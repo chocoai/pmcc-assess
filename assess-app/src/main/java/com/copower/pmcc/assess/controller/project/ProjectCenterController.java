@@ -79,9 +79,9 @@ public class ProjectCenterController {
     @ResponseBody
     @RequestMapping(value = "/getParticipationProject", name = "取得参与项目", method = RequestMethod.GET)
     public BootstrapTableVo getParticipationProject (String queryName, String projectStatus, String queryCreator, String queryMember, Integer entrustPurpose,
-                                                    String queryManager, String queryTimeStart, String queryTimeEnd,String queryConsignor ,Integer queryUseUnit) throws Exception {
+                                                    String queryManager, String queryTimeStart, String queryTimeEnd,String queryConsignor ,Integer queryUseUnit, Integer queryLoanType) throws Exception {
         return projectCenterService.getParticipationProject(queryName, projectStatus,queryCreator,queryMember,entrustPurpose,
-                queryManager,queryTimeStart,queryTimeEnd,queryConsignor, queryUseUnit);
+                queryManager,queryTimeStart,queryTimeEnd,queryConsignor, queryUseUnit, null);
     }
 
     @RequestMapping(value = "/projectList", name = "所有项目")
@@ -93,6 +93,9 @@ public class ProjectCenterController {
         //委托目的
         List<BaseDataDic> entrustPurposeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE);
         modelAndView.addObject("entrustPurposeList", entrustPurposeList);
+        //贷款类型
+        List<BaseDataDic> loanTypeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_LOAN_TYPE);
+        modelAndView.addObject("loanTypeList", loanTypeList);
         modelAndView.addObject("companyId", publicService.getCurrentCompany().getCompanyId());
         return modelAndView;
     }
@@ -100,9 +103,9 @@ public class ProjectCenterController {
     @ResponseBody
     @RequestMapping(value = "/getProjectList", name = "取得所有项目列表", method = RequestMethod.GET)
     public BootstrapTableVo getProjectList(String queryName, String projectStatus,String queryCreator,String queryMember,Integer entrustPurpose,
-                                           String queryManager, String queryTimeStart, String queryTimeEnd,String queryConsignor ,Integer queryUseUnit,String queryEstateName) throws Exception{
+                                           String queryManager, String queryTimeStart, String queryTimeEnd,String queryConsignor ,Integer queryUseUnit,String queryEstateName,Integer queryLoanType) throws Exception{
         return projectCenterService.getProjectList(queryName, projectStatus,queryCreator,queryMember,entrustPurpose,
-                queryManager,queryTimeStart,queryTimeEnd,queryConsignor,queryUseUnit,queryEstateName);
+                queryManager,queryTimeStart,queryTimeEnd,queryConsignor,queryUseUnit,queryEstateName, queryLoanType);
     }
 
     @ResponseBody

@@ -134,6 +134,19 @@
                                                    onclick="selectCustomer(this)">
                                         </div>
                                     </div>
+                                    <div>
+                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                            贷款类型
+                                        </label>
+                                        <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                            <select id="queryLoanType" class="form-control">
+                                                <option value="">--请选择--</option>
+                                                <c:forEach var="item" items="${loanTypeList}">
+                                                    <option value="${item.id}">${item.name}</option>
+                                                </c:forEach>
+                                            </select>
+                                        </div>
+                                    </div>
                                     <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                         <button type="button" class="btn btn-primary"
                                                 onclick="loadProjectList()">
@@ -170,7 +183,7 @@
         cols.push({field: 'projectName', title: '项目名称'});
         cols.push({field: 'useUnitName', title: '使用报告单位'});
         cols.push({
-            field: 'serviceEnd', width: '20%', title: '项目成员', formatter: function (value, row, index) {
+            field: 'serviceEnd', width: '15%', title: '项目成员', formatter: function (value, row, index) {
                 var s = "";
                 if (row.userAccountManagerName) {
                     s += "<label style='padding: 5px;' class='label label-info'>" + row.userAccountManagerName.split("_")[0] + "</label>"
@@ -198,6 +211,7 @@
         });
         cols.push({field: 'projectStatus', title: '项目状态'});
         cols.push({field: 'entrustPurposeName', title: '委托目的'});
+        cols.push({field: 'loanTypeName', title: '贷款类型'});
         cols.push({
             field: 'finishPre', width: '20%', title: '项目进度', formatter: function (value, row, index) {
                 var s = "<div class='progress progress_sm' style='margin-bottom: 0px;'>";
@@ -242,7 +256,8 @@
             queryTimeStart:$("#queryTimeStart").val(),
             queryTimeEnd:$("#queryTimeEnd").val(),
             queryConsignor:$("#queryConsignor").val(),
-            queryUseUnit:$("#queryUseUnit").val()
+            queryUseUnit:$("#queryUseUnit").val(),
+            queryLoanType:$("#queryLoanType").val()
         }, {
             showColumns: false,
             showRefresh: false,
