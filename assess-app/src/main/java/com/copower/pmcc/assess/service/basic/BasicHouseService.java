@@ -252,16 +252,13 @@ public class BasicHouseService {
     }
 
     public BasicHouse getHouseByApplyId(Integer applyId) {
-        if (applyId == null || applyId == 0) {
-            BasicHouse where = new BasicHouse();
-            where.setApplyId(applyId);
-            where.setCreator(commonService.thisUserAccount());
-            List<BasicHouse> basicHouses = basicHouseDao.basicHouseList(where);
-            if (CollectionUtils.isEmpty(basicHouses)) {
-                return null;
-            }
-            BasicHouse basicHouse = basicHouses.get(0);
-            return basicHouse;
+        if(applyId==null) return null;
+        BasicHouse where = new BasicHouse();
+        where.setApplyId(applyId);
+        where.setCreator(commonService.thisUserAccount());
+        List<BasicHouse> basicHouses = basicHouseDao.basicHouseList(where);
+        if (!CollectionUtils.isEmpty(basicHouses)) {
+            return basicHouses.get(0);
         } else {
             BasicApply basicApply = basicApplyService.getByBasicApplyId(applyId);
             return basicHouseDao.getBasicHouseById(basicApply.getBasicHouseId());

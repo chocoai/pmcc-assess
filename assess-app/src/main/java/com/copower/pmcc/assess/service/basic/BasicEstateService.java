@@ -330,6 +330,7 @@ public class BasicEstateService {
     }
 
     public BasicEstate getBasicEstateByApplyId(Integer applyId) {
+        if(applyId == null) return null;
         BasicEstate where = new BasicEstate();
         where.setApplyId(applyId);
         where.setCreator(commonService.thisUserAccount());
