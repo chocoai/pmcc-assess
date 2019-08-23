@@ -167,12 +167,12 @@ public class BasicBuildingService {
      * @throws Exception
      */
     public BasicBuildingVo getBasicBuildingByApplyId(Integer applyId) {
-        if (applyId == null || applyId == 0) {
-            BasicBuilding where = new BasicBuilding();
-            where.setApplyId(applyId);
-            where.setCreator(commonService.thisUserAccount());
-            List<BasicBuilding> basicBuildings = basicBuildingDao.getBasicBuildingList(where);
-            if (CollectionUtils.isEmpty(basicBuildings)) return null;
+        if (applyId == null) return null;
+        BasicBuilding where = new BasicBuilding();
+        where.setApplyId(applyId);
+        where.setCreator(commonService.thisUserAccount());
+        List<BasicBuilding> basicBuildings = basicBuildingDao.getBasicBuildingList(where);
+        if (!CollectionUtils.isEmpty(basicBuildings)) {
             return getBasicBuildingVo(basicBuildings.get(0));
         } else {
             BasicApply basicApply = basicApplyService.getByBasicApplyId(applyId);

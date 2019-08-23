@@ -330,14 +330,14 @@ public class BasicEstateService {
     }
 
     public BasicEstate getBasicEstateByApplyId(Integer applyId) {
-        if (applyId == null || applyId == 0){
-            BasicEstate where = new BasicEstate();
-            where.setApplyId(applyId);
-            where.setCreator(commonService.thisUserAccount());
-            List<BasicEstate> basicEstates = basicEstateDao.basicEstateList(where);
-            if (CollectionUtils.isEmpty(basicEstates)) return null;
+        if(applyId == null) return null;
+        BasicEstate where = new BasicEstate();
+        where.setApplyId(applyId);
+        where.setCreator(commonService.thisUserAccount());
+        List<BasicEstate> basicEstates = basicEstateDao.basicEstateList(where);
+        if (!CollectionUtils.isEmpty(basicEstates)){
             return basicEstates.get(0);
-        }else{
+        } else{
             BasicApply basicApply = basicApplyService.getByBasicApplyId(applyId);
             return basicEstateDao.getBasicEstateById(basicApply.getBasicEstateId());
         }
