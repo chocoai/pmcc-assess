@@ -126,7 +126,7 @@ public class DataDispatchRegisterService {
                 if (!importDataDispatchRegister(dataDispatchRegister, builder, row, i)) {
                     continue;
                 }
-                dataDispatchRegister.setCreator(commonService.thisUserAccount());
+                dataDispatchRegister.setCreator(commonService.thisUser().getUserName());
             } catch (Exception e) {
                 builder.append(String.format("\n第%s行异常：%s", i, e.getMessage()));
                 continue;

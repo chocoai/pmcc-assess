@@ -96,7 +96,7 @@ public class DataDispatchRegisterController extends BaseController {
     @RequestMapping(value = "/saveAndUpdateDataDispatchRegister", method = {RequestMethod.POST}, name = "更新发文登记表")
     public HttpResult saveAndUpdateDataDispatchRegister(DataDispatchRegister dataDispatchRegister) {
         try {
-            dataDispatchRegister.setCreator(commonService.thisUserAccount());
+            dataDispatchRegister.setCreator(commonService.thisUser().getUserName());
             dataDispatchRegisterService.saveAndUpdateDataDispatchRegister(dataDispatchRegister);
             return HttpResult.newCorrectResult("保存 success!");
         } catch (Exception e) {
