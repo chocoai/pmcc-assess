@@ -91,4 +91,14 @@ public class ReportDesignerController {
         ModelAndView modelAndView = commonService.baseView("/reportManage/projectWorkItem");
         return modelAndView;
     }
+
+    @GetMapping(value = "/myProjectFinance",name = "项目收款报表页面")
+    public ModelAndView MyProjectFinance() {
+        ModelAndView modelAndView = commonService.baseView("/reportManage/myProjectFinance");
+        List<BaseDataDic> entrustmentList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE);
+        List<BaseDataDic> loanTypeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_LOAN_TYPE);
+        modelAndView.addObject("entrustmentList", entrustmentList);
+        modelAndView.addObject("loanTypeList", loanTypeList);
+        return modelAndView;
+    }
 }
