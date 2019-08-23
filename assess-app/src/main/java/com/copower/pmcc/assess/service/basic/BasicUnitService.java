@@ -183,16 +183,16 @@ public class BasicUnitService {
      * @throws Exception
      */
     public BasicUnit getBasicUnitByApplyId(Integer applyId) {
-        if (applyId == null || applyId == 0) {
-            BasicUnit where = new BasicUnit();
-            where.setApplyId(applyId);
-            where.setCreator(commonService.thisUserAccount());
-            List<BasicUnit> basicUnits = basicUnitDao.basicUnitList(where);
-            if (CollectionUtils.isEmpty(basicUnits)) return null;
+        if(applyId==null) return null;
+        BasicUnit where = new BasicUnit();
+        where.setApplyId(applyId);
+        where.setCreator(commonService.thisUserAccount());
+        List<BasicUnit> basicUnits = basicUnitDao.basicUnitList(where);
+        if (!CollectionUtils.isEmpty(basicUnits)) {
             return basicUnits.get(0);
         } else {
-            BasicApply basicApply = basicApplyService.getByBasicApplyId(applyId);
-            return basicUnitDao.getBasicUnitById(basicApply.getBasicUnitId());
+        BasicApply basicApply = basicApplyService.getByBasicApplyId(applyId);
+        return basicUnitDao.getBasicUnitById(basicApply.getBasicUnitId());
         }
     }
 

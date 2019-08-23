@@ -14,6 +14,7 @@
         <result column="valuation_date" property="valuationDate" jdbcType="TIMESTAMP"/>
         <result column="entrust_purpose" property="entrustPurpose" jdbcType="INTEGER"/>
         <result column="value_type" property="valueType" jdbcType="INTEGER"/>
+        <result column="loan_type" property="loanType" jdbcType="INTEGER"/>
         <result column="department_id" property="departmentId" jdbcType="INTEGER"/>
         <result column="remarks" property="remarks" jdbcType="VARCHAR"/>
         <result column="complete_date_plan" property="completeDatePlan" jdbcType="TIMESTAMP"/>
@@ -73,6 +74,9 @@
         </if>
         <if test="queryEstateName!=null and queryEstateName!=''">
             AND A.estate_name LIKE CONCAT(CONCAT('%', #{queryEstateName}), '%')
+        </if>
+        <if test="queryLoanType!=null">
+            AND A.loan_type = #{queryLoanType}
         </if>
         ORDER BY A.id DESC
     </select>

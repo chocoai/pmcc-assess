@@ -1,19 +1,30 @@
 package com.copower.pmcc.assess.service.project.survey;
 
 import com.copower.pmcc.assess.common.enums.ExamineTypeEnum;
+import com.copower.pmcc.assess.common.enums.ResponsibileModelEnum;
+import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyCaseStudyDao;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
-import com.copower.pmcc.assess.dal.basis.entity.SurveyCaseStudy;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.basic.BasicApplyBatchService;
+import com.copower.pmcc.assess.service.project.ProjectInfoService;
+import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
+import com.copower.pmcc.assess.service.project.ProjectPlanService;
+import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
+import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
+import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
+import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
+import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import com.copower.pmcc.erp.constant.ApplicationConstant;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,7 +38,6 @@ import java.util.List;
  */
 @Service
 public class SurveyCaseStudyService {
-
     @Autowired
     private SurveyCaseStudyDao surveyCaseStudyDao;
     @Autowired
@@ -37,11 +47,23 @@ public class SurveyCaseStudyService {
     @Autowired
     private SurveyExamineTaskService surveyExamineTaskService;
     @Autowired
-    private SurveyCommonService surveyCommonService;
+    private ProjectPhaseService projectPhaseService;
     @Autowired
     private BaseDataDicService baseDataDicService;
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    private ProjectWorkStageService projectWorkStageService;
+    @Autowired
+    private ErpRpcUserService erpRpcUserService;
+    @Autowired
+    private ApplicationConstant applicationConstant;
+    @Autowired
+    private ProjectPlanService projectPlanService;
+    @Autowired
+    private BpmRpcProjectTaskService bpmRpcProjectTaskService;
+    @Autowired
+    private ProjectInfoService projectInfoService;
+    @Autowired
+    private BasicApplyBatchService basicApplyBatchService;
 
     /**
      * 数据保存
@@ -131,6 +153,50 @@ public class SurveyCaseStudyService {
     }
 
     /**
+     * 保存案例任务
+     * @param pid
+     * @param projectPhaseName
+     * @param transactionType
+     * @throws BusinessException
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void saveCaseTaskExtend(Integer pid,String projectPhaseName, Integer transactionType) throws BusinessException {
+        ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(pid);
+        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.COMMON_CASE_STUDY_EXAMINE);
+        ProjectWorkStage workStage = projectWorkStageService.cacheProjectWorkStage(projectPlanDetails.getProjectWorkStageId());
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
+        ProjectPlanDetails taskPlanDetails = new ProjectPlanDetails();
+        BeanUtils.copyProperties(projectPlanDetails, taskPlanDetails);
+        taskPlanDetails.setId(null);
+        taskPlanDetails.setPid(projectPlanDetails.getId());
+        SysUserDto sysUser = erpRpcUserService.getSysUser(commonService.thisUserAccount());
+        taskPlanDetails.setProjectPhaseId(projectPhase.getId());
+        taskPlanDetails.setExecuteUserAccount(commonService.thisUserAccount());
+        taskPlanDetails.setExecuteDepartmentId(sysUser.getDepartmentId());
+        taskPlanDetails.setBisLastLayer(true);
+        taskPlanDetails.setStatus(ProcessStatusEnum.RUN.getValue());
+        taskPlanDetails.setCreator(commonService.thisUserAccount());
+        taskPlanDetails.setProjectPhaseName(String.format("%s(%s)",projectPhaseName,baseDataDicService.getNameById(transactionType)));
+        projectPlanDetailsService.saveProjectPlanDetails(taskPlanDetails);
+        //添加任务
+        ProjectResponsibilityDto projectTask = new ProjectResponsibilityDto();
+        projectTask.setProjectId(projectPlanDetails.getProjectId());
+        projectTask.setProjectName(projectInfo.getProjectName());
+        projectTask.setPlanEndTime(projectPlanDetails.getPlanEndDate());
+        projectTask.setPlanId(projectPlanDetails.getPlanId());
+        projectTask.setPlanDetailsId(taskPlanDetails.getId());
+        projectTask.setModel(ResponsibileModelEnum.TASK.getId());
+        projectTask.setConclusion(ResponsibileModelEnum.TASK.getName());
+        projectTask.setUserAccount(commonService.thisUserAccount());
+        projectTask.setBisEnable(true);
+        projectTask.setAppKey(applicationConstant.getAppKey());
+        projectTask.setPlanDetailsName(String.format("%s[%s]", workStage.getWorkStageName(), taskPlanDetails.getProjectPhaseName()));
+        projectPlanService.updateProjectTaskUrl(ResponsibileModelEnum.TASK, projectTask);
+        projectTask.setCreator(commonService.thisUserAccount());
+        bpmRpcProjectTaskService.saveProjectTask(projectTask);
+    }
+
+    /**
      * 删除案例任务
      *
      * @param planDetailsId
@@ -138,6 +204,10 @@ public class SurveyCaseStudyService {
     @Transactional(rollbackFor = Exception.class)
     public void deleteCaseTask(Integer planDetailsId) throws Exception {
         //先验证是否满足删除条件
+        BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchByPlanDetailsId(planDetailsId);
+        if (basicApplyBatch != null) {
+            throw new BusinessException("任务已开始填写，不允许删除");
+        }
         //需删除该计划任务下的子项任务，项目待提交的任务
         List<ProjectPlanDetails> list = projectPlanDetailsService.getPlanDetailsListRecursion(planDetailsId, true);
         surveyExamineTaskService.deletePlanDetailsAndTask(list);
@@ -151,29 +221,5 @@ public class SurveyCaseStudyService {
         return surveyCaseStudy;
     }
 
-    /**
-     * 复制案例
-     *
-     * @param planDetailsId
-     */
-    @Transactional
-    public void copyCaseStudy(Integer planDetailsId) throws BusinessException {
-        //1.先复制planDetails数据 2.复制调查信息数据 3.复制所关联的附件信息
-        //分派等相关任务还需手动操作
-        ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
-        projectPlanDetails.setId(null);
-        projectPlanDetails.setProjectPhaseName(String.format("%s-复制", projectPlanDetails.getProjectPhaseName()));
-        projectPlanDetails.setSorting(projectPlanDetails.getSorting() + 100);
-        projectPlanDetails.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
-        projectPlanDetails.setCreator(commonService.thisUserAccount());
-        projectPlanDetailsService.saveProjectPlanDetails(projectPlanDetails);
-        StringBuilder stringBuilder = new StringBuilder();
-        List<String> tableList = surveyCommonService.getTableList();
-        //同步examine表数据
-        for (String tableName : tableList) {
-            stringBuilder.append(surveyCommonService.getSynchronizeSql(tableName, planDetailsId, projectPlanDetails.getId(), projectPlanDetails.getDeclareRecordId()));
-        }
-        jdbcTemplate.execute(stringBuilder.toString());
-    }
 
 }

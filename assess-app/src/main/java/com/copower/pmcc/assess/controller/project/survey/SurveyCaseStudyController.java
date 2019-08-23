@@ -1,7 +1,5 @@
 package com.copower.pmcc.assess.controller.project.survey;
 
-import com.alibaba.fastjson.JSON;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
 import com.copower.pmcc.assess.service.project.survey.SurveyCaseStudyService;
 import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
@@ -48,10 +46,9 @@ public class SurveyCaseStudyController {
 
     @ResponseBody
     @PostMapping(name = "保存案例任务,并且分派", value = "/saveCaseTask")
-    public HttpResult saveCaseTask(String formData, Integer planDetailsId,Integer transactionType, String examineFormType) {
+    public HttpResult saveCaseTask(Integer planDetailsId,String projectPhaseName, Integer transactionType) {
         try {
-            ProjectPlanDetails projectPlanDetails = JSON.parseObject(formData, ProjectPlanDetails.class);
-            surveyCaseStudyService.saveCaseTask(projectPlanDetails, planDetailsId,transactionType,examineFormType);
+            surveyCaseStudyService.saveCaseTaskExtend(planDetailsId,projectPhaseName,transactionType);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             logger.error("保存案例任务", e);
@@ -68,18 +65,6 @@ public class SurveyCaseStudyController {
         } catch (Exception e) {
             logger.error("删除案例任务", e);
             return HttpResult.newErrorResult(e.getMessage());
-        }
-    }
-
-    @ResponseBody
-    @PostMapping(name = "复制案例", value = "/copyCaseStudy")
-    public HttpResult copyCaseStudy(Integer planDetailsId) {
-        try {
-            surveyCaseStudyService.copyCaseStudy(planDetailsId);
-            return HttpResult.newCorrectResult();
-        } catch (Exception e) {
-            logger.error("复制案例", e);
-            return HttpResult.newErrorResult("复制案例异常");
         }
     }
 
