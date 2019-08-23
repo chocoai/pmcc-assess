@@ -297,3 +297,4 @@ AssessFTKey.ftMethodIncomeHistoryRestaurant = "ft.method.income.history.restaura
 AssessFTKey.ftDeclareBuildEngineering = "ft.declare.build.engineering";//在建工程土建模板
 AssessFTKey.ftDeclareBuildEquipmentInstall = "ft.declare.build.equipmentInstall";//在建工程设备安装模板
 AssessFTKey.ftOperationManualCaseBase = "ft.operation.manual.case.base";//案例库操作手册
+AssessFTKey.ftProjectDispatchRegister = "ft.project.dispatch.register";//项目发文登记表模板

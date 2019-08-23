@@ -1,0 +1,449 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.DataDispatchRegisterMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.DataDispatchRegister" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="dispatch_date" property="dispatchDate" jdbcType="VARCHAR" />
+    <result column="dispatch_number" property="dispatchNumber" jdbcType="VARCHAR" />
+    <result column="business_type" property="businessType" jdbcType="VARCHAR" />
+    <result column="entrust_purpose" property="entrustPurpose" jdbcType="VARCHAR" />
+    <result column="project_name" property="projectName" jdbcType="VARCHAR" />
+    <result column="client_company" property="clientCompany" jdbcType="VARCHAR" />
+    <result column="entrust_unit" property="entrustUnit" jdbcType="VARCHAR" />
+    <result column="assess_area" property="assessArea" jdbcType="VARCHAR" />
+    <result column="assess_amount" property="assessAmount" jdbcType="VARCHAR" />
+    <result column="send_number" property="sendNumber" jdbcType="VARCHAR" />
+    <result column="remain_number" property="remainNumber" jdbcType="VARCHAR" />
+    <result column="operator" property="operator" jdbcType="VARCHAR" />
+    <result column="approver" property="approver" jdbcType="VARCHAR" />
+    <result column="deposit_person" property="depositPerson" jdbcType="VARCHAR" />
+    <result column="redact_person" property="redactPerson" jdbcType="VARCHAR" />
+    <result column="pigeonhole_date" property="pigeonholeDate" jdbcType="VARCHAR" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
+    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, dispatch_date, dispatch_number, business_type, entrust_purpose, project_name, 
+    client_company, entrust_unit, assess_area, assess_amount, send_number, remain_number, 
+    operator, approver, deposit_person, redact_person, pigeonhole_date, creator, gmt_created, 
+    gmt_modified
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataDispatchRegisterExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_data_dispatch_register
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_data_dispatch_register
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_data_dispatch_register
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataDispatchRegisterExample" >
+    delete from tb_data_dispatch_register
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataDispatchRegister" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_data_dispatch_register (dispatch_date, dispatch_number, business_type, 
+      entrust_purpose, project_name, client_company, 
+      entrust_unit, assess_area, assess_amount, 
+      send_number, remain_number, operator, 
+      approver, deposit_person, redact_person, 
+      pigeonhole_date, creator, gmt_created, 
+      gmt_modified)
+    values (#{dispatchDate,jdbcType=VARCHAR}, #{dispatchNumber,jdbcType=VARCHAR}, #{businessType,jdbcType=VARCHAR}, 
+      #{entrustPurpose,jdbcType=VARCHAR}, #{projectName,jdbcType=VARCHAR}, #{clientCompany,jdbcType=VARCHAR}, 
+      #{entrustUnit,jdbcType=VARCHAR}, #{assessArea,jdbcType=VARCHAR}, #{assessAmount,jdbcType=VARCHAR}, 
+      #{sendNumber,jdbcType=VARCHAR}, #{remainNumber,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR}, 
+      #{approver,jdbcType=VARCHAR}, #{depositPerson,jdbcType=VARCHAR}, #{redactPerson,jdbcType=VARCHAR}, 
+      #{pigeonholeDate,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataDispatchRegister" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_data_dispatch_register
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="dispatchDate != null" >
+        dispatch_date,
+      </if>
+      <if test="dispatchNumber != null" >
+        dispatch_number,
+      </if>
+      <if test="businessType != null" >
+        business_type,
+      </if>
+      <if test="entrustPurpose != null" >
+        entrust_purpose,
+      </if>
+      <if test="projectName != null" >
+        project_name,
+      </if>
+      <if test="clientCompany != null" >
+        client_company,
+      </if>
+      <if test="entrustUnit != null" >
+        entrust_unit,
+      </if>
+      <if test="assessArea != null" >
+        assess_area,
+      </if>
+      <if test="assessAmount != null" >
+        assess_amount,
+      </if>
+      <if test="sendNumber != null" >
+        send_number,
+      </if>
+      <if test="remainNumber != null" >
+        remain_number,
+      </if>
+      <if test="operator != null" >
+        operator,
+      </if>
+      <if test="approver != null" >
+        approver,
+      </if>
+      <if test="depositPerson != null" >
+        deposit_person,
+      </if>
+      <if test="redactPerson != null" >
+        redact_person,
+      </if>
+      <if test="pigeonholeDate != null" >
+        pigeonhole_date,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created,
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="dispatchDate != null" >
+        #{dispatchDate,jdbcType=VARCHAR},
+      </if>
+      <if test="dispatchNumber != null" >
+        #{dispatchNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="businessType != null" >
+        #{businessType,jdbcType=VARCHAR},
+      </if>
+      <if test="entrustPurpose != null" >
+        #{entrustPurpose,jdbcType=VARCHAR},
+      </if>
+      <if test="projectName != null" >
+        #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="clientCompany != null" >
+        #{clientCompany,jdbcType=VARCHAR},
+      </if>
+      <if test="entrustUnit != null" >
+        #{entrustUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="assessArea != null" >
+        #{assessArea,jdbcType=VARCHAR},
+      </if>
+      <if test="assessAmount != null" >
+        #{assessAmount,jdbcType=VARCHAR},
+      </if>
+      <if test="sendNumber != null" >
+        #{sendNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="remainNumber != null" >
+        #{remainNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null" >
+        #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="approver != null" >
+        #{approver,jdbcType=VARCHAR},
+      </if>
+      <if test="depositPerson != null" >
+        #{depositPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="redactPerson != null" >
+        #{redactPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="pigeonholeDate != null" >
+        #{pigeonholeDate,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null" >
+        #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataDispatchRegisterExample" resultType="java.lang.Integer" >
+    select count(*) from tb_data_dispatch_register
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_data_dispatch_register
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.dispatchDate != null" >
+        dispatch_date = #{record.dispatchDate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dispatchNumber != null" >
+        dispatch_number = #{record.dispatchNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.businessType != null" >
+        business_type = #{record.businessType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.entrustPurpose != null" >
+        entrust_purpose = #{record.entrustPurpose,jdbcType=VARCHAR},
+      </if>
+      <if test="record.projectName != null" >
+        project_name = #{record.projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.clientCompany != null" >
+        client_company = #{record.clientCompany,jdbcType=VARCHAR},
+      </if>
+      <if test="record.entrustUnit != null" >
+        entrust_unit = #{record.entrustUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="record.assessArea != null" >
+        assess_area = #{record.assessArea,jdbcType=VARCHAR},
+      </if>
+      <if test="record.assessAmount != null" >
+        assess_amount = #{record.assessAmount,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sendNumber != null" >
+        send_number = #{record.sendNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remainNumber != null" >
+        remain_number = #{record.remainNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operator != null" >
+        operator = #{record.operator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.approver != null" >
+        approver = #{record.approver,jdbcType=VARCHAR},
+      </if>
+      <if test="record.depositPerson != null" >
+        deposit_person = #{record.depositPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="record.redactPerson != null" >
+        redact_person = #{record.redactPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pigeonholeDate != null" >
+        pigeonhole_date = #{record.pigeonholeDate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.creator != null" >
+        creator = #{record.creator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gmtCreated != null" >
+        gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gmtModified != null" >
+        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_data_dispatch_register
+    set id = #{record.id,jdbcType=INTEGER},
+      dispatch_date = #{record.dispatchDate,jdbcType=VARCHAR},
+      dispatch_number = #{record.dispatchNumber,jdbcType=VARCHAR},
+      business_type = #{record.businessType,jdbcType=VARCHAR},
+      entrust_purpose = #{record.entrustPurpose,jdbcType=VARCHAR},
+      project_name = #{record.projectName,jdbcType=VARCHAR},
+      client_company = #{record.clientCompany,jdbcType=VARCHAR},
+      entrust_unit = #{record.entrustUnit,jdbcType=VARCHAR},
+      assess_area = #{record.assessArea,jdbcType=VARCHAR},
+      assess_amount = #{record.assessAmount,jdbcType=VARCHAR},
+      send_number = #{record.sendNumber,jdbcType=VARCHAR},
+      remain_number = #{record.remainNumber,jdbcType=VARCHAR},
+      operator = #{record.operator,jdbcType=VARCHAR},
+      approver = #{record.approver,jdbcType=VARCHAR},
+      deposit_person = #{record.depositPerson,jdbcType=VARCHAR},
+      redact_person = #{record.redactPerson,jdbcType=VARCHAR},
+      pigeonhole_date = #{record.pigeonholeDate,jdbcType=VARCHAR},
+      creator = #{record.creator,jdbcType=VARCHAR},
+      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataDispatchRegister" >
+    update tb_data_dispatch_register
+    <set >
+      <if test="dispatchDate != null" >
+        dispatch_date = #{dispatchDate,jdbcType=VARCHAR},
+      </if>
+      <if test="dispatchNumber != null" >
+        dispatch_number = #{dispatchNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="businessType != null" >
+        business_type = #{businessType,jdbcType=VARCHAR},
+      </if>
+      <if test="entrustPurpose != null" >
+        entrust_purpose = #{entrustPurpose,jdbcType=VARCHAR},
+      </if>
+      <if test="projectName != null" >
+        project_name = #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="clientCompany != null" >
+        client_company = #{clientCompany,jdbcType=VARCHAR},
+      </if>
+      <if test="entrustUnit != null" >
+        entrust_unit = #{entrustUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="assessArea != null" >
+        assess_area = #{assessArea,jdbcType=VARCHAR},
+      </if>
+      <if test="assessAmount != null" >
+        assess_amount = #{assessAmount,jdbcType=VARCHAR},
+      </if>
+      <if test="sendNumber != null" >
+        send_number = #{sendNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="remainNumber != null" >
+        remain_number = #{remainNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null" >
+        operator = #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="approver != null" >
+        approver = #{approver,jdbcType=VARCHAR},
+      </if>
+      <if test="depositPerson != null" >
+        deposit_person = #{depositPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="redactPerson != null" >
+        redact_person = #{redactPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="pigeonholeDate != null" >
+        pigeonhole_date = #{pigeonholeDate,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataDispatchRegister" >
+    update tb_data_dispatch_register
+    set dispatch_date = #{dispatchDate,jdbcType=VARCHAR},
+      dispatch_number = #{dispatchNumber,jdbcType=VARCHAR},
+      business_type = #{businessType,jdbcType=VARCHAR},
+      entrust_purpose = #{entrustPurpose,jdbcType=VARCHAR},
+      project_name = #{projectName,jdbcType=VARCHAR},
+      client_company = #{clientCompany,jdbcType=VARCHAR},
+      entrust_unit = #{entrustUnit,jdbcType=VARCHAR},
+      assess_area = #{assessArea,jdbcType=VARCHAR},
+      assess_amount = #{assessAmount,jdbcType=VARCHAR},
+      send_number = #{sendNumber,jdbcType=VARCHAR},
+      remain_number = #{remainNumber,jdbcType=VARCHAR},
+      operator = #{operator,jdbcType=VARCHAR},
+      approver = #{approver,jdbcType=VARCHAR},
+      deposit_person = #{depositPerson,jdbcType=VARCHAR},
+      redact_person = #{redactPerson,jdbcType=VARCHAR},
+      pigeonhole_date = #{pigeonholeDate,jdbcType=VARCHAR},
+      creator = #{creator,jdbcType=VARCHAR},
+      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
