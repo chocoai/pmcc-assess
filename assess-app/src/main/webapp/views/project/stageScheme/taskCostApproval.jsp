@@ -58,6 +58,7 @@
                 </div>
 
                 <%@include file="/views/method/module/developmentCommon.jsp" %>
+                <%@include file="/views/project/tool/residueRatio.jsp" %>
 
 
                 <div class="x_content">

@@ -78,14 +78,6 @@ public class MdCostConstruction {
 
     private BigDecimal constructionAssessmentValue2;
 
-    private String creator;
-
-    private Date gmtModified;
-
-    private Date gmtCreated;
-
-    private Integer pid;
-
     private BigDecimal additionalCostLandAcquisition;
 
     private String infrastructureCostExplain;
@@ -97,6 +89,18 @@ public class MdCostConstruction {
     private String additionalCostLandAcquisitionExplain;
 
     private String reconnaissanceDesignExplain;
+
+    private Integer residueRatioId;
+
+    private BigDecimal residueRatio;
+
+    private Integer pid;
+
+    private String creator;
+
+    private Date gmtModified;
+
+    private Date gmtCreated;
 
     public Integer getId() {
         return id;
@@ -394,38 +398,6 @@ public class MdCostConstruction {
         this.constructionAssessmentValue2 = constructionAssessmentValue2;
     }
 
-    public String getCreator() {
-        return creator;
-    }
-
-    public void setCreator(String creator) {
-        this.creator = creator == null ? null : creator.trim();
-    }
-
-    public Date getGmtModified() {
-        return gmtModified;
-    }
-
-    public void setGmtModified(Date gmtModified) {
-        this.gmtModified = gmtModified;
-    }
-
-    public Date getGmtCreated() {
-        return gmtCreated;
-    }
-
-    public void setGmtCreated(Date gmtCreated) {
-        this.gmtCreated = gmtCreated;
-    }
-
-    public Integer getPid() {
-        return pid;
-    }
-
-    public void setPid(Integer pid) {
-        this.pid = pid;
-    }
-
     public BigDecimal getAdditionalCostLandAcquisition() {
         return additionalCostLandAcquisition;
     }
@@ -472,5 +444,53 @@ public class MdCostConstruction {
 
     public void setReconnaissanceDesignExplain(String reconnaissanceDesignExplain) {
         this.reconnaissanceDesignExplain = reconnaissanceDesignExplain == null ? null : reconnaissanceDesignExplain.trim();
+    }
+
+    public Integer getResidueRatioId() {
+        return residueRatioId;
+    }
+
+    public void setResidueRatioId(Integer residueRatioId) {
+        this.residueRatioId = residueRatioId;
+    }
+
+    public BigDecimal getResidueRatio() {
+        return residueRatio;
+    }
+
+    public void setResidueRatio(BigDecimal residueRatio) {
+        this.residueRatio = residueRatio;
+    }
+
+    public Integer getPid() {
+        return pid;
+    }
+
+    public void setPid(Integer pid) {
+        this.pid = pid;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator == null ? null : creator.trim();
+    }
+
+    public Date getGmtModified() {
+        return gmtModified;
+    }
+
+    public void setGmtModified(Date gmtModified) {
+        this.gmtModified = gmtModified;
+    }
+
+    public Date getGmtCreated() {
+        return gmtCreated;
+    }
+
+    public void setGmtCreated(Date gmtCreated) {
+        this.gmtCreated = gmtCreated;
     }
 }

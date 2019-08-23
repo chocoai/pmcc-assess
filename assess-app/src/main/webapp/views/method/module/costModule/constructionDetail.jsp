@@ -442,6 +442,27 @@
                 </div>
             </div>
         </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    成新率
+                </label>
+                <div class="col-sm-3">
+                    <input type="hidden" placeholder="成新率"  name="residueRatioId"   value="${mdCostVo.mdCostConstruction.residueRatioId}">
+                    <div class="input-group">
+                        <span class="input-group-btn">
+                            <label  class="form-control">
+                        <fmt:formatNumber value="${mdCostVo.mdCostConstruction.residueRatio}" type="percent"/>
+                         </label>
+                        </span>
+                        <span class="input-group-btn">
+                            <button type="button" class="btn-primary btn" onclick="callResidueRatio(this,true)"> <i class="fa fa-dashcube"></i></button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -525,6 +546,20 @@
 
 
 <script>
+
+    function callResidueRatio(_this, readonly) {
+        try {
+            var target = $(_this).closest("form");
+            residueRatio.init({
+                readonly: readonly,
+                residueRatioId: target.find("input[name='residueRatioId']").val(),
+                houseId: '${basicHouseVo.id}',
+                success: function (id, resultValue) {
+                }
+            });
+        } catch (e) {
+        }
+    }
     function constructionInstallationEngineeringFeeEvent(id) {
         var target = $("#boxMdCostConstruction");
         if (target.find(".panel-body").find("table").size() == 0) {

@@ -39,16 +39,18 @@
     <result column="investment_profit_tax" property="investmentProfitTax" jdbcType="DECIMAL" />
     <result column="investment_profit_tax_explain" property="investmentProfitTaxExplain" jdbcType="VARCHAR" />
     <result column="construction_assessment_value2" property="constructionAssessmentValue2" jdbcType="DECIMAL" />
-    <result column="creator" property="creator" jdbcType="VARCHAR" />
-    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
-    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
-    <result column="pid" property="pid" jdbcType="INTEGER" />
     <result column="additional_cost_land_acquisition" property="additionalCostLandAcquisition" jdbcType="DECIMAL" />
     <result column="infrastructure_cost_explain" property="infrastructureCostExplain" jdbcType="VARCHAR" />
     <result column="dev_during_explain" property="devDuringExplain" jdbcType="VARCHAR" />
     <result column="other_engineering_cost_explain" property="otherEngineeringCostExplain" jdbcType="VARCHAR" />
     <result column="additional_cost_land_acquisition_explain" property="additionalCostLandAcquisitionExplain" jdbcType="VARCHAR" />
     <result column="reconnaissance_design_explain" property="reconnaissanceDesignExplain" jdbcType="VARCHAR" />
+    <result column="residue_ratio_id" property="residueRatioId" jdbcType="INTEGER" />
+    <result column="residue_ratio" property="residueRatio" jdbcType="DECIMAL" />
+    <result column="pid" property="pid" jdbcType="INTEGER" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -119,9 +121,9 @@
     management_expense, management_expense_explain, sales_fee, sales_fee_explain, interest_investment_tax, 
     interest_investment_tax_explain, sales_tax_and_additional, sales_tax_and_additional_explain, 
     investment_profit_tax, investment_profit_tax_explain, construction_assessment_value2, 
-    creator, gmt_modified, gmt_created, pid, additional_cost_land_acquisition, infrastructure_cost_explain, 
-    dev_during_explain, other_engineering_cost_explain, additional_cost_land_acquisition_explain, 
-    reconnaissance_design_explain
+    additional_cost_land_acquisition, infrastructure_cost_explain, dev_during_explain, 
+    other_engineering_cost_explain, additional_cost_land_acquisition_explain, reconnaissance_design_explain, 
+    residue_ratio_id, residue_ratio, pid, creator, gmt_modified, gmt_created
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdCostConstructionExample" >
     select
@@ -173,12 +175,12 @@
       interest_investment_tax, interest_investment_tax_explain, 
       sales_tax_and_additional, sales_tax_and_additional_explain, 
       investment_profit_tax, investment_profit_tax_explain, 
-      construction_assessment_value2, creator, 
-      gmt_modified, gmt_created, pid, 
-      additional_cost_land_acquisition, infrastructure_cost_explain, 
-      dev_during_explain, other_engineering_cost_explain, 
-      additional_cost_land_acquisition_explain, reconnaissance_design_explain
-      )
+      construction_assessment_value2, additional_cost_land_acquisition, 
+      infrastructure_cost_explain, dev_during_explain, 
+      other_engineering_cost_explain, additional_cost_land_acquisition_explain, 
+      reconnaissance_design_explain, residue_ratio_id, 
+      residue_ratio, pid, creator, 
+      gmt_modified, gmt_created)
     values (#{constructionInstallationEngineeringFeeIds,jdbcType=VARCHAR}, #{constructionAssessmentPriceCorrecting,jdbcType=DECIMAL}, 
       #{constructionAssessmentValue,jdbcType=VARCHAR}, #{investmentProfit,jdbcType=VARCHAR}, 
       #{interestInvestment,jdbcType=VARCHAR}, #{constructionSubtotal,jdbcType=VARCHAR}, 
@@ -195,12 +197,12 @@
       #{interestInvestmentTax,jdbcType=DECIMAL}, #{interestInvestmentTaxExplain,jdbcType=VARCHAR}, 
       #{salesTaxAndAdditional,jdbcType=DECIMAL}, #{salesTaxAndAdditionalExplain,jdbcType=VARCHAR}, 
       #{investmentProfitTax,jdbcType=DECIMAL}, #{investmentProfitTaxExplain,jdbcType=VARCHAR}, 
-      #{constructionAssessmentValue2,jdbcType=DECIMAL}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtModified,jdbcType=TIMESTAMP}, #{gmtCreated,jdbcType=TIMESTAMP}, #{pid,jdbcType=INTEGER}, 
-      #{additionalCostLandAcquisition,jdbcType=DECIMAL}, #{infrastructureCostExplain,jdbcType=VARCHAR}, 
-      #{devDuringExplain,jdbcType=VARCHAR}, #{otherEngineeringCostExplain,jdbcType=VARCHAR}, 
-      #{additionalCostLandAcquisitionExplain,jdbcType=VARCHAR}, #{reconnaissanceDesignExplain,jdbcType=VARCHAR}
-      )
+      #{constructionAssessmentValue2,jdbcType=DECIMAL}, #{additionalCostLandAcquisition,jdbcType=DECIMAL}, 
+      #{infrastructureCostExplain,jdbcType=VARCHAR}, #{devDuringExplain,jdbcType=VARCHAR}, 
+      #{otherEngineeringCostExplain,jdbcType=VARCHAR}, #{additionalCostLandAcquisitionExplain,jdbcType=VARCHAR}, 
+      #{reconnaissanceDesignExplain,jdbcType=VARCHAR}, #{residueRatioId,jdbcType=INTEGER}, 
+      #{residueRatio,jdbcType=DECIMAL}, #{pid,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtModified,jdbcType=TIMESTAMP}, #{gmtCreated,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdCostConstruction" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -316,18 +318,6 @@
       <if test="constructionAssessmentValue2 != null" >
         construction_assessment_value2,
       </if>
-      <if test="creator != null" >
-        creator,
-      </if>
-      <if test="gmtModified != null" >
-        gmt_modified,
-      </if>
-      <if test="gmtCreated != null" >
-        gmt_created,
-      </if>
-      <if test="pid != null" >
-        pid,
-      </if>
       <if test="additionalCostLandAcquisition != null" >
         additional_cost_land_acquisition,
       </if>
@@ -345,6 +335,24 @@
       </if>
       <if test="reconnaissanceDesignExplain != null" >
         reconnaissance_design_explain,
+      </if>
+      <if test="residueRatioId != null" >
+        residue_ratio_id,
+      </if>
+      <if test="residueRatio != null" >
+        residue_ratio,
+      </if>
+      <if test="pid != null" >
+        pid,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified,
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -456,18 +464,6 @@
       <if test="constructionAssessmentValue2 != null" >
         #{constructionAssessmentValue2,jdbcType=DECIMAL},
       </if>
-      <if test="creator != null" >
-        #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="gmtModified != null" >
-        #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="gmtCreated != null" >
-        #{gmtCreated,jdbcType=TIMESTAMP},
-      </if>
-      <if test="pid != null" >
-        #{pid,jdbcType=INTEGER},
-      </if>
       <if test="additionalCostLandAcquisition != null" >
         #{additionalCostLandAcquisition,jdbcType=DECIMAL},
       </if>
@@ -485,6 +481,24 @@
       </if>
       <if test="reconnaissanceDesignExplain != null" >
         #{reconnaissanceDesignExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="residueRatioId != null" >
+        #{residueRatioId,jdbcType=INTEGER},
+      </if>
+      <if test="residueRatio != null" >
+        #{residueRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="pid != null" >
+        #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtModified != null" >
+        #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtCreated != null" >
+        #{gmtCreated,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -608,18 +622,6 @@
       <if test="record.constructionAssessmentValue2 != null" >
         construction_assessment_value2 = #{record.constructionAssessmentValue2,jdbcType=DECIMAL},
       </if>
-      <if test="record.creator != null" >
-        creator = #{record.creator,jdbcType=VARCHAR},
-      </if>
-      <if test="record.gmtModified != null" >
-        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.gmtCreated != null" >
-        gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.pid != null" >
-        pid = #{record.pid,jdbcType=INTEGER},
-      </if>
       <if test="record.additionalCostLandAcquisition != null" >
         additional_cost_land_acquisition = #{record.additionalCostLandAcquisition,jdbcType=DECIMAL},
       </if>
@@ -637,6 +639,24 @@
       </if>
       <if test="record.reconnaissanceDesignExplain != null" >
         reconnaissance_design_explain = #{record.reconnaissanceDesignExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="record.residueRatioId != null" >
+        residue_ratio_id = #{record.residueRatioId,jdbcType=INTEGER},
+      </if>
+      <if test="record.residueRatio != null" >
+        residue_ratio = #{record.residueRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="record.pid != null" >
+        pid = #{record.pid,jdbcType=INTEGER},
+      </if>
+      <if test="record.creator != null" >
+        creator = #{record.creator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gmtModified != null" >
+        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gmtCreated != null" >
+        gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -682,16 +702,18 @@
       investment_profit_tax = #{record.investmentProfitTax,jdbcType=DECIMAL},
       investment_profit_tax_explain = #{record.investmentProfitTaxExplain,jdbcType=VARCHAR},
       construction_assessment_value2 = #{record.constructionAssessmentValue2,jdbcType=DECIMAL},
-      creator = #{record.creator,jdbcType=VARCHAR},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      pid = #{record.pid,jdbcType=INTEGER},
       additional_cost_land_acquisition = #{record.additionalCostLandAcquisition,jdbcType=DECIMAL},
       infrastructure_cost_explain = #{record.infrastructureCostExplain,jdbcType=VARCHAR},
       dev_during_explain = #{record.devDuringExplain,jdbcType=VARCHAR},
       other_engineering_cost_explain = #{record.otherEngineeringCostExplain,jdbcType=VARCHAR},
       additional_cost_land_acquisition_explain = #{record.additionalCostLandAcquisitionExplain,jdbcType=VARCHAR},
-      reconnaissance_design_explain = #{record.reconnaissanceDesignExplain,jdbcType=VARCHAR}
+      reconnaissance_design_explain = #{record.reconnaissanceDesignExplain,jdbcType=VARCHAR},
+      residue_ratio_id = #{record.residueRatioId,jdbcType=INTEGER},
+      residue_ratio = #{record.residueRatio,jdbcType=DECIMAL},
+      pid = #{record.pid,jdbcType=INTEGER},
+      creator = #{record.creator,jdbcType=VARCHAR},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -807,18 +829,6 @@
       <if test="constructionAssessmentValue2 != null" >
         construction_assessment_value2 = #{constructionAssessmentValue2,jdbcType=DECIMAL},
       </if>
-      <if test="creator != null" >
-        creator = #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="gmtModified != null" >
-        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="gmtCreated != null" >
-        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      </if>
-      <if test="pid != null" >
-        pid = #{pid,jdbcType=INTEGER},
-      </if>
       <if test="additionalCostLandAcquisition != null" >
         additional_cost_land_acquisition = #{additionalCostLandAcquisition,jdbcType=DECIMAL},
       </if>
@@ -836,6 +846,24 @@
       </if>
       <if test="reconnaissanceDesignExplain != null" >
         reconnaissance_design_explain = #{reconnaissanceDesignExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="residueRatioId != null" >
+        residue_ratio_id = #{residueRatioId,jdbcType=INTEGER},
+      </if>
+      <if test="residueRatio != null" >
+        residue_ratio = #{residueRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="pid != null" >
+        pid = #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -878,16 +906,18 @@
       investment_profit_tax = #{investmentProfitTax,jdbcType=DECIMAL},
       investment_profit_tax_explain = #{investmentProfitTaxExplain,jdbcType=VARCHAR},
       construction_assessment_value2 = #{constructionAssessmentValue2,jdbcType=DECIMAL},
-      creator = #{creator,jdbcType=VARCHAR},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      pid = #{pid,jdbcType=INTEGER},
       additional_cost_land_acquisition = #{additionalCostLandAcquisition,jdbcType=DECIMAL},
       infrastructure_cost_explain = #{infrastructureCostExplain,jdbcType=VARCHAR},
       dev_during_explain = #{devDuringExplain,jdbcType=VARCHAR},
       other_engineering_cost_explain = #{otherEngineeringCostExplain,jdbcType=VARCHAR},
       additional_cost_land_acquisition_explain = #{additionalCostLandAcquisitionExplain,jdbcType=VARCHAR},
-      reconnaissance_design_explain = #{reconnaissanceDesignExplain,jdbcType=VARCHAR}
+      reconnaissance_design_explain = #{reconnaissanceDesignExplain,jdbcType=VARCHAR},
+      residue_ratio_id = #{residueRatioId,jdbcType=INTEGER},
+      residue_ratio = #{residueRatio,jdbcType=DECIMAL},
+      pid = #{pid,jdbcType=INTEGER},
+      creator = #{creator,jdbcType=VARCHAR},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

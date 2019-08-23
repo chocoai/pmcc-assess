@@ -5,11 +5,14 @@ import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dto.output.basic.BasicHouseVo;
 import com.copower.pmcc.assess.dto.output.data.InfrastructureVo;
 import com.copower.pmcc.assess.dto.output.method.MdCostConstructionVo;
 import com.copower.pmcc.assess.dto.output.method.MdCostVo;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
+import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.basic.PublicBasicService;
 import com.copower.pmcc.assess.service.data.DataInfrastructureService;
 import com.copower.pmcc.assess.service.method.MdArchitecturalObjService;
 import com.copower.pmcc.assess.service.method.MdDevelopmentIncomeCategoryService;
@@ -78,6 +81,10 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
     private SurveyCommonService surveyCommonService;
     @Autowired
     private TaskExecutor executor;
+    @Autowired
+    private PublicBasicService publicBasicService;
+    @Autowired
+    private BaseService baseService;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
@@ -248,10 +255,10 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
         if (schemeJudgeObject.getDeclareRecordId() == null) {
             return;
         }
-        setIndicatorsContentParam(schemeJudgeObject, projectPlanDetails, init);
+        setIndicatorsContentParam(schemeJudgeObject, projectPlanDetails,modelAndView, init);
     }
 
-    private void setIndicatorsContentParam(SchemeJudgeObject schemeJudgeObject, ProjectPlanDetails projectPlanDetails, boolean init) {
+    private void setIndicatorsContentParam(SchemeJudgeObject schemeJudgeObject, ProjectPlanDetails projectPlanDetails,ModelAndView modelAndView, boolean init) {
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
         List<DeclareEconomicIndicatorsContent> indicatorsContentList = Lists.newArrayList();
         List<Integer> integerList = Lists.newArrayList();
@@ -288,11 +295,11 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
             }
         }
         if (init) {
-            initPortOtherInfo(indicatorsContentList,projectPlanDetails,surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId()));
+            initPortOtherInfo(indicatorsContentList,projectPlanDetails,surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId()),modelAndView);
         }
     }
 
-    private void initPortOtherInfo(List<DeclareEconomicIndicatorsContent> indicatorsContentList,ProjectPlanDetails projectPlanDetails,BasicApply basicApply){
+    private void initPortOtherInfo(List<DeclareEconomicIndicatorsContent> indicatorsContentList,ProjectPlanDetails projectPlanDetails,BasicApply basicApply,ModelAndView modelAndView){
         if (CollectionUtils.isNotEmpty(indicatorsContentList)) {
             mdDevelopmentIncomeCategoryService.clear();
             for (DeclareEconomicIndicatorsContent obj : indicatorsContentList) {
@@ -353,6 +360,13 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
                         }
                     });
                 }
+            }
+            try {
+                BasicHouseVo basicHouseVo = publicBasicService.getBasicHouseVoByAppId(basicApply) ;
+                modelAndView.addObject(StringUtils.uncapitalize(BasicHouseVo.class.getSimpleName()),basicHouseVo );
+            } catch (Exception e) {
+                baseService.writeExceptionInfo(e);
+                modelAndView.addObject(StringUtils.uncapitalize(BasicHouseVo.class.getSimpleName()),new BasicHouseVo() );
             }
         }
     }

@@ -515,6 +515,26 @@
                 </div>
             </div>
         </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    成新率(非必需)
+                </label>
+                <div class="col-sm-3">
+                    <input type="hidden" placeholder="成新率"  name="residueRatioId"   value="${mdCostVo.mdCostConstruction.residueRatioId}">
+                    <div class="input-group">
+                        <span class="input-group-btn">
+                            <input type="hidden"  name="residueRatio"  value="${mdCostVo.mdCostConstruction.residueRatio}">
+                            <input type="text" placeholder="成新率(计算值)" class="form-control" name="residueRatioShow" readonly="readonly" value="${mdCostVo.mdCostConstruction.residueRatio}">
+                        </span>
+                        <span class="input-group-btn">
+                            <button type="button" class="btn-primary btn" onclick="construction.callResidueRatio(this,false)"> <i class="fa fa-dashcube"></i></button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <input type="hidden" readonly="readonly" class="form-control" name="e18" placeholder="e18" onblur="construction.calculationE19();">
     <input type="hidden" readonly="readonly" class="form-control" name="e19" placeholder="e19" onblur="construction.calculationE23();construction.calculationE21()">

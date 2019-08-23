@@ -461,6 +461,10 @@
             return false;
         }
         var c = math.chain(e25).multiply(10000).divide(f3).done();
+        var residueRatio = this.target.find("input[name='residueRatio']").val();
+        if ($.isNumeric(residueRatio)){
+            c = math.multiply(c,residueRatio);
+        }
         c = c.toFixed(construction.fixedMin);
         construction.target.find("input[name='constructionAssessmentPriceCorrecting']").val(c).trigger('blur');
         construction.target.find(".constructionAssessmentPriceCorrecting").html(c);
@@ -623,6 +627,30 @@
             }
             construction.target.find("input[name='infrastructureCost']").val(result).trigger('blur');
         });
+    };
+
+    /**
+     * 成新率
+     */
+    construction.callResidueRatio = function (_this, readonly) {
+        //获取已使用年限,当前评估基准日-楼栋的竣工时间
+        //获取可用年限，根据建筑使用年限配置而来
+        try {
+            residueRatio.init({
+                readonly: readonly,
+                residueRatioId: construction.target.find("input[name='residueRatioId']").val(),
+//                usedYear: 0,
+//                usableYear: 5,
+                houseId: '${basicHouseVo.id}',
+                success: function (id, resultValue) {
+                    construction.target.find("input[name='residueRatioId']").val(id);
+                    construction.target.find("input[name='residueRatio']").val(parseFloat(resultValue)/100);
+                    construction.target.find("input[name='residueRatioShow']").val(resultValue);
+                    construction.constructionAssessmentPriceCorrectingCalculationE26() ;
+                }
+            });
+        } catch (e) {
+        }
     };
 
     /**
