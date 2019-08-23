@@ -95,9 +95,9 @@
 </div>
 <div class="form-group">
     <div class="x-valid">
-        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">基础设施完备度</label>
+        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地利用现状</label>
         <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-            <label class="form-control">${basicEstateLandState.infrastructureCompletenessName}</label>
+            <label class="form-control">${basicEstateLandState.presentSituationLandUse}</label>
         </div>
     </div>
     <div class="x-valid">
@@ -108,7 +108,7 @@
     </div>
     <div class="x-valid">
         <c:if test="${basicEstateLandState.developmentDegreeName == '熟地'}">
-            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label"></label>
+            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">基础信息外部</label>
             <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                 <label class="form-control">${basicEstateLandState.developmentDegreeContentName}</label>
             </div>
@@ -123,12 +123,7 @@
 </div>
 
 <div class="form-group">
-    <div class="x-valid">
-        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地利用现状</label>
-        <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-            <label class="form-control">${basicEstateLandState.presentSituationLandUse}</label>
-        </div>
-    </div>
+
 </div>
 
 <div class="form-group">
