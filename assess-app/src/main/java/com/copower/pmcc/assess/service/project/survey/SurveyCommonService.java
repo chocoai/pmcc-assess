@@ -97,16 +97,17 @@ public class SurveyCommonService {
     public List<KeyValueDto> getExamineFormTypeList() {
         List<KeyValueDto> keyValueDtoList = Lists.newArrayList();
         KeyValueDto keyValueDto = new KeyValueDto();
-        keyValueDto.setKey(AssessExamineTaskConstant.FC_RESIDENCE);
-        keyValueDto.setValue(dataExamineTaskService.getCacheDataExamineTaskByFieldName(AssessExamineTaskConstant.FC_RESIDENCE).getName());
+        keyValueDto.setKey(String.valueOf(BasicApplyTypeEnum.RESIDENCE.getId()) );
+        keyValueDto.setValue(BasicApplyTypeEnum.RESIDENCE.getName());
         keyValueDtoList.add(keyValueDto);
 
         keyValueDto = new KeyValueDto();
-        keyValueDto.setKey(AssessExamineTaskConstant.FC_INDUSTRY);
-        keyValueDto.setValue(dataExamineTaskService.getCacheDataExamineTaskByFieldName(AssessExamineTaskConstant.FC_INDUSTRY).getName());
+        keyValueDto.setKey(String.valueOf(BasicApplyTypeEnum.INDUSTRY.getId()) );
+        keyValueDto.setValue(BasicApplyTypeEnum.INDUSTRY.getName());
         keyValueDtoList.add(keyValueDto);
         return keyValueDtoList;
     }
+
 
     /**
      * 获取需处理的任务集合

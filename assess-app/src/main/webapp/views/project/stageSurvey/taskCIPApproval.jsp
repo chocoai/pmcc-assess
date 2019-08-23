@@ -24,17 +24,28 @@
                 <div class="x_content">
                     <form class="form-horizontal">
                         <div class="form-group">
-                        <div class="x-valid">
-                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                楼盘名称
-                            </label>
-                            <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                                <label class="form-control">${applyBatch.estateName}</label>
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                    楼盘名称
+                                </label>
+                                <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
+                                    <label class="form-control">${applyBatch.estateName}</label>
+                                </div>
+                            </div>
+                            <div class="x-valid">
+                                <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4 radio-inline">
+                                    <c:forEach var="item" items="${examineFormTypeList}">
+                                        <span class=" col-xs-6  col-sm-6  col-md-6  col-lg-6 ">
+                                            <input type="radio" id="examineFormType_${item.key}" name="type"
+                                                   value='${item.key}' ${item.key eq applyBatch.type?'checked="checked"':''} disabled="disabled">
+                                            <label for="examineFormType_${item.key}">&nbsp;${item.value}</label>
+                                        </span>
+                                    </c:forEach>
+                                </div>
                             </div>
                         </div>
-                        </div>
                         <div class="form-group">
-                            <div class="col-md-3">
+                            <div class="col-md-3 col-lg-offset-1">
                                 <ul id="ztree" class="ztree"></ul>
                             </div>
                             <div class="col-md-9">

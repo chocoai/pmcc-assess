@@ -34,7 +34,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">添加</h4>
+                <h3 class="modal-title">添加</h3>
             </div>
             <form id="frm_detail" class="form-horizontal">
                 <input type="hidden" name="id" value="0">
@@ -239,7 +239,7 @@
             type: "post",
             data: {
                 formData: JSON.stringify(formData),
-                planDetailsId: '${projectPlanDetails.pid}'
+                planDetailsId: '${projectPlanDetails.id}'
             },
             success: function (result) {
                 if (result.ret) {
@@ -270,7 +270,7 @@
             dataType: "json",
             data: {
                 formData: JSON.stringify(formData),
-                planDetailsId: '${projectPlanDetails.pid}'
+                planDetailsId: '${projectPlanDetails.id}'
             },
             success: function (result) {
                 if (result.ret) {
@@ -403,10 +403,7 @@
             estateId = batchApply.estateId;
         }
         var type = batchApply.type;
-        openWin('${pageContext.request.contextPath}/basicApplyBatch/fillInformation?type=' + type + "&id=" + node.id + "&buildingType=" + node.level + "&estateId=" + estateId, function () {
-            batchTreeTool.ztreeInit(batchApply);
-        })
-
+        openWin('${pageContext.request.contextPath}/basicApplyBatch/fillInformation?type=' + type + "&id=" + node.id + "&buildingType=" + node.level + "&estateId=" + estateId, function () {})
     }
 
 </script>

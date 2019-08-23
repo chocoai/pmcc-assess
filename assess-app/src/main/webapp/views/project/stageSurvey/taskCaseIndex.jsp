@@ -181,14 +181,14 @@
                             var s = "";
                             if (row.id == '${projectPlanDetails.id}') {
                                 s += "<a  data-placement='top' data-original-title='新增' class='btn btn-xs btn-success tooltips' target='_blank' onclick='taskCaseIndex.addCaseTask(" + row.id + ")'   ><i class='fa fa-plus fa-white'></i></a>";
-                            } else if (row.pid == '${projectPlanDetails.id}') {
-                                s += taskCaseIndex.getOperationHtml(row.status, row.id);
                             } else {
-                                //只用于处理任务
                                 if (row.excuteUrl) {
                                     s += "<a  data-placement='top' data-original-title='提交' class='btn btn-xs btn-success tooltips' target='_blank' onclick='taskCaseIndex.openTaskUrl(\"" + row.excuteUrl + "\")'   ><i class='fa fa-arrow-right fa-white'></i></a>";
-                                } else if (row.displayUrl) {
+                                }
+                                if (row.displayUrl) {
                                     s += " <a target='_blank' href='" + row.displayUrl + "' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-search fa-white'></i></a>";
+                                }else{
+                                    s += "<a  data-placement='top' data-original-title='删除' class='btn btn-xs btn-warning tooltips' target='_blank'   onclick='taskCaseIndex.deleteCaseTask(" + row.id + ")'><i class='fa fa-minus fa-white'></i></a>";
                                 }
                             }
                             return s;
@@ -280,7 +280,7 @@
             url: "${pageContext.request.contextPath}/surveyCaseStudy/saveCaseTask",
             data: {
                 planDetailsId: "${projectPlanDetails.id}",
-                formData: JSON.stringify(data),
+                projectPhaseName: data.projectPhaseName,
                 transactionType: data.transactionType,
                 examineFormType: data.examineFormType,
                 name: data.examineFormName
@@ -457,21 +457,6 @@
                         <option value="${item.id}">${item.name}</option>
                     </c:forEach>
                 </select>
-            </div>
-        </div>
-    </div>
-    <div class="form-group" id="examineFormTypeList" style="display: none">
-        <div class="x-valid">
-            <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">案例类别<span
-                    class="symbol required"></span></label>
-            <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
-                <c:forEach var="item" items="${examineFormTypeList}">
-                <span class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
-                <input type="radio" id="examineFormType_${item.key}" name="examineFormType" value='${item.key}'
-                       required>
-                <label for="examineFormType_${item.key}">&nbsp;${item.value}</label>
-                </span>
-                </c:forEach>
             </div>
         </div>
     </div>

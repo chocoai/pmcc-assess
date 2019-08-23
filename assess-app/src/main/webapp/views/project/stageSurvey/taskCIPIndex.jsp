@@ -24,11 +24,10 @@
                 <div class="x_content">
                     <form id="basicBatchApplyFrm" class="form-horizontal">
                         <input type="hidden" name="id" value="${applyBatch.id}">
-                        <input type="hidden" id="type" name="type" value="3">
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    楼盘名称
+                                    楼盘名称<span class="symbol required"></span>
                                 </label>
                                 <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
                                     <input type="hidden" id="estateId" name="estateId" value="${applyBatch.estateId}">
@@ -36,18 +35,33 @@
                                            required value="${applyBatch.estateName}">
                                 </div>
                             </div>
-                            <a id="saveApplyInfoBtn" class="btn btn-warning" onclick="saveApplyInfo(this);">
-                                <c:if test="${empty applyBatch}">
-                                    添加楼栋单元房屋
-                                </c:if>
-                                <c:if test="${!empty applyBatch}">
-                                    查看楼栋单元房屋
-                                </c:if>
-                            </a>
+                            <div class="x-valid">
+                                <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4 radio-inline">
+                                    <c:forEach var="item" items="${examineFormTypeList}">
+                                        <span class=" col-xs-6  col-sm-6  col-md-6  col-lg-6 ">
+                                            <input type="radio" id="examineFormType_${item.key}" name="type"
+                                                   value='${item.key}' ${item.key eq applyBatch.type?'checked="checked"':''} required>
+                                            <label for="examineFormType_${item.key}">&nbsp;${item.value}</label>
+                                        </span>
+                                    </c:forEach>
+                                </div>
+                            </div>
+                            <c:if test="${empty applyBatch}">
+                                <a id="saveApplyInfoBtn" class="btn btn-warning" onclick="saveApplyInfo(this);">添加</a>
+                            </c:if>
+                            <c:if test="${!empty applyBatch}">
+                                <script type="text/javascript">
+                                    $(function () {
+                                        showApplyInfo();
+                                    })
+                                </script>
+                            </c:if>
                         </div>
                     </form>
                     <div id="showTree" style="display: none">
-                        <%@include file="/views/basic/basicBatchTool/batchTreeTool.jsp" %>
+                        <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4 col-lg-offset-1">
+                            <%@include file="/views/basic/basicBatchTool/batchTreeTool.jsp" %>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -119,7 +133,7 @@
         $.ajax({
             url: "${pageContext.request.contextPath}/projectTaskCIP/getStandardCount",
             data: {
-                planDetailsId: '${projectPlanDetails.pid}'
+                planDetailsId: '${projectPlanDetails.id}'
             },
             type: "post",
             async: false,
@@ -154,16 +168,20 @@
                 if (result.ret) {
                     $(_this).hide();
                     var data = result.data;
-                    // 批量表单赋值
                     $("#basicBatchApplyFrm").find("input[name='id']").val(data.basicApplyBatch.id);
                     $("#estateId").val(data.basicApplyBatch.estateId);
-                    $("#basicBatchApplyFrm").find("input").attr("readonly", "readonly");
-                    $("#showTree").show();
-                    batchTreeTool.ztreeInit(data.basicApplyBatch);
+                    showApplyInfo();
                 } else {
                     Alert(result.errmsg);
                 }
             }
         });
+    }
+
+    function showApplyInfo() {
+        var basicApplyBatch = formSerializeArray($("#basicBatchApplyFrm"));
+        $("#basicBatchApplyFrm").find("input").attr("disabled", "disabled");
+        $("#showTree").show();
+        batchTreeTool.ztreeInit(basicApplyBatch);
     }
 </script>

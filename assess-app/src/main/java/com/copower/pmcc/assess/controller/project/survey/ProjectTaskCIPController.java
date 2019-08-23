@@ -47,12 +47,10 @@ public class ProjectTaskCIPController {
     @RequestMapping(value = "/saveApplyInfo", method = {RequestMethod.POST}, name = "保存")
     public HttpResult save(String formData, Integer planDetailsId) {
         try {
-            ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
             Map<String, Object> objectMap = Maps.newHashMap();
             BasicApplyBatch applyBatch = JSON.parseObject(formData, BasicApplyBatch.class);
-            applyBatch.setPlanDetailsId(projectPlanDetails.getPid());
-            //显示引用案列按钮
-            applyBatch.setShowTab(true);
+            applyBatch.setPlanDetailsId(planDetailsId);
+            applyBatch.setShowTab(true);//显示引用案列按钮
             basicApplyBatchService.saveApplyInfo(applyBatch);
             objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicApplyBatch.class.getSimpleName()), applyBatch);
             return HttpResult.newCorrectResult(objectMap);

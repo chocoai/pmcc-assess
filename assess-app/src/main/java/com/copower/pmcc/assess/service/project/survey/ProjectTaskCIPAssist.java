@@ -1,7 +1,6 @@
 package com.copower.pmcc.assess.service.project.survey;
 
 import com.alibaba.fastjson.JSON;
-import com.copower.pmcc.assess.dal.basis.entity.BasicApply;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dal.basis.entity.SurveySceneExplore;
@@ -34,7 +33,8 @@ public class ProjectTaskCIPAssist implements ProjectTaskInterface {
     private SurveySceneExploreService surveySceneExploreService;
     @Autowired
     private BasicApplyBatchService basicApplyBatchService;
-
+    @Autowired
+    private SurveyCommonService surveyCommonService;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
@@ -42,7 +42,8 @@ public class ProjectTaskCIPAssist implements ProjectTaskInterface {
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
         modelAndView.addObject("declareRecord", declareRecord);
         modelAndView.addObject("projectPlanDetails", projectPlanDetails);
-        modelAndView.addObject("applyBatch", basicApplyBatchService.getBasicApplyBatchByPlanDetailsId(projectPlanDetails.getPid()));
+        modelAndView.addObject("applyBatch", basicApplyBatchService.getBasicApplyBatchByPlanDetailsId(projectPlanDetails.getId()));
+        modelAndView.addObject("examineFormTypeList", surveyCommonService.getExamineFormTypeList());
         surveySceneExploreService.deleteUnfinishedData();//删除未完成数据
         return modelAndView;
     }
@@ -52,10 +53,8 @@ public class ProjectTaskCIPAssist implements ProjectTaskInterface {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskCIPApproval", processInsId, boxId, taskId, agentUserAccount);
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
         modelAndView.addObject("declareRecord", declareRecord);
-        modelAndView.addObject("applyBatch", basicApplyBatchService.getBasicApplyBatchByPlanDetailsId(projectPlanDetails.getPid()));
-        BasicApply basicApply = new BasicApply();
-        basicApply.setType(3);
-        modelAndView.addObject("basicApply", basicApply);
+        modelAndView.addObject("applyBatch", basicApplyBatchService.getBasicApplyBatchByPlanDetailsId(projectPlanDetails.getId()));
+        modelAndView.addObject("examineFormTypeList", surveyCommonService.getExamineFormTypeList());
         return modelAndView;
     }
 
@@ -64,7 +63,8 @@ public class ProjectTaskCIPAssist implements ProjectTaskInterface {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskCIPIndex", processInsId, boxId, taskId, agentUserAccount);
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
         modelAndView.addObject("declareRecord", declareRecord);
-        modelAndView.addObject("applyBatch", basicApplyBatchService.getBasicApplyBatchByPlanDetailsId(projectPlanDetails.getPid()));
+        modelAndView.addObject("applyBatch", basicApplyBatchService.getBasicApplyBatchByPlanDetailsId(projectPlanDetails.getId()));
+        modelAndView.addObject("examineFormTypeList", surveyCommonService.getExamineFormTypeList());
         return modelAndView;
     }
 
@@ -78,7 +78,8 @@ public class ProjectTaskCIPAssist implements ProjectTaskInterface {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskCIPApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
         modelAndView.addObject("declareRecord", declareRecord);
-        modelAndView.addObject("applyBatch", basicApplyBatchService.getBasicApplyBatchByPlanDetailsId(projectPlanDetails.getPid()));
+        modelAndView.addObject("applyBatch", basicApplyBatchService.getBasicApplyBatchByPlanDetailsId(projectPlanDetails.getId()));
+        modelAndView.addObject("examineFormTypeList", surveyCommonService.getExamineFormTypeList());
         return modelAndView;
     }
 

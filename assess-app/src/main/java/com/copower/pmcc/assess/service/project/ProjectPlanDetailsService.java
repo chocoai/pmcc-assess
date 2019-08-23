@@ -203,12 +203,9 @@ public class ProjectPlanDetailsService {
         }
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
         ProjectPhase sceneExplorePhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.SCENE_EXPLORE, projectInfo.getProjectCategoryId());
-        ProjectPhase sceneExploreChildPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.COMMON_SCENE_EXPLORE_EXAMINE);
         ProjectPhase caseStudyChildPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.COMMON_CASE_STUDY_EXAMINE);
-        List<Integer> phaseIds = Lists.newArrayList(sceneExploreChildPhase.getId(), caseStudyChildPhase.getId());
+        List<Integer> phaseIds = Lists.newArrayList(sceneExplorePhase.getId(), caseStudyChildPhase.getId());
         List<Integer> phaseFullIds = Lists.newArrayList(phaseIds);
-        if (sceneExplorePhase != null)
-            phaseFullIds.add(sceneExplorePhase.getId());
         String viewUrl = String.format("/%s/ProjectTask/projectTaskDetailsById?planDetailsId=", applicationConstant.getAppKey());
         //判断任务是否结束，如果结束只能查看详情
         for (ProjectPlanDetailsVo projectPlanDetailsVo : projectPlanDetailsVos) {
@@ -749,32 +746,12 @@ public class ProjectPlanDetailsService {
         ProjectPlanDetails pastePlanDetails = projectPlanDetailsDao.getProjectPlanDetailsById(pastePlanDetailsId);
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(copyPlanDetails.getProjectId());
         ProjectPhase sceneExplorePhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.SCENE_EXPLORE, projectInfo.getProjectCategoryId());
-        ProjectPhase sceneExploreChildPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.COMMON_SCENE_EXPLORE_EXAMINE);
         ProjectPhase caseStudyChildPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.COMMON_CASE_STUDY_EXAMINE);
-        List<Integer> commonPhaseIds = Lists.newArrayList(sceneExploreChildPhase.getId(), caseStudyChildPhase.getId());
+        List<Integer> commonPhaseIds = Lists.newArrayList(sceneExplorePhase.getId(), caseStudyChildPhase.getId());
         //現場查勘案例調查
         if (commonPhaseIds.contains(copyPlanDetails.getProjectPhaseId())) {
             if (commonPhaseIds.contains(pastePlanDetails.getProjectPhaseId())) {
-                basicApplyTransferService.copyForExamine(copyPlanDetails.getPid(), pastePlanDetails.getPid());
-            }else if (pastePlanDetails.getProjectPhaseId().equals(sceneExplorePhase.getId())) {
-                //查看有无子项，无子项先生成子项，有子项则跳过
-                List<ProjectPlanDetails> detailsList = projectPlanDetailsDao.getProjectPlanDetailsByPid(pastePlanDetails.getId());
-                if (CollectionUtils.isNotEmpty(detailsList)) return;
-                ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.COMMON_SCENE_EXPLORE_EXAMINE);
-                ProjectPlanDetails taskPlanDetails = new ProjectPlanDetails();
-                BeanUtils.copyProperties(pastePlanDetails, taskPlanDetails);
-                taskPlanDetails.setId(null);
-                taskPlanDetails.setPid(pastePlanDetails.getId());
-                SysUserDto sysUser = erpRpcUserService.getSysUser(commonService.thisUserAccount());
-                taskPlanDetails.setProjectPhaseId(projectPhase.getId());
-                taskPlanDetails.setExecuteUserAccount(commonService.thisUserAccount());
-                taskPlanDetails.setExecuteDepartmentId(sysUser.getDepartmentId());
-                taskPlanDetails.setBisLastLayer(true);
-                taskPlanDetails.setStatus(ProcessStatusEnum.RUN.getValue());
-                taskPlanDetails.setCreator(commonService.thisUserAccount());
-                taskPlanDetails.setProjectPhaseName(String.format("%s-%s", pastePlanDetails.getProjectPhaseName(), publicService.getUserNameByAccount(commonService.thisUserAccount())));
-                saveProjectPlanDetails(taskPlanDetails);
-                basicApplyTransferService.copyForExamine(copyPlanDetails.getPid(), pastePlanDetails.getId());
+                basicApplyTransferService.copyForExamine(copyPlanDetails.getId(), pastePlanDetails.getId());
             }
         }
     }
