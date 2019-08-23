@@ -1,13 +1,10 @@
 package com.copower.pmcc.assess.service.project.scheme;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseVo;
 import com.copower.pmcc.assess.dto.output.data.InfrastructureVo;
-import com.copower.pmcc.assess.dto.output.method.MdCostConstructionVo;
 import com.copower.pmcc.assess.dto.output.method.MdCostVo;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.BaseService;
@@ -19,7 +16,6 @@ import com.copower.pmcc.assess.service.method.MdDevelopmentIncomeCategoryService
 import com.copower.pmcc.assess.service.method.MdMarketCostService;
 import com.copower.pmcc.assess.service.project.declare.DeclareBuildEngineeringAndEquipmentCenterService;
 import com.copower.pmcc.assess.service.project.declare.DeclareEconomicIndicatorsContentService;
-import com.copower.pmcc.assess.service.project.declare.DeclareEconomicIndicatorsHeadService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
@@ -31,9 +27,6 @@ import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Component;
@@ -142,7 +135,11 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
 
     @Override
     public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
-        this.saveAndUpdate(projectPlanDetails, processInsId, formData);
+        try {
+            this.saveAndUpdate(projectPlanDetails, processInsId, formData);
+        } catch (BusinessException e) {
+            baseService.writeExceptionInfo(e);
+        }
     }
 
     private void saveAndUpdate(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
@@ -152,55 +149,16 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
         schemeInfo.setJudgeObjectId(projectPlanDetails.getJudgeObjectId());
         schemeInfo.setMethodType(baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_COST).getId());
         List<SchemeInfo> schemeInfoList = schemeInfoService.getInfoList(schemeInfo);
-        JSONObject jsonObject = JSON.parseObject(formData);
-        String type = (String) jsonObject.get("type");
-        MdCost mdCost = new MdCost();
-        MdCostConstruction mdCostConstruction = null;
-        MdCostBuilding mdCostBuilding = null;
-        if (Objects.equal("2", type)) {
-            mdCostConstruction = JSONObject.parseObject(formData, MdCostConstruction.class);
-            if (mdCostConstruction != null) {
-                if (mdCostConstruction.getPid() != null) {
-                    mdCost.setId(mdCostConstruction.getPid());
-                }
-            }
-        }
-        if (Objects.equal("1", type)) {
-            mdCostBuilding = JSONObject.parseObject(formData, MdCostBuilding.class);
-            if (mdCostBuilding != null) {
-                if (mdCostBuilding.getPid() != null) {
-                    mdCost.setId(mdCostBuilding.getPid());
-                }
-            }
-        }
-        if (mdCost != null) {
-            mdCost.setType(type);
-            mdMarketCostService.saveAndUpdateMdCost(mdCost);
-        }
-        if (mdCostBuilding != null) {
-            mdCostBuilding.setJsonContent(formData);
-            mdMarketCostService.saveAndUpdateMdCostBuilding(mdCostBuilding, mdCost);
-            mdCost.setPrice(mdCostBuilding.getAssessPrice());
-        }
-        if (mdCostConstruction != null) {
-            mdCostConstruction.setJsonContent(formData);
-            mdMarketCostService.saveAndUpdateMdCostConstruction(mdCostConstruction, mdCost);
-            mdCost.setPrice(mdCostConstruction.getConstructionAssessmentPriceCorrecting());
-        }
-
-        if (mdCost != null) {
-            mdMarketCostService.saveAndUpdateMdCost(mdCost);
-        }
-
+        Integer id = mdMarketCostService.saveAndUpdateMdCostConstruction(formData);
         if (CollectionUtils.isNotEmpty(schemeInfoList)) {
             for (SchemeInfo oo : schemeInfoList) {
-                oo.setMethodDataId(mdCost.getId());
+                oo.setMethodDataId(id);
                 oo.setProcessInsId(StringUtils.isNotEmpty(processInsId) ? processInsId : "0");
                 schemeInfoService.saveSchemeInfo(oo);
             }
         } else {
             schemeInfo.setProcessInsId(StringUtils.isNotEmpty(processInsId) ? processInsId : "0");
-            schemeInfo.setMethodDataId(mdCost.getId());
+            schemeInfo.setMethodDataId(id);
             schemeInfoService.saveSchemeInfo(schemeInfo);
         }
     }

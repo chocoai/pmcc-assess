@@ -2,7 +2,7 @@
 
 <div class="x_panel">
     <input type="hidden" name="id" value="${mdCostVo.mdCostConstruction.id}">
-    <input type="hidden" name="pid" value="${mdCostVo.id}">
+    <input type="hidden" name="pid" value="${mdCostVo.mdCostConstruction.pid}">
     <input type="hidden" name="mcId" value="${mdCostVo.mdCostConstruction.mcId}">
     <div class="x_title collapse-link">
         <ul class="nav navbar-right panel_toolbox">

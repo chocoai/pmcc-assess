@@ -1,7 +1,6 @@
 package com.copower.pmcc.assess.dto.output.method;
 
 import com.copower.pmcc.assess.dal.basis.entity.MdCost;
-import com.copower.pmcc.assess.dal.basis.entity.MdCostBuilding;
 
 import java.io.Serializable;
 
@@ -10,7 +9,6 @@ import java.io.Serializable;
  */
 public class MdCostVo extends MdCost implements Serializable{
     private MdCostConstructionVo mdCostConstruction = new MdCostConstructionVo();
-    private MdCostBuilding mdCostBuilding = new MdCostBuilding();
 
     public MdCostConstructionVo getMdCostConstruction() {
         return mdCostConstruction;
@@ -20,11 +18,5 @@ public class MdCostVo extends MdCost implements Serializable{
         this.mdCostConstruction = mdCostConstruction;
     }
 
-    public MdCostBuilding getMdCostBuilding() {
-        return mdCostBuilding;
-    }
 
-    public void setMdCostBuilding(MdCostBuilding mdCostBuilding) {
-        this.mdCostBuilding = mdCostBuilding;
-    }
 }
