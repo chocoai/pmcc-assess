@@ -3,12 +3,15 @@ package com.copower.pmcc.assess.service.basic;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.enums.*;
+import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.basic.*;
+import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dal.cases.entity.*;
 import com.copower.pmcc.assess.dto.input.SynchronousDataDto;
 import com.copower.pmcc.assess.dto.input.ZtreeDto;
 import com.copower.pmcc.assess.dto.output.basic.BasicApplyBatchVo;
+import com.copower.pmcc.assess.dto.output.basic.BasicBuildingVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.assist.DdlMySqlAssist;
@@ -17,6 +20,11 @@ import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
 import com.copower.pmcc.assess.service.cases.*;
 import com.copower.pmcc.assess.service.event.basic.BasicApplyBatchEvent;
+import com.copower.pmcc.assess.service.project.ProjectPhaseService;
+import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
+import com.copower.pmcc.assess.service.project.survey.SurveyCaseStudyService;
+import com.copower.pmcc.assess.service.project.survey.SurveyExamineTaskService;
+import com.copower.pmcc.assess.service.project.survey.SurveySceneExploreService;
 import com.copower.pmcc.bpm.api.dto.ProcessUserDto;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
@@ -47,6 +55,7 @@ import org.springframework.util.ObjectUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class BasicApplyBatchService {
@@ -128,6 +137,20 @@ public class BasicApplyBatchService {
     private CaseHouseRoomDecorateService caseHouseDamagedDegreeService;
     @Autowired
     private BasicBuildingDao basicBuildingDao;
+    @Autowired
+    private ProjectPhaseService projectPhaseService;
+    @Autowired
+    private ProjectPlanDetailsService projectPlanDetailsService;
+    @Autowired
+    private ProjectPlanDetailsDao projectPlanDetailsDao;
+    @Autowired
+    private SurveyCaseStudyService surveyCaseStudyService;
+    @Autowired
+    private BasicApplyService basicApplyService;
+    @Autowired
+    private BasicApplyDao basicApplyDao;
+    @Autowired
+    private SurveySceneExploreService surveySceneExploreService;
 
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -1048,5 +1071,170 @@ public class BasicApplyBatchService {
         synchronousDataDto.setFieldDefaultValue(map);
         sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));
         return sqlBuilder.toString();
+    }
+
+    //老数据调整
+    public void updateOldData(Integer projectId) {
+        Integer projectCategoryId = 345;//案列与查勘projectCategoryId为345
+        //案列事项
+        ProjectPhase projectCasePhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.CASE_STUDY, projectCategoryId);
+        ProjectPlanDetails projectCaseDetails = new ProjectPlanDetails();
+        projectCaseDetails.setProjectId(projectId);
+        projectCaseDetails.setProjectPhaseId(projectCasePhase.getId());
+        List<ProjectPlanDetails> caseLists = projectPlanDetailsService.getProjectDetails(projectCaseDetails);
+        if (CollectionUtils.isNotEmpty(caseLists)) {
+            for (ProjectPlanDetails item : caseLists) {
+                List<ProjectPlanDetails> projectPlanDetailsByPid = projectPlanDetailsDao.getProjectPlanDetailsByPid(item.getId());
+                if (CollectionUtils.isNotEmpty(projectPlanDetailsByPid)) {
+                    for (ProjectPlanDetails data : projectPlanDetailsByPid) {
+                        List<ProjectPlanDetails> anli = projectPlanDetailsDao.getProjectPlanDetailsByPid(data.getId());
+                        for (ProjectPlanDetails item2: anli) {
+                            SurveyCaseStudy surveyCaseStudy = surveyCaseStudyService.getSurveyCaseStudy(item2.getId());
+                            Integer basicApplyId = surveyCaseStudy.getBasicApplyId();
+                            BasicApply basicApply = basicApplyService.getByBasicApplyId(basicApplyId);
+                            if(basicApply == null){
+                                continue;
+                            }
+                            BasicEstate  basicEstateByApplyId = basicEstateService.getBasicEstateByApplyId(basicApplyId);
+                            if(basicEstateByApplyId==null){
+                                continue;
+                            }
+                            BasicBuildingVo basicBuildingByApplyId = basicBuildingService.getBasicBuildingByApplyId(basicApplyId);
+                            BasicUnit basicUnitByApplyId = basicUnitService.getBasicUnitByApplyId(basicApplyId);
+                            BasicHouse houseByApplyId = basicHouseService.getHouseByApplyId(basicApplyId);
+                            basicApply.setBasicEstateId(basicEstateByApplyId.getId());
+                            if(basicBuildingByApplyId!=null)
+                            basicApply.setBasicBuildingId(basicBuildingByApplyId.getId());
+                            if(basicUnitByApplyId!=null)
+                            basicApply.setBasicUnitId(basicUnitByApplyId.getId());
+                            if(houseByApplyId!=null)
+                            basicApply.setBasicHouseId(houseByApplyId.getId());
+                            basicApply.setPlanDetailsId(data.getId());
+                            basicApplyDao.updateBasicApply(basicApply);
+                            //批量主表
+                            BasicApplyBatch applyBatch = new BasicApplyBatch();
+                            applyBatch.setEstateId(basicEstateByApplyId.getId());
+                            applyBatch.setEstateName(basicEstateByApplyId.getName());
+                            applyBatch.setType(basicApply.getType());
+                            applyBatch.setPlanDetailsId(data.getId());
+                            basicApplyBatchDao.addInfo(applyBatch);
+                            //楼栋
+                            if(basicBuildingByApplyId!=null){
+                                BasicApplyBatchDetail basicApplyBatchDetail = new BasicApplyBatchDetail();
+                                basicApplyBatchDetail.setApplyBatchId(applyBatch.getId());
+                                basicApplyBatchDetail.setTableId(basicBuildingByApplyId.getId());
+                                basicApplyBatchDetail.setTableName("tb_basic_building");
+                                basicApplyBatchDetail.setName(basicBuildingByApplyId.getBuildingNumber());
+                                basicApplyBatchDetail.setDisplayName(String.format("%s%s",basicBuildingByApplyId.getBuildingNumber(),"栋"));
+                                basicApplyBatchDetail.setPid(0);
+                                basicApplyBatchDetailDao.addInfo(basicApplyBatchDetail);
+                                //单元
+                                if(basicUnitByApplyId!=null){
+                                    BasicApplyBatchDetail basicApplyBatchDetail2 = new BasicApplyBatchDetail();
+                                    basicApplyBatchDetail2.setApplyBatchId(applyBatch.getId());
+                                    basicApplyBatchDetail2.setTableId(basicUnitByApplyId.getId());
+                                    basicApplyBatchDetail2.setTableName("tb_basic_unit");
+                                    basicApplyBatchDetail2.setName(basicUnitByApplyId.getUnitNumber());
+                                    basicApplyBatchDetail2.setDisplayName(String.format("%s%s",basicUnitByApplyId.getUnitNumber(),"单元"));
+                                    basicApplyBatchDetail2.setPid(basicApplyBatchDetail.getId());
+                                    basicApplyBatchDetailDao.addInfo(basicApplyBatchDetail2);
+                                    //房屋
+                                    if(houseByApplyId!=null) {
+                                        BasicApplyBatchDetail basicApplyBatchDetail3 = new BasicApplyBatchDetail();
+                                        basicApplyBatchDetail3.setApplyBatchId(applyBatch.getId());
+                                        basicApplyBatchDetail3.setTableId(houseByApplyId.getId());
+                                        basicApplyBatchDetail3.setTableName("tb_basic_house");
+                                        basicApplyBatchDetail3.setName(houseByApplyId.getHouseNumber());
+                                        basicApplyBatchDetail3.setDisplayName(houseByApplyId.getHouseNumber());
+                                        basicApplyBatchDetail3.setPid(basicApplyBatchDetail2.getId());
+                                        basicApplyBatchDetailDao.addInfo(basicApplyBatchDetail3);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        //查勘事项
+        ProjectPhase projectSurveyPhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.SCENE_EXPLORE, projectCategoryId);
+        ProjectPlanDetails projectPlanDetails = new ProjectPlanDetails();
+        projectPlanDetails.setProjectId(projectId);
+        projectPlanDetails.setProjectPhaseId(projectSurveyPhase.getId());
+        List<ProjectPlanDetails> projectDetailLists = projectPlanDetailsService.getProjectDetails(projectPlanDetails);
+        if (CollectionUtils.isNotEmpty(projectDetailLists)) {
+            if (CollectionUtils.isNotEmpty(projectDetailLists)) {
+                for (ProjectPlanDetails data : projectDetailLists) {
+                    List<ProjectPlanDetails> chakan = projectPlanDetailsDao.getProjectPlanDetailsByPid(data.getId());
+                    for (ProjectPlanDetails item: chakan) {
+                        SurveySceneExplore surveySceneExploreById = surveySceneExploreService.getSurveySceneExplore(item.getId());
+                        Integer basicApplyId = surveySceneExploreById.getBasicApplyId();
+                        BasicApply basicApply = basicApplyService.getByBasicApplyId(basicApplyId);
+                        if(basicApply == null){
+                            continue;
+                        }
+                        BasicEstate basicEstateByApplyId = basicEstateService.getBasicEstateByApplyId(basicApplyId);
+                        if(basicEstateByApplyId==null){
+                            continue;
+                        }
+                        BasicBuildingVo basicBuildingByApplyId = basicBuildingService.getBasicBuildingByApplyId(basicApplyId);
+                        BasicUnit basicUnitByApplyId = basicUnitService.getBasicUnitByApplyId(basicApplyId);
+                        BasicHouse houseByApplyId = basicHouseService.getHouseByApplyId(basicApplyId);
+                        basicApply.setBasicEstateId(basicEstateByApplyId.getId());
+                        if(basicBuildingByApplyId!=null)
+                        basicApply.setBasicBuildingId(basicBuildingByApplyId.getId());
+                        if(basicUnitByApplyId!=null)
+                        basicApply.setBasicUnitId(basicUnitByApplyId.getId());
+                        if(houseByApplyId!=null)
+                        basicApply.setBasicHouseId(houseByApplyId.getId());
+                        basicApply.setPlanDetailsId(data.getId());
+                        basicApplyDao.updateBasicApply(basicApply);
+                        //批量主表
+                        BasicApplyBatch applyBatch = new BasicApplyBatch();
+                        applyBatch.setEstateId(basicEstateByApplyId.getId());
+                        applyBatch.setEstateName(basicEstateByApplyId.getName());
+                        applyBatch.setType(basicApply.getType());
+                        applyBatch.setPlanDetailsId(data.getId());
+                        basicApplyBatchDao.addInfo(applyBatch);
+                        //楼栋
+                        if(basicBuildingByApplyId!=null){
+                            BasicApplyBatchDetail basicApplyBatchDetail = new BasicApplyBatchDetail();
+                            basicApplyBatchDetail.setApplyBatchId(applyBatch.getId());
+                            basicApplyBatchDetail.setTableId(basicBuildingByApplyId.getId());
+                            basicApplyBatchDetail.setTableName("tb_basic_building");
+                            basicApplyBatchDetail.setName(basicBuildingByApplyId.getBuildingNumber());
+                            basicApplyBatchDetail.setDisplayName(String.format("%s%s",basicBuildingByApplyId.getBuildingNumber(),"栋"));
+                            basicApplyBatchDetail.setPid(0);
+                            basicApplyBatchDetailDao.addInfo(basicApplyBatchDetail);
+                            //单元
+                            if(basicUnitByApplyId!=null){
+                                BasicApplyBatchDetail basicApplyBatchDetail2 = new BasicApplyBatchDetail();
+                                basicApplyBatchDetail2.setApplyBatchId(applyBatch.getId());
+                                basicApplyBatchDetail2.setTableId(basicUnitByApplyId.getId());
+                                basicApplyBatchDetail2.setTableName("tb_basic_unit");
+                                basicApplyBatchDetail2.setName(basicUnitByApplyId.getUnitNumber());
+                                basicApplyBatchDetail2.setDisplayName(String.format("%s%s",basicUnitByApplyId.getUnitNumber(),"单元"));
+                                basicApplyBatchDetail2.setPid(basicApplyBatchDetail.getId());
+                                basicApplyBatchDetailDao.addInfo(basicApplyBatchDetail2);
+                                //房屋
+                                if(houseByApplyId!=null) {
+                                    BasicApplyBatchDetail basicApplyBatchDetail3 = new BasicApplyBatchDetail();
+                                    basicApplyBatchDetail3.setApplyBatchId(applyBatch.getId());
+                                    basicApplyBatchDetail3.setTableId(houseByApplyId.getId());
+                                    basicApplyBatchDetail3.setTableName("tb_basic_house");
+                                    basicApplyBatchDetail3.setName(houseByApplyId.getHouseNumber());
+                                    basicApplyBatchDetail3.setDisplayName(houseByApplyId.getHouseNumber());
+                                    basicApplyBatchDetail3.setPid(basicApplyBatchDetail2.getId());
+                                    basicApplyBatchDetailDao.addInfo(basicApplyBatchDetail3);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
+
     }
 }
