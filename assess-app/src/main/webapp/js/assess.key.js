@@ -129,6 +129,7 @@ AssessDicKey.estateDevelopment_degreePrepared_land = "estate.development_degree.
 AssessDicKey.estateShape_state = "estate.shape_state";//土地形状
 AssessDicKey.estateTopographic_terrain = "estate.topographic_terrain";//地势
 AssessDicKey.estateSupplySituation = "estate.supply.situation";//供应情况
+AssessDicKey.estateLandInfrastructure = "estate.land.infrastructure";//基础设施情况
 
 AssessDicKey.estate_network_supplier = "estate.network.supplier";//	通信网络-供应商名称
 AssessDicKey.estate_network_service_content = "estate.network.service.content";//通信网络-服务内容

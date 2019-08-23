@@ -1007,6 +1007,9 @@ public class GenerateReportService {
         if (Objects.equal(BaseReportFieldEnum.JudgeObjectLoactionField6.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectLocationValue(BaseReportFieldEnum.JudgeObjectLoactionField6));
         }
+        if (Objects.equal(BaseReportFieldEnum.JudgeObjectLoactionField6B.getName(), name)) {
+            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectLocationValue(BaseReportFieldEnum.JudgeObjectLoactionField6B));
+        }
         if (Objects.equal(BaseReportFieldEnum.JudgeObjectLoactionField7.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectLocationValue(BaseReportFieldEnum.JudgeObjectLoactionField7));
         }

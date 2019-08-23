@@ -30,6 +30,7 @@ import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -199,6 +200,17 @@ public class BasicEstateService {
                 vo.setDataDeveloper(dataDeveloperService.getDataDeveloperVo(dataDeveloper));
             }
         }
+        if (StringUtils.isNotBlank(basicEstate.getInfrastructure())){
+            List<Integer> ids = FormatUtils.transformString2Integer(basicEstate.getInfrastructure());
+            if (org.apache.commons.collections.CollectionUtils.isNotEmpty(ids)){
+                List<String> stringList = Lists.newArrayList();
+                for (Integer integer:ids){
+                    stringList.add(baseDataDicService.getNameById(integer)) ;
+                }
+                vo.setInfrastructureName(StringUtils.join(stringList,"，"));
+            }
+        }
+        vo.setInfrastructureCompletenessName(baseDataDicService.getNameById(basicEstate.getInfrastructureCompleteness()));
         return vo;
     }
 

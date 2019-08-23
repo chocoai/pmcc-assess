@@ -3,54 +3,17 @@
 
 <div class="form-group">
     <div class="x-valid">
-        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">供气信息</label>
-        <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-            <label class="form-control">${basicEstate.supplyGasName}</label>
-        </div>
-    </div>
-    <div class="x-valid">
-        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">供电信息</label>
-        <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-            <label class="form-control">${basicEstate.supplyPowerName}</label>
+        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">基础信息内部</label>
+        <div class=" col-xs-7  col-sm-7  col-md-7  col-lg-7 ">
+            <label class="form-control">${basicEstate.infrastructureName}</label>
         </div>
     </div>
 
     <div class="x-valid">
-        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">供水情况</label>
+        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">基础设施完备度</label>
         <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-            <label class="form-control">${basicEstate.supplyWaterName}</label>
+            <label class="form-control">${basicEstate.infrastructureCompletenessName}</label>
         </div>
     </div>
-</div>
-<div class="form-group">
-    <div class="x-valid">
-        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">排水情况</label>
-        <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-            <label class="form-control">${basicEstate.drainWaterName}</label>
-        </div>
-    </div>
-    <div class="x-valid">
-        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">供热信息</label>
-        <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-            <label class="form-control">${basicEstate.supplyHeatingName}</label>
-        </div>
-    </div>
-</div>
-<div class="form-group">
-    <c:if test="${!empty basicEstate.supplyCommunicationName}">
-        <div class="x-valid">
-            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">通讯情况</label>
-            <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                <label class="form-control">${basicEstate.supplyCommunicationName}</label>
-            </div>
-        </div>
-    </c:if>
-    <c:if test="${!empty basicEstate.supplyRoadName}">
-        <div class="x-valid">
-            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">道路信息</label>
-            <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                <label class="form-control">${basicEstate.supplyRoadName}</label>
-            </div>
-        </div>
-    </c:if>
+
 </div>

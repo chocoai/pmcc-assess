@@ -70,7 +70,8 @@ public class ProjectCenterService {
      * @return
      */
     public BootstrapTableVo getProjectList(String queryName, String projectStatus, String queryCreator, String queryMember, Integer entrustPurpose,
-                                           String queryManager, String queryTimeStart, String queryTimeEnd, String queryConsignor, Integer queryUseUnit,String queryEstateName) throws Exception {
+                                           String queryManager, String queryTimeStart, String queryTimeEnd, String queryConsignor,
+                                           Integer queryUseUnit,String queryEstateName,Integer queryLoanType) throws Exception {
 
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         List<Integer> orgIds = null;
@@ -96,7 +97,7 @@ public class ProjectCenterService {
             endTimeParse = c.getTime();
         }
         List<ProjectInfo> projectInfoList = projectInfoDao.getProjectListByUserAccount("", queryName, projectStatus, queryCreator, queryMember, entrustPurpose,
-                queryManager, startTimeParse, endTimeParse, queryConsignor, queryUseUnit,queryEstateName);
+                queryManager, startTimeParse, endTimeParse, queryConsignor, queryUseUnit,queryEstateName,queryLoanType);
         List<ProjectInfoVo> projectInfoVos = getProjectInfoVos(projectInfoList);
         bootstrapTableVo.setTotal(page.getTotal());
         bootstrapTableVo.setRows(projectInfoVos);
@@ -128,6 +129,7 @@ public class ProjectCenterService {
                     projectInfoVo.setProjectClassName(baseProjectClassifyService.getNameById(item.getProjectClassId()));
                     projectInfoVo.setProjectTypeName(baseProjectClassifyService.getNameById(item.getProjectTypeId()));
                     projectInfoVo.setEntrustPurposeName(baseDataDicService.getNameById(item.getEntrustPurpose()));
+                    projectInfoVo.setLoanTypeName(baseDataDicService.getNameById(item.getLoanType()));
                     projectInfoVo.setProjectCategoryName(baseProjectClassifyService.getNameById(item.getProjectCategoryId()));
                     if (item.getProjectStatus() != null)
                         projectInfoVo.setProjectStatus(ProjectStatusEnum.getNameByKey(item.getProjectStatus()));
@@ -196,7 +198,7 @@ public class ProjectCenterService {
      * @return
      */
     public BootstrapTableVo getParticipationProject(String projectName, String projectStatus, String queryCreator, String queryMember, Integer entrustPurpose,
-                                                    String queryManager, String queryTimeStart, String queryTimeEnd, String queryConsignor, Integer queryUseUnit) throws Exception {
+                                                    String queryManager, String queryTimeStart, String queryTimeEnd, String queryConsignor, Integer queryUseUnit, Integer queryLoanType) throws Exception {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
@@ -213,7 +215,7 @@ public class ProjectCenterService {
             endTimeParse = c.getTime();
         }
         List<ProjectInfo> list = projectInfoDao.getProjectListByUserAccount(processControllerComponent.getThisUser(), projectName, projectStatus, queryCreator, queryMember, entrustPurpose,
-                queryManager, startTimeParse, endTimeParse, queryConsignor, queryUseUnit,null);
+                queryManager, startTimeParse, endTimeParse, queryConsignor, queryUseUnit,null, queryLoanType);
         List<ProjectInfoVo> projectInfoVos = getProjectInfoVos(list);
         vo.setTotal(page.getTotal());
         vo.setRows(ObjectUtils.isEmpty(projectInfoVos) ? Lists.newArrayList() : projectInfoVos);
