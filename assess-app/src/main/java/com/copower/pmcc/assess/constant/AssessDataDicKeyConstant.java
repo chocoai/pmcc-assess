@@ -33,7 +33,7 @@ public class AssessDataDicKeyConstant {
      */
     public static final String REPORT_TYPE = "report.type"; //报告类型
     public static final String REPORT_TYPE_PREAUDIT = "report.type.preaudit"; //预评报告
-    public static final String REPORT_TYPE_RESULT_CONSULTATION = "report.type.result.consultation"; //咨评报告
+    public static final String REPORT_TYPE_CONSULTATION = "report.type.consultation"; //咨评报告
     public static final String REPORT_TYPE_TECHNOLOGY = "report.type.technology"; //技术报告
     public static final String REPORT_TYPE_RESULT = "report.type.result"; //结果报告
     public static final String REPORT_TYPE_CONFIRMATION_HOUSING_VALUATION = "report.type.confirmation.housing.valuation"; //房屋评估价值确认书
