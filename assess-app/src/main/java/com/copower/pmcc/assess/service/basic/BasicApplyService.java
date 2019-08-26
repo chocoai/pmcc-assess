@@ -339,9 +339,7 @@ public class BasicApplyService {
             for (ProjectPlanDetails item : caseLists) {
                 List<ProjectPlanDetails> projectPlanDetailsByPid = projectPlanDetailsDao.getProjectPlanDetailsByPid(item.getId());
                 if (CollectionUtils.isNotEmpty(projectPlanDetailsByPid)) {
-                    for (ProjectPlanDetails data : projectPlanDetailsByPid) {
-                        caseList.addAll(projectPlanDetailsDao.getProjectPlanDetailsByPid(data.getId()));
-                    }
+                    caseList.addAll(projectPlanDetailsByPid);
                 }
             }
         }
@@ -352,9 +350,7 @@ public class BasicApplyService {
         projectPlanDetails.setProjectPhaseId(projectSurveyPhase.getId());
         List<ProjectPlanDetails> projectDetailLists = projectPlanDetailsService.getProjectDetails(projectPlanDetails);
         if (CollectionUtils.isNotEmpty(projectDetailLists)) {
-            for (ProjectPlanDetails item : projectDetailLists) {
-                caseList.addAll(projectPlanDetailsDao.getProjectPlanDetailsByPid(item.getId()));
-            }
+            caseList.addAll(projectDetailLists);
         }
 
         vo.setTotal(page.getTotal());
@@ -362,11 +358,4 @@ public class BasicApplyService {
         return vo;
     }
 
-
-    //获取查勘及案例的BasicApply
-    public BasicApply getCaseBasicApply(Integer id, Integer projectPhaseId) throws Exception {
-        Integer applyPlanDetailsId = projectPlanDetailsService.getProjectPlanDetailsById(id).getPid();
-        BasicApply basicApply = this.getBasicApplyByPlanDetailsId(applyPlanDetailsId);
-        return basicApply;
-    }
 }

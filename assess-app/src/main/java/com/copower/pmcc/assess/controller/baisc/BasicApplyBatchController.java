@@ -366,4 +366,16 @@ public class BasicApplyBatchController extends BaseController {
         vo.setRows(ObjectUtils.isEmpty(vos) ? new ArrayList<BasicEstateVo>(10) : vos);
         return vo;
     }
+
+    /**
+     * 获取和编辑
+     *
+     * @param planDetailsId
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/getDataByPlanDetailsId", name = "通过PlanDetailsId获取", method = RequestMethod.GET)
+    public HttpResult getDataByPlanDetailsId(Integer planDetailsId) {
+        return HttpResult.newCorrectResult(basicApplyBatchService.getBasicApplyBatchByPlanDetailsId(planDetailsId));
+    }
 }

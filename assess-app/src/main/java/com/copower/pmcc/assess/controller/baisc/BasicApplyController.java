@@ -345,14 +345,11 @@ public class BasicApplyController extends BaseController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getCaseBasicApply", name = "获取案列或查勘详细", method = RequestMethod.GET)
-    public HttpResult getCaseBasicApplyId(Integer id, Integer projectPhaseId) throws Exception {
+    @RequestMapping(value = "/getCaseBasicApply", name = "获取案列或查勘对应basicApply", method = RequestMethod.GET)
+    public HttpResult getCaseBasicApplyId(Integer planDetailsId){
         try {
-            return HttpResult.newCorrectResult(basicApplyService.getCaseBasicApply(id, projectPhaseId));
-        } catch (BusinessException e) {
-            log.error(e.getMessage(), e);
-            return HttpResult.newErrorResult(e.getMessage());
-        } catch (Exception e1) {
+            return HttpResult.newCorrectResult(basicApplyService.getBasicApplyByPlanDetailsId(planDetailsId));
+        }  catch (Exception e1) {
             log.error(e1.getMessage(), e1);
             return HttpResult.newErrorResult("获取数据异常");
         }
