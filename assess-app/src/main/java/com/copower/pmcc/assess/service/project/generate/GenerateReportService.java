@@ -298,14 +298,14 @@ public class GenerateReportService {
                 if (StringUtils.isEmpty(name)) {
                     name = bookmarkCollection.get(i).getName();
                 }
-                regexDto.setName(name).setChineseName(name).setType(BaseReportFieldReplaceEnum.TEXT.getKey());
+                regexDto.setName(name).setChineseName(name);
                 bookmarkAndRegexDtoHashSet.add(regexDto);
             }
         }
         if (CollectionUtils.isNotEmpty(regexS)) {
             for (String name : regexS) {
                 BookmarkAndRegexDto regexDto = new BookmarkAndRegexDto();
-                regexDto.setName(name).setChineseName(name).setType(BaseReportFieldReplaceEnum.TEXT.getKey());
+                regexDto.setName(name).setChineseName(name);
                 bookmarkAndRegexDtoHashSet.add(regexDto);
             }
         }

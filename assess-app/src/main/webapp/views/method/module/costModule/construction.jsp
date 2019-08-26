@@ -50,7 +50,7 @@
 </div>
 
 
-<div class="x_panel">
+<div class="x_panel" id="LAND_ACQUISITION_COST">
 
     <div class="x_title collapse-link">
         <ul class="nav navbar-right panel_toolbox">
@@ -117,12 +117,11 @@
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
-                    土地取得附加成本(万元)
+                    土地取得附加成本<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <input type="text" name="additionalCostLandAcquisition"
-                           placeholder="土地取得附加成本" class="form-control" data-rule-number='true' onblur="cost.checkParams(this);construction.calculationD8();"
-                           value="${mdCostVo.mdCostConstruction.additionalCostLandAcquisition}">
+                    <input type="text" name="additionalCostLandAcquisition" required="required"
+                           placeholder="土地取得附加成本" class="form-control" data-rule-number='true' onblur="cost.checkParams(this);construction.calculationD8();" value="${mdCostVo.mdCostConstruction.additionalCostLandAcquisition}">
                 </div>
             </div>
 
@@ -136,16 +135,13 @@
                            name="additionalCostLandAcquisitionExplain" value="${mdCostVo.mdCostConstruction.additionalCostLandAcquisitionExplain}">
                 </div>
             </div>
-
-
         </div>
     </div>
-
-    <input type="hidden" readonly="readonly" class="form-control" name="e6" placeholder="e6" onblur="construction.calculationE7();">
-    <input type="hidden" readonly="readonly" class="form-control" name="e7" placeholder="e7" onblur="construction.calculationLandGetCostTotalE9();">
-    <input type="hidden" readonly="readonly" class="form-control" name="d8" placeholder="d8" onblur="construction.calculationLandGetCostTotalE9();">
-
+    <input type="hidden" readonly="readonly" class="form-control" name="e6" placeholder="e6" onblur="construction.calculationE7();" >
+    <input type="hidden" readonly="readonly" class="form-control" name="e7" placeholder="e7" onblur="construction.calculationLandGetCostTotalE9();" >
+    <input type="hidden" readonly="readonly" class="form-control" name="d8" placeholder="d8" onblur="construction.calculationLandGetCostTotalE9();" >
 </div>
+
 
 
 <div class="x_panel">
@@ -154,7 +150,7 @@
         <ul class="nav navbar-right panel_toolbox">
             <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
         </ul>
-        <h3>建设成本或费率</h3>
+        <h3>建设成本</h3>
         <div class="clearfix"></div>
     </div>
 
@@ -195,7 +191,7 @@
                         <input type="hidden" name="constructionInstallationEngineeringFeeIds" value="${mdCostVo.mdCostConstruction.constructionInstallationEngineeringFeeIds}">
                         <input type="text" readonly="readonly" placeholder="建筑安装工程费" class="form-control" onblur="construction.calculationE12()"
                                name="constructionInstallationEngineeringFee"  value="${mdCostVo.mdCostConstruction.constructionInstallationEngineeringFee}" >
-                       <span class="input-group-btn">
+                        <span class="input-group-btn">
                               <button type="button" class="btn  btn-success" onclick="construction.constructionInstallationEngineeringFeeEvent.appendHTML(this)"><i class="fa fa-plus"></i></button>
                         </span>
                     </div>
@@ -233,7 +229,7 @@
                         </span>
                         <select name="infrastructureCostValue"
                                 class="form-control" onchange="construction.calculationE13Select(this)">
-                                <option value="0">请选择</option>
+                            <option value="0">请选择</option>
                             <c:forEach items="${dataInfrastructureList}" var="item">
                                 <c:if test="${item.infrastructureSupportingFacilities != 0}">
                                     <c:if test="${mdCostVo.mdCostConstruction.infrastructureCost != item.infrastructureSupportingFacilities}">
@@ -315,9 +311,9 @@
             </label>
             <div class="x-valid">
                 <div class="col-sm-3">
-                        <input type="text" required="required"
-                               placeholder="公共配套设施建设费" class="form-control" onblur="cost.checkParams(this);construction.calculationE15()"
-                               name="devDuring" value="${mdCostVo.mdCostConstruction.devDuring}">
+                    <input type="text" required="required"
+                           placeholder="公共配套设施建设费" class="form-control" onblur="cost.checkParams(this);construction.calculationE15()"
+                           name="devDuring" value="${mdCostVo.mdCostConstruction.devDuring}">
                 </div>
             </div>
 
@@ -511,7 +507,7 @@
                 <div class="col-sm-3">
                     <input type="text"
                            placeholder="说明" class="form-control " name="investmentProfitTaxExplain" onblur=""
-                            data-value=""  value="${mdCostVo.mdCostConstruction.investmentProfitTaxExplain}">
+                           data-value=""  value="${mdCostVo.mdCostConstruction.investmentProfitTaxExplain}">
                 </div>
             </div>
         </div>
@@ -560,8 +556,9 @@
                     <tfoot>
                     <tr>
                         <td> 土地取得成本小计</td>
-                        <td><label class="landGetCostTotal">${mdCostVo.mdCostConstruction.landGetCostTotal}</label> <input type="hidden" onblur="construction.calculationE19();" value="${mdCostVo.mdCostConstruction.landGetCostTotal}" name="landGetCostTotal" placeholder="土地取得成本小计"> </td>
+                        <td><label class="landGetCostTotal">${mdCostVo.mdCostConstruction.landGetCostTotal}</label> </td>
                     </tr>
+                    <input type="hidden" onblur="construction.calculationE19();" value="${mdCostVo.mdCostConstruction.landGetCostTotal+0}" name="landGetCostTotal" placeholder="土地取得成本小计">
                     <tr>
                         <td> 建设成本小计</td>
                         <td><label class="constructionSubtotal">${mdCostVo.mdCostConstruction.constructionSubtotal}</label>

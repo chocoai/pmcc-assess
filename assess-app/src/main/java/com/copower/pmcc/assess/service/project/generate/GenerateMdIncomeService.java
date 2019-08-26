@@ -5,8 +5,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.aspose.words.*;
 import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.enums.BaseReportFieldMdIncomeEnum;
-import com.copower.pmcc.assess.common.enums.BaseReportFieldReplaceEnum;
-import com.copower.pmcc.assess.common.enums.CalculationMethodNameEnum;
 import com.copower.pmcc.assess.common.enums.DeclareTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
@@ -132,14 +130,14 @@ public class GenerateMdIncomeService implements Serializable {
         if (bookmarkCollection.getCount() >= 1) {
             for (int i = 0; i < bookmarkCollection.getCount(); i++) {
                 BookmarkAndRegexDto regexDto = new BookmarkAndRegexDto();
-                regexDto.setChineseName(AsposeUtils.getChinese(bookmarkCollection.get(i).getName())).setName(bookmarkCollection.get(i).getName()).setType(BaseReportFieldReplaceEnum.BOOKMARK.getKey());
+                regexDto.setChineseName(AsposeUtils.getChinese(bookmarkCollection.get(i).getName())).setName(bookmarkCollection.get(i).getName());
                 bookmarkAndRegexDtoHashSet.add(regexDto);
             }
         }
         if (CollectionUtils.isNotEmpty(regexS)) {
             for (String name : regexS) {
                 BookmarkAndRegexDto regexDto = new BookmarkAndRegexDto();
-                regexDto.setChineseName(null).setName(name).setType(BaseReportFieldReplaceEnum.TEXT.getKey());
+                regexDto.setChineseName(null).setName(name);
                 bookmarkAndRegexDtoHashSet.add(regexDto);
             }
         }

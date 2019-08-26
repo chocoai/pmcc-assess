@@ -101,11 +101,10 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-3 control-label">
-                                            替换类型<span class="symbol required"></span>
+                                            替换类型
                                         </label>
                                         <div class="col-sm-9">
-                                            <select id="replaceType" name="replaceType" class="form-control"
-                                                    required>
+                                            <select id="replaceType" name="replaceType" class="form-control">
                                                 <c:forEach items="${replaceType}" var="item">
                                                     <option value="${item.key}">${item.value}</option>
                                                 </c:forEach>
@@ -119,7 +118,7 @@
                                             字段<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-9">
-                                            <input type="text" data-rule-maxlength="50" placeholder="字段"
+                                            <input type="text" required="required" data-rule-maxlength="50" placeholder="字段"
                                                    id="fieldName" name="fieldName" class="form-control">
                                         </div>
                                     </div>
@@ -231,11 +230,10 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-3 control-label">
-                                            替换类型<span class="symbol required"></span>
+                                            替换类型
                                         </label>
                                         <div class="col-sm-8">
-                                            <select id="subReplaceType" name="replaceType" class="form-control"
-                                                    required>
+                                            <select id="subReplaceType" name="replaceType" class="form-control">
                                                 <c:forEach items="${replaceType}" var="item">
                                                     <option value="${item.key}">${item.value}</option>
                                                 </c:forEach>
@@ -337,6 +335,7 @@
                 return getBoolChs(value);
             }
         });
+        cols.push({field: 'fieldName', title: '字段'});
         cols.push({field: 'sorting', title: '排序'});
         cols.push({field: 'remark', title: '备注'});
         cols.push({
