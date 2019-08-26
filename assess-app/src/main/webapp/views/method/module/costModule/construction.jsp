@@ -150,7 +150,7 @@
         <ul class="nav navbar-right panel_toolbox">
             <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
         </ul>
-        <h3>建设成本或费率</h3>
+        <h3>建设成本</h3>
         <div class="clearfix"></div>
     </div>
 
