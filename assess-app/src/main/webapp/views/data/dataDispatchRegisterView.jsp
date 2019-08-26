@@ -110,7 +110,6 @@
         cols.push({field: 'depositPerson', title: '交存人'});
         cols.push({field: 'redactPerson', title: '编存人'});
         cols.push({field: 'pigeonholeDate', title: '归档日期'});
-        cols.push({field: 'creator', title: '创建人'});
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';

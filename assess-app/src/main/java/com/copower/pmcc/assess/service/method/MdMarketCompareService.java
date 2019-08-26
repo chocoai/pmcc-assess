@@ -462,16 +462,12 @@ public class MdMarketCompareService {
      * @return
      */
     public List<ProjectPlanDetails> getCaseAll(Integer projectId) {
-        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
-        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.CASE_STUDY, projectInfo.getProjectCategoryId());
+        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.COMMON_CASE_STUDY_EXAMINE);
         ProjectPlanDetails projectPlanDetails = new ProjectPlanDetails();
         projectPlanDetails.setProjectId(projectId);
         projectPlanDetails.setProjectPhaseId(projectPhase.getId());
         List<ProjectPlanDetails> detailsList = projectPlanDetailsDao.getListObject(projectPlanDetails);
-        if (CollectionUtils.isEmpty(detailsList)) {
-            return null;
-        }
-        return projectPlanDetailsDao.getProjectPlanDetailsByPid(detailsList.get(0).getId());
+        return detailsList;
     }
 
     /**

@@ -95,7 +95,7 @@
                         租约限制说明<span class="symbol required"></span>
                     </label>
                     <div class="col-sm-8">
-                        <textarea name="restrictionExplain" class="form-control" required></textarea>
+                        <textarea name="restrictionExplain" class="form-control"  required>${empty mdIncome?'': mdIncome.restrictionExplain}</textarea>
                     </div>
                 </div>
 
