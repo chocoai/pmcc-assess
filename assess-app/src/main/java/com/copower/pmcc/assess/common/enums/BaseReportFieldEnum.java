@@ -114,7 +114,7 @@ public enum BaseReportFieldEnum implements Serializable {
     JudgeObjectLoactionField4("建行个贷交通通达度"),
     JudgeObjectLoactionField5("建行个贷地铁"),
     JudgeObjectLoactionField6("建行个贷基础设施"),
-    JudgeObjectLoactionField6B("建行个贷基础内部设施"),
+    JudgeObjectLoactionField6B("建行个贷基础外部设施"),
     JudgeObjectLoactionField7("建行个贷教育设施"),
     JudgeObjectLoactionField8("建行个贷医疗设施"),
     JudgeObjectLoactionField9("建行个贷自然环境"),

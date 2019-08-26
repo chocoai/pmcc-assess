@@ -281,6 +281,7 @@
             if (data.estate.infrastructure) {
                 array = data.estate.infrastructure.split(',');
             }
+            console.log(array);
             $.each(resultData, function (i, item) {
                 resultHtml += '<span class="checkbox-inline"><input type="checkbox" ';
                 if ($.inArray(item.id.toString(), array) > -1) {
@@ -290,9 +291,9 @@
                 resultHtml += '<label for="infrastructure' + item.id + '">' + item.name + '</label></span>';
             });
             resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '全选或全不选' + "</span>";
-            resultHtml +=    "<input type=\"radio\" name=\"infrastructure\"  onclick=\"estateCommon.checkedFun(this,'infrastructure',true)\">";
+            resultHtml +=    "<input type=\"radio\" name=\"infrastructureSelect\"  onclick=\"estateCommon.checkedFun(this,'infrastructure',true)\">";
             resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '反选' + "</span>";
-            resultHtml +=    "<input type=\"radio\" name=\"infrastructure\"  onclick=\"estateCommon.checkedFun(this,'infrastructure',false)\">";
+            resultHtml +=    "<input type=\"radio\" name=\"infrastructureSelect\"  onclick=\"estateCommon.checkedFun(this,'infrastructure',false)\">";
             target.append(resultHtml);
         }, true);
         AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estate_position, data.estate.position, function (html, data) {
@@ -418,9 +419,9 @@
                             resultHtml += '<label for="developmentDegreeContent' + item.id + '">' + item.name + '</label></span>';
                         });
                         resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '全选或全不选' + "</span>";
-                        resultHtml +=    "<input type=\"radio\" name=\"developmentDegreeContent\"  onclick=\"estateCommon.checkedFun(this,'developmentDegreeContent',true)\">";
+                        resultHtml +=    "<input type=\"radio\" name=\"developmentDegreeContentSelect\"  onclick=\"estateCommon.checkedFun(this,'developmentDegreeContent',true)\">";
                         resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '反选' + "</span>";
-                        resultHtml +=    "<input type=\"radio\" name=\"developmentDegreeContent\"  onclick=\"estateCommon.checkedFun(this,'developmentDegreeContent',false)\">";
+                        resultHtml +=    "<input type=\"radio\" name=\"developmentDegreeContentSelect\"  onclick=\"estateCommon.checkedFun(this,'developmentDegreeContent',false)\">";
                         $("#developmentDegreeContentContainer").html(resultHtml);
                     }
                 });

@@ -4259,7 +4259,6 @@ public class GenerateBaseDataService {
                     }
                     if (CollectionUtils.isNotEmpty(stringLinkedList)) {
                         String value = StringUtils.join(stringLinkedList, "。");
-//                        value = generateCommonMethod.getIndentHtml(value);
                         map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), value);
                     }
                     stringLinkedList.clear();
@@ -4268,7 +4267,6 @@ public class GenerateBaseDataService {
                     List<BasicMatchingLeisurePlace> basicMatchingLeisurePlaceList = generateBaseExamineService.getBasicMatchingLeisurePlaceList();
                     String value = generateLoactionService.getMatchingLeisurePlacePrivate(basicMatchingLeisurePlaceList, ExamineMatchingLeisurePlaceTypeEnum.MATCHINGMARKET, "区域内", false);
                     if (StringUtils.isNotEmpty(value)) {
-//                        value = generateCommonMethod.getIndentHtml(value);
                         map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), value);
                     }
                 }
@@ -4277,7 +4275,6 @@ public class GenerateBaseDataService {
                     List<BasicMatchingTrafficVo> basicMatchingTrafficList = generateBaseExamineService.getBasicMatchingTrafficList();
                     String value = generateLoactionService.getTrafficConditionsPrivate(basicMatchingTrafficList, ExamineMatchingTrafficTypeEnum.TRANSIT, "", false);
                     if (StringUtils.isNotEmpty(value)) {
-//                        value = generateCommonMethod.getIndentHtml(value);
                         map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), value);
                     }
                 }
@@ -4286,7 +4283,6 @@ public class GenerateBaseDataService {
                     List<BasicMatchingTrafficVo> basicMatchingTrafficList = generateBaseExamineService.getBasicMatchingTrafficList();
                     String value = generateLoactionService.getTrafficConditionsPrivate(basicMatchingTrafficList, ExamineMatchingTrafficTypeEnum.TrafficHub, "区域内", false);
                     if (StringUtils.isNotEmpty(value)) {
-//                        value = generateCommonMethod.getIndentHtml(value);
                         map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), value);
                     }
                 }
@@ -4295,22 +4291,20 @@ public class GenerateBaseDataService {
                     List<BasicMatchingTrafficVo> basicMatchingTrafficList = generateBaseExamineService.getBasicMatchingTrafficList();
                     String value = generateLoactionService.getTrafficConditionsPrivate(basicMatchingTrafficList, ExamineMatchingTrafficTypeEnum.METRO, "区域内", false);
                     if (StringUtils.isNotEmpty(value)) {
-//                        value = generateCommonMethod.getIndentHtml(value);
                         map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), value);
                     }
                 }
                 break;
                 case JudgeObjectLoactionField6: {
-                    String value = generateLoactionService.getExternalInfrastructure(basicApply);
-                    if (StringUtils.isNotEmpty(value)) {
-//                        value = generateCommonMethod.getIndentHtml(value);
-                        map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), value);
+                    if (StringUtils.isNotEmpty(basicEstateLandStateVo.getDevelopmentDegreeContentName())) {
+                        map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), basicEstateLandStateVo.getDevelopmentDegreeContentName());
                     }
                 }
                 break;
                 case JudgeObjectLoactionField6B: {
-                    String value = String.join("", basicEstateVo.getInfrastructureName(), basicEstateVo.getInfrastructureCompletenessName());
-                    map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), value);
+                    if (StringUtils.isNotBlank(basicEstateVo.getInfrastructureName())) {
+                        map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), basicEstateVo.getInfrastructureName());
+                    }
                 }
                 break;
                 case JudgeObjectLoactionField7: {
@@ -4319,7 +4313,6 @@ public class GenerateBaseDataService {
                             basicMatchingEducationList, "区域内");
                     if (StringUtils.isNotEmpty(value)) {
                         value = String.format("%s%s", value, "教育条件较好。");
-//                        value = generateCommonMethod.getIndentHtml(value);
                         map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), value);
                     }
                 }
@@ -4330,7 +4323,6 @@ public class GenerateBaseDataService {
                             null, "区域内");
                     if (StringUtils.isNotEmpty(value)) {
                         value = String.format("%s%s", value, "医疗条件较好。");
-//                        value = generateCommonMethod.getIndentHtml(value);
                         map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), value);
                     }
                 }
@@ -4338,7 +4330,6 @@ public class GenerateBaseDataService {
                 case JudgeObjectLoactionField9: {
                     String value = generateLoactionService.getEnvironmentalScience(basicApply, EnvironmentalScienceEnum.NATURAL);
                     if (StringUtils.isNotEmpty(value)) {
-//                        value = generateCommonMethod.getIndentHtml(value);
                         map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), value);
                     }
                 }
@@ -4346,7 +4337,6 @@ public class GenerateBaseDataService {
                 case JudgeObjectLoactionField10: {
                     String value = generateLoactionService.getEnvironmentalScience(basicApply, EnvironmentalScienceEnum.HUMANITY);
                     if (StringUtils.isNotEmpty(value)) {
-//                        value = generateCommonMethod.getIndentHtml(value);
                         map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), value);
                     }
                 }
@@ -5193,25 +5183,25 @@ public class GenerateBaseDataService {
                 schemeInfo = schemeInfoService.getSchemeInfo(schemeJudgeObject.getId(), mdCompare.getId());
                 if (schemeInfo != null && schemeInfo.getMethodDataId() != null) {
                     GenerateMdCompareService generateMdCompareService = new GenerateMdCompareService(schemeJudgeObject.getId(), schemeInfo.getMethodDataId(), areaId);
-                    baseDetailedCalculationProcessValuationObject(generateMdCompareService.generateCompareFile(),builder,keyValueDtoList,numbers,mdCompare,map) ;
+                    baseDetailedCalculationProcessValuationObject(generateMdCompareService.generateCompareFile(), builder, keyValueDtoList, numbers, mdCompare, map);
                 }
                 //收益法
                 schemeInfo = schemeInfoService.getSchemeInfo(schemeJudgeObject.getId(), mdIncome.getId());
                 if (schemeInfo != null && schemeInfo.getMethodDataId() != null) {
                     GenerateMdIncomeService generateMdIncomeService = new GenerateMdIncomeService(schemeInfo, projectId, areaId);
-                    baseDetailedCalculationProcessValuationObject(generateMdIncomeService.generateCompareFile(),builder,keyValueDtoList,numbers,mdIncome,map) ;
+                    baseDetailedCalculationProcessValuationObject(generateMdIncomeService.generateCompareFile(), builder, keyValueDtoList, numbers, mdIncome, map);
                 }
                 //成本法
                 schemeInfo = schemeInfoService.getSchemeInfo(schemeJudgeObject.getId(), mdCost.getId());
                 if (schemeInfo != null && schemeInfo.getMethodDataId() != null) {
                     GenerateMdCostService mdCostService = new GenerateMdCostService(projectId, schemeInfo, areaId);
-                    baseDetailedCalculationProcessValuationObject(mdCostService.generateCompareFile(),builder,keyValueDtoList,numbers,mdCost,map) ;
+                    baseDetailedCalculationProcessValuationObject(mdCostService.generateCompareFile(), builder, keyValueDtoList, numbers, mdCost, map);
                 }
                 //假设开发法
                 schemeInfo = schemeInfoService.getSchemeInfo(schemeJudgeObject.getId(), mdDevelopment.getId());
                 if (schemeInfo != null && schemeInfo.getMethodDataId() != null) {
                     GenerateMdDevelopmentService generateMdDevelopmentService = new GenerateMdDevelopmentService(projectId, schemeInfo, areaId);
-                    baseDetailedCalculationProcessValuationObject(generateMdDevelopmentService.generateCompareFile(),builder,keyValueDtoList,numbers,mdDevelopment,map) ;
+                    baseDetailedCalculationProcessValuationObject(generateMdDevelopmentService.generateCompareFile(), builder, keyValueDtoList, numbers, mdDevelopment, map);
                 }
             }
         }
@@ -5222,7 +5212,7 @@ public class GenerateBaseDataService {
         return localPath;
     }
 
-    private void baseDetailedCalculationProcessValuationObject(String reportPath,DocumentBuilder builder,List<KeyValueDto> keyValueDtoList,List<Integer> numbers,BaseDataDic baseDataDic,Map<String, String> map)throws Exception{
+    private void baseDetailedCalculationProcessValuationObject(String reportPath, DocumentBuilder builder, List<KeyValueDto> keyValueDtoList, List<Integer> numbers, BaseDataDic baseDataDic, Map<String, String> map) throws Exception {
         File file = new File(reportPath);
         if (file.isFile()) {
             String title = generateCommonMethod.delHTMLTag(String.format("%s号:%s", generateCommonMethod.convertNumber(numbers), baseDataDic.getName()));

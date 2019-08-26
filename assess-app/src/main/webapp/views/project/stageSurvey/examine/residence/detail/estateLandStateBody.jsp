@@ -108,7 +108,7 @@
     </div>
     <div class="x-valid">
         <c:if test="${basicEstateLandState.developmentDegreeName == '熟地'}">
-            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">基础信息外部</label>
+            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">基础信息内部</label>
             <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                 <label class="form-control">${basicEstateLandState.developmentDegreeContentName}</label>
             </div>
