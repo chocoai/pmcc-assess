@@ -106,7 +106,7 @@ public class MyProjectFinancetService {
             queryDepartmentId = objectToInteger(maps.get("queryDepartmentId"));
         }
         //咨评报告
-        BaseDataDic preauditReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_RESULT_CONSULTATION);
+        BaseDataDic preauditReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_CONSULTATION);
         Integer preauditId = preauditReport.getId();
         //技术报告
         BaseDataDic technologyReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_TECHNOLOGY);
