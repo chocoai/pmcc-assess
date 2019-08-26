@@ -8,6 +8,7 @@ import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileInputStream;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -202,7 +204,9 @@ public class DataDispatchRegisterService {
         }
         //归档日期
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(15)))) {
-            dataDispatchRegister.setPigeonholeDate(PoiUtils.getCellValue(row.getCell(15)));
+            Date parse = DateUtils.parse(PoiUtils.getCellValue(row.getCell(15)));
+            String format = DateUtils.format(parse, DateUtils.DATE_CHINESE_PATTERN);
+            dataDispatchRegister.setPigeonholeDate(format);
         }
 
         return true;

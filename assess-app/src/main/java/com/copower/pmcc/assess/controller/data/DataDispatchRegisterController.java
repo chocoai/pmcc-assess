@@ -107,7 +107,7 @@ public class DataDispatchRegisterController extends BaseController {
 
 
     @ResponseBody
-    @RequestMapping(value = "/importData", name = "导入土地证并且关联房产证", method = RequestMethod.POST)
+    @RequestMapping(value = "/importData", name = "导入", method = RequestMethod.POST)
     public HttpResult importDataLand(HttpServletRequest request) {
         try {
             MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
