@@ -462,8 +462,7 @@ public class MdMarketCompareService {
      * @return
      */
     public List<ProjectPlanDetails> getCaseAll(Integer projectId) {
-        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
-        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.COMMON_CASE_STUDY_EXAMINE, projectInfo.getProjectCategoryId());
+        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.COMMON_CASE_STUDY_EXAMINE);
         ProjectPlanDetails projectPlanDetails = new ProjectPlanDetails();
         projectPlanDetails.setProjectId(projectId);
         projectPlanDetails.setProjectPhaseId(projectPhase.getId());
