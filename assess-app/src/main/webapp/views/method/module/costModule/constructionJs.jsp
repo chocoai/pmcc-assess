@@ -452,6 +452,7 @@
 
     construction.constructionAssessmentPriceCorrectingCalculationE26 = function () {
         //=IF(E25=" "," ",E25*10000/F3)
+        console.log('constructionAssessmentPriceCorrectingCalculationE26');
         var e25 = construction.target.find("input[name='constructionAssessmentValue']").val();
         var f3 = construction.target.find("input[name='developBuildAreaTax']").val();
         if (!AssessCommon.isNumber(e25)) {
@@ -542,10 +543,14 @@
             }) ;
         },
         appendHTML:function () {
+            var type = construction.target.prev().find("input[name='type']:checked").val() ;
             var target = $("#boxMdCostConstruction");
             target.find(".panel-body").empty() ;
             target.find(".panel-body").append(developmentCommon.architecturalB.getHtml());
             developmentCommon.architecturalB.treeGirdParse(target);
+            if (type == cost.one){
+                target.find("table").find("input[name='valuationDateDegreeCompletion']").val('100%').attr({readonly:'readonly',class:'form-control','data-value':'1'});
+            }
             target.modal("show");
         }
     };

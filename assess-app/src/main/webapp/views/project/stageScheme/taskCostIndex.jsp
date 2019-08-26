@@ -25,40 +25,31 @@
                     <div class="clearfix"></div>
                 </div>
 
-                <div class="x_content">
-                    <form class="form-horizontal" id="costMethodFrm">
-                        <div class="col-sm-12 form-group">
-                            <span class="col-sm-1">
-                                <label>建筑形态</label>
-                            </span>
-                            <span class="col-sm-2 col-sm-offset-1 checkbox-inline" style="display: none">
-                                <input type="radio" id="building" name="type" value="1">
-                                <label for="building">建筑物</label>
-                            </span>
-                            <span class="col-sm-2  checkbox-inline">
-                                <input type="radio" id="construction" name="type" value="2" checked="checked">
-                                <label for="construction">在建工程</label>
-                            </span>
-                        </div>
-                    </form>
-                </div>
-
-                <div class="x_content">
-                    <form class="form-horizontal" id="buildingFrm" style="display: none">
-                        <%@include file="/views/method/module/costModule/building.jsp" %>
-                    </form>
-                </div>
-
                 <%@include file="/views/method/module/developmentCommon.jsp" %>
                 <%@include file="/views/project/tool/residueRatio.jsp" %>
 
 
                 <div class="x_content">
-                    <form class="form-horizontal" id="constructionFrm">
-                        <%@include file="/views/method/module/costModule/constructionJs.jsp" %>
-                        <%@include file="/views/method/module/costModule/construction.jsp" %>
-                    </form>
+                    <div class="col-sm-12 form-group">
+                            <span class="col-sm-1">
+                                <label>建筑形态</label>
+                            </span>
+                        <span class="col-sm-2 col-sm-offset-1 checkbox-inline">
+                                <input type="radio" id="building" name="type" value="1">
+                                <label for="building">建筑物</label>
+                            </span>
+                        <span class="col-sm-2  checkbox-inline">
+                                <input type="radio" id="construction" name="type" value="2" checked="checked">
+                                <label for="construction">在建工程</label>
+                            </span>
+                    </div>
                 </div>
+
+
+                <form class="form-horizontal" id="constructionFrm">
+                    <%@include file="/views/method/module/costModule/constructionJs.jsp" %>
+                    <%@include file="/views/method/module/costModule/construction.jsp" %>
+                </form>
             </div>
 
             <div class="x_panel">
@@ -114,9 +105,6 @@
 <script type="text/javascript">
 
     var cost = {};
-
-    cost.frm = $("#costMethodFrm");
-    cost.buildingFrm = $("#buildingFrm");
     cost.constructionFrm = $("#constructionFrm");
 
     cost.isNotBlank = function (item) {
@@ -125,46 +113,14 @@
         }
         return false;
     };
+    cost.one = 1;
+    cost.two = 2;
 
     cost.isNotBlankObject = function (obj) {
         for (var key in obj) {
             return true;
         }
         return false
-    };
-
-    cost.valid = function (callback) {
-        var html = "<div class='help-block' for='for'>" + "该字段为必填项(注意哦!)" + "</div>";
-        var head = formSerializeArray(cost.frm);
-        if (head.type == '1') {
-            if (!cost.buildingFrm.valid()) {
-                return false;
-            }
-        }
-        if (head.type == '2') {
-            if (!cost.constructionFrm.valid()) {
-                return false;
-            }
-        }
-        if (callback) {
-            callback();
-        }
-    };
-
-    cost.getFomData = function () {
-        var head = formSerializeArray(cost.frm);
-        if (head.type == '1') {
-            var data = formSerializeArray(cost.buildingFrm);
-            $.extend(data, head);
-            data.planDetailsId = '${projectPlanDetails.id}';
-            return data;
-        }
-        if (head.type == '2') {
-            var data = formSerializeArray(cost.constructionFrm);
-            $.extend(data, head);
-            data.planDetailsId = '${projectPlanDetails.id}';
-            return data;
-        }
     };
 
     //参数校验
@@ -193,31 +149,32 @@
     };
 
     $(document).ready(function () {
-
+        //建筑安装工程费 估价时点完工程度的设置为100%
         var type = '${mdCostVo.type}';
-
-        cost.frm.find("input[type='radio'][name='type']").change(function () {
-            var data = formSerializeArray(cost.frm);
-            if (data.type == '1') {
-                cost.buildingFrm.show();
-                cost.constructionFrm.hide();
+        cost.constructionFrm.prev().find("input[name='type']:radio").change(function () {
+            var value = $(this).val() ;
+            var target = $("#LAND_ACQUISITION_COST") ;
+            if (value == cost.one){
+                target.find("input").each(function () {
+                    var text = $(this).val() ;
+                    $(this).attr({'data-value':0,'obj-value':text}).val(0);
+                }) ;
+                target.hide() ;
+                var landGetCostTotal = cost.constructionFrm.find("input[name='landGetCostTotal']").val() ;
+                cost.constructionFrm.find("input[name='landGetCostTotal']").val(0).attr({'obj-value':landGetCostTotal}) ;
+                cost.constructionFrm.find(".landGetCostTotal").parent().parent().hide() ;
             }
-            if (data.type == '2') {
-                cost.buildingFrm.hide();
-                cost.constructionFrm.show();
+            if (value == cost.two){
+                target.show() ;
+                target.find("input").each(function () {
+                    var text = $(this).attr("obj-value");
+                    $(this).attr({'data-value':text,'obj-value':0}).val(text);
+                }) ;
+                var landGetCostTotal2 = cost.constructionFrm.find("input[name='landGetCostTotal']").attr('obj-value') ;
+                cost.constructionFrm.find("input[name='landGetCostTotal']").val(landGetCostTotal2) ;
+                cost.constructionFrm.find(".landGetCostTotal").parent().parent().show() ;
             }
         });
-        if (cost.isNotBlank(type)) {
-            if (type == '2') {
-                cost.buildingFrm.hide();
-                cost.constructionFrm.show();
-            }
-            if (type == '1') {
-                cost.buildingFrm.show();
-                cost.constructionFrm.hide();
-            }
-        }
-
         if (!cost.isNotBlank('${mdCostVo.mdCostConstruction.id}')){
             var query = {province:'${schemeAreaGroup.province}',city:'${schemeAreaGroup.city}',district:'${schemeAreaGroup.district}',bisNationalUnity:true} ;
             $.ajax({
@@ -290,22 +247,23 @@
     });
     //提交
     function submit() {
-        cost.valid(function () {
-            var data = cost.getFomData();
-            var item = formSerializeArray($("#md_cost_form")) ;
-            if(data.type == '2'){
-                if (item){
-                    if (item.price){
-                        data.constructionAssessmentPriceCorrecting =  item.price;
-                    }
-                }
+        if (!cost.constructionFrm.valid()) {
+            return false;
+        }
+        var data = formSerializeArray(cost.constructionFrm);
+        data.planDetailsId = '${projectPlanDetails.id}';
+        data.type = cost.constructionFrm.prev().find("input[name='type']:checked").val() ;
+        var item = formSerializeArray($("#md_cost_form")) ;
+        if (item){
+            if (item.price){
+                data.constructionAssessmentPriceCorrecting =  item.price;
             }
-            if ("${processInsId}" != "0") {
-                submitEditToServer(JSON.stringify(data));
-            } else {
-                submitToServer(JSON.stringify(data));
-            }
-        });
+        }
+        if ("${processInsId}" != "0") {
+            submitEditToServer(JSON.stringify(data));
+        } else {
+            submitToServer(JSON.stringify(data));
+        }
     }
 </script>
 

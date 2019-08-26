@@ -49,98 +49,95 @@
 
 </div>
 
+<c:if test="${mdCostVo.type == 2}">
+    <div class="x_panel">
 
-<div class="x_panel">
+        <div class="x_title collapse-link">
+            <ul class="nav navbar-right panel_toolbox">
+                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+            </ul>
+            <h3>土地取得成本</h3>
+            <div class="clearfix"></div>
+        </div>
 
-    <div class="x_title collapse-link">
-        <ul class="nav navbar-right panel_toolbox">
-            <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-        </ul>
-        <h3>土地取得成本</h3>
-        <div class="clearfix"></div>
-    </div>
+        <div class="x_content">
+            <div class="form-group">
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">
+                        土地购买价格<span class="symbol required"></span>
+                    </label>
+                    <div class="col-sm-3">
+                        <div class="input-group">
+                            <label  class="form-control"> ${mdCostVo.mdCostConstruction.landPurchasePrice} </label>
+                            <span class="input-group-btn">
+                                            <input type="button" class="btn btn-primary" value="市场比较法"
+                                                   onclick="callCompareMethod('${mdCostVo.mdCostConstruction.mcId}');">
+                                        </span>
+                        </div>
+                    </div>
+                </div>
 
-    <div class="x_content">
-        <div class="form-group">
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">
-                    土地购买价格<span class="symbol required"></span>
-                </label>
-                <div class="col-sm-3">
-                    <div class="input-group">
-                        <label  class="form-control"> ${mdCostVo.mdCostConstruction.landPurchasePrice} </label>
-                        <span class="input-group-btn">
-                                        <input type="button" class="btn btn-primary" value="市场比较法"
-                                               onclick="callCompareMethod('${mdCostVo.mdCostConstruction.mcId}');">
-                                    </span>
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">
+                        价格说明
+                    </label>
+                    <div class="col-sm-3">
+
+                        <label  class="form-control"> ${mdCostVo.mdCostConstruction.landPurchasePriceExplain} </label>
+
                     </div>
                 </div>
             </div>
 
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">
-                    价格说明
-                </label>
-                <div class="col-sm-3">
-
-                    <label  class="form-control"> ${mdCostVo.mdCostConstruction.landPurchasePriceExplain} </label>
-
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">
-                    土地取得相关税费率<span class="symbol required"></span>
-                </label>
-                <div class="col-sm-3">
-                    <label  class="form-control">
-                        <fmt:formatNumber value="${mdCostVo.mdCostConstruction.landGetRelevant}" type="percent"/>
+            <div class="form-group">
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">
+                        土地取得相关税费率<span class="symbol required"></span>
                     </label>
+                    <div class="col-sm-3">
+                        <label  class="form-control">
+                            <fmt:formatNumber value="${mdCostVo.mdCostConstruction.landGetRelevant}" type="percent"/>
+                        </label>
 
+                    </div>
+                </div>
+
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">
+                        说明
+                    </label>
+                    <div class="col-sm-3">
+
+                        <label  class="form-control"> ${mdCostVo.mdCostConstruction.landGetRelevantExplain} </label>
+
+                    </div>
                 </div>
             </div>
 
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">
-                    说明
-                </label>
-                <div class="col-sm-3">
+            <div class="form-group">
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">
+                        土地取得附加成本
+                    </label>
+                    <div class="col-sm-3">
 
-                    <label  class="form-control"> ${mdCostVo.mdCostConstruction.landGetRelevantExplain} </label>
+                        <label  class="form-control"> ${mdCostVo.mdCostConstruction.additionalCostLandAcquisition} </label>
 
+                    </div>
+                </div>
+
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">
+                        说明
+                    </label>
+                    <div class="col-sm-3">
+                        <label   class="form-control">${mdCostVo.mdCostConstruction.additionalCostLandAcquisitionExplain}</label>
+                    </div>
                 </div>
             </div>
-        </div>
-
-        <div class="form-group">
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">
-                    土地取得附加成本
-                </label>
-                <div class="col-sm-3">
-
-                    <label  class="form-control"> ${mdCostVo.mdCostConstruction.additionalCostLandAcquisition} </label>
-
-                </div>
-            </div>
-
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">
-                    说明
-                </label>
-                <div class="col-sm-3">
-                    <label   class="form-control">${mdCostVo.mdCostConstruction.additionalCostLandAcquisitionExplain}</label>
-                </div>
-            </div>
-
-
         </div>
     </div>
-
-
-</div>
+</c:if>
 
 
 <div class="x_panel">
@@ -191,14 +188,12 @@
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                     工程费列表
                 </label>
-                <div class=" col-xs-9  col-sm-9  col-md-9  col-lg-9 ">
+                <div class=" col-xs-7  col-sm-7  col-md-7  col-lg-7 ">
                     <c:forEach items="${mdCostVo.mdCostConstruction.constructionInstallationEngineeringFeeDtos}" var="item">
                         <div class="panel panel-info">
                             <i class="fa fa-search" onclick="constructionInstallationEngineeringFeeEvent('${item.key}')" title="查看"
@@ -209,6 +204,8 @@
                 </div>
             </div>
         </div>
+
+
 
         <div class="form-group">
             <label class="col-sm-1 control-label">
@@ -302,9 +299,6 @@
             </div>
         </div>
     </div>
-
-
-
 </div>
 
 <div class="x_panel">
@@ -481,10 +475,12 @@
             <div class="col-md-12 col-sm-12">
                 <table class="table table-bordered">
                     <tfoot>
-                    <tr>
-                        <td> 土地取得成本小计</td>
-                        <td><label class="landGetCostTotal">${mdCostVo.mdCostConstruction.landGetCostTotal}</label> <input type="hidden"  value="${mdCostVo.mdCostConstruction.landGetCostTotal}" name="landGetCostTotal" placeholder="土地取得成本小计"> </td>
-                    </tr>
+                    <c:if test="${mdCostVo.type == 2}">
+                        <tr>
+                            <td> 土地取得成本小计</td>
+                            <td><label class="landGetCostTotal">${mdCostVo.mdCostConstruction.landGetCostTotal}</label> <input type="hidden"  value="${mdCostVo.mdCostConstruction.landGetCostTotal}" name="landGetCostTotal" placeholder="土地取得成本小计"> </td>
+                        </tr>
+                    </c:if>
                     <tr>
                         <td> 建设成本小计</td>
                         <td><label class="constructionSubtotal">${mdCostVo.mdCostConstruction.constructionSubtotal}</label></td>

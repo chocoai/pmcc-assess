@@ -49,23 +49,13 @@
                     </form>
                 </div>
 
-                <div class="x_content">
-                    <form class="form-horizontal" id="buildingFrm">
-                        <c:if test="${mdCostVo.type == '1'}">
-                            <%@include file="/views/method/module/costModule/buildingDetail.jsp" %>
-                        </c:if>
-                    </form>
-                </div>
-
                 <%@include file="/views/method/module/developmentCommon.jsp" %>
                 <%@include file="/views/project/tool/residueRatio.jsp" %>
 
 
                 <div class="x_content">
                     <form class="form-horizontal" id="constructionFrm">
-                        <c:if test="${mdCostVo.type == '2'}">
-                            <%@include file="/views/method/module/costModule/constructionDetail.jsp" %>
-                        </c:if>
+                        <%@include file="/views/method/module/costModule/constructionDetail.jsp" %>
                     </form>
                 </div>
             </div>
