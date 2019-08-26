@@ -1,14 +1,13 @@
 package com.copower.pmcc.assess.controller.base;
 
-import com.copower.pmcc.assess.common.enums.BaseReportFieldReplaceEnum;
+import com.copower.pmcc.assess.common.enums.BaseReportTemplateTypeEnum;
 import com.copower.pmcc.assess.dal.basis.entity.BaseReportField;
 import com.copower.pmcc.assess.dto.input.ZtreeDto;
+import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.base.BaseReportFieldService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -24,12 +23,13 @@ import java.util.List;
 @RestController
 public class BaseReportFieldController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(BaseReportFieldController.class);
-
+    @Autowired
+    private BaseService baseService;
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
     private BaseReportFieldService baseReportFieldService;
+
     /**
      * 基础数据字典配置页面视图
      *
@@ -38,7 +38,7 @@ public class BaseReportFieldController {
     @GetMapping(value = "/index", name = "视图")
     public ModelAndView index() {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/base/baseReportField");
-       modelAndView.addObject("replaceType", BaseReportFieldReplaceEnum.getBaseReportFieldReplaceEnumList());
+        modelAndView.addObject("replaceType", BaseReportTemplateTypeEnum.getBaseReportTemplateTypeEnumList());
         return modelAndView;
     }
 
@@ -52,26 +52,26 @@ public class BaseReportFieldController {
         return baseReportFieldService.getReportFieldListVo(fieldName, name);
     }
 
-    @PostMapping(value = "/saveBaseReportField",name = "更新或者添加")
+    @PostMapping(value = "/saveBaseReportField", name = "更新或者添加")
     public HttpResult saveReportField(BaseReportField baseReportField) {
         try {
             baseReportFieldService.saveReportField(baseReportField);
+            return HttpResult.newCorrectResult(200, baseReportField);
         } catch (Exception e) {
-            LOGGER.error("保存数据字典异常", e);
+            baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult(500, e.getMessage());
         }
-        return HttpResult.newCorrectResult(200, baseReportField);
     }
 
     @DeleteMapping(value = "/delBaseReportField", name = "删除数据")
     public HttpResult delReportField(Integer id) {
         try {
             baseReportFieldService.delReportField(id);
+            return HttpResult.newCorrectResult(200, id);
         } catch (Exception e) {
-            LOGGER.error("删除数据字典异常", e);
+            baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult(500, e.getMessage());
         }
-        return HttpResult.newCorrectResult(200, id);
     }
 
     @GetMapping(value = "/getBaseReportField")
@@ -80,16 +80,16 @@ public class BaseReportFieldController {
         if (baseReportField == null) {
             baseReportField = new BaseReportField();
         }
-        return HttpResult.newCorrectResult(200,baseReportField);
+        return HttpResult.newCorrectResult(200, baseReportField);
     }
 
-    @PostMapping(value = "/getBaseReportFieldLevel",name = "获取字典层级")
+    @PostMapping(value = "/getBaseReportFieldLevel", name = "获取字典层级")
     public HttpResult getReportFieldLevel(Integer id) {
         try {
-            return HttpResult.newCorrectResult(200,baseReportFieldService.getReportFieldLevel(id));
+            return HttpResult.newCorrectResult(200, baseReportFieldService.getReportFieldLevel(id));
         } catch (Exception e) {
-            LOGGER.error("获取字典层级异常", e);
-            return HttpResult.newErrorResult(500,e.getMessage());
+            baseService.writeExceptionInfo(e);
+            return HttpResult.newErrorResult(500, e.getMessage());
         }
     }
 

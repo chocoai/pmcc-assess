@@ -4309,7 +4309,7 @@ public class GenerateBaseDataService {
                 }
                 break;
                 case JudgeObjectLoactionField6B: {
-                    String value = String.join("",basicEstateVo.getInfrastructureName(),basicEstateVo.getInfrastructureCompletenessName()) ;
+                    String value = String.join("", basicEstateVo.getInfrastructureName(), basicEstateVo.getInfrastructureCompletenessName());
                     map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), value);
                 }
                 break;
@@ -5183,6 +5183,7 @@ public class GenerateBaseDataService {
         BaseDataDic mdCost = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_COST);
         BaseDataDic mdDevelopment = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_DEVELOPMENT);
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
+        List<KeyValueDto> keyValueDtoList = Lists.newArrayList(new KeyValueDto("text-align", "center"), new KeyValueDto("font-size", "16.0pt"));
         Map<String, String> map = Maps.newHashMap();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
@@ -5192,58 +5193,25 @@ public class GenerateBaseDataService {
                 schemeInfo = schemeInfoService.getSchemeInfo(schemeJudgeObject.getId(), mdCompare.getId());
                 if (schemeInfo != null && schemeInfo.getMethodDataId() != null) {
                     GenerateMdCompareService generateMdCompareService = new GenerateMdCompareService(schemeJudgeObject.getId(), schemeInfo.getMethodDataId(), areaId);
-                    try {
-                        String generateCompareFile = generateMdCompareService.generateCompareFile();
-                        File file = new File(generateCompareFile);
-                        if (file.isFile()) {
-                            String key = String.format("%s号:%s", generateCommonMethod.convertNumber(numbers), mdCompare.getName());
-                            builder.insertHtml(generateCommonMethod.getWarpCssHtml("<div style='text-align:center;font-size:16.0pt;'>" + key + "</div>"), true);
-                            //去掉html
-                            key = key.replaceAll("^<[^>]+>|<[^>]+>$", "");
-                            key = String.format("%s%s", key, UUID.randomUUID().toString());
-                            map.put(key, generateCompareFile);
-                            builder.writeln(key);
-                        }
-                    } catch (Exception e) {
-                        baseService.writeExceptionInfo(e, "估价对象详细测算过程");
-                    }
+                    baseDetailedCalculationProcessValuationObject(generateMdCompareService.generateCompareFile(),builder,keyValueDtoList,numbers,mdCompare,map) ;
                 }
                 //收益法
                 schemeInfo = schemeInfoService.getSchemeInfo(schemeJudgeObject.getId(), mdIncome.getId());
                 if (schemeInfo != null && schemeInfo.getMethodDataId() != null) {
                     GenerateMdIncomeService generateMdIncomeService = new GenerateMdIncomeService(schemeInfo, projectId, areaId);
-                    String generateCompareFile = generateMdIncomeService.generateCompareFile();
-                    File file = new File(generateCompareFile);
-                    if (file.isFile()) {
-                        String key = String.format("%s号:%s", generateCommonMethod.convertNumber(numbers), mdIncome.getName());
-                        builder.insertHtml(generateCommonMethod.getWarpCssHtml("<div style='text-align:center;font-size:16.0pt;'>" + key + "</div>"), true);
-                        //去掉html
-                        key = key.replaceAll("^<[^>]+>|<[^>]+>$", "");
-                        key = String.format("%s%s", key, UUID.randomUUID().toString());
-                        map.put(key, generateCompareFile);
-                        builder.writeln(key);
-                    }
+                    baseDetailedCalculationProcessValuationObject(generateMdIncomeService.generateCompareFile(),builder,keyValueDtoList,numbers,mdIncome,map) ;
                 }
                 //成本法
                 schemeInfo = schemeInfoService.getSchemeInfo(schemeJudgeObject.getId(), mdCost.getId());
                 if (schemeInfo != null && schemeInfo.getMethodDataId() != null) {
-
+                    GenerateMdCostService mdCostService = new GenerateMdCostService(projectId, schemeInfo, areaId);
+                    baseDetailedCalculationProcessValuationObject(mdCostService.generateCompareFile(),builder,keyValueDtoList,numbers,mdCost,map) ;
                 }
                 //假设开发法
                 schemeInfo = schemeInfoService.getSchemeInfo(schemeJudgeObject.getId(), mdDevelopment.getId());
                 if (schemeInfo != null && schemeInfo.getMethodDataId() != null) {
                     GenerateMdDevelopmentService generateMdDevelopmentService = new GenerateMdDevelopmentService(projectId, schemeInfo, areaId);
-                    String generateCompareFile = generateMdDevelopmentService.generateCompareFile();
-                    File file = new File(generateCompareFile);
-                    if (file.isFile()) {
-                        String key = String.format("%s号:%s", generateCommonMethod.convertNumber(numbers), mdDevelopment.getName());
-                        builder.insertHtml(generateCommonMethod.getWarpCssHtml("<div style='text-align:center;font-size:16.0pt;'>" + key + "</div>"), true);
-                        //去掉html
-                        key = key.replaceAll("^<[^>]+>|<[^>]+>$", "");
-                        key = String.format("%s%s", key, UUID.randomUUID().toString());
-                        map.put(key, generateCompareFile);
-                        builder.writeln(key);
-                    }
+                    baseDetailedCalculationProcessValuationObject(generateMdDevelopmentService.generateCompareFile(),builder,keyValueDtoList,numbers,mdDevelopment,map) ;
                 }
             }
         }
@@ -5252,6 +5220,17 @@ public class GenerateBaseDataService {
             AsposeUtils.replaceTextToFile(localPath, map);
         }
         return localPath;
+    }
+
+    private void baseDetailedCalculationProcessValuationObject(String reportPath,DocumentBuilder builder,List<KeyValueDto> keyValueDtoList,List<Integer> numbers,BaseDataDic baseDataDic,Map<String, String> map)throws Exception{
+        File file = new File(reportPath);
+        if (file.isFile()) {
+            String title = generateCommonMethod.delHTMLTag(String.format("%s号:%s", generateCommonMethod.convertNumber(numbers), baseDataDic.getName()));
+            AsposeUtils.insertHtml(builder, AsposeUtils.getWarpCssHtml(title, keyValueDtoList), true);
+            String key = String.join("", title, RandomStringUtils.randomAlphanumeric(16));
+            map.put(key, reportPath);
+            builder.writeln(key);
+        }
     }
 
     /**
