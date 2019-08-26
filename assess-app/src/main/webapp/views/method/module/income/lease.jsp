@@ -526,8 +526,6 @@
 </script>
 
 <script type="text/javascript">
-    console.log(Math.pow((1 + 0.05), 0.38));
-
     var lease = {};
 
     //调用市场比较法
@@ -936,6 +934,7 @@
         formData.mdIncome.houseRemainingYear = $("#frm_income").find('[name=houseRemainingYear]').val();
         formData.mdIncome.landRemainingYear = $("#frm_income").find('[name=landRemainingYear]').val();
         formData.mdIncome.name = $("#frm_income").find('[name=name]').val();
+        formData.mdIncome.restrictionExplain = $("#frm_income").find('[name=restrictionExplain]').val();
         formData.mdIncome.price = $("#leaseResult").find('[data-name=price]').text();
         formData.mdIncome.operationMode = $("#frm_income").find('[name=operationMode]:checked').val();
         formData.mdIncome.leaseMode = $("#frm_income").find('[name=leaseMode]:checked').val();
