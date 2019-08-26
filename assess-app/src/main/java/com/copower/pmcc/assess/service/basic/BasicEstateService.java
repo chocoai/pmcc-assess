@@ -538,7 +538,7 @@ public class BasicEstateService {
         }
 
         BasicEstateTagging oldBasicEstateTagging = new BasicEstateTagging();
-        oldBasicEstateTagging.setApplyId(applyId);
+        oldBasicEstateTagging.setTableId(oldEstateByApplyId.getId());
         oldBasicEstateTagging.setType(EstateTaggingTypeEnum.ESTATE.getKey());
         List<BasicEstateTagging> oldBasicEstateTaggingList = basicEstateTaggingService.getBasicEstateTaggingList(oldBasicEstateTagging);
         if (!ObjectUtils.isEmpty(oldBasicEstateTaggingList)) {
@@ -547,6 +547,7 @@ public class BasicEstateService {
             basicEstateTagging.setCreator(commonService.thisUserAccount());
             basicEstateTagging.setApplyId(0);
             basicEstateTagging.setName(null);
+            basicEstateTagging.setTableId(basicEstate.getId());
             basicEstateTagging.setGmtCreated(null);
             basicEstateTagging.setGmtModified(null);
             basicEstateTaggingService.addBasicEstateTagging(basicEstateTagging);

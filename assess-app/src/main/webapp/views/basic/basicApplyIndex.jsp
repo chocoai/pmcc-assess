@@ -56,7 +56,7 @@
                             <div class="x-valid">
                                 <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
                                     <input type="button" class="btn btn-success" data-mode="reference"
-                                           onclick="projectData.prototype.showModel();"
+                                           onclick="projectData.prototype.showProjectDataModel();"
                                            value="引用项目中的楼盘">
                                 </div>
                             </div>
@@ -230,7 +230,7 @@
 </body>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/map.position.js"></script>
 <%@include file="/views/share/main_footer.jsp" %>
-<jsp:include page="/views/basic/modelView/projectHousesData.jsp"></jsp:include>
+<jsp:include page="/views/basic/modelView/basicApplyQuoteData.jsp"></jsp:include>
 </html>
 <script type="text/javascript">
     var basicApplyIndex = new Object();
@@ -509,15 +509,11 @@
         }
     };
 
-    basicApplyIndex.autocompleteData = function (index) {
-        var row = $("#projectCaseItemList").bootstrapTable('getData')[index];
+    basicApplyIndex.autocompleteData = function (id) {
         Loading.progressShow();
         $.ajax({
             url: '${pageContext.request.contextPath}/basicApply/getCaseBasicApply',
-            data: {
-                id: row.id,
-                projectPhaseId: row.projectPhaseId
-            },
+            data: {planDetailsId: id},
             type: "get",
             success: function (result) {
                 Loading.progressHide();
@@ -554,6 +550,7 @@
                         });
                          $('#divBoxProjectItemData').modal('hide');
                          $('#divBoxProjectData').modal('hide');
+                         $('#divBoxTree').modal('hide');
                     }
                 } else {
                     Loading.progressHide();

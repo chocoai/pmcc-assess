@@ -266,14 +266,7 @@
                 }
             })
         }
-        <%--autocompleteData:function (index) {--%>
-        <%--if(${!empty basicApplyTypeId}){--%>
-        <%--basicApplyIndex.autocompleteData(index);--%>
-        <%--}--%>
-        <%--if(${!empty type}){--%>
-        <%--fillInformation.autocompleteData(index);--%>
-        <%--}--%>
-        <%--}--%>
+
     };
 
     //楼栋

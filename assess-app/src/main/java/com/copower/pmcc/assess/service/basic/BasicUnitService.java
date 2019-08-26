@@ -335,7 +335,7 @@ public class BasicUnitService {
         baseAttachmentService.copyFtpAttachments(example, attachmentDto);
 
         BasicEstateTagging oldBasicEstateTagging = new BasicEstateTagging();
-        oldBasicEstateTagging.setApplyId(applyId);
+        oldBasicEstateTagging.setTableId(oldBasicUnit.getId());
         oldBasicEstateTagging.setType(EstateTaggingTypeEnum.UNIT.getKey());
         List<BasicEstateTagging> oldBasicEstateTaggingList = basicEstateTaggingService.getBasicEstateTaggingList(oldBasicEstateTagging);
         if (!ObjectUtils.isEmpty(oldBasicEstateTaggingList)) {
@@ -343,6 +343,7 @@ public class BasicUnitService {
             BeanUtils.copyProperties(oldBasicEstateTaggingList.get(0), basicEstateTagging);
             basicEstateTagging.setCreator(commonService.thisUserAccount());
             basicEstateTagging.setApplyId(0);
+            basicEstateTagging.setTableId(basicUnit.getId());
             basicEstateTagging.setName(null);
             basicEstateTagging.setGmtCreated(null);
             basicEstateTagging.setGmtModified(null);

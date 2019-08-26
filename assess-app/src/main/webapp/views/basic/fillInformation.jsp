@@ -52,7 +52,7 @@
 </body>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/map.position.js"></script>
 <%@include file="/views/share/main_footer.jsp" %>
-<jsp:include page="/views/basic/modelView/projectHousesData.jsp"></jsp:include>
+<jsp:include page="/views/basic/modelView/batchQuoteData.jsp"></jsp:include>
 </html>
 <script type="text/javascript">
     var fillInformation = new Object();
