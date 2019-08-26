@@ -10,6 +10,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html lang="en" class="no-js">
 <head>
     <%@include file="/views/share/main_css.jsp" %>
@@ -32,7 +33,7 @@
                             <div class="form-group">
                                 <div class='x-valid'>
                                     <label class='col-sm-1 control-label'>
-                                        意见稿标题<span class="symbol required"></span>
+                                        标题<span class="symbol required"></span>
                                     </label>
                                     <div class='col-sm-11'>
                                         <label class="form-control">${documentOpinion.title}</label>
@@ -46,7 +47,6 @@
                                         报告
                                     </label>
                                     <div class="col-sm-11">
-
                                         <div id="_file_report">
                                         </div>
                                     </div>
@@ -55,17 +55,16 @@
                             <div class="form-group">
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
-                                        合同
+                                        意见稿
                                     </label>
                                     <div class="col-sm-11">
-
                                         <div id="_file_upload">
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <c:choose>
-                                <c:when test="${CurrentStep eq '0' && StepCount eq '2'}">
+                                <c:when test="${fn:contains(activityCnName,'项目经理') eq true}">
                                     <input type="hidden" id="id" name="id" value="${documentOpinion.id}">
                                     <div class="form-group">
                                         <div class="x-valid">
@@ -74,7 +73,8 @@
                                             </label>
                                             <div class="col-md-11 col-sm-11 col-xs-12">
                                 <textarea class="form-control" id="suggestion" name="suggestion" rows="4" required
-                                          data-rule-maxlength="255" placeholder="">${documentOpinion.suggestion}</textarea>
+                                          data-rule-maxlength="255"
+                                          placeholder="">${documentOpinion.suggestion}</textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -87,6 +87,26 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <script type="text/javascript">
+                                        $(function () {
+                                            loadUploadFiles("reply_letter", "tb_document_opinion", '${documentOpinion.id}', "reply_letter", true);
+                                            FileUtils.uploadFiles({
+                                                target: "reply_letter",
+                                                disabledTarget: "btn_submit",
+                                                formData: {
+                                                    tableName: "tb_document_opinion",
+                                                    tableId: ${documentOpinion.id},
+                                                    fieldsName: "reply_letter",
+                                                    projectId: "${projectPlanDetails.projectId}"
+                                                },
+                                                deleteFlag: true
+                                            }, {
+                                                onUploadComplete: function () {
+                                                    loadUploadFiles("reply_letter", "tb_document_opinion", '${documentOpinion.id}', "reply_letter", true);
+                                                }
+                                            });
+                                        })
+                                    </script>
                                 </c:when>
                                 <c:otherwise>
                                     <div class="form-group">
@@ -107,10 +127,13 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <script type="text/javascript">
+                                        $(function () {
+                                            loadUploadFiles("reply_letter_d", "tb_document_opinion", '${documentOpinion.id}', "reply_letter", false);
+                                        })
+                                    </script>
                                 </c:otherwise>
                             </c:choose>
-
-
                         </form>
                     </div>
                 </div>
@@ -124,7 +147,6 @@
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="text/javascript">
     $(function () {
-        console.log("CurrentStep${CurrentStep}===StepCount${StepCount}")
         //显示报告
         loadUploadFiles("file_report", AssessDBKey.GenerateReportInfo, '${documentOpinion.generationId}', '${fieldsName}', false);
         //合同
@@ -137,30 +159,8 @@
                 proectId:${documentOpinion.projectId}
             },
             editFlag: true,
-            signatureFlag: '${activityCnName}'.indexOf("盖章") > -1,
             deleteFlag: false
         });
-        //回函附件
-        if('${CurrentStep}'=='0'&&'${StepCount}'==2){
-            loadUploadFiles("reply_letter", "tb_document_opinion", '${documentOpinion.id}', "reply_letter", true);
-            FileUtils.uploadFiles({
-                target: "reply_letter",
-                disabledTarget: "btn_submit",
-                formData: {
-                    tableName: "tb_document_opinion",
-                    tableId: ${documentOpinion.id},
-                    fieldsName: "reply_letter",
-                    projectId: "${projectPlanDetails.projectId}"
-                },
-                deleteFlag: true
-            }, {
-                onUploadComplete: function () {
-                    loadUploadFiles("reply_letter", "tb_document_opinion", '${documentOpinion.id}', "reply_letter", true);
-                }
-            });
-        }else{
-            loadUploadFiles("reply_letter_d", "tb_document_opinion", '${documentOpinion.id}', "reply_letter", false);
-        }
     })
 
     //显示附件

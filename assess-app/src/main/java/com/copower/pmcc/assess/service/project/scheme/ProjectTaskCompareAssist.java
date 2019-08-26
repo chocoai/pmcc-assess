@@ -116,20 +116,24 @@ public class ProjectTaskCompareAssist implements ProjectTaskInterface {
      */
     private void setViewParam(ProjectPlanDetails projectPlanDetails, SchemeInfo info, SchemeJudgeObject judgeObject, ModelAndView modelAndView) {
         //市场比较法相关
-        List<ProjectPlanDetails> caseAll = mdMarketCompareService.getCaseAll(projectPlanDetails.getProjectId());
-        modelAndView.addObject("casesAllJSON", JSON.toJSONString(caseAll));
-        MdMarketCompare marketCompare = mdMarketCompareService.getMdMarketCompare(info.getMethodDataId());
-        List<DataSetUseField> fieldList = mdMarketCompareService.getShowSetUseFieldList(judgeObject.getSetUse());
-        MdMarketCompareItem evaluationObject = mdMarketCompareService.getEvaluationByMcId(marketCompare.getId());
-        List<MdMarketCompareItem> caseList = mdMarketCompareService.getCaseListByMcId(marketCompare.getId());
-        modelAndView.addObject("marketCompareJSON", JSON.toJSONString(marketCompare));
-        modelAndView.addObject("fieldsJSON", JSON.toJSONString(fieldList));
-        modelAndView.addObject("evaluationJSON", JSON.toJSONString(evaluationObject));
-        modelAndView.addObject("casesJSON", JSON.toJSONString(caseList));
-        modelAndView.addObject("mcId", marketCompare.getId());
-        modelAndView.addObject("setUse", judgeObject.getSetUse());
-        modelAndView.addObject("judgeObject", judgeObject);
-        modelAndView.addObject("isLand", false);
+        try{
+            List<ProjectPlanDetails> caseAll = mdMarketCompareService.getCaseAll(projectPlanDetails.getProjectId());
+            modelAndView.addObject("casesAllJSON", JSON.toJSONString(caseAll));
+            MdMarketCompare marketCompare = mdMarketCompareService.getMdMarketCompare(info.getMethodDataId());
+            List<DataSetUseField> fieldList = mdMarketCompareService.getShowSetUseFieldList(judgeObject.getSetUse());
+            MdMarketCompareItem evaluationObject = mdMarketCompareService.getEvaluationByMcId(marketCompare.getId());
+            List<MdMarketCompareItem> caseList = mdMarketCompareService.getCaseListByMcId(marketCompare.getId());
+            modelAndView.addObject("marketCompareJSON", JSON.toJSONString(marketCompare));
+            modelAndView.addObject("fieldsJSON", JSON.toJSONString(fieldList));
+            modelAndView.addObject("evaluationJSON", JSON.toJSONString(evaluationObject));
+            modelAndView.addObject("casesJSON", JSON.toJSONString(caseList));
+            modelAndView.addObject("mcId", marketCompare.getId());
+            modelAndView.addObject("setUse", judgeObject.getSetUse());
+            modelAndView.addObject("judgeObject", judgeObject);
+            modelAndView.addObject("isLand", false);
+        }catch (Exception e){
+            logger.error(e.getMessage(),e);
+        }
     }
 
 
