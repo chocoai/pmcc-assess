@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.common.enums.BasicApplyPartInModeEnum;
 import com.copower.pmcc.assess.common.enums.EstateTaggingTypeEnum;
 import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDetailDao;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateTaggingDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicHouseDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dal.cases.entity.*;
@@ -93,6 +94,8 @@ public class BasicHouseService {
     private BasicApplyBatchDetailService basicApplyBatchDetailService;
     @Autowired
     private BasicApplyBatchDetailDao basicApplyBatchDetailDao;
+    @Autowired
+    private BasicEstateTaggingDao basicEstateTaggingDao;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -210,7 +213,13 @@ public class BasicHouseService {
             house = basicHouseDao.getBasicHouseById(basicApply.getBasicHouseId());
         }
         if (house == null) return;
-
+        //清除标记
+        if(house!=null) {
+            BasicEstateTagging where = new BasicEstateTagging();
+            where.setTableId(house.getId());
+            where.setType("house");
+            basicEstateTaggingDao.removeBasicEstateTagging(where);
+        }
         StringBuilder sqlBulder = new StringBuilder();
         String baseSql = "delete from %s where house_id=%s;";
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseTradingSell.class), house.getId()));

@@ -340,7 +340,7 @@
         $.ajax({
             url: getContextPath() + '/basicEstateTagging/addBasicEstateTagging',
             data: {
-                applyId: basicCommon.getApplyId(),
+                tableId: buildingCommon.getBuildingId(),
                 type: 'building',
                 lng: lng,
                 lat: lat,
@@ -359,9 +359,9 @@
     //加载标注
     buildingCommon.loadMarkerList = function () {
         $.ajax({
-            url: getContextPath() + '/basicEstateTagging/getEstateTaggingList',
+            url: getContextPath() + '/basicEstateTagging/getApplyBatchEstateTaggingsByTableId',
             data: {
-                applyId: basicCommon.getApplyId(),
+                tableId: buildingCommon.getBuildingId(),
                 type: 'building'
             },
             success: function (result) {

@@ -123,6 +123,7 @@
     </div>
 </div>
 <script type="application/javascript">
+    var  planDetailsId = undefined;
     // 查找项目及楼盘
     var projectData = function () {
 
@@ -221,6 +222,7 @@
                     if (result.ret) {
                         if (result.data) {
                             treeTool.ztreeInit(result.data);
+                            planDetailsId = id;
                             treeTool.showQuoteBut();
                             $('#' + projectData.prototype.config().treeBox).modal("show");
                         } else {
@@ -299,7 +301,7 @@
 
 
     //显示引用按钮
-    treeTool.showQuoteBut = function () {
+    treeTool.showQuoteBut = function (id) {
         var node = zTreeObj.getSelectedNodes()[0];
         var level = node.level;
         if (level == 3) {
@@ -310,7 +312,7 @@
     }
 
     //引用
-    treeTool.quote = function (id) {
-        basicApplyIndex.autocompleteData(id);
+    treeTool.quote = function () {
+        basicApplyIndex.autocompleteData(planDetailsId);
     }
 </script>
