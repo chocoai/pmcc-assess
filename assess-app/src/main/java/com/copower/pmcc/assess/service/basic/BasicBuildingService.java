@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.common.enums.EstateTaggingTypeEnum;
 import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDetailDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicBuildingDao;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateTaggingDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dal.cases.entity.*;
 import com.copower.pmcc.assess.dto.input.SynchronousDataDto;
@@ -82,6 +83,8 @@ public class BasicBuildingService {
     private BasicApplyBatchDetailService basicApplyBatchDetailService;
     @Autowired
     private BasicApplyBatchDetailDao basicApplyBatchDetailDao;
+    @Autowired
+    private BasicEstateTaggingDao basicEstateTaggingDao;
 
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -282,7 +285,13 @@ public class BasicBuildingService {
             BasicApply basicApply = basicApplyService.getByBasicApplyId(applyId);
             basicBuilding = getBasicBuildingById(basicApply.getBasicBuildingId());
         }
-
+        //清除标记
+        if(basicBuilding!=null) {
+            BasicEstateTagging where = new BasicEstateTagging();
+            where.setTableId(basicBuilding.getId());
+            where.setType("building");
+            basicEstateTaggingDao.removeBasicEstateTagging(where);
+        }
         StringBuilder sqlBulder = new StringBuilder();
         String baseSql = "delete from %s where building_id=%s;";
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicBuildingFunction.class), basicBuilding.getId()));
@@ -426,7 +435,6 @@ public class BasicBuildingService {
             BasicEstateTagging basicEstateTagging = new BasicEstateTagging();
             BeanUtils.copyProperties(oldBasicEstateTaggingList.get(0), basicEstateTagging);
             basicEstateTagging.setCreator(commonService.thisUserAccount());
-            basicEstateTagging.setApplyId(0);
             basicEstateTagging.setTableId(basicBuilding.getId());
             basicEstateTagging.setName(null);
             basicEstateTagging.setGmtCreated(null);

@@ -105,9 +105,9 @@ public class BasicEstateTaggingController {
 
     @ResponseBody
     @RequestMapping(value = "/getUnitTagging", name = "获取单元下的标注", method = {RequestMethod.POST})
-    public HttpResult getUnitTagging(String unitPartInMode, Integer applyId, Integer caseUnitId) {
+    public HttpResult getUnitTagging(String unitPartInMode, Integer tableId, Integer caseUnitId) {
         try {
-            return HttpResult.newCorrectResult(basicEstateTaggingService.getUnitTagging(unitPartInMode,applyId,caseUnitId));
+            return HttpResult.newCorrectResult(basicEstateTaggingService.getUnitTagging(unitPartInMode,tableId,caseUnitId));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(e.getMessage());
@@ -127,9 +127,9 @@ public class BasicEstateTaggingController {
 
     @ResponseBody
     @RequestMapping(value = "/deleteHouseTagging", name = "删除房屋标注信息", method = {RequestMethod.POST})
-    public HttpResult deleteHouseTagging(Integer applyId) {
+    public HttpResult deleteHouseTagging(Integer tableId) {
         try {
-            basicEstateTaggingService.deleteHouseTagging(applyId);
+            basicEstateTaggingService.deleteHouseTagging(tableId);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);

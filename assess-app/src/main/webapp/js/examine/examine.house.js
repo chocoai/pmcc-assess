@@ -665,7 +665,7 @@
         $.ajax({
             url: getContextPath() + '/basicEstateTagging/getUnitTagging',
             data: {
-                applyId: basicCommon.getApplyId(),
+                tableId: unitCommon.getUnitId(),
                 unitPartInMode: 'add'
             },
             async: false,
@@ -701,9 +701,9 @@
      */
     houseCommon.orientationFun = function (readonly) {
         $.ajax({
-            url: getContextPath() + '/basicEstateTagging/getEstateTaggingList',
+            url: getContextPath() + '/basicEstateTagging/getApplyBatchEstateTaggingsByTableId',
             data: {
-                applyId: basicCommon.getApplyId(),
+                tableId: houseCommon.getHouseId(),
                 type: "house"
             },
             async: false,
@@ -748,9 +748,9 @@
                         if (!readonly) {
                             //到iframe中获取数据
                             $.ajax({
-                                url: getContextPath() + '/basicEstateTagging/addBasicEstateTagging',
+                                url: getContextPath() + '/basicEstateTagging/addBasicEstateTaggingByTableId',
                                 data: {
-                                    applyId: basicCommon.getApplyId(),
+                                    tableId: houseCommon.getHouseId(),
                                     type: "house",
                                     lng: houseCommon.houseMapiframe.config.position.lng,
                                     lat: houseCommon.houseMapiframe.config.position.lat,
@@ -858,7 +858,7 @@
         $.ajax({
             url: getContextPath() + '/basicEstateTagging/deleteHouseTagging',
             data: {
-                applyId: basicCommon.getApplyId()
+                tableId: houseCommon.getHouseId()
             },
             success: function (result) {
                 if (result.ret) {

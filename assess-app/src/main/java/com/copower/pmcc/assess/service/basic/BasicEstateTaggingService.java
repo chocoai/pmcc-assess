@@ -66,9 +66,8 @@ public class BasicEstateTaggingService {
     public void addBasicEstateTagging(BasicEstateTagging basicEstateTagging) throws Exception {
         //先清除标记
         BasicEstateTagging where = new BasicEstateTagging();
-        if (basicEstateTagging.getApplyId() == null || basicEstateTagging.getApplyId() == 0)
-            where.setCreator(commonService.thisUserAccount());
-        where.setApplyId(basicEstateTagging.getApplyId());
+        where.setCreator(commonService.thisUserAccount());
+        where.setTableId(basicEstateTagging.getTableId());
         where.setType(basicEstateTagging.getType());
         basicEstateTaggingDao.removeBasicEstateTagging(where);
 
@@ -136,12 +135,10 @@ public class BasicEstateTaggingService {
         basicEstateTaggingDao.removeBasicEstateTagging(basicEstateTagging);
     }
 
-    public Boolean hasBasicEstateTagging(Integer applyId, EstateTaggingTypeEnum estateTaggingTypeEnum) {
+    public Boolean hasBasicEstateTagging(Integer tableId, EstateTaggingTypeEnum estateTaggingTypeEnum) {
         BasicEstateTagging basicEstateTagging = new BasicEstateTagging();
-        basicEstateTagging.setApplyId(applyId);
+        basicEstateTagging.setTableId(tableId);
         basicEstateTagging.setType(estateTaggingTypeEnum.getKey());
-        if (applyId == null || applyId == 0)
-            basicEstateTagging.setCreator(commonService.thisUserAccount());
         return basicEstateTaggingDao.getEstateTaggingCount(basicEstateTagging) > 0;
     }
 
@@ -149,11 +146,11 @@ public class BasicEstateTaggingService {
      * 获取单元下的标注
      *
      * @param unitPartInMode
-     * @param applyId
+     * @param tableId
      * @param caseUnitId
      * @return
      */
-    public BasicEstateTagging getUnitTagging(String unitPartInMode, Integer applyId, Integer caseUnitId) throws Exception {
+    public BasicEstateTagging getUnitTagging(String unitPartInMode, Integer tableId, Integer caseUnitId) throws Exception {
         BasicEstateTagging tagging = new BasicEstateTagging();
         if (StringUtils.isBlank(unitPartInMode)) {
             CaseEstateTagging caseEstateTagging = caseEstateTaggingService.getCaseEstateTagging(caseUnitId, EstateTaggingTypeEnum.UNIT.getKey());
@@ -161,10 +158,9 @@ public class BasicEstateTaggingService {
             BeanUtils.copyProperties(caseEstateTagging, tagging);
         } else {
             BasicEstateTagging where = new BasicEstateTagging();
-            where.setApplyId(applyId);
+            where.setTableId(tableId);
             where.setType(EstateTaggingTypeEnum.UNIT.getKey());
-            if (applyId == null || applyId == 0)
-                where.setCreator(commonService.thisUserAccount());
+
             List<BasicEstateTagging> taggingList = basicEstateTaggingDao.getBasicEstateTaggingList(where);
             if (!CollectionUtils.isEmpty(taggingList))
                 tagging = taggingList.get(0);
@@ -190,14 +186,13 @@ public class BasicEstateTaggingService {
     /**
      * 删除房屋下标注信息
      *
-     * @param applyId
+     * @param tableId
      */
-    public void deleteHouseTagging(Integer applyId) throws SQLException {
+    public void deleteHouseTagging(Integer tableId) throws SQLException {
         BasicEstateTagging where = new BasicEstateTagging();
-        where.setApplyId(applyId);
+        where.setTableId(tableId);
         where.setType(EstateTaggingTypeEnum.HOUSE.getKey());
-        if (applyId == null || applyId == 0)
-            where.setCreator(commonService.thisUserAccount());
+
         List<BasicEstateTagging> taggingList = basicEstateTaggingDao.getBasicEstateTaggingList(where);
         if (CollectionUtils.isEmpty(taggingList)) return;
         taggingList.forEach(o -> basicEstateTaggingDao.deleteBasicEstateTagging(o.getId()));

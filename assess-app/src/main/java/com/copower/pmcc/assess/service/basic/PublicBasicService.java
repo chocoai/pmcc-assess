@@ -773,6 +773,7 @@ public class PublicBasicService {
                     basicEstate.setApplyId(basicApply.getId());
                     basicEstate.setType(basicApply.getType());
                     basicEstateService.saveAndUpdateBasicEstate(basicEstate);
+                    basicApply.setBasicEstateId(basicEstate.getId());
                     if (basicEstate.getId() != null) {
                         BasicEstateLandState basicEstateLandState = null;
                         if (StringUtils.isNotEmpty(jsonObject.getString(BasicApplyFormNameEnum.BASIC_ESTATELAND_STATE.getVar()))) {
@@ -808,6 +809,7 @@ public class PublicBasicService {
                     }
                     basicBuilding.setApplyId(basicApply.getId());
                     basicBuildingService.saveAndUpdateBasicBuilding(basicBuilding);
+                    basicApply.setBasicBuildingId(basicBuilding.getId());
                 }
             }
         }
@@ -832,6 +834,7 @@ public class PublicBasicService {
                     }
                     basicUnit.setApplyId(basicApply.getId());
                     basicUnitService.saveAndUpdateBasicUnit(basicUnit);
+                    basicApply.setBasicUnitId(basicUnit.getId());
                 }
             }
         }
@@ -856,6 +859,7 @@ public class PublicBasicService {
                     }
                     basicHouse.setApplyId(basicApply.getId());
                     Integer house = basicHouseService.saveAndUpdateBasicHouse(basicHouse);
+                    basicApply.setBasicHouseId(house);
                     //交易信息
                     jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_TRADING.getVar());
                     BasicHouseTrading basicTrading = JSONObject.parseObject(jsonContent, BasicHouseTrading.class);
@@ -933,29 +937,33 @@ public class PublicBasicService {
      */
     private void taggingValid(BasicApply basicApply) throws BusinessException {
         if (StringUtils.isNotBlank(basicApply.getEstatePartInMode())) {
-            if (!basicEstateTaggingService.hasBasicEstateTagging(basicApply.getId(), EstateTaggingTypeEnum.ESTATE)) {
+            BasicEstate estate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
+            if (!basicEstateTaggingService.hasBasicEstateTagging(estate.getId(), EstateTaggingTypeEnum.ESTATE)) {
                 throw new BusinessException("楼盘位置信息还未标注");
             }
         }
         if (StringUtils.isNotBlank(basicApply.getBuildingPartInMode()) && basicApply.getType() != 2) {
-            if (!basicEstateTaggingService.hasBasicEstateTagging(basicApply.getId(), EstateTaggingTypeEnum.BUILDING)) {
+            BasicBuildingVo building = basicBuildingService.getBasicBuildingByApplyId(basicApply.getId());
+            if (!basicEstateTaggingService.hasBasicEstateTagging(building.getId(), EstateTaggingTypeEnum.BUILDING)) {
                 throw new BusinessException("楼栋位置信息还未标注");
             }
         }
         if (StringUtils.isNotBlank(basicApply.getUnitPartInMode())) {
-            if (!basicEstateTaggingService.hasBasicEstateTagging(basicApply.getId(), EstateTaggingTypeEnum.UNIT)) {
+            BasicUnit unit = basicUnitService.getBasicUnitByApplyId(basicApply.getId());
+            if (!basicEstateTaggingService.hasBasicEstateTagging(unit.getId(), EstateTaggingTypeEnum.UNIT)) {
                 throw new BusinessException("单元位置信息还未标注");
             }
         }
         if (StringUtils.isNotBlank(basicApply.getHousePartInMode())) {
-            if (!basicEstateTaggingService.hasBasicEstateTagging(basicApply.getId(), EstateTaggingTypeEnum.HOUSE)) {
+            BasicHouse house = basicHouseService.getHouseByApplyId(basicApply.getId());
+            if (!basicEstateTaggingService.hasBasicEstateTagging(house.getId(), EstateTaggingTypeEnum.HOUSE)) {
                 throw new BusinessException("房屋户型图朝向还未设置");
             }
         }
     }
 
-    public BasicEstateVo getBasicEstateByAppId(BasicApply basicApply) throws Exception {
-        BasicEstate estate = basicEstateService.getBasicEstateById(basicApply.getBasicEstateId());
+    public BasicEstateVo getBasicEstateByAppId(BasicApply basicApply) {
+        BasicEstate estate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
         if (estate == null) return null;
         return basicEstateService.getBasicEstateVo(estate);
     }
@@ -984,15 +992,15 @@ public class PublicBasicService {
     }
 
     public BasicBuildingVo getBasicBuildingByAppId(BasicApply basicApply) throws Exception {
-        return basicBuildingService.getBasicBuildingById(basicApply.getBasicBuildingId());
+        return basicBuildingService.getBasicBuildingByApplyId(basicApply.getId());
     }
 
     public BasicBuildingVo getBasicBuildingById(Integer id) throws Exception {
         return basicBuildingService.getBasicBuildingVo(basicBuildingService.getBasicBuildingById(id));
     }
 
-    public BasicUnit getBasicUnitByAppId(BasicApply basicApply) throws Exception {
-        return basicUnitService.getBasicUnitById(basicApply.getBasicUnitId());
+    public BasicUnit getBasicUnitByAppId(BasicApply basicApply) {
+        return basicUnitService.getBasicUnitByApplyId(basicApply.getId());
     }
 
     public BasicUnit getBasicUnitById(Integer id) throws Exception {
@@ -1010,7 +1018,7 @@ public class PublicBasicService {
     }
 
     public BasicHouseVo getBasicHouseVoByAppId(BasicApply basicApply) throws Exception {
-        BasicHouse basicHouse = basicHouseService.getBasicHouseById(basicApply.getBasicHouseId());
+        BasicHouse basicHouse = basicHouseService.getBasicHouseById(basicApply.getId());
         if (basicHouse == null) return null;
         return basicHouseService.getBasicHouseVo(basicHouse);
     }
