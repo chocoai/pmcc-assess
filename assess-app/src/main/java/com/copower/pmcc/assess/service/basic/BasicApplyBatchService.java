@@ -1091,21 +1091,21 @@ public class BasicApplyBatchService {
                     continue;
                 }
                 Integer basicApplyId = basicApply.getId();
-                BasicEstate basicEstateWhere=new BasicEstate();
+                BasicEstate basicEstateWhere = new BasicEstate();
                 basicEstateWhere.setApplyId(basicApplyId);
                 BasicEstate basicEstateByApplyId = basicEstateDao.basicEstateList(basicEstateWhere).get(0);
                 if (basicEstateByApplyId == null) {
                     continue;
                 }
-                BasicBuilding basicBuildingWhere=new BasicBuilding();
+                BasicBuilding basicBuildingWhere = new BasicBuilding();
                 basicBuildingWhere.setApplyId(basicApplyId);
                 BasicBuilding basicBuildingByApplyId = basicBuildingDao.getBasicBuildingList(basicBuildingWhere).get(0);
 
-                BasicUnit basicUnitWhere=new BasicUnit();
+                BasicUnit basicUnitWhere = new BasicUnit();
                 basicUnitWhere.setApplyId(basicApplyId);
                 BasicUnit basicUnitByApplyId = basicUnitDao.basicUnitList(basicUnitWhere).get(0);
 
-                BasicHouse basicHouseWhere=new BasicHouse();
+                BasicHouse basicHouseWhere = new BasicHouse();
                 basicHouseWhere.setApplyId(basicApplyId);
                 BasicHouse houseByApplyId = basicHouseDao.basicHouseList(basicHouseWhere).get(0);
                 basicApply.setBasicEstateId(basicEstateByApplyId.getId());
@@ -1174,21 +1174,21 @@ public class BasicApplyBatchService {
                         continue;
                     }
                     Integer basicApplyId = basicApply.getId();
-                    BasicEstate basicEstateWhere=new BasicEstate();
+                    BasicEstate basicEstateWhere = new BasicEstate();
                     basicEstateWhere.setApplyId(basicApplyId);
                     BasicEstate basicEstateByApplyId = basicEstateDao.basicEstateList(basicEstateWhere).get(0);
                     if (basicEstateByApplyId == null) {
                         continue;
                     }
-                    BasicBuilding basicBuildingWhere=new BasicBuilding();
+                    BasicBuilding basicBuildingWhere = new BasicBuilding();
                     basicBuildingWhere.setApplyId(basicApplyId);
                     BasicBuilding basicBuildingByApplyId = basicBuildingDao.getBasicBuildingList(basicBuildingWhere).get(0);
 
-                    BasicUnit basicUnitWhere=new BasicUnit();
+                    BasicUnit basicUnitWhere = new BasicUnit();
                     basicUnitWhere.setApplyId(basicApplyId);
                     BasicUnit basicUnitByApplyId = basicUnitDao.basicUnitList(basicUnitWhere).get(0);
 
-                    BasicHouse basicHouseWhere=new BasicHouse();
+                    BasicHouse basicHouseWhere = new BasicHouse();
                     basicHouseWhere.setApplyId(basicApplyId);
                     BasicHouse houseByApplyId = basicHouseDao.basicHouseList(basicHouseWhere).get(0);
 
@@ -1244,7 +1244,45 @@ public class BasicApplyBatchService {
                 }
             }
         }
+    }
 
+    //处理部分未更新的数据
+    public int updateBasicNullId() {
+        List<BasicApply> basicApplyList = basicApplyDao.getBasicEstateIdNull();
+        if (CollectionUtils.isNotEmpty(basicApplyList)) {
+            for (BasicApply basicApply : basicApplyList) {
+                try {
+                    BasicEstate basicEstateWhere = new BasicEstate();
+                    basicEstateWhere.setApplyId(basicApply.getId());
+                    BasicEstate basicEstateByApplyId = basicEstateDao.basicEstateList(basicEstateWhere).get(0);
 
+                    BasicBuilding basicBuildingWhere = new BasicBuilding();
+                    basicBuildingWhere.setApplyId(basicApply.getId());
+                    BasicBuilding basicBuildingByApplyId = basicBuildingDao.getBasicBuildingList(basicBuildingWhere).get(0);
+
+                    BasicUnit basicUnitWhere = new BasicUnit();
+                    basicUnitWhere.setApplyId(basicApply.getId());
+                    BasicUnit basicUnitByApplyId = basicUnitDao.basicUnitList(basicUnitWhere).get(0);
+
+                    BasicHouse basicHouseWhere = new BasicHouse();
+                    basicHouseWhere.setApplyId(basicApply.getId());
+                    BasicHouse houseByApplyId = basicHouseDao.basicHouseList(basicHouseWhere).get(0);
+
+                    if (basicEstateByApplyId != null)
+                        basicApply.setBasicEstateId(basicEstateByApplyId.getId());
+                    if (basicBuildingByApplyId != null)
+                        basicApply.setBasicBuildingId(basicBuildingByApplyId.getId());
+                    if (basicUnitByApplyId != null)
+                        basicApply.setBasicUnitId(basicUnitByApplyId.getId());
+                    if (houseByApplyId != null)
+                        basicApply.setBasicHouseId(houseByApplyId.getId());
+
+                    basicApplyDao.updateBasicApply(basicApply);
+                } catch (Exception e) {
+
+                }
+            }
+        }
+        return basicApplyList.size();
     }
 }

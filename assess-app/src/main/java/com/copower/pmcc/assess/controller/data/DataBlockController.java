@@ -191,4 +191,15 @@ public class DataBlockController extends BaseController {
         }
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/updateBasicNullId", method = {RequestMethod.GET}, name = "更新老数据")
+    public HttpResult updateBasicNullId() {
+        try {
+            return HttpResult.newCorrectResult( basicApplyBatchService.updateBasicNullId());
+        } catch (Exception e) {
+            log.error(String.format("exception: %s", e.getMessage()), e);
+            return HttpResult.newErrorResult("写入案例异常");
+        }
+    }
+
 }

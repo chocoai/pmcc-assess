@@ -103,4 +103,10 @@ public class BasicApplyDao {
         example.createCriteria().andIdNotEqualTo(applyId);
         return basicApplyMapper.countByExample(example);
     }
+
+    public List<BasicApply> getBasicEstateIdNull(){
+        BasicApplyExample example = new BasicApplyExample();
+        example.createCriteria().andBasicEstateIdIsNull();
+        return basicApplyMapper.selectByExample(example);
+    }
 }

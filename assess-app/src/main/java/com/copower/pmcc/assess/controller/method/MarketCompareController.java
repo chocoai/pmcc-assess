@@ -2,7 +2,10 @@ package com.copower.pmcc.assess.controller.method;
 
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.constant.BaseConstant;
-import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dal.basis.entity.MdMarketCompare;
+import com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareItem;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
+import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
 import com.copower.pmcc.assess.dto.input.method.MarketCompareResultDto;
 import com.copower.pmcc.assess.dto.output.basic.BasicApplyVo;
 import com.copower.pmcc.assess.dto.output.method.MdCompareCaseVo;
@@ -12,6 +15,7 @@ import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,8 +59,7 @@ public class MarketCompareController {
         MdMarketCompareItem evaluationObject = mdMarketCompareService.getEvaluationByMcId(marketCompare.getId());
         if (evaluationObject == null) {//页面选择估价对象
             List<BasicApplyVo> standardJudgeList = mdMarketCompareService.getStandardJudgeList(judgeObject);
-            if (CollectionUtils.isNotEmpty(standardJudgeList))
-                modelAndView.addObject("standardJudgesJSON", JSON.toJSONString(standardJudgeList));
+            modelAndView.addObject("standardJudgesJSON", JSON.toJSONString(CollectionUtils.isEmpty(standardJudgeList) ? Lists.newArrayList() : standardJudgeList));
         } else {
             modelAndView.addObject("marketCompareJSON", JSON.toJSONString(marketCompare));
         }
