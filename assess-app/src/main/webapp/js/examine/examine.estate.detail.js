@@ -22,9 +22,6 @@ var estateNetwork;
             return false;
         },
         loadDataDicList: function () {
-            console.log(estateCommon.getEstateId()+"**0**")
-            console.log($('#basicEstate').find('[name=id]').val()+"**1**")
-            console.log($('#frm_estate').find('[name=id]').val()+"**2**")
             var cols = commonColumn.estateNetworkColumn();
             $("#" + estateNetwork.prototype.config().table).bootstrapTable('destroy');
             TableInit(estateNetwork.prototype.config().table, getContextPath() + "/basicEstateNetwork/getBootstrapTableVo", cols, {

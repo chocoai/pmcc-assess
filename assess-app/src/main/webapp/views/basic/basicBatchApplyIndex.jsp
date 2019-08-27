@@ -257,7 +257,6 @@
             dataType: "json",
             data: formData,
             success: function (result) {
-                console.log(result.data)
                 if (result.ret) {
                     $(_this).hide();
                     $("#basicBatchApplyFrm").find("input[name='id']").val(result.data.id);

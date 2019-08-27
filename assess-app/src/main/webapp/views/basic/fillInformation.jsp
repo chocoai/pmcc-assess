@@ -172,7 +172,6 @@
 
 
     $(function () {
-        console.log(${showTab}+"====1")
         industry.keyApp("${type}");
         if ("estate" == "${buildingType}") {
             estateCommon.initById("${tableId}", basicCommon.showEstateTab("add"));
@@ -224,7 +223,6 @@
         var item = {};
         if ("estate" == "${buildingType}") {
             item.basicEstate = formSerializeArray(estateCommon.estateForm);
-            console.log(item.basicEstate.id + "===")
             if (estateCommon.estateLandStateForm.size() >= 1) {
                 var data = formSerializeArray(estateCommon.estateLandStateForm);
                 var landLevelContent = [];
