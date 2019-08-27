@@ -24,8 +24,14 @@
                     <div class="input-group">
                         <label class="form-control" name="buildingNumber">${basicBuilding.buildingNumber}</label>
                         <span class="input-group-btn">
+                               <c:if test="${empty isApplyBatch}">
                             <div onclick="buildingCommon.mapMarker(true);" class="btn btn-info"><i
                                     class="fa fa-map-marker"></i> 标注</div>
+                               </c:if>
+                                <c:if test="${isApplyBatch eq 'show'}">
+                                 <div onclick="buildingCommon.mapMarker2(true,${tableId});" class="btn btn-info"><i
+                                         class="fa fa-map-marker"></i> 标注</div>
+                                </c:if>
                         </span>
                     </div>
                 </div>
@@ -248,7 +254,7 @@
                     工程质量
                 </label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <label class="form-control" >${basicBuilding.constructionQualityName}</label>
+                    <label class="form-control" name="constructionQualityName">${basicBuilding.constructionQualityName}</label>
                 </div>
             </div>
             <div class="x-valid">
@@ -256,7 +262,7 @@
                     外观风格
                 </label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <label class="form-control" >${basicBuilding.appearanceStyleName}</label>
+                    <label class="form-control" name="appearanceStyleName">${basicBuilding.appearanceStyleName}</label>
                 </div>
             </div>
             <div class="x-valid">
@@ -264,7 +270,7 @@
                     外观新旧
                 </label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <label class="form-control" >${basicBuilding.appearanceNewAndOldName}</label>
+                    <label class="form-control" name="appearanceNewAndOldName">${basicBuilding.appearanceNewAndOldName}</label>
                 </div>
             </div>
         </div>
@@ -272,7 +278,7 @@
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">楼间距描述</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <label class="form-control">${basicBuilding.betweenDistanceDescription}</label>
+                    <label class="form-control" name="betweenDistanceDescription">${basicBuilding.betweenDistanceDescription}</label>
                 </div>
             </div>
 
@@ -281,12 +287,12 @@
                     楼间距
                 </label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <label class="form-control">${basicBuilding.betweenDistanceName}</label>
+                    <label class="form-control" name="betweenDistanceName">${basicBuilding.betweenDistanceName}</label>
                 </div>
             </div>
             <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">单元说明</label>
             <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                <label class="form-control">${basicBuilding.remark}</label>
+                <label class="form-control" name="remark">${basicBuilding.remark}</label>
             </div>
         </div>
         <div class="form-group">
@@ -339,7 +345,7 @@
                     物业公司公司性质
                 </label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <label class="form-control" name="propertyName">${basicBuilding.propertyCompanyNatureName}</label>
+                    <label class="form-control" name="propertyCompanyNatureName">${basicBuilding.propertyCompanyNatureName}</label>
                 </div>
             </div>
 
@@ -348,7 +354,7 @@
                     物业公司社会信誉
                 </label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <label class="form-control" name="propertyName">${basicBuilding.propertySocialPrestigeName}</label>
+                    <label class="form-control" name="propertySocialPrestigeName">${basicBuilding.propertySocialPrestigeName}</label>
                 </div>
             </div>
         </div>

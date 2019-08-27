@@ -23,8 +23,14 @@
                         <input type="text" id="txt_building_search" data-rule-maxlength="100" placeholder="楼栋号" required="required"
                                name="buildingNumber" class="form-control" onblur="buildingCommon.buildingNumberBlur(this);" value="${basicBuilding.buildingNumber}">
                         <span class="input-group-btn">
+                          <c:if test="${empty isApplyBatch}">
                             <div onclick="buildingCommon.mapMarker();" class="btn btn-info"><i
                                     class="fa fa-map-marker"></i> 标注</div>
+                          </c:if>
+                                <c:if test="${isApplyBatch eq 'show'}">
+                                 <div onclick="buildingCommon.mapMarker2(false,${tableId});" class="btn btn-info"><i
+                                         class="fa fa-map-marker"></i> 标注</div>
+                                </c:if>
                         </span>
                     </div>
                 </div>
