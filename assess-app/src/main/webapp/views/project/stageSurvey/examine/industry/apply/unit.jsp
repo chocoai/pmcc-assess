@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
 单元基本情况
 --%>
@@ -17,8 +18,14 @@
                         <input type="text" data-rule-maxlength="100" placeholder="单元编号" required="required"
                                name="unitNumber" class="form-control" value="${basicUnit.unitNumber}" id="txt_Unit_search">
                         <span class="input-group-btn">
+                            <c:if test="${empty isApplyBatch}">
                             <div onclick="unitCommon.mapMarker();" class="btn btn-info"><i
                                     class="fa fa-map-marker"></i> 标注</div>
+                            </c:if>
+                              <c:if test="${isApplyBatch eq 'show'}">
+                            <div onclick="unitCommon.mapMarker2(false,${tableId});" class="btn btn-info"><i
+                                    class="fa fa-map-marker"></i> 标注</div>
+                              </c:if>
                         </span>
                     </div>
                 </div>

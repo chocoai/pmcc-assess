@@ -14,10 +14,16 @@
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">单元编号</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <div class="input-group">
-                        <label class="form-control">${basicUnit.unitNumber}</label>
+                        <label class="form-control" name="unitNumber">${basicUnit.unitNumber}</label>
                         <span class="input-group-btn">
+                             <c:if test="${empty isApplyBatch}">
                             <div onclick="unitCommon.mapMarker(true);" class="btn btn-info"><i
                                     class="fa fa-map-marker"></i> 标注</div>
+                             </c:if>
+                              <c:if test="${isApplyBatch eq 'show'}">
+                            <div onclick="unitCommon.mapMarker2(true,${tableId});" class="btn btn-info"><i
+                                    class="fa fa-map-marker"></i> 标注</div>
+                              </c:if>
                         </span>
                     </div>
                 </div>
@@ -25,13 +31,13 @@
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">梯户比</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <label class="form-control">${basicUnit.elevatorHouseholdRatio}</label>
+                    <label class="form-control" name="elevatorHouseholdRatio">${basicUnit.elevatorHouseholdRatio}</label>
                 </div>
             </div>
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">户型说明</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <label class="form-control">${basicUnit.huxingExplain}</label>
+                    <label class="form-control" name="huxingExplain">${basicUnit.huxingExplain}</label>
                 </div>
             </div>
         </div>
