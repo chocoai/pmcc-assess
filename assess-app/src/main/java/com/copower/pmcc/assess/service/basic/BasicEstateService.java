@@ -7,6 +7,7 @@ import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateLandStateDao;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateTaggingDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dal.cases.entity.*;
 import com.copower.pmcc.assess.dto.input.SynchronousDataDto;
@@ -93,6 +94,8 @@ public class BasicEstateService {
     private BasicApplyBatchService basicApplyBatchService;
     @Autowired
     private BasicApplyBatchDao basicApplyBatchDao;
+    @Autowired
+    private BasicEstateTaggingDao basicEstateTaggingDao;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -234,7 +237,13 @@ public class BasicEstateService {
             BasicApply basicApply = basicApplyService.getByBasicApplyId(applyId);
             estate=basicEstateDao.getBasicEstateById(basicApply.getBasicEstateId());
         }
-
+        //清除标记
+        if(estate!=null) {
+            BasicEstateTagging where = new BasicEstateTagging();
+            where.setTableId(estate.getId());
+            where.setType("estate");
+            basicEstateTaggingDao.removeBasicEstateTagging(where);
+        }
         StringBuilder sqlBulder = new StringBuilder();
         String baseSql = "delete from %s where estate_id=%s;";
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicEstateNetwork.class), estate.getId()));
@@ -545,7 +554,6 @@ public class BasicEstateService {
             BasicEstateTagging basicEstateTagging = new BasicEstateTagging();
             BeanUtils.copyProperties(oldBasicEstateTaggingList.get(0), basicEstateTagging);
             basicEstateTagging.setCreator(commonService.thisUserAccount());
-            basicEstateTagging.setApplyId(0);
             basicEstateTagging.setName(null);
             basicEstateTagging.setTableId(basicEstate.getId());
             basicEstateTagging.setGmtCreated(null);

@@ -56,7 +56,7 @@
         } catch (e) {
         }
         var estateName = basicCommon.basicApplyForm.find('[name=estateName]').val();
-        var name = basicCommon.basicApplyForm.find('[name=name]').val();
+        var name = estateCommon.estateForm.find('[name=name]').val();
         if (estatePartInMode) {
             return name;
         }
@@ -588,7 +588,7 @@
         $.ajax({
             url: getContextPath() + '/basicEstateTagging/addBasicEstateTagging',
             data: {
-                applyId: basicCommon.getApplyId(),
+                tableId: estateCommon.getEstateId(),
                 type: 'estate',
                 lng: lng,
                 lat: lat,
@@ -608,9 +608,9 @@
     //加载标注
     estateCommon.loadMarkerList = function () {
         $.ajax({
-            url: getContextPath() + '/basicEstateTagging/getEstateTaggingList',
+            url: getContextPath() + '/basicEstateTagging/getApplyBatchEstateTaggingsByTableId',
             data: {
-                applyId: basicCommon.getApplyId(),
+                tableId: estateCommon.getEstateId(),
                 type: 'estate'
             },
             success: function (result) {

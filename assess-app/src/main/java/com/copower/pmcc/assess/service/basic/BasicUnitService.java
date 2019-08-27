@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.common.enums.BasicApplyPartInModeEnum;
 import com.copower.pmcc.assess.common.enums.EstateTaggingTypeEnum;
 import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDetailDao;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateTaggingDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicUnitDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dal.cases.entity.CaseUnit;
@@ -75,6 +76,8 @@ public class BasicUnitService {
     private BasicApplyBatchDetailService basicApplyBatchDetailService;
     @Autowired
     private BasicApplyBatchDetailDao basicApplyBatchDetailDao;
+    @Autowired
+    private BasicEstateTaggingDao basicEstateTaggingDao;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -163,7 +166,13 @@ public class BasicUnitService {
             BasicApply basicApply = basicApplyService.getByBasicApplyId(applyId);
             unit = basicUnitDao.getBasicUnitById(basicApply.getBasicUnitId());
         }
-
+        //清除标记
+        if(unit!=null) {
+            BasicEstateTagging where = new BasicEstateTagging();
+            where.setTableId(unit.getId());
+            where.setType("unit");
+            basicEstateTaggingDao.removeBasicEstateTagging(where);
+        }
         StringBuilder sqlBulder = new StringBuilder();
         String baseSql = "delete from %s where unit_id=%s;";
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicUnitHuxing.class), unit.getId()));
@@ -342,7 +351,6 @@ public class BasicUnitService {
             BasicEstateTagging basicEstateTagging = new BasicEstateTagging();
             BeanUtils.copyProperties(oldBasicEstateTaggingList.get(0), basicEstateTagging);
             basicEstateTagging.setCreator(commonService.thisUserAccount());
-            basicEstateTagging.setApplyId(0);
             basicEstateTagging.setTableId(basicUnit.getId());
             basicEstateTagging.setName(null);
             basicEstateTagging.setGmtCreated(null);
