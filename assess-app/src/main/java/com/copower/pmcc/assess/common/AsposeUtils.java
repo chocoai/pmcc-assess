@@ -3,13 +3,11 @@ package com.copower.pmcc.assess.common;
 import com.aspose.words.*;
 import com.aspose.words.Shape;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
-import com.google.common.base.*;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,7 +26,7 @@ import java.util.regex.Pattern;
  * Created by kings on 2018-6-6.
  */
 public class AsposeUtils {
-    public static String reportReplaceString = "\\$\\{.*?\\}" ;
+    public static String reportReplaceString = "\\$\\{.*?\\}";
     //字体名称
     public static String FontFamily = "font-family";
     //字体大小
@@ -729,6 +727,25 @@ public class AsposeUtils {
         return stringBuilder.toString();
     }
 
+    /**
+     * 保存word
+     *
+     * @param path
+     * @throws Exception
+     */
+    public static void saveWord(String path,Document document) throws Exception {
+        File file = new File(path);
+        String fileName = file.getName();
+        String suffix = fileName.substring(fileName.lastIndexOf(".") + 1);
+        int[] arr = new int[]{SaveFormat.DOC, SaveFormat.DOT, SaveFormat.DOTX, SaveFormat.DOCM, SaveFormat.DOTX, SaveFormat.DOTM, SaveFormat.HTML};
+        for (int i = 0; i < arr.length; i++) {
+            if (StringUtils.equalsIgnoreCase(SaveFormat.getName(arr[i]),suffix)) {
+                document.save(path, arr[i]);
+                break;
+            }
+        }
+    }
+
     public static String getWarpCssHtml(String html, String key, String value) {
         List<KeyValueDto> keyValueDtoList = new ArrayList<>(1);
         keyValueDtoList.add(new KeyValueDto(key, value));
@@ -829,12 +846,12 @@ public class AsposeUtils {
         if (parameter.getFirstLineIndent() != null) {
             paragraphFormat.setFirstLineIndent(parameter.getFirstLineIndent());
         }
-        if (parameter.getAlignment() != null){
+        if (parameter.getAlignment() != null) {
             paragraphFormat.setAlignment(parameter.getAlignment());
         }
     }
 
-    public static void setDefaultRun( Run run,AsposeSettingParameter parameter)throws Exception{
+    public static void setDefaultRun(Run run, AsposeSettingParameter parameter) throws Exception {
         //设置字体名称
         if (StringUtils.isNotBlank(parameter.getFontFamily())) {
             run.getFont().setName(parameter.getFontFamily());

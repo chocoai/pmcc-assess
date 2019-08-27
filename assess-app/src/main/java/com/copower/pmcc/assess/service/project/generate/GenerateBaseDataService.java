@@ -5160,7 +5160,6 @@ public class GenerateBaseDataService {
 
     /**
      * 功能描述: 估价对象详细测算过程
-     *
      * @author: zch
      * @date: 2019/3/4 10:30
      */
@@ -5168,46 +5167,76 @@ public class GenerateBaseDataService {
         String localPath = getLocalPath();
         List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectApplicableListByAreaGroupId(areaId);
         Document document = new Document();
-        BaseDataDic mdIncome = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_INCOME);
-        BaseDataDic mdCompare = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_MARKET_COMPARE);
-        BaseDataDic mdCost = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_COST);
-        BaseDataDic mdDevelopment = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_DEVELOPMENT);
+        //测算估价方法key的集合
+        final String keys = String.join(",",
+                AssessDataDicKeyConstant.MD_INCOME,
+                AssessDataDicKeyConstant.MD_MARKET_COMPARE,
+                AssessDataDicKeyConstant.MD_COST,
+                AssessDataDicKeyConstant.MD_DEVELOPMENT);
+        List<BaseDataDic> dataDicList = Lists.newArrayList();
+        for (String key : keys.split(",")) {
+            dataDicList.add(baseDataDicService.getCacheDataDicByFieldName(key));
+        }
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
         List<KeyValueDto> keyValueDtoList = Lists.newArrayList(new KeyValueDto("text-align", "center"), new KeyValueDto("font-size", "16.0pt"));
-        Map<String, String> map = Maps.newHashMap();
+        LinkedHashMap<String, String> map = Maps.newLinkedHashMap();
+        LinkedHashMap<SchemeInfo, SchemeJudgeObject> schemeJudgeObjectLinkedHashMap = Maps.newLinkedHashMap();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                List<Integer> numbers = Lists.newArrayList(Lists.newArrayList(schemeJudgeObject.getNumber().split(",")).stream().map(s -> Integer.parseInt(s)).collect(Collectors.toList()));
-                SchemeInfo schemeInfo = null;
-                //市场比较法
-                schemeInfo = schemeInfoService.getSchemeInfo(schemeJudgeObject.getId(), mdCompare.getId());
-                if (schemeInfo != null && schemeInfo.getMethodDataId() != null) {
-                    GenerateMdCompareService generateMdCompareService = new GenerateMdCompareService(schemeJudgeObject.getId(), schemeInfo.getMethodDataId(), areaId);
-                    baseDetailedCalculationProcessValuationObject(generateMdCompareService.generateCompareFile(), builder, keyValueDtoList, numbers, mdCompare, map);
-                }
-                //收益法
-                schemeInfo = schemeInfoService.getSchemeInfo(schemeJudgeObject.getId(), mdIncome.getId());
-                if (schemeInfo != null && schemeInfo.getMethodDataId() != null) {
-                    GenerateMdIncomeService generateMdIncomeService = new GenerateMdIncomeService(schemeInfo, projectId, areaId);
-                    baseDetailedCalculationProcessValuationObject(generateMdIncomeService.generateCompareFile(), builder, keyValueDtoList, numbers, mdIncome, map);
-                }
-                //成本法
-                schemeInfo = schemeInfoService.getSchemeInfo(schemeJudgeObject.getId(), mdCost.getId());
-                if (schemeInfo != null && schemeInfo.getMethodDataId() != null) {
-                    GenerateMdCostService mdCostService = new GenerateMdCostService(projectId, schemeInfo, areaId);
-                    baseDetailedCalculationProcessValuationObject(mdCostService.generateCompareFile(), builder, keyValueDtoList, numbers, mdCost, map);
-                }
-                //假设开发法
-                schemeInfo = schemeInfoService.getSchemeInfo(schemeJudgeObject.getId(), mdDevelopment.getId());
-                if (schemeInfo != null && schemeInfo.getMethodDataId() != null) {
-                    GenerateMdDevelopmentService generateMdDevelopmentService = new GenerateMdDevelopmentService(projectId, schemeInfo, areaId);
-                    baseDetailedCalculationProcessValuationObject(generateMdDevelopmentService.generateCompareFile(), builder, keyValueDtoList, numbers, mdDevelopment, map);
+                for (BaseDataDic baseDataDic : dataDicList) {
+                    SchemeInfo schemeInfo = schemeInfoService.getSchemeInfo(schemeJudgeObject.getId(), baseDataDic.getId());
+                    if (schemeInfo != null) {
+                        schemeJudgeObjectLinkedHashMap.put(schemeInfo, schemeJudgeObject);
+                    }
                 }
             }
         }
-        document.save(localPath, SaveFormat.DOC);
+        if (!schemeJudgeObjectLinkedHashMap.isEmpty()) {
+            for (Map.Entry<SchemeInfo, SchemeJudgeObject> entry : schemeJudgeObjectLinkedHashMap.entrySet()) {
+                BaseDataDic baseDataDic = dataDicList.stream().filter(oo -> Objects.equal(entry.getKey().getMethodType(), oo.getId())).findFirst().get();
+                if (baseDataDic == null || StringUtils.isEmpty(baseDataDic.getFieldName())) {
+                    continue;
+                }
+                List<Integer> numbers = Lists.newArrayList(Lists.newArrayList(entry.getValue().getNumber().split(",")).stream().map(s -> Integer.parseInt(s)).collect(Collectors.toList()));
+                switch (baseDataDic.getFieldName()) {
+                    case AssessDataDicKeyConstant.MD_MARKET_COMPARE:
+                        GenerateMdCompareService generateMdCompareService = new GenerateMdCompareService(entry.getValue().getId(), entry.getKey().getMethodDataId(), areaId);
+                        baseDetailedCalculationProcessValuationObject(generateMdCompareService.generateCompareFile(), builder, keyValueDtoList, numbers, baseDataDic, map);
+                        break;
+                    case AssessDataDicKeyConstant.MD_INCOME:
+                        GenerateMdIncomeService generateMdIncomeService = new GenerateMdIncomeService(entry.getKey(), projectId, areaId);
+                        baseDetailedCalculationProcessValuationObject(generateMdIncomeService.generateCompareFile(), builder, keyValueDtoList, numbers, baseDataDic, map);
+                        break;
+                    case AssessDataDicKeyConstant.MD_COST:
+                        GenerateMdCostService mdCostService = new GenerateMdCostService(projectId, entry.getKey(), areaId);
+                        baseDetailedCalculationProcessValuationObject(mdCostService.generateCompareFile(), builder, keyValueDtoList, numbers, baseDataDic, map);
+                        break;
+                    case AssessDataDicKeyConstant.MD_DEVELOPMENT:
+                        GenerateMdDevelopmentService generateMdDevelopmentService = new GenerateMdDevelopmentService(projectId, entry.getKey(), areaId);
+                        baseDetailedCalculationProcessValuationObject(generateMdDevelopmentService.generateCompareFile(), builder, keyValueDtoList, numbers, baseDataDic, map);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+        AsposeUtils.saveWord(localPath, document);
+        //开始对插入的标识符换为文档
         if (!map.isEmpty()) {
-            AsposeUtils.replaceTextToFile(localPath, map);
+            for (Map.Entry<String, String> stringEntry : map.entrySet()) {
+                IReplacingCallback callback = new IReplacingCallback() {
+                    @Override
+                    public int replacing(ReplacingArgs e) throws Exception {
+                        DocumentBuilder builder = new DocumentBuilder((Document) e.getMatchNode().getDocument());
+                        builder.moveTo(e.getMatchNode());
+                        Document doc = new Document(stringEntry.getValue());
+                        builder.insertDocument(doc, 0);
+                        return 0;
+                    }
+                };
+                document.getRange().replace(Pattern.compile(stringEntry.getKey()), callback, false);
+            }
+            AsposeUtils.saveWord(localPath, document);
         }
         return localPath;
     }
