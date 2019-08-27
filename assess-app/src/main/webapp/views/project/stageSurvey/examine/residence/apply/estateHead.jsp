@@ -1,6 +1,6 @@
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div class="form-group">
     <div class="x-valid">
         <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">省
@@ -40,9 +40,14 @@
                        name="name" class="form-control" value="${basicEstate.name}">
                         <span class="input-group-btn">
 
-                            <div onclick="estateCommon.mapMarker()" class="btn btn-info">
-                                <i class="fa fa-map-marker"></i> 标注
-                            </div>
+                             <c:if test="${empty isApplyBatch}">
+                            <div onclick="estateCommon.mapMarker();" class="btn btn-info"><i
+                                    class="fa fa-map-marker"></i> 标注</div>
+                             </c:if>
+                            <c:if test="${isApplyBatch eq 'show'}">
+                            <div onclick="estateCommon.mapMarker2(false,${tableId});" class="btn btn-info"><i
+                                    class="fa fa-map-marker"></i> 标注</div>
+                            </c:if>
 
                              <div style="display: none" onclick="estateCommon.mapLandMarker(false)" class="btn btn-info">
                                 <i class="fa fa-map-marker"></i> 标注

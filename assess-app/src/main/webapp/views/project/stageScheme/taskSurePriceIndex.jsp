@@ -289,11 +289,11 @@
             schemeSurePriceItem.id = $(this).find('[name=id]').val();
             schemeSurePriceItem.weight = $(this).find('[name=weight]').attr('data-value');
             surePriceApply.surePriceItemList.push(schemeSurePriceItem);
-        }) ;
+        });
         $.ajax({
             url: "${pageContext.request.contextPath}/schemeSurePrice/updateCalculationSchemeSurePrice",
             data: {
-                fomData:JSON.stringify(surePriceApply),planDetailsId:'${projectPlanDetails.id}'
+                fomData: JSON.stringify(surePriceApply), planDetailsId: '${projectPlanDetails.id}'
             },
             type: "post",
             dataType: "json",
@@ -314,7 +314,8 @@
         $.ajax({
             url: "${pageContext.request.contextPath}/schemeSurePrice/getSchemeSurePriceItemList",
             data: {
-                judgeObjectId: judgeObjectId
+                judgeObjectId: judgeObjectId,
+                isUpdatePrice: true
             },
             type: "get",
             dataType: "json",
@@ -380,7 +381,7 @@
         $("#sure_price_form").find('[name=price]').val(resultPrice.toFixed(2));
         if (isAverage) {
             $("#sure_price_form").find('[name=weightExplain]').closest('.form-group').hide();
-        }else{
+        } else {
             $("#sure_price_form").find('[name=weightExplain]').closest('.form-group').show();
         }
     }

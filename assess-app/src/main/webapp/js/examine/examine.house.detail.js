@@ -1,9 +1,6 @@
 /**
  * Created by kings on 2019-5-30.
  */
-var detailHouseId = $('#basicHouseFrm').find('[name=id]').val();
-detailHouseId=detailHouseId?detailHouseId:$('#frm_house').find('[name=id]').val();
-
 
 var houseRoom;
 (function () {
@@ -41,7 +38,7 @@ var houseRoom;
             });
             $("#" + houseRoom.prototype.config().table).bootstrapTable('destroy');
             TableInit(houseRoom.prototype.config().table, getContextPath()+"/basicHouseRoom/getBootstrapTableVo", cols, {
-                houseId: detailHouseId,
+                houseId: houseCommon.getHouseId(),
                 approval: true
             }, {
                 showColumns: false,
@@ -105,7 +102,7 @@ var houseFaceStreet;
             var cols = commonColumn.houseFaceStreetColumn();
             $("#" + houseFaceStreet.prototype.config().table).bootstrapTable('destroy');
             TableInit(houseFaceStreet.prototype.config().table, getContextPath()+"/basicHouseFaceStreet/getBootstrapTableVo", cols, {
-                houseId: detailHouseId,
+                houseId: houseCommon.getHouseId(),
                 approval: true
             }, {
                 showColumns: false,
@@ -148,7 +145,7 @@ var houseCorollaryEquipment;
             var cols = commonColumn.houseCorollaryEquipmentColumn();
             $("#" + houseCorollaryEquipment.prototype.config().table).bootstrapTable('destroy');
             TableInit(houseCorollaryEquipment.prototype.config().table, getContextPath()+"/basicHouseCorollaryEquipment/getBootstrapTableVo", cols, {
-                houseId: detailHouseId,
+                houseId: houseCommon.getHouseId(),
                 approval: true
             }, {
                 showColumns: false,
@@ -190,7 +187,7 @@ var houseIntelligent;
             var cols = commonColumn.houseIntelligentColumn();
             $("#" + houseIntelligent.prototype.config().table).bootstrapTable('destroy');
             TableInit(houseIntelligent.prototype.config().table, getContextPath()+"/basicHouseIntelligent/getBootstrapTableVo", cols, {
-                houseId: detailHouseId,
+                houseId: houseCommon.getHouseId(),
                 approval: true
             }, {
                 showColumns: false,
@@ -233,7 +230,7 @@ var houseWater;
             var cols = commonColumn.houseWaterColumn();
             $("#" + houseWater.prototype.config().table).bootstrapTable('destroy');
             TableInit(houseWater.prototype.config().table, getContextPath()+"/basicHouseWater/getBootstrapTableVo", cols, {
-                houseId: detailHouseId,
+                houseId: houseCommon.getHouseId(),
                 approval: true
             }, {
                 showColumns: false,
@@ -269,7 +266,7 @@ houseWaterDrain.loadDataDicList = function () {
     var cols = commonColumn.houseWaterDrainColumn();
     $("#" + this.config.table).bootstrapTable('destroy');
     TableInit(this.config.table, getContextPath() + "/basicHouseWaterDrain/getBootstrapTableVo", cols, {
-        houseId: detailHouseId,
+        houseId: houseCommon.getHouseId(),
         approval: true
     }, {
         showColumns: false,
@@ -312,7 +309,7 @@ var houseNewWind;
             $("#" + houseNewWind.prototype.config().table).bootstrapTable('destroy');
             TableInit(houseNewWind.prototype.config().table, getContextPath()+"/basicHouseEquipment/getBootstrapTableVo", cols, {
                 type: houseNewWind.prototype.config().type,
-                houseId: detailHouseId,
+                houseId: houseCommon.getHouseId(),
                 approval: true
             }, {
                 showColumns: false,
@@ -356,7 +353,7 @@ var houseAirConditioner;
             $("#" + houseAirConditioner.prototype.config().table).bootstrapTable('destroy');
             TableInit(houseAirConditioner.prototype.config().table, getContextPath()+"/basicHouseEquipment/getBootstrapTableVo", cols, {
                 type: houseAirConditioner.prototype.config().type,
-                houseId: detailHouseId,
+                houseId: houseCommon.getHouseId(),
                 approval: true
             }, {
                 showColumns: false,
@@ -400,7 +397,7 @@ var houseHeating;
             $("#" + houseHeating.prototype.config().table).bootstrapTable('destroy');
             TableInit(houseHeating.prototype.config().table, getContextPath()+"/basicHouseEquipment/getBootstrapTableVo", cols, {
                 type: houseHeating.prototype.config().type,
-                houseId: detailHouseId,
+                houseId: houseCommon.getHouseId(),
                 approval: true
             }, {
                 showColumns: false,

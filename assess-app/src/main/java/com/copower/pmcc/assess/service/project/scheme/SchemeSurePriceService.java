@@ -134,16 +134,10 @@ public class SchemeSurePriceService {
         List<SchemeSurePriceItem> surePriceItemList = schemeSurePriceItemDao.getSurePriceItemList(where);
         SchemeJudgeObject judgeObject = schemeJudgeObjectDao.getSchemeJudgeObject(judgeObjectId);
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(judgeObject.getProjectId());
-        if (CollectionUtils.isNotEmpty(surePriceItemList)) {//更新试算价格
-            if (isUpdatePrice != null) {
-                if (isUpdatePrice){
-                    for (SchemeSurePriceItem schemeSurePriceItem : surePriceItemList) {
-                        schemeSurePriceItem.setTrialPrice(getPrice(judgeObjectId, schemeSurePriceItem.getMethodType()));
-                        schemeSurePriceItemDao.updateSurePriceItem(schemeSurePriceItem);
-                    }
-                }
-            } else {
-                return surePriceItemList;
+        if (CollectionUtils.isNotEmpty(surePriceItemList) && Boolean.TRUE == isUpdatePrice) {//更新试算价格
+            for (SchemeSurePriceItem schemeSurePriceItem : surePriceItemList) {
+                schemeSurePriceItem.setTrialPrice(getPrice(judgeObjectId, schemeSurePriceItem.getMethodType()));
+                schemeSurePriceItemDao.updateSurePriceItem(schemeSurePriceItem);
             }
         } else {//初始化数据
             SchemeJudgeFunction functionWhere = new SchemeJudgeFunction();
