@@ -1018,7 +1018,7 @@ public class PublicBasicService {
     }
 
     public BasicHouseVo getBasicHouseVoByAppId(BasicApply basicApply) throws Exception {
-        BasicHouse basicHouse = basicHouseService.getBasicHouseById(basicApply.getId());
+        BasicHouse basicHouse = basicHouseService.getHouseByApplyId(basicApply.getId());
         if (basicHouse == null) return null;
         return basicHouseService.getBasicHouseVo(basicHouse);
     }
@@ -1027,5 +1027,42 @@ public class PublicBasicService {
         return basicHouseService.getBasicHouseVo(basicHouseService.getBasicHouseById(id));
     }
 
+    //处理标注老数据
+    public void disposeTaggingData()throws Exception{
+        //获取applyId不为null的标注
+        List<BasicEstateTagging> basicEstateTaggingList = basicEstateTaggingService.getApplyIdIsNotNullList();
+        for (BasicEstateTagging tagging: basicEstateTaggingList) {
+            if (Objects.equal(tagging.getType(), EstateTaggingTypeEnum.ESTATE.getKey())) {
+                BasicEstate estate = basicEstateService.getBasicEstateByApplyId(tagging.getApplyId());
+                //判断是否已经存在标注
+                if(!basicEstateTaggingService.hasBasicEstateTagging(estate.getId(), EstateTaggingTypeEnum.ESTATE)){
+                    //不存在则写入tableId
+                    tagging.setTableId(estate.getId());
+                    basicEstateTaggingService.updateBasicEstateTagging(tagging);
+                }
+            }
+            if (Objects.equal(tagging.getType(), EstateTaggingTypeEnum.BUILDING.getKey())) {
+                BasicBuildingVo building = basicBuildingService.getBasicBuildingByApplyId(tagging.getApplyId());
+                if(!basicEstateTaggingService.hasBasicEstateTagging(building.getId(), EstateTaggingTypeEnum.BUILDING)) {
+                    tagging.setTableId(building.getId());
+                    basicEstateTaggingService.updateBasicEstateTagging(tagging);
+                }
+            }
+            if (Objects.equal(tagging.getType(), EstateTaggingTypeEnum.UNIT.getKey())) {
+                BasicUnit unit = basicUnitService.getBasicUnitByApplyId(tagging.getApplyId());
+                if(!basicEstateTaggingService.hasBasicEstateTagging(unit.getId(), EstateTaggingTypeEnum.UNIT)) {
+                    tagging.setTableId(unit.getId());
+                    basicEstateTaggingService.updateBasicEstateTagging(tagging);
+                }
+            }
+            if (Objects.equal(tagging.getType(), EstateTaggingTypeEnum.HOUSE.getKey())) {
+                BasicHouse house = basicHouseService.getHouseByApplyId(tagging.getApplyId());
+                if(!basicEstateTaggingService.hasBasicEstateTagging(house.getId(), EstateTaggingTypeEnum.HOUSE)) {
+                    tagging.setTableId(house.getId());
+                    basicEstateTaggingService.updateBasicEstateTagging(tagging);
+                }
+            }
+        }
+    }
 
 }

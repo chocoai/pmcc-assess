@@ -55,4 +55,11 @@ public class BasicEstateTaggingDao {
         MybatisUtils.convertObj2Example(basicEstateTagging, example);
         return basicEstateTaggingMapper.countByExample(example);
     }
+
+    //获取标注不为null数据
+    public List<BasicEstateTagging> getApplyIdIsNotNullList() {
+        BasicEstateTaggingExample example = new BasicEstateTaggingExample();
+        example.createCriteria().andApplyIdIsNotNull();
+        return basicEstateTaggingMapper.selectByExample(example);
+    }
 }
