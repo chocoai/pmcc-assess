@@ -143,7 +143,9 @@ public class DataDispatchRegisterService {
     public boolean importDataDispatchRegister(DataDispatchRegister dataDispatchRegister, StringBuilder builder, Row row, int i) throws Exception {
         //登记日期
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(0)))) {
-            dataDispatchRegister.setDispatchDate(PoiUtils.getCellValue(row.getCell(0)));
+            Date parse = DateUtils.parse(PoiUtils.getCellValue(row.getCell(0)));
+            String format = DateUtils.format(parse, DateUtils.DATE_CHINESE_PATTERN);
+            dataDispatchRegister.setDispatchDate(format);
         }
         //发文号
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(1)))) {
