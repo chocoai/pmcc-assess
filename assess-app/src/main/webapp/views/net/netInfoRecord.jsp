@@ -172,43 +172,58 @@
                                     </div>
                                     <div class="x-valid">
                                         <label class="col-sm-1 control-label">
-                                            变现率
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <label class="form-control" name="liquidRatios"></label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
                                             单位
                                         </label>
                                         <div class="col-sm-4">
-                                    <div class="input-group">
-                                                <input type="text" id="unitName" name="unitName" list="unitList" class="form-control">
+                                            <div class="input-group">
+                                                <input type="text" id="unitName" name="unitName" list="unitList"
+                                                       class="form-control">
                                                 <datalist id="unitList">
                                                     <c:forEach var="item" items="${unitList}">
                                                         <option value="${item}">${item}</option>
                                                     </c:forEach>
                                                 </datalist>
-                                            <span class="input-group-btn">
+                                                <span class="input-group-btn">
                                                 <button type="button" class="btn btn-default docs-tooltip"
                                                         onclick="$(this).closest('.input-group').find('input').val('');"
                                                         data-toggle="tooltip" data-original-title="清除">
                                                 <i class="fa fa-trash-o"></i>
                                                 </button>
                                             </span>
-                                        </div>
+                                            </div>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-1 control-label">
                                             数量
                                         </label>
                                         <div class="col-sm-4">
                                             <input type="text" data-rule-number="true" data-rule-maxlength="50"
-                                                   id="amount" name="amount" class="form-control">
+                                                   id="amount" name="amount" class="form-control" placeholder="数量(数字)">
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            面积
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <input type="text" data-rule-number="true" placeholder="面积(数字)"
+                                                   data-rule-maxlength="50"
+                                                   id="area" name="area" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            评估基准日
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <input placeholder="评估基准日" readonly
+                                                   name="assessBaseDate" data-date-format="yyyy-mm-dd"
+                                                   class="form-control date-picker dbdate">
                                         </div>
                                     </div>
                                 </div>
@@ -254,21 +269,24 @@
         loadDataDicList: function () {
             var cols = [];
             cols.push({field: 'title', title: '标题', width: '15%'});
-            cols.push({field: 'province', title: '省', width: '10%'});
-            cols.push({field: 'city', title: '市', width: '10%'});
+            cols.push({field: 'province', title: '省', width: '5%'});
+            cols.push({field: 'city', title: '市', width: '5%'});
             cols.push({field: 'sourceSiteName', title: '来源网站', width: '10%'});
-            cols.push({field: 'type', title: '类型', width: '10%'});
+            cols.push({field: 'type', title: '类型', width: '6%'});
             cols.push({
-                field: 'beginTime', title: '开始时间', width: '10%', formatter: function (value, row, index) {
+                field: 'beginTime', title: '开始时间', width: '7%', formatter: function (value, row, index) {
                     return formatDate(row.beginTime, false);
                 }
             });
             cols.push({
-                field: 'endTime', title: '结束时间', width: '10%', formatter: function (value, row, index) {
+                field: 'endTime', title: '结束时间', width: '7%', formatter: function (value, row, index) {
                     return formatDate(row.endTime, false);
                 }
             });
             cols.push({field: 'content', title: '内容', width: '25%'});
+            cols.push({field: 'liquidRatios', title: '变现率', width: '6%'});
+            cols.push({field: 'unitPrice', title: '单价', width: '6%'});
+            cols.push({field: 'liquidCycle', title: '变现周期', width: '6%'});
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
@@ -331,7 +349,7 @@
                 url: "${pageContext.request.contextPath}/netInfoRecordController/updateNetInfoRecord",
                 type: "post",
                 dataType: "json",
-                data: data,
+                data: {formData: JSON.stringify(data)},
                 success: function (result) {
                     if (result.ret) {
                         toastr.success('保存成功');

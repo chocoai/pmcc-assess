@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.dal.basis.entity;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -1442,6 +1443,126 @@ public class NetInfoRecordExample {
 
         public Criteria andAmountNotBetween(Integer value1, Integer value2) {
             addCriterion("amount not between", value1, value2, "amount");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessBaseDateIsNull() {
+            addCriterion("assess_base_date is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessBaseDateIsNotNull() {
+            addCriterion("assess_base_date is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessBaseDateEqualTo(Date value) {
+            addCriterion("assess_base_date =", value, "assessBaseDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessBaseDateNotEqualTo(Date value) {
+            addCriterion("assess_base_date <>", value, "assessBaseDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessBaseDateGreaterThan(Date value) {
+            addCriterion("assess_base_date >", value, "assessBaseDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessBaseDateGreaterThanOrEqualTo(Date value) {
+            addCriterion("assess_base_date >=", value, "assessBaseDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessBaseDateLessThan(Date value) {
+            addCriterion("assess_base_date <", value, "assessBaseDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessBaseDateLessThanOrEqualTo(Date value) {
+            addCriterion("assess_base_date <=", value, "assessBaseDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessBaseDateIn(List<Date> values) {
+            addCriterion("assess_base_date in", values, "assessBaseDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessBaseDateNotIn(List<Date> values) {
+            addCriterion("assess_base_date not in", values, "assessBaseDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessBaseDateBetween(Date value1, Date value2) {
+            addCriterion("assess_base_date between", value1, value2, "assessBaseDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessBaseDateNotBetween(Date value1, Date value2) {
+            addCriterion("assess_base_date not between", value1, value2, "assessBaseDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaIsNull() {
+            addCriterion("area is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaIsNotNull() {
+            addCriterion("area is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaEqualTo(BigDecimal value) {
+            addCriterion("area =", value, "area");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaNotEqualTo(BigDecimal value) {
+            addCriterion("area <>", value, "area");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaGreaterThan(BigDecimal value) {
+            addCriterion("area >", value, "area");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("area >=", value, "area");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaLessThan(BigDecimal value) {
+            addCriterion("area <", value, "area");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("area <=", value, "area");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaIn(List<BigDecimal> values) {
+            addCriterion("area in", values, "area");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaNotIn(List<BigDecimal> values) {
+            addCriterion("area not in", values, "area");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("area between", value1, value2, "area");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("area not between", value1, value2, "area");
             return (Criteria) this;
         }
     }
