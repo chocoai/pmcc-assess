@@ -64,6 +64,7 @@ AssessDBKey.DeclarePreSalePermit = "tb_declare_pre_sale_permit";
 AssessDBKey.DeclareLandUsePermit = "tb_declare_land_use_permit";
 AssessDBKey.DeclareBuildingPermit = "tb_declare_building_permit";
 
+AssessDBKey.MdCalculatingMethodEngineeringCost = "tb_md_calculating_method_engineering_cost";
 AssessDBKey.MdCost = "tb_md_cost";
 AssessDBKey.MdDevelopment = "tb_md_development";
 AssessDBKey.MdIncome = "tb_md_income";
@@ -113,6 +114,7 @@ AssessDicKey.data_company_reputation = "data.company.reputation";//公司信誉
 AssessDicKey.dataLoanType="data.loan.type";//贷款类型
 AssessDicKey.certifyPart="certify.part";//相关证明对应查勘部位
 AssessDicKey.houseInventoryRightCategory="project.survey.house.inventory.right.category";//房产他权类别
+AssessDicKey.build_security_engineering_project_market_cost = "build.security.engineering.project.market.cost";//建安工程项目
 
 //楼盘
 AssessDicKey.estate_position = "estate.position";//楼盘方位

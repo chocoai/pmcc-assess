@@ -177,30 +177,27 @@
 
         </div>
 
-        <div class="form-group">
-            <label class="col-sm-1 control-label">
-                建筑安装工程费<span class="symbol required"></span>
-            </label>
-            <div class="x-valid">
-                <div class="col-sm-3">
-                    <div class="input-group">
-                        <label  class="form-control"> ${mdCostVo.mdCostConstruction.constructionInstallationEngineeringFee} </label>
-                    </div>
-                </div>
-            </div>
 
+
+        <div class="form-group">
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                    工程费列表
-                </label>
-                <div class=" col-xs-7  col-sm-7  col-md-7  col-lg-7 ">
-                    <c:forEach items="${mdCostVo.mdCostConstruction.constructionInstallationEngineeringFeeDtos}" var="item">
-                        <div class="panel panel-info">
-                            <i class="fa fa-search" onclick="constructionInstallationEngineeringFeeEvent('${item.key}')" title="查看"
-                               style="margin-right: 10px;font-size: 15px;cursor: pointer;"></i>
-                            <a  style="cursor: pointer;" onclick="constructionInstallationEngineeringFeeEvent('${item.key}')">${item.value}</a>
+                <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                    <div id="toolbarMdCalculatingMethodEngineeringCost" style="display: none">
+                        <div class="input-group">
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-info disabled">
+                                    建筑安装工程费
+                                </button>
+                            </span>
+
+                            <span class="input-group-btn">
+                                <label  class="form-control"> ${mdCostVo.mdCostConstruction.constructionInstallationEngineeringFee} </label>
+                            </span>
                         </div>
-                    </c:forEach>
+                    </div>
+                    <table class="table table-striped" id="engineeringConstructionInstallationEngineeringFeeInfoTarget" >
+
+                    </table>
                 </div>
             </div>
         </div>
@@ -587,6 +584,22 @@
         });
     }
 
+    function loadMdCalculatingMethodEngineeringCostTable() {
+        var obj = {type:'engineering',planDetailsId:'${projectPlanDetails.pid}'} ;
+        var cols = [];
+        cols.push({
+            field: 'id', title: '建筑安装工程费明细', formatter: function (value, row, index) {
+                var str = '<div class="btn-margin">';
+                str += "<a class='btn btn-xs btn-success tooltips' data-placement='top' data-original-title='建筑安装工程费明细' onclick='constructionInstallationEngineeringFeeEvent(" + row.architecturalObjId + ")'" + ">" + "<i class='fa fa-search fa-white'>" + "建筑安装工程费明细" + "</a>";
+                str += '</div>';
+                return str;
+            }
+        });
+        developmentCommon.loadMdCalculatingMethodEngineeringCostTable($("#engineeringConstructionInstallationEngineeringFeeInfoTarget"),obj,$("#toolbarMdCalculatingMethodEngineeringCost"),function () {
+
+        },cols) ;
+    }
+
     function callCompareMethod(mcId) {
         if ($.isNumeric(mcId)){
             var frame = layer.open({
@@ -621,5 +634,6 @@
 
     $(function () {
         loadMdDevelopmentInfrastructureChildrenTable() ;
+        loadMdCalculatingMethodEngineeringCostTable() ;
     });
 </script>

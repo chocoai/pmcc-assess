@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordDao;
 import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecord;
 import com.copower.pmcc.assess.service.ErpAreaService;
@@ -59,27 +60,7 @@ public class NetInfoRecordController {
     @ResponseBody
     @RequestMapping(value = "/getInfoRecordList", name = "信息列表", method = RequestMethod.GET)
     public BootstrapTableVo getInfoRecordList(String queryTitle, String queryWebName, String province, String city, String queryContent,String queryType, String queryStartTime, String queryEndTime) throws Exception {
-        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
-        BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
-        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        String provinceName = erpAreaService.getSysAreaName(province);
-        String cityName = erpAreaService.getSysAreaName(city);
-        Date startTimeParse = null;
-        Date endTimeParse = null;
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        if (StringUtil.isNotEmpty(queryStartTime))
-            startTimeParse = sdf.parse(queryStartTime);
-        if (StringUtil.isNotEmpty(queryEndTime)){
-            endTimeParse = sdf.parse(queryEndTime);
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(endTimeParse);
-            calendar.add(Calendar.DAY_OF_MONTH, +1); //得到后1天
-            endTimeParse = calendar.getTime();
-        }
-        List<NetInfoRecord> netInfoRecords = netInfoRecordDao.getNetInfoRecordListByName(queryTitle, queryWebName, provinceName, cityName, queryContent,queryType, startTimeParse, endTimeParse);
-        bootstrapTableVo.setTotal(page.getTotal());
-        bootstrapTableVo.setRows(CollectionUtils.isEmpty(netInfoRecords) ? new ArrayList<NetInfoRecord>() : netInfoRecords);
-        return bootstrapTableVo;
+          return netInfoRecordService.getInfoRecordList(queryTitle,queryWebName,province,city,queryContent,queryType,queryStartTime,queryEndTime);
     }
 
     @ResponseBody
@@ -109,7 +90,8 @@ public class NetInfoRecordController {
 
     @ResponseBody
     @RequestMapping(value = "/updateNetInfoRecord", method = {RequestMethod.POST}, name = "保存")
-    public HttpResult saveAndUpdate(NetInfoRecord netInfoRecord) {
+    public HttpResult saveAndUpdate(String formData) {
+        NetInfoRecord netInfoRecord = JSON.parseObject(formData, NetInfoRecord.class);
         try {
             if (netInfoRecord.getId() != null && !netInfoRecord.getId().equals(0)) {
                 netInfoRecordDao.updateInfo(netInfoRecord);

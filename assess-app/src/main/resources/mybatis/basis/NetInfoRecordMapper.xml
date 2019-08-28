@@ -22,6 +22,8 @@
     <result column="liquid_ratios" property="liquidRatios" jdbcType="VARCHAR" />
     <result column="unit_name" property="unitName" jdbcType="VARCHAR" />
     <result column="amount" property="amount" jdbcType="INTEGER" />
+    <result column="assess_base_date" property="assessBaseDate" jdbcType="TIMESTAMP" />
+    <result column="area" property="area" jdbcType="DECIMAL" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -84,7 +86,7 @@
   <sql id="Base_Column_List" >
     id, province, city, title, content, type, notice_date, begin_time, end_time, source_site_name, 
     source_site_url, creator, gmt_created, gmt_modified, current_price, consult_price, 
-    init_price, liquid_ratios, unit_name, amount
+    init_price, liquid_ratios, unit_name, amount, assess_base_date, area
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordExample" >
     select
@@ -126,14 +128,16 @@
       source_site_url, creator, gmt_created, 
       gmt_modified, current_price, consult_price, 
       init_price, liquid_ratios, unit_name, 
-      amount)
+      amount, assess_base_date, area
+      )
     values (#{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, 
       #{content,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{noticeDate,jdbcType=VARCHAR}, 
       #{beginTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, #{sourceSiteName,jdbcType=VARCHAR}, 
       #{sourceSiteUrl,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
       #{gmtModified,jdbcType=TIMESTAMP}, #{currentPrice,jdbcType=VARCHAR}, #{consultPrice,jdbcType=VARCHAR}, 
       #{initPrice,jdbcType=VARCHAR}, #{liquidRatios,jdbcType=VARCHAR}, #{unitName,jdbcType=VARCHAR}, 
-      #{amount,jdbcType=INTEGER})
+      #{amount,jdbcType=INTEGER}, #{assessBaseDate,jdbcType=TIMESTAMP}, #{area,jdbcType=DECIMAL}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.NetInfoRecord" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -198,6 +202,12 @@
       <if test="amount != null" >
         amount,
       </if>
+      <if test="assessBaseDate != null" >
+        assess_base_date,
+      </if>
+      <if test="area != null" >
+        area,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="province != null" >
@@ -256,6 +266,12 @@
       </if>
       <if test="amount != null" >
         #{amount,jdbcType=INTEGER},
+      </if>
+      <if test="assessBaseDate != null" >
+        #{assessBaseDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="area != null" >
+        #{area,jdbcType=DECIMAL},
       </if>
     </trim>
   </insert>
@@ -328,6 +344,12 @@
       <if test="record.amount != null" >
         amount = #{record.amount,jdbcType=INTEGER},
       </if>
+      <if test="record.assessBaseDate != null" >
+        assess_base_date = #{record.assessBaseDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.area != null" >
+        area = #{record.area,jdbcType=DECIMAL},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -354,7 +376,9 @@
       init_price = #{record.initPrice,jdbcType=VARCHAR},
       liquid_ratios = #{record.liquidRatios,jdbcType=VARCHAR},
       unit_name = #{record.unitName,jdbcType=VARCHAR},
-      amount = #{record.amount,jdbcType=INTEGER}
+      amount = #{record.amount,jdbcType=INTEGER},
+      assess_base_date = #{record.assessBaseDate,jdbcType=TIMESTAMP},
+      area = #{record.area,jdbcType=DECIMAL}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -419,6 +443,12 @@
       <if test="amount != null" >
         amount = #{amount,jdbcType=INTEGER},
       </if>
+      <if test="assessBaseDate != null" >
+        assess_base_date = #{assessBaseDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="area != null" >
+        area = #{area,jdbcType=DECIMAL},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -442,7 +472,9 @@
       init_price = #{initPrice,jdbcType=VARCHAR},
       liquid_ratios = #{liquidRatios,jdbcType=VARCHAR},
       unit_name = #{unitName,jdbcType=VARCHAR},
-      amount = #{amount,jdbcType=INTEGER}
+      amount = #{amount,jdbcType=INTEGER},
+      assess_base_date = #{assessBaseDate,jdbcType=TIMESTAMP},
+      area = #{area,jdbcType=DECIMAL}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
