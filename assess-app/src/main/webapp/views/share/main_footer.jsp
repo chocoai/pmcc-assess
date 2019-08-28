@@ -34,9 +34,9 @@
 
     $(function () {
         $(".tooltips").tooltip();
-        mainObj.fetchMessage;
 
-
+        mainObj.storeAccess();
+        mainObj.fetchMessage();
     });
     mainObj.fetchMessage = function () {
         //先关闭之前的websocket
@@ -58,6 +58,16 @@
             };
             toastr.info("系统消息:" + message);
         };
+    };
+    mainObj.storeAccess = function () {
+        window.sessionStorage.setItem("${requestAccessKey}", "${baseViewDto.thisUser.sessionId}");
+
+        //设置全局ajax头
+        $.ajaxSetup({
+            headers: {
+                accessToken: window.sessionStorage.getItem("${requestAccessKey}")
+            }
+        });
     };
 
     //获取打开页面与当前时间小时差
