@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.dal.basis.entity;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class NetInfoRecord {
@@ -42,6 +43,10 @@ public class NetInfoRecord {
     private String unitName;
 
     private Integer amount;
+
+    private Date assessBaseDate;
+
+    private BigDecimal area;
 
     public Integer getId() {
         return id;
@@ -201,5 +206,21 @@ public class NetInfoRecord {
 
     public void setAmount(Integer amount) {
         this.amount = amount;
+    }
+
+    public Date getAssessBaseDate() {
+        return assessBaseDate;
+    }
+
+    public void setAssessBaseDate(Date assessBaseDate) {
+        this.assessBaseDate = assessBaseDate;
+    }
+
+    public BigDecimal getArea() {
+        return area;
+    }
+
+    public void setArea(BigDecimal area) {
+        this.area = area;
     }
 }

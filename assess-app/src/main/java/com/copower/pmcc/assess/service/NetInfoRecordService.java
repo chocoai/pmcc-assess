@@ -10,7 +10,15 @@ import com.copower.pmcc.assess.dto.input.net.JDSFDto;
 import com.copower.pmcc.assess.dto.input.net.JDZCDto;
 import com.copower.pmcc.assess.dto.input.net.TBSFDto;
 import com.copower.pmcc.assess.dto.input.net.ZGSFDto;
+import com.copower.pmcc.assess.dto.output.net.NetInfoRecordVo;
+import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.DateUtils;
+import com.copower.pmcc.erp.common.utils.LangUtils;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.StringUtil;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -19,6 +27,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -52,6 +61,8 @@ public class NetInfoRecordService {
     private NetInfoRecordContentDao netInfoRecordContentDao;
     @Autowired
     private PublicService publicService;
+    @Autowired
+    private ErpAreaService erpAreaService;
 
     //抓取数据
     public void climbingData() {
@@ -174,7 +185,6 @@ public class NetInfoRecordService {
     }
 
 
-
     //来源京东司法
     public void getNetInfoFromJDSF() {
         try {
@@ -237,14 +247,14 @@ public class NetInfoRecordService {
                         netInfoRecord.setBeginTime(jdsfDto.getStartTime());
                         netInfoRecord.setType(entry.getKey());
                         String initPrice = "";
-                        try{
+                        try {
                             String replace = initPriceHref.replace("%s", jdsfDto.getId().toString());
                             Elements initPriceElements = getContent(replace, "body", "");
                             String initPriceData = initPriceElements.get(0).childNodes().get(0).toString();
                             JSONObject initPriceStr = JSON.parseObject(initPriceData);
                             initPriceStr = JSON.parseObject(initPriceStr.getString("data"));
                             initPrice = JSON.parseObject(initPriceStr.getString("startPrice"), String.class);
-                        }catch (Exception e){
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
                         netInfoRecord.setCurrentPrice(getRealMoney(jdsfDto.getCurrentPriceStr()));
@@ -637,7 +647,7 @@ public class NetInfoRecordService {
                             String consultPrice = info.get(0).childNodes().get(6).childNodes().get(2).childNodes().get(0).childNodes().get(0).toString();
                             //单位可能是元或万元
                             String moneyUnit = info.get(0).childNodes().get(6).childNodes().get(2).childNodes().get(1).toString();
-                            if(moneyUnit.contains("万")){
+                            if (moneyUnit.contains("万")) {
                                 NumberFormat format = NumberFormat.getInstance();
                                 BigDecimal bigDecimal = new BigDecimal(format.parse(consultPrice).doubleValue());
                                 consultPrice = bigDecimal.multiply(new BigDecimal("10000")).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
@@ -648,9 +658,9 @@ public class NetInfoRecordService {
                             Elements tbody_tr = itemContent.get(0).select("tbody td");//consult_price
                             //起拍价
                             String initPrice = "";
-                            try{
+                            try {
                                 initPrice = tbody_tr.get(6).childNodes().get(1).childNodes().get(0).toString();
-                            }catch (Exception e){
+                            } catch (Exception e) {
                                 e.printStackTrace();
                             }
                             netInfoRecord.setProvince(entry.getValue().substring(entry.getValue().indexOf("_") + 1));
@@ -895,10 +905,11 @@ public class NetInfoRecordService {
                     if (select.size() == 0) continue;
                     List<String> fieldValues = Lists.newArrayList();
                     for (int j = 0; j < length; j++) {
-                        try{
+                        try {
                             String fieldValue = checkNull(select, j);
                             fieldValues.add(publicService.delHtmlTags(fieldValue));
-                        }catch (Exception e){}
+                        } catch (Exception e) {
+                        }
                     }
                     NetInfoRecord netInfoRecord = new NetInfoRecord();
                     netInfoRecord.setProvince("四川");
@@ -1033,27 +1044,71 @@ public class NetInfoRecordService {
     }
 
     //获取变现率（成交价/评估价）
-    public String getLiquidRatios(String currentPriceStr,String consultPriceStr)throws Exception{
-        if(StringUtil.isEmpty(currentPriceStr)||StringUtil.isEmpty(consultPriceStr))
+    public String getLiquidRatios(String currentPriceStr, String consultPriceStr) throws Exception {
+        if (StringUtil.isEmpty(currentPriceStr) || StringUtil.isEmpty(consultPriceStr))
             return null;
         BigDecimal verifyValue = new BigDecimal("0");
         NumberFormat format = NumberFormat.getInstance();
         BigDecimal currentPrice = new BigDecimal(format.parse(currentPriceStr).doubleValue());
         BigDecimal consultPrice = new BigDecimal(format.parse(consultPriceStr).doubleValue());
         //起始价，评估价不为0
-        if(verifyValue.compareTo(currentPrice)==0||verifyValue.compareTo(consultPrice)==0)
+        if (verifyValue.compareTo(currentPrice) == 0 || verifyValue.compareTo(consultPrice) == 0)
             return null;
-        BigDecimal liquidRatiosValue = currentPrice.multiply(new BigDecimal("100")).divide(consultPrice,2, BigDecimal.ROUND_HALF_UP);
-        return String.format("%s%s",liquidRatiosValue,"%");
+        BigDecimal liquidRatiosValue = currentPrice.multiply(new BigDecimal("100")).divide(consultPrice, 2, BigDecimal.ROUND_HALF_UP);
+        return String.format("%s%s", liquidRatiosValue, "%");
     }
 
     //price格式为000.00或者000,000.00统一格式为000.00
-    public String getRealMoney(String price) throws Exception{
+    public String getRealMoney(String price) throws Exception {
         NumberFormat format = NumberFormat.getInstance();
-        if (StringUtil.isNotEmpty(price)){
+        if (StringUtil.isNotEmpty(price)) {
             return new BigDecimal(format.parse(price).doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
-        }else{
+        } else {
             return "";
         }
+    }
+
+    public BootstrapTableVo getInfoRecordList(String queryTitle, String queryWebName, String province, String city, String queryContent, String queryType, String queryStartTime, String queryEndTime) throws Exception {
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        String provinceName = erpAreaService.getSysAreaName(province);
+        String cityName = erpAreaService.getSysAreaName(city);
+        Date startTimeParse = null;
+        Date endTimeParse = null;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        if (StringUtil.isNotEmpty(queryStartTime))
+            startTimeParse = sdf.parse(queryStartTime);
+        if (StringUtil.isNotEmpty(queryEndTime)) {
+            endTimeParse = sdf.parse(queryEndTime);
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(endTimeParse);
+            calendar.add(Calendar.DAY_OF_MONTH, +1); //得到后1天
+            endTimeParse = calendar.getTime();
+        }
+        List<NetInfoRecord> netInfoRecords = netInfoRecordDao.getNetInfoRecordListByName(queryTitle, queryWebName, provinceName, cityName, queryContent, queryType, startTimeParse, endTimeParse);
+        List<NetInfoRecordVo> vos = LangUtils.transform(netInfoRecords, o -> getNetInfoRecordVo(o));
+        bootstrapTableVo.setTotal(page.getTotal());
+        bootstrapTableVo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<NetInfoRecord>() : vos);
+        return bootstrapTableVo;
+    }
+
+
+    public NetInfoRecordVo getNetInfoRecordVo(NetInfoRecord netInfoRecord) {
+        if (netInfoRecord == null) return null;
+        NetInfoRecordVo netInfoRecordVo = new NetInfoRecordVo();
+        BeanUtils.copyProperties(netInfoRecord, netInfoRecordVo);
+        //单价=成交价/面积
+        if (StringUtils.isNotEmpty(netInfoRecord.getCurrentPrice()) && netInfoRecord.getArea() != null) {
+            BigDecimal currentPrice = new BigDecimal(netInfoRecord.getCurrentPrice());
+            BigDecimal unitPrice = currentPrice.divide(netInfoRecord.getArea(), 2, BigDecimal.ROUND_HALF_UP);
+            netInfoRecordVo.setUnitPrice(unitPrice.toString());
+        }
+        //默认使用结束日期作为成交日期,计算周期
+        if (netInfoRecord.getEndTime() != null && netInfoRecord.getAssessBaseDate() != null) {
+            String value = String.valueOf(DateUtils.diffDate(netInfoRecord.getEndTime(), netInfoRecord.getAssessBaseDate()));
+            netInfoRecordVo.setLiquidCycle(String.format("%s%s",value,"天"));
+        }
+        return netInfoRecordVo;
     }
 }
