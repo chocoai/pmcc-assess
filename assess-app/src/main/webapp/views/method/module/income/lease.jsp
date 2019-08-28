@@ -901,7 +901,7 @@
             data: {
                 incomeId: $("#frm_income").find('[name=id]').val(),
                 limit: 100,
-                operationMode: $("#frm_income").find('[name=operationMode]:checked').val()
+                operationMode: incomeIndex.getOperationMode()
             },
             success: function (result) {
                 if (result.rows) {
@@ -936,7 +936,7 @@
         formData.mdIncome.name = $("#frm_income").find('[name=name]').val();
         formData.mdIncome.restrictionExplain = $("#frm_income").find('[name=restrictionExplain]').val();
         formData.mdIncome.price = $("#leaseResult").find('[data-name=price]').text();
-        formData.mdIncome.operationMode = $("#frm_income").find('[name=operationMode]:checked').val();
+        formData.mdIncome.operationMode = incomeIndex.getOperationMode();
         formData.mdIncome.leaseMode = $("#frm_income").find('[name=leaseMode]:checked').val();
         formData.mdIncome.rewardRate = $("#frm_lease").find('[name=rewardRate]').attr('data-value');
         formData.mdIncome.rewardRateId = $("#frm_lease").find('[name=rewardRateId]').val();

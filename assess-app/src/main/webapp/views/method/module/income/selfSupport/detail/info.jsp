@@ -17,9 +17,8 @@
             <div id="ref_forecastRestaurantIncome" style="display:none;">
                 <jsp:include page="forecastRestaurantIncome.jsp"></jsp:include>
             </div>
-
             <div class="x_title">
-                预测结果数据
+                有效毛收入
             </div>
             <div class="x_content">
                 <table class="table table-bordered" id="tb_forecast_income_list">
@@ -45,7 +44,7 @@
             </div>
 
             <div class="x_title">
-                预测结果数据
+                年运营费
             </div>
             <div class="x_content">
                 <table class="table table-bordered" id="tb_forecast_cost_list">
@@ -340,7 +339,7 @@
             dataType: "json",
             data: {
                 incomeId: $("#frm_income").find('[name=id]').val(),
-                operationMode: $("#frm_income").find('[name=operationMode]').val()
+                operationMode: incomeIndex.getOperationMode()
             },
             success: function (result) {
                 if (result.rows) {

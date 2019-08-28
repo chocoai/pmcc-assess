@@ -37,17 +37,17 @@
                     经营方式
                 </label>
                 <div class="col-sm-2 col-sm-offset-1">
-                    <span class="radio-inline">
-                             <input type="radio" required name="operationMode" readonly="readonly"
-                                    id="operationMode0" onclick="incomeIndex.operationModeChange(this);" value="0">
-                        <label for="operationMode0">自营</label></span>
-                </div>
-                <div class="col-sm-2 col-sm-offset-1">
                          <span class="radio-inline"><input type="radio" name="operationMode" id="operationMode1"
                                                            readonly="readonly"
                                                            onclick="incomeIndex.operationModeChange(this);"
                                                            value="1"><label
                                  for="operationMode1">租赁</label></span>
+                </div>
+                <div class="col-sm-2 col-sm-offset-1">
+                    <span class="radio-inline">
+                             <input type="radio" required name="operationMode" readonly="readonly"
+                                    id="operationMode0" onclick="incomeIndex.operationModeChange(this);" value="0">
+                        <label for="operationMode0">自营</label></span>
                 </div>
             </div>
             <div class="form-group" id="group_FormType" style="display: none;">

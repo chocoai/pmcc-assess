@@ -7,7 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="x_title">
-    历史数据
+    历史或调查数据
 </div>
 <div class="x_content">
     <div class="form-horizontal">
