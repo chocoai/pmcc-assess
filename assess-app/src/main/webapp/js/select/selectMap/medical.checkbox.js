@@ -11,9 +11,9 @@
      */
     AssessMedical.prototype.select = function (that) {
         $.ajax({
-            url: getContextPath() + '/basicEstateTagging/getEstateTaggingList',
+            url: getContextPath() + '/basicEstateTagging/getApplyBatchEstateTaggingsByTableId',
             data: {
-                applyId: basicCommon.getApplyId(),
+                tableId: estateCommon.getEstateId(),
                 type: 'estate'
             },
             success: function (result) {
