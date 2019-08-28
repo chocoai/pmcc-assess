@@ -127,6 +127,12 @@
         getHtml: function () {
             return $("#" + developmentCommon.config.architecturalB.id).html();
         },
+        getHtml2: function (target) {
+            AssessCommon.loadDataDicByKey(AssessDicKey.build_security_engineering_project_market_cost, '', function (html, data) {
+               console.log(data) ;
+            });
+            return $("#" + developmentCommon.config.architecturalB.id).html();
+        },
         getHtmlDetail: function () {
             return $("#" + developmentCommon.config.architecturalB.detail).html();
         },
@@ -263,6 +269,149 @@
                 Alert("调用服务端方法失败，失败原因:" + e);
             }
         });
+    };
+
+    developmentCommon.saveMdCalculatingMethodEngineeringCost = function (data,callback) {
+        $.ajax({
+            type: "post",
+            url: "${pageContext.request.contextPath}/mdCalculatingMethodEngineeringCost/saveMdCalculatingMethodEngineeringCost",
+            data: {formData:JSON.stringify(data)},
+            success: function (result) {
+                if (result.ret) {
+                    if (callback) {
+                        callback(result.data);
+                    }
+                } else {
+                    Alert("保存失败:" + result.errmsg);
+                }
+            },
+            error: function (e) {
+                Alert("调用服务端方法失败，失败原因:" + e);
+            }
+        });
+    };
+
+    developmentCommon.deleteMdCalculatingMethodEngineeringCostById = function (id,callback) {
+        $.ajax({
+            type: "post",
+            url: "${pageContext.request.contextPath}/mdCalculatingMethodEngineeringCost/deleteMdCalculatingMethodEngineeringCostById",
+            data: {id: id},
+            success: function (result) {
+                if (result.ret) {
+                    if (callback) {
+                        callback(result.data);
+                    }
+                } else {
+                    Alert("失败:" + result.errmsg);
+                }
+            },
+            error: function (e) {
+                Alert("调用服务端方法失败，失败原因:" + e);
+            }
+        });
+    };
+
+    developmentCommon.getMdCalculatingMethodEngineeringCostList = function (data,callback) {
+        $.ajax({
+            type: "get",
+            url: "${pageContext.request.contextPath}/mdCalculatingMethodEngineeringCost/getMdCalculatingMethodEngineeringCostList",
+            data: data,
+            success: function (result) {
+                if (result.ret) {
+                    if (callback) {
+                        callback(result.data);
+                    }
+                } else {
+                    Alert("失败:" + result.errmsg);
+                }
+            },
+            error: function (e) {
+                Alert("调用服务端方法失败，失败原因:" + e);
+            }
+        });
+    };
+
+    developmentCommon.loadMdCalculatingMethodEngineeringCostTable = function (table,quarm,toolbar,callback,array) {
+        var cols = [];
+        cols.push({checkbox: true,width:"5%"});
+        cols.push({
+            field: 'dataTableName', title: '工程表绑定类型', formatter: function (value, row, index) {
+                if (value == AssessDBKey.BasicEstate){
+                    return "楼盘" ;
+                }
+                if (value == AssessDBKey.BasicBuilding){
+                    return "楼栋" ;
+                }
+                return "未设定" ;
+            }
+        });
+        cols.push({field: 'name', title: '名称',width:"20%", class: 'editable',editable: {
+            type: 'text',
+            validate: function (value) {
+                if ($.trim(value) == '') {
+                    return '名称不能为空!';
+                }
+            }
+        }});
+        cols.push({field: 'area', title: '建筑面积',width:"10%", class: 'editable',editable: {
+            type: 'text',
+            validate: function (value) {
+                if (!$.isNumeric(value)){
+                    return '必须是数字!';
+                }
+            }
+        }});
+        cols.push({field: 'price', title: '建筑安装工程费价格(不建议手动更改建议通过工程费明细更改)',width:"10%", class: 'editable',editable: {
+            type: 'text',
+            validate: function (value) {
+                if (!$.isNumeric(value)){
+                    return '必须是数字!';
+                }
+            }
+        }});
+        if (array){
+            $.each(array,function (i,item) {
+                cols.push(item) ;
+            });
+        }
+        var method = {
+            onEditableSave:function (field, row, oldValue, $el) {
+                table.bootstrapTable('updateByUniqueId', {id: row.id, row: row});
+                developmentCommon.saveMdCalculatingMethodEngineeringCost(row,function () {
+                    if (callback){
+                        callback() ;
+                    }
+                    toastr.success('编辑成功!');
+                },function () {
+                    toastr.success('编辑失败!');
+                });
+            },
+            showColumns: true,
+            showRefresh: true,
+            search: false,
+            onLoadSuccess:function () {//加载成功时执行
+                if (callback){
+                    callback() ;
+                }
+            },
+            onLoadError:function () {
+
+            }
+        } ;
+        table.bootstrapTable('destroy');
+        TableInit(table.attr("id"), "${pageContext.request.contextPath}/mdCalculatingMethodEngineeringCost/getBootstrapTableVo",cols,quarm, method);
+        if (toolbar){
+            if (toolbar.size() != 0) {
+                var bootstrapTable = table.closest(".bootstrap-table");
+                if (bootstrapTable.size() != 0) {
+                    var fixedTableToolbar = bootstrapTable.find(".fixed-table-toolbar");
+                    if (fixedTableToolbar.size() != 0) {
+                        fixedTableToolbar.append(toolbar.html());
+                    }
+                }
+            }
+            toolbar.empty() ;
+        }
     };
 
     developmentCommon.architecturalA = {
@@ -608,7 +757,27 @@
     };
 
 </script>
-
+<script type="text/html" id="architecturalBModelParent" data-title="复杂树 父级">
+    <tr class="treegrid-{index}" data-key="{key}" data-role="parent">
+        <td>{name}</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+</script>
+<script type="text/html" id="architecturalBModelChildren" data-title="复杂树 子级">
+    <tr class="treegrid-{index}-{child-index} treegrid-parent-{index}" data-key="{key}" data-role="child">
+        <td> {name}</td>
+        <td><input type="text" onblur="developmentCommon.architecturalB.totalResult(this)" placeholder="单价(数字)"
+                   name="price" data-rule-number="true" style="width: 100px;"></td>
+        <td><input type="text" class="x-percent" onblur="developmentCommon.architecturalB.totalResult(this)"
+                   placeholder="(数字)" name="valuationDateDegreeCompletion" data-rule-number="true"
+                   style="width: 100px;"></td>
+        <td><input type="text" name="remark" ></td>
+        <td></td>
+    </tr>
+</script>
 <script type="text/html" id="architecturalB" data-title="复杂树">
     <table class="table tree" id="architecturalBHandle">
         <thead>

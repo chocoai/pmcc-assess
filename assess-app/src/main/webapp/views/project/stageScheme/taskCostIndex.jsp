@@ -100,6 +100,7 @@
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
 <script src="${pageContext.request.contextPath}/assets/x-editable/js/bootstrap-editable.min.js"></script>
+<script src="${pageContext.request.contextPath}/assets/x-editable/js/bootstrap-table-editable.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/tree-grid/js/jquery.treegrid.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/ajaxfileupload.js"></script>
 <script type="text/javascript">
@@ -218,7 +219,8 @@
 
         construction.inputBlurEvent() ;
 
-        construction.constructionInstallationEngineeringFeeEvent.loadHtml();
+        construction.loadMdCalculatingMethodEngineeringCostTable() ;
+
     });
 
 </script>
