@@ -96,6 +96,8 @@ public class BasicEstateService {
     private BasicApplyBatchDao basicApplyBatchDao;
     @Autowired
     private BasicEstateTaggingDao basicEstateTaggingDao;
+    @Autowired
+    private CaseEstateTaggingService caseEstateTaggingService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -411,10 +413,22 @@ public class BasicEstateService {
         }else{
             objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicEstateLandState.class.getSimpleName()), new BasicEstateLandStateVo());
         }
-
+        //标注拷贝
         CaseEstateTagging caseEstateTagging = new CaseEstateTagging();
         caseEstateTagging.setDataId(caseEstateId);
         caseEstateTagging.setType(EstateTaggingTypeEnum.ESTATE.getKey());
+        List<CaseEstateTagging> oldCaseEstateTaggingList = caseEstateTaggingService.getCaseEstateTaggingList(caseEstateTagging);
+        if (!ObjectUtils.isEmpty(oldCaseEstateTaggingList)) {
+            BasicEstateTagging basicEstateTagging = new BasicEstateTagging();
+            BeanUtils.copyProperties(oldCaseEstateTaggingList.get(0), basicEstateTagging);
+            basicEstateTagging.setCreator(commonService.thisUserAccount());
+            basicEstateTagging.setName(null);
+            basicEstateTagging.setTableId(basicEstate.getId());
+            basicEstateTagging.setGmtCreated(null);
+            basicEstateTagging.setGmtModified(null);
+            basicEstateTaggingService.addBasicEstateTagging(basicEstateTagging);
+            objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicEstateTagging.class.getSimpleName()), basicEstateTaggingService.getBasicEstateTaggingVo(basicEstateTagging));
+        }
 
         try {
             CaseEstateParking estateParking = new CaseEstateParking();
@@ -488,7 +502,6 @@ public class BasicEstateService {
         synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicMatchingEducation.class));
         sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//教育信息sql
 
-        sqlBuilder.append(this.copyTaggingFromCase(EstateTaggingTypeEnum.ESTATE, caseEstate.getId(), applyId));
         ddlMySqlAssist.customTableDdl(sqlBuilder.toString());//执行sql
         return objectMap;
     }

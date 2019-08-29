@@ -15,6 +15,7 @@ import com.copower.pmcc.assess.service.assist.DdlMySqlAssist;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.cases.CaseBuildingService;
+import com.copower.pmcc.assess.service.cases.CaseEstateTaggingService;
 import com.copower.pmcc.assess.service.data.DataBuilderService;
 import com.copower.pmcc.assess.service.data.DataBuildingNewRateService;
 import com.copower.pmcc.assess.service.data.DataPropertyService;
@@ -85,6 +86,8 @@ public class BasicBuildingService {
     private BasicApplyBatchDetailDao basicApplyBatchDetailDao;
     @Autowired
     private BasicEstateTaggingDao basicEstateTaggingDao;
+    @Autowired
+    private CaseEstateTaggingService caseEstateTaggingService;
 
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -365,6 +368,21 @@ public class BasicBuildingService {
         attachmentDto.setTableId(basicBuilding.getId());
         attachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicBuilding.class));
         baseAttachmentService.copyFtpAttachments(example, attachmentDto);
+        //标注拷贝
+        CaseEstateTagging caseEstateTagging = new CaseEstateTagging();
+        caseEstateTagging.setDataId(caseBuildingId);
+        caseEstateTagging.setType(EstateTaggingTypeEnum.BUILDING.getKey());
+        List<CaseEstateTagging> oldCaseEstateTaggingList = caseEstateTaggingService.getCaseEstateTaggingList(caseEstateTagging);
+        if (!ObjectUtils.isEmpty(oldCaseEstateTaggingList)) {
+            BasicEstateTagging basicEstateTagging = new BasicEstateTagging();
+            BeanUtils.copyProperties(oldCaseEstateTaggingList.get(0), basicEstateTagging);
+            basicEstateTagging.setCreator(commonService.thisUserAccount());
+            basicEstateTagging.setName(null);
+            basicEstateTagging.setTableId(basicBuilding.getId());
+            basicEstateTagging.setGmtCreated(null);
+            basicEstateTagging.setGmtModified(null);
+            basicEstateTaggingService.addBasicEstateTagging(basicEstateTagging);
+        }
 
         StringBuilder sqlBuilder = new StringBuilder();
         SynchronousDataDto synchronousDataDto = new SynchronousDataDto();
@@ -390,7 +408,6 @@ public class BasicBuildingService {
         synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicBuildingFunction.class));
         sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//建筑功能sql
 
-        sqlBuilder.append(basicEstateService.copyTaggingFromCase(EstateTaggingTypeEnum.BUILDING, caseBuilding.getId(), applyId));
         ddlMySqlAssist.customTableDdl(sqlBuilder.toString());//执行sql
         return basicBuilding;
     }

@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.basic;
 
+import com.copower.pmcc.assess.common.enums.AssessUploadEnum;
 import com.copower.pmcc.assess.common.enums.BasicApplyPartInModeEnum;
 import com.copower.pmcc.assess.common.enums.EstateTaggingTypeEnum;
 import com.copower.pmcc.assess.constant.BaseConstant;
@@ -96,6 +97,10 @@ public class BasicHouseService {
     private BasicApplyBatchDetailDao basicApplyBatchDetailDao;
     @Autowired
     private BasicEstateTaggingDao basicEstateTaggingDao;
+    @Autowired
+    private CaseEstateTaggingService caseEstateTaggingService;
+    @Autowired
+    private BasicEstateTaggingService basicEstateTaggingService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -394,7 +399,29 @@ public class BasicHouseService {
         attachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicHouse.class));
         baseAttachmentService.copyFtpAttachments(example, attachmentDto);
 
-
+        //标注拷贝
+        CaseEstateTagging caseEstateTagging = new CaseEstateTagging();
+        caseEstateTagging.setDataId(caseHouseId);
+        caseEstateTagging.setType(EstateTaggingTypeEnum.HOUSE.getKey());
+        List<CaseEstateTagging> oldCaseEstateTaggingList = caseEstateTaggingService.getCaseEstateTaggingList(caseEstateTagging);
+        if (!ObjectUtils.isEmpty(oldCaseEstateTaggingList)) {
+            BasicEstateTagging basicEstateTagging = new BasicEstateTagging();
+            BeanUtils.copyProperties(oldCaseEstateTaggingList.get(0), basicEstateTagging);
+            basicEstateTagging.setCreator(commonService.thisUserAccount());
+            basicEstateTagging.setName(null);
+            basicEstateTagging.setTableId(basicHouse.getId());
+            basicEstateTagging.setGmtCreated(null);
+            basicEstateTagging.setGmtModified(null);
+            //获取新户型图id
+            SysAttachmentDto newHuXing = new SysAttachmentDto();
+            newHuXing.setTableId(basicHouse.getId());
+            newHuXing.setTableName(FormatUtils.entityNameConvertToTableName(BasicHouse.class));
+            newHuXing.setFieldsName(AssessUploadEnum.HOUSE_NEW_HUXING_PLAN.getKey());
+            List<SysAttachmentDto> newHuXingList = baseAttachmentService.getAttachmentList(newHuXing);
+            if(CollectionUtils.isNotEmpty(newHuXingList))
+                basicEstateTagging.setAttachmentId(newHuXingList.get(0).getId());
+            basicEstateTaggingService.addBasicEstateTagging(basicEstateTagging);
+        }
         StringBuilder sqlBuilder = new StringBuilder();
         SynchronousDataDto synchronousDataDto = new SynchronousDataDto();
         HashMap<String, String> map = Maps.newHashMap();
@@ -431,7 +458,6 @@ public class BasicHouseService {
         synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseEquipment.class));
         sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//设备sql
 
-        sqlBuilder.append(basicEstateService.copyTaggingFromCase(EstateTaggingTypeEnum.HOUSE, caseHouse.getId(), applyId));
         ddlMySqlAssist.customTableDdl(sqlBuilder.toString());//执行sql
 
         CaseHouseRoom caseHouseRoom = new CaseHouseRoom();
@@ -588,6 +614,29 @@ public class BasicHouseService {
         attachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicHouse.class));
         baseAttachmentService.copyFtpAttachments(example, attachmentDto);
 
+        //标注拷贝
+        BasicEstateTagging basicEstateTaggingQuery = new BasicEstateTagging();
+        basicEstateTaggingQuery.setTableId(oldBasicHouse.getId());
+        basicEstateTaggingQuery.setType(EstateTaggingTypeEnum.HOUSE.getKey());
+        List<BasicEstateTagging> oldBasicEstateTaggingList = basicEstateTaggingService.getBasicEstateTaggingList(basicEstateTaggingQuery);
+        if (!ObjectUtils.isEmpty(oldBasicEstateTaggingList)) {
+            BasicEstateTagging basicEstateTagging = new BasicEstateTagging();
+            BeanUtils.copyProperties(oldBasicEstateTaggingList.get(0), basicEstateTagging);
+            basicEstateTagging.setCreator(commonService.thisUserAccount());
+            basicEstateTagging.setName(null);
+            basicEstateTagging.setTableId(basicHouse.getId());
+            basicEstateTagging.setGmtCreated(null);
+            basicEstateTagging.setGmtModified(null);
+            //获取新户型图id
+            SysAttachmentDto newHuXing = new SysAttachmentDto();
+            newHuXing.setTableId(basicHouse.getId());
+            newHuXing.setTableName(FormatUtils.entityNameConvertToTableName(BasicHouse.class));
+            newHuXing.setFieldsName(AssessUploadEnum.HOUSE_NEW_HUXING_PLAN.getKey());
+            List<SysAttachmentDto> newHuXingList = baseAttachmentService.getAttachmentList(newHuXing);
+            if(CollectionUtils.isNotEmpty(newHuXingList))
+                basicEstateTagging.setAttachmentId(newHuXingList.get(0).getId());
+            basicEstateTaggingService.addBasicEstateTagging(basicEstateTagging);
+        }
 
         StringBuilder sqlBuilder = new StringBuilder();
         SynchronousDataDto synchronousDataDto = new SynchronousDataDto();
