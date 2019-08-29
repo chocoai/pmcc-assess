@@ -3,12 +3,15 @@ package com.copower.pmcc.assess.service.project;
 import com.copower.pmcc.assess.common.enums.ResponsibileModelEnum;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.ProjectTaskReturnRecordDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeSurePriceRecordDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.basic.BasicApplyTransferService;
 import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
+import com.copower.pmcc.assess.service.project.scheme.SchemeSurePriceService;
 import com.copower.pmcc.assess.service.project.survey.SurveyExamineInfoService;
 import com.copower.pmcc.assess.service.project.survey.SurveyExamineTaskService;
 import com.copower.pmcc.bpm.api.dto.ActivitiTaskNodeDto;
@@ -28,6 +31,7 @@ import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.api.enums.SysProjectEnum;
+import com.copower.pmcc.erp.api.provider.ErpRpcAttachmentService;
 import com.copower.pmcc.erp.api.provider.ErpRpcDepartmentService;
 import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
 import com.copower.pmcc.erp.common.CommonService;
@@ -95,6 +99,14 @@ public class ProjectPlanDetailsService {
     private SurveyExamineInfoService surveyExamineInfoService;
     @Autowired
     private ProjectMemberService projectMemberService;
+    @Autowired
+    private SchemeSurePriceService schemeSurePriceService;
+    @Autowired
+    private SchemeSurePriceRecordDao schemeSurePriceRecordDao;
+    @Autowired
+    private ProjectTaskReturnRecordDao projectTaskReturnRecordDao;
+    @Autowired
+    private ErpRpcAttachmentService erpRpcAttachmentService;
 
     public ProjectPlanDetails getProjectPlanDetailsById(Integer id) {
         return projectPlanDetailsDao.getProjectPlanDetailsById(id);
@@ -619,6 +631,34 @@ public class ProjectPlanDetailsService {
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
         ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlanDetails.getProjectWorkStageId());
         projectPlanService.saveProjectPlanDetailsResponsibility(projectPlanDetails, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.TASK);
+
+        //新增一条重启记录
+        ProjectTaskReturnRecord projectTaskReturnRecord = new ProjectTaskReturnRecord();
+        projectTaskReturnRecord.setProjectId(projectPlanDetails.getProjectId());
+        projectTaskReturnRecord.setPlanDetailsId(planDetailsId);
+        projectTaskReturnRecord.setReason(reason);
+        projectTaskReturnRecord.setCreator(commonService.thisUserAccount());
+        Integer returnId = projectTaskReturnRecordDao.addProjectTaskReturnRecord(projectTaskReturnRecord);
+        //修改附件tableId
+        SysAttachmentDto queryParam = new SysAttachmentDto();
+        queryParam.setTableName("tb_project_task_return_record");
+        queryParam.setTableId(0);
+        queryParam.setFieldsName(String.valueOf(planDetailsId));
+        queryParam.setAppKey(applicationConstant.getAppKey());
+        SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
+        sysAttachmentDto.setTableId(returnId);
+        erpRpcAttachmentService.updateAttachmentByParam(queryParam, sysAttachmentDto);
+        //确定单价保存记录
+        ProjectPhase phaseSurePrice = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.SURE_PRICE, projectInfo.getProjectCategoryId());
+        if(projectPlanDetails.getProjectPhaseId().equals(phaseSurePrice.getId())){
+            SchemeSurePriceRecord schemeSurePriceRecord = new SchemeSurePriceRecord();
+            schemeSurePriceRecord.setPlanDetailsId(planDetailsId);
+            schemeSurePriceRecord.setProjectId(projectPlanDetails.getProjectId());
+            SchemeSurePrice surePrice = schemeSurePriceService.getSurePriceByPlanDetailsId(planDetailsId);
+            schemeSurePriceRecord.setRecordPrice(surePrice.getPrice());
+            schemeSurePriceRecord.setCreator(commonService.thisUserAccount());
+            schemeSurePriceRecordDao.addSchemeSurePriceRecord(schemeSurePriceRecord);
+        }
         return getProjectPlanDetailsVo(projectPlanDetails);
     }
 
