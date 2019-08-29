@@ -680,9 +680,7 @@ public class GenerateMdIncomeService implements Serializable {
                     }
                 } else {//没有调用市场比较法则说出收入来源说明
                     if (StringUtils.isNotBlank(vo.getRentalIncomeRemark())) {
-                        priceExplainBuilder.append(vo.getRentalIncomeRemark());
-                        if (vo.getRentalIncomeRemark().endsWith("，") || vo.getRentalIncomeRemark().endsWith("。"))
-                            priceExplainBuilder.append("。");
+                        priceExplainBuilder.append(generateCommonMethod.trim(vo.getRentalIncomeRemark()));
                     }
                     priceExplainBuilder.append("即估价对象的比准租赁价格为");
                     priceExplainBuilder.append(vo.getRentalIncome().toString()).append("元/㎡月");
