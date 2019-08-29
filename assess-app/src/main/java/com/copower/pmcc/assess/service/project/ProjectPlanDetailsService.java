@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.project;
 
+import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.enums.ResponsibileModelEnum;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
@@ -609,10 +610,10 @@ public class ProjectPlanDetailsService {
      * 重启任务
      *
      * @param planDetailsId
-     * @param reason
+     * @param formData
      */
     @Transactional(rollbackFor = Exception.class)
-    public ProjectPlanDetailsVo replyProjectPlanDetails(Integer planDetailsId, String reason) throws BusinessException, BpmException {
+    public ProjectPlanDetailsVo replyProjectPlanDetails(Integer planDetailsId, String formData) throws BusinessException, BpmException {
         //1.更新任务状态 记录重启原因 2.添加新的待提交任务
         ProjectPlanDetails projectPlanDetails = getProjectPlanDetailsById(planDetailsId);
         if (projectPlanDetails == null) return null;
@@ -620,7 +621,6 @@ public class ProjectPlanDetailsService {
             throw new BusinessException("已完成的任务才允许重启");
 
         projectPlanDetails.setStatus(ProcessStatusEnum.RUN.getValue());
-        projectPlanDetails.setReturnDetailsReason(reason);
         projectPlanDetails.setTaskSubmitTime(null);
         projectPlanDetails.setBisStart(false);
         projectPlanDetails.setProcessInsId("0");
@@ -633,10 +633,9 @@ public class ProjectPlanDetailsService {
         projectPlanService.saveProjectPlanDetailsResponsibility(projectPlanDetails, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.TASK);
 
         //新增一条重启记录
-        ProjectTaskReturnRecord projectTaskReturnRecord = new ProjectTaskReturnRecord();
+        ProjectTaskReturnRecord projectTaskReturnRecord = JSON.parseObject(formData, ProjectTaskReturnRecord.class);
         projectTaskReturnRecord.setProjectId(projectPlanDetails.getProjectId());
         projectTaskReturnRecord.setPlanDetailsId(planDetailsId);
-        projectTaskReturnRecord.setReason(reason);
         projectTaskReturnRecord.setCreator(commonService.thisUserAccount());
         Integer returnId = projectTaskReturnRecordDao.addProjectTaskReturnRecord(projectTaskReturnRecord);
         //修改附件tableId
@@ -648,17 +647,6 @@ public class ProjectPlanDetailsService {
         SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
         sysAttachmentDto.setTableId(returnId);
         erpRpcAttachmentService.updateAttachmentByParam(queryParam, sysAttachmentDto);
-        //确定单价保存记录
-        ProjectPhase phaseSurePrice = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.SURE_PRICE, projectInfo.getProjectCategoryId());
-        if(projectPlanDetails.getProjectPhaseId().equals(phaseSurePrice.getId())){
-            SchemeSurePriceRecord schemeSurePriceRecord = new SchemeSurePriceRecord();
-            schemeSurePriceRecord.setPlanDetailsId(planDetailsId);
-            schemeSurePriceRecord.setProjectId(projectPlanDetails.getProjectId());
-            SchemeSurePrice surePrice = schemeSurePriceService.getSurePriceByPlanDetailsId(planDetailsId);
-            schemeSurePriceRecord.setRecordPrice(surePrice.getPrice());
-            schemeSurePriceRecord.setCreator(commonService.thisUserAccount());
-            schemeSurePriceRecordDao.addSchemeSurePriceRecord(schemeSurePriceRecord);
-        }
         return getProjectPlanDetailsVo(projectPlanDetails);
     }
 

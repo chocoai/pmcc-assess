@@ -39,9 +39,9 @@ public class ProjectPlanDetailsController {
 
     @ResponseBody
     @PostMapping(name = "重启任务", value = "/replyProjectPlanDetails")
-    public HttpResult replyProjectPlanDetails(Integer planDetailsId, String reason) {
+    public HttpResult replyProjectPlanDetails(Integer planDetailsId, String formData) {
         try {
-            ProjectPlanDetailsVo projectPlanDetailsVo = projectPlanDetailsService.replyProjectPlanDetails(planDetailsId, reason);
+            ProjectPlanDetailsVo projectPlanDetailsVo = projectPlanDetailsService.replyProjectPlanDetails(planDetailsId, formData);
             return HttpResult.newCorrectResult(projectPlanDetailsService.getPlanDetailListByProjectPlanDetailId(projectPlanDetailsVo.getId()));
         } catch (Exception e) {
             logger.error("重启任务", e);

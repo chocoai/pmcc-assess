@@ -352,11 +352,33 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
+                                            重启人<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <input type="hidden" id="returnPerson" name="returnPerson">
+                                            <input type="text" data-rule-maxlength="50" readonly
+                                                   placeholder="项目经理" onclick="projectDetails.personSelect()"
+                                                   id="returnPersonName" name="returnPersonName" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            重启时间<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <input type="text" readonly placeholder="重启时间" name="returnTime"
+                                                   data-date-format="yyyy-mm-dd" class="form-control date-picker dbdate">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
                                             重启原因<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <textarea placeholder="重启原因" id="returnDetailsReason"
-                                                      class="form-control"></textarea>
+                                            <textarea placeholder="重启原因" name="reason"
+                                                      class="form-control" required></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -863,13 +885,14 @@
         //重启任务
         replyTaskBtn: function () {
             var planDetailsId = $("#replyTaskForm").find("#planDetailsId").val();
-            var val = $("#replyTaskForm").find("#returnDetailsReason").val();
-            console.log("planDetailsId:"+planDetailsId+"---val:"+val)
+            if (!$("#replyTaskForm").valid()) {
+                return false;
+            }
             $.ajax({
                 url: '${pageContext.request.contextPath}/projectPlanDetails/replyProjectPlanDetails',
                 data: {
                     planDetailsId: planDetailsId,
-                    reason: val
+                    formData: JSON.stringify(formParams("replyTaskForm"))
                 },
                 success: function (result) {
                     if (result.ret) {
@@ -1068,6 +1091,22 @@
                 search: false,
                 onLoadSuccess: function () {
                     $('.tooltips').tooltip();
+                }
+            });
+        },
+
+        //选择人员
+        personSelect:function () {
+            erpEmployee.select({
+                onSelected: function (data) {
+                    if (data.account) {
+                        $("#returnPersonName").val(data.name);
+                        $("#returnPerson").val(data.account);
+                    }
+                    else {
+                        $("#returnPerson").val('');
+                        $("#returnPerson").val('');
+                    }
                 }
             });
         },

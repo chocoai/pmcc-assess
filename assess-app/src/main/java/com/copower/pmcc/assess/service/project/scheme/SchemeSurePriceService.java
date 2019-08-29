@@ -11,8 +11,11 @@ import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeSurePriceApplyDto;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.event.project.SchemeSurePriceEvent;
 import com.copower.pmcc.assess.service.method.MdCommonService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
+import com.copower.pmcc.bpm.api.exception.BpmException;
+import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.LangUtils;
@@ -20,6 +23,8 @@ import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,6 +40,7 @@ import java.util.Map;
  */
 @Service
 public class SchemeSurePriceService {
+    private Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private SchemeSurePriceDao schemeSurePriceDao;
     @Autowired
@@ -67,6 +73,8 @@ public class SchemeSurePriceService {
     private ProjectInfoService projectInfoService;
     @Autowired
     private SchemeSurePriceFactorService schemeSurePriceFactorService;
+    @Autowired
+    private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
 
     /**
      * 保存确定单价信息
@@ -346,6 +354,14 @@ public class SchemeSurePriceService {
                     judgeObject.setOriginalPrice(temp);
                     schemeJudgeObjectDao.updateSchemeJudgeObject(judgeObject);
                 }
+            }
+        }
+        if (!org.apache.commons.lang.StringUtils.isBlank(processInsId)) {
+            //修改监听器
+            try {
+                bpmRpcActivitiProcessManageService.setProcessEventExecutor(processInsId, SchemeSurePriceEvent.class.getSimpleName());
+            }catch (BpmException e){
+                logger.error(e.getMessage(), e);
             }
         }
     }

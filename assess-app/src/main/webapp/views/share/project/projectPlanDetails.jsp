@@ -46,21 +46,27 @@
                     <div id="_projectPhaseWorkTemp"></div>
                 </div>
             </div>
-            <c:if test="${not empty projectPlanDetails.returnDetailsReason}">
-                <div class="form-group">
-                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                        重启原因
-                    </label>
-                    <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
-                        <label class="form-control">${projectPlanDetails.returnDetailsReason}</label>
-                    </div>
-                </div>
-            </c:if>
         </div>
+    </div>
+</div>
+<div class="x_panel">
+    <div class="x_title collapse-link">
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+        </ul>
+        <h3>
+            任务重启记录
+        </h3>
+        <div class="clearfix"></div>
+    </div>
+    <div class="x_content collapse">
+        <table class="table table-bordered" id="tb_returnRecordList">
+        </table>
     </div>
 </div>
 <script type="application/javascript">
     $(function () {
+        loadReturnRecordList();
         FileUtils.getFileShows({
             target: "projectPhaseWorkTemp",
             formData: {
@@ -185,5 +191,29 @@
                 Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
             }
         })
+    }
+
+    //任务重启原因
+    function loadReturnRecordList() {
+        var cols = [];
+        cols.push({field: 'reason', title: '重启原因'});
+        cols.push({field: 'returnPersonName', title: '重启人'});
+        cols.push({
+            field: 'returnTime', title: '重启时间', formatter: function (value, row, index) {
+                return formatDate(value);
+            }
+        });
+        cols.push({field: 'fileViewName', title: '附件'});
+        $("#tb_returnRecordList").bootstrapTable('destroy');
+        TableInit("tb_returnRecordList", "${pageContext.request.contextPath}/ProjectTask/loadReturnRecordList", cols, {
+            planDetailsId: '${projectPlanDetails.id}'
+        }, {
+            showColumns: false,
+            showRefresh: false,
+            search: false,
+            onLoadSuccess: function () {
+                $('.tooltips').tooltip();
+            }
+        });
     }
 </script>
