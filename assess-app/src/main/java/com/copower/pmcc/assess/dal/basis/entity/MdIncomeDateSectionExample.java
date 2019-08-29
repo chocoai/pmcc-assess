@@ -846,6 +846,76 @@ public class MdIncomeDateSectionExample {
             return (Criteria) this;
         }
 
+        public Criteria andRentalGrowthRateExplainSupplementIsNull() {
+            addCriterion("rental_growth_rate_explain_supplement is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRentalGrowthRateExplainSupplementIsNotNull() {
+            addCriterion("rental_growth_rate_explain_supplement is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRentalGrowthRateExplainSupplementEqualTo(String value) {
+            addCriterion("rental_growth_rate_explain_supplement =", value, "rentalGrowthRateExplainSupplement");
+            return (Criteria) this;
+        }
+
+        public Criteria andRentalGrowthRateExplainSupplementNotEqualTo(String value) {
+            addCriterion("rental_growth_rate_explain_supplement <>", value, "rentalGrowthRateExplainSupplement");
+            return (Criteria) this;
+        }
+
+        public Criteria andRentalGrowthRateExplainSupplementGreaterThan(String value) {
+            addCriterion("rental_growth_rate_explain_supplement >", value, "rentalGrowthRateExplainSupplement");
+            return (Criteria) this;
+        }
+
+        public Criteria andRentalGrowthRateExplainSupplementGreaterThanOrEqualTo(String value) {
+            addCriterion("rental_growth_rate_explain_supplement >=", value, "rentalGrowthRateExplainSupplement");
+            return (Criteria) this;
+        }
+
+        public Criteria andRentalGrowthRateExplainSupplementLessThan(String value) {
+            addCriterion("rental_growth_rate_explain_supplement <", value, "rentalGrowthRateExplainSupplement");
+            return (Criteria) this;
+        }
+
+        public Criteria andRentalGrowthRateExplainSupplementLessThanOrEqualTo(String value) {
+            addCriterion("rental_growth_rate_explain_supplement <=", value, "rentalGrowthRateExplainSupplement");
+            return (Criteria) this;
+        }
+
+        public Criteria andRentalGrowthRateExplainSupplementLike(String value) {
+            addCriterion("rental_growth_rate_explain_supplement like", value, "rentalGrowthRateExplainSupplement");
+            return (Criteria) this;
+        }
+
+        public Criteria andRentalGrowthRateExplainSupplementNotLike(String value) {
+            addCriterion("rental_growth_rate_explain_supplement not like", value, "rentalGrowthRateExplainSupplement");
+            return (Criteria) this;
+        }
+
+        public Criteria andRentalGrowthRateExplainSupplementIn(List<String> values) {
+            addCriterion("rental_growth_rate_explain_supplement in", values, "rentalGrowthRateExplainSupplement");
+            return (Criteria) this;
+        }
+
+        public Criteria andRentalGrowthRateExplainSupplementNotIn(List<String> values) {
+            addCriterion("rental_growth_rate_explain_supplement not in", values, "rentalGrowthRateExplainSupplement");
+            return (Criteria) this;
+        }
+
+        public Criteria andRentalGrowthRateExplainSupplementBetween(String value1, String value2) {
+            addCriterion("rental_growth_rate_explain_supplement between", value1, value2, "rentalGrowthRateExplainSupplement");
+            return (Criteria) this;
+        }
+
+        public Criteria andRentalGrowthRateExplainSupplementNotBetween(String value1, String value2) {
+            addCriterion("rental_growth_rate_explain_supplement not between", value1, value2, "rentalGrowthRateExplainSupplement");
+            return (Criteria) this;
+        }
+
         public Criteria andCorrectionFactorIsNull() {
             addCriterion("correction_factor is null");
             return (Criteria) this;

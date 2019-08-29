@@ -252,8 +252,8 @@
             return false;
         }
         var data = formParams("frm_data_section");
-        data.incomeId = $("#frm_income").find('[name=id]').val();
-        data.operationMode = $("#frm_income").find('[name=operationMode]:checked').val();
+        data.incomeId = incomeIndex.getInComeId();
+        data.operationMode = incomeIndex.getOperationMode();
         Loading.progressShow();
         $.ajax({
             url: "${pageContext.request.contextPath}/income/saveDateSection",
@@ -314,7 +314,7 @@
         });
         $("#tb_data_section_list").bootstrapTable('destroy');
         TableInit("tb_data_section_list", "${pageContext.request.contextPath}/income/getDateSectionList", cols, {
-            incomeId: $("#frm_income").find('[name=id]').val(),
+            incomeId: incomeIndex.getInComeId(),
             operationMode: operationMode
         }, {
             showColumns: false,
@@ -340,10 +340,10 @@
                     Loading.progressHide();
                     if (result.ret) {
                         toastr.success('删除成功');
-                        incomeIndex.loadDateSectionList($("#frm_income").find('[name=operationMode]:checked').val());
+                        incomeIndex.loadDateSectionList(incomeIndex.getOperationMode());
 
                         //刷新从表信息
-                        var operationMode = $("#frm_income").find('[name=operationMode]:checked').val();
+                        var operationMode =incomeIndex.getOperationMode();
                         if (operationMode == 0) {
                             selfSupport.loadForecastIncomeList();
                             selfSupport.loadForecastCostList();
@@ -468,7 +468,7 @@
     //获取表单数据
     incomeIndex.getData = function () {
         var formData = {};
-        var operationMode = $("#frm_income").find('[name=operationMode]:checked').val();
+        var operationMode = incomeIndex.getOperationMode();
         if (operationMode == 0) {//自营
             formData = selfSupport.getData();
         }

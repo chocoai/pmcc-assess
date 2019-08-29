@@ -14,6 +14,7 @@
     <result column="net_profit" property="netProfit" jdbcType="VARCHAR" />
     <result column="rental_growth_rate" property="rentalGrowthRate" jdbcType="DECIMAL" />
     <result column="rental_growth_rate_explain" property="rentalGrowthRateExplain" jdbcType="VARCHAR" />
+    <result column="rental_growth_rate_explain_supplement" property="rentalGrowthRateExplainSupplement" jdbcType="VARCHAR" />
     <result column="correction_factor" property="correctionFactor" jdbcType="DECIMAL" />
     <result column="present_value_factor" property="presentValueFactor" jdbcType="DECIMAL" />
     <result column="income_price" property="incomePrice" jdbcType="DECIMAL" />
@@ -82,8 +83,9 @@
   </sql>
   <sql id="Base_Column_List" >
     id, income_id, operation_mode, begin_date, end_date, year_count, income_total, cost_total, 
-    operating_profit, net_profit, rental_growth_rate, rental_growth_rate_explain, correction_factor, 
-    present_value_factor, income_price, sorting, creator, gmt_created, gmt_modified
+    operating_profit, net_profit, rental_growth_rate, rental_growth_rate_explain, rental_growth_rate_explain_supplement, 
+    correction_factor, present_value_factor, income_price, sorting, creator, gmt_created, 
+    gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeDateSectionExample" >
     select
@@ -123,16 +125,18 @@
       end_date, year_count, income_total, 
       cost_total, operating_profit, net_profit, 
       rental_growth_rate, rental_growth_rate_explain, 
-      correction_factor, present_value_factor, income_price, 
-      sorting, creator, gmt_created, 
-      gmt_modified)
+      rental_growth_rate_explain_supplement, correction_factor, 
+      present_value_factor, income_price, sorting, 
+      creator, gmt_created, gmt_modified
+      )
     values (#{incomeId,jdbcType=INTEGER}, #{operationMode,jdbcType=INTEGER}, #{beginDate,jdbcType=TIMESTAMP}, 
       #{endDate,jdbcType=TIMESTAMP}, #{yearCount,jdbcType=DECIMAL}, #{incomeTotal,jdbcType=DECIMAL}, 
       #{costTotal,jdbcType=DECIMAL}, #{operatingProfit,jdbcType=DECIMAL}, #{netProfit,jdbcType=VARCHAR}, 
       #{rentalGrowthRate,jdbcType=DECIMAL}, #{rentalGrowthRateExplain,jdbcType=VARCHAR}, 
-      #{correctionFactor,jdbcType=DECIMAL}, #{presentValueFactor,jdbcType=DECIMAL}, #{incomePrice,jdbcType=DECIMAL}, 
-      #{sorting,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{rentalGrowthRateExplainSupplement,jdbcType=VARCHAR}, #{correctionFactor,jdbcType=DECIMAL}, 
+      #{presentValueFactor,jdbcType=DECIMAL}, #{incomePrice,jdbcType=DECIMAL}, #{sorting,jdbcType=INTEGER}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeDateSection" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -172,6 +176,9 @@
       </if>
       <if test="rentalGrowthRateExplain != null" >
         rental_growth_rate_explain,
+      </if>
+      <if test="rentalGrowthRateExplainSupplement != null" >
+        rental_growth_rate_explain_supplement,
       </if>
       <if test="correctionFactor != null" >
         correction_factor,
@@ -228,6 +235,9 @@
       </if>
       <if test="rentalGrowthRateExplain != null" >
         #{rentalGrowthRateExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="rentalGrowthRateExplainSupplement != null" >
+        #{rentalGrowthRateExplainSupplement,jdbcType=VARCHAR},
       </if>
       <if test="correctionFactor != null" >
         #{correctionFactor,jdbcType=DECIMAL},
@@ -297,6 +307,9 @@
       <if test="record.rentalGrowthRateExplain != null" >
         rental_growth_rate_explain = #{record.rentalGrowthRateExplain,jdbcType=VARCHAR},
       </if>
+      <if test="record.rentalGrowthRateExplainSupplement != null" >
+        rental_growth_rate_explain_supplement = #{record.rentalGrowthRateExplainSupplement,jdbcType=VARCHAR},
+      </if>
       <if test="record.correctionFactor != null" >
         correction_factor = #{record.correctionFactor,jdbcType=DECIMAL},
       </if>
@@ -337,6 +350,7 @@
       net_profit = #{record.netProfit,jdbcType=VARCHAR},
       rental_growth_rate = #{record.rentalGrowthRate,jdbcType=DECIMAL},
       rental_growth_rate_explain = #{record.rentalGrowthRateExplain,jdbcType=VARCHAR},
+      rental_growth_rate_explain_supplement = #{record.rentalGrowthRateExplainSupplement,jdbcType=VARCHAR},
       correction_factor = #{record.correctionFactor,jdbcType=DECIMAL},
       present_value_factor = #{record.presentValueFactor,jdbcType=DECIMAL},
       income_price = #{record.incomePrice,jdbcType=DECIMAL},
@@ -384,6 +398,9 @@
       <if test="rentalGrowthRateExplain != null" >
         rental_growth_rate_explain = #{rentalGrowthRateExplain,jdbcType=VARCHAR},
       </if>
+      <if test="rentalGrowthRateExplainSupplement != null" >
+        rental_growth_rate_explain_supplement = #{rentalGrowthRateExplainSupplement,jdbcType=VARCHAR},
+      </if>
       <if test="correctionFactor != null" >
         correction_factor = #{correctionFactor,jdbcType=DECIMAL},
       </if>
@@ -421,6 +438,7 @@
       net_profit = #{netProfit,jdbcType=VARCHAR},
       rental_growth_rate = #{rentalGrowthRate,jdbcType=DECIMAL},
       rental_growth_rate_explain = #{rentalGrowthRateExplain,jdbcType=VARCHAR},
+      rental_growth_rate_explain_supplement = #{rentalGrowthRateExplainSupplement,jdbcType=VARCHAR},
       correction_factor = #{correctionFactor,jdbcType=DECIMAL},
       present_value_factor = #{presentValueFactor,jdbcType=DECIMAL},
       income_price = #{incomePrice,jdbcType=DECIMAL},

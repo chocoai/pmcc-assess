@@ -30,17 +30,6 @@
                 </div>
                 <div class="x_content">
                     <table id="case_list" class="table table-bordered" style="max-height: auto;"></table>
-                    <form id="frm_case" class="form-horizontal" style="display: none">
-                        <fieldset>
-                            <legend>同步数据到其它权证</legend>
-                            <div class="form-group">
-                                <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 " id="declareCertContent">
-
-                                </div>
-                            </div>
-                        </fieldset>
-                    </form>
-                    <input type="hidden" id="jsonContentCase" value='${surveyCaseStudy.jsonContent}'>
                 </div>
             </div>
             <%@include file="/views/share/form_approval.jsp" %>

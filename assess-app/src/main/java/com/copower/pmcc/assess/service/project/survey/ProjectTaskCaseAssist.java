@@ -10,7 +10,6 @@ import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
-import com.copower.pmcc.assess.service.event.project.SurveyCaseStudyEvent;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
@@ -19,16 +18,12 @@ import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.exception.BusinessException;
-import com.google.common.base.Objects;
-import com.google.common.collect.Lists;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -89,8 +84,7 @@ public class ProjectTaskCaseAssist implements ProjectTaskInterface {
             examineType = ExamineTypeEnum.CASE.getId();
         }
         SurveyExamineInfo surveyExamineInfo = surveyExamineInfoService.getExamineInfoByPlanDetailsId(projectPlanDetails.getId());
-        if (surveyExamineInfo == null) {
-            //清空数据
+        if (surveyExamineInfo == null) {//清空数据
             surveyExamineTaskService.deleteTaskByPlanDetailsId(projectPlanDetails.getId());
         }
         List<BaseDataDic> transactionTypeList = new ArrayList<>();
@@ -122,7 +116,6 @@ public class ProjectTaskCaseAssist implements ProjectTaskInterface {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskCaseApproval", processInsId, boxId, taskId, agentUserAccount);
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
         modelAndView.addObject("declareRecord", declareRecord);
-        modelAndView.addObject("surveyCaseStudy", surveyCaseStudyService.getSurveyCaseStudy(processInsId));
         return modelAndView;
     }
 
@@ -145,18 +138,12 @@ public class ProjectTaskCaseAssist implements ProjectTaskInterface {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskCaseApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
         modelAndView.addObject("declareRecord", declareRecord);
-        modelAndView.addObject("surveyCaseStudy", surveyCaseStudyService.getSurveyCaseStudy(projectPlanDetails.getId()));
         return modelAndView;
     }
 
     @Override
     public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException, BpmException {
-        SurveyCaseStudy surveyCaseStudy = JSON.parseObject(formData, SurveyCaseStudy.class);
-        surveyCaseStudy.setProcessInsId(processInsId);
-        surveyCaseStudyService.saveSurveyCaseStudy(surveyCaseStudy);
-        if (StringUtils.isNotBlank(processInsId)) {
-            bpmRpcActivitiProcessManageService.setProcessEventExecutor(processInsId, SurveyCaseStudyEvent.class.getSimpleName());//修改监听器
-        }
+
     }
 
     @Override

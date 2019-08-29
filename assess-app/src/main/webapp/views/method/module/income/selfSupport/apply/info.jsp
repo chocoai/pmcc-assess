@@ -18,7 +18,7 @@
             </div>
 
             <div class="x_title">
-                预测结果数据
+                有效毛收入
             </div>
             <div class="x_content">
                 <table class="table table-bordered" id="tb_forecast_income_list">
@@ -44,7 +44,7 @@
             </div>
 
             <div class="x_title">
-                预测结果数据
+                年运营费
             </div>
             <div class="x_content">
                 <table class="table table-bordered" id="tb_forecast_cost_list">
@@ -615,7 +615,7 @@
         $("#tb_forecast_income_list").bootstrapTable('destroy');
         TableInit("tb_forecast_income_list", "${pageContext.request.contextPath}/income/getForecastList", cols, {
             type: 0,
-            incomeId: $("#frm_income").find('[name=id]').val()
+            incomeId: incomeIndex.getInComeId()
         }, {
             showColumns: false,
             showRefresh: false,
@@ -665,7 +665,7 @@
         $("#tb_forecast_cost_list").bootstrapTable('destroy');
         TableInit("tb_forecast_cost_list", "${pageContext.request.contextPath}/income/getForecastList", cols, {
             type: 1,
-            incomeId: $("#frm_income").find('[name=id]').val()
+            incomeId: incomeIndex.getInComeId()
         }, {
             showColumns: false,
             showRefresh: false,
@@ -866,8 +866,8 @@
             type: "get",
             dataType: "json",
             data: {
-                incomeId: $("#frm_income").find('[name=id]').val(),
-                operationMode: $("#frm_income").find('[name=operationMode]').val()
+                incomeId: incomeIndex.getInComeId(),
+                operationMode: incomeIndex.getOperationMode()
             },
             success: function (result) {
                 if (result.rows) {
@@ -896,7 +896,7 @@
     selfSupport.getData = function () {
         var formData = {};
         formData.mdIncome = {};
-        formData.mdIncome.id = $("#frm_income").find('[name=id]').val();
+        formData.mdIncome.id = incomeIndex.getInComeId();
         formData.mdIncome.houseRemainingYear = $("#frm_income").find('[name=houseRemainingYear]').val();
         formData.mdIncome.landRemainingYear = $("#frm_income").find('[name=landRemainingYear]').val();
         formData.mdIncome.name = $("#frm_income").find('[name=name]').val();

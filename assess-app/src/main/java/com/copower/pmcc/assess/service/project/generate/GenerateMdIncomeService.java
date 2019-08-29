@@ -655,36 +655,39 @@ public class GenerateMdIncomeService implements Serializable {
             for (int i = 0; i < leaseVoList.size(); i++) {
                 MdIncomeLeaseVo vo = leaseVoList.get(i);
                 StringBuilder stringBuilder = new StringBuilder(8);
-                stringBuilder.append("第");
-                stringBuilder.append(getChineseNumber(i));
-                stringBuilder.append("段");
-                stringBuilder.append(DateUtils.format(vo.getBeginDate(), DateUtils.DATE_CHINESE_PATTERN));
-                stringBuilder.append("-");
+                StringBuilder dateRangeBuilder = new StringBuilder(8);
+                dateRangeBuilder.append("第");
+                dateRangeBuilder.append(getChineseNumber(i));
+                dateRangeBuilder.append("段");
+                dateRangeBuilder.append(DateUtils.format(vo.getBeginDate(), DateUtils.DATE_CHINESE_PATTERN));
+                dateRangeBuilder.append("-");
                 if (vo.getEndDate() != null) {
-                    stringBuilder.append(DateUtils.format(vo.getEndDate(), DateUtils.DATE_CHINESE_PATTERN));
+                    dateRangeBuilder.append(DateUtils.format(vo.getEndDate(), DateUtils.DATE_CHINESE_PATTERN));
                 } else {
-                    stringBuilder.append("未知");
+                    dateRangeBuilder.append("未知");
                 }
-                stringBuilder.append("租约租金,即估价对象的比准租赁价格为");
-                stringBuilder.append(vo.getRentalIncome().toString()).append("元/㎡月");
+                stringBuilder.append(generateCommonMethod.getIndentHtml(dateRangeBuilder.toString()));
+
+                StringBuilder priceExplainBuilder = new StringBuilder(8);
                 if (vo.getMcId() != null) {
                     String path = getMdComparePath(vo.getMcId());
                     if (StringUtils.isNotBlank(path)) {
                         String key = RandomStringUtils.randomNumeric(12);
-                        stringBuilder.append("调用比较法测算");
-                        stringBuilder.append(StringUtils.repeat(ControlChar.LINE_BREAK, 1));
-                        stringBuilder.append(key);
+                        priceExplainBuilder.append("调用比较法测算");
+                        priceExplainBuilder.append(StringUtils.repeat(ControlChar.LINE_BREAK, 1));
+                        priceExplainBuilder.append(key);
                         linkedHashMap.put(key, path);
                     }
-                } else {
-                    //没有调用市场比较法则说出收入来源说明
+                } else {//没有调用市场比较法则说出收入来源说明
                     if (StringUtils.isNotBlank(vo.getRentalIncomeRemark())) {
-                        stringBuilder.append("，租金收入来源说明").append(vo.getRentalIncomeRemark());
+                        priceExplainBuilder.append(generateCommonMethod.trim(vo.getRentalIncomeRemark()));
                     }
+                    priceExplainBuilder.append("即估价对象的比准租赁价格为");
+                    priceExplainBuilder.append(vo.getRentalIncome().toString()).append("元/㎡月");
                 }
+                stringBuilder.append(generateCommonMethod.getIndentHtml(priceExplainBuilder.toString()));
                 linkedList.add(stringBuilder.toString());
             }
-
         }
         if (CollectionUtils.isNotEmpty(linkedList)) {
             for (int i = 0; i < linkedList.size(); i++) {
@@ -885,7 +888,7 @@ public class GenerateMdIncomeService implements Serializable {
      * @date: 2019/2/28 16:28
      */
     public synchronized String getTenancyrestrictionReamrk() throws Exception {
-        return StringUtils.isNotBlank(getMdIncome().getRestrictionExplain())?getMdIncome().getRestrictionExplain():"不考虑估价对象租赁因素影响" ;
+        return StringUtils.isNotBlank(getMdIncome().getRestrictionExplain()) ? getMdIncome().getRestrictionExplain() : "不考虑估价对象租赁因素影响";
     }
 
     /**
@@ -1082,24 +1085,33 @@ public class GenerateMdIncomeService implements Serializable {
                         }
                     }
                     break;
-                case AnnualNetIncome:
-                {
+                case AnnualNetIncome: {
                     mdIncomeDateSection = mdIncomeDateSectionService.getDateSectionById(mdIncomeLeaseCostVo.getSectionId());
                     StringBuilder stringBuilder = new StringBuilder(8);
-                    stringBuilder.append(mdIncomeDateSection.getIncomeTotal()) ;
+                    stringBuilder.append(mdIncomeDateSection.getIncomeTotal());
                     stringBuilder.append(" - ");
-                    stringBuilder.append(mdIncomeDateSection.getCostTotal()) ;
-                    stringBuilder.append(" = ").append(mdIncomeDateSection.getNetProfit()) ;
+                    stringBuilder.append(mdIncomeDateSection.getCostTotal());
+                    stringBuilder.append(" = ").append(mdIncomeDateSection.getNetProfit());
                     value = stringBuilder.toString();
                 }
                 break;
                 case TransactionTaxeFeeExplain:
                     value = mdIncomeLeaseCostVo.getTransactionTaxeFeeExplain();
+                    if (value.endsWith("，") || value.endsWith("。"))
+                        value += mdIncomeLeaseCostVo.getTransactionTaxeFeeExplainSupplement();
+                    else
+                        value += "，" + mdIncomeLeaseCostVo.getTransactionTaxeFeeExplainSupplement();
                     break;
                 case RentalGrowthRateExplain:
                     mdIncomeDateSection = mdIncomeDateSectionService.getDateSectionById(mdIncomeLeaseCostVo.getSectionId());
                     if (mdIncomeDateSection != null) {
                         value = mdIncomeDateSection.getRentalGrowthRateExplain();
+                        if (mdIncomeDateSection.getRentalGrowthRate().doubleValue() > 0 && StringUtils.isNotBlank(mdIncomeDateSection.getRentalGrowthRateExplainSupplement())) {
+                            if (value.endsWith("，") || value.endsWith("。"))
+                                value += mdIncomeDateSection.getRentalGrowthRateExplainSupplement();
+                            else
+                                value += "，" + mdIncomeDateSection.getRentalGrowthRateExplainSupplement();
+                        }
                     }
                     break;
                 default:
@@ -1512,14 +1524,8 @@ public class GenerateMdIncomeService implements Serializable {
         if (CollectionUtils.isEmpty(this.mdIncomeDateSectionList)) {
             MdIncomeDateSection query = new MdIncomeDateSection();
             query.setIncomeId(miId);
-            mdIncomeDateSectionList = mdIncomeDateSectionService.getMdIncomeDateSectionList(query);
+            this.mdIncomeDateSectionList = mdIncomeDateSectionService.getMdIncomeDateSectionList(query);
         }
-        mdIncomeDateSectionList = mdIncomeDateSectionList.stream().sorted(new Comparator<MdIncomeDateSection>() {
-            @Override
-            public int compare(MdIncomeDateSection o1, MdIncomeDateSection o2) {
-                return o1.getId().compareTo(o2.getId());
-            }
-        }.reversed()).collect(Collectors.toList());
         return mdIncomeDateSectionList;
     }
 
@@ -1527,15 +1533,9 @@ public class GenerateMdIncomeService implements Serializable {
         if (CollectionUtils.isEmpty(mdIncomeLeaseList)) {
             MdIncomeLease query = new MdIncomeLease();
             query.setIncomeId(miId);
-            mdIncomeLeaseList = mdIncomeLeaseDao.getIncomeLeaseList(query).stream()
-                    .map(mdIncomeLease -> mdIncomeService.getMdIncomeLeaseVo(mdIncomeLease)).collect(Collectors.toList());
+            List<MdIncomeLease> incomeLeaseList = mdIncomeLeaseDao.getIncomeLeaseList(query);
+            this.mdIncomeLeaseList = incomeLeaseList.stream().map(mdIncomeLease -> mdIncomeService.getMdIncomeLeaseVo(mdIncomeLease)).collect(Collectors.toList());
         }
-        this.mdIncomeLeaseList = mdIncomeLeaseList.stream().sorted(new Comparator<MdIncomeLeaseVo>() {
-            @Override
-            public int compare(MdIncomeLeaseVo o1, MdIncomeLeaseVo o2) {
-                return o1.getId().compareTo(o2.getId());
-            }
-        }.reversed()).collect(Collectors.toList());
         return this.mdIncomeLeaseList;
     }
 
@@ -1543,14 +1543,9 @@ public class GenerateMdIncomeService implements Serializable {
         if (CollectionUtils.isEmpty(this.leaseVoList)) {
             MdIncomeLeaseCost query = new MdIncomeLeaseCost();
             query.setIncomeId(miId);
-            leaseVoList = mdIncomeLeaseCostDao.getLeaseCostList(query).stream().map(mdIncomeLeaseCost -> mdIncomeService.getMdIncomeLeaseCostVo(mdIncomeLeaseCost)).collect(Collectors.toList());
+            List<MdIncomeLeaseCost> leaseCostList = mdIncomeLeaseCostDao.getLeaseCostList(query);
+            this.leaseVoList = leaseCostList.stream().map(mdIncomeLeaseCost -> mdIncomeService.getMdIncomeLeaseCostVo(mdIncomeLeaseCost)).collect(Collectors.toList());
         }
-        this.leaseVoList = this.leaseVoList.stream().sorted(new Comparator<MdIncomeLeaseCostVo>() {
-            @Override
-            public int compare(MdIncomeLeaseCostVo o1, MdIncomeLeaseCostVo o2) {
-                return o1.getId().compareTo(o2.getId());
-            }
-        }.reversed()).collect(Collectors.toList());
         return this.leaseVoList;
     }
 

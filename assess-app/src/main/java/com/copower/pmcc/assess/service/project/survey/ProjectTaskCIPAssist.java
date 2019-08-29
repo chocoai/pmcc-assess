@@ -1,9 +1,7 @@
 package com.copower.pmcc.assess.service.project.survey;
 
-import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
-import com.copower.pmcc.assess.dal.basis.entity.SurveySceneExplore;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.basic.BasicApplyBatchService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
@@ -85,10 +83,7 @@ public class ProjectTaskCIPAssist implements ProjectTaskInterface {
 
     @Override
     public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException, BpmException {
-        SurveySceneExplore surveySceneExplore = JSON.parseObject(formData, SurveySceneExplore.class);
-        surveySceneExplore.setProcessInsId(processInsId);
-        surveySceneExplore.setCreator(processControllerComponent.getThisUser());
-        surveySceneExploreService.saveSurveySceneExplore(surveySceneExplore);
+
     }
 
     @Override

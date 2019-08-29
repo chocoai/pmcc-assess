@@ -125,7 +125,7 @@
 <script type="text/html" id="selectJudgeHtml">
     <tr>
         <td data-name="name">{name}</td>
-        <td><input type="button" class="btn btn-xs btn-warning" value="选择" onclick="marketCompare.selectStandardJudge('{id}');"></td>
+        <td><input type="button" class="btn btn-xs btn-warning" value="选择" onclick="marketCompare.selectStandardJudge('{basicApplyId}');"></td>
     </tr>
 </script>
 
@@ -287,6 +287,7 @@
             marketCompare.isLand = defaluts.isLand == 'true' ? true : false;
             marketCompare.evaluation = defaluts.evaluation;
             marketCompare.casesAll = defaluts.casesAll;
+            marketCompare.standardJudges = defaluts.standardJudges;
             marketCompare.judgeObjectId = defaluts.judgeObjectId;
             $("#tb_md_mc_item_list").empty();
             marketCompare.initHead(defaluts);
@@ -1145,7 +1146,7 @@
                 var html = '';
                 $.each(marketCompare.standardJudges, function (i, item) {
                     var htmlTemp = $("#selectJudgeHtml").html();
-                    htmlTemp = htmlTemp.replace(/{planDetailsId}/, item.planDetailsId).replace(/{name}/, item.name);
+                    htmlTemp = htmlTemp.replace(/{basicApplyId}/, item.id).replace(/{name}/, item.fullName);
                     html += htmlTemp;
                 })
                 $("#modal_select_judge").find('tbody').empty().append(html);

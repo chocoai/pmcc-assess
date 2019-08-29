@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <div class="x_title">
-    历史数据
+    历史或调查数据
 </div>
 <div class="x_content">
     <div class="form-horizontal">
@@ -107,7 +107,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">历史数据</h3>
+                <h3 class="modal-title">历史或调查数据</h3>
             </div>
             <form id="frm_history" class="form-horizontal">
                 <input type="hidden" name="id">

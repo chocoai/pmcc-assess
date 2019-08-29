@@ -1126,6 +1126,76 @@ public class MdIncomeLeaseCostExample {
             return (Criteria) this;
         }
 
+        public Criteria andTransactionTaxeFeeExplainSupplementIsNull() {
+            addCriterion("transaction_taxe_fee_explain_supplement is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransactionTaxeFeeExplainSupplementIsNotNull() {
+            addCriterion("transaction_taxe_fee_explain_supplement is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransactionTaxeFeeExplainSupplementEqualTo(String value) {
+            addCriterion("transaction_taxe_fee_explain_supplement =", value, "transactionTaxeFeeExplainSupplement");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransactionTaxeFeeExplainSupplementNotEqualTo(String value) {
+            addCriterion("transaction_taxe_fee_explain_supplement <>", value, "transactionTaxeFeeExplainSupplement");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransactionTaxeFeeExplainSupplementGreaterThan(String value) {
+            addCriterion("transaction_taxe_fee_explain_supplement >", value, "transactionTaxeFeeExplainSupplement");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransactionTaxeFeeExplainSupplementGreaterThanOrEqualTo(String value) {
+            addCriterion("transaction_taxe_fee_explain_supplement >=", value, "transactionTaxeFeeExplainSupplement");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransactionTaxeFeeExplainSupplementLessThan(String value) {
+            addCriterion("transaction_taxe_fee_explain_supplement <", value, "transactionTaxeFeeExplainSupplement");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransactionTaxeFeeExplainSupplementLessThanOrEqualTo(String value) {
+            addCriterion("transaction_taxe_fee_explain_supplement <=", value, "transactionTaxeFeeExplainSupplement");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransactionTaxeFeeExplainSupplementLike(String value) {
+            addCriterion("transaction_taxe_fee_explain_supplement like", value, "transactionTaxeFeeExplainSupplement");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransactionTaxeFeeExplainSupplementNotLike(String value) {
+            addCriterion("transaction_taxe_fee_explain_supplement not like", value, "transactionTaxeFeeExplainSupplement");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransactionTaxeFeeExplainSupplementIn(List<String> values) {
+            addCriterion("transaction_taxe_fee_explain_supplement in", values, "transactionTaxeFeeExplainSupplement");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransactionTaxeFeeExplainSupplementNotIn(List<String> values) {
+            addCriterion("transaction_taxe_fee_explain_supplement not in", values, "transactionTaxeFeeExplainSupplement");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransactionTaxeFeeExplainSupplementBetween(String value1, String value2) {
+            addCriterion("transaction_taxe_fee_explain_supplement between", value1, value2, "transactionTaxeFeeExplainSupplement");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransactionTaxeFeeExplainSupplementNotBetween(String value1, String value2) {
+            addCriterion("transaction_taxe_fee_explain_supplement not between", value1, value2, "transactionTaxeFeeExplainSupplement");
+            return (Criteria) this;
+        }
+
         public Criteria andPropertyTaxRatioIsNull() {
             addCriterion("property_tax_ratio is null");
             return (Criteria) this;
