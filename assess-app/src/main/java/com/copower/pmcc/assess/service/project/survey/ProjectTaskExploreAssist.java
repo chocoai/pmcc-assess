@@ -5,7 +5,6 @@ import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dal.basis.entity.SurveySceneExplore;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
-import com.copower.pmcc.assess.service.event.project.SurveySceneExploreEvent;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.api.exception.BpmException;
@@ -85,12 +84,7 @@ public class ProjectTaskExploreAssist implements ProjectTaskInterface {
 
     @Override
     public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException, BpmException {
-        SurveySceneExplore surveySceneExplore= JSON.parseObject(formData,SurveySceneExplore.class);
-        surveySceneExplore.setProcessInsId(processInsId);
-        surveySceneExploreService.saveSurveySceneExplore(surveySceneExplore);
-        if(StringUtils.isNotBlank(processInsId)){
-            bpmRpcActivitiProcessManageService.setProcessEventExecutor(processInsId, SurveySceneExploreEvent.class.getSimpleName());//修改监听器
-        }
+
     }
 
     @Override
