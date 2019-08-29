@@ -44,7 +44,7 @@
     </div>
 
 </div>
-
+<script src="${pageContext.request.contextPath}/js/method/developmentCommon.js"></script>
 <%@include file="/views/method/module/developmentCommon.jsp" %>
 <%@include file="/views/project/tool/rewardRate.jsp" %>
 
@@ -252,8 +252,8 @@
         underConstruction.unsaleableBuildingAreaFunHandle() ;
         landEngineering.inputBlurEvent() ;
         underConstruction.inputBlurEvent() ;
-        landEngineering.constructionInstallationEngineeringFeeEvent.loadHtml();
-        underConstruction.constructionInstallationEngineeringFeeEvent.loadHtml();
+        underConstruction.loadMdCalculatingMethodEngineeringCostTable() ;
+        landEngineering.loadMdCalculatingMethodEngineeringCostTable() ;
     };
 
     $(document).ready(function () {

@@ -24,7 +24,7 @@
                     <h3>成本法</h3>
                     <div class="clearfix"></div>
                 </div>
-
+                <script src="${pageContext.request.contextPath}/js/method/developmentCommon.js"></script>
                 <%@include file="/views/method/module/developmentCommon.jsp" %>
                 <%@include file="/views/project/tool/residueRatio.jsp" %>
 
@@ -220,6 +220,8 @@
         construction.inputBlurEvent() ;
 
         construction.loadMdCalculatingMethodEngineeringCostTable() ;
+
+        construction.loadIncomeCategoryTable() ;
 
     });
 

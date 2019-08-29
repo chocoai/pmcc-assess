@@ -141,35 +141,30 @@
 
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">
-                    建筑安装工程费<span class="symbol required"></span>
-                </label>
-                <div class="col-sm-3">
-                    <div class="input-group">
-                        <input type="hidden" name="constructionInstallationEngineeringFeeIds" value="${mdDevelopment.constructionInstallationEngineeringFeeIds}">
-                        <input type="text" readonly="readonly" class="form-control" name="constructionInstallationEngineeringFee" onblur="underConstruction.calculationD21()" value="${mdDevelopment.constructionInstallationEngineeringFee}">
-                        <span class="input-group-btn">
-                              <button type="button" class="btn  btn-success" onclick="underConstruction.constructionInstallationEngineeringFeeEvent.appendHTML(this)"><i class="fa fa-plus"></i></button>
-                        </span>
+                <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                    <div id="toolbarMdCalculatingMethodEngineeringCostEngineering" style="display: none">
+                        <div class="input-group">
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-info disabled">
+                                    建筑安装工程费
+                                </button>
+                                <button type="button" class="btn btn-primary" onclick="underConstruction.delMdCalculatingMethodEngineeringCost()">删除</button>
+                                <button type="button" class="btn btn-primary" onclick="underConstruction.constructionInstallationEngineeringFeeEvent.appendHTML();">添加</button>
+                            </span>
+                            <span class="input-group-btn">
+                                <input type="text" readonly="readonly"  class="form-control" onblur="underConstruction.calculationD21()"
+                                       name="constructionInstallationEngineeringFee"  value="${mdDevelopment.constructionInstallationEngineeringFee}" >
+                                <input type="hidden" name="constructionInstallationEngineeringFeeIds" value="${mdDevelopment.constructionInstallationEngineeringFeeIds}">
+                            </span>
+                        </div>
                     </div>
-                </div>
-            </div>
+                    <table class="table table-striped" id="engineeringConstructionInstallationEngineeringFeeInfoTarget" >
 
-            <div class="x-valid">
-                <div class=" col-xs-1  col-sm-1  col-md-1  col-lg-1">
-                    <div class="input-group">
-                        <button type="button" class="btn btn-default"
-                                onclick="underConstruction.constructionInstallationEngineeringFeeEvent.loadHtml();">
-                            工程费列表
-                            <i class="fa fa-refresh" aria-hidden="true"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 " id="engineeringConstructionInstallationEngineeringFeeInfoTarget">
-
+                    </table>
                 </div>
             </div>
         </div>
+
 
         <div class="form-group">
             <div class="x-valid">
@@ -855,6 +850,7 @@
                 <h3 class="modal-title">建筑安装工程费</h3>
             </div>
             <input type="hidden" name="id">
+            <input type="hidden" name="masterId">
             <div class="modal-body">
                 <div class="row">
                     <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">

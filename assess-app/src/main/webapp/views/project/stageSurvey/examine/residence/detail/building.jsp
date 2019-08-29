@@ -396,7 +396,10 @@
 
 <%@include file="./buildingOutfit.jsp" %>
 <%@include file="./buildingFunction.jsp" %>
-<%@include file="../../residence/apply/constructionInstallationEngineeringFeeInfoModelHtml.jsp" %>
+<script src="${pageContext.request.contextPath}/js/method/developmentCommon.js"></script>
+<%@include file="/views/method/module/developmentCommon.jsp" %>
+
+
 
 </html>
 

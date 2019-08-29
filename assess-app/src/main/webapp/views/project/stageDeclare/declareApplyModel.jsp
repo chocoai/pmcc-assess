@@ -833,17 +833,17 @@
             }
             if (planIndex != 0) {
                 if (target.find("input[name='planIndex']").size() != 0) {
-                    target.find("input[name='planIndex']").val(planIndex);
+                    target.find("input[name='planIndex']").val(planIndex.toFixed(2));
                 }
             }
             if (salabilityNumber != 0) {
                 if (target.find("input[name='salabilityNumber']").size() != 0) {
-                    target.find("input[name='salabilityNumber']").val(salabilityNumber);
+                    target.find("input[name='salabilityNumber']").val(salabilityNumber.toFixed(2));
                 }
             }
             if (assessSalabilityNumber != 0) {
                 if (target.find("input[name='assessSalabilityNumber']").size() != 0) {
-                    target.find("input[name='assessSalabilityNumber']").val(assessSalabilityNumber);
+                    target.find("input[name='assessSalabilityNumber']").val(assessSalabilityNumber.toFixed(2));
                 }
             }
         },

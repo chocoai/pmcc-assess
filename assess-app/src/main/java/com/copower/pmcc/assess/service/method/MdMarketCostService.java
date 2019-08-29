@@ -33,6 +33,8 @@ public class MdMarketCostService {
     private CommonService commonService;
     @Autowired
     private MdArchitecturalObjService mdArchitecturalObjService;
+    @Autowired
+    private MdDevelopmentIncomeCategoryService mdDevelopmentIncomeCategoryService;
 
 
     public MdCost initExplore(SchemeJudgeObject schemeJudgeObject) {
@@ -75,6 +77,17 @@ public class MdMarketCostService {
                 mdArchitecturalObjService.saveMdArchitecturalObj(oo);
             }
         }
+        MdDevelopmentIncomeCategory mdDevelopmentIncomeCategory = new MdDevelopmentIncomeCategory();
+        mdDevelopmentIncomeCategory.setPid(0);
+        mdDevelopmentIncomeCategory.setPlanDetailsId(mdCost.getPlanDetailsId());
+        List<MdDevelopmentIncomeCategory> mdDevelopmentIncomeCategoryList = mdDevelopmentIncomeCategoryService.getMdDevelopmentIncomeCategoryListByExample(mdDevelopmentIncomeCategory) ;
+        if (CollectionUtils.isNotEmpty(mdDevelopmentIncomeCategoryList)){
+            for (MdDevelopmentIncomeCategory oo:mdDevelopmentIncomeCategoryList){
+                oo.setPid(mdCostConstruction.getId());
+                mdDevelopmentIncomeCategoryService.saveMdDevelopmentIncomeCategory(oo) ;
+            }
+        }
+
         return mdCost.getId();
     }
 

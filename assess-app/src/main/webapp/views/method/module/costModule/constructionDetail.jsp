@@ -49,6 +49,54 @@
 
 </div>
 
+<div class="x_panel">
+
+    <div class="x_title collapse-link">
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+        </ul>
+        <h3>经济指标(参考值)</h3>
+        <div class="clearfix"></div>
+    </div>
+
+
+    <div class="x_content">
+        <div class="form-group">
+            <div class="x-valid">
+                <div class="col-sm-12">
+                    <table class="table table-striped" id="landIncomeCategoryTableId" >
+
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <div class="col-sm-12">
+                    <table class="table table-condensed">
+                        <tfoot>
+                        <tr>
+                        </tr>
+                        <tr>
+                            <td>预期销售合计:</td>
+                            <td class="info">规划建筑面积<label name="plannedBuildingArea" class="label label-default"></label></td>
+                            <td class="info">总可售面积售价<label name="totalSaleableAreaPrice" class="label label-default"></label></td>
+                            <td class="info">可售面积<label name="saleableArea" class="label label-default"></label></td>
+                            <td class="active">
+                                <!-- 不可售建筑面积 -->
+                                <a data-key="unsaleableBuildingArea"></a>
+                                <input type="hidden" value="" name="unsaleableBuildingArea" class="form-control" >
+                            </td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <c:if test="${mdCostVo.type == 2}">
     <div class="x_panel">
 
@@ -71,7 +119,7 @@
                             <label  class="form-control"> ${mdCostVo.mdCostConstruction.landPurchasePrice} </label>
                             <span class="input-group-btn">
                                             <input type="button" class="btn btn-primary" value="市场比较法"
-                                                   onclick="callCompareMethod('${mdCostVo.mdCostConstruction.mcId}');">
+                                                   onclick="construction.callCompareMethod('${mdCostVo.mdCostConstruction.mcId}');">
                                         </span>
                         </div>
                     </div>
@@ -448,7 +496,7 @@
                          </label>
                         </span>
                         <span class="input-group-btn">
-                            <button type="button" class="btn-primary btn" onclick="callResidueRatio(this,true)"> <i class="fa fa-dashcube"></i></button>
+                            <button type="button" class="btn-primary btn" onclick="construction.callResidueRatio(this,true)"> <i class="fa fa-dashcube"></i></button>
                         </span>
                     </div>
                 </div>
@@ -540,7 +588,13 @@
 
 <script>
 
-    function callResidueRatio(_this, readonly) {
+    var construction = {};
+
+    construction.target = $("#constructionFrm");
+    construction.type = "engineering";
+
+
+    construction.callResidueRatio = function (_this, readonly) {
         try {
             var target = $(_this).closest("form");
             residueRatio.init({
@@ -552,45 +606,43 @@
             });
         } catch (e) {
         }
-    }
-    function constructionInstallationEngineeringFeeEvent(id) {
+    };
+
+    construction.constructionInstallationEngineeringFeeEvent = function (id) {
         var target = $("#boxMdCostConstruction");
-        if (target.find(".panel-body").find("table").size() == 0) {
-            target.find(".panel-body").append(developmentCommon.architecturalB.getHtmlDetail());
-            developmentCommon.architecturalB.treeGirdParse(target);
-        }
+        target.modal("show");
+        target.find(".panel-body").empty() ;
         developmentCommon.getMdArchitecturalObjById(id,function (item) {
-            var data = {} ;
+            var data = [] ;
             try {
                 data = JSON.parse(item.jsonContent) ;
             } catch (e) {
                 console.log("解析异常!");
             }
-            developmentCommon.architecturalB.initData(target.find("table"),data) ;
+            developmentCommon.architecturalB.appendHtml(target.find(".panel-body"),data,{readonly:"readonly",'class':'form-control'},item.price) ;
         });
-        target.modal("show");
-    }
+    };
 
-    function loadMdDevelopmentInfrastructureChildrenTable() {
+    construction.loadMdDevelopmentInfrastructureChildrenTable = function () {
         var cols = [];
         cols.push({field: 'name', title: '名称'});
         cols.push({field: 'number', title: '金额'});
-        cols.push({field: 'tax', title: '税费'});
         $("#landMdCostConstructionChildrenTable").bootstrapTable('destroy');
-        TableInit('landMdCostConstructionChildrenTable', "${pageContext.request.contextPath}/mdDevelopmentInfrastructureChildren/getBootstrapTableVo?pid=${mdCostVo.mdCostConstruction.id}&planDetailsId=${projectPlanDetails.id}&type=engineering", cols, {}, {
+        TableInit('landMdCostConstructionChildrenTable', "${pageContext.request.contextPath}/mdDevelopmentInfrastructureChildren/getBootstrapTableVo?pid=${mdCostVo.mdCostConstruction.id}&planDetailsId=${projectPlanDetails.id}&type="+construction.type, cols, {}, {
             showColumns: true,
             showRefresh: true,
             search: false
         });
-    }
+    };
 
-    function loadMdCalculatingMethodEngineeringCostTable() {
-        var obj = {type:'engineering',planDetailsId:'${projectPlanDetails.pid}'} ;
+
+    construction.loadMdCalculatingMethodEngineeringCostTable = function () {
+        var obj = {type:construction.type,planDetailsId:'${projectPlanDetails.pid}'} ;
         var cols = [];
         cols.push({
             field: 'id', title: '建筑安装工程费明细', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                str += "<a class='btn btn-xs btn-success tooltips' data-placement='top' data-original-title='建筑安装工程费明细' onclick='constructionInstallationEngineeringFeeEvent(" + row.architecturalObjId + ")'" + ">" + "<i class='fa fa-search fa-white'>" + "建筑安装工程费明细" + "</a>";
+                str += "<a class='btn btn-xs btn-success tooltips' data-placement='top' data-original-title='建筑安装工程费明细' onclick='construction.constructionInstallationEngineeringFeeEvent(" + row.architecturalObjId + ")'" + ">" + "<i class='fa fa-search fa-white'>" + "建筑安装工程费明细" + "</a>";
                 str += '</div>';
                 return str;
             }
@@ -598,9 +650,55 @@
         developmentCommon.loadMdCalculatingMethodEngineeringCostTable($("#engineeringConstructionInstallationEngineeringFeeInfoTarget"),obj,$("#toolbarMdCalculatingMethodEngineeringCost"),function () {
 
         },cols) ;
-    }
+    };
 
-    function callCompareMethod(mcId) {
+    /*经济指标 table*/
+    construction.loadIncomeCategoryTable = function () {
+        var obj = {type:construction.type,planDetailsId:'${projectPlanDetails.id}'} ;
+        developmentCommon.loadIncomeCategoryTable($("#landIncomeCategoryTableId"),obj,null,function () {
+            construction.writeMdDevelopmentIncomeCategoryTable($("#landIncomeCategoryTableId"),null) ;
+        }) ;
+    } ;
+
+
+    /**经济指标 测算方法*/
+    construction.writeMdDevelopmentIncomeCategoryTable = function (table,obj) {
+        var arr = table.bootstrapTable('getData') ;
+        if (obj){
+            arr.push(obj) ;
+        }
+        //js去重
+        var result = [];
+        var obj = {};
+        for (var i = 0; i < arr.length; i++) {
+            if (!obj[arr[i].id]) {
+                result.push(arr[i]);
+                obj[arr[i].id] = true;
+            }
+        }
+        var plannedBuildingArea = math.bignumber(0);
+        var totalSaleableAreaPrice = math.bignumber(0);
+        var saleableArea = math.bignumber(0);
+        $.each(result,function (i,n) {
+            if ($.isNumeric(n.plannedBuildingArea)){
+                plannedBuildingArea = math.add(plannedBuildingArea, math.bignumber(n.plannedBuildingArea)) ;
+            }
+            if ($.isNumeric(n.totalSaleableAreaPrice)){
+                totalSaleableAreaPrice = math.add(totalSaleableAreaPrice, math.bignumber(n.totalSaleableAreaPrice)) ;
+            }
+            if ($.isNumeric(n.saleableArea)){
+                saleableArea = math.add(saleableArea, math.bignumber(n.saleableArea)) ;
+            }
+        });
+        plannedBuildingArea = plannedBuildingArea.toString() ;
+        totalSaleableAreaPrice = totalSaleableAreaPrice.toString() ;
+        saleableArea = saleableArea.toString() ;
+        this.target.find("label[name='plannedBuildingArea']").html(plannedBuildingArea);
+        this.target.find("label[name='totalSaleableAreaPrice']").html(totalSaleableAreaPrice);
+        this.target.find("label[name='saleableArea']").html(saleableArea);
+    };
+
+    construction.callCompareMethod = function (mcId) {
         if ($.isNumeric(mcId)){
             var frame = layer.open({
                 type: 2,
@@ -629,11 +727,11 @@
         }else {
             toastr.success('未使用过比较法!');
         }
-    }
-
+    };
 
     $(function () {
-        loadMdDevelopmentInfrastructureChildrenTable() ;
-        loadMdCalculatingMethodEngineeringCostTable() ;
+        construction.loadMdDevelopmentInfrastructureChildrenTable() ;
+        construction.loadMdCalculatingMethodEngineeringCostTable() ;
+        construction.loadIncomeCategoryTable() ;
     });
 </script>

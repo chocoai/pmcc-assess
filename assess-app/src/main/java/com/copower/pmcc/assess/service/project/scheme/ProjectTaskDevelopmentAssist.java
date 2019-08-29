@@ -11,6 +11,7 @@ import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataInfrastructureService;
 import com.copower.pmcc.assess.service.method.MdArchitecturalObjService;
+import com.copower.pmcc.assess.service.method.MdCalculatingMethodEngineeringCostService;
 import com.copower.pmcc.assess.service.method.MdDevelopmentIncomeCategoryService;
 import com.copower.pmcc.assess.service.method.MdDevelopmentService;
 import com.copower.pmcc.assess.service.project.declare.DeclareBuildEngineeringAndEquipmentCenterService;
@@ -75,26 +76,28 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
     private MdArchitecturalObjService mdArchitecturalObjService;
     @Autowired
     private TaskExecutor executor;
+    @Autowired
+    private MdCalculatingMethodEngineeringCostService mdCalculatingMethodEngineeringCostService;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskDevelopmentIndex", "", 0, "0", "");
         //初始化支撑数据
-        setViewParam(projectPlanDetails, modelAndView, true);
+        setViewParam(projectPlanDetails, modelAndView);
         return modelAndView;
     }
 
     @Override
     public ModelAndView approvalView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskDevelopmentApproval", processInsId, boxId, taskId, agentUserAccount);
-        setViewParam(projectPlanDetails, modelAndView, false);
+        setViewParam(projectPlanDetails, modelAndView);
         return modelAndView;
     }
 
     @Override
     public ModelAndView returnEditView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskDevelopmentIndex", processInsId, boxId, taskId, agentUserAccount);
-        setViewParam(projectPlanDetails, modelAndView, false);
+        setViewParam(projectPlanDetails, modelAndView);
         return modelAndView;
     }
 
@@ -106,7 +109,7 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView detailsView(ProjectPlanDetails projectPlanDetails, Integer boxId) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskDevelopmentApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
-        setViewParam(projectPlanDetails, modelAndView, false);
+        setViewParam(projectPlanDetails, modelAndView);
         return modelAndView;
     }
 
@@ -169,7 +172,7 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
      *
      * @param modelAndView
      */
-    private void setViewParam(ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView, boolean init) {
+    private void setViewParam(ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) {
         SchemeInfo select = new SchemeInfo();
         select.setMethodType(baseDataDicService.getCacheDataDicByFieldName(AssessReportFieldConstant.DEVELOPMENT).getId());
         select.setProjectId(projectPlanDetails.getProjectId());
@@ -188,7 +191,7 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
         }
         //projectPlanDetails
         modelAndView.addObject(StringUtils.uncapitalize(ProjectPlanDetails.class.getSimpleName()), projectPlanDetails);
-        setViewBaseParam(projectPlanDetails, modelAndView, init);
+        setViewBaseParam(projectPlanDetails, modelAndView, mdDevelopment != null && mdDevelopment.getId() != null);
     }
 
     private void setViewBaseParam(ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView, boolean init) {
@@ -250,11 +253,11 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
             }
         }
         if (init) {
-            initPortOtherInfo(indicatorsContentList,projectPlanDetails,surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId()));
+            initPortOtherInfo(indicatorsContentList,projectPlanDetails,surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId()),schemeJudgeObject.getFloorArea() != null ? schemeJudgeObject.getFloorArea() : schemeJudgeObject.getEvaluationArea());
         }
     }
 
-    private void initPortOtherInfo(List<DeclareEconomicIndicatorsContent> indicatorsContentList,ProjectPlanDetails projectPlanDetails,BasicApply basicApply){
+    private void initPortOtherInfo(List<DeclareEconomicIndicatorsContent> indicatorsContentList,ProjectPlanDetails projectPlanDetails,BasicApply basicApply,BigDecimal area){
         if (CollectionUtils.isNotEmpty(indicatorsContentList)) {
             mdDevelopmentIncomeCategoryService.clear();
             for (DeclareEconomicIndicatorsContent obj : indicatorsContentList) {
@@ -316,6 +319,13 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
                             oo.setType("engineering");
                             oo.setDatabaseName(FormatUtils.entityNameConvertToTableName(ProjectPlanDetails.class));
                             mdArchitecturalObjService.saveMdArchitecturalObj(oo);
+                            MdCalculatingMethodEngineeringCost mdCalculatingMethodEngineeringCost = new MdCalculatingMethodEngineeringCost();
+                            mdCalculatingMethodEngineeringCost.setCreator(processControllerComponent.getThisUser());
+                            mdCalculatingMethodEngineeringCost.setArea(area);
+                            mdCalculatingMethodEngineeringCost.setArchitecturalObjId(obj.getId());
+                            mdCalculatingMethodEngineeringCost.setPlanDetailsId(projectPlanDetails.getPid());
+                            mdCalculatingMethodEngineeringCost.setProjectId(projectPlanDetails.getProjectId());
+                            mdCalculatingMethodEngineeringCostService.saveMdCalculatingMethodEngineeringCost(mdCalculatingMethodEngineeringCost);
                         }
                     });
                 }
