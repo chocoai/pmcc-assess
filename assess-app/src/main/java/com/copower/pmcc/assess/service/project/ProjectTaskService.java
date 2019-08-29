@@ -1,11 +1,10 @@
 package com.copower.pmcc.assess.service.project;
 
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectPhase;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectWorkStage;
+import com.copower.pmcc.assess.dal.basis.dao.project.ProjectTaskReturnRecordDao;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.ProjectTaskDto;
+import com.copower.pmcc.assess.dto.output.project.ProjectTaskReturnRecordVo;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.event.project.ProjectTaskEvent;
@@ -23,23 +22,35 @@ import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
+import com.copower.pmcc.erp.api.dto.SysUserDto;
+import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.common.utils.SpringContextUtils;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 /**
  * 描述:
  *
- * @author: Calvin(qiudong@copowercpa.com)
+ * @author: Calvin(qiudong @ copowercpa.com)
  * @data: 2018/1/30
  * @time: 14:45
  */
@@ -67,6 +78,10 @@ public class ProjectTaskService {
     private ProjectInfoService projectInfoService;
     @Autowired
     private ProjectPlanService projectPlanService;
+    @Autowired
+    private ProjectTaskReturnRecordDao projectTaskReturnRecordDao;
+    @Autowired
+    private ErpRpcUserService erpRpcUserService;
 
     @Transactional(rollbackFor = Exception.class)
     public void submitTask(ProjectTaskDto projectTaskDto) throws Exception {
@@ -200,5 +215,38 @@ public class ProjectTaskService {
         } catch (BpmException e) {
             throw new BusinessException(e.getMessage());
         }
+    }
+
+    public BootstrapTableVo getDataLandLevelListVos(Integer planDetailsId) {
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        ProjectTaskReturnRecord projectTaskReturnRecord = new ProjectTaskReturnRecord();
+        projectTaskReturnRecord.setPlanDetailsId(planDetailsId);
+        List<ProjectTaskReturnRecord> projectTaskReturnRecordList = projectTaskReturnRecordDao.getProjectTaskReturnRecordList(projectTaskReturnRecord);
+        List<ProjectTaskReturnRecordVo> vos = LangUtils.transform(projectTaskReturnRecordList, o -> getProjectTaskReturnRecordVo(o));
+        vo.setTotal(page.getTotal());
+        vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<ProjectTaskReturnRecordVo>() : vos);
+        return vo;
+    }
+
+    public ProjectTaskReturnRecordVo getProjectTaskReturnRecordVo(ProjectTaskReturnRecord projectTaskReturnRecord) {
+        if (projectTaskReturnRecord == null) {
+            return null;
+        }
+        ProjectTaskReturnRecordVo vo = new ProjectTaskReturnRecordVo();
+        BeanUtils.copyProperties(projectTaskReturnRecord, vo);
+        List<SysAttachmentDto> sysAttachmentDtos = baseAttachmentService.getByField_tableId(projectTaskReturnRecord.getId(), String.valueOf(projectTaskReturnRecord.getPlanDetailsId()), FormatUtils.entityNameConvertToTableName(ProjectTaskReturnRecord.class));
+        StringBuilder builder = new StringBuilder();
+        if (!ObjectUtils.isEmpty(sysAttachmentDtos)) {
+            for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtos) {
+                builder.append(baseAttachmentService.getViewHtml(sysAttachmentDto)).append(" ");
+            }
+            vo.setFileViewName(builder.toString());
+        }
+        SysUserDto sysUser = erpRpcUserService.getSysUser(projectTaskReturnRecord.getReturnPerson());
+        if (sysUser != null)
+            vo.setReturnPersonName(sysUser.getUserName());
+        return vo;
     }
 }

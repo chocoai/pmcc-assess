@@ -17,6 +17,10 @@ public class ProjectTaskReturnRecord {
 
     private Date gmtModified;
 
+    private String returnPerson;
+
+    private Date returnTime;
+
     public Integer getId() {
         return id;
     }
@@ -71,5 +75,21 @@ public class ProjectTaskReturnRecord {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getReturnPerson() {
+        return returnPerson;
+    }
+
+    public void setReturnPerson(String returnPerson) {
+        this.returnPerson = returnPerson == null ? null : returnPerson.trim();
+    }
+
+    public Date getReturnTime() {
+        return returnTime;
+    }
+
+    public void setReturnTime(Date returnTime) {
+        this.returnTime = returnTime;
     }
 }

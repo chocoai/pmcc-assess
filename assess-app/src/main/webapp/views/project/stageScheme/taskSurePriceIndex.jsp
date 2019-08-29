@@ -124,6 +124,21 @@
                 </div>
             </c:if>
             <div class="x_panel">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                    </ul>
+                    <h3>
+                        确认单价记录
+                    </h3>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content collapse">
+                    <table class="table table-bordered" id="tb_surePriceRecordList">
+                    </table>
+                </div>
+            </div>
+            <div class="x_panel">
                 <div class="x_content">
                     <div class="col-sm-4 col-sm-offset-5">
                         <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
@@ -245,6 +260,7 @@
 <script type="application/javascript">
     $(function () {
         surePrice.surePrice('${projectPlanDetails.judgeObjectId}');
+        loadDocumentSend();
     })
 
     function submit() {
@@ -307,6 +323,28 @@
         });
     }
 
+
+    //确认单价记录
+    function loadDocumentSend() {
+        var cols = [];
+        cols.push({field: 'recordPrice', title: '单价记录'});
+        cols.push({
+            field: 'gmtCreated', title: '日期', formatter: function (value, row, index) {
+                return formatDate(value);
+            }
+        });
+        $("#tb_documentSendList").bootstrapTable('destroy');
+        TableInit("tb_surePriceRecordList", "${pageContext.request.contextPath}/schemeSurePriceRecord/getSchemeSurePriceRecordList", cols, {
+            planDetailsId: '${projectPlanDetails.id}'
+        }, {
+            showColumns: false,
+            showRefresh: false,
+            search: false,
+            onLoadSuccess: function () {
+                $('.tooltips').tooltip();
+            }
+        });
+    }
 
     var surePrice = {};
     //确定单价
