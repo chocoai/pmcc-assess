@@ -18,6 +18,7 @@
     <result column="use_tax_parameter" property="useTaxParameter" jdbcType="VARCHAR" />
     <result column="transaction_taxe_fee_ratio" property="transactionTaxeFeeRatio" jdbcType="DECIMAL" />
     <result column="transaction_taxe_fee_explain" property="transactionTaxeFeeExplain" jdbcType="VARCHAR" />
+    <result column="transaction_taxe_fee_explain_supplement" property="transactionTaxeFeeExplainSupplement" jdbcType="VARCHAR" />
     <result column="property_tax_ratio" property="propertyTaxRatio" jdbcType="DECIMAL" />
     <result column="stamp_duty_ratio" property="stampDutyRatio" jdbcType="DECIMAL" />
     <result column="sales_tax_ratio" property="salesTaxRatio" jdbcType="DECIMAL" />
@@ -91,9 +92,9 @@
     id, income_id, section_id, replacement_value, management_cost, management_cost_ratio, 
     maintenance, maintenance_cost_ratio, additional, additional_ratio, insurance_premium, 
     insurance_premium_ratio, land_use_tax, use_tax_parameter, transaction_taxe_fee_ratio, 
-    transaction_taxe_fee_explain, property_tax_ratio, stamp_duty_ratio, sales_tax_ratio, 
-    construction_tax_ratio, local_education_ratio, education_ratio, sorting, creator, 
-    gmt_created, gmt_modified
+    transaction_taxe_fee_explain, transaction_taxe_fee_explain_supplement, property_tax_ratio, 
+    stamp_duty_ratio, sales_tax_ratio, construction_tax_ratio, local_education_ratio, 
+    education_ratio, sorting, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeLeaseCostExample" >
     select
@@ -134,21 +135,21 @@
       maintenance_cost_ratio, additional, additional_ratio, 
       insurance_premium, insurance_premium_ratio, 
       land_use_tax, use_tax_parameter, transaction_taxe_fee_ratio, 
-      transaction_taxe_fee_explain, property_tax_ratio, 
-      stamp_duty_ratio, sales_tax_ratio, construction_tax_ratio, 
-      local_education_ratio, education_ratio, sorting, 
-      creator, gmt_created, gmt_modified
-      )
+      transaction_taxe_fee_explain, transaction_taxe_fee_explain_supplement, 
+      property_tax_ratio, stamp_duty_ratio, sales_tax_ratio, 
+      construction_tax_ratio, local_education_ratio, 
+      education_ratio, sorting, creator, 
+      gmt_created, gmt_modified)
     values (#{incomeId,jdbcType=INTEGER}, #{sectionId,jdbcType=INTEGER}, #{replacementValue,jdbcType=DECIMAL}, 
       #{managementCost,jdbcType=VARCHAR}, #{managementCostRatio,jdbcType=DECIMAL}, #{maintenance,jdbcType=VARCHAR}, 
       #{maintenanceCostRatio,jdbcType=DECIMAL}, #{additional,jdbcType=VARCHAR}, #{additionalRatio,jdbcType=DECIMAL}, 
       #{insurancePremium,jdbcType=VARCHAR}, #{insurancePremiumRatio,jdbcType=DECIMAL}, 
       #{landUseTax,jdbcType=DECIMAL}, #{useTaxParameter,jdbcType=VARCHAR}, #{transactionTaxeFeeRatio,jdbcType=DECIMAL}, 
-      #{transactionTaxeFeeExplain,jdbcType=VARCHAR}, #{propertyTaxRatio,jdbcType=DECIMAL}, 
-      #{stampDutyRatio,jdbcType=DECIMAL}, #{salesTaxRatio,jdbcType=DECIMAL}, #{constructionTaxRatio,jdbcType=DECIMAL}, 
-      #{localEducationRatio,jdbcType=DECIMAL}, #{educationRatio,jdbcType=DECIMAL}, #{sorting,jdbcType=INTEGER}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+      #{transactionTaxeFeeExplain,jdbcType=VARCHAR}, #{transactionTaxeFeeExplainSupplement,jdbcType=VARCHAR}, 
+      #{propertyTaxRatio,jdbcType=DECIMAL}, #{stampDutyRatio,jdbcType=DECIMAL}, #{salesTaxRatio,jdbcType=DECIMAL}, 
+      #{constructionTaxRatio,jdbcType=DECIMAL}, #{localEducationRatio,jdbcType=DECIMAL}, 
+      #{educationRatio,jdbcType=DECIMAL}, #{sorting,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeLeaseCost" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -200,6 +201,9 @@
       </if>
       <if test="transactionTaxeFeeExplain != null" >
         transaction_taxe_fee_explain,
+      </if>
+      <if test="transactionTaxeFeeExplainSupplement != null" >
+        transaction_taxe_fee_explain_supplement,
       </if>
       <if test="propertyTaxRatio != null" >
         property_tax_ratio,
@@ -277,6 +281,9 @@
       </if>
       <if test="transactionTaxeFeeExplain != null" >
         #{transactionTaxeFeeExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="transactionTaxeFeeExplainSupplement != null" >
+        #{transactionTaxeFeeExplainSupplement,jdbcType=VARCHAR},
       </if>
       <if test="propertyTaxRatio != null" >
         #{propertyTaxRatio,jdbcType=DECIMAL},
@@ -367,6 +374,9 @@
       <if test="record.transactionTaxeFeeExplain != null" >
         transaction_taxe_fee_explain = #{record.transactionTaxeFeeExplain,jdbcType=VARCHAR},
       </if>
+      <if test="record.transactionTaxeFeeExplainSupplement != null" >
+        transaction_taxe_fee_explain_supplement = #{record.transactionTaxeFeeExplainSupplement,jdbcType=VARCHAR},
+      </if>
       <if test="record.propertyTaxRatio != null" >
         property_tax_ratio = #{record.propertyTaxRatio,jdbcType=DECIMAL},
       </if>
@@ -420,6 +430,7 @@
       use_tax_parameter = #{record.useTaxParameter,jdbcType=VARCHAR},
       transaction_taxe_fee_ratio = #{record.transactionTaxeFeeRatio,jdbcType=DECIMAL},
       transaction_taxe_fee_explain = #{record.transactionTaxeFeeExplain,jdbcType=VARCHAR},
+      transaction_taxe_fee_explain_supplement = #{record.transactionTaxeFeeExplainSupplement,jdbcType=VARCHAR},
       property_tax_ratio = #{record.propertyTaxRatio,jdbcType=DECIMAL},
       stamp_duty_ratio = #{record.stampDutyRatio,jdbcType=DECIMAL},
       sales_tax_ratio = #{record.salesTaxRatio,jdbcType=DECIMAL},
@@ -482,6 +493,9 @@
       <if test="transactionTaxeFeeExplain != null" >
         transaction_taxe_fee_explain = #{transactionTaxeFeeExplain,jdbcType=VARCHAR},
       </if>
+      <if test="transactionTaxeFeeExplainSupplement != null" >
+        transaction_taxe_fee_explain_supplement = #{transactionTaxeFeeExplainSupplement,jdbcType=VARCHAR},
+      </if>
       <if test="propertyTaxRatio != null" >
         property_tax_ratio = #{propertyTaxRatio,jdbcType=DECIMAL},
       </if>
@@ -532,6 +546,7 @@
       use_tax_parameter = #{useTaxParameter,jdbcType=VARCHAR},
       transaction_taxe_fee_ratio = #{transactionTaxeFeeRatio,jdbcType=DECIMAL},
       transaction_taxe_fee_explain = #{transactionTaxeFeeExplain,jdbcType=VARCHAR},
+      transaction_taxe_fee_explain_supplement = #{transactionTaxeFeeExplainSupplement,jdbcType=VARCHAR},
       property_tax_ratio = #{propertyTaxRatio,jdbcType=DECIMAL},
       stamp_duty_ratio = #{stampDutyRatio,jdbcType=DECIMAL},
       sales_tax_ratio = #{salesTaxRatio,jdbcType=DECIMAL},

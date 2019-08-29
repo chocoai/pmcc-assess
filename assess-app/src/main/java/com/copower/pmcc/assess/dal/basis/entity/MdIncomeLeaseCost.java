@@ -36,6 +36,8 @@ public class MdIncomeLeaseCost {
 
     private String transactionTaxeFeeExplain;
 
+    private String transactionTaxeFeeExplainSupplement;
+
     private BigDecimal propertyTaxRatio;
 
     private BigDecimal stampDutyRatio;
@@ -182,6 +184,14 @@ public class MdIncomeLeaseCost {
 
     public void setTransactionTaxeFeeExplain(String transactionTaxeFeeExplain) {
         this.transactionTaxeFeeExplain = transactionTaxeFeeExplain == null ? null : transactionTaxeFeeExplain.trim();
+    }
+
+    public String getTransactionTaxeFeeExplainSupplement() {
+        return transactionTaxeFeeExplainSupplement;
+    }
+
+    public void setTransactionTaxeFeeExplainSupplement(String transactionTaxeFeeExplainSupplement) {
+        this.transactionTaxeFeeExplainSupplement = transactionTaxeFeeExplainSupplement == null ? null : transactionTaxeFeeExplainSupplement.trim();
     }
 
     public BigDecimal getPropertyTaxRatio() {

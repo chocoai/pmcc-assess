@@ -153,7 +153,8 @@
                                 月租金收入说明
                             </label>
                             <div class="col-sm-10">
-                                <textarea name="rentalIncomeRemark" placeholder="月租金收入说明" class="form-control"></textarea>
+                                <textarea name="rentalIncomeRemark" placeholder="月租金收入说明"
+                                          class="form-control"></textarea>
                             </div>
                         </div>
                     </div>
@@ -176,7 +177,6 @@
                                        required="required">
                             </div>
                         </div>
-
                     </div>
                     <div class="form-group">
                         <div class="x-valid">
@@ -720,11 +720,12 @@
 
     //保存成本信息
     lease.saveLeaseCost = function () {
-        if (!$("#frm_lease_cost").valid()) {
+        var form = $("#frm_lease_cost");
+        if (!form.valid()) {
             return false;
         }
-        var data = formParams("frm_lease_cost");
-        console.log(data);
+        var data = formSerializeArray(form);
+        data.transactionTaxeFeeExplainSupplement = form.find('[id=transactionTaxeFeeRatioReadonly]').text();
         Loading.progressShow();
         $.ajax({
             url: "${pageContext.request.contextPath}/income/updateLeaseCost",
@@ -821,15 +822,17 @@
         if (!rentalGrowthRateExplain.val()) {
             rentalGrowthRateExplain.val(rentalGrowthRateExplain.attr('data-template'));
         }
-        $('#modal_lease_parameter').modal();
+        $('#modal_lease_parameter').modal();Rate
     }
 
     //保存参数信息
     lease.saveLeaseParameter = function () {
-        if (!$("#frm_lease_parameter").valid()) {
+        var form = $("#frm_lease_parameter");
+        if (!form.valid()) {
             return false;
         }
-        var data = formParams("frm_lease_parameter");
+        var data = formSerializeArray(form);
+        data.rentalGrowthExplainSupplement = form.find('[id=rentalGrowthRateExplainReadonly]').text();
         Loading.progressShow();
         $.ajax({
             url: "${pageContext.request.contextPath}/income/updateDateSection",
