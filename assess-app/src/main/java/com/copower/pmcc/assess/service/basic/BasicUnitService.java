@@ -7,15 +7,13 @@ import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDetailDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateTaggingDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicUnitDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
-import com.copower.pmcc.assess.dal.cases.entity.CaseUnit;
-import com.copower.pmcc.assess.dal.cases.entity.CaseUnitDecorate;
-import com.copower.pmcc.assess.dal.cases.entity.CaseUnitElevator;
-import com.copower.pmcc.assess.dal.cases.entity.CaseUnitHuxing;
+import com.copower.pmcc.assess.dal.cases.entity.*;
 import com.copower.pmcc.assess.dto.input.SynchronousDataDto;
 import com.copower.pmcc.assess.dto.output.cases.CaseUnitHuxingVo;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.assist.DdlMySqlAssist;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
+import com.copower.pmcc.assess.service.cases.CaseEstateTaggingService;
 import com.copower.pmcc.assess.service.cases.CaseUnitHuxingService;
 import com.copower.pmcc.assess.service.cases.CaseUnitService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
@@ -78,6 +76,8 @@ public class BasicUnitService {
     private BasicApplyBatchDetailDao basicApplyBatchDetailDao;
     @Autowired
     private BasicEstateTaggingDao basicEstateTaggingDao;
+    @Autowired
+    private CaseEstateTaggingService caseEstateTaggingService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -260,6 +260,22 @@ public class BasicUnitService {
         attachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicUnit.class));
         baseAttachmentService.copyFtpAttachments(example, attachmentDto);
 
+        //标注拷贝
+        CaseEstateTagging caseEstateTagging = new CaseEstateTagging();
+        caseEstateTagging.setDataId(caseUnitId);
+        caseEstateTagging.setType(EstateTaggingTypeEnum.UNIT.getKey());
+        List<CaseEstateTagging> oldCaseEstateTaggingList = caseEstateTaggingService.getCaseEstateTaggingList(caseEstateTagging);
+        if (!ObjectUtils.isEmpty(oldCaseEstateTaggingList)) {
+            BasicEstateTagging basicEstateTagging = new BasicEstateTagging();
+            BeanUtils.copyProperties(oldCaseEstateTaggingList.get(0), basicEstateTagging);
+            basicEstateTagging.setCreator(commonService.thisUserAccount());
+            basicEstateTagging.setName(null);
+            basicEstateTagging.setTableId(basicUnit.getId());
+            basicEstateTagging.setGmtCreated(null);
+            basicEstateTagging.setGmtModified(null);
+            basicEstateTaggingService.addBasicEstateTagging(basicEstateTagging);
+        }
+
         try {
             List<CaseUnitHuxingVo> caseUnitHuxingList = null;
             CaseUnitHuxing query = new CaseUnitHuxing();
@@ -305,9 +321,7 @@ public class BasicUnitService {
         synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicUnitElevator.class));
         sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//配备电梯sql
 
-        sqlBuilder.append(basicEstateService.copyTaggingFromCase(EstateTaggingTypeEnum.UNIT, caseUnit.getId(), applyId));
         ddlMySqlAssist.customTableDdl(sqlBuilder.toString());//执行sql
-
         return basicUnit;
     }
 

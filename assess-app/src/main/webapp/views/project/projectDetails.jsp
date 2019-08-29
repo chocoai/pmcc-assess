@@ -334,6 +334,60 @@
         </div>
     </div>
 </div>
+<div id="replyTaskBox" class="modal fade bs-example-modal-lg"
+     data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">重启任务</h3>
+            </div>
+            <div class="modal-body">
+                <form id="replyTaskForm" class="form-horizontal">
+                    <input type="hidden" id="planDetailsId">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            重启原因<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <textarea placeholder="重启原因" id="returnDetailsReason"
+                                                      class="form-control"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            附件
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <input id="returnUploadFile" type="file" multiple="false">
+                                            <div id="_returnUploadFile"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">
+                    取消
+                </button>
+                <button type="button" class="btn btn-primary" onclick="projectDetails.replyTaskBtn()">
+                    保存
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/jquery.easyui.min.js"></script>
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="application/javascript">
@@ -767,27 +821,68 @@
             });
         },
 
-        //重启任务
+        //重启任务modal
         replyTask: function (planDetailsId) {
-            layer.prompt({title: '输入重启任务的原因', formType: 2}, function (val, index) {
-                $.ajax({
-                    url: '${pageContext.request.contextPath}/projectPlanDetails/replyProjectPlanDetails',
-                    data: {
-                        planDetailsId: planDetailsId,
-                        reason: val
-                    },
-                    success: function (result) {
-                        if (result.ret) {
-                            toastr.success('任务重启成功');
-                            //projectDetails.loadPlanTabInfo(projectDetails.getActiveTab());
-                            refreshNode(result.data);
-                            layer.closeAll();
-                        } else {
-                            toastr.info(result.errmsg);
-                        }
-                    }
-                })
+            $("#replyTaskForm").clearAll();
+            $("#_returnUploadFile").empty();
+            $("#replyTaskForm").find("#planDetailsId").val(planDetailsId);
+            //重启附件
+            projectDetails.loadTemplateAttachment(planDetailsId);
+            FileUtils.uploadFiles({
+                target: "returnUploadFile",
+                showFileList: false,
+                onUpload: function (file) {//上传之前触发
+                    var formData = {
+                        tableName: AssessDBKey.ProjectTaskReturnRecord,
+                        tableId: 0,
+                        fieldsName:planDetailsId
+                    };
+                    return formData;
+                },
+                onUploadComplete: function () {
+                    projectDetails.loadTemplateAttachment(planDetailsId);
+                }
             });
+            $("#replyTaskBox").modal("show");
+        },
+
+        //加载附件
+        loadTemplateAttachment:function(planDetailsId) {
+            FileUtils.getFileShows({
+                target: "returnUploadFile",
+                formData: {
+                    tableName: AssessDBKey.ProjectTaskReturnRecord,
+                    tableId: 0,
+                    fieldsName:planDetailsId
+                },
+                editFlag: true,
+                deleteFlag: true
+            });
+        },
+
+        //重启任务
+        replyTaskBtn: function () {
+            var planDetailsId = $("#replyTaskForm").find("#planDetailsId").val();
+            var val = $("#replyTaskForm").find("#returnDetailsReason").val();
+            console.log("planDetailsId:"+planDetailsId+"---val:"+val)
+            $.ajax({
+                url: '${pageContext.request.contextPath}/projectPlanDetails/replyProjectPlanDetails',
+                data: {
+                    planDetailsId: planDetailsId,
+                    reason: val
+                },
+                success: function (result) {
+                    if (result.ret) {
+                        $("#replyTaskBox").modal("hide");
+                        toastr.success('任务重启成功');
+                        //projectDetails.loadPlanTabInfo(projectDetails.getActiveTab());
+                        refreshNode(result.data);
+                    } else {
+                        toastr.info(result.errmsg);
+                    }
+                }
+            })
+
         },
 
         //调整责任人

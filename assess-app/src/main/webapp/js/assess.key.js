@@ -14,6 +14,7 @@ AssessDBKey.BaseReportField = "tb_base_report_field";
 AssessDBKey.ReportTemplate = "tb_report_template";
 AssessDBKey.ProjectPlanDetails = "tb_project_plan_details";
 AssessDBKey.ProjectInfo = "tb_project_info";
+AssessDBKey.ProjectTaskReturnRecord = "tb_project_task_return_record";
 AssessDBKey.ProjectPhase = "tb_project_phase";
 AssessDBKey.InitiatePossessor = "tb_initiate_possessor";
 AssessDBKey.InitiateConsignor = "tb_initiate_consignor";
