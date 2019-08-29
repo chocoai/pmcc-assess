@@ -50,6 +50,62 @@
 </div>
 
 
+<div class="x_panel">
+
+    <div class="x_title collapse-link">
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+        </ul>
+        <h3>经济指标(参考值)</h3>
+        <div class="clearfix"></div>
+    </div>
+
+
+    <div class="x_content">
+        <div class="form-group">
+            <div class="x-valid">
+                <div class="col-sm-12">
+                    <div id="toolbarLandIncomeCategoryTableId" style="display: none">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-primary" onclick="construction.deleteMdDevelopmentIncomeCategoryTable('#landIncomeCategoryTableId')">删除</button>
+                            <button type="button" class="btn btn-primary" onclick="construction.editMdDevelopmentIncomeCategoryTable('#landIncomeCategoryTableId','#basicMdDevelopmentIncomeCategoryModalTool',true)">编辑</button>
+                            <button type="button" class="btn btn-primary" onclick="construction.editMdDevelopmentIncomeCategoryTable('#landIncomeCategoryTableId','#basicMdDevelopmentIncomeCategoryModalTool',false)">添加</button>
+                        </div>
+                    </div>
+                    <table class="table table-striped" id="landIncomeCategoryTableId" >
+
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <div class="col-sm-12">
+                    <table class="table table-condensed">
+                        <tfoot>
+                        <tr>
+                        </tr>
+                        <tr>
+                            <td>预期销售合计:</td>
+                            <td class="info">规划建筑面积<label name="plannedBuildingArea" class="label label-default"></label></td>
+                            <td class="info">总可售面积售价<label name="totalSaleableAreaPrice" class="label label-default"></label></td>
+                            <td class="info">可售面积<label name="saleableArea" class="label label-default"></label></td>
+                            <td class="active">
+                                <!-- 不可售建筑面积 -->
+                                <a data-key="unsaleableBuildingArea"></a>
+                                <input type="hidden" value="" name="unsaleableBuildingArea" class="form-control" >
+                            </td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <div class="x_panel" id="LAND_ACQUISITION_COST">
 
     <div class="x_title collapse-link">

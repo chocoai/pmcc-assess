@@ -590,26 +590,22 @@
         }
     } ;
 
-    //单元格f21
+    /*建筑安装工程费*/
     landEngineering.constructionInstallationEngineeringFeeEvent = {
         detailsConstructionInstallation: function (id) {
-            landEngineering.constructionInstallationEngineeringFeeEvent.appendHTML() ;
-            developmentCommon.getMdArchitecturalObjById(id,function (item) {
+            var mdCalculatingMethodEngineeringCost = landEngineering.engineeringFeeInfoTarget.bootstrapTable('getRowByUniqueId', id);
+            developmentCommon.getMdArchitecturalObjById(mdCalculatingMethodEngineeringCost.architecturalObjId, function (item) {
                 var target = $("#boxLandEngineering");
-                target.find("input[name='id']").val(item.id) ;
-                var data = {} ;
+                target.find("input[name='id']").val(item.id);
+                target.find("input[name='masterId']").val(id);
+                var data = [];
                 try {
-                    data = JSON.parse(item.jsonContent) ;
+                    data = JSON.parse(item.jsonContent);
                 } catch (e) {
                     console.log("解析异常!");
                 }
-                developmentCommon.architecturalA.initData(target.find("table"),data) ;
+                landEngineering.constructionInstallationEngineeringFeeEvent.appendHTML(data, item.price);
             });
-        },
-        deleteConstructionInstallation:function (id) {
-            developmentCommon.deleteMdArchitecturalObjById(id,function () {
-                landEngineering.constructionInstallationEngineeringFeeEvent.loadHtml();
-            }) ;
         },
         save: function () {
             var target = $("#boxLandEngineering");
@@ -628,50 +624,139 @@
             obj.id = target.find("input[name='id']").val();
             developmentCommon.saveMdArchitecturalObj2(developmentCommon.architecturalA.getFomData(table),obj,function (item) {
                 toastr.success('保存成功!');
-                landEngineering.constructionInstallationEngineeringFeeEvent.loadHtml();
+                var mdCalculatingMethodEngineeringCost = {
+                    planDetailsId: '${projectPlanDetails.id}',
+                    type: landEngineering.type,
+                    price: value,
+                    projectId: '${projectPlanDetails.projectId}'
+                };
+                mdCalculatingMethodEngineeringCost.architecturalObjId = item.id;
+                mdCalculatingMethodEngineeringCost.id = target.find("input[name='masterId']").val();
+                developmentCommon.saveMdCalculatingMethodEngineeringCost(mdCalculatingMethodEngineeringCost, function (data) {
+                    landEngineering.engineeringFeeInfoTarget.bootstrapTable('refresh');
+                    landEngineering.writeMdCalculatingMethodEngineeringCost(data);
+                });
             }) ;
             target.modal("hide");
         },
-        appendHTML:function (_this) {
+        appendHTML:function (data, price) {
             var target = $("#boxLandEngineering");
-            target.find(".panel-body").empty() ;
-            target.find(".panel-body").append(developmentCommon.architecturalA.getHtml());
-            developmentCommon.architecturalA.treeGirdParse(target);
+            target.find(".panel-body").empty();
+            if (data == undefined) {
+                data = [];
+            }
+            if (price == undefined) {
+                price = '';
+                target.find("input[name='id']").val('');
+                target.find("input[name='masterId']").val('');
+            }
+            developmentCommon.architecturalA.appendHtml(target.find(".panel-body"), data, null, price, function (tr) {
+
+            });
             target.modal("show");
-        },
-        loadHtml:function () {
-            var obj = { } ;
-            obj.databaseName = AssessDBKey.MdDevelopment ;
-            obj.pid = developmentCommon.isNotBlank('${mdDevelopment.id}')?'${mdDevelopment.id}':'0';
-            obj.type = landEngineering.type ;
-            obj.planDetailsId = '${projectPlanDetails.id}' ;
-            developmentCommon.getMdArchitecturalObjList(obj.type,obj.databaseName,obj.pid,obj.planDetailsId,function (data) {
-                landEngineering.engineeringFeeInfoTarget.empty();
-                var html = "";
-                var multiply = math.bignumber(0);
-                var arr = [] ;
-                if (data.length >= 1) {
-                    $.each(data, function (i, item) {
-                        var resetHtml = $("#constructionInstallationEngineeringFeeInfoModelHtml").html();
-                        resetHtml = resetHtml.replace(/{uuid}/g, item.id);
-                        resetHtml = resetHtml.replace(/{price}/g, item.price);
-                        resetHtml = resetHtml.replace(/{method}/g, "landEngineering.constructionInstallationEngineeringFeeEvent");
-                        html += resetHtml;
-                        if ($.isNumeric(item.price)){
-                            multiply = math.add(multiply, math.bignumber(item.price));
-                        }
-                        arr.push(item.id) ;
-                    });
-                }
-                multiply = Number(multiply.toString()) ;
-                landEngineering.target.find("input[name='constructionInstallationEngineeringFee']").val(multiply.toFixed(landEngineering.fixed)).trigger('blur');
-                landEngineering.target.find("input[name='reconnaissanceDesign']").trigger('blur');
-                landEngineering.target.find("input[name='constructionInstallationEngineeringFeeIds']").val(arr.join(","));
-                landEngineering.engineeringFeeInfoTarget.append(html);
-            }) ;
         }
     };
 
+    /**
+     * 工程费表格加载
+     */
+    landEngineering.loadMdCalculatingMethodEngineeringCostTable = function () {
+        var obj = {type: landEngineering.type, planDetailsId: '${projectPlanDetails.id}'};
+        var cols = [];
+        cols.push({
+            field: 'id', title: '建筑安装工程费明细', formatter: function (value, row, index) {
+                var str = '<div class="btn-margin">';
+                str += "<a class='btn btn-xs btn-success tooltips' data-placement='top' data-original-title='建筑安装工程费明细' onclick='landEngineering.constructionInstallationEngineeringFeeEvent.detailsConstructionInstallation(" + row.id + ")'" + ">" + "<i class='fa fa-pencil-square-o'>" + "建筑安装工程费明细" + "</a>";
+                str += '</div>';
+                return str;
+            }
+        });
+        cols.push({
+            field: 'id', title: '工程类型绑定操作', formatter: function (value, row, index) {
+                var text = "<select" + " data-id='mdCalculatingMethodEngineeringCostField" + row.id + "' ";
+                text += "name='dataTableName'  class='form-control' onchange='landEngineering.changeMdCalculatingMethodEngineeringCostField(" + index + "," + row.id + ")'>";
+                text += "                            <option value=\"0\">不设定</option>";
+                text += "                            <option value=\"2\">楼栋</option>";
+                text += "                            ";
+                text += "                            <option value=\"1\">楼盘</option>";
+                text += "                        </select>";
+                return text;
+            }
+        });
+        developmentCommon.loadMdCalculatingMethodEngineeringCostTable(landEngineering.engineeringFeeInfoTarget, obj, $("#toolbarMdCalculatingMethodEngineeringCostLand"), function () {
+            landEngineering.writeMdCalculatingMethodEngineeringCost();
+        }, cols);
+    };
+
+    /**工程费 事件**/
+    landEngineering.changeMdCalculatingMethodEngineeringCostField = function (index, id) {
+        var value = landEngineering.engineeringFeeInfoTarget.find("[data-id='" + "mdCalculatingMethodEngineeringCostField" + id + "']").find("option:selected").val();
+        var mdCalculatingMethodEngineeringCost = landEngineering.engineeringFeeInfoTarget.bootstrapTable('getRowByUniqueId', id);
+        if (value == 1) {
+            mdCalculatingMethodEngineeringCost.dataTableName = AssessDBKey.BasicEstate;
+        }
+        if (value == 2) {
+            mdCalculatingMethodEngineeringCost.dataTableName = AssessDBKey.BasicBuilding;
+        }
+        developmentCommon.saveMdCalculatingMethodEngineeringCost(mdCalculatingMethodEngineeringCost, function () {
+            landEngineering.engineeringFeeInfoTarget.bootstrapTable('updateCell', {
+                field: 'dataTableName',
+                value: mdCalculatingMethodEngineeringCost.dataTableName
+            });
+            landEngineering.engineeringFeeInfoTarget.bootstrapTable('refresh');
+            toastr.success('绑定成功!');
+        });
+    };
+
+    /*工程费和计算**/
+    landEngineering.writeMdCalculatingMethodEngineeringCost = function (obj) {
+        var arr = landEngineering.engineeringFeeInfoTarget.bootstrapTable('getData');
+        if (obj) {
+            arr.push(obj);
+        }
+        //js去重
+        var result = [];
+        var obj = {};
+        for (var i = 0; i < arr.length; i++) {
+            if (!obj[arr[i].id]) {
+                result.push(arr[i]);
+                obj[arr[i].id] = true;
+            }
+        }
+        var price = math.bignumber(0);
+        $.each(result, function (i, n) {
+            if ($.isNumeric(n.price)) {
+                price = math.add(price, math.bignumber(n.price));
+            }
+        });
+        price = Number(price.toString());
+        landEngineering.target.find("input[name='constructionInstallationEngineeringFee']").val(price.toFixed(landEngineering.fixed)).trigger('blur');
+        landEngineering.target.find("input[name='reconnaissanceDesign']").trigger('blur');
+    };
+
+    /**
+     * 工程费删除
+     */
+    landEngineering.delMdCalculatingMethodEngineeringCost = function () {
+        var rows = landEngineering.engineeringFeeInfoTarget.bootstrapTable('getSelections');
+        if (!rows || rows.length <= 0) {
+            toastr.info("请选择要删除的数据");
+        } else {
+            var idArray = [];
+            $.each(rows, function (i, item) {
+                idArray.push(item.id);
+            });
+            Alert("确认要删除么？", 2, null, function () {
+                developmentCommon.deleteMdCalculatingMethodEngineeringCostById(idArray.join(","), function () {
+                    toastr.success('删除成功');
+                    landEngineering.engineeringFeeInfoTarget.bootstrapTable('refresh');
+                    landEngineering.writeMdCalculatingMethodEngineeringCost();
+                });
+            })
+        }
+    };
+
+    /*土地还原率或者报酬率**/
     landEngineering.getRewardRate = function (_this) {
         var group = $(_this).closest('.input-group');
         rewardRateFunc.calculation(group.find('[name=rewardRateId]').val(), function (data) {
@@ -682,13 +767,13 @@
             }
         })
     } ;
-
+    /*基础设施配套费  table load**/
     landEngineering.loadMdDevelopmentInfrastructureChildrenTable = function () {
         var pid = developmentCommon.isNotBlank('${mdDevelopment.id}')?'${mdDevelopment.id}':'0' ;
         developmentCommon.infrastructureChildren.loadTable(pid,'${projectPlanDetails.id}',landEngineering.type,landEngineering.infrastructureChildrenTable,$("#toolbarMdDevelopmentInfrastructureChildrenTable")) ;
         landEngineering.writeMdDevelopmentInfrastructureChildrenTable() ;
     };
-
+    /*基础设施配套费  table delete**/
     landEngineering.deleteMdDevelopmentInfrastructureChildrenTable = function (table) {
         var rows = $(table).bootstrapTable('getSelections');
         if (rows.length >= 1) {
@@ -705,7 +790,7 @@
             toastr.success('至少勾选一个!');
         }
     };
-
+    /*基础设施配套费  table edit**/
     landEngineering.editMdDevelopmentInfrastructureChildrenTable = function (table,box ,flag) {
         var target = $(box) ;
         var frm = target.find("form") ;
@@ -727,6 +812,7 @@
             target.modal('show');
         }
     };
+    /*基础设施配套费  table save**/
     landEngineering.saveMdDevelopmentInfrastructureChildrenTable = function (_this) {
         var target = $(_this).parent().parent().parent().parent() ;
         var frm = target.find("form") ;
@@ -745,6 +831,7 @@
         });
     } ;
 
+    /*基础设施配套费  table 测算**/
     landEngineering.writeMdDevelopmentInfrastructureChildrenTable = function () {
         var pid = developmentCommon.isNotBlank('${mdDevelopment.id}')?'${mdDevelopment.id}':'0' ;
         developmentCommon.infrastructureChildren.getDataList({planDetailsId:'${projectPlanDetails.id}',pid:pid,type:landEngineering.type} ,function (item) {
@@ -758,6 +845,7 @@
         }) ;
     };
 
+    /*收入类 经济指标 table save**/
     landEngineering.saveMdDevelopmentIncomeCategoryTable = function (_this) {
         var target = $(_this).parent().parent().parent().parent() ;
         var frm = target.find("form") ;
@@ -778,6 +866,7 @@
         }) ;
     };
 
+    /*收入类 经济指标 table delete**/
     landEngineering.deleteMdDevelopmentIncomeCategoryTable = function (table) {
         var rows = $(table).bootstrapTable('getSelections');
         if (rows.length >= 1) {
@@ -804,6 +893,7 @@
         }
     };
 
+    /*收入类 经济指标 table load**/
     landEngineering.loadIncomeCategoryTable = function () {
         var obj = {type:landEngineering.type,planDetailsId:'${projectPlanDetails.id}'} ;
         developmentCommon.loadIncomeCategoryTable(landEngineering.incomeCategoryTable,obj,$("#toolbarLandIncomeCategoryTableId"),function () {
@@ -811,6 +901,7 @@
         }) ;
     } ;
 
+    /*收入类 经济指标 table edit**/
     landEngineering.editMdDevelopmentIncomeCategoryTable = function (table,box ,flag) {
         var target = $(box) ;
         var frm = target.find("form") ;
@@ -833,6 +924,7 @@
         }
     };
 
+    /*收入类 经济指标 table 测算**/
     landEngineering.writeMdDevelopmentIncomeCategoryTable = function (table,obj) {
         var data = table.bootstrapTable('getData') ;
         if (obj){
@@ -863,6 +955,7 @@
         this.target.find("input[name='saleableArea']").val(saleableArea).trigger('blur');
     };
 
+    /*不可售建筑面积**/
     landEngineering.unsaleableBuildingAreaFunHandle = function () {
         this.target.find("a").each(function (i,item) {
             var target = $(item);
@@ -894,13 +987,10 @@
     landEngineering.inputBlurEvent = function () {
         if (development.isNotBlank('${mdDevelopment.id}')){
             if ('${mdDevelopment.type == 1}'){
-                console.log('inputBlurEvent') ;
                 landEngineering.target.find("input").trigger('blur');
             }
         }
     };
-
-
 
     /**
      math.sqrt(4) 开方

@@ -117,29 +117,23 @@
         </div>
 
         <div class="form-group">
-            <label class="col-sm-1 control-label">
-                建筑安装工程费<span class="symbol required"></span>
-            </label>
             <div class="x-valid">
-                <div class="col-sm-3">
-                    <label class="form-control">${mdDevelopment.constructionInstallationEngineeringFee}</label>
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                    工程费列表
-                </label>
-                <div class=" col-xs-9  col-sm-9  col-md-9  col-lg-9 ">
-                    <c:forEach items="${mdDevelopment.constructionInstallationEngineeringFeeDtos}" var="item">
-                        <div class="panel panel-info">
-                            <i class="fa fa-search" onclick="constructionInstallationEngineeringFeeEvent('${item.key}')" title="查看"
-                               style="margin-right: 10px;font-size: 15px;cursor: pointer;"></i>
-                            <a  style="cursor: pointer;" onclick="constructionInstallationEngineeringFeeEvent('${item.key}')">${item.value}</a>
+                <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                    <div id="toolbarMdCalculatingMethodEngineeringCostLand" style="display: none">
+                        <div class="input-group">
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-info disabled">
+                                    建筑安装工程费
+                                </button>
+                            </span>
+                            <span class="input-group-btn">
+                               <label class="form-control">${mdDevelopment.constructionInstallationEngineeringFee}</label>
+                            </span>
                         </div>
-                    </c:forEach>
+                    </div>
+                    <table class="table table-striped" id="landConstructionInstallationEngineeringFeeInfoTarget" >
+
+                    </table>
                 </div>
             </div>
         </div>
@@ -634,47 +628,67 @@
 </div>
 
 <script>
-    function constructionInstallationEngineeringFeeEvent(id) {
+
+    var landEngineering = {};
+    landEngineering.target = $("#mdDevelopmentLandFrm");
+    landEngineering.type = 'land' ;
+
+    landEngineering.constructionInstallationEngineeringFeeEvent = function (id) {
         var target = $("#boxLandEngineering");
-        if (target.find(".panel-body").find("table").size() == 0) {
-            target.find(".panel-body").append(developmentCommon.architecturalA.getHtmlDetail());
-            developmentCommon.architecturalA.treeGirdParse(target);
-        }
+        target.modal("show");
+        target.find(".panel-body").empty() ;
         developmentCommon.getMdArchitecturalObjById(id,function (item) {
-            var data = {} ;
+            var data = [] ;
             try {
                 data = JSON.parse(item.jsonContent) ;
             } catch (e) {
                 console.log("解析异常!");
             }
-            developmentCommon.architecturalA.initData(target.find("table"),data) ;
+            developmentCommon.architecturalA.appendHtml(target.find(".panel-body"),data,{readonly:"readonly",'class':'form-control'},item.price) ;
         });
-        target.modal("show");
-    }
-    function loadMdDevelopmentInfrastructureChildrenTable() {
+    };
+
+    landEngineering.loadMdCalculatingMethodEngineeringCostTable = function () {
+        var obj = {type:landEngineering.type,planDetailsId:'${projectPlanDetails.id}'} ;
+        var cols = [];
+        cols.push({
+            field: 'id', title: '建筑安装工程费明细', formatter: function (value, row, index) {
+                var str = '<div class="btn-margin">';
+                str += "<a class='btn btn-xs btn-success tooltips' data-placement='top' data-original-title='建筑安装工程费明细' onclick='landEngineering.constructionInstallationEngineeringFeeEvent(" + row.architecturalObjId + ")'" + ">" + "<i class='fa fa-search fa-white'>" + "建筑安装工程费明细" + "</a>";
+                str += '</div>';
+                return str;
+            }
+        });
+        developmentCommon.loadMdCalculatingMethodEngineeringCostTable($("#landConstructionInstallationEngineeringFeeInfoTarget"),obj,$("#toolbarMdCalculatingMethodEngineeringCostLand"),function () {
+
+        },cols) ;
+    };
+
+    landEngineering.loadMdDevelopmentInfrastructureChildrenTable = function () {
         var cols = [];
         cols.push({field: 'name', title: '名称'});
         cols.push({field: 'number', title: '金额'});
         cols.push({field: 'tax', title: '税费'});
         $("#landMdDevelopmentInfrastructureChildrenTable").bootstrapTable('destroy');
-        TableInit('landMdDevelopmentInfrastructureChildrenTable', "${pageContext.request.contextPath}/mdDevelopmentInfrastructureChildren/getBootstrapTableVo?pid=${mdDevelopment.id}&planDetailsId=${mdDevelopment.planDetailsId}&type=land", cols, {}, {
+        TableInit('landMdDevelopmentInfrastructureChildrenTable', "${pageContext.request.contextPath}/mdDevelopmentInfrastructureChildren/getBootstrapTableVo?pid=${mdDevelopment.id}&planDetailsId=${mdDevelopment.planDetailsId}&type="+landEngineering.type, cols, {}, {
             showColumns: true,
             showRefresh: true,
             search: false
         });
-    }
+    };
 
-    function loadIncomeCategoryTable() {
-        var obj = {type:'land',planDetailsId:'${projectPlanDetails.id}'} ;
+    landEngineering.loadIncomeCategoryTable = function () {
+        var obj = {type:landEngineering.type,planDetailsId:'${projectPlanDetails.id}'} ;
         developmentCommon.loadIncomeCategoryTable($("#landIncomeCategoryTableId"),obj,null,function () {
 
         }) ;
-    }
+    };
 
 
     $(function () {
-        loadMdDevelopmentInfrastructureChildrenTable() ;
-        loadIncomeCategoryTable() ;
+        landEngineering.loadMdDevelopmentInfrastructureChildrenTable() ;
+        landEngineering.loadIncomeCategoryTable() ;
+        landEngineering.loadMdCalculatingMethodEngineeringCostTable() ;
     });
 
 </script>
