@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.service.project.generate;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.aspose.words.*;
+import com.copower.pmcc.assess.common.ArithmeticUtils;
 import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.enums.BaseReportFieldMdIncomeEnum;
 import com.copower.pmcc.assess.common.enums.DeclareTypeEnum;
@@ -49,6 +50,8 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -145,7 +148,7 @@ public class GenerateMdIncomeService implements Serializable {
         }
         Map<String, String> textMap = Maps.newHashMap();
         Map<String, String> bookmarkMap = Maps.newHashMap();
-        Map<String, String> fileMap = Maps.newHashMap();
+        LinkedHashMap<String, String> fileMap = Maps.newLinkedHashMap();
         if (CollectionUtils.isEmpty(bookmarkAndRegexDtoHashSet)) {
             return localPath;
         }
@@ -162,11 +165,11 @@ public class GenerateMdIncomeService implements Serializable {
                 }
                 //收益法出租率说明
                 if (Objects.equal(name, BaseReportFieldMdIncomeEnum.RestrictionExplain.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getRestrictionExplain());
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCommon(BaseReportFieldMdIncomeEnum.RestrictionExplain));
                 }
                 //收益法确定客观月租金
                 if (Objects.equal(name, BaseReportFieldMdIncomeEnum.MonthRentalIncome.getName())) {
-                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, getMonthRentalIncome());
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMonthRentalIncome(fileMap));
                 }
                 //月份数
                 if (Objects.equal(name, BaseReportFieldMdIncomeEnum.MonthNumber.getName())) {
@@ -643,12 +646,7 @@ public class GenerateMdIncomeService implements Serializable {
      * @return
      * @throws Exception
      */
-    private synchronized String getMonthRentalIncome() throws Exception {
-        Document document = new Document();
-        DocumentBuilder builder = new DocumentBuilder(document);
-        String localPath = getLocalPath();
-        LinkedHashMap<String, String> linkedHashMap = Maps.newLinkedHashMap();
-        final List<KeyValueDto> keyValueDtoList = Lists.newArrayList(new KeyValueDto("text-indent", "2em"), new KeyValueDto("font-family", "仿宋_GB2312"), new KeyValueDto("font-size", "14.0pt"));
+    private synchronized String getMonthRentalIncome(Map<String, String> fileMap)throws Exception  {
         List<MdIncomeLeaseVo> leaseVoList = getMdIncomeLeaseList();
         LinkedList<String> linkedList = Lists.newLinkedList();
         if (CollectionUtils.isNotEmpty(leaseVoList)) {
@@ -656,6 +654,9 @@ public class GenerateMdIncomeService implements Serializable {
                 MdIncomeLeaseVo vo = leaseVoList.get(i);
                 StringBuilder stringBuilder = new StringBuilder(8);
                 StringBuilder dateRangeBuilder = new StringBuilder(8);
+                if (i != 0){
+                    dateRangeBuilder.append(StringUtils.repeat(ControlChar.TAB,1)) ;
+                }
                 dateRangeBuilder.append("第");
                 dateRangeBuilder.append(getChineseNumber(i));
                 dateRangeBuilder.append("段");
@@ -666,7 +667,7 @@ public class GenerateMdIncomeService implements Serializable {
                 } else {
                     dateRangeBuilder.append("未知");
                 }
-                stringBuilder.append(generateCommonMethod.getIndentHtml(dateRangeBuilder.toString()));
+                stringBuilder.append(dateRangeBuilder.toString());
 
                 StringBuilder priceExplainBuilder = new StringBuilder(8);
                 if (vo.getMcId() != null) {
@@ -674,9 +675,9 @@ public class GenerateMdIncomeService implements Serializable {
                     if (StringUtils.isNotBlank(path)) {
                         String key = RandomStringUtils.randomNumeric(12);
                         priceExplainBuilder.append("调用比较法测算");
-                        priceExplainBuilder.append(StringUtils.repeat(ControlChar.LINE_BREAK, 1));
+                        priceExplainBuilder.append(String.join("",StringUtils.repeat(ControlChar.LINE_BREAK, 1)));
                         priceExplainBuilder.append(key);
-                        linkedHashMap.put(key, path);
+                        fileMap.put(key,path) ;
                     }
                 } else {//没有调用市场比较法则说出收入来源说明
                     if (StringUtils.isNotBlank(vo.getRentalIncomeRemark())) {
@@ -685,38 +686,14 @@ public class GenerateMdIncomeService implements Serializable {
                     priceExplainBuilder.append("即估价对象的比准租赁价格为");
                     priceExplainBuilder.append(vo.getRentalIncome().toString()).append("元/㎡月");
                 }
-                stringBuilder.append(generateCommonMethod.getIndentHtml(priceExplainBuilder.toString()));
+                stringBuilder.append(priceExplainBuilder.toString());
                 linkedList.add(stringBuilder.toString());
             }
         }
         if (CollectionUtils.isNotEmpty(linkedList)) {
-            for (int i = 0; i < linkedList.size(); i++) {
-                String s = linkedList.get(i);
-                if (i != linkedList.size() - 1) {
-                    s = String.format("%s%s", s, StringUtils.repeat(ControlChar.LINE_BREAK, 1));
-                }
-                AsposeUtils.insertHtml(builder, AsposeUtils.getWarpCssHtml(s, keyValueDtoList), false);
-            }
+            return StringUtils.join(linkedList, String.join("",StringUtils.repeat(ControlChar.TAB,1),StringUtils.repeat(ControlChar.LINE_BREAK, 1))) ;
         }
-        AsposeUtils.saveWord(localPath, document);
-        if (!linkedHashMap.isEmpty()) {
-            for (Map.Entry<String, String> stringEntry : linkedHashMap.entrySet()) {
-                IReplacingCallback callback = new IReplacingCallback() {
-                    @Override
-                    public int replacing(ReplacingArgs e) throws Exception {
-                        DocumentBuilder builder = new DocumentBuilder((Document) e.getMatchNode().getDocument());
-                        builder.moveTo(e.getMatchNode());
-                        Document doc = new Document(stringEntry.getValue());
-                        builder.insertDocument(doc, 0);
-                        return 0;
-                    }
-                };
-                document.getRange().replace(Pattern.compile(stringEntry.getKey()), callback, false);
-            }
-            AsposeUtils.saveWord(localPath, document);
-        }
-        document.save(localPath);
-        return localPath;
+        return errorStr;
     }
 
     /**
@@ -868,18 +845,7 @@ public class GenerateMdIncomeService implements Serializable {
         return errorStr;
     }
 
-    /**
-     * 出租率说明
-     *
-     * @return
-     * @throws Exception
-     */
-    private synchronized String getRestrictionExplain() {
-        if (StringUtils.isNotBlank(getMdIncome().getRestrictionExplain())) {
-            return getMdIncome().getRestrictionExplain();
-        }
-        return errorStr;
-    }
+
 
     /**
      * 功能描述: 收益法租赁限制说明
@@ -961,6 +927,9 @@ public class GenerateMdIncomeService implements Serializable {
                     break;
                 case OtherIncomeExplain:
                     value = mdIncomeLeaseVo.getOtherIncomeRemark();
+                    break;
+                case RestrictionExplain:
+                    value = mdIncomeLeaseVo.getRentalsRemark();
                     break;
                 default:
                     break;
@@ -1112,6 +1081,9 @@ public class GenerateMdIncomeService implements Serializable {
                             else
                                 value += "，" + mdIncomeDateSection.getRentalGrowthRateExplainSupplement();
                         }
+                        if (atomicInteger.get() != 0){
+                            value = String.join("",StringUtils.repeat(ControlChar.TAB,1),value);
+                        }
                     }
                     break;
                 default:
@@ -1134,6 +1106,9 @@ public class GenerateMdIncomeService implements Serializable {
             separator = ControlChar.LINE_BREAK;
         }
         if (Objects.equal(incomeEnum.getName(), BaseReportFieldMdIncomeEnum.AnnualNetIncome.getName())) {
+            separator = ControlChar.LINE_BREAK;
+        }
+        if (Objects.equal(incomeEnum.getName(), BaseReportFieldMdIncomeEnum.RentalGrowthRateExplain.getName())) {
             separator = ControlChar.LINE_BREAK;
         }
         return this.toEachDesc(map, "", "", separator);
@@ -1225,8 +1200,8 @@ public class GenerateMdIncomeService implements Serializable {
                     break;
                 case IncomesalesTaxRatioCorrect:
                     if (mdIncomeLeaseCostVo.getSalesTaxRatio() != null) {
-                        decimal = new BigDecimal(1 + mdIncomeLeaseCostVo.getSalesTaxRatio().doubleValue());
-                        decimal = decimal.multiply(mdIncomeLeaseCostVo.getSalesTaxRatio());
+                        double div = ArithmeticUtils.div( mdIncomeLeaseCostVo.getSalesTaxRatio().doubleValue(),new BigDecimal(1 + mdIncomeLeaseCostVo.getSalesTaxRatio().doubleValue()).doubleValue(),4) ;
+                        decimal = new BigDecimal(div) ;
                     }
                     break;
                 case IncomePropertyTax:
@@ -1236,7 +1211,8 @@ public class GenerateMdIncomeService implements Serializable {
                     break;
                 case IncomePropertyTaxCorrect:
                     if (mdIncomeLeaseCostVo.getSalesTaxRatio() != null && mdIncomeLeaseCostVo.getPropertyTaxRatio() != null) {
-                        decimal = mdIncomeLeaseCostVo.getPropertyTaxRatio().multiply(new BigDecimal(1).add(mdIncomeLeaseCostVo.getSalesTaxRatio()));
+                        BigDecimal div = mdIncomeLeaseCostVo.getPropertyTaxRatio().divide(new BigDecimal(1+mdIncomeLeaseCostVo.getSalesTaxRatio().doubleValue()), RoundingMode.HALF_UP) ;
+                        decimal = new BigDecimal(div.toString());
                     }
                     break;
                 case IncomeCityLocalEducationTaxCorrect:
@@ -1252,9 +1228,10 @@ public class GenerateMdIncomeService implements Serializable {
                     if (mdIncomeLeaseCostVo.getSalesTaxRatio() == null) {
                         break;
                     }
-                    BigDecimal start = mdIncomeLeaseCostVo.getConstructionTaxRatio().add(mdIncomeLeaseCostVo.getEducationRatio()).add(mdIncomeLeaseCostVo.getLocalEducationRatio());
-                    BigDecimal end = new BigDecimal(1 + mdIncomeLeaseCostVo.getSalesTaxRatio().doubleValue()).multiply(mdIncomeLeaseCostVo.getSalesTaxRatio());
-                    decimal = start.multiply(end);
+                    double[] doubles = new double[]{mdIncomeLeaseCostVo.getConstructionTaxRatio().doubleValue(),mdIncomeLeaseCostVo.getEducationRatio().doubleValue(),mdIncomeLeaseCostVo.getLocalEducationRatio().doubleValue()} ;
+                    double start = ArithmeticUtils.add(doubles) ;
+                    double end = ArithmeticUtils.div(mdIncomeLeaseCostVo.getSalesTaxRatio().doubleValue(),new BigDecimal(1 + mdIncomeLeaseCostVo.getSalesTaxRatio().doubleValue()).doubleValue());
+                    decimal = new BigDecimal(ArithmeticUtils.mul(start,end)).setScale(4,BigDecimal.ROUND_HALF_UP);
                     break;
                 case IncomestampTax:
                     if (mdIncomeLeaseCostVo.getStampDutyRatio() != null) {
@@ -1310,7 +1287,7 @@ public class GenerateMdIncomeService implements Serializable {
                     break;
             }
             if (decimal != null) {
-                map.put(atomicInteger.get(), generateCommonMethod.getPercentileSystem(decimal));
+                map.put(atomicInteger.get(), ArithmeticUtils.getPercentileSystem(decimal,4,BigDecimal.ROUND_HALF_UP));
                 atomicInteger.incrementAndGet();
             }
         });

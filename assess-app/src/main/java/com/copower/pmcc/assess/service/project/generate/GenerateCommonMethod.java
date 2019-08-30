@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.service.project.generate;
 
 import com.aspose.words.*;
+import com.copower.pmcc.assess.common.ArithmeticUtils;
 import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.FileUtils;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
@@ -298,12 +299,7 @@ public class GenerateCommonMethod {
     }
 
     public String getPercentileSystem(BigDecimal bigDecimal) {
-        if (bigDecimal == null) {
-            return null;
-        }
-        bigDecimal = bigDecimal.multiply(new BigDecimal(100));
-        bigDecimal = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP);
-        return String.format("%s%s", bigDecimal.toString(), "%");
+        return ArithmeticUtils.getPercentileSystem(bigDecimal,2,BigDecimal.ROUND_HALF_UP) ;
     }
 
     /**
@@ -347,21 +343,7 @@ public class GenerateCommonMethod {
      * @return
      */
     public String getBigDecimalToInteger(final BigDecimal bigDecimal, int number) {
-        if (bigDecimal == null) {
-            return "";
-        }
-        double log = Math.log10(number);
-        if (log < 0) {
-            //暂时不处理,测试
-        }
-        int newScale = (int) Math.log10(new BigDecimal(number).doubleValue());
-        int num = bigDecimal.intValue() / (number * 10);
-        num *= (number * 10);
-        int result = bigDecimal.intValue() % (number * 10);
-        BigDecimal big = new BigDecimal(result / Math.pow(10, newScale)).setScale(0, BigDecimal.ROUND_HALF_UP);
-        big = big.multiply(new BigDecimal(Math.pow(10, newScale)));
-        num += big.intValue();
-        return String.valueOf(num);
+       return ArithmeticUtils.getBigDecimalToInteger(bigDecimal, number);
     }
 
     /**
