@@ -11,7 +11,7 @@
         <h4>楼栋内装情况</h4>
     </div>
     <div class="x_content collapse">
-        <table class="table table-bordered" id="ExamineUnitDecorateList">
+        <table class="table table-bordered" id="ExamineUnitDecorateListDetail">
             <!-- cerare document add ajax data-->
         </table>
     </div>
@@ -20,15 +20,15 @@
 
 
 <script>
-    var unitDecorate;
+    var unitDecorateDetail;
     (function () {
-        unitDecorate = function () {
+        unitDecorateDetail = function () {
 
         };
-        unitDecorate.prototype = {
+        unitDecorateDetail.prototype = {
             config: function () {
                 var data = {};
-                data.table = "ExamineUnitDecorateList";
+                data.table = "ExamineUnitDecorateListDetail";
                 data.box = "divBoxExamineUnitDecorate";
                 data.frm = "frmExamineUnitDecorate";
                 return data;
@@ -41,8 +41,8 @@
             },
             loadDataDicList: function () {
                 var cols = commonColumn.unitDecorateColumn();
-                $("#" + unitDecorate.prototype.config().table).bootstrapTable('destroy');
-                TableInit(unitDecorate.prototype.config().table, "${pageContext.request.contextPath}/basicUnitDecorate/getBootstrapTableVo", cols, {
+                $("#" + unitDecorateDetail.prototype.config().table).bootstrapTable('destroy');
+                TableInit(unitDecorateDetail.prototype.config().table, "${pageContext.request.contextPath}/basicUnitDecorate/getBootstrapTableVo", cols, {
                     unitId: ${empty basicUnit.id?0:basicUnit.id},
                     approval:true
                 }, {
@@ -57,8 +57,8 @@
         }
 
         //绑定事件
-        $('#' + unitDecorate.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
-            unitDecorate.prototype.loadDataDicList();
+        $('#' + unitDecorateDetail.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
+            unitDecorateDetail.prototype.loadDataDicList();
         })
     })();
 </script>
