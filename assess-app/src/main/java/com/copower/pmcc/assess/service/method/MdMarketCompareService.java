@@ -255,8 +255,10 @@ public class MdMarketCompareService {
      * @param timePoint
      */
     private void setResidueRatioParam(MdMarketCompareItem mdMarketCompareItem, BasicApply basicApply, Date timePoint) {
+        if (mdMarketCompareItem == null || basicApply == null || timePoint == null) return;
         BasicBuilding basicBuilding = basicBuildingService.getBasicBuildingByApplyId(basicApply.getId());
         BasicHouse basicHouse = basicHouseService.getHouseByApplyId(basicApply.getId());
+        if (basicBuilding == null || basicBuilding.getBeCompletedTime() == null) return;
         Integer usedYear = DateUtils.diffDate(timePoint, basicBuilding.getBeCompletedTime()) / DateUtils.DAYS_PER_YEAR;//已用年限
         if (basicApply.getType().equals(BasicApplyTypeEnum.RESIDENCE.getId())) {
             BaseDataDic dataDic = baseDataDicService.getDataDicById(basicBuilding.getResidenceUseYear());
