@@ -947,6 +947,12 @@ public class GenerateMdIncomeService implements Serializable {
         if (Objects.equal(incomeEnum.getName(), BaseReportFieldMdIncomeEnum.IncomeDepositCost.getName())) {
             separator = "，";
         }
+        if (Objects.equal(incomeEnum.getName(), BaseReportFieldMdIncomeEnum.RestrictionExplain.getName())) {
+            separator = ControlChar.LINE_BREAK;
+        }
+        if (Objects.equal(incomeEnum.getName(), BaseReportFieldMdIncomeEnum.IncomeAdditionalCaptureRemark.getName())) {
+            separator = ControlChar.LINE_BREAK;
+        }
         return this.toEachDesc(map, "", "", separator);
     }
 
@@ -1082,7 +1088,7 @@ public class GenerateMdIncomeService implements Serializable {
                                 value += "，" + mdIncomeDateSection.getRentalGrowthRateExplainSupplement();
                         }
                         if (atomicInteger.get() != 0){
-                            value = String.join("",StringUtils.repeat(ControlChar.TAB,1),value);
+                            value = String.join("",StringUtils.repeat(" ",2),value);
                         }
                     }
                     break;
@@ -1109,6 +1115,9 @@ public class GenerateMdIncomeService implements Serializable {
             separator = ControlChar.LINE_BREAK;
         }
         if (Objects.equal(incomeEnum.getName(), BaseReportFieldMdIncomeEnum.RentalGrowthRateExplain.getName())) {
+            separator = ControlChar.LINE_BREAK;
+        }
+        if (Objects.equal(incomeEnum.getName(), BaseReportFieldMdIncomeEnum.TransactionTaxeFeeExplain.getName())) {
             separator = ControlChar.LINE_BREAK;
         }
         return this.toEachDesc(map, "", "", separator);

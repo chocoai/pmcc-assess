@@ -441,20 +441,20 @@ public class GenerateReportService {
         }
         //特别提示
         if (Objects.equal(BaseReportFieldEnum.HotTip.getName(), name)) {
-            generateCommonMethod.putValue(true, true, false, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getHotTip2());
+            generateCommonMethod.putValue(true, true, false, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getHotTip2(0));
         }
         //建行个贷特别提示
         if (Objects.equal(BaseReportFieldEnum.HotTip2.getName(), name)) {
-            generateCommonMethod.putValue(true, true, false, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getHotTip2());
+            generateCommonMethod.putValue(true, true, false, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getHotTip2(0));
         }
         if (Objects.equal(BaseReportFieldEnum.HotTip4.getName(), name)) {
-            generateCommonMethod.putValue(true, true, false, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getHotTip2());
+            generateCommonMethod.putValue(true, true, false, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getHotTip2(2));
         }
         if (Objects.equal(BaseReportFieldEnum.HotTipBank.getName(), name)) {
-            generateCommonMethod.putValue(true, true, false, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getHotTip2());
+            generateCommonMethod.putValue(true, true, false, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getHotTip2(2));
         }
         if (Objects.equal(BaseReportFieldEnum.Atypism2.getName(), name)) {
-            generateCommonMethod.putValue(true, true, false, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getHotTip2());
+            generateCommonMethod.putValue(true, true, false, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getHotTip2(0));
         }
         //作业结束时间
         if (Objects.equal(BaseReportFieldEnum.HomeWorkEndTime.getName(), name)) {
