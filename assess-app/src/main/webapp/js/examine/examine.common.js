@@ -117,6 +117,7 @@ basicCommon.blockSelect = function (this_) {
         success: function (row) {
             $(this_).parent().prev().val(row.name);
             $(this_).parent().prev().prev().val(row.id);
+            estateCommon.estateForm.find("input[name='blockDescription']").val(row.remark);
         }
     })
 };

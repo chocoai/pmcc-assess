@@ -204,7 +204,10 @@
             type: "post",
             dataType: "json",
             async: false,
-            data: {formData: formData},
+            data: {
+                formData: formData,
+                planDetailsId: '${planDetailsId}'
+            },
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
@@ -223,6 +226,8 @@
         var item = {};
         if ("estate" == "${buildingType}") {
             item.basicEstate = formSerializeArray(estateCommon.estateForm);
+            item.basicEstate.id = estateCommon.estateForm.find("input[name='id']").val();
+            item.basicEstate.name = estateCommon.estateForm.find("input[name='name']").val();
             if (estateCommon.estateLandStateForm.size() >= 1) {
                 var data = formSerializeArray(estateCommon.estateLandStateForm);
                 var landLevelContent = [];

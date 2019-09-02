@@ -91,6 +91,15 @@
 </div>
 <div class="form-group">
     <div class="x-valid">
+        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">基础版块描述<span class="symbol required"></span></label>
+        <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
+                        <textarea class="form-control" name="blockDescription" id="blockDescription" required
+                                  placeholder="基础版块描述">${basicEstate.blockDescription}</textarea>
+        </div>
+    </div>
+</div>
+<div class="form-group">
+    <div class="x-valid">
         <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">街道名称<span class="symbol required"></span></label>
         <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
             <input type="text" placeholder="街道名称" required
@@ -228,8 +237,7 @@
     </div>
 </div>
 
-<script src="${pageContext.request.contextPath}/js/method/developmentCommon.js"></script>
-<%@include file="/views/method/module/developmentCommon.jsp" %>
+
 
 
 

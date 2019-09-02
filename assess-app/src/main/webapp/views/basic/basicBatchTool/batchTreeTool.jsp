@@ -403,7 +403,9 @@
             estateId = batchApply.estateId;
         }
         var type = batchApply.type;
-        openWin('${pageContext.request.contextPath}/basicApplyBatch/fillInformation?type=' + type + "&id=" + node.id + "&buildingType=" + node.level + "&estateId=" + estateId, function () {})
+        var planDetailsId = batchApply.planDetailsId ? batchApply.planDetailsId : 0;
+        openWin('${pageContext.request.contextPath}/basicApplyBatch/fillInformation?type=' + type + "&id=" + node.id + "&buildingType=" + node.level + "&estateId=" + estateId + "&planDetailsId=" + planDetailsId, function () {
+        })
     }
 
 </script>

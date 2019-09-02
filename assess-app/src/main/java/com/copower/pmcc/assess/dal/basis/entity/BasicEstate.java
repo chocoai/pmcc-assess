@@ -20,6 +20,8 @@ public class BasicEstate {
 
     private String blockName;
 
+    private String blockDescription;
+
     private String developer;
 
     private String developerName;
@@ -144,6 +146,14 @@ public class BasicEstate {
 
     public void setBlockName(String blockName) {
         this.blockName = blockName == null ? null : blockName.trim();
+    }
+
+    public String getBlockDescription() {
+        return blockDescription;
+    }
+
+    public void setBlockDescription(String blockDescription) {
+        this.blockDescription = blockDescription == null ? null : blockDescription.trim();
     }
 
     public String getDeveloper() {

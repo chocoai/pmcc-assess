@@ -352,28 +352,6 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            重启人<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <input type="hidden" id="returnPerson" name="returnPerson">
-                                            <input type="text" data-rule-maxlength="50" readonly
-                                                   placeholder="项目经理" onclick="projectDetails.personSelect()"
-                                                   id="returnPersonName" name="returnPersonName" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            重启时间<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <input type="text" readonly placeholder="重启时间" name="returnTime"
-                                                   data-date-format="yyyy-mm-dd" class="form-control date-picker dbdate">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
                                             重启原因<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
