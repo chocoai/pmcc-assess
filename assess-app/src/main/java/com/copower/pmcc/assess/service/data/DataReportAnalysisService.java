@@ -342,27 +342,29 @@ public class DataReportAnalysisService {
             analysisDtoMap.put(entry.getKey().getName(), estateLiquidityAnalysisDto);
         }
         StringBuilder stringBuilder = new StringBuilder(8);
+        stringBuilder.append(StringUtils.repeat(ControlChar.LINE_BREAK, 1)) ;
+        final int five = 4;
         for (int i = 0; i < reportAnalysisList.size(); i++) {
             DataReportAnalysis dataReportAnalysis = reportAnalysisList.get(i);
             String fieldName = dataReportAnalysis.getFieldName();
             switch (fieldName) {
                 case AssessReportFieldConstant.ZONE_BIT_ANALYSIS://估价对象区位分析与估价区位分析
-                    stringBuilder.append(StringUtils.repeat(" ",5)).append(StringUtils.trim(dataReportAnalysis.getTemplate())).append(StringUtils.trim(generateCommonMethod.trim(getLocationAnalysis(estateGroupMap)))).append(StringUtils.repeat(ControlChar.LINE_BREAK, 1));
+                    stringBuilder.append(StringUtils.repeat(" ",five)).append(StringUtils.trim(dataReportAnalysis.getTemplate())).append(StringUtils.trim(generateCommonMethod.trim(getLocationAnalysis(estateGroupMap)))).append(StringUtils.repeat(ControlChar.LINE_BREAK, 1));
                     break;
                 case AssessReportFieldConstant.LOCATION_ANALYSIS://估价对象区位分析与估价区位分析
-                    stringBuilder.append(StringUtils.repeat(" ",5)).append(StringUtils.trim(dataReportAnalysis.getTemplate())).append(generateCommonMethod.trim(this.getLocationAnalysis(estateGroupMap))).append(StringUtils.repeat(ControlChar.LINE_BREAK, 1));
+                    stringBuilder.append(StringUtils.repeat(" ",five)).append(StringUtils.trim(dataReportAnalysis.getTemplate())).append(generateCommonMethod.trim(this.getLocationAnalysis(estateGroupMap))).append(StringUtils.repeat(ControlChar.LINE_BREAK, 1));
                     break;
                 case AssessReportFieldConstant.UNIVERSALITY_ANALYSIS://变现能力通用性分析
-                    stringBuilder.append(StringUtils.repeat(" ",1)).append(StringUtils.trim(dataReportAnalysis.getTemplate())).append(StringUtils.trimToEmpty(generateCommonMethod.trim(this.getUniversalityAnalysis(estateGroupMap, projectInfo.getId(), analysisDtoMap)))).append(StringUtils.repeat(ControlChar.LINE_BREAK, 1));
+                    stringBuilder.append(StringUtils.repeat(" ",five)).append(StringUtils.trim(dataReportAnalysis.getTemplate())).append(StringUtils.trimToEmpty(generateCommonMethod.trim(this.getUniversalityAnalysis(estateGroupMap, projectInfo.getId(), analysisDtoMap)))).append(StringUtils.repeat(ControlChar.LINE_BREAK, 1));
                     break;
                 case AssessReportFieldConstant.INDEPENDENCE_ANALYSIS://独立性分析
-                    stringBuilder.append(StringUtils.repeat(" ",5)).append(StringUtils.trim(dataReportAnalysis.getTemplate())).append(generateCommonMethod.trim(this.getIndependenceAnalysis(judgeObjectList))).append(StringUtils.repeat(ControlChar.LINE_BREAK, 1));
+                    stringBuilder.append(StringUtils.repeat(" ",five)).append(StringUtils.trim(dataReportAnalysis.getTemplate())).append(generateCommonMethod.trim(this.getIndependenceAnalysis(judgeObjectList))).append(StringUtils.repeat(ControlChar.LINE_BREAK, 1));
                     break;
                 case AssessReportFieldConstant.DIVISIBLE_ANALYSIS://可分割分析
-                    stringBuilder.append(StringUtils.repeat(" ",5)).append(StringUtils.trim(dataReportAnalysis.getTemplate())).append(generateCommonMethod.trim(this.getDivisibleAnalysis(judgeObjectList))).append(StringUtils.repeat(ControlChar.LINE_BREAK, 1));
+                    stringBuilder.append(StringUtils.repeat(" ",five)).append(StringUtils.trim(dataReportAnalysis.getTemplate())).append(generateCommonMethod.trim(this.getDivisibleAnalysis(judgeObjectList))).append(StringUtils.repeat(ControlChar.LINE_BREAK, 1));
                     break;
                 case AssessReportFieldConstant.VALUE_ANALYSIS: //价值大小分析
-                    stringBuilder.append(StringUtils.repeat(" ",5)).append(StringUtils.trim(dataReportAnalysis.getTemplate())).append(generateCommonMethod.trim(this.getValueAnalysis(judgeObjectList, areaGroupId))).append(StringUtils.repeat(ControlChar.LINE_BREAK, 1));
+                    stringBuilder.append(StringUtils.repeat(" ",five)).append(StringUtils.trim(dataReportAnalysis.getTemplate())).append(generateCommonMethod.trim(this.getValueAnalysis(judgeObjectList, areaGroupId))).append(StringUtils.repeat(ControlChar.LINE_BREAK, 1));
                     break;
                 case AssessReportFieldConstant.CASHABILITY_SUMMARY://变现能力综述
                 {
@@ -390,7 +392,7 @@ public class DataReportAnalysisService {
                         }
                     }
                     if (CollectionUtils.isNotEmpty(stringHashSet)) {
-                        stringBuilder.append(StringUtils.repeat(" ",5)).append(StringUtils.trim(StringUtils.join(stringHashSet, ""))).append(StringUtils.repeat(ControlChar.LINE_BREAK, 1));
+                        stringBuilder.append(StringUtils.repeat(" ",five)).append(StringUtils.trim(StringUtils.join(stringHashSet, ""))).append(StringUtils.repeat(ControlChar.LINE_BREAK, 1));
                     }
                 }
                 break;
@@ -398,7 +400,7 @@ public class DataReportAnalysisService {
                     break;
             }
         }
-        return stringBuilder.toString();
+        return generateCommonMethod.delHTMLTag(stringBuilder.toString());
     }
 
 

@@ -409,10 +409,10 @@ public class GenerateReportService {
         }
         //建行个贷变现能力分析
         if (Objects.equal(BaseReportFieldEnum.ANALYSIS_CATEGORY_LIQUIDITY2.getName(), name)) {
-            generateCommonMethod.putValue(true, true, false, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getLiquidityRiskLittle());
+            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLiquidityRiskLittle());
         }
         if (Objects.equal(BaseReportFieldEnum.ANALYSIS_CATEGORY_LIQUIDITY3.getName(), name)) {
-            generateCommonMethod.putValue(true, true, false, preMap, bookmarkMap, fileMap, name, generateBaseDataService.getLiquidityRiskLittle());
+            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLiquidityRiskLittle());
         }
         //风险提示
         if (Objects.equal(BaseReportFieldEnum.ANALYSIS_CATEGORY_RISK.getName(), name)) {

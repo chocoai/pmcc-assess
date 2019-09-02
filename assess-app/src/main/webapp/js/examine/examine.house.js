@@ -87,7 +87,8 @@
                         basicUnitId: result.data,
                         success: function (row) {
                             //1.赋值 2.拷贝附件并显示附件数据
-                            $(_this).closest('.input-group').find(':text').val(row.name);
+                            $(_this).closest('.input-group').find("input[name='huxingId']").val(row.id);
+                            $(_this).closest('.input-group').find("input[name='huxingName']").val(row.name);
                             houseCommon.houseForm.find('[name=area]').val(row.area);
                             houseCommon.houseForm.find('[name=orientation]').val(row.orientation).trigger('change');
                             $.ajax({

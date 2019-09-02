@@ -5911,8 +5911,9 @@ public class GenerateBaseDataService {
                 BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObjectSchemeInfoEntry.getKey());
                 GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
                 BasicEstateVo basicEstate = generateBaseExamineService.getEstate();
+                //描述内容
                 if (StringUtils.isNotBlank(basicEstate.getLocationDescribe())) {
-                    documentBuilder.writeln(basicEstate.getLocationDescribe());
+                    documentBuilder.insertHtml(generateCommonMethod.getIndentHtml(basicEstate.getLocationDescribe()),false);
                 }
                 List<MdMarketCompareItem> mdMarketCompareItemList = mdMarketCompareService.getCaseListByMcId(schemeJudgeObjectSchemeInfoEntry.getValue().getMethodDataId());
                 if (CollectionUtils.isNotEmpty(mdMarketCompareItemList)) {
@@ -5934,10 +5935,20 @@ public class GenerateBaseDataService {
     private String getICBCValuationCaseInformationSheet2(List<MdMarketCompareItem> mdMarketCompareItemList) throws Exception {
         String localPath = getLocalPath();
         Document document = new Document();
-        DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(document);
+        DocumentBuilder documentBuilder = new DocumentBuilder(document) ;
         generateCommonMethod.settingBuildingTable(documentBuilder);
-        documentBuilder.getFont().setSize(9);
+        //设置具体宽度100好方便下面的设置
+        documentBuilder.getCellFormat().setWidth(100);
+        documentBuilder.getCellFormat().setVerticalMerge(CellVerticalAlignment.CENTER);
+        documentBuilder.getCellFormat().setVerticalAlignment(CellVerticalAlignment.CENTER);
+        documentBuilder.getCellFormat().setHorizontalMerge(CellVerticalAlignment.CENTER);
+
+        documentBuilder.getFont().setSize(10.5);
         documentBuilder.getFont().setName(AsposeUtils.SongStyleFontName);
+        //左边框填充1/4的宽度长度
+        documentBuilder.getCellFormat().setLeftPadding(documentBuilder.getCellFormat().getWidth()/4);
+        //右边框填充1/10的宽度长度
+        documentBuilder.getCellFormat().setRightPadding(documentBuilder.getCellFormat().getWidth()/10);
         List<Integer> planDetailsIdList = Lists.newArrayList();
         mdMarketCompareItemList.forEach(po -> {
             if (po.getPlanDetailsId() != null) {
