@@ -1918,10 +1918,12 @@ public class GenerateBaseDataService {
      *
      * @throws Exception
      */
-    public String getHotTip2() throws Exception {
+    public String getHotTip2(final int repeat) throws Exception {
         String value = getHotTipBank(true);
         if (StringUtils.isNotBlank(value)){
-            value = String.join("",StringUtils.repeat(" ",2),value);
+            if (repeat != 0){
+                value = String.join("",StringUtils.repeat(" ",repeat),value);
+            }
         }
         if (StringUtils.isEmpty(value)) {
             value = "/";
