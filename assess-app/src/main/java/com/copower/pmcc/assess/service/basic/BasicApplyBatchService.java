@@ -5,26 +5,24 @@ import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.enums.*;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.basic.*;
-import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dal.cases.entity.*;
 import com.copower.pmcc.assess.dto.input.SynchronousDataDto;
 import com.copower.pmcc.assess.dto.input.ZtreeDto;
 import com.copower.pmcc.assess.dto.output.basic.BasicApplyBatchVo;
-import com.copower.pmcc.assess.dto.output.basic.BasicBuildingVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.assist.DdlMySqlAssist;
 import com.copower.pmcc.assess.service.assist.ResidueRatioService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
 import com.copower.pmcc.assess.service.cases.*;
 import com.copower.pmcc.assess.service.event.basic.BasicApplyBatchEvent;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
-import com.copower.pmcc.assess.service.project.survey.SurveyCaseStudyService;
-import com.copower.pmcc.assess.service.project.survey.SurveyExamineTaskService;
+import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.survey.SurveySceneExploreService;
 import com.copower.pmcc.bpm.api.dto.ProcessUserDto;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
@@ -56,7 +54,6 @@ import org.springframework.util.ObjectUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class BasicApplyBatchService {
@@ -154,6 +151,12 @@ public class BasicApplyBatchService {
     private BasicUnitDao basicUnitDao;
     @Autowired
     private BasicHouseDao basicHouseDao;
+    @Autowired
+    private SurveySceneExploreService surveySceneExploreService;
+    @Autowired
+    private DeclareRecordService declareRecordService;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -250,12 +253,25 @@ public class BasicApplyBatchService {
         return null;
     }
 
-    public void deleteBatchByPlanDetailsId(Integer planDetailsId) {
+    public void deleteBatchByPlanDetailsId(Integer planDetailsId) throws Exception {
         BasicApplyBatch applyBatch = getBasicApplyBatchByPlanDetailsId(planDetailsId);
         if (applyBatch != null) {
             List<BasicApplyBatchDetail> batchDetailList = basicApplyBatchDetailService.getBasicApplyBatchDetailByApplyBatchId(applyBatch.getId());
-            if (CollectionUtils.isNotEmpty(batchDetailList))
-                batchDetailList.forEach(o -> basicApplyBatchDetailDao.deleteInfo(o.getId()));
+            if (CollectionUtils.isNotEmpty(batchDetailList)) {
+                for (BasicApplyBatchDetail basicApplyBatchDetail : batchDetailList) {
+                    if (FormatUtils.entityNameConvertToTableName(BasicBuilding.class).equals(basicApplyBatchDetail.getTableName())) {
+                        basicBuildingService.clearInvalidData(basicApplyBatchDetail.getTableId());
+                    }
+                    if (FormatUtils.entityNameConvertToTableName(BasicUnit.class).equals(basicApplyBatchDetail.getTableName())) {
+                        basicUnitService.clearInvalidData(basicApplyBatchDetail.getTableId());
+                    }
+                    if (FormatUtils.entityNameConvertToTableName(BasicHouse.class).equals(basicApplyBatchDetail.getTableName())) {
+                        basicHouseService.clearInvalidData(basicApplyBatchDetail.getTableId());
+                    }
+                    basicApplyBatchDetailDao.deleteInfo(basicApplyBatchDetail.getId());
+                }
+            }
+            basicEstateService.clearInvalidData(applyBatch.getEstateId());
             basicApplyBatchDao.deleteInfo(applyBatch.getId());
         }
     }
@@ -310,7 +326,7 @@ public class BasicApplyBatchService {
      * @throws Exception
      */
     @Transactional(rollbackFor = Exception.class)
-    public void saveDraft(String formData) throws Exception {
+    public void saveDraft(String formData, Integer planDetailsId) throws Exception {
         String jsonContent = null;
         JSONObject jsonObject = JSON.parseObject(formData);
 
@@ -322,8 +338,10 @@ public class BasicApplyBatchService {
             if (basicEstate != null) {
                 basicEstateService.saveAndUpdateBasicEstate(basicEstate);
                 BasicApplyBatch basicApplyBatch = getBasicApplyBatchByEstateId(basicEstate.getId());
-                basicApplyBatch.setEstateName(basicEstate.getName());
-                basicApplyBatchDao.updateInfo(basicApplyBatch);
+                if (basicApplyBatch != null) {
+                    basicApplyBatch.setEstateName(basicEstate.getName());
+                    basicApplyBatchDao.updateInfo(basicApplyBatch);
+                }
                 if (basicEstate.getId() != null) {
                     BasicEstateLandState basicEstateLandState = null;
                     String string = jsonObject.getString(BasicApplyFormNameEnum.BASIC_ESTATELAND_STATE.getVar());
@@ -375,6 +393,15 @@ public class BasicApplyBatchService {
                 houseDetail.setName(basicHouse.getHouseNumber());
                 houseDetail.setDisplayName(basicHouse.getHouseNumber());
                 basicApplyBatchDetailDao.updateInfo(houseDetail);
+                //查勘时实际用途保存到案列
+                SurveySceneExplore surveySceneExplore = surveySceneExploreService.getSurveySceneExplore(planDetailsId);
+                if (surveySceneExplore != null) {
+                    DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(surveySceneExplore.getDeclareId());
+                    if(basicHouse.getPracticalUse()!=null) {
+                        declareRecord.setPracticalUse(baseDataDicService.getNameById(basicHouse.getPracticalUse()));
+                        declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
+                    }
+                }
                 //交易信息
                 jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_TRADING.getVar());
                 BasicHouseTrading basicTrading = JSONObject.parseObject(jsonContent, BasicHouseTrading.class);

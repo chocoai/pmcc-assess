@@ -13,19 +13,19 @@
         <h4>配备电梯</h4>
     </div>
     <div class="x_content collapse">
-        <table class="table table-bordered" id="ExamineUnitElevatorList">
+        <table class="table table-bordered" id="examineUnitElevatorList">
             <!-- cerare document add ajax data-->
         </table>
     </div>
 </div>
 
 <script>
-    var unitElevator;
+    var unitElevatorDetail;
     (function () {
-        unitElevator = function () {
+        unitElevatorDetail = function () {
 
         };
-        unitElevator.prototype = {
+        unitElevatorDetail.prototype = {
             isNotNull:function (item) {
                 if (item){
                     return true;
@@ -34,15 +34,15 @@
             },
             config: function () {
                 var data = {};
-                data.table = "ExamineUnitElevatorList";
+                data.table = "examineUnitElevatorList";
                 data.box = "divBoxExamineUnitElevator";
                 data.frm = "frmExamineUnitElevator";
                 return data;
             },
             loadDataDicList: function () {
                 var cols = commonColumn.unitElevatorColumn();
-                $("#" + unitElevator.prototype.config().table).bootstrapTable('destroy');
-                TableInit(unitElevator.prototype.config().table, "${pageContext.request.contextPath}/basicUnitElevator/getBootstrapTableVo", cols, {
+                $("#" + unitElevatorDetail.prototype.config().table).bootstrapTable('destroy');
+                TableInit(unitElevatorDetail.prototype.config().table, "${pageContext.request.contextPath}/basicUnitElevator/getBootstrapTableVo", cols, {
                     unitId: ${empty basicUnit.id?0:basicUnit.id},
                     approval:true
                 }, {
@@ -57,8 +57,8 @@
         }
 
         //绑定事件
-        $('#' + unitElevator.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
-            unitElevator.prototype.loadDataDicList();
+        $('#' + unitElevatorDetail.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
+            unitElevatorDetail.prototype.loadDataDicList();
         })
     })();
 </script>

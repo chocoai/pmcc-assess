@@ -596,12 +596,19 @@ public class BasicApplyTransferService {
         BasicApply sourceBasicApply = basicApplyService.getBasicApplyByPlanDetailsId(sourcePlanDetailsId);
         if (sourceBasicApply == null)
             throw new BusinessException(HttpReturnEnum.NOTFIND.getName());
-        BasicApply targetBasicApply = basicApplyService.getBasicApplyByPlanDetailsId(targetPlanDetailsId);
-        if (targetBasicApply != null) {
-            basicApplyService.deleteBasicApply(targetBasicApply.getId());  //先清除數據
-            basicApplyBatchService.deleteBatchByPlanDetailsId(targetPlanDetailsId);
+        List<BasicApply> basicApplyList = basicApplyService.getBasicApplyListByPlanDetailsId(targetPlanDetailsId);
+        if (CollectionUtils.isNotEmpty(basicApplyList)) {
+            basicApplyList.forEach(o -> {
+                try {
+                    basicApplyService.deleteBasicApply(o.getId());
+                } catch (Exception e) {
+                    logger.error(e.getMessage(),e);
+                }
+            });
         }
-        targetBasicApply = new BasicApply();
+        basicApplyBatchService.deleteBatchByPlanDetailsId(targetPlanDetailsId);
+
+        BasicApply  targetBasicApply = new BasicApply();
         BeanUtils.copyProperties(sourceBasicApply, targetBasicApply);
         targetBasicApply.setPlanDetailsId(targetPlanDetailsId);
         targetBasicApply.setStatus(ProjectStatusEnum.STARTAPPLY.getKey());

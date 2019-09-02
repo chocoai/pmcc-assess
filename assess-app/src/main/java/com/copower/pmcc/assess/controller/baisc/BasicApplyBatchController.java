@@ -132,9 +132,10 @@ public class BasicApplyBatchController extends BaseController {
     }
 
     @RequestMapping(value = "/fillInformation", name = "填写信息页面", method = RequestMethod.GET)
-    public ModelAndView fillInformation(Integer type, Integer id, Integer buildingType, Integer estateId) throws Exception {
+    public ModelAndView fillInformation(Integer type, Integer id, Integer buildingType, Integer estateId, Integer planDetailsId) throws Exception {
         String view = "/basic/fillInformation";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
+        modelAndView.addObject("planDetailsId", planDetailsId);
         this.setViewParam(type, id, buildingType, estateId, modelAndView);
 
         return modelAndView;
@@ -178,9 +179,9 @@ public class BasicApplyBatchController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "/saveDraft", name = "保存楼盘等")
-    public HttpResult saveDraft(String formData) {
+    public HttpResult saveDraft(String formData,Integer planDetailsId) {
         try {
-            basicApplyBatchService.saveDraft(formData);
+            basicApplyBatchService.saveDraft(formData, planDetailsId);
             return HttpResult.newCorrectResult();
         } catch (BusinessException e) {
             log.error(e.getMessage(), e);

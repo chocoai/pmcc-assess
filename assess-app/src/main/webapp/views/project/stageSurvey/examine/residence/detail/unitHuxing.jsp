@@ -13,7 +13,7 @@
         <h4>户型</h4>
     </div>
     <div class="x_content collapse">
-        <table class="table table-bordered" id="UnitHuxingList">
+        <table class="table table-bordered" id="UnitHuxingListDetail">
             <!-- cerare document add ajax data-->
         </table>
     </div>
@@ -22,14 +22,14 @@
 <script>
 
 
-    var unitHuxing;
+    var unitHuxingDetail;
     (function () {
-        unitHuxing = function () {
+        unitHuxingDetail = function () {
         };
-        unitHuxing.prototype = {
+        unitHuxingDetail.prototype = {
             config: function () {
                 var data = {};
-                data.table = "UnitHuxingList";
+                data.table = "UnitHuxingListDetail";
                 data.box = "divBoxUnitHuxing";
                 data.frm = "frmUnitHuxing";
                 data.unitHuxingFileIDFildName = "house_latest_family_planV";
@@ -37,8 +37,8 @@
             },
             loadDataDicList: function () {
                 var cols = commonColumn.unitHuxingColumn();
-                $("#" + unitHuxing.prototype.config().table).bootstrapTable('destroy');
-                TableInit(unitHuxing.prototype.config().table, "${pageContext.request.contextPath}/basicUnitHuxing/getBootstrapTableVo", cols, {
+                $("#" + unitHuxingDetail.prototype.config().table).bootstrapTable('destroy');
+                TableInit(unitHuxingDetail.prototype.config().table, "${pageContext.request.contextPath}/basicUnitHuxing/getBootstrapTableVo", cols, {
                     unitId: ${empty basicUnit.id?0:basicUnit.id},
                     approval:true
                 }, {
@@ -59,8 +59,8 @@
         }
 
         //绑定事件
-        $('#' + unitHuxing.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
-            unitHuxing.prototype.loadDataDicList();
+        $('#' + unitHuxingDetail.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
+            unitHuxingDetail.prototype.loadDataDicList();
         })
     })();
 

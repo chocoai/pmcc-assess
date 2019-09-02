@@ -97,6 +97,8 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.build.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.unit.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.house.js"></script>
+<script src="${pageContext.request.contextPath}/js/method/developmentCommon.js"></script>
+<%@include file="/views/method/module/developmentCommon.jsp" %>
 <script type="text/javascript">
     $(function () {
 

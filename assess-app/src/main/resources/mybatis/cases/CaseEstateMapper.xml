@@ -38,6 +38,7 @@
     <result column="location_describe" property="locationDescribe" jdbcType="VARCHAR" />
     <result column="supply_communication" property="supplyCommunication" jdbcType="INTEGER" />
     <result column="supply_road" property="supplyRoad" jdbcType="INTEGER" />
+    <result column="block_description" property="blockDescription" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -103,7 +104,7 @@
     volumetric_rate, greening_rate, building_number, position, description, average_price, 
     price_range, supply_power, supply_water, drain_water, supply_gas, supply_heating, 
     version, creator, gmt_created, gmt_modified, location_describe, supply_communication, 
-    supply_road
+    supply_road, block_description
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseEstateExample" >
     select
@@ -150,7 +151,8 @@
       supply_water, drain_water, supply_gas, 
       supply_heating, version, creator, 
       gmt_created, gmt_modified, location_describe, 
-      supply_communication, supply_road)
+      supply_communication, supply_road, block_description
+      )
     values (#{type,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, 
       #{district,jdbcType=VARCHAR}, #{blockId,jdbcType=INTEGER}, #{blockName,jdbcType=VARCHAR}, 
       #{developer,jdbcType=VARCHAR}, #{developerName,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
@@ -162,7 +164,8 @@
       #{supplyWater,jdbcType=INTEGER}, #{drainWater,jdbcType=INTEGER}, #{supplyGas,jdbcType=INTEGER}, 
       #{supplyHeating,jdbcType=INTEGER}, #{version,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
       #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{locationDescribe,jdbcType=VARCHAR}, 
-      #{supplyCommunication,jdbcType=INTEGER}, #{supplyRoad,jdbcType=INTEGER})
+      #{supplyCommunication,jdbcType=INTEGER}, #{supplyRoad,jdbcType=INTEGER}, #{blockDescription,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseEstate" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -275,6 +278,9 @@
       <if test="supplyRoad != null" >
         supply_road,
       </if>
+      <if test="blockDescription != null" >
+        block_description,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="type != null" >
@@ -381,6 +387,9 @@
       </if>
       <if test="supplyRoad != null" >
         #{supplyRoad,jdbcType=INTEGER},
+      </if>
+      <if test="blockDescription != null" >
+        #{blockDescription,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -501,6 +510,9 @@
       <if test="record.supplyRoad != null" >
         supply_road = #{record.supplyRoad,jdbcType=INTEGER},
       </if>
+      <if test="record.blockDescription != null" >
+        block_description = #{record.blockDescription,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -543,7 +555,8 @@
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       location_describe = #{record.locationDescribe,jdbcType=VARCHAR},
       supply_communication = #{record.supplyCommunication,jdbcType=INTEGER},
-      supply_road = #{record.supplyRoad,jdbcType=INTEGER}
+      supply_road = #{record.supplyRoad,jdbcType=INTEGER},
+      block_description = #{record.blockDescription,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -656,6 +669,9 @@
       <if test="supplyRoad != null" >
         supply_road = #{supplyRoad,jdbcType=INTEGER},
       </if>
+      <if test="blockDescription != null" >
+        block_description = #{blockDescription,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -695,7 +711,8 @@
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       location_describe = #{locationDescribe,jdbcType=VARCHAR},
       supply_communication = #{supplyCommunication,jdbcType=INTEGER},
-      supply_road = #{supplyRoad,jdbcType=INTEGER}
+      supply_road = #{supplyRoad,jdbcType=INTEGER},
+      block_description = #{blockDescription,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
