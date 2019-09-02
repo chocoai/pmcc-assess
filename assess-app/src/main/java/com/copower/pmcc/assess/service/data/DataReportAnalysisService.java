@@ -342,7 +342,6 @@ public class DataReportAnalysisService {
             analysisDtoMap.put(entry.getKey().getName(), estateLiquidityAnalysisDto);
         }
         StringBuilder stringBuilder = new StringBuilder(8);
-        stringBuilder.append(StringUtils.repeat(ControlChar.LINE_BREAK, 1)) ;
         final int five = 4;
         for (int i = 0; i < reportAnalysisList.size(); i++) {
             DataReportAnalysis dataReportAnalysis = reportAnalysisList.get(i);
@@ -400,7 +399,8 @@ public class DataReportAnalysisService {
                     break;
             }
         }
-        return generateCommonMethod.delHTMLTag(stringBuilder.toString());
+        String value = generateCommonMethod.delHTMLTag(stringBuilder.toString()) ;
+        return value;
     }
 
 

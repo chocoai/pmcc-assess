@@ -502,7 +502,7 @@ public class GenerateCommonMethod {
         Pattern p_html = Pattern.compile(regEx_html, Pattern.CASE_INSENSITIVE);
         Matcher m_html = p_html.matcher(htmlStr);
         htmlStr = m_html.replaceAll(""); //过滤html标签
-        return htmlStr.trim(); //返回文本字符串
+        return htmlStr; //返回文本字符串
     }
 
     /**

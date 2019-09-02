@@ -412,7 +412,8 @@ public class GenerateReportService {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLiquidityRiskLittle());
         }
         if (Objects.equal(BaseReportFieldEnum.ANALYSIS_CATEGORY_LIQUIDITY3.getName(), name)) {
-            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLiquidityRiskLittle());
+            String value = generateBaseDataService.getLiquidityRiskLittle() ;
+            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name,value );
         }
         //风险提示
         if (Objects.equal(BaseReportFieldEnum.ANALYSIS_CATEGORY_RISK.getName(), name)) {
@@ -1095,22 +1096,21 @@ public class GenerateReportService {
     private void replaceWord(String localPath, Map<String, String> textMap, Map<String, String> preMap, Map<String, String> bookmarkMap, Map<String, String> fileMap) throws Exception {
         Map<String, String> errorMap2 = Maps.newHashMap();
         List<String> typeList = Arrays.asList("\r", "\n");
-        {
-            if (!textMap.isEmpty()) {
-                textMap.forEach((key, value) -> {
-                    typeList.forEach(s -> {
-                        if (StringUtils.contains(value, s)) {
-                            errorMap2.put(key, value);
-                        }
-                    });
+        if (!textMap.isEmpty()) {
+            //特殊处理一些数据
+            textMap.forEach((key, value) -> {
+                typeList.forEach(s -> {
+                    if (StringUtils.contains(value, s)) {
+                        errorMap2.put(key, value);
+                    }
                 });
-            }
-            if (!errorMap2.isEmpty()) {
-                try {
-                    replaceHandleError(errorMap2, localPath);
-                } catch (Exception e) {
-                    baseService.writeExceptionInfo(e,"报告生成");
-                }
+            });
+        }
+        if (!errorMap2.isEmpty()) {
+            try {
+                replaceHandleError(errorMap2, localPath);
+            } catch (Exception e) {
+                baseService.writeExceptionInfo(e,"报告生成");
             }
         }
         if (!preMap.isEmpty()) {
