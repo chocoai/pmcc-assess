@@ -984,7 +984,7 @@ public class GenerateBaseDataService {
                         value = declareRealtyRealEstateCert.getCertName();
                     }
                     if (StringUtils.isEmpty(value)) {
-                        value = declareRealtyHouseCert.getCertName();
+//                        value = declareRealtyHouseCert.getCertName();
                     }
                     if (StringUtils.isNotEmpty(value)) {
                         map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), value);
@@ -997,7 +997,7 @@ public class GenerateBaseDataService {
                         value = declareRealtyRealEstateCert.getOwnership();
                     }
                     if (StringUtils.isEmpty(value)) {
-                        value = declareRealtyHouseCert.getOwnership();
+//                        value = declareRealtyHouseCert.getOwnership();
                     }
                     if (StringUtils.isNotEmpty(value)) {
                         map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), value);
@@ -1016,7 +1016,7 @@ public class GenerateBaseDataService {
                     }
                     if (StringUtils.isEmpty(value)) {
                         if (declareRealtyHouseCert.getCertUseCategory() != null) {
-                            value = baseDataDicService.getNameById(declareRealtyHouseCert.getCertUseCategory());
+//                            value = baseDataDicService.getNameById(declareRealtyHouseCert.getCertUseCategory());
                         }
                     }
                     if (StringUtils.isNotEmpty(value)) {
@@ -1053,7 +1053,7 @@ public class GenerateBaseDataService {
                     }
                     if (apportionmentArea == null) {
                         if (declareRealtyHouseCert.getApportionmentArea() != null) {
-                            apportionmentArea = declareRealtyHouseCert.getApportionmentArea();
+//                            apportionmentArea = declareRealtyHouseCert.getApportionmentArea();
                         }
                     }
                     if (apportionmentArea != null) {
@@ -1078,7 +1078,7 @@ public class GenerateBaseDataService {
                     }
                     if (useEndDate == null) {
                         if (declareRealtyHouseCert.getUseEndDate() != null) {
-                            useEndDate = declareRealtyHouseCert.getUseEndDate();
+//                            useEndDate = declareRealtyHouseCert.getUseEndDate();
                         }
                     }
                     if (useEndDate != null) {
@@ -1100,7 +1100,7 @@ public class GenerateBaseDataService {
                     }
                     if (StringUtils.isEmpty(value)) {
                         if (StringUtils.isNotEmpty(declareRealtyHouseCert.getRegistrationAuthority())) {
-                            value = declareRealtyHouseCert.getRegistrationAuthority();
+//                            value = declareRealtyHouseCert.getRegistrationAuthority();
                         }
                     }
                     if (StringUtils.isNotEmpty(value)) {
@@ -1139,7 +1139,7 @@ public class GenerateBaseDataService {
                     }
                     if (apportionmentArea == null) {
                         if (declareRealtyHouseCert.getApportionmentArea() != null) {
-                            apportionmentArea = declareRealtyHouseCert.getApportionmentArea();
+//                            apportionmentArea = declareRealtyHouseCert.getApportionmentArea();
                         }
                     }
                     if (apportionmentArea != null) {
@@ -6111,13 +6111,13 @@ public class GenerateBaseDataService {
     public String getAssessAssessTotalAssessTotalRMB() {
         String value = getAssessAssessTotal2();
         if (NumberUtils.isNumber(value)) {
-            value = CnNumberUtils.toUppercase(value);
+            value = CnNumberUtils.toUppercaseSubstring(value);
             return value;
         }
         return "/";
     }
 
-    private String getAssessAssessTotal2() {
+    private synchronized String getAssessAssessTotal2() {
         BigDecimal bigDecimal = new BigDecimal(0);
         Map<SchemeJudgeObject, KeyValueDto> map = getAssessAssessTotalData();
         if (!map.isEmpty()) {
@@ -6127,10 +6127,11 @@ public class GenerateBaseDataService {
                 bigDecimal = bigDecimal.add(one.multiply(two));
             }
         }
-        return generateCommonMethod.getBigDecimalToInteger(bigDecimal, 100);
+        String s = generateCommonMethod.getBigDecimalToInteger(bigDecimal, 100);
+        return s;
     }
 
-    private Map<SchemeJudgeObject, KeyValueDto> getAssessAssessTotalData() {
+    private synchronized Map<SchemeJudgeObject, KeyValueDto> getAssessAssessTotalData() {
         Map<SchemeJudgeObject, KeyValueDto> map = Maps.newHashMap();
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {

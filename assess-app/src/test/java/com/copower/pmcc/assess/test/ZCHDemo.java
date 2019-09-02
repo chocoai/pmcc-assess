@@ -1,8 +1,10 @@
 package com.copower.pmcc.assess.test;
 
+import com.copower.pmcc.assess.common.ArithmeticUtils;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import jodd.util.URLDecoder;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.junit.*;
 import org.junit.Test;
@@ -15,6 +17,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -24,8 +28,8 @@ public class ZCHDemo {
 
     @org.junit.Test
     public void run() {
-        BigDecimal bigDecimal = new BigDecimal(1543.45);
-        String value = getBigDecimalToInteger(bigDecimal, -2);
+        BigDecimal bigDecimal = new BigDecimal(0.30);
+        String value = getBigDecimalToInteger(bigDecimal, 10);
         System.out.println(value);
     }
 
@@ -38,21 +42,51 @@ public class ZCHDemo {
      */
     public String getBigDecimalToInteger(final BigDecimal bigDecimal, final int number) {
         if (bigDecimal == null) {
-            return "";
+            throw new IllegalArgumentException("不符合约定哦亲!") ;
         }
-        double log = Math.log10(number);
-        if (log < 1) {
-
+        int log = (int) Math.log10(number);//这里一定会是整数,不用担心精度损失
+        if (log < 1){
+            throw new IllegalArgumentException("不符合约定哦亲!") ;
         }
-        int newScale = (int) Math.log10(new BigDecimal(number).doubleValue());
-        int num = bigDecimal.intValue() / (number * 10);
-        num *= (number * 10);
-        int result = bigDecimal.intValue() % (number * 10);
-        BigDecimal big = new BigDecimal(result / Math.pow(10, newScale)).setScale(0, BigDecimal.ROUND_HALF_UP);
-        big = big.multiply(new BigDecimal(Math.pow(10, newScale)));
-        num += big.intValue();
-        return String.valueOf(num);
+        final AtomicInteger atomicInteger = new AtomicInteger(0);
+        double result = whileDivide(atomicInteger,bigDecimal.doubleValue()) ;
+        int sub = atomicInteger.get()-log;//总int长度 - 需要保留到的int长度
+        BigDecimal temp = new BigDecimal(result).setScale(sub, BigDecimal.ROUND_HALF_UP);
+        result = temp.doubleValue();
+        long center = Math.round(Math.pow(10, (double) atomicInteger.get())) ;
+        result = result*center;
+        return new BigDecimal(result).stripTrailingZeros().toPlainString() ;
     }
+
+    private double whileDivide(AtomicInteger atomicInteger,double number){
+        final int one = 1;
+        if (number > one){
+            number = number/ 10;
+            atomicInteger.incrementAndGet();
+            return whileDivide(atomicInteger,number) ;
+        }else {
+            return number;
+        }
+    }
+
+    @Test
+    public void testNumber(){
+        double number = 6326;
+        final AtomicInteger atomicInteger = new AtomicInteger(0);
+        number = whileDivide(atomicInteger,number) ;
+        System.out.println(number);
+        System.out.println(atomicInteger.get());
+    }
+
+    @Test
+    public void subDecimal(){
+        double number = 252.2623623;
+       String start = StringUtils.substringAfterLast(String.valueOf(number),".");
+        System.out.println(start);
+
+    }
+
+
 
     @org.junit.Test
     public void testA() {

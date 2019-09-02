@@ -4,8 +4,12 @@ package com.copower.pmcc.assess.common;
  * Created by zch on 2019-8-30.
  */
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.math.RoundingMode;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 /**
@@ -368,33 +372,90 @@ public class ArithmeticUtils {
      * @param number     必须是10的正次方的结果 如10,100,1000,1000
      * @return
      */
-    public static String getBigDecimalToInteger(final BigDecimal bigDecimal, int number) {
+    public static String getBigDecimalToInteger(final BigDecimal bigDecimal,final int number) {
         if (bigDecimal == null) {
-            return "";
+            throw new IllegalArgumentException("不符合约定哦亲!") ;
         }
-        double log = Math.log10(number);
-        if (log < 0) {
-            //暂时不处理,测试
+        int log = (int) Math.log10(number);//这里一定会是整数,不用担心精度损失
+        if (log < 1){
+            throw new IllegalArgumentException("不符合约定哦亲!") ;
         }
-        int newScale = (int) Math.log10(new BigDecimal(number).doubleValue());
-        int num = bigDecimal.intValue() / (number * 10);
-        num *= (number * 10);
-        int result = bigDecimal.intValue() % (number * 10);
-        BigDecimal big = new BigDecimal(result / Math.pow(10, newScale)).setScale(0, BigDecimal.ROUND_HALF_UP);
-        big = big.multiply(new BigDecimal(Math.pow(10, newScale)));
-        num += big.intValue();
-        return String.valueOf(num);
+        final AtomicInteger atomicInteger = new AtomicInteger(0);
+        double result = whileDivide(atomicInteger,bigDecimal.doubleValue()) ;
+        int sub = atomicInteger.get()-log;//总int长度 - 需要保留到的int长度
+        BigDecimal temp = new BigDecimal(result).setScale(sub, BigDecimal.ROUND_HALF_UP);
+        result = mul(temp.doubleValue(),Math.pow(10, (double) atomicInteger.get())) ;
+        BigInteger bigInteger = new BigDecimal(result).toBigInteger() ;
+        return bigInteger.toString() ;
     }
 
-    public static String getBigDecimalString(BigDecimal bigDecimal){
+    /**
+     * 去除BigDecimal末尾多余的0
+     * @param bigDecimal
+     * @return
+     */
+    public static String getBigDecimalString(final BigDecimal bigDecimal){
         if (bigDecimal == null){
             return "" ;
         }
         try {
-            //去除BigDecimal末尾多余的0
             return bigDecimal.stripTrailingZeros().toPlainString();
         } catch (Exception e) {
             return bigDecimal.toString();
+        }
+    }
+
+    /**
+     * 获取数字中小数后面的字符串
+     * @param input
+     * @return
+     */
+    public static String getDecimalString(String input){
+        return StringUtils.substringAfterLast(String.valueOf(input),".") ;
+    }
+
+    /**
+     * 获取数字中小数后面的长度
+     * @param input
+     * @return
+     */
+    public static int getDecimalLength(String input){
+        return StringUtils.substringAfterLast(String.valueOf(input),".").length() ;
+    }
+
+    /**
+     * 获取数字中小数后面的字符串
+     * @param input
+     * @return
+     */
+    public static String getDecimalString(double input){
+        return StringUtils.substringAfterLast(String.valueOf(input),".") ;
+    }
+
+    /**
+     * 获取数字中小数后面的长度
+     * @param input
+     * @return
+     */
+    public static int getDecimalLength(double input){
+        return StringUtils.substringAfterLast(String.valueOf(input),".").length() ;
+    }
+
+
+    /**
+     * 将非小数转换为小数并且记录次数
+     * @param atomicInteger
+     * @param number
+     * @return
+     */
+    private static double whileDivide(final AtomicInteger atomicInteger,double number){
+        final int one = 1;
+        if (number > one){
+            number = number/ 10;
+            atomicInteger.incrementAndGet();
+            return whileDivide(atomicInteger,number) ;
+        }else {
+            return number;
         }
     }
 }

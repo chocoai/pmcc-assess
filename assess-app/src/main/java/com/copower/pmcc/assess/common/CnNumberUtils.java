@@ -61,7 +61,7 @@ public class CnNumberUtils implements Serializable {
      * @param num
      * @return
      */
-    public static String toUppercase(String num) {
+    private static String toUppercase(String num) {
         String[] strNumArray = num.split("\\.");
         int strNumArrayLength = strNumArray.length;
         if (strNumArrayLength > 2 || (strNumArrayLength == 2 && strNumArray[1].length() > 2)) {
