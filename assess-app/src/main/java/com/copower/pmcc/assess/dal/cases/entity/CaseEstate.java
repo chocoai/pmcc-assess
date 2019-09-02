@@ -76,6 +76,8 @@ public class CaseEstate {
 
     private Integer supplyRoad;
 
+    private String blockDescription;
+
     public Integer getId() {
         return id;
     }
@@ -362,5 +364,13 @@ public class CaseEstate {
 
     public void setSupplyRoad(Integer supplyRoad) {
         this.supplyRoad = supplyRoad;
+    }
+
+    public String getBlockDescription() {
+        return blockDescription;
+    }
+
+    public void setBlockDescription(String blockDescription) {
+        this.blockDescription = blockDescription == null ? null : blockDescription.trim();
     }
 }

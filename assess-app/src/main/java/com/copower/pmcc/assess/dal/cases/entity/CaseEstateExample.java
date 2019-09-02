@@ -2445,6 +2445,76 @@ public class CaseEstateExample {
             addCriterion("supply_road not between", value1, value2, "supplyRoad");
             return (Criteria) this;
         }
+
+        public Criteria andBlockDescriptionIsNull() {
+            addCriterion("block_description is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlockDescriptionIsNotNull() {
+            addCriterion("block_description is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlockDescriptionEqualTo(String value) {
+            addCriterion("block_description =", value, "blockDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlockDescriptionNotEqualTo(String value) {
+            addCriterion("block_description <>", value, "blockDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlockDescriptionGreaterThan(String value) {
+            addCriterion("block_description >", value, "blockDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlockDescriptionGreaterThanOrEqualTo(String value) {
+            addCriterion("block_description >=", value, "blockDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlockDescriptionLessThan(String value) {
+            addCriterion("block_description <", value, "blockDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlockDescriptionLessThanOrEqualTo(String value) {
+            addCriterion("block_description <=", value, "blockDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlockDescriptionLike(String value) {
+            addCriterion("block_description like", value, "blockDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlockDescriptionNotLike(String value) {
+            addCriterion("block_description not like", value, "blockDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlockDescriptionIn(List<String> values) {
+            addCriterion("block_description in", values, "blockDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlockDescriptionNotIn(List<String> values) {
+            addCriterion("block_description not in", values, "blockDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlockDescriptionBetween(String value1, String value2) {
+            addCriterion("block_description between", value1, value2, "blockDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlockDescriptionNotBetween(String value1, String value2) {
+            addCriterion("block_description not between", value1, value2, "blockDescription");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

@@ -50,6 +50,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -637,6 +638,8 @@ public class ProjectPlanDetailsService {
         projectTaskReturnRecord.setProjectId(projectPlanDetails.getProjectId());
         projectTaskReturnRecord.setPlanDetailsId(planDetailsId);
         projectTaskReturnRecord.setCreator(commonService.thisUserAccount());
+        projectTaskReturnRecord.setReturnPerson(commonService.thisUserAccount());
+        projectTaskReturnRecord.setReturnTime(new Date());
         Integer returnId = projectTaskReturnRecordDao.addProjectTaskReturnRecord(projectTaskReturnRecord);
         //修改附件tableId
         SysAttachmentDto queryParam = new SysAttachmentDto();
