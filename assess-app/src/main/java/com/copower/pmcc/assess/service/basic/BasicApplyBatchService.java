@@ -250,12 +250,25 @@ public class BasicApplyBatchService {
         return null;
     }
 
-    public void deleteBatchByPlanDetailsId(Integer planDetailsId) {
+    public void deleteBatchByPlanDetailsId(Integer planDetailsId) throws Exception {
         BasicApplyBatch applyBatch = getBasicApplyBatchByPlanDetailsId(planDetailsId);
         if (applyBatch != null) {
             List<BasicApplyBatchDetail> batchDetailList = basicApplyBatchDetailService.getBasicApplyBatchDetailByApplyBatchId(applyBatch.getId());
-            if (CollectionUtils.isNotEmpty(batchDetailList))
-                batchDetailList.forEach(o -> basicApplyBatchDetailDao.deleteInfo(o.getId()));
+            if (CollectionUtils.isNotEmpty(batchDetailList)) {
+                for (BasicApplyBatchDetail basicApplyBatchDetail : batchDetailList) {
+                    if (FormatUtils.entityNameConvertToTableName(BasicBuilding.class).equals(basicApplyBatchDetail.getTableName())) {
+                        basicBuildingService.clearInvalidData(basicApplyBatchDetail.getTableId());
+                    }
+                    if (FormatUtils.entityNameConvertToTableName(BasicUnit.class).equals(basicApplyBatchDetail.getTableName())) {
+                        basicUnitService.clearInvalidData(basicApplyBatchDetail.getTableId());
+                    }
+                    if (FormatUtils.entityNameConvertToTableName(BasicHouse.class).equals(basicApplyBatchDetail.getTableName())) {
+                        basicHouseService.clearInvalidData(basicApplyBatchDetail.getTableId());
+                    }
+                    basicApplyBatchDetailDao.deleteInfo(basicApplyBatchDetail.getId());
+                }
+            }
+            basicEstateService.clearInvalidData(applyBatch.getEstateId());
             basicApplyBatchDao.deleteInfo(applyBatch.getId());
         }
     }
@@ -322,8 +335,10 @@ public class BasicApplyBatchService {
             if (basicEstate != null) {
                 basicEstateService.saveAndUpdateBasicEstate(basicEstate);
                 BasicApplyBatch basicApplyBatch = getBasicApplyBatchByEstateId(basicEstate.getId());
-                basicApplyBatch.setEstateName(basicEstate.getName());
-                basicApplyBatchDao.updateInfo(basicApplyBatch);
+                if (basicApplyBatch != null) {
+                    basicApplyBatch.setEstateName(basicEstate.getName());
+                    basicApplyBatchDao.updateInfo(basicApplyBatch);
+                }
                 if (basicEstate.getId() != null) {
                     BasicEstateLandState basicEstateLandState = null;
                     String string = jsonObject.getString(BasicApplyFormNameEnum.BASIC_ESTATELAND_STATE.getVar());

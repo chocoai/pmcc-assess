@@ -107,7 +107,7 @@
             target: "report_file",
             formData: {
                 tableName: AssessDBKey.MdCost,
-                tableId: '${mdCost.id}'
+                tableId: '${mdCostVo.id}'
             },
             editFlag: false,
             deleteFlag: false
