@@ -197,22 +197,22 @@ public class BasicEstateService {
         vo.setSupplyHeatingName(baseDataDicService.getNameById(basicEstate.getSupplyHeating()));
         vo.setSupplyCommunicationName(baseDataDicService.getNameById(basicEstate.getSupplyCommunication()));
         vo.setSupplyRoadName(baseDataDicService.getNameById(basicEstate.getSupplyRoad()));
-        if (NumberUtils.isNumber(basicEstate.getDeveloper())){
+        if (NumberUtils.isNumber(basicEstate.getDeveloper())) {
             DataDeveloper dataDeveloper = dataDeveloperService.getByDataDeveloperId(Integer.parseInt(basicEstate.getDeveloper()));
-            if (dataDeveloper != null){
+            if (dataDeveloper != null) {
                 vo.setDeveloper(dataDeveloper.getName());
                 vo.setDeveloperName(dataDeveloper.getName());
                 vo.setDataDeveloper(dataDeveloperService.getDataDeveloperVo(dataDeveloper));
             }
         }
-        if (StringUtils.isNotBlank(basicEstate.getInfrastructure())){
+        if (StringUtils.isNotBlank(basicEstate.getInfrastructure())) {
             List<Integer> ids = FormatUtils.transformString2Integer(basicEstate.getInfrastructure());
-            if (org.apache.commons.collections.CollectionUtils.isNotEmpty(ids)){
+            if (org.apache.commons.collections.CollectionUtils.isNotEmpty(ids)) {
                 List<String> stringList = Lists.newArrayList();
-                for (Integer integer:ids){
-                    stringList.add(baseDataDicService.getNameById(integer)) ;
+                for (Integer integer : ids) {
+                    stringList.add(baseDataDicService.getNameById(integer));
                 }
-                vo.setInfrastructureName(StringUtils.join(stringList,"，"));
+                vo.setInfrastructureName(StringUtils.join(stringList, "，"));
             }
         }
         vo.setInfrastructureCompletenessName(baseDataDicService.getNameById(basicEstate.getInfrastructureCompleteness()));
@@ -227,25 +227,25 @@ public class BasicEstateService {
      */
     @Transactional(rollbackFor = Exception.class)
     public void clearInvalidData(Integer applyId) throws Exception {
-        BasicEstate estate =null;
-        if (applyId.equals(0)){
+        BasicEstate estate = null;
+        if (applyId.equals(0)) {
             BasicEstate where = new BasicEstate();
             where.setApplyId(applyId);
             where.setCreator(commonService.thisUserAccount());
             List<BasicEstate> estateList = basicEstateDao.basicEstateList(where);
             if (CollectionUtils.isEmpty(estateList)) return;
             estate = estateList.get(0);
-        }else{
+        } else {
             BasicApply basicApply = basicApplyService.getByBasicApplyId(applyId);
-            estate=basicEstateDao.getBasicEstateById(basicApply.getBasicEstateId());
+            if (basicApply != null)
+                estate = basicEstateDao.getBasicEstateById(basicApply.getBasicEstateId());
         }
+        if (estate == null) return;
         //清除标记
-        if(estate!=null) {
-            BasicEstateTagging where = new BasicEstateTagging();
-            where.setTableId(estate.getId());
-            where.setType("estate");
-            basicEstateTaggingDao.removeBasicEstateTagging(where);
-        }
+        BasicEstateTagging where = new BasicEstateTagging();
+        where.setTableId(estate.getId());
+        where.setType("estate");
+        basicEstateTaggingDao.removeBasicEstateTagging(where);
         StringBuilder sqlBulder = new StringBuilder();
         String baseSql = "delete from %s where estate_id=%s;";
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicEstateNetwork.class), estate.getId()));
@@ -283,6 +283,7 @@ public class BasicEstateService {
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicEstateLandState.class), tableId));
         ddlMySqlAssist.customTableDdl(sqlBulder.toString());
     }
+
     /**
      * 获取数据
      *
@@ -303,7 +304,7 @@ public class BasicEstateService {
 
         BasicEstateLandState estateLandState = basicEstateLandStateService.getLandStateByEstateId(basicEstate.getId());
         BasicEstateLandStateVo basicEstateLandStateVo = basicEstateLandStateService.getBasicEstateLandStateVo(estateLandState);
-        if(basicEstateLandStateVo==null){
+        if (basicEstateLandStateVo == null) {
             basicEstateLandStateVo = new BasicEstateLandStateVo();
             basicEstateLandStateVo.setEstateId(estateLandState.getId());
         }
@@ -312,14 +313,14 @@ public class BasicEstateService {
     }
 
     public BasicEstate getBasicEstateByApplyId(Integer applyId) {
-        if(applyId == null) return null;
+        if (applyId == null) return null;
         BasicEstate where = new BasicEstate();
         where.setApplyId(applyId);
         where.setCreator(commonService.thisUserAccount());
         List<BasicEstate> basicEstates = basicEstateDao.basicEstateList(where);
-        if (!CollectionUtils.isEmpty(basicEstates)){
+        if (!CollectionUtils.isEmpty(basicEstates)) {
             return basicEstates.get(0);
-        } else{
+        } else {
             BasicApply basicApply = basicApplyService.getByBasicApplyId(applyId);
             return basicEstateDao.getBasicEstateById(basicApply.getBasicEstateId());
         }
@@ -410,7 +411,7 @@ public class BasicEstateService {
             basicEstateLandState.setGmtModified(null);
             basicEstateLandStateDao.saveBasicEstateLandState(basicEstateLandState);
             objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicEstateLandState.class.getSimpleName()), basicEstateLandStateService.getBasicEstateLandStateVo(basicEstateLandState));
-        }else{
+        } else {
             objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicEstateLandState.class.getSimpleName()), new BasicEstateLandStateVo());
         }
         //标注拷贝
@@ -555,7 +556,7 @@ public class BasicEstateService {
             basicEstateLandState.setGmtModified(null);
             basicEstateLandStateDao.saveBasicEstateLandState(basicEstateLandState);
             objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicEstateLandState.class.getSimpleName()), basicEstateLandStateService.getBasicEstateLandStateVo(basicEstateLandState));
-        }else{
+        } else {
             objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicEstateLandState.class.getSimpleName()), new BasicEstateLandStateVo());
         }
 
@@ -660,8 +661,8 @@ public class BasicEstateService {
      * @return
      */
     @Transactional(rollbackFor = Exception.class)
-    public Map<String, Object> quoteEstateData(Integer id,Integer tableId) throws Exception {
-        if (id == null || tableId==null) {
+    public Map<String, Object> quoteEstateData(Integer id, Integer tableId) throws Exception {
+        if (id == null || tableId == null) {
             throw new BusinessException("null point");
         }
         this.clearInvalidData2(tableId);
@@ -721,7 +722,7 @@ public class BasicEstateService {
             basicEstateLandState.setGmtModified(null);
             basicEstateLandStateDao.saveBasicEstateLandState(basicEstateLandState);
             objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicEstateLandState.class.getSimpleName()), basicEstateLandStateService.getBasicEstateLandStateVo(basicEstateLandState));
-        }else{
+        } else {
             objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicEstateLandState.class.getSimpleName()), new BasicEstateLandStateVo());
         }
 
@@ -817,7 +818,6 @@ public class BasicEstateService {
         ddlMySqlAssist.customTableDdl(sqlBuilder.toString());//执行sql
         return objectMap;
     }
-
 
 
     /**
