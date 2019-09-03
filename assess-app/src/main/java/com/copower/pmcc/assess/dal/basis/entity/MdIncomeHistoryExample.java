@@ -1795,6 +1795,76 @@ public class MdIncomeHistoryExample {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
             return (Criteria) this;
         }
+
+        public Criteria andSourceTypeIsNull() {
+            addCriterion("source_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSourceTypeIsNotNull() {
+            addCriterion("source_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSourceTypeEqualTo(String value) {
+            addCriterion("source_type =", value, "sourceType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSourceTypeNotEqualTo(String value) {
+            addCriterion("source_type <>", value, "sourceType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSourceTypeGreaterThan(String value) {
+            addCriterion("source_type >", value, "sourceType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSourceTypeGreaterThanOrEqualTo(String value) {
+            addCriterion("source_type >=", value, "sourceType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSourceTypeLessThan(String value) {
+            addCriterion("source_type <", value, "sourceType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSourceTypeLessThanOrEqualTo(String value) {
+            addCriterion("source_type <=", value, "sourceType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSourceTypeLike(String value) {
+            addCriterion("source_type like", value, "sourceType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSourceTypeNotLike(String value) {
+            addCriterion("source_type not like", value, "sourceType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSourceTypeIn(List<String> values) {
+            addCriterion("source_type in", values, "sourceType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSourceTypeNotIn(List<String> values) {
+            addCriterion("source_type not in", values, "sourceType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSourceTypeBetween(String value1, String value2) {
+            addCriterion("source_type between", value1, value2, "sourceType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSourceTypeNotBetween(String value1, String value2) {
+            addCriterion("source_type not between", value1, value2, "sourceType");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

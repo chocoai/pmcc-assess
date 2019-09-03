@@ -12,6 +12,7 @@ import com.copower.pmcc.assess.dto.output.method.*;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.project.generate.GenerateCommonMethod;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.CommonService;
@@ -24,6 +25,8 @@ import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -41,6 +44,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by kings on 2018-7-23.
@@ -73,6 +77,10 @@ public class MdIncomeService {
     private PublicService publicService;
     @Autowired
     private MdIncomeForecastAnalyseDao mdIncomeForecastAnalyseDao;
+    @Autowired
+    private MdIncomeForecastAnalyseItemDao mdIncomeForecastAnalyseItemDao;
+    @Autowired
+    private GenerateCommonMethod generateCommonMethod;
 
     /**
      * 保存数据
@@ -97,20 +105,26 @@ public class MdIncomeService {
      * @param ids
      */
     @Transactional
-    public void historyToForecast(List<Integer> ids, Integer forecastAnalyseId) {
+    public void historyToForecast(List<Integer> ids, Integer year) {
         if (CollectionUtils.isNotEmpty(ids)) {
             for (Integer id : ids) {
                 MdIncomeHistory history = mdIncomeHistoryDao.getHistoryById(id);
-                history.setBisForecast(true);
-                history.setForecastAnalyseId(forecastAnalyseId);
-                mdIncomeHistoryDao.updateHistory(history);
+                //找到来源一致的预测分析
+                MdIncomeForecastAnalyse where = new MdIncomeForecastAnalyse();
+                where.setIncomeId(history.getIncomeId());
+                where.setType(history.getType());
+                where.setSourceType(history.getSourceType());
+                where.setYear(year);
+                MdIncomeForecastAnalyse forecastAnalyse = mdIncomeForecastAnalyseDao.getForecastAnalyse(where);
+                if (forecastAnalyse != null) {
+                    history.setBisForecast(true);
+                    history.setForecastAnalyseId(forecastAnalyse.getId());
+                    mdIncomeHistoryDao.updateHistory(history);
+                    forecastAnalyse.setBisParticipateIn(true);
+                    mdIncomeForecastAnalyseDao.updateForecastAnalyse(forecastAnalyse);
+                }
             }
-            //将对应年份设置为参与预测的年份
-            MdIncomeForecastAnalyse forecastAnalyse = mdIncomeForecastAnalyseDao.getForecastAnalyseById(forecastAnalyseId);
-            if (forecastAnalyse != null) {
-                forecastAnalyse.setBisParticipateIn(true);
-                mdIncomeForecastAnalyseDao.updateForecastAnalyse(forecastAnalyse);
-            }
+
         }
     }
 
@@ -201,6 +215,7 @@ public class MdIncomeService {
         where.setIncomeId(mdIncomeHistory.getIncomeId());
         where.setType(mdIncomeHistory.getType());
         where.setFormType(mdIncomeHistory.getFormType());
+        where.setSourceType(mdIncomeHistory.getSourceType());
         Integer year = null;
         switch (MethodIncomeFormTypeEnum.create(mdIncomeHistory.getFormType())) {
             case DEFUALT:
@@ -217,6 +232,7 @@ public class MdIncomeService {
             mdIncomeForecastAnalyse.setType(mdIncomeHistory.getType());
             mdIncomeForecastAnalyse.setFormType(mdIncomeHistory.getFormType());
             mdIncomeForecastAnalyse.setYear(year);
+            mdIncomeForecastAnalyse.setSourceType(mdIncomeHistory.getSourceType());
             mdIncomeForecastAnalyse.setBisParticipateIn(false);
             mdIncomeForecastAnalyse.setCreator(commonService.thisUserAccount());
             mdIncomeForecastAnalyseDao.addForecastAnalyse(mdIncomeForecastAnalyse);
@@ -231,63 +247,448 @@ public class MdIncomeService {
      */
     @Transactional
     public void startAnalyse(Integer incomeId, Integer type, Integer formType) {
-        //1.取出预测数据中的第一年作为基准数据
-        //2.后续每年与第一年数据做比较 分别计算出 合计金额，数量趋势，单价趋势
         MdIncomeForecastAnalyse analyseWhere = new MdIncomeForecastAnalyse();
         analyseWhere.setIncomeId(incomeId);
         analyseWhere.setType(type);
         analyseWhere.setFormType(formType);
         analyseWhere.setBisParticipateIn(true);
         List<MdIncomeForecastAnalyse> analyseList = mdIncomeForecastAnalyseDao.getForecastAnalyseList(analyseWhere);
-        MdIncomeForecastAnalyse baseAnalyse = analyseList.get(0);//基准数据
-        MdIncomeHistory historyWhere = new MdIncomeHistory();
-        historyWhere.setBisForecast(true);
-        historyWhere.setForecastAnalyseId(baseAnalyse.getId());
-        List<MdIncomeHistory> baseHistoryList = mdIncomeHistoryDao.getHistoryList(historyWhere);//预测基准数据
-        if (CollectionUtils.isEmpty(baseHistoryList)) return;
+
         if (CollectionUtils.isNotEmpty(analyseList)) {
             for (int i = 0; i < analyseList.size(); i++) {
-                historyWhere = new MdIncomeHistory();
+                //删除原来的明细
+                MdIncomeForecastAnalyseItem oldItem = new MdIncomeForecastAnalyseItem();
+                oldItem.setForecastAnalyseId(analyseList.get(i).getId());
+                List<MdIncomeForecastAnalyseItem> oldForecastAnalyseItemList = mdIncomeForecastAnalyseItemDao.getForecastAnalyseItemList(oldItem);
+                if(CollectionUtils.isNotEmpty(oldForecastAnalyseItemList)){
+                    for (MdIncomeForecastAnalyseItem old: oldForecastAnalyseItemList) {
+                        mdIncomeForecastAnalyseItemDao.deleteForecastAnalyseItem(old.getId());
+                    }
+                }
+                //历史数据添加到分析明细
+                MdIncomeHistory historyWhere = new MdIncomeHistory();
                 historyWhere.setForecastAnalyseId(analyseList.get(i).getId());
                 List<MdIncomeHistory> currhistoryList = mdIncomeHistoryDao.getHistoryList(historyWhere);
+                //同年同来源数据总价
                 BigDecimal total = new BigDecimal("0");
                 if (CollectionUtils.isNotEmpty(currhistoryList)) {
                     for (MdIncomeHistory mdIncomeHistory : currhistoryList) {
                         total = total.add(mdIncomeHistory.getAmountMoney());
                     }
-                    if (i > 0) {
-                        BigDecimal baseNumberTotal = new BigDecimal("0");
-                        BigDecimal currNumberTotal = new BigDecimal("0");
-                        BigDecimal basePriceTotal = new BigDecimal("0");
-                        BigDecimal currPriceTotal = new BigDecimal("0");
-                        for (MdIncomeHistory baseHistory : baseHistoryList) {
-                            for (MdIncomeHistory currHistory : currhistoryList) {
-                                boolean isSameMonth = true;
-                                if (MethodIncomeFormTypeEnum.DEFUALT.getValue().equals(formType)) {
-                                    isSameMonth = baseHistory.getMonth().equals(currHistory.getMonth());
-                                }
-                                if (isSameMonth && baseHistory.getAccountingSubject().equals(currHistory.getAccountingSubject()) &&
-                                        baseHistory.getFirstLevelNumber().equals(currHistory.getFirstLevelNumber()) && baseHistory.getSecondLevelNumber().equals(currHistory.getSecondLevelNumber())) {
-                                    //数量趋势 原则：单价一致(基于基准)，数量不同
-                                    baseNumberTotal = baseNumberTotal.add(baseHistory.getUnitPrice().multiply(new BigDecimal(baseHistory.getNumber())));
-                                    currNumberTotal = currNumberTotal.add(baseHistory.getUnitPrice().multiply(new BigDecimal(currHistory.getNumber())));
 
-                                    //单价趋势 原则：数量一致(基于当前)，单价不同
-                                    basePriceTotal = basePriceTotal.add(baseHistory.getUnitPrice().multiply(new BigDecimal(currHistory.getNumber())));
-                                    currPriceTotal = currPriceTotal.add(currHistory.getUnitPrice().multiply(new BigDecimal(currHistory.getNumber())));
-                                }
-                            }
-                        }
-                        analyseList.get(i).setQuantitativeTrend(currNumberTotal.divide(baseNumberTotal, 4, BigDecimal.ROUND_HALF_UP));
-                        analyseList.get(i).setUnivalentTrend(currPriceTotal.divide(basePriceTotal, 4, BigDecimal.ROUND_HALF_UP));
-                    }
                 }
                 analyseList.get(i).setAmountMoney(total);
                 mdIncomeForecastAnalyseDao.updateForecastAnalyse(analyseList.get(i));
+                //生成预测明细数据
+                List<List<MdIncomeHistory>> goodsList = getGoodsList(currhistoryList);
+                for (List<MdIncomeHistory> goods : goodsList) {
+                    if(CollectionUtils.isNotEmpty(goods)){
+                        //同种物品一年总价
+                        BigDecimal sameGoodsTotal = new BigDecimal("0");
+                        //同种物品一年个数
+                        Integer sameNumTotal = 0;
+                        for (MdIncomeHistory item : goods) {
+                            sameGoodsTotal = sameGoodsTotal.add(item.getAmountMoney());
+                            sameNumTotal += item.getNumber();
+                        }
+                        //新增明细
+                        MdIncomeForecastAnalyseItem mdIncomeForecastAnalyseItem = new MdIncomeForecastAnalyseItem();
+                        mdIncomeForecastAnalyseItem.setForecastAnalyseId(analyseList.get(i).getId());
+                        mdIncomeForecastAnalyseItem.setFirstLevelNumber(goods.get(0).getFirstLevelNumber());
+                        mdIncomeForecastAnalyseItem.setSecondLevelNumber(goods.get(0).getSecondLevelNumber());
+                        mdIncomeForecastAnalyseItem.setAccountingSubject(goods.get(0).getAccountingSubject());
+                        mdIncomeForecastAnalyseItem.setSourceType(goods.get(0).getSourceType());
+                        mdIncomeForecastAnalyseItem.setYear(analyseList.get(i).getYear());
+                        mdIncomeForecastAnalyseItem.setIncomeId(analyseList.get(i).getIncomeId());
+                        mdIncomeForecastAnalyseItem.setAmountMoney(sameGoodsTotal);
+                        mdIncomeForecastAnalyseItem.setNumber(sameNumTotal);
+                        mdIncomeForecastAnalyseItemDao.addForecastAnalyseItem(mdIncomeForecastAnalyseItem);
+                    }
+                }
             }
         }
+
     }
 
+    //一条预测分析数据对应的List<MdIncomeHistory>有几种物品
+    public List<List<MdIncomeHistory>> getGoodsList(List<MdIncomeHistory> MdIncomeHistorys) {
+        if (CollectionUtils.isEmpty(MdIncomeHistorys)) return null;
+        List<List<MdIncomeHistory>> allGoods = Lists.newArrayList();
+        for (MdIncomeHistory item : MdIncomeHistorys) {
+            if (CollectionUtils.isEmpty(allGoods)) {
+                List<MdIncomeHistory> goods = Lists.newArrayList();
+                goods.add(item);
+                allGoods.add(goods);
+            } else {
+                //该类型物品是否已存在
+                boolean flag = false;
+                step:
+                for (List<MdIncomeHistory> list : allGoods) {
+                    for (MdIncomeHistory good : list) {
+                        if (item.getAccountingSubject().equals(good.getAccountingSubject())
+                                && item.getFirstLevelNumber().equals(good.getFirstLevelNumber()) && item.getSecondLevelNumber().equals(good.getSecondLevelNumber())) {
+                            list.add(item);
+                            flag = true;
+                            break step;
+                        }
+                    }
+                }
+                //不存在则造一个list存放
+                if (!flag) {
+                    List<MdIncomeHistory> goods = Lists.newArrayList();
+                    goods.add(item);
+                    allGoods.add(goods);
+                }
+            }
+        }
+        return allGoods;
+    }
+
+
+    //写入数量趋势和金额趋势(二级编号)
+    public List<MdIncomeForecastAnalyseItemVo> getSecondLevelTrend(Integer forecastAnalyseId) {
+        MdIncomeForecastAnalyse analyse = mdIncomeForecastAnalyseDao.getForecastAnalyseById(forecastAnalyseId);
+        //1.来源相同二级编号相同物品归类
+        MdIncomeForecastAnalyseItem forecastAnalyseItem = new MdIncomeForecastAnalyseItem();
+        forecastAnalyseItem.setSourceType(analyse.getSourceType());
+        forecastAnalyseItem.setIncomeId(analyse.getIncomeId());
+        List<MdIncomeForecastAnalyseItem> forecastAnalyseItemList = mdIncomeForecastAnalyseItemDao.getForecastAnalyseItemList(forecastAnalyseItem);
+        List<List<MdIncomeForecastAnalyseItem>> allGoods = Lists.newArrayList();
+        for (MdIncomeForecastAnalyseItem item : forecastAnalyseItemList) {
+            if (CollectionUtils.isEmpty(allGoods)) {
+                List<MdIncomeForecastAnalyseItem> goods = Lists.newArrayList();
+                goods.add(item);
+                allGoods.add(goods);
+            } else {
+                //该类型物品是否已存在
+                boolean flag = false;
+                step:
+                for (List<MdIncomeForecastAnalyseItem> list : allGoods) {
+                    for (MdIncomeForecastAnalyseItem good : list) {
+                        if (item.getForecastAnalyseId().equals(good.getForecastAnalyseId())&&item.getYear().equals(good.getYear())&&item.getAccountingSubject().equals(good.getAccountingSubject()) && item.getSourceType().equals(good.getSourceType())
+                                && item.getFirstLevelNumber().equals(good.getFirstLevelNumber())&& item.getSecondLevelNumber().equals(good.getSecondLevelNumber())) {
+                            list.add(item);
+                            flag = true;
+                            break step;
+                        }
+                    }
+                }
+                //不存在则造一个list存放
+                if (!flag) {
+                    List<MdIncomeForecastAnalyseItem> goods = Lists.newArrayList();
+                    goods.add(item);
+                    allGoods.add(goods);
+                }
+            }
+        }
+        //得到年份不同但二级编号相同 的金额与数量
+        List<MdIncomeForecastAnalyseItem> tempLists = Lists.newArrayList();
+        for (List<MdIncomeForecastAnalyseItem> goods : allGoods) {
+            BigDecimal sumMoney = new BigDecimal("0");
+            Integer sumQuantity = 0;
+            MdIncomeForecastAnalyseItem item = new MdIncomeForecastAnalyseItem();
+            Integer year = null;
+            Integer forecastAnalyseId2 = null;
+            Integer accountingSubject = null;
+            String firstLevelNumber = null;
+            String secondLevelNumber = null;
+            for (int i = 0; i < goods.size(); i++) {
+                sumMoney = sumMoney.add(goods.get(i).getAmountMoney());
+                sumQuantity += goods.get(i).getNumber();
+                year = goods.get(i).getYear();
+                forecastAnalyseId2 = goods.get(i).getForecastAnalyseId();
+                accountingSubject = goods.get(i).getAccountingSubject();
+                firstLevelNumber = goods.get(i).getFirstLevelNumber();
+                secondLevelNumber = goods.get(i).getSecondLevelNumber();
+            }
+            item.setYear(year);
+            item.setForecastAnalyseId(forecastAnalyseId2);
+            item.setAccountingSubject(accountingSubject);
+            item.setFirstLevelNumber(firstLevelNumber);
+            item.setSecondLevelNumber(secondLevelNumber);
+            item.setAmountMoney(sumMoney);
+            item.setNumber(sumQuantity);
+            tempLists.add(item);
+
+        }
+        Map<List<MdIncomeForecastAnalyseItem>,String> tempMaps = Maps.newHashMap();
+        //所有二级编号类型
+        List<String> AllSecondLevelTypes = Lists.newArrayList();
+        for (MdIncomeForecastAnalyseItem item: tempLists) {
+            AllSecondLevelTypes.add(String.format("%s/%s/%s", item.getAccountingSubject(), item.getFirstLevelNumber(),item.getSecondLevelNumber()));
+        }
+        //去重
+        List<String> secondLevelList = generateCommonMethod.removeDuplicate(AllSecondLevelTypes);
+        for (String secondLevel: secondLevelList) {
+            List<MdIncomeForecastAnalyseItem> secondLevelAnalyseItemLists = Lists.newArrayList();
+            for (MdIncomeForecastAnalyseItem item: tempLists) {
+                String formatName = String.format("%s/%s/%s", item.getAccountingSubject(), item.getFirstLevelNumber(), item.getSecondLevelNumber());
+                if(secondLevel.equals(formatName)){
+                    secondLevelAnalyseItemLists.add(item);
+                }
+            }
+            tempMaps.put(secondLevelAnalyseItemLists,secondLevel);
+        }
+
+        //后续每年与前一条数据做比较
+        List<MdIncomeForecastAnalyseItemVo> vos = Lists.newArrayList();
+        for (Map.Entry<List<MdIncomeForecastAnalyseItem>,String> map: tempMaps.entrySet()) {
+            List<MdIncomeForecastAnalyseItem> analyseItems = map.getKey();
+            for (int i = 0; i < analyseItems.size(); i++) {
+                MdIncomeForecastAnalyseItem item = analyseItems.get(i);
+                MdIncomeForecastAnalyseItemVo mdIncomeForecastAnalyseItemVo = new MdIncomeForecastAnalyseItemVo();
+                if (item.getForecastAnalyseId().equals(forecastAnalyseId)) {
+                    mdIncomeForecastAnalyseItemVo.setAmountMoney(analyseItems.get(i).getAmountMoney());
+                    mdIncomeForecastAnalyseItemVo.setNumber(analyseItems.get(i).getNumber());
+                    if (analyseItems.get(i).getAccountingSubject() != null && analyseItems.get(i).getAccountingSubject() > 0) {
+                        String accountingSubjectName = baseDataDicService.getNameById(analyseItems.get(i).getAccountingSubject());
+                        mdIncomeForecastAnalyseItemVo.setName(String.format("%s/%s/%s", accountingSubjectName, analyseItems.get(i).getFirstLevelNumber(), analyseItems.get(i).getSecondLevelNumber()));
+                    }
+                    if(i==0) {
+                        vos.add(mdIncomeForecastAnalyseItemVo);
+                    }
+                }
+                if (i > 0) {
+                    //金额趋势=现在金额：昨年金额
+                    BigDecimal univalentTrend = analyseItems.get(i).getAmountMoney().divide(analyseItems.get(i - 1).getAmountMoney(), 2, BigDecimal.ROUND_HALF_UP);
+                    //数量趋势=现在数量：昨年数量
+                    BigDecimal quantitativeTrend = new BigDecimal(analyseItems.get(i).getNumber()).divide(new BigDecimal(analyseItems.get(i - 1).getNumber()), 2, BigDecimal.ROUND_HALF_UP);
+                    if (item.getForecastAnalyseId().equals(forecastAnalyseId)) {
+                        mdIncomeForecastAnalyseItemVo.setMoneyTrend(univalentTrend.toString());
+                        mdIncomeForecastAnalyseItemVo.setQuantitativeTrend(quantitativeTrend.toString());
+                        vos.add(mdIncomeForecastAnalyseItemVo);
+                    }
+                }
+            }
+        }
+        return vos;
+    }
+
+
+    //写入数量趋势和金额趋势(一级编号)
+    public List<MdIncomeForecastAnalyseItemVo> getStairTrend(Integer forecastAnalyseId) {
+        MdIncomeForecastAnalyse analyse = mdIncomeForecastAnalyseDao.getForecastAnalyseById(forecastAnalyseId);
+        //1.来源相同一级编号相同物品归类
+        MdIncomeForecastAnalyseItem forecastAnalyseItem = new MdIncomeForecastAnalyseItem();
+        forecastAnalyseItem.setSourceType(analyse.getSourceType());
+        forecastAnalyseItem.setIncomeId(analyse.getIncomeId());
+        List<MdIncomeForecastAnalyseItem> forecastAnalyseItemList = mdIncomeForecastAnalyseItemDao.getForecastAnalyseItemList(forecastAnalyseItem);
+        List<List<MdIncomeForecastAnalyseItem>> allGoods = Lists.newArrayList();
+        for (MdIncomeForecastAnalyseItem item : forecastAnalyseItemList) {
+            if (CollectionUtils.isEmpty(allGoods)) {
+                List<MdIncomeForecastAnalyseItem> goods = Lists.newArrayList();
+                goods.add(item);
+                allGoods.add(goods);
+            } else {
+                //该类型物品是否已存在
+                boolean flag = false;
+                step:
+                for (List<MdIncomeForecastAnalyseItem> list : allGoods) {
+                    for (MdIncomeForecastAnalyseItem good : list) {
+                        if (item.getForecastAnalyseId().equals(good.getForecastAnalyseId())&&item.getYear().equals(good.getYear())&&item.getAccountingSubject().equals(good.getAccountingSubject()) && item.getSourceType().equals(good.getSourceType())
+                                && item.getFirstLevelNumber().equals(good.getFirstLevelNumber())) {
+                            list.add(item);
+                            flag = true;
+                            break step;
+                        }
+                    }
+                }
+                //不存在则造一个list存放
+                if (!flag) {
+                    List<MdIncomeForecastAnalyseItem> goods = Lists.newArrayList();
+                    goods.add(item);
+                    allGoods.add(goods);
+                }
+            }
+        }
+        //得到年份不同但一级编号相同 的金额与数量
+        List<MdIncomeForecastAnalyseItem> tempLists = Lists.newArrayList();
+        for (List<MdIncomeForecastAnalyseItem> goods : allGoods) {
+            BigDecimal sumMoney = new BigDecimal("0");
+            Integer sumQuantity = 0;
+            MdIncomeForecastAnalyseItem item = new MdIncomeForecastAnalyseItem();
+            Integer year = null;
+            Integer forecastAnalyseId2 = null;
+            Integer accountingSubject = null;
+            String firstLevelNumber = null;
+            for (int i = 0; i < goods.size(); i++) {
+                sumMoney = sumMoney.add(goods.get(i).getAmountMoney());
+                sumQuantity += goods.get(i).getNumber();
+                year = goods.get(i).getYear();
+                forecastAnalyseId2 = goods.get(i).getForecastAnalyseId();
+                accountingSubject = goods.get(i).getAccountingSubject();
+                firstLevelNumber = goods.get(i).getFirstLevelNumber();
+            }
+            item.setYear(year);
+            item.setForecastAnalyseId(forecastAnalyseId2);
+            item.setAccountingSubject(accountingSubject);
+            item.setFirstLevelNumber(firstLevelNumber);
+            item.setAmountMoney(sumMoney);
+            item.setNumber(sumQuantity);
+            tempLists.add(item);
+
+        }
+        Map<List<MdIncomeForecastAnalyseItem>,String> tempMaps = Maps.newHashMap();
+        //所有一级编号类型
+        List<String> AllFirstLevelTypes = Lists.newArrayList();
+        for (MdIncomeForecastAnalyseItem item: tempLists) {
+            AllFirstLevelTypes.add(String.format("%s/%s", item.getAccountingSubject(), item.getFirstLevelNumber()));
+        }
+        //去重
+        List<String> FirstLevelList = generateCommonMethod.removeDuplicate(AllFirstLevelTypes);
+        for (String firstLevel: FirstLevelList) {
+            List<MdIncomeForecastAnalyseItem> FirstLevelAnalyseItemLists = Lists.newArrayList();
+            for (MdIncomeForecastAnalyseItem item: tempLists) {
+                String formatName = String.format("%s/%s", item.getAccountingSubject(), item.getFirstLevelNumber());
+                if(firstLevel.equals(formatName)){
+                    FirstLevelAnalyseItemLists.add(item);
+                }
+            }
+            tempMaps.put(FirstLevelAnalyseItemLists,firstLevel);
+        }
+
+        //后续每年与前一条数据做比较
+        List<MdIncomeForecastAnalyseItemVo> vos = Lists.newArrayList();
+        for (Map.Entry<List<MdIncomeForecastAnalyseItem>,String> map: tempMaps.entrySet()) {
+            List<MdIncomeForecastAnalyseItem> analyseItems = map.getKey();
+            for (int i = 0; i < analyseItems.size(); i++) {
+                MdIncomeForecastAnalyseItem item = analyseItems.get(i);
+                MdIncomeForecastAnalyseItemVo mdIncomeForecastAnalyseItemVo = new MdIncomeForecastAnalyseItemVo();
+                if (item.getForecastAnalyseId().equals(forecastAnalyseId)) {
+                    mdIncomeForecastAnalyseItemVo.setAmountMoney(analyseItems.get(i).getAmountMoney());
+                    mdIncomeForecastAnalyseItemVo.setNumber(analyseItems.get(i).getNumber());
+                    if (analyseItems.get(i).getAccountingSubject() != null && analyseItems.get(i).getAccountingSubject() > 0) {
+                        String accountingSubjectName = baseDataDicService.getNameById(analyseItems.get(i).getAccountingSubject());
+                        mdIncomeForecastAnalyseItemVo.setName(String.format("%s/%s", accountingSubjectName, analyseItems.get(i).getFirstLevelNumber()));
+                    }
+                    if(i==0) {
+                        vos.add(mdIncomeForecastAnalyseItemVo);
+                    }
+                }
+                if (i > 0) {
+                    //金额趋势=现在金额：昨年金额
+                    BigDecimal univalentTrend = analyseItems.get(i).getAmountMoney().divide(analyseItems.get(i - 1).getAmountMoney(), 2, BigDecimal.ROUND_HALF_UP);
+                    //数量趋势=现在数量：昨年数量
+                    BigDecimal quantitativeTrend = new BigDecimal(analyseItems.get(i).getNumber()).divide(new BigDecimal(analyseItems.get(i - 1).getNumber()), 2, BigDecimal.ROUND_HALF_UP);
+                    if (item.getForecastAnalyseId().equals(forecastAnalyseId)) {
+                        mdIncomeForecastAnalyseItemVo.setMoneyTrend(univalentTrend.toString());
+                        mdIncomeForecastAnalyseItemVo.setQuantitativeTrend(quantitativeTrend.toString());
+                        vos.add(mdIncomeForecastAnalyseItemVo);
+                    }
+                }
+            }
+        }
+        return vos;
+    }
+
+
+    //写入数量趋势和金额趋势(会计科目)
+    public List<MdIncomeForecastAnalyseItemVo> getAccountingSubjectTrend(Integer forecastAnalyseId) {
+        MdIncomeForecastAnalyse analyse = mdIncomeForecastAnalyseDao.getForecastAnalyseById(forecastAnalyseId);
+        //1.来源相同会计科目相同物品归类
+        MdIncomeForecastAnalyseItem forecastAnalyseItem = new MdIncomeForecastAnalyseItem();
+        forecastAnalyseItem.setSourceType(analyse.getSourceType());
+        forecastAnalyseItem.setIncomeId(analyse.getIncomeId());
+        List<MdIncomeForecastAnalyseItem> forecastAnalyseItemList = mdIncomeForecastAnalyseItemDao.getForecastAnalyseItemList(forecastAnalyseItem);
+        List<List<MdIncomeForecastAnalyseItem>> allGoods = Lists.newArrayList();
+        for (MdIncomeForecastAnalyseItem item : forecastAnalyseItemList) {
+            if (CollectionUtils.isEmpty(allGoods)) {
+                List<MdIncomeForecastAnalyseItem> goods = Lists.newArrayList();
+                goods.add(item);
+                allGoods.add(goods);
+            } else {
+                //该类型物品是否已存在
+                boolean flag = false;
+                step:
+                for (List<MdIncomeForecastAnalyseItem> list : allGoods) {
+                    for (MdIncomeForecastAnalyseItem good : list) {
+                        if (item.getForecastAnalyseId().equals(good.getForecastAnalyseId())&&item.getYear().equals(good.getYear())&&item.getAccountingSubject().equals(good.getAccountingSubject()) && item.getSourceType().equals(good.getSourceType())) {
+                            list.add(item);
+                            flag = true;
+                            break step;
+                        }
+                    }
+                }
+                //不存在则造一个list存放
+                if (!flag) {
+                    List<MdIncomeForecastAnalyseItem> goods = Lists.newArrayList();
+                    goods.add(item);
+                    allGoods.add(goods);
+                }
+            }
+        }
+        //得到年份不同但会计科目相同的金额与数量
+        List<MdIncomeForecastAnalyseItem> tempLists = Lists.newArrayList();
+        for (List<MdIncomeForecastAnalyseItem> goods : allGoods) {
+            BigDecimal sumMoney = new BigDecimal("0");
+            Integer sumQuantity = 0;
+            MdIncomeForecastAnalyseItem item = new MdIncomeForecastAnalyseItem();
+            Integer year = null;
+            Integer forecastAnalyseId2 = null;
+            Integer accountingSubject = null;
+            for (int i = 0; i < goods.size(); i++) {
+                sumMoney = sumMoney.add(goods.get(i).getAmountMoney());
+                sumQuantity += goods.get(i).getNumber();
+                year = goods.get(i).getYear();
+                forecastAnalyseId2 = goods.get(i).getForecastAnalyseId();
+                accountingSubject = goods.get(i).getAccountingSubject();
+            }
+            item.setYear(year);
+            item.setForecastAnalyseId(forecastAnalyseId2);
+            item.setAccountingSubject(accountingSubject);
+            item.setAmountMoney(sumMoney);
+            item.setNumber(sumQuantity);
+            tempLists.add(item);
+
+        }
+        Map<List<MdIncomeForecastAnalyseItem>,Integer> tempMaps = Maps.newHashMap();
+        //所有一级编号类型
+        List<Integer> AllAccountingSubjectTypes = LangUtils.transform(tempLists, o -> o.getAccountingSubject());
+        //去重
+        List<Integer> accountingSubjectTypes = generateCommonMethod.removeDuplicate(AllAccountingSubjectTypes);
+        for (Integer accountingSubjectType: accountingSubjectTypes) {
+            List<MdIncomeForecastAnalyseItem> FirstLevelAnalyseItemLists = Lists.newArrayList();
+            for (MdIncomeForecastAnalyseItem item: tempLists) {
+                if(accountingSubjectType.equals(item.getAccountingSubject())){
+                    FirstLevelAnalyseItemLists.add(item);
+                }
+            }
+            tempMaps.put(FirstLevelAnalyseItemLists,accountingSubjectType);
+        }
+
+        //后续每年与前一条数据做比较
+        List<MdIncomeForecastAnalyseItemVo> vos = Lists.newArrayList();
+        for (Map.Entry<List<MdIncomeForecastAnalyseItem>,Integer> map: tempMaps.entrySet()) {
+            List<MdIncomeForecastAnalyseItem> analyseItems = map.getKey();
+            for (int i = 0; i < analyseItems.size(); i++) {
+                MdIncomeForecastAnalyseItem item = analyseItems.get(i);
+                MdIncomeForecastAnalyseItemVo mdIncomeForecastAnalyseItemVo = new MdIncomeForecastAnalyseItemVo();
+                if (item.getForecastAnalyseId().equals(forecastAnalyseId)) {
+                    mdIncomeForecastAnalyseItemVo.setAmountMoney(analyseItems.get(i).getAmountMoney());
+                    mdIncomeForecastAnalyseItemVo.setNumber(analyseItems.get(i).getNumber());
+                    if (analyseItems.get(i).getAccountingSubject() != null && analyseItems.get(i).getAccountingSubject() > 0) {
+                        String accountingSubjectName = baseDataDicService.getNameById(analyseItems.get(i).getAccountingSubject());
+                        mdIncomeForecastAnalyseItemVo.setName(String.format("%s", accountingSubjectName));
+                    }
+                    if(i==0) {
+                        vos.add(mdIncomeForecastAnalyseItemVo);
+                    }
+                }
+                if (i > 0) {
+                    //金额趋势=现在金额：昨年金额
+                    BigDecimal univalentTrend = analyseItems.get(i).getAmountMoney().divide(analyseItems.get(i - 1).getAmountMoney(), 2, BigDecimal.ROUND_HALF_UP);
+                    //数量趋势=现在数量：昨年数量
+                    BigDecimal quantitativeTrend = new BigDecimal(analyseItems.get(i).getNumber()).divide(new BigDecimal(analyseItems.get(i - 1).getNumber()), 2, BigDecimal.ROUND_HALF_UP);
+                    if (item.getForecastAnalyseId().equals(forecastAnalyseId)) {
+                        mdIncomeForecastAnalyseItemVo.setMoneyTrend(univalentTrend.toString());
+                        mdIncomeForecastAnalyseItemVo.setQuantitativeTrend(quantitativeTrend.toString());
+                        vos.add(mdIncomeForecastAnalyseItemVo);
+                    }
+                }
+            }
+        }
+        return vos;
+    }
     /**
      * 获取数据列表
      *
@@ -307,6 +708,65 @@ public class MdIncomeService {
         vo.setTotal((long) analyseList.size());
         return vo;
     }
+
+    /**
+     * 获取数据列表
+     *
+     * @param incomeId
+     * @return
+     */
+    public List<Integer> getAnalyseCountByYear(Integer incomeId, Integer type, Integer formType) {
+        MdIncomeForecastAnalyse where = new MdIncomeForecastAnalyse();
+        where.setType(type);
+        where.setFormType(formType);
+        where.setIncomeId(incomeId);
+        List<MdIncomeForecastAnalyse> analyseList = mdIncomeForecastAnalyseDao.getForecastAnalyseList(where);
+        List<Integer> years = LangUtils.transform(analyseList, o -> o.getYear());
+        //去重
+        List<Integer> listTemp = Lists.newArrayList();
+        for (int i = 0; i < years.size(); i++) {
+            if (!listTemp.contains(years.get(i))) {
+                listTemp.add(years.get(i));
+            }
+        }
+        return listTemp;
+    }
+
+    /**
+     * 获取分析数据明细列表
+     *
+     * @param forecastAnalyseId
+     * @return
+     */
+    public BootstrapTableVo getForecastAnalyseItemList(Integer forecastAnalyseId) {
+        BootstrapTableVo vo = new BootstrapTableVo();
+        MdIncomeForecastAnalyseItem where = new MdIncomeForecastAnalyseItem();
+        where.setForecastAnalyseId(forecastAnalyseId);
+        List<MdIncomeForecastAnalyseItem> list = mdIncomeForecastAnalyseItemDao.getForecastAnalyseItemList(where);
+        List<MdIncomeForecastAnalyseItemVo> vos = Lists.newArrayList();
+        List<MdIncomeForecastAnalyseItemVo> accountingSubjectTrendVos = getAccountingSubjectTrend(forecastAnalyseId);
+        List<MdIncomeForecastAnalyseItemVo> firstLevelVos = getStairTrend(forecastAnalyseId);
+        List<MdIncomeForecastAnalyseItemVo> secondLevelVos = getSecondLevelTrend(forecastAnalyseId);
+        vos.addAll(accountingSubjectTrendVos);
+        vos.addAll(firstLevelVos);
+        vos.addAll(secondLevelVos);
+        vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<MdIncomeForecastAnalyseItemVo>() : vos);
+        vo.setTotal((long) list.size());
+        return vo;
+    }
+
+//    public MdIncomeForecastAnalyseItemVo getVoBySecondLevelTrend(MdIncomeForecastAnalyseItem forecastAnalyseItem) {
+//        if (forecastAnalyseItem == null) return null;
+//        MdIncomeForecastAnalyseItemVo forecastAnalyseItemVo = new MdIncomeForecastAnalyseItemVo();
+//        BeanUtils.copyProperties(forecastAnalyseItem, forecastAnalyseItemVo);
+//        if (forecastAnalyseItem.getAccountingSubject() != null && forecastAnalyseItem.getAccountingSubject() > 0) {
+//            String accountingSubjectName = baseDataDicService.getNameById(forecastAnalyseItem.getAccountingSubject());
+//            forecastAnalyseItemVo.setName(String.format("%s/%s/%s", accountingSubjectName, forecastAnalyseItem.getFirstLevelNumber(), forecastAnalyseItem.getSecondLevelNumber()));
+//        }
+//        //写入数量趋势和单价趋势
+//        forecastAnalyseItemVo = getSecondLevelTrend(forecastAnalyseItemVo);
+//        return forecastAnalyseItemVo;
+//    }
 
     /**
      * 导入历史数据
@@ -891,7 +1351,7 @@ public class MdIncomeService {
      */
     public BigDecimal getLandSurplusYear(Date landUseEndDate, Date valueTimePoint) {
         if (landUseEndDate == null || valueTimePoint == null) return null;
-        return publicService.diffDateYear(landUseEndDate,valueTimePoint);
+        return publicService.diffDateYear(landUseEndDate, valueTimePoint);
     }
 
     /**
@@ -904,7 +1364,7 @@ public class MdIncomeService {
      */
     public BigDecimal getHouseSurplusYear(Date completedTime, Date valueTimePoint, Integer canUseYear) {
         if (completedTime == null || valueTimePoint == null || canUseYear == null) return null;
-        BigDecimal houseSurplusYear = new BigDecimal(canUseYear).subtract(publicService.diffDateYear(valueTimePoint,completedTime));
+        BigDecimal houseSurplusYear = new BigDecimal(canUseYear).subtract(publicService.diffDateYear(valueTimePoint, completedTime));
         return houseSurplusYear;
     }
 }

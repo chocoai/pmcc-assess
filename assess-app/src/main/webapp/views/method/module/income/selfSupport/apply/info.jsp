@@ -186,10 +186,30 @@
                         </div>
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
+                                初始金额说明<span class="symbol required"></span>
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="text" name="initialAmountRemark" placeholder="初始金额说明"
+                                       class="form-control" required="required">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
                                 增长率<span class="symbol required"></span>
                             </label>
                             <div class="col-sm-4">
                                 <input type="text" name="growthRate" placeholder="增长率" class="form-control x-percent"
+                                       required="required">
+                            </div>
+                        </div>
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                增长率说明<span class="symbol required"></span>
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="text" name="growthRateRemaek" placeholder="增长率说明" class="form-control"
                                        required="required">
                             </div>
                         </div>
@@ -236,12 +256,32 @@
                         </div>
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
+                                经营成本说明<span class="symbol required"></span>
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="text" name="operatingCostRemark" placeholder="经营成本说明"
+                                      class="form-control" required="required">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
                                 经营费用<span class="symbol required"></span>
                             </label>
                             <div class="col-sm-4">
                                 <input type="text" name="operatingExpenses" placeholder="经营费用" data-rule-number="true"
                                        onblur="selfSupport.computeInitialAmount(this);" class="form-control"
                                        required="required">
+                            </div>
+                        </div>
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                经营费用说明<span class="symbol required"></span>
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="text" name="operatingExpensesRemark" placeholder="经营费用"
+                                       class="form-control" required="required">
                             </div>
                         </div>
                     </div>
@@ -258,12 +298,32 @@
                         </div>
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
+                                经营税金及附加说明<span class="symbol required"></span>
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="text" name="operatingTaxRemark" placeholder="经营税金及附加说明"
+                                       class="form-control" required="required">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
                                 管理费用<span class="symbol required"></span>
                             </label>
                             <div class="col-sm-4">
                                 <input type="text" name="managementCost" placeholder="管理费用" data-rule-number="true"
                                        onblur="selfSupport.computeInitialAmount(this);" class="form-control"
                                        required="required">
+                            </div>
+                        </div>
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                管理费用说明<span class="symbol required"></span>
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="text" name="managementCostRemark" placeholder="管理费用说明"
+                                       class="form-control" required="required">
                             </div>
                         </div>
                     </div>
@@ -280,12 +340,32 @@
                         </div>
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
+                                财务费用说明<span class="symbol required"></span>
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="text" name="financialCostRemark" placeholder="财务费用说明"
+                                       class="form-control" required="required">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
                                 经营利润<span class="symbol required"></span>
                             </label>
                             <div class="col-sm-4">
                                 <input type="text" name="operatingProfit" placeholder="经营利润" data-rule-number="true"
                                        onblur="selfSupport.computeInitialAmount(this);" class="form-control"
                                        required="required">
+                            </div>
+                        </div>
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                经营利润说明<span class="symbol required"></span>
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="text" name="operatingProfitRemark" placeholder="经营利润说明"
+                                       class="form-control" required="required">
                             </div>
                         </div>
                     </div>
@@ -298,6 +378,15 @@
                                 <input type="text" name="excessProfit" placeholder="特许权超额利润" data-rule-number="true"
                                        onblur="selfSupport.computeInitialAmount(this);" class="form-control"
                                        required="required">
+                            </div>
+                        </div>
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                特许权超额利润说明<span class="symbol required"></span>
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="text" name="excessProfitRemark" placeholder="特许权超额利润说明"
+                                       class="form-control" required="required">
                             </div>
                         </div>
                     </div>
@@ -313,10 +402,30 @@
                         </div>
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
+                                初始金额说明<span class="symbol required"></span>
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="text" name="initialAmountRemark" placeholder="初始金额说明"
+                                       class="form-control" required="required">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
                                 增长率<span class="symbol required"></span>
                             </label>
                             <div class="col-sm-4">
                                 <input type="text" name="growthRate" placeholder="增长率" class="form-control x-percent"
+                                       required="required">
+                            </div>
+                        </div>
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                增长率说明<span class="symbol required"></span>
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="text" name="growthRateRemark" placeholder="增长率说明" class="form-control"
                                        required="required">
                             </div>
                         </div>

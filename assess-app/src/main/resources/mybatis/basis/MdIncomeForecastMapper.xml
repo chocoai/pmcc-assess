@@ -7,14 +7,23 @@
     <result column="section_id" property="sectionId" jdbcType="INTEGER" />
     <result column="type" property="type" jdbcType="INTEGER" />
     <result column="initial_amount" property="initialAmount" jdbcType="DECIMAL" />
+    <result column="initial_amount_remark" property="initialAmountRemark" jdbcType="VARCHAR" />
     <result column="operating_cost" property="operatingCost" jdbcType="DECIMAL" />
+    <result column="operating_cost_remark" property="operatingCostRemark" jdbcType="VARCHAR" />
     <result column="operating_expenses" property="operatingExpenses" jdbcType="DECIMAL" />
+    <result column="operating_expenses_remark" property="operatingExpensesRemark" jdbcType="VARCHAR" />
     <result column="operating_tax" property="operatingTax" jdbcType="DECIMAL" />
+    <result column="operating_tax_remark" property="operatingTaxRemark" jdbcType="VARCHAR" />
     <result column="management_cost" property="managementCost" jdbcType="DECIMAL" />
+    <result column="management_cost_remark" property="managementCostRemark" jdbcType="VARCHAR" />
     <result column="financial_cost" property="financialCost" jdbcType="DECIMAL" />
+    <result column="financial_cost_remark" property="financialCostRemark" jdbcType="VARCHAR" />
     <result column="operating_profit" property="operatingProfit" jdbcType="DECIMAL" />
+    <result column="operating_profit_remark" property="operatingProfitRemark" jdbcType="VARCHAR" />
     <result column="excess_profit" property="excessProfit" jdbcType="DECIMAL" />
+    <result column="excess_profit_remark" property="excessProfitRemark" jdbcType="VARCHAR" />
     <result column="growth_rate" property="growthRate" jdbcType="DECIMAL" />
+    <result column="growth_rate_remark" property="growthRateRemark" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -78,9 +87,11 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, income_id, section_id, type, initial_amount, operating_cost, operating_expenses, 
-    operating_tax, management_cost, financial_cost, operating_profit, excess_profit, 
-    growth_rate, creator, gmt_created, gmt_modified
+    id, income_id, section_id, type, initial_amount, initial_amount_remark, operating_cost, 
+    operating_cost_remark, operating_expenses, operating_expenses_remark, operating_tax, 
+    operating_tax_remark, management_cost, management_cost_remark, financial_cost, financial_cost_remark, 
+    operating_profit, operating_profit_remark, excess_profit, excess_profit_remark, growth_rate, 
+    growth_rate_remark, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeForecastExample" >
     select
@@ -117,17 +128,23 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_md_income_forecast (income_id, section_id, type, 
-      initial_amount, operating_cost, operating_expenses, 
-      operating_tax, management_cost, financial_cost, 
-      operating_profit, excess_profit, growth_rate, 
-      creator, gmt_created, gmt_modified
-      )
+      initial_amount, initial_amount_remark, operating_cost, 
+      operating_cost_remark, operating_expenses, 
+      operating_expenses_remark, operating_tax, 
+      operating_tax_remark, management_cost, management_cost_remark, 
+      financial_cost, financial_cost_remark, operating_profit, 
+      operating_profit_remark, excess_profit, excess_profit_remark, 
+      growth_rate, growth_rate_remark, creator, 
+      gmt_created, gmt_modified)
     values (#{incomeId,jdbcType=INTEGER}, #{sectionId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, 
-      #{initialAmount,jdbcType=DECIMAL}, #{operatingCost,jdbcType=DECIMAL}, #{operatingExpenses,jdbcType=DECIMAL}, 
-      #{operatingTax,jdbcType=DECIMAL}, #{managementCost,jdbcType=DECIMAL}, #{financialCost,jdbcType=DECIMAL}, 
-      #{operatingProfit,jdbcType=DECIMAL}, #{excessProfit,jdbcType=DECIMAL}, #{growthRate,jdbcType=DECIMAL}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+      #{initialAmount,jdbcType=DECIMAL}, #{initialAmountRemark,jdbcType=VARCHAR}, #{operatingCost,jdbcType=DECIMAL}, 
+      #{operatingCostRemark,jdbcType=VARCHAR}, #{operatingExpenses,jdbcType=DECIMAL}, 
+      #{operatingExpensesRemark,jdbcType=VARCHAR}, #{operatingTax,jdbcType=DECIMAL}, 
+      #{operatingTaxRemark,jdbcType=VARCHAR}, #{managementCost,jdbcType=DECIMAL}, #{managementCostRemark,jdbcType=VARCHAR}, 
+      #{financialCost,jdbcType=DECIMAL}, #{financialCostRemark,jdbcType=VARCHAR}, #{operatingProfit,jdbcType=DECIMAL}, 
+      #{operatingProfitRemark,jdbcType=VARCHAR}, #{excessProfit,jdbcType=DECIMAL}, #{excessProfitRemark,jdbcType=VARCHAR}, 
+      #{growthRate,jdbcType=DECIMAL}, #{growthRateRemark,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeForecast" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -147,29 +164,56 @@
       <if test="initialAmount != null" >
         initial_amount,
       </if>
+      <if test="initialAmountRemark != null" >
+        initial_amount_remark,
+      </if>
       <if test="operatingCost != null" >
         operating_cost,
+      </if>
+      <if test="operatingCostRemark != null" >
+        operating_cost_remark,
       </if>
       <if test="operatingExpenses != null" >
         operating_expenses,
       </if>
+      <if test="operatingExpensesRemark != null" >
+        operating_expenses_remark,
+      </if>
       <if test="operatingTax != null" >
         operating_tax,
+      </if>
+      <if test="operatingTaxRemark != null" >
+        operating_tax_remark,
       </if>
       <if test="managementCost != null" >
         management_cost,
       </if>
+      <if test="managementCostRemark != null" >
+        management_cost_remark,
+      </if>
       <if test="financialCost != null" >
         financial_cost,
+      </if>
+      <if test="financialCostRemark != null" >
+        financial_cost_remark,
       </if>
       <if test="operatingProfit != null" >
         operating_profit,
       </if>
+      <if test="operatingProfitRemark != null" >
+        operating_profit_remark,
+      </if>
       <if test="excessProfit != null" >
         excess_profit,
       </if>
+      <if test="excessProfitRemark != null" >
+        excess_profit_remark,
+      </if>
       <if test="growthRate != null" >
         growth_rate,
+      </if>
+      <if test="growthRateRemark != null" >
+        growth_rate_remark,
       </if>
       <if test="creator != null" >
         creator,
@@ -194,29 +238,56 @@
       <if test="initialAmount != null" >
         #{initialAmount,jdbcType=DECIMAL},
       </if>
+      <if test="initialAmountRemark != null" >
+        #{initialAmountRemark,jdbcType=VARCHAR},
+      </if>
       <if test="operatingCost != null" >
         #{operatingCost,jdbcType=DECIMAL},
+      </if>
+      <if test="operatingCostRemark != null" >
+        #{operatingCostRemark,jdbcType=VARCHAR},
       </if>
       <if test="operatingExpenses != null" >
         #{operatingExpenses,jdbcType=DECIMAL},
       </if>
+      <if test="operatingExpensesRemark != null" >
+        #{operatingExpensesRemark,jdbcType=VARCHAR},
+      </if>
       <if test="operatingTax != null" >
         #{operatingTax,jdbcType=DECIMAL},
+      </if>
+      <if test="operatingTaxRemark != null" >
+        #{operatingTaxRemark,jdbcType=VARCHAR},
       </if>
       <if test="managementCost != null" >
         #{managementCost,jdbcType=DECIMAL},
       </if>
+      <if test="managementCostRemark != null" >
+        #{managementCostRemark,jdbcType=VARCHAR},
+      </if>
       <if test="financialCost != null" >
         #{financialCost,jdbcType=DECIMAL},
+      </if>
+      <if test="financialCostRemark != null" >
+        #{financialCostRemark,jdbcType=VARCHAR},
       </if>
       <if test="operatingProfit != null" >
         #{operatingProfit,jdbcType=DECIMAL},
       </if>
+      <if test="operatingProfitRemark != null" >
+        #{operatingProfitRemark,jdbcType=VARCHAR},
+      </if>
       <if test="excessProfit != null" >
         #{excessProfit,jdbcType=DECIMAL},
       </if>
+      <if test="excessProfitRemark != null" >
+        #{excessProfitRemark,jdbcType=VARCHAR},
+      </if>
       <if test="growthRate != null" >
         #{growthRate,jdbcType=DECIMAL},
+      </if>
+      <if test="growthRateRemark != null" >
+        #{growthRateRemark,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -253,29 +324,56 @@
       <if test="record.initialAmount != null" >
         initial_amount = #{record.initialAmount,jdbcType=DECIMAL},
       </if>
+      <if test="record.initialAmountRemark != null" >
+        initial_amount_remark = #{record.initialAmountRemark,jdbcType=VARCHAR},
+      </if>
       <if test="record.operatingCost != null" >
         operating_cost = #{record.operatingCost,jdbcType=DECIMAL},
+      </if>
+      <if test="record.operatingCostRemark != null" >
+        operating_cost_remark = #{record.operatingCostRemark,jdbcType=VARCHAR},
       </if>
       <if test="record.operatingExpenses != null" >
         operating_expenses = #{record.operatingExpenses,jdbcType=DECIMAL},
       </if>
+      <if test="record.operatingExpensesRemark != null" >
+        operating_expenses_remark = #{record.operatingExpensesRemark,jdbcType=VARCHAR},
+      </if>
       <if test="record.operatingTax != null" >
         operating_tax = #{record.operatingTax,jdbcType=DECIMAL},
+      </if>
+      <if test="record.operatingTaxRemark != null" >
+        operating_tax_remark = #{record.operatingTaxRemark,jdbcType=VARCHAR},
       </if>
       <if test="record.managementCost != null" >
         management_cost = #{record.managementCost,jdbcType=DECIMAL},
       </if>
+      <if test="record.managementCostRemark != null" >
+        management_cost_remark = #{record.managementCostRemark,jdbcType=VARCHAR},
+      </if>
       <if test="record.financialCost != null" >
         financial_cost = #{record.financialCost,jdbcType=DECIMAL},
+      </if>
+      <if test="record.financialCostRemark != null" >
+        financial_cost_remark = #{record.financialCostRemark,jdbcType=VARCHAR},
       </if>
       <if test="record.operatingProfit != null" >
         operating_profit = #{record.operatingProfit,jdbcType=DECIMAL},
       </if>
+      <if test="record.operatingProfitRemark != null" >
+        operating_profit_remark = #{record.operatingProfitRemark,jdbcType=VARCHAR},
+      </if>
       <if test="record.excessProfit != null" >
         excess_profit = #{record.excessProfit,jdbcType=DECIMAL},
       </if>
+      <if test="record.excessProfitRemark != null" >
+        excess_profit_remark = #{record.excessProfitRemark,jdbcType=VARCHAR},
+      </if>
       <if test="record.growthRate != null" >
         growth_rate = #{record.growthRate,jdbcType=DECIMAL},
+      </if>
+      <if test="record.growthRateRemark != null" >
+        growth_rate_remark = #{record.growthRateRemark,jdbcType=VARCHAR},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -298,14 +396,23 @@
       section_id = #{record.sectionId,jdbcType=INTEGER},
       type = #{record.type,jdbcType=INTEGER},
       initial_amount = #{record.initialAmount,jdbcType=DECIMAL},
+      initial_amount_remark = #{record.initialAmountRemark,jdbcType=VARCHAR},
       operating_cost = #{record.operatingCost,jdbcType=DECIMAL},
+      operating_cost_remark = #{record.operatingCostRemark,jdbcType=VARCHAR},
       operating_expenses = #{record.operatingExpenses,jdbcType=DECIMAL},
+      operating_expenses_remark = #{record.operatingExpensesRemark,jdbcType=VARCHAR},
       operating_tax = #{record.operatingTax,jdbcType=DECIMAL},
+      operating_tax_remark = #{record.operatingTaxRemark,jdbcType=VARCHAR},
       management_cost = #{record.managementCost,jdbcType=DECIMAL},
+      management_cost_remark = #{record.managementCostRemark,jdbcType=VARCHAR},
       financial_cost = #{record.financialCost,jdbcType=DECIMAL},
+      financial_cost_remark = #{record.financialCostRemark,jdbcType=VARCHAR},
       operating_profit = #{record.operatingProfit,jdbcType=DECIMAL},
+      operating_profit_remark = #{record.operatingProfitRemark,jdbcType=VARCHAR},
       excess_profit = #{record.excessProfit,jdbcType=DECIMAL},
+      excess_profit_remark = #{record.excessProfitRemark,jdbcType=VARCHAR},
       growth_rate = #{record.growthRate,jdbcType=DECIMAL},
+      growth_rate_remark = #{record.growthRateRemark,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -328,29 +435,56 @@
       <if test="initialAmount != null" >
         initial_amount = #{initialAmount,jdbcType=DECIMAL},
       </if>
+      <if test="initialAmountRemark != null" >
+        initial_amount_remark = #{initialAmountRemark,jdbcType=VARCHAR},
+      </if>
       <if test="operatingCost != null" >
         operating_cost = #{operatingCost,jdbcType=DECIMAL},
+      </if>
+      <if test="operatingCostRemark != null" >
+        operating_cost_remark = #{operatingCostRemark,jdbcType=VARCHAR},
       </if>
       <if test="operatingExpenses != null" >
         operating_expenses = #{operatingExpenses,jdbcType=DECIMAL},
       </if>
+      <if test="operatingExpensesRemark != null" >
+        operating_expenses_remark = #{operatingExpensesRemark,jdbcType=VARCHAR},
+      </if>
       <if test="operatingTax != null" >
         operating_tax = #{operatingTax,jdbcType=DECIMAL},
+      </if>
+      <if test="operatingTaxRemark != null" >
+        operating_tax_remark = #{operatingTaxRemark,jdbcType=VARCHAR},
       </if>
       <if test="managementCost != null" >
         management_cost = #{managementCost,jdbcType=DECIMAL},
       </if>
+      <if test="managementCostRemark != null" >
+        management_cost_remark = #{managementCostRemark,jdbcType=VARCHAR},
+      </if>
       <if test="financialCost != null" >
         financial_cost = #{financialCost,jdbcType=DECIMAL},
+      </if>
+      <if test="financialCostRemark != null" >
+        financial_cost_remark = #{financialCostRemark,jdbcType=VARCHAR},
       </if>
       <if test="operatingProfit != null" >
         operating_profit = #{operatingProfit,jdbcType=DECIMAL},
       </if>
+      <if test="operatingProfitRemark != null" >
+        operating_profit_remark = #{operatingProfitRemark,jdbcType=VARCHAR},
+      </if>
       <if test="excessProfit != null" >
         excess_profit = #{excessProfit,jdbcType=DECIMAL},
       </if>
+      <if test="excessProfitRemark != null" >
+        excess_profit_remark = #{excessProfitRemark,jdbcType=VARCHAR},
+      </if>
       <if test="growthRate != null" >
         growth_rate = #{growthRate,jdbcType=DECIMAL},
+      </if>
+      <if test="growthRateRemark != null" >
+        growth_rate_remark = #{growthRateRemark,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -370,14 +504,23 @@
       section_id = #{sectionId,jdbcType=INTEGER},
       type = #{type,jdbcType=INTEGER},
       initial_amount = #{initialAmount,jdbcType=DECIMAL},
+      initial_amount_remark = #{initialAmountRemark,jdbcType=VARCHAR},
       operating_cost = #{operatingCost,jdbcType=DECIMAL},
+      operating_cost_remark = #{operatingCostRemark,jdbcType=VARCHAR},
       operating_expenses = #{operatingExpenses,jdbcType=DECIMAL},
+      operating_expenses_remark = #{operatingExpensesRemark,jdbcType=VARCHAR},
       operating_tax = #{operatingTax,jdbcType=DECIMAL},
+      operating_tax_remark = #{operatingTaxRemark,jdbcType=VARCHAR},
       management_cost = #{managementCost,jdbcType=DECIMAL},
+      management_cost_remark = #{managementCostRemark,jdbcType=VARCHAR},
       financial_cost = #{financialCost,jdbcType=DECIMAL},
+      financial_cost_remark = #{financialCostRemark,jdbcType=VARCHAR},
       operating_profit = #{operatingProfit,jdbcType=DECIMAL},
+      operating_profit_remark = #{operatingProfitRemark,jdbcType=VARCHAR},
       excess_profit = #{excessProfit,jdbcType=DECIMAL},
+      excess_profit_remark = #{excessProfitRemark,jdbcType=VARCHAR},
       growth_rate = #{growthRate,jdbcType=DECIMAL},
+      growth_rate_remark = #{growthRateRemark,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

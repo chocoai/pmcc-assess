@@ -28,6 +28,8 @@ public class MdIncomeForecastAnalyse {
 
     private Date gmtModified;
 
+    private String sourceType;
+
     public Integer getId() {
         return id;
     }
@@ -122,5 +124,13 @@ public class MdIncomeForecastAnalyse {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getSourceType() {
+        return sourceType;
+    }
+
+    public void setSourceType(String sourceType) {
+        this.sourceType = sourceType == null ? null : sourceType.trim();
     }
 }
