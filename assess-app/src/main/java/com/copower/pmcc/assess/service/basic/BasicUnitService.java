@@ -164,15 +164,15 @@ public class BasicUnitService {
             unit = unitList.get(0);
         } else {
             BasicApply basicApply = basicApplyService.getByBasicApplyId(applyId);
-            unit = basicUnitDao.getBasicUnitById(basicApply.getBasicUnitId());
+            if (basicApply != null)
+                unit = basicUnitDao.getBasicUnitById(basicApply.getBasicUnitId());
         }
+        if (unit == null) return;
         //清除标记
-        if(unit!=null) {
-            BasicEstateTagging where = new BasicEstateTagging();
-            where.setTableId(unit.getId());
-            where.setType("unit");
-            basicEstateTaggingDao.removeBasicEstateTagging(where);
-        }
+        BasicEstateTagging where = new BasicEstateTagging();
+        where.setTableId(unit.getId());
+        where.setType("unit");
+        basicEstateTaggingDao.removeBasicEstateTagging(where);
         StringBuilder sqlBulder = new StringBuilder();
         String baseSql = "delete from %s where unit_id=%s;";
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicUnitHuxing.class), unit.getId()));
@@ -192,7 +192,7 @@ public class BasicUnitService {
      * @throws Exception
      */
     public BasicUnit getBasicUnitByApplyId(Integer applyId) {
-        if(applyId==null) return null;
+        if (applyId == null) return null;
         BasicUnit where = new BasicUnit();
         where.setApplyId(applyId);
         where.setCreator(commonService.thisUserAccount());
@@ -200,8 +200,8 @@ public class BasicUnitService {
         if (!CollectionUtils.isEmpty(basicUnits)) {
             return basicUnits.get(0);
         } else {
-        BasicApply basicApply = basicApplyService.getByBasicApplyId(applyId);
-        return basicUnitDao.getBasicUnitById(basicApply.getBasicUnitId());
+            BasicApply basicApply = basicApplyService.getByBasicApplyId(applyId);
+            return basicUnitDao.getBasicUnitById(basicApply.getBasicUnitId());
         }
     }
 
@@ -430,7 +430,7 @@ public class BasicUnitService {
      */
     @Transactional(rollbackFor = Exception.class)
     public BasicUnit quoteUnitData(Integer id, Integer tableId) throws Exception {
-        if (id == null || tableId==null) {
+        if (id == null || tableId == null) {
             throw new BusinessException("null point");
         }
         clearInvalidData2(tableId);

@@ -215,16 +215,15 @@ public class BasicHouseService {
             }
         } else {
             BasicApply basicApply = basicApplyService.getByBasicApplyId(applyId);
-            house = basicHouseDao.getBasicHouseById(basicApply.getBasicHouseId());
+            if (basicApply != null)
+                house = basicHouseDao.getBasicHouseById(basicApply.getBasicHouseId());
         }
         if (house == null) return;
         //清除标记
-        if(house!=null) {
-            BasicEstateTagging where = new BasicEstateTagging();
-            where.setTableId(house.getId());
-            where.setType("house");
-            basicEstateTaggingDao.removeBasicEstateTagging(where);
-        }
+        BasicEstateTagging where = new BasicEstateTagging();
+        where.setTableId(house.getId());
+        where.setType("house");
+        basicEstateTaggingDao.removeBasicEstateTagging(where);
         StringBuilder sqlBulder = new StringBuilder();
         String baseSql = "delete from %s where house_id=%s;";
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseTradingSell.class), house.getId()));
@@ -266,7 +265,7 @@ public class BasicHouseService {
     }
 
     public BasicHouse getHouseByApplyId(Integer applyId) {
-        if(applyId==null) return null;
+        if (applyId == null) return null;
         BasicHouse where = new BasicHouse();
         where.setApplyId(applyId);
         where.setCreator(commonService.thisUserAccount());
@@ -418,7 +417,7 @@ public class BasicHouseService {
             newHuXing.setTableName(FormatUtils.entityNameConvertToTableName(BasicHouse.class));
             newHuXing.setFieldsName(AssessUploadEnum.HOUSE_NEW_HUXING_PLAN.getKey());
             List<SysAttachmentDto> newHuXingList = baseAttachmentService.getAttachmentList(newHuXing);
-            if(CollectionUtils.isNotEmpty(newHuXingList))
+            if (CollectionUtils.isNotEmpty(newHuXingList))
                 basicEstateTagging.setAttachmentId(newHuXingList.get(0).getId());
             basicEstateTaggingService.addBasicEstateTagging(basicEstateTagging);
         }
@@ -633,7 +632,7 @@ public class BasicHouseService {
             newHuXing.setTableName(FormatUtils.entityNameConvertToTableName(BasicHouse.class));
             newHuXing.setFieldsName(AssessUploadEnum.HOUSE_NEW_HUXING_PLAN.getKey());
             List<SysAttachmentDto> newHuXingList = baseAttachmentService.getAttachmentList(newHuXing);
-            if(CollectionUtils.isNotEmpty(newHuXingList))
+            if (CollectionUtils.isNotEmpty(newHuXingList))
                 basicEstateTagging.setAttachmentId(newHuXingList.get(0).getId());
             basicEstateTaggingService.addBasicEstateTagging(basicEstateTagging);
         }

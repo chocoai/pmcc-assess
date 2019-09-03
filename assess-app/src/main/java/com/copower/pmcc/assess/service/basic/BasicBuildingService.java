@@ -286,15 +286,15 @@ public class BasicBuildingService {
             basicBuilding = basicBuildingList.get(0);
         } else {
             BasicApply basicApply = basicApplyService.getByBasicApplyId(applyId);
-            basicBuilding = getBasicBuildingById(basicApply.getBasicBuildingId());
+            if (basicApply != null)
+                basicBuilding = getBasicBuildingById(basicApply.getBasicBuildingId());
         }
+        if (basicBuilding == null) return;
         //清除标记
-        if(basicBuilding!=null) {
-            BasicEstateTagging where = new BasicEstateTagging();
-            where.setTableId(basicBuilding.getId());
-            where.setType("building");
-            basicEstateTaggingDao.removeBasicEstateTagging(where);
-        }
+        BasicEstateTagging where = new BasicEstateTagging();
+        where.setTableId(basicBuilding.getId());
+        where.setType("building");
+        basicEstateTaggingDao.removeBasicEstateTagging(where);
         StringBuilder sqlBulder = new StringBuilder();
         String baseSql = "delete from %s where building_id=%s;";
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicBuildingFunction.class), basicBuilding.getId()));
