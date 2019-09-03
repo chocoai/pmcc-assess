@@ -5822,10 +5822,9 @@ public class GenerateBaseDataService {
     public String getICBCValuationCaseInformationSheet() throws Exception {
         String localPath = getLocalPath();
         Document document = new Document();
-        DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(document);
-        generateCommonMethod.setDefaultDocumentBuilderSetting(documentBuilder);
+        DocumentBuilder documentBuilder = new DocumentBuilder(document) ;
         documentBuilder.getFont().setSize(12);
-        documentBuilder.getFont().setName(AsposeUtils.SongStyleFontName);
+        documentBuilder.getFont().setName(AsposeUtils.ImitationSong);
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         BaseDataDic mdCompare = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_MARKET_COMPARE);
         Map<SchemeJudgeObject, SchemeInfo> objectSchemeInfoMap = Maps.newHashMap();
@@ -5851,7 +5850,7 @@ public class GenerateBaseDataService {
                 BasicEstateVo basicEstate = generateBaseExamineService.getEstate();
                 //描述内容
                 if (StringUtils.isNotBlank(basicEstate.getLocationDescribe())) {
-                    documentBuilder.insertHtml(generateCommonMethod.getIndentHtml(basicEstate.getLocationDescribe()),false);
+                    AsposeUtils.insertHtml(documentBuilder,AsposeUtils.getWarpCssHtml(basicEstate.getLocationDescribe(),Lists.newArrayList(new KeyValueDto("text-indent","2em"),new KeyValueDto(AsposeUtils.FontFamily,AsposeUtils.ImitationSong),new KeyValueDto(AsposeUtils.FontSize,"12pt"))));
                 }
                 List<MdMarketCompareItem> mdMarketCompareItemList = mdMarketCompareService.getCaseListByMcId(schemeJudgeObjectSchemeInfoEntry.getValue().getMethodDataId());
                 if (CollectionUtils.isNotEmpty(mdMarketCompareItemList)) {
@@ -5874,25 +5873,19 @@ public class GenerateBaseDataService {
         String localPath = getLocalPath();
         Document document = new Document();
         DocumentBuilder documentBuilder = new DocumentBuilder(document) ;
-        generateCommonMethod.settingBuildingTable(documentBuilder);
-        //设置具体宽度100好方便下面的设置
+        //设置具体宽度自动适应
         PreferredWidth preferredWidth = PreferredWidth.AUTO;
         documentBuilder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
         documentBuilder.getCellFormat().setPreferredWidth(preferredWidth);
         documentBuilder.getCellFormat().setVerticalMerge(CellVerticalAlignment.CENTER);
         documentBuilder.getCellFormat().setVerticalAlignment(CellVerticalAlignment.CENTER);
         documentBuilder.getCellFormat().setHorizontalMerge(CellVerticalAlignment.CENTER);
-        documentBuilder.getCellFormat().setHorizontalMerge(CellVerticalAlignment.CENTER);
         documentBuilder.getCellFormat().setTopPadding(0);
         documentBuilder.getCellFormat().setBottomPadding(0);
         documentBuilder.getCellFormat().setLeftPadding(0);
         documentBuilder.getCellFormat().setRightPadding(0);
-
         documentBuilder.getFont().setSize(10.5);
         documentBuilder.getFont().setName(AsposeUtils.ImitationSong);
-        //左边框填充1/4的宽度长度
-//        documentBuilder.getCellFormat().setLeftPadding(documentBuilder.getCellFormat().getWidth()/4);
-
         List<Integer> planDetailsIdList = Lists.newArrayList();
         mdMarketCompareItemList.forEach(po -> {
             if (po.getPlanDetailsId() != null) {
@@ -5916,8 +5909,6 @@ public class GenerateBaseDataService {
                 BasicEstateVo basicEstate = generateBaseExamineService.getEstate();
                 BasicHouseVo basicHouseVo = generateBaseExamineService.getBasicHouse();
                 BasicHouseTrading basicHouseTrading = generateBaseExamineService.getBasicTrading();
-                BasicUnit basicUnit = generateBaseExamineService.getBasicUnit();
-                BasicBuildingVo basicBuildingVo = generateBaseExamineService.getBasicBuilding();
                 List<BasicHouseRoom> basicHouseRoomList = generateBaseExamineService.getBasicHouseRoomList();
                 Map<BasicHouseRoom, List<BasicHouseRoomDecorateVo>> basicHouseRoomListMap = Maps.newHashMap();
                 if (CollectionUtils.isNotEmpty(basicHouseRoomList)) {
