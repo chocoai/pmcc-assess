@@ -655,7 +655,7 @@ public class GenerateMdIncomeService implements Serializable {
                 StringBuilder stringBuilder = new StringBuilder(8);
                 StringBuilder dateRangeBuilder = new StringBuilder(8);
                 if (i != 0){
-                    dateRangeBuilder.append(StringUtils.repeat(ControlChar.TAB,1)) ;
+                    dateRangeBuilder.append(StringUtils.repeat(" ",3)) ;
                 }
                 dateRangeBuilder.append("第");
                 dateRangeBuilder.append(getChineseNumber(i));
@@ -878,6 +878,7 @@ public class GenerateMdIncomeService implements Serializable {
             return errorStr;
         }
         String separator = "";
+        int repeat = 0;
         final Map<Integer, String> map = Maps.newHashMap();
         final AtomicInteger atomicInteger = new AtomicInteger(0);
         mdIncomeLeaseList.forEach(mdIncomeLeaseVo -> {
@@ -948,12 +949,14 @@ public class GenerateMdIncomeService implements Serializable {
             separator = "，";
         }
         if (Objects.equal(incomeEnum.getName(), BaseReportFieldMdIncomeEnum.RestrictionExplain.getName())) {
-            separator = ControlChar.LINE_BREAK;
+            separator = String.format("%s%s",StringUtils.repeat(" ",2),ControlChar.LINE_BREAK);
+            repeat = 3;
         }
         if (Objects.equal(incomeEnum.getName(), BaseReportFieldMdIncomeEnum.IncomeAdditionalCaptureRemark.getName())) {
-            separator = ControlChar.LINE_BREAK;
+            separator = String.format("%s%s",StringUtils.repeat(" ",2),ControlChar.LINE_BREAK);
+            repeat = 3;
         }
-        return this.toEachDesc(map, "", "", separator);
+        return this.toEachDesc(map, "", "", separator,repeat);
     }
 
 
@@ -972,6 +975,7 @@ public class GenerateMdIncomeService implements Serializable {
         final Map<Integer, String> map = Maps.newHashMap();
         final AtomicInteger atomicInteger = new AtomicInteger(0);
         String separator = "";
+        int repeat = 0;
         leaseVoList.forEach(mdIncomeLeaseCostVo -> {
             BigDecimal cost = null;
             String value = null;
@@ -1115,12 +1119,15 @@ public class GenerateMdIncomeService implements Serializable {
             separator = ControlChar.LINE_BREAK;
         }
         if (Objects.equal(incomeEnum.getName(), BaseReportFieldMdIncomeEnum.RentalGrowthRateExplain.getName())) {
-            separator = ControlChar.LINE_BREAK;
+            separator = String.format("%s%s",StringUtils.repeat(" ",2),ControlChar.LINE_BREAK);
+            repeat = 4;
         }
         if (Objects.equal(incomeEnum.getName(), BaseReportFieldMdIncomeEnum.TransactionTaxeFeeExplain.getName())) {
-            separator = ControlChar.LINE_BREAK;
+            separator = String.format("%s%s",StringUtils.repeat(" ",2),ControlChar.LINE_BREAK);
+            repeat = 0;
         }
-        return this.toEachDesc(map, "", "", separator);
+        String value = this.toEachDesc(map, "", "", separator,repeat) ;
+        return value;
     }
 
 
@@ -1137,6 +1144,7 @@ public class GenerateMdIncomeService implements Serializable {
         }
         final Map<Integer, String> map = Maps.newHashMap();
         final AtomicInteger value = new AtomicInteger(0);
+        int repeat = 0;
         leaseVoList.forEach(mdIncomeLeaseCostVo -> {
             BigDecimal cost = null;
             switch (incomeEnum) {
@@ -1183,7 +1191,7 @@ public class GenerateMdIncomeService implements Serializable {
                 }
             }
         });
-        return this.toEachDesc(map, "", "", "");
+        return this.toEachDesc(map, "", "", "",repeat);
     }
 
     /**
@@ -1198,6 +1206,7 @@ public class GenerateMdIncomeService implements Serializable {
             return errorStr;
         }
         final Map<Integer, String> map = Maps.newHashMap();
+        int repeat = 0;
         final AtomicInteger atomicInteger = new AtomicInteger(0);
         leaseVoList.forEach(mdIncomeLeaseCostVo -> {
             BigDecimal decimal = null;
@@ -1300,7 +1309,7 @@ public class GenerateMdIncomeService implements Serializable {
                 atomicInteger.incrementAndGet();
             }
         });
-        return this.toEachDesc(map, "", "", "");
+        return this.toEachDesc(map, "", "", "",repeat);
     }
 
     /**
@@ -1613,13 +1622,14 @@ public class GenerateMdIncomeService implements Serializable {
      * @param separator 分隔符
      * @return
      */
-    private String toEachDesc(Map<Integer, String> map, String explain, String symbol, String separator) {
+    private String toEachDesc(final Map<Integer, String> map,final String explain,final String symbol,final String separator,final int repeat) {
         if (map == null || map.size() <= 0) {
             return "";
         }
-
         LinkedHashSet<String> stringSet = Sets.newLinkedHashSet();
         stringSet.addAll(map.values());
+        final AtomicInteger atomicInteger = new AtomicInteger(0);
+        final StringBuilder stringBuilder = new StringBuilder(8) ;
         if (map.values().size() == 1 || stringSet.size() == 1) {
             return stringSet.stream().findFirst().get();
         } else {
@@ -1630,8 +1640,18 @@ public class GenerateMdIncomeService implements Serializable {
                     return o1.getKey().compareTo(o2.getKey());
                 }
             }).forEach(integerStringEntry -> {
-                String string = String.join("", "第", getChineseNumber(integerStringEntry.getKey()), "段", StringUtils.isNotBlank(explain) ? explain : "", integerStringEntry.getValue(), StringUtils.isNotBlank(symbol) ? symbol : "");
-                stringSet.add(string);
+                if (atomicInteger.get() != 0){
+                    stringBuilder.append(StringUtils.repeat(" ",repeat)) ;
+                }
+                stringBuilder.append("第") ;
+                stringBuilder.append(getChineseNumber(integerStringEntry.getKey())) ;
+                stringBuilder.append("段") ;
+                stringBuilder.append(StringUtils.isNotBlank(explain) ? explain : "") ;
+                stringBuilder.append(integerStringEntry.getValue()) ;
+                stringBuilder.append(StringUtils.isNotBlank(symbol) ? symbol : "") ;
+                stringSet.add(stringBuilder.toString());
+                stringBuilder.delete(0,stringBuilder.toString().length()) ;
+                atomicInteger.incrementAndGet();
             });
             return StringUtils.join(stringSet, separator);
         }
