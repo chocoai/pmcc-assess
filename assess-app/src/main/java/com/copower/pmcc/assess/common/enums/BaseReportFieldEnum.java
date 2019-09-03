@@ -268,6 +268,9 @@ public enum BaseReportFieldEnum implements Serializable {
     MarketCost_Method("成本法土地测算方法"),
     MarketCost_extraterritorial_reality("成本法宗地外实际"),
     MarketCost_intra_territorial_reality("成本法宗地内实际"),
+    MarketCost_extraterritorial_setting("成本法宗地外设定"),
+    MarketCost_intra_territorial_setting("成本法宗地内设定"),
+    MarketCost_GroundFloor_AreaCounted_volume_ratio("成本法地上计入容积率建筑面积"),
 
     ;
     private String name;
