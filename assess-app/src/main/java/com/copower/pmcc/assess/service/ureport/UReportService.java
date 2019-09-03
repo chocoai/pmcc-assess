@@ -23,6 +23,7 @@ import com.github.pagehelper.StringUtil;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +61,10 @@ public class UReportService {
      * @return
      */
     public BeanPageDataSet getUProjectFinanceVoList(String dsname, String datasetName, Map<String, Object> maps) throws Exception {
+        return getProjectFinanceDataSet(maps,null);
+    }
+
+    public BeanPageDataSet getProjectFinanceDataSet(Map<String, Object> maps,String userAccount){
         String queryProjectName = "";
         String queryConsignorName = "";
         String queryReportUseUnitName = "";
@@ -135,10 +140,10 @@ public class UReportService {
         if (queryEntrustment != null && !queryEntrustment.equals(0)) {
             sql.append(String.format(" AND A.entrust_purpose = '%s'", queryEntrustment));
         }
-         if (queryLoanType != null && !queryLoanType.equals(0)) {
+        if (queryLoanType != null && !queryLoanType.equals(0)) {
             sql.append(String.format(" AND A.loan_type = '%s'", queryLoanType));
         }
-         if (queryDepartmentId != null&& !queryDepartmentId.equals(0)) {
+        if (queryDepartmentId != null&& !queryDepartmentId.equals(0)) {
             sql.append(String.format(" AND A.department_id = '%s'", queryDepartmentId));
         }
 
@@ -159,8 +164,12 @@ public class UReportService {
         if (StringUtil.isNotEmpty(queryEndTime)) {
             sql.append(String.format(" AND Date(A.gmt_created) <= '%s'", queryEndTime));
         }
-        if (StringUtil.isNotEmpty(queryUserAccount)) {
-            sql.append(String.format(" AND B.user_account_manager = '%s'", queryUserAccount));
+        if(StringUtils.isNotBlank(userAccount)){
+            sql.append(String.format(" AND B.user_account_manager = '%s'", userAccount));
+        }else{
+            if (StringUtil.isNotEmpty(queryUserAccount)) {
+                sql.append(String.format(" AND B.user_account_manager = '%s'", queryUserAccount));
+            }
         }
         if (StringUtil.isNotEmpty(queryServiceExplain)) {
             sql.append(String.format(" AND A.service_come_from_explain LIKE '%s%s%s'", "%", queryServiceExplain, "%"));
@@ -229,18 +238,18 @@ public class UReportService {
                         vo.setProjectCreated(DateUtils.convertDate(String.valueOf(gmt_created)));
                     }
                     vo.setContractName(objectToString(map.get("contract_name")));
-                    vo.setContractPrice(objectToString(map.get("contract_price")));
+                    vo.setContractPrice(objectToBigDecimal(map.get("contract_price")));
                     Integer publicProjectId = objectToInteger(map.get("public_project_id"));
                     if (mapFinance != null && mapFinance.get(publicProjectId) != null) {
                         FinancialBillMakeOutProjectDto makeOutProjectDto = mapFinance.get(publicProjectId);
                         if (makeOutProjectDto.getAmount() != null) {
-                            vo.setAmount(objectToString(makeOutProjectDto.getAmount() / 100L));
+                            vo.setAmount(objectToBigDecimal(makeOutProjectDto.getAmount() / 100L));
                         }
                         if (makeOutProjectDto.getActualAmount() != null) {
-                            vo.setActualAmount(objectToString(makeOutProjectDto.getActualAmount() / 100L));
+                            vo.setActualAmount(objectToBigDecimal(makeOutProjectDto.getActualAmount() / 100L));
                         }
                         if (makeOutProjectDto.getPayAmount() != null) {
-                            vo.setPayAmount(objectToString(makeOutProjectDto.getPayAmount().divide(new BigDecimal("100"))));
+                            vo.setPayAmount(makeOutProjectDto.getPayAmount().divide(new BigDecimal("100")));
                         }
                     }
                     list.add(vo);
@@ -262,5 +271,12 @@ public class UReportService {
         if (StringUtils.isNotBlank(string) && StringUtils.isNumeric(string))
             return Integer.valueOf(string);
         return 0;
+    }
+
+    private BigDecimal objectToBigDecimal(Object obj) {
+        String string = objectToString(obj);
+        if (StringUtils.isNotBlank(string) && NumberUtils.isNumber(string))
+            return new BigDecimal(string);
+        return new BigDecimal("0");
     }
 }
