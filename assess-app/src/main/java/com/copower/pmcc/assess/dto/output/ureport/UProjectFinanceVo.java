@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.dto.output.ureport;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -16,10 +17,10 @@ public class UProjectFinanceVo {
     private Date reportNumberCreated;//报告文号创建时间 -查询
     private String projectManagerName;//项目经理 -查询
     private String contractName;//合同名称
-    private String contractPrice;//合同金额
-    private String amount;//开票金额
-    private String actualAmount;//实际金额
-    private String payAmount;//支付金额
+    private BigDecimal contractPrice;//合同金额
+    private BigDecimal amount;//开票金额
+    private BigDecimal actualAmount;//实际开票金额（总金额）
+    private BigDecimal payAmount;//付款金额
     private String entrustPurposeName;//委托目的
     private String departmentName;//评估部门
     private String loanTypeName;//贷款类型
@@ -107,35 +108,35 @@ public class UProjectFinanceVo {
         this.contractName = contractName;
     }
 
-    public String getContractPrice() {
+    public BigDecimal getContractPrice() {
         return contractPrice;
     }
 
-    public void setContractPrice(String contractPrice) {
+    public void setContractPrice(BigDecimal contractPrice) {
         this.contractPrice = contractPrice;
     }
 
-    public String getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(String amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 
-    public String getActualAmount() {
+    public BigDecimal getActualAmount() {
         return actualAmount;
     }
 
-    public void setActualAmount(String actualAmount) {
+    public void setActualAmount(BigDecimal actualAmount) {
         this.actualAmount = actualAmount;
     }
 
-    public String getPayAmount() {
+    public BigDecimal getPayAmount() {
         return payAmount;
     }
 
-    public void setPayAmount(String payAmount) {
+    public void setPayAmount(BigDecimal payAmount) {
         this.payAmount = payAmount;
     }
 

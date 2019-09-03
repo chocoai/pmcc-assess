@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.MdIncomeForecastAnalyseMapper" >
-  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.MdIncomeForecastAnalyse" >
+<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.MdIncomeForecastAnalyseItemMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.MdIncomeForecastAnalyseItem" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="income_id" property="incomeId" jdbcType="INTEGER" />
-    <result column="type" property="type" jdbcType="INTEGER" />
-    <result column="form_type" property="formType" jdbcType="INTEGER" />
+    <result column="forecast_analyse_id" property="forecastAnalyseId" jdbcType="INTEGER" />
     <result column="year" property="year" jdbcType="INTEGER" />
+    <result column="source_type" property="sourceType" jdbcType="VARCHAR" />
+    <result column="accounting_subject" property="accountingSubject" jdbcType="INTEGER" />
+    <result column="first_level_number" property="firstLevelNumber" jdbcType="VARCHAR" />
+    <result column="second_level_number" property="secondLevelNumber" jdbcType="VARCHAR" />
     <result column="amount_money" property="amountMoney" jdbcType="DECIMAL" />
-    <result column="quantitative_trend" property="quantitativeTrend" jdbcType="DECIMAL" />
-    <result column="univalent_trend" property="univalentTrend" jdbcType="DECIMAL" />
-    <result column="bis_participate_in" property="bisParticipateIn" jdbcType="BIT" />
+    <result column="number" property="number" jdbcType="INTEGER" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
-    <result column="source_type" property="sourceType" jdbcType="VARCHAR" />
+    <result column="income_id" property="incomeId" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -75,16 +75,16 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, income_id, type, form_type, year, amount_money, quantitative_trend, univalent_trend, 
-    bis_participate_in, creator, gmt_created, gmt_modified, source_type
+    id, forecast_analyse_id, year, source_type, accounting_subject, first_level_number, 
+    second_level_number, amount_money, number, creator, gmt_created, gmt_modified, income_id
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeForecastAnalyseExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeForecastAnalyseItemExample" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from tb_md_income_forecast_analyse
+    from tb_md_income_forecast_analyse_item
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -95,63 +95,63 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from tb_md_income_forecast_analyse
+    from tb_md_income_forecast_analyse_item
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from tb_md_income_forecast_analyse
+    delete from tb_md_income_forecast_analyse_item
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeForecastAnalyseExample" >
-    delete from tb_md_income_forecast_analyse
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeForecastAnalyseItemExample" >
+    delete from tb_md_income_forecast_analyse_item
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeForecastAnalyse" >
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeForecastAnalyseItem" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_md_income_forecast_analyse (income_id, type, form_type, 
-      year, amount_money, quantitative_trend, 
-      univalent_trend, bis_participate_in, creator, 
-      gmt_created, gmt_modified, source_type
+    insert into tb_md_income_forecast_analyse_item (forecast_analyse_id, year, source_type, 
+      accounting_subject, first_level_number, second_level_number, 
+      amount_money, number, creator, 
+      gmt_created, gmt_modified, income_id
       )
-    values (#{incomeId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{formType,jdbcType=INTEGER}, 
-      #{year,jdbcType=INTEGER}, #{amountMoney,jdbcType=DECIMAL}, #{quantitativeTrend,jdbcType=DECIMAL}, 
-      #{univalentTrend,jdbcType=DECIMAL}, #{bisParticipateIn,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{sourceType,jdbcType=VARCHAR}
+    values (#{forecastAnalyseId,jdbcType=INTEGER}, #{year,jdbcType=INTEGER}, #{sourceType,jdbcType=VARCHAR}, 
+      #{accountingSubject,jdbcType=INTEGER}, #{firstLevelNumber,jdbcType=VARCHAR}, #{secondLevelNumber,jdbcType=VARCHAR}, 
+      #{amountMoney,jdbcType=DECIMAL}, #{number,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{incomeId,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeForecastAnalyse" >
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeForecastAnalyseItem" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_md_income_forecast_analyse
+    insert into tb_md_income_forecast_analyse_item
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="incomeId != null" >
-        income_id,
-      </if>
-      <if test="type != null" >
-        type,
-      </if>
-      <if test="formType != null" >
-        form_type,
+      <if test="forecastAnalyseId != null" >
+        forecast_analyse_id,
       </if>
       <if test="year != null" >
         year,
       </if>
+      <if test="sourceType != null" >
+        source_type,
+      </if>
+      <if test="accountingSubject != null" >
+        accounting_subject,
+      </if>
+      <if test="firstLevelNumber != null" >
+        first_level_number,
+      </if>
+      <if test="secondLevelNumber != null" >
+        second_level_number,
+      </if>
       <if test="amountMoney != null" >
         amount_money,
       </if>
-      <if test="quantitativeTrend != null" >
-        quantitative_trend,
-      </if>
-      <if test="univalentTrend != null" >
-        univalent_trend,
-      </if>
-      <if test="bisParticipateIn != null" >
-        bis_participate_in,
+      <if test="number != null" >
+        number,
       </if>
       <if test="creator != null" >
         creator,
@@ -162,34 +162,34 @@
       <if test="gmtModified != null" >
         gmt_modified,
       </if>
-      <if test="sourceType != null" >
-        source_type,
+      <if test="incomeId != null" >
+        income_id,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="incomeId != null" >
-        #{incomeId,jdbcType=INTEGER},
-      </if>
-      <if test="type != null" >
-        #{type,jdbcType=INTEGER},
-      </if>
-      <if test="formType != null" >
-        #{formType,jdbcType=INTEGER},
+      <if test="forecastAnalyseId != null" >
+        #{forecastAnalyseId,jdbcType=INTEGER},
       </if>
       <if test="year != null" >
         #{year,jdbcType=INTEGER},
       </if>
+      <if test="sourceType != null" >
+        #{sourceType,jdbcType=VARCHAR},
+      </if>
+      <if test="accountingSubject != null" >
+        #{accountingSubject,jdbcType=INTEGER},
+      </if>
+      <if test="firstLevelNumber != null" >
+        #{firstLevelNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="secondLevelNumber != null" >
+        #{secondLevelNumber,jdbcType=VARCHAR},
+      </if>
       <if test="amountMoney != null" >
         #{amountMoney,jdbcType=DECIMAL},
       </if>
-      <if test="quantitativeTrend != null" >
-        #{quantitativeTrend,jdbcType=DECIMAL},
-      </if>
-      <if test="univalentTrend != null" >
-        #{univalentTrend,jdbcType=DECIMAL},
-      </if>
-      <if test="bisParticipateIn != null" >
-        #{bisParticipateIn,jdbcType=BIT},
+      <if test="number != null" >
+        #{number,jdbcType=INTEGER},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -200,46 +200,46 @@
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
       </if>
-      <if test="sourceType != null" >
-        #{sourceType,jdbcType=VARCHAR},
+      <if test="incomeId != null" >
+        #{incomeId,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeForecastAnalyseExample" resultType="java.lang.Integer" >
-    select count(*) from tb_md_income_forecast_analyse
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeForecastAnalyseItemExample" resultType="java.lang.Integer" >
+    select count(*) from tb_md_income_forecast_analyse_item
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update tb_md_income_forecast_analyse
+    update tb_md_income_forecast_analyse_item
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.incomeId != null" >
-        income_id = #{record.incomeId,jdbcType=INTEGER},
-      </if>
-      <if test="record.type != null" >
-        type = #{record.type,jdbcType=INTEGER},
-      </if>
-      <if test="record.formType != null" >
-        form_type = #{record.formType,jdbcType=INTEGER},
+      <if test="record.forecastAnalyseId != null" >
+        forecast_analyse_id = #{record.forecastAnalyseId,jdbcType=INTEGER},
       </if>
       <if test="record.year != null" >
         year = #{record.year,jdbcType=INTEGER},
       </if>
+      <if test="record.sourceType != null" >
+        source_type = #{record.sourceType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.accountingSubject != null" >
+        accounting_subject = #{record.accountingSubject,jdbcType=INTEGER},
+      </if>
+      <if test="record.firstLevelNumber != null" >
+        first_level_number = #{record.firstLevelNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.secondLevelNumber != null" >
+        second_level_number = #{record.secondLevelNumber,jdbcType=VARCHAR},
+      </if>
       <if test="record.amountMoney != null" >
         amount_money = #{record.amountMoney,jdbcType=DECIMAL},
       </if>
-      <if test="record.quantitativeTrend != null" >
-        quantitative_trend = #{record.quantitativeTrend,jdbcType=DECIMAL},
-      </if>
-      <if test="record.univalentTrend != null" >
-        univalent_trend = #{record.univalentTrend,jdbcType=DECIMAL},
-      </if>
-      <if test="record.bisParticipateIn != null" >
-        bis_participate_in = #{record.bisParticipateIn,jdbcType=BIT},
+      <if test="record.number != null" >
+        number = #{record.number,jdbcType=INTEGER},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -250,8 +250,8 @@
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.sourceType != null" >
-        source_type = #{record.sourceType,jdbcType=VARCHAR},
+      <if test="record.incomeId != null" >
+        income_id = #{record.incomeId,jdbcType=INTEGER},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -259,50 +259,50 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update tb_md_income_forecast_analyse
+    update tb_md_income_forecast_analyse_item
     set id = #{record.id,jdbcType=INTEGER},
-      income_id = #{record.incomeId,jdbcType=INTEGER},
-      type = #{record.type,jdbcType=INTEGER},
-      form_type = #{record.formType,jdbcType=INTEGER},
+      forecast_analyse_id = #{record.forecastAnalyseId,jdbcType=INTEGER},
       year = #{record.year,jdbcType=INTEGER},
+      source_type = #{record.sourceType,jdbcType=VARCHAR},
+      accounting_subject = #{record.accountingSubject,jdbcType=INTEGER},
+      first_level_number = #{record.firstLevelNumber,jdbcType=VARCHAR},
+      second_level_number = #{record.secondLevelNumber,jdbcType=VARCHAR},
       amount_money = #{record.amountMoney,jdbcType=DECIMAL},
-      quantitative_trend = #{record.quantitativeTrend,jdbcType=DECIMAL},
-      univalent_trend = #{record.univalentTrend,jdbcType=DECIMAL},
-      bis_participate_in = #{record.bisParticipateIn,jdbcType=BIT},
+      number = #{record.number,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      source_type = #{record.sourceType,jdbcType=VARCHAR}
+      income_id = #{record.incomeId,jdbcType=INTEGER}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeForecastAnalyse" >
-    update tb_md_income_forecast_analyse
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeForecastAnalyseItem" >
+    update tb_md_income_forecast_analyse_item
     <set >
-      <if test="incomeId != null" >
-        income_id = #{incomeId,jdbcType=INTEGER},
-      </if>
-      <if test="type != null" >
-        type = #{type,jdbcType=INTEGER},
-      </if>
-      <if test="formType != null" >
-        form_type = #{formType,jdbcType=INTEGER},
+      <if test="forecastAnalyseId != null" >
+        forecast_analyse_id = #{forecastAnalyseId,jdbcType=INTEGER},
       </if>
       <if test="year != null" >
         year = #{year,jdbcType=INTEGER},
       </if>
+      <if test="sourceType != null" >
+        source_type = #{sourceType,jdbcType=VARCHAR},
+      </if>
+      <if test="accountingSubject != null" >
+        accounting_subject = #{accountingSubject,jdbcType=INTEGER},
+      </if>
+      <if test="firstLevelNumber != null" >
+        first_level_number = #{firstLevelNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="secondLevelNumber != null" >
+        second_level_number = #{secondLevelNumber,jdbcType=VARCHAR},
+      </if>
       <if test="amountMoney != null" >
         amount_money = #{amountMoney,jdbcType=DECIMAL},
       </if>
-      <if test="quantitativeTrend != null" >
-        quantitative_trend = #{quantitativeTrend,jdbcType=DECIMAL},
-      </if>
-      <if test="univalentTrend != null" >
-        univalent_trend = #{univalentTrend,jdbcType=DECIMAL},
-      </if>
-      <if test="bisParticipateIn != null" >
-        bis_participate_in = #{bisParticipateIn,jdbcType=BIT},
+      <if test="number != null" >
+        number = #{number,jdbcType=INTEGER},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -313,26 +313,26 @@
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
-      <if test="sourceType != null" >
-        source_type = #{sourceType,jdbcType=VARCHAR},
+      <if test="incomeId != null" >
+        income_id = #{incomeId,jdbcType=INTEGER},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeForecastAnalyse" >
-    update tb_md_income_forecast_analyse
-    set income_id = #{incomeId,jdbcType=INTEGER},
-      type = #{type,jdbcType=INTEGER},
-      form_type = #{formType,jdbcType=INTEGER},
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeForecastAnalyseItem" >
+    update tb_md_income_forecast_analyse_item
+    set forecast_analyse_id = #{forecastAnalyseId,jdbcType=INTEGER},
       year = #{year,jdbcType=INTEGER},
+      source_type = #{sourceType,jdbcType=VARCHAR},
+      accounting_subject = #{accountingSubject,jdbcType=INTEGER},
+      first_level_number = #{firstLevelNumber,jdbcType=VARCHAR},
+      second_level_number = #{secondLevelNumber,jdbcType=VARCHAR},
       amount_money = #{amountMoney,jdbcType=DECIMAL},
-      quantitative_trend = #{quantitativeTrend,jdbcType=DECIMAL},
-      univalent_trend = #{univalentTrend,jdbcType=DECIMAL},
-      bis_participate_in = #{bisParticipateIn,jdbcType=BIT},
+      number = #{number,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      source_type = #{sourceType,jdbcType=VARCHAR}
+      income_id = #{incomeId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

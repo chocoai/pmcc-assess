@@ -54,7 +54,7 @@
             casesAll: JSON.parse($("#casesAllJSON").val()),
             standardJudges: JSON.parse($("#standardJudgesJSON").val()),
             mcId: ${mcId},
-            isLand: ${isLand},
+            isLand: '${isLand}',
             judgeObjectId: '${judgeObject.id}',
             cases: JSON.parse($("#casesJSON").val())
         });

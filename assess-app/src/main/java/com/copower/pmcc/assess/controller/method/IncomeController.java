@@ -102,10 +102,10 @@ public class IncomeController {
 
     @ResponseBody
     @RequestMapping(value = "/historyToForecast", method = {RequestMethod.POST}, name = "历史数据添加到预测数据")
-    public HttpResult historyToForecast(String ids, Integer forecastAnalyseId) {
+    public HttpResult historyToForecast(String ids, Integer year) {
         try {
             if (StringUtils.isNotBlank(ids))
-                mdIncomeService.historyToForecast(FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(ids)), forecastAnalyseId);
+                mdIncomeService.historyToForecast(FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(ids)), year);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return HttpResult.newErrorResult(e.getMessage());
@@ -295,4 +295,23 @@ public class IncomeController {
         }
         return HttpResult.newCorrectResult();
     }
+
+
+    @ResponseBody
+    @RequestMapping(value = "/getAnalyseCountByYear", name = "显示预测列表通过年份分类", method = RequestMethod.GET)
+    public HttpResult getAnalyseCountByYear(Integer incomeId, Integer type, Integer formType) {
+        try {
+            List<Integer> years = mdIncomeService.getAnalyseCountByYear(incomeId, type, formType);
+            return HttpResult.newCorrectResult(years);
+        } catch (Exception e) {
+            return HttpResult.newErrorResult("获取失败");
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getForecastAnalyseItemList", name = "显示预测分析明细列表", method = RequestMethod.GET)
+    public BootstrapTableVo getForecastAnalyseItemList(Integer forecastAnalyseId) {
+        return mdIncomeService.getForecastAnalyseItemList(forecastAnalyseId);
+    }
+
 }

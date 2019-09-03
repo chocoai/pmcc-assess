@@ -406,6 +406,76 @@ public class MdIncomeForecastExample {
             return (Criteria) this;
         }
 
+        public Criteria andInitialAmountRemarkIsNull() {
+            addCriterion("initial_amount_remark is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInitialAmountRemarkIsNotNull() {
+            addCriterion("initial_amount_remark is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInitialAmountRemarkEqualTo(String value) {
+            addCriterion("initial_amount_remark =", value, "initialAmountRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andInitialAmountRemarkNotEqualTo(String value) {
+            addCriterion("initial_amount_remark <>", value, "initialAmountRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andInitialAmountRemarkGreaterThan(String value) {
+            addCriterion("initial_amount_remark >", value, "initialAmountRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andInitialAmountRemarkGreaterThanOrEqualTo(String value) {
+            addCriterion("initial_amount_remark >=", value, "initialAmountRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andInitialAmountRemarkLessThan(String value) {
+            addCriterion("initial_amount_remark <", value, "initialAmountRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andInitialAmountRemarkLessThanOrEqualTo(String value) {
+            addCriterion("initial_amount_remark <=", value, "initialAmountRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andInitialAmountRemarkLike(String value) {
+            addCriterion("initial_amount_remark like", value, "initialAmountRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andInitialAmountRemarkNotLike(String value) {
+            addCriterion("initial_amount_remark not like", value, "initialAmountRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andInitialAmountRemarkIn(List<String> values) {
+            addCriterion("initial_amount_remark in", values, "initialAmountRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andInitialAmountRemarkNotIn(List<String> values) {
+            addCriterion("initial_amount_remark not in", values, "initialAmountRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andInitialAmountRemarkBetween(String value1, String value2) {
+            addCriterion("initial_amount_remark between", value1, value2, "initialAmountRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andInitialAmountRemarkNotBetween(String value1, String value2) {
+            addCriterion("initial_amount_remark not between", value1, value2, "initialAmountRemark");
+            return (Criteria) this;
+        }
+
         public Criteria andOperatingCostIsNull() {
             addCriterion("operating_cost is null");
             return (Criteria) this;
@@ -463,6 +533,76 @@ public class MdIncomeForecastExample {
 
         public Criteria andOperatingCostNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("operating_cost not between", value1, value2, "operatingCost");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingCostRemarkIsNull() {
+            addCriterion("operating_cost_remark is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingCostRemarkIsNotNull() {
+            addCriterion("operating_cost_remark is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingCostRemarkEqualTo(String value) {
+            addCriterion("operating_cost_remark =", value, "operatingCostRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingCostRemarkNotEqualTo(String value) {
+            addCriterion("operating_cost_remark <>", value, "operatingCostRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingCostRemarkGreaterThan(String value) {
+            addCriterion("operating_cost_remark >", value, "operatingCostRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingCostRemarkGreaterThanOrEqualTo(String value) {
+            addCriterion("operating_cost_remark >=", value, "operatingCostRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingCostRemarkLessThan(String value) {
+            addCriterion("operating_cost_remark <", value, "operatingCostRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingCostRemarkLessThanOrEqualTo(String value) {
+            addCriterion("operating_cost_remark <=", value, "operatingCostRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingCostRemarkLike(String value) {
+            addCriterion("operating_cost_remark like", value, "operatingCostRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingCostRemarkNotLike(String value) {
+            addCriterion("operating_cost_remark not like", value, "operatingCostRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingCostRemarkIn(List<String> values) {
+            addCriterion("operating_cost_remark in", values, "operatingCostRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingCostRemarkNotIn(List<String> values) {
+            addCriterion("operating_cost_remark not in", values, "operatingCostRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingCostRemarkBetween(String value1, String value2) {
+            addCriterion("operating_cost_remark between", value1, value2, "operatingCostRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingCostRemarkNotBetween(String value1, String value2) {
+            addCriterion("operating_cost_remark not between", value1, value2, "operatingCostRemark");
             return (Criteria) this;
         }
 
@@ -526,6 +666,76 @@ public class MdIncomeForecastExample {
             return (Criteria) this;
         }
 
+        public Criteria andOperatingExpensesRemarkIsNull() {
+            addCriterion("operating_expenses_remark is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingExpensesRemarkIsNotNull() {
+            addCriterion("operating_expenses_remark is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingExpensesRemarkEqualTo(String value) {
+            addCriterion("operating_expenses_remark =", value, "operatingExpensesRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingExpensesRemarkNotEqualTo(String value) {
+            addCriterion("operating_expenses_remark <>", value, "operatingExpensesRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingExpensesRemarkGreaterThan(String value) {
+            addCriterion("operating_expenses_remark >", value, "operatingExpensesRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingExpensesRemarkGreaterThanOrEqualTo(String value) {
+            addCriterion("operating_expenses_remark >=", value, "operatingExpensesRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingExpensesRemarkLessThan(String value) {
+            addCriterion("operating_expenses_remark <", value, "operatingExpensesRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingExpensesRemarkLessThanOrEqualTo(String value) {
+            addCriterion("operating_expenses_remark <=", value, "operatingExpensesRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingExpensesRemarkLike(String value) {
+            addCriterion("operating_expenses_remark like", value, "operatingExpensesRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingExpensesRemarkNotLike(String value) {
+            addCriterion("operating_expenses_remark not like", value, "operatingExpensesRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingExpensesRemarkIn(List<String> values) {
+            addCriterion("operating_expenses_remark in", values, "operatingExpensesRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingExpensesRemarkNotIn(List<String> values) {
+            addCriterion("operating_expenses_remark not in", values, "operatingExpensesRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingExpensesRemarkBetween(String value1, String value2) {
+            addCriterion("operating_expenses_remark between", value1, value2, "operatingExpensesRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingExpensesRemarkNotBetween(String value1, String value2) {
+            addCriterion("operating_expenses_remark not between", value1, value2, "operatingExpensesRemark");
+            return (Criteria) this;
+        }
+
         public Criteria andOperatingTaxIsNull() {
             addCriterion("operating_tax is null");
             return (Criteria) this;
@@ -583,6 +793,76 @@ public class MdIncomeForecastExample {
 
         public Criteria andOperatingTaxNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("operating_tax not between", value1, value2, "operatingTax");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingTaxRemarkIsNull() {
+            addCriterion("operating_tax_remark is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingTaxRemarkIsNotNull() {
+            addCriterion("operating_tax_remark is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingTaxRemarkEqualTo(String value) {
+            addCriterion("operating_tax_remark =", value, "operatingTaxRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingTaxRemarkNotEqualTo(String value) {
+            addCriterion("operating_tax_remark <>", value, "operatingTaxRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingTaxRemarkGreaterThan(String value) {
+            addCriterion("operating_tax_remark >", value, "operatingTaxRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingTaxRemarkGreaterThanOrEqualTo(String value) {
+            addCriterion("operating_tax_remark >=", value, "operatingTaxRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingTaxRemarkLessThan(String value) {
+            addCriterion("operating_tax_remark <", value, "operatingTaxRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingTaxRemarkLessThanOrEqualTo(String value) {
+            addCriterion("operating_tax_remark <=", value, "operatingTaxRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingTaxRemarkLike(String value) {
+            addCriterion("operating_tax_remark like", value, "operatingTaxRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingTaxRemarkNotLike(String value) {
+            addCriterion("operating_tax_remark not like", value, "operatingTaxRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingTaxRemarkIn(List<String> values) {
+            addCriterion("operating_tax_remark in", values, "operatingTaxRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingTaxRemarkNotIn(List<String> values) {
+            addCriterion("operating_tax_remark not in", values, "operatingTaxRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingTaxRemarkBetween(String value1, String value2) {
+            addCriterion("operating_tax_remark between", value1, value2, "operatingTaxRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingTaxRemarkNotBetween(String value1, String value2) {
+            addCriterion("operating_tax_remark not between", value1, value2, "operatingTaxRemark");
             return (Criteria) this;
         }
 
@@ -646,6 +926,76 @@ public class MdIncomeForecastExample {
             return (Criteria) this;
         }
 
+        public Criteria andManagementCostRemarkIsNull() {
+            addCriterion("management_cost_remark is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagementCostRemarkIsNotNull() {
+            addCriterion("management_cost_remark is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagementCostRemarkEqualTo(String value) {
+            addCriterion("management_cost_remark =", value, "managementCostRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagementCostRemarkNotEqualTo(String value) {
+            addCriterion("management_cost_remark <>", value, "managementCostRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagementCostRemarkGreaterThan(String value) {
+            addCriterion("management_cost_remark >", value, "managementCostRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagementCostRemarkGreaterThanOrEqualTo(String value) {
+            addCriterion("management_cost_remark >=", value, "managementCostRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagementCostRemarkLessThan(String value) {
+            addCriterion("management_cost_remark <", value, "managementCostRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagementCostRemarkLessThanOrEqualTo(String value) {
+            addCriterion("management_cost_remark <=", value, "managementCostRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagementCostRemarkLike(String value) {
+            addCriterion("management_cost_remark like", value, "managementCostRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagementCostRemarkNotLike(String value) {
+            addCriterion("management_cost_remark not like", value, "managementCostRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagementCostRemarkIn(List<String> values) {
+            addCriterion("management_cost_remark in", values, "managementCostRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagementCostRemarkNotIn(List<String> values) {
+            addCriterion("management_cost_remark not in", values, "managementCostRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagementCostRemarkBetween(String value1, String value2) {
+            addCriterion("management_cost_remark between", value1, value2, "managementCostRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagementCostRemarkNotBetween(String value1, String value2) {
+            addCriterion("management_cost_remark not between", value1, value2, "managementCostRemark");
+            return (Criteria) this;
+        }
+
         public Criteria andFinancialCostIsNull() {
             addCriterion("financial_cost is null");
             return (Criteria) this;
@@ -703,6 +1053,76 @@ public class MdIncomeForecastExample {
 
         public Criteria andFinancialCostNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("financial_cost not between", value1, value2, "financialCost");
+            return (Criteria) this;
+        }
+
+        public Criteria andFinancialCostRemarkIsNull() {
+            addCriterion("financial_cost_remark is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFinancialCostRemarkIsNotNull() {
+            addCriterion("financial_cost_remark is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFinancialCostRemarkEqualTo(String value) {
+            addCriterion("financial_cost_remark =", value, "financialCostRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andFinancialCostRemarkNotEqualTo(String value) {
+            addCriterion("financial_cost_remark <>", value, "financialCostRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andFinancialCostRemarkGreaterThan(String value) {
+            addCriterion("financial_cost_remark >", value, "financialCostRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andFinancialCostRemarkGreaterThanOrEqualTo(String value) {
+            addCriterion("financial_cost_remark >=", value, "financialCostRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andFinancialCostRemarkLessThan(String value) {
+            addCriterion("financial_cost_remark <", value, "financialCostRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andFinancialCostRemarkLessThanOrEqualTo(String value) {
+            addCriterion("financial_cost_remark <=", value, "financialCostRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andFinancialCostRemarkLike(String value) {
+            addCriterion("financial_cost_remark like", value, "financialCostRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andFinancialCostRemarkNotLike(String value) {
+            addCriterion("financial_cost_remark not like", value, "financialCostRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andFinancialCostRemarkIn(List<String> values) {
+            addCriterion("financial_cost_remark in", values, "financialCostRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andFinancialCostRemarkNotIn(List<String> values) {
+            addCriterion("financial_cost_remark not in", values, "financialCostRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andFinancialCostRemarkBetween(String value1, String value2) {
+            addCriterion("financial_cost_remark between", value1, value2, "financialCostRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andFinancialCostRemarkNotBetween(String value1, String value2) {
+            addCriterion("financial_cost_remark not between", value1, value2, "financialCostRemark");
             return (Criteria) this;
         }
 
@@ -766,6 +1186,76 @@ public class MdIncomeForecastExample {
             return (Criteria) this;
         }
 
+        public Criteria andOperatingProfitRemarkIsNull() {
+            addCriterion("operating_profit_remark is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingProfitRemarkIsNotNull() {
+            addCriterion("operating_profit_remark is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingProfitRemarkEqualTo(String value) {
+            addCriterion("operating_profit_remark =", value, "operatingProfitRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingProfitRemarkNotEqualTo(String value) {
+            addCriterion("operating_profit_remark <>", value, "operatingProfitRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingProfitRemarkGreaterThan(String value) {
+            addCriterion("operating_profit_remark >", value, "operatingProfitRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingProfitRemarkGreaterThanOrEqualTo(String value) {
+            addCriterion("operating_profit_remark >=", value, "operatingProfitRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingProfitRemarkLessThan(String value) {
+            addCriterion("operating_profit_remark <", value, "operatingProfitRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingProfitRemarkLessThanOrEqualTo(String value) {
+            addCriterion("operating_profit_remark <=", value, "operatingProfitRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingProfitRemarkLike(String value) {
+            addCriterion("operating_profit_remark like", value, "operatingProfitRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingProfitRemarkNotLike(String value) {
+            addCriterion("operating_profit_remark not like", value, "operatingProfitRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingProfitRemarkIn(List<String> values) {
+            addCriterion("operating_profit_remark in", values, "operatingProfitRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingProfitRemarkNotIn(List<String> values) {
+            addCriterion("operating_profit_remark not in", values, "operatingProfitRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingProfitRemarkBetween(String value1, String value2) {
+            addCriterion("operating_profit_remark between", value1, value2, "operatingProfitRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingProfitRemarkNotBetween(String value1, String value2) {
+            addCriterion("operating_profit_remark not between", value1, value2, "operatingProfitRemark");
+            return (Criteria) this;
+        }
+
         public Criteria andExcessProfitIsNull() {
             addCriterion("excess_profit is null");
             return (Criteria) this;
@@ -826,6 +1316,76 @@ public class MdIncomeForecastExample {
             return (Criteria) this;
         }
 
+        public Criteria andExcessProfitRemarkIsNull() {
+            addCriterion("excess_profit_remark is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andExcessProfitRemarkIsNotNull() {
+            addCriterion("excess_profit_remark is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andExcessProfitRemarkEqualTo(String value) {
+            addCriterion("excess_profit_remark =", value, "excessProfitRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andExcessProfitRemarkNotEqualTo(String value) {
+            addCriterion("excess_profit_remark <>", value, "excessProfitRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andExcessProfitRemarkGreaterThan(String value) {
+            addCriterion("excess_profit_remark >", value, "excessProfitRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andExcessProfitRemarkGreaterThanOrEqualTo(String value) {
+            addCriterion("excess_profit_remark >=", value, "excessProfitRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andExcessProfitRemarkLessThan(String value) {
+            addCriterion("excess_profit_remark <", value, "excessProfitRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andExcessProfitRemarkLessThanOrEqualTo(String value) {
+            addCriterion("excess_profit_remark <=", value, "excessProfitRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andExcessProfitRemarkLike(String value) {
+            addCriterion("excess_profit_remark like", value, "excessProfitRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andExcessProfitRemarkNotLike(String value) {
+            addCriterion("excess_profit_remark not like", value, "excessProfitRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andExcessProfitRemarkIn(List<String> values) {
+            addCriterion("excess_profit_remark in", values, "excessProfitRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andExcessProfitRemarkNotIn(List<String> values) {
+            addCriterion("excess_profit_remark not in", values, "excessProfitRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andExcessProfitRemarkBetween(String value1, String value2) {
+            addCriterion("excess_profit_remark between", value1, value2, "excessProfitRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andExcessProfitRemarkNotBetween(String value1, String value2) {
+            addCriterion("excess_profit_remark not between", value1, value2, "excessProfitRemark");
+            return (Criteria) this;
+        }
+
         public Criteria andGrowthRateIsNull() {
             addCriterion("growth_rate is null");
             return (Criteria) this;
@@ -883,6 +1443,76 @@ public class MdIncomeForecastExample {
 
         public Criteria andGrowthRateNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("growth_rate not between", value1, value2, "growthRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGrowthRateRemarkIsNull() {
+            addCriterion("growth_rate_remark is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGrowthRateRemarkIsNotNull() {
+            addCriterion("growth_rate_remark is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGrowthRateRemarkEqualTo(String value) {
+            addCriterion("growth_rate_remark =", value, "growthRateRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andGrowthRateRemarkNotEqualTo(String value) {
+            addCriterion("growth_rate_remark <>", value, "growthRateRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andGrowthRateRemarkGreaterThan(String value) {
+            addCriterion("growth_rate_remark >", value, "growthRateRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andGrowthRateRemarkGreaterThanOrEqualTo(String value) {
+            addCriterion("growth_rate_remark >=", value, "growthRateRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andGrowthRateRemarkLessThan(String value) {
+            addCriterion("growth_rate_remark <", value, "growthRateRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andGrowthRateRemarkLessThanOrEqualTo(String value) {
+            addCriterion("growth_rate_remark <=", value, "growthRateRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andGrowthRateRemarkLike(String value) {
+            addCriterion("growth_rate_remark like", value, "growthRateRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andGrowthRateRemarkNotLike(String value) {
+            addCriterion("growth_rate_remark not like", value, "growthRateRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andGrowthRateRemarkIn(List<String> values) {
+            addCriterion("growth_rate_remark in", values, "growthRateRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andGrowthRateRemarkNotIn(List<String> values) {
+            addCriterion("growth_rate_remark not in", values, "growthRateRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andGrowthRateRemarkBetween(String value1, String value2) {
+            addCriterion("growth_rate_remark between", value1, value2, "growthRateRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andGrowthRateRemarkNotBetween(String value1, String value2) {
+            addCriterion("growth_rate_remark not between", value1, value2, "growthRateRemark");
             return (Criteria) this;
         }
 

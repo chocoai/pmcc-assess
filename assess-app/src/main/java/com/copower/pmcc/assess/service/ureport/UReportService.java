@@ -23,6 +23,7 @@ import com.github.pagehelper.StringUtil;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +61,10 @@ public class UReportService {
      * @return
      */
     public BeanPageDataSet getUProjectFinanceVoList(String dsname, String datasetName, Map<String, Object> maps) throws Exception {
+        return getProjectFinanceDataSet(maps,null);
+    }
+
+    public BeanPageDataSet getProjectFinanceDataSet(Map<String, Object> maps,String userAccount){
         String queryProjectName = "";
         String queryConsignorName = "";
         String queryReportUseUnitName = "";
@@ -106,8 +111,8 @@ public class UReportService {
         if (maps.get("queryDepartmentId") != null) {
             queryDepartmentId = objectToInteger(maps.get("queryDepartmentId"));
         }
-        //咨评报告
-        BaseDataDic preauditReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_CONSULTATION);
+        //预评报告
+        BaseDataDic preauditReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT);
         Integer preauditId = preauditReport.getId();
         //技术报告
         BaseDataDic technologyReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_TECHNOLOGY);
@@ -115,11 +120,14 @@ public class UReportService {
         //结果报告
         BaseDataDic resultReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_RESULT);
         Integer resultId = resultReport.getId();
+        //咨评报告
+        BaseDataDic consultationReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_CONSULTATION);
+        Integer consultationId = consultationReport.getId();
 
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT A.id,A.public_project_id,A.project_name,A.contract_name,A.contract_price,A.entrust_purpose,A.loan_type,A.department_id,A.service_come_from_explain," +
                 "B.user_account_manager,C.cs_entrustment_unit,C.cs_name,D.u_use_unit," +
-                " E.number_value as preaudit_number,F.number_value as technology_number,G.number_value as result_number,A.gmt_created" +
+                " E.number_value as preaudit_number,F.number_value as technology_number,G.number_value as result_number,H.number_value as consultation_number,A.gmt_created" +
                 " FROM tb_project_info A " +
                 " LEFT JOIN tb_project_member B ON A.id=B.project_id" +
                 " LEFT JOIN tb_initiate_consignor C ON A.id=C.project_id" +
@@ -127,6 +135,7 @@ public class UReportService {
         sql.append(String.format(" LEFT JOIN tb_project_number_record E ON (A.id=E.project_id and E.report_type = %s)", preauditId));
         sql.append(String.format(" LEFT JOIN tb_project_number_record F ON (A.id=F.project_id and F.report_type = %s)", technologyId));
         sql.append(String.format(" LEFT JOIN tb_project_number_record G ON (A.id=G.project_id and G.report_type = %s)", resultId));
+        sql.append(String.format(" LEFT JOIN tb_project_number_record H ON (A.id=H.project_id and H.report_type = %s)", consultationId));
         sql.append(" WHERE 1=1");
 
         if (StringUtil.isNotEmpty(queryProjectName)) {
@@ -135,10 +144,10 @@ public class UReportService {
         if (queryEntrustment != null && !queryEntrustment.equals(0)) {
             sql.append(String.format(" AND A.entrust_purpose = '%s'", queryEntrustment));
         }
-         if (queryLoanType != null && !queryLoanType.equals(0)) {
+        if (queryLoanType != null && !queryLoanType.equals(0)) {
             sql.append(String.format(" AND A.loan_type = '%s'", queryLoanType));
         }
-         if (queryDepartmentId != null&& !queryDepartmentId.equals(0)) {
+        if (queryDepartmentId != null&& !queryDepartmentId.equals(0)) {
             sql.append(String.format(" AND A.department_id = '%s'", queryDepartmentId));
         }
 
@@ -152,15 +161,22 @@ public class UReportService {
             sql.append(String.format(" AND E.number_value LIKE '%s%s%s'", "%", queryReportNumber, "%"));
             sql.append(String.format(" OR F.number_value LIKE '%s%s%s'", "%", queryReportNumber, "%"));
             sql.append(String.format(" OR G.number_value LIKE '%s%s%s'", "%", queryReportNumber, "%"));
+            sql.append(String.format(" OR H.number_value LIKE '%s%s%s'", "%", queryReportNumber, "%"));
         }
         if (StringUtil.isNotEmpty(queryStartTime)) {
-            sql.append(String.format(" AND Date(A.gmt_created) >= '%s'", queryStartTime));
+            sql.append(String.format(" AND Date(E.gmt_created) >= '%s'", queryStartTime));
+            sql.append(String.format(" OR Date(G.gmt_created) >= '%s'", queryStartTime));
         }
         if (StringUtil.isNotEmpty(queryEndTime)) {
-            sql.append(String.format(" AND Date(A.gmt_created) <= '%s'", queryEndTime));
+            sql.append(String.format(" AND Date(E.gmt_created) <= '%s'", queryEndTime));
+            sql.append(String.format(" AND Date(G.gmt_created) <= '%s'", queryEndTime));
         }
-        if (StringUtil.isNotEmpty(queryUserAccount)) {
-            sql.append(String.format(" AND B.user_account_manager = '%s'", queryUserAccount));
+        if(StringUtils.isNotBlank(userAccount)){
+            sql.append(String.format(" AND B.user_account_manager = '%s'", userAccount));
+        }else{
+            if (StringUtil.isNotEmpty(queryUserAccount)) {
+                sql.append(String.format(" AND B.user_account_manager = '%s'", queryUserAccount));
+            }
         }
         if (StringUtil.isNotEmpty(queryServiceExplain)) {
             sql.append(String.format(" AND A.service_come_from_explain LIKE '%s%s%s'", "%", queryServiceExplain, "%"));
@@ -223,24 +239,24 @@ public class UReportService {
                     vo.setReportUseUnitName(useUnit);
                     vo.setPreauditNumber(objectToString(map.get("preaudit_number")));
                     vo.setTechnologyNumber(objectToString(map.get("technology_number")));
-                    vo.setResultNumber(objectToString(map.get("result_number")));
+                    vo.setResultNumber(String.format("%s/%s",objectToString(map.get("consultation_number")),objectToString(map.get("result_number"))));
                     Object gmt_created = map.get("gmt_created");
                     if (gmt_created != null) {
                         vo.setProjectCreated(DateUtils.convertDate(String.valueOf(gmt_created)));
                     }
                     vo.setContractName(objectToString(map.get("contract_name")));
-                    vo.setContractPrice(objectToString(map.get("contract_price")));
+                    vo.setContractPrice(objectToBigDecimal(map.get("contract_price")));
                     Integer publicProjectId = objectToInteger(map.get("public_project_id"));
                     if (mapFinance != null && mapFinance.get(publicProjectId) != null) {
                         FinancialBillMakeOutProjectDto makeOutProjectDto = mapFinance.get(publicProjectId);
                         if (makeOutProjectDto.getAmount() != null) {
-                            vo.setAmount(objectToString(makeOutProjectDto.getAmount() / 100L));
+                            vo.setAmount(objectToBigDecimal(makeOutProjectDto.getAmount() / 100L));
                         }
                         if (makeOutProjectDto.getActualAmount() != null) {
-                            vo.setActualAmount(objectToString(makeOutProjectDto.getActualAmount() / 100L));
+                            vo.setActualAmount(objectToBigDecimal(makeOutProjectDto.getActualAmount() / 100L));
                         }
                         if (makeOutProjectDto.getPayAmount() != null) {
-                            vo.setPayAmount(objectToString(makeOutProjectDto.getPayAmount().divide(new BigDecimal("100"))));
+                            vo.setPayAmount(makeOutProjectDto.getPayAmount().divide(new BigDecimal("100")));
                         }
                     }
                     list.add(vo);
@@ -262,5 +278,12 @@ public class UReportService {
         if (StringUtils.isNotBlank(string) && StringUtils.isNumeric(string))
             return Integer.valueOf(string);
         return 0;
+    }
+
+    private BigDecimal objectToBigDecimal(Object obj) {
+        String string = objectToString(obj);
+        if (StringUtils.isNotBlank(string) && NumberUtils.isNumber(string))
+            return new BigDecimal(string);
+        return new BigDecimal("0");
     }
 }
