@@ -111,8 +111,8 @@ public class UReportService {
         if (maps.get("queryDepartmentId") != null) {
             queryDepartmentId = objectToInteger(maps.get("queryDepartmentId"));
         }
-        //咨评报告
-        BaseDataDic preauditReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_CONSULTATION);
+        //预评报告
+        BaseDataDic preauditReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT);
         Integer preauditId = preauditReport.getId();
         //技术报告
         BaseDataDic technologyReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_TECHNOLOGY);
@@ -120,11 +120,14 @@ public class UReportService {
         //结果报告
         BaseDataDic resultReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_RESULT);
         Integer resultId = resultReport.getId();
+        //咨评报告
+        BaseDataDic consultationReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_CONSULTATION);
+        Integer consultationId = consultationReport.getId();
 
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT A.id,A.public_project_id,A.project_name,A.contract_name,A.contract_price,A.entrust_purpose,A.loan_type,A.department_id,A.service_come_from_explain," +
                 "B.user_account_manager,C.cs_entrustment_unit,C.cs_name,D.u_use_unit," +
-                " E.number_value as preaudit_number,F.number_value as technology_number,G.number_value as result_number,A.gmt_created" +
+                " E.number_value as preaudit_number,F.number_value as technology_number,G.number_value as result_number,H.number_value as consultation_number,A.gmt_created" +
                 " FROM tb_project_info A " +
                 " LEFT JOIN tb_project_member B ON A.id=B.project_id" +
                 " LEFT JOIN tb_initiate_consignor C ON A.id=C.project_id" +
@@ -132,6 +135,7 @@ public class UReportService {
         sql.append(String.format(" LEFT JOIN tb_project_number_record E ON (A.id=E.project_id and E.report_type = %s)", preauditId));
         sql.append(String.format(" LEFT JOIN tb_project_number_record F ON (A.id=F.project_id and F.report_type = %s)", technologyId));
         sql.append(String.format(" LEFT JOIN tb_project_number_record G ON (A.id=G.project_id and G.report_type = %s)", resultId));
+        sql.append(String.format(" LEFT JOIN tb_project_number_record H ON (A.id=H.project_id and H.report_type = %s)", consultationId));
         sql.append(" WHERE 1=1");
 
         if (StringUtil.isNotEmpty(queryProjectName)) {
@@ -157,12 +161,15 @@ public class UReportService {
             sql.append(String.format(" AND E.number_value LIKE '%s%s%s'", "%", queryReportNumber, "%"));
             sql.append(String.format(" OR F.number_value LIKE '%s%s%s'", "%", queryReportNumber, "%"));
             sql.append(String.format(" OR G.number_value LIKE '%s%s%s'", "%", queryReportNumber, "%"));
+            sql.append(String.format(" OR H.number_value LIKE '%s%s%s'", "%", queryReportNumber, "%"));
         }
         if (StringUtil.isNotEmpty(queryStartTime)) {
-            sql.append(String.format(" AND Date(A.gmt_created) >= '%s'", queryStartTime));
+            sql.append(String.format(" AND Date(E.gmt_created) >= '%s'", queryStartTime));
+            sql.append(String.format(" OR Date(G.gmt_created) >= '%s'", queryStartTime));
         }
         if (StringUtil.isNotEmpty(queryEndTime)) {
-            sql.append(String.format(" AND Date(A.gmt_created) <= '%s'", queryEndTime));
+            sql.append(String.format(" AND Date(E.gmt_created) <= '%s'", queryEndTime));
+            sql.append(String.format(" AND Date(G.gmt_created) <= '%s'", queryEndTime));
         }
         if(StringUtils.isNotBlank(userAccount)){
             sql.append(String.format(" AND B.user_account_manager = '%s'", userAccount));
@@ -232,7 +239,7 @@ public class UReportService {
                     vo.setReportUseUnitName(useUnit);
                     vo.setPreauditNumber(objectToString(map.get("preaudit_number")));
                     vo.setTechnologyNumber(objectToString(map.get("technology_number")));
-                    vo.setResultNumber(objectToString(map.get("result_number")));
+                    vo.setResultNumber(String.format("%s/%s",objectToString(map.get("consultation_number")),objectToString(map.get("result_number"))));
                     Object gmt_created = map.get("gmt_created");
                     if (gmt_created != null) {
                         vo.setProjectCreated(DateUtils.convertDate(String.valueOf(gmt_created)));
