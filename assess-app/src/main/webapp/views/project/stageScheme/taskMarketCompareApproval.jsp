@@ -39,7 +39,7 @@
             evaluation: JSON.parse($("#evaluationJSON").val()),
             casesAll: JSON.parse($("#casesAllJSON").val()),
             mcId: '${mcId}',
-            isLand: ${isLand},
+            isLand: '${isLand}',
             judgeObjectId: '${judgeObject.id}',
             cases: JSON.parse($("#casesJSON").val())
         });
