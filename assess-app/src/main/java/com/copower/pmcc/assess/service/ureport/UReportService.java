@@ -230,7 +230,7 @@ public class UReportService {
                     }
                     vo.setContractName(objectToString(map.get("contract_name")));
                     vo.setContractPrice(objectToString(map.get("contract_price")));
-                    Integer publicProjectId = objectToInteger(map.get("id"));
+                    Integer publicProjectId = objectToInteger(map.get("public_project_id"));
                     if (mapFinance != null && mapFinance.get(publicProjectId) != null) {
                         FinancialBillMakeOutProjectDto makeOutProjectDto = mapFinance.get(publicProjectId);
                         if (makeOutProjectDto.getAmount() != null) {
