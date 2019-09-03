@@ -263,6 +263,12 @@ public enum BaseReportFieldEnum implements Serializable {
     Development_DevelopmentDegreeCorrectionValue("假设法开发程度修正值"),
     Development_AmendmentStatusRights("假设法宗地权利状况修正值"),
     Development_AmendmentStatusRightsRemark("假设法宗地权利状况修正说明"),
+
+
+    MarketCost_Method("成本法土地测算方法"),
+    MarketCost_extraterritorial_reality("成本法宗地外实际"),
+    MarketCost_intra_territorial_reality("成本法宗地内实际"),
+
     ;
     private String name;
     private BaseReportFieldEnum(String name) {

@@ -5876,17 +5876,23 @@ public class GenerateBaseDataService {
         DocumentBuilder documentBuilder = new DocumentBuilder(document) ;
         generateCommonMethod.settingBuildingTable(documentBuilder);
         //设置具体宽度100好方便下面的设置
-        documentBuilder.getCellFormat().setWidth(100);
+        PreferredWidth preferredWidth = PreferredWidth.AUTO;
+        documentBuilder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
+        documentBuilder.getCellFormat().setPreferredWidth(preferredWidth);
         documentBuilder.getCellFormat().setVerticalMerge(CellVerticalAlignment.CENTER);
         documentBuilder.getCellFormat().setVerticalAlignment(CellVerticalAlignment.CENTER);
         documentBuilder.getCellFormat().setHorizontalMerge(CellVerticalAlignment.CENTER);
+        documentBuilder.getCellFormat().setHorizontalMerge(CellVerticalAlignment.CENTER);
+        documentBuilder.getCellFormat().setTopPadding(0);
+        documentBuilder.getCellFormat().setBottomPadding(0);
+        documentBuilder.getCellFormat().setLeftPadding(0);
+        documentBuilder.getCellFormat().setRightPadding(0);
 
         documentBuilder.getFont().setSize(10.5);
-        documentBuilder.getFont().setName(AsposeUtils.SongStyleFontName);
+        documentBuilder.getFont().setName(AsposeUtils.ImitationSong);
         //左边框填充1/4的宽度长度
-        documentBuilder.getCellFormat().setLeftPadding(documentBuilder.getCellFormat().getWidth()/4);
-        //右边框填充1/10的宽度长度
-        documentBuilder.getCellFormat().setRightPadding(documentBuilder.getCellFormat().getWidth()/10);
+//        documentBuilder.getCellFormat().setLeftPadding(documentBuilder.getCellFormat().getWidth()/4);
+
         List<Integer> planDetailsIdList = Lists.newArrayList();
         mdMarketCompareItemList.forEach(po -> {
             if (po.getPlanDetailsId() != null) {
@@ -5898,8 +5904,6 @@ public class GenerateBaseDataService {
             LinkedList<String> stringLinkedList = Lists.newLinkedList();
             final String nullValue = "";
             int count = 0;
-            BaseDataDic production = baseDataDicService.getCacheDataDicByFieldName(AssessExamineTaskConstant.EXAMINE_UNIT_HUXING_TYPE_PRODUCTION);
-            BaseDataDic office = baseDataDicService.getCacheDataDicByFieldName(AssessExamineTaskConstant.EXAMINE_UNIT_HUXING_TYPE_OFFICE);
             stringLinkedList.addAll(Arrays.asList("序号", "名称", "位置", "所在楼层", "面积(㎡)", "单价(元/㎡)", "装修状况", "平面布局"));
             AsposeUtils.writeWordTitle(documentBuilder, stringLinkedList);
             stringLinkedList.clear();

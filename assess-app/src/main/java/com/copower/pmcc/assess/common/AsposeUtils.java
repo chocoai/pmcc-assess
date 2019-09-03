@@ -39,6 +39,7 @@ public class AsposeUtils {
      * 仿宋_GB2312
      */
     public static String ImitationSongGB2312FontName = "仿宋_GB2312";
+    public static String ImitationSong = "仿宋";
     /**
      * 宋体
      */

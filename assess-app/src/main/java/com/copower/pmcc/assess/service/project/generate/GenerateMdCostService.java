@@ -3,17 +3,18 @@ package com.copower.pmcc.assess.service.project.generate;
 import com.aspose.words.BookmarkCollection;
 import com.aspose.words.Document;
 import com.copower.pmcc.assess.common.AsposeUtils;
+import com.copower.pmcc.assess.common.enums.BaseReportFieldEnum;
 import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
 import com.copower.pmcc.assess.dal.basis.entity.BaseReportField;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeAreaGroup;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeInfo;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
+import com.copower.pmcc.assess.dto.output.method.MdCostVo;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseReportFieldService;
 import com.copower.pmcc.assess.service.data.DataSetUseFieldService;
-import com.copower.pmcc.assess.service.method.MdDevelopmentService;
 import com.copower.pmcc.assess.service.method.MdMarketCostService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
@@ -41,6 +42,7 @@ public class GenerateMdCostService implements Serializable {
 
     private SchemeAreaGroup schemeAreaGroup;
     private SchemeJudgeObject schemeJudgeObject;
+    private MdCostVo costVo;
 
     private Integer areaId;
     private SchemeInfo schemeInfo;
@@ -58,7 +60,7 @@ public class GenerateMdCostService implements Serializable {
     private MdMarketCostService mdMarketCostService;
     private BaseService baseService;
 
-    public GenerateMdCostService(Integer projectId, SchemeInfo schemeInfo, Integer areaId){
+    public GenerateMdCostService(Integer projectId, SchemeInfo schemeInfo, Integer areaId) {
         this.projectId = projectId;
         this.schemeInfo = schemeInfo;
         this.areaId = areaId;
@@ -76,7 +78,7 @@ public class GenerateMdCostService implements Serializable {
         this.baseService = SpringContextUtils.getBean(BaseService.class);
     }
 
-    public String generateCompareFile() throws Exception{
+    public String generateCompareFile() throws Exception {
         BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByFieldName(AssessReportFieldConstant.COST_TEMPLATE);
         List<SysAttachmentDto> dtoList = baseAttachmentService.getByField_tableId(baseReportField.getId(), null, FormatUtils.entityNameConvertToTableName(BaseReportField.class));
         if (CollectionUtils.isEmpty(dtoList)) {
@@ -86,7 +88,7 @@ public class GenerateMdCostService implements Serializable {
         Document document = new Document(localPath);
         LinkedHashSet<KeyValueDto> dtoLinkedHashSet = new LinkedHashSet<>(10);
         //获取待替换文本的集合
-        List<String> regexS = generateCommonMethod.specialTreatment(AsposeUtils.getRegexList(document, null));
+        List<String> stringList = generateCommonMethod.specialTreatment(AsposeUtils.getRegexList(document, null));
         //获取所有书签集合
         BookmarkCollection bookmarkCollection = AsposeUtils.getBookmarks(document);
         if (bookmarkCollection.getCount() >= 1) {
@@ -94,21 +96,19 @@ public class GenerateMdCostService implements Serializable {
                 dtoLinkedHashSet.add(new KeyValueDto(bookmarkCollection.get(i).getName(), bookmarkCollection.get(i).getName()));
             }
         }
-        if (CollectionUtils.isNotEmpty(regexS)) {
-            for (String name : regexS) {
+        if (CollectionUtils.isNotEmpty(stringList)) {
+            for (String name : stringList) {
                 dtoLinkedHashSet.add(new KeyValueDto(name, name));
             }
         }
         HashMap<String, String> textMap = Maps.newHashMap();
         HashMap<String, String> fileMap = Maps.newHashMap();
         HashMap<String, String> bookmarkMap = Maps.newHashMap();
-        if (CollectionUtils.isNotEmpty(dtoLinkedHashSet)){
-            for (KeyValueDto keyValueDto : dtoLinkedHashSet){
+        if (CollectionUtils.isNotEmpty(dtoLinkedHashSet)) {
+            for (KeyValueDto keyValueDto : dtoLinkedHashSet) {
 
             }
         }
-
-
         //替换
         if (!textMap.isEmpty()) {
             AsposeUtils.replaceText(localPath, textMap);
@@ -122,4 +122,46 @@ public class GenerateMdCostService implements Serializable {
         }
         return localPath;
     }
+
+    public String getFieldObjectValue(BaseReportFieldEnum reportField) {
+        MdCostVo mdCostVo = getMdCostVo();
+        SchemeAreaGroup schemeAreaGroup = getSchemeAreaGroup();
+        SchemeJudgeObject schemeJudgeObject = getSchemeJudgeObject();
+        String nullValue = "";
+
+        return nullValue;
+    }
+
+    private MdCostVo getMdCostVo() {
+        if (this.costVo == null) {
+            synchronized (this) {
+                this.costVo = mdMarketCostService.getMdCostVo(mdMarketCostService.getByMdCostId(schemeInfo.getMethodDataId()));
+            }
+        }
+        return this.costVo;
+    }
+
+    private SchemeAreaGroup getSchemeAreaGroup() {
+        if (this.schemeAreaGroup == null) {
+            synchronized (this) {
+                this.schemeAreaGroup = schemeAreaGroupService.get(areaId);
+            }
+        }
+        return this.schemeAreaGroup;
+    }
+
+    private SchemeJudgeObject getSchemeJudgeObject() {
+        if (schemeJudgeObject == null) {
+            synchronized (this) {
+                if (schemeInfo.getJudgeObjectId() != null) {
+                    schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(schemeInfo.getJudgeObjectId());
+                }
+                if (schemeJudgeObject == null) {
+                    schemeJudgeObject = new SchemeJudgeObject();
+                }
+            }
+        }
+        return schemeJudgeObject;
+    }
+
 }
