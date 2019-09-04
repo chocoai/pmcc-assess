@@ -9,6 +9,8 @@ public class DataNumberRule {
 
     private String fieldName;
 
+    private String groupName;
+
     private String prefix;
 
     private String numberRule;
@@ -51,6 +53,14 @@ public class DataNumberRule {
 
     public void setFieldName(String fieldName) {
         this.fieldName = fieldName == null ? null : fieldName.trim();
+    }
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName == null ? null : groupName.trim();
     }
 
     public String getPrefix() {
