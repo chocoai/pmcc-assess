@@ -210,7 +210,7 @@ public class DataBlockController extends BaseController {
     public HttpResult climbingOldData() {
         try {
             netInfoRecordService.climbingOldData();
-            return HttpResult.newCorrectResult( );
+            return HttpResult.newCorrectResult();
         } catch (Exception e) {
             log.error(String.format("exception: %s", e.getMessage()), e);
             return HttpResult.newErrorResult("抓取两年前老数据异常");
