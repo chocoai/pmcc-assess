@@ -31,6 +31,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.task.TaskExecutor;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
@@ -167,6 +168,12 @@ public class GenerateMdCostService implements Serializable {
     private void setFieldObjectValue(BaseReportFieldEnum key, final ConcurrentHashMap<String, String> textMap, final ConcurrentHashMap<String, String> fileMap, final ConcurrentHashMap<String, String> bookmarkMap, MdCostVo mdCostVo, SchemeAreaGroup schemeAreaGroup, SchemeJudgeObject schemeJudgeObject, JSONObject jsonObject) {
         final String defaultValue = "";
         MdCostConstructionVo target = mdCostVo.getMdCostConstruction();
+        //计算类数据
+        String value = mdMarketCostService.getFieldObjectValue(key, target);
+        if (StringUtils.isNotBlank(value)) {
+            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), value);
+        }
+        //非计算类数据
         switch (key) {
             case MarketCost_Method: {
                 if (mdCostVo.getMdCostConstruction().getMcId() != null) {
@@ -176,6 +183,8 @@ public class GenerateMdCostService implements Serializable {
                     } catch (Exception e) {
                         baseService.writeExceptionInfo(e);
                     }
+                } else {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), "市场比较法");
                 }
             }
             break;
@@ -187,6 +196,7 @@ public class GenerateMdCostService implements Serializable {
             }
             break;
             case MarketCost_region: {
+                generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), schemeAreaGroup.getAreaName());
             }
             break;
             case MarketCost_extraterritorial_setting: {
@@ -199,9 +209,8 @@ public class GenerateMdCostService implements Serializable {
             }
             break;
             case MarketCost_constructionInstallationEngineeringFee: {
-                if (target.getConstructionAssessmentPriceCorrecting() != null) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), target.getConstructionAssessmentPriceCorrecting().toString());
-                }
+                BigDecimal start = ArithmeticUtils.divide(ArithmeticUtils.multiply(target.getConstructionAssessmentPriceCorrecting(), target.getDevelopLandAreaTax(), 2), ArithmeticUtils.createBigDecimal(10000), 2);
+                generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), ArithmeticUtils.getBigDecimalString(start));
             }
             break;
             case MarketCost_constructionInstallationEngineeringFee_Sheet: {
@@ -210,33 +219,15 @@ public class GenerateMdCostService implements Serializable {
             case MarketCost_constructionInstallationEngineeringFee_Basis: {
             }
             break;
-            case MarketCost_developYearNumberTax: {
-                if (target.getDevelopYearNumberTax() != null) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), target.getDevelopYearNumberTax().toString());
-                }
-            }
-            break;
             case MarketCost_Planning_land_area_construction: {
             }
             break;
             case MarketCost_AssessBuildArea: {
             }
             break;
-            case MarketCost_AssessUseLandArea: {
-            }
-            break;
             case MarketCost_landPurchasePriceExplain: {
                 if (StringUtils.isNotBlank(target.getLandPurchasePriceExplain())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), target.getLandPurchasePriceExplain());
-                }
-            }
-            break;
-            case MarketCost_UnitAreaLandPrice: {
-            }
-            break;
-            case MarketCost_landPurchasePrice: {
-                if (target.getLandPurchasePrice() != null && target.getDevelopLandAreaTax() != null) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), ArithmeticUtils.mul(target.getLandPurchasePrice(), target.getDevelopLandAreaTax(), 2));
                 }
             }
             break;
@@ -246,87 +237,18 @@ public class GenerateMdCostService implements Serializable {
                 }
             }
             break;
-            case MarketCost_landGetRelevant: {
-                if (target.getLandGetRelevant() != null) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), target.getLandGetRelevant().toString());
-                }
-            }
-            break;
             case MarketCost_additionalCostLandAcquisitionExplain: {
                 if (StringUtils.isNotBlank(target.getAdditionalCostLandAcquisitionExplain())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), target.getAdditionalCostLandAcquisitionExplain());
                 }
             }
             break;
-            case MarketCost_additionalCostLandAcquisition: {
-                if (target.getAdditionalCostLandAcquisition() != null) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), target.getAdditionalCostLandAcquisition().toString());
-                }
-            }
-            break;
-            case MarketCost_reconnaissanceDesignRate: {
-                if (target.getReconnaissanceDesign() != null) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), target.getReconnaissanceDesign().toString());
-                }
-            }
-            break;
-            case MarketCost_reconnaissanceDesign: {
-            }
-            break;
-            case MarketCost_infrastructureCost: {
-                if (target.getInfrastructureCost() != null) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), target.getInfrastructureCost().toString());
-                }
-            }
-            break;
             case MarketCost_infrastructureCostBasis: {
-            }
-            break;
-            case MarketCost_infrastructureMatchingCost: {
-                if (target.getInfrastructureMatchingCost() != null) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), target.getInfrastructureMatchingCost().toString());
-                }
-            }
-            break;
-            case MarketCost_devDuring: {
-                if (target.getDevDuring() != null) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), target.getDevDuring().toString());
-                }
-            }
-            break;
-            case MarketCost_otherEngineeringCost: {
-                if (target.getOtherEngineeringCost() != null) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), target.getOtherEngineeringCost().toString());
-                }
-            }
-            break;
-            case MarketCost_constructionSubtotal: {
-                if (target.getConstructionSubtotal() != null) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), target.getConstructionSubtotal());
-                }
-            }
-            break;
-            case MarketCost_unforeseenExpenses: {
-            }
-            break;
-            case MarketCost_unforeseenExpensesRate: {
-                if (target.getUnforeseenExpenses() != null) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), target.getUnforeseenExpenses().toString());
-                }
             }
             break;
             case MarketCost_unforeseenExpensesExplain: {
                 if (StringUtils.isNotBlank(target.getUnforeseenExpensesExplain())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), target.getUnforeseenExpensesExplain());
-                }
-            }
-            break;
-            case MarketCost_managementExpense: {
-            }
-            break;
-            case MarketCost_managementExpenseRate: {
-                if (target.getManagementExpense() != null) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), target.getManagementExpense().toString());
                 }
             }
             break;
@@ -336,30 +258,9 @@ public class GenerateMdCostService implements Serializable {
                 }
             }
             break;
-            case MarketCost_salesFee: {
-            }
-            break;
-            case MarketCost_salesFeeRate: {
-                if (target.getSalesFee() != null) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), target.getSalesFee().toString());
-                }
-            }
-            break;
             case MarketCost_salesFeeExplain: {
                 if (StringUtils.isNotBlank(target.getSalesFeeExplain())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), target.getSalesFeeExplain());
-                }
-            }
-            break;
-            case MarketCost_interestInvestment: {
-                if (target.getInterestInvestment() != null) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), target.getInterestInvestment());
-                }
-            }
-            break;
-            case MarketCost_interestInvestmentRate: {
-                if (target.getInterestInvestmentTax() != null) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), target.getInterestInvestmentTax().toString());
                 }
             }
             break;
@@ -369,30 +270,9 @@ public class GenerateMdCostService implements Serializable {
                 }
             }
             break;
-            case MarketCost_salesTaxAndAdditional: {
-            }
-            break;
-            case MarketCost_salesTaxAndAdditionalRate: {
-                if (target.getSalesTaxAndAdditional() != null) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), target.getSalesTaxAndAdditional().toString());
-                }
-            }
-            break;
             case MarketCost_salesTaxAndAdditionalExplain: {
                 if (StringUtils.isNotBlank(target.getSalesTaxAndAdditionalExplain())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), target.getSalesTaxAndAdditionalExplain());
-                }
-            }
-            break;
-            case MarketCost_investmentProfitRate: {
-                if (target.getInvestmentProfitTax() != null) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), target.getInvestmentProfitTax().toString());
-                }
-            }
-            break;
-            case MarketCost_investmentProfit: {
-                if (target.getInvestmentProfit() != null) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), target.getInvestmentProfit());
                 }
             }
             break;
@@ -402,37 +282,12 @@ public class GenerateMdCostService implements Serializable {
                 }
             }
             break;
-            case MarketCost_developBuildArea: {
-                if (target.getDevelopBuildAreaTax() != null) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), target.getDevelopBuildAreaTax().toString());
-                }
-            }
-            break;
-            case MarketCost_EstateLandPrice: {
-                generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), defaultValue);
-            }
-            break;
-            case MarketCost_landGetCostTotal: {
-                if (StringUtils.isNotBlank(target.getLandGetCostTotal())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), target.getLandGetCostTotal());
-                }
-            }
-            break;
-            case MarketCost_Degree_land_development: {
-                generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), defaultValue);
-            }
-            break;
-            case MarketCost_constructionAssessmentPriceCorrecting: {
-                if (target.getConstructionAssessmentPriceCorrecting() != null) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), target.getConstructionAssessmentPriceCorrecting().toString());
-                }
-            }
-            break;
             default: {
             }
             break;
         }
     }
+
 
     private MdCostVo getMdCostVo() {
         if (this.costVo == null) {

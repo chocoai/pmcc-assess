@@ -289,7 +289,7 @@ public class ArithmeticUtils implements Serializable {
     }
 
     public static BigDecimal div(BigDecimal v1, BigDecimal v2) {
-        return divideModel(v1, v2, null, null);
+        return divide(v1,v2,10);
     }
 
     /**
