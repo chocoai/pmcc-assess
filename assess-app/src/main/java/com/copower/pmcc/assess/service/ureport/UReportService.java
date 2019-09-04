@@ -253,7 +253,7 @@ public class UReportService {
                                     amount = amount.add(objectToBigDecimal(makeOutProjectDto.getAmount() / 100L));
                                 if (makeOutProjectDto.getActualAmount() != null)
                                     actualAmount = actualAmount.add(objectToBigDecimal(makeOutProjectDto.getActualAmount() / 100L));
-                                if (makeOutProjectDto.getAmount() != null)
+                                if (makeOutProjectDto.getPayAmount() != null)
                                     payAmount = payAmount.add(objectToBigDecimal(makeOutProjectDto.getPayAmount().divide(new BigDecimal("100"))));
                             }
                         }
