@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.controller.BaseController;
 import com.copower.pmcc.assess.dal.basis.entity.DataBlock;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.service.ErpAreaService;
+import com.copower.pmcc.assess.service.NetInfoRecordService;
 import com.copower.pmcc.assess.service.basic.BasicApplyBatchService;
 import com.copower.pmcc.assess.service.basic.PublicBasicService;
 import com.copower.pmcc.assess.service.data.DataBlockService;
@@ -41,6 +42,8 @@ public class DataBlockController extends BaseController {
     private PublicBasicService publicBasicService;
     @Autowired
     private ProjectInfoService projectInfoService;
+    @Autowired
+    private NetInfoRecordService netInfoRecordService;
 
     @RequestMapping(value = "/view", name = "转到index页面 ", method = {RequestMethod.GET})
     public ModelAndView index() {
@@ -202,4 +205,15 @@ public class DataBlockController extends BaseController {
         }
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/climbingOldData", method = {RequestMethod.GET}, name = "抓取两年前老数据")
+    public HttpResult climbingOldData() {
+        try {
+            netInfoRecordService.climbingOldData();
+            return HttpResult.newCorrectResult();
+        } catch (Exception e) {
+            log.error(String.format("exception: %s", e.getMessage()), e);
+            return HttpResult.newErrorResult("抓取两年前老数据异常");
+        }
+    }
 }
