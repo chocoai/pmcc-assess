@@ -61,10 +61,10 @@ public class UReportService {
      * @return
      */
     public BeanPageDataSet getUProjectFinanceVoList(String dsname, String datasetName, Map<String, Object> maps) throws Exception {
-        return getProjectFinanceDataSet(maps,null);
+        return getProjectFinanceDataSet(maps, null);
     }
 
-    public BeanPageDataSet getProjectFinanceDataSet(Map<String, Object> maps,String userAccount){
+    public BeanPageDataSet getProjectFinanceDataSet(Map<String, Object> maps, String userAccount) {
         String queryProjectName = "";
         String queryConsignorName = "";
         String queryReportUseUnitName = "";
@@ -147,7 +147,7 @@ public class UReportService {
         if (queryLoanType != null && !queryLoanType.equals(0)) {
             sql.append(String.format(" AND A.loan_type = '%s'", queryLoanType));
         }
-        if (queryDepartmentId != null&& !queryDepartmentId.equals(0)) {
+        if (queryDepartmentId != null && !queryDepartmentId.equals(0)) {
             sql.append(String.format(" AND A.department_id = '%s'", queryDepartmentId));
         }
 
@@ -171,9 +171,9 @@ public class UReportService {
             sql.append(String.format(" AND Date(E.gmt_created) <= '%s'", queryEndTime));
             sql.append(String.format(" AND Date(G.gmt_created) <= '%s'", queryEndTime));
         }
-        if(StringUtils.isNotBlank(userAccount)){
+        if (StringUtils.isNotBlank(userAccount)) {
             sql.append(String.format(" AND B.user_account_manager = '%s'", userAccount));
-        }else{
+        } else {
             if (StringUtil.isNotEmpty(queryUserAccount)) {
                 sql.append(String.format(" AND B.user_account_manager = '%s'", queryUserAccount));
             }
@@ -197,12 +197,8 @@ public class UReportService {
             } catch (Exception e) {
                 logger.error(e.getMessage(), e);
             }
-            Map<Integer, FinancialBillMakeOutProjectDto> mapFinance = null;
-            if (CollectionUtils.isNotEmpty(makeOutList)) {
-                mapFinance = FormatUtils.mappingSingleEntity(makeOutList, o -> o.getProjectId());
-            }
             for (Map map : mapList) {
-                try{
+                try {
                     UProjectFinanceVo vo = new UProjectFinanceVo();
                     vo.setId(objectToInteger(map.get("id")));
                     vo.setProjectName(objectToString(map.get("project_name")));
@@ -213,7 +209,7 @@ public class UReportService {
                     vo.setLoanTypeName(baseDataDicService.getNameById(objectToString(map.get("loan_type"))));
                     //评估部门
                     String departmentId = objectToString(map.get("department_id"));
-                    if(StringUtils.isNotEmpty(departmentId))
+                    if (StringUtils.isNotEmpty(departmentId))
                         vo.setDepartmentName(erpRpcDepartmentService.getDepartmentById(Integer.valueOf(departmentId)).getName());
 
                     vo.setProjectName(objectToString(map.get("project_name")));
@@ -239,7 +235,7 @@ public class UReportService {
                     vo.setReportUseUnitName(useUnit);
                     vo.setPreauditNumber(objectToString(map.get("preaudit_number")));
                     vo.setTechnologyNumber(objectToString(map.get("technology_number")));
-                    vo.setResultNumber(String.format("%s/%s",objectToString(map.get("consultation_number")),objectToString(map.get("result_number"))));
+                    vo.setResultNumber(String.format("%s/%s", objectToString(map.get("consultation_number")), objectToString(map.get("result_number"))));
                     Object gmt_created = map.get("gmt_created");
                     if (gmt_created != null) {
                         vo.setProjectCreated(DateUtils.convertDate(String.valueOf(gmt_created)));
@@ -247,21 +243,27 @@ public class UReportService {
                     vo.setContractName(objectToString(map.get("contract_name")));
                     vo.setContractPrice(objectToBigDecimal(map.get("contract_price")));
                     Integer publicProjectId = objectToInteger(map.get("public_project_id"));
-                    if (mapFinance != null && mapFinance.get(publicProjectId) != null) {
-                        FinancialBillMakeOutProjectDto makeOutProjectDto = mapFinance.get(publicProjectId);
-                        if (makeOutProjectDto.getAmount() != null) {
-                            vo.setAmount(objectToBigDecimal(makeOutProjectDto.getAmount() / 100L));
+                    if (publicProjectId != null && CollectionUtils.isNotEmpty(makeOutList)) {
+                        BigDecimal amount = new BigDecimal("0");
+                        BigDecimal actualAmount = new BigDecimal("0");
+                        BigDecimal payAmount = new BigDecimal("0");
+                        for (FinancialBillMakeOutProjectDto makeOutProjectDto : makeOutList) {
+                            if (publicProjectId.equals(makeOutProjectDto.getProjectId())) {
+                                if (makeOutProjectDto.getAmount() != null)
+                                    amount = amount.add(objectToBigDecimal(makeOutProjectDto.getAmount() / 100L));
+                                if (makeOutProjectDto.getActualAmount() != null)
+                                    actualAmount = actualAmount.add(objectToBigDecimal(makeOutProjectDto.getActualAmount() / 100L));
+                                if (makeOutProjectDto.getAmount() != null)
+                                    payAmount = payAmount.add(objectToBigDecimal(makeOutProjectDto.getPayAmount().divide(new BigDecimal("100"))));
+                            }
                         }
-                        if (makeOutProjectDto.getActualAmount() != null) {
-                            vo.setActualAmount(objectToBigDecimal(makeOutProjectDto.getActualAmount() / 100L));
-                        }
-                        if (makeOutProjectDto.getPayAmount() != null) {
-                            vo.setPayAmount(makeOutProjectDto.getPayAmount().divide(new BigDecimal("100")));
-                        }
+                        vo.setAmount(amount);
+                        vo.setActualAmount(actualAmount);
+                        vo.setPayAmount(payAmount);
                     }
                     list.add(vo);
-                }catch (Exception ex){
-                    logger.error(ex.getMessage(),ex);
+                } catch (Exception ex) {
+                    logger.error(ex.getMessage(), ex);
                 }
             }
         }
