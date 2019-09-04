@@ -235,8 +235,8 @@ public class GenerateMdCostService implements Serializable {
             }
             break;
             case MarketCost_landPurchasePrice: {
-                if (target.getLandPurchasePrice() != null) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), target.getLandPurchasePrice().toString());
+                if (target.getLandPurchasePrice() != null && target.getDevelopLandAreaTax() != null) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), ArithmeticUtils.mul(target.getLandPurchasePrice(), target.getDevelopLandAreaTax(), 2));
                 }
             }
             break;

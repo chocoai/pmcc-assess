@@ -2,21 +2,23 @@ package com.copower.pmcc.assess.common;
 
 /**
  * Created by zch on 2019-8-30.
+ * 2019-09-04重新构造
  */
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.MathContext;
 import java.math.RoundingMode;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
 /**
  * 用于高精确处理常用的数学运算
- * 特殊情况请不要使用本工具(测试人zch)
  */
-public class ArithmeticUtils {
+public class ArithmeticUtils implements Serializable {
     /*
     * setScale(1,BigDecimal.ROUND_DOWN)直接删除多余的小数位，如2.35会变成2.3
     * setScale(1,BigDecimal.ROUND_UP)进位处理，2.35变成2.4
@@ -32,10 +34,13 @@ public class ArithmeticUtils {
     * RoundingMode.HALF_DOWN:五舍六入，负数先取绝对值再五舍六入再负数
     * RoundingMode.HALF_UP:四舍五入，负数原理同上
     * RoundingMode.HALF_EVEN:这个比较绕，整数位若是奇数则四舍五入，若是偶数则五舍六入
+    *
+    * MathContext DECIMAL128 其精度设置与 IEEE 754R Decimal128 格式（即 34 个数字）匹配，舍入模式为 HALF_EVEN，这是 IEEE 754R 的默认舍入模式。
+    * MathContext DECIMAL32 其精度设置与 IEEE 754R Decimal32 格式（即 7 个数字）匹配,舍入模式为 HALF_EVEN,这是 IEEE 754R 的默认舍入模式
+    * MathContext DECIMAL64 其精度设置与 IEEE 754R Decimal64 格式（即 16 个数字）匹配,舍入模式为 HALF_EVEN,这是 IEEE 754R 的默认舍入模式
+    * MathContext UNLIMITED  其设置具有无限精度算法所需值的 MathContext 对象
     * */
 
-    //默认除法运算精度
-    private static final int DEF_DIV_SCALE = 10;
 
     /**
      * 提供精确的加法运算
@@ -46,15 +51,13 @@ public class ArithmeticUtils {
      */
 
     public static double add(double v1, double v2) {
-        BigDecimal b1 = new BigDecimal(Double.toString(v1));
-        BigDecimal b2 = new BigDecimal(Double.toString(v2));
-        return b1.add(b2).doubleValue();
+        return addModel(createBigDecimal(v1), createBigDecimal(v2), null, null).doubleValue();
     }
 
-    public static double add(double[] doubles){
-        BigDecimal bigDecimal = new BigDecimal(0) ;
-        for (double d:doubles){
-            bigDecimal = add(bigDecimal.toString(),String.valueOf(d)) ;
+    public static double add(double[] doubles) {
+        BigDecimal bigDecimal = createBigDecimal(0);
+        for (double d : doubles) {
+            bigDecimal = add(bigDecimal.toString(), String.valueOf(d));
         }
         return bigDecimal.doubleValue();
     }
@@ -67,9 +70,7 @@ public class ArithmeticUtils {
      * @return 两个参数的和
      */
     public static BigDecimal add(String v1, String v2) {
-        BigDecimal b1 = new BigDecimal(v1);
-        BigDecimal b2 = new BigDecimal(v2);
-        return b1.add(b2);
+        return addModel(createBigDecimal(v1), createBigDecimal(v2), null, null);
     }
 
     /**
@@ -81,13 +82,23 @@ public class ArithmeticUtils {
      * @return 两个参数的和
      */
     public static String add(String v1, String v2, int scale) {
-        if (scale < 0) {
-            throw new IllegalArgumentException(
-                    "The scale must be a positive integer or zero");
+        return addModel(createBigDecimal(v1), createBigDecimal(v2), scale).toString();
+    }
+
+    public static BigDecimal addModel(BigDecimal v1, BigDecimal v2, int scale) {
+        return addModel(v1, v2, scale, BigDecimal.ROUND_HALF_UP);
+    }
+
+    public static BigDecimal addModel(BigDecimal v1, BigDecimal v2, Integer scale, Integer roundingMode) {
+        if (scale != null && roundingMode != null) {
+            if (scale < 0) {
+                throw new IllegalArgumentException(
+                        "The scale must be a positive integer or zero");
+            }
+            return v1.add(v2).setScale(scale, roundingMode);
+        } else {
+            return v1.add(v2);
         }
-        BigDecimal b1 = new BigDecimal(v1);
-        BigDecimal b2 = new BigDecimal(v2);
-        return b1.add(b2).setScale(scale, BigDecimal.ROUND_HALF_UP).toString();
     }
 
     /**
@@ -98,9 +109,7 @@ public class ArithmeticUtils {
      * @return 两个参数的差
      */
     public static double sub(double v1, double v2) {
-        BigDecimal b1 = new BigDecimal(Double.toString(v1));
-        BigDecimal b2 = new BigDecimal(Double.toString(v2));
-        return b1.subtract(b2).doubleValue();
+        return subtract(createBigDecimal(v1), createBigDecimal(v2), null, null).doubleValue();
     }
 
     /**
@@ -111,9 +120,7 @@ public class ArithmeticUtils {
      * @return 两个参数的差
      */
     public static BigDecimal sub(String v1, String v2) {
-        BigDecimal b1 = new BigDecimal(v1);
-        BigDecimal b2 = new BigDecimal(v2);
-        return b1.subtract(b2);
+        return subtract(createBigDecimal(v1), createBigDecimal(v2), null, null);
     }
 
     /**
@@ -125,13 +132,23 @@ public class ArithmeticUtils {
      * @return 两个参数的差
      */
     public static String sub(String v1, String v2, int scale) {
-        if (scale < 0) {
-            throw new IllegalArgumentException(
-                    "The scale must be a positive integer or zero");
+        return sub(createBigDecimal(v1), createBigDecimal(v2), scale, BigDecimal.ROUND_HALF_UP).toString();
+    }
+
+    public static BigDecimal sub(BigDecimal v1, BigDecimal v2, int scale, int roundingMode) {
+        return subtract(v1, v2, scale, roundingMode);
+    }
+
+    public static BigDecimal subtract(BigDecimal v1, BigDecimal v2, Integer scale, Integer roundingMode) {
+        if (scale != null && roundingMode != null) {
+            if (scale < 0) {
+                throw new IllegalArgumentException(
+                        "The scale must be a positive integer or zero");
+            }
+            return v1.subtract(v2).setScale(scale, roundingMode);
+        } else {
+            return v1.subtract(v2);
         }
-        BigDecimal b1 = new BigDecimal(v1);
-        BigDecimal b2 = new BigDecimal(v2);
-        return b1.subtract(b2).setScale(scale, BigDecimal.ROUND_HALF_UP).toString();
     }
 
     /**
@@ -142,18 +159,16 @@ public class ArithmeticUtils {
      * @return 两个参数的积
      */
     public static double mul(double v1, double v2) {
-        BigDecimal b1 = new BigDecimal(Double.toString(v1));
-        BigDecimal b2 = new BigDecimal(Double.toString(v2));
-        return b1.multiply(b2).doubleValue();
+        return multiply(createBigDecimal(v1), createBigDecimal(v2)).doubleValue();
     }
 
-    public static double mul(double[] doubles){
+    public static double mul(double[] doubles) {
         double d = 0;
         for (int i = 0; i < doubles.length; i++) {
-            if (i == 0){
-                d = d+doubles[i] ;
-            }else {
-                d =  mul(d,doubles[i]) ;
+            if (i == 0) {
+                d = d + doubles[i];
+            } else {
+                d = mul(d, doubles[i]);
             }
         }
         return d;
@@ -167,9 +182,7 @@ public class ArithmeticUtils {
      * @return 两个参数的积
      */
     public static BigDecimal mul(String v1, String v2) {
-        BigDecimal b1 = new BigDecimal(v1);
-        BigDecimal b2 = new BigDecimal(v2);
-        return b1.multiply(b2);
+        return multiply(createBigDecimal(v1), createBigDecimal(v2));
     }
 
 
@@ -182,9 +195,7 @@ public class ArithmeticUtils {
      * @return 两个参数的积
      */
     public static double mul(double v1, double v2, int scale) {
-        BigDecimal b1 = new BigDecimal(Double.toString(v1));
-        BigDecimal b2 = new BigDecimal(Double.toString(v2));
-        return round(b1.multiply(b2).doubleValue(), scale);
+        return multiply(createBigDecimal(v1), createBigDecimal(v2)).setScale(scale, BigDecimal.ROUND_HALF_UP).doubleValue();
     }
 
     /**
@@ -196,18 +207,47 @@ public class ArithmeticUtils {
      * @return 两个参数的积
      */
     public static String mul(String v1, String v2, int scale) {
-        if (scale < 0) {
-            throw new IllegalArgumentException(
-                    "The scale must be a positive integer or zero");
-        }
-        BigDecimal b1 = new BigDecimal(v1);
-        BigDecimal b2 = new BigDecimal(v2);
-        return b1.multiply(b2).setScale(scale, BigDecimal.ROUND_HALF_UP).toString();
+        return mul(createBigDecimal(v1), createBigDecimal(v2), scale);
     }
 
     /**
-     * 提供（相对）精确的除法运算，当发生除不尽的情况时，精确到
-     * 小数点以后10位，以后的数字四舍五入
+     * 提供精确的乘法运算
+     *
+     * @param v1    被乘数
+     * @param v2    乘数
+     * @param scale 保留scale 位小数
+     * @return 两个参数的积
+     */
+    public static String mul(BigDecimal v1, BigDecimal v2, int scale) {
+        return multiply(v1, v2, scale).toString();
+    }
+
+    public static String mul(BigDecimal v1, BigDecimal v2, int scale, int roundingMode) {
+        return multiply(v1, v2, scale, roundingMode).toString();
+    }
+
+    public static BigDecimal multiply(BigDecimal v1, BigDecimal v2, int scale) {
+        return multiply(v1, v2, scale, BigDecimal.ROUND_HALF_UP);
+    }
+
+    public static BigDecimal multiply(BigDecimal v1, BigDecimal v2) {
+        return multiply(v1, v2, null, null);
+    }
+
+    public static BigDecimal multiply(BigDecimal v1, BigDecimal v2, Integer scale, Integer roundingMode) {
+        if (scale != null && roundingMode != null) {
+            if (scale < 0) {
+                throw new IllegalArgumentException(
+                        "The scale must be a positive integer or zero");
+            }
+            return v1.multiply(v2).setScale(scale, roundingMode);
+        } else {
+            return v1.multiply(v2);
+        }
+    }
+
+    /**
+     * 提供（相对）精确的除法运算
      *
      * @param v1 被除数
      * @param v2 除数
@@ -215,7 +255,7 @@ public class ArithmeticUtils {
      */
 
     public static double div(double v1, double v2) {
-        return div(v1, v2, DEF_DIV_SCALE);
+        return div(createBigDecimal(v1), createBigDecimal(v2)).doubleValue();
     }
 
     /**
@@ -228,10 +268,7 @@ public class ArithmeticUtils {
      * @return 两个参数的商
      */
     public static double div(double v1, double v2, int scale) {
-        if (scale < 0) {
-            throw new IllegalArgumentException("The scale must be a positive integer or zero");
-        }
-        return div(new BigDecimal(v1), new BigDecimal(v2),scale).doubleValue();
+        return divide(createBigDecimal(v1), createBigDecimal(v2), scale).doubleValue();
     }
 
     /**
@@ -244,24 +281,53 @@ public class ArithmeticUtils {
      * @return 两个参数的商
      */
     public static String div(String v1, String v2, int scale) {
-        if (scale < 0) {
-            throw new IllegalArgumentException("The scale must be a positive integer or zero");
-        }
-        return div(new BigDecimal(v1), new BigDecimal(v2),scale).toString();
+        return divide(createBigDecimal(v1), createBigDecimal(v2), scale).toString();
+    }
+
+    public static String div(String v1, String v2) {
+        return div(createBigDecimal(v1), createBigDecimal(v2)).toString();
+    }
+
+    public static BigDecimal div(BigDecimal v1, BigDecimal v2) {
+        return divideModel(v1, v2, null, null);
     }
 
     /**
      * 除法 运算
+     *
      * @param v1
      * @param v2
      * @param scale
      * @return
      */
-    public static BigDecimal div(BigDecimal v1,BigDecimal v2,int scale){
-        if (scale < 0) {
-            throw new IllegalArgumentException("The scale must be a positive integer or zero");
+    public static BigDecimal divide(BigDecimal v1, BigDecimal v2, int scale) {
+        return divModel(v1, v2, scale, RoundingMode.HALF_UP);
+    }
+
+    public static BigDecimal divModel(BigDecimal v1, BigDecimal v2, Integer scale, RoundingMode roundingMode) {
+        if (scale != null) {
+            if (scale < 0) {
+                throw new IllegalArgumentException("The scale must be a positive integer or zero");
+            }
+            return v1.divide(v2, scale, roundingMode);
+        } else {
+            return v1.divide(v2, roundingMode);
         }
-        return v1.divide(v2, scale,RoundingMode.HALF_UP) ;
+    }
+
+    public static BigDecimal divModel(BigDecimal v1, BigDecimal v2, RoundingMode roundingMode) {
+        return v1.divide(v2, roundingMode);
+    }
+
+    public static BigDecimal divideModel(BigDecimal v1, BigDecimal v2, Integer scale, Integer roundingMode) {
+        if (scale != null && roundingMode != null) {
+            if (scale < 0) {
+                throw new IllegalArgumentException("The scale must be a positive integer or zero");
+            }
+            return v1.divide(v2, scale, RoundingMode.valueOf(roundingMode));
+        } else {
+            return v1.divide(v2,RoundingMode.HALF_UP) ;
+        }
     }
 
     /**
@@ -272,11 +338,7 @@ public class ArithmeticUtils {
      * @return 四舍五入后的结果
      */
     public static double round(double v, int scale) {
-        if (scale < 0) {
-            throw new IllegalArgumentException("The scale must be a positive integer or zero");
-        }
-        BigDecimal b = new BigDecimal(Double.toString(v));
-        return b.setScale(scale, BigDecimal.ROUND_HALF_UP).doubleValue();
+        return round(createBigDecimal(v), scale, BigDecimal.ROUND_HALF_UP).doubleValue();
     }
 
     /**
@@ -287,12 +349,15 @@ public class ArithmeticUtils {
      * @return 四舍五入后的结果
      */
     public static String round(String v, int scale) {
+        return round(createBigDecimal(v), scale, BigDecimal.ROUND_HALF_UP).toString();
+    }
+
+    public static BigDecimal round(BigDecimal v, int scale, int roundingMode) {
         if (scale < 0) {
             throw new IllegalArgumentException(
                     "The scale must be a positive integer or zero");
         }
-        BigDecimal b = new BigDecimal(v);
-        return b.setScale(scale, BigDecimal.ROUND_HALF_UP).toString();
+        return v.setScale(scale, roundingMode);
     }
 
 
@@ -305,13 +370,7 @@ public class ArithmeticUtils {
      * @return 余数
      */
     public static String remainder(String v1, String v2, int scale) {
-        if (scale < 0) {
-            throw new IllegalArgumentException(
-                    "The scale must be a positive integer or zero");
-        }
-        BigDecimal b1 = new BigDecimal(v1);
-        BigDecimal b2 = new BigDecimal(v2);
-        return b1.remainder(b2).setScale(scale, BigDecimal.ROUND_HALF_UP).toString();
+        return remainderModel(createBigDecimal(v1), createBigDecimal(v2), scale, BigDecimal.ROUND_HALF_UP).toString();
     }
 
     /**
@@ -323,11 +382,19 @@ public class ArithmeticUtils {
      * @return 余数
      */
     public static BigDecimal remainder(BigDecimal v1, BigDecimal v2, int scale) {
-        if (scale < 0) {
-            throw new IllegalArgumentException(
-                    "The scale must be a positive integer or zero");
+        return remainderModel(v1, v2, scale, BigDecimal.ROUND_HALF_UP);
+    }
+
+    public static BigDecimal remainderModel(BigDecimal v1, BigDecimal v2, Integer scale, Integer roundingMode) {
+        if (scale != null && roundingMode != null) {
+            if (scale < 0) {
+                throw new IllegalArgumentException(
+                        "The scale must be a positive integer or zero");
+            }
+            return v1.remainder(v2).setScale(scale, roundingMode);
+        } else {
+            return v1.remainder(v2);
         }
-        return v1.remainder(v2).setScale(scale, BigDecimal.ROUND_HALF_UP);
     }
 
     /**
@@ -338,8 +405,8 @@ public class ArithmeticUtils {
      * @return 如果v1 大于v2 则 返回true 否则false
      */
     public static boolean compare(String v1, String v2) {
-        BigDecimal b1 = new BigDecimal(v1);
-        BigDecimal b2 = new BigDecimal(v2);
+        BigDecimal b1 = createBigDecimal(v1);
+        BigDecimal b2 = createBigDecimal(v2);
         int bj = b1.compareTo(b2);
         boolean res;
         if (bj > 0)
@@ -350,19 +417,38 @@ public class ArithmeticUtils {
     }
 
     /**
+     * 判断是否为整数 如1.0 为整数
+     * @param bigDecimal
+     * @return
+     */
+    public static boolean isInteger(BigDecimal bigDecimal) {
+        if (bigDecimal == null) {
+            return false;
+        }
+        String v1 = getBigDecimalString(bigDecimal) ;
+        String v2 = bigDecimal.toBigInteger().toString();
+        return v1.equals(v2) ;
+    }
+
+    /**
      * 小数转换为百分数
+     *
      * @param bigDecimal
      * @param newScale
      * @param roundingMode
      * @return
      */
-    public static String getPercentileSystem(BigDecimal bigDecimal,final int newScale, final int roundingMode) {
+    public static String getPercentileSystem(BigDecimal bigDecimal, final int newScale, final int roundingMode) {
         if (bigDecimal == null) {
             return null;
         }
-        bigDecimal = bigDecimal.multiply(new BigDecimal(100));
+        bigDecimal = bigDecimal.multiply(createBigDecimal(100));
         bigDecimal = bigDecimal.setScale(newScale, roundingMode);
         return String.format("%s%s", getBigDecimalString(bigDecimal), "%");
+    }
+
+    public static String getPercentileSystem(BigDecimal bigDecimal, final int newScale) {
+        return getPercentileSystem(bigDecimal, newScale, BigDecimal.ROUND_HALF_UP);
     }
 
     /**
@@ -372,31 +458,32 @@ public class ArithmeticUtils {
      * @param number     必须是10的正次方的结果 如10,100,1000,1000
      * @return
      */
-    public static String getBigDecimalToInteger(final BigDecimal bigDecimal,final int number) {
+    public static String getBigDecimalToInteger(final BigDecimal bigDecimal, final int number) {
         if (bigDecimal == null) {
-            throw new IllegalArgumentException("不符合约定哦亲!") ;
+            throw new IllegalArgumentException("不符合约定哦亲!");
         }
         int log = (int) Math.log10(number);//这里一定会是整数,不用担心精度损失
-        if (log < 1){
-            throw new IllegalArgumentException("不符合约定哦亲!") ;
+        if (log < 1) {
+            throw new IllegalArgumentException("不符合约定哦亲!");
         }
         final AtomicInteger atomicInteger = new AtomicInteger(0);
-        double result = whileDivide(atomicInteger,bigDecimal.doubleValue()) ;
-        int sub = atomicInteger.get()-log;//总int长度 - 需要保留到的int长度
+        double result = whileDivide(atomicInteger, bigDecimal.doubleValue());
+        int sub = atomicInteger.get() - log;//总int长度 - 需要保留到的int长度
         BigDecimal temp = new BigDecimal(result).setScale(sub, BigDecimal.ROUND_HALF_UP);
-        result = mul(temp.doubleValue(),Math.pow(10, (double) atomicInteger.get())) ;
-        BigInteger bigInteger = new BigDecimal(result).toBigInteger() ;
-        return bigInteger.toString() ;
+        result = mul(temp.doubleValue(), Math.pow(10, (double) atomicInteger.get()));
+        BigInteger bigInteger = new BigDecimal(result).toBigInteger();
+        return bigInteger.toString();
     }
 
     /**
      * 去除BigDecimal末尾多余的0
+     *
      * @param bigDecimal
      * @return
      */
-    public static String getBigDecimalString(final BigDecimal bigDecimal){
-        if (bigDecimal == null){
-            return "" ;
+    public static String getBigDecimalString(final BigDecimal bigDecimal) {
+        if (bigDecimal == null) {
+            return "";
         }
         try {
             return bigDecimal.stripTrailingZeros().toPlainString();
@@ -407,55 +494,146 @@ public class ArithmeticUtils {
 
     /**
      * 获取数字中小数后面的字符串
+     *
      * @param input
      * @return
      */
-    public static String getDecimalString(String input){
-        return StringUtils.substringAfterLast(String.valueOf(input),".") ;
+    public static String getDecimalString(String input) {
+        return StringUtils.substringAfterLast(String.valueOf(input), ".");
     }
 
     /**
      * 获取数字中小数后面的长度
+     *
      * @param input
      * @return
      */
-    public static int getDecimalLength(String input){
-        return StringUtils.substringAfterLast(String.valueOf(input),".").length() ;
+    public static int getDecimalLength(String input) {
+        return StringUtils.substringAfterLast(String.valueOf(input), ".").length();
     }
 
     /**
      * 获取数字中小数后面的字符串
+     *
      * @param input
      * @return
      */
-    public static String getDecimalString(double input){
-        return StringUtils.substringAfterLast(String.valueOf(input),".") ;
+    public static String getDecimalString(double input) {
+        return StringUtils.substringAfterLast(String.valueOf(input), ".");
     }
 
     /**
      * 获取数字中小数后面的长度
+     *
      * @param input
      * @return
      */
-    public static int getDecimalLength(double input){
-        return StringUtils.substringAfterLast(String.valueOf(input),".").length() ;
+    public static int getDecimalLength(double input) {
+        return StringUtils.substringAfterLast(String.valueOf(input), ".").length();
     }
 
 
     /**
      * 将非小数转换为小数并且记录次数
+     *
      * @param atomicInteger
      * @param number
      * @return
      */
-    private static double whileDivide(final AtomicInteger atomicInteger,double number){
+    private static double whileDivide(final AtomicInteger atomicInteger, double number) {
         final int one = 1;
-        if (number > one){
-            number = number/ 10;
+        if (number > one) {
+            number = number / 10;
             atomicInteger.incrementAndGet();
-            return whileDivide(atomicInteger,number) ;
-        }else {
+            return whileDivide(atomicInteger, number);
+        } else {
             return number;
         }
     }
+
+
+    public static BigDecimal createBigDecimal(String value) {
+        return createBigDecimal(value, MathContext.UNLIMITED);
+    }
+
+    public static BigDecimal createBigDecimal(int value) {
+        return createBigDecimal(value, MathContext.UNLIMITED);
+    }
+
+    public static BigDecimal createBigDecimal(double value) {
+        return createBigDecimal(value, MathContext.UNLIMITED);
+    }
+
+    public static BigDecimal createBigDecimal(float value) {
+        return createBigDecimal(value, MathContext.UNLIMITED);
+    }
+
+    public static BigDecimal createBigDecimal(long value) {
+        return createBigDecimal(value, MathContext.UNLIMITED);
+    }
+
+    /**
+     * MathContext DECIMAL128 其精度设置与 IEEE 754R Decimal128 格式（即 34 个数字）匹配，舍入模式为 HALF_EVEN，这是 IEEE 754R 的默认舍入模式。
+     * MathContext DECIMAL32 其精度设置与 IEEE 754R Decimal32 格式（即 7 个数字）匹配,舍入模式为 HALF_EVEN,这是 IEEE 754R 的默认舍入模式
+     * MathContext DECIMAL64 其精度设置与 IEEE 754R Decimal64 格式（即 16 个数字）匹配,舍入模式为 HALF_EVEN,这是 IEEE 754R 的默认舍入模式
+     * MathContext UNLIMITED  其设置具有无限精度算法所需值的 MathContext 对象
+     *
+     * @param value
+     * @param context
+     * @return
+     */
+    public static BigDecimal createBigDecimal(String value, MathContext context) {
+        return new BigDecimal(value.toCharArray(), 0, value.length(), context);
+    }
+
+    public static BigDecimal createBigDecimal(double value, MathContext context) {
+        return new BigDecimal(value, context);
+    }
+
+    public static BigDecimal createBigDecimal(int value, MathContext context) {
+        return new BigDecimal(value, context);
+    }
+
+    public static BigDecimal createBigDecimal(long value, MathContext context) {
+        return new BigDecimal(value, context);
+    }
+
+    public static BigDecimal createBigDecimal(float value, MathContext context) {
+        return new BigDecimal(value, context);
+    }
+
+//    public static void addTest(){
+//        System.out.println(ArithmeticUtils.add(2.1, 2.3));
+//        System.out.println(ArithmeticUtils.add("235.1", "2623.2"));
+//        System.out.println(ArithmeticUtils.add("235.463", "2623.473",2));
+//    }
+
+//    public static void subTet(){
+//        System.out.println(ArithmeticUtils.sub(3.14, 2.1));
+//        System.out.println(ArithmeticUtils.sub("3.14", "2.1"));
+//        System.out.println(ArithmeticUtils.sub("3.16", "2.1",2));
+//    }
+
+//    public static void mulTest(){
+//        System.out.println(ArithmeticUtils.mul(23.26, 10.0));
+//        System.out.println(ArithmeticUtils.mul("23.26", "10.0"));
+//        System.out.println(ArithmeticUtils.mul("23.26", "10.0",2));
+//    }
+
+//    public static void divTest(){
+//        System.out.println(ArithmeticUtils.div(3.1, 2.0));
+//        System.out.println(ArithmeticUtils.div("3.1", "2.0"));
+//        System.out.println(ArithmeticUtils.div("3.1", "2.0",2));
+//    }
+
+//    public static void remainderTest(){
+//        System.out.println(ArithmeticUtils.remainder("3", "2", 1));
+//        System.out.println(ArithmeticUtils.remainderModel(new BigDecimal(3), new BigDecimal(2),null,null));
+//    }
+
+//    public static void isIntegerTest(){
+//        System.out.println(ArithmeticUtils.isInteger(new BigDecimal(1.0)));
+//        System.out.println(ArithmeticUtils.isInteger(new BigDecimal(-1.0)));
+//        System.out.println(ArithmeticUtils.isInteger(new BigDecimal(-1.04)));
+//    }
 }

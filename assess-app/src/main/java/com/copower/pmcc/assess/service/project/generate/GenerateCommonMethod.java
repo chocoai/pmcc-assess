@@ -40,6 +40,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -323,7 +324,7 @@ public class GenerateCommonMethod {
         }
         BigDecimal setScale = new BigDecimal(0);
         if (d != null) {
-            setScale = bigDecimal.divide(new BigDecimal(d.doubleValue()));
+            setScale = ArithmeticUtils.divModel(bigDecimal, new BigDecimal(d),RoundingMode.HALF_UP);
         }
         if (d == null) {
             setScale = new BigDecimal(bigDecimal.toString());
@@ -350,10 +351,7 @@ public class GenerateCommonMethod {
      * @return
      */
     public boolean isInteger(BigDecimal bigDecimal) {
-        if (bigDecimal == null) {
-            return false;
-        }
-        return bigDecimal.abs().toBigInteger().intValue() == bigDecimal.abs().doubleValue();
+        return ArithmeticUtils.isInteger(bigDecimal);
     }
 
     /**
