@@ -10,7 +10,6 @@ import com.copower.pmcc.assess.dto.output.MergeCellModel;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
-import com.copower.pmcc.assess.service.data.DataSetUseFieldService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
@@ -66,8 +65,6 @@ public class GenerateCommonMethod {
     @Autowired
     private ProjectPlanDetailsService projectPlanDetailsService;
     @Autowired
-    private DataSetUseFieldService dataSetUseFieldService;
-    @Autowired
     private BaseDataDicService baseDataDicService;
     @Autowired
     private SurveyCommonService surveyCommonService;
@@ -79,7 +76,7 @@ public class GenerateCommonMethod {
     private SurveyAssetInventoryContentService surveyAssetInventoryContentService;
 
     public final String SchemeJudgeObjectName = "委估对象";
-    public final String errorStr = "无";
+
 
 
     //房地产总价

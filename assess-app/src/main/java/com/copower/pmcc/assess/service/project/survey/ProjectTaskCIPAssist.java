@@ -90,7 +90,9 @@ public class ProjectTaskCIPAssist implements ProjectTaskInterface {
     public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException, BpmException {
         if(StringUtils.isNotEmpty(processInsId)) {
             //修改监听器
-            bpmRpcActivitiProcessManageService.setProcessEventExecutor(processInsId, ProjectTaskCIPEven.class.getSimpleName());
+            bpmRpcActivitiProcessManageService.setProcessEventExecutor(projectPlanDetails.getProcessInsId(), ProjectTaskCIPEven.class.getSimpleName());
+        }else {
+            surveyCommonService.updateDeclarePracticalUse(projectPlanDetails);
         }
     }
 

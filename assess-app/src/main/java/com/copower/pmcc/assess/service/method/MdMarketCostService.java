@@ -65,6 +65,7 @@ public class MdMarketCostService {
         mdCost.setPrice(mdCostConstruction.getConstructionAssessmentPriceCorrecting());
         saveAndUpdateMdCost(mdCost);
         mdCostConstruction.setPid(mdCost.getId());
+        mdCostConstruction.setJsonContent(formData);
         saveMdCostConstructionAndUpdate(mdCostConstruction);
         MdArchitecturalObj mdArchitecturalObj = new MdArchitecturalObj();
         mdArchitecturalObj.setDatabaseName(FormatUtils.entityNameConvertToTableName(MdCost.class));

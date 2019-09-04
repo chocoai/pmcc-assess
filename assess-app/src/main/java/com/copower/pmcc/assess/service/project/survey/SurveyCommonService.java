@@ -1,14 +1,10 @@
 package com.copower.pmcc.assess.service.project.survey;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.enums.BasicApplyTypeEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.constant.BaseConstant;
-import com.copower.pmcc.assess.dal.basis.entity.BasicApply;
-import com.copower.pmcc.assess.dal.basis.entity.BasicBuilding;
 import com.copower.pmcc.assess.dal.basis.custom.entity.CustomSurveyExamineTask;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
@@ -17,14 +13,14 @@ import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.basic.BasicApplyService;
 import com.copower.pmcc.assess.service.basic.BasicBuildingService;
+import com.copower.pmcc.assess.service.basic.BasicHouseService;
 import com.copower.pmcc.assess.service.data.DataBuildingNewRateService;
 import com.copower.pmcc.assess.service.data.DataExamineTaskService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
-import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
+import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
-import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
@@ -87,6 +83,8 @@ public class SurveyCommonService {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private DataBuildingNewRateService dataBuildingNewRateService;
+    @Autowired
+    private BasicHouseService basicHouseService;
 
 
     /**
@@ -97,12 +95,12 @@ public class SurveyCommonService {
     public List<KeyValueDto> getExamineFormTypeList() {
         List<KeyValueDto> keyValueDtoList = Lists.newArrayList();
         KeyValueDto keyValueDto = new KeyValueDto();
-        keyValueDto.setKey(String.valueOf(BasicApplyTypeEnum.RESIDENCE.getId()) );
+        keyValueDto.setKey(String.valueOf(BasicApplyTypeEnum.RESIDENCE.getId()));
         keyValueDto.setValue(BasicApplyTypeEnum.RESIDENCE.getName());
         keyValueDtoList.add(keyValueDto);
 
         keyValueDto = new KeyValueDto();
-        keyValueDto.setKey(String.valueOf(BasicApplyTypeEnum.INDUSTRY.getId()) );
+        keyValueDto.setKey(String.valueOf(BasicApplyTypeEnum.INDUSTRY.getId()));
         keyValueDto.setValue(BasicApplyTypeEnum.INDUSTRY.getName());
         keyValueDtoList.add(keyValueDto);
         return keyValueDtoList;
@@ -275,6 +273,7 @@ public class SurveyCommonService {
 
     /**
      * 获取房产经济耐用年限
+     *
      * @param basicApply
      * @param basicBuilding
      * @return
@@ -340,4 +339,25 @@ public class SurveyCommonService {
         resultString = String.format(resultString, columnString);
         return resultString;
     }
+
+    //修改申报实际用途
+    public void updateDeclarePracticalUse(ProjectPlanDetails projectPlanDetails) {
+        if (projectPlanDetails.getDeclareRecordId() != null) {
+            DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
+            if (declareRecord != null) {
+                try {
+                    BasicApply basicApply = basicApplyService.getBasicApplyByPlanDetailsId(projectPlanDetails.getId());
+                    BasicHouse house = basicHouseService.getBasicHouseById(basicApply.getBasicHouseId());
+                    if (house.getPracticalUse() != null) {
+                        declareRecord.setPracticalUse(baseDataDicService.getNameById(house.getPracticalUse()));
+                        declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
+                    }
+                } catch (Exception e) {
+                    logger.error(e.getMessage(), e);
+                }
+            }
+        }
+
+    }
+
 }
