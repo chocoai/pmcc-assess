@@ -5,6 +5,7 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="report_type" property="reportType" jdbcType="INTEGER" />
     <result column="field_name" property="fieldName" jdbcType="VARCHAR" />
+    <result column="group_name" property="groupName" jdbcType="VARCHAR" />
     <result column="prefix" property="prefix" jdbcType="VARCHAR" />
     <result column="number_rule" property="numberRule" jdbcType="VARCHAR" />
     <result column="figures" property="figures" jdbcType="INTEGER" />
@@ -75,8 +76,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, report_type, field_name, prefix, number_rule, figures, start_year, start_number, 
-    same_report_type, bis_enable, creator, gmt_created, gmt_modified
+    id, report_type, field_name, group_name, prefix, number_rule, figures, start_year, 
+    start_number, same_report_type, bis_enable, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataNumberRuleExample" >
     select
@@ -112,16 +113,16 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_data_number_rule (report_type, field_name, prefix, 
-      number_rule, figures, start_year, 
-      start_number, same_report_type, bis_enable, 
-      creator, gmt_created, gmt_modified
-      )
-    values (#{reportType,jdbcType=INTEGER}, #{fieldName,jdbcType=VARCHAR}, #{prefix,jdbcType=VARCHAR}, 
-      #{numberRule,jdbcType=VARCHAR}, #{figures,jdbcType=INTEGER}, #{startYear,jdbcType=INTEGER}, 
-      #{startNumber,jdbcType=INTEGER}, #{sameReportType,jdbcType=INTEGER}, #{bisEnable,jdbcType=BIT}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+    insert into tb_data_number_rule (report_type, field_name, group_name, 
+      prefix, number_rule, figures, 
+      start_year, start_number, same_report_type, 
+      bis_enable, creator, gmt_created, 
+      gmt_modified)
+    values (#{reportType,jdbcType=INTEGER}, #{fieldName,jdbcType=VARCHAR}, #{groupName,jdbcType=VARCHAR}, 
+      #{prefix,jdbcType=VARCHAR}, #{numberRule,jdbcType=VARCHAR}, #{figures,jdbcType=INTEGER}, 
+      #{startYear,jdbcType=INTEGER}, #{startNumber,jdbcType=INTEGER}, #{sameReportType,jdbcType=INTEGER}, 
+      #{bisEnable,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataNumberRule" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -134,6 +135,9 @@
       </if>
       <if test="fieldName != null" >
         field_name,
+      </if>
+      <if test="groupName != null" >
+        group_name,
       </if>
       <if test="prefix != null" >
         prefix,
@@ -172,6 +176,9 @@
       </if>
       <if test="fieldName != null" >
         #{fieldName,jdbcType=VARCHAR},
+      </if>
+      <if test="groupName != null" >
+        #{groupName,jdbcType=VARCHAR},
       </if>
       <if test="prefix != null" >
         #{prefix,jdbcType=VARCHAR},
@@ -223,6 +230,9 @@
       <if test="record.fieldName != null" >
         field_name = #{record.fieldName,jdbcType=VARCHAR},
       </if>
+      <if test="record.groupName != null" >
+        group_name = #{record.groupName,jdbcType=VARCHAR},
+      </if>
       <if test="record.prefix != null" >
         prefix = #{record.prefix,jdbcType=VARCHAR},
       </if>
@@ -263,6 +273,7 @@
     set id = #{record.id,jdbcType=INTEGER},
       report_type = #{record.reportType,jdbcType=INTEGER},
       field_name = #{record.fieldName,jdbcType=VARCHAR},
+      group_name = #{record.groupName,jdbcType=VARCHAR},
       prefix = #{record.prefix,jdbcType=VARCHAR},
       number_rule = #{record.numberRule,jdbcType=VARCHAR},
       figures = #{record.figures,jdbcType=INTEGER},
@@ -285,6 +296,9 @@
       </if>
       <if test="fieldName != null" >
         field_name = #{fieldName,jdbcType=VARCHAR},
+      </if>
+      <if test="groupName != null" >
+        group_name = #{groupName,jdbcType=VARCHAR},
       </if>
       <if test="prefix != null" >
         prefix = #{prefix,jdbcType=VARCHAR},
@@ -323,6 +337,7 @@
     update tb_data_number_rule
     set report_type = #{reportType,jdbcType=INTEGER},
       field_name = #{fieldName,jdbcType=VARCHAR},
+      group_name = #{groupName,jdbcType=VARCHAR},
       prefix = #{prefix,jdbcType=VARCHAR},
       number_rule = #{numberRule,jdbcType=VARCHAR},
       figures = #{figures,jdbcType=INTEGER},
