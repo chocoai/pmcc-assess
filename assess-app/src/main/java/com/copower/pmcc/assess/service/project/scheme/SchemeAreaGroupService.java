@@ -189,7 +189,7 @@ public class SchemeAreaGroupService {
                 areaGroup.setRemarkEntrustPurpose(projectInfo.getRemarkEntrustPurpose());
                 areaGroup.setValueDefinition(projectInfo.getValueType());
                 areaGroup.setValueDefinitionDesc(projectInfo.getRemarkValueType());
-                areaGroup.setPropertyScope(Integer.valueOf(StringUtils.defaultString(projectInfo.getPropertyScope(), "0")));
+                areaGroup.setPropertyScope(Integer.valueOf(StringUtils.defaultIfBlank(projectInfo.getPropertyScope(), "0")));
                 areaGroup.setScopeInclude(projectInfo.getScopeInclude());
                 areaGroup.setScopeNotInclude(projectInfo.getScopeNotInclude());
                 areaGroup.setPid(0);

@@ -10,7 +10,7 @@ package com.copower.pmcc.assess.constant;
 public class AssessProjectClassifyConstant {
 
     public static final String SINGLE = "single";  //单项资产
-    public static final String COMPREHENSIVE  = "comprehensive";  //综合资产
+    public static final String COMPREHENSIVE  = "assets";  //综合资产
     public static final String SINGLE_HOUSE_BUILDING_CERTIFICATE_TYPE  = "single.house.building.certificate.type";  //在建工程类型
     public static final String SINGLE_HOUSE_PROPERTY_CERTIFICATE_TYPE  = "single.house.property.certificate.type";  //房产
     public static final String SINGLE_HOUSE_PROPERTY_CERTIFICATE_TYPE_SIMPLE  = "single.house.property.certificate.type.simple";  //房产(简单)
