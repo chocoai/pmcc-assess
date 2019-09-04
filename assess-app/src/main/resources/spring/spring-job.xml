@@ -8,7 +8,7 @@
             http://www.springframework.org/schema/task/spring-task.xsd"
        default-autowire="byName">
 
-    <task:scheduled-tasks>
-        <task:scheduled ref="climbingCaseJob" method="climbing" cron="0 0 1 * * ?"/>
-    </task:scheduled-tasks>
+    <!--<task:scheduled-tasks>-->
+        <!--<task:scheduled ref="climbingCaseJob" method="climbing" cron="0 0 1 * * ?"/>-->
+    <!--</task:scheduled-tasks>-->
 </beans>
