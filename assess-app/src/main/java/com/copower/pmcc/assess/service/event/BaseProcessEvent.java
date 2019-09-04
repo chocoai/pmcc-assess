@@ -9,6 +9,8 @@ import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProcessExecutionService;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import net.bytebuddy.implementation.bytecode.Throw;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +21,7 @@ import java.util.Date;
  */
 @Component
 public class BaseProcessEvent implements ProcessEventExecutor {
+    private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private BpmRpcBoxService bpmRpcBoxService;
     @Autowired
@@ -43,7 +46,7 @@ public class BaseProcessEvent implements ProcessEventExecutor {
             String sql = String.format("update %s set status='%s' where id=%s", boxRuDto.getTableName(), processExecution.getProcessStatus().getValue(), boxRuDto.getTableId());
             customDdlTableMapper.customTableSelect(sql);
         } catch (Exception e) {
-            //
+            logger.error(e.getMessage(),e);
         }
         return boxRuDto;
     }

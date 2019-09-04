@@ -357,8 +357,7 @@ public class BasicApplyBatchController extends BaseController {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<BasicEstateVo> vos = Lists.newArrayList();
-        ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
-        BasicApplyBatch applyBatch = basicApplyBatchService.getBasicApplyBatchByPlanDetailsId(planDetails.getPid());
+        BasicApplyBatch applyBatch = basicApplyBatchService.getBasicApplyBatchByPlanDetailsId(planDetailsId);
         if (applyBatch != null) {
             BasicEstate estate = basicEstateService.getBasicEstateById(applyBatch.getEstateId());
             vos.add(basicEstateService.getBasicEstateVo(estate));
