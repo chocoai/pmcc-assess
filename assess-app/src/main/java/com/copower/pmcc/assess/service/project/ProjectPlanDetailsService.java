@@ -643,10 +643,11 @@ public class ProjectPlanDetailsService {
         Integer returnId = projectTaskReturnRecordDao.addProjectTaskReturnRecord(projectTaskReturnRecord);
         //修改附件tableId
         SysAttachmentDto queryParam = new SysAttachmentDto();
-        queryParam.setTableName("tb_project_task_return_record");
+        queryParam.setTableName(FormatUtils.entityNameConvertToTableName(ProjectTaskReturnRecord.class));
         queryParam.setTableId(0);
         queryParam.setFieldsName(String.valueOf(planDetailsId));
         queryParam.setAppKey(applicationConstant.getAppKey());
+        queryParam.setCreater(commonService.thisUserAccount());
         SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
         sysAttachmentDto.setTableId(returnId);
         erpRpcAttachmentService.updateAttachmentByParam(queryParam, sysAttachmentDto);

@@ -1,8 +1,8 @@
 package com.copower.pmcc.assess.controller.project;
 
-import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
+import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import org.slf4j.Logger;
@@ -43,6 +43,8 @@ public class ProjectPlanDetailsController {
         try {
             ProjectPlanDetailsVo projectPlanDetailsVo = projectPlanDetailsService.replyProjectPlanDetails(planDetailsId, formData);
             return HttpResult.newCorrectResult(projectPlanDetailsService.getPlanDetailListByProjectPlanDetailId(projectPlanDetailsVo.getId()));
+        } catch (BusinessException e) {
+            return HttpResult.newErrorResult(e.getMessage());
         } catch (Exception e) {
             logger.error("重启任务", e);
             return HttpResult.newErrorResult("重启任务异常");
