@@ -210,21 +210,26 @@ public class ProjectPlanDetailsService {
             }
         }
         List<ActivitiTaskNodeDto> activitiTaskNodeDtos = null;
-        try {
-            activitiTaskNodeDtos = bpmRpcActivitiProcessManageService.queryProcessCurrentTask(processInsIds.toArray(new String[processInsIds.size()]));
-        } catch (BpmException e) {
-            logger.error("计划任务获取流程任务异常", e);
+        if (CollectionUtils.isNotEmpty(processInsIds)) {
+            try {
+                activitiTaskNodeDtos = bpmRpcActivitiProcessManageService.queryProcessCurrentTask(processInsIds.toArray(new String[processInsIds.size()]));
+            } catch (BpmException e) {
+                logger.error("计划任务获取流程任务异常", e);
+            }
         }
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
+        List<Integer> phaseFullIds = Lists.newArrayList();
         ProjectPhase sceneExplorePhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.SCENE_EXPLORE, projectInfo.getProjectCategoryId());
         ProjectPhase caseStudyChildPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.COMMON_CASE_STUDY_EXAMINE);
-        List<Integer> phaseIds = Lists.newArrayList(sceneExplorePhase.getId(), caseStudyChildPhase.getId());
-        List<Integer> phaseFullIds = Lists.newArrayList(phaseIds);
+        if (sceneExplorePhase != null)
+            phaseFullIds.add(sceneExplorePhase.getId());
+        if (caseStudyChildPhase != null)
+            phaseFullIds.add(caseStudyChildPhase.getId());
         String viewUrl = String.format("/%s/ProjectTask/projectTaskDetailsById?planDetailsId=", applicationConstant.getAppKey());
         //判断任务是否结束，如果结束只能查看详情
         for (ProjectPlanDetailsVo projectPlanDetailsVo : projectPlanDetailsVos) {
             //任务在进行中，则需判断任务是在提交还是审批的状态
-            // 如果任务是在审批或完成状态可查看详情
+            //如果任务是在审批或完成状态可查看详情
             //如果为待提交状态 当前人与任务执行人相同 可提交任务
             //如果为待审批状态 当前人与审批人相同 可审批该任务
             SysProjectEnum sysProjectEnum = SysProjectEnum.getEnumByName(SysProjectEnum.getNameByKey(projectPlanDetailsVo.getStatus()));
@@ -239,7 +244,7 @@ public class ProjectPlanDetailsService {
                                     String executeUrl = String.format(responsibilityDto.getUrl().contains("?") ? "%s&responsibilityId=%s" : "%s?responsibilityId=%s", responsibilityDto.getUrl(), responsibilityDto.getId());
                                     projectPlanDetailsVo.setExcuteUrl(executeUrl);
                                     //设置粘贴
-                                    if (phaseFullIds.contains(projectPlanDetailsVo.getProjectPhaseId())) {
+                                    if (CollectionUtils.isNotEmpty(phaseFullIds) && phaseFullIds.contains(projectPlanDetailsVo.getProjectPhaseId())) {
                                         projectPlanDetailsVo.setCanPaste(true);
                                     }
                                 }
@@ -275,7 +280,7 @@ public class ProjectPlanDetailsService {
             if (projectPlanDetailsVo.getBisLastLayer() == Boolean.TRUE)
                 projectPlanDetailsVo.setDisplayUrl(String.format("%s%s", viewUrl, projectPlanDetailsVo.getId()));
             //设置复制
-            if (projectPlanDetailsVo.getBisLastLayer() == Boolean.TRUE && phaseIds.contains(projectPlanDetailsVo.getProjectPhaseId())) {
+            if (projectPlanDetailsVo.getBisLastLayer() == Boolean.TRUE && phaseFullIds.contains(projectPlanDetailsVo.getProjectPhaseId())) {
                 projectPlanDetailsVo.setCanCopy(true);
             }
             boolean isMember = projectMemberService.isProjectMember(projectId, commonService.thisUserAccount());
@@ -442,8 +447,8 @@ public class ProjectPlanDetailsService {
         if (StringUtils.isNotBlank(projectPlanDetails.getExecuteUserAccount())) {
             SysUserDto sysUser = erpRpcUserService.getSysUser(projectPlanDetails.getExecuteUserAccount());
             projectPlanDetailsVo.setExecuteUserName(sysUser == null ? "" : sysUser.getUserName());
-            projectPlanDetailsVo.setNodeName(String.format("%s(%s)",projectPlanDetails.getProjectPhaseName(),sysUser.getUserName()));
-        }else{
+            projectPlanDetailsVo.setNodeName(String.format("%s(%s)", projectPlanDetails.getProjectPhaseName(), sysUser.getUserName()));
+        } else {
             projectPlanDetailsVo.setNodeName(projectPlanDetails.getProjectPhaseName());
         }
         if (projectPlanDetails.getExecuteDepartmentId() != null) {
@@ -716,7 +721,7 @@ public class ProjectPlanDetailsService {
     @Transactional(rollbackFor = Exception.class)
     public void batchUpdateExecuteUser(List<Integer> planDetailsIds, String newExecuteUser) throws BusinessException {
         List<ProjectPlanDetails> projectPlanDetailsByIds = this.getProjectPlanDetailsByIds(planDetailsIds);
-        for (ProjectPlanDetails projectPlanDetails: projectPlanDetailsByIds) {
+        for (ProjectPlanDetails projectPlanDetails : projectPlanDetailsByIds) {
             if (projectPlanDetails == null) return;
             if (StringUtils.isBlank(newExecuteUser))
                 throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());

@@ -472,6 +472,7 @@
                             valueType: valueType
                         },
                         success: function (result) {
+                            console.log("111")
                             if (result.ret) {
                                 if (result.data) {
                                     $("#" + objProject.config.info.frm).find("select.propertyScope").val([result.data.propertyScope]).trigger('change');
@@ -1097,6 +1098,12 @@
 
                 if (objProject.isNotBlankObjectProperty(data)) {
                     objProject.info.loadInit(data);
+                    setTimeout(function () {
+                        //一些数据重新赋值
+                        $("#" + objProject.config.info.frm).find("input[name='scopeInclude']").val(data.scopeInclude);
+                        $("#" + objProject.config.info.frm).find("input[name='scopeNotInclude']").val(data.scopeNotInclude);
+                        $("#" + objProject.config.info.frm).find("input[name='remarkEntrustPurpose']").val(data.remarkEntrustPurpose);
+                    }, 2000);
                 }else {
                     var item = formParams(objProject.config.info.frm) ;
                     objProject.info.loadInit({id:item.id});

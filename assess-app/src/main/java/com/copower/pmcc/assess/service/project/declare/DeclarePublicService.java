@@ -691,8 +691,10 @@ public class DeclarePublicService {
                 if (certName.contains(type.getName())) {
                     declareRealtyHouseCert.setType(type.getId().toString());
                     declareRealtyHouseCert.setLocation(StringUtils.substringBetween(declareRealtyHouseCert.getCertName(), "", type.getName()));
+                    break;
                 }else{
                     declareRealtyHouseCert.setLocation(StringUtils.substringBetween(declareRealtyHouseCert.getCertName(), "", "第"));
+                    break;
                 }
             }
         } else {

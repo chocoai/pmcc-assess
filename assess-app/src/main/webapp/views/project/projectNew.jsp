@@ -20,30 +20,23 @@
                     </div>
                     <div class="x_content">
                         <c:forEach var="classItem" items="${keyValueDtoList}">
-                            <div class="x_title">
-                                    ${classItem.value}
-                            </div>
                             <c:forEach var="typeItem" items="${classItem.keyValueDtos}">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-dark">
-                                            ${typeItem.value}</button>
-                                    <c:if test="${not empty typeItem.keyValueDtos}">
-                                        <button type="button" class="btn btn-dark dropdown-toggle"
-                                                data-toggle="dropdown"
-                                                aria-expanded="false">
-                                            <span class="caret"></span>
-                                            <span class="sr-only">Toggle Dropdown</span>
-                                        </button>
-                                        <ul class="dropdown-menu" role="menu">
-                                            <c:forEach var="categoryItem" items="${typeItem.keyValueDtos}">
-                                                <li>
-                                                    <a target="_blank"
-                                                       href="${pageContext.request.contextPath}/${categoryItem.explain}?projectClassId=${classItem.key}&projectTypeId=${typeItem.key}&projectCategoryId=${categoryItem.key}"><span>${categoryItem.value}</span></a>
-                                                </li>
-                                            </c:forEach>
-                                        </ul>
-                                    </c:if>
-                                </div>
+                                <c:if test="${not empty typeItem.keyValueDtos}">
+                                    <c:forEach var="categoryItem" items="${typeItem.keyValueDtos}">
+                                        <a target="_blank"
+                                           href="${pageContext.request.contextPath}/${categoryItem.explain}?projectClassId=${classItem.key}&projectTypeId=${typeItem.key}&projectCategoryId=${categoryItem.key}">
+                                            <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                                                <div class="tile-stats">
+                                                    <div class="icon"><i class="fa fa-bank"></i>
+                                                    </div>
+                                                    <div class="count">${categoryItem.value}</div>
+                                                    <h3>${typeItem.value}</h3>
+                                                    <p>${classItem.value}</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </c:forEach>
+                                </c:if>
                             </c:forEach>
                         </c:forEach>
                     </div>
@@ -51,7 +44,8 @@
             </div>
         </div>
     </div>
-    <!-- end: MAIN CONTAINER -->
+</div>
+<!-- end: MAIN CONTAINER -->
 </div>
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
