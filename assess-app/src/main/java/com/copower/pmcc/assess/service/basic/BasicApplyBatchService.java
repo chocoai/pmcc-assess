@@ -15,7 +15,6 @@ import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.assist.DdlMySqlAssist;
 import com.copower.pmcc.assess.service.assist.ResidueRatioService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
-import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
 import com.copower.pmcc.assess.service.cases.*;
 import com.copower.pmcc.assess.service.event.basic.BasicApplyBatchEvent;
@@ -155,8 +154,7 @@ public class BasicApplyBatchService {
     private SurveySceneExploreService surveySceneExploreService;
     @Autowired
     private DeclareRecordService declareRecordService;
-    @Autowired
-    private BaseDataDicService baseDataDicService;
+
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -393,15 +391,6 @@ public class BasicApplyBatchService {
                 houseDetail.setName(basicHouse.getHouseNumber());
                 houseDetail.setDisplayName(basicHouse.getHouseNumber());
                 basicApplyBatchDetailDao.updateInfo(houseDetail);
-                //查勘时实际用途保存到案列
-                SurveySceneExplore surveySceneExplore = surveySceneExploreService.getSurveySceneExplore(planDetailsId);
-                if (surveySceneExplore != null) {
-                    DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(surveySceneExplore.getDeclareId());
-                    if(basicHouse.getPracticalUse()!=null) {
-                        declareRecord.setPracticalUse(baseDataDicService.getNameById(basicHouse.getPracticalUse()));
-                        declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
-                    }
-                }
                 //交易信息
                 jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_TRADING.getVar());
                 BasicHouseTrading basicTrading = JSONObject.parseObject(jsonContent, BasicHouseTrading.class);

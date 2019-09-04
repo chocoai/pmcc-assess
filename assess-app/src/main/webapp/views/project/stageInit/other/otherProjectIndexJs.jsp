@@ -436,6 +436,11 @@
 
                 }
             });
+            if(result.data.propertyScope){
+                $("#" + objProject.config.info.frm).find("select.propertyScope").val([result.data.propertyScope]).trigger('change');
+                $("#" + objProject.config.info.frm).find("input[name='scopeInclude']").val(result.data.scopeInclude);
+                $("#" + objProject.config.info.frm).find("input[name='scopeNotInclude']").val(result.data.scopeNotInclude);
+            }
             $("#" + objProject.config.info.frm).find("select.entrustPurpose").change(function () {
                 var entrustPurpose = $("#" + objProject.config.info.frm).find("select.entrustPurpose").find("option:selected").val();
                 var strArr = ["抵押评估"];//来自于实体描述1(1).docx中的规则
