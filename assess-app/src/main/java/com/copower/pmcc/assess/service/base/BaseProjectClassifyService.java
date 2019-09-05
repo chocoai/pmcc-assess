@@ -7,18 +7,22 @@ import com.copower.pmcc.assess.dto.input.ZtreeDto;
 import com.copower.pmcc.assess.dto.output.base.BaseProjectClassifyVo;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
+import com.copower.pmcc.erp.api.dto.SysProjectTypeDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
+import com.copower.pmcc.erp.api.provider.ErpRpcProjectService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
+import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.copower.pmcc.erp.constant.CacheConstant;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -37,6 +41,10 @@ public class BaseProjectClassifyService {
     private BaseProjectClassifyDao baseProjectClassifyDao;
     @Autowired
     private ProcessControllerComponent processControllerComponent;
+    @Autowired
+    private ErpRpcProjectService erpRpcProjectService;
+    @Autowired
+    private ApplicationConstant applicationConstant;
 
     //region 获取项目分类列表
 
@@ -102,6 +110,19 @@ public class BaseProjectClassifyService {
             if (!baseProjectClassifyDao.addObject(sysProjectClassify)) {
                 throw new BusinessException(HttpReturnEnum.SAVEFAIL.getName());
             }
+            //写入erp
+            List<Integer> firstLevelIds = LangUtils.transform(getCacheEnableListByPid(0), o -> o.getId());
+            SysProjectTypeDto sysProjectTypeDto = new SysProjectTypeDto();
+            sysProjectTypeDto.setAppKey(applicationConstant.getAppKey());
+            sysProjectTypeDto.setCode(String.valueOf(sysProjectClassify.getId()));
+            if (sysProjectClassify.getPid().equals(0))
+                sysProjectTypeDto.setDataGrade(1);
+            else if(CollectionUtils.isNotEmpty(firstLevelIds)&&firstLevelIds.contains(sysProjectClassify.getPid()))
+                sysProjectTypeDto.setDataGrade(2);
+            else
+                sysProjectTypeDto.setDataGrade(3);
+            sysProjectTypeDto.setName(sysProjectClassify.getName());
+            erpRpcProjectService.saveSysProjectTypeDto(sysProjectTypeDto);
         }
         processControllerComponent.removeRedisKeyValues(AssessCacheConstant.PMCC_ASSESS_PROJECT_CLASSIFY, "");
     }

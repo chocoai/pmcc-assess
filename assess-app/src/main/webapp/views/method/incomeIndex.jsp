@@ -194,7 +194,7 @@
         $.each(incomeIndex.fileArrayId,function (i,n) {
             incomeIndex.showFile(n,AssessDBKey.MdIncome,incomeIndex.isNotBlank('${mdIncome}')?'${mdIncome.id}':"0",true,n);
             incomeIndex.fileUpload(n,AssessDBKey.MdIncome,incomeIndex.isNotBlank('${mdIncome}')?'${mdIncome.id}':"0",true,n);
-        }) ;
+        });
     });
     var incomeIndex = {};
     incomeIndex.isNotBlank = function (item) {
