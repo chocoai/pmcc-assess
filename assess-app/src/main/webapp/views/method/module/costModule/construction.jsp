@@ -557,8 +557,8 @@
                         成新率(非必需)
                     </label>
                     <div class="col-sm-3">
-                        <input type="hidden" placeholder="成新率"  name="residueRatioId"   value="${mdCostVo.mdCostConstruction.residueRatioId}">
                         <div class="input-group">
+                            <input type="hidden" placeholder="成新率"  name="residueRatioId"   value="${mdCostVo.mdCostConstruction.residueRatioId}">
                             <span class="input-group-btn">
                                 <input type="hidden"  name="residueRatio" onblur="cost.checkParams(this);"  value="${mdCostVo.mdCostConstruction.residueRatio}">
                                 <input type="text" placeholder="成新率(计算值)" class="form-control" name="residueRatioShow" readonly="readonly" value="${mdCostVo.mdCostConstruction.residueRatio}">

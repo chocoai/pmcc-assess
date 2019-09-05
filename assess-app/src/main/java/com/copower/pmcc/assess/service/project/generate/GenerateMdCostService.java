@@ -9,6 +9,8 @@ import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.enums.BaseReportFieldEnum;
 import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dto.output.basic.BasicEstateLandStateVo;
+import com.copower.pmcc.assess.dto.output.basic.BasicEstateVo;
 import com.copower.pmcc.assess.dto.output.method.MdCostConstructionVo;
 import com.copower.pmcc.assess.dto.output.method.MdCostVo;
 import com.copower.pmcc.assess.service.BaseService;
@@ -190,9 +192,44 @@ public class GenerateMdCostService implements Serializable {
             break;
             case MarketCost_extraterritorial_reality: {
                 BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
+                if (basicApply == null){
+                    return;
+                }
+                GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
+                BasicEstateVo basicEstateVo = generateBaseExamineService.getEstate();
+                if (basicEstateVo != null) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), basicEstateVo.getInfrastructureName());
+                }
             }
             break;
             case MarketCost_intra_territorial_reality: {
+                BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
+                if (basicApply == null){
+                    return;
+                }
+                GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
+                try {
+                    BasicEstateLandStateVo basicEstateLandStateVo = generateBaseExamineService.getBasicEstateLandState();
+                    if (basicEstateLandStateVo != null) {
+                        generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), basicEstateLandStateVo.getDevelopmentDegreeContentName());
+                    }
+                } catch (Exception e) {
+                }
+            }
+            break;
+            case MarketCost_Degree_land_development: {
+                BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
+                if (basicApply == null){
+                    return;
+                }
+                GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
+                try {
+                    BasicEstateLandStateVo basicEstateLandStateVo = generateBaseExamineService.getBasicEstateLandState();
+                    if (basicEstateLandStateVo != null) {
+                        generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), basicEstateLandStateVo.getDevelopmentDegreeName());
+                    }
+                } catch (Exception e) {
+                }
             }
             break;
             case MarketCost_region: {
@@ -223,6 +260,8 @@ public class GenerateMdCostService implements Serializable {
             }
             break;
             case MarketCost_AssessBuildArea: {
+                // 成本法评估总建筑面积 有误
+                generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), target.getDevelopLandAreaTax().toString());
             }
             break;
             case MarketCost_landPurchasePriceExplain: {
@@ -244,6 +283,9 @@ public class GenerateMdCostService implements Serializable {
             }
             break;
             case MarketCost_infrastructureCostBasis: {
+                if (StringUtils.isNotBlank(target.getUnforeseenExpensesExplain())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), target.getInfrastructureCostExplain());
+                }
             }
             break;
             case MarketCost_unforeseenExpensesExplain: {

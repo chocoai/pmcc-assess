@@ -24,12 +24,8 @@
                     <h3>成本法</h3>
                     <div class="clearfix"></div>
                 </div>
-                <script src="${pageContext.request.contextPath}/js/method/developmentCommon.js"></script>
-                <%@include file="/views/method/module/developmentCommon.jsp" %>
-                <%@include file="/views/project/tool/residueRatio.jsp" %>
 
-
-                <div class="x_content">
+                <div class="x_content" id="costCheckboxTool">
                     <div class="col-sm-12 form-group">
                             <span class="col-sm-1">
                                 <label>建筑形态</label>
@@ -46,8 +42,11 @@
                 </div>
 
 
-                <%@include file="/views/method/module/costModule/constructionJs.jsp" %>
                 <%@include file="/views/method/module/costModule/construction.jsp" %>
+                <%@include file="/views/method/module/costModule/constructionJs.jsp" %>
+                <%@include file="/views/method/module/developmentCommon.jsp" %>
+                <%@include file="/views/project/tool/residueRatio.jsp" %>
+                <script src="${pageContext.request.contextPath}/js/method/developmentCommon.js"></script>
             </div>
 
             <div class="x_panel">
@@ -189,7 +188,7 @@
     $(document).ready(function () {
         //建筑安装工程费 估价时点完工程度的设置为100%
         var type = '${mdCostVo.type}';
-        cost.constructionFrm.prev().find("input[name='type']:radio").change(function () {
+        $("#costCheckboxTool").find("input[name='type']:radio").change(function () {
             var value = $(this).val() ;
             var target = $("#LAND_ACQUISITION_COST") ;
             if (value == cost.one){
@@ -291,7 +290,7 @@
         }
         var data = formSerializeArray(cost.constructionFrm);
         data.planDetailsId = '${projectPlanDetails.id}';
-        data.type = cost.constructionFrm.prev().find("input[name='type']:checked").val() ;
+        data.type = $("#costCheckboxTool").find("input[name='type']:checked").val() ;
         var item = formSerializeArray($("#md_cost_form")) ;
         if (item){
             if (item.price){
