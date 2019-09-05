@@ -491,9 +491,11 @@
 //                usableYear: 5,
                 houseId: '${basicHouseVo.id}',
                 success: function (id, resultValue) {
-                    construction.target.find("input[name='residueRatioId']").val(id);
-                    construction.target.find("input[name='residueRatio']").val(parseFloat(resultValue) / 100);
-                    construction.target.find("input[name='residueRatioShow']").val(resultValue);
+                    console.log(resultValue) ;
+                    var target = $(_this).closest(".input-group") ;
+                    target.find("input[name='residueRatioId']").val(id);
+                    target.find("input[name='residueRatio']").val(parseFloat(resultValue) / 100).trigger('blur');
+                    target.find("input[name='residueRatioShow']").val(resultValue);
                 }
             });
         } catch (e) {

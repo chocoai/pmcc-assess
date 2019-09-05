@@ -46,10 +46,8 @@
                 </div>
 
 
-                <form class="form-horizontal" id="constructionFrm">
-                    <%@include file="/views/method/module/costModule/constructionJs.jsp" %>
-                    <%@include file="/views/method/module/costModule/construction.jsp" %>
-                </form>
+                <%@include file="/views/method/module/costModule/constructionJs.jsp" %>
+                <%@include file="/views/method/module/costModule/construction.jsp" %>
             </div>
 
             <div class="x_panel">

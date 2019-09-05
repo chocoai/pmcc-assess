@@ -464,7 +464,8 @@ public class MdMarketCostService {
                     String f3 = target.getDevelopBuildAreaTax().toString();
                     BigDecimal v = ArithmeticUtils.multiply(ArithmeticUtils.createBigDecimal(e25), ArithmeticUtils.createBigDecimal(10000));
                     BigDecimal decimal = ArithmeticUtils.divide(v, ArithmeticUtils.createBigDecimal(f3), 2);
-                    if (target.getResidueRatio() != null && target.getResidueRatio().toBigInteger().intValue() != 0) {
+                    BigDecimal residueRatio = target.getResidueRatio() ;
+                    if (residueRatio != null) {
                         decimal = ArithmeticUtils.multiply(decimal, target.getResidueRatio(), 2);
                     }
                     target.setConstructionAssessmentPriceCorrecting(decimal);
@@ -474,7 +475,7 @@ public class MdMarketCostService {
                 }
             }
             default: {
-                return null;
+                return "0";
             }
         }
     }
