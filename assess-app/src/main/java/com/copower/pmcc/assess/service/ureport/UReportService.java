@@ -164,12 +164,12 @@ public class UReportService {
             sql.append(String.format(" OR H.number_value LIKE '%s%s%s'", "%", queryReportNumber, "%"));
         }
         if (StringUtil.isNotEmpty(queryStartTime)) {
-            sql.append(String.format(" AND Date(E.gmt_created) >= '%s'", queryStartTime));
-            sql.append(String.format(" OR Date(G.gmt_created) >= '%s'", queryStartTime));
+            sql.append(String.format(" AND Date(A.preaudit_number_date) >= '%s'", queryStartTime));
+            sql.append(String.format(" OR Date(A.result_number_date) >= '%s'", queryStartTime));
         }
         if (StringUtil.isNotEmpty(queryEndTime)) {
-            sql.append(String.format(" AND Date(E.gmt_created) <= '%s'", queryEndTime));
-            sql.append(String.format(" AND Date(G.gmt_created) <= '%s'", queryEndTime));
+            sql.append(String.format(" AND Date(A.preaudit_number_date) <= '%s'", queryEndTime));
+            sql.append(String.format(" AND Date(A.result_number_date) <= '%s'", queryEndTime));
         }
         if (StringUtils.isNotBlank(userAccount)) {
             sql.append(String.format(" AND B.user_account_manager = '%s'", userAccount));
