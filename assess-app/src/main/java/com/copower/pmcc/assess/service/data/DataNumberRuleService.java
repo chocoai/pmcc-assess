@@ -85,4 +85,11 @@ public class DataNumberRuleService {
         if(id ==null) throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());;
         return dataNumberRuleDao.delete(id);
     }
+
+    public List<DataNumberRule> getDataNumberRuleByGroup(String groupName){
+        DataNumberRule dataNumberRule = new DataNumberRule();
+        dataNumberRule.setGroupName(groupName);
+        List<DataNumberRule> dataNumberRulesList = dataNumberRuleDao.getDataNumberRule(dataNumberRule);
+        return dataNumberRulesList;
+    }
 }

@@ -2466,6 +2466,126 @@ public class ProjectInfoExample {
             return (Criteria) this;
         }
 
+        public Criteria andPreauditNumberDateIsNull() {
+            addCriterion("preaudit_number_date is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPreauditNumberDateIsNotNull() {
+            addCriterion("preaudit_number_date is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPreauditNumberDateEqualTo(Date value) {
+            addCriterion("preaudit_number_date =", value, "preauditNumberDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andPreauditNumberDateNotEqualTo(Date value) {
+            addCriterion("preaudit_number_date <>", value, "preauditNumberDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andPreauditNumberDateGreaterThan(Date value) {
+            addCriterion("preaudit_number_date >", value, "preauditNumberDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andPreauditNumberDateGreaterThanOrEqualTo(Date value) {
+            addCriterion("preaudit_number_date >=", value, "preauditNumberDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andPreauditNumberDateLessThan(Date value) {
+            addCriterion("preaudit_number_date <", value, "preauditNumberDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andPreauditNumberDateLessThanOrEqualTo(Date value) {
+            addCriterion("preaudit_number_date <=", value, "preauditNumberDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andPreauditNumberDateIn(List<Date> values) {
+            addCriterion("preaudit_number_date in", values, "preauditNumberDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andPreauditNumberDateNotIn(List<Date> values) {
+            addCriterion("preaudit_number_date not in", values, "preauditNumberDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andPreauditNumberDateBetween(Date value1, Date value2) {
+            addCriterion("preaudit_number_date between", value1, value2, "preauditNumberDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andPreauditNumberDateNotBetween(Date value1, Date value2) {
+            addCriterion("preaudit_number_date not between", value1, value2, "preauditNumberDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andResultNumberDateIsNull() {
+            addCriterion("result_number_date is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andResultNumberDateIsNotNull() {
+            addCriterion("result_number_date is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andResultNumberDateEqualTo(Date value) {
+            addCriterion("result_number_date =", value, "resultNumberDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andResultNumberDateNotEqualTo(Date value) {
+            addCriterion("result_number_date <>", value, "resultNumberDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andResultNumberDateGreaterThan(Date value) {
+            addCriterion("result_number_date >", value, "resultNumberDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andResultNumberDateGreaterThanOrEqualTo(Date value) {
+            addCriterion("result_number_date >=", value, "resultNumberDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andResultNumberDateLessThan(Date value) {
+            addCriterion("result_number_date <", value, "resultNumberDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andResultNumberDateLessThanOrEqualTo(Date value) {
+            addCriterion("result_number_date <=", value, "resultNumberDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andResultNumberDateIn(List<Date> values) {
+            addCriterion("result_number_date in", values, "resultNumberDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andResultNumberDateNotIn(List<Date> values) {
+            addCriterion("result_number_date not in", values, "resultNumberDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andResultNumberDateBetween(Date value1, Date value2) {
+            addCriterion("result_number_date between", value1, value2, "resultNumberDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andResultNumberDateNotBetween(Date value1, Date value2) {
+            addCriterion("result_number_date not between", value1, value2, "resultNumberDate");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatorIsNull() {
             addCriterion("creator is null");
             return (Criteria) this;
