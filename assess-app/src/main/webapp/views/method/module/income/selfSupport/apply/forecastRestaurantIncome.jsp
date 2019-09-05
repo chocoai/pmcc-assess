@@ -120,75 +120,65 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            一级编号<span class="symbol required"></span>
+                                            一级编号
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" name="firstLevelNumber" placeholder="一级编号"
-                                                   class="form-control" required="required">
+                                            <input type="text" name="firstLevelNumber" placeholder="一级编号" class="form-control" >
                                         </div>
                                     </div>
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            二级编号<span class="symbol required"></span>
+                                            二级编号
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" name="secondLevelNumber" placeholder="二级编号"
-                                                   class="form-control" required="required">
+                                            <input type="text" name="secondLevelNumber" placeholder="二级编号" class="form-control">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            开始时间<span class="symbol required"></span>
+                                            开始时间
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" name="beginDate" data-date-format='yyyy-mm-dd'
-                                                   placeholder="开始时间"
-                                                   class="form-control dbdate" required="required">
+                                            <input type="text" name="beginDate" data-date-format='yyyy-mm-dd' placeholder="开始时间" class="form-control dbdate" >
                                         </div>
                                     </div>
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            结束时间<span class="symbol required"></span>
+                                            结束时间
                                         </label>
                                         <div class="col-sm-4">
                                             <input type="text" name="endDate" data-date-format='yyyy-mm-dd'
-                                                   placeholder="结束时间" class="form-control dbdate"
-                                                   required="required">
+                                                   placeholder="结束时间" class="form-control dbdate">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            单位<span class="symbol required"></span>
+                                            单位
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" name="unit" placeholder="单位" class="form-control"
-                                                   required="required">
+                                            <input type="text" name="unit" placeholder="单位" class="form-control">
                                         </div>
                                     </div>
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            数量<span class="symbol required"></span>
+                                            数量
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" name="number" placeholder="数量"
-                                                   onblur="forecastRestaurant.computeMoney();"
-                                                   data-rule-digits="true" class="form-control" required="required">
+                                            <input type="text" name="number" placeholder="数量" onblur="forecastRestaurant.computeMoney();" data-rule-digits="true" class="form-control">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            利用率<span class="symbol required"></span>
+                                            利用率
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" name="utilizationRatio" placeholder="利用率"
-                                                   onblur="forecastRestaurant.computeMoney();"
-                                                   class="form-control x-percent" required="required">
+                                            <input type="text" name="utilizationRatio" placeholder="利用率" onblur="forecastRestaurant.computeMoney();" class="form-control x-percent">
                                         </div>
                                     </div>
                                     <div class="x-valid">
@@ -196,20 +186,17 @@
                                             利用率说明
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" name="utilizationRatioExplain" placeholder="利用率说明"
-                                                   class="form-control">
+                                            <input type="text" name="utilizationRatioExplain" placeholder="利用率说明" class="form-control">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            标价<span class="symbol required"></span>
+                                            标价
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" name="makePrice" placeholder="标价"
-                                                   onblur="forecastRestaurant.computeUnitPrice();"
-                                                   data-rule-number="true" class="form-control" required="required">
+                                            <input type="text" name="makePrice" placeholder="标价" onblur="forecastRestaurant.computeUnitPrice();" data-rule-number="true" class="form-control">
                                         </div>
                                     </div>
                                     <div class="x-valid">
@@ -217,20 +204,17 @@
                                             标价说明
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" name="makePriceExplain" placeholder="标价说明"
-                                                   class="form-control">
+                                            <input type="text" name="makePriceExplain" placeholder="标价说明" class="form-control">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            折扣率<span class="symbol required"></span>
+                                            折扣率
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" name="discountRate" placeholder="折扣率"
-                                                   onblur="forecastRestaurant.computeUnitPrice();"
-                                                   class="form-control x-percent" required="required">
+                                            <input type="text" name="discountRate" placeholder="折扣率" onblur="forecastRestaurant.computeUnitPrice();" class="form-control x-percent">
                                         </div>
                                     </div>
                                     <div class="x-valid">
@@ -238,20 +222,17 @@
                                             折扣率说明
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" name="discountRateExplain" placeholder="折扣率说明"
-                                                   class="form-control">
+                                            <input type="text" name="discountRateExplain" placeholder="折扣率说明" class="form-control">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            执行价<span class="symbol required"></span>
+                                            执行价
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" name="unitPrice" placeholder="执行价"
-                                                   onblur="forecastRestaurant.computeMoney();"
-                                                   data-rule-number="true" class="form-control" required="required">
+                                            <input type="text" name="unitPrice" placeholder="执行价" onblur="forecastRestaurant.computeMoney();" data-rule-number="true" class="form-control">
                                         </div>
                                     </div>
                                     <div class="x-valid">
