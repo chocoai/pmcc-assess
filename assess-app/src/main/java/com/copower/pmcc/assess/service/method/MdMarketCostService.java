@@ -15,6 +15,7 @@ import com.copower.pmcc.erp.common.utils.FormatUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -37,6 +38,8 @@ public class MdMarketCostService {
     private MdArchitecturalObjService mdArchitecturalObjService;
     @Autowired
     private MdDevelopmentIncomeCategoryService mdDevelopmentIncomeCategoryService;
+    @Autowired
+    private TaskExecutor taskExecutor;
 
 
     public MdCost initExplore(SchemeJudgeObject schemeJudgeObject) {
@@ -83,11 +86,11 @@ public class MdMarketCostService {
         MdDevelopmentIncomeCategory mdDevelopmentIncomeCategory = new MdDevelopmentIncomeCategory();
         mdDevelopmentIncomeCategory.setPid(0);
         mdDevelopmentIncomeCategory.setPlanDetailsId(mdCost.getPlanDetailsId());
-        List<MdDevelopmentIncomeCategory> mdDevelopmentIncomeCategoryList = mdDevelopmentIncomeCategoryService.getMdDevelopmentIncomeCategoryListByExample(mdDevelopmentIncomeCategory) ;
-        if (CollectionUtils.isNotEmpty(mdDevelopmentIncomeCategoryList)){
-            for (MdDevelopmentIncomeCategory oo:mdDevelopmentIncomeCategoryList){
+        List<MdDevelopmentIncomeCategory> mdDevelopmentIncomeCategoryList = mdDevelopmentIncomeCategoryService.getMdDevelopmentIncomeCategoryListByExample(mdDevelopmentIncomeCategory);
+        if (CollectionUtils.isNotEmpty(mdDevelopmentIncomeCategoryList)) {
+            for (MdDevelopmentIncomeCategory oo : mdDevelopmentIncomeCategoryList) {
                 oo.setPid(mdCostConstruction.getId());
-                mdDevelopmentIncomeCategoryService.saveMdDevelopmentIncomeCategory(oo) ;
+                mdDevelopmentIncomeCategoryService.saveMdDevelopmentIncomeCategory(oo);
             }
         }
 
@@ -161,6 +164,19 @@ public class MdMarketCostService {
         return vo;
     }
 
+    public String calculationNumeric(MdCostConstruction target) {
+        String value = getFieldObjectValue(BaseReportFieldEnum.MarketCost_constructionAssessmentPriceCorrecting, target);
+        if (target.getId() != null && target.getId() != 0) {
+            taskExecutor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    mdCostConstructionDao.updateEstateNetwork(target);
+                }
+            });
+        }
+        return value;
+    }
+
     /**
      * 运算类的数据获取方法
      *
@@ -168,7 +184,7 @@ public class MdMarketCostService {
      * @param target
      * @return
      */
-    public String getFieldObjectValue(BaseReportFieldEnum key, MdCostConstructionVo target) {
+    public String getFieldObjectValue(BaseReportFieldEnum key, MdCostConstruction target) {
         switch (key) {
             case MarketCost_developYearNumberTax: {
                 return ArithmeticUtils.getBigDecimalString(target.getDevelopYearNumberTax());
@@ -187,7 +203,7 @@ public class MdMarketCostService {
                     BigDecimal start = ArithmeticUtils.divide(ArithmeticUtils.multiply(target.getLandPurchasePrice(), target.getDevelopLandAreaTax()), ArithmeticUtils.createBigDecimal(10000), 2);
                     return ArithmeticUtils.getBigDecimalString(start);
                 } catch (Exception e) {
-                    return "";
+                    return "0";
                 }
             }
             case MarketCost_landGetRelevant: {
@@ -195,7 +211,7 @@ public class MdMarketCostService {
                     String start = getFieldObjectValue(BaseReportFieldEnum.MarketCost_landPurchasePrice, target);
                     return ArithmeticUtils.mul(start, target.getLandGetRelevant().toString(), 2);
                 } catch (Exception e) {
-                    return "";
+                    return "0";
                 }
             }
             case MarketCost_landGetRelevantRate: {
@@ -203,11 +219,11 @@ public class MdMarketCostService {
             }
             case MarketCost_additionalCostLandAcquisition: {
                 try {
-                    BigDecimal bigDecimal = ArithmeticUtils.div(target.getAdditionalCostLandAcquisition(), target.getDevelopLandAreaTax()) ;
+                    BigDecimal bigDecimal = ArithmeticUtils.div(target.getAdditionalCostLandAcquisition(), target.getDevelopLandAreaTax());
                     BigDecimal start = ArithmeticUtils.multiply(bigDecimal, ArithmeticUtils.createBigDecimal(10000), 2);
                     return ArithmeticUtils.getBigDecimalString(start);
                 } catch (Exception e) {
-                    return "";
+                    return "0";
                 }
             }
             case MarketCost_reconnaissanceDesignRate: {
@@ -224,7 +240,7 @@ public class MdMarketCostService {
             }
             case MarketCost_constructionInstallationEngineeringFee: {
                 try {
-                    BigDecimal bigDecimal = ArithmeticUtils.multiply(target.getConstructionInstallationEngineeringFee(), target.getDevelopBuildAreaTax(), 2) ;
+                    BigDecimal bigDecimal = ArithmeticUtils.multiply(target.getConstructionInstallationEngineeringFee(), target.getDevelopBuildAreaTax(), 2);
                     BigDecimal start = ArithmeticUtils.divide(bigDecimal, ArithmeticUtils.createBigDecimal(10000), 2);
                     return ArithmeticUtils.getBigDecimalString(start);
                 } catch (Exception e) {
@@ -272,7 +288,8 @@ public class MdMarketCostService {
                     String v5 = getFieldObjectValue(BaseReportFieldEnum.MarketCost_devDuring, target);
                     String v6 = getFieldObjectValue(BaseReportFieldEnum.MarketCost_otherEngineeringCost, target);
                     double[] doubles = new double[]{Double.valueOf(v1), Double.valueOf(v2), Double.valueOf(v3), Double.valueOf(v4), Double.valueOf(v5), Double.valueOf(v6)};
-                    double value = ArithmeticUtils.add(doubles) ;
+                    double value = ArithmeticUtils.add(doubles);
+                    target.setConstructionSubtotal(String.valueOf(value));
                     return String.valueOf(value);
                 } catch (Exception e) {
                     return "";
@@ -294,10 +311,10 @@ public class MdMarketCostService {
                     double e17 = Double.valueOf(getFieldObjectValue(BaseReportFieldEnum.MarketCost_constructionSubtotal, target));
                     double e18 = Double.valueOf(getFieldObjectValue(BaseReportFieldEnum.MarketCost_unforeseenExpenses, target));
                     double e9 = Double.valueOf(getFieldObjectValue(BaseReportFieldEnum.MarketCost_landGetCostTotal, target));
-                    double v1 = ArithmeticUtils.add(new double[]{e17,e18,e9}) ;
-                    double d19 = target.getManagementExpense().doubleValue() ;
-                    double v = ArithmeticUtils.mul(v1, d19, 2) ;
-                    return String.valueOf(v) ;
+                    double v1 = ArithmeticUtils.add(new double[]{e17, e18, e9});
+                    double d19 = target.getManagementExpense().doubleValue();
+                    double v = ArithmeticUtils.mul(v1, d19, 2);
+                    return String.valueOf(v);
                 } catch (Exception e) {
                     return "";
                 }
@@ -341,7 +358,7 @@ public class MdMarketCostService {
                     double d21 = Double.valueOf(getFieldObjectValue(BaseReportFieldEnum.MarketCost_interestInvestmentRate, target));
                     double h3 = target.getDevelopYearNumberTax().doubleValue();
                     double a = Math.pow(1 + d21, h3 / 2);
-                    double c = ArithmeticUtils.mul(d20, a - 1);
+                    double c = ArithmeticUtils.mul(d20, a - 1, 5);
                     return String.valueOf(c);
                 } catch (Exception e) {
                     return "";
@@ -358,8 +375,8 @@ public class MdMarketCostService {
             }
             case MarketCost_investmentProfitCorrectRate: {//G23
                 try {
-                    String v = ArithmeticUtils.mul(getFieldObjectValue(BaseReportFieldEnum.MarketCost_investmentProfitRate, target), target.getSalesFee().toString()).toString();
-                    return v ;
+                    String v = ArithmeticUtils.mul(getFieldObjectValue(BaseReportFieldEnum.MarketCost_investmentProfitRate, target), target.getSalesFee().toString(), 5).toString();
+                    return v;
                 } catch (Exception e) {
                     return "";
                 }
@@ -412,7 +429,7 @@ public class MdMarketCostService {
                 try {
                     double e24 = Double.valueOf(getFieldObjectValue(BaseReportFieldEnum.MarketCost_constructionAssessmentValue2, target));
                     double g24 = Double.valueOf(getFieldObjectValue(BaseReportFieldEnum.MarketCost_constructionAssessmentValue2Rate, target));
-                    double value = ArithmeticUtils.div(e24, 1 - g24);
+                    double value = ArithmeticUtils.div(e24, 1 - g24, 2);
                     target.setConstructionAssessmentValue(String.valueOf(value));
                     return String.valueOf(value);
                 } catch (Exception e) {
@@ -447,6 +464,9 @@ public class MdMarketCostService {
                     String f3 = target.getDevelopBuildAreaTax().toString();
                     BigDecimal v = ArithmeticUtils.multiply(ArithmeticUtils.createBigDecimal(e25), ArithmeticUtils.createBigDecimal(10000));
                     BigDecimal decimal = ArithmeticUtils.divide(v, ArithmeticUtils.createBigDecimal(f3), 2);
+                    if (target.getResidueRatio() != null && target.getResidueRatio().toBigInteger().intValue() != 0) {
+                        decimal = ArithmeticUtils.multiply(decimal, target.getResidueRatio(), 2);
+                    }
                     target.setConstructionAssessmentPriceCorrecting(decimal);
                     return decimal.toString();
                 } catch (Exception e) {

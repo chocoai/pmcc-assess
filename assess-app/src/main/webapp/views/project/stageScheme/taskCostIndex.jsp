@@ -147,6 +147,45 @@
             $(that).val('');
             return false;
         }
+        //从服务端获取计算后的数据
+        cost.calculationNumeric(formSerializeArray(cost.constructionFrm),function (data) {
+            cost.constructionFrm.find("input[name='landGetCostTotal']").val(data.landGetCostTotal);
+            cost.constructionFrm.find(".landGetCostTotal").html(data.landGetCostTotal);
+            cost.constructionFrm.find("input[name='constructionSubtotal']").val(data.constructionSubtotal);
+            cost.constructionFrm.find(".constructionSubtotal").html(data.constructionSubtotal);
+            cost.constructionFrm.find("input[name='interestInvestment']").val(data.interestInvestment);
+            cost.constructionFrm.find(".interestInvestment").html(data.interestInvestment);
+            cost.constructionFrm.find("input[name='investmentProfit']").val(data.investmentProfit);
+            cost.constructionFrm.find(".investmentProfit").html(data.investmentProfit);
+            cost.constructionFrm.find("input[name='constructionAssessmentValue']").val(data.constructionAssessmentValue);
+            cost.constructionFrm.find(".constructionAssessmentValue").html(data.constructionAssessmentValue);
+            cost.constructionFrm.find("input[name='constructionAssessmentPriceCorrecting']").val(data.constructionAssessmentPriceCorrecting);
+            cost.constructionFrm.find(".constructionAssessmentPriceCorrecting").html(data.constructionAssessmentPriceCorrecting);
+
+            if ($("#md_cost_form").size() != 0){
+                $("#md_cost_form").find("input[name='price']").val(data.constructionAssessmentPriceCorrecting) ;
+            }
+        });
+    };
+    
+    cost.calculationNumeric = function (data,callback) {
+        $.ajax({
+            type: "post",
+            url: getContextPath() +"/mdCostConstruction/calculationNumeric",
+            data: {fomData:JSON.stringify(data)},
+            success: function (result) {
+                if (result.ret) {
+                    if (callback){
+                        callback(result.data) ;
+                    }
+                } else {
+                    Alert("失败:" + result.errmsg);
+                }
+            },
+            error: function (e) {
+                Alert("调用服务端方法失败，失败原因:" + e);
+            }
+        });
     };
 
     $(document).ready(function () {
@@ -216,8 +255,6 @@
         };
 
         construction.loadMdDevelopmentInfrastructureChildrenTable() ;
-
-        construction.inputBlurEvent() ;
 
         construction.loadMdCalculatingMethodEngineeringCostTable() ;
 
