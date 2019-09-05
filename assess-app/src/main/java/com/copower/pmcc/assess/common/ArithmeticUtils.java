@@ -12,6 +12,8 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.MathContext;
 import java.math.RoundingMode;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
@@ -289,7 +291,7 @@ public class ArithmeticUtils implements Serializable {
     }
 
     public static BigDecimal div(BigDecimal v1, BigDecimal v2) {
-        return divide(v1,v2,10);
+        return divide(v1, v2, 10);
     }
 
     /**
@@ -326,7 +328,7 @@ public class ArithmeticUtils implements Serializable {
             }
             return v1.divide(v2, scale, RoundingMode.valueOf(roundingMode));
         } else {
-            return v1.divide(v2,RoundingMode.HALF_UP) ;
+            return v1.divide(v2, RoundingMode.HALF_UP);
         }
     }
 
@@ -418,6 +420,7 @@ public class ArithmeticUtils implements Serializable {
 
     /**
      * 判断是否为整数 如1.0 为整数
+     *
      * @param bigDecimal
      * @return
      */
@@ -425,9 +428,51 @@ public class ArithmeticUtils implements Serializable {
         if (bigDecimal == null) {
             return false;
         }
-        String v1 = getBigDecimalString(bigDecimal) ;
+        String v1 = getBigDecimalString(bigDecimal);
         String v2 = bigDecimal.toBigInteger().toString();
-        return v1.equals(v2) ;
+        return v1.equals(v2);
+    }
+
+    /**
+     * 百分数转数字
+     * @param value
+     * @return
+     * @throws ParseException
+     */
+    public static String parseFormatString(String value)throws ParseException {
+       return parseFormatNumber(value).toString();
+    }
+
+    /**
+     * 百分数转数字
+     * @param value
+     * @return
+     * @throws ParseException
+     */
+    public static BigDecimal parseFormatBigDecimal(String value)throws ParseException {
+       return createBigDecimal(parseFormatNumber(value).toString());
+    }
+
+    /**
+     * 百分数转数字
+     * @param value
+     * @return
+     * @throws ParseException
+     */
+    public static double parseFormatDouble(String value)throws ParseException {
+       return parseFormatNumber(value).doubleValue();
+    }
+
+    /**
+     * 百分数转数字
+     * @param value
+     * @return
+     * @throws ParseException
+     */
+    public static Number parseFormatNumber(String value)throws ParseException {
+        NumberFormat nf = NumberFormat.getPercentInstance();
+        Number m = nf.parse(value);
+        return m;
     }
 
     /**

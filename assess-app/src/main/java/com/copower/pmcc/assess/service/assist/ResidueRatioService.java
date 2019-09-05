@@ -86,6 +86,13 @@ public class ResidueRatioService {
         return toolResidueRatio;
     }
 
+    public ToolResidueRatio getToolResidueRatio(Integer id) {
+        if (id == null){
+            return null;
+        }
+        return toolResidueRatioDao.getToolResidueRatio(id);
+    }
+
     public HashMap<String, String> getObserveDate(Integer residueRatioId, Integer houseId) {
         HashMap<String, String> observeDateMap = new HashMap<>();
         if (residueRatioId != null) {
