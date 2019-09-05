@@ -119,12 +119,13 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            年度<span class="symbol required"></span>
+                                            类型<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" name="year" placeholder="年度"
-                                                   data-rule-digits="true" class="form-control date-year"
-                                                   required="required">
+                                            <select name="sourceType" class="form-control" required>
+                                                <option value="历史">历史</option>
+                                                <option value="调查">调查</option>
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="x-valid">
@@ -138,69 +139,70 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            一级编号<span class="symbol required"></span>
+                                            年度<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" name="firstLevelNumber" placeholder="一级编号"
-                                                   class="form-control" required="required">
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            二级编号<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <input type="text" name="secondLevelNumber" placeholder="二级编号"
-                                                   class="form-control" required="required">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            月度<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <input type="text" name="month" placeholder="月度"
-                                                   class="form-control" required="required">
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            单位<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <input type="text" name="unit" placeholder="单位" class="form-control"
+                                            <input type="text" name="year" placeholder="年度"
+                                                   data-rule-digits="true" class="form-control date-year"
                                                    required="required">
                                         </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            单价<span class="symbol required"></span>
+                                            月度
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" name="unitPrice" placeholder="单价"
-                                                   onblur="selfSupportForecast.computeMoney();"
-                                                   data-rule-number="true" class="form-control" required="required">
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            数量<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <input type="text" name="number" placeholder="数量"
-                                                   onblur="selfSupportForecast.computeMoney();"
-                                                   data-rule-digits="true" class="form-control" required="required">
+                                            <input type="text" name="month" placeholder="月度" class="form-control" >
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            一级编号
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <input type="text" name="firstLevelNumber" placeholder="一级编号" class="form-control" >
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            二级编号
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <input type="text" name="secondLevelNumber" placeholder="二级编号" class="form-control" >
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            单位
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <input type="text" name="unit" placeholder="单位" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            单价
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <input type="text" name="unitPrice" placeholder="单价" onblur="selfSupportForecast.computeMoney();" data-rule-number="true" class="form-control" >
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            数量
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <input type="text" name="number" placeholder="数量" onblur="selfSupportForecast.computeMoney();" data-rule-digits="true" class="form-control" >
+                                        </div>
+                                    </div>
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
                                             金额<span class="symbol required"></span>
@@ -208,17 +210,6 @@
                                         <div class="col-sm-4">
                                             <input type="text" name="amountMoney" placeholder="金额"
                                                    data-rule-number="true" class="form-control" required="required">
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            类型<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <select name="sourceType" class="form-control" required>
-                                                <option value="历史">历史</option>
-                                                <option value="调查">调查</option>
-                                            </select>
                                         </div>
                                     </div>
                                 </div>

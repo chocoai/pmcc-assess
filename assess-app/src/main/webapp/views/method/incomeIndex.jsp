@@ -189,6 +189,7 @@
         if ("${mdIncome.id}" > 0) {
             $("#frm_income").find("[name=operationMode][value=${mdIncome.operationMode}]").trigger('click');
             $("#frm_income").find("[name=leaseMode][value=${mdIncome.leaseMode}]").trigger('click');
+            $("#frm_income").find("[name=formType][value=${mdIncome.formType}]").trigger('click');
         }
         $.each(incomeIndex.fileArrayId,function (i,n) {
             incomeIndex.showFile(n,AssessDBKey.MdIncome,incomeIndex.isNotBlank('${mdIncome}')?'${mdIncome.id}':"0",true,n);

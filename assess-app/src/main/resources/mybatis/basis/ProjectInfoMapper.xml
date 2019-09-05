@@ -38,6 +38,8 @@
     <result column="assign_process_ins_id" property="assignProcessInsId" jdbcType="VARCHAR" />
     <result column="assign_status" property="assignStatus" jdbcType="VARCHAR" />
     <result column="estate_name" property="estateName" jdbcType="VARCHAR" />
+    <result column="preaudit_number_date" property="preauditNumberDate" jdbcType="TIMESTAMP" />
+    <result column="result_number_date" property="resultNumberDate" jdbcType="TIMESTAMP" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -107,7 +109,7 @@
     complete_date_start, process_ins_id, property_scope, scope_include, scope_not_include, 
     loan_type, contract_id, contract_name, contract_price, service_come_from, service_come_from_explain, 
     status, project_status, public_project_id, assign_process_ins_id, assign_status, 
-    estate_name, creator, gmt_created, gmt_modified
+    estate_name, preaudit_number_date, result_number_date, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectInfoExample" >
     select
@@ -155,6 +157,7 @@
       service_come_from, service_come_from_explain, 
       status, project_status, public_project_id, 
       assign_process_ins_id, assign_status, estate_name, 
+      preaudit_number_date, result_number_date, 
       creator, gmt_created, gmt_modified
       )
     values (#{projectClassId,jdbcType=INTEGER}, #{projectTypeId,jdbcType=INTEGER}, #{projectCategoryId,jdbcType=INTEGER}, 
@@ -169,6 +172,7 @@
       #{serviceComeFrom,jdbcType=VARCHAR}, #{serviceComeFromExplain,jdbcType=VARCHAR}, 
       #{status,jdbcType=VARCHAR}, #{projectStatus,jdbcType=VARCHAR}, #{publicProjectId,jdbcType=INTEGER}, 
       #{assignProcessInsId,jdbcType=VARCHAR}, #{assignStatus,jdbcType=VARCHAR}, #{estateName,jdbcType=VARCHAR}, 
+      #{preauditNumberDate,jdbcType=TIMESTAMP}, #{resultNumberDate,jdbcType=TIMESTAMP}, 
       #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
       )
   </insert>
@@ -282,6 +286,12 @@
       </if>
       <if test="estateName != null" >
         estate_name,
+      </if>
+      <if test="preauditNumberDate != null" >
+        preaudit_number_date,
+      </if>
+      <if test="resultNumberDate != null" >
+        result_number_date,
       </if>
       <if test="creator != null" >
         creator,
@@ -398,6 +408,12 @@
       </if>
       <if test="estateName != null" >
         #{estateName,jdbcType=VARCHAR},
+      </if>
+      <if test="preauditNumberDate != null" >
+        #{preauditNumberDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="resultNumberDate != null" >
+        #{resultNumberDate,jdbcType=TIMESTAMP},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -527,6 +543,12 @@
       <if test="record.estateName != null" >
         estate_name = #{record.estateName,jdbcType=VARCHAR},
       </if>
+      <if test="record.preauditNumberDate != null" >
+        preaudit_number_date = #{record.preauditNumberDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.resultNumberDate != null" >
+        result_number_date = #{record.resultNumberDate,jdbcType=TIMESTAMP},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -579,6 +601,8 @@
       assign_process_ins_id = #{record.assignProcessInsId,jdbcType=VARCHAR},
       assign_status = #{record.assignStatus,jdbcType=VARCHAR},
       estate_name = #{record.estateName,jdbcType=VARCHAR},
+      preaudit_number_date = #{record.preauditNumberDate,jdbcType=TIMESTAMP},
+      result_number_date = #{record.resultNumberDate,jdbcType=TIMESTAMP},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -694,6 +718,12 @@
       <if test="estateName != null" >
         estate_name = #{estateName,jdbcType=VARCHAR},
       </if>
+      <if test="preauditNumberDate != null" >
+        preaudit_number_date = #{preauditNumberDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="resultNumberDate != null" >
+        result_number_date = #{resultNumberDate,jdbcType=TIMESTAMP},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -743,6 +773,8 @@
       assign_process_ins_id = #{assignProcessInsId,jdbcType=VARCHAR},
       assign_status = #{assignStatus,jdbcType=VARCHAR},
       estate_name = #{estateName,jdbcType=VARCHAR},
+      preaudit_number_date = #{preauditNumberDate,jdbcType=TIMESTAMP},
+      result_number_date = #{resultNumberDate,jdbcType=TIMESTAMP},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

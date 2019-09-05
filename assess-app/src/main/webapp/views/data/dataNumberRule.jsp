@@ -142,14 +142,13 @@
                             <div class="form-group">
                                 <div class="x-valid">
                                     <label class="col-sm-2 control-label">
-                                        同号的报告类型
+                                       文号分组
                                     </label>
                                     <div class="col-sm-4">
-                                        <select class="form-control"  name="sameReportType">
-                                            <option value="0">-请选择-</option>
-                                            <c:forEach var="items" items="${reportTypeList}">
-                                                <option value="${items.id}">${items.name}</option>
-                                            </c:forEach>
+                                        <select class="form-control"  name="groupName">
+                                            <option value="">-请选择-</option>
+                                            <option value="result">结果报告文号</option>
+                                            <option value="preaudit">预评报告文号</option>
                                         </select>
                                     </div>
                                 </div>
@@ -187,7 +186,16 @@
         cols.push({field: 'figures', title: '位数'});
         cols.push({field: 'startYear', title: '起始年份'});
         cols.push({field: 'startNumber', title: '起始编号'});
-        cols.push({field: 'sameReportTypeName', title: '同号的报告类型'});
+        cols.push({
+            field: 'groupName', title: '文号分组', formatter: function (value, row, index) {
+                if(row.groupName=='result'){
+                    return '结果报告文号';
+                }else if(row.groupName=='preaudit'){
+                    return '预评报告文号';
+                }
+
+            }
+        });
 
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {

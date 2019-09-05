@@ -132,10 +132,10 @@ public class UReportService {
                 " LEFT JOIN tb_project_member B ON A.id=B.project_id" +
                 " LEFT JOIN tb_initiate_consignor C ON A.id=C.project_id" +
                 " LEFT JOIN tb_initiate_unit_information D ON A.id=D.project_id");
-        sql.append(String.format(" LEFT JOIN tb_project_number_record E ON (A.id=E.project_id and E.report_type = %s)", preauditId));
-        sql.append(String.format(" LEFT JOIN tb_project_number_record F ON (A.id=F.project_id and F.report_type = %s)", technologyId));
-        sql.append(String.format(" LEFT JOIN tb_project_number_record G ON (A.id=G.project_id and G.report_type = %s)", resultId));
-        sql.append(String.format(" LEFT JOIN tb_project_number_record H ON (A.id=H.project_id and H.report_type = %s)", consultationId));
+        sql.append(String.format(" LEFT JOIN tb_project_number_record E ON (A.id=E.project_id and E.report_type = %s AND E.bis_delete = 0)", preauditId));
+        sql.append(String.format(" LEFT JOIN tb_project_number_record F ON (A.id=F.project_id and F.report_type = %s AND F.bis_delete = 0)", technologyId));
+        sql.append(String.format(" LEFT JOIN tb_project_number_record G ON (A.id=G.project_id and G.report_type = %s AND G.bis_delete = 0)", resultId));
+        sql.append(String.format(" LEFT JOIN tb_project_number_record H ON (A.id=H.project_id and H.report_type = %s AND H.bis_delete = 0)", consultationId));
         sql.append(" WHERE 1=1");
 
         if (StringUtil.isNotEmpty(queryProjectName)) {
@@ -164,12 +164,10 @@ public class UReportService {
             sql.append(String.format(" OR H.number_value LIKE '%s%s%s'", "%", queryReportNumber, "%"));
         }
         if (StringUtil.isNotEmpty(queryStartTime)) {
-            sql.append(String.format(" AND Date(E.gmt_created) >= '%s'", queryStartTime));
-            sql.append(String.format(" OR Date(G.gmt_created) >= '%s'", queryStartTime));
+            sql.append(String.format(" AND (Date(A.preaudit_number_date) >= '%s' OR Date(A.result_number_date) >= '%s')", queryStartTime, queryStartTime));
         }
         if (StringUtil.isNotEmpty(queryEndTime)) {
-            sql.append(String.format(" AND Date(E.gmt_created) <= '%s'", queryEndTime));
-            sql.append(String.format(" AND Date(G.gmt_created) <= '%s'", queryEndTime));
+            sql.append(String.format(" AND Date(A.preaudit_number_date) <= '%s' OR Date(A.result_number_date) <= '%s'", queryEndTime, queryEndTime));
         }
         if (StringUtils.isNotBlank(userAccount)) {
             sql.append(String.format(" AND B.user_account_manager = '%s'", userAccount));

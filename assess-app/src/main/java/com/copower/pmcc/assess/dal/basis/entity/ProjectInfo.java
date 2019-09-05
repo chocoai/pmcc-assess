@@ -76,6 +76,10 @@ public class ProjectInfo {
 
     private String estateName;
 
+    private Date preauditNumberDate;
+
+    private Date resultNumberDate;
+
     private String creator;
 
     private Date gmtCreated;
@@ -368,6 +372,22 @@ public class ProjectInfo {
 
     public void setEstateName(String estateName) {
         this.estateName = estateName == null ? null : estateName.trim();
+    }
+
+    public Date getPreauditNumberDate() {
+        return preauditNumberDate;
+    }
+
+    public void setPreauditNumberDate(Date preauditNumberDate) {
+        this.preauditNumberDate = preauditNumberDate;
+    }
+
+    public Date getResultNumberDate() {
+        return resultNumberDate;
+    }
+
+    public void setResultNumberDate(Date resultNumberDate) {
+        this.resultNumberDate = resultNumberDate;
     }
 
     public String getCreator() {
