@@ -1,12 +1,20 @@
 package com.copower.pmcc.assess.test;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.aspose.words.*;
+import com.aspose.words.Table;
 import com.copower.pmcc.assess.common.ArithmeticUtils;
+import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.enums.BaseReportFieldEnum;
+import com.copower.pmcc.assess.dal.basis.entity.MdCalculatingMethodEngineeringCost;
+import com.copower.pmcc.assess.dto.output.MergeCellModel;
 import com.copower.pmcc.assess.dto.output.method.MdCostConstructionVo;
 import com.copower.pmcc.assess.service.method.MdMarketCostService;
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
+import com.google.common.collect.*;
 import jodd.util.URLDecoder;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.junit.*;
@@ -15,9 +23,8 @@ import org.junit.Test;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
+import java.text.ParseException;
+import java.util.*;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
@@ -28,19 +35,149 @@ import java.util.stream.Collectors;
  * Created by zch on 2019/7/17.
  */
 public class ZCHDemo {
+    final public String jsonData =
+            "[{\"name\": \"建筑工程\", \"role\": \"parent\", \"dataKey\": \"soil_engineering_project_market_cost\"}, {\"name\": \" 地下基础\", \"role\": \"child\", \"price\": \"346\", \"remark\": \"\", \"dataKey\": \"soil_engineering_project_market_cost\", \"valuationDateDegreeCompletion\": \"46%\"}, {\"name\": \" 地下室\", \"role\": \"child\", \"price\": \"\", \"remark\": \"\", \"dataKey\": \"soil_engineering_project_market_cost\", \"valuationDateDegreeCompletion\": \"\"}, {\"name\": \" 地上主体\", \"role\": \"child\", \"price\": \"\", \"remark\": \"\", \"dataKey\": \"soil_engineering_project_market_cost\", \"valuationDateDegreeCompletion\": \"\"}, {\"name\": \"安装工程\", \"role\": \"parent\", \"dataKey\": \"erect_engineering_project_market_cost\"}, {\"name\": \" 电气工程\", \"role\": \"child\", \"price\": \"\", \"remark\": \"\", \"dataKey\": \"erect_engineering_project_market_cost\", \"valuationDateDegreeCompletion\": \"\"}, {\"name\": \" 给排水工程\", \"role\": \"child\", \"price\": \"\", \"remark\": \"\", \"dataKey\": \"erect_engineering_project_market_cost\", \"valuationDateDegreeCompletion\": \"\"}, {\"name\": \"装饰工程\", \"role\": \"parent\", \"dataKey\": \"decorate_engineering_project_market_cost\"}, {\"name\": \" 楼地面工程\", \"role\": \"child\", \"price\": \"\", \"remark\": \"\", \"dataKey\": \"decorate_engineering_project_market_cost\", \"valuationDateDegreeCompletion\": \"\"}, {\"name\": \" 外墙墙柱面工程\", \"role\": \"child\", \"price\": \"\", \"remark\": \"\", \"dataKey\": \"decorate_engineering_project_market_cost\", \"valuationDateDegreeCompletion\": \"\"}, {\"name\": \" 内墙墙柱面工程\", \"role\": \"child\", \"price\": \"\", \"remark\": \"\", \"dataKey\": \"decorate_engineering_project_market_cost\", \"valuationDateDegreeCompletion\": \"\"}, {\"name\": \" 天棚工程\", \"role\": \"child\", \"price\": \"\", \"remark\": \"\", \"dataKey\": \"decorate_engineering_project_market_cost\", \"valuationDateDegreeCompletion\": \"\"}, {\"name\": \" 门窗工程\", \"role\": \"child\", \"price\": \"\", \"remark\": \"\", \"dataKey\": \"decorate_engineering_project_market_cost\", \"valuationDateDegreeCompletion\": \"\"}, {\"name\": \" 外墙（油漆、涂料、裱糊）工程\", \"role\": \"child\", \"price\": \"\", \"remark\": \"\", \"dataKey\": \"decorate_engineering_project_market_cost\", \"valuationDateDegreeCompletion\": \"\"}, {\"name\": \" 内墙（油漆、涂料、裱糊）工程\", \"role\": \"child\", \"price\": \"\", \"remark\": \"\", \"dataKey\": \"decorate_engineering_project_market_cost\", \"valuationDateDegreeCompletion\": \"\"}, {\"name\": \"附属工程\", \"role\": \"parent\", \"dataKey\": \"subsidiary_engineering_project_market_cost\"}, {\"name\": \" 道路\", \"role\": \"child\", \"price\": \"\", \"remark\": \"\", \"dataKey\": \"subsidiary_engineering_project_market_cost\", \"valuationDateDegreeCompletion\": \"\"}, {\"name\": \" 围墙\", \"role\": \"child\", \"price\": \"\", \"remark\": \"\", \"dataKey\": \"subsidiary_engineering_project_market_cost\", \"valuationDateDegreeCompletion\": \"\"}, {\"name\": \" 大门\", \"role\": \"child\", \"price\": \"\", \"remark\": \"\", \"dataKey\": \"subsidiary_engineering_project_market_cost\", \"valuationDateDegreeCompletion\": \"\"}, {\"name\": \" 绿化\", \"role\": \"child\", \"price\": \"\", \"remark\": \"\", \"dataKey\": \"subsidiary_engineering_project_market_cost\", \"valuationDateDegreeCompletion\": \"\"}, {\"name\": \" 园林\", \"role\": \"child\", \"price\": \"\", \"remark\": \"\", \"dataKey\": \"subsidiary_engineering_project_market_cost\", \"valuationDateDegreeCompletion\": \"\"}, {\"name\": \" 景观\", \"role\": \"child\", \"price\": \"\", \"remark\": \"\", \"dataKey\": \"subsidiary_engineering_project_market_cost\", \"valuationDateDegreeCompletion\": \"\"}, {\"name\": \"二装工程\", \"role\": \"parent\", \"dataKey\": \"twoLoading_engineering_project_market_cost\"}, {\"name\": \" 第二次装修\", \"role\": \"child\", \"price\": \"525\", \"remark\": \"fcdfdfdfj\", \"dataKey\": \"twoLoading_engineering_project_market_cost\", \"valuationDateDegreeCompletion\": \"34%\"}]";
 
     @Test
-   public void testAlgsTest(){
-        MdCostConstructionVo vo = new MdCostConstructionVo();
-        vo.setDevelopLandAreaTax(new BigDecimal(65975.9)) ;
-        vo.setDevelopBuildAreaTax(new BigDecimal(185000)) ;
-        vo.setDevelopYearNumberTax(new BigDecimal(2)) ;
-        vo.setLandPurchasePrice(new BigDecimal(1000)) ;
-        vo.setLandGetRelevant(new BigDecimal(0.05)) ;
-        vo.setAdditionalCostLandAcquisition(new BigDecimal(120)) ;
+    public void testSheet() throws Exception {
+        String path = "C:\\Users\\HP\\Documents\\" + RandomStringUtils.randomNumeric(7) + ".doc";
+        LinkedList<String> linkedList = Lists.newLinkedList();
+        Set<MergeCellModel> mergeCellModelList = Sets.newHashSet();
+        Document document = new Document();
+        DocumentBuilder documentBuilder = new DocumentBuilder(document);
 
-        vo.setReconnaissanceDesign(new BigDecimal(0.06)) ;
-        vo.setConstructionInstallationEngineeringFee(new BigDecimal(1500)) ;
+
+        //设置具体宽度自动适应
+        PreferredWidth preferredWidth = PreferredWidth.AUTO;
+        documentBuilder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
+        documentBuilder.getCellFormat().setPreferredWidth(preferredWidth);
+        documentBuilder.getCellFormat().setVerticalMerge(CellVerticalAlignment.CENTER);
+        documentBuilder.getCellFormat().setVerticalAlignment(CellVerticalAlignment.CENTER);
+        documentBuilder.getCellFormat().setHorizontalMerge(CellVerticalAlignment.CENTER);
+        documentBuilder.getCellFormat().setTopPadding(0);
+        documentBuilder.getCellFormat().setBottomPadding(0);
+        documentBuilder.getCellFormat().setLeftPadding(0);
+        documentBuilder.getCellFormat().setRightPadding(0);
+        documentBuilder.getFont().setSize(10.5);
+        documentBuilder.getFont().setName(AsposeUtils.ImitationSong);
+
+
+        List<MdCalculatingMethodEngineeringCost> costList = Lists.newArrayList();
+        JSONArray jsonArrayA = JSONArray.parseArray(jsonData);
+        MdCalculatingMethodEngineeringCost mdCalculatingMethodEngineeringCost = new MdCalculatingMethodEngineeringCost();
+        mdCalculatingMethodEngineeringCost.setName("2栋");
+        mdCalculatingMethodEngineeringCost.setPrice(new BigDecimal(22.5));
+        mdCalculatingMethodEngineeringCost.setArea(new BigDecimal(322.1));
+        costList.add(mdCalculatingMethodEngineeringCost);
+        LinkedHashMap<MdCalculatingMethodEngineeringCost, JSONArray> costJSONObjectMap = Maps.newLinkedHashMap();
+        costJSONObjectMap.put(mdCalculatingMethodEngineeringCost, jsonArrayA);
+        final AtomicInteger atomicInteger = new AtomicInteger(0);
+
+        com.aspose.words.Table table = documentBuilder.startTable();
+        writeCalculatingMethodEngineeringCostSheet(documentBuilder, linkedList, costJSONObjectMap, mergeCellModelList, atomicInteger);
+        if (CollectionUtils.isNotEmpty(mergeCellModelList)) {
+            mergeCellTable(mergeCellModelList, table);
+        }
+        documentBuilder.endTable();
+
+        AsposeUtils.saveWord(path, document);
+    }
+
+    private void writeCalculatingMethodEngineeringCostSheet(DocumentBuilder documentBuilder, LinkedList<String> linkedList, LinkedHashMap<MdCalculatingMethodEngineeringCost, JSONArray> costJSONObjectMap, Set<MergeCellModel> mergeCellModelList, final AtomicInteger atomicInteger) throws Exception {
+        for (Map.Entry<MdCalculatingMethodEngineeringCost, JSONArray> entry : costJSONObjectMap.entrySet()) {
+            linkedList.addAll(Arrays.asList(String.join("工程名称:","",entry.getKey().getName()), "", "", "", ""));
+            AsposeUtils.writeWordTitle(documentBuilder, linkedList);
+            mergeCellModelList.add(new MergeCellModel(atomicInteger.get(), 0, atomicInteger.get(), linkedList.size() - 1));
+            linkedList.clear();
+            atomicInteger.incrementAndGet();
+
+            linkedList.addAll(Arrays.asList("列表属性", "", "估价时点完工程度", "单方造价(元/㎡)", "估价时点单价(元/㎡)"));
+            AsposeUtils.writeWordTitle(documentBuilder, linkedList);
+            mergeCellModelList.add(new MergeCellModel(atomicInteger.get(), 0, atomicInteger.get(), 1));
+            atomicInteger.incrementAndGet();
+            linkedList.clear();
+
+
+            JSONArray jsonArray = entry.getValue();
+            for (int i = 0; i < jsonArray.size(); i++) {
+                JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+                //父级
+                if (jsonObject.size() == 3) {
+                    linkedList.add(String.join("",jsonObject.getString("name"),StringUtils.repeat(" ",1),"(父级)"));
+                    linkedList.add("");
+
+                    linkedList.add("/");
+                    linkedList.add("");
+                    linkedList.add("");
+                    AsposeUtils.writeWordTitle(documentBuilder, linkedList);
+                    mergeCellModelList.add(new MergeCellModel(atomicInteger.get(), 0, atomicInteger.get(), linkedList.size() - 1));
+                    linkedList.clear();
+                }
+                //子级
+                if (jsonObject.size() != 3) {
+                    linkedList.add("");
+                    linkedList.add(jsonObject.getString("name"));
+
+                    String valuationDateDegreeCompletion = jsonObject.getString("valuationDateDegreeCompletion");
+                    String price = jsonObject.getString("price");
+
+                    linkedList.add(StringUtils.isNotBlank(valuationDateDegreeCompletion) ? valuationDateDegreeCompletion : "");
+                    linkedList.add(StringUtils.isNotBlank(price) ? price : "");
+                    if (StringUtils.isNotBlank(valuationDateDegreeCompletion) && StringUtils.isNotBlank(price)) {
+                        try {
+                            String string = ArithmeticUtils.parseFormatString(valuationDateDegreeCompletion);
+                            String costPrice = ArithmeticUtils.mul(string, price, 2);
+                            linkedList.add(costPrice);
+                        } catch (ParseException e) {
+                            linkedList.add("");
+                        }
+                    } else {
+                        linkedList.add("");
+                    }
+                    AsposeUtils.writeWordTitle(documentBuilder, linkedList);
+                    linkedList.clear();
+                }
+                atomicInteger.incrementAndGet();
+            }
+        }
+    }
+
+    private void mergeCellTable(Set<MergeCellModel> mergeCellModelList, Table table) {
+        if (CollectionUtils.isNotEmpty(mergeCellModelList)) {
+            for (MergeCellModel mergeCellModel : mergeCellModelList) {
+                try {
+                    Cell cellStartRange = null;
+                    Cell cellEndRange = null;
+                    if (mergeCellModel.getCellEndRange() == null && mergeCellModel.getCellStartRange() == null) {
+                        cellStartRange = table.getRows().get(mergeCellModel.getStartRowIndex()).getCells().get(mergeCellModel.getStartColumnIndex());
+                        cellEndRange = table.getRows().get(mergeCellModel.getEndRowIndex()).getCells().get(mergeCellModel.getEndColumnIndex());
+                    } else {
+                        cellStartRange = mergeCellModel.getCellStartRange();
+                        cellEndRange = mergeCellModel.getCellEndRange();
+                    }
+                    if (cellStartRange != null && cellEndRange != null) {
+                        if (table != null) {
+                            AsposeUtils.mergeCells(cellStartRange, cellEndRange, table);
+                        }
+                    }
+                } catch (Exception e) {
+                }
+            }
+        }
+    }
+
+    @Test
+    public void testAlgsTest() {
+        MdCostConstructionVo vo = new MdCostConstructionVo();
+        vo.setDevelopLandAreaTax(new BigDecimal(65975.9));
+        vo.setDevelopBuildAreaTax(new BigDecimal(185000));
+        vo.setDevelopYearNumberTax(new BigDecimal(2));
+        vo.setLandPurchasePrice(new BigDecimal(1000));
+        vo.setLandGetRelevant(new BigDecimal(0.05));
+        vo.setAdditionalCostLandAcquisition(new BigDecimal(120));
+
+        vo.setReconnaissanceDesign(new BigDecimal(0.06));
+        vo.setConstructionInstallationEngineeringFee(new BigDecimal(1500));
         vo.setInfrastructureCost(new BigDecimal(120));
         vo.setInfrastructureMatchingCost(new BigDecimal(50));
         vo.setDevDuring(new BigDecimal(45));
@@ -51,12 +188,12 @@ public class ZCHDemo {
         vo.setInterestInvestmentTax(new BigDecimal(0.05));
         vo.setSalesTaxAndAdditional(new BigDecimal(0.057));
         vo.setInvestmentProfitTax(new BigDecimal(0.2));
-        String value = getFieldObjectValue(BaseReportFieldEnum.MarketCost_constructionAssessmentPriceCorrecting,vo) ;
+        String value = getFieldObjectValue(BaseReportFieldEnum.MarketCost_constructionAssessmentPriceCorrecting, vo);
         System.out.println(value);
-   }
+    }
 
     private String getFieldObjectValue(BaseReportFieldEnum key, MdCostConstructionVo target) {
-        return new MdMarketCostService().getFieldObjectValue(key,target) ;
+        return new MdMarketCostService().getFieldObjectValue(key, target);
     }
 
 
@@ -76,50 +213,49 @@ public class ZCHDemo {
      */
     public String getBigDecimalToInteger(final BigDecimal bigDecimal, final int number) {
         if (bigDecimal == null) {
-            throw new IllegalArgumentException("不符合约定哦亲!") ;
+            throw new IllegalArgumentException("不符合约定哦亲!");
         }
         int log = (int) Math.log10(number);//这里一定会是整数,不用担心精度损失
-        if (log < 1){
-            throw new IllegalArgumentException("不符合约定哦亲!") ;
+        if (log < 1) {
+            throw new IllegalArgumentException("不符合约定哦亲!");
         }
         final AtomicInteger atomicInteger = new AtomicInteger(0);
-        double result = whileDivide(atomicInteger,bigDecimal.doubleValue()) ;
-        int sub = atomicInteger.get()-log;//总int长度 - 需要保留到的int长度
+        double result = whileDivide(atomicInteger, bigDecimal.doubleValue());
+        int sub = atomicInteger.get() - log;//总int长度 - 需要保留到的int长度
         BigDecimal temp = new BigDecimal(result).setScale(sub, BigDecimal.ROUND_HALF_UP);
         result = temp.doubleValue();
-        long center = Math.round(Math.pow(10, (double) atomicInteger.get())) ;
-        result = result*center;
-        return new BigDecimal(result).stripTrailingZeros().toPlainString() ;
+        long center = Math.round(Math.pow(10, (double) atomicInteger.get()));
+        result = result * center;
+        return new BigDecimal(result).stripTrailingZeros().toPlainString();
     }
 
-    private double whileDivide(AtomicInteger atomicInteger,double number){
+    private double whileDivide(AtomicInteger atomicInteger, double number) {
         final int one = 1;
-        if (number > one){
-            number = number/ 10;
+        if (number > one) {
+            number = number / 10;
             atomicInteger.incrementAndGet();
-            return whileDivide(atomicInteger,number) ;
-        }else {
+            return whileDivide(atomicInteger, number);
+        } else {
             return number;
         }
     }
 
     @Test
-    public void testNumber(){
+    public void testNumber() {
         double number = 6326;
         final AtomicInteger atomicInteger = new AtomicInteger(0);
-        number = whileDivide(atomicInteger,number) ;
+        number = whileDivide(atomicInteger, number);
         System.out.println(number);
         System.out.println(atomicInteger.get());
     }
 
     @Test
-    public void subDecimal(){
+    public void subDecimal() {
         double number = 252.2623623;
-       String start = StringUtils.substringAfterLast(String.valueOf(number),".");
+        String start = StringUtils.substringAfterLast(String.valueOf(number), ".");
         System.out.println(start);
 
     }
-
 
 
     @org.junit.Test
@@ -134,7 +270,7 @@ public class ZCHDemo {
     }
 
     @Test
-    public void testURLEncoder()throws Exception {
+    public void testURLEncoder() throws Exception {
         String strTest = "http://rd.wechat.com/qrcode/confirm?block_type=101&content=%E5%A4%87%E6%A1%88%E5%8F%B7%EF%BC%9A5112819AA0008%0A%E6%8A%A5%E5%91%8A%E5%90%8D%E7%A7%B0%EF%BC%9A%E6%88%90%E9%83%BD%E4%BA%91%E5%A4%A9%E7%91%9E%E6%88%90%E5%95%86%E8%B4%B8%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8..%0A%E4%BC%B0%E4%BB%B7%E5%8D%95%E4%BD%8D%EF%BC%9A%E5%9B%9B%E5%B7%9D%E5%8D%8F%E5%90%88%E6%88%BF%E5%9C%B0%E4%BA%A7%E5%9C%9F%E5%9C%B0%E8%B5%84%E4%BA%A7%E8%AF%84..%0A%E6%8A%A5%E5%91%8A%E6%97%A5%E6%9C%9F%EF%BC%9A2019%E5%B9%B43%E6%9C%8819%E6%97%A5&lang=zh_CN&scene=4";
 
         strTest = URLDecoder.decode(strTest, "UTF-8");//解码
@@ -143,17 +279,17 @@ public class ZCHDemo {
     }
 
     @Test
-    public void testFilter(){
-        List<String> stringList = Arrays.asList("a","b","v");
-        stringList = new ArrayList<>() ;
+    public void testFilter() {
+        List<String> stringList = Arrays.asList("a", "b", "v");
+        stringList = new ArrayList<>();
         List<String> list = stringList.stream().filter(s -> NumberUtils.isNumber(s)).collect(Collectors.toList());
         System.out.println(list.size());
     }
 
     @Test
-    public void testForeach(){
+    public void testForeach() {
         final AtomicInteger value = new AtomicInteger(0);
-        List<String> stringList = Arrays.asList("a","b","v");
+        List<String> stringList = Arrays.asList("a", "b", "v");
         stringList.forEach(s -> {
             System.out.println(value.get());
             value.incrementAndGet();
@@ -161,8 +297,8 @@ public class ZCHDemo {
     }
 
     @Test
-    public void testStringJoin(){
-        String prefix = String.join("","2","2") ;
+    public void testStringJoin() {
+        String prefix = String.join("", "2", "2");
         System.out.println(prefix);
     }
 

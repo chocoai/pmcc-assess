@@ -265,6 +265,8 @@ public enum BaseReportFieldEnum implements Serializable {
     Development_AmendmentStatusRightsRemark("假设法宗地权利状况修正说明"),
 
 
+    MarketCost_JudgeObject("成本法估价对象"),
+    MarketCost_Merge_JudgeObject("成本法合并估价对象"),
     MarketCost_Method("成本法土地测算方法"),
     MarketCost_region("成本法区域"),
     MarketCost_developYearNumberTax("成本法开发周期"),
@@ -324,7 +326,15 @@ public enum BaseReportFieldEnum implements Serializable {
     MarketCost_EstateLandPrice("成本法楼面土地单价"),
     MarketCost_landGetCostTotal("成本法土地取得成本"),
     MarketCost_Degree_land_development("成本法土地开发程度"),
+    MarketCost_ResidueRatio("成本法综合成新率"),
+    MarketCost_ResidueRatio_method("成本法成新率方法选择"),
+    MarketCost_ResidueRatio_remark("成本法成新率选择方法说明"),
+    MarketCost_ResidueRatio_formula("成本法成新率计算公式"),
+    MarketCost_ResidueRatio_value("成本法成新率计算公式分别代值"),
+    MarketCost_CompleteCostValue("成本法完全成本计算值"),
+    MarketCost_constructionAssessmentPriceCorrecting2("成本法单价源"),
     MarketCost_constructionAssessmentPriceCorrecting("成本法单价"),
+    MarketCost_CalculatingMethodEngineeringCostSheet("成本法建安工程费用计算表"),
 
     ;
     private String name;

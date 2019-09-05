@@ -1,24 +1,27 @@
 package com.copower.pmcc.assess.service.project.generate;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.aspose.words.BookmarkCollection;
-import com.aspose.words.Document;
+import com.alibaba.fastjson.JSONArray;
+import com.aspose.words.*;
 import com.copower.pmcc.assess.common.ArithmeticUtils;
 import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.enums.BaseReportFieldEnum;
 import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dto.output.MergeCellModel;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateLandStateVo;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateVo;
 import com.copower.pmcc.assess.dto.output.method.MdCostConstructionVo;
 import com.copower.pmcc.assess.dto.output.method.MdCostVo;
+import com.copower.pmcc.assess.dto.output.project.scheme.SchemeJudgeObjectVo;
 import com.copower.pmcc.assess.service.BaseService;
+import com.copower.pmcc.assess.service.assist.ResidueRatioService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseReportFieldService;
-import com.copower.pmcc.assess.service.data.DataSetUseFieldService;
+import com.copower.pmcc.assess.service.method.MdArchitecturalObjService;
+import com.copower.pmcc.assess.service.method.MdCalculatingMethodEngineeringCostService;
 import com.copower.pmcc.assess.service.method.MdMarketCostService;
+import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
@@ -27,17 +30,23 @@ import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.SpringContextUtils;
 import com.google.common.base.Objects;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.math.NumberUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.task.TaskExecutor;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by zch on 2019-8-26.
@@ -61,13 +70,15 @@ public class GenerateMdCostService implements Serializable {
     private GenerateCommonMethod generateCommonMethod;
     private BaseReportFieldService baseReportFieldService;
     private BaseAttachmentService baseAttachmentService;
-    private DataSetUseFieldService dataSetUseFieldService;
     private MdMarketCostService mdMarketCostService;
     private BaseService baseService;
     private TaskExecutor taskExecutor;
+    private ResidueRatioService residueRatioService;
+    private ProjectPlanDetailsService projectPlanDetailsService;
+    private MdArchitecturalObjService mdArchitecturalObjService;
 
 
-    protected String generateCompareFile() throws Exception {
+    public synchronized String generateCompareFile() throws Exception {
         MdCostVo costVo = getMdCostVo();
         String key = Objects.equal("1", costVo.getType()) ? AssessReportFieldConstant.COST_TEMPLATE_BUILDING : AssessReportFieldConstant.COST_TEMPLATE_CONSTRUCTION;
         BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByFieldName(key);
@@ -106,53 +117,88 @@ public class GenerateMdCostService implements Serializable {
         final ConcurrentHashMap<String, String> bookmarkMap = new ConcurrentHashMap<String, String>(0);
         final long time = 70;//最多阻塞70秒
         //设置必要的数据
+        final ProjectPlanDetails projectPlanDetails = getProjectPlanDetailsById(schemeInfo.getPlanDetailsId()) ;
+        final LinkedHashMap<MdCalculatingMethodEngineeringCost, JSONArray> costJSONObjectMap = Maps.newLinkedHashMap();
+        mdArchitecturalObjService.setMdCalculatingMethodEngineeringCostMapData(costJSONObjectMap, projectPlanDetails,projectPlanDetails.getProjectId());
         final MdCostVo mdCostVo = getMdCostVo();
         final SchemeAreaGroup schemeAreaGroup = getSchemeAreaGroup();
         final SchemeJudgeObject schemeJudgeObject = getSchemeJudgeObject();
-        JSONObject jsonObject = null;
-        try {
-            MdCostConstruction target = mdMarketCostService.getMdCostConstruction(mdCostVo.getMdCostConstruction().getId());
-            jsonObject = JSON.parseObject(target.getJsonContent());
-        } catch (Exception e) {
-        }
-        if (jsonObject == null) {
-            jsonObject = new JSONObject();
-        }
-        final JSONObject jsonObject1 = jsonObject;
-        synchronized (this) {
-            if (!map.isEmpty()) {
-                //发起线程组
-                final CountDownLatch countDownLatch = new CountDownLatch(map.size());
-                for (Map.Entry<BaseReportFieldEnum, String> enumStringEntry : map.entrySet()) {
-                    taskExecutor.execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                setFieldObjectValue(enumStringEntry.getKey(), textMap, fileMap, bookmarkMap, mdCostVo, schemeAreaGroup, schemeJudgeObject, jsonObject1);
-                            } catch (Exception e) {
-                                baseService.writeExceptionInfo(e);
-                            } finally {
-                                countDownLatch.countDown();
-                            }
+        final ToolResidueRatio toolResidueRatio = residueRatioService.getToolResidueRatio(mdCostVo.getMdCostConstruction().getResidueRatioId());
+        if (!map.isEmpty()) {
+            //发起线程组
+            final CountDownLatch countDownLatch = new CountDownLatch(map.size());
+            for (Map.Entry<BaseReportFieldEnum, String> enumStringEntry : map.entrySet()) {
+                taskExecutor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            setFieldObjectValue(enumStringEntry.getKey(), textMap, fileMap, bookmarkMap, mdCostVo, schemeAreaGroup, schemeJudgeObject, toolResidueRatio);
+                            setFieldObjectOtherValue(enumStringEntry.getKey(), textMap, fileMap, bookmarkMap, costJSONObjectMap);
+                        } catch (Exception e) {
+                            baseService.writeExceptionInfo(e);
+                        } finally {
+                            countDownLatch.countDown();
                         }
-                    });
-                }
-                //能够阻塞线程 直到调用N次end.countDown() 方法才释放线程
-                countDownLatch.await(time, TimeUnit.SECONDS);
+                    }
+                });
             }
-            //替换
-            if (!textMap.isEmpty()) {
-                AsposeUtils.replaceText(localPath, textMap);
-            }
-            if (!bookmarkMap.isEmpty()) {
-                AsposeUtils.replaceBookmark(localPath, bookmarkMap, true);
-            }
-            if (!fileMap.isEmpty()) {
-                AsposeUtils.replaceTextToFile(localPath, fileMap);
-                AsposeUtils.replaceBookmarkToFile(localPath, fileMap);
-            }
+            //能够阻塞线程 直到调用N次end.countDown() 方法才释放线程
+            countDownLatch.await(time, TimeUnit.SECONDS);
+        }
+        //
+        //替换
+        if (!textMap.isEmpty()) {
+            AsposeUtils.replaceText(localPath, textMap);
+        }
+        if (!bookmarkMap.isEmpty()) {
+            AsposeUtils.replaceBookmark(localPath, bookmarkMap, true);
+        }
+        if (!fileMap.isEmpty()) {
+            AsposeUtils.replaceTextToFile(localPath, fileMap);
+            AsposeUtils.replaceBookmarkToFile(localPath, fileMap);
         }
         return localPath;
+    }
+
+    private void setFieldObjectOtherValue(BaseReportFieldEnum key, final ConcurrentHashMap<String, String> textMap, final ConcurrentHashMap<String, String> fileMap, final ConcurrentHashMap<String, String> bookmarkMap,LinkedHashMap<MdCalculatingMethodEngineeringCost, JSONArray> costJSONObjectMap)throws Exception{
+        switch (key){
+            case MarketCost_CalculatingMethodEngineeringCostSheet: {
+                if (costJSONObjectMap.isEmpty()){
+                    break;
+                }
+                String path = generateCommonMethod.getLocalPath(RandomStringUtils.randomAlphanumeric(4));
+                LinkedList<String> linkedList = Lists.newLinkedList();
+                Set<MergeCellModel> mergeCellModelList = Sets.newHashSet();
+                Document document = new Document();
+                DocumentBuilder documentBuilder = new DocumentBuilder(document);
+                //设置具体宽度自动适应
+                PreferredWidth preferredWidth = PreferredWidth.AUTO;
+                documentBuilder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
+                documentBuilder.getCellFormat().setPreferredWidth(preferredWidth);
+                documentBuilder.getCellFormat().setVerticalMerge(CellVerticalAlignment.CENTER);
+                documentBuilder.getCellFormat().setVerticalAlignment(CellVerticalAlignment.CENTER);
+                documentBuilder.getCellFormat().setHorizontalMerge(CellVerticalAlignment.CENTER);
+                documentBuilder.getCellFormat().setTopPadding(0);
+                documentBuilder.getCellFormat().setBottomPadding(0);
+                documentBuilder.getCellFormat().setLeftPadding(0);
+                documentBuilder.getCellFormat().setRightPadding(0);
+                documentBuilder.getFont().setSize(10.5);
+                documentBuilder.getFont().setName(AsposeUtils.ImitationSongGB2312FontName);
+
+                final AtomicInteger atomicInteger = new AtomicInteger(0);
+                com.aspose.words.Table table = documentBuilder.startTable();
+                mdArchitecturalObjService.writeCalculatingMethodEngineeringCostSheet(documentBuilder, linkedList, costJSONObjectMap, mergeCellModelList, atomicInteger);
+                if (CollectionUtils.isNotEmpty(mergeCellModelList)) {
+                    generateCommonMethod.mergeCellTable(mergeCellModelList, table);
+                }
+                documentBuilder.endTable();
+                AsposeUtils.saveWord(path, document);
+                generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, key.getName(), path);
+            }
+            break;
+
+            default:break;
+        }
     }
 
     /**
@@ -165,10 +211,9 @@ public class GenerateMdCostService implements Serializable {
      * @param mdCostVo
      * @param schemeAreaGroup
      * @param schemeJudgeObject
-     * @param jsonObject
+     * @param toolResidueRatio
      */
-    private void setFieldObjectValue(BaseReportFieldEnum key, final ConcurrentHashMap<String, String> textMap, final ConcurrentHashMap<String, String> fileMap, final ConcurrentHashMap<String, String> bookmarkMap, MdCostVo mdCostVo, SchemeAreaGroup schemeAreaGroup, SchemeJudgeObject schemeJudgeObject, JSONObject jsonObject) {
-        final String defaultValue = "";
+    private void setFieldObjectValue(BaseReportFieldEnum key, final ConcurrentHashMap<String, String> textMap, final ConcurrentHashMap<String, String> fileMap, final ConcurrentHashMap<String, String> bookmarkMap, MdCostVo mdCostVo, SchemeAreaGroup schemeAreaGroup, SchemeJudgeObject schemeJudgeObject, ToolResidueRatio toolResidueRatio) throws Exception {
         MdCostConstructionVo target = mdCostVo.getMdCostConstruction();
         //计算类数据
         String value = mdMarketCostService.getFieldObjectValue(key, target);
@@ -177,6 +222,26 @@ public class GenerateMdCostService implements Serializable {
         }
         //非计算类数据
         switch (key) {
+            case MarketCost_JudgeObject: {
+                generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), String.join("", generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject), "估价对象"));
+            }
+            break;
+            case MarketCost_Merge_JudgeObject: {
+                String v = "无合并对象";
+                if (schemeJudgeObject.getBisMerge() != null) {
+                    List<SchemeJudgeObjectVo> schemeJudgeObjectVoList = schemeJudgeObjectService.getListByPid(schemeJudgeObject.getId());
+                    if (CollectionUtils.isNotEmpty(schemeJudgeObjectVoList)) {
+                        List<Integer> integerList = Lists.newArrayList();
+                        for (SchemeJudgeObjectVo schemeJudgeObjectVo : schemeJudgeObjectVoList) {
+                            integerList.add(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObjectVo.getNumber()));
+                        }
+                        v = generateCommonMethod.convertNumber(integerList);
+                        v = String.join("", v, "估价对象");
+                    }
+                }
+                generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), v);
+            }
+            break;
             case MarketCost_Method: {
                 if (mdCostVo.getMdCostConstruction().getMcId() != null) {
                     try {
@@ -192,7 +257,7 @@ public class GenerateMdCostService implements Serializable {
             break;
             case MarketCost_extraterritorial_reality: {
                 BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
-                if (basicApply == null){
+                if (basicApply == null) {
                     return;
                 }
                 GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
@@ -204,7 +269,7 @@ public class GenerateMdCostService implements Serializable {
             break;
             case MarketCost_intra_territorial_reality: {
                 BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
-                if (basicApply == null){
+                if (basicApply == null) {
                     return;
                 }
                 GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
@@ -219,7 +284,7 @@ public class GenerateMdCostService implements Serializable {
             break;
             case MarketCost_Degree_land_development: {
                 BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
-                if (basicApply == null){
+                if (basicApply == null) {
                     return;
                 }
                 GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
@@ -324,6 +389,99 @@ public class GenerateMdCostService implements Serializable {
                 }
             }
             break;
+            case MarketCost_ResidueRatio: {
+                generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), ArithmeticUtils.getPercentileSystem(target.getResidueRatio(), 2));
+            }
+            break;
+            case MarketCost_constructionAssessmentPriceCorrecting2: {
+                if (target.getResidueRatio() != null) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), ArithmeticUtils.divide(target.getConstructionAssessmentPriceCorrecting(), target.getResidueRatio(), 2).toString());
+                }
+            }
+            break;
+            case MarketCost_ResidueRatio_method: {
+                if (target.getResidueRatioId() != null) {
+                    if (toolResidueRatio == null) {
+                        break;
+                    }
+                    if (toolResidueRatio.getType() == null) {
+                        break;
+                    }
+                    switch (toolResidueRatio.getType()) {
+                        case 0:
+                            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), "年限法");
+                            break;
+                        case 1:
+                            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), "观察法");
+                            break;
+                        case 2:
+                            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), "综合法");
+                            break;
+                    }
+                }
+            }
+            break;
+            case MarketCost_ResidueRatio_remark: {
+                if (target.getResidueRatioId() != null) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), "无说明");
+                }
+                break;
+            }
+            case MarketCost_ResidueRatio_formula: {
+                if (toolResidueRatio == null) {
+                    break;
+                }
+                if (toolResidueRatio.getType() == null) {
+                    break;
+                }
+                switch (toolResidueRatio.getType()) {
+                    case 0:
+                        generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), "1-已使用年限/可用年限");
+                        break;
+                    case 1:
+                        generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), "取得完损度数据自动计算");
+                        break;
+                    case 2:
+                        generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), "年限法成效率*年限法权重+观察法成新率*观察法权重");
+                        break;
+                }
+            }
+            break;
+            case MarketCost_ResidueRatio_value: {
+                if (toolResidueRatio == null) {
+                    break;
+                }
+                try {
+                    StringBuilder stringBuilder = new StringBuilder(8);
+                    if (toolResidueRatio.getUsedYear() != null) {
+                        stringBuilder.append("已用年限:").append(ArithmeticUtils.getBigDecimalString(toolResidueRatio.getUsedYear()));
+                    }
+                    if (toolResidueRatio.getUsableYear() != null) {
+                        stringBuilder.append("可用年限:").append(ArithmeticUtils.getBigDecimalString(toolResidueRatio.getUsableYear()));
+                    }
+                    if (toolResidueRatio.getAgeRate() != null) {
+                        stringBuilder.append("年限权重:").append(ArithmeticUtils.getBigDecimalString(toolResidueRatio.getAgeRate()));
+                    }
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), stringBuilder.toString());
+                } catch (Exception e) {
+                }
+            }
+            break;
+            case MarketCost_CompleteCostValue: {
+                try {
+                    String v1 = mdMarketCostService.getFieldObjectValue(BaseReportFieldEnum.MarketCost_landGetCostTotal, target);
+                    String v2 = mdMarketCostService.getFieldObjectValue(BaseReportFieldEnum.MarketCost_constructionSubtotal, target);
+                    String v3 = mdMarketCostService.getFieldObjectValue(BaseReportFieldEnum.MarketCost_unforeseenExpenses, target);
+                    String v4 = mdMarketCostService.getFieldObjectValue(BaseReportFieldEnum.MarketCost_managementExpense, target);
+                    String v5 = NumberUtils.isNumber(mdMarketCostService.getFieldObjectValue(BaseReportFieldEnum.MarketCost_salesFee, target)) ? mdMarketCostService.getFieldObjectValue(BaseReportFieldEnum.MarketCost_salesFee, target) : "0";
+                    String v6 = NumberUtils.isNumber(mdMarketCostService.getFieldObjectValue(BaseReportFieldEnum.MarketCost_salesTaxAndAdditional, target)) ? mdMarketCostService.getFieldObjectValue(BaseReportFieldEnum.MarketCost_salesTaxAndAdditional, target) : "0";
+                    String v7 = mdMarketCostService.getFieldObjectValue(BaseReportFieldEnum.MarketCost_investmentProfit, target);
+                    double v = ArithmeticUtils.add(new double[]{Double.valueOf(v1), Double.valueOf(v2), Double.valueOf(v3), Double.valueOf(v4), Double.valueOf(v5), Double.valueOf(v6), Double.valueOf(v7)});
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), String.valueOf(v));
+                } catch (Exception e) {
+                }
+            }
+            break;
             default: {
             }
             break;
@@ -363,6 +521,10 @@ public class GenerateMdCostService implements Serializable {
         return schemeJudgeObject;
     }
 
+    private   ProjectPlanDetails getProjectPlanDetailsById(Integer id){
+        return projectPlanDetailsService.getProjectPlanDetailsById(id) ;
+    }
+
     public GenerateMdCostService(Integer projectId, SchemeInfo schemeInfo, Integer areaId) {
         this.projectId = projectId;
         this.schemeInfo = schemeInfo;
@@ -375,10 +537,13 @@ public class GenerateMdCostService implements Serializable {
         this.generateCommonMethod = SpringContextUtils.getBean(GenerateCommonMethod.class);
         this.baseReportFieldService = SpringContextUtils.getBean(BaseReportFieldService.class);
         this.baseAttachmentService = SpringContextUtils.getBean(BaseAttachmentService.class);
-        this.dataSetUseFieldService = SpringContextUtils.getBean(DataSetUseFieldService.class);
         this.mdMarketCostService = SpringContextUtils.getBean(MdMarketCostService.class);
         this.baseService = SpringContextUtils.getBean(BaseService.class);
         this.taskExecutor = SpringContextUtils.getBean(TaskExecutor.class);
+        this.residueRatioService = SpringContextUtils.getBean(ResidueRatioService.class);
+        this.projectPlanDetailsService = SpringContextUtils.getBean(ProjectPlanDetailsService.class);
+        this.mdArchitecturalObjService = SpringContextUtils.getBean(MdArchitecturalObjService.class);
     }
+
 
 }
