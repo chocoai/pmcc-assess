@@ -347,7 +347,7 @@
         var cols = [];
         cols.push({field: 'year', title: '年度'});
         cols.push({field: 'month', title: '月度'});
-        cols.push({field: 'sourceType', title: '来源'});
+        cols.push({field: 'sourceType', title: '类型'});
         cols.push({
             field: 'accountingSubjectName', title: '会计科目', formatter: function (value, row, index) {
                 if (row.bisForecast) {
@@ -526,6 +526,7 @@
                 url: '${pageContext.request.contextPath}/income/historyToForecast',
                 data: {
                     year: year,
+                    formType: incomeIndex.getFormType(),
                     ids: idArray.join()
                 },
                 success: function (result) {
@@ -593,7 +594,7 @@
     selfSupportForecast.loadForecastAnalyseList = function (type) {
         var cols = [];
         cols.push({field: 'year', title: '年份'});
-        cols.push({field: 'sourceType', title: '来源'});
+        cols.push({field: 'sourceType', title: '类型'});
         cols.push({field: 'amountMoney', title: '金额'});
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {

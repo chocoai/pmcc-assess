@@ -109,6 +109,17 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
+                                            类型<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <select name="sourceType" class="form-control" required>
+                                                <option value="历史">历史</option>
+                                                <option value="调查">调查</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
                                             会计科目<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-4">
@@ -138,18 +149,20 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            开始时间
+                                            开始时间<span class="symbol required"></span>
+                                        </label>
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" name="beginDate" data-date-format='yyyy-mm-dd' placeholder="开始时间" class="form-control dbdate" >
+                                            <input type="text" name="beginDate" data-date-format='yyyy-mm-dd' placeholder="开始时间" class="form-control dbdate" required>
                                         </div>
                                     </div>
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            结束时间
+                                            结束时间<span class="symbol required"></span>
+                                        </label>
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" name="endDate" data-date-format='yyyy-mm-dd'
+                                            <input type="text" name="endDate" data-date-format='yyyy-mm-dd' required
                                                    placeholder="结束时间" class="form-control dbdate">
                                         </div>
                                     </div>
@@ -263,6 +276,35 @@
     </div>
 </div>
 
+<div id="divBoxAnalyseItemData" class="modal fade bs-example-modal-lg" data-backdrop="static"
+     tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">明细</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                        <table class="table table-bordered" id="analyseItemList">
+                            <!-- cerare document add ajax data-->
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">
+                    关闭
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 <script type="text/javascript">
     var forecastRestaurant = {};
     forecastRestaurant.YEAR_DAYS = 365;//一年默认天数
@@ -359,6 +401,7 @@
                 return formatDate(value);
             }
         });
+        cols.push({field: 'sourceType', title: '类型'});
         cols.push({
             field: 'accountingSubjectName', title: '会计科目', formatter: function (value, row, index) {
                 if (row.bisForecast) {
@@ -399,7 +442,7 @@
                 $(".tooltips").tooltip();
                 setTimeout(function () {
                     $.ajax({
-                        url: '${pageContext.request.contextPath}/income/getForecastAnalyseList',
+                        url: '${pageContext.request.contextPath}/income/getAnalyseCountByYear',
                         type: 'get',
                         data: {
                             type: type,
@@ -408,8 +451,8 @@
                         },
                         success: function (result) {
                             var html = '';
-                            $.each(result.rows, function (i, item) {
-                                html += '<li><a href="javascript://" onclick="forecastRestaurant.historyToForecast(' + type + ',' + item.id + ');">' + item.year + '</a></li>';
+                            $.each(result.data, function (i, item) {
+                                html += '<li><a href="javascript://" onclick="forecastRestaurant.historyToForecast(' + type + ',' + item + ');">' + item + '</a></li>';
                             })
                             var elementId = type == 0 ? "ulForecastRestaurantAnalyseIncome" : "ulForecastRestaurantAnalyseCost";
                             $("#" + elementId).empty().html(html);
@@ -421,14 +464,14 @@
     }
 
     //删除历史信息
-    forecastRestaurant.delHistory = function (id, type) {
+    forecastRestaurant.delHistory = function (ids, type) {
         Alert("确认要删除么？", 2, null, function () {
             Loading.progressShow();
             $.ajax({
                 url: "${pageContext.request.contextPath}/income/deleteHistory",
                 type: "post",
                 dataType: "json",
-                data: {id: id},
+                data: {ids: ids},
                 success: function (result) {
                     Loading.progressHide();
                     if (result.ret) {
@@ -512,7 +555,7 @@
     }
 
     //历史数据添加到预测数据
-    forecastRestaurant.historyToForecast = function (type, forecastAnalyseId) {
+    forecastRestaurant.historyToForecast = function (type, year) {
         var rows = $('#' + forecastRestaurant.getHistoryListId(type)).bootstrapTable('getSelections');
         if (rows && rows.length > 0) {
             var idArray = [];
@@ -522,7 +565,8 @@
             $.ajax({
                 url: '${pageContext.request.contextPath}/income/historyToForecast',
                 data: {
-                    forecastAnalyseId: forecastAnalyseId,
+                    year: year,
+                    formType: incomeIndex.getFormType(),
                     ids: idArray.join()
                 },
                 success: function (result) {
@@ -590,15 +634,51 @@
     forecastRestaurant.loadForecastAnalyseList = function (type) {
         var cols = [];
         cols.push({field: 'year', title: '年份'});
+        cols.push({field: 'sourceType', title: '类型'});
         cols.push({field: 'amountMoney', title: '金额'});
-        cols.push({field: 'quantitativeTrend', title: '数量趋势'});
-        cols.push({field: 'univalentTrend', title: '单价趋势'});
+        cols.push({
+            field: 'id', title: '操作', formatter: function (value, row, index) {
+                if(row.amountMoney != null){
+                    var str = '<div class="btn-margin">';
+                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="查看明细" onclick="forecastRestaurant.showItemData(' + row.id  + ')">查看明细</a>';
+                    str += '</div>';
+                    return str;
+                }
+            }
+        });
         $("#" + forecastRestaurant.getForecastAnalyseListId(type)).bootstrapTable('destroy');
         TableInit(forecastRestaurant.getForecastAnalyseListId(type), "${pageContext.request.contextPath}/income/getForecastAnalyseList", cols, {
             type: type,
             formType: incomeIndex.getFormType(),
             bisParticipateIn: true,
             incomeId: incomeIndex.getInComeId()
+        }, {
+            showColumns: false,
+            showRefresh: false,
+            pagination: false,
+            search: false,
+            onLoadSuccess: function (data) {
+                $(".tooltips").tooltip();
+            }
+        });
+    }
+
+    forecastRestaurant.showItemData = function (id) {
+        forecastRestaurant.loadForecastAnalyseItemList(id);
+        $('#divBoxAnalyseItemData').modal("show");
+    }
+
+    //加载预测分析明细
+    forecastRestaurant.loadForecastAnalyseItemList = function (id) {
+        var cols = [];
+        cols.push({field: 'name', title: '会计科目/一级编号/二级编号'});
+        cols.push({field: 'amountMoney', title: '金额'});
+        cols.push({field: 'number', title: '数量'});
+        cols.push({field: 'moneyTrend', title: '金额趋势'});
+        cols.push({field: 'quantitativeTrend', title: '数量趋势'});
+        $("#analyseItemList").bootstrapTable('destroy');
+        TableInit("analyseItemList", "${pageContext.request.contextPath}/income/getForecastAnalyseItemList", cols, {
+            forecastAnalyseId: id,
         }, {
             showColumns: false,
             showRefresh: false,

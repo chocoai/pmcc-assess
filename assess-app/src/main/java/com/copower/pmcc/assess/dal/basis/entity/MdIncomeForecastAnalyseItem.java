@@ -6,7 +6,11 @@ import java.util.Date;
 public class MdIncomeForecastAnalyseItem {
     private Integer id;
 
+    private Integer incomeId;
+
     private Integer forecastAnalyseId;
+
+    private Integer formType;
 
     private Integer year;
 
@@ -28,8 +32,6 @@ public class MdIncomeForecastAnalyseItem {
 
     private Date gmtModified;
 
-    private Integer incomeId;
-
     public Integer getId() {
         return id;
     }
@@ -38,12 +40,28 @@ public class MdIncomeForecastAnalyseItem {
         this.id = id;
     }
 
+    public Integer getIncomeId() {
+        return incomeId;
+    }
+
+    public void setIncomeId(Integer incomeId) {
+        this.incomeId = incomeId;
+    }
+
     public Integer getForecastAnalyseId() {
         return forecastAnalyseId;
     }
 
     public void setForecastAnalyseId(Integer forecastAnalyseId) {
         this.forecastAnalyseId = forecastAnalyseId;
+    }
+
+    public Integer getFormType() {
+        return formType;
+    }
+
+    public void setFormType(Integer formType) {
+        this.formType = formType;
     }
 
     public Integer getYear() {
@@ -124,13 +142,5 @@ public class MdIncomeForecastAnalyseItem {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public Integer getIncomeId() {
-        return incomeId;
-    }
-
-    public void setIncomeId(Integer incomeId) {
-        this.incomeId = incomeId;
     }
 }

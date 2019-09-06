@@ -84,6 +84,9 @@ public class IncomeController {
     @ResponseBody
     @RequestMapping(value = "/getHistoryList", name = "显示列表", method = RequestMethod.GET)
     public BootstrapTableVo getHistoryList(MdIncomeHistory mdIncomeHistory) {
+        if(StringUtils.isEmpty(mdIncomeHistory.getSecondLevelNumber())){
+            mdIncomeHistory.setSecondLevelNumber(null);
+        }
         return mdIncomeService.getHistoryList(mdIncomeHistory);
     }
 
@@ -102,10 +105,10 @@ public class IncomeController {
 
     @ResponseBody
     @RequestMapping(value = "/historyToForecast", method = {RequestMethod.POST}, name = "历史数据添加到预测数据")
-    public HttpResult historyToForecast(String ids, Integer year) {
+    public HttpResult historyToForecast(String ids, Integer year, String formType) {
         try {
             if (StringUtils.isNotBlank(ids))
-                mdIncomeService.historyToForecast(FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(ids)), year);
+                mdIncomeService.historyToForecast(FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(ids)), year,formType);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return HttpResult.newErrorResult(e.getMessage());

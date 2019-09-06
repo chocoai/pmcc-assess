@@ -166,6 +166,66 @@ public class MdIncomeForecastAnalyseItemExample {
             return (Criteria) this;
         }
 
+        public Criteria andIncomeIdIsNull() {
+            addCriterion("income_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncomeIdIsNotNull() {
+            addCriterion("income_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncomeIdEqualTo(Integer value) {
+            addCriterion("income_id =", value, "incomeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncomeIdNotEqualTo(Integer value) {
+            addCriterion("income_id <>", value, "incomeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncomeIdGreaterThan(Integer value) {
+            addCriterion("income_id >", value, "incomeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncomeIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("income_id >=", value, "incomeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncomeIdLessThan(Integer value) {
+            addCriterion("income_id <", value, "incomeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncomeIdLessThanOrEqualTo(Integer value) {
+            addCriterion("income_id <=", value, "incomeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncomeIdIn(List<Integer> values) {
+            addCriterion("income_id in", values, "incomeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncomeIdNotIn(List<Integer> values) {
+            addCriterion("income_id not in", values, "incomeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncomeIdBetween(Integer value1, Integer value2) {
+            addCriterion("income_id between", value1, value2, "incomeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncomeIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("income_id not between", value1, value2, "incomeId");
+            return (Criteria) this;
+        }
+
         public Criteria andForecastAnalyseIdIsNull() {
             addCriterion("forecast_analyse_id is null");
             return (Criteria) this;
@@ -223,6 +283,66 @@ public class MdIncomeForecastAnalyseItemExample {
 
         public Criteria andForecastAnalyseIdNotBetween(Integer value1, Integer value2) {
             addCriterion("forecast_analyse_id not between", value1, value2, "forecastAnalyseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormTypeIsNull() {
+            addCriterion("form_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormTypeIsNotNull() {
+            addCriterion("form_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormTypeEqualTo(Integer value) {
+            addCriterion("form_type =", value, "formType");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormTypeNotEqualTo(Integer value) {
+            addCriterion("form_type <>", value, "formType");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormTypeGreaterThan(Integer value) {
+            addCriterion("form_type >", value, "formType");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormTypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("form_type >=", value, "formType");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormTypeLessThan(Integer value) {
+            addCriterion("form_type <", value, "formType");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormTypeLessThanOrEqualTo(Integer value) {
+            addCriterion("form_type <=", value, "formType");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormTypeIn(List<Integer> values) {
+            addCriterion("form_type in", values, "formType");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormTypeNotIn(List<Integer> values) {
+            addCriterion("form_type not in", values, "formType");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormTypeBetween(Integer value1, Integer value2) {
+            addCriterion("form_type between", value1, value2, "formType");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormTypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("form_type not between", value1, value2, "formType");
             return (Criteria) this;
         }
 
@@ -863,66 +983,6 @@ public class MdIncomeForecastAnalyseItemExample {
 
         public Criteria andGmtModifiedNotBetween(Date value1, Date value2) {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
-            return (Criteria) this;
-        }
-
-        public Criteria andIncomeIdIsNull() {
-            addCriterion("income_id is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andIncomeIdIsNotNull() {
-            addCriterion("income_id is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andIncomeIdEqualTo(Integer value) {
-            addCriterion("income_id =", value, "incomeId");
-            return (Criteria) this;
-        }
-
-        public Criteria andIncomeIdNotEqualTo(Integer value) {
-            addCriterion("income_id <>", value, "incomeId");
-            return (Criteria) this;
-        }
-
-        public Criteria andIncomeIdGreaterThan(Integer value) {
-            addCriterion("income_id >", value, "incomeId");
-            return (Criteria) this;
-        }
-
-        public Criteria andIncomeIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("income_id >=", value, "incomeId");
-            return (Criteria) this;
-        }
-
-        public Criteria andIncomeIdLessThan(Integer value) {
-            addCriterion("income_id <", value, "incomeId");
-            return (Criteria) this;
-        }
-
-        public Criteria andIncomeIdLessThanOrEqualTo(Integer value) {
-            addCriterion("income_id <=", value, "incomeId");
-            return (Criteria) this;
-        }
-
-        public Criteria andIncomeIdIn(List<Integer> values) {
-            addCriterion("income_id in", values, "incomeId");
-            return (Criteria) this;
-        }
-
-        public Criteria andIncomeIdNotIn(List<Integer> values) {
-            addCriterion("income_id not in", values, "incomeId");
-            return (Criteria) this;
-        }
-
-        public Criteria andIncomeIdBetween(Integer value1, Integer value2) {
-            addCriterion("income_id between", value1, value2, "incomeId");
-            return (Criteria) this;
-        }
-
-        public Criteria andIncomeIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("income_id not between", value1, value2, "incomeId");
             return (Criteria) this;
         }
     }
