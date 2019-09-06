@@ -11,44 +11,43 @@
     </div>
 
     <div class="x_content">
-        <form class="form-horizontal" id="developmentFrm">
-            <input type="hidden" name="id" value="${mdDevelopment.id}">
-            <div class="col-sm-12 form-group">
-                <span class="col-sm-1">
-                    <label>经营方式</label><span class="symbol required"></span>
-                </span>
-                <span class="col-sm-2 col-sm-offset-1 checkbox-inline">
-                     <input type="radio" id="developmentLand" name="development" value="1" checked="checked">
-                    <label for="developmentLand">土地</label>
-                </span>
-                <span class="col-sm-2  checkbox-inline">
-                    <input type="radio" id="developmentEngineering" name="development" value="2">
-                    <label for="developmentEngineering">在建工程</label>
-                </span>
-            </div>
-        </form>
-    </div>
-
-    <div class="x_content">
-        <form class="form-horizontal" id="mdDevelopmentLandFrm">
-            <%@include file="/views/method/module/developmentModule/landEngineering.jsp" %>
-            <%@include file="/views/method/module/developmentModule/landEngineeringJs.jsp" %>
-        </form>
-    </div>
-
-    <div class="x_content">
-        <form class="form-horizontal" id="mdDevelopmentEngineeringFrm" style="display: none">
-            <%@include file="/views/method/module/developmentModule/underConstruction.jsp" %>
-            <%@include file="/views/method/module/developmentModule/underConstructionJs.jsp" %>
-        </form>
+        <%@include file="/views/method/module/developmentModule/landEngineering.jsp" %>
     </div>
 
 </div>
 <script src="${pageContext.request.contextPath}/js/method/developmentCommon.js"></script>
+<%@include file="/views/method/module/developmentModule/landEngineeringJs.jsp" %>
 <%@include file="/views/method/module/developmentCommon.jsp" %>
 <%@include file="/views/project/tool/rewardRate.jsp" %>
 
 <script>
+
+
+
+
+    var development = {};
+
+    development.config = {
+        frm: "#mdDevelopmentLandFrm"
+    };
+    /**
+     * 空字符串检测
+     * @param item
+     * @returns {boolean}
+     */
+    development.isNotBlank = function (item) {
+        if (item) {
+            return true;
+        }
+        return false;
+    };
+
+    development.isNotBlankObject = function (obj) {
+        for (var key in obj) {
+            return true;
+        }
+        return false
+    };
 
     function checkParams(that) {
         if (!development.isNotBlank(that)) {
@@ -72,101 +71,48 @@
             $(that).val('');
             return false;
         }
+        var target = $(development.config.frm);
+        calculationNumeric(formSerializeArray(target),function (data) {
+            target.find("td[name='price']").html(data.price);
+            target.find("input[name='price']").val(data.price);
+            target.find("td[name='constructionCostSubtotal']").html(data.constructionCostSubtotal);
+            target.find("input[name='constructionCostSubtotal']").val(data.constructionCostSubtotal);
+            target.find("td[name='interestInvestment']").html(data.interestInvestment);
+            target.find("input[name='interestInvestment']").val(data.interestInvestment);
+            target.find("td[name='investmentProfit']").html(data.investmentProfit);
+            target.find("input[name='investmentProfit']").val(data.investmentProfit);
+            target.find("td[name='assessPrice']").html(data.assessPrice);
+            target.find("input[name='assessPrice']").val(data.assessPrice);
+            target.find("input[name='projectConstructionPeriod']").val(data.projectConstructionPeriod);
+            if ($("#md_development_form").size() != 0){
+                $("#md_development_form") .find("input[name='price']").val(data.price) ;
+            }
+        });
     }
 
-    function projectConstructionPeriodFun(_this) {
-        var target = $(_this).closest("form") ;
-        var developedYear = target.find("input[name='developedYear']").val() ;
-        var remainingDevelopmentYear = target.find("input[name='remainingDevelopmentYear']").val() ;
-        if (!AssessCommon.isNumber(developedYear)) {
-            return false;
-        }
-        if (!AssessCommon.isNumber(remainingDevelopmentYear)) {
-            return false;
-        }
-        var c = 0;
-        if (development.isNotBlank(developedYear)) {
-            c += Number(developedYear);
-        }
-        if (development.isNotBlank(remainingDevelopmentYear)) {
-            c += Number(remainingDevelopmentYear);
-        }
-        target.find("input[name='projectConstructionPeriod']").val(c) ;
-        target.find("input[name='projectConstructionPeriod']").trigger('blur');
+    function calculationNumeric(data,callback) {
+        $.ajax({
+            type: "post",
+            url: getContextPath() +"/mdDevelopment/calculationNumeric",
+            data: {fomData:JSON.stringify(data)},
+            success: function (result) {
+                if (result.ret) {
+                    if (callback){
+                        callback(result.data) ;
+                    }
+                } else {
+                    Alert("失败:" + result.errmsg);
+                }
+            },
+            error: function (e) {
+                Alert("调用服务端方法失败，失败原因:" + e);
+            }
+        });
     }
-
-    var development = {};
-
-    development.config = {
-        frm: "#developmentFrm",
-        land: {
-            parameter: "#landParameter",
-            frm: "#mdDevelopmentLandFrm"
-        },
-        engineering: {
-            parameter: "#engineeringParameter",
-            frm: "#mdDevelopmentEngineeringFrm"
-        }
-    };
-    /**
-     * 空字符串检测
-     * @param item
-     * @returns {boolean}
-     */
-    development.isNotBlank = function (item) {
-        if (item) {
-            return true;
-        }
-        return false;
-    };
-
-    development.isNotBlankObject = function (obj) {
-        for (var key in obj) {
-            return true;
-        }
-        return false
-    };
-
-    //参数校验
-    development.checkParams = function (that) {
-        if (!development.isNotBlank(that)) {
-            return false;
-        }
-        var value = $(that).val();
-        var i = 0;
-        if (!development.isNotBlank(value)) {
-            return false;
-        }
-        var reg = new RegExp(/^[0-9]+\.?[0-9]*%$/);
-        if (reg.test(value)) {
-            i++;
-        }
-        if ($.isNumeric(value)) {
-            i++;
-        }
-        if (i == 0) {
-            alert("不符合，必须是数字!");
-            $(that).attr("data-value", '');
-            $(that).val('');
-            return false;
-        }
-    };
-
 
 
     development.valid = function (callback) {
-        var head = formSerializeArray($(development.config.frm)) ;
-        var frm = undefined;
-        if (head.development == '1') {
-            frm = $(development.config.land.frm) ;
-        }
-        if (head.development == '2') {
-            frm = $(development.config.engineering.frm) ;
-        }
-        var data = formSerializeArray(frm) ;
-        if (!$(development.config.frm).valid()) {
-            return false;
-        }
+        var frm = $(development.config.frm);
         if (!frm.valid()) {
             return false;
         }
@@ -176,25 +122,14 @@
     };
 
     development.getFomData = function () {
-        var head = formSerializeArray($(development.config.frm)) ;
-        var frm = undefined;
-        if (head.development == '1') {
-            frm = landEngineering.target ;
-        }
-        if (head.development == '2') {
-            frm = underConstruction.target ;
-        }
+        var frm = $(development.config.frm);
         var data = formSerializeArray(frm) ;
-        data.id = development.isNotBlank('${mdDevelopment.id}')?'${mdDevelopment.id}':'0' ;
-        data.type = head.development ;
-        data.price = frm.find("input[name='price']").val() ;
         data.planDetailsId = '${projectPlanDetails.id}' ;
         return data ;
     };
 
     development.initData = function () {
-        var landFrm = $(development.config.land.frm) ;
-        var engineeringFrm = $(development.config.engineering.frm) ;
+        var frm = $(development.config.frm);
         if (!development.isNotBlank('${mdDevelopment.id}')){
             $.ajax({
                 type: "get",
@@ -211,26 +146,26 @@
                                 }
                                 if (item.typeName == '增值税'){
                                     if (item.taxRate){
-                                        landFrm.find("input[name='f38']").val(taxRate) ;
-                                        landFrm.find("input[name='f38']").attr("data-value",item.taxRate) ;
+                                        frm.find("input[name='landValueAddedTax']").val(taxRate) ;
+                                        frm.find("input[name='landValueAddedTax']").attr("data-value",item.taxRate) ;
                                     }
                                 }
                                 if (item.typeName == '契税'){
                                     if (item.taxRate){
-                                        landFrm.find("input[name='f29']").val(taxRate) ;
-                                        landFrm.find("input[name='f29']").attr("data-value",item.taxRate) ;
+                                        frm.find("input[name='deedTaxRate']").val(taxRate) ;
+                                        frm.find("input[name='deedTaxRate']").attr("data-value",item.taxRate) ;
                                     }
                                 }
                                 if (item.typeName == '所得税'){
                                     if (item.taxRate){
-                                        landFrm.find("input[name='f39']").val(taxRate) ;
-                                        landFrm.find("input[name='f39']").attr("data-value",item.taxRate) ;
+                                        frm.find("input[name='projectDevelopmentIncomeTax']").val(taxRate) ;
+                                        frm.find("input[name='projectDevelopmentIncomeTax']").attr("data-value",item.taxRate) ;
                                     }
                                 }
                                 if (item.typeName == '其它税费'){
                                     if (item.taxRate){
-                                        landFrm.find("input[name='f25']").val(taxRate) ;
-                                        landFrm.find("input[name='f25']").attr("data-value",item.taxRate) ;
+                                        frm.find("input[name='otherEngineeringCost']").val(taxRate) ;
+                                        frm.find("input[name='otherEngineeringCost']").attr("data-value",item.taxRate) ;
                                     }
                                 }
                             });
@@ -245,43 +180,70 @@
             });
         }
         landEngineering.loadMdDevelopmentInfrastructureChildrenTable() ;
-        underConstruction.loadMdDevelopmentInfrastructureChildrenTable() ;
         landEngineering.loadIncomeCategoryTable();
-        underConstruction.loadIncomeCategoryTable();
         landEngineering.unsaleableBuildingAreaFunHandle() ;
-        underConstruction.unsaleableBuildingAreaFunHandle() ;
-        landEngineering.inputBlurEvent() ;
-        underConstruction.inputBlurEvent() ;
-        underConstruction.loadMdCalculatingMethodEngineeringCostTable() ;
         landEngineering.loadMdCalculatingMethodEngineeringCostTable() ;
     };
 
+    development.writeValueEvent = function (value) {
+        var frm = $(development.config.frm);
+        if (value == 1){
+            var managementExpense = frm.find("input[placeholder='续建管理费率']") ;
+            managementExpense.attr({placeholder:"管理费率"}) ;
+            managementExpense.closest(".form-group").find("label").first().text("管理费率") ;
+
+            var landGetRelevant = frm.find("input[placeholder='在建工程修复费用']") ;
+            landGetRelevant.attr({placeholder:"土地取得附加成本"}) ;
+            landGetRelevant.closest(".form-group").find("label").first().text("土地取得附加成本") ;
+
+            var interestInvestmentTax = frm.find("input[placeholder='续建投资利息率']") ;
+            interestInvestmentTax.attr({placeholder:"投资利息率"}) ;
+            interestInvestmentTax.closest(".form-group").find("label").first().text("投资利息率") ;
+
+            var investmentProfitTax = frm.find("input[placeholder='续建投资利润率']") ;
+            investmentProfitTax.attr({placeholder:"投资利润率"}) ;
+            investmentProfitTax.closest(".form-group").find("label").first().text("投资利润率") ;
+        }
+        if (value == 2){
+            var managementExpense = frm.find("input[placeholder='管理费率']") ;
+            managementExpense.attr({placeholder:"续建管理费率"}) ;
+            managementExpense.closest(".form-group").find("label").first().text("续建管理费率") ;
+
+            var landGetRelevant = frm.find("input[placeholder='土地取得附加成本']") ;
+            landGetRelevant.attr({placeholder:"在建工程修复费用"}) ;
+            landGetRelevant.closest(".form-group").find("label").first().text("在建工程修复费用") ;
+
+            var interestInvestmentTax = frm.find("input[placeholder='投资利息率']") ;
+            interestInvestmentTax.attr({placeholder:"续建投资利息率"}) ;
+            interestInvestmentTax.closest(".form-group").find("label").first().text("续建投资利息率") ;
+
+            var investmentProfitTax = frm.find("input[placeholder='投资利润率']") ;
+            investmentProfitTax.attr({placeholder:"续建投资利润率"}) ;
+            investmentProfitTax.closest(".form-group").find("label").first().text("续建投资利润率") ;
+        }
+    };
+
     $(document).ready(function () {
+
         development.initData();
-        var frm = $(development.config.frm) ;
-        frm.find("input[type='radio'][name='development']").change(function () {
-            var data = formSerializeArray(frm);
-            if (data.development == '1') {
-                $(development.config.land.frm).show();
-                $(development.config.engineering.frm).hide();
-            }
-            if (data.development == '2') {
-                $(development.config.land.frm).hide();
-                $(development.config.engineering.frm).show();
-            }
-        });
+
+        var frm = $(development.config.frm);
         var type = '${mdDevelopment.type}' ;
         if (development.isNotBlank(type)){
+            development.writeValueEvent(type) ;
             if (type == '1') {
-                $(development.config.land.frm).show();
-                $(development.config.engineering.frm).hide();
-                $("#developmentLand").attr('checked','true') ;
+                $("#developmentLand").attr('checked','true').trigger('change');
+                $("#developmentEngineering").attr('checked','false').trigger('change');
             }
             if (type == '2') {
-                $(development.config.land.frm).hide();
-                $(development.config.engineering.frm).show();
-                $("#developmentEngineering").attr('checked','true') ;
+                $("#developmentEngineering").attr('checked','true').trigger('change');
+                $("#developmentLand").attr('checked','false').trigger('change');
             }
         }
+        frm.find("input[type='radio'][name='type']").change(function () {
+            var value = $(this).val();
+            landEngineering.loadMdCalculatingMethodEngineeringCostTable() ;
+            development.writeValueEvent(value) ;
+        });
     });
 </script>

@@ -24,11 +24,9 @@ import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.SpringContextUtils;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 
 import java.util.*;
 
@@ -122,14 +120,14 @@ public class GenerateMdDevelopmentService {
                 if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_investmentProfit.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_investmentProfit));
                 }
-                if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_investmentProfitTax.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_investmentProfitTax));
+                if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_investmentProfitRate.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_investmentProfitRate));
                 }
                 if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_interestInvestment.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_interestInvestment));
                 }
-                if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_interestInvestmentTax.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_interestInvestmentTax));
+                if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_interestInvestmentRate.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_interestInvestmentRate));
                 }
                 if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_constructionSubtotal.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_constructionSubtotal));
@@ -140,8 +138,8 @@ public class GenerateMdDevelopmentService {
                 if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_constructionSubtotal2.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_constructionSubtotal2));
                 }
-                if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_reconnaissanceDesign.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_reconnaissanceDesign));
+                if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_reconnaissanceDesignRate.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_reconnaissanceDesignRate));
                 }
                 if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_constructionInstallationEngineeringFee.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_constructionInstallationEngineeringFee));
@@ -194,8 +192,8 @@ public class GenerateMdDevelopmentService {
                 if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_managementExpense.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_managementExpense));
                 }
-                if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_managementExpenseTax.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_managementExpenseTax));
+                if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_managementExpenseRate.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_managementExpenseRate));
                 }
                 if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_DevelopmentDegreeCorrectionValue.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_DevelopmentDegreeCorrectionValue));
@@ -281,7 +279,7 @@ public class GenerateMdDevelopmentService {
                 }
             }
             break;
-            case Development_investmentProfitTax: {
+            case Development_investmentProfitRate: {
                 if (vo.getInvestmentProfitTax() != null) {
                     return vo.getInvestmentProfitTax().toString();
                 }
@@ -293,7 +291,7 @@ public class GenerateMdDevelopmentService {
                 }
             }
             break;
-            case Development_interestInvestmentTax: {
+            case Development_interestInvestmentRate: {
                 if (vo.getInterestInvestmentTax() != null) {
                     return vo.getInterestInvestmentTax().toString();
                 }
@@ -341,7 +339,7 @@ public class GenerateMdDevelopmentService {
                 }
             }
             break;
-            case Development_reconnaissanceDesign: {
+            case Development_reconnaissanceDesignRate: {
                 if (vo.getReconnaissanceDesign() != null) {
                     return vo.getReconnaissanceDesign().toString();
                 }
@@ -383,7 +381,7 @@ public class GenerateMdDevelopmentService {
                 }
             }
             break;
-            case Development_managementExpenseTax: {
+            case Development_managementExpenseRate: {
                 if (vo.getManagementExpense() != null) {
                     return vo.getManagementExpense().toString();
                 }
