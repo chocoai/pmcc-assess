@@ -92,7 +92,7 @@
     </table>
 </div>
 <div class="x_title">
-    预测分析数据
+    历史数据分析
 </div>
 <div class="x_content">
     <table class="table table-bordered" id="tb_forecast_income_analyse_list">
@@ -590,7 +590,7 @@
         })
     }
 
-    //加载预测分析数据
+    //加载历史数据分析
     selfSupportForecast.loadForecastAnalyseList = function (type) {
         var cols = [];
         cols.push({field: 'year', title: '年份'});

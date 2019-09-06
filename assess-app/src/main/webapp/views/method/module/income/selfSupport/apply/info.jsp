@@ -18,7 +18,7 @@
             </div>
 
             <div class="x_title">
-                有效毛收入
+                收入预测
             </div>
             <div class="x_content">
                 <table class="table table-bordered" id="tb_forecast_income_list">

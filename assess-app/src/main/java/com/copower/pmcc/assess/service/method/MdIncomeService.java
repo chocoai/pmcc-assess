@@ -145,7 +145,7 @@ public class MdIncomeService {
                 mdIncomeHistoryDao.updateHistory(history);
             }
 
-            //查找预测分析数据中是否还存在对应关联的数据
+            //查找历史数据分析中是否还存在对应关联的数据
             MdIncomeForecastAnalyse whereForecastAnalyse = new MdIncomeForecastAnalyse();
             whereForecastAnalyse.setIncomeId(incomeId);
             whereForecastAnalyse.setType(type);
@@ -179,7 +179,7 @@ public class MdIncomeService {
         for (Integer id : integers) {
             MdIncomeHistory history = mdIncomeHistoryDao.getHistoryById(id);
             mdIncomeHistoryDao.deleteHistory(id);
-            //如果该年份下的预测分析数据没有关联的数据，则将该预测分析数据删除
+            //如果该年份下的历史数据分析没有关联的数据，则将该历史数据分析删除
             MdIncomeHistory historyWhere = new MdIncomeHistory();
             historyWhere.setIncomeId(history.getIncomeId());
             historyWhere.setType(history.getType());
@@ -208,7 +208,7 @@ public class MdIncomeService {
     }
 
     /**
-     * 生成预测分析数据
+     * 生成历史数据分析
      *
      * @param mdIncomeHistory
      */
@@ -315,7 +315,7 @@ public class MdIncomeService {
 
     }
 
-    //一条预测分析数据对应的List<MdIncomeHistory>有几种物品
+    //一条历史数据分析对应的List<MdIncomeHistory>有几种物品
     public List<List<MdIncomeHistory>> getGoodsList(List<MdIncomeHistory> MdIncomeHistorys) {
         if (CollectionUtils.isEmpty(MdIncomeHistorys)) return null;
         List<List<MdIncomeHistory>> allGoods = Lists.newArrayList();

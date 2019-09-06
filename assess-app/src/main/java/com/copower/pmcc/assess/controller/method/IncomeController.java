@@ -175,7 +175,7 @@ public class IncomeController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getForecastAnalyseList", name = "显示预测分析数据列表", method = RequestMethod.GET)
+    @RequestMapping(value = "/getForecastAnalyseList", name = "显示历史数据分析列表", method = RequestMethod.GET)
     public BootstrapTableVo getForecastAnalyseList(Integer incomeId, Integer type, Integer formType, Boolean bisParticipateIn) {
         return mdIncomeService.getForecastAnalyseList(incomeId, type, formType, bisParticipateIn);
     }

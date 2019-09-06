@@ -44,7 +44,11 @@
         <!--<columnOverride column="json_content" jdbcType="VARCHAR"></columnOverride>-->
 
         <!-- 具体表 -->
-        <table tableName="tb_data_number_rule">
+        <table tableName="tb_md_economic_indicators">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+            <!--<columnOverride column="json_content" jdbcType="VARCHAR"></columnOverride>-->
+        </table>
+        <table tableName="tb_md_economic_indicators_item">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
             <!--<columnOverride column="json_content" jdbcType="VARCHAR"></columnOverride>-->
         </table>

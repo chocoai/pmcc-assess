@@ -30,7 +30,7 @@
 </div>
 
 <div class="x_title">
-    预测分析数据
+    历史数据分析
 </div>
 <div class="x_content">
     <table class="table table-bordered" id="tb_forecast_restaurant_cost_analyse_list">
