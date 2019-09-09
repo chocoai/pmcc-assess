@@ -6,6 +6,8 @@
     <result column="pid" property="pid" jdbcType="INTEGER" />
     <result column="economic_id" property="economicId" jdbcType="INTEGER" />
     <result column="plan_details_id" property="planDetailsId" jdbcType="INTEGER" />
+    <result column="data_key" property="dataKey" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="planned_building_area" property="plannedBuildingArea" jdbcType="DECIMAL" />
     <result column="saleable_area" property="saleableArea" jdbcType="DECIMAL" />
     <result column="number" property="number" jdbcType="INTEGER" />
@@ -74,8 +76,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, pid, economic_id, plan_details_id, planned_building_area, saleable_area, number, 
-    unit_price, remark, creator, gmt_created, gmt_modified
+    id, pid, economic_id, plan_details_id, data_key, name, planned_building_area, saleable_area, 
+    number, unit_price, remark, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdEconomicIndicatorsItemExample" >
     select
@@ -112,13 +114,15 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_md_economic_indicators_item (pid, economic_id, plan_details_id, 
-      planned_building_area, saleable_area, number, 
-      unit_price, remark, creator, 
-      gmt_created, gmt_modified)
+      data_key, name, planned_building_area, 
+      saleable_area, number, unit_price, 
+      remark, creator, gmt_created, 
+      gmt_modified)
     values (#{pid,jdbcType=INTEGER}, #{economicId,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, 
-      #{plannedBuildingArea,jdbcType=DECIMAL}, #{saleableArea,jdbcType=DECIMAL}, #{number,jdbcType=INTEGER}, 
-      #{unitPrice,jdbcType=DECIMAL}, #{remark,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+      #{dataKey,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{plannedBuildingArea,jdbcType=DECIMAL}, 
+      #{saleableArea,jdbcType=DECIMAL}, #{number,jdbcType=INTEGER}, #{unitPrice,jdbcType=DECIMAL}, 
+      #{remark,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdEconomicIndicatorsItem" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -134,6 +138,12 @@
       </if>
       <if test="planDetailsId != null" >
         plan_details_id,
+      </if>
+      <if test="dataKey != null" >
+        data_key,
+      </if>
+      <if test="name != null" >
+        name,
       </if>
       <if test="plannedBuildingArea != null" >
         planned_building_area,
@@ -169,6 +179,12 @@
       </if>
       <if test="planDetailsId != null" >
         #{planDetailsId,jdbcType=INTEGER},
+      </if>
+      <if test="dataKey != null" >
+        #{dataKey,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
       </if>
       <if test="plannedBuildingArea != null" >
         #{plannedBuildingArea,jdbcType=DECIMAL},
@@ -217,6 +233,12 @@
       <if test="record.planDetailsId != null" >
         plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
       </if>
+      <if test="record.dataKey != null" >
+        data_key = #{record.dataKey,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
       <if test="record.plannedBuildingArea != null" >
         planned_building_area = #{record.plannedBuildingArea,jdbcType=DECIMAL},
       </if>
@@ -252,6 +274,8 @@
       pid = #{record.pid,jdbcType=INTEGER},
       economic_id = #{record.economicId,jdbcType=INTEGER},
       plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
+      data_key = #{record.dataKey,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
       planned_building_area = #{record.plannedBuildingArea,jdbcType=DECIMAL},
       saleable_area = #{record.saleableArea,jdbcType=DECIMAL},
       number = #{record.number,jdbcType=INTEGER},
@@ -275,6 +299,12 @@
       </if>
       <if test="planDetailsId != null" >
         plan_details_id = #{planDetailsId,jdbcType=INTEGER},
+      </if>
+      <if test="dataKey != null" >
+        data_key = #{dataKey,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
       </if>
       <if test="plannedBuildingArea != null" >
         planned_building_area = #{plannedBuildingArea,jdbcType=DECIMAL},
@@ -308,6 +338,8 @@
     set pid = #{pid,jdbcType=INTEGER},
       economic_id = #{economicId,jdbcType=INTEGER},
       plan_details_id = #{planDetailsId,jdbcType=INTEGER},
+      data_key = #{dataKey,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
       planned_building_area = #{plannedBuildingArea,jdbcType=DECIMAL},
       saleable_area = #{saleableArea,jdbcType=DECIMAL},
       number = #{number,jdbcType=INTEGER},

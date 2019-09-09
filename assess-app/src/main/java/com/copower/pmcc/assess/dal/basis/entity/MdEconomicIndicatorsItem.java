@@ -12,6 +12,10 @@ public class MdEconomicIndicatorsItem {
 
     private Integer planDetailsId;
 
+    private String dataKey;
+
+    private String name;
+
     private BigDecimal plannedBuildingArea;
 
     private BigDecimal saleableArea;
@@ -58,6 +62,22 @@ public class MdEconomicIndicatorsItem {
 
     public void setPlanDetailsId(Integer planDetailsId) {
         this.planDetailsId = planDetailsId;
+    }
+
+    public String getDataKey() {
+        return dataKey;
+    }
+
+    public void setDataKey(String dataKey) {
+        this.dataKey = dataKey == null ? null : dataKey.trim();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
     }
 
     public BigDecimal getPlannedBuildingArea() {

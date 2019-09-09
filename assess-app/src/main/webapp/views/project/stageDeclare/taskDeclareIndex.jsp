@@ -12,19 +12,12 @@
             <%@include file="/views/share/form_head.jsp" %>
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
-
             <!-- 申报各种类型的html视图 -->
             <%@include file="/views/project/stageDeclare/declareApplyModel.jsp" %>
             <!-- 房产证 -->
             <div id="viewDeclareRealtyHouseCert">
                 <%@include file="/views/project/stageDeclare/houseDeclarationModel/viewDeclareRealtyHouseCert.jsp" %>
             </div>
-
-            <!-- 土地证 -->
-            <%--<div id="viewDeclareRealtyLandCert">--%>
-                <%--<%@include file="/views/project/stageDeclare/houseDeclarationModel/viewDeclareRealtyLandCert.jsp" %>--%>
-            <%--</div>--%>
-
             <!-- 不动产证 -->
             <div id="viewDeclareRealtyRealEstateCert">
                 <%@include
@@ -175,6 +168,7 @@
                     </div>
                 </div>
             </div>
+            <%@include file="/views/method/module/economicIndicators.jsp" %>
             <%@include file="/views/share/form_log.jsp" %>
         </div>
     </div>

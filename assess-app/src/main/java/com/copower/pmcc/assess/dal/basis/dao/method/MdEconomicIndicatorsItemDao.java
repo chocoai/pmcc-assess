@@ -23,6 +23,7 @@ public class MdEconomicIndicatorsItemDao {
 
     /**
      * 获取数据信息
+     *
      * @param id
      * @return
      */
@@ -32,6 +33,7 @@ public class MdEconomicIndicatorsItemDao {
 
     /**
      * 获取数据列表
+     *
      * @param mdEconomicIndicatorsItem
      * @return
      */
@@ -43,6 +45,7 @@ public class MdEconomicIndicatorsItemDao {
 
     /**
      * 新增
+     *
      * @param mdEconomicIndicatorsItem
      * @return
      */
@@ -53,6 +56,7 @@ public class MdEconomicIndicatorsItemDao {
 
     /**
      * 编辑
+     *
      * @param mdEconomicIndicatorsItem
      * @return
      */
@@ -62,11 +66,17 @@ public class MdEconomicIndicatorsItemDao {
 
     /**
      * 删除
+     *
      * @param id
      * @return
      */
-    public boolean deleteEconomicIndicatorsItem(Integer id){
+    public boolean deleteEconomicIndicatorsItem(Integer id) {
         return mdEconomicIndicatorsItemMapper.deleteByPrimaryKey(id) > 0;
     }
 
+    public boolean deleteItemByEconomicId(Integer economicId) {
+        MdEconomicIndicatorsItemExample example = new MdEconomicIndicatorsItemExample();
+        example.createCriteria().andEconomicIdEqualTo(economicId);
+        return mdEconomicIndicatorsItemMapper.deleteByExample(example) > 0;
+    }
 }
