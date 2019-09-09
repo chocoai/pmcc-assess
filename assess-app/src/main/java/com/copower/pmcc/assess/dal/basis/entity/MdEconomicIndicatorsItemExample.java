@@ -346,6 +346,146 @@ public class MdEconomicIndicatorsItemExample {
             return (Criteria) this;
         }
 
+        public Criteria andDataKeyIsNull() {
+            addCriterion("data_key is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataKeyIsNotNull() {
+            addCriterion("data_key is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataKeyEqualTo(String value) {
+            addCriterion("data_key =", value, "dataKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataKeyNotEqualTo(String value) {
+            addCriterion("data_key <>", value, "dataKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataKeyGreaterThan(String value) {
+            addCriterion("data_key >", value, "dataKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataKeyGreaterThanOrEqualTo(String value) {
+            addCriterion("data_key >=", value, "dataKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataKeyLessThan(String value) {
+            addCriterion("data_key <", value, "dataKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataKeyLessThanOrEqualTo(String value) {
+            addCriterion("data_key <=", value, "dataKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataKeyLike(String value) {
+            addCriterion("data_key like", value, "dataKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataKeyNotLike(String value) {
+            addCriterion("data_key not like", value, "dataKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataKeyIn(List<String> values) {
+            addCriterion("data_key in", values, "dataKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataKeyNotIn(List<String> values) {
+            addCriterion("data_key not in", values, "dataKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataKeyBetween(String value1, String value2) {
+            addCriterion("data_key between", value1, value2, "dataKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataKeyNotBetween(String value1, String value2) {
+            addCriterion("data_key not between", value1, value2, "dataKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameIsNull() {
+            addCriterion("name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameIsNotNull() {
+            addCriterion("name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameEqualTo(String value) {
+            addCriterion("name =", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameNotEqualTo(String value) {
+            addCriterion("name <>", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameGreaterThan(String value) {
+            addCriterion("name >", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameGreaterThanOrEqualTo(String value) {
+            addCriterion("name >=", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameLessThan(String value) {
+            addCriterion("name <", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameLessThanOrEqualTo(String value) {
+            addCriterion("name <=", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameLike(String value) {
+            addCriterion("name like", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameNotLike(String value) {
+            addCriterion("name not like", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameIn(List<String> values) {
+            addCriterion("name in", values, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameNotIn(List<String> values) {
+            addCriterion("name not in", values, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameBetween(String value1, String value2) {
+            addCriterion("name between", value1, value2, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameNotBetween(String value1, String value2) {
+            addCriterion("name not between", value1, value2, "name");
+            return (Criteria) this;
+        }
+
         public Criteria andPlannedBuildingAreaIsNull() {
             addCriterion("planned_building_area is null");
             return (Criteria) this;

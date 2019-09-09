@@ -33,4 +33,8 @@ public class MdEconomicIndicatorsItemService {
             mdEconomicIndicatorsItemDao.addEconomicIndicatorsItem(mdEconomicIndicatorsItem);
         }
     }
+
+    public void deleteItemByEconomicId(Integer economicId){
+        mdEconomicIndicatorsItemDao.deleteItemByEconomicId(economicId);
+    }
 }

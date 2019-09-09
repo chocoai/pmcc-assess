@@ -12,26 +12,26 @@ declareRealtyRealEstateCert.config = {
     fileId: declareCommon.config.declareRealty.fileId,
     newFileId: declareCommon.config.declareRealty.newFileId,
     fileView: declareCommon.config.declareRealty.fileView,
-    declareEconomicIndicatorsHead:{
-        frm:  declareCommon.config.declareEconomicIndicatorsHead2.frm,
+    declareEconomicIndicatorsHead: {
+        frm: declareCommon.config.declareEconomicIndicatorsHead2.frm,
         name: declareCommon.config.declareEconomicIndicatorsHead2.name,
         box: declareCommon.config.declareEconomicIndicatorsHead2.box
-    } ,
-    declareEconomicIndicatorsContent:{
-        frm:  declareCommon.config.declareEconomicIndicatorsContent2.frm,
+    },
+    declareEconomicIndicatorsContent: {
+        frm: declareCommon.config.declareEconomicIndicatorsContent2.frm,
         name: declareCommon.config.declareEconomicIndicatorsContent2.name
     },
     handleCopy: "#realtyRealEstateHandleInputGroup"
 };
 
 declareRealtyRealEstateCert.init = function (item) {
-    declareCommon.initDeclareRealty(item,$("#" + declareRealtyRealEstateCert.config.frm),[declareRealtyRealEstateCert.config.newFileId],null);
+    declareCommon.initDeclareRealty(item, $("#" + declareRealtyRealEstateCert.config.frm), [declareRealtyRealEstateCert.config.newFileId], null);
 };
 
 declareRealtyRealEstateCert.showAddModel = function () {
     $('#' + declareRealtyRealEstateCert.config.box).find("#" + commonDeclareApplyModel.config.realEstateCert.handleId).remove();
     $('#' + declareRealtyRealEstateCert.config.box).find(".panel-body").prepend(commonDeclareApplyModel.realEstateCert.getHtml());
-    declareCommon.showHtmlMastInit($("#" + declareRealtyRealEstateCert.config.frm),function (area) {
+    declareCommon.showHtmlMastInit($("#" + declareRealtyRealEstateCert.config.frm), function (area) {
         declareRealtyRealEstateCert.init(area);
         $('#' + declareRealtyRealEstateCert.config.box).modal("show");
     });
@@ -53,11 +53,11 @@ declareRealtyRealEstateCert.editData = function () {
 };
 //上传附件到服务端
 declareRealtyRealEstateCert.enclosureFun = function () {
-    var target = $("#" + declareRealtyRealEstateCert.config.fileId) ;
+    var target = $("#" + declareRealtyRealEstateCert.config.fileId);
     var id = target.attr("data-id");
     var value = target.val();
-    if (!declareCommon.isNotBlank(value)){
-        return false ;
+    if (!declareCommon.isNotBlank(value)) {
+        return false;
     }
     $.ajaxFileUpload({
         type: "POST",
@@ -74,10 +74,13 @@ declareRealtyRealEstateCert.enclosureFun = function () {
         async: false,
         success: function (result) {
             if (result.ret) {
-                declareCommon.getDeclareRealtyData(id,function (row) {
+                declareCommon.getDeclareRealtyData(id, function (row) {
                     toastr.success('成功 !');
-                    $("#" + declareRealtyRealEstateCert.config.table).bootstrapTable('updateByUniqueId', {id: id, row: row});
-                }) ;
+                    $("#" + declareRealtyRealEstateCert.config.table).bootstrapTable('updateByUniqueId', {
+                        id: id,
+                        row: row
+                    });
+                });
             }
         },
         error: function (result, status, e) {
@@ -140,7 +143,7 @@ declareRealtyRealEstateCert.loadList = function () {
     });
     $("#" + declareRealtyRealEstateCert.config.table).bootstrapTable('destroy');
     TableInit(declareRealtyRealEstateCert.config.table, getContextPath() + "/declareRealtyRealEstateCert/getDeclareRealtyRealEstateCertList", cols, {
-        planDetailsId: declareCommon.getPlanDetailsId(),enable:declareCommon.masterData
+        planDetailsId: declareCommon.getPlanDetailsId(), enable: declareCommon.masterData
     }, {
         showColumns: false,
         showRefresh: false,
@@ -154,28 +157,28 @@ declareRealtyRealEstateCert.loadList = function () {
 declareRealtyRealEstateCert.deleteData = function () {
     var rows = $("#" + declareRealtyRealEstateCert.config.table).bootstrapTable('getSelections');
     if (rows.length >= 1) {
-        var arr = [] ;
+        var arr = [];
         var idCenters = [];
         var bisRecord = 0;
         $.each(rows, function (i, n) {
             arr.push(n.id);
-            if (n.centerId){
+            if (n.centerId) {
                 idCenters.push(n.centerId);
             }
-            if (declareCommon.isNotBlank(n.bisRecord)){
-                if (n.bisRecord){
+            if (declareCommon.isNotBlank(n.bisRecord)) {
+                if (n.bisRecord) {
                     bisRecord++;
                 }
             }
         });
-        if (bisRecord != 0){
+        if (bisRecord != 0) {
             toastr.info("其中包括了已经参与查勘任务的权证,请重新选择");
             $("#" + declareRealtyRealEstateCert.config.table).bootstrapTable('uncheckAll');
-            return false ;
+            return false;
         }
         Alert("是否删除", 2, null,
             function () {
-                declareCommon.deleteDeclareRealtyData(arr.join(","),function () {
+                declareCommon.deleteDeclareRealtyData(arr.join(","), function () {
                     declareRealtyRealEstateCert.loadList();
                     toastr.success('成功!');
                 });
@@ -237,31 +240,26 @@ declareRealtyRealEstateCert.pasteAll = function () {
 
 //经济指标
 declareRealtyRealEstateCert.showAddModelDeclareEconomicIndicators = function (id) {
-    var element1 = $("#"+declareRealtyRealEstateCert.config.declareEconomicIndicatorsHead.frm).find(".panel-body") ;
-    var element2 = $("#"+declareRealtyRealEstateCert.config.declareEconomicIndicatorsContent.frm).find(".panel-body") ;
-    declareCommon.appendDeclareEconomicIndicators(element1,element2) ;
     var item = $("#" + declareRealtyRealEstateCert.config.table).bootstrapTable('getRowByUniqueId', id);
+    console.log(item);
     if (!declareCommon.isNotBlank(item.centerId)) {
         toastr.success('不合符调整后的数据约定,请联系管理员!');
         return false;
     }
     declareCommon.showHtmlMastInit($("#" + declareRealtyRealEstateCert.config.declareEconomicIndicatorsHead.frm), function (area) {
         declareCommon.getDeclareBuildCenter(item.centerId, function (centerData) {
-            if (centerData.indicatorId){
-                declareCommon.getByDeclareEconomicIndicatorsHeadId(centerData.indicatorId , function (data) {
-                    data.centerId = item.centerId;
-                    declareCommon.initDeclareEconomicIndicators($("#" + declareRealtyRealEstateCert.config.declareEconomicIndicatorsHead.frm) ,
-                        $("#"+declareRealtyRealEstateCert.config.declareEconomicIndicatorsContent.frm),
-                        data ,
-                        function () {
-                        $('#' + declareRealtyRealEstateCert.config.declareEconomicIndicatorsHead.box).modal("show");
-                    }) ;
-                }) ;
-            }else {
-                declareCommon.firstLoadChildDeclareEconomicIndicators(element2) ;
-                declareCommon.initDeclareEconomicIndicators($("#" + declareRealtyRealEstateCert.config.declareEconomicIndicatorsHead.frm),$("#"+declareRealtyRealEstateCert.config.declareEconomicIndicatorsContent.frm),{centerId: centerData.id} ,function () {
-                    $('#' + declareRealtyRealEstateCert.config.declareEconomicIndicatorsHead.box).modal("show");
-                }) ;
+            if (centerData.indicatorId) {
+                economicIndicators.init({
+                    planDetailsId: declareCommon.getPlanDetailsId(),
+                    economicId: centerData.indicatorId
+                });
+            } else {
+                economicIndicators.init({
+                    planDetailsId: declareCommon.getPlanDetailsId(),
+                    saveCallback: function (economicId) {//经济指标id更新到中间表
+                        declareCommon.declareBuildCenterSaveAndUpdate({indicatorId: economicId, id: item.centerId});
+                    }
+                });
             }
         });
     });
@@ -288,12 +286,12 @@ declareRealtyRealEstateCert.deleteDeclareEconomicIndicatorsCenter = function () 
 //经济指标 save
 declareRealtyRealEstateCert.saveDeclareEconomicIndicatorsData = function (this_) {
     declareCommon.saveDeclareEconomicIndicators(function () {
-        $('#' + declareRealtyRealEstateCert.config.declareEconomicIndicatorsHead.box).modal("hide");
-        $("#"+declareRealtyRealEstateCert.config.declareEconomicIndicatorsHead.frm).find(".panel-body").empty() ;
-        $("#"+declareRealtyRealEstateCert.config.declareEconomicIndicatorsContent.frm).find(".panel-body").empty() ;
-        toastr.info("成功!");
-    },$("#"+declareRealtyRealEstateCert.config.declareEconomicIndicatorsHead.frm),
-        $("#"+declareRealtyRealEstateCert.config.declareEconomicIndicatorsContent.frm)) ;
+            $('#' + declareRealtyRealEstateCert.config.declareEconomicIndicatorsHead.box).modal("hide");
+            $("#" + declareRealtyRealEstateCert.config.declareEconomicIndicatorsHead.frm).find(".panel-body").empty();
+            $("#" + declareRealtyRealEstateCert.config.declareEconomicIndicatorsContent.frm).find(".panel-body").empty();
+            toastr.info("成功!");
+        }, $("#" + declareRealtyRealEstateCert.config.declareEconomicIndicatorsHead.frm),
+        $("#" + declareRealtyRealEstateCert.config.declareEconomicIndicatorsContent.frm));
 };
 
 declareRealtyRealEstateCert.saveAndUpdateData = function () {
@@ -307,27 +305,27 @@ declareRealtyRealEstateCert.saveAndUpdateData = function () {
         data.enable = declareCommon.masterData;
     }
     //当土地证填写后
-    if (data.landNumber){
-        var html = "<span class='help-block' for='for'>" +"该字段为必填项(土地证号需要的基本数据)"+"</span>" ;
-        if (!data.landAcquisition){
-            $("#" + declareRealtyRealEstateCert.config.frm).find("input[name='landAcquisition']").after(html.replace(/for/g,"landAcquisition"));
+    if (data.landNumber) {
+        var html = "<span class='help-block' for='for'>" + "该字段为必填项(土地证号需要的基本数据)" + "</span>";
+        if (!data.landAcquisition) {
+            $("#" + declareRealtyRealEstateCert.config.frm).find("input[name='landAcquisition']").after(html.replace(/for/g, "landAcquisition"));
             return false;
         }
-        if (!data.registrationAuthority){
-            $("#" + declareRealtyRealEstateCert.config.frm).find("input[name='registrationAuthority']").after(html.replace(/for/g,"registrationAuthority"));
+        if (!data.registrationAuthority) {
+            $("#" + declareRealtyRealEstateCert.config.frm).find("input[name='registrationAuthority']").after(html.replace(/for/g, "registrationAuthority"));
             return false;
         }
-        if (!data.useStartDate){
-            $("#" + declareRealtyRealEstateCert.config.frm).find("input[name='useStartDate']").after(html.replace(/for/g,"useStartDate"));
+        if (!data.useStartDate) {
+            $("#" + declareRealtyRealEstateCert.config.frm).find("input[name='useStartDate']").after(html.replace(/for/g, "useStartDate"));
             return false;
         }
-        if (!data.useEndDate){
-            $("#" + declareRealtyRealEstateCert.config.frm).find("input[name='useEndDate']").after(html.replace(/for/g,"useEndDate"));
+        if (!data.useEndDate) {
+            $("#" + declareRealtyRealEstateCert.config.frm).find("input[name='useEndDate']").after(html.replace(/for/g, "useEndDate"));
             return false;
         }
     }
-    declareCommon.saveDeclareRealtyData(data,function (item) {
-        if (!declareCommon.isNotBlank(data.id)){
+    declareCommon.saveDeclareRealtyData(data, function (item) {
+        if (!declareCommon.isNotBlank(data.id)) {
             declareCommon.declareBuildCenterSaveAndUpdate({
                 realEstateId: item,
                 planDetailsId: declareCommon.getPlanDetailsId(),

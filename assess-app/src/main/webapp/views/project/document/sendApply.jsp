@@ -103,7 +103,7 @@
                 extendConten: extendConten,
                 contractType:${documentSend.contractType},
                 projectId:${documentSend.projectId},
-                processInsId:${empty documentSend.processInsId?0:documentOpinion.processInsId},
+                processInsId:'${empty documentSend.processInsId?0:documentOpinion.processInsId}',
                 id: $("#id").val(),
                 title: $("#title").val()
             },

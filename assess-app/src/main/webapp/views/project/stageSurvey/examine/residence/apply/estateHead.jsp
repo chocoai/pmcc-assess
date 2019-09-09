@@ -227,7 +227,7 @@
         </label>
         <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
             <label class=" control-label">
-                建筑安装工程费
+                建安工程完工度调查表
             </label>
             <button type="button" class="btn btn-default"
                     onclick="estateCommon.constructionInstallationEngineeringFeeEvent.loadHtml();">
