@@ -7,6 +7,7 @@
     <result column="area" property="area" jdbcType="DECIMAL" />
     <result column="price" property="price" jdbcType="DECIMAL" />
     <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="economic_id" property="economicId" jdbcType="INTEGER" />
     <result column="plan_details_id" property="planDetailsId" jdbcType="INTEGER" />
     <result column="construction_cost_subtotal" property="constructionCostSubtotal" jdbcType="DECIMAL" />
     <result column="interest_investment" property="interestInvestment" jdbcType="DECIMAL" />
@@ -128,8 +129,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, name, area, price, type, plan_details_id, construction_cost_subtotal, interest_investment, 
-    investment_profit, assess_price, head_content, content, project_construction_period, 
+    id, name, area, price, type, economic_id, plan_details_id, construction_cost_subtotal, 
+    interest_investment, investment_profit, assess_price, head_content, content, project_construction_period, 
     developed_year, remaining_development_year, reward_rate_id, total_saleable_area_price, 
     saleable_area, planned_building_area, unsaleable_building_area, reconnaissance_design, 
     construction_installation_engineering_fee_ids, construction_installation_engineering_fee, 
@@ -181,16 +182,16 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_md_development (name, area, price, 
-      type, plan_details_id, construction_cost_subtotal, 
-      interest_investment, investment_profit, assess_price, 
-      head_content, content, project_construction_period, 
-      developed_year, remaining_development_year, 
-      reward_rate_id, total_saleable_area_price, saleable_area, 
-      planned_building_area, unsaleable_building_area, 
-      reconnaissance_design, construction_installation_engineering_fee_ids, 
-      construction_installation_engineering_fee, infrastructure_cost, 
-      infrastructure_matching_cost, dev_during, 
-      other_engineering_cost, unforeseen_expenses, 
+      type, economic_id, plan_details_id, 
+      construction_cost_subtotal, interest_investment, 
+      investment_profit, assess_price, head_content, 
+      content, project_construction_period, developed_year, 
+      remaining_development_year, reward_rate_id, 
+      total_saleable_area_price, saleable_area, planned_building_area, 
+      unsaleable_building_area, reconnaissance_design, 
+      construction_installation_engineering_fee_ids, construction_installation_engineering_fee, 
+      infrastructure_cost, infrastructure_matching_cost, 
+      dev_during, other_engineering_cost, unforeseen_expenses, 
       reconnaissance_design_explain, infrastructure_cost_explain, 
       infrastructure_matching_cost_explain, dev_during_explain, 
       other_engineering_cost_explain, unforeseen_expenses_explain, 
@@ -210,16 +211,16 @@
       creator, gmt_created, gmt_modified
       )
     values (#{name,jdbcType=VARCHAR}, #{area,jdbcType=DECIMAL}, #{price,jdbcType=DECIMAL}, 
-      #{type,jdbcType=VARCHAR}, #{planDetailsId,jdbcType=INTEGER}, #{constructionCostSubtotal,jdbcType=DECIMAL}, 
-      #{interestInvestment,jdbcType=DECIMAL}, #{investmentProfit,jdbcType=DECIMAL}, #{assessPrice,jdbcType=DECIMAL}, 
-      #{headContent,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{projectConstructionPeriod,jdbcType=DECIMAL}, 
-      #{developedYear,jdbcType=DECIMAL}, #{remainingDevelopmentYear,jdbcType=DECIMAL}, 
-      #{rewardRateId,jdbcType=INTEGER}, #{totalSaleableAreaPrice,jdbcType=DECIMAL}, #{saleableArea,jdbcType=DECIMAL}, 
-      #{plannedBuildingArea,jdbcType=DECIMAL}, #{unsaleableBuildingArea,jdbcType=DECIMAL}, 
-      #{reconnaissanceDesign,jdbcType=DECIMAL}, #{constructionInstallationEngineeringFeeIds,jdbcType=VARCHAR}, 
-      #{constructionInstallationEngineeringFee,jdbcType=DECIMAL}, #{infrastructureCost,jdbcType=DECIMAL}, 
-      #{infrastructureMatchingCost,jdbcType=DECIMAL}, #{devDuring,jdbcType=DECIMAL}, 
-      #{otherEngineeringCost,jdbcType=DECIMAL}, #{unforeseenExpenses,jdbcType=DECIMAL}, 
+      #{type,jdbcType=VARCHAR}, #{economicId,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, 
+      #{constructionCostSubtotal,jdbcType=DECIMAL}, #{interestInvestment,jdbcType=DECIMAL}, 
+      #{investmentProfit,jdbcType=DECIMAL}, #{assessPrice,jdbcType=DECIMAL}, #{headContent,jdbcType=VARCHAR}, 
+      #{content,jdbcType=VARCHAR}, #{projectConstructionPeriod,jdbcType=DECIMAL}, #{developedYear,jdbcType=DECIMAL}, 
+      #{remainingDevelopmentYear,jdbcType=DECIMAL}, #{rewardRateId,jdbcType=INTEGER}, 
+      #{totalSaleableAreaPrice,jdbcType=DECIMAL}, #{saleableArea,jdbcType=DECIMAL}, #{plannedBuildingArea,jdbcType=DECIMAL}, 
+      #{unsaleableBuildingArea,jdbcType=DECIMAL}, #{reconnaissanceDesign,jdbcType=DECIMAL}, 
+      #{constructionInstallationEngineeringFeeIds,jdbcType=VARCHAR}, #{constructionInstallationEngineeringFee,jdbcType=DECIMAL}, 
+      #{infrastructureCost,jdbcType=DECIMAL}, #{infrastructureMatchingCost,jdbcType=DECIMAL}, 
+      #{devDuring,jdbcType=DECIMAL}, #{otherEngineeringCost,jdbcType=DECIMAL}, #{unforeseenExpenses,jdbcType=DECIMAL}, 
       #{reconnaissanceDesignExplain,jdbcType=VARCHAR}, #{infrastructureCostExplain,jdbcType=VARCHAR}, 
       #{infrastructureMatchingCostExplain,jdbcType=VARCHAR}, #{devDuringExplain,jdbcType=VARCHAR}, 
       #{otherEngineeringCostExplain,jdbcType=VARCHAR}, #{unforeseenExpensesExplain,jdbcType=VARCHAR}, 
@@ -256,6 +257,9 @@
       </if>
       <if test="type != null" >
         type,
+      </if>
+      <if test="economicId != null" >
+        economic_id,
       </if>
       <if test="planDetailsId != null" >
         plan_details_id,
@@ -453,6 +457,9 @@
       </if>
       <if test="type != null" >
         #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="economicId != null" >
+        #{economicId,jdbcType=INTEGER},
       </if>
       <if test="planDetailsId != null" >
         #{planDetailsId,jdbcType=INTEGER},
@@ -663,6 +670,9 @@
       <if test="record.type != null" >
         type = #{record.type,jdbcType=VARCHAR},
       </if>
+      <if test="record.economicId != null" >
+        economic_id = #{record.economicId,jdbcType=INTEGER},
+      </if>
       <if test="record.planDetailsId != null" >
         plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
       </if>
@@ -858,6 +868,7 @@
       area = #{record.area,jdbcType=DECIMAL},
       price = #{record.price,jdbcType=DECIMAL},
       type = #{record.type,jdbcType=VARCHAR},
+      economic_id = #{record.economicId,jdbcType=INTEGER},
       plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
       construction_cost_subtotal = #{record.constructionCostSubtotal,jdbcType=DECIMAL},
       interest_investment = #{record.interestInvestment,jdbcType=DECIMAL},
@@ -937,6 +948,9 @@
       </if>
       <if test="type != null" >
         type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="economicId != null" >
+        economic_id = #{economicId,jdbcType=INTEGER},
       </if>
       <if test="planDetailsId != null" >
         plan_details_id = #{planDetailsId,jdbcType=INTEGER},
@@ -1130,6 +1144,7 @@
       area = #{area,jdbcType=DECIMAL},
       price = #{price,jdbcType=DECIMAL},
       type = #{type,jdbcType=VARCHAR},
+      economic_id = #{economicId,jdbcType=INTEGER},
       plan_details_id = #{planDetailsId,jdbcType=INTEGER},
       construction_cost_subtotal = #{constructionCostSubtotal,jdbcType=DECIMAL},
       interest_investment = #{interestInvestment,jdbcType=DECIMAL},

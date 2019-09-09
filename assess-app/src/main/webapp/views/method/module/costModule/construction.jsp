@@ -63,22 +63,24 @@
 
 
         <div class="x_content">
-            <div class="form-group">
-                <div class="x-valid">
-                    <div class="col-sm-12">
-                        <div id="toolbarLandIncomeCategoryTableId" style="display: none">
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-primary" onclick="construction.deleteMdDevelopmentIncomeCategoryTable('#landIncomeCategoryTableId')">删除</button>
-                                <button type="button" class="btn btn-primary" onclick="construction.editMdDevelopmentIncomeCategoryTable('#landIncomeCategoryTableId','#basicMdDevelopmentIncomeCategoryModalTool',true)">编辑</button>
-                                <button type="button" class="btn btn-primary" onclick="construction.editMdDevelopmentIncomeCategoryTable('#landIncomeCategoryTableId','#basicMdDevelopmentIncomeCategoryModalTool',false)">添加</button>
-                            </div>
-                        </div>
-                        <table class="table table-striped" id="landIncomeCategoryTableId" >
+            <input type="button" class="btn btn-primary" value="经济规划指标"
+                   onclick="economicIndicators.init(${mdCostVo.mdCostConstruction.economicId});">
+            <%--<div class="form-group">--%>
+                <%--<div class="x-valid">--%>
+                    <%--<div class="col-sm-12">--%>
+                        <%--<div id="toolbarLandIncomeCategoryTableId" style="display: none">--%>
+                            <%--<div class="btn-group">--%>
+                                <%--<button type="button" class="btn btn-primary" onclick="construction.deleteMdDevelopmentIncomeCategoryTable('#landIncomeCategoryTableId')">删除</button>--%>
+                                <%--<button type="button" class="btn btn-primary" onclick="construction.editMdDevelopmentIncomeCategoryTable('#landIncomeCategoryTableId','#basicMdDevelopmentIncomeCategoryModalTool',true)">编辑</button>--%>
+                                <%--<button type="button" class="btn btn-primary" onclick="construction.editMdDevelopmentIncomeCategoryTable('#landIncomeCategoryTableId','#basicMdDevelopmentIncomeCategoryModalTool',false)">添加</button>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
+                        <%--<table class="table table-striped" id="landIncomeCategoryTableId" >--%>
 
-                        </table>
-                    </div>
-                </div>
-            </div>
+                        <%--</table>--%>
+                    <%--</div>--%>
+                <%--</div>--%>
+            <%--</div>--%>
 
             <div class="form-group">
                 <div class="x-valid">
@@ -106,9 +108,7 @@
         </div>
     </div>
 
-
     <div class="x_panel" id="LAND_ACQUISITION_COST">
-
         <div class="x_title collapse-link">
             <ul class="nav navbar-right panel_toolbox">
                 <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>

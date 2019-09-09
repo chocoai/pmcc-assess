@@ -246,22 +246,20 @@ declareRealtyRealEstateCert.showAddModelDeclareEconomicIndicators = function (id
         toastr.success('不合符调整后的数据约定,请联系管理员!');
         return false;
     }
-    declareCommon.showHtmlMastInit($("#" + declareRealtyRealEstateCert.config.declareEconomicIndicatorsHead.frm), function (area) {
-        declareCommon.getDeclareBuildCenter(item.centerId, function (centerData) {
-            if (centerData.indicatorId) {
-                economicIndicators.init({
-                    planDetailsId: declareCommon.getPlanDetailsId(),
-                    economicId: centerData.indicatorId
-                });
-            } else {
-                economicIndicators.init({
-                    planDetailsId: declareCommon.getPlanDetailsId(),
-                    saveCallback: function (economicId) {//经济指标id更新到中间表
-                        declareCommon.declareBuildCenterSaveAndUpdate({indicatorId: economicId, id: item.centerId});
-                    }
-                });
-            }
-        });
+    declareCommon.getDeclareBuildCenter(item.centerId, function (centerData) {
+        if (centerData.indicatorId) {
+            economicIndicators.init({
+                planDetailsId: declareCommon.getPlanDetailsId(),
+                economicId: centerData.indicatorId
+            });
+        } else {
+            economicIndicators.init({
+                planDetailsId: declareCommon.getPlanDetailsId(),
+                saveCallback: function (economicId) {//经济指标id更新到中间表
+                    declareCommon.declareBuildCenterSaveAndUpdate({indicatorId: economicId, id: item.centerId});
+                }
+            });
+        }
     });
 };
 

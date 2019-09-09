@@ -14,6 +14,8 @@ public class MdDevelopment {
 
     private String type;
 
+    private Integer economicId;
+
     private Integer planDetailsId;
 
     private BigDecimal constructionCostSubtotal;
@@ -174,6 +176,14 @@ public class MdDevelopment {
 
     public void setType(String type) {
         this.type = type == null ? null : type.trim();
+    }
+
+    public Integer getEconomicId() {
+        return economicId;
+    }
+
+    public void setEconomicId(Integer economicId) {
+        this.economicId = economicId;
     }
 
     public Integer getPlanDetailsId() {

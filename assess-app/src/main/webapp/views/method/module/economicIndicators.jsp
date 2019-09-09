@@ -154,10 +154,10 @@
                         </thead>
                         <tbody>
                         <tr class="treegrid-1" data-key="groundBuildingArea" data-title="地上计入容积率建筑面积"
-                            data-role="parent">
+                            data-role="parent" data-parent-index="1">
                             <td>一: 地上计入容积率建筑面积
                                 <a class="btn btn-xs btn-warning tooltips" data-placement="top"
-                                   onclick="economicIndicators.appendItemChildren(this,1);"><i
+                                   onclick="economicIndicators.appendItemChildren(this);"><i
                                         class="fa fa-plus fa-white"></i></a>
                             </td>
                             <td><label name="plannedBuildingArea"></label></td>
@@ -166,10 +166,10 @@
                             <td></td>
                         </tr>
                         <tr class="treegrid-2" data-key="groundExcludBuildingArea" data-title="地上不计入容积率建筑面积"
-                            data-role="parent">
+                            data-role="parent" data-parent-index="2">
                             <td>二: 地上不计入容积率建筑面积
                                 <a class="btn btn-xs btn-warning tooltips" data-placement="top"
-                                   onclick="economicIndicators.appendItemChildren(this,2);"><i
+                                   onclick="economicIndicators.appendItemChildren(this);"><i
                                         class="fa fa-plus fa-white"></i></a>
                             </td>
                             <td><label name="plannedBuildingArea"></label></td>
@@ -178,10 +178,10 @@
                             <td></td>
                         </tr>
                         <tr class="treegrid-3" data-key="undergroundBuildingArea" data-title="地下建筑面积"
-                            data-role="parent">
+                            data-role="parent" data-parent-index="3">
                             <td>三: 地下建筑面积
                                 <a class="btn btn-xs btn-warning tooltips" data-placement="top"
-                                   onclick="economicIndicators.appendItemChildren(this,3);"><i
+                                   onclick="economicIndicators.appendItemChildren(this);"><i
                                         class="fa fa-plus fa-white"></i></a>
                             </td>
                             <td><label name="plannedBuildingArea"></label></td>
@@ -190,10 +190,10 @@
                             <td></td>
                         </tr>
                         <tr class="treegrid-4" data-key="undergroundIncludedBuildingArea" data-title="地下不计入建筑面积"
-                            data-role="parent">
+                            data-role="parent" data-parent-index="4">
                             <td>四: 地下不计入建筑面积
                                 <a class="btn btn-xs btn-warning tooltips" data-placement="top"
-                                   onclick="economicIndicators.appendItemChildren(this,4);"><i
+                                   onclick="economicIndicators.appendItemChildren(this);"><i
                                         class="fa fa-plus fa-white"></i></a>
                             </td>
                             <td><label name="plannedBuildingArea"></label></td>
@@ -201,10 +201,10 @@
                             <td><label name="number"></label></td>
                             <td></td>
                         </tr>
-                        <tr class="treegrid-5" data-key="otherBuildingArea" data-role="parent">
+                        <tr class="treegrid-5" data-key="otherBuildingArea" data-role="parent" data-parent-index="5">
                             <td>五: 其他
                                 <a class="btn btn-xs btn-warning tooltips" data-placement="top"
-                                   onclick="economicIndicators.appendItemChildren(this,5);"><i
+                                   onclick="economicIndicators.appendItemChildren(this);"><i
                                         class="fa fa-plus fa-white"></i></a>
                             </td>
                             <td><label name="plannedBuildingArea"></label></td>
@@ -280,9 +280,17 @@
                     if (result.ret) {
                         $("#frmEconomicIndicators").initForm(result.data.economicIndicators);
                         if(result.data.economicIndicatorsItemList){
-                            $.each(result.data.economicIndicatorsItemList,function () {
-                                
-                            })    
+                            $.each(result.data.economicIndicatorsItemList,function (i,item) {
+                                var dataKey=item.dataKey;
+                                var parentTr = $("#frmEconomicIndicatorsItem").find('[data-key=' + dataKey + '][data-role="parent"]')
+                                var html = $("#economicIndicatorsItemTemplate").html();
+                                html = html.replace(/{dataKey}/g, dataKey).replace(/{parentIndex}/g, parentTr.attr('data-parent-index'));
+                                html = html.replace(/{currentIndex}/g, $("#frmEconomicIndicatorsItem").find('[data-key=' + dataKey + ']').length);
+                                html = html.replace(/{name}/g,AssessCommon.toString(item.name)).replace(/{plannedBuildingArea}/g, AssessCommon.toString(item.plannedBuildingArea));
+                                html = html.replace(/{saleableArea}/g, AssessCommon.toString(item.saleableArea)).replace(/{number}/g, AssessCommon.toString(item.number)).replace(/{remark}/g, AssessCommon.toString(item.remark));
+                                $("#frmEconomicIndicatorsItem").find('[data-key=' + dataKey + ']').last().after(html);
+                            })
+                            economicIndicators.autoSummary();
                         }
                     } else {
                         Alert(result.errmsg);
@@ -329,10 +337,10 @@
     }
 
     //添加子项
-    economicIndicators.appendItemChildren = function (_this, parentIndex) {
+    economicIndicators.appendItemChildren = function (_this) {
         var dataKey = $(_this).closest('tr').attr('data-key');
         var html = $("#economicIndicatorsItemTemplate").html();
-        html = html.replace(/{dataKey}/g, dataKey).replace(/{parentIndex}/g, parentIndex);
+        html = html.replace(/{dataKey}/g, dataKey).replace(/{parentIndex}/g, $(_this).closest('tr').attr('data-parent-index'));
         html = html.replace(/{currentIndex}/g, $("#frmEconomicIndicatorsItem").find('[data-key=' + dataKey + ']').length);
         html = html.replace(/{name}/g, '').replace(/{plannedBuildingArea}/g, '');
         html = html.replace(/{saleableArea}/g, '').replace(/{number}/g, '').replace(/{remark}/g, '');

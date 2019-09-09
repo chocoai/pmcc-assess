@@ -30,4 +30,14 @@ public class MdEconomicIndicatorsController {
             return HttpResult.newErrorResult("保存经济指标异常");
         }
     }
+
+    @PostMapping(value = "/getEconomicIndicatorsInfo")
+    public HttpResult getEconomicIndicatorsInfo(Integer economicId) {
+        try {
+            return HttpResult.newCorrectResult(mdEconomicIndicatorsService.getEconomicIndicatorsInfo(economicId));
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
+            return HttpResult.newErrorResult("获取经济指标异常");
+        }
+    }
 }

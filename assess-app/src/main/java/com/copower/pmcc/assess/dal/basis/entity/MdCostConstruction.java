@@ -28,6 +28,8 @@ public class MdCostConstruction {
 
     private BigDecimal developYearNumberTax;
 
+    private Integer economicId;
+
     private Integer mcId;
 
     private BigDecimal landPurchasePrice;
@@ -196,6 +198,14 @@ public class MdCostConstruction {
 
     public void setDevelopYearNumberTax(BigDecimal developYearNumberTax) {
         this.developYearNumberTax = developYearNumberTax;
+    }
+
+    public Integer getEconomicId() {
+        return economicId;
+    }
+
+    public void setEconomicId(Integer economicId) {
+        this.economicId = economicId;
     }
 
     public Integer getMcId() {

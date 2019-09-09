@@ -14,6 +14,7 @@
     <result column="develop_land_area_tax" property="developLandAreaTax" jdbcType="DECIMAL" />
     <result column="develop_build_area_tax" property="developBuildAreaTax" jdbcType="DECIMAL" />
     <result column="develop_year_number_tax" property="developYearNumberTax" jdbcType="DECIMAL" />
+    <result column="economic_id" property="economicId" jdbcType="INTEGER" />
     <result column="mc_id" property="mcId" jdbcType="INTEGER" />
     <result column="land_purchase_price" property="landPurchasePrice" jdbcType="DECIMAL" />
     <result column="land_purchase_price_explain" property="landPurchasePriceExplain" jdbcType="VARCHAR" />
@@ -114,7 +115,7 @@
     id, construction_installation_engineering_fee_ids, construction_assessment_price_correcting, 
     construction_assessment_value, investment_profit, interest_investment, construction_subtotal, 
     land_get_cost_total, json_content, develop_land_area_tax, develop_build_area_tax, 
-    develop_year_number_tax, mc_id, land_purchase_price, land_purchase_price_explain, 
+    develop_year_number_tax, economic_id, mc_id, land_purchase_price, land_purchase_price_explain, 
     land_get_relevant, land_get_relevant_explain, reconnaissance_design, construction_installation_engineering_fee, 
     infrastructure_cost, infrastructure_matching_cost, infrastructure_matching_cost_explain, 
     dev_during, other_engineering_cost, unforeseen_expenses, unforeseen_expenses_explain, 
@@ -164,12 +165,12 @@
       interest_investment, construction_subtotal, 
       land_get_cost_total, json_content, develop_land_area_tax, 
       develop_build_area_tax, develop_year_number_tax, 
-      mc_id, land_purchase_price, land_purchase_price_explain, 
-      land_get_relevant, land_get_relevant_explain, 
-      reconnaissance_design, construction_installation_engineering_fee, 
-      infrastructure_cost, infrastructure_matching_cost, 
-      infrastructure_matching_cost_explain, dev_during, 
-      other_engineering_cost, unforeseen_expenses, 
+      economic_id, mc_id, land_purchase_price, 
+      land_purchase_price_explain, land_get_relevant, 
+      land_get_relevant_explain, reconnaissance_design, 
+      construction_installation_engineering_fee, infrastructure_cost, 
+      infrastructure_matching_cost, infrastructure_matching_cost_explain, 
+      dev_during, other_engineering_cost, unforeseen_expenses, 
       unforeseen_expenses_explain, management_expense, 
       management_expense_explain, sales_fee, sales_fee_explain, 
       interest_investment_tax, interest_investment_tax_explain, 
@@ -186,12 +187,12 @@
       #{interestInvestment,jdbcType=VARCHAR}, #{constructionSubtotal,jdbcType=VARCHAR}, 
       #{landGetCostTotal,jdbcType=VARCHAR}, #{jsonContent,jdbcType=VARCHAR}, #{developLandAreaTax,jdbcType=DECIMAL}, 
       #{developBuildAreaTax,jdbcType=DECIMAL}, #{developYearNumberTax,jdbcType=DECIMAL}, 
-      #{mcId,jdbcType=INTEGER}, #{landPurchasePrice,jdbcType=DECIMAL}, #{landPurchasePriceExplain,jdbcType=VARCHAR}, 
-      #{landGetRelevant,jdbcType=DECIMAL}, #{landGetRelevantExplain,jdbcType=VARCHAR}, 
-      #{reconnaissanceDesign,jdbcType=DECIMAL}, #{constructionInstallationEngineeringFee,jdbcType=DECIMAL}, 
-      #{infrastructureCost,jdbcType=DECIMAL}, #{infrastructureMatchingCost,jdbcType=DECIMAL}, 
-      #{infrastructureMatchingCostExplain,jdbcType=VARCHAR}, #{devDuring,jdbcType=DECIMAL}, 
-      #{otherEngineeringCost,jdbcType=DECIMAL}, #{unforeseenExpenses,jdbcType=DECIMAL}, 
+      #{economicId,jdbcType=INTEGER}, #{mcId,jdbcType=INTEGER}, #{landPurchasePrice,jdbcType=DECIMAL}, 
+      #{landPurchasePriceExplain,jdbcType=VARCHAR}, #{landGetRelevant,jdbcType=DECIMAL}, 
+      #{landGetRelevantExplain,jdbcType=VARCHAR}, #{reconnaissanceDesign,jdbcType=DECIMAL}, 
+      #{constructionInstallationEngineeringFee,jdbcType=DECIMAL}, #{infrastructureCost,jdbcType=DECIMAL}, 
+      #{infrastructureMatchingCost,jdbcType=DECIMAL}, #{infrastructureMatchingCostExplain,jdbcType=VARCHAR}, 
+      #{devDuring,jdbcType=DECIMAL}, #{otherEngineeringCost,jdbcType=DECIMAL}, #{unforeseenExpenses,jdbcType=DECIMAL}, 
       #{unforeseenExpensesExplain,jdbcType=VARCHAR}, #{managementExpense,jdbcType=DECIMAL}, 
       #{managementExpenseExplain,jdbcType=VARCHAR}, #{salesFee,jdbcType=DECIMAL}, #{salesFeeExplain,jdbcType=VARCHAR}, 
       #{interestInvestmentTax,jdbcType=DECIMAL}, #{interestInvestmentTaxExplain,jdbcType=VARCHAR}, 
@@ -242,6 +243,9 @@
       </if>
       <if test="developYearNumberTax != null" >
         develop_year_number_tax,
+      </if>
+      <if test="economicId != null" >
+        economic_id,
       </if>
       <if test="mcId != null" >
         mc_id,
@@ -388,6 +392,9 @@
       </if>
       <if test="developYearNumberTax != null" >
         #{developYearNumberTax,jdbcType=DECIMAL},
+      </if>
+      <if test="economicId != null" >
+        #{economicId,jdbcType=INTEGER},
       </if>
       <if test="mcId != null" >
         #{mcId,jdbcType=INTEGER},
@@ -547,6 +554,9 @@
       <if test="record.developYearNumberTax != null" >
         develop_year_number_tax = #{record.developYearNumberTax,jdbcType=DECIMAL},
       </if>
+      <if test="record.economicId != null" >
+        economic_id = #{record.economicId,jdbcType=INTEGER},
+      </if>
       <if test="record.mcId != null" >
         mc_id = #{record.mcId,jdbcType=INTEGER},
       </if>
@@ -677,6 +687,7 @@
       develop_land_area_tax = #{record.developLandAreaTax,jdbcType=DECIMAL},
       develop_build_area_tax = #{record.developBuildAreaTax,jdbcType=DECIMAL},
       develop_year_number_tax = #{record.developYearNumberTax,jdbcType=DECIMAL},
+      economic_id = #{record.economicId,jdbcType=INTEGER},
       mc_id = #{record.mcId,jdbcType=INTEGER},
       land_purchase_price = #{record.landPurchasePrice,jdbcType=DECIMAL},
       land_purchase_price_explain = #{record.landPurchasePriceExplain,jdbcType=VARCHAR},
@@ -753,6 +764,9 @@
       </if>
       <if test="developYearNumberTax != null" >
         develop_year_number_tax = #{developYearNumberTax,jdbcType=DECIMAL},
+      </if>
+      <if test="economicId != null" >
+        economic_id = #{economicId,jdbcType=INTEGER},
       </if>
       <if test="mcId != null" >
         mc_id = #{mcId,jdbcType=INTEGER},
@@ -881,6 +895,7 @@
       develop_land_area_tax = #{developLandAreaTax,jdbcType=DECIMAL},
       develop_build_area_tax = #{developBuildAreaTax,jdbcType=DECIMAL},
       develop_year_number_tax = #{developYearNumberTax,jdbcType=DECIMAL},
+      economic_id = #{economicId,jdbcType=INTEGER},
       mc_id = #{mcId,jdbcType=INTEGER},
       land_purchase_price = #{landPurchasePrice,jdbcType=DECIMAL},
       land_purchase_price_explain = #{landPurchasePriceExplain,jdbcType=VARCHAR},

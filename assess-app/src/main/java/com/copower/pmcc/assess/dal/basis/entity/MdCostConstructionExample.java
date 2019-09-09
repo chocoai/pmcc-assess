@@ -896,6 +896,66 @@ public class MdCostConstructionExample {
             return (Criteria) this;
         }
 
+        public Criteria andEconomicIdIsNull() {
+            addCriterion("economic_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEconomicIdIsNotNull() {
+            addCriterion("economic_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEconomicIdEqualTo(Integer value) {
+            addCriterion("economic_id =", value, "economicId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEconomicIdNotEqualTo(Integer value) {
+            addCriterion("economic_id <>", value, "economicId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEconomicIdGreaterThan(Integer value) {
+            addCriterion("economic_id >", value, "economicId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEconomicIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("economic_id >=", value, "economicId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEconomicIdLessThan(Integer value) {
+            addCriterion("economic_id <", value, "economicId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEconomicIdLessThanOrEqualTo(Integer value) {
+            addCriterion("economic_id <=", value, "economicId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEconomicIdIn(List<Integer> values) {
+            addCriterion("economic_id in", values, "economicId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEconomicIdNotIn(List<Integer> values) {
+            addCriterion("economic_id not in", values, "economicId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEconomicIdBetween(Integer value1, Integer value2) {
+            addCriterion("economic_id between", value1, value2, "economicId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEconomicIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("economic_id not between", value1, value2, "economicId");
+            return (Criteria) this;
+        }
+
         public Criteria andMcIdIsNull() {
             addCriterion("mc_id is null");
             return (Criteria) this;
