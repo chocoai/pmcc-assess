@@ -56,12 +56,24 @@ public class ArithmeticUtils implements Serializable {
         return addModel(createBigDecimal(v1), createBigDecimal(v2), null, null).doubleValue();
     }
 
+    public static BigDecimal add(BigDecimal v1, BigDecimal v2) {
+        return addModel(v1, v2, null, null);
+    }
+
     public static double add(double[] doubles) {
         BigDecimal bigDecimal = createBigDecimal(0);
         for (double d : doubles) {
             bigDecimal = add(bigDecimal.toString(), String.valueOf(d));
         }
         return bigDecimal.doubleValue();
+    }
+
+    public static BigDecimal add(BigDecimal[] doubles) {
+        BigDecimal bigDecimal = createBigDecimal(0);
+        for (BigDecimal d : doubles) {
+            bigDecimal = add(bigDecimal.toString(), d.toString());
+        }
+        return bigDecimal;
     }
 
     /**
@@ -286,10 +298,22 @@ public class ArithmeticUtils implements Serializable {
         return divide(createBigDecimal(v1), createBigDecimal(v2), scale).toString();
     }
 
+    /**
+     * 默认精度10
+     * @param v1
+     * @param v2
+     * @return
+     */
     public static String div(String v1, String v2) {
         return div(createBigDecimal(v1), createBigDecimal(v2)).toString();
     }
 
+    /**
+     * 默认精度10
+     * @param v1
+     * @param v2
+     * @return
+     */
     public static BigDecimal div(BigDecimal v1, BigDecimal v2) {
         return divide(v1, v2, 10);
     }

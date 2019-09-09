@@ -10,74 +10,19 @@
     landEngineering.fixed = 2; //小数点保留2位
     landEngineering.fixedMax = 4; //小数点保留4位
     landEngineering.fixedMin = 0; //小数点保留0位
-    landEngineering.type = 'land' ;
+    landEngineering.defaultType = 'land' ;
 
-
-    //单元格f18
-    landEngineering.calculationF18 = function () {
-        var a = this.target.find("input[name='unsaleableBuildingArea']").val();
-        var b = this.target.find("input[name='saleableArea']").val();
-        var c = 0;
-        if (development.isNotBlank(a)) {
-            c += Number(a);
+    landEngineering.getTypeData = function () {
+        var data = formSerializeArray(landEngineering.target) ;
+        if (data.type == 1){
+            return landEngineering.defaultType ;
         }
-        if (development.isNotBlank(b)) {
-            c += Number(b);
+        if (data.type == 2){
+            return 'engineering' ;
         }
-        this.target.find("input[name='f18']").val(c.toFixed(landEngineering.fixed));
-        this.target.find("input[name='reconnaissanceDesign']").trigger('blur');
-        this.target.find("input[name='infrastructureCost']").trigger('blur');
-        this.target.find("input[name='infrastructureMatchingCost']").trigger('blur');
-        this.target.find("input[name='devDuring']").trigger('blur');
-        this.target.find("input[name='otherEngineeringCost']").trigger('blur');
     };
 
-    //单元格D20
-    landEngineering.calculationD20 = function () {
-        console.log("calculationD20");
-        var f18 = this.target.find("input[name='f18']").val();
-        var f20 = this.target.find("input[name='reconnaissanceDesign']").attr("data-value");
-        var f21 = this.target.find("input[name='constructionInstallationEngineeringFee']").val();
-        if (!AssessCommon.isNumber(f20)) {
-            return false;
-        }
-        if (!AssessCommon.isNumber(f18)) {
-            return false;
-        }
-        if (!AssessCommon.isNumber(f21)) {
-            return false;
-        }
-        var c = Number(f18) * Number(f21) * Number(f20) / 10000;
-        landEngineering.target.find("input[name='d20']").val(c.toFixed(landEngineering.fixed));
-        this.target.find("input[name='constructionCostSubtotal']").trigger('blur');
-    };
 
-    //单元格d21
-    landEngineering.calculationD21 = function () {
-        console.log("calculationD21");
-        var f18 = this.target.find("input[name='f18']").val();
-        var f21 = landEngineering.target.find("input[name='constructionInstallationEngineeringFee']").val();
-        var c = Number(f21) * Number(f18) / 10000;
-        landEngineering.target.find("input[name='d21']").val(c.toFixed(landEngineering.fixed));
-        this.target.find("input[name='reconnaissanceDesign']").trigger('blur');
-        this.target.find("input[name='constructionCostSubtotal']").trigger('blur');
-    };
-
-    //单元格d22
-    landEngineering.calculationD22 = function () {
-        console.log("calculationD22");
-        var f18 = this.target.find("input[name='f18']").val();
-        var f22 = this.target.find("input[name='infrastructureCost']").val();
-        if (!AssessCommon.isNumber(f18)) {
-            return false;
-        }
-        if (!AssessCommon.isNumber(f22)) {
-            return false;
-        }
-        var c = Number(f22) * Number(f18) / 10000;
-        landEngineering.target.find("input[name='d22']").val(c.toFixed(landEngineering.fixed));
-        this.target.find("input[name='constructionCostSubtotal']").trigger('blur');
-    };
 
     landEngineering.calculationF22 = function (_this) {
         var item = $(_this).find('option:selected') ;
@@ -99,7 +44,7 @@
                         $.each(data,function (i,n) {
                             var obj = {name:n.name,number:n.number,tax:n.tax} ;
                             obj.planDetailsId = '${projectPlanDetails.id}' ;
-                            obj.type = landEngineering.type ;
+                            obj.type = landEngineering.getTypeData() ;
                             obj.pid = developmentCommon.isNotBlank('${mdDevelopment.id}')?'${mdDevelopment.id}':'0' ;
                             arr.push(obj) ;
                         });
@@ -121,474 +66,6 @@
             toastr.success('无子项!');
         }
     };
-
-    //单元格d23
-    landEngineering.calculationD23 = function () {
-        console.log("calculationD23");
-        var f18 = this.target.find("input[name='f18']").val();
-        var f23 = this.target.find("input[name='infrastructureMatchingCost']").val();
-        if (!AssessCommon.isNumber(f18)) {
-            return false;
-        }
-        if (!AssessCommon.isNumber(f23)) {
-            return false;
-        }
-        var c = Number(f23) * Number(f18) / 10000;
-        landEngineering.target.find("input[name='d23']").val(c.toFixed(landEngineering.fixed));
-        this.target.find("input[name='constructionCostSubtotal']").trigger('blur');
-    };
-
-    //单元格d24
-    landEngineering.calculationD24 = function () {
-        console.log("calculationD24");
-        var f18 = this.target.find("input[name='f18']").val();
-        var f24 = this.target.find("input[name='devDuring']").val();
-        if (!AssessCommon.isNumber(f18)) {
-            return false;
-        }
-        if (!AssessCommon.isNumber(f24)) {
-            return false;
-        }
-        var c = Number(f24) * Number(f18) / 10000;
-        this.target.find("input[name='d24']").val(c.toFixed(landEngineering.fixed));
-        this.target.find("input[name='constructionCostSubtotal']").trigger('blur');
-    };
-
-
-
-    //单元格Dd25
-    landEngineering.calculationD25 = function () {
-        console.log("calculationD25");
-        var f18 = this.target.find("input[name='f18']").val();
-        var f25 = this.target.find("input[name='otherEngineeringCost']").attr("data-value");
-        if (!AssessCommon.isNumber(f18)) {
-            return false;
-        }
-        if (!AssessCommon.isNumber(f25)) {
-            return false;
-        }
-        var c = Number(f25) * Number(f18) / 10000;
-        this.target.find("input[name='d25']").val(c.toFixed(landEngineering.fixed));
-        this.target.find("input[name='constructionCostSubtotal']").trigger('blur');
-    };
-
-    //单元格D26
-    landEngineering.calculationD26 = function () {
-        console.log("calculationD26");
-        var d20 = this.target.find("input[name='d20']").val();
-        var d21 = this.target.find("input[name='d21']").val();
-        var d22 = this.target.find("input[name='d22']").val();
-        var d23 = this.target.find("input[name='d23']").val();
-        var d24 = this.target.find("input[name='d24']").val();
-        var d25 = this.target.find("input[name='d25']").val();
-        var arr = [];
-        if (development.isNotBlank(d20)) {
-            arr.push(d20);
-        }
-        if (development.isNotBlank(d21)) {
-            arr.push(d21);
-        }
-        if (development.isNotBlank(d22)) {
-            arr.push(d22);
-        }
-        if (development.isNotBlank(d23)) {
-            arr.push(d23);
-        }
-        if (development.isNotBlank(d24)) {
-            arr.push(d24);
-        }
-        if (development.isNotBlank(d25)) {
-            arr.push(d25);
-        }
-        if (arr.length == 0) {
-            return false;
-        }
-        var c = 0;
-        $.each(arr, function (i, item) {
-            c += Number(item);
-        });
-        c = c.toFixed(landEngineering.fixed) ;
-        this.target.find("input[name='constructionCostSubtotal']").val(c);
-        this.target.find(".constructionCostSubtotal").html(c);
-        this.target.find("input[name='unforeseenExpenses']").trigger('blur');
-        landEngineering.calculationF40() ;
-    };
-
-    //单元格D27
-    landEngineering.calculationD27 = function () {
-        var d26 = this.target.find("input[name='constructionCostSubtotal']").val() ;
-        var f27 = this.target.find("input[name='unforeseenExpenses']").attr("data-value");
-        if (!AssessCommon.isNumber(d26)) {
-            return false;
-        }
-        if (!AssessCommon.isNumber(f27)) {
-            return false;
-        }
-        var c = Number(d26) * Number(f27) ;
-        this.target.find("input[name='d27']").val(c.toFixed(landEngineering.fixed));
-        this.target.find("input[name='interestInvestmentTax']").trigger('blur');
-        this.target.find("input[name='investmentProfitTax']").trigger('blur');
-        landEngineering.calculationF40() ;
-    };
-
-    //单元格D28
-    landEngineering.calculationD28 = function () {
-        var f29 = this.target.find("input[name='deedTaxRate']").attr("data-value");
-        var f30 = this.target.find("input[name='transactionTaxRate']").attr("data-value");
-        if (!AssessCommon.isNumber(f29)) {
-            return false;
-        }
-        if (!AssessCommon.isNumber(f30)) {
-            return false;
-        }
-        var c = Number(f29) + Number(f30) +1;
-        this.target.find("input[name='d28']").val(c.toFixed(landEngineering.fixed));
-        this.target.find("input[name='d32']").trigger('blur');
-        this.target.find("input[name='d34']").trigger('blur');
-    } ;
-
-    //单元格D32
-    landEngineering.calculationD32 = function () {
-        var g32 = this.target.find("input[name='managementExpense']").attr("data-value");
-        var d28 = this.target.find("input[name='d28']").val();
-        if (!AssessCommon.isNumber(d28)) {
-            return false;
-        }
-        if (!AssessCommon.isNumber(g32)) {
-            return false;
-        }
-        var c = Number(d28) * Number(g32) ;
-        this.target.find("input[name='d32']").val(c.toFixed(landEngineering.fixedMax));
-        this.target.find("input[name='d34']").trigger('blur');
-        this.target.find("input[name='d35']").trigger('blur');
-        landEngineering.calculationH40() ;
-    };
-
-    //单元格F32
-    landEngineering.calculationF32 = function () {
-        //=(SUM(D26+D27)+F31)*G32
-        var f31 = this.target.find("input[name='landGetRelevant']").val();
-        var g32 = this.target.find("input[name='managementExpense']").attr("data-value");
-        var d26 = this.target.find("input[name='constructionCostSubtotal']").val() ;
-        var d27 = this.target.find("input[name='d27']").val();
-        if (!AssessCommon.isNumber(f31)) {
-            return false;
-        }
-        if (!AssessCommon.isNumber(g32)) {
-            return false;
-        }
-        if (!AssessCommon.isNumber(d26)) {
-            return false;
-        }
-        if (!AssessCommon.isNumber(d27)) {
-            return false;
-        }
-        var c = Number(d26) + Number(d27) + Number(f31);
-        c *= Number(g32) ;
-        this.target.find("input[name='f32']").val(c.toFixed(landEngineering.fixed));
-        this.target.find("input[name='interestInvestment']").trigger('blur');//f34
-        this.target.find("input[name='investmentProfit']").trigger('blur');//f35
-        landEngineering.calculationF40() ;
-    };
-
-    //单元格F33
-    landEngineering.calculationF33 = function () {
-        console.log('landEngineering.calculationF33') ;
-        var g33 = this.target.find("input[name='salesFee']").attr("data-value");
-        var e16 = this.target.find("input[name='totalSaleableAreaPrice']").val();
-        if (!AssessCommon.isNumber(g33)) {
-            return false;
-        }
-        if (!AssessCommon.isNumber(e16)) {
-            return false;
-        }
-        var c = ( Number(e16) * Number(g33) ) ;
-        c = Number(c) ;
-        if (AssessCommon.isNumber(c)) {
-            this.target.find("input[name='f33']").val(c.toFixed(landEngineering.fixed));
-            this.target.find("input[name='interestInvestment']").trigger('blur');//f34
-            this.target.find("input[name='investmentProfit']").trigger('blur');//f35
-            landEngineering.calculationF40() ;
-        }
-    };
-
-    //单元格F34
-    landEngineering.calculationF34 = function () {
-        console.log("landEngineering.calculationF34") ;
-        //,(D21+D23+D24+D25+D27+F32+F33)  *  ( (1+G34)^(D3/2)-1)   +(SUM(D20+D22)+E31) * (  (1+G34)^(D3)-1 )    )
-        var g34 = this.target.find("input[name='interestInvestmentTax']").attr("data-value");
-        var d20 = this.target.find("input[name='d20']").val();
-        var d21 = this.target.find("input[name='d21']").val();
-        var d22 = this.target.find("input[name='d22']").val();
-        var d23 = this.target.find("input[name='d23']").val();
-        var d24 = this.target.find("input[name='d24']").val();
-        var d25 = this.target.find("input[name='d25']").val();
-        var d27 = this.target.find("input[name='d27']").val();
-        var f33 = this.target.find("input[name='f33']").val();
-        var f32 = this.target.find("input[name='f32']").val();
-        var d3 = this.target.find("input[name='projectConstructionPeriod']").val() ;
-        var f31 = this.target.find("input[name='landGetRelevant']").val();
-
-        if (!AssessCommon.isNumber(d3)) {
-            return false
-        }
-        if (!AssessCommon.isNumber(g34)) {
-            return false
-        }
-        var a = Number(d21) + Number(d23) + Number(d24) + Number(d25) + Number(d27)  + Number(f32)  + Number(f33);
-        var b = Math.pow(1 + Number(g34), Number(d3) / 2) - 1 ;
-        var c1 = a *b ;
-        var c2 = (Number(d20) + Number(d22) + Number(f31))   *   ( Math.pow(1 + Number(g34), Number(d3))  - 1)   ;
-        var c = c1 + c2;
-        if (AssessCommon.isNumber(c)) {
-            c = c.toFixed(landEngineering.fixed) ;
-            this.target.find(".interestInvestment").html(c);
-            this.target.find("input[name='interestInvestment']").val(c);
-            landEngineering.calculationF40() ;
-        }
-    };
-
-    //单元格D34
-    landEngineering.calculationD34 = function () {
-        console.log("landEngineering.calculationD34") ;
-        //(1+G34)^D3-1)*D28+((1+G34)^(D3/2)-1)*D32
-        var g34 = this.target.find("input[name='interestInvestmentTax']").attr("data-value");
-        var d3 = this.target.find("input[name='projectConstructionPeriod']").val() ;
-        var d28 = this.target.find("input[name='d28']").val() ;
-        var d32 = this.target.find("input[name='d32']").val() ;
-        if (!AssessCommon.isNumber(g34)) {
-            return false;
-        }
-        if (!AssessCommon.isNumber(d3)) {
-            return false
-        }
-        var c1 = ( Math.pow(1 + Number(g34),Number(d3)) - 1)  * Number(d28) ;
-        var c2 = (Math.pow(1 + Number(g34),Number(d3)/2) - 1) * Number(d32) ;
-        var c = c1 + c2;
-        if (AssessCommon.isNumber(c)) {
-            this.target.find("input[name='d34']").val(c.toFixed(landEngineering.fixedMax));
-            landEngineering.calculationH40() ;
-        }
-    };
-
-    //单元格D35
-    landEngineering.calculationD35 = function () {
-        //=(D28+D32)*G35
-        var g35 = this.target.find("input[name='investmentProfitTax']").attr("data-value");
-        var d28 = this.target.find("input[name='d28']").val();
-        var d32 = this.target.find("input[name='d32']").val() ;
-        if (!AssessCommon.isNumber(g35)) {
-            return false;
-        }
-        if (!AssessCommon.isNumber(d28)) {
-            return false;
-        }
-        if (!AssessCommon.isNumber(d32)) {
-            return false;
-        }
-        var c  = (Number(d28) + Number(d32)) * Number(g35) ;
-        this.target.find("input[name='d35']").val(c.toFixed(landEngineering.fixedMax));
-        landEngineering.calculationH40() ;
-    } ;
-
-    //单元格F35
-    landEngineering.calculationF35 = function () {
-        //=(D26+D27+F32+F33+E31)*G35
-        var g35 = this.target.find("input[name='investmentProfitTax']").attr("data-value");
-        var d26 = this.target.find("input[name='constructionCostSubtotal']").val() ;
-        var d27 = this.target.find("input[name='d27']").val();
-        var f32 = this.target.find("input[name='f32']").val();
-        var f33 = this.target.find("input[name='f33']").val();
-        var f31 = this.target.find("input[name='landGetRelevant']").val();
-        if (!AssessCommon.isNumber(g35)) {
-            return false;
-        }
-        if (!AssessCommon.isNumber(d26)) {
-            return false;
-        }
-        if (!AssessCommon.isNumber(d27)) {
-            return false;
-        }
-        if (!AssessCommon.isNumber(f32)) {
-            return false;
-        }
-        if (!AssessCommon.isNumber(f33)) {
-            return false;
-        }
-        if (!AssessCommon.isNumber(f31)) {
-            return false;
-        }
-        if (!AssessCommon.isNumber(f32)) {
-            return false;
-        }
-        var c = ( Number(d26) + Number(d27)+ Number(f32)+ Number(f33)+ Number(f31) ) * Number(g35) ;
-        c = c.toFixed(landEngineering.fixed) ;
-        this.target.find(".investmentProfit").html(c);
-        this.target.find("input[name='investmentProfit']").val(c);
-        landEngineering.calculationF40() ;
-    } ;
-
-    //单元格D36
-    landEngineering.calculationD36 = function () {
-        var f37 = this.target.find("input[name='salesTaxAndAdditional']").attr("data-value");
-        var f38 = this.target.find("input[name='landValueAddedTax']").attr("data-value");
-        var f39 = this.target.find("input[name='projectDevelopmentIncomeTax']").attr("data-value");
-        var arr = [] ;
-        if ($.isNumeric(f37)){
-            arr.push(f37) ;
-        }
-        if ($.isNumeric(f38)){
-            arr.push(f38) ;
-        }
-        if ($.isNumeric(f39)){
-            arr.push(f39) ;
-        }
-        if (arr.length < 1){
-            return false ;
-        }
-        var c = math.bignumber(0) ;
-        $.each(arr,function (i,item) {
-            c = math.add(c, math.bignumber(item)) ;
-        });
-        //将对象转换为普通数字
-        c = math.number(c.toString()) ;
-        c = c.toFixed(landEngineering.fixedMax) ;
-        this.target.find("input[name='d36']").val(c);
-        this.target.find("input[name='f36']").trigger('blur');
-    } ;
-
-    //单元格F36 =E16*D36
-    landEngineering.calculationF36 = function () {
-        var d36 = this.target.find("input[name='d36']").val() ;
-        var e16 = this.target.find("input[name='totalSaleableAreaPrice']").val();
-        if (!AssessCommon.isNumber(d36)) {
-            return false;
-        }
-        if (!AssessCommon.isNumber(e16)) {
-            return false;
-        }
-        var c = Number(d36) * Number(e16) ;
-        this.target.find("input[name='f36']").val(c.toFixed(landEngineering.fixed));
-        landEngineering.calculationF40() ;
-    };
-
-    //单元格H40
-    landEngineering.calculationH40 = function () {
-        //=D29+D30+D32+D35+D34
-        var f29 = this.target.find("input[name='deedTaxRate']").attr("data-value");
-        var f30 = this.target.find("input[name='transactionTaxRate']").attr("data-value");
-        var d32 = this.target.find("input[name='d32']").val();
-        var d34 = this.target.find("input[name='d34']").val();
-        var d35 = this.target.find("input[name='d35']").val();
-        var c = undefined ;
-        try {
-            c = Number(f29) + Number(f30)+ Number(d32)+ Number(d34)+ Number(d35)  ;
-        } catch (e) {
-        }
-        if (AssessCommon.isNumber(c)) {
-            this.target.find("input[name='h40']").val(c.toFixed(landEngineering.fixedMax));
-            landEngineering.calculationE40() ;
-        }
-    };
-
-    //单元格F40
-    landEngineering.calculationF40 = function () {
-        console.log('landEngineering.calculationF40') ;
-        //E16-D26-D27-E31-SUM(F32:F35)-F36)
-        var e16 = this.target.find("input[name='totalSaleableAreaPrice']").val();
-        var d26 = this.target.find("input[name='constructionCostSubtotal']").val() ;
-        var d27 = this.target.find("input[name='d27']").val();
-        var f31 = this.target.find("input[name='landGetRelevant']").val();
-        var f32 = this.target.find("input[name='f32']").val();
-        var f33 = this.target.find("input[name='f33']").val();
-        var f36 = this.target.find("input[name='f36']").val();
-        var f34 = this.target.find("input[name='interestInvestment']").val();
-        var f35 = this.target.find("input[name='investmentProfit']").val();
-        try {
-            var a = math.add(  math.bignumber(d26) , math.bignumber(d27)  , math.bignumber(f31) , math.bignumber(f32), math.bignumber(f33), math.bignumber(f34) ,math.bignumber(f35) ,math.bignumber(f36)) ;
-            var c = math.number(math.subtract(math.bignumber(e16) , a).toString()) ;
-            this.target.find("input[name='f40']").val(c.toFixed(landEngineering.fixedMax));
-            landEngineering.calculationE40() ;
-        } catch (e) {
-        }
-    } ;
-
-    //单元格E40 =F40/(1+H40)
-    landEngineering.calculationE40 = function () {
-        console.log('landEngineering.calculationE40') ;
-        var f40 = this.target.find("input[name='f40']").val();
-        var h40 = this.target.find("input[name='h40']").val();
-        if (!AssessCommon.isNumber(f40)) {
-            return false;
-        }
-        if (!AssessCommon.isNumber(h40)) {
-            return false;
-        }
-        var c = Number(f40) / (1 + Number(h40)) ;
-        this.target.find("input[name='e40']").val(c.toFixed(landEngineering.fixed));
-        landEngineering.calculationD41() ;
-    } ;
-
-    //单元格D41 =E40/F18*10000
-    landEngineering.calculationD41 = function () {
-        console.log('landEngineering.calculationD41') ;
-        var f18 = this.target.find("input[name='f18']").val();
-        var e40 = this.target.find("input[name='e40']").val();
-        if (!AssessCommon.isNumber(e40)) {
-            return false;
-        }
-        if (!AssessCommon.isNumber(f18)) {
-            return false;
-        }
-        var c = Number(e40) / Number(f18)  * 10000;
-        c = c.toFixed(landEngineering.fixedMin) ;
-        this.target.find("input[name='assessPrice']").val(c);
-        this.target.find(".assessPrice").html(c);
-        landEngineering.calculationD47() ;
-    } ;
-
-    //单元格D43
-    landEngineering.calculationD43 = function () {
-        console.log('landEngineering.calculationD43') ;
-        //ROUND((1-1/(1+E43)^G43)/(1-1/(1+E43)^F43),4))
-        var e43 = this.target.find("input[name='remunerationRate']").attr("data-value");
-        var g43 = landEngineering.target.find("input[name='remainingYears']").val();
-        var f43 = landEngineering.target.find("input[name='statutoryLife']").val();
-        if (!AssessCommon.isNumber(e43)) {
-            return false;
-        }
-        if (!AssessCommon.isNumber(g43)) {
-            return false;
-        }
-        if (!AssessCommon.isNumber(f43)) {
-            return false;
-        }
-        e43 = Number(e43) ;
-        g43 = Number(g43) ;
-        f43 = Number(f43) ;
-        var a = 1 - 1 / Math.pow(1+e43,g43) ;
-        var b = 1 - 1 / Math.pow(1+e43,f43) ;
-        var c = a/ b;
-        this.target.find("input[name='d43']").val(c.toFixed(landEngineering.fixedMax));
-        landEngineering.calculationD47() ;
-    };
-
-    //单元格D47 =D41*D43*D44*D45+D46
-    landEngineering.calculationD47 = function () {
-        console.log('landEngineering.calculationD47') ;
-        var d41 = landEngineering.target.find("input[name='assessPrice']").val();
-        var d44 = landEngineering.target.find("input[name='amendmentStatusRights']").val();
-        var d46 = landEngineering.target.find("input[name='developmentDegreeRevision']").val();
-        var d45 = landEngineering.target.find("input[name='otherAmendments']").val();
-        var d43 = this.target.find("input[name='d43']").val();
-        try {
-            var c = Number(d41) * Number(d43)* Number(d44)* Number(d45) + Number(d46) ;
-            c = c.toFixed(landEngineering.fixedMin) ;
-            this.target.find("input[name='price']").val(c);
-            this.target.find("td[name='price']").html(c);
-        } catch (e) {
-        }
-    } ;
 
     /*建筑安装工程费*/
     landEngineering.constructionInstallationEngineeringFeeEvent = {
@@ -618,25 +95,48 @@
             var obj = {} ;
             obj.databaseName = AssessDBKey.MdDevelopment ;
             obj.pid = developmentCommon.isNotBlank('${mdDevelopment.id}')?'${mdDevelopment.id}':'0';
-            obj.type = landEngineering.type ;
+            obj.type = landEngineering.getTypeData() ;
             obj.price = Number(value) ;
             obj.planDetailsId = '${projectPlanDetails.id}' ;
             obj.id = target.find("input[name='id']").val();
-            developmentCommon.saveMdArchitecturalObj2(developmentCommon.architecturalA.getFomData(table),obj,function (item) {
-                toastr.success('保存成功!');
-                var mdCalculatingMethodEngineeringCost = {
-                    planDetailsId: '${projectPlanDetails.id}',
-                    type: landEngineering.type,
-                    price: value,
-                    projectId: '${projectPlanDetails.projectId}'
-                };
-                mdCalculatingMethodEngineeringCost.architecturalObjId = item.id;
-                mdCalculatingMethodEngineeringCost.id = target.find("input[name='masterId']").val();
-                developmentCommon.saveMdCalculatingMethodEngineeringCost(mdCalculatingMethodEngineeringCost, function (data) {
-                    landEngineering.engineeringFeeInfoTarget.bootstrapTable('refresh');
-                    landEngineering.writeMdCalculatingMethodEngineeringCost(data);
-                });
-            }) ;
+
+
+
+            if (landEngineering.defaultType == landEngineering.getTypeData()){
+                developmentCommon.saveMdArchitecturalObj2(developmentCommon.architecturalA.getFomData(table),obj,function (item) {
+                    toastr.success('保存成功!');
+                    var mdCalculatingMethodEngineeringCost = {
+                        planDetailsId: '${projectPlanDetails.id}',
+                        type: landEngineering.getTypeData(),
+                        price: value,
+                        projectId: '${projectPlanDetails.projectId}'
+                    };
+                    mdCalculatingMethodEngineeringCost.architecturalObjId = item.id;
+                    mdCalculatingMethodEngineeringCost.id = target.find("input[name='masterId']").val();
+                    developmentCommon.saveMdCalculatingMethodEngineeringCost(mdCalculatingMethodEngineeringCost, function (data) {
+                        landEngineering.engineeringFeeInfoTarget.bootstrapTable('refresh');
+                        landEngineering.writeMdCalculatingMethodEngineeringCost(data);
+                    });
+                }) ;
+            }else {
+                developmentCommon.saveMdArchitecturalObj2(developmentCommon.architecturalB.getFomData(table),obj,function (item) {
+                    toastr.success('保存成功!');
+                    var mdCalculatingMethodEngineeringCost = {
+                        planDetailsId: '${projectPlanDetails.id}',
+                        type: landEngineering.getTypeData(),
+                        price: value,
+                        projectId: '${projectPlanDetails.projectId}'
+                    };
+                    mdCalculatingMethodEngineeringCost.architecturalObjId = item.id;
+                    mdCalculatingMethodEngineeringCost.id = target.find("input[name='masterId']").val();
+                    developmentCommon.saveMdCalculatingMethodEngineeringCost(mdCalculatingMethodEngineeringCost, function (data) {
+                        landEngineering.engineeringFeeInfoTarget.bootstrapTable('refresh');
+                        landEngineering.writeMdCalculatingMethodEngineeringCost(data);
+                    });
+                }) ;
+            }
+
+
             target.modal("hide");
         },
         appendHTML:function (data, price) {
@@ -650,9 +150,15 @@
                 target.find("input[name='id']").val('');
                 target.find("input[name='masterId']").val('');
             }
-            developmentCommon.architecturalA.appendHtml(target.find(".panel-body"), data, null, price, function (tr) {
+            if (landEngineering.defaultType == landEngineering.getTypeData()){
+                developmentCommon.architecturalA.appendHtml(target.find(".panel-body"), data, null, price, function (tr) {
 
-            });
+                });
+            }else {
+                developmentCommon.architecturalB.appendHtml(target.find(".panel-body"), data, null, price, function (tr) {
+
+                });
+            }
             target.modal("show");
         }
     };
@@ -661,7 +167,7 @@
      * 工程费表格加载
      */
     landEngineering.loadMdCalculatingMethodEngineeringCostTable = function () {
-        var obj = {type: landEngineering.type, planDetailsId: '${projectPlanDetails.id}'};
+        var obj = {type: landEngineering.getTypeData(), planDetailsId: '${projectPlanDetails.id}'};
         var cols = [];
         cols.push({
             field: 'id', title: '建筑安装工程费明细', formatter: function (value, row, index) {
@@ -671,42 +177,48 @@
                 return str;
             }
         });
-        cols.push({
-            field: 'id', title: '工程类型绑定操作', formatter: function (value, row, index) {
-                var text = "<select" + " data-id='mdCalculatingMethodEngineeringCostField" + row.id + "' ";
-                text += "name='dataTableName'  class='form-control' onchange='landEngineering.changeMdCalculatingMethodEngineeringCostField(" + index + "," + row.id + ")'>";
-                text += "                            <option value=\"0\">不设定</option>";
-                text += "                            <option value=\"2\">楼栋</option>";
-                text += "                            ";
-                text += "                            <option value=\"1\">楼盘</option>";
-                text += "                        </select>";
-                return text;
-            }
-        });
         developmentCommon.loadMdCalculatingMethodEngineeringCostTable(landEngineering.engineeringFeeInfoTarget, obj, $("#toolbarMdCalculatingMethodEngineeringCostLand"), function () {
             landEngineering.writeMdCalculatingMethodEngineeringCost();
         }, cols);
     };
 
-    /**工程费 事件**/
-    landEngineering.changeMdCalculatingMethodEngineeringCostField = function (index, id) {
-        var value = landEngineering.engineeringFeeInfoTarget.find("[data-id='" + "mdCalculatingMethodEngineeringCostField" + id + "']").find("option:selected").val();
-        var mdCalculatingMethodEngineeringCost = landEngineering.engineeringFeeInfoTarget.bootstrapTable('getRowByUniqueId', id);
-        if (value == 1) {
-            mdCalculatingMethodEngineeringCost.dataTableName = AssessDBKey.BasicEstate;
+    /*工程费 show*/
+    landEngineering.showMdCalculatingMethodEngineeringCost = function () {
+        var target = $("#boxMdCalculatingMethodEngineeringCost");
+        target.modal("show");
+        var frm = target.find("form") ;
+        frm.clearAll();
+    };
+
+    /*工程费 save*/
+    landEngineering.saveMdCalculatingMethodEngineeringCost = function () {
+        var target = $("#boxMdCalculatingMethodEngineeringCost");
+        var frm = target.find("form") ;
+        if (!frm.valid()) {
+            return false;
         }
-        if (value == 2) {
-            mdCalculatingMethodEngineeringCost.dataTableName = AssessDBKey.BasicBuilding;
-        }
-        developmentCommon.saveMdCalculatingMethodEngineeringCost(mdCalculatingMethodEngineeringCost, function () {
-            landEngineering.engineeringFeeInfoTarget.bootstrapTable('updateCell', {
-                field: 'dataTableName',
-                value: mdCalculatingMethodEngineeringCost.dataTableName
-            });
-            landEngineering.engineeringFeeInfoTarget.bootstrapTable('refresh');
-            toastr.success('绑定成功!');
+        var data = formSerializeArray(frm);
+        data.planDetailsId = '${projectPlanDetails.id}' ;
+        data.projectId = '${projectPlanDetails.id}' ;
+        data.type = landEngineering.getTypeData() ;
+        developmentCommon.saveMdCalculatingMethodEngineeringCost(data, function (item) {
+            landEngineering.writeMdCalculatingMethodEngineeringCost(item);
+            target.modal("hide");
+            toastr.info("添加成功!");
+            var obj = {} ;
+            obj.databaseName = AssessDBKey.MdDevelopment ;
+            obj.pid = developmentCommon.isNotBlank('${mdDevelopment.id}')?'${mdDevelopment.id}':'0';
+            obj.type = landEngineering.getTypeData() ;
+            obj.planDetailsId = '${projectPlanDetails.id}' ;
+            developmentCommon.saveMdArchitecturalObj2({},obj,function (n) {
+                item.architecturalObjId = n.id;
+                developmentCommon.saveMdCalculatingMethodEngineeringCost(item) ;
+                landEngineering.loadMdCalculatingMethodEngineeringCostTable() ;
+            }) ;
         });
     };
+
+
 
     /*工程费和计算**/
     landEngineering.writeMdCalculatingMethodEngineeringCost = function (obj) {
@@ -770,7 +282,7 @@
     /*基础设施配套费  table load**/
     landEngineering.loadMdDevelopmentInfrastructureChildrenTable = function () {
         var pid = developmentCommon.isNotBlank('${mdDevelopment.id}')?'${mdDevelopment.id}':'0' ;
-        developmentCommon.infrastructureChildren.loadTable(pid,'${projectPlanDetails.id}',landEngineering.type,landEngineering.infrastructureChildrenTable,$("#toolbarMdDevelopmentInfrastructureChildrenTable")) ;
+        developmentCommon.infrastructureChildren.loadTable(pid,'${projectPlanDetails.id}',landEngineering.getTypeData(),landEngineering.infrastructureChildrenTable,$("#toolbarMdDevelopmentInfrastructureChildrenTable")) ;
         landEngineering.writeMdDevelopmentInfrastructureChildrenTable() ;
     };
     /*基础设施配套费  table delete**/
@@ -821,7 +333,7 @@
         }
         var data = formSerializeArray(frm);
         data.planDetailsId = '${projectPlanDetails.id}' ;
-        data.type = landEngineering.type ;
+        data.type = landEngineering.getTypeData() ;
         data.pid = developmentCommon.isNotBlank('${mdDevelopment.id}')?'${mdDevelopment.id}':'0' ;
         developmentCommon.infrastructureChildren.save(data , function () {
             toastr.success('添加成功!');
@@ -834,7 +346,7 @@
     /*基础设施配套费  table 测算**/
     landEngineering.writeMdDevelopmentInfrastructureChildrenTable = function () {
         var pid = developmentCommon.isNotBlank('${mdDevelopment.id}')?'${mdDevelopment.id}':'0' ;
-        developmentCommon.infrastructureChildren.getDataList({planDetailsId:'${projectPlanDetails.id}',pid:pid,type:landEngineering.type} ,function (item) {
+        developmentCommon.infrastructureChildren.getDataList({planDetailsId:'${projectPlanDetails.id}',pid:pid,type:landEngineering.getTypeData()} ,function (item) {
             var result = 0;
             if (item.length >= 1){
                 $.each(item,function (i,n) {
@@ -854,7 +366,7 @@
         }
         var data = formSerializeArray(frm);
         data.planDetailsId = '${projectPlanDetails.id}' ;
-        data.type = landEngineering.type ;
+        data.type = landEngineering.getTypeData() ;
         data.pid = developmentCommon.isNotBlank('${mdDevelopment.id}')?'${mdDevelopment.id}':'0' ;
         target.modal('hide');
         developmentCommon.loadIncomeCategorySave(data,function (item) {
@@ -895,7 +407,7 @@
 
     /*收入类 经济指标 table load**/
     landEngineering.loadIncomeCategoryTable = function () {
-        var obj = {type:landEngineering.type,planDetailsId:'${projectPlanDetails.id}'} ;
+        var obj = {type:landEngineering.getTypeData(),planDetailsId:'${projectPlanDetails.id}'} ;
         developmentCommon.loadIncomeCategoryTable(landEngineering.incomeCategoryTable,obj,$("#toolbarLandIncomeCategoryTableId"),function () {
             landEngineering.writeMdDevelopmentIncomeCategoryTable(landEngineering.incomeCategoryTable,null) ;
         }) ;
@@ -981,16 +493,7 @@
         });
     };
 
-    /**
-     * 触发事件
-     */
-    landEngineering.inputBlurEvent = function () {
-        if (development.isNotBlank('${mdDevelopment.id}')){
-            if ('${mdDevelopment.type == 1}'){
-                landEngineering.target.find("input").trigger('blur');
-            }
-        }
-    };
+
 
     /**
      math.sqrt(4) 开方

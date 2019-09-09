@@ -8,8 +8,10 @@ import com.copower.pmcc.assess.common.ArithmeticUtils;
 import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.enums.BaseReportFieldEnum;
 import com.copower.pmcc.assess.dal.basis.entity.MdCalculatingMethodEngineeringCost;
+import com.copower.pmcc.assess.dal.basis.entity.MdDevelopment;
 import com.copower.pmcc.assess.dto.output.MergeCellModel;
 import com.copower.pmcc.assess.dto.output.method.MdCostConstructionVo;
+import com.copower.pmcc.assess.service.method.MdDevelopmentService;
 import com.copower.pmcc.assess.service.method.MdMarketCostService;
 import com.google.common.collect.*;
 import jodd.util.URLDecoder;
@@ -189,6 +191,47 @@ public class ZCHDemo {
         vo.setSalesTaxAndAdditional(new BigDecimal(0.057));
         vo.setInvestmentProfitTax(new BigDecimal(0.2));
         String value = getFieldObjectValue(BaseReportFieldEnum.MarketCost_constructionAssessmentPriceCorrecting, vo);
+        System.out.println(value);
+    }
+
+    @Test
+    public void testAlgsMdDevelopmentTest(){
+        MdDevelopment mdDevelopment = new MdDevelopment();
+        mdDevelopment.setDevelopedYear(ArithmeticUtils.createBigDecimal(1.5));
+        mdDevelopment.setRemainingDevelopmentYear(ArithmeticUtils.createBigDecimal(0.5));
+
+        mdDevelopment.setUnsaleableBuildingArea(ArithmeticUtils.createBigDecimal(1200.00));
+        mdDevelopment.setSaleableArea(ArithmeticUtils.createBigDecimal( 65850.00));
+        mdDevelopment.setTotalSaleableAreaPrice(ArithmeticUtils.createBigDecimal(30069.00)) ;
+
+        mdDevelopment.setReconnaissanceDesign(new BigDecimal(0.06));
+        mdDevelopment.setConstructionInstallationEngineeringFee(new BigDecimal(1500));
+        mdDevelopment.setInfrastructureCost(new BigDecimal(93));
+        mdDevelopment.setInfrastructureMatchingCost(new BigDecimal(100));
+        mdDevelopment.setDevDuring(new BigDecimal(2));
+        mdDevelopment.setOtherEngineeringCost(new BigDecimal(0.2));
+
+        mdDevelopment.setUnforeseenExpenses(new BigDecimal(0.03));
+        mdDevelopment.setDeedTaxRate(new BigDecimal(0.03));
+        mdDevelopment.setTransactionTaxRate(new BigDecimal(0.02));
+        mdDevelopment.setLandGetRelevant(new BigDecimal(120));
+        mdDevelopment.setManagementExpense(new BigDecimal(0.03));
+        mdDevelopment.setSalesFee(new BigDecimal(0.02));
+        mdDevelopment.setInterestInvestmentTax(new BigDecimal(0.0531));
+        mdDevelopment.setInvestmentProfitTax(new BigDecimal(0.2));
+
+
+        mdDevelopment.setSalesTaxAndAdditional(new BigDecimal(0.0565));
+        mdDevelopment.setLandValueAddedTax(new BigDecimal(0.0060));
+
+        mdDevelopment.setRemunerationRate(new BigDecimal(0.07));
+        mdDevelopment.setStatutoryLife(new BigDecimal(50));
+        mdDevelopment.setRemainingYears(new BigDecimal(35));
+        mdDevelopment.setAmendmentStatusRights(new BigDecimal(1));
+        mdDevelopment.setOtherAmendments(new BigDecimal(1));
+        mdDevelopment.setDevelopmentDegreeRevision(new BigDecimal(-20));
+
+        String value = new MdDevelopmentService().getFieldObjectValue(BaseReportFieldEnum.Development_Price,mdDevelopment) ;
         System.out.println(value);
     }
 
