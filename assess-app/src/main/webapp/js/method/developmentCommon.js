@@ -368,17 +368,17 @@ developmentCommon.getMdCalculatingMethodEngineeringCostList = function (data, ca
 developmentCommon.loadMdCalculatingMethodEngineeringCostTable = function (table, quarm, toolbar, callback, array) {
     var cols = [];
     cols.push({checkbox: true, width: "5%"});
-    cols.push({
-        field: 'dataTableName', title: '工程表绑定类型', formatter: function (value, row, index) {
-            if (value == AssessDBKey.BasicEstate) {
-                return "楼盘";
-            }
-            if (value == AssessDBKey.BasicBuilding) {
-                return "楼栋";
-            }
-            return "未设定";
-        }
-    });
+    // cols.push({
+    //     field: 'dataTableName', title: '工程表绑定类型', formatter: function (value, row, index) {
+    //         if (value == AssessDBKey.BasicEstate) {
+    //             return "楼盘";
+    //         }
+    //         if (value == AssessDBKey.BasicBuilding) {
+    //             return "楼栋";
+    //         }
+    //         return "未设定";
+    //     }
+    // });
     cols.push({
         field: 'name', title: '名称', width: "20%", class: 'editable', editable: {
             type: 'text',

@@ -194,7 +194,7 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
         }
         MdCostVo mdCostVo = mdMarketCostService.getMdCostVo(mdCost);
         modelAndView.addObject(StringUtils.uncapitalize(MdCostVo.class.getSimpleName()), mdCostVo);
-        setViewBaseParam(projectPlanDetails, modelAndView, mdCost != null && mdCost.getId() != null && mdCost.getId() != 0);
+        setViewBaseParam(projectPlanDetails, modelAndView, !(mdCost != null && mdCost.getId() != null && mdCost.getId() != 0));
     }
 
     private void setViewBaseParam(ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView, boolean init) {

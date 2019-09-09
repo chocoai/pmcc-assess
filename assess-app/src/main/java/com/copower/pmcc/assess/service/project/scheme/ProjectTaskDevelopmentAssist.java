@@ -191,7 +191,7 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
         }
         //projectPlanDetails
         modelAndView.addObject(StringUtils.uncapitalize(ProjectPlanDetails.class.getSimpleName()), projectPlanDetails);
-        setViewBaseParam(projectPlanDetails, modelAndView, mdDevelopment != null && mdDevelopment.getId() != null);
+        setViewBaseParam(projectPlanDetails, modelAndView, !(mdDevelopment != null && mdDevelopment.getId() != null));
     }
 
     private void setViewBaseParam(ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView, boolean init) {

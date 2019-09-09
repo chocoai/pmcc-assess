@@ -182,7 +182,7 @@
         landEngineering.loadMdDevelopmentInfrastructureChildrenTable() ;
         landEngineering.loadIncomeCategoryTable();
         landEngineering.unsaleableBuildingAreaFunHandle() ;
-        landEngineering.loadMdCalculatingMethodEngineeringCostTable() ;
+        landEngineering.loadMdCalculatingMethodEngineeringCostTable('${!empty mdDevelopment.type}'?'${mdDevelopment.type}':undefined) ;
     };
 
     development.writeValueEvent = function (value) {
@@ -239,6 +239,8 @@
                 $("#developmentEngineering").attr('checked','true').trigger('change');
                 $("#developmentLand").attr('checked','false').trigger('change');
             }
+            landEngineering.loadMdCalculatingMethodEngineeringCostTable(type) ;
+            landEngineering.infrastructureChildrenTable.bootstrapTable('refresh');
         }
         frm.find("input[type='radio'][name='type']").change(function () {
             var value = $(this).val();

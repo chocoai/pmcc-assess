@@ -1,34 +1,42 @@
 package com.copower.pmcc.assess.service.project.generate;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.aspose.words.BookmarkCollection;
-import com.aspose.words.Document;
-import com.aspose.words.DocumentBuilder;
+import com.alibaba.fastjson.JSONArray;
+import com.aspose.words.*;
+import com.copower.pmcc.assess.common.ArithmeticUtils;
 import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.enums.BaseReportFieldEnum;
 import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dto.output.MergeCellModel;
 import com.copower.pmcc.assess.dto.output.project.scheme.MdDevelopmentVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseReportFieldService;
 import com.copower.pmcc.assess.service.data.DataSetUseFieldService;
+import com.copower.pmcc.assess.service.method.MdArchitecturalObjService;
 import com.copower.pmcc.assess.service.method.MdDevelopmentService;
+import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeInfoService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
-import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.SpringContextUtils;
+import com.google.common.base.*;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.math.NumberUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by zch on 2019/7/9.
@@ -55,6 +63,8 @@ public class GenerateMdDevelopmentService {
     private BaseAttachmentService baseAttachmentService;
     private MdDevelopmentService mdDevelopmentService;
     private DataSetUseFieldService dataSetUseFieldService;
+    private MdArchitecturalObjService mdArchitecturalObjService;
+    private ProjectPlanDetailsService projectPlanDetailsService;
 
     public GenerateMdDevelopmentService(Integer projectId, SchemeInfo schemeInfo, Integer areaId) {
         this.projectId = projectId;
@@ -71,6 +81,8 @@ public class GenerateMdDevelopmentService {
         this.baseAttachmentService = SpringContextUtils.getBean(BaseAttachmentService.class);
         this.mdDevelopmentService = SpringContextUtils.getBean(MdDevelopmentService.class);
         this.dataSetUseFieldService = SpringContextUtils.getBean(DataSetUseFieldService.class);
+        this.mdArchitecturalObjService = SpringContextUtils.getBean(MdArchitecturalObjService.class);
+        this.projectPlanDetailsService = SpringContextUtils.getBean(ProjectPlanDetailsService.class);
     }
 
 
@@ -82,148 +94,44 @@ public class GenerateMdDevelopmentService {
         }
         String localPath = baseAttachmentService.downloadFtpFileToLocal(dtoList.get(0).getId());
         Document document = new Document(localPath);
-        LinkedHashSet<KeyValueDto> dtoLinkedHashSet = new LinkedHashSet<>(10);
+        Map<BaseReportFieldEnum, String> map = Maps.newHashMap();
+        final ConcurrentHashMap<String, String> textMap = new ConcurrentHashMap<String, String>(0);
+        final ConcurrentHashMap<String, String> fileMap = new ConcurrentHashMap<String, String>(0);
+        final ConcurrentHashMap<String, String> bookmarkMap = new ConcurrentHashMap<String, String>(0);
+        final ProjectPlanDetails projectPlanDetails = getProjectPlanDetailsById(schemeInfo.getPlanDetailsId());
+        Map<String, BaseReportFieldEnum> reportFieldEnumMap = new HashMap<String, BaseReportFieldEnum>(0);
+        for (BaseReportFieldEnum reportFieldEnum : BaseReportFieldEnum.values()) {
+            reportFieldEnumMap.put(reportFieldEnum.getName(), reportFieldEnum);
+        }
         //获取待替换文本的集合
-        List<String> regexS = generateCommonMethod.specialTreatment(AsposeUtils.getRegexList(document, null));
+        List<String> stringList = generateCommonMethod.specialTreatment(AsposeUtils.getRegexList(document, null));
         //获取所有书签集合
         BookmarkCollection bookmarkCollection = AsposeUtils.getBookmarks(document);
         if (bookmarkCollection.getCount() >= 1) {
             for (int i = 0; i < bookmarkCollection.getCount(); i++) {
-                dtoLinkedHashSet.add(new KeyValueDto(bookmarkCollection.get(i).getName(), bookmarkCollection.get(i).getName()));
+                if (reportFieldEnumMap.keySet().contains(bookmarkCollection.get(i).getName())) {
+                    map.put(reportFieldEnumMap.get(bookmarkCollection.get(i).getName()), bookmarkCollection.get(i).getName());
+                }
             }
         }
-        if (CollectionUtils.isNotEmpty(regexS)) {
-            for (String name : regexS) {
-                dtoLinkedHashSet.add(new KeyValueDto(name, name));
+        if (CollectionUtils.isNotEmpty(stringList)) {
+            for (String name : stringList) {
+                if (reportFieldEnumMap.keySet().contains(name)) {
+                    map.put(reportFieldEnumMap.get(name), name);
+                }
             }
         }
-        HashMap<String, String> textMap = Maps.newHashMap();
-        HashMap<String, String> fileMap = Maps.newHashMap();
-        HashMap<String, String> bookmarkMap = Maps.newHashMap();
-        if (CollectionUtils.isNotEmpty(dtoLinkedHashSet)) {
-            for (KeyValueDto keyValueDto : dtoLinkedHashSet) {
-                if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_Land_SetUse.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getLand_SetUse(BaseReportFieldEnum.Development_Land_SetUse));
-                }
-                if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_SetUse.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getLand_SetUse(BaseReportFieldEnum.Development_SetUse));
-                }
-                if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_Price.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_Price));
-                }
-                if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_SalesTaxAndAdditional.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_SalesTaxAndAdditional));
-                }
-                if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_assessPrice.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_assessPrice));
-                }
-                if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_investmentProfit.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_investmentProfit));
-                }
-                if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_investmentProfitRate.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_investmentProfitRate));
-                }
-                if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_interestInvestment.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_interestInvestment));
-                }
-                if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_interestInvestmentRate.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_interestInvestmentRate));
-                }
-                if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_constructionSubtotal.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_constructionSubtotal));
-                }
-                if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_constructionSubtotal3.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_constructionSubtotal));
-                }
-                if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_constructionSubtotal2.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_constructionSubtotal2));
-                }
-                if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_reconnaissanceDesignRate.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_reconnaissanceDesignRate));
-                }
-                if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_constructionInstallationEngineeringFee.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_constructionInstallationEngineeringFee));
-                }
-                if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_infrastructureCost.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_infrastructureCost));
-                }
-                if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_infrastructureMatchingCost.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_infrastructureMatchingCost));
-                }
-                if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_devDuring.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_devDuring));
-                }
-                if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_otherEngineeringCost.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_otherEngineeringCost));
-                }
-                if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_unforeseenExpensesTax.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_unforeseenExpensesTax));
-                }
-                if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_unforeseenExpenses.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_unforeseenExpenses));
-                }
-                if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_deedCorrecting.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_deedCorrecting));
-                }
-                if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_transactionCostCorrecting.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_transactionCostCorrecting));
-                }
-                if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_LandAcquisitionCost.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_LandAcquisitionCost));
-                }
-                if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_LandGetCost.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_LandAcquisitionCost));
-                }
-                if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_LandAcquisitionCostTax.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_LandAcquisitionCostTax));
-                }
-                if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_salesFeeTax.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_salesFeeTax));
-                }
-                if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_salesFee.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_salesFee));
-                }
-                if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_projectConstructionPeriod.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_projectConstructionPeriod));
-                }
-                if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_total_area.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_total_area));
-                }
-                if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_managementExpense.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_managementExpense));
-                }
-                if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_managementExpenseRate.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_managementExpenseRate));
-                }
-                if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_DevelopmentDegreeCorrectionValue.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_DevelopmentDegreeCorrectionValue));
-                }
-                if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_OtherAmendments.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_OtherAmendments));
-                }
-                if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_OtherAmendmentsRemark.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_OtherAmendmentsRemark));
-                }
-                if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_AmendmentStatusRights.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_AmendmentStatusRights));
-                }
-                if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_AmendmentStatusRightsRemark.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_AmendmentStatusRightsRemark));
-                }
-                if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_landIncrementTax.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getMdDevelopmentCommonValue(BaseReportFieldEnum.Development_landIncrementTax));
-                }
-                if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_constructionSubtotal_ComputationalProcess.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getDevelopment_constructionSubtotal_ComputationalProcess());
-                }
-                if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_region.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getDevelopment_region());
-                }
-                if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_EconomicIndicators.getName())) {
-                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getDevelopment_EconomicIndicators());
-                }
-                if (com.google.common.base.Objects.equal(keyValueDto.getKey(), BaseReportFieldEnum.Development_constructionSubtotalContent.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, keyValueDto.getKey(), getDevelopment_constructionSubtotalContent());
+        SchemeAreaGroup schemeAreaGroup = getSchemeAreaGroup();
+        SchemeJudgeObject schemeJudgeObject = getSchemeJudgeObject();
+        if (!map.isEmpty()) {
+            //发起线程组
+            for (Map.Entry<BaseReportFieldEnum, String> enumStringEntry : map.entrySet()) {
+                try {
+                    setFieldObjectValue(enumStringEntry.getKey(), textMap, fileMap, bookmarkMap, getMdDevelopmentVo());
+                    setMdDevelopmentCommonValue(enumStringEntry.getKey(), textMap, fileMap, bookmarkMap, getMdDevelopmentVo(), schemeJudgeObject, schemeAreaGroup, projectPlanDetails);
+                } catch (Exception e) {
+                    String error = e.getMessage();
+                    throw e;
                 }
             }
         }
@@ -241,283 +149,89 @@ public class GenerateMdDevelopmentService {
         return localPath;
     }
 
-    private String getDevelopment_region(){
-        SchemeAreaGroup schemeAreaGroup = getSchemeAreaGroup();
-        if (schemeAreaGroup != null){
-            if (StringUtils.isNotBlank(schemeAreaGroup.getAreaName())){
-                return schemeAreaGroup.getAreaName() ;
+    private void setMdDevelopmentCommonValue(BaseReportFieldEnum key, final ConcurrentHashMap<String, String> textMap, final ConcurrentHashMap<String, String> fileMap, final ConcurrentHashMap<String, String> bookmarkMap, MdDevelopment target, SchemeJudgeObject schemeJudgeObject, SchemeAreaGroup schemeAreaGroup, ProjectPlanDetails projectPlanDetails) {
+        switch (key) {
+            case Development_region: {
+                generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), schemeAreaGroup.getAreaName());
+                break;
             }
-        }
-        return errorStr;
-    }
-
-    private String getMdDevelopmentCommonValue(BaseReportFieldEnum fieldEnum) {
-        MdDevelopmentVo vo = getMdDevelopmentVo();
-        MdDevelopmentVo format = mdDevelopmentService.getMdDevelopmentVo(vo, true);
-        JSONObject jsonObject = null;
-        try {
-            jsonObject = JSON.parseObject(vo.getContent());
-        } catch (Exception e) {
-            jsonObject = new JSONObject();
-        }
-        switch (fieldEnum) {
-            case Development_Price: {
-                if (vo.getPrice() != null) {
-                    return vo.getPrice().toString();
-                }
-            }
-            break;
-            case Development_assessPrice: {
-                if (vo.getAssessPrice() != null) {
-                    return vo.getAssessPrice().toString();
-                }
-            }
-            break;
-            case Development_investmentProfit: {
-                if (vo.getInvestmentProfit() != null) {
-                    return vo.getInvestmentProfit().toString();
-                }
-            }
-            break;
-            case Development_investmentProfitRate: {
-                if (vo.getInvestmentProfitTax() != null) {
-                    return vo.getInvestmentProfitTax().toString();
-                }
-            }
-            break;
-            case Development_interestInvestment: {
-                if (vo.getInterestInvestment() != null) {
-                    return vo.getInterestInvestment().toString();
-                }
-            }
-            break;
-            case Development_interestInvestmentRate: {
-                if (vo.getInterestInvestmentTax() != null) {
-                    return vo.getInterestInvestmentTax().toString();
-                }
-            }
-            break;
-            case Development_DevelopmentDegreeCorrectionValue: {
-                if (vo.getDevelopmentDegreeRevision() != null) {
-                    return vo.getDevelopmentDegreeRevision().toString();
-                }
-            }
-            break;
-            case Development_AmendmentStatusRights: {
-                if (vo.getAmendmentStatusRights() != null) {
-                    return vo.getAmendmentStatusRights().toString();
-                }
-            }
-            break;
-            case Development_AmendmentStatusRightsRemark: {
-                if (StringUtils.isNotBlank(vo.getAmendmentStatusRightsExplain())) {
-                    return vo.getAmendmentStatusRightsExplain();
-                }
-            }
-            break;
-            case Development_OtherAmendments: {
-                if (vo.getOtherAmendments() != null) {
-                    return vo.getOtherAmendments().toString();
-                }
-            }
-            break;
-            case Development_OtherAmendmentsRemark: {
-                if (StringUtils.isNotBlank(vo.getOtherAmendmentsExplain())) {
-                    return vo.getOtherAmendmentsExplain();
-                }
-            }
-            break;
-            case Development_constructionSubtotal: {
-                if (vo.getConstructionCostSubtotal() != null) {
-                    return vo.getConstructionCostSubtotal().toString();
-                }
-            }
-            break;
-            case Development_constructionSubtotal2: {
-                if (vo.getConstructionCostSubtotal() != null) {
-                    return vo.getConstructionCostSubtotal().toString();
-                }
-            }
-            break;
-            case Development_reconnaissanceDesignRate: {
-                if (vo.getReconnaissanceDesign() != null) {
-                    return vo.getReconnaissanceDesign().toString();
-                }
-            }
-            break;
-            case Development_constructionInstallationEngineeringFee: {
-                if (vo.getConstructionInstallationEngineeringFee() != null) {
-                    return vo.getConstructionInstallationEngineeringFee().toString();
-                }
-            }
-            break;
-            case Development_infrastructureCost: {
-                if (vo.getInterestInvestment() != null) {
-                    return vo.getInterestInvestment().toString();
-                }
-            }
-            break;
-            case Development_infrastructureMatchingCost: {
-                if (vo.getInfrastructureMatchingCost() != null) {
-                    return vo.getInfrastructureMatchingCost().toString();
-                }
-            }
-            break;
-            case Development_devDuring: {
-                if (vo.getDevDuring() != null) {
-                    return vo.getDevDuring().toString();
-                }
-            }
-            break;
-            case Development_otherEngineeringCost: {
-                if (vo.getOtherEngineeringCost() != null) {
-                    return vo.getOtherEngineeringCost().toString();
-                }
-            }
-            break;
-            case Development_unforeseenExpensesTax: {
-                if (vo.getUnforeseenExpenses() != null) {
-                    return vo.getUnforeseenExpenses().toString();
-                }
-            }
-            break;
-            case Development_managementExpenseRate: {
-                if (vo.getManagementExpense() != null) {
-                    return vo.getManagementExpense().toString();
-                }
-            }
-            break;
-            case Development_landIncrementTax: {
-                if (vo.getLandValueAddedTax() != null) {
-                    return vo.getLandValueAddedTax().toString();
-                }
-            }
-            break;
-            case Development_managementExpense: {
-                String key = "d32";
-                if (jsonObject.get(key) != null) {
-                    return (String) jsonObject.get(key);
-                }
-            }
-            break;
-            case Development_unforeseenExpenses: {
-                String key = "d27";
-                if (jsonObject.get(key) != null) {
-                    return (String) jsonObject.get(key);
-                }
-            }
-            break;
-            case Development_deedCorrecting: {
-                if (vo.getDeedTaxRate() != null) {
-                    return vo.getDeedTaxRate().toString();
-                }
-            }
-            break;
-            case Development_transactionCostCorrecting: {
-                if (vo.getTransactionTaxRate() != null) {
-                    return vo.getTransactionTaxRate().toString();
-                }
-            }
-            break;
-            case Development_LandAcquisitionCost: {
-                if (vo.getLandGetRelevant() != null) {
-                    return vo.getLandGetRelevant().toString();
-                }
-            }
-            break;
-            case Development_LandAcquisitionCostTax: {
-                String key = "d28";
-                if (jsonObject.get(key) != null) {
-                    return (String) jsonObject.get(key);
-                }
-            }
-            break;
-            case Development_total_area: {
-                String key = "f18";
-                if (jsonObject.get(key) != null) {
-                    return (String) jsonObject.get(key);
-                }
-            }
-            break;
-            case Development_salesFeeTax: {
-                if (vo.getSalesFee() != null) {
-                    return vo.getSalesFee().toString();
-                }
-            }
-            break;
-            case Development_salesFee: {
-                String key = "f33";
-                if (jsonObject.get(key) != null) {
-                    return (String) jsonObject.get(key);
-                }
-            }
-            break;
-            case Development_projectConstructionPeriod: {
-                if (vo.getProjectConstructionPeriod() != null) {
-                    return vo.getProjectConstructionPeriod().toString();
-                }
-            }
-            break;
-            case Development_SalesTaxAndAdditional:
-                if (vo.getSalesTaxAndAdditional() != null) {
-                    return vo.getSalesTaxAndAdditional().toString();
-                }
-                return errorStr;
-            default: {
-            }
-            break;
-        }
-        return errorStr;
-    }
-
-    private String getDevelopment_constructionSubtotal_ComputationalProcess() {
-        //=勘察设计和前期工程费 + 建筑安装工程费 + 基础设施费用 + 公共配套设施建设费 + 开发期间税费 + 其它工程费
-        StringBuilder stringBuilder = new StringBuilder(8);
-        MdDevelopmentVo vo = getMdDevelopmentVo();
-        MdDevelopmentVo format = mdDevelopmentService.getMdDevelopmentVo(vo, true);
-        JSONObject jsonObject = null;
-        try {
-            jsonObject = JSON.parseObject(vo.getContent());
-            stringBuilder.append((String) jsonObject.get("d20")).append(" + ");
-            stringBuilder.append((String) jsonObject.get("d21")).append(" + ");
-            stringBuilder.append((String) jsonObject.get("d22")).append(" + ");
-            stringBuilder.append((String) jsonObject.get("d23")).append(" + ");
-            stringBuilder.append((String) jsonObject.get("d24")).append(" + ");
-            stringBuilder.append((String) jsonObject.get("d25")).append(" + ");
-        } catch (Exception e) {
-        }
-        if (StringUtils.isNotBlank(stringBuilder.toString())) {
-            return stringBuilder.toString();
-        }
-        return errorStr;
-    }
-
-    private String getLand_SetUse(BaseReportFieldEnum fieldEnum) {
-        SchemeJudgeObject schemeJudgeObject = getSchemeJudgeObject();
-        switch (fieldEnum) {
             case Development_Land_SetUse: {
-                if (schemeJudgeObject.getSetUse() != null) {
-                    DataSetUseField dataSetUseField = dataSetUseFieldService.getCacheSetUseFieldById(schemeJudgeObject.getSetUse());
-                    if (dataSetUseField != null && StringUtils.isNotBlank(dataSetUseField.getName())) {
-                        return dataSetUseField.getName();
-                    }
+                if (schemeJudgeObject.getSetUse() == null) {
+                    break;
                 }
+                DataSetUseField dataSetUseField = dataSetUseFieldService.getCacheSetUseFieldById(schemeJudgeObject.getSetUse());
+                if (dataSetUseField == null || StringUtils.isEmpty(dataSetUseField.getName())) {
+                    break;
+                }
+                generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), dataSetUseField.getName());
+                break;
             }
             case Development_SetUse: {
-                if (schemeJudgeObject.getSetUse() != null) {
-                    DataSetUseField dataSetUseField = dataSetUseFieldService.getCacheSetUseFieldById(schemeJudgeObject.getSetUse());
-                    if (dataSetUseField != null && StringUtils.isNotBlank(dataSetUseField.getName())) {
-                        return dataSetUseField.getName();
-                    }
+                if (schemeJudgeObject.getSetUse() == null) {
+                    break;
                 }
+                DataSetUseField dataSetUseField = dataSetUseFieldService.getCacheSetUseFieldById(schemeJudgeObject.getSetUse());
+                if (dataSetUseField == null || StringUtils.isEmpty(dataSetUseField.getName())) {
+                    break;
+                }
+                generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), dataSetUseField.getName());
+                break;
             }
-            break;
-            default: {
+            case Development_EconomicIndicators: {//经济指标
+                try {
+                    Document doc = new Document();
+                    DocumentBuilder builder = new DocumentBuilder(doc);
+                    generateCommonMethod.settingBuildingTable(builder);
+                    String localPath = generateCommonMethod.getLocalPath();
+                    doc.save(localPath);
+                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, key.getName(), localPath);
+                } catch (Exception e) {
+                }
+                break;
             }
-            break;
+            case Development_constructionSubtotal_ComputationalProcess: {
+                LinkedHashMap<MdCalculatingMethodEngineeringCost, JSONArray> costJSONObjectMap = Maps.newLinkedHashMap();
+                mdArchitecturalObjService.setMdCalculatingMethodEngineeringCostMapData(costJSONObjectMap, projectPlanDetails, projectPlanDetails.getProjectId());
+                if (costJSONObjectMap.isEmpty()) {
+                    break;
+                }
+                String path = generateCommonMethod.getLocalPath(RandomStringUtils.randomAlphanumeric(4));
+                LinkedList<String> linkedList = Lists.newLinkedList();
+                Set<MergeCellModel> mergeCellModelList = Sets.newHashSet();
+                try {
+                    Document document = new Document();
+                    DocumentBuilder documentBuilder = new DocumentBuilder(document);
+                    //设置具体宽度自动适应
+                    PreferredWidth preferredWidth = PreferredWidth.AUTO;
+                    documentBuilder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
+                    documentBuilder.getCellFormat().setPreferredWidth(preferredWidth);
+                    documentBuilder.getCellFormat().setVerticalMerge(CellVerticalAlignment.CENTER);
+                    documentBuilder.getCellFormat().setVerticalAlignment(CellVerticalAlignment.CENTER);
+                    documentBuilder.getCellFormat().setHorizontalMerge(CellVerticalAlignment.CENTER);
+                    documentBuilder.getCellFormat().setTopPadding(0);
+                    documentBuilder.getCellFormat().setBottomPadding(0);
+                    documentBuilder.getCellFormat().setLeftPadding(0);
+                    documentBuilder.getCellFormat().setRightPadding(0);
+                    documentBuilder.getFont().setSize(10.5);
+                    documentBuilder.getFont().setName(AsposeUtils.ImitationSongGB2312FontName);
+
+                    final AtomicInteger atomicInteger = new AtomicInteger(0);
+                    Table table = documentBuilder.startTable();
+                    mdArchitecturalObjService.writeCalculatingMethodEngineeringCostSheet(documentBuilder, linkedList, costJSONObjectMap, mergeCellModelList, atomicInteger);
+                    if (CollectionUtils.isNotEmpty(mergeCellModelList)) {
+                        generateCommonMethod.mergeCellTable(mergeCellModelList, table);
+                    }
+                    documentBuilder.endTable();
+                    AsposeUtils.saveWord(path, document);
+                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, key.getName(), path);
+                } catch (Exception e) {
+                }
+
+                break;
+            }
         }
-        return errorStr;
     }
+
 
     private SchemeInfo getSchemeInfo() {
         return schemeInfo;
@@ -554,23 +268,103 @@ public class GenerateMdDevelopmentService {
         return schemeJudgeObject;
     }
 
-    private String getDevelopment_constructionSubtotalContent(){
-        return errorStr;
+
+    private synchronized void setFieldObjectValue(BaseReportFieldEnum key, final ConcurrentHashMap<String, String> textMap, final ConcurrentHashMap<String, String> fileMap, final ConcurrentHashMap<String, String> bookmarkMap, MdDevelopment target) {
+        String value = mdDevelopmentService.getFieldObjectValue(key, target);
+        switch (key) {
+            case Development_SalesTaxAndAdditional: {
+                value = ArithmeticUtils.getBigDecimalString(target.getSalesTaxAndAdditional());
+                break;
+            }
+            case Development_reconnaissanceDesignRate:
+                value = ArithmeticUtils.getBigDecimalString(target.getReconnaissanceDesign());
+                break;
+            case Development_unforeseenExpensesTax:
+                value = ArithmeticUtils.getBigDecimalString(target.getUnforeseenExpenses());
+                break;
+            case Development_deedCorrecting:
+                value = ArithmeticUtils.getBigDecimalString(target.getDeedTaxRate());
+                break;
+            case Development_transactionCostCorrecting:
+                value = ArithmeticUtils.getBigDecimalString(target.getTransactionTaxRate());
+                break;
+            case Development_LandAcquisitionCost: {
+                value = mdDevelopmentService.getFieldObjectValue(BaseReportFieldEnum.Development_LandGetCost, target);
+                break;
+            }
+            case Development_LandAcquisitionCostTax: {
+                value = ArithmeticUtils.getBigDecimalString(target.getLandGetRelevant());
+                break;
+            }
+            case Development_managementExpenseRate: {
+                value = ArithmeticUtils.getBigDecimalString(target.getManagementExpense());
+                break;
+            }
+            case Development_constructionSubtotal2: {
+                value = mdDevelopmentService.getFieldObjectValue(BaseReportFieldEnum.Development_constructionSubtotal, target);
+                break;
+            }
+            case Development_constructionSubtotal3: {
+                value = mdDevelopmentService.getFieldObjectValue(BaseReportFieldEnum.Development_constructionSubtotal, target);
+                break;
+            }
+            case Development_salesFeeTax: {
+                value = ArithmeticUtils.getBigDecimalString(target.getSalesFee());
+                break;
+            }
+            case Development_interestInvestmentRate: {
+                value = ArithmeticUtils.getBigDecimalString(target.getInterestInvestmentTax());
+                break;
+            }
+            case Development_investmentProfitRate: {
+                value = ArithmeticUtils.getBigDecimalString(target.getInvestmentProfitTax());
+                break;
+            }
+            case Development_landIncrementTax: {
+                value = ArithmeticUtils.getBigDecimalString(target.getLandValueAddedTax());
+                break;
+            }
+            case Development_AmendmentStatusRights: {
+                value = ArithmeticUtils.getBigDecimalString(target.getAmendmentStatusRights());
+                break;
+            }
+            case Development_OtherAmendments: {
+                value = ArithmeticUtils.getBigDecimalString(target.getOtherAmendments());
+                break;
+            }
+            case Development_DevelopmentDegreeCorrectionValue: {
+                value = ArithmeticUtils.getBigDecimalString(target.getDevelopmentDegreeRevision());
+                break;
+            }
+            case Development_AmendmentStatusRightsRemark: {
+                value = target.getAmendmentStatusRightsExplain();
+                break;
+            }
+            case Development_OtherAmendmentsRemark: {
+                value = target.getOtherAmendmentsExplain();
+                break;
+            }
+        }
+        if (StringUtils.isNotBlank(value)) {
+            if (NumberUtils.isNumber(value)) {
+                int length = ArithmeticUtils.getDecimalLength(value);
+                if (length > 4) {
+                    value = ArithmeticUtils.round(value, 2);
+                }
+            }
+        }
+        if (StringUtils.isEmpty(value)) {
+            return;
+        }
+        if (com.google.common.base.Objects.equal("0", value)) {
+            return;
+        }
+        generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), value);
+    }
+
+    private ProjectPlanDetails getProjectPlanDetailsById(Integer id) {
+        return projectPlanDetailsService.getProjectPlanDetailsById(id);
     }
 
 
-    /**
-     * 经济指标
-     * @return
-     * @throws Exception
-     */
-    private String getDevelopment_EconomicIndicators()throws Exception{
-        Document doc = new Document();
-        DocumentBuilder builder = new DocumentBuilder(doc);
-        generateCommonMethod.settingBuildingTable(builder);
-        String localPath =  generateCommonMethod.getLocalPath();
-
-        doc.save(localPath) ;
-        return localPath;
-    }
 }
