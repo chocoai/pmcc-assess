@@ -160,7 +160,16 @@
 
             <div class="form-group">
                 <div class="x-valid">
-                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                    <label class="col-sm-1 control-label">
+                        建筑安装工程费
+                    </label>
+                    <div class=" col-xs-1  col-sm-1  col-md-1  col-lg-1 ">
+                        <input type="text" readonly="readonly"  class="form-control" onblur="checkParams(this);"
+                               name="constructionInstallationEngineeringFee"  value="${mdDevelopment.constructionInstallationEngineeringFee}" >
+                    </div>
+                </div>
+                <div class="x-valid">
+                    <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
                         <table class="table table-striped" id="landConstructionInstallationEngineeringFeeInfoTarget" >
 
                         </table>
@@ -844,16 +853,11 @@
 <div id="toolbarMdCalculatingMethodEngineeringCostLand" style="display: none">
     <div class="input-group">
                                 <span class="input-group-btn">
-                                    <button type="button" class="btn btn-info disabled">
-                                        建筑安装工程费
-                                    </button>
                                     <button type="button" class="btn btn-primary" onclick="landEngineering.delMdCalculatingMethodEngineeringCost()">删除</button>
                                     <button type="button" class="btn btn-primary" onclick="landEngineering.showMdCalculatingMethodEngineeringCost();">添加</button>
                                 </span>
         <span class="input-group-btn">
-                                    <input type="text" readonly="readonly"  class="form-control" onblur="checkParams(this);"
-                                           name="constructionInstallationEngineeringFee"  value="${mdDevelopment.constructionInstallationEngineeringFee}" >
-                                    <input type="hidden" name="constructionInstallationEngineeringFeeIds" value="${mdDevelopment.constructionInstallationEngineeringFeeIds}">
+
                                 </span>
     </div>
 </div>
