@@ -31,6 +31,17 @@ public class MdEconomicIndicatorsController {
         }
     }
 
+    @PostMapping(value = "/deleteById",name = "删除数据")
+    public HttpResult deleteById(Integer id){
+        try {
+            mdEconomicIndicatorsService.deleteById(id);
+            return HttpResult.newCorrectResult() ;
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
+            return HttpResult.newErrorResult(500,"删除经济指标异常");
+        }
+    }
+
     @PostMapping(value = "/getEconomicIndicatorsInfo")
     public HttpResult getEconomicIndicatorsInfo(Integer economicId) {
         try {

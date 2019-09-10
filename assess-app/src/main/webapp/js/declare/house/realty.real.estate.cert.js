@@ -241,22 +241,31 @@ declareRealtyRealEstateCert.pasteAll = function () {
 //经济指标
 declareRealtyRealEstateCert.showAddModelDeclareEconomicIndicators = function (id) {
     var item = $("#" + declareRealtyRealEstateCert.config.table).bootstrapTable('getRowByUniqueId', id);
-    console.log(item);
     if (!declareCommon.isNotBlank(item.centerId)) {
         toastr.success('不合符调整后的数据约定,请联系管理员!');
         return false;
     }
+    var showDelHtml = "" ;
+    showDelHtml += declareCommon.declareCenterData.indicatorIdDelHtml;
+    showDelHtml = showDelHtml.replace(/{method}/g, 'declareRealtyRealEstateCert.deleteDeclareEconomicIndicatorsCenter') ;
     declareCommon.getDeclareBuildCenter(item.centerId, function (centerData) {
         if (centerData.indicatorId) {
             economicIndicators.init({
                 planDetailsId: declareCommon.getPlanDetailsId(),
-                economicId: centerData.indicatorId
+                economicId: centerData.indicatorId,
+                showDelHtml:showDelHtml,
+                centerId:item.centerId
             });
         } else {
             economicIndicators.init({
                 planDetailsId: declareCommon.getPlanDetailsId(),
                 saveCallback: function (economicId) {//经济指标id更新到中间表
                     declareCommon.declareBuildCenterSaveAndUpdate({indicatorId: economicId, id: item.centerId});
+                },
+                showDelHtml:showDelHtml,
+                centerId:item.centerId,
+                targetCallback:function () {
+                    economicIndicators.autoSummary(true) ;
                 }
             });
         }
@@ -264,14 +273,15 @@ declareRealtyRealEstateCert.showAddModelDeclareEconomicIndicators = function (id
 };
 
 //经济指标删除
-declareRealtyRealEstateCert.deleteDeclareEconomicIndicatorsCenter = function () {
-    var data = formParams(declareRealtyRealEstateCert.config.declareEconomicIndicatorsHead.frm);
+declareRealtyRealEstateCert.deleteDeclareEconomicIndicatorsCenter = function (frmEle,box) {
+    var data = formParams(frmEle);
     if (declareCommon.isNotBlank(data.centerId)) {
         declareCommon.getDeclareBuildCenter(data.centerId, function (centerData) {
             if (declareCommon.isNotBlank(centerData.indicatorId)) {//关联情况
                 declareCommon.deleteByDeclareBuildCenterType(data.centerId, declareCommon.declareCenterData.indicatorId.type, function () {
-                    $('#' + declareRealtyRealEstateCert.config.declareEconomicIndicatorsHead.box).modal("hide");
+                    $('#' + box).modal("hide");
                     toastr.success('已经删除!');
+                    economicIndicators.autoSummary(true) ;
                     declareRealtyRealEstateCert.loadList();
                 });
             } else {
@@ -281,16 +291,6 @@ declareRealtyRealEstateCert.deleteDeclareEconomicIndicatorsCenter = function () 
     }
 };
 
-//经济指标 save
-declareRealtyRealEstateCert.saveDeclareEconomicIndicatorsData = function (this_) {
-    declareCommon.saveDeclareEconomicIndicators(function () {
-            $('#' + declareRealtyRealEstateCert.config.declareEconomicIndicatorsHead.box).modal("hide");
-            $("#" + declareRealtyRealEstateCert.config.declareEconomicIndicatorsHead.frm).find(".panel-body").empty();
-            $("#" + declareRealtyRealEstateCert.config.declareEconomicIndicatorsContent.frm).find(".panel-body").empty();
-            toastr.info("成功!");
-        }, $("#" + declareRealtyRealEstateCert.config.declareEconomicIndicatorsHead.frm),
-        $("#" + declareRealtyRealEstateCert.config.declareEconomicIndicatorsContent.frm));
-};
 
 declareRealtyRealEstateCert.saveAndUpdateData = function () {
     if (!$("#" + declareRealtyRealEstateCert.config.frm).valid()) {
