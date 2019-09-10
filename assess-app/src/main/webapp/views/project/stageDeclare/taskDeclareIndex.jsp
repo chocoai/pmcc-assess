@@ -49,13 +49,11 @@
                             </div>
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    完成时限<span class="symbol required"></span>
+                                    估价委托书
                                 </label>
-                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <input required="required" placeholder="完成时限" id="dateLimit"
-                                           name="dateLimit" data-date-format="yyyy-mm-dd" required
-                                           class="form-control date-picker dbdate" readonly="readonly"
-                                           value="<fmt:formatDate value='${declare.dateLimit}' pattern='yyyy-MM-dd'/>">
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3  ">
+                                    <input id="project_proxy" name="project_proxy" type="file" multiple="false">
+                                    <div id="_project_proxy"></div>
                                 </div>
                             </div>
                         </div>
@@ -68,7 +66,6 @@
                                     <input name="assessArea" class="form-control" placeholder="评估面积" value='${declare.assessArea}'/>
                                 </div>
                             </div>
-
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                     评估金额
@@ -77,18 +74,19 @@
                                     <input name="assessMoney" class="form-control" placeholder="评估金额" value='${declare.assessMoney}'/>
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-group">
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    估价委托书
+                                    评估基准日
                                 </label>
-                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3  ">
-                                    <input id="project_proxy" name="project_proxy" type="file" multiple="false">
-                                    <div id="_project_proxy"></div>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                    <input required="required" placeholder="完成时限" id="dateLimit"
+                                           name="dateLimit" data-date-format="yyyy-mm-dd"
+                                           class="form-control date-picker dbdate" readonly="readonly"
+                                           value="<fmt:formatDate value='${declare.dateLimit}' pattern='yyyy-MM-dd'/>">
                                 </div>
                             </div>
-
+                        </div>
+                        <div class="form-group">
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                     评估报告
@@ -102,7 +100,7 @@
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    自定义
+                                    自定义附件
                                 </label>
                                 <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
                                     <div class="btn  btn-success" onclick="appendHTML(this)"><i class="fa fa-plus"></i></div>
@@ -230,7 +228,6 @@
     }
 
     $(document).ready(function () {
-
         var fileArr = [AssessUploadKey.PROJECT_PROXY ,AssessUploadKey.ASSESS_REPORT_Enclosure ] ;
         $.each(fileArr,function (i,n) {
             declareCommon.showFile(n, AssessDBKey.ProjectInfo, "${projectPlanDetails.projectId}", true, n);
