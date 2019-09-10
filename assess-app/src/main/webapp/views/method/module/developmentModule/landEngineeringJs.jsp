@@ -144,7 +144,8 @@
      * 工程费表格加载
      */
     landEngineering.loadMdCalculatingMethodEngineeringCostTable = function (type) {
-        var obj = {type: landEngineering.getTypeData(type), planDetailsId: '${projectPlanDetails.id}'};
+        <%--var obj = {type: landEngineering.getTypeData(type), planDetailsId: '${projectPlanDetails.id}'};--%>
+        var obj = { planDetailsId: '${projectPlanDetails.id}'};
         var cols = [];
         cols.push({
             field: 'id', title: '建筑安装工程费明细', formatter: function (value, row, index) {
@@ -260,7 +261,13 @@
     /*基础设施配套费  table load**/
     landEngineering.loadMdDevelopmentInfrastructureChildrenTable = function () {
         var pid = developmentCommon.isNotBlank('${mdDevelopment.id}')?'${mdDevelopment.id}':'0' ;
-        developmentCommon.infrastructureChildren.loadTable(pid,'${projectPlanDetails.id}',landEngineering.getTypeData(),landEngineering.infrastructureChildrenTable,$("#toolbarMdDevelopmentInfrastructureChildrenTable")) ;
+
+        developmentCommon.infrastructureChildren.loadTable2(
+            {planDetailsId:'${projectPlanDetails.id}',pid:pid},
+            landEngineering.infrastructureChildrenTable,
+            $("#toolbarMdDevelopmentInfrastructureChildrenTable")
+        ) ;
+
         landEngineering.writeMdDevelopmentInfrastructureChildrenTable() ;
     };
     /*基础设施配套费  table delete**/
@@ -311,7 +318,7 @@
         }
         var data = formSerializeArray(frm);
         data.planDetailsId = '${projectPlanDetails.id}' ;
-        data.type = landEngineering.getTypeData() ;
+//        data.type = landEngineering.getTypeData() ;
         data.pid = developmentCommon.isNotBlank('${mdDevelopment.id}')?'${mdDevelopment.id}':'0' ;
         developmentCommon.infrastructureChildren.save(data , function () {
             toastr.success('添加成功!');
@@ -324,12 +331,17 @@
     /*基础设施配套费  table 测算**/
     landEngineering.writeMdDevelopmentInfrastructureChildrenTable = function () {
         var pid = developmentCommon.isNotBlank('${mdDevelopment.id}')?'${mdDevelopment.id}':'0' ;
-        developmentCommon.infrastructureChildren.getDataList({planDetailsId:'${projectPlanDetails.id}',pid:pid,type:landEngineering.getTypeData()} ,function (item) {
+        developmentCommon.infrastructureChildren.getDataList({planDetailsId:'${projectPlanDetails.id}',pid:pid} ,function (item) {
             var result = 0;
             if (item.length >= 1){
                 $.each(item,function (i,n) {
                     result += Number(n.number) ;
                 });
+            }
+            if ('${mdDevelopment.infrastructureCost}'){
+                if (result == 0){
+                    result += Number('${mdDevelopment.infrastructureCost}') ;
+                }
             }
             landEngineering.target.find("input[name='infrastructureCost']").val(result).trigger('blur');
         }) ;

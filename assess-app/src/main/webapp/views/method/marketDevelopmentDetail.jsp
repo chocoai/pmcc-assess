@@ -19,3 +19,5 @@
 <%@include file="/views/method/module/developmentCommon.jsp" %>
 <%@include file="/views/project/tool/rewardRateDetail.jsp" %>
 
+<%@include file="/views/method/module/economicIndicators.jsp" %>
+

@@ -371,7 +371,8 @@
     /**基础设施建设 table*/
     construction.loadMdDevelopmentInfrastructureChildrenTable = function () {
         var pid = developmentCommon.isNotBlank('${mdCostVo.mdCostConstruction.id}') ? '${mdCostVo.mdCostConstruction.id}' : '0';
-        developmentCommon.infrastructureChildren.loadTable(pid, '${projectPlanDetails.id}', construction.type, $(construction.infrastructureChildrenTable), $("#toolbarMdCostConstructionChildrenTable"));
+        var data = {planDetailsId:'${projectPlanDetails.id}',pid:pid} ;
+        developmentCommon.infrastructureChildren.loadTable2(data, $(construction.infrastructureChildrenTable), $("#toolbarMdCostConstructionChildrenTable"));
         construction.writeMdDevelopmentInfrastructureChildrenTable();
     };
 
@@ -444,13 +445,15 @@
             type: construction.type
         }, function (item) {
             var result = 0;
-            if ('${mdCostVo.mdCostConstruction.infrastructureCost}'){
-                result += Number('${mdCostVo.mdCostConstruction.infrastructureCost}') ;
-            }
             if (item.length >= 1) {
                 $.each(item, function (i, n) {
                     result += Number(n.number);
                 });
+            }
+            if ('${mdCostVo.mdCostConstruction.infrastructureCost}'){
+                if (result == 0){
+                    result += Number('${mdCostVo.mdCostConstruction.infrastructureCost}') ;
+                }
             }
             construction.target.find("input[name='infrastructureCost']").val(result).trigger('blur');
         });

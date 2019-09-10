@@ -177,7 +177,7 @@
                         callback(result.data) ;
                     }
                 } else {
-                    Alert("失败:" + result.errmsg);
+//                    Alert("失败:" + result.errmsg);
                 }
             },
             error: function (e) {

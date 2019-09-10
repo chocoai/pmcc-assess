@@ -31,6 +31,7 @@ public class MdDevelopmentController {
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
             String error = e.getMessage();
+            e.printStackTrace();
             return HttpResult.newErrorResult("请检查输入的数据");
         }
     }

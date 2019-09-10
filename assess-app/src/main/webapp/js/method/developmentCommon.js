@@ -828,12 +828,16 @@ developmentCommon.infrastructureChildren = {
         });
     },
     loadTable: function (pid, planDetailsId, type, selectId, toolbar) {
+        var data = {pid:pid,planDetailsId:planDetailsId,type:type} ;
+        developmentCommon.infrastructureChildren.loadTable2(data,selectId,toolbar) ;
+    },
+    loadTable2: function (data, selectId, toolbar) {
         var cols = [];
         cols.push({checkbox: true});
         cols.push({field: 'name', title: '名称'});
         cols.push({field: 'number', title: '金额'});
         selectId.bootstrapTable('destroy');
-        TableInit(selectId.attr("id"), getContextPath() +"/mdDevelopmentInfrastructureChildren/getBootstrapTableVo?pid=" + pid + "&planDetailsId=" + planDetailsId + "&type=" + type, cols, {}, {
+        TableInit(selectId.attr("id"), getContextPath() +"/mdDevelopmentInfrastructureChildren/getBootstrapTableVo", cols, data, {
             showColumns: true,
             showRefresh: true,
             search: false

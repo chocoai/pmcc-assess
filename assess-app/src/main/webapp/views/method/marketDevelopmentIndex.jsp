@@ -19,6 +19,7 @@
 <%@include file="/views/method/module/developmentModule/landEngineeringJs.jsp" %>
 <%@include file="/views/method/module/developmentCommon.jsp" %>
 <%@include file="/views/project/tool/rewardRate.jsp" %>
+<%@include file="/views/method/module/economicIndicators.jsp" %>
 
 <script>
 
@@ -100,8 +101,8 @@
                     if (callback){
                         callback(result.data) ;
                     }
-                } else {
-                    Alert("失败:" + result.errmsg);
+                }else {
+//                    Alert("失败:" + result.errmsg);
                 }
             },
             error: function (e) {
