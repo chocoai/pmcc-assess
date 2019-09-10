@@ -1071,6 +1071,16 @@ public class MdIncomeService {
         }
         List<MdIncomeHistory> historyList = mdIncomeHistoryDao.getHistoryList(mdIncomeHistory);
         List<MdIncomeHistoryVo> vos = LangUtils.transform(historyList, p -> getHistoryVo(p));
+        //表单类型为餐饮、酒店、宾馆时排序
+        if(mdIncomeHistory.getFormType()==1) {
+            Comparator<MdIncomeHistoryVo> comparator = new Comparator<MdIncomeHistoryVo>() {
+                @Override
+                public int compare(MdIncomeHistoryVo o1, MdIncomeHistoryVo o2) {
+                    return o1.getBeginDate().compareTo(o2.getBeginDate());
+                }
+            };
+            Collections.sort(vos, comparator);
+        }
         vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<DataEvaluationHypothesisVo>() : vos);
         vo.setTotal(page.getTotal());
         return vo;
@@ -1107,7 +1117,7 @@ public class MdIncomeService {
      * @return
      */
     @Transactional
-    public void createForecastIncomeYear(Integer incomeForecastId) {
+    public void createForecastIncomeYear(Integer incomeForecastId) throws BusinessException{
         MdIncomeForecast forecast = mdIncomeForecastDao.getForecastById(incomeForecastId);
 
         //先清除原数据
@@ -1641,6 +1651,14 @@ public class MdIncomeService {
      * @param formType
      */
     public void forecastIncomeItemQuoteData(Integer incomeId, Integer formType, Integer incomeForecastId) {
+        //删除老数据
+        List<MdIncomeForecastItem> oldData = getIncomeForecastItemListByMasterId(incomeForecastId);
+        if(CollectionUtils.isNotEmpty(oldData)){
+            for (MdIncomeForecastItem item: oldData) {
+                mdIncomeForecastItemDao.deleteIncomeForecastItem(item.getId());
+            }
+        }
+
         MdIncomeForecastAnalyse forecastAnalyse = new MdIncomeForecastAnalyse();
         forecastAnalyse.setIncomeId(incomeId);
         forecastAnalyse.setType(0);
