@@ -9,6 +9,7 @@ public class MdIncomeForecastAnalyseItemVo extends MdIncomeForecastAnalyseItem {
     private String name;
     private String quantitativeTrend;
     private String moneyTrend;
+    private String unitPriceTrend;
 
     public String getName() {
         return name;
@@ -32,5 +33,13 @@ public class MdIncomeForecastAnalyseItemVo extends MdIncomeForecastAnalyseItem {
 
     public void setMoneyTrend(String moneyTrend) {
         this.moneyTrend = moneyTrend;
+    }
+
+    public String getUnitPriceTrend() {
+        return unitPriceTrend;
+    }
+
+    public void setUnitPriceTrend(String unitPriceTrend) {
+        this.unitPriceTrend = unitPriceTrend;
     }
 }

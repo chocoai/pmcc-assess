@@ -276,14 +276,6 @@
             }
         });
         cols.push({field: 'amount', title: '金额'});
-        cols.push({
-            field: 'id', title: '操作', formatter: function (value, row, index) {
-                var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="查看月度" onclick="selfSupport.viewForecastMonth(' + row.type + ',' + row.id + ');" ><i class="fa fa-search fa-white"></i></a>';
-                str += '</div>';
-                return str;
-            }
-        });
         $("#tb_forecast_year_list").bootstrapTable('destroy');
         TableInit("tb_forecast_year_list", "${pageContext.request.contextPath}/income/getForecastYearList", cols, {
             forecastId: forecastId

@@ -3,20 +3,10 @@ package com.copower.pmcc.assess.dal.basis.entity;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class MdIncomeForecastAnalyseItem {
+public class MdIncomeForecastItem {
     private Integer id;
 
-    private Integer incomeId;
-
-    private Integer forecastAnalyseId;
-
-    private Integer formType;
-
-    private Integer type;
-
-    private Integer year;
-
-    private String sourceType;
+    private Integer incomeForecastId;
 
     private Integer accountingSubject;
 
@@ -26,7 +16,9 @@ public class MdIncomeForecastAnalyseItem {
 
     private BigDecimal amountMoney;
 
-    private Integer number;
+    private BigDecimal rateIncrease;
+
+    private String rateIncreaseExplain;
 
     private String creator;
 
@@ -42,52 +34,12 @@ public class MdIncomeForecastAnalyseItem {
         this.id = id;
     }
 
-    public Integer getIncomeId() {
-        return incomeId;
+    public Integer getIncomeForecastId() {
+        return incomeForecastId;
     }
 
-    public void setIncomeId(Integer incomeId) {
-        this.incomeId = incomeId;
-    }
-
-    public Integer getForecastAnalyseId() {
-        return forecastAnalyseId;
-    }
-
-    public void setForecastAnalyseId(Integer forecastAnalyseId) {
-        this.forecastAnalyseId = forecastAnalyseId;
-    }
-
-    public Integer getFormType() {
-        return formType;
-    }
-
-    public void setFormType(Integer formType) {
-        this.formType = formType;
-    }
-
-    public Integer getType() {
-        return type;
-    }
-
-    public void setType(Integer type) {
-        this.type = type;
-    }
-
-    public Integer getYear() {
-        return year;
-    }
-
-    public void setYear(Integer year) {
-        this.year = year;
-    }
-
-    public String getSourceType() {
-        return sourceType;
-    }
-
-    public void setSourceType(String sourceType) {
-        this.sourceType = sourceType == null ? null : sourceType.trim();
+    public void setIncomeForecastId(Integer incomeForecastId) {
+        this.incomeForecastId = incomeForecastId;
     }
 
     public Integer getAccountingSubject() {
@@ -122,12 +74,20 @@ public class MdIncomeForecastAnalyseItem {
         this.amountMoney = amountMoney;
     }
 
-    public Integer getNumber() {
-        return number;
+    public BigDecimal getRateIncrease() {
+        return rateIncrease;
     }
 
-    public void setNumber(Integer number) {
-        this.number = number;
+    public void setRateIncrease(BigDecimal rateIncrease) {
+        this.rateIncrease = rateIncrease;
+    }
+
+    public String getRateIncreaseExplain() {
+        return rateIncreaseExplain;
+    }
+
+    public void setRateIncreaseExplain(String rateIncreaseExplain) {
+        this.rateIncreaseExplain = rateIncreaseExplain == null ? null : rateIncreaseExplain.trim();
     }
 
     public String getCreator() {

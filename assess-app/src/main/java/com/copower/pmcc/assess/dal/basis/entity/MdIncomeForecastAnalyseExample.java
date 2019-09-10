@@ -905,6 +905,426 @@ public class MdIncomeForecastAnalyseExample {
             addCriterion("source_type not between", value1, value2, "sourceType");
             return (Criteria) this;
         }
+
+        public Criteria andCostRatioIsNull() {
+            addCriterion("cost_ratio is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostRatioIsNotNull() {
+            addCriterion("cost_ratio is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostRatioEqualTo(BigDecimal value) {
+            addCriterion("cost_ratio =", value, "costRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostRatioNotEqualTo(BigDecimal value) {
+            addCriterion("cost_ratio <>", value, "costRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostRatioGreaterThan(BigDecimal value) {
+            addCriterion("cost_ratio >", value, "costRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostRatioGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("cost_ratio >=", value, "costRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostRatioLessThan(BigDecimal value) {
+            addCriterion("cost_ratio <", value, "costRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostRatioLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("cost_ratio <=", value, "costRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostRatioIn(List<BigDecimal> values) {
+            addCriterion("cost_ratio in", values, "costRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostRatioNotIn(List<BigDecimal> values) {
+            addCriterion("cost_ratio not in", values, "costRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostRatioBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("cost_ratio between", value1, value2, "costRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostRatioNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("cost_ratio not between", value1, value2, "costRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andEarnedProfitRatioIsNull() {
+            addCriterion("earned_profit_ratio is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEarnedProfitRatioIsNotNull() {
+            addCriterion("earned_profit_ratio is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEarnedProfitRatioEqualTo(BigDecimal value) {
+            addCriterion("earned_profit_ratio =", value, "earnedProfitRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andEarnedProfitRatioNotEqualTo(BigDecimal value) {
+            addCriterion("earned_profit_ratio <>", value, "earnedProfitRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andEarnedProfitRatioGreaterThan(BigDecimal value) {
+            addCriterion("earned_profit_ratio >", value, "earnedProfitRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andEarnedProfitRatioGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("earned_profit_ratio >=", value, "earnedProfitRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andEarnedProfitRatioLessThan(BigDecimal value) {
+            addCriterion("earned_profit_ratio <", value, "earnedProfitRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andEarnedProfitRatioLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("earned_profit_ratio <=", value, "earnedProfitRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andEarnedProfitRatioIn(List<BigDecimal> values) {
+            addCriterion("earned_profit_ratio in", values, "earnedProfitRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andEarnedProfitRatioNotIn(List<BigDecimal> values) {
+            addCriterion("earned_profit_ratio not in", values, "earnedProfitRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andEarnedProfitRatioBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("earned_profit_ratio between", value1, value2, "earnedProfitRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andEarnedProfitRatioNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("earned_profit_ratio not between", value1, value2, "earnedProfitRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andEarnedProfitIsNull() {
+            addCriterion("earned_profit is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEarnedProfitIsNotNull() {
+            addCriterion("earned_profit is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEarnedProfitEqualTo(BigDecimal value) {
+            addCriterion("earned_profit =", value, "earnedProfit");
+            return (Criteria) this;
+        }
+
+        public Criteria andEarnedProfitNotEqualTo(BigDecimal value) {
+            addCriterion("earned_profit <>", value, "earnedProfit");
+            return (Criteria) this;
+        }
+
+        public Criteria andEarnedProfitGreaterThan(BigDecimal value) {
+            addCriterion("earned_profit >", value, "earnedProfit");
+            return (Criteria) this;
+        }
+
+        public Criteria andEarnedProfitGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("earned_profit >=", value, "earnedProfit");
+            return (Criteria) this;
+        }
+
+        public Criteria andEarnedProfitLessThan(BigDecimal value) {
+            addCriterion("earned_profit <", value, "earnedProfit");
+            return (Criteria) this;
+        }
+
+        public Criteria andEarnedProfitLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("earned_profit <=", value, "earnedProfit");
+            return (Criteria) this;
+        }
+
+        public Criteria andEarnedProfitIn(List<BigDecimal> values) {
+            addCriterion("earned_profit in", values, "earnedProfit");
+            return (Criteria) this;
+        }
+
+        public Criteria andEarnedProfitNotIn(List<BigDecimal> values) {
+            addCriterion("earned_profit not in", values, "earnedProfit");
+            return (Criteria) this;
+        }
+
+        public Criteria andEarnedProfitBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("earned_profit between", value1, value2, "earnedProfit");
+            return (Criteria) this;
+        }
+
+        public Criteria andEarnedProfitNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("earned_profit not between", value1, value2, "earnedProfit");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingExpensesRatioIsNull() {
+            addCriterion("operating_expenses_ratio is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingExpensesRatioIsNotNull() {
+            addCriterion("operating_expenses_ratio is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingExpensesRatioEqualTo(BigDecimal value) {
+            addCriterion("operating_expenses_ratio =", value, "operatingExpensesRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingExpensesRatioNotEqualTo(BigDecimal value) {
+            addCriterion("operating_expenses_ratio <>", value, "operatingExpensesRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingExpensesRatioGreaterThan(BigDecimal value) {
+            addCriterion("operating_expenses_ratio >", value, "operatingExpensesRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingExpensesRatioGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("operating_expenses_ratio >=", value, "operatingExpensesRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingExpensesRatioLessThan(BigDecimal value) {
+            addCriterion("operating_expenses_ratio <", value, "operatingExpensesRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingExpensesRatioLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("operating_expenses_ratio <=", value, "operatingExpensesRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingExpensesRatioIn(List<BigDecimal> values) {
+            addCriterion("operating_expenses_ratio in", values, "operatingExpensesRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingExpensesRatioNotIn(List<BigDecimal> values) {
+            addCriterion("operating_expenses_ratio not in", values, "operatingExpensesRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingExpensesRatioBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("operating_expenses_ratio between", value1, value2, "operatingExpensesRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingExpensesRatioNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("operating_expenses_ratio not between", value1, value2, "operatingExpensesRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingTaxRatioIsNull() {
+            addCriterion("operating_tax_ratio is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingTaxRatioIsNotNull() {
+            addCriterion("operating_tax_ratio is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingTaxRatioEqualTo(BigDecimal value) {
+            addCriterion("operating_tax_ratio =", value, "operatingTaxRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingTaxRatioNotEqualTo(BigDecimal value) {
+            addCriterion("operating_tax_ratio <>", value, "operatingTaxRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingTaxRatioGreaterThan(BigDecimal value) {
+            addCriterion("operating_tax_ratio >", value, "operatingTaxRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingTaxRatioGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("operating_tax_ratio >=", value, "operatingTaxRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingTaxRatioLessThan(BigDecimal value) {
+            addCriterion("operating_tax_ratio <", value, "operatingTaxRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingTaxRatioLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("operating_tax_ratio <=", value, "operatingTaxRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingTaxRatioIn(List<BigDecimal> values) {
+            addCriterion("operating_tax_ratio in", values, "operatingTaxRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingTaxRatioNotIn(List<BigDecimal> values) {
+            addCriterion("operating_tax_ratio not in", values, "operatingTaxRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingTaxRatioBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("operating_tax_ratio between", value1, value2, "operatingTaxRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingTaxRatioNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("operating_tax_ratio not between", value1, value2, "operatingTaxRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagementCostRatioIsNull() {
+            addCriterion("management_cost_ratio is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagementCostRatioIsNotNull() {
+            addCriterion("management_cost_ratio is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagementCostRatioEqualTo(BigDecimal value) {
+            addCriterion("management_cost_ratio =", value, "managementCostRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagementCostRatioNotEqualTo(BigDecimal value) {
+            addCriterion("management_cost_ratio <>", value, "managementCostRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagementCostRatioGreaterThan(BigDecimal value) {
+            addCriterion("management_cost_ratio >", value, "managementCostRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagementCostRatioGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("management_cost_ratio >=", value, "managementCostRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagementCostRatioLessThan(BigDecimal value) {
+            addCriterion("management_cost_ratio <", value, "managementCostRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagementCostRatioLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("management_cost_ratio <=", value, "managementCostRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagementCostRatioIn(List<BigDecimal> values) {
+            addCriterion("management_cost_ratio in", values, "managementCostRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagementCostRatioNotIn(List<BigDecimal> values) {
+            addCriterion("management_cost_ratio not in", values, "managementCostRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagementCostRatioBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("management_cost_ratio between", value1, value2, "managementCostRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagementCostRatioNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("management_cost_ratio not between", value1, value2, "managementCostRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andFinancialCostRatioIsNull() {
+            addCriterion("financial_cost_ratio is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFinancialCostRatioIsNotNull() {
+            addCriterion("financial_cost_ratio is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFinancialCostRatioEqualTo(BigDecimal value) {
+            addCriterion("financial_cost_ratio =", value, "financialCostRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andFinancialCostRatioNotEqualTo(BigDecimal value) {
+            addCriterion("financial_cost_ratio <>", value, "financialCostRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andFinancialCostRatioGreaterThan(BigDecimal value) {
+            addCriterion("financial_cost_ratio >", value, "financialCostRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andFinancialCostRatioGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("financial_cost_ratio >=", value, "financialCostRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andFinancialCostRatioLessThan(BigDecimal value) {
+            addCriterion("financial_cost_ratio <", value, "financialCostRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andFinancialCostRatioLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("financial_cost_ratio <=", value, "financialCostRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andFinancialCostRatioIn(List<BigDecimal> values) {
+            addCriterion("financial_cost_ratio in", values, "financialCostRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andFinancialCostRatioNotIn(List<BigDecimal> values) {
+            addCriterion("financial_cost_ratio not in", values, "financialCostRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andFinancialCostRatioBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("financial_cost_ratio between", value1, value2, "financialCostRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andFinancialCostRatioNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("financial_cost_ratio not between", value1, value2, "financialCostRatio");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

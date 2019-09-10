@@ -205,6 +205,18 @@ public class IncomeController {
     }
 
     @ResponseBody
+    @RequestMapping(value = "/createForecastIncomeYear", method = {RequestMethod.POST}, name = "生成年度预测")
+    public HttpResult createForecastIncomeYear(Integer incomeForecastId) {
+        try {
+            mdIncomeService.createForecastIncomeYear(incomeForecastId);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/deleteForecast", name = "删除", method = RequestMethod.POST)
     public HttpResult deleteForecast(@RequestParam(value = "id") Integer id) {
         try {
@@ -316,5 +328,51 @@ public class IncomeController {
     public BootstrapTableVo getForecastAnalyseItemList(Integer forecastAnalyseId) {
         return mdIncomeService.getForecastAnalyseItemList(forecastAnalyseId);
     }
+
+
+    @ResponseBody
+    @RequestMapping(value = "/loadIncomeForecastItemList", name = "显示有效毛收入数据列表", method = RequestMethod.GET)
+    public BootstrapTableVo loadIncomeForecastItemList(Integer incomeForecastId) {
+        return mdIncomeService.loadIncomeForecastItemList(incomeForecastId);
+    }
+
+
+    @ResponseBody
+    @RequestMapping(value = "/saveIncomeForecastItem", method = {RequestMethod.POST}, name = "修改")
+    public HttpResult saveIncomeForecastItem(MdIncomeForecastItem mdIncomeForecastItem) {
+        try {
+            mdIncomeService.saveIncomeForecastItem(mdIncomeForecastItem);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/deleteForecastIncomeItem", name = "删除有效毛收入明细", method = RequestMethod.POST)
+    public HttpResult deleteForecastIncomeItem(@RequestParam(value = "id") Integer id) {
+        try {
+            mdIncomeService.deleteForecastIncomeItem(id);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+
+
+    @ResponseBody
+    @RequestMapping(value = "/forecastIncomeItemQuoteData", name = "引用数据", method = RequestMethod.POST)
+    public HttpResult deleteForecast(Integer incomeId,Integer formType, Integer incomeForecastId) {
+        try {
+            mdIncomeService.forecastIncomeItemQuoteData(incomeId,formType,incomeForecastId);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+
 
 }
