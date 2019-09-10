@@ -293,6 +293,7 @@
                 <input type="hidden" name="type">
                 <input type="hidden" name="sectionId">
                 <input type="hidden" name="incomeTotal">
+                <input type="hidden" name="initialAmount">
                 <div class="modal-body">
                     <div class="form-group">
                         <div class="x-valid">
@@ -314,7 +315,7 @@
                         </div>
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                经营成本说明<span class="symbol required"></span>
+                                经营成本说明
                             </label>
                             <div class="col-sm-2">
                                 <input type="text" name="operatingCostRemark" placeholder="经营成本说明"
@@ -342,7 +343,7 @@
                         </div>
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                经营费用说明<span class="symbol required"></span>
+                                经营费用说明
                             </label>
                             <div class="col-sm-2">
                                 <input type="text" name="operatingExpensesRemark" placeholder="经营费用"
@@ -370,7 +371,7 @@
                         </div>
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                经营税金及附加说明<span class="symbol required"></span>
+                                经营税金及附加说明
                             </label>
                             <div class="col-sm-2">
                                 <input type="text" name="operatingTaxRemark" placeholder="经营税金及附加说明"
@@ -390,7 +391,7 @@
                         </div>
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                管理费用<span class="symbol required"></span>
+                                管理费用
                             </label>
                             <div class="col-sm-2">
                                 <input type="text" name="managementCost" placeholder="管理费用" class="form-control" readonly>
@@ -398,7 +399,7 @@
                         </div>
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                管理费用说明<span class="symbol required"></span>
+                                管理费用说明
                             </label>
                             <div class="col-sm-2">
                                 <input type="text" name="managementCostRemark" placeholder="管理费用说明"
@@ -426,7 +427,7 @@
                         </div>
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                财务费用说明<span class="symbol required"></span>
+                                财务费用说明
                             </label>
                             <div class="col-sm-2">
                                 <input type="text" name="financialCostRemark" placeholder="财务费用说明"
@@ -454,7 +455,7 @@
                         </div>
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                经营利润说明<span class="symbol required"></span>
+                                经营利润说明
                             </label>
                             <div class="col-sm-2">
                                 <input type="text" name="operatingProfitRemark" placeholder="经营利润说明"
@@ -482,30 +483,10 @@
                         </div>
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                特许权超额利润说明<span class="symbol required"></span>
+                                特许权超额利润说明
                             </label>
                             <div class="col-sm-2">
                                 <input type="text" name="excessProfitRemark" placeholder="特许权超额利润说明"
-                                       class="form-control" required="required">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                初始金额<span class="symbol required"></span>
-                            </label>
-                            <div class="col-sm-2">
-                                <input type="text" name="initialAmount" placeholder="初始金额" data-rule-number="true"
-                                       class="form-control" required="required">
-                            </div>
-                        </div>
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                初始金额说明<span class="symbol required"></span>
-                            </label>
-                            <div class="col-sm-2">
-                                <input type="text" name="initialAmountRemark" placeholder="初始金额说明"
                                        class="form-control" required="required">
                             </div>
                         </div>
@@ -978,12 +959,10 @@
         cols.push({field: 'financialCost', title: '财务费用'});
         cols.push({field: 'operatingProfit', title: '经营利润'});
         cols.push({field: 'excessProfit', title: '特许权超额利润'});
-        cols.push({field: 'initialAmount', title: '初始金额'});
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
                 str += '<a class="btn btn-xs btn-success tooltips" data-placement="top" data-original-title="编辑" onclick="selfSupport.editForecastCost(' + index + ');" ><i class="fa fa-edit fa-white"></i></a>';
-                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="查看" onclick="selfSupport.viewForecastYear(' + row.id + ');" ><i class="fa fa-search fa-white"></i></a>';
                 str += '</div>';
                 return str;
             }

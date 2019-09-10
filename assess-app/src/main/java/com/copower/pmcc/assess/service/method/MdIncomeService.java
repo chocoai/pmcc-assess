@@ -42,10 +42,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.text.Collator;
+import java.util.*;
 
 /**
  * Created by kings on 2018-7-23.
@@ -281,7 +279,7 @@ public class MdIncomeService {
                 BigDecimal engageCost = new BigDecimal("0");
                 //增值税及其附加
                 BigDecimal operatingCost = new BigDecimal("0");
-                 //管理费用
+                //管理费用
                 BigDecimal managerCost = new BigDecimal("0");
                 //财务费用
                 BigDecimal financeCost = new BigDecimal("0");
@@ -289,41 +287,41 @@ public class MdIncomeService {
                     for (MdIncomeHistory mdIncomeHistory : currhistoryList) {
                         total = total.add(mdIncomeHistory.getAmountMoney());
                         //经营成本 = 主成本业务+其他成本业务
-                        if (type==1){
+                        if (type == 1) {
                             //主经营成本
                             BaseDataDic mainManagerCost = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_INCOME_HISTORY_TYPE_MAIN_MANAGER_COST);
                             //其他经营成本
                             BaseDataDic otherManagerCost = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_INCOME_HISTORY_TYPE_OTHER_MANAGER_COST);
-                            if(mainManagerCost.getId().equals(mdIncomeHistory.getAccountingSubject())||otherManagerCost.getId().equals(mdIncomeHistory.getAccountingSubject())){
-                                if(mdIncomeHistory.getAmountMoney()!=null) {
+                            if (mainManagerCost.getId().equals(mdIncomeHistory.getAccountingSubject()) || otherManagerCost.getId().equals(mdIncomeHistory.getAccountingSubject())) {
+                                if (mdIncomeHistory.getAmountMoney() != null) {
                                     manageCost = manageCost.add(mdIncomeHistory.getAmountMoney());
                                 }
                             }
                             //经营费用
                             BaseDataDic engageCostDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_INCOME_HISTORY_TYPE_ENGAGE_COST);
-                            if(engageCostDic.getId().equals(mdIncomeHistory.getAccountingSubject())){
-                                if(mdIncomeHistory.getAmountMoney()!=null) {
+                            if (engageCostDic.getId().equals(mdIncomeHistory.getAccountingSubject())) {
+                                if (mdIncomeHistory.getAmountMoney() != null) {
                                     engageCost = engageCost.add(mdIncomeHistory.getAmountMoney());
                                 }
                             }
                             //增值税及其附加
                             BaseDataDic operatingCostDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_INCOME_HISTORY_TYPE_OPERATING_COST);
-                            if(operatingCostDic.getId().equals(mdIncomeHistory.getAccountingSubject())){
-                                if(mdIncomeHistory.getAmountMoney()!=null) {
+                            if (operatingCostDic.getId().equals(mdIncomeHistory.getAccountingSubject())) {
+                                if (mdIncomeHistory.getAmountMoney() != null) {
                                     operatingCost = operatingCost.add(mdIncomeHistory.getAmountMoney());
                                 }
                             }
                             //管理费用
                             BaseDataDic managerCostDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_INCOME_HISTORY_TYPE_MANAGER_COST);
-                            if(managerCostDic.getId().equals(mdIncomeHistory.getAccountingSubject())){
-                                if(mdIncomeHistory.getAmountMoney()!=null) {
+                            if (managerCostDic.getId().equals(mdIncomeHistory.getAccountingSubject())) {
+                                if (mdIncomeHistory.getAmountMoney() != null) {
                                     managerCost = managerCost.add(mdIncomeHistory.getAmountMoney());
                                 }
                             }
                             //财务费用
                             BaseDataDic financeCostDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_INCOME_HISTORY_TYPE_FINANCE_COST);
-                            if(financeCostDic.getId().equals(mdIncomeHistory.getAccountingSubject())){
-                                if(mdIncomeHistory.getAmountMoney()!=null) {
+                            if (financeCostDic.getId().equals(mdIncomeHistory.getAccountingSubject())) {
+                                if (mdIncomeHistory.getAmountMoney() != null) {
                                     financeCost = financeCost.add(mdIncomeHistory.getAmountMoney());
                                 }
                             }
@@ -331,33 +329,34 @@ public class MdIncomeService {
                     }
                 }
                 analyseList.get(i).setAmountMoney(total);
-                if(type==1){
-                    //找到当年度的预测收入
-                    MdIncomeForecastYear mdIncomeForecastYear = new MdIncomeForecastYear();
-                    mdIncomeForecastYear.setIncomeId(incomeId);
-                    List<MdIncomeForecastYear> forecastYearList = mdIncomeForecastYearDao.getForecastYearList(mdIncomeForecastYear);
-                    if(CollectionUtils.isNotEmpty(forecastYearList)){
-                        for (MdIncomeForecastYear yearItem: forecastYearList) {
-                            if(StringUtils.equals(String.valueOf(analyseList.get(i).getYear()),String.valueOf(DateUtils.getYear(yearItem.getBeginDate())))){
+                if (type == 1) {
+                    //找到当年度的收入
+                    MdIncomeForecastAnalyse incomeForecastAnalyse = new MdIncomeForecastAnalyse();
+                    incomeForecastAnalyse.setIncomeId(incomeId);
+                    incomeForecastAnalyse.setType(0);
+                    List<MdIncomeForecastAnalyse> incomeList = mdIncomeForecastAnalyseDao.getForecastAnalyseList(incomeForecastAnalyse);
+                    if (CollectionUtils.isNotEmpty(incomeList)) {
+                        for (MdIncomeForecastAnalyse incomeItem : incomeList) {
+                            if (StringUtils.equals(String.valueOf(analyseList.get(i).getYear()), String.valueOf(incomeItem.getYear()))) {
                                 //成本比率=成本金额（主营、其他）/年收入
-                                analyseList.get(i).setCostRatio(manageCost.divide(yearItem.getAmount(),2,BigDecimal.ROUND_HALF_UP));
+                                analyseList.get(i).setCostRatio(manageCost.divide(incomeItem.getAmountMoney(), 2, BigDecimal.ROUND_HALF_UP));
                                 //经营利润=年收入-经营成本-经营费用-经营税金及附加-管理费用-财务费用
-                                BigDecimal earnedProfit = yearItem.getAmount().subtract(total);
+                                BigDecimal earnedProfit = incomeItem.getAmountMoney().subtract(total);
                                 analyseList.get(i).setEarnedProfit(earnedProfit);
                                 //经营利润比率=经营利润/年收入
-                                BigDecimal earnedProfitRatio = earnedProfit.divide(yearItem.getAmount(), 2, BigDecimal.ROUND_HALF_UP);
+                                BigDecimal earnedProfitRatio = earnedProfit.divide(incomeItem.getAmountMoney(), 2, BigDecimal.ROUND_HALF_UP);
                                 analyseList.get(i).setEarnedProfitRatio(earnedProfitRatio);
                                 //经营费用比率
-                                BigDecimal operatingExpensesRatio = engageCost.divide(yearItem.getAmount(), 2, BigDecimal.ROUND_HALF_UP);
+                                BigDecimal operatingExpensesRatio = engageCost.divide(incomeItem.getAmountMoney(), 2, BigDecimal.ROUND_HALF_UP);
                                 analyseList.get(i).setOperatingExpensesRatio(operatingExpensesRatio);
                                 //增值税及其附加比率
-                                BigDecimal operatingTaxRatio = operatingCost.divide(yearItem.getAmount(), 2, BigDecimal.ROUND_HALF_UP);
+                                BigDecimal operatingTaxRatio = operatingCost.divide(incomeItem.getAmountMoney(), 2, BigDecimal.ROUND_HALF_UP);
                                 analyseList.get(i).setOperatingTaxRatio(operatingTaxRatio);
                                 //管理费用比率
-                                BigDecimal managementCostRatio = managerCost.divide(yearItem.getAmount(), 2, BigDecimal.ROUND_HALF_UP);
+                                BigDecimal managementCostRatio = managerCost.divide(incomeItem.getAmountMoney(), 2, BigDecimal.ROUND_HALF_UP);
                                 analyseList.get(i).setManagementCostRatio(managementCostRatio);
                                 //财务费用比率
-                                BigDecimal financialCostRatio = financeCost.divide(yearItem.getAmount(), 2, BigDecimal.ROUND_HALF_UP);
+                                BigDecimal financialCostRatio = financeCost.divide(incomeItem.getAmountMoney(), 2, BigDecimal.ROUND_HALF_UP);
                                 analyseList.get(i).setFinancialCostRatio(financialCostRatio);
                             }
                         }
@@ -533,8 +532,7 @@ public class MdIncomeService {
                 MdIncomeForecastAnalyseItem item = analyseItems.get(i);
                 MdIncomeForecastAnalyseItemVo mdIncomeForecastAnalyseItemVo = new MdIncomeForecastAnalyseItemVo();
                 if (item.getForecastAnalyseId().equals(forecastAnalyseId)) {
-                    mdIncomeForecastAnalyseItemVo.setAmountMoney(analyseItems.get(i).getAmountMoney());
-                    mdIncomeForecastAnalyseItemVo.setNumber(analyseItems.get(i).getNumber());
+                    BeanUtils.copyProperties(analyseItems.get(i), mdIncomeForecastAnalyseItemVo);
                     if (analyseItems.get(i).getAccountingSubject() != null && analyseItems.get(i).getAccountingSubject() > 0) {
                         String accountingSubjectName = baseDataDicService.getNameById(analyseItems.get(i).getAccountingSubject());
                         mdIncomeForecastAnalyseItemVo.setName(String.format("%s/%s/%s", accountingSubjectName, analyseItems.get(i).getFirstLevelNumber(), analyseItems.get(i).getSecondLevelNumber()));
@@ -563,6 +561,7 @@ public class MdIncomeService {
                 }
             }
         }
+        this.orderVos(vos);
         return vos;
     }
 
@@ -659,8 +658,7 @@ public class MdIncomeService {
                 MdIncomeForecastAnalyseItem item = analyseItems.get(i);
                 MdIncomeForecastAnalyseItemVo mdIncomeForecastAnalyseItemVo = new MdIncomeForecastAnalyseItemVo();
                 if (item.getForecastAnalyseId().equals(forecastAnalyseId)) {
-                    mdIncomeForecastAnalyseItemVo.setAmountMoney(analyseItems.get(i).getAmountMoney());
-                    mdIncomeForecastAnalyseItemVo.setNumber(analyseItems.get(i).getNumber());
+                    BeanUtils.copyProperties(analyseItems.get(i), mdIncomeForecastAnalyseItemVo);
                     if (analyseItems.get(i).getAccountingSubject() != null && analyseItems.get(i).getAccountingSubject() > 0) {
                         String accountingSubjectName = baseDataDicService.getNameById(analyseItems.get(i).getAccountingSubject());
                         mdIncomeForecastAnalyseItemVo.setName(String.format("%s/%s", accountingSubjectName, analyseItems.get(i).getFirstLevelNumber()));
@@ -689,9 +687,9 @@ public class MdIncomeService {
                 }
             }
         }
+        this.orderVos(vos);
         return vos;
     }
-
 
     //写入数量趋势和金额趋势(会计科目)
     public List<MdIncomeForecastAnalyseItemVo> getAccountingSubjectTrend(Integer forecastAnalyseId) {
@@ -777,8 +775,7 @@ public class MdIncomeService {
                 MdIncomeForecastAnalyseItem item = analyseItems.get(i);
                 MdIncomeForecastAnalyseItemVo mdIncomeForecastAnalyseItemVo = new MdIncomeForecastAnalyseItemVo();
                 if (item.getForecastAnalyseId().equals(forecastAnalyseId)) {
-                    mdIncomeForecastAnalyseItemVo.setAmountMoney(analyseItems.get(i).getAmountMoney());
-                    mdIncomeForecastAnalyseItemVo.setNumber(analyseItems.get(i).getNumber());
+                    BeanUtils.copyProperties(analyseItems.get(i), mdIncomeForecastAnalyseItemVo);
                     if (analyseItems.get(i).getAccountingSubject() != null && analyseItems.get(i).getAccountingSubject() > 0) {
                         String accountingSubjectName = baseDataDicService.getNameById(analyseItems.get(i).getAccountingSubject());
                         mdIncomeForecastAnalyseItemVo.setName(String.format("%s", accountingSubjectName));
@@ -807,7 +804,30 @@ public class MdIncomeService {
                 }
             }
         }
+        this.orderVos(vos);
         return vos;
+    }
+
+    //根据会计科目/一级编号/二级编号排序
+    public void orderVos(List<MdIncomeForecastAnalyseItemVo> vos) {
+        Comparator<MdIncomeForecastAnalyseItemVo> comparator1 = Comparator.comparing(MdIncomeForecastAnalyseItemVo::getAccountingSubject);
+        Comparator<MdIncomeForecastAnalyseItemVo> comparator2 = new Comparator<MdIncomeForecastAnalyseItemVo>() {
+            @Override
+            public int compare(MdIncomeForecastAnalyseItemVo o1, MdIncomeForecastAnalyseItemVo o2) {
+                //获取中文环境
+                Comparator<Object> com = Collator.getInstance(Locale.CHINA);
+                return com.compare(o1.getFirstLevelNumber(), o2.getFirstLevelNumber());
+            }
+        };
+        Comparator<MdIncomeForecastAnalyseItemVo> comparator3 = new Comparator<MdIncomeForecastAnalyseItemVo>() {
+            @Override
+            public int compare(MdIncomeForecastAnalyseItemVo o1, MdIncomeForecastAnalyseItemVo o2) {
+                //获取中文环境
+                Comparator<Object> com = Collator.getInstance(Locale.CHINA);
+                return com.compare(o1.getSecondLevelNumber(), o2.getSecondLevelNumber());
+            }
+        };
+        Collections.sort(vos, comparator1.thenComparing(comparator2.thenComparing(comparator3)));
     }
 
     /**
@@ -949,11 +969,15 @@ public class MdIncomeService {
                         }
                         mdIncomeHistory.setFirstLevelNumber(PoiUtils.getCellValue(row.getCell(4)));
                         mdIncomeHistory.setSecondLevelNumber(PoiUtils.getCellValue(row.getCell(5)));
-                        mdIncomeHistory.setUnit(PoiUtils.getCellValue(row.getCell(6)));
+                        if (StringUtils.isNotEmpty(PoiUtils.getCellValue(row.getCell(6)))) {
+                            mdIncomeHistory.setUnit(PoiUtils.getCellValue(row.getCell(6)));
+                        }
                         if (StringUtils.isNotEmpty(PoiUtils.getCellValue(row.getCell(7)))) {
                             mdIncomeHistory.setUnitPrice(new BigDecimal(PoiUtils.getCellValue(row.getCell(7))));
                         }
-                        mdIncomeHistory.setNumber(Integer.valueOf(PoiUtils.getCellValue(row.getCell(8))));
+                        if (StringUtils.isNotEmpty(PoiUtils.getCellValue(row.getCell(8)))) {
+                            mdIncomeHistory.setNumber(Integer.valueOf(PoiUtils.getCellValue(row.getCell(8))));
+                        }
                         if (StringUtils.isNotEmpty(PoiUtils.getCellValue(row.getCell(9)))) {
                             mdIncomeHistory.setAmountMoney(new BigDecimal(PoiUtils.getCellValue(row.getCell(9))));
                         }
@@ -1070,6 +1094,10 @@ public class MdIncomeService {
 
     public void updateForecast(MdIncomeForecast mdIncomeForecast) {
         mdIncomeForecastDao.updateForecast(mdIncomeForecast);
+        MdIncomeDateSection dateSectionById = mdIncomeDateSectionDao.getDateSectionById(mdIncomeForecast.getSectionId());
+        dateSectionById.setCostTotal(mdIncomeForecast.getInitialAmount());
+        dateSectionById.setOperatingProfit(mdIncomeForecast.getOperatingProfit());
+        mdIncomeDateSectionDao.updateDateSection(dateSectionById);
     }
 
     /**
@@ -1096,18 +1124,18 @@ public class MdIncomeService {
             mdIncomeForecastYear.setEndDate(DateUtils.addYear(incomeDateSection.getBeginDate(), i));
             //明细
             List<MdIncomeForecastItem> mdIncomeForecastItems = getIncomeForecastItemListByMasterId(forecast.getId());
-            if(i==1){
+            if (i == 1) {
                 BigDecimal totalAmount = new BigDecimal("0");//总金额
-                for (MdIncomeForecastItem item: mdIncomeForecastItems) {
+                for (MdIncomeForecastItem item : mdIncomeForecastItems) {
                     totalAmount = totalAmount.add(item.getAmountMoney());
                 }
                 mdIncomeForecastYear.setAmount(totalAmount);
-            }else{
+            } else {
                 BigDecimal totalAmount = new BigDecimal("0");//总金额
-                for (MdIncomeForecastItem item: mdIncomeForecastItems) {
-                    totalAmount = totalAmount.add(item.getAmountMoney().multiply(new BigDecimal("1").add(item.getRateIncrease()).pow(i-1)));
+                for (MdIncomeForecastItem item : mdIncomeForecastItems) {
+                    totalAmount = totalAmount.add(item.getAmountMoney().multiply(new BigDecimal("1").add(item.getRateIncrease()).pow(i - 1)));
                 }
-                mdIncomeForecastYear.setAmount(totalAmount.setScale(2,BigDecimal.ROUND_HALF_UP));
+                mdIncomeForecastYear.setAmount(totalAmount.setScale(2, BigDecimal.ROUND_HALF_UP));
             }
             mdIncomeForecastYear.setCreator(commonService.thisUserAccount());
             mdIncomeForecastYearDao.addForecastYear(mdIncomeForecastYear);
@@ -1117,7 +1145,7 @@ public class MdIncomeService {
         if (forecast.getType().equals(MethodDataTypeEnum.INCOME.getId())) {
             List<MdIncomeForecastYear> list = getIncomeForecastYearListByMasterId(incomeForecastId);
             BigDecimal totalAmount = new BigDecimal("0");//总金额
-            for (MdIncomeForecastYear yearItem: list) {
+            for (MdIncomeForecastYear yearItem : list) {
                 totalAmount = totalAmount.add(yearItem.getAmount());
             }
             incomeDateSection.setIncomeTotal(totalAmount);
@@ -1612,16 +1640,16 @@ public class MdIncomeService {
      * @param incomeId
      * @param formType
      */
-    public void forecastIncomeItemQuoteData(Integer incomeId,Integer formType, Integer incomeForecastId) {
+    public void forecastIncomeItemQuoteData(Integer incomeId, Integer formType, Integer incomeForecastId) {
         MdIncomeForecastAnalyse forecastAnalyse = new MdIncomeForecastAnalyse();
         forecastAnalyse.setIncomeId(incomeId);
         forecastAnalyse.setType(0);
         forecastAnalyse.setFormType(formType);
         List<MdIncomeForecastAnalyse> analyseList = mdIncomeForecastAnalyseDao.getForecastAnalyseList(forecastAnalyse);
-        if(CollectionUtils.isNotEmpty(analyseList)) {
+        if (CollectionUtils.isNotEmpty(analyseList)) {
             Integer forecastAnalyseId = analyseList.get(analyseList.size() - 1).getId();
             List<MdIncomeForecastAnalyseItem> forecastAnalyseItemList = getForecastAnalyseItemListByMasterId(forecastAnalyseId);
-            for (MdIncomeForecastAnalyseItem analyseItem: forecastAnalyseItemList) {
+            for (MdIncomeForecastAnalyseItem analyseItem : forecastAnalyseItemList) {
                 MdIncomeForecastItem incomeForecastItem = new MdIncomeForecastItem();
                 BeanUtils.copyProperties(analyseItem, incomeForecastItem);
                 incomeForecastItem.setIncomeForecastId(incomeForecastId);
@@ -1632,21 +1660,21 @@ public class MdIncomeService {
     }
 
 
-    public List<MdIncomeForecastAnalyseItem> getForecastAnalyseItemListByMasterId(Integer forecastAnalyseId){
+    public List<MdIncomeForecastAnalyseItem> getForecastAnalyseItemListByMasterId(Integer forecastAnalyseId) {
         MdIncomeForecastAnalyseItem item = new MdIncomeForecastAnalyseItem();
         item.setForecastAnalyseId(forecastAnalyseId);
         List<MdIncomeForecastAnalyseItem> forecastAnalyseItemList = mdIncomeForecastAnalyseItemDao.getForecastAnalyseItemList(item);
         return forecastAnalyseItemList;
     }
 
-    public List<MdIncomeForecastItem> getIncomeForecastItemListByMasterId(Integer forecastId){
+    public List<MdIncomeForecastItem> getIncomeForecastItemListByMasterId(Integer forecastId) {
         MdIncomeForecastItem item = new MdIncomeForecastItem();
         item.setIncomeForecastId(forecastId);
         List<MdIncomeForecastItem> forecastItemList = mdIncomeForecastItemDao.getIncomeForecastItemList(item);
         return forecastItemList;
     }
 
-    public List<MdIncomeForecastYear> getIncomeForecastYearListByMasterId(Integer forecastId){
+    public List<MdIncomeForecastYear> getIncomeForecastYearListByMasterId(Integer forecastId) {
         MdIncomeForecastYear where = new MdIncomeForecastYear();
         where.setForecastId(forecastId);
         List<MdIncomeForecastYear> forecastYearList = mdIncomeForecastYearDao.getForecastYearList(where);

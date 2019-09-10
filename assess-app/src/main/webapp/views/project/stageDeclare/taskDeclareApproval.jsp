@@ -72,15 +72,15 @@
                                 </div>
                             </div>
                             <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">完成时限</label>
-                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <label class="form-control"><fmt:formatDate value='${declare.dateLimit}'
-                                                                                pattern='yyyy-MM-dd'/></label>
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1   control-label">
+                                    估价委托书
+                                </label>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3  ">
+                                    <div id="_project_proxy"></div>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
-
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                     评估面积
@@ -98,19 +98,15 @@
                                     <label class="form-control">${declare.assessMoney}</label>
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-group">
                             <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1   control-label">
-                                    估价委托书
-                                </label>
-                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3  ">
-                                    <div id="_project_proxy"></div>
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">评估基准日</label>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                    <label class="form-control"><fmt:formatDate value='${declare.dateLimit}'
+                                                                                pattern='yyyy-MM-dd'/></label>
                                 </div>
                             </div>
-
-
-
+                        </div>
+                        <div class="form-group">
 
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
