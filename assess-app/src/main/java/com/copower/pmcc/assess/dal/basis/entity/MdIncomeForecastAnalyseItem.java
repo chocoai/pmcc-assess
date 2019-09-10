@@ -12,6 +12,8 @@ public class MdIncomeForecastAnalyseItem {
 
     private Integer formType;
 
+    private Integer type;
+
     private Integer year;
 
     private String sourceType;
@@ -62,6 +64,14 @@ public class MdIncomeForecastAnalyseItem {
 
     public void setFormType(Integer formType) {
         this.formType = formType;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
     }
 
     public Integer getYear() {

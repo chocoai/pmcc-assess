@@ -655,6 +655,66 @@ public class MdIncomeForecastYearExample {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
             return (Criteria) this;
         }
+
+        public Criteria andIncomeIdIsNull() {
+            addCriterion("income_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncomeIdIsNotNull() {
+            addCriterion("income_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncomeIdEqualTo(Integer value) {
+            addCriterion("income_id =", value, "incomeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncomeIdNotEqualTo(Integer value) {
+            addCriterion("income_id <>", value, "incomeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncomeIdGreaterThan(Integer value) {
+            addCriterion("income_id >", value, "incomeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncomeIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("income_id >=", value, "incomeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncomeIdLessThan(Integer value) {
+            addCriterion("income_id <", value, "incomeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncomeIdLessThanOrEqualTo(Integer value) {
+            addCriterion("income_id <=", value, "incomeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncomeIdIn(List<Integer> values) {
+            addCriterion("income_id in", values, "incomeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncomeIdNotIn(List<Integer> values) {
+            addCriterion("income_id not in", values, "incomeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncomeIdBetween(Integer value1, Integer value2) {
+            addCriterion("income_id between", value1, value2, "incomeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncomeIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("income_id not between", value1, value2, "incomeId");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

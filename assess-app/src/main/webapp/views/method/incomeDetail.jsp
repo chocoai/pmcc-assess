@@ -202,13 +202,13 @@
                     selfSupportForecast.loadHistoryList(0);
                     selfSupportForecast.loadHistoryList(1);
                     selfSupportForecast.loadForecastAnalyseList(0);
-                    selfSupportForecast.loadForecastAnalyseList(1);
+                    selfSupportForecast.loadCostForecastAnalyseList(1);
                     break;
                 case "1":
                     forecastRestaurant.loadHistoryList(0);
                     forecastRestaurant.loadHistoryList(1);
                     forecastRestaurant.loadForecastAnalyseList(0);
-                    forecastRestaurant.loadForecastAnalyseList(1);
+                    forecastRestaurant.loadCostForecastAnalyseList(1);
                     break;
             }
             selfSupport.loadForecastList(0);
@@ -243,14 +243,14 @@
             selfSupportForecast.loadHistoryList(0);
             selfSupportForecast.loadHistoryList(1);
             selfSupportForecast.loadForecastAnalyseList(0);
-            selfSupportForecast.loadForecastAnalyseList(1);
+            selfSupportForecast.loadCostForecastAnalyseList(1);
         } else if (value == 1) {
             $("#ref_forecastIncome,#ref_forecastCost").hide();
             $("#ref_forecastRestaurantIncome,#ref_forecastRestaurantCost").show();
             forecastRestaurant.loadHistoryList(0);
             forecastRestaurant.loadHistoryList(1);
             forecastRestaurant.loadForecastAnalyseList(0);
-            forecastRestaurant.loadForecastAnalyseList(1);
+            forecastRestaurant.loadCostForecastAnalyseList(1);
         }
     }
     //获取经营方式

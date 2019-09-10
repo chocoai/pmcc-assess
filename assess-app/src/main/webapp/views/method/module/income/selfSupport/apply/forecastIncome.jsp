@@ -27,7 +27,7 @@
                 年度
             </label>
             <div class="col-sm-1">
-               <input type="text" name="year" class="form-control">
+                <input type="text" name="year" class="form-control">
             </div>
             <label class="col-sm-1 control-label">
                 二级编号
@@ -636,9 +636,65 @@
         cols.push({field: 'number', title: '数量'});
         cols.push({field: 'moneyTrend', title: '金额趋势'});
         cols.push({field: 'quantitativeTrend', title: '数量趋势'});
+        cols.push({field: 'unitPriceTrend', title: '单价趋势'});
         $("#analyseItemList").bootstrapTable('destroy');
         TableInit("analyseItemList", "${pageContext.request.contextPath}/income/getForecastAnalyseItemList", cols, {
             forecastAnalyseId: id,
+        }, {
+            showColumns: false,
+            showRefresh: false,
+            pagination: false,
+            search: false,
+            onLoadSuccess: function (data) {
+                $(".tooltips").tooltip();
+            }
+        });
+    }
+
+
+    //加载历史数据分析
+    selfSupportForecast.loadCostForecastAnalyseList = function (type) {
+        var cols = [];
+        cols.push({field: 'year', title: '年份'});
+        cols.push({field: 'sourceType', title: '类型'});
+        cols.push({field: 'amountMoney', title: '成本金额'});
+        cols.push({
+            field: 'costRatio', title: '成本比率', formatter: function (value, row, index) {
+                return AssessCommon.pointToPercent(value);
+            }
+        });
+        cols.push({field: 'earnedProfit', title: '经营利润'});
+        cols.push({
+            field: 'earnedProfitRatio', title: '经营利润比率', formatter: function (value, row, index) {
+                return AssessCommon.pointToPercent(value);
+            }
+        });
+        cols.push({
+            field: 'operatingExpensesRatio', title: '经营费用比率', formatter: function (value, row, index) {
+                return AssessCommon.pointToPercent(value);
+            }
+        });
+        cols.push({
+            field: 'operatingTaxRatio', title: '税金及附加比率', formatter: function (value, row, index) {
+                return AssessCommon.pointToPercent(value);
+            }
+        });
+        cols.push({
+            field: 'managementCostRatio', title: '管理费用比率', formatter: function (value, row, index) {
+                return AssessCommon.pointToPercent(value);
+            }
+        });
+        cols.push({
+            field: 'financialCostRatio', title: '财务费用比率', formatter: function (value, row, index) {
+                return AssessCommon.pointToPercent(value);
+            }
+        });
+        $("#tb_forecast_cost_analyse_list").bootstrapTable('destroy');
+        TableInit("tb_forecast_cost_analyse_list", "${pageContext.request.contextPath}/income/getForecastAnalyseList", cols, {
+            type: type,
+            formType: incomeIndex.getFormType(),
+            bisParticipateIn: true,
+            incomeId: incomeIndex.getInComeId()
         }, {
             showColumns: false,
             showRefresh: false,

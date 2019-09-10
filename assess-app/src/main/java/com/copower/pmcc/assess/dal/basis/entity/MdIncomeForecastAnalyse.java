@@ -30,6 +30,20 @@ public class MdIncomeForecastAnalyse {
 
     private String sourceType;
 
+    private BigDecimal costRatio;
+
+    private BigDecimal earnedProfitRatio;
+
+    private BigDecimal earnedProfit;
+
+    private BigDecimal operatingExpensesRatio;
+
+    private BigDecimal operatingTaxRatio;
+
+    private BigDecimal managementCostRatio;
+
+    private BigDecimal financialCostRatio;
+
     public Integer getId() {
         return id;
     }
@@ -132,5 +146,61 @@ public class MdIncomeForecastAnalyse {
 
     public void setSourceType(String sourceType) {
         this.sourceType = sourceType == null ? null : sourceType.trim();
+    }
+
+    public BigDecimal getCostRatio() {
+        return costRatio;
+    }
+
+    public void setCostRatio(BigDecimal costRatio) {
+        this.costRatio = costRatio;
+    }
+
+    public BigDecimal getEarnedProfitRatio() {
+        return earnedProfitRatio;
+    }
+
+    public void setEarnedProfitRatio(BigDecimal earnedProfitRatio) {
+        this.earnedProfitRatio = earnedProfitRatio;
+    }
+
+    public BigDecimal getEarnedProfit() {
+        return earnedProfit;
+    }
+
+    public void setEarnedProfit(BigDecimal earnedProfit) {
+        this.earnedProfit = earnedProfit;
+    }
+
+    public BigDecimal getOperatingExpensesRatio() {
+        return operatingExpensesRatio;
+    }
+
+    public void setOperatingExpensesRatio(BigDecimal operatingExpensesRatio) {
+        this.operatingExpensesRatio = operatingExpensesRatio;
+    }
+
+    public BigDecimal getOperatingTaxRatio() {
+        return operatingTaxRatio;
+    }
+
+    public void setOperatingTaxRatio(BigDecimal operatingTaxRatio) {
+        this.operatingTaxRatio = operatingTaxRatio;
+    }
+
+    public BigDecimal getManagementCostRatio() {
+        return managementCostRatio;
+    }
+
+    public void setManagementCostRatio(BigDecimal managementCostRatio) {
+        this.managementCostRatio = managementCostRatio;
+    }
+
+    public BigDecimal getFinancialCostRatio() {
+        return financialCostRatio;
+    }
+
+    public void setFinancialCostRatio(BigDecimal financialCostRatio) {
+        this.financialCostRatio = financialCostRatio;
     }
 }

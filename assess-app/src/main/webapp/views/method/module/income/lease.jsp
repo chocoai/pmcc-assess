@@ -822,7 +822,7 @@
         if (!rentalGrowthRateExplain.val()) {
             rentalGrowthRateExplain.val(rentalGrowthRateExplain.attr('data-template'));
         }
-        $('#modal_lease_parameter').modal();Rate
+        $('#modal_lease_parameter').modal();
     }
 
     //保存参数信息

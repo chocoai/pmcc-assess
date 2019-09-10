@@ -22,6 +22,8 @@ public class MdIncomeForecastYear {
 
     private Date gmtModified;
 
+    private Integer incomeId;
+
     public Integer getId() {
         return id;
     }
@@ -92,5 +94,13 @@ public class MdIncomeForecastYear {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public Integer getIncomeId() {
+        return incomeId;
+    }
+
+    public void setIncomeId(Integer incomeId) {
+        this.incomeId = incomeId;
     }
 }

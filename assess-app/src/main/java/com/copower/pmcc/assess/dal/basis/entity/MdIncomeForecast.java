@@ -54,6 +54,20 @@ public class MdIncomeForecast {
 
     private Date gmtModified;
 
+    private BigDecimal operatingCostRatio;
+
+    private BigDecimal operatingExpensesRatio;
+
+    private BigDecimal operatingTaxRatio;
+
+    private BigDecimal managementCostRatio;
+
+    private BigDecimal financialCostRatio;
+
+    private BigDecimal operatingProfitRatio;
+
+    private BigDecimal excessProfitRatio;
+
     public Integer getId() {
         return id;
     }
@@ -252,5 +266,61 @@ public class MdIncomeForecast {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public BigDecimal getOperatingCostRatio() {
+        return operatingCostRatio;
+    }
+
+    public void setOperatingCostRatio(BigDecimal operatingCostRatio) {
+        this.operatingCostRatio = operatingCostRatio;
+    }
+
+    public BigDecimal getOperatingExpensesRatio() {
+        return operatingExpensesRatio;
+    }
+
+    public void setOperatingExpensesRatio(BigDecimal operatingExpensesRatio) {
+        this.operatingExpensesRatio = operatingExpensesRatio;
+    }
+
+    public BigDecimal getOperatingTaxRatio() {
+        return operatingTaxRatio;
+    }
+
+    public void setOperatingTaxRatio(BigDecimal operatingTaxRatio) {
+        this.operatingTaxRatio = operatingTaxRatio;
+    }
+
+    public BigDecimal getManagementCostRatio() {
+        return managementCostRatio;
+    }
+
+    public void setManagementCostRatio(BigDecimal managementCostRatio) {
+        this.managementCostRatio = managementCostRatio;
+    }
+
+    public BigDecimal getFinancialCostRatio() {
+        return financialCostRatio;
+    }
+
+    public void setFinancialCostRatio(BigDecimal financialCostRatio) {
+        this.financialCostRatio = financialCostRatio;
+    }
+
+    public BigDecimal getOperatingProfitRatio() {
+        return operatingProfitRatio;
+    }
+
+    public void setOperatingProfitRatio(BigDecimal operatingProfitRatio) {
+        this.operatingProfitRatio = operatingProfitRatio;
+    }
+
+    public BigDecimal getExcessProfitRatio() {
+        return excessProfitRatio;
+    }
+
+    public void setExcessProfitRatio(BigDecimal excessProfitRatio) {
+        this.excessProfitRatio = excessProfitRatio;
     }
 }

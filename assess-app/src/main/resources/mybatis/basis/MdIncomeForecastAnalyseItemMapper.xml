@@ -6,6 +6,7 @@
     <result column="income_id" property="incomeId" jdbcType="INTEGER" />
     <result column="forecast_analyse_id" property="forecastAnalyseId" jdbcType="INTEGER" />
     <result column="form_type" property="formType" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
     <result column="year" property="year" jdbcType="INTEGER" />
     <result column="source_type" property="sourceType" jdbcType="VARCHAR" />
     <result column="accounting_subject" property="accountingSubject" jdbcType="INTEGER" />
@@ -76,7 +77,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, income_id, forecast_analyse_id, form_type, year, source_type, accounting_subject, 
+    id, income_id, forecast_analyse_id, form_type, type, year, source_type, accounting_subject, 
     first_level_number, second_level_number, amount_money, number, creator, gmt_created, 
     gmt_modified
   </sql>
@@ -115,15 +116,15 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_md_income_forecast_analyse_item (income_id, forecast_analyse_id, form_type, 
-      year, source_type, accounting_subject, 
-      first_level_number, second_level_number, amount_money, 
-      number, creator, gmt_created, 
-      gmt_modified)
+      type, year, source_type, 
+      accounting_subject, first_level_number, second_level_number, 
+      amount_money, number, creator, 
+      gmt_created, gmt_modified)
     values (#{incomeId,jdbcType=INTEGER}, #{forecastAnalyseId,jdbcType=INTEGER}, #{formType,jdbcType=INTEGER}, 
-      #{year,jdbcType=INTEGER}, #{sourceType,jdbcType=VARCHAR}, #{accountingSubject,jdbcType=INTEGER}, 
-      #{firstLevelNumber,jdbcType=VARCHAR}, #{secondLevelNumber,jdbcType=VARCHAR}, #{amountMoney,jdbcType=DECIMAL}, 
-      #{number,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{type,jdbcType=INTEGER}, #{year,jdbcType=INTEGER}, #{sourceType,jdbcType=VARCHAR}, 
+      #{accountingSubject,jdbcType=INTEGER}, #{firstLevelNumber,jdbcType=VARCHAR}, #{secondLevelNumber,jdbcType=VARCHAR}, 
+      #{amountMoney,jdbcType=DECIMAL}, #{number,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeForecastAnalyseItem" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -139,6 +140,9 @@
       </if>
       <if test="formType != null" >
         form_type,
+      </if>
+      <if test="type != null" >
+        type,
       </if>
       <if test="year != null" >
         year,
@@ -180,6 +184,9 @@
       </if>
       <if test="formType != null" >
         #{formType,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
       </if>
       <if test="year != null" >
         #{year,jdbcType=INTEGER},
@@ -234,6 +241,9 @@
       <if test="record.formType != null" >
         form_type = #{record.formType,jdbcType=INTEGER},
       </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=INTEGER},
+      </if>
       <if test="record.year != null" >
         year = #{record.year,jdbcType=INTEGER},
       </if>
@@ -275,6 +285,7 @@
       income_id = #{record.incomeId,jdbcType=INTEGER},
       forecast_analyse_id = #{record.forecastAnalyseId,jdbcType=INTEGER},
       form_type = #{record.formType,jdbcType=INTEGER},
+      type = #{record.type,jdbcType=INTEGER},
       year = #{record.year,jdbcType=INTEGER},
       source_type = #{record.sourceType,jdbcType=VARCHAR},
       accounting_subject = #{record.accountingSubject,jdbcType=INTEGER},
@@ -300,6 +311,9 @@
       </if>
       <if test="formType != null" >
         form_type = #{formType,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
       </if>
       <if test="year != null" >
         year = #{year,jdbcType=INTEGER},
@@ -339,6 +353,7 @@
     set income_id = #{incomeId,jdbcType=INTEGER},
       forecast_analyse_id = #{forecastAnalyseId,jdbcType=INTEGER},
       form_type = #{formType,jdbcType=INTEGER},
+      type = #{type,jdbcType=INTEGER},
       year = #{year,jdbcType=INTEGER},
       source_type = #{sourceType,jdbcType=VARCHAR},
       accounting_subject = #{accountingSubject,jdbcType=INTEGER},

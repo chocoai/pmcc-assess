@@ -425,7 +425,7 @@
                 return str;
             }
         });
-
+        $("#" + forecastRestaurant.getHistoryListId(type)).bootstrapTable('destroy');
         var queryParam = {
             type: type,
             formType: incomeIndex.getFormType(),
@@ -454,7 +454,7 @@
                             $.each(result.data, function (i, item) {
                                 html += '<li><a href="javascript://" onclick="forecastRestaurant.historyToForecast(' + type + ',' + item + ');">' + item + '</a></li>';
                             })
-                            var elementId = type == 0 ? "ulForecastRestaurantAnalyseIncome" : "ulForecastRestaurantAnalyseCost";
+                            var elementId = type == 0 ? "ulForecastAnalyseIncome" : "ulForecastAnalyseCost";
                             $("#" + elementId).empty().html(html);
                         }
                     })
@@ -679,6 +679,60 @@
         $("#analyseItemList").bootstrapTable('destroy');
         TableInit("analyseItemList", "${pageContext.request.contextPath}/income/getForecastAnalyseItemList", cols, {
             forecastAnalyseId: id,
+        }, {
+            showColumns: false,
+            showRefresh: false,
+            pagination: false,
+            search: false,
+            onLoadSuccess: function (data) {
+                $(".tooltips").tooltip();
+            }
+        });
+    }
+
+    //加载历史数据分析
+    forecastRestaurant.loadCostForecastAnalyseList = function (type) {
+        var cols = [];
+        cols.push({field: 'year', title: '年份'});
+        cols.push({field: 'sourceType', title: '类型'});
+        cols.push({field: 'amountMoney', title: '成本金额'});
+        cols.push({
+            field: 'costRatio', title: '成本比率', formatter: function (value, row, index) {
+                return AssessCommon.pointToPercent(value);
+            }
+        });
+        cols.push({field: 'earnedProfit', title: '经营利润'});
+        cols.push({
+            field: 'earnedProfitRatio', title: '经营利润比率', formatter: function (value, row, index) {
+                return AssessCommon.pointToPercent(value);
+            }
+        });
+        cols.push({
+            field: 'operatingExpensesRatio', title: '经营费用比率', formatter: function (value, row, index) {
+                return AssessCommon.pointToPercent(value);
+            }
+        });
+        cols.push({
+            field: 'operatingTaxRatio', title: '税金及附加比率', formatter: function (value, row, index) {
+                return AssessCommon.pointToPercent(value);
+            }
+        });
+        cols.push({
+            field: 'managementCostRatio', title: '管理费用比率', formatter: function (value, row, index) {
+                return AssessCommon.pointToPercent(value);
+            }
+        });
+        cols.push({
+            field: 'financialCostRatio', title: '财务费用比率', formatter: function (value, row, index) {
+                return AssessCommon.pointToPercent(value);
+            }
+        });
+        $("#tb_forecast_restaurant_cost_analyse_list").bootstrapTable('destroy');
+        TableInit("tb_forecast_restaurant_cost_analyse_list", "${pageContext.request.contextPath}/income/getForecastAnalyseList", cols, {
+            type: type,
+            formType: incomeIndex.getFormType(),
+            bisParticipateIn: true,
+            incomeId: incomeIndex.getInComeId()
         }, {
             showColumns: false,
             showRefresh: false,

@@ -15,6 +15,13 @@
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
     <result column="source_type" property="sourceType" jdbcType="VARCHAR" />
+    <result column="cost_ratio" property="costRatio" jdbcType="DECIMAL" />
+    <result column="earned_profit_ratio" property="earnedProfitRatio" jdbcType="DECIMAL" />
+    <result column="earned_profit" property="earnedProfit" jdbcType="DECIMAL" />
+    <result column="operating_expenses_ratio" property="operatingExpensesRatio" jdbcType="DECIMAL" />
+    <result column="operating_tax_ratio" property="operatingTaxRatio" jdbcType="DECIMAL" />
+    <result column="management_cost_ratio" property="managementCostRatio" jdbcType="DECIMAL" />
+    <result column="financial_cost_ratio" property="financialCostRatio" jdbcType="DECIMAL" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -76,7 +83,9 @@
   </sql>
   <sql id="Base_Column_List" >
     id, income_id, type, form_type, year, amount_money, quantitative_trend, univalent_trend, 
-    bis_participate_in, creator, gmt_created, gmt_modified, source_type
+    bis_participate_in, creator, gmt_created, gmt_modified, source_type, cost_ratio, 
+    earned_profit_ratio, earned_profit, operating_expenses_ratio, operating_tax_ratio, 
+    management_cost_ratio, financial_cost_ratio
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeForecastAnalyseExample" >
     select
@@ -115,12 +124,18 @@
     insert into tb_md_income_forecast_analyse (income_id, type, form_type, 
       year, amount_money, quantitative_trend, 
       univalent_trend, bis_participate_in, creator, 
-      gmt_created, gmt_modified, source_type
+      gmt_created, gmt_modified, source_type, 
+      cost_ratio, earned_profit_ratio, earned_profit, 
+      operating_expenses_ratio, operating_tax_ratio, 
+      management_cost_ratio, financial_cost_ratio
       )
     values (#{incomeId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{formType,jdbcType=INTEGER}, 
       #{year,jdbcType=INTEGER}, #{amountMoney,jdbcType=DECIMAL}, #{quantitativeTrend,jdbcType=DECIMAL}, 
       #{univalentTrend,jdbcType=DECIMAL}, #{bisParticipateIn,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{sourceType,jdbcType=VARCHAR}
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{sourceType,jdbcType=VARCHAR}, 
+      #{costRatio,jdbcType=DECIMAL}, #{earnedProfitRatio,jdbcType=DECIMAL}, #{earnedProfit,jdbcType=DECIMAL}, 
+      #{operatingExpensesRatio,jdbcType=DECIMAL}, #{operatingTaxRatio,jdbcType=DECIMAL}, 
+      #{managementCostRatio,jdbcType=DECIMAL}, #{financialCostRatio,jdbcType=DECIMAL}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeForecastAnalyse" >
@@ -165,6 +180,27 @@
       <if test="sourceType != null" >
         source_type,
       </if>
+      <if test="costRatio != null" >
+        cost_ratio,
+      </if>
+      <if test="earnedProfitRatio != null" >
+        earned_profit_ratio,
+      </if>
+      <if test="earnedProfit != null" >
+        earned_profit,
+      </if>
+      <if test="operatingExpensesRatio != null" >
+        operating_expenses_ratio,
+      </if>
+      <if test="operatingTaxRatio != null" >
+        operating_tax_ratio,
+      </if>
+      <if test="managementCostRatio != null" >
+        management_cost_ratio,
+      </if>
+      <if test="financialCostRatio != null" >
+        financial_cost_ratio,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="incomeId != null" >
@@ -202,6 +238,27 @@
       </if>
       <if test="sourceType != null" >
         #{sourceType,jdbcType=VARCHAR},
+      </if>
+      <if test="costRatio != null" >
+        #{costRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="earnedProfitRatio != null" >
+        #{earnedProfitRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="earnedProfit != null" >
+        #{earnedProfit,jdbcType=DECIMAL},
+      </if>
+      <if test="operatingExpensesRatio != null" >
+        #{operatingExpensesRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="operatingTaxRatio != null" >
+        #{operatingTaxRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="managementCostRatio != null" >
+        #{managementCostRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="financialCostRatio != null" >
+        #{financialCostRatio,jdbcType=DECIMAL},
       </if>
     </trim>
   </insert>
@@ -253,6 +310,27 @@
       <if test="record.sourceType != null" >
         source_type = #{record.sourceType,jdbcType=VARCHAR},
       </if>
+      <if test="record.costRatio != null" >
+        cost_ratio = #{record.costRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="record.earnedProfitRatio != null" >
+        earned_profit_ratio = #{record.earnedProfitRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="record.earnedProfit != null" >
+        earned_profit = #{record.earnedProfit,jdbcType=DECIMAL},
+      </if>
+      <if test="record.operatingExpensesRatio != null" >
+        operating_expenses_ratio = #{record.operatingExpensesRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="record.operatingTaxRatio != null" >
+        operating_tax_ratio = #{record.operatingTaxRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="record.managementCostRatio != null" >
+        management_cost_ratio = #{record.managementCostRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="record.financialCostRatio != null" >
+        financial_cost_ratio = #{record.financialCostRatio,jdbcType=DECIMAL},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -272,7 +350,14 @@
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      source_type = #{record.sourceType,jdbcType=VARCHAR}
+      source_type = #{record.sourceType,jdbcType=VARCHAR},
+      cost_ratio = #{record.costRatio,jdbcType=DECIMAL},
+      earned_profit_ratio = #{record.earnedProfitRatio,jdbcType=DECIMAL},
+      earned_profit = #{record.earnedProfit,jdbcType=DECIMAL},
+      operating_expenses_ratio = #{record.operatingExpensesRatio,jdbcType=DECIMAL},
+      operating_tax_ratio = #{record.operatingTaxRatio,jdbcType=DECIMAL},
+      management_cost_ratio = #{record.managementCostRatio,jdbcType=DECIMAL},
+      financial_cost_ratio = #{record.financialCostRatio,jdbcType=DECIMAL}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -316,6 +401,27 @@
       <if test="sourceType != null" >
         source_type = #{sourceType,jdbcType=VARCHAR},
       </if>
+      <if test="costRatio != null" >
+        cost_ratio = #{costRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="earnedProfitRatio != null" >
+        earned_profit_ratio = #{earnedProfitRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="earnedProfit != null" >
+        earned_profit = #{earnedProfit,jdbcType=DECIMAL},
+      </if>
+      <if test="operatingExpensesRatio != null" >
+        operating_expenses_ratio = #{operatingExpensesRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="operatingTaxRatio != null" >
+        operating_tax_ratio = #{operatingTaxRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="managementCostRatio != null" >
+        management_cost_ratio = #{managementCostRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="financialCostRatio != null" >
+        financial_cost_ratio = #{financialCostRatio,jdbcType=DECIMAL},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -332,7 +438,14 @@
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      source_type = #{sourceType,jdbcType=VARCHAR}
+      source_type = #{sourceType,jdbcType=VARCHAR},
+      cost_ratio = #{costRatio,jdbcType=DECIMAL},
+      earned_profit_ratio = #{earnedProfitRatio,jdbcType=DECIMAL},
+      earned_profit = #{earnedProfit,jdbcType=DECIMAL},
+      operating_expenses_ratio = #{operatingExpensesRatio,jdbcType=DECIMAL},
+      operating_tax_ratio = #{operatingTaxRatio,jdbcType=DECIMAL},
+      management_cost_ratio = #{managementCostRatio,jdbcType=DECIMAL},
+      financial_cost_ratio = #{financialCostRatio,jdbcType=DECIMAL}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

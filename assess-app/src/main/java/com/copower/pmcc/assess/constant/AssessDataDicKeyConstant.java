@@ -105,6 +105,12 @@ public class AssessDataDicKeyConstant {
      */
     public static final String MD_INCOME_HISTORY_TYPE_INCOME = "md.income.history.type.income"; //收入类
     public static final String MD_INCOME_HISTORY_TYPE_COST = "md.income.history.type.cost"; //成本类
+    public static final String MD_INCOME_HISTORY_TYPE_MAIN_MANAGER_COST = "md.income.history.type.main.manager.cost"; //主经营成本
+    public static final String MD_INCOME_HISTORY_TYPE_OTHER_MANAGER_COST = "md.income.history.type.other.manager.cost"; //其他经营成本
+    public static final String MD_INCOME_HISTORY_TYPE_ENGAGE_COST = "md.income.history.type.engage.cost"; //经营费用
+    public static final String MD_INCOME_HISTORY_TYPE_OPERATING_COST = "md.income.history.type.operating.cost"; //增值税及其附加
+    public static final String MD_INCOME_HISTORY_TYPE_MANAGER_COST = "md.income.history.type.manager.cost"; //管理费用
+    public static final String MD_INCOME_HISTORY_TYPE_FINANCE_COST = "md.income.history.type.finance.cost"; //财务费用
     public static final String MD_INCOME_RENTAL_GROWTH_RATE_EXPLAIN_EDITABLE = "md.income.rental_growth_rate_explain.editable"; //租金增长率描述（可调整）
     public static final String MD_INCOME_RENTAL_GROWTH_RATE_EXPLAIN_READONLY = "md.income.rental_growth_rate_explain.readonly"; //租金增长率描述（固定
     public static final String MD_INCOME_TRANSACTION_TAXE_FEE_RATIO_EDITABLE = "md.income.transaction_taxe_fee_ratio.editable"; //其它相关费用说明（可调整）
