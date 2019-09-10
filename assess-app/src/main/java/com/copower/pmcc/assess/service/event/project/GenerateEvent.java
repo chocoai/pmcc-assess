@@ -49,13 +49,14 @@ public class GenerateEvent extends BaseProcessEvent {
     public void processFinishExecute(ProcessExecution processExecution) throws Exception {
         super.processFinishExecute(processExecution);
         ProcessStatusEnum processStatusEnum = ProcessStatusEnum.create(processExecution.getProcessStatus().getValue());
+        if (processStatusEnum == null) return;
         switch (processStatusEnum) {
             case FINISH:
                 ProjectPlan projectPlan = projectPlanService.getProjectplanByProcessInsId(processExecution.getProcessInstanceId());
+                if (projectPlan == null) return;
                 projectPlan.setProjectStatus(ProjectStatusEnum.FINISH.getKey());
                 projectPlan.setFinishDate(new Date());
                 projectPlanService.updateProjectPlan(projectPlan);
-
                 updateDocNumberToErp(projectPlan.getProjectId());
                 break;
         }
@@ -74,7 +75,7 @@ public class GenerateEvent extends BaseProcessEvent {
         SysProjectDto sysProjectDto = erpRpcProjectService.getProjectInfoByProjectId(publicProjectId, applicationConstant.getAppKey());
         if (sysProjectDto != null && sysProjectDto.getId() > 0) {
             sysProjectDto.setStatus(ProjectStatusEnum.FINISH.getKey());
-            List<String> reportNumberList = projectNumberRecordService.getReportNumberList(projectId,null);
+            List<String> reportNumberList = projectNumberRecordService.getReportNumberList(projectId, null);
             if (CollectionUtils.isEmpty(reportNumberList)) return;
             String s = StringUtils.join(reportNumberList, ',');
             sysProjectDto.setProjectDocumentNumber(s);
