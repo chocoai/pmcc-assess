@@ -32,23 +32,6 @@
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    委托单位<span class="symbol required"></span>
-                                </label>
-                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <c:choose>
-                                        <c:when test="${empty declare.client}">
-                                            <input name="client" class="form-control" placeholder="委托单位"
-                                                   required value='${consignor}'/>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <input name="client" class="form-control" placeholder="委托单位"
-                                                   required value='${declare.client}'/>
-                                        </c:otherwise>
-                                    </c:choose>
-                                </div>
-                            </div>
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                     估价委托书
                                 </label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3  ">
@@ -56,30 +39,39 @@
                                     <div id="_project_proxy"></div>
                                 </div>
                             </div>
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                    前次评估报告
+                                </label>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3  ">
+                                    <input id="assess_report_enclosure" name="assess_report_enclosure" type="file" multiple="false">
+                                    <div id="_assess_report_enclosure"></div>
+                                </div>
+                            </div>
                         </div>
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    评估面积
+                                    前次评估面积
                                 </label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <input name="assessArea" class="form-control" placeholder="评估面积" value='${declare.assessArea}'/>
+                                    <input name="assessArea" class="form-control" placeholder="前次评估面积" value='${declare.assessArea}'/>
                                 </div>
                             </div>
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    评估金额
+                                    前次评估金额
                                 </label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <input name="assessMoney" class="form-control" placeholder="评估金额" value='${declare.assessMoney}'/>
+                                    <input name="assessMoney" class="form-control" placeholder="前次评估金额" value='${declare.assessMoney}'/>
                                 </div>
                             </div>
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    评估基准日
+                                    前次评估基准日
                                 </label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <input required="required" placeholder="完成时限" id="dateLimit"
+                                    <input required="required" placeholder="前次评估基准日" id="dateLimit"
                                            name="dateLimit" data-date-format="yyyy-mm-dd"
                                            class="form-control date-picker dbdate" readonly="readonly"
                                            value="<fmt:formatDate value='${declare.dateLimit}' pattern='yyyy-MM-dd'/>">
@@ -89,11 +81,19 @@
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    评估报告
+                                    前次委托单位
                                 </label>
-                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3  ">
-                                    <input id="assess_report_enclosure" name="assess_report_enclosure" type="file" multiple="false">
-                                    <div id="_assess_report_enclosure"></div>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                    <c:choose>
+                                        <c:when test="${empty declare.client}">
+                                            <input name="client" class="form-control" placeholder="前次委托单位"
+                                                   required value='${consignor}'/>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <input name="client" class="form-control" placeholder="前次委托单位"
+                                                   required value='${declare.client}'/>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </div>
                             </div>
                         </div>

@@ -454,7 +454,7 @@
                             $.each(result.data, function (i, item) {
                                 html += '<li><a href="javascript://" onclick="forecastRestaurant.historyToForecast(' + type + ',' + item + ');">' + item + '</a></li>';
                             })
-                            var elementId = type == 0 ? "ulForecastAnalyseIncome" : "ulForecastAnalyseCost";
+                            var elementId = type == 0 ? "ulForecastRestaurantAnalyseIncome" : "ulForecastRestaurantAnalyseCost";
                             $("#" + elementId).empty().html(html);
                         }
                     })

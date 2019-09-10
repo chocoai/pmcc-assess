@@ -32,9 +32,10 @@ public class ProjectTaskEvent extends BaseProcessEvent {
         super.processFinishExecute(processExecution);
         String processInstanceId = processExecution.getProcessInstanceId();
         ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsByProcessInsId(processInstanceId);
-        if (projectPlanDetails != null && projectPlanDetails.getBisRestart() == Boolean.FALSE) {//非重启任务
+        if (projectPlanDetails == null) return;
+        if (projectPlanDetails.getBisRestart() == Boolean.FALSE) {//非重启任务
             projectPlanService.enterNextStage(projectPlanDetails.getPlanId()); //结束当前阶段进入下一阶段
-        }else{
+        } else {
             projectPlanDetails.setBisRestart(false);
             projectPlanDetails.setStatus(ProcessStatusEnum.FINISH.getValue());
             projectPlanDetailsDao.updateProjectPlanDetails(projectPlanDetails);
