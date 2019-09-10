@@ -211,8 +211,8 @@
                     forecastRestaurant.loadCostForecastAnalyseList(1);
                     break;
             }
-            selfSupport.loadForecastList(0);
-            selfSupport.loadForecastList(1);
+            selfSupport.loadForecastIncomeList();
+            selfSupport.loadForecastCostList();
             selfSupport.loadCalculationResult();
         } else if ($(_this).val() == 1) {
             $("#self_support_info,#group_FormType").hide();
