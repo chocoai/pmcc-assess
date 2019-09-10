@@ -949,11 +949,15 @@ public class MdIncomeService {
                         }
                         mdIncomeHistory.setFirstLevelNumber(PoiUtils.getCellValue(row.getCell(4)));
                         mdIncomeHistory.setSecondLevelNumber(PoiUtils.getCellValue(row.getCell(5)));
-                        mdIncomeHistory.setUnit(PoiUtils.getCellValue(row.getCell(6)));
+                        if (StringUtils.isNotEmpty(PoiUtils.getCellValue(row.getCell(6)))) {
+                            mdIncomeHistory.setUnit(PoiUtils.getCellValue(row.getCell(6)));
+                        }
                         if (StringUtils.isNotEmpty(PoiUtils.getCellValue(row.getCell(7)))) {
                             mdIncomeHistory.setUnitPrice(new BigDecimal(PoiUtils.getCellValue(row.getCell(7))));
                         }
-                        mdIncomeHistory.setNumber(Integer.valueOf(PoiUtils.getCellValue(row.getCell(8))));
+                        if (StringUtils.isNotEmpty(PoiUtils.getCellValue(row.getCell(8)))) {
+                            mdIncomeHistory.setNumber(Integer.valueOf(PoiUtils.getCellValue(row.getCell(8))));
+                        }
                         if (StringUtils.isNotEmpty(PoiUtils.getCellValue(row.getCell(9)))) {
                             mdIncomeHistory.setAmountMoney(new BigDecimal(PoiUtils.getCellValue(row.getCell(9))));
                         }
