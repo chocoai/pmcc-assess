@@ -13,6 +13,7 @@
                   style="display: block;margin-bottom: 0px;padding-bottom: 0px;">
                 <input type="hidden" name="id">
                 <input type="hidden" name="planDetailsId">
+                <input type="hidden" name="centerId">
                 <div class="modal-body">
                     <div class="form-group">
                         <div class="x-valid">
@@ -146,8 +147,8 @@
                         <thead>
                         <tr>
                             <th>规划项目名称</th>
-                            <th>规划建筑面积</th>
-                            <th>可出售面积</th>
+                            <th>规划建筑面积 ㎡</th>
+                            <th>可出售面积 ㎡</th>
                             <th>个数</th>
                             <th>备注</th>
                         </tr>
@@ -238,11 +239,11 @@
         </td>
         <td><input type="text" value="{plannedBuildingArea}"
                    onblur="economicIndicators.autoSummary()"
-                   name="plannedBuildingArea" data-rule-number="true" style="width: 100px;">㎡
+                   name="plannedBuildingArea" data-rule-number="true" style="width: 100px;">
         </td>
         <td><input type="text" value="{saleableArea}"
                    onblur="economicIndicators.autoSummary()"
-                   name="saleableArea" data-rule-number="true" style="width: 100px;">㎡
+                   name="saleableArea" data-rule-number="true" style="width: 100px;">
         </td>
         <td><input type="text" value="{number}"
                    onblur="economicIndicators.autoSummary()"
@@ -267,6 +268,7 @@
         $("#frmEconomicIndicators").clearAll();
         $("#frmEconomicIndicatorsItem").find('[data-role=child]').remove();
         $("#frmEconomicIndicators").find('[name=planDetailsId]').val(defaluts.planDetailsId);
+        $("#frmEconomicIndicators").find('[name=centerId]').val(defaluts.centerId);
         //回显数据
         if(defaluts.economicId){
             $.ajax({
@@ -282,14 +284,22 @@
                         if(result.data.economicIndicatorsItemList){
                             $.each(result.data.economicIndicatorsItemList,function (i,item) {
                                 var dataKey=item.dataKey;
-                                var parentTr = $("#frmEconomicIndicatorsItem").find('[data-key=' + dataKey + '][data-role="parent"]')
-                                var html = $("#economicIndicatorsItemTemplate").html();
+                                var parentTr = $("#frmEconomicIndicatorsItem").find('[data-key=' + dataKey + '][data-role="parent"]');
+                                var childTarget = $("#economicIndicatorsItemTemplate") ;
+                                var html = childTarget.html();
                                 html = html.replace(/{dataKey}/g, dataKey).replace(/{parentIndex}/g, parentTr.attr('data-parent-index'));
                                 html = html.replace(/{currentIndex}/g, $("#frmEconomicIndicatorsItem").find('[data-key=' + dataKey + ']').length);
                                 html = html.replace(/{name}/g,AssessCommon.toString(item.name)).replace(/{plannedBuildingArea}/g, AssessCommon.toString(item.plannedBuildingArea));
                                 html = html.replace(/{saleableArea}/g, AssessCommon.toString(item.saleableArea)).replace(/{number}/g, AssessCommon.toString(item.number)).replace(/{remark}/g, AssessCommon.toString(item.remark));
                                 $("#frmEconomicIndicatorsItem").find('[data-key=' + dataKey + ']').last().after(html);
-                            })
+                                if (defaluts.attribute){
+                                    $("#frmEconomicIndicatorsItem").find('[data-key=' + dataKey + ']').each(function (i,n) {
+                                        var target = $(n) ;
+                                        target.find("td").first().find("a").remove() ;
+                                    });
+                                    $("#frmEconomicIndicatorsItem").find('[data-key=' + dataKey + ']').last().find("input").attr(defaluts.attribute) ;
+                                }
+                            });
                             economicIndicators.autoSummary();
                         }
                     } else {
@@ -298,12 +308,35 @@
                 }
             })
         }
+        if (defaluts.attribute){
+            $("#frmEconomicIndicators").find("input").attr(defaluts.attribute) ;
+        }
+        if (defaluts.showDelHtml){
+            var html = defaluts.showDelHtml.replace(/{frm}/g, 'frmEconomicIndicators') ;
+            html = html.replace(/{box}/g, 'modalEconomicIndicators') ;
+            $("#modalEconomicIndicators").find(".modal-footer").find(".btn-warning").remove() ;
+            $("#modalEconomicIndicators").find(".modal-footer").find("button").eq(1).before(html) ;
+        }
+        if (defaluts.targetCallback){
+            defaluts.targetCallback() ;
+        }
+        if (defaluts.attribute){
+            $("#frmEconomicIndicatorsItem").find("tr").each(function (i,n) {
+                var target = $(n) ;
+                target.find("td").first().find("a").remove() ;
+            });
+            $("#modalEconomicIndicators").find(".modal-footer").find(".btn-primary").remove() ;
+        }
         $("#modalEconomicIndicators").modal();
-    }
+    };
 
     //保存
     economicIndicators.save = function () {
+        if (!$("#frmEconomicIndicators").valid()) {
+            return false;
+        }
         var data = {};
+
         data.economicIndicators = formSerializeArray($("#frmEconomicIndicators"));
         data.economicIndicatorsItemList = [];
         $("#frmEconomicIndicatorsItem").find('tr[data-role="child"]').each(function () {
@@ -329,6 +362,9 @@
                     if (economicIndicators.saveCallback)
                         economicIndicators.saveCallback(result.data.id);
                     $("#modalEconomicIndicators").modal('hide');
+                    if (data.economicIndicatorsItemList.length >= 1){
+
+                    }
                 } else {
                     Alert(result.errmsg);
                 }
@@ -362,13 +398,19 @@
                     saleableAreaTotal += parseFloat(saleableArea);
                 if (AssessCommon.isNumber(number))
                     numberTotal += parseFloat(number);
-            })
+            });
+
+            $(this).find('[name=plannedBuildingArea]').text('');
+            $(this).find('[name=saleableArea]').text('');
+            $(this).find('[name=number]').text('');
+
             if (plannedBuildingAreaTotal > 0)
                 $(this).find('[name=plannedBuildingArea]').text(plannedBuildingAreaTotal);
             if (saleableAreaTotal > 0)
                 $(this).find('[name=saleableArea]').text(saleableAreaTotal);
             if (numberTotal > 0)
                 $(this).find('[name=number]').text(numberTotal);
+
         })
     }
 </script> 

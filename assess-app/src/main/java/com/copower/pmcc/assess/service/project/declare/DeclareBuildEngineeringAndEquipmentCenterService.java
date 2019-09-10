@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.service.project.declare;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareBuildEngineeringAndEquipmentCenterDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
+import com.copower.pmcc.assess.service.method.MdEconomicIndicatorsService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.google.common.base.Objects;
@@ -43,6 +44,8 @@ public class DeclareBuildEngineeringAndEquipmentCenterService {
     private DeclareRealtyHouseCertService declareRealtyHouseCertService;
     @Autowired
     private TaskExecutor executor;
+    @Autowired
+    private MdEconomicIndicatorsService mdEconomicIndicatorsService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -219,6 +222,16 @@ public class DeclareBuildEngineeringAndEquipmentCenterService {
     private boolean deleteByType2(List<String> types, DeclareBuildEngineeringAndEquipmentCenter equipmentCenter) {
         if (CollectionUtils.isEmpty(types) || equipmentCenter == null) {
             return false;
+        }
+        //新经济指标2
+        if (types.contains(MdEconomicIndicators.class.getSimpleName())) {
+            if (restrain(equipmentCenter.getPlanDetailsId(), equipmentCenter.getType(), equipmentCenter.getIndicatorId())) {
+                executor.execute(() -> {
+//                    mdEconomicIndicatorsService.deleteById(equipmentCenter.getIndicatorId());
+                    equipmentCenter.setIndicatorId(0);
+                    saveAndUpdateDeclareBuildEngineeringAndEquipmentCenter(equipmentCenter);
+                });
+            }
         }
         //新经济指标
         if (types.contains(DeclareEconomicIndicatorsHead.class.getSimpleName())) {
