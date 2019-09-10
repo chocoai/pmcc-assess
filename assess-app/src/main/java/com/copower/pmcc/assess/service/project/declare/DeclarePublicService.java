@@ -151,7 +151,7 @@ public class DeclarePublicService {
         if (StringUtils.isNotBlank(cerName)) {
             oo.setCertName(cerName);
             String location = StringUtils.substringBetween(cerName, ")", "不动产");
-            if(StringUtils.isEmpty(location)){
+            if (StringUtils.isEmpty(location)) {
                 location = StringUtils.substringBetween(cerName, "）", "不动产");
             }
             oo.setLocation(location);
@@ -693,7 +693,8 @@ public class DeclarePublicService {
             String certName = PoiUtils.getCellValue(row.getCell(3));
             declareRealtyHouseCert.setCertName(certName);
             //编号
-            declareRealtyHouseCert.setNumber(generateCommonMethod.getNumber(declareRealtyHouseCert.getCertName()));
+            String numberStr = StringUtils.substringAfterLast(declareRealtyHouseCert.getCertName(), "第");
+            declareRealtyHouseCert.setNumber(generateCommonMethod.getNumber(numberStr));
             for (BaseDataDic type : types) {
                 if (certName.contains(type.getName())) {
                     declareRealtyHouseCert.setType(type.getId().toString());
@@ -701,7 +702,6 @@ public class DeclarePublicService {
                     break;
                 } else {
                     declareRealtyHouseCert.setLocation(StringUtils.substringBetween(declareRealtyHouseCert.getCertName(), "", "第"));
-                    break;
                 }
             }
         } else {
