@@ -71,7 +71,7 @@
                                     前次评估基准日
                                 </label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <input required="required" placeholder="前次评估基准日" id="dateLimit"
+                                    <input placeholder="前次评估基准日" id="dateLimit"
                                            name="dateLimit" data-date-format="yyyy-mm-dd"
                                            class="form-control date-picker dbdate" readonly="readonly"
                                            value="<fmt:formatDate value='${declare.dateLimit}' pattern='yyyy-MM-dd'/>">
@@ -86,12 +86,10 @@
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                     <c:choose>
                                         <c:when test="${empty declare.client}">
-                                            <input name="client" class="form-control" placeholder="前次委托单位"
-                                                   required value='${consignor}'/>
+                                            <input name="client" class="form-control" placeholder="前次委托单位" value='${consignor}'/>
                                         </c:when>
                                         <c:otherwise>
-                                            <input name="client" class="form-control" placeholder="前次委托单位"
-                                                   required value='${declare.client}'/>
+                                            <input name="client" class="form-control" placeholder="前次委托单位" value='${declare.client}'/>
                                         </c:otherwise>
                                     </c:choose>
                                 </div>
