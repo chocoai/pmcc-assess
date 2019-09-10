@@ -56,8 +56,7 @@ public class MdMarketCostService {
     private DeclareRecordService declareRecordService;
     @Autowired
     private DeclareBuildEngineeringAndEquipmentCenterService declareBuildEngineeringAndEquipmentCenterService;
-    @Autowired
-    private MdDevelopmentInfrastructureChildrenService mdDevelopmentInfrastructureChildrenService;
+
 
 
     public MdCost initExplore(SchemeJudgeObject schemeJudgeObject) {
@@ -162,17 +161,7 @@ public class MdMarketCostService {
         mdCostConstruction.setJsonContent(formData);
         saveMdCostConstructionAndUpdate(mdCostConstruction);
 
-        MdDevelopmentInfrastructureChildren infrastructureChildren = new MdDevelopmentInfrastructureChildren();
-        infrastructureChildren.setPlanDetailsId(mdCost.getPlanDetailsId());
-        infrastructureChildren.setPid(0);
-        infrastructureChildren.setCreator(commonService.thisUserAccount());
-        List<MdDevelopmentInfrastructureChildren> childrenList = mdDevelopmentInfrastructureChildrenService.getMdDevelopmentInfrastructureChildrenListByExample(infrastructureChildren);
-        if (CollectionUtils.isNotEmpty(childrenList)) {
-            for (MdDevelopmentInfrastructureChildren po : childrenList) {
-                po.setPid(mdCostConstruction.getId());
-                mdDevelopmentInfrastructureChildrenService.saveMdDevelopmentInfrastructureChildren(po);
-            }
-        }
+
 
     }
 

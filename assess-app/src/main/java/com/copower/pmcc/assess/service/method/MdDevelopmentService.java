@@ -47,8 +47,6 @@ public class MdDevelopmentService {
     @Autowired
     private MdArchitecturalObjService mdArchitecturalObjService;
     @Autowired
-    private MdDevelopmentInfrastructureChildrenService mdDevelopmentInfrastructureChildrenService;
-    @Autowired
     private TaskExecutor taskExecutor;
     @Autowired
     private SchemeJudgeObjectService schemeJudgeObjectService;
@@ -451,17 +449,7 @@ public class MdDevelopmentService {
 
         this.saveAndUpdateMdDevelopment(mdDevelopment);
 
-        MdDevelopmentInfrastructureChildren infrastructureChildren = new MdDevelopmentInfrastructureChildren();
-        infrastructureChildren.setPlanDetailsId(projectPlanDetails.getId());
-        infrastructureChildren.setPid(0);
-        infrastructureChildren.setCreator(commonService.thisUserAccount());
-        List<MdDevelopmentInfrastructureChildren> childrenList = mdDevelopmentInfrastructureChildrenService.getMdDevelopmentInfrastructureChildrenListByExample(infrastructureChildren);
-        if (CollectionUtils.isNotEmpty(childrenList)) {
-            for (MdDevelopmentInfrastructureChildren po : childrenList) {
-                po.setPid(mdDevelopment.getId());
-                mdDevelopmentInfrastructureChildrenService.saveMdDevelopmentInfrastructureChildren(po);
-            }
-        }
+
     }
 
     public void saveAndUpdateMdDevelopment(MdDevelopment oo) {

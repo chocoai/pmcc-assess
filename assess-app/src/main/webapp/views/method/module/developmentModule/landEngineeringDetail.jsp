@@ -730,9 +730,8 @@
         var cols = [];
         cols.push({field: 'name', title: '名称'});
         cols.push({field: 'number', title: '金额'});
-        cols.push({field: 'tax', title: '税费'});
         $("#landMdDevelopmentInfrastructureChildrenTable").bootstrapTable('destroy');
-        TableInit('landMdDevelopmentInfrastructureChildrenTable', "${pageContext.request.contextPath}/mdDevelopmentInfrastructureChildren/getBootstrapTableVo?pid=${mdDevelopment.id}&planDetailsId=${mdDevelopment.planDetailsId}", cols, {}, {
+        TableInit('landMdDevelopmentInfrastructureChildrenTable', "${pageContext.request.contextPath}/mdDevelopmentInfrastructureChildren/getBootstrapTableVo?pid=${mdDevelopment.id}", cols, {}, {
             showColumns: true,
             showRefresh: true,
             search: false

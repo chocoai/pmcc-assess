@@ -623,7 +623,7 @@
         cols.push({field: 'name', title: '名称'});
         cols.push({field: 'number', title: '金额'});
         $("#landMdCostConstructionChildrenTable").bootstrapTable('destroy');
-        TableInit('landMdCostConstructionChildrenTable', "${pageContext.request.contextPath}/mdDevelopmentInfrastructureChildren/getBootstrapTableVo?pid=${mdCostVo.mdCostConstruction.id}&planDetailsId=${projectPlanDetails.id}", cols, {}, {
+        TableInit('landMdCostConstructionChildrenTable', "${pageContext.request.contextPath}/mdDevelopmentInfrastructureChildren/getBootstrapTableVo?pid=${mdCostVo.mdCostConstruction.id}", cols, {}, {
             showColumns: true,
             showRefresh: true,
             search: false
