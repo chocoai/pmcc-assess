@@ -293,6 +293,7 @@
                 <input type="hidden" name="type">
                 <input type="hidden" name="sectionId">
                 <input type="hidden" name="incomeTotal">
+                <input type="hidden" name="initialAmount">
                 <div class="modal-body">
                     <div class="form-group">
                         <div class="x-valid">
@@ -486,26 +487,6 @@
                             </label>
                             <div class="col-sm-2">
                                 <input type="text" name="excessProfitRemark" placeholder="特许权超额利润说明"
-                                       class="form-control" required="required">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                初始金额<span class="symbol required"></span>
-                            </label>
-                            <div class="col-sm-2">
-                                <input type="text" name="initialAmount" placeholder="初始金额" data-rule-number="true"
-                                       class="form-control" required="required">
-                            </div>
-                        </div>
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                初始金额说明
-                            </label>
-                            <div class="col-sm-2">
-                                <input type="text" name="initialAmountRemark" placeholder="初始金额说明"
                                        class="form-control" required="required">
                             </div>
                         </div>
@@ -978,7 +959,6 @@
         cols.push({field: 'financialCost', title: '财务费用'});
         cols.push({field: 'operatingProfit', title: '经营利润'});
         cols.push({field: 'excessProfit', title: '特许权超额利润'});
-        cols.push({field: 'initialAmount', title: '初始金额'});
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';

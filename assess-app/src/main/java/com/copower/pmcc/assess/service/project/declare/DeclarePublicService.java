@@ -151,6 +151,9 @@ public class DeclarePublicService {
         if (StringUtils.isNotBlank(cerName)) {
             oo.setCertName(cerName);
             String location = StringUtils.substringBetween(cerName, ")", "不动产");
+            if(StringUtils.isEmpty(location)){
+                location = StringUtils.substringBetween(cerName, "）", "不动产");
+            }
             oo.setLocation(location);
             String yearStr = StringUtils.substringBeforeLast(cerName, "不动产");
             oo.setYear(generateCommonMethod.getNumber(yearStr));
