@@ -36,26 +36,6 @@
                 </div>
             </div>
 
-            <!-- 土地证 -->
-            <%--<div class="x_panel" id="viewDeclareRealtyLandCert">--%>
-                <%--<div class="x_content">--%>
-                    <%--<div class="x_title">--%>
-                        <%--<h3>--%>
-                            <%--土地证--%>
-                        <%--</h3>--%>
-                        <%--<div class="clearfix"></div>--%>
-                    <%--</div>--%>
-                    <%--<form class="form-horizontal">--%>
-                        <%--<div class="form-group">--%>
-                            <%--<div class="x-valid">--%>
-                                <%--<table class="table table-bordered" id="tableDeclareRealtyLandCert">--%>
-                                    <%--<!-- cerare document add ajax data-->--%>
-                                <%--</table>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
-                    <%--</form>--%>
-                <%--</div>--%>
-            <%--</div>--%>
 
             <!-- 不动产证 -->
             <div class="x_panel" id="viewDeclareRealtyRealEstateCert">
@@ -173,6 +153,7 @@
 </body>
 
 <%@include file="/views/share/main_footer.jsp" %>
+<%@include file="/views/method/module/economicIndicators.jsp" %>
 <script>
 
     var declareApprovalFun = {};
@@ -284,20 +265,15 @@
             toastr.success('不合符调整后的数据约定,请联系管理员!');
             return false;
         }
-        var element1 = $("#"+declareApprovalFun.houseConfig.declareEconomicIndicatorsHead.frm).find(".panel-body") ;
-        var element2 = $("#"+declareApprovalFun.houseConfig.declareEconomicIndicatorsContent.frm).find(".panel-body") ;
-        declareCommon.appendDeclareEconomicIndicatorsApproval(element1,element2) ;
+        var attribute = {readonly:"readonly",'class':'form-control'} ;
         declareCommon.getDeclareBuildCenter(item.centerId, function (centerData) {
             if (declareCommon.isNotBlank(centerData.indicatorId)) {//关联情况
-                declareCommon.getByDeclareEconomicIndicatorsHeadId(centerData.indicatorId , function (data) {
-                    if (declareCommon.isNotBlank(data)) {
-                        declareCommon.initDeclareEconomicIndicators($("#" + declareApprovalFun.houseConfig.declareEconomicIndicatorsHead.frm) ,$("#"+declareApprovalFun.houseConfig.declareEconomicIndicatorsContent.frm), data , function () {
-                            $('#' + declareApprovalFun.houseConfig.declareEconomicIndicatorsHead.box).modal("show");
-                        }) ;
-                    } else {
-                        toastr.success('关联的经济指标数据已经被删除!');
-                    }
-                }) ;
+                economicIndicators.init({
+                    planDetailsId: declareCommon.getPlanDetailsId(),
+                    economicId: centerData.indicatorId,
+                    centerId:item.centerId,
+                    attribute:attribute
+                });
             }else {
                 toastr.success('经济指标无!');
             }
@@ -405,20 +381,15 @@
             toastr.success('不合符调整后的数据约定,请联系管理员!');
             return false;
         }
-        var element1 = $("#"+declareApprovalFun.declareRealtyRealEstateCertConfig.declareEconomicIndicatorsHead.frm).find(".panel-body") ;
-        var element2 = $("#"+declareApprovalFun.declareRealtyRealEstateCertConfig.declareEconomicIndicatorsContent.frm).find(".panel-body") ;
-        declareCommon.appendDeclareEconomicIndicatorsApproval(element1,element2) ;
+        var attribute = {readonly:"readonly",'class':'form-control'} ;
         declareCommon.getDeclareBuildCenter(item.centerId, function (centerData) {
             if (declareCommon.isNotBlank(centerData.indicatorId)) {//关联情况
-                declareCommon.getByDeclareEconomicIndicatorsHeadId(centerData.indicatorId , function (data) {
-                    if (declareCommon.isNotBlank(data)) {
-                        declareCommon.initDeclareEconomicIndicators($("#" + declareApprovalFun.declareRealtyRealEstateCertConfig.declareEconomicIndicatorsHead.frm) ,$("#"+declareApprovalFun.declareRealtyRealEstateCertConfig.declareEconomicIndicatorsContent.frm), data , function () {
-                            $('#' + declareApprovalFun.declareRealtyRealEstateCertConfig.declareEconomicIndicatorsHead.box).modal("show");
-                        }) ;
-                    } else {
-                        toastr.success('关联的经济指标数据已经被删除!');
-                    }
-                }) ;
+                economicIndicators.init({
+                    planDetailsId: declareCommon.getPlanDetailsId(),
+                    economicId: centerData.indicatorId,
+                    centerId:item.centerId,
+                    attribute:attribute
+                });
             }else {
                 toastr.success('经济指标无!');
             }
@@ -472,53 +443,7 @@
 </script>
 </body>
 
-<!--  房产证模块 经济指标 -->
-<div id="boxDeclareEconomicIndicatorsHead" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
-     role="dialog"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">经济指标</h3>
-            </div>
-            <form id="frmDeclareEconomicIndicatorsHead" class="form-horizontal" style="display: block;margin-bottom: 0px;padding-bottom: 0px;">
-                <input type="hidden" name="id">
-                <input type="hidden" name="centerId">
-                <div class="modal-body">
-                    <div class="row">
-                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                            <div class="panel-body">
 
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </form>
-
-            <form id="frmDeclareEconomicIndicatorsContent" class="form-horizontal" style="display: block;margin-top: -4px;padding-top: -4px;">
-                <div class="modal-body">
-                    <div class="row">
-                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                            <div class="panel-body">
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </form>
-
-            <form>
-                <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn btn-default">
-                        关闭
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
 
 <!--  房产证模块 房产证信息 -->
 <div id="boxDeclareRealtyHouseCert" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
@@ -683,53 +608,7 @@
 </div>
 
 
-<!-- 不动产 经济指标  -->
-<div id="boxDeclareEconomicIndicatorsHeadRealtyRealEstate" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
-     role="dialog"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">经济指标</h3>
-            </div>
-            <form id="frmDeclareEconomicIndicatorsHeadRealtyRealEstate" class="form-horizontal" style="display: block;margin-bottom: 0px;padding-bottom: 0px;">
-                <input type="hidden" name="id">
-                <input type="hidden" name="centerId">
-                <div class="modal-body">
-                    <div class="row">
-                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                            <div class="panel-body">
 
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </form>
-
-            <form id="frmDeclareEconomicIndicatorsContentRealtyRealEstate" class="form-horizontal" style="display: block;margin-top: -4px;padding-top: -4px;">
-                <div class="modal-body">
-                    <div class="row">
-                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                            <div class="panel-body">
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </form>
-
-            <form>
-                <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn btn-default">
-                        关闭
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
 
 </html>
 

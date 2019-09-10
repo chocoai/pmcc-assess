@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * 基准地价系数修正法
+ * 经济指标
  *
  * @author noOne
  */
@@ -50,6 +50,11 @@ public class MdEconomicIndicatorsService {
             mdEconomicIndicators.setCreator(commonService.thisUserAccount());
             mdEconomicIndicatorsDao.addEconomicIndicators(mdEconomicIndicators);
         }
+    }
+
+    public void deleteById(Integer id){
+        mdEconomicIndicatorsDao.deleteEconomicIndicators(id) ;
+        mdEconomicIndicatorsItemDao.deleteItemByEconomicId(id);
     }
 
     public MdEconomicIndicators saveEconomicIndicators(MdEconomicIndicatorsApplyDto mdEconomicIndicatorsApplyDto) {

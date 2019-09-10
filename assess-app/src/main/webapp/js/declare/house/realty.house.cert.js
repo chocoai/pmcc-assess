@@ -230,57 +230,51 @@ assessCommonHouse.pasteAll = function () {
  * @param id
  */
 assessCommonHouse.showAddModelDeclareEconomicIndicators = function (id) {
-    var element1 = $("#"+assessCommonHouse.config.declareEconomicIndicatorsHead.frm).find(".panel-body") ;
-    var element2 = $("#"+assessCommonHouse.config.declareEconomicIndicatorsContent.frm).find(".panel-body") ;
-    declareCommon.appendDeclareEconomicIndicators(element1,element2) ;
     var item = $("#" + assessCommonHouse.config.table).bootstrapTable('getRowByUniqueId', id);
     if (!declareCommon.isNotBlank(item.centerId)) {
         toastr.success('不合符调整后的数据约定,请联系管理员!');
         return false;
     }
-    declareCommon.showHtmlMastInit($("#" + assessCommonHouse.config.declareEconomicIndicatorsHead.frm), function (area) {
-        declareCommon.getDeclareBuildCenter(item.centerId, function (centerData) {
-            if (centerData.indicatorId){
-                declareCommon.getByDeclareEconomicIndicatorsHeadId(centerData.indicatorId , function (data) {
-                    data.centerId = item.centerId;
-                    declareCommon.initDeclareEconomicIndicators($("#" + assessCommonHouse.config.declareEconomicIndicatorsHead.frm) , $("#"+assessCommonHouse.config.declareEconomicIndicatorsContent.frm),data , function () {
-                        $('#' + assessCommonHouse.config.declareEconomicIndicatorsHead.box).modal("show");
-                    }) ;
-                }) ;
-            }else {
-                declareCommon.firstLoadChildDeclareEconomicIndicators(element2) ;
-                declareCommon.initDeclareEconomicIndicators($("#" + assessCommonHouse.config.declareEconomicIndicatorsHead.frm),$("#"+assessCommonHouse.config.declareEconomicIndicatorsContent.frm) ,{centerId: centerData.id} ,function () {
-                    $('#' + assessCommonHouse.config.declareEconomicIndicatorsHead.box).modal("show");
-                }) ;
-            }
-        });
+    var showDelHtml = "" ;
+    showDelHtml += declareCommon.declareCenterData.indicatorIdDelHtml;
+    showDelHtml = showDelHtml.replace(/{method}/g, 'assessCommonHouse.deleteDeclareEconomicIndicatorsCenter') ;
+    declareCommon.getDeclareBuildCenter(item.centerId, function (centerData) {
+        if (centerData.indicatorId){
+            economicIndicators.init({
+                planDetailsId: declareCommon.getPlanDetailsId(),
+                economicId: centerData.indicatorId,
+                showDelHtml:showDelHtml,
+                centerId:item.centerId
+            });
+        }else {
+            economicIndicators.init({
+                planDetailsId: declareCommon.getPlanDetailsId(),
+                saveCallback: function (economicId) {//经济指标id更新到中间表
+                    declareCommon.declareBuildCenterSaveAndUpdate({indicatorId: economicId, id: item.centerId});
+                },
+                showDelHtml:showDelHtml,
+                centerId:item.centerId,
+                targetCallback:function () {
+                    economicIndicators.autoSummary(true) ;
+                }
+            });
+        }
     });
 };
 
-/**
- * 经济指标 保存
- */
-assessCommonHouse.saveDeclareEconomicIndicatorsData = function () {
-    declareCommon.saveDeclareEconomicIndicators(function () {
-        $('#' + assessCommonHouse.config.declareEconomicIndicatorsHead.box).modal("hide");
-        $("#"+assessCommonHouse.config.declareEconomicIndicatorsHead.frm).find(".panel-body").empty() ;
-        $("#"+assessCommonHouse.config.declareEconomicIndicatorsContent.frm).find(".panel-body").empty() ;
-        toastr.info("成功!");
-    },$("#"+assessCommonHouse.config.declareEconomicIndicatorsHead.frm),
-        $("#"+assessCommonHouse.config.declareEconomicIndicatorsContent.frm)) ;
-} ;
 
 /**
  * 删除中间表得经济指标 注意这得删除不是通过经济指标方法删除得土地证而是中间表删除得经济指标
  */
-assessCommonHouse.deleteDeclareEconomicIndicatorsCenter = function () {
-    var data = formParams(assessCommonHouse.config.declareEconomicIndicatorsHead.frm);
+assessCommonHouse.deleteDeclareEconomicIndicatorsCenter = function (frmEle,box) {
+    var data = formParams(frmEle);
     if (declareCommon.isNotBlank(data.centerId)) {
         declareCommon.getDeclareBuildCenter(data.centerId, function (centerData) {
             if (declareCommon.isNotBlank(centerData.indicatorId)) {//关联情况
                 declareCommon.deleteByDeclareBuildCenterType(data.centerId, declareCommon.declareCenterData.indicatorId.type, function () {
-                    $('#' + assessCommonHouse.config.declareEconomicIndicatorsHead.box).modal("hide");
+                    $('#' + box).modal("hide");
                     toastr.success('已经删除!');
+                    economicIndicators.autoSummary(true) ;
                     assessCommonHouse.loadList();
                 });
             } else {
