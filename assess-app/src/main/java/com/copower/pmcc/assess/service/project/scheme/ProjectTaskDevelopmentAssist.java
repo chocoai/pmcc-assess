@@ -289,7 +289,7 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
             }
         }
         if (basicApply != null){
-            mdArchitecturalObjService.clear();
+            mdArchitecturalObjService.clear(projectPlanDetails.getId());
             List<MdArchitecturalObj> mdArchitecturalObjList = Lists.newArrayList();
             MdArchitecturalObj select = new MdArchitecturalObj();
             select.setDatabaseName(FormatUtils.entityNameConvertToTableName(BasicEstate.class));

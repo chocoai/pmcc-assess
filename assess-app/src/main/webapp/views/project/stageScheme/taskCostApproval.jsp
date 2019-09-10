@@ -52,6 +52,7 @@
                 <%@include file="/views/method/module/developmentCommon.jsp" %>
                 <script src="${pageContext.request.contextPath}/js/method/developmentCommon.js"></script>
                 <%@include file="/views/project/tool/residueRatio.jsp" %>
+                <%@include file="/views/method/module/economicIndicators.jsp" %>
 
 
                 <div class="x_content">

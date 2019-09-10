@@ -16,6 +16,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -46,10 +47,11 @@ public class MdArchitecturalObjService {
         }
     }
 
-    public void clear(){
+    public void clear(Integer planDetailsId){
         MdArchitecturalObj oo = new MdArchitecturalObj();
         oo.setCreator(commonService.thisUserAccount());
-        oo.setPid(0);
+        oo.setPrice(new BigDecimal(0));
+        oo.setPlanDetailsId(planDetailsId);
         List<MdArchitecturalObj> list = getMdArchitecturalObjListByExample(oo);
         if (CollectionUtils.isNotEmpty(list)){
             for (MdArchitecturalObj architecturalObj:list){

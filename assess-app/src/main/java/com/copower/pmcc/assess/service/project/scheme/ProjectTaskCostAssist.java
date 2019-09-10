@@ -87,6 +87,7 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskCostIndex", "", 0, "0", "");
         //初始化支撑数据
         setViewParam(projectPlanDetails, modelAndView);
+        setViewBaseParam(projectPlanDetails, modelAndView);
         return modelAndView;
     }
 
@@ -121,6 +122,7 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
     public ModelAndView returnEditView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskCostIndex", processInsId, boxId, taskId, agentUserAccount);
         setViewParam(projectPlanDetails, modelAndView);
+        setViewBaseParam(projectPlanDetails, modelAndView);
         return modelAndView;
     }
 
@@ -138,33 +140,9 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
 
     @Override
     public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
-        try {
-            this.saveAndUpdate(projectPlanDetails, processInsId, formData);
-        } catch (BusinessException e) {
-            baseService.writeExceptionInfo(e);
-        }
+        mdMarketCostService.saveAndUpdateMdCostData(formData);
     }
 
-    private void saveAndUpdate(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
-        SchemeInfo schemeInfo = new SchemeInfo();
-        schemeInfo.setProjectId(projectPlanDetails.getProjectId());
-        schemeInfo.setPlanDetailsId(projectPlanDetails.getId());
-        schemeInfo.setJudgeObjectId(projectPlanDetails.getJudgeObjectId());
-        schemeInfo.setMethodType(baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_COST).getId());
-        List<SchemeInfo> schemeInfoList = schemeInfoService.getInfoList(schemeInfo);
-        Integer id = mdMarketCostService.saveAndUpdateMdCostConstruction(formData);
-        if (CollectionUtils.isNotEmpty(schemeInfoList)) {
-            for (SchemeInfo oo : schemeInfoList) {
-                oo.setMethodDataId(id);
-                oo.setProcessInsId(StringUtils.isNotEmpty(processInsId) ? processInsId : "0");
-                schemeInfoService.saveSchemeInfo(oo);
-            }
-        } else {
-            schemeInfo.setProcessInsId(StringUtils.isNotEmpty(processInsId) ? processInsId : "0");
-            schemeInfo.setMethodDataId(id);
-            schemeInfoService.saveSchemeInfo(schemeInfo);
-        }
-    }
 
     @Override
     public void approvalCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
@@ -172,7 +150,7 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
 
     @Override
     public void returnEditCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
-        this.saveAndUpdate(projectPlanDetails, processInsId, formData);
+        mdMarketCostService.saveAndUpdateMdCostData(formData);
     }
 
     /**
@@ -192,12 +170,16 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
                 mdCost = mdMarketCostService.getByMdCostId(schemeInfo.getMethodDataId());
             }
         }
+        try {
+            mdMarketCostService.initData(mdCost, projectPlanDetails, projectPlanDetails.getProcessInsId());
+        } catch (BusinessException e) {
+            baseService.writeExceptionInfo(e);
+        }
         MdCostVo mdCostVo = mdMarketCostService.getMdCostVo(mdCost);
         modelAndView.addObject(StringUtils.uncapitalize(MdCostVo.class.getSimpleName()), mdCostVo);
-        setViewBaseParam(projectPlanDetails, modelAndView, !(mdCost != null && mdCost.getId() != null && mdCost.getId() != 0));
     }
 
-    private void setViewBaseParam(ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView, boolean init) {
+    private void setViewBaseParam(ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) {
         if (projectPlanDetails.getJudgeObjectId() == null) {
             return;
         }
@@ -213,129 +195,76 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
                 modelAndView.addObject(StringUtils.uncapitalize(SchemeAreaGroup.class.getSimpleName()), schemeAreaGroup);
             }
         }
-        if (schemeJudgeObject.getDeclareRecordId() == null) {
+        BigDecimal area = schemeJudgeObject.getFloorArea() != null ? schemeJudgeObject.getFloorArea() : schemeJudgeObject.getEvaluationArea();
+        setMdCalculatingMethodEngineeringCost(projectPlanDetails, surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId()), area, modelAndView);
+    }
+
+    /**
+     * 设置工程费
+     * @param projectPlanDetails
+     * @param basicApply
+     * @param area
+     * @param modelAndView
+     */
+    private void setMdCalculatingMethodEngineeringCost(ProjectPlanDetails projectPlanDetails, BasicApply basicApply, BigDecimal area, ModelAndView modelAndView) {
+        if (basicApply == null) {
             return;
         }
-        setIndicatorsContentParam(schemeJudgeObject, projectPlanDetails, modelAndView, init, schemeJudgeObject.getFloorArea() != null ? schemeJudgeObject.getFloorArea() : schemeJudgeObject.getEvaluationArea());
-    }
+        mdArchitecturalObjService.clear(projectPlanDetails.getId());
+        mdCalculatingMethodEngineeringCostService.clear(projectPlanDetails);
 
-    private void setIndicatorsContentParam(SchemeJudgeObject schemeJudgeObject, ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView, boolean init, BigDecimal area) {
-        DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
-        List<DeclareEconomicIndicatorsContent> indicatorsContentList = Lists.newArrayList();
-        List<Integer> integerList = Lists.newArrayList();
-        DeclareBuildEngineeringAndEquipmentCenter query = new DeclareBuildEngineeringAndEquipmentCenter();
-        if (Objects.equal(FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class), declareRecord.getDataTableName())) {
-            query.setHouseId(declareRecord.getDataTableId());
-            query.setType(DeclareRealtyHouseCert.class.getSimpleName());
-            List<DeclareBuildEngineeringAndEquipmentCenter> centerList = declareBuildEngineeringAndEquipmentCenterService.declareBuildEngineeringAndEquipmentCenterList(query);
-            if (CollectionUtils.isNotEmpty(centerList)) {
-                List<Integer> integerList2 = centerList.stream().filter(oo -> oo.getIndicatorId() != null).map(oo -> oo.getIndicatorId()).collect(Collectors.toList());
-                if (CollectionUtils.isNotEmpty(integerList2)) {
-                    integerList.addAll(integerList2);
-                }
-            }
+        List<MdArchitecturalObj> mdArchitecturalObjList = Lists.newArrayList();
+        MdArchitecturalObj select = new MdArchitecturalObj();
+        select.setDatabaseName(FormatUtils.entityNameConvertToTableName(BasicEstate.class));
+        select.setPid(basicApply.getBasicEstateId());
+        List<MdArchitecturalObj> mdArchitecturalObjList2 = mdArchitecturalObjService.getMdArchitecturalObjListByExample(select);
+        if (CollectionUtils.isNotEmpty(mdArchitecturalObjList2)) {
+            mdArchitecturalObjList.addAll(mdArchitecturalObjList2);
         }
-        if (Objects.equal(FormatUtils.entityNameConvertToTableName(DeclareRealtyRealEstateCert.class), declareRecord.getDataTableName())) {
-            query.setRealEstateId(declareRecord.getDataTableId());
-            query.setType(DeclareRealtyRealEstateCert.class.getSimpleName());
-            List<DeclareBuildEngineeringAndEquipmentCenter> centerList = declareBuildEngineeringAndEquipmentCenterService.declareBuildEngineeringAndEquipmentCenterList(query);
-            if (CollectionUtils.isNotEmpty(centerList)) {
-                List<Integer> integerList2 = centerList.stream().filter(oo -> oo.getIndicatorId() != null).map(oo -> oo.getIndicatorId()).collect(Collectors.toList());
-                if (CollectionUtils.isNotEmpty(integerList2)) {
-                    integerList.addAll(integerList2);
-                }
-            }
+        select.setDatabaseName(FormatUtils.entityNameConvertToTableName(BasicBuilding.class));
+        select.setPid(basicApply.getBasicBuildingId());
+        mdArchitecturalObjList2 = mdArchitecturalObjService.getMdArchitecturalObjListByExample(select);
+        if (CollectionUtils.isNotEmpty(mdArchitecturalObjList2)) {
+            mdArchitecturalObjList.addAll(mdArchitecturalObjList2);
         }
-        if (CollectionUtils.isNotEmpty(integerList)) {
-            for (Integer id : integerList) {
-                List<DeclareEconomicIndicatorsContent> list = declareEconomicIndicatorsContentService.getDeclareEconomicIndicatorsContentListByHeadId(id);
-                if (CollectionUtils.isEmpty(list)) {
-                    continue;
-                }
-                indicatorsContentList.addAll(list);
-            }
-        }
-        if (init) {
-            initPortOtherInfo(indicatorsContentList, projectPlanDetails, surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId()), area, modelAndView);
-        }
-    }
-
-    private void initPortOtherInfo(List<DeclareEconomicIndicatorsContent> indicatorsContentList, ProjectPlanDetails projectPlanDetails, BasicApply basicApply, BigDecimal area, ModelAndView modelAndView) {
-        if (CollectionUtils.isNotEmpty(indicatorsContentList)) {
-            mdDevelopmentIncomeCategoryService.clear();
-            for (DeclareEconomicIndicatorsContent obj : indicatorsContentList) {
+        if (CollectionUtils.isNotEmpty(mdArchitecturalObjList)) {
+            for (MdArchitecturalObj oo : mdArchitecturalObjList) {
                 executor.execute(new Runnable() {
                     @Override
                     public void run() {
-                        MdDevelopmentIncomeCategory engineering = new MdDevelopmentIncomeCategory();
-                        engineering.setPid(0);
-                        if (NumberUtils.isNumber(obj.getPlanIndex())) {
-                            engineering.setPlannedBuildingArea(new BigDecimal(obj.getPlanIndex()));
-                        }
-                        if (NumberUtils.isNumber(obj.getSalabilityNumber())) {
-                            engineering.setSaleableArea(new BigDecimal(obj.getSalabilityNumber()));
-                        }
-                        if (NumberUtils.isNumber(obj.getAssessSalabilityNumber())) {
-                            engineering.setAssessArea(new BigDecimal(obj.getAssessSalabilityNumber()));
-                        }
-                        engineering.setCreator(processControllerComponent.getThisUser());
-                        engineering.setName(obj.getName());
-                        engineering.setPlanDetailsId(projectPlanDetails.getId());
-                        engineering.setType("engineering");
-                        mdDevelopmentIncomeCategoryService.saveMdDevelopmentIncomeCategory(engineering);
+
+                        MdCalculatingMethodEngineeringCost mdCalculatingMethodEngineeringCost = new MdCalculatingMethodEngineeringCost();
+                        mdCalculatingMethodEngineeringCost.setCreator(processControllerComponent.getThisUser());
+                        mdCalculatingMethodEngineeringCost.setArea(area);
+                        mdCalculatingMethodEngineeringCost.setArchitecturalObjId(0);
+                        mdCalculatingMethodEngineeringCost.setPlanDetailsId(projectPlanDetails.getId());
+                        mdCalculatingMethodEngineeringCost.setProjectId(projectPlanDetails.getProjectId());
+                        mdCalculatingMethodEngineeringCost.setPrice(new BigDecimal(0));
+                        mdCalculatingMethodEngineeringCostService.saveMdCalculatingMethodEngineeringCost(mdCalculatingMethodEngineeringCost);
+
+
+                        MdArchitecturalObj obj = mdArchitecturalObjService.getMdArchitecturalObjById(oo.getId());
+                        oo.setId(null);
+                        oo.setPlanDetailsId(projectPlanDetails.getId());
+                        oo.setPid(mdCalculatingMethodEngineeringCost.getId());
+                        oo.setJsonContent(obj.getJsonContent());
+                        oo.setPrice(new BigDecimal(0));
+                        oo.setCreator(processControllerComponent.getThisUser());
+                        oo.setDatabaseName(FormatUtils.entityNameConvertToTableName(MdCost.class));
+                        mdArchitecturalObjService.saveMdArchitecturalObj(oo);
+
+                        mdCalculatingMethodEngineeringCost.setArchitecturalObjId(oo.getId());
+                        mdCalculatingMethodEngineeringCostService.saveMdCalculatingMethodEngineeringCost(mdCalculatingMethodEngineeringCost);
                     }
                 });
             }
         }
-        if (basicApply != null) {
-            mdArchitecturalObjService.clear();
-            List<MdArchitecturalObj> mdArchitecturalObjList = Lists.newArrayList();
-            MdArchitecturalObj select = new MdArchitecturalObj();
-            select.setDatabaseName(FormatUtils.entityNameConvertToTableName(BasicEstate.class));
-            select.setPid(basicApply.getBasicEstateId());
-            List<MdArchitecturalObj> mdArchitecturalObjList2 = mdArchitecturalObjService.getMdArchitecturalObjListByExample(select);
-            if (CollectionUtils.isNotEmpty(mdArchitecturalObjList2)) {
-                mdArchitecturalObjList.addAll(mdArchitecturalObjList2);
-            }
-            select.setDatabaseName(FormatUtils.entityNameConvertToTableName(BasicBuilding.class));
-            select.setPid(basicApply.getBasicBuildingId());
-            mdArchitecturalObjList2 = mdArchitecturalObjService.getMdArchitecturalObjListByExample(select);
-            if (CollectionUtils.isNotEmpty(mdArchitecturalObjList2)) {
-                mdArchitecturalObjList.addAll(mdArchitecturalObjList2);
-            }
-            if (CollectionUtils.isNotEmpty(mdArchitecturalObjList)) {
-                for (MdArchitecturalObj oo : mdArchitecturalObjList) {
-                    executor.execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            MdArchitecturalObj obj = mdArchitecturalObjService.getMdArchitecturalObjById(oo.getId());
-                            oo.setId(null);
-                            oo.setPlanDetailsId(projectPlanDetails.getPid());
-                            oo.setPid(0);
-                            oo.setJsonContent(obj.getJsonContent());
-                            oo.setPrice(new BigDecimal(0));
-                            oo.setCreator(processControllerComponent.getThisUser());
-                            oo.setType("engineering");
-                            oo.setDatabaseName(FormatUtils.entityNameConvertToTableName(ProjectPlanDetails.class));
-                            mdArchitecturalObjService.saveMdArchitecturalObj(oo);
-                            MdCalculatingMethodEngineeringCost mdCalculatingMethodEngineeringCost = new MdCalculatingMethodEngineeringCost();
-                            mdCalculatingMethodEngineeringCost.setCreator(processControllerComponent.getThisUser());
-                            mdCalculatingMethodEngineeringCost.setArea(area);
-                            mdCalculatingMethodEngineeringCost.setArchitecturalObjId(obj.getId());
-                            mdCalculatingMethodEngineeringCost.setPlanDetailsId(projectPlanDetails.getPid());
-                            mdCalculatingMethodEngineeringCost.setProjectId(projectPlanDetails.getProjectId());
-                            mdCalculatingMethodEngineeringCostService.saveMdCalculatingMethodEngineeringCost(mdCalculatingMethodEngineeringCost);
-                        }
-                    });
-                }
-            }
-            try {
-                BasicHouseVo basicHouseVo = publicBasicService.getBasicHouseVoByAppId(basicApply);
-                modelAndView.addObject(StringUtils.uncapitalize(BasicHouseVo.class.getSimpleName()), basicHouseVo);
-            } catch (Exception e) {
-                baseService.writeExceptionInfo(e);
-                modelAndView.addObject(StringUtils.uncapitalize(BasicHouseVo.class.getSimpleName()), new BasicHouseVo());
-            }
+        try {
+            BasicHouseVo basicHouseVo = publicBasicService.getBasicHouseVoByAppId(basicApply);
+            modelAndView.addObject(StringUtils.uncapitalize(BasicHouseVo.class.getSimpleName()), basicHouseVo);
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
+            modelAndView.addObject(StringUtils.uncapitalize(BasicHouseVo.class.getSimpleName()), new BasicHouseVo());
         }
     }
 

@@ -4,15 +4,24 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.ArithmeticUtils;
 import com.copower.pmcc.assess.common.enums.BaseReportFieldEnum;
+import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdCostConstructionDao;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdCostDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.method.MdCostConstructionVo;
 import com.copower.pmcc.assess.dto.output.method.MdCostVo;
-import com.copower.pmcc.erp.api.dto.KeyValueDto;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.project.declare.DeclareBuildEngineeringAndEquipmentCenterService;
+import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
+import com.copower.pmcc.assess.service.project.scheme.SchemeInfoService;
+import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.erp.common.CommonService;
+import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.google.common.base.Objects;
+import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.task.TaskExecutor;
@@ -20,6 +29,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @Auther: zch
@@ -35,11 +45,17 @@ public class MdMarketCostService {
     @Autowired
     private CommonService commonService;
     @Autowired
-    private MdArchitecturalObjService mdArchitecturalObjService;
-    @Autowired
-    private MdDevelopmentIncomeCategoryService mdDevelopmentIncomeCategoryService;
-    @Autowired
     private TaskExecutor taskExecutor;
+    @Autowired
+    private SchemeInfoService schemeInfoService;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
+    @Autowired
+    private SchemeJudgeObjectService schemeJudgeObjectService;
+    @Autowired
+    private DeclareRecordService declareRecordService;
+    @Autowired
+    private DeclareBuildEngineeringAndEquipmentCenterService declareBuildEngineeringAndEquipmentCenterService;
 
 
     public MdCost initExplore(SchemeJudgeObject schemeJudgeObject) {
@@ -51,6 +67,67 @@ public class MdMarketCostService {
         return mdCost;
     }
 
+    /**
+     * 初始化数据
+     * @param mdCost
+     * @param projectPlanDetails
+     * @param processInsId
+     * @throws BusinessException
+     */
+    public void initData(MdCost mdCost, ProjectPlanDetails projectPlanDetails, String processInsId) throws BusinessException {
+        if (mdCost == null) {
+            return;
+        }
+        boolean firstInit = (mdCost.getId() == null || mdCost.getId() == 0);
+        saveAndUpdateMdCost(mdCost);
+        MdCostConstruction mdCostConstruction = new MdCostConstruction();
+        mdCostConstruction.setPid(mdCost.getId());
+        SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId());
+        DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
+        List<Integer> integerList = Lists.newArrayList();
+        DeclareBuildEngineeringAndEquipmentCenter query = new DeclareBuildEngineeringAndEquipmentCenter();
+        if (Objects.equal(FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class), declareRecord.getDataTableName())) {
+            query.setHouseId(declareRecord.getDataTableId());
+            query.setType(DeclareRealtyHouseCert.class.getSimpleName());
+            List<DeclareBuildEngineeringAndEquipmentCenter> centerList = declareBuildEngineeringAndEquipmentCenterService.declareBuildEngineeringAndEquipmentCenterList(query);
+            if (CollectionUtils.isNotEmpty(centerList)) {
+                List<Integer> integerList2 = centerList.stream().filter(oo -> oo.getIndicatorId() != null).map(oo -> oo.getIndicatorId()).collect(Collectors.toList());
+                if (CollectionUtils.isNotEmpty(integerList2)) {
+                    integerList.addAll(integerList2);
+                }
+            }
+        }
+        if (Objects.equal(FormatUtils.entityNameConvertToTableName(DeclareRealtyRealEstateCert.class), declareRecord.getDataTableName())) {
+            query.setRealEstateId(declareRecord.getDataTableId());
+            query.setType(DeclareRealtyRealEstateCert.class.getSimpleName());
+            List<DeclareBuildEngineeringAndEquipmentCenter> centerList = declareBuildEngineeringAndEquipmentCenterService.declareBuildEngineeringAndEquipmentCenterList(query);
+            if (CollectionUtils.isNotEmpty(centerList)) {
+                List<Integer> integerList2 = centerList.stream().filter(oo -> oo.getIndicatorId() != null).map(oo -> oo.getIndicatorId()).collect(Collectors.toList());
+                if (CollectionUtils.isNotEmpty(integerList2)) {
+                    integerList.addAll(integerList2);
+                }
+            }
+        }
+        if (CollectionUtils.isNotEmpty(integerList)) {
+            mdCostConstruction.setEconomicId(integerList.stream().findFirst().get());
+        }
+        MdCostVo mdCostVo = getMdCostVo(mdCost);
+        mdCostConstruction.setId(mdCostVo.getMdCostConstruction().getId());
+        saveMdCostConstruction(mdCostConstruction);
+
+        if (firstInit) {
+            SchemeInfo schemeInfo = new SchemeInfo();
+            schemeInfo.setProjectId(projectPlanDetails.getProjectId());
+            schemeInfo.setPlanDetailsId(projectPlanDetails.getId());
+            schemeInfo.setJudgeObjectId(projectPlanDetails.getJudgeObjectId());
+            schemeInfo.setMethodType(baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_COST).getId());
+            schemeInfo.setProcessInsId(StringUtils.isNotEmpty(processInsId) ? processInsId : "0");
+            schemeInfo.setMethodDataId(mdCost.getId());
+            schemeInfoService.saveSchemeInfo(schemeInfo);
+        }
+
+    }
+
     public void saveAndUpdateMdCost(MdCost mdCost) {
         if (mdCost.getId() == null || mdCost.getId() == 0) {
             mdCost.setCreator(commonService.thisUserAccount());
@@ -60,41 +137,30 @@ public class MdMarketCostService {
         }
     }
 
+    public void saveMdCostConstruction(MdCostConstruction mdCostConstruction) {
+        if (mdCostConstruction.getId() == null || mdCostConstruction.getId() == 0) {
+            mdCostConstruction.setCreator(commonService.thisUserAccount());
+            mdCostConstructionDao.addEstateNetwork(mdCostConstruction);
+        } else {
+            mdCostConstructionDao.updateEstateNetwork(mdCostConstruction);
+        }
+    }
 
-    public Integer saveAndUpdateMdCostConstruction(String formData) {
+
+    public void saveAndUpdateMdCostData(String formData) {
         JSONObject jsonObject = JSON.parseObject(formData);
         MdCost mdCost = new MdCost();
         MdCostConstruction mdCostConstruction = JSONObject.parseObject(formData, MdCostConstruction.class);
         mdCost.setType((String) jsonObject.get("type"));
         mdCost.setId(mdCostConstruction.getPid());
         mdCost.setPrice(mdCostConstruction.getConstructionAssessmentPriceCorrecting());
+
         saveAndUpdateMdCost(mdCost);
-        mdCostConstruction.setPid(mdCost.getId());
+
         mdCostConstruction.setJsonContent(formData);
         saveMdCostConstructionAndUpdate(mdCostConstruction);
-        MdArchitecturalObj mdArchitecturalObj = new MdArchitecturalObj();
-        mdArchitecturalObj.setDatabaseName(FormatUtils.entityNameConvertToTableName(MdCost.class));
-        mdArchitecturalObj.setPid(0);
-        mdArchitecturalObj.setPlanDetailsId(mdCost.getPlanDetailsId());
-        List<MdArchitecturalObj> mdArchitecturalObjList = mdArchitecturalObjService.getMdArchitecturalObjListByExample(mdArchitecturalObj);
-        if (CollectionUtils.isNotEmpty(mdArchitecturalObjList)) {
-            for (MdArchitecturalObj oo : mdArchitecturalObjList) {
-                oo.setPid(mdCostConstruction.getId());
-                mdArchitecturalObjService.saveMdArchitecturalObj(oo);
-            }
-        }
-        MdDevelopmentIncomeCategory mdDevelopmentIncomeCategory = new MdDevelopmentIncomeCategory();
-        mdDevelopmentIncomeCategory.setPid(0);
-        mdDevelopmentIncomeCategory.setPlanDetailsId(mdCost.getPlanDetailsId());
-        List<MdDevelopmentIncomeCategory> mdDevelopmentIncomeCategoryList = mdDevelopmentIncomeCategoryService.getMdDevelopmentIncomeCategoryListByExample(mdDevelopmentIncomeCategory);
-        if (CollectionUtils.isNotEmpty(mdDevelopmentIncomeCategoryList)) {
-            for (MdDevelopmentIncomeCategory oo : mdDevelopmentIncomeCategoryList) {
-                oo.setPid(mdCostConstruction.getId());
-                mdDevelopmentIncomeCategoryService.saveMdDevelopmentIncomeCategory(oo);
-            }
-        }
 
-        return mdCost.getId();
+
     }
 
     public void saveMdCostConstructionAndUpdate(MdCostConstruction mdCostConstruction) {
@@ -149,18 +215,6 @@ public class MdMarketCostService {
             return vo;
         }
         BeanUtils.copyProperties(mdCostConstruction, vo);
-        if (org.apache.commons.lang.StringUtils.isNotEmpty(mdCostConstruction.getConstructionInstallationEngineeringFeeIds())) {
-            List<Integer> integerList = FormatUtils.transformString2Integer(mdCostConstruction.getConstructionInstallationEngineeringFeeIds());
-            if (CollectionUtils.isNotEmpty(integerList)) {
-                for (Integer integer : integerList) {
-                    MdArchitecturalObj architecturalObj = mdArchitecturalObjService.getMdArchitecturalObjById(integer);
-                    if (architecturalObj == null) {
-                        continue;
-                    }
-                    vo.getConstructionInstallationEngineeringFeeDtos().add(new KeyValueDto(architecturalObj.getId().toString(), architecturalObj.getPrice() == null ? "0" : architecturalObj.getPrice().setScale(2, BigDecimal.ROUND_UP).toString()));
-                }
-            }
-        }
         return vo;
     }
 
@@ -347,6 +401,7 @@ public class MdMarketCostService {
                     double b = Math.pow(1 + d21, h3 / 2);
                     double c2 = ArithmeticUtils.mul(ArithmeticUtils.add(new double[]{e12, e14, e15, e16, e18, e19}), b - 1);
                     String value = ArithmeticUtils.add(String.valueOf(c1), String.valueOf(c2), 2);
+                    target.setInterestInvestment(value);
                     return value;
                 } catch (Exception e) {
                     return "";
@@ -464,7 +519,7 @@ public class MdMarketCostService {
                     String f3 = target.getDevelopBuildAreaTax().toString();
                     BigDecimal v = ArithmeticUtils.multiply(ArithmeticUtils.createBigDecimal(e25), ArithmeticUtils.createBigDecimal(10000));
                     BigDecimal decimal = ArithmeticUtils.divide(v, ArithmeticUtils.createBigDecimal(f3), 2);
-                    BigDecimal residueRatio = target.getResidueRatio() ;
+                    BigDecimal residueRatio = target.getResidueRatio();
                     if (residueRatio != null) {
                         decimal = ArithmeticUtils.multiply(decimal, target.getResidueRatio(), 2);
                     }

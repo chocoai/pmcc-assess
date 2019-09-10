@@ -171,7 +171,8 @@
      * 工程费表格加载
      */
     construction.loadMdCalculatingMethodEngineeringCostTable = function () {
-        var obj = {type: construction.type, planDetailsId: '${projectPlanDetails.id}'};
+        <%--var obj = {type: construction.type, planDetailsId: '${projectPlanDetails.id}'};--%>
+        var obj = { planDetailsId: '${projectPlanDetails.id}'};
         var cols = [];
         cols.push({
             field: 'id', title: '建筑安装工程费明细', formatter: function (value, row, index) {
@@ -290,121 +291,81 @@
         }
     };
 
-    /*经济指标 table*/
-    construction.loadIncomeCategoryTable = function () {
-        var obj = {type: construction.type, planDetailsId: '${projectPlanDetails.id}'};
-        developmentCommon.loadIncomeCategoryTable($(construction.incomeCategoryTable), obj, $("#toolbarLandIncomeCategoryTableId"), function () {
-            construction.writeMdDevelopmentIncomeCategoryTable($(construction.incomeCategoryTable), null);
-        });
-    };
-
-    /*经济指标  单个数据编辑*/
-    construction.editMdDevelopmentIncomeCategoryTable = function (table, box, flag) {
-        var target = $(box);
-        var frm = target.find("form");
-        frm.clearAll();
-        var pid = developmentCommon.isNotBlank('${mdCostVo.mdCostConstruction.id}') ? '${mdCostVo.mdCostConstruction.id}' : '0';
-        if (flag) {
-            var rows = $(table).bootstrapTable('getSelections');
-            if (rows.length == 1) {
-                var data = rows[0];
-                frm.initForm(data);
-                target.find(".modal-footer").empty().append($(construction.incomeCategoryFooterHtml).html());
-                target.modal('show');
-            } else {
-                toastr.success('勾选一个!');
-            }
-        } else {
-            frm.clearAll();
-            frm.initForm({pid: pid});
-            target.find(".modal-footer").empty().append($(construction.incomeCategoryFooterHtml).html());
-            target.modal('show');
-        }
-    };
-
-    /*经济指标  单个数据save*/
-    construction.saveMdDevelopmentIncomeCategoryTable = function (_this) {
-        var target = $(_this).parent().parent().parent().parent();
-        var frm = target.find("form");
-        if (!frm.valid()) {
-            return false;
-        }
-        var data = formSerializeArray(frm);
-        data.planDetailsId = '${projectPlanDetails.id}';
-        data.type = construction.type;
-        data.pid = developmentCommon.isNotBlank('${mdCostVo.mdCostConstruction.id}') ? '${mdCostVo.mdCostConstruction.id}' : '0';
-        target.modal('hide');
-        developmentCommon.loadIncomeCategorySave(data, function (item) {
-            toastr.success('添加成功!');
-            $(construction.incomeCategoryTable).bootstrapTable('refresh');
-            construction.writeMdDevelopmentIncomeCategoryTable($(construction.incomeCategoryTable), item);
-        }, function () {
-
-        });
-    };
-
-    /**经济指标删除*/
-    construction.deleteMdDevelopmentIncomeCategoryTable = function (table) {
-        var rows = $(table).bootstrapTable('getSelections');
-        if (rows.length >= 1) {
-            var data = [];
-            $.each(rows, function (i, item) {
-                data.push(item.id);
+    //经济指标show
+    construction.showMdDevelopmentIncomeCategory = function () {
+        var economicId = '${mdCostVo.mdCostConstruction.economicId}' ;
+        if (economicId){
+            economicIndicators.init({economicId:economicId});
+        }else {
+            economicIndicators.init({
+                planDetailsId: '${projectPlanDetails.id}',
+                saveCallback: function (economicId) {//经济指标id更新到中间表
+                    console.log(economicId);
+                    construction.target.find("input[name='economicId']").val(economicId).trigger('blur');
+                },
+                targetCallback:function () {
+                    economicIndicators.autoSummary(true) ;
+                }
             });
-            var ids = $.map($(table).bootstrapTable('getSelections'), function (row) {
-                return row.id
-            });
-            developmentCommon.deleteIncomeCategory(data, function () {
-                $(table).bootstrapTable('remove', {
-                    field: 'id',
-                    values: ids
-                });
-                $(table).bootstrapTable('refresh');
-                toastr.success('删除成功!');
-                construction.writeMdDevelopmentIncomeCategoryTable($(table));
-            }, function () {
-                toastr.success('删除失败!');
-            });
-        } else {
-            toastr.success('至少勾选一个!');
         }
-    };
+        $('#modalEconomicIndicators').find('.modal-footer').find('button').last().bind('click',function() {
+            construction.writeMdDevelopmentIncomeCategoryTable() ;
+        })
+    } ;
+
+
+
 
     /**经济指标 测算方法*/
-    construction.writeMdDevelopmentIncomeCategoryTable = function (table, obj) {
-        var arr = table.bootstrapTable('getData');
-        if (obj) {
-            arr.push(obj);
+    construction.writeMdDevelopmentIncomeCategoryTable = function () {
+        var resultArr = [];
+        var economicId = '${mdCostVo.mdCostConstruction.economicId}' ;
+        if (economicId){
+            $.ajax({
+                url: '${pageContext.request.contextPath}/mdEconomicIndicators/getEconomicIndicatorsInfo',
+                data: {economicId: economicId},
+                type: 'post',
+                dataType: 'json',
+                success: function (result) {
+                    if (result.ret) {
+                        if (result.data){
+                            var economicIndicatorsItemList = result.data.economicIndicatorsItemList ;
+                            if (economicIndicatorsItemList){
+                                $.each(economicIndicatorsItemList , function (i,item) {
+                                    var economicIndicatorsItem = {};
+
+                                    economicIndicatorsItem.plannedBuildingArea = item.plannedBuildingArea;
+                                    economicIndicatorsItem.saleableArea = item.saleableArea;
+                                    economicIndicatorsItem.number = item.number;
+
+                                    resultArr.push(economicIndicatorsItem);
+                                    var plannedBuildingArea = math.bignumber(0);
+                                    var totalSaleableAreaPrice = math.bignumber(0);
+                                    var saleableArea = math.bignumber(0);
+                                    $.each(resultArr, function (i, n) {
+                                        if ($.isNumeric(n.plannedBuildingArea)) {
+                                            plannedBuildingArea = math.add(plannedBuildingArea, math.bignumber(n.plannedBuildingArea));
+                                        }
+                                        if ($.isNumeric(n.totalSaleableAreaPrice) && $.isNumeric(n.number)) {
+                                            totalSaleableAreaPrice = math.add(totalSaleableAreaPrice, math.bignumber(n.totalSaleableAreaPrice));
+                                        }
+                                        if ($.isNumeric(n.saleableArea)) {
+                                            saleableArea = math.add(saleableArea, math.bignumber(n.saleableArea));
+                                        }
+                                    });
+                                    plannedBuildingArea = plannedBuildingArea.toString();
+                                    totalSaleableAreaPrice = totalSaleableAreaPrice.toString();
+                                    saleableArea = saleableArea.toString();
+                                    construction.target.find("label[name='plannedBuildingArea']").html(plannedBuildingArea);
+                                    construction.target.find("label[name='totalSaleableAreaPrice']").html(totalSaleableAreaPrice);
+                                    construction.target.find("label[name='saleableArea']").html(saleableArea);
+                                });
+                            }
+                        }
+                    }
+                }
+            });
         }
-        //js去重
-        var result = [];
-        var obj = {};
-        for (var i = 0; i < arr.length; i++) {
-            if (!obj[arr[i].id]) {
-                result.push(arr[i]);
-                obj[arr[i].id] = true;
-            }
-        }
-        var plannedBuildingArea = math.bignumber(0);
-        var totalSaleableAreaPrice = math.bignumber(0);
-        var saleableArea = math.bignumber(0);
-        $.each(result, function (i, n) {
-            if ($.isNumeric(n.plannedBuildingArea)) {
-                plannedBuildingArea = math.add(plannedBuildingArea, math.bignumber(n.plannedBuildingArea));
-            }
-            if ($.isNumeric(n.totalSaleableAreaPrice)) {
-                totalSaleableAreaPrice = math.add(totalSaleableAreaPrice, math.bignumber(n.totalSaleableAreaPrice));
-            }
-            if ($.isNumeric(n.saleableArea)) {
-                saleableArea = math.add(saleableArea, math.bignumber(n.saleableArea));
-            }
-        });
-        plannedBuildingArea = plannedBuildingArea.toString();
-        totalSaleableAreaPrice = totalSaleableAreaPrice.toString();
-        saleableArea = saleableArea.toString();
-        this.target.find("label[name='plannedBuildingArea']").html(plannedBuildingArea);
-        this.target.find("label[name='totalSaleableAreaPrice']").html(totalSaleableAreaPrice);
-        this.target.find("label[name='saleableArea']").html(saleableArea);
     };
 
     /**基础设施建设 table*/
@@ -483,6 +444,9 @@
             type: construction.type
         }, function (item) {
             var result = 0;
+            if ('${mdCostVo.mdCostConstruction.infrastructureCost}'){
+                result += Number('${mdCostVo.mdCostConstruction.infrastructureCost}') ;
+            }
             if (item.length >= 1) {
                 $.each(item, function (i, n) {
                     result += Number(n.number);

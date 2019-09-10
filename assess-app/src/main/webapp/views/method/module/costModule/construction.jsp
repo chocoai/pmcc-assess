@@ -5,6 +5,7 @@
         <input type="hidden" name="id" value="${mdCostVo.mdCostConstruction.id}">
         <input type="hidden" name="pid" value="${mdCostVo.mdCostConstruction.pid}">
         <input type="hidden" name="mcId" value="${mdCostVo.mdCostConstruction.mcId}">
+        <input type="hidden" name="economicId" value="${mdCostVo.mdCostConstruction.economicId}" onblur="cost.checkParams(this);">
         <div class="x_title collapse-link">
             <ul class="nav navbar-right panel_toolbox">
                 <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
@@ -64,23 +65,7 @@
 
         <div class="x_content">
             <input type="button" class="btn btn-primary" value="经济规划指标"
-                   onclick="economicIndicators.init(${mdCostVo.mdCostConstruction.economicId});">
-            <%--<div class="form-group">--%>
-                <%--<div class="x-valid">--%>
-                    <%--<div class="col-sm-12">--%>
-                        <%--<div id="toolbarLandIncomeCategoryTableId" style="display: none">--%>
-                            <%--<div class="btn-group">--%>
-                                <%--<button type="button" class="btn btn-primary" onclick="construction.deleteMdDevelopmentIncomeCategoryTable('#landIncomeCategoryTableId')">删除</button>--%>
-                                <%--<button type="button" class="btn btn-primary" onclick="construction.editMdDevelopmentIncomeCategoryTable('#landIncomeCategoryTableId','#basicMdDevelopmentIncomeCategoryModalTool',true)">编辑</button>--%>
-                                <%--<button type="button" class="btn btn-primary" onclick="construction.editMdDevelopmentIncomeCategoryTable('#landIncomeCategoryTableId','#basicMdDevelopmentIncomeCategoryModalTool',false)">添加</button>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
-                        <%--<table class="table table-striped" id="landIncomeCategoryTableId" >--%>
-
-                        <%--</table>--%>
-                    <%--</div>--%>
-                <%--</div>--%>
-            <%--</div>--%>
+                   onclick="construction.showMdDevelopmentIncomeCategory('${mdCostVo.mdCostConstruction.economicId}');">
 
             <div class="form-group">
                 <div class="x-valid">

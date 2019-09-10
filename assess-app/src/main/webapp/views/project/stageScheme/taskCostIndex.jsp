@@ -46,6 +46,7 @@
                 <%@include file="/views/method/module/costModule/constructionJs.jsp" %>
                 <%@include file="/views/method/module/developmentCommon.jsp" %>
                 <%@include file="/views/project/tool/residueRatio.jsp" %>
+                <%@include file="/views/method/module/economicIndicators.jsp" %>
                 <script src="${pageContext.request.contextPath}/js/method/developmentCommon.js"></script>
             </div>
 
@@ -255,7 +256,7 @@
 
         construction.loadMdCalculatingMethodEngineeringCostTable() ;
 
-        construction.loadIncomeCategoryTable() ;
+        construction.writeMdDevelopmentIncomeCategoryTable() ;
 
     });
 
