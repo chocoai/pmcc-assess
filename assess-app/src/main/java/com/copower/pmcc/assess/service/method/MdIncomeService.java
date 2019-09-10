@@ -42,10 +42,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.text.Collator;
+import java.util.*;
 
 /**
  * Created by kings on 2018-7-23.
@@ -534,8 +532,7 @@ public class MdIncomeService {
                 MdIncomeForecastAnalyseItem item = analyseItems.get(i);
                 MdIncomeForecastAnalyseItemVo mdIncomeForecastAnalyseItemVo = new MdIncomeForecastAnalyseItemVo();
                 if (item.getForecastAnalyseId().equals(forecastAnalyseId)) {
-                    mdIncomeForecastAnalyseItemVo.setAmountMoney(analyseItems.get(i).getAmountMoney());
-                    mdIncomeForecastAnalyseItemVo.setNumber(analyseItems.get(i).getNumber());
+                    BeanUtils.copyProperties(analyseItems.get(i), mdIncomeForecastAnalyseItemVo);
                     if (analyseItems.get(i).getAccountingSubject() != null && analyseItems.get(i).getAccountingSubject() > 0) {
                         String accountingSubjectName = baseDataDicService.getNameById(analyseItems.get(i).getAccountingSubject());
                         mdIncomeForecastAnalyseItemVo.setName(String.format("%s/%s/%s", accountingSubjectName, analyseItems.get(i).getFirstLevelNumber(), analyseItems.get(i).getSecondLevelNumber()));
@@ -564,6 +561,7 @@ public class MdIncomeService {
                 }
             }
         }
+        this.orderVos(vos);
         return vos;
     }
 
@@ -660,8 +658,7 @@ public class MdIncomeService {
                 MdIncomeForecastAnalyseItem item = analyseItems.get(i);
                 MdIncomeForecastAnalyseItemVo mdIncomeForecastAnalyseItemVo = new MdIncomeForecastAnalyseItemVo();
                 if (item.getForecastAnalyseId().equals(forecastAnalyseId)) {
-                    mdIncomeForecastAnalyseItemVo.setAmountMoney(analyseItems.get(i).getAmountMoney());
-                    mdIncomeForecastAnalyseItemVo.setNumber(analyseItems.get(i).getNumber());
+                    BeanUtils.copyProperties(analyseItems.get(i), mdIncomeForecastAnalyseItemVo);
                     if (analyseItems.get(i).getAccountingSubject() != null && analyseItems.get(i).getAccountingSubject() > 0) {
                         String accountingSubjectName = baseDataDicService.getNameById(analyseItems.get(i).getAccountingSubject());
                         mdIncomeForecastAnalyseItemVo.setName(String.format("%s/%s", accountingSubjectName, analyseItems.get(i).getFirstLevelNumber()));
@@ -690,9 +687,9 @@ public class MdIncomeService {
                 }
             }
         }
+        this.orderVos(vos);
         return vos;
     }
-
 
     //写入数量趋势和金额趋势(会计科目)
     public List<MdIncomeForecastAnalyseItemVo> getAccountingSubjectTrend(Integer forecastAnalyseId) {
@@ -778,8 +775,7 @@ public class MdIncomeService {
                 MdIncomeForecastAnalyseItem item = analyseItems.get(i);
                 MdIncomeForecastAnalyseItemVo mdIncomeForecastAnalyseItemVo = new MdIncomeForecastAnalyseItemVo();
                 if (item.getForecastAnalyseId().equals(forecastAnalyseId)) {
-                    mdIncomeForecastAnalyseItemVo.setAmountMoney(analyseItems.get(i).getAmountMoney());
-                    mdIncomeForecastAnalyseItemVo.setNumber(analyseItems.get(i).getNumber());
+                    BeanUtils.copyProperties(analyseItems.get(i), mdIncomeForecastAnalyseItemVo);
                     if (analyseItems.get(i).getAccountingSubject() != null && analyseItems.get(i).getAccountingSubject() > 0) {
                         String accountingSubjectName = baseDataDicService.getNameById(analyseItems.get(i).getAccountingSubject());
                         mdIncomeForecastAnalyseItemVo.setName(String.format("%s", accountingSubjectName));
@@ -808,7 +804,30 @@ public class MdIncomeService {
                 }
             }
         }
+        this.orderVos(vos);
         return vos;
+    }
+
+    //根据会计科目/一级编号/二级编号排序
+    public void orderVos(List<MdIncomeForecastAnalyseItemVo> vos) {
+        Comparator<MdIncomeForecastAnalyseItemVo> comparator1 = Comparator.comparing(MdIncomeForecastAnalyseItemVo::getAccountingSubject);
+        Comparator<MdIncomeForecastAnalyseItemVo> comparator2 = new Comparator<MdIncomeForecastAnalyseItemVo>() {
+            @Override
+            public int compare(MdIncomeForecastAnalyseItemVo o1, MdIncomeForecastAnalyseItemVo o2) {
+                //获取中文环境
+                Comparator<Object> com = Collator.getInstance(Locale.CHINA);
+                return com.compare(o1.getFirstLevelNumber(), o2.getFirstLevelNumber());
+            }
+        };
+        Comparator<MdIncomeForecastAnalyseItemVo> comparator3 = new Comparator<MdIncomeForecastAnalyseItemVo>() {
+            @Override
+            public int compare(MdIncomeForecastAnalyseItemVo o1, MdIncomeForecastAnalyseItemVo o2) {
+                //获取中文环境
+                Comparator<Object> com = Collator.getInstance(Locale.CHINA);
+                return com.compare(o1.getSecondLevelNumber(), o2.getSecondLevelNumber());
+            }
+        };
+        Collections.sort(vos, comparator1.thenComparing(comparator2.thenComparing(comparator3)));
     }
 
     /**
@@ -1075,6 +1094,10 @@ public class MdIncomeService {
 
     public void updateForecast(MdIncomeForecast mdIncomeForecast) {
         mdIncomeForecastDao.updateForecast(mdIncomeForecast);
+        MdIncomeDateSection dateSectionById = mdIncomeDateSectionDao.getDateSectionById(mdIncomeForecast.getSectionId());
+        dateSectionById.setCostTotal(mdIncomeForecast.getInitialAmount());
+        dateSectionById.setOperatingProfit(mdIncomeForecast.getOperatingProfit());
+        mdIncomeDateSectionDao.updateDateSection(dateSectionById);
     }
 
     /**
