@@ -70,7 +70,7 @@
             <ul class="nav navbar-right panel_toolbox">
                 <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
             </ul>
-            <h3>收入类(参数)</h3>
+            <h3>经济指标(参数)</h3>
             <div class="clearfix"></div>
         </div>
 
@@ -710,7 +710,8 @@
     };
 
     landEngineering.loadMdCalculatingMethodEngineeringCostTable = function () {
-        var obj = {type:landEngineering.type,planDetailsId:'${projectPlanDetails.id}'} ;
+        <%--var obj = {type:landEngineering.type,planDetailsId:'${projectPlanDetails.id}'} ;--%>
+        var obj = {planDetailsId:'${projectPlanDetails.id}'} ;
         var cols = [];
         cols.push({
             field: 'id', title: '建筑安装工程费明细', formatter: function (value, row, index) {
@@ -731,7 +732,7 @@
         cols.push({field: 'number', title: '金额'});
         cols.push({field: 'tax', title: '税费'});
         $("#landMdDevelopmentInfrastructureChildrenTable").bootstrapTable('destroy');
-        TableInit('landMdDevelopmentInfrastructureChildrenTable', "${pageContext.request.contextPath}/mdDevelopmentInfrastructureChildren/getBootstrapTableVo?pid=${mdDevelopment.id}&planDetailsId=${mdDevelopment.planDetailsId}&type="+landEngineering.type, cols, {}, {
+        TableInit('landMdDevelopmentInfrastructureChildrenTable', "${pageContext.request.contextPath}/mdDevelopmentInfrastructureChildren/getBootstrapTableVo?pid=${mdDevelopment.id}&planDetailsId=${mdDevelopment.planDetailsId}", cols, {}, {
             showColumns: true,
             showRefresh: true,
             search: false

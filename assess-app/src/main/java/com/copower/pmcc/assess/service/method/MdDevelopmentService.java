@@ -4,12 +4,21 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.ArithmeticUtils;
 import com.copower.pmcc.assess.common.enums.BaseReportFieldEnum;
+import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdDevelopmentDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.scheme.MdDevelopmentVo;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.project.declare.DeclareBuildEngineeringAndEquipmentCenterService;
+import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
+import com.copower.pmcc.assess.service.project.scheme.SchemeInfoService;
+import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.common.CommonService;
+import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.google.common.base.Objects;
+import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -21,8 +30,8 @@ import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @Auther: zch
@@ -40,11 +49,73 @@ public class MdDevelopmentService {
     @Autowired
     private MdDevelopmentInfrastructureChildrenService mdDevelopmentInfrastructureChildrenService;
     @Autowired
-    private MdDevelopmentIncomeCategoryService mdDevelopmentIncomeCategoryService;
-    @Autowired
     private TaskExecutor taskExecutor;
+    @Autowired
+    private SchemeJudgeObjectService schemeJudgeObjectService;
+    @Autowired
+    private DeclareRecordService declareRecordService;
+    @Autowired
+    private DeclareBuildEngineeringAndEquipmentCenterService declareBuildEngineeringAndEquipmentCenterService;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
+    @Autowired
+    private SchemeInfoService schemeInfoService;
 
     private Logger logger = LoggerFactory.getLogger(getClass());
+
+    /**
+     * 初始化数据
+     * @param target
+     * @param projectPlanDetails
+     * @param processInsId
+     * @throws BusinessException
+     */
+    public void initData(MdDevelopment target, ProjectPlanDetails projectPlanDetails, String processInsId)throws BusinessException {
+        if (target == null) {
+            return;
+        }
+        boolean firstInit = (target.getId() == null || target.getId() == 0);
+        SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId());
+        DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
+        List<Integer> integerList = Lists.newArrayList();
+        DeclareBuildEngineeringAndEquipmentCenter query = new DeclareBuildEngineeringAndEquipmentCenter();
+        if (Objects.equal(FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class), declareRecord.getDataTableName())) {
+            query.setHouseId(declareRecord.getDataTableId());
+            query.setType(DeclareRealtyHouseCert.class.getSimpleName());
+            List<DeclareBuildEngineeringAndEquipmentCenter> centerList = declareBuildEngineeringAndEquipmentCenterService.declareBuildEngineeringAndEquipmentCenterList(query);
+            if (CollectionUtils.isNotEmpty(centerList)) {
+                List<Integer> integerList2 = centerList.stream().filter(oo -> oo.getIndicatorId() != null).map(oo -> oo.getIndicatorId()).collect(Collectors.toList());
+                if (CollectionUtils.isNotEmpty(integerList2)) {
+                    integerList.addAll(integerList2);
+                }
+            }
+        }
+        if (Objects.equal(FormatUtils.entityNameConvertToTableName(DeclareRealtyRealEstateCert.class), declareRecord.getDataTableName())) {
+            query.setRealEstateId(declareRecord.getDataTableId());
+            query.setType(DeclareRealtyRealEstateCert.class.getSimpleName());
+            List<DeclareBuildEngineeringAndEquipmentCenter> centerList = declareBuildEngineeringAndEquipmentCenterService.declareBuildEngineeringAndEquipmentCenterList(query);
+            if (CollectionUtils.isNotEmpty(centerList)) {
+                List<Integer> integerList2 = centerList.stream().filter(oo -> oo.getIndicatorId() != null).map(oo -> oo.getIndicatorId()).collect(Collectors.toList());
+                if (CollectionUtils.isNotEmpty(integerList2)) {
+                    integerList.addAll(integerList2);
+                }
+            }
+        }
+        if (CollectionUtils.isNotEmpty(integerList)) {
+            target.setEconomicId(integerList.stream().findFirst().get());
+        }
+        saveAndUpdateMdDevelopment(target);
+        if (firstInit) {
+            SchemeInfo schemeInfo = new SchemeInfo();
+            schemeInfo.setProjectId(projectPlanDetails.getProjectId());
+            schemeInfo.setPlanDetailsId(projectPlanDetails.getId());
+            schemeInfo.setJudgeObjectId(projectPlanDetails.getJudgeObjectId());
+            schemeInfo.setMethodType(baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_DEVELOPMENT).getId());
+            schemeInfo.setProcessInsId(org.apache.commons.lang3.StringUtils.isNotEmpty(processInsId) ? processInsId : "0");
+            schemeInfo.setMethodDataId(target.getId());
+            schemeInfoService.saveSchemeInfo(schemeInfo);
+        }
+    }
 
     /**
      * 计算假设开发法的测算方法
@@ -375,59 +446,30 @@ public class MdDevelopmentService {
         return mdDevelopmentDao.getMdDevelopmentById(id);
     }
 
+    public void saveAndUpdateData(String formData,ProjectPlanDetails projectPlanDetails){
+        MdDevelopment mdDevelopment = JSONObject.parseObject(formData, MdDevelopment.class);
+
+        this.saveAndUpdateMdDevelopment(mdDevelopment);
+
+        MdDevelopmentInfrastructureChildren infrastructureChildren = new MdDevelopmentInfrastructureChildren();
+        infrastructureChildren.setPlanDetailsId(projectPlanDetails.getId());
+        infrastructureChildren.setPid(0);
+        infrastructureChildren.setCreator(commonService.thisUserAccount());
+        List<MdDevelopmentInfrastructureChildren> childrenList = mdDevelopmentInfrastructureChildrenService.getMdDevelopmentInfrastructureChildrenListByExample(infrastructureChildren);
+        if (CollectionUtils.isNotEmpty(childrenList)) {
+            for (MdDevelopmentInfrastructureChildren po : childrenList) {
+                po.setPid(mdDevelopment.getId());
+                mdDevelopmentInfrastructureChildrenService.saveMdDevelopmentInfrastructureChildren(po);
+            }
+        }
+    }
+
     public void saveAndUpdateMdDevelopment(MdDevelopment oo) {
         if (oo.getId() == null || oo.getId() == 0) {
             oo.setCreator(commonService.thisUserAccount());
             mdDevelopmentDao.addMdDevelopment(oo);
         } else {
             mdDevelopmentDao.updateMdDevelopment(oo);
-        }
-        MdArchitecturalObj mdArchitecturalObj = new MdArchitecturalObj();
-        mdArchitecturalObj.setDatabaseName(FormatUtils.entityNameConvertToTableName(MdDevelopment.class));
-        mdArchitecturalObj.setPid(0);
-        mdArchitecturalObj.setPlanDetailsId(oo.getPlanDetailsId());
-        mdArchitecturalObj.setCreator(commonService.thisUserAccount());
-        List<MdArchitecturalObj> mdArchitecturalObjList = mdArchitecturalObjService.getMdArchitecturalObjListByExample(mdArchitecturalObj);
-        if (CollectionUtils.isNotEmpty(mdArchitecturalObjList)) {
-            for (MdArchitecturalObj po : mdArchitecturalObjList) {
-                mdArchitecturalObjService.deleteMdArchitecturalObjById(po.getId());
-            }
-            mdArchitecturalObjList.clear();
-        }
-        if (StringUtils.isNotEmpty(oo.getConstructionInstallationEngineeringFeeIds())) {
-            List<Integer> integerList = FormatUtils.transformString2Integer(oo.getConstructionInstallationEngineeringFeeIds());
-            if (CollectionUtils.isNotEmpty(integerList)) {
-                for (Integer integer : integerList) {
-                    MdArchitecturalObj architecturalObj = mdArchitecturalObjService.getMdArchitecturalObjById(integer);
-                    if (architecturalObj == null) {
-                        continue;
-                    }
-                    architecturalObj.setPid(oo.getId());
-                    mdArchitecturalObjService.saveMdArchitecturalObj(architecturalObj);
-                }
-            }
-        }
-        MdDevelopmentInfrastructureChildren infrastructureChildren = new MdDevelopmentInfrastructureChildren();
-        infrastructureChildren.setPlanDetailsId(oo.getPlanDetailsId());
-        infrastructureChildren.setPid(0);
-        infrastructureChildren.setCreator(commonService.thisUserAccount());
-        List<MdDevelopmentInfrastructureChildren> childrenList = mdDevelopmentInfrastructureChildrenService.getMdDevelopmentInfrastructureChildrenListByExample(infrastructureChildren);
-        if (CollectionUtils.isNotEmpty(childrenList)) {
-            for (MdDevelopmentInfrastructureChildren po : childrenList) {
-                po.setPid(oo.getId());
-                mdDevelopmentInfrastructureChildrenService.saveMdDevelopmentInfrastructureChildren(po);
-            }
-        }
-        MdDevelopmentIncomeCategory mdDevelopmentIncomeCategory = new MdDevelopmentIncomeCategory();
-        mdDevelopmentIncomeCategory.setPlanDetailsId(oo.getPlanDetailsId());
-        mdDevelopmentIncomeCategory.setPid(0);
-        mdDevelopmentIncomeCategory.setCreator(commonService.thisUserAccount());
-        List<MdDevelopmentIncomeCategory> categoryList = mdDevelopmentIncomeCategoryService.getMdDevelopmentIncomeCategoryListByExample(mdDevelopmentIncomeCategory);
-        if (CollectionUtils.isNotEmpty(categoryList)) {
-            for (MdDevelopmentIncomeCategory obj : categoryList) {
-                obj.setPid(oo.getId());
-                mdDevelopmentIncomeCategoryService.saveMdDevelopmentIncomeCategory(obj);
-            }
         }
     }
 

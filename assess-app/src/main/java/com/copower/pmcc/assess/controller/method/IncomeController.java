@@ -209,7 +209,7 @@ public class IncomeController {
     public HttpResult createForecastIncomeYear(Integer incomeForecastId) {
         try {
             mdIncomeService.createForecastIncomeYear(incomeForecastId);
-        } catch (Exception e) {
+        }catch (Exception e) {
             logger.error(e.getMessage(), e);
             return HttpResult.newErrorResult(e.getMessage());
         }
@@ -364,7 +364,7 @@ public class IncomeController {
 
     @ResponseBody
     @RequestMapping(value = "/forecastIncomeItemQuoteData", name = "引用数据", method = RequestMethod.POST)
-    public HttpResult deleteForecast(Integer incomeId,Integer formType, Integer incomeForecastId) {
+    public HttpResult forecastIncomeItemQuoteData(Integer incomeId,Integer formType, Integer incomeForecastId) {
         try {
             mdIncomeService.forecastIncomeItemQuoteData(incomeId,formType,incomeForecastId);
         } catch (Exception e) {

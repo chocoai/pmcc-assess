@@ -413,7 +413,7 @@
         cols.push({field: 'firstLevelNumber', title: '一级编号'});
         cols.push({field: 'secondLevelNumber', title: '二级编号'});
         cols.push({field: 'unit', title: '单位'});
-        cols.push({field: 'unitPrice', title: '单价'});
+        cols.push({field: 'makePrice', title: '标价'});
         cols.push({field: 'number', title: '数量'});
         cols.push({field: 'amountMoney', title: '金额'});
         cols.push({
