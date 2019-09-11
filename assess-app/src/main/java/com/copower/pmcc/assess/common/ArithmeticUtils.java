@@ -14,6 +14,8 @@ import java.math.MathContext;
 import java.math.RoundingMode;
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
@@ -74,6 +76,14 @@ public class ArithmeticUtils implements Serializable {
             bigDecimal = add(bigDecimal.toString(), d.toString());
         }
         return bigDecimal;
+    }
+
+    public static BigDecimal add(List<BigDecimal> bigDecimalList) {
+        BigDecimal[] doubles = new BigDecimal[bigDecimalList.size()] ;
+        for (int i = 0; i < bigDecimalList.size(); i++) {
+            doubles[i] = bigDecimalList.get(i) ;
+        }
+        return add(doubles) ;
     }
 
     /**

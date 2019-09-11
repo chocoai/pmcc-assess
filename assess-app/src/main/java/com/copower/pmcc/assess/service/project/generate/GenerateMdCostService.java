@@ -7,6 +7,7 @@ import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.enums.BaseReportFieldEnum;
 import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dto.input.method.MdEconomicIndicatorsApplyDto;
 import com.copower.pmcc.assess.dto.output.MergeCellModel;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateLandStateVo;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateVo;
@@ -20,6 +21,7 @@ import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseReportFieldService;
 import com.copower.pmcc.assess.service.method.MdArchitecturalObjService;
 import com.copower.pmcc.assess.service.method.MdCalculatingMethodEngineeringCostService;
+import com.copower.pmcc.assess.service.method.MdEconomicIndicatorsService;
 import com.copower.pmcc.assess.service.method.MdMarketCostService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
@@ -76,6 +78,7 @@ public class GenerateMdCostService implements Serializable {
     private ResidueRatioService residueRatioService;
     private ProjectPlanDetailsService projectPlanDetailsService;
     private MdArchitecturalObjService mdArchitecturalObjService;
+    private MdEconomicIndicatorsService mdEconomicIndicatorsService;
 
 
     public synchronized String generateCompareFile() throws Exception {
@@ -117,13 +120,14 @@ public class GenerateMdCostService implements Serializable {
         final ConcurrentHashMap<String, String> bookmarkMap = new ConcurrentHashMap<String, String>(0);
         final long time = 70;//最多阻塞70秒
         //设置必要的数据
-        final ProjectPlanDetails projectPlanDetails = getProjectPlanDetailsById(schemeInfo.getPlanDetailsId()) ;
+        final ProjectPlanDetails projectPlanDetails = getProjectPlanDetailsById(schemeInfo.getPlanDetailsId());
         final LinkedHashMap<MdCalculatingMethodEngineeringCost, JSONArray> costJSONObjectMap = Maps.newLinkedHashMap();
-        mdArchitecturalObjService.setMdCalculatingMethodEngineeringCostMapData(costJSONObjectMap, projectPlanDetails,projectPlanDetails.getProjectId());
+        mdArchitecturalObjService.setMdCalculatingMethodEngineeringCostMapData(costJSONObjectMap, projectPlanDetails, projectPlanDetails.getProjectId());
         final MdCostVo mdCostVo = getMdCostVo();
         final SchemeAreaGroup schemeAreaGroup = getSchemeAreaGroup();
         final SchemeJudgeObject schemeJudgeObject = getSchemeJudgeObject();
         final ToolResidueRatio toolResidueRatio = residueRatioService.getToolResidueRatio(mdCostVo.getMdCostConstruction().getResidueRatioId());
+        final MdEconomicIndicatorsApplyDto mdEconomicIndicatorsApplyDto = getMdEconomicIndicatorsApplyDto();
         if (!map.isEmpty()) {
             //发起线程组
             final CountDownLatch countDownLatch = new CountDownLatch(map.size());
@@ -132,7 +136,7 @@ public class GenerateMdCostService implements Serializable {
                     @Override
                     public void run() {
                         try {
-                            setFieldObjectValue(enumStringEntry.getKey(), textMap, fileMap, bookmarkMap, mdCostVo, schemeAreaGroup, schemeJudgeObject, toolResidueRatio);
+                            setFieldObjectValue(enumStringEntry.getKey(), textMap, fileMap, bookmarkMap, mdCostVo, schemeAreaGroup, schemeJudgeObject, toolResidueRatio, mdEconomicIndicatorsApplyDto);
                             setFieldObjectOtherValue(enumStringEntry.getKey(), textMap, fileMap, bookmarkMap, costJSONObjectMap);
                         } catch (Exception e) {
                             baseService.writeExceptionInfo(e);
@@ -160,10 +164,10 @@ public class GenerateMdCostService implements Serializable {
         return localPath;
     }
 
-    private void setFieldObjectOtherValue(BaseReportFieldEnum key, final ConcurrentHashMap<String, String> textMap, final ConcurrentHashMap<String, String> fileMap, final ConcurrentHashMap<String, String> bookmarkMap,LinkedHashMap<MdCalculatingMethodEngineeringCost, JSONArray> costJSONObjectMap)throws Exception{
-        switch (key){
+    private void setFieldObjectOtherValue(BaseReportFieldEnum key, final ConcurrentHashMap<String, String> textMap, final ConcurrentHashMap<String, String> fileMap, final ConcurrentHashMap<String, String> bookmarkMap, LinkedHashMap<MdCalculatingMethodEngineeringCost, JSONArray> costJSONObjectMap) throws Exception {
+        switch (key) {
             case MarketCost_CalculatingMethodEngineeringCostSheet: {
-                if (costJSONObjectMap.isEmpty()){
+                if (costJSONObjectMap.isEmpty()) {
                     break;
                 }
                 String path = generateCommonMethod.getLocalPath(RandomStringUtils.randomAlphanumeric(4));
@@ -197,7 +201,8 @@ public class GenerateMdCostService implements Serializable {
             }
             break;
 
-            default:break;
+            default:
+                break;
         }
     }
 
@@ -213,7 +218,7 @@ public class GenerateMdCostService implements Serializable {
      * @param schemeJudgeObject
      * @param toolResidueRatio
      */
-    private void setFieldObjectValue(BaseReportFieldEnum key, final ConcurrentHashMap<String, String> textMap, final ConcurrentHashMap<String, String> fileMap, final ConcurrentHashMap<String, String> bookmarkMap, MdCostVo mdCostVo, SchemeAreaGroup schemeAreaGroup, SchemeJudgeObject schemeJudgeObject, ToolResidueRatio toolResidueRatio) throws Exception {
+    private void setFieldObjectValue(BaseReportFieldEnum key, final ConcurrentHashMap<String, String> textMap, final ConcurrentHashMap<String, String> fileMap, final ConcurrentHashMap<String, String> bookmarkMap, MdCostVo mdCostVo, SchemeAreaGroup schemeAreaGroup, SchemeJudgeObject schemeJudgeObject, ToolResidueRatio toolResidueRatio, MdEconomicIndicatorsApplyDto mdEconomicIndicatorsApplyDto) throws Exception {
         MdCostConstructionVo target = mdCostVo.getMdCostConstruction();
         //计算类数据
         String value = mdMarketCostService.getFieldObjectValue(key, target);
@@ -308,6 +313,33 @@ public class GenerateMdCostService implements Serializable {
             }
             break;
             case MarketCost_GroundFloor_AreaCounted_volume_ratio: {
+                String str = "groundBuildingArea";
+                if (mdEconomicIndicatorsApplyDto == null){
+                    break;
+                }
+                List<MdEconomicIndicatorsItem> itemList = mdEconomicIndicatorsApplyDto.getEconomicIndicatorsItemList();
+                List<BigDecimal> bigDecimalList = Lists.newArrayList();
+                if (CollectionUtils.isNotEmpty(itemList)) {
+                    for (MdEconomicIndicatorsItem item : itemList) {
+                        if (item.getSaleableArea() == null) {
+                            continue;
+                        }
+                        if (!Objects.equal(item.getDataKey(), str)) {
+                            continue;
+                        }
+                        bigDecimalList.add(item.getSaleableArea());
+                    }
+                }
+                if (CollectionUtils.isNotEmpty(bigDecimalList)) {
+                    ArithmeticUtils.add(bigDecimalList);
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), ArithmeticUtils.getBigDecimalString(ArithmeticUtils.add(bigDecimalList)));
+                } else {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), "0");
+                }
+            }
+            break;
+            case MarketCost_EconomicIndicatorsField1: {
+                setFieldObjectValue(BaseReportFieldEnum.MarketCost_GroundFloor_AreaCounted_volume_ratio, textMap, fileMap, bookmarkMap, mdCostVo, schemeAreaGroup, schemeJudgeObject, toolResidueRatio, mdEconomicIndicatorsApplyDto);
             }
             break;
             case MarketCost_constructionInstallationEngineeringFee: {
@@ -322,11 +354,24 @@ public class GenerateMdCostService implements Serializable {
             }
             break;
             case MarketCost_Planning_land_area_construction: {
+                if (mdEconomicIndicatorsApplyDto != null && mdEconomicIndicatorsApplyDto.getEconomicIndicators() != null) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(),
+                            ArithmeticUtils.getBigDecimalString(mdEconomicIndicatorsApplyDto.getEconomicIndicators().getPlanNetConstructionLandArea()));
+                }
             }
             break;
             case MarketCost_AssessBuildArea: {
-                // 成本法评估总建筑面积 有误
-                generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), target.getDevelopLandAreaTax().toString());
+                if (mdEconomicIndicatorsApplyDto != null && mdEconomicIndicatorsApplyDto.getEconomicIndicators() != null) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(),
+                            ArithmeticUtils.getBigDecimalString(mdEconomicIndicatorsApplyDto.getEconomicIndicators().getAssessTotalBuildArea()));
+                }
+            }
+            break;
+            case MarketCost_AssessUseLandArea: {
+                if (mdEconomicIndicatorsApplyDto != null && mdEconomicIndicatorsApplyDto.getEconomicIndicators() != null) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(),
+                            ArithmeticUtils.getBigDecimalString(mdEconomicIndicatorsApplyDto.getEconomicIndicators().getAssessUseLandArea()));
+                }
             }
             break;
             case MarketCost_landPurchasePriceExplain: {
@@ -521,8 +566,17 @@ public class GenerateMdCostService implements Serializable {
         return schemeJudgeObject;
     }
 
-    private   ProjectPlanDetails getProjectPlanDetailsById(Integer id){
-        return projectPlanDetailsService.getProjectPlanDetailsById(id) ;
+    private ProjectPlanDetails getProjectPlanDetailsById(Integer id) {
+        return projectPlanDetailsService.getProjectPlanDetailsById(id);
+    }
+
+    private MdEconomicIndicatorsApplyDto getMdEconomicIndicatorsApplyDto() {
+        MdCostVo costVo = getMdCostVo();
+        MdEconomicIndicatorsApplyDto mdEconomicIndicatorsApplyDto = new MdEconomicIndicatorsApplyDto();
+        if (costVo.getMdCostConstruction().getEconomicId() != null) {
+            mdEconomicIndicatorsApplyDto = mdEconomicIndicatorsService.getEconomicIndicatorsInfo(costVo.getMdCostConstruction().getEconomicId());
+        }
+        return mdEconomicIndicatorsApplyDto;
     }
 
     public GenerateMdCostService(Integer projectId, SchemeInfo schemeInfo, Integer areaId) {
@@ -543,6 +597,7 @@ public class GenerateMdCostService implements Serializable {
         this.residueRatioService = SpringContextUtils.getBean(ResidueRatioService.class);
         this.projectPlanDetailsService = SpringContextUtils.getBean(ProjectPlanDetailsService.class);
         this.mdArchitecturalObjService = SpringContextUtils.getBean(MdArchitecturalObjService.class);
+        this.mdEconomicIndicatorsService = SpringContextUtils.getBean(MdEconomicIndicatorsService.class);
     }
 
 

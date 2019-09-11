@@ -294,6 +294,7 @@ public enum BaseReportFieldEnum implements Serializable {
     MarketCost_intra_territorial_setting("成本法宗地内设定"),
     MarketCost_GroundFloor_AreaCounted_volume_ratio("成本法地上计入容积率建筑面积"),
     MarketCost_Planning_land_area_construction("成本法规划建设净用地面积"),
+    MarketCost_EconomicIndicatorsField1("成本法地上计入容积率的建筑面积"),
     MarketCost_AssessBuildArea("成本法评估总建筑面积"),
     MarketCost_AssessUseLandArea("成本法评估用地面积"),
     MarketCost_landPurchasePriceExplain("成本法土地价格说明"),
