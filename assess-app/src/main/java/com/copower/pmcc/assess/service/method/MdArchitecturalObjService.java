@@ -10,6 +10,7 @@ import com.copower.pmcc.assess.dal.basis.entity.MdArchitecturalObj;
 import com.copower.pmcc.assess.dal.basis.entity.MdCalculatingMethodEngineeringCost;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dto.output.MergeCellModel;
+import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.erp.common.CommonService;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -34,6 +35,8 @@ public class MdArchitecturalObjService {
     private MdCalculatingMethodEngineeringCostService mdCalculatingMethodEngineeringCostService;
     @Autowired
     private MdArchitecturalObjDao mdArchitecturalObjDao;
+    @Autowired
+    private BaseService baseService;
 
     public boolean saveMdArchitecturalObj(MdArchitecturalObj mdArchitecturalObj){
         if (mdArchitecturalObj == null){
@@ -106,8 +109,13 @@ public class MdArchitecturalObjService {
             if (StringUtils.isEmpty(mdArchitecturalObj.getJsonContent())){
                 continue;
             }
-            JSONArray jsonArray = JSONArray.parseArray(mdArchitecturalObj.getJsonContent());
-            costJSONObjectMap.put(oo,jsonArray) ;
+            try {
+                JSONArray jsonArray = JSONArray.parseArray(mdArchitecturalObj.getJsonContent());
+                costJSONObjectMap.put(oo,jsonArray) ;
+            } catch (Exception e) {
+                String error = e.getMessage();
+                baseService.writeExceptionInfo(e);
+            }
         }
     }
 
