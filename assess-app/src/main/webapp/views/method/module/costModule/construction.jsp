@@ -218,6 +218,7 @@
                                 </span>
 
                                 <span class="input-group-btn">
+                                    <button type="button" class="btn btn-primary" onclick="construction.setMdCalculatingMethodEngineeringCost()">同步查勘建筑安装工程费</button>
                                 </span>
                             </div>
                         </div>

@@ -1,15 +1,20 @@
 package com.copower.pmcc.assess.service.method;
 
 import com.copower.pmcc.assess.dal.basis.dao.method.MdCalculatingMethodEngineeringCostDao;
-import com.copower.pmcc.assess.dal.basis.entity.MdCalculatingMethodEngineeringCost;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
+import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.service.BaseService;
+import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
+import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
+import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +24,7 @@ import java.util.List;
 
 /**
  * Created by zch on 2019-8-28.
+ * 工程费
  */
 @Service
 public class MdCalculatingMethodEngineeringCostService {
@@ -28,6 +34,81 @@ public class MdCalculatingMethodEngineeringCostService {
 
     @Autowired
     private MdCalculatingMethodEngineeringCostDao mdCalculatingMethodEngineeringCostDao;
+    @Autowired
+    private MdArchitecturalObjService mdArchitecturalObjService;
+    @Autowired
+    private SchemeJudgeObjectService schemeJudgeObjectService;
+    @Autowired
+    private BaseService baseService;
+    @Autowired
+    private ProjectPlanDetailsService projectPlanDetailsService;
+    @Autowired
+    private SurveyCommonService surveyCommonService;
+
+    public void setMdCalculatingMethodEngineeringCost(Integer planDetailsId,String databaseName){
+        ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId) ;
+        SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId());
+        BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
+        BigDecimal area = schemeJudgeObject.getFloorArea() != null ? schemeJudgeObject.getFloorArea() : schemeJudgeObject.getEvaluationArea();
+        setMdCalculatingMethodEngineeringCost2(projectPlanDetails,basicApply,area,databaseName) ;
+    }
+
+    /**
+     * 设置工程费
+     * @param projectPlanDetails
+     * @param basicApply
+     * @param area
+     * @param databaseName
+     */
+    private void setMdCalculatingMethodEngineeringCost2(ProjectPlanDetails projectPlanDetails, BasicApply basicApply, BigDecimal area, String databaseName) {
+        if (basicApply == null) {
+            return;
+        }
+        mdArchitecturalObjService.clear(projectPlanDetails.getId());
+        this.clear(projectPlanDetails);
+
+        List<MdArchitecturalObj> mdArchitecturalObjList = Lists.newArrayList();
+        MdArchitecturalObj select = new MdArchitecturalObj();
+        select.setDatabaseName(FormatUtils.entityNameConvertToTableName(BasicEstate.class));
+        select.setPid(basicApply.getBasicEstateId());
+        List<MdArchitecturalObj> mdArchitecturalObjList2 = mdArchitecturalObjService.getMdArchitecturalObjListByExample(select);
+        if (CollectionUtils.isNotEmpty(mdArchitecturalObjList2)) {
+            mdArchitecturalObjList.addAll(mdArchitecturalObjList2);
+        }
+        select.setDatabaseName(FormatUtils.entityNameConvertToTableName(BasicBuilding.class));
+        select.setPid(basicApply.getBasicBuildingId());
+        mdArchitecturalObjList2 = mdArchitecturalObjService.getMdArchitecturalObjListByExample(select);
+        if (CollectionUtils.isNotEmpty(mdArchitecturalObjList2)) {
+            mdArchitecturalObjList.addAll(mdArchitecturalObjList2);
+        }
+        if (CollectionUtils.isNotEmpty(mdArchitecturalObjList)) {
+            for (MdArchitecturalObj oo : mdArchitecturalObjList) {
+                MdCalculatingMethodEngineeringCost mdCalculatingMethodEngineeringCost = new MdCalculatingMethodEngineeringCost();
+                mdCalculatingMethodEngineeringCost.setCreator(commonService.thisUserAccount());
+                mdCalculatingMethodEngineeringCost.setArea(area);
+                mdCalculatingMethodEngineeringCost.setArchitecturalObjId(0);
+                mdCalculatingMethodEngineeringCost.setPlanDetailsId(projectPlanDetails.getId());
+                mdCalculatingMethodEngineeringCost.setProjectId(projectPlanDetails.getProjectId());
+                mdCalculatingMethodEngineeringCost.setPrice(new BigDecimal(0));
+                this.saveMdCalculatingMethodEngineeringCost(mdCalculatingMethodEngineeringCost);
+
+
+                MdArchitecturalObj obj = mdArchitecturalObjService.getMdArchitecturalObjById(oo.getId());
+                oo.setId(null);
+                oo.setPlanDetailsId(projectPlanDetails.getId());
+                oo.setPid(mdCalculatingMethodEngineeringCost.getId());
+                oo.setJsonContent(obj.getJsonContent());
+                oo.setPrice(new BigDecimal(0));
+                oo.setCreator(commonService.thisUserAccount());
+                oo.setDatabaseName(databaseName);
+                mdArchitecturalObjService.saveMdArchitecturalObj(oo);
+
+                mdCalculatingMethodEngineeringCost.setArchitecturalObjId(oo.getId());
+                this.saveMdCalculatingMethodEngineeringCost(mdCalculatingMethodEngineeringCost);
+            }
+        }
+    }
+
 
     public boolean saveMdCalculatingMethodEngineeringCost(MdCalculatingMethodEngineeringCost mdCalculatingMethodEngineeringCost){
         if (mdCalculatingMethodEngineeringCost == null){

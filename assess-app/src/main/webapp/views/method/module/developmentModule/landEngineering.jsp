@@ -79,16 +79,8 @@
             <div class="form-group">
                 <div class="x-valid">
                     <div class="col-sm-12">
-                        <div id="toolbarLandIncomeCategoryTableId" style="display: none">
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-primary" onclick="landEngineering.deleteMdDevelopmentIncomeCategoryTable('#landIncomeCategoryTableId')">删除</button>
-                                <button type="button" class="btn btn-primary" onclick="landEngineering.editMdDevelopmentIncomeCategoryTable('#landIncomeCategoryTableId','#basicMdDevelopmentIncomeCategoryModalTool',true)">编辑</button>
-                                <button type="button" class="btn btn-primary" onclick="landEngineering.editMdDevelopmentIncomeCategoryTable('#landIncomeCategoryTableId','#basicMdDevelopmentIncomeCategoryModalTool',false)">添加</button>
-                            </div>
-                        </div>
-                        <table class="table table-striped" id="landIncomeCategoryTableId" >
-
-                        </table>
+                        <input type="button" class="btn btn-primary" value="经济规划指标"
+                               onclick="landEngineering.showMdDevelopmentIncomeCategory('${mdDevelopment.economicId}');">
                     </div>
                 </div>
             </div>
@@ -99,18 +91,30 @@
                         <table class="table table-condensed">
                             <tfoot>
                             <tr>
+                                <td>规划建筑面积</td>
+                                <td>总可售面积售价</td>
+                                <td>可售面积</td>
+                                <td>不可售建筑面积</td>
                             </tr>
                             <tr>
-                                <td>收入类预期销售合计:</td>
-                                <td class="info">规划建筑面积<label name="plannedBuildingArea" class="label label-default">${mdDevelopment.plannedBuildingArea}</label><input type="hidden"  value="${mdDevelopment.plannedBuildingArea}" name="plannedBuildingArea"></td>
-
-                                <td class="info">总可售面积售价<label name="totalSaleableAreaPrice" class="label label-default">${mdDevelopment.totalSaleableAreaPrice}</label>
-                                    <input type="hidden"  value="${mdDevelopment.totalSaleableAreaPrice}" name="totalSaleableAreaPrice">
+                                <td class="active">
+                                    <!-- 规划建筑面积 -->
+                                    <a data-key="plannedBuildingArea">${mdDevelopment.plannedBuildingArea}</a>
+                                    <input type="hidden"  value="${mdDevelopment.plannedBuildingArea}" name="plannedBuildingArea" onblur="checkParams(this);">
                                 </td>
 
-                                <td class="info">可售面积<label name="saleableArea" class="label label-default">${mdDevelopment.saleableArea}</label>
+                                <td class="active">
+                                    <!-- 总可售面积售价 -->
+                                    <a data-key="totalSaleableAreaPrice">${mdDevelopment.totalSaleableAreaPrice}</a>
+                                    <input type="hidden"  value="${mdDevelopment.totalSaleableAreaPrice}" name="totalSaleableAreaPrice" onblur="checkParams(this);">
+                                </td>
+
+                                <td class="active">
+                                    <!-- 可售面积 -->
+                                    <a data-key="saleableArea">${mdDevelopment.saleableArea}</a>
                                     <input type="hidden"  value="${mdDevelopment.saleableArea}" name="saleableArea" onblur="checkParams(this);">
                                 </td>
+
                                 <td class="active">
                                     <!-- 不可售建筑面积 -->
                                     <a data-key="unsaleableBuildingArea">${mdDevelopment.unsaleableBuildingArea}</a>
@@ -858,7 +862,7 @@
                                     <button type="button" class="btn btn-primary" onclick="landEngineering.showMdCalculatingMethodEngineeringCost();">添加</button>
                                 </span>
         <span class="input-group-btn">
-
+                                    <button type="button" class="btn btn-primary" onclick="landEngineering.setMdCalculatingMethodEngineeringCost()">同步查勘建筑安装工程费</button>
                                 </span>
     </div>
 </div>

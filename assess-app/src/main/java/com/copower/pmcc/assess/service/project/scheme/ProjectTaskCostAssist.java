@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.service.project.scheme;
 
-import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseVo;
@@ -11,31 +10,18 @@ import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.basic.PublicBasicService;
 import com.copower.pmcc.assess.service.data.DataInfrastructureService;
-import com.copower.pmcc.assess.service.method.MdArchitecturalObjService;
-import com.copower.pmcc.assess.service.method.MdCalculatingMethodEngineeringCostService;
-import com.copower.pmcc.assess.service.method.MdDevelopmentIncomeCategoryService;
 import com.copower.pmcc.assess.service.method.MdMarketCostService;
-import com.copower.pmcc.assess.service.project.declare.DeclareBuildEngineeringAndEquipmentCenterService;
-import com.copower.pmcc.assess.service.project.declare.DeclareEconomicIndicatorsContentService;
-import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.exception.BusinessException;
-import com.copower.pmcc.erp.common.utils.FormatUtils;
-import com.google.common.base.Objects;
-import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.math.BigDecimal;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * 描述:
@@ -62,25 +48,11 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
     @Autowired
     private DataInfrastructureService dataInfrastructureService;
     @Autowired
-    private DeclareBuildEngineeringAndEquipmentCenterService declareBuildEngineeringAndEquipmentCenterService;
-    @Autowired
-    private DeclareRecordService declareRecordService;
-    @Autowired
-    private DeclareEconomicIndicatorsContentService declareEconomicIndicatorsContentService;
-    @Autowired
-    private MdArchitecturalObjService mdArchitecturalObjService;
-    @Autowired
-    private MdDevelopmentIncomeCategoryService mdDevelopmentIncomeCategoryService;
-    @Autowired
     private SurveyCommonService surveyCommonService;
-    @Autowired
-    private TaskExecutor executor;
     @Autowired
     private PublicBasicService publicBasicService;
     @Autowired
     private BaseService baseService;
-    @Autowired
-    private MdCalculatingMethodEngineeringCostService mdCalculatingMethodEngineeringCostService;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
@@ -195,72 +167,8 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
                 modelAndView.addObject(StringUtils.uncapitalize(SchemeAreaGroup.class.getSimpleName()), schemeAreaGroup);
             }
         }
-        BigDecimal area = schemeJudgeObject.getFloorArea() != null ? schemeJudgeObject.getFloorArea() : schemeJudgeObject.getEvaluationArea();
-        setMdCalculatingMethodEngineeringCost(projectPlanDetails, surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId()), area, modelAndView);
-    }
-
-    /**
-     * 设置工程费
-     * @param projectPlanDetails
-     * @param basicApply
-     * @param area
-     * @param modelAndView
-     */
-    private void setMdCalculatingMethodEngineeringCost(ProjectPlanDetails projectPlanDetails, BasicApply basicApply, BigDecimal area, ModelAndView modelAndView) {
-        if (basicApply == null) {
-            return;
-        }
-        mdArchitecturalObjService.clear(projectPlanDetails.getId());
-        mdCalculatingMethodEngineeringCostService.clear(projectPlanDetails);
-
-        List<MdArchitecturalObj> mdArchitecturalObjList = Lists.newArrayList();
-        MdArchitecturalObj select = new MdArchitecturalObj();
-        select.setDatabaseName(FormatUtils.entityNameConvertToTableName(BasicEstate.class));
-        select.setPid(basicApply.getBasicEstateId());
-        List<MdArchitecturalObj> mdArchitecturalObjList2 = mdArchitecturalObjService.getMdArchitecturalObjListByExample(select);
-        if (CollectionUtils.isNotEmpty(mdArchitecturalObjList2)) {
-            mdArchitecturalObjList.addAll(mdArchitecturalObjList2);
-        }
-        select.setDatabaseName(FormatUtils.entityNameConvertToTableName(BasicBuilding.class));
-        select.setPid(basicApply.getBasicBuildingId());
-        mdArchitecturalObjList2 = mdArchitecturalObjService.getMdArchitecturalObjListByExample(select);
-        if (CollectionUtils.isNotEmpty(mdArchitecturalObjList2)) {
-            mdArchitecturalObjList.addAll(mdArchitecturalObjList2);
-        }
-        if (CollectionUtils.isNotEmpty(mdArchitecturalObjList)) {
-            for (MdArchitecturalObj oo : mdArchitecturalObjList) {
-                executor.execute(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        MdCalculatingMethodEngineeringCost mdCalculatingMethodEngineeringCost = new MdCalculatingMethodEngineeringCost();
-                        mdCalculatingMethodEngineeringCost.setCreator(processControllerComponent.getThisUser());
-                        mdCalculatingMethodEngineeringCost.setArea(area);
-                        mdCalculatingMethodEngineeringCost.setArchitecturalObjId(0);
-                        mdCalculatingMethodEngineeringCost.setPlanDetailsId(projectPlanDetails.getId());
-                        mdCalculatingMethodEngineeringCost.setProjectId(projectPlanDetails.getProjectId());
-                        mdCalculatingMethodEngineeringCost.setPrice(new BigDecimal(0));
-                        mdCalculatingMethodEngineeringCostService.saveMdCalculatingMethodEngineeringCost(mdCalculatingMethodEngineeringCost);
-
-
-                        MdArchitecturalObj obj = mdArchitecturalObjService.getMdArchitecturalObjById(oo.getId());
-                        oo.setId(null);
-                        oo.setPlanDetailsId(projectPlanDetails.getId());
-                        oo.setPid(mdCalculatingMethodEngineeringCost.getId());
-                        oo.setJsonContent(obj.getJsonContent());
-                        oo.setPrice(new BigDecimal(0));
-                        oo.setCreator(processControllerComponent.getThisUser());
-                        oo.setDatabaseName(FormatUtils.entityNameConvertToTableName(MdCost.class));
-                        mdArchitecturalObjService.saveMdArchitecturalObj(oo);
-
-                        mdCalculatingMethodEngineeringCost.setArchitecturalObjId(oo.getId());
-                        mdCalculatingMethodEngineeringCostService.saveMdCalculatingMethodEngineeringCost(mdCalculatingMethodEngineeringCost);
-                    }
-                });
-            }
-        }
         try {
-            BasicHouseVo basicHouseVo = publicBasicService.getBasicHouseVoByAppId(basicApply);
+            BasicHouseVo basicHouseVo = publicBasicService.getBasicHouseVoByAppId(surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId()));
             modelAndView.addObject(StringUtils.uncapitalize(BasicHouseVo.class.getSimpleName()), basicHouseVo);
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
