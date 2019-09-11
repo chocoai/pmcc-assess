@@ -60,6 +60,8 @@ public class MdIncomeHistory {
 
     private String sourceType;
 
+    private String deprecitionRoyalty;
+
     public Integer getId() {
         return id;
     }
@@ -282,5 +284,13 @@ public class MdIncomeHistory {
 
     public void setSourceType(String sourceType) {
         this.sourceType = sourceType == null ? null : sourceType.trim();
+    }
+
+    public String getDeprecitionRoyalty() {
+        return deprecitionRoyalty;
+    }
+
+    public void setDeprecitionRoyalty(String deprecitionRoyalty) {
+        this.deprecitionRoyalty = deprecitionRoyalty == null ? null : deprecitionRoyalty.trim();
     }
 }

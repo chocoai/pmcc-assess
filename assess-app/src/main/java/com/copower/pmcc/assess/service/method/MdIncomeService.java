@@ -82,6 +82,8 @@ public class MdIncomeService {
     private MdIncomeForecastAnalyseItemDao mdIncomeForecastAnalyseItemDao;
     @Autowired
     private GenerateCommonMethod generateCommonMethod;
+    @Autowired
+    private MdIncomePriceInvestigationDao mdIncomePriceInvestigationDao;
 
     /**
      * 保存数据
@@ -981,7 +983,7 @@ public class MdIncomeService {
                         if (StringUtils.isNotEmpty(PoiUtils.getCellValue(row.getCell(9)))) {
                             mdIncomeHistory.setAmountMoney(new BigDecimal(PoiUtils.getCellValue(row.getCell(9))));
                         }
-                        //mdIncomeHistory.setMoneyExplain(PoiUtils.getCellValue(row.getCell(10)));
+                        mdIncomeHistory.setDeprecitionRoyalty(PoiUtils.getCellValue(row.getCell(10)));
                         mdIncomeHistory.setBisForecast(false);
                         mdIncomeHistoryDao.addHistory(mdIncomeHistory);
                         generatorForecastAnalyse(mdIncomeHistory);
@@ -1039,7 +1041,7 @@ public class MdIncomeService {
                         if (StringUtils.isNotEmpty(PoiUtils.getCellValue(row.getCell(15)))) {
                             mdIncomeHistory.setAmountMoney(new BigDecimal(PoiUtils.getCellValue(row.getCell(15))));
                         }
-                        //mdIncomeHistory.setMoneyExplain(PoiUtils.getCellValue(row.getCell(16)));
+                        mdIncomeHistory.setDeprecitionRoyalty(PoiUtils.getCellValue(row.getCell(16)));
                         mdIncomeHistory.setBisForecast(false);
                         mdIncomeHistoryDao.addHistory(mdIncomeHistory);
                         generatorForecastAnalyse(mdIncomeHistory);
@@ -1072,7 +1074,7 @@ public class MdIncomeService {
         List<MdIncomeHistory> historyList = mdIncomeHistoryDao.getHistoryList(mdIncomeHistory);
         List<MdIncomeHistoryVo> vos = LangUtils.transform(historyList, p -> getHistoryVo(p));
         //表单类型为餐饮、酒店、宾馆时排序
-        if(mdIncomeHistory.getFormType()==1) {
+        if (mdIncomeHistory.getFormType() == 1) {
             Comparator<MdIncomeHistoryVo> comparator = new Comparator<MdIncomeHistoryVo>() {
                 @Override
                 public int compare(MdIncomeHistoryVo o1, MdIncomeHistoryVo o2) {
@@ -1117,7 +1119,7 @@ public class MdIncomeService {
      * @return
      */
     @Transactional
-    public void createForecastIncomeYear(Integer incomeForecastId) throws BusinessException{
+    public void createForecastIncomeYear(Integer incomeForecastId) {
         MdIncomeForecast forecast = mdIncomeForecastDao.getForecastById(incomeForecastId);
 
         //先清除原数据
@@ -1653,8 +1655,8 @@ public class MdIncomeService {
     public void forecastIncomeItemQuoteData(Integer incomeId, Integer formType, Integer incomeForecastId) {
         //删除老数据
         List<MdIncomeForecastItem> oldData = getIncomeForecastItemListByMasterId(incomeForecastId);
-        if(CollectionUtils.isNotEmpty(oldData)){
-            for (MdIncomeForecastItem item: oldData) {
+        if (CollectionUtils.isNotEmpty(oldData)) {
+            for (MdIncomeForecastItem item : oldData) {
                 mdIncomeForecastItemDao.deleteIncomeForecastItem(item.getId());
             }
         }
@@ -1700,4 +1702,32 @@ public class MdIncomeService {
     }
 
 
+    public void saveMdIncomePriceInvestigation(MdIncomePriceInvestigation mdIncomePriceInvestigation) {
+        if (mdIncomePriceInvestigation.getId() == null) {
+            mdIncomePriceInvestigation.setCreator(commonService.thisUserAccount());
+            mdIncomePriceInvestigationDao.addIncomePriceInvestigation(mdIncomePriceInvestigation);
+        } else {
+            mdIncomePriceInvestigationDao.updateIncomePriceInvestigation(mdIncomePriceInvestigation);
+        }
+    }
+
+    public MdIncomePriceInvestigation getMdIncomePriceInvestigationById(Integer id) {
+        return mdIncomePriceInvestigationDao.getIncomePriceInvestigationById(id);
+    }
+
+    public BootstrapTableVo getMdIncomePriceInvestigationList(Integer incomeId) {
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        MdIncomePriceInvestigation mdIncomePriceInvestigation = new MdIncomePriceInvestigation();
+        mdIncomePriceInvestigation.setIncomeId(incomeId);
+        List<MdIncomePriceInvestigation> list = mdIncomePriceInvestigationDao.getIncomePriceInvestigationList(mdIncomePriceInvestigation);
+        vo.setTotal(page.getTotal());
+        vo.setRows(CollectionUtils.isEmpty(list) ? new ArrayList<MdIncomePriceInvestigation>() : list);
+        return vo;
+    }
+
+    public void removeMdIncomePriceInvestigation(Integer id) {
+        mdIncomePriceInvestigationDao.deleteIncomePriceInvestigation(id);
+    }
 }

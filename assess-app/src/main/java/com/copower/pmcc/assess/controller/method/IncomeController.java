@@ -84,7 +84,7 @@ public class IncomeController {
     @ResponseBody
     @RequestMapping(value = "/getHistoryList", name = "显示列表", method = RequestMethod.GET)
     public BootstrapTableVo getHistoryList(MdIncomeHistory mdIncomeHistory) {
-        if(StringUtils.isEmpty(mdIncomeHistory.getSecondLevelNumber())){
+        if (StringUtils.isEmpty(mdIncomeHistory.getSecondLevelNumber())) {
             mdIncomeHistory.setSecondLevelNumber(null);
         }
         return mdIncomeService.getHistoryList(mdIncomeHistory);
@@ -108,7 +108,7 @@ public class IncomeController {
     public HttpResult historyToForecast(String ids, Integer year, String formType) {
         try {
             if (StringUtils.isNotBlank(ids))
-                mdIncomeService.historyToForecast(FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(ids)), year,formType);
+                mdIncomeService.historyToForecast(FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(ids)), year, formType);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return HttpResult.newErrorResult(e.getMessage());
@@ -209,7 +209,7 @@ public class IncomeController {
     public HttpResult createForecastIncomeYear(Integer incomeForecastId) {
         try {
             mdIncomeService.createForecastIncomeYear(incomeForecastId);
-        }catch (Exception e) {
+        } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return HttpResult.newErrorResult(e.getMessage());
         }
@@ -364,9 +364,9 @@ public class IncomeController {
 
     @ResponseBody
     @RequestMapping(value = "/forecastIncomeItemQuoteData", name = "引用数据", method = RequestMethod.POST)
-    public HttpResult forecastIncomeItemQuoteData(Integer incomeId,Integer formType, Integer incomeForecastId) {
+    public HttpResult forecastIncomeItemQuoteData(Integer incomeId, Integer formType, Integer incomeForecastId) {
         try {
-            mdIncomeService.forecastIncomeItemQuoteData(incomeId,formType,incomeForecastId);
+            mdIncomeService.forecastIncomeItemQuoteData(incomeId, formType, incomeForecastId);
         } catch (Exception e) {
             logger.error(e.getMessage());
             return HttpResult.newErrorResult(e.getMessage());
@@ -374,5 +374,44 @@ public class IncomeController {
         return HttpResult.newCorrectResult();
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/getMdIncomePriceInvestigationList", name = "商品调查价格列表", method = RequestMethod.GET)
+    public BootstrapTableVo getMdIncomePriceInvestigationList(Integer incomeId) {
+        return mdIncomeService.getMdIncomePriceInvestigationList(incomeId);
+    }
 
+    @ResponseBody
+    @RequestMapping(value = "/removeMdIncomePriceInvestigation", name = "删除一条商品调查价格", method = RequestMethod.POST)
+    public HttpResult removeMdIncomePriceInvestigation(@RequestParam(value = "id") Integer id) {
+        try {
+            mdIncomeService.removeMdIncomePriceInvestigation(id);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/saveMdIncomePriceInvestigation", method = {RequestMethod.POST}, name = "保存商品调查价格")
+    public HttpResult saveMdIncomePriceInvestigation(MdIncomePriceInvestigation mdIncomePriceInvestigation) {
+        try {
+            mdIncomeService.saveMdIncomePriceInvestigation(mdIncomePriceInvestigation);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getMdIncomePriceInvestigationById", name = "获取一条商品调查价格", method = RequestMethod.GET)
+    public HttpResult getMdIncomePriceInvestigationById(Integer id) {
+        try {
+            MdIncomePriceInvestigation priceInvestigationById = mdIncomeService.getMdIncomePriceInvestigationById(id);
+            return HttpResult.newCorrectResult(priceInvestigationById);
+        } catch (Exception e) {
+            return HttpResult.newErrorResult("获取失败");
+        }
+    }
 }
