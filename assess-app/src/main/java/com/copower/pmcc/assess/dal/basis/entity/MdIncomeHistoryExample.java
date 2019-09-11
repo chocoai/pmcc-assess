@@ -1865,6 +1865,76 @@ public class MdIncomeHistoryExample {
             addCriterion("source_type not between", value1, value2, "sourceType");
             return (Criteria) this;
         }
+
+        public Criteria andDeprecitionRoyaltyIsNull() {
+            addCriterion("deprecition_royalty is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeprecitionRoyaltyIsNotNull() {
+            addCriterion("deprecition_royalty is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeprecitionRoyaltyEqualTo(String value) {
+            addCriterion("deprecition_royalty =", value, "deprecitionRoyalty");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeprecitionRoyaltyNotEqualTo(String value) {
+            addCriterion("deprecition_royalty <>", value, "deprecitionRoyalty");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeprecitionRoyaltyGreaterThan(String value) {
+            addCriterion("deprecition_royalty >", value, "deprecitionRoyalty");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeprecitionRoyaltyGreaterThanOrEqualTo(String value) {
+            addCriterion("deprecition_royalty >=", value, "deprecitionRoyalty");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeprecitionRoyaltyLessThan(String value) {
+            addCriterion("deprecition_royalty <", value, "deprecitionRoyalty");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeprecitionRoyaltyLessThanOrEqualTo(String value) {
+            addCriterion("deprecition_royalty <=", value, "deprecitionRoyalty");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeprecitionRoyaltyLike(String value) {
+            addCriterion("deprecition_royalty like", value, "deprecitionRoyalty");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeprecitionRoyaltyNotLike(String value) {
+            addCriterion("deprecition_royalty not like", value, "deprecitionRoyalty");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeprecitionRoyaltyIn(List<String> values) {
+            addCriterion("deprecition_royalty in", values, "deprecitionRoyalty");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeprecitionRoyaltyNotIn(List<String> values) {
+            addCriterion("deprecition_royalty not in", values, "deprecitionRoyalty");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeprecitionRoyaltyBetween(String value1, String value2) {
+            addCriterion("deprecition_royalty between", value1, value2, "deprecitionRoyalty");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeprecitionRoyaltyNotBetween(String value1, String value2) {
+            addCriterion("deprecition_royalty not between", value1, value2, "deprecitionRoyalty");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

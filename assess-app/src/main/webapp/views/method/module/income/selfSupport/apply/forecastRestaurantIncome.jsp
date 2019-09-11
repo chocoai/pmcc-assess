@@ -258,6 +258,16 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            房屋折旧与使用费
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <input type="text" name="deprecitionRoyalty" placeholder="房屋折旧与使用费" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -416,6 +426,7 @@
         cols.push({field: 'makePrice', title: '标价'});
         cols.push({field: 'number', title: '数量'});
         cols.push({field: 'amountMoney', title: '金额'});
+        cols.push({field: 'deprecitionRoyalty', title: '房屋折旧与使用费'});
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
