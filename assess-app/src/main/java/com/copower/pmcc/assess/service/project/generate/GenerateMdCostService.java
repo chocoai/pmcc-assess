@@ -247,6 +247,50 @@ public class GenerateMdCostService implements Serializable {
                 generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), v);
             }
             break;
+            case MarketCost_Assessment_land_use_right_area: {
+                generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), ArithmeticUtils.getBigDecimalString(target.getDevelopLandAreaTax()));
+            }
+            break;
+            case MarketCost_UnitAreaLandPrice: {
+                generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), ArithmeticUtils.getBigDecimalString(target.getLandPurchasePrice()));
+            }
+            break;
+            case MarketCost_landPurchasePrice: {//成本法土地购买价格
+                BigDecimal bigDecimal = ArithmeticUtils.multiply(target.getDevelopLandAreaTax(), target.getLandPurchasePrice(), 2);
+                generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), ArithmeticUtils.getBigDecimalString(bigDecimal));
+            }
+            break;
+            case MarketCost_landGetRelevantRate: {
+                generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), ArithmeticUtils.getPercentileSystem(target.getLandGetRelevant(), 2));
+            }
+            break;
+            case MarketCost_landGetRelevant: { //成本法土地取得税费
+                BigDecimal bigDecimal = ArithmeticUtils.multiply(target.getDevelopLandAreaTax(), target.getLandPurchasePrice());
+                bigDecimal = ArithmeticUtils.multiply(bigDecimal, target.getLandGetRelevant());
+                generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), ArithmeticUtils.round(bigDecimal.toString(), 2));
+            }
+            break;
+            case MarketCost_additionalCostLandAcquisition: {
+                generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), ArithmeticUtils.round(target.getAdditionalCostLandAcquisition().toString(), 2));
+            }
+            break;
+            case MarketCost_landGetCostTotal: {
+                BigDecimal bigDecimal = ArithmeticUtils.multiply(target.getDevelopLandAreaTax(), target.getLandPurchasePrice());
+                BigDecimal landGetRelevant = ArithmeticUtils.multiply(bigDecimal, target.getLandGetRelevant());
+                BigDecimal additionalCostLandAcquisition = target.getAdditionalCostLandAcquisition();
+                BigDecimal v = ArithmeticUtils.add(new BigDecimal[]{bigDecimal, landGetRelevant, additionalCostLandAcquisition});
+                generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), ArithmeticUtils.round(v.toString(), 2));
+            }
+            break;
+            case MarketCost_EstateLandPrice: {
+                BigDecimal bigDecimal = ArithmeticUtils.multiply(target.getDevelopLandAreaTax(), target.getLandPurchasePrice());
+                BigDecimal landGetRelevant = ArithmeticUtils.multiply(bigDecimal, target.getLandGetRelevant());
+                BigDecimal additionalCostLandAcquisition = target.getAdditionalCostLandAcquisition();
+                BigDecimal v = ArithmeticUtils.add(new BigDecimal[]{bigDecimal, landGetRelevant, additionalCostLandAcquisition});
+                v = ArithmeticUtils.divide(v,target.getDevelopBuildAreaTax(),2) ;
+                generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), ArithmeticUtils.round(v.toString(), 2));
+            }
+            break;
             case MarketCost_Method: {
                 if (mdCostVo.getMdCostConstruction().getMcId() != null) {
                     try {
@@ -314,20 +358,20 @@ public class GenerateMdCostService implements Serializable {
             break;
             case MarketCost_GroundFloor_AreaCounted_volume_ratio: {
                 String str = "groundBuildingArea";
-                if (mdEconomicIndicatorsApplyDto == null){
+                if (mdEconomicIndicatorsApplyDto == null) {
                     break;
                 }
                 List<MdEconomicIndicatorsItem> itemList = mdEconomicIndicatorsApplyDto.getEconomicIndicatorsItemList();
                 List<BigDecimal> bigDecimalList = Lists.newArrayList();
                 if (CollectionUtils.isNotEmpty(itemList)) {
                     for (MdEconomicIndicatorsItem item : itemList) {
-                        if (item.getSaleableArea() == null) {
+                        if (item.getPlannedBuildingArea() == null) {
                             continue;
                         }
                         if (!Objects.equal(item.getDataKey(), str)) {
                             continue;
                         }
-                        bigDecimalList.add(item.getSaleableArea());
+                        bigDecimalList.add(item.getPlannedBuildingArea());
                     }
                 }
                 if (CollectionUtils.isNotEmpty(bigDecimalList)) {
