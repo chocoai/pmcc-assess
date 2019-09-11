@@ -567,22 +567,6 @@ public class ProjectPlanDetailsService {
     }
 
     /**
-     * 判断该计划任务下的所有任务是否都已完成
-     *
-     * @param planDetailsId
-     * @return
-     */
-    public boolean isAllFinish(Integer planDetailsId) {
-        List<ProjectPlanDetails> planDetailsList = getPlanDetailsListRecursion(planDetailsId, false);
-        if (CollectionUtils.isEmpty(planDetailsList)) return true;
-        for (ProjectPlanDetails projectPlanDetails : planDetailsList) {
-            if (projectPlanDetails.getBisLastLayer() == Boolean.TRUE && !StringUtils.equals(projectPlanDetails.getStatus(), ProcessStatusEnum.FINISH.getValue()))
-                return false;
-        }
-        return true;
-    }
-
-    /**
      * 获取子项计划任务
      *
      * @param planDetailsId

@@ -432,4 +432,15 @@ public class ProjectInfoController {
         }
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/enterNextStage", name = "进入项目下个阶段", method = RequestMethod.GET)
+    public HttpResult enterNextStage(Integer projectId) {
+        try {
+            projectInfoService.enterNextStage(projectId);
+            return HttpResult.newCorrectResult();
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return HttpResult.newErrorResult("进入项目下个阶段");
+        }
+    }
 }

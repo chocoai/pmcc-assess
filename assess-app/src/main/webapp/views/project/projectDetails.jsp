@@ -105,6 +105,12 @@
                            href="${pageContext.request.contextPath}/projectReportFile/index?projectId=${projectInfo.id}">估价委托书及相关证明</a>
                     </div>
                     <div class="btn-group">
+                        <button type="button" onclick="projectDetails.enterNextStage();"
+                                class="btn btn-primary">
+                            进入下阶段
+                        </button>
+                    </div>
+                    <div class="btn-group">
                         <button type="button" onclick="projectDetails.loadPlanTabInfo(projectDetails.getActiveTab());"
                                 class="btn btn-primary">
                             <i class='fa fa-refresh fa-white'></i> 刷新
@@ -473,7 +479,7 @@
                             if (result.data.planExecutUrl) {
                                 var btnClass = result.data.processInsId == "-1" ? "success" : "primary";
                                 html += '<div class="btn btn-sm btn-' + btnClass + '" data-placement="top" data-toggle="tooltip" onclick="projectDetails.taskOpenWin(\'' + result.data.planExecutUrl + '\')" data-original-title="处理"><i class="fa fa-arrow-right"></i> </div>';
-                            }else if ('${projectInfo.projectStatus}' != 'finish' && '${isPM}' == 'true' && result.data.status != 'runing') {
+                            } else if ('${projectInfo.projectStatus}' != 'finish' && '${isPM}' == 'true' && result.data.status != 'runing') {
                                 html += '<div class="btn btn-sm btn-primary" data-placement="top" data-toggle="tooltip" data-original-title="重启" onclick="projectDetails.replyPlan(' + planId + ');"><i class="fa fa-reply"></i></div>';
                             }
                             html += '<div class="btn btn-sm btn-warning" data-placement="top" data-toggle="tooltip" data-original-title="查看" onclick="window.open(\'' + result.data.planDisplayUrl + '\')"><i class="fa fa-search"></i></div>';
@@ -835,7 +841,7 @@
                     var formData = {
                         tableName: AssessDBKey.ProjectTaskReturnRecord,
                         tableId: 0,
-                        fieldsName:planDetailsId
+                        fieldsName: planDetailsId
                     };
                     return formData;
                 },
@@ -847,13 +853,13 @@
         },
 
         //加载附件
-        loadTemplateAttachment:function(planDetailsId) {
+        loadTemplateAttachment: function (planDetailsId) {
             FileUtils.getFileShows({
                 target: "returnUploadFile",
                 formData: {
                     tableName: AssessDBKey.ProjectTaskReturnRecord,
                     tableId: 0,
-                    fieldsName:planDetailsId
+                    fieldsName: planDetailsId
                 },
                 editFlag: true,
                 deleteFlag: true
@@ -1074,7 +1080,7 @@
         },
 
         //选择人员
-        personSelect:function () {
+        personSelect: function () {
             erpEmployee.select({
                 onSelected: function (data) {
                     if (data.account) {
@@ -1129,6 +1135,23 @@
                 search: false,
                 onLoadSuccess: function () {
                     $('.tooltips').tooltip();
+                }
+            });
+        },
+
+        //进入项目下个阶段
+        enterNextStage:function () {
+            $.ajax({
+                url: '${pageContext.request.contextPath}/projectInfo/enterNextStage',
+                data: {
+                    projectId: '${projectInfo.id}'
+                },
+                success: function (result) {
+                    if (result.ret) {
+                        toastr.success('操作成功');
+                    } else {
+                        Alert(result.errmsg);
+                    }
                 }
             });
         }

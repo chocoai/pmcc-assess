@@ -842,65 +842,16 @@ public class ProjectPlanService {
     }
 
     /**
-     * 在bpm里面追加任务
-     * 检测重启后没有产生得任务
-     * @param listLinkedHashMap
-     * @param workStageId
+     * 获取当前项目阶段
+     *
      * @param projectId
-     * @param projectPhases
-     * @param appendTask
-     * @throws BpmException
+     * @return
      */
-    public void repairTreatmentTask(LinkedHashMap<DeclareRecord, List<ProjectPlanDetails>> listLinkedHashMap, Integer workStageId, Integer projectId, List<ProjectPhase> projectPhases, boolean appendTask) throws BpmException {
-        if (listLinkedHashMap.isEmpty()) {
-            return;
-        }
-        if (!appendTask) {
-            return;
-        }
-        ProjectInfo projectInfo = projectInfoDao.getProjectInfoById(projectId);
-        ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(workStageId);
-        //目前只处理申报阶段重启之后bpm没有任务
-        List<ProjectPhase> projectPhaseList = Lists.newArrayList();
-        List<String> keys = Arrays.asList(AssessPhaseKeyConstant.ASSET_INVENTORY, AssessPhaseKeyConstant.SCENE_EXPLORE);
-        for (String key : keys) {
-            ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByReferenceId(key,projectInfo.getProjectCategoryId());
-            if (projectPhase != null) {
-                projectPhaseList.add(projectPhase);
-            }
-        }
-        for (Map.Entry<DeclareRecord, List<ProjectPlanDetails>> entry : listLinkedHashMap.entrySet()) {
-            List<ProjectPlanDetails> projectPlanDetailsList = entry.getValue();
-            if (CollectionUtils.isEmpty(projectPlanDetailsList)) {
-                continue;
-            }
-            for (ProjectPlanDetails projectPlanDetails : projectPlanDetailsList) {
-                ResponsibileModelEnum modelEnum = ResponsibileModelEnum.TASK;
-                ProjectResponsibilityDto projectPlanResponsibility = new ProjectResponsibilityDto();
-                projectPlanResponsibility.setAppKey(applicationConstant.getAppKey());
-                projectPlanResponsibility.setProjectId(projectPlanDetails.getProjectId());
-                projectPlanResponsibility.setPlanId(projectPlanDetails.getPlanId());
-                projectPlanResponsibility.setPlanDetailsId(projectPlanDetails.getId());
-                projectPlanResponsibility.setModel(modelEnum.getId());
-                List<ProjectResponsibilityDto> projectResponsibilityDtoList = bpmRpcProjectTaskService.getProjectTaskList(projectPlanResponsibility);
-                if (CollectionUtils.isEmpty(projectResponsibilityDtoList) && CollectionUtils.isNotEmpty(projectPhaseList)) {
-                    if (projectPlanDetails.getPlanEndDate() == null) {
-                        projectPlanDetails.setPlanEndDate(new Date());
-                    }
-                    if (projectPlanDetails.getPlanStartDate() == null) {
-                        projectPlanDetails.setPlanStartDate(new Date());
-                    }
-                    if (StringUtils.isEmpty(projectPlanDetails.getExecuteUserAccount())){
-                        projectPlanDetails.setExecuteUserAccount(commonService.thisUserAccount());
-                    }
-                    //当检测到没有任务并且还是处于申报阶段的任务,注意如果需要以后每个阶段都检测并追加遗漏的把这放开就行任务
-                    if (projectPhaseList.stream().anyMatch(select -> com.google.common.base.Objects.equal(select.getId(), projectPlanDetails.getProjectPhaseId()))) {
-                        saveProjectPlanDetailsResponsibility(projectPlanDetails, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), modelEnum);
-                        projectPlanDetailsDao.updateProjectPlanDetails(projectPlanDetails) ;
-                    }
-                }
-            }
-        }
+    public List<ProjectPlan> getCurrentProjectPlans(Integer projectId) {
+        List<ProjectPlan> list = Lists.newArrayList();
+        list.addAll(projectPlanDao.getProjectPlanByStatus(Lists.newArrayList(projectId), ProjectStatusEnum.PLAN.getKey()));
+        list.addAll(projectPlanDao.getProjectPlanByStatus(Lists.newArrayList(projectId), ProjectStatusEnum.TASK.getKey()));
+        return list;
     }
 
 

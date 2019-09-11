@@ -27,17 +27,6 @@ public class ProjectPlanDetailsController {
     private ProjectPlanDetailsService projectPlanDetailsService;
 
     @ResponseBody
-    @PostMapping(name = "是否所有计划任务已完成", value = "/isAllFinish")
-    public HttpResult isAllFinish(Integer planDetailsId) {
-        try {
-            return HttpResult.newCorrectResult(projectPlanDetailsService.isAllFinish(planDetailsId));
-        } catch (Exception e) {
-            logger.error("是否所有计划任务已完成", e);
-            return HttpResult.newErrorResult("是否所有计划任务已完成异常");
-        }
-    }
-
-    @ResponseBody
     @PostMapping(name = "重启任务", value = "/replyProjectPlanDetails")
     public HttpResult replyProjectPlanDetails(Integer planDetailsId, String formData) {
         try {

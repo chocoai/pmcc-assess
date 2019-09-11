@@ -140,7 +140,7 @@ public class ProjectInfoService {
     @Autowired
     private BaseAttachmentService baseAttachmentService;
     @Autowired
-    private AdRpcQualificationsService adRpcQualificationsService;
+    private ProjectPlanDetailsService projectPlanDetailsService;
 
 
     /**
@@ -759,5 +759,20 @@ public class ProjectInfoService {
         ProjectInfo projectInfo = getProjectInfoById(projectId);
         projectInfo.setProjectStatus(ProjectStatusEnum.FINISH.getKey());
         updateProjectInfo(projectInfo);
+    }
+
+    /**
+     * 进入项目下个阶段
+     * @param projectId
+     */
+    public void enterNextStage(Integer projectId) throws Exception {
+        List<ProjectPlan> planList = projectPlanService.getCurrentProjectPlans(projectId);
+        if(CollectionUtils.isEmpty(planList)) return;
+        //判断当前阶段是否任务是否完成
+        Integer planId=planList.get(0).getId();
+        boolean isAllFinish = projectPlanDetailsService.isAllPlanDetailsFinish(planId);
+        if(isAllFinish){
+            projectPlanService.enterNextStage(planId);
+        }
     }
 }
