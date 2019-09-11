@@ -79,9 +79,8 @@
             <div class="form-group">
                 <div class="x-valid">
                     <div class="col-sm-12">
-                        <table class="table table-striped" id="landIncomeCategoryTableId" >
-
-                        </table>
+                        <input type="button" class="btn btn-primary" value="经济规划指标"
+                               onclick="economicIndicators.init({economicId:'${mdDevelopment.economicId}',attribute:{readonly:'readonly','class':'form-control'} });">
                     </div>
                 </div>
             </div>
@@ -710,7 +709,6 @@
     };
 
     landEngineering.loadMdCalculatingMethodEngineeringCostTable = function () {
-        <%--var obj = {type:landEngineering.type,planDetailsId:'${projectPlanDetails.id}'} ;--%>
         var obj = {planDetailsId:'${projectPlanDetails.id}'} ;
         var cols = [];
         cols.push({
@@ -738,17 +736,10 @@
         });
     };
 
-    landEngineering.loadIncomeCategoryTable = function () {
-        var obj = {type:landEngineering.type,planDetailsId:'${projectPlanDetails.id}'} ;
-        developmentCommon.loadIncomeCategoryTable($("#landIncomeCategoryTableId"),obj,null,function () {
-
-        }) ;
-    };
 
 
     $(function () {
         landEngineering.loadMdDevelopmentInfrastructureChildrenTable() ;
-        landEngineering.loadIncomeCategoryTable() ;
         landEngineering.loadMdCalculatingMethodEngineeringCostTable() ;
     });
 

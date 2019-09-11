@@ -181,7 +181,6 @@
             });
         }
         landEngineering.loadMdDevelopmentInfrastructureChildrenTable() ;
-        landEngineering.loadIncomeCategoryTable();
         landEngineering.unsaleableBuildingAreaFunHandle() ;
         landEngineering.loadMdCalculatingMethodEngineeringCostTable('${!empty mdDevelopment.type}'?'${mdDevelopment.type}':undefined) ;
     };

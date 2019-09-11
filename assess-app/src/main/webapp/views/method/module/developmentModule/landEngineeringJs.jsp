@@ -197,6 +197,27 @@
         });
     };
 
+    /**
+     * 设置工程费
+     */
+    landEngineering.setMdCalculatingMethodEngineeringCost = function () {
+        var  planDetailsId = '${projectPlanDetails.id}' ;
+        $.ajax({
+            type: "post",
+            url: getContextPath() +"/mdDevelopment/setMdCalculatingMethodEngineeringCost",
+            data: {planDetailsId:planDetailsId},
+            success: function (result) {
+                if (result.ret) {
+                    toastr.success('成功');
+                    landEngineering.loadMdCalculatingMethodEngineeringCostTable();
+                }
+            },
+            error: function (e) {
+                Alert("调用服务端方法失败，失败原因:" + e);
+            }
+        });
+    };
+
 
 
     /*工程费和计算**/
@@ -318,7 +339,6 @@
         }
         var data = formSerializeArray(frm);
         data.planDetailsId = '${projectPlanDetails.id}' ;
-//        data.type = landEngineering.getTypeData() ;
         data.pid = developmentCommon.isNotBlank('${mdDevelopment.id}')?'${mdDevelopment.id}':'0' ;
         developmentCommon.infrastructureChildren.save(data , function () {
             toastr.success('添加成功!');
@@ -347,149 +367,61 @@
         }) ;
     };
 
-    /*收入类 经济指标 table save**/
-    landEngineering.saveMdDevelopmentIncomeCategoryTable = function (_this) {
-        var target = $(_this).parent().parent().parent().parent() ;
-        var frm = target.find("form") ;
-        if (!frm.valid()) {
-            return false ;
-        }
-        var data = formSerializeArray(frm);
-        data.planDetailsId = '${projectPlanDetails.id}' ;
-        data.type = landEngineering.getTypeData() ;
-        data.pid = developmentCommon.isNotBlank('${mdDevelopment.id}')?'${mdDevelopment.id}':'0' ;
-        target.modal('hide');
-        developmentCommon.loadIncomeCategorySave(data,function (item) {
-            toastr.success('添加成功!');
-            landEngineering.incomeCategoryTable.bootstrapTable('refresh');
-            landEngineering.writeMdDevelopmentIncomeCategoryTable(landEngineering.incomeCategoryTable,item) ;
-        },function () {
-
-        }) ;
-    };
-
-    /*收入类 经济指标 table delete**/
-    landEngineering.deleteMdDevelopmentIncomeCategoryTable = function (table) {
-        var rows = $(table).bootstrapTable('getSelections');
-        if (rows.length >= 1) {
-            var data = [];
-            $.each(rows, function (i, item) {
-                data.push(item.id);
-            });
-            var ids = $.map($(table).bootstrapTable('getSelections'), function (row) {
-                return row.id
-            });
-            developmentCommon.deleteIncomeCategory(data,function () {
-                $(table).bootstrapTable('remove', {
-                    field: 'id',
-                    values: ids
-                });
-                $(table).bootstrapTable('refresh');
-                toastr.success('删除成功!');
-                landEngineering.writeMdDevelopmentIncomeCategoryTable($(table)) ;
-            },function () {
-                toastr.success('删除失败!');
-            }) ;
-        } else {
-            toastr.success('至少勾选一个!');
-        }
-    };
-
-    /*收入类 经济指标 table load**/
-    landEngineering.loadIncomeCategoryTable = function () {
-        var obj = {type:landEngineering.getTypeData(),planDetailsId:'${projectPlanDetails.id}'} ;
-        developmentCommon.loadIncomeCategoryTable(landEngineering.incomeCategoryTable,obj,$("#toolbarLandIncomeCategoryTableId"),function () {
-            landEngineering.writeMdDevelopmentIncomeCategoryTable(landEngineering.incomeCategoryTable,null) ;
-        }) ;
-    } ;
-
-    /*收入类 经济指标 table edit**/
-    landEngineering.editMdDevelopmentIncomeCategoryTable = function (table,box ,flag) {
-        var target = $(box) ;
-        var frm = target.find("form") ;
-        var pid = developmentCommon.isNotBlank('${mdDevelopment.id}')?'${mdDevelopment.id}':'0' ;
-        if (flag){
-            var rows = $(table).bootstrapTable('getSelections');
-            if (rows.length == 1) {
-                var data = rows[0];
-                frm.initForm(data);
-                target.find(".modal-footer").empty().append($(landEngineering.incomeCategoryFooterHtml).html()) ;
-                target.modal('show');
-            } else {
-                toastr.success('勾选一个!');
-            }
+    //经济指标show
+    landEngineering.showMdDevelopmentIncomeCategory = function () {
+        var economicId = '${mdDevelopment.economicId}' ;
+        if (economicId){
+            economicIndicators.init({economicId:economicId});
         }else {
-            frm.clearAll();
-            frm.initForm({pid:pid});
-            target.find(".modal-footer").empty().append($(landEngineering.incomeCategoryFooterHtml).html()) ;
-            target.modal('show');
+            economicIndicators.init({
+                planDetailsId: '${projectPlanDetails.id}',
+                saveCallback: function (economicId) {//经济指标id更新到中间表
+                    landEngineering.target.find("input[name='economicId']").val(economicId).trigger('blur');
+                },
+                targetCallback:function () {
+                    economicIndicators.autoSummary(true) ;
+                }
+            });
         }
-    };
+        $('#modalEconomicIndicators').find('.modal-footer').find('button').last().bind('click',function() {
+            var data = economicIndicators.getFormData() ;
+            landEngineering.target.find("a[data-key='plannedBuildingArea']").html(data.plannedBuildingArea);
+            landEngineering.target.find("a[data-key='totalSaleableAreaPrice']").html(data.totalSaleableAreaPrice);
+            landEngineering.target.find("a[data-key='saleableArea']").html(data.saleableArea);
 
-    /*收入类 经济指标 table 测算**/
-    landEngineering.writeMdDevelopmentIncomeCategoryTable = function (table,obj) {
-        var data = table.bootstrapTable('getData') ;
-        if (obj){
-            data.push(obj) ;
-        }
-        var plannedBuildingArea = math.bignumber(0);
-        var totalSaleableAreaPrice = math.bignumber(0);
-        var saleableArea = math.bignumber(0);
-        $.each(data,function (i,n) {
-            if ($.isNumeric(n.plannedBuildingArea)){
-                plannedBuildingArea = math.add(plannedBuildingArea, math.bignumber(n.plannedBuildingArea)) ;
-            }
-            if ($.isNumeric(n.totalSaleableAreaPrice)){
-                totalSaleableAreaPrice = math.add(totalSaleableAreaPrice, math.bignumber(n.totalSaleableAreaPrice)) ;
-            }
-            if ($.isNumeric(n.saleableArea)){
-                saleableArea = math.add(saleableArea, math.bignumber(n.saleableArea)) ;
-            }
+            landEngineering.target.find("input[name='plannedBuildingArea']").val(data.plannedBuildingArea).trigger('blur');
+            landEngineering.target.find("input[name='totalSaleableAreaPrice']").val(data.totalSaleableAreaPrice).trigger('blur');
+            landEngineering.target.find("input[name='saleableArea']").val(data.saleableArea).trigger('blur');
         });
-        plannedBuildingArea = plannedBuildingArea.toString() ;
-        totalSaleableAreaPrice = totalSaleableAreaPrice.toString() ;
-        saleableArea = saleableArea.toString() ;
-        this.target.find("label[name='plannedBuildingArea']").html(plannedBuildingArea);
-        this.target.find("label[name='totalSaleableAreaPrice']").html(totalSaleableAreaPrice);
-        this.target.find("label[name='saleableArea']").html(saleableArea);
-        this.target.find("input[name='plannedBuildingArea']").val(plannedBuildingArea).trigger('blur');
-        this.target.find("input[name='totalSaleableAreaPrice']").val(totalSaleableAreaPrice).trigger('blur');
-        this.target.find("input[name='saleableArea']").val(saleableArea).trigger('blur');
     };
 
-    /*不可售建筑面积**/
+
+    /*编辑表格**/
     landEngineering.unsaleableBuildingAreaFunHandle = function () {
+        var arrKeys = ['unsaleableBuildingArea','saleableArea' , 'totalSaleableAreaPrice' , 'plannedBuildingArea'] ;
         this.target.find("a").each(function (i,item) {
             var target = $(item);
             var dataKey = target.attr("data-key");
-            if (dataKey == 'unsaleableBuildingArea'){
-                target.editable({
-                    type: "text",                //编辑框的类型。支持text|textarea|select|date|checklist等
-                    disabled: false,             //是否禁用编辑 ,默认 false
-                    emptytext: "不可售建筑面积(请输入数字最多保留两位小数)",          //空值的默认文本
-                    mode: "inline",              //编辑框的模式：支持popup和inline两种模式，默认是popup
-                    validate: function (value) { //字段验证
-                        if ($.isNumeric(value)){
-                            landEngineering.target.find("input[name='unsaleableBuildingArea']").val(value).trigger('blur');
-                        }else {
-                            return '必须是数字';
+            $.each(arrKeys,function (i,key) {
+                if (dataKey == key){
+                    target.editable({
+                        type: "text",                //编辑框的类型。支持text|textarea|select|date|checklist等
+                        disabled: false,             //是否禁用编辑 ,默认 false
+                        emptytext: "不可售建筑面积(请输入数字最多保留两位小数)",          //空值的默认文本
+                        mode: "inline",              //编辑框的模式：支持popup和inline两种模式，默认是popup
+                        validate: function (value) { //字段验证
+                            if ($.isNumeric(value)){
+                                landEngineering.target.find("input[name='"+key+"']").val(value).trigger('blur');
+                            }else {
+                                return '必须是数字';
+                            }
+                        },
+                        display: function (value) {
+                            $(this).text(value);
                         }
-                    },
-                    display: function (value) {
-                        $(this).text(value);
-                    }
-                });
-            }
+                    });
+                }
+            });
         });
     };
-
-
-
-    /**
-     math.sqrt(4) 开方
-     math.add( ) 加
-     math.subtract( )减
-     math.divide( ) 除
-     math.multiply( )乘
-     */
 </script>
