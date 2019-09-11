@@ -115,7 +115,7 @@
                     </label>
                     <div class="col-sm-3">
                         <label  class="form-control">
-                            <fmt:formatNumber value="${mdCostVo.mdCostConstruction.landGetRelevant}" type="percent"/>
+                            <fmt:formatNumber value="${mdCostVo.mdCostConstruction.landGetRelevant}" type="percent" maxFractionDigits="4"/>
                         </label>
 
                     </div>
@@ -178,7 +178,7 @@
                 <div class="col-sm-3">
 
                     <label  class="form-control">
-                        <fmt:formatNumber value="${mdCostVo.mdCostConstruction.reconnaissanceDesign}" type="percent"/>
+                        <fmt:formatNumber value="${mdCostVo.mdCostConstruction.reconnaissanceDesign}" type="percent" maxFractionDigits="4"/>
                         </label>
 
                 </div>
@@ -334,7 +334,7 @@
                 </label>
                 <div class="col-sm-3">
                     <label  class="form-control">
-                        <fmt:formatNumber value="${mdCostVo.mdCostConstruction.unforeseenExpenses}" type="percent"/>
+                        <fmt:formatNumber value="${mdCostVo.mdCostConstruction.unforeseenExpenses}" type="percent" maxFractionDigits="4"/>
                     </label>
                 </div>
             </div>
@@ -355,7 +355,7 @@
                 </label>
                 <div class="col-sm-3">
                     <label  class="form-control">
-                        <fmt:formatNumber value="${mdCostVo.mdCostConstruction.managementExpense}" type="percent"/>
+                        <fmt:formatNumber value="${mdCostVo.mdCostConstruction.managementExpense}" type="percent" maxFractionDigits="4"/>
                          </label>
                 </div>
             </div>
@@ -376,7 +376,7 @@
                 </label>
                 <div class="col-sm-3">
                     <label  class="form-control">
-                        <fmt:formatNumber value="${mdCostVo.mdCostConstruction.salesFee}" type="percent"/>
+                        <fmt:formatNumber value="${mdCostVo.mdCostConstruction.salesFee}" type="percent" maxFractionDigits="4"/>
                          </label>
                 </div>
             </div>
@@ -397,7 +397,7 @@
                 </label>
                 <div class="col-sm-3">
                     <label  class="form-control">
-                        <fmt:formatNumber value="${mdCostVo.mdCostConstruction.interestInvestmentTax}" type="percent"/>
+                        <fmt:formatNumber value="${mdCostVo.mdCostConstruction.interestInvestmentTax}" type="percent" maxFractionDigits="4"/>
                          </label>
                 </div>
             </div>
@@ -418,7 +418,7 @@
                 </label>
                 <div class="col-sm-3">
                     <label  class="form-control">
-                        <fmt:formatNumber value="${mdCostVo.mdCostConstruction.salesTaxAndAdditional}" type="percent"/>
+                        <fmt:formatNumber value="${mdCostVo.mdCostConstruction.salesTaxAndAdditional}" type="percent" maxFractionDigits="4"/>
                          </label>
                 </div>
             </div>
@@ -439,7 +439,7 @@
                 </label>
                 <div class="col-sm-3">
                     <label  class="form-control">
-                        <fmt:formatNumber value="${mdCostVo.mdCostConstruction.investmentProfitTax}" type="percent"/>
+                        <fmt:formatNumber value="${mdCostVo.mdCostConstruction.investmentProfitTax}" type="percent" maxFractionDigits="4"/>
                          </label>
                 </div>
             </div>
@@ -463,7 +463,7 @@
                     <div class="input-group">
                         <span class="input-group-btn">
                             <label  class="form-control">
-                        <fmt:formatNumber value="${mdCostVo.mdCostConstruction.residueRatio}" type="percent"/>
+                        <fmt:formatNumber value="${mdCostVo.mdCostConstruction.residueRatio}" type="percent" maxFractionDigits="4"/>
                          </label>
                         </span>
                         <span class="input-group-btn">
