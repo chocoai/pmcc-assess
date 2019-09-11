@@ -32,6 +32,27 @@
             <ul class="nav navbar-right panel_toolbox">
                 <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
             </ul>
+            <h3>商品价格调查</h3>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+            <form  class="form-horizontal">
+                <button type="button" class="btn btn-success"
+                        onclick="priceInvestigation.prototype.showModel()"
+                        data-toggle="modal" href="#divBox"> 新增
+                </button>
+            </form>
+            <table class="table table-bordered" id="tb_price_investigation_list">
+                <!-- cerare document add ajax data-->
+            </table>
+        </div>
+    </div>
+    
+    <div class="x_panel">
+        <div class="x_title collapse-link">
+            <ul class="nav navbar-right panel_toolbox">
+                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+            </ul>
             <h3>成本类</h3>
             <div class="clearfix"></div>
         </div>
@@ -169,28 +190,31 @@
                         aria-hidden="true">&times;</span></button>
                 <h3 class="modal-title">收入预测</h3>
             </div>
-            <form id="frm_forecast_income" class="form-horizontal">
-                <input type="hidden" name="incomeForecastId">
-                <div class="col-sm-3">
-                    <button type="button" class="btn btn-success"
-                            onclick="selfSupport.showForecastIncomeItemModel()"
-                            data-toggle="modal" href="#divBox"> 新增
-                    </button>
-                    <button type="button" class="btn btn-primary"
-                            onclick="selfSupport.forecastIncomeItemQuoteData()"> 引用数据
-                    </button>
-                </div>
-                <table class="table table-bordered" id="tb_md_income_forecast_analyse_item_list">
-                </table>
-                <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn btn-default">
-                        取消
-                    </button>
-                    <button type="button" class="btn btn-primary" onclick="selfSupport.createForecastIncomeYear();">
-                        保存
-                    </button>
-                </div>
-            </form>
+            <div class="modal-body">
+                <form id="frm_forecast_income" class="form-horizontal">
+                    <input type="hidden" name="incomeForecastId">
+                    <div class="col-sm-3">
+                        <button type="button" class="btn btn-success"
+                                onclick="selfSupport.showForecastIncomeItemModel()"
+                                data-toggle="modal" href="#divBox"> 新增
+                        </button>
+                        <button type="button" class="btn btn-primary"
+                                onclick="selfSupport.forecastIncomeItemQuoteData()"> 引用数据
+                        </button>
+                    </div>
+                    <table class="table table-bordered" id="tb_md_income_forecast_analyse_item_list">
+                    </table>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">
+                    取消
+                </button>
+                <button type="button" class="btn btn-primary" onclick="selfSupport.createForecastIncomeYear();">
+                    保存
+                </button>
+            </div>
+
         </div>
     </div>
 </div>
@@ -286,7 +310,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">预测数据</h3>
+                <h3 class="modal-title">运营费</h3>
             </div>
             <form id="frm_forecast_cost" class="form-horizontal">
                 <input type="hidden" name="id">
@@ -294,30 +318,29 @@
                 <input type="hidden" name="sectionId">
                 <input type="hidden" name="incomeTotal">
                 <input type="hidden" name="initialAmount">
+                <input type="hidden" name="operatingCost">
+                <input type="hidden" name="operatingExpenses">
+                <input type="hidden" name="operatingTax">
+                <input type="hidden" name="managementCost">
+                <input type="hidden" name="financialCost">
+                <input type="hidden" name="operatingProfit">
+                <input type="hidden" name="excessProfit">
                 <div class="modal-body">
                     <div class="form-group">
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
                                 经营成本比率<span class="symbol required"></span>
                             </label>
-                            <div class="col-sm-2">
+                            <div class="col-sm-4">
                                 <input type="text" name="operatingCostRatio" placeholder="经营成本比率"
                                        onblur="selfSupport.computeInitialAmount(this);" class="form-control x-percent">
                             </div>
                         </div>
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                经营成本<span class="symbol required"></span>
-                            </label>
-                            <div class="col-sm-2">
-                                <input type="text" name="operatingCost" placeholder="经营成本" class="form-control" readonly>
-                            </div>
-                        </div>
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
                                 经营成本说明
                             </label>
-                            <div class="col-sm-2">
+                            <div class="col-sm-4">
                                 <input type="text" name="operatingCostRemark" placeholder="经营成本说明"
                                        class="form-control" required="required">
                             </div>
@@ -328,24 +351,16 @@
                             <label class="col-sm-2 control-label">
                                 经营费用比率<span class="symbol required"></span>
                             </label>
-                            <div class="col-sm-2">
+                            <div class="col-sm-4">
                                 <input type="text" name="operatingExpensesRatio" placeholder="经营费用比率"
                                        onblur="selfSupport.computeInitialAmount(this);" class="form-control x-percent">
                             </div>
                         </div>
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                经营费用<span class="symbol required"></span>
-                            </label>
-                            <div class="col-sm-2">
-                                <input type="text" name="operatingExpenses" placeholder="经营费用" class="form-control" readonly>
-                            </div>
-                        </div>
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
                                 经营费用说明
                             </label>
-                            <div class="col-sm-2">
+                            <div class="col-sm-4">
                                 <input type="text" name="operatingExpensesRemark" placeholder="经营费用"
                                        class="form-control" required="required">
                             </div>
@@ -356,24 +371,16 @@
                             <label class="col-sm-2 control-label">
                                 经营税金及附加比率<span class="symbol required"></span>
                             </label>
-                            <div class="col-sm-2">
+                            <div class="col-sm-4">
                                 <input type="text" name="operatingTaxRatio" placeholder="经营税金及附加比率"
                                        onblur="selfSupport.computeInitialAmount(this);" class="form-control x-percent">
                             </div>
                         </div>
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                经营税金及附加<span class="symbol required"></span>
-                            </label>
-                            <div class="col-sm-2">
-                                <input type="text" name="operatingTax" placeholder="经营税金及附加" class="form-control" readonly>
-                            </div>
-                        </div>
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
                                 经营税金及附加说明
                             </label>
-                            <div class="col-sm-2">
+                            <div class="col-sm-4">
                                 <input type="text" name="operatingTaxRemark" placeholder="经营税金及附加说明"
                                        class="form-control" required="required">
                             </div>
@@ -384,24 +391,16 @@
                             <label class="col-sm-2 control-label">
                                 管理费用比率<span class="symbol required"></span>
                             </label>
-                            <div class="col-sm-2">
+                            <div class="col-sm-4">
                                 <input type="text" name="managementCostRatio" placeholder="管理费用比率"
                                        onblur="selfSupport.computeInitialAmount(this);" class="form-control x-percent">
                             </div>
                         </div>
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                管理费用
-                            </label>
-                            <div class="col-sm-2">
-                                <input type="text" name="managementCost" placeholder="管理费用" class="form-control" readonly>
-                            </div>
-                        </div>
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
                                 管理费用说明
                             </label>
-                            <div class="col-sm-2">
+                            <div class="col-sm-4">
                                 <input type="text" name="managementCostRemark" placeholder="管理费用说明"
                                        class="form-control" required="required">
                             </div>
@@ -412,24 +411,16 @@
                             <label class="col-sm-2 control-label">
                                 财务费用比率<span class="symbol required"></span>
                             </label>
-                            <div class="col-sm-2">
+                            <div class="col-sm-4">
                                 <input type="text" name="financialCostRatio" placeholder="财务费用比率"
                                        onblur="selfSupport.computeInitialAmount(this);" class="form-control x-percent">
                             </div>
                         </div>
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                财务费用<span class="symbol required"></span>
-                            </label>
-                            <div class="col-sm-2">
-                                <input type="text" name="financialCost" placeholder="财务费用" class="form-control" readonly>
-                            </div>
-                        </div>
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
                                 财务费用说明
                             </label>
-                            <div class="col-sm-2">
+                            <div class="col-sm-4">
                                 <input type="text" name="financialCostRemark" placeholder="财务费用说明"
                                        class="form-control" required="required">
                             </div>
@@ -440,24 +431,16 @@
                             <label class="col-sm-2 control-label">
                                 经营利润比率<span class="symbol required"></span>
                             </label>
-                            <div class="col-sm-2">
+                            <div class="col-sm-4">
                                 <input type="text" name="operatingProfitRatio" placeholder="经营利润比率"
                                        onblur="selfSupport.computeInitialAmount(this);" class="form-control x-percent">
                             </div>
                         </div>
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                经营利润<span class="symbol required"></span>
-                            </label>
-                            <div class="col-sm-2">
-                                <input type="text" name="operatingProfit" placeholder="经营利润" class="form-control" readonly>
-                            </div>
-                        </div>
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
                                 经营利润说明
                             </label>
-                            <div class="col-sm-2">
+                            <div class="col-sm-4">
                                 <input type="text" name="operatingProfitRemark" placeholder="经营利润说明"
                                        class="form-control" required="required">
                             </div>
@@ -468,24 +451,16 @@
                             <label class="col-sm-2 control-label">
                                 特许权超额利润比率<span class="symbol required"></span>
                             </label>
-                            <div class="col-sm-2">
+                            <div class="col-sm-4">
                                 <input type="text" name="excessProfitRatio" placeholder="特许权超额利润比率"
                                        onblur="selfSupport.computeInitialAmount(this);" class="form-control x-percent">
                             </div>
                         </div>
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                特许权超额利润<span class="symbol required"></span>
-                            </label>
-                            <div class="col-sm-2">
-                                <input type="text" name="excessProfit" placeholder="特许权超额利润" class="form-control" readonly>
-                            </div>
-                        </div>
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
                                 特许权超额利润说明
                             </label>
-                            <div class="col-sm-2">
+                            <div class="col-sm-4">
                                 <input type="text" name="excessProfitRemark" placeholder="特许权超额利润说明"
                                        class="form-control" required="required">
                             </div>
@@ -643,6 +618,56 @@
                     保存
                 </button>
             </div>
+        </div>
+    </div>
+</div>
+
+<div id="modal_price_investigation" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">商品调查价格</h3>
+            </div>
+            <form id="frm_price_investigation" class="form-horizontal">
+                <input type="hidden" id="id" name="id">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            商品名称<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <input type="text" name="name" class="form-control" required="required">
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            价格<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <input type="text" name="price"class="form-control" data-rule-number="true" required="required">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-default">
+                        取消
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="priceInvestigation.prototype.saveData()">
+                        保存
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -952,13 +977,41 @@
             }
         });
         cols.push({field: 'yearCount', title: '年份数'});
-        cols.push({field: 'operatingCost', title: '经营成本'});
-        cols.push({field: 'operatingExpenses', title: '经营费用'});
-        cols.push({field: 'operatingTax', title: '经营税金及附加'});
-        cols.push({field: 'managementCost', title: '管理费用'});
-        cols.push({field: 'financialCost', title: '财务费用'});
-        cols.push({field: 'operatingProfit', title: '经营利润'});
-        cols.push({field: 'excessProfit', title: '特许权超额利润'});
+        cols.push({
+            field: 'operatingCostRatio', title: '经营成本比率', formatter: function (value, row, index) {
+                return AssessCommon.pointToPercent(value);
+            }
+        });
+        cols.push({
+            field: 'operatingExpensesRatio', title: '经营费用比率', formatter: function (value, row, index) {
+                return AssessCommon.pointToPercent(value);
+            }
+        });
+        cols.push({
+            field: 'operatingTaxRatio', title: '经营税金及附加比率', formatter: function (value, row, index) {
+                return AssessCommon.pointToPercent(value);
+            }
+        });
+        cols.push({
+            field: 'managementCostRatio', title: '管理费用比率', formatter: function (value, row, index) {
+                return AssessCommon.pointToPercent(value);
+            }
+        });
+        cols.push({
+            field: 'financialCostRatio', title: '财务费用比率', formatter: function (value, row, index) {
+                return AssessCommon.pointToPercent(value);
+            }
+        });
+        cols.push({
+            field: 'operatingProfitRatio', title: '经营利润比率', formatter: function (value, row, index) {
+                return AssessCommon.pointToPercent(value);
+            }
+        });
+        cols.push({
+            field: 'excessProfitRatio', title: '特许权超额利润比率', formatter: function (value, row, index) {
+                return AssessCommon.pointToPercent(value);
+            }
+        });
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
@@ -1313,6 +1366,121 @@
         if (!AssessCommon.isNumber(area)) return false;
         area = parseFloat(area);
         $("#selfSupportResult").find('[data-name=price]').text((incomePriceTotal / area).toFixed(2));
+    }
+</script>
+<%--商品价格调查--%>
+<script type="text/javascript">
+    $(function () {
+        priceInvestigation.prototype.loadDataList(incomeIndex.getInComeId());
+    });
+    var priceInvestigation = function () {
+
+    };
+    priceInvestigation.prototype = {
+        config: function () {
+            var data = {};
+            data.table = "tb_price_investigation_list";
+            data.box = "modal_price_investigation";
+            data.frm = "frm_price_investigation";
+            return data;
+        },
+        loadDataList: function (incomeId) {
+            var cols = [];
+            cols.push({field: 'name', title: '名称'});
+            cols.push({field: 'price', title: '价格'});
+            cols.push({
+                field: 'id', title: '操作', formatter: function (value, row, index) {
+                    var str = '<div class="btn-margin">';
+                    <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
+                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="priceInvestigation.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
+                    str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="priceInvestigation.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
+                    str += '</div>';
+                    return str;
+                }
+            });
+            $("#" + priceInvestigation.prototype.config().table).bootstrapTable('destroy');
+            TableInit(priceInvestigation.prototype.config().table, "${pageContext.request.contextPath}/income/getMdIncomePriceInvestigationList", cols, {
+                incomeId: incomeId
+            }, {
+                showColumns: false,
+                showRefresh: false,
+                search: false,
+                onLoadSuccess: function () {
+                    $('.tooltips').tooltip();
+                }
+            });
+        },
+        removeData: function (id) {
+            Alert("确认删除!", 2, null, function () {
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/income/removeMdIncomePriceInvestigation",
+                    type: "post",
+                    dataType: "json",
+                    data: {id: id},
+                    success: function (result) {
+                        if (result.ret) {
+                            toastr.success('删除成功');
+                            priceInvestigation.prototype.loadDataList(incomeIndex.getInComeId());
+                        }
+                        else {
+                            Alert("保存数据失败，失败原因:" + result.errmsg);
+                        }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
+                    }
+                })
+            });
+        },
+        showModel: function () {
+            $("#" + priceInvestigation.prototype.config().frm).clearAll();
+            $('#' + priceInvestigation.prototype.config().box).modal("show");
+        },
+        saveData: function () {
+            if (!$("#" + priceInvestigation.prototype.config().frm).valid()) {
+                return false;
+            }
+            var data = formParams(priceInvestigation.prototype.config().frm);
+            data.incomeId = incomeIndex.getInComeId();
+            $.ajax({
+                url: "${pageContext.request.contextPath}/income/saveMdIncomePriceInvestigation",
+                type: "post",
+                dataType: "json",
+                data: data,
+                success: function (result) {
+                    if (result.ret) {
+                        toastr.success('保存成功');
+                        $('#' + priceInvestigation.prototype.config().box).modal('hide');
+                        priceInvestigation.prototype.loadDataList(incomeIndex.getInComeId());
+                    }
+                    else {
+                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        },
+        getAndInit: function (id) {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/income/getMdIncomePriceInvestigationById",
+                type: "get",
+                dataType: "json",
+                data: {id: id},
+                success: function (result) {
+                    if (result.ret) {
+                        $("#" + priceInvestigation.prototype.config().frm).clearAll();
+                        $("#" + priceInvestigation.prototype.config().frm).initForm(result.data);
+                        $('#' + priceInvestigation.prototype.config().box).modal("show");
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        }
+
     }
 </script>
 

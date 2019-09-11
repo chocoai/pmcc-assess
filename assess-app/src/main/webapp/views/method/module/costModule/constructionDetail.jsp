@@ -83,7 +83,7 @@
             <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
-                        土地购买价格<span class="symbol required"></span>
+                        土地购买价格 (元/㎡)<span class="symbol required"></span>
                     </label>
                     <div class="col-sm-3">
                         <div class="input-group">
@@ -115,7 +115,7 @@
                     </label>
                     <div class="col-sm-3">
                         <label  class="form-control">
-                            <fmt:formatNumber value="${mdCostVo.mdCostConstruction.landGetRelevant}" type="percent"/>
+                            <fmt:formatNumber value="${mdCostVo.mdCostConstruction.landGetRelevant}" type="percent" maxFractionDigits="4"/>
                         </label>
 
                     </div>
@@ -136,7 +136,7 @@
             <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
-                        土地取得附加成本
+                        土地取得附加成本(万元)
                     </label>
                     <div class="col-sm-3">
 
@@ -178,7 +178,7 @@
                 <div class="col-sm-3">
 
                     <label  class="form-control">
-                        <fmt:formatNumber value="${mdCostVo.mdCostConstruction.reconnaissanceDesign}" type="percent"/>
+                        <fmt:formatNumber value="${mdCostVo.mdCostConstruction.reconnaissanceDesign}" type="percent" maxFractionDigits="4"/>
                         </label>
 
                 </div>
@@ -205,7 +205,7 @@
                         <div class="input-group">
                             <span class="input-group-btn">
                                 <button type="button" class="btn btn-info disabled">
-                                    建筑安装工程费
+                                    建筑安装工程费 (元/㎡)
                                 </button>
                             </span>
 
@@ -225,7 +225,7 @@
 
         <div class="form-group">
             <label class="col-sm-1 control-label">
-                基础设施建设费<span class="symbol required"></span>
+                基础设施建设费 (元/㎡)<span class="symbol required"></span>
             </label>
             <div class="x-valid">
                 <div class="col-sm-3">
@@ -256,7 +256,7 @@
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
-                    公共配套设施建设费<span class="symbol required"></span>
+                    公共配套设施建设费 (元/㎡)<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
                     <label  class="form-control"> ${mdCostVo.mdCostConstruction.infrastructureMatchingCost} </label>
@@ -276,7 +276,7 @@
 
         <div class="form-group">
             <label class="col-sm-1 control-label">
-                开发期间税费<span class="symbol required"></span>
+                开发期间税费 (元/㎡)<span class="symbol required"></span>
             </label>
             <div class="x-valid">
                 <div class="col-sm-3">
@@ -297,7 +297,7 @@
 
         <div class="form-group">
             <label class="col-sm-1 control-label">
-                其它工程费<span class="symbol required"></span>
+                其它工程费 (元/㎡)<span class="symbol required"></span>
             </label>
             <div class="x-valid">
                 <div class="col-sm-3">
@@ -334,7 +334,7 @@
                 </label>
                 <div class="col-sm-3">
                     <label  class="form-control">
-                        <fmt:formatNumber value="${mdCostVo.mdCostConstruction.unforeseenExpenses}" type="percent"/>
+                        <fmt:formatNumber value="${mdCostVo.mdCostConstruction.unforeseenExpenses}" type="percent" maxFractionDigits="4"/>
                     </label>
                 </div>
             </div>
@@ -355,7 +355,7 @@
                 </label>
                 <div class="col-sm-3">
                     <label  class="form-control">
-                        <fmt:formatNumber value="${mdCostVo.mdCostConstruction.managementExpense}" type="percent"/>
+                        <fmt:formatNumber value="${mdCostVo.mdCostConstruction.managementExpense}" type="percent" maxFractionDigits="4"/>
                          </label>
                 </div>
             </div>
@@ -376,7 +376,7 @@
                 </label>
                 <div class="col-sm-3">
                     <label  class="form-control">
-                        <fmt:formatNumber value="${mdCostVo.mdCostConstruction.salesFee}" type="percent"/>
+                        <fmt:formatNumber value="${mdCostVo.mdCostConstruction.salesFee}" type="percent" maxFractionDigits="4"/>
                          </label>
                 </div>
             </div>
@@ -397,7 +397,7 @@
                 </label>
                 <div class="col-sm-3">
                     <label  class="form-control">
-                        <fmt:formatNumber value="${mdCostVo.mdCostConstruction.interestInvestmentTax}" type="percent"/>
+                        <fmt:formatNumber value="${mdCostVo.mdCostConstruction.interestInvestmentTax}" type="percent" maxFractionDigits="4"/>
                          </label>
                 </div>
             </div>
@@ -418,7 +418,7 @@
                 </label>
                 <div class="col-sm-3">
                     <label  class="form-control">
-                        <fmt:formatNumber value="${mdCostVo.mdCostConstruction.salesTaxAndAdditional}" type="percent"/>
+                        <fmt:formatNumber value="${mdCostVo.mdCostConstruction.salesTaxAndAdditional}" type="percent" maxFractionDigits="4"/>
                          </label>
                 </div>
             </div>
@@ -439,7 +439,7 @@
                 </label>
                 <div class="col-sm-3">
                     <label  class="form-control">
-                        <fmt:formatNumber value="${mdCostVo.mdCostConstruction.investmentProfitTax}" type="percent"/>
+                        <fmt:formatNumber value="${mdCostVo.mdCostConstruction.investmentProfitTax}" type="percent" maxFractionDigits="4"/>
                          </label>
                 </div>
             </div>
@@ -463,7 +463,7 @@
                     <div class="input-group">
                         <span class="input-group-btn">
                             <label  class="form-control">
-                        <fmt:formatNumber value="${mdCostVo.mdCostConstruction.residueRatio}" type="percent"/>
+                        <fmt:formatNumber value="${mdCostVo.mdCostConstruction.residueRatio}" type="percent" maxFractionDigits="4"/>
                          </label>
                         </span>
                         <span class="input-group-btn">
@@ -493,28 +493,28 @@
                     <tfoot>
                     <c:if test="${mdCostVo.type == 2}">
                         <tr>
-                            <td> 土地取得成本小计</td>
+                            <td> 土地取得成本小计 (万元)</td>
                             <td><label class="landGetCostTotal">${mdCostVo.mdCostConstruction.landGetCostTotal}</label> <input type="hidden"  value="${mdCostVo.mdCostConstruction.landGetCostTotal}" name="landGetCostTotal" placeholder="土地取得成本小计"> </td>
                         </tr>
                     </c:if>
                     <tr>
-                        <td> 建设成本小计</td>
+                        <td> 建设成本小计 (万元)</td>
                         <td><label class="constructionSubtotal">${mdCostVo.mdCostConstruction.constructionSubtotal}</label></td>
                     </tr>
                     <tr>
-                        <td> 投资利息</td>
+                        <td> 投资利息 (万元)</td>
                         <td><label class="interestInvestment">${mdCostVo.mdCostConstruction.interestInvestment}</label><input  type="hidden" value="${mdCostVo.mdCostConstruction.interestInvestment}" name="interestInvestment" placeholder="投资利息"> </td>
                     </tr>
                     <tr>
-                        <td> 开发利润</td>
+                        <td> 开发利润 (万元)</td>
                         <td><label class="investmentProfit">${mdCostVo.mdCostConstruction.investmentProfit}</label><input type="hidden"  value="${mdCostVo.mdCostConstruction.investmentProfit}" name="investmentProfit" placeholder="开发利润"> </td>
                     </tr>
                     <tr>
-                        <td> 在建工程评估价值</td>
+                        <td> 在建工程评估价值 (万元)</td>
                         <td><label class="constructionAssessmentValue">${mdCostVo.mdCostConstruction.constructionAssessmentValue}</label><input type="hidden"  value="${mdCostVo.mdCostConstruction.constructionAssessmentValue}" name="constructionAssessmentValue" placeholder="在建工程评估价值"> </td>
                     </tr>
                     <tr>
-                        <td> 在建工程单位价</td>
+                        <td> 在建工程单位价 (万元)</td>
                         <td><label class="constructionAssessmentPriceCorrecting">${mdCostVo.mdCostConstruction.constructionAssessmentPriceCorrecting}</label><input type="hidden" value="${mdCostVo.mdCostConstruction.constructionAssessmentPriceCorrecting}" name="constructionAssessmentPriceCorrecting" placeholder="在建工程单位价"> </td>
                     </tr>
                     </tfoot>

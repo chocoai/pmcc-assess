@@ -30,6 +30,7 @@
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
     <result column="source_type" property="sourceType" jdbcType="VARCHAR" />
+    <result column="deprecition_royalty" property="deprecitionRoyalty" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -94,7 +95,7 @@
     first_level_number, second_level_number, unit, unit_price, number, amount_money, 
     begin_date, end_date, utilization_ratio, utilization_ratio_explain, make_price, make_price_explain, 
     executive_price, discount_rate, discount_rate_explain, bis_forecast, creator, gmt_created, 
-    gmt_modified, source_type
+    gmt_modified, source_type, deprecition_royalty
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeHistoryExample" >
     select
@@ -139,7 +140,7 @@
       make_price, make_price_explain, executive_price, 
       discount_rate, discount_rate_explain, bis_forecast, 
       creator, gmt_created, gmt_modified, 
-      source_type)
+      source_type, deprecition_royalty)
     values (#{incomeId,jdbcType=INTEGER}, #{forecastAnalyseId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, 
       #{formType,jdbcType=INTEGER}, #{year,jdbcType=INTEGER}, #{month,jdbcType=INTEGER}, 
       #{accountingSubject,jdbcType=INTEGER}, #{firstLevelNumber,jdbcType=VARCHAR}, #{secondLevelNumber,jdbcType=VARCHAR}, 
@@ -149,7 +150,7 @@
       #{makePrice,jdbcType=DECIMAL}, #{makePriceExplain,jdbcType=VARCHAR}, #{executivePrice,jdbcType=DECIMAL}, 
       #{discountRate,jdbcType=DECIMAL}, #{discountRateExplain,jdbcType=VARCHAR}, #{bisForecast,jdbcType=BIT}, 
       #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
-      #{sourceType,jdbcType=VARCHAR})
+      #{sourceType,jdbcType=VARCHAR}, #{deprecitionRoyalty,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeHistory" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -238,6 +239,9 @@
       <if test="sourceType != null" >
         source_type,
       </if>
+      <if test="deprecitionRoyalty != null" >
+        deprecition_royalty,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="incomeId != null" >
@@ -320,6 +324,9 @@
       </if>
       <if test="sourceType != null" >
         #{sourceType,jdbcType=VARCHAR},
+      </if>
+      <if test="deprecitionRoyalty != null" >
+        #{deprecitionRoyalty,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -416,6 +423,9 @@
       <if test="record.sourceType != null" >
         source_type = #{record.sourceType,jdbcType=VARCHAR},
       </if>
+      <if test="record.deprecitionRoyalty != null" >
+        deprecition_royalty = #{record.deprecitionRoyalty,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -450,7 +460,8 @@
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      source_type = #{record.sourceType,jdbcType=VARCHAR}
+      source_type = #{record.sourceType,jdbcType=VARCHAR},
+      deprecition_royalty = #{record.deprecitionRoyalty,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -539,6 +550,9 @@
       <if test="sourceType != null" >
         source_type = #{sourceType,jdbcType=VARCHAR},
       </if>
+      <if test="deprecitionRoyalty != null" >
+        deprecition_royalty = #{deprecitionRoyalty,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -570,7 +584,8 @@
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      source_type = #{sourceType,jdbcType=VARCHAR}
+      source_type = #{sourceType,jdbcType=VARCHAR},
+      deprecition_royalty = #{deprecitionRoyalty,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

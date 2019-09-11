@@ -32,6 +32,21 @@
             <ul class="nav navbar-right panel_toolbox">
                 <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
             </ul>
+            <h3>商品价格调查</h3>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+            <table class="table table-bordered" id="tb_price_investigation_list">
+                <!-- cerare document add ajax data-->
+            </table>
+        </div>
+    </div>
+
+    <div class="x_panel">
+        <div class="x_title collapse-link">
+            <ul class="nav navbar-right panel_toolbox">
+                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+            </ul>
             <h3>成本类</h3>
             <div class="clearfix"></div>
         </div>
@@ -193,37 +208,25 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">预测数据</h3>
+                <h3 class="modal-title">运营费</h3>
             </div>
             <form id="frm_forecast_cost_detail" class="form-horizontal">
-                <input type="hidden" name="id">
-                <input type="hidden" name="type">
-                <input type="hidden" name="sectionId">
-                <input type="hidden" name="incomeTotal">
                 <div class="modal-body">
                     <div class="form-group">
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                经营成本比率
+                                经营成本比率<span class="symbol required"></span>
                             </label>
-                            <div class="col-sm-2">
+                            <div class="col-sm-4">
                                 <input type="text" name="operatingCostRatio" placeholder="经营成本比率"
                                        onblur="selfSupport.computeInitialAmount(this);" class="form-control x-percent">
                             </div>
                         </div>
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                经营成本
-                            </label>
-                            <div class="col-sm-2">
-                                <input type="text" name="operatingCost" placeholder="经营成本" class="form-control" readonly>
-                            </div>
-                        </div>
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
                                 经营成本说明
                             </label>
-                            <div class="col-sm-2">
+                            <div class="col-sm-4">
                                 <input type="text" name="operatingCostRemark" placeholder="经营成本说明"
                                        class="form-control" required="required">
                             </div>
@@ -232,26 +235,18 @@
                     <div class="form-group">
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                经营费用比率
+                                经营费用比率<span class="symbol required"></span>
                             </label>
-                            <div class="col-sm-2">
+                            <div class="col-sm-4">
                                 <input type="text" name="operatingExpensesRatio" placeholder="经营费用比率"
                                        onblur="selfSupport.computeInitialAmount(this);" class="form-control x-percent">
                             </div>
                         </div>
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                经营费用
-                            </label>
-                            <div class="col-sm-2">
-                                <input type="text" name="operatingExpenses" placeholder="经营费用" class="form-control" readonly>
-                            </div>
-                        </div>
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
                                 经营费用说明
                             </label>
-                            <div class="col-sm-2">
+                            <div class="col-sm-4">
                                 <input type="text" name="operatingExpensesRemark" placeholder="经营费用"
                                        class="form-control" required="required">
                             </div>
@@ -260,26 +255,18 @@
                     <div class="form-group">
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                经营税金及附加比率
+                                经营税金及附加比率<span class="symbol required"></span>
                             </label>
-                            <div class="col-sm-2">
+                            <div class="col-sm-4">
                                 <input type="text" name="operatingTaxRatio" placeholder="经营税金及附加比率"
                                        onblur="selfSupport.computeInitialAmount(this);" class="form-control x-percent">
                             </div>
                         </div>
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                经营税金及附加
-                            </label>
-                            <div class="col-sm-2">
-                                <input type="text" name="operatingTax" placeholder="经营税金及附加" class="form-control" readonly>
-                            </div>
-                        </div>
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
                                 经营税金及附加说明
                             </label>
-                            <div class="col-sm-2">
+                            <div class="col-sm-4">
                                 <input type="text" name="operatingTaxRemark" placeholder="经营税金及附加说明"
                                        class="form-control" required="required">
                             </div>
@@ -288,26 +275,18 @@
                     <div class="form-group">
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                管理费用比率
+                                管理费用比率<span class="symbol required"></span>
                             </label>
-                            <div class="col-sm-2">
+                            <div class="col-sm-4">
                                 <input type="text" name="managementCostRatio" placeholder="管理费用比率"
                                        onblur="selfSupport.computeInitialAmount(this);" class="form-control x-percent">
                             </div>
                         </div>
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                管理费用
-                            </label>
-                            <div class="col-sm-2">
-                                <input type="text" name="managementCost" placeholder="管理费用" class="form-control" readonly>
-                            </div>
-                        </div>
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
                                 管理费用说明
                             </label>
-                            <div class="col-sm-2">
+                            <div class="col-sm-4">
                                 <input type="text" name="managementCostRemark" placeholder="管理费用说明"
                                        class="form-control" required="required">
                             </div>
@@ -316,26 +295,18 @@
                     <div class="form-group">
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                财务费用比率
+                                财务费用比率<span class="symbol required"></span>
                             </label>
-                            <div class="col-sm-2">
+                            <div class="col-sm-4">
                                 <input type="text" name="financialCostRatio" placeholder="财务费用比率"
                                        onblur="selfSupport.computeInitialAmount(this);" class="form-control x-percent">
                             </div>
                         </div>
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                财务费用
-                            </label>
-                            <div class="col-sm-2">
-                                <input type="text" name="financialCost" placeholder="财务费用" class="form-control" readonly>
-                            </div>
-                        </div>
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
                                 财务费用说明
                             </label>
-                            <div class="col-sm-2">
+                            <div class="col-sm-4">
                                 <input type="text" name="financialCostRemark" placeholder="财务费用说明"
                                        class="form-control" required="required">
                             </div>
@@ -344,26 +315,18 @@
                     <div class="form-group">
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                经营利润比率
+                                经营利润比率<span class="symbol required"></span>
                             </label>
-                            <div class="col-sm-2">
+                            <div class="col-sm-4">
                                 <input type="text" name="operatingProfitRatio" placeholder="经营利润比率"
                                        onblur="selfSupport.computeInitialAmount(this);" class="form-control x-percent">
                             </div>
                         </div>
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                经营利润
-                            </label>
-                            <div class="col-sm-2">
-                                <input type="text" name="operatingProfit" placeholder="经营利润" class="form-control" readonly>
-                            </div>
-                        </div>
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
                                 经营利润说明
                             </label>
-                            <div class="col-sm-2">
+                            <div class="col-sm-4">
                                 <input type="text" name="operatingProfitRemark" placeholder="经营利润说明"
                                        class="form-control" required="required">
                             </div>
@@ -372,26 +335,18 @@
                     <div class="form-group">
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                特许权超额利润比率
+                                特许权超额利润比率<span class="symbol required"></span>
                             </label>
-                            <div class="col-sm-2">
+                            <div class="col-sm-4">
                                 <input type="text" name="excessProfitRatio" placeholder="特许权超额利润比率"
                                        onblur="selfSupport.computeInitialAmount(this);" class="form-control x-percent">
                             </div>
                         </div>
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                特许权超额利润
-                            </label>
-                            <div class="col-sm-2">
-                                <input type="text" name="excessProfit" placeholder="特许权超额利润" class="form-control" readonly>
-                            </div>
-                        </div>
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
                                 特许权超额利润说明
                             </label>
-                            <div class="col-sm-2">
+                            <div class="col-sm-4">
                                 <input type="text" name="excessProfitRemark" placeholder="特许权超额利润说明"
                                        class="form-control" required="required">
                             </div>
@@ -624,13 +579,41 @@
             }
         });
         cols.push({field: 'yearCount', title: '年份数'});
-        cols.push({field: 'operatingCost', title: '经营成本'});
-        cols.push({field: 'operatingExpenses', title: '经营费用'});
-        cols.push({field: 'operatingTax', title: '经营税金及附加'});
-        cols.push({field: 'managementCost', title: '管理费用'});
-        cols.push({field: 'financialCost', title: '财务费用'});
-        cols.push({field: 'operatingProfit', title: '经营利润'});
-        cols.push({field: 'excessProfit', title: '特许权超额利润'});
+        cols.push({
+            field: 'operatingCostRatio', title: '经营成本比率', formatter: function (value, row, index) {
+                return AssessCommon.pointToPercent(value);
+            }
+        });
+        cols.push({
+            field: 'operatingExpensesRatio', title: '经营费用比率', formatter: function (value, row, index) {
+                return AssessCommon.pointToPercent(value);
+            }
+        });
+        cols.push({
+            field: 'operatingTaxRatio', title: '经营税金及附加比率', formatter: function (value, row, index) {
+                return AssessCommon.pointToPercent(value);
+            }
+        });
+        cols.push({
+            field: 'managementCostRatio', title: '管理费用比率', formatter: function (value, row, index) {
+                return AssessCommon.pointToPercent(value);
+            }
+        });
+        cols.push({
+            field: 'financialCostRatio', title: '财务费用比率', formatter: function (value, row, index) {
+                return AssessCommon.pointToPercent(value);
+            }
+        });
+        cols.push({
+            field: 'operatingProfitRatio', title: '经营利润比率', formatter: function (value, row, index) {
+                return AssessCommon.pointToPercent(value);
+            }
+        });
+        cols.push({
+            field: 'excessProfitRatio', title: '特许权超额利润比率', formatter: function (value, row, index) {
+                return AssessCommon.pointToPercent(value);
+            }
+        });
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
@@ -654,7 +637,6 @@
     }
     selfSupport.editForecastCost = function (index) {
         var row = $("#tb_forecast_cost_list").bootstrapTable('getData')[index];
-        console.log(row+"+==");
         selfSupport.frmForecastCost.clearAll();
         selfSupport.frmForecastCost.initForm(row);
         selfSupport.frmForecastCost.find('[name=operatingCostRatio]').attr('data-value', row.operatingCostRatio);
@@ -743,6 +725,38 @@
         });
     }
 </script>
+<%--商品价格调查--%>
+<script type="text/javascript">
+    $(function () {
+        priceInvestigation.prototype.loadDataList();
+    });
+    var priceInvestigation = function () {
 
+    };
+    priceInvestigation.prototype = {
+        config: function () {
+            var data = {};
+            data.table = "tb_price_investigation_list";
+            return data;
+        },
+        loadDataList: function () {
+            var cols = [];
+            cols.push({field: 'name', title: '名称'});
+            cols.push({field: 'price', title: '价格'});
+            $("#" + priceInvestigation.prototype.config().table).bootstrapTable('destroy');
+            TableInit(priceInvestigation.prototype.config().table, "${pageContext.request.contextPath}/income/getMdIncomePriceInvestigationList", cols, {
+                incomeId: incomeIndex.getInComeId()
+            }, {
+                showColumns: false,
+                showRefresh: false,
+                search: false,
+                onLoadSuccess: function () {
+                    $('.tooltips').tooltip();
+                }
+            });
+        }
+
+    }
+</script>
 
 

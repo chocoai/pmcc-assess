@@ -400,7 +400,7 @@ developmentCommon.loadMdCalculatingMethodEngineeringCostTable = function (table,
         }
     });
     cols.push({
-        field: 'price', title: '建筑安装工程费价格(不建议手动更改建议通过工程费明细更改)', width: "20%", class: 'editable', editable: {
+        field: 'price', title: '建筑安装工程费计算价格 (元/㎡)', width: "20%", class: 'editable', editable: {
             type: 'text',
             validate: function (value) {
                 if (!$.isNumeric(value)) {

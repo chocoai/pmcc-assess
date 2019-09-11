@@ -122,7 +122,7 @@
                         勘察设计和前期工程费率<span class="symbol required"></span>
                     </label>
                     <div class="col-sm-3">
-                        <label class="form-control"><fmt:formatNumber value="${mdDevelopment.reconnaissanceDesign}" type="percent"/></label>                </div>
+                        <label class="form-control"><fmt:formatNumber value="${mdDevelopment.reconnaissanceDesign}" type="percent" maxFractionDigits="4"/></label>                </div>
                 </div>
 
                 <div class="x-valid">
@@ -223,7 +223,7 @@
                         其它工程费率<span class="symbol required"></span>
                     </label>
                     <div class="col-sm-3">
-                        <label class="form-control"><fmt:formatNumber value="${mdDevelopment.otherEngineeringCost}" type="percent"/></label>
+                        <label class="form-control"><fmt:formatNumber value="${mdDevelopment.otherEngineeringCost}" type="percent" maxFractionDigits="4"/></label>
                     </div>
                 </div>
 
@@ -243,7 +243,7 @@
                         不可预见费率<span class="symbol required"></span>
                     </label>
                     <div class="col-sm-3">
-                        <label class="form-control"><fmt:formatNumber value="${mdDevelopment.unforeseenExpenses}" type="percent"/></label>
+                        <label class="form-control"><fmt:formatNumber value="${mdDevelopment.unforeseenExpenses}" type="percent" maxFractionDigits="4"/></label>
                     </div>
                 </div>
 
@@ -285,7 +285,7 @@
                         契税率<span class="symbol required"></span>
                     </label>
                     <div class="col-sm-3">
-                        <label class="form-control"><fmt:formatNumber value="${mdDevelopment.deedTaxRate}" type="percent"/></label>
+                        <label class="form-control"><fmt:formatNumber value="${mdDevelopment.deedTaxRate}" type="percent" maxFractionDigits="4"/></label>
                     </div>
                 </div>
 
@@ -305,7 +305,7 @@
                         交易费率<span class="symbol required"></span>
                     </label>
                     <div class="col-sm-3">
-                        <label class="form-control"><fmt:formatNumber value="${mdDevelopment.transactionTaxRate}" type="percent"/></label>
+                        <label class="form-control"><fmt:formatNumber value="${mdDevelopment.transactionTaxRate}" type="percent" maxFractionDigits="4"/></label>
                     </div>
                 </div>
                 <div class="x-valid">
@@ -331,7 +331,7 @@
                         <span class="symbol required"></span>
                     </label>
                     <div class="col-sm-3">
-                        <label class="form-control"><fmt:formatNumber value="${mdDevelopment.managementExpense}" type="percent"/></label>
+                        <label class="form-control"><fmt:formatNumber value="${mdDevelopment.managementExpense}" type="percent" maxFractionDigits="4"/></label>
                     </div>
                 </div>
 
@@ -378,7 +378,7 @@
                         销售费用率<span class="symbol required"></span>
                     </label>
                     <div class="col-sm-3">
-                        <label class="form-control"><fmt:formatNumber value="${mdDevelopment.salesFee}" type="percent"/></label>
+                        <label class="form-control"><fmt:formatNumber value="${mdDevelopment.salesFee}" type="percent" maxFractionDigits="4"/></label>
                     </div>
                 </div>
 
@@ -405,7 +405,7 @@
                         <span class="symbol required"></span>
                     </label>
                     <div class="col-sm-3">
-                        <label class="form-control"><fmt:formatNumber value="${mdDevelopment.interestInvestmentTax}" type="percent"/></label>
+                        <label class="form-control"><fmt:formatNumber value="${mdDevelopment.interestInvestmentTax}" type="percent" maxFractionDigits="4"/></label>
                     </div>
                 </div>
 
@@ -433,7 +433,7 @@
                         <span class="symbol required"></span>
                     </label>
                     <div class="col-sm-3">
-                        <label class="form-control"><fmt:formatNumber value="${mdDevelopment.investmentProfitTax}" type="percent"/></label>
+                        <label class="form-control"><fmt:formatNumber value="${mdDevelopment.investmentProfitTax}" type="percent" maxFractionDigits="4"/></label>
                     </div>
                 </div>
 
@@ -453,7 +453,7 @@
                         销售环节增值税及附加<span class="symbol required"></span>
                     </label>
                     <div class="col-sm-3">
-                        <label class="form-control"><fmt:formatNumber value="${mdDevelopment.salesTaxAndAdditional}" type="percent"/></label>
+                        <label class="form-control"><fmt:formatNumber value="${mdDevelopment.salesTaxAndAdditional}" type="percent" maxFractionDigits="4"/></label>
 
                     </div>
                 </div>
@@ -533,7 +533,7 @@
                     <div class="col-sm-3">
 
                         <div class="input-group">
-                            <label class="form-control"><fmt:formatNumber value="${mdDevelopment.remunerationRate}" type="percent"/></label>
+                            <label class="form-control"><fmt:formatNumber value="${mdDevelopment.remunerationRate}" type="percent" maxFractionDigits="4"/></label>
                             <span class="input-group-btn">
                                         <input type="hidden" name="rewardRateId" value="${mdDevelopment.rewardRateId}">
                                   <input type="button" class="btn btn-primary" value="报酬率测算"

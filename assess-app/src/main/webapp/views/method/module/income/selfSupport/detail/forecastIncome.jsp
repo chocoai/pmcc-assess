@@ -112,6 +112,7 @@
         cols.push({field: 'unitPrice', title: '单价'});
         cols.push({field: 'number', title: '数量'});
         cols.push({field: 'amountMoney', title: '金额'});
+        cols.push({field: 'deprecitionRoyalty', title: '房屋折旧与使用费'});
         $("#" + selfSupportForecast.getHistoryListId(type)).bootstrapTable('destroy');
         var queryParam = {
             type: type,

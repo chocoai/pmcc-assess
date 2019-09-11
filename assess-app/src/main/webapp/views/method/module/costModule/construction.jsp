@@ -82,7 +82,7 @@
             <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
-                        土地购买价格(万元)<span class="symbol required"></span>
+                        土地购买价格(元/㎡)<span class="symbol required"></span>
                     </label>
                     <div class="col-sm-3">
                         <div class="input-group">
@@ -135,7 +135,7 @@
             <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
-                        土地取得附加成本<span class="symbol required"></span>
+                        土地取得附加成本(万元)<span class="symbol required"></span>
                     </label>
                     <div class="col-sm-3">
                         <input type="text" name="additionalCostLandAcquisition" required="required"
@@ -200,7 +200,7 @@
 
             <div class="form-group">
                 <label class="col-sm-1 control-label">
-                    建筑安装工程费
+                    建筑安装工程费 (元/㎡)
                 </label>
                 <div class="x-valid">
                     <div class=" col-xs-1  col-sm-1  col-md-1  col-lg-1 ">
@@ -232,7 +232,7 @@
 
             <div class="form-group">
                 <label class="col-sm-1 control-label">
-                    基础设施建设费<span class="symbol required"></span>
+                    基础设施建设费(元/㎡)<span class="symbol required"></span>
                 </label>
                 <div class="x-valid">
                     <div class="col-sm-3">
@@ -292,7 +292,7 @@
             <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
-                        公共配套设施建设费<span class="symbol required"></span>
+                        公共配套设施建设费(元/㎡)<span class="symbol required"></span>
                     </label>
                     <div class="col-sm-3">
                         <input type="text" required="required"
@@ -322,7 +322,7 @@
 
             <div class="form-group">
                 <label class="col-sm-1 control-label">
-                    开发期间税费<span class="symbol required"></span>
+                    开发期间税费(元/㎡)<span class="symbol required"></span>
                 </label>
                 <div class="x-valid">
                     <div class="col-sm-3">
@@ -346,7 +346,7 @@
 
             <div class="form-group">
                 <label class="col-sm-1 control-label">
-                    其它工程费<span class="symbol required"></span>
+                    其它工程费(元/㎡)<span class="symbol required"></span>
                 </label>
                 <div class="x-valid">
                     <div class="col-sm-3">
@@ -529,7 +529,7 @@
                             <input type="hidden" placeholder="成新率"  name="residueRatioId"   value="${mdCostVo.mdCostConstruction.residueRatioId}">
                             <span class="input-group-btn">
                                 <input type="hidden"  name="residueRatio" onblur="cost.checkParams(this);"  value="${mdCostVo.mdCostConstruction.residueRatio}">
-                                <input type="text" placeholder="成新率(计算值)" class="form-control" name="residueRatioShow" readonly="readonly" value="${mdCostVo.mdCostConstruction.residueRatio}">
+                                <input type="text" placeholder="成新率(计算值)" class="form-control x-percent" name="residueRatioShow" readonly="readonly"  data-value="${mdCostVo.mdCostConstruction.residueRatio}">
                             </span>
                             <span class="input-group-btn">
                                 <button type="button" class="btn-primary btn" onclick="construction.callResidueRatio(this,false)"> <i class="fa fa-dashcube"></i></button>
@@ -563,29 +563,29 @@
                     <table class="table table-bordered">
                         <tfoot>
                         <tr>
-                            <td> 土地取得成本小计</td>
+                            <td> 土地取得成本小计 (万元)</td>
                             <td><label class="landGetCostTotal">${mdCostVo.mdCostConstruction.landGetCostTotal}</label> </td>
                         </tr>
                         <tr>
-                            <td> 建设成本小计</td>
+                            <td> 建设成本小计 (万元)</td>
                             <td><label class="constructionSubtotal">${mdCostVo.mdCostConstruction.constructionSubtotal}</label>
                             </td>
                         </tr>
                         <tr>
-                            <td> 投资利息</td>
+                            <td> 投资利息 (万元)</td>
                             <td><label class="interestInvestment">${mdCostVo.mdCostConstruction.interestInvestment}</label>
                             </td>
                         </tr>
                         <tr>
-                            <td> 开发利润</td>
+                            <td> 开发利润 (万元)</td>
                             <td><label class="investmentProfit">${mdCostVo.mdCostConstruction.investmentProfit}</label> </td>
                         </tr>
                         <tr>
-                            <td> 在建工程评估价值</td>
+                            <td> 在建工程评估价值 (万元)</td>
                             <td><label class="constructionAssessmentValue">${mdCostVo.mdCostConstruction.constructionAssessmentValue}</label> </td>
                         </tr>
                         <tr>
-                            <td> 在建工程单位价</td>
+                            <td> 在建工程单位价 (万元)</td>
                             <td><label class="constructionAssessmentPriceCorrecting">${mdCostVo.mdCostConstruction.constructionAssessmentPriceCorrecting}</label> </td>
                         </tr>
                         </tfoot>

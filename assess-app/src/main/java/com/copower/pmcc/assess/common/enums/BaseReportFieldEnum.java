@@ -299,6 +299,7 @@ public enum BaseReportFieldEnum implements Serializable {
     MarketCost_AssessUseLandArea("成本法评估用地面积"),
     MarketCost_landPurchasePriceExplain("成本法土地价格说明"),
     MarketCost_UnitAreaLandPrice("成本法单位面积地价"),
+    MarketCost_Assessment_land_use_right_area("成本法分摊土地使用权面积"),
     MarketCost_landPurchasePrice("成本法土地购买价格"),
     MarketCost_landGetRelevantExplain("成本法土地取得税费说明"),
     MarketCost_landGetRelevant("成本法土地取得税费"),
