@@ -16,6 +16,7 @@ public enum BaseParameterEnum {
      * 第三个为:参数分类(box表示是流程模型,其他自定义(如系统级sys等))
      */
     SYS_URL_KEY("sys.url.key", "系统链接地址key", "sys"),
+    SYS_ASSESS_VERSION("sys.assess.version", "系统更新版本号", "sys"),
     CSR_PROJECT_APPLY_PROCESS_KEY("csr.project.apply.process.key", "债权项目立项流程key", "box"),
     PROJECT_APPLY_ASSIGN_PROCESS_KEY("project.apply.assign.process.key", "任务再分派流程key", "box"),
     PROJECT_INFORMATION_CHANGE_PROCESS_KEY("project.information.change.process.key", "项目信息变更流程key", "box"),
