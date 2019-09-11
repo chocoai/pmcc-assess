@@ -291,6 +291,28 @@
         }
     };
 
+    /**
+     * 设置工程费
+     */
+    construction.setMdCalculatingMethodEngineeringCost = function () {
+        var  planDetailsId = '${projectPlanDetails.id}' ;
+        $.ajax({
+            type: "post",
+            url: getContextPath() +"/mdCostConstruction/setMdCalculatingMethodEngineeringCost",
+            data: {planDetailsId:planDetailsId},
+            success: function (result) {
+                if (result.ret) {
+                    toastr.success('成功');
+                    construction.loadMdCalculatingMethodEngineeringCostTable();
+                }
+            },
+            error: function (e) {
+                Alert("调用服务端方法失败，失败原因:" + e);
+            }
+        });
+
+    };
+
     //经济指标show
     construction.showMdDevelopmentIncomeCategory = function () {
         var economicId = '${mdCostVo.mdCostConstruction.economicId}' ;
