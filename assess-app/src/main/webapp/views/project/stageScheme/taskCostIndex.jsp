@@ -256,8 +256,6 @@
 
         construction.loadMdCalculatingMethodEngineeringCostTable() ;
 
-        construction.writeMdDevelopmentIncomeCategoryTable() ;
-
     });
 
 </script>

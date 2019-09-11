@@ -66,30 +66,6 @@
         <div class="x_content">
             <input type="button" class="btn btn-primary" value="经济规划指标"
                    onclick="construction.showMdDevelopmentIncomeCategory('${mdCostVo.mdCostConstruction.economicId}');">
-
-            <div class="form-group">
-                <div class="x-valid">
-                    <div class="col-sm-12">
-                        <table class="table table-condensed">
-                            <tfoot>
-                            <tr>
-                            </tr>
-                            <tr>
-                                <td>预期销售合计:</td>
-                                <td class="info">规划建筑面积<label name="plannedBuildingArea" class="label label-default"></label></td>
-                                <td class="info">总可售面积售价<label name="totalSaleableAreaPrice" class="label label-default"></label></td>
-                                <td class="info">可售面积<label name="saleableArea" class="label label-default"></label></td>
-                                <td class="active">
-                                    <!-- 不可售建筑面积 -->
-                                    <a data-key="unsaleableBuildingArea"></a>
-                                    <input type="hidden" value="" name="unsaleableBuildingArea" class="form-control" >
-                                </td>
-                            </tr>
-                            </tfoot>
-                        </table>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 

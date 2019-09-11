@@ -150,6 +150,7 @@
                             <th>规划建筑面积 ㎡</th>
                             <th>可出售面积 ㎡</th>
                             <th>个数</th>
+                            <th>单位售价</th>
                             <th>备注</th>
                         </tr>
                         </thead>
@@ -164,6 +165,7 @@
                             <td><label name="plannedBuildingArea"></label></td>
                             <td><label name="saleableArea"></label></td>
                             <td><label name="number"></label></td>
+                            <td><label name="unitPrice"></label></td>
                             <td></td>
                         </tr>
                         <tr class="treegrid-2" data-key="groundExcludBuildingArea" data-title="地上不计入容积率建筑面积"
@@ -176,6 +178,7 @@
                             <td><label name="plannedBuildingArea"></label></td>
                             <td><label name="saleableArea"></label></td>
                             <td><label name="number"></label></td>
+                            <td><label name="unitPrice"></label></td>
                             <td></td>
                         </tr>
                         <tr class="treegrid-3" data-key="undergroundBuildingArea" data-title="地下建筑面积"
@@ -188,6 +191,7 @@
                             <td><label name="plannedBuildingArea"></label></td>
                             <td><label name="saleableArea"></label></td>
                             <td><label name="number"></label></td>
+                            <td><label name="unitPrice"></label></td>
                             <td></td>
                         </tr>
                         <tr class="treegrid-4" data-key="undergroundIncludedBuildingArea" data-title="地下不计入建筑面积"
@@ -200,6 +204,7 @@
                             <td><label name="plannedBuildingArea"></label></td>
                             <td><label name="saleableArea"></label></td>
                             <td><label name="number"></label></td>
+                            <td><label name="unitPrice"></label></td>
                             <td></td>
                         </tr>
                         <tr class="treegrid-5" data-key="otherBuildingArea" data-role="parent" data-parent-index="5">
@@ -211,9 +216,19 @@
                             <td><label name="plannedBuildingArea"></label></td>
                             <td><label name="saleableArea"></label></td>
                             <td><label name="number"></label></td>
+                            <td><label name="unitPrice"></label></td>
                             <td></td>
                         </tr>
                         </tbody>
+
+                        <tfoot>
+                            <tr>
+                                <td>预期销售合计:</td>
+                                <td class="info">规划建筑面积<label name="plannedBuildingArea" class="label label-default"></label></td>
+                                <td class="info">总可售面积售价<label name="totalSaleableAreaPrice" class="label label-default"></label></td>
+                                <td class="info">可售面积<label name="saleableArea" class="label label-default"></label></td>
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
             </form>
@@ -248,6 +263,10 @@
         <td><input type="text" value="{number}"
                    onblur="economicIndicators.autoSummary()"
                    name="number" data-rule-number="true" style="width: 100px;">
+        </td>
+        <td><input type="text" value="{unitPrice}"
+                   onblur="economicIndicators.autoSummary()"
+                   name="unitPrice" data-rule-number="true" style="width: 100px;">
         </td>
         <td><input type="text" value="{remark}" placeholder="备注" name="remark" style="width: 100px;"></td>
     </tr>
@@ -291,6 +310,7 @@
                                 html = html.replace(/{currentIndex}/g, $("#frmEconomicIndicatorsItem").find('[data-key=' + dataKey + ']').length);
                                 html = html.replace(/{name}/g,AssessCommon.toString(item.name)).replace(/{plannedBuildingArea}/g, AssessCommon.toString(item.plannedBuildingArea));
                                 html = html.replace(/{saleableArea}/g, AssessCommon.toString(item.saleableArea)).replace(/{number}/g, AssessCommon.toString(item.number)).replace(/{remark}/g, AssessCommon.toString(item.remark));
+                                html = html.replace(/{unitPrice}/g, AssessCommon.toString(item.unitPrice)) ;
                                 $("#frmEconomicIndicatorsItem").find('[data-key=' + dataKey + ']').last().after(html);
                                 if (defaluts.attribute){
                                     $("#frmEconomicIndicatorsItem").find('[data-key=' + dataKey + ']').each(function (i,n) {
@@ -347,6 +367,7 @@
             economicIndicatorsItem.plannedBuildingArea = $(this).find('[name=plannedBuildingArea]').val();
             economicIndicatorsItem.saleableArea = $(this).find('[name=saleableArea]').val();
             economicIndicatorsItem.number = $(this).find('[name=number]').val();
+            economicIndicatorsItem.unitPrice = $(this).find('[name=unitPrice]').val();
             economicIndicatorsItem.remark = $(this).find('[name=remark]').val();
             data.economicIndicatorsItemList.push(economicIndicatorsItem);
         })
@@ -370,7 +391,7 @@
                 }
             }
         })
-    }
+    };
 
     //添加子项
     economicIndicators.appendItemChildren = function (_this) {
@@ -380,37 +401,79 @@
         html = html.replace(/{currentIndex}/g, $("#frmEconomicIndicatorsItem").find('[data-key=' + dataKey + ']').length);
         html = html.replace(/{name}/g, '').replace(/{plannedBuildingArea}/g, '');
         html = html.replace(/{saleableArea}/g, '').replace(/{number}/g, '').replace(/{remark}/g, '');
+        html = html.replace(/{unitPrice}/g, '');
         $("#frmEconomicIndicatorsItem").find('[data-key=' + dataKey + ']').last().after(html);
-    }
+    };
+
+    /**
+     * 获取计算后的总值
+     * @returns {{}}
+     */
+    economicIndicators.getFormData = function () {
+        var target = $("#frmEconomicIndicatorsItem").find("table").find("tfoot") ;
+        var data = {} ;
+        data.plannedBuildingArea = target.find("label[name='plannedBuildingArea']").html() ;
+        data.totalSaleableAreaPrice = target.find("label[name='totalSaleableAreaPrice']").html() ;
+        data.saleableArea = target.find("label[name='saleableArea']").html() ;
+        return data;
+    };
 
     //自动汇总
     economicIndicators.autoSummary = function () {
-        $("#frmEconomicIndicatorsItem").find('tr[data-role="parent"]').each(function () {
+        var target = $("#frmEconomicIndicatorsItem") ;
+        var plannedBuildingAreaValue = 0 , totalSaleableAreaPriceValue = 0,saleableAreaValue = 0;
+        target.find('tr[data-role="parent"]').each(function () {
             var dataKey = $(this).attr('data-key');
-            var numberTotal = 0, saleableAreaTotal = 0, plannedBuildingAreaTotal = 0;
+            var numberTotal = 0, saleableAreaTotal = 0, plannedBuildingAreaTotal = 0,unitPriceTotal = 0,totalSaleableAreaPrice = 0;
             $("#frmEconomicIndicatorsItem").find('tr[data-role="child"][data-key=' + dataKey + ']').each(function () {
                 var plannedBuildingArea = $(this).find('[name=plannedBuildingArea]').val();
                 var saleableArea = $(this).find('[name=saleableArea]').val();
                 var number = $(this).find('[name=number]').val();
-                if (AssessCommon.isNumber(plannedBuildingArea))
+                var unitPrice = $(this).find('[name=unitPrice]').val();
+                if (AssessCommon.isNumber(plannedBuildingArea)){
                     plannedBuildingAreaTotal += parseFloat(plannedBuildingArea);
-                if (AssessCommon.isNumber(saleableArea))
+                }
+                if (AssessCommon.isNumber(saleableArea)){
                     saleableAreaTotal += parseFloat(saleableArea);
-                if (AssessCommon.isNumber(number))
+                }
+                if (AssessCommon.isNumber(number)){
                     numberTotal += parseFloat(number);
+                }
+                if (AssessCommon.isNumber(unitPrice)){
+                    unitPriceTotal += parseFloat(unitPrice);
+                }
+                if ($.isNumeric(saleableArea) && $.isNumeric(unitPrice)){
+                    var temp = ( parseFloat(saleableArea) * parseFloat(unitPrice)  ) / 10000;
+                    totalSaleableAreaPrice += parseFloat(temp);
+                }
             });
 
             $(this).find('[name=plannedBuildingArea]').text('');
             $(this).find('[name=saleableArea]').text('');
             $(this).find('[name=number]').text('');
+            $(this).find('[name=unitPrice]').text('');
 
-            if (plannedBuildingAreaTotal > 0)
+            if (plannedBuildingAreaTotal > 0){
                 $(this).find('[name=plannedBuildingArea]').text(plannedBuildingAreaTotal);
-            if (saleableAreaTotal > 0)
+                plannedBuildingAreaValue += plannedBuildingAreaTotal ;
+            }
+            if (saleableAreaTotal > 0){
                 $(this).find('[name=saleableArea]').text(saleableAreaTotal);
-            if (numberTotal > 0)
+                saleableAreaValue += saleableAreaTotal ;
+            }
+            if (numberTotal > 0){
                 $(this).find('[name=number]').text(numberTotal);
+            }
+            if (unitPriceTotal > 0){
+                $(this).find('[name=unitPrice]').text(unitPriceTotal);
+            }
+            if (totalSaleableAreaPrice > 0){
+                totalSaleableAreaPriceValue += totalSaleableAreaPrice ;
+            }
 
-        })
+        });
+        target.find("table").find("tfoot").find("label[name='plannedBuildingArea']").html(plannedBuildingAreaValue);
+        target.find("table").find("tfoot").find("label[name='totalSaleableAreaPrice']").html(totalSaleableAreaPriceValue);
+        target.find("table").find("tfoot").find("label[name='saleableArea']").html(saleableAreaValue);
     }
 </script> 

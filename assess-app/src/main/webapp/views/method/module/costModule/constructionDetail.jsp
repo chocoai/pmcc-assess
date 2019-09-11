@@ -62,31 +62,7 @@
 
     <div class="x_content">
         <input type="button" class="btn btn-primary" value="经济规划指标"
-               onclick="economicIndicators.init({economicId:'${mdCostVo.mdCostConstruction.economicId}',attribute:{readonly:'readonly','class':'form-control'} });construction.writeMdDevelopmentIncomeCategoryTable();">
-
-        <div class="form-group">
-            <div class="x-valid">
-                <div class="col-sm-12">
-                    <table class="table table-condensed">
-                        <tfoot>
-                        <tr>
-                        </tr>
-                        <tr>
-                            <td>预期销售合计:</td>
-                            <td class="info">规划建筑面积<label name="plannedBuildingArea" class="label label-default"></label></td>
-                            <td class="info">总可售面积售价<label name="totalSaleableAreaPrice" class="label label-default"></label></td>
-                            <td class="info">可售面积<label name="saleableArea" class="label label-default"></label></td>
-                            <td class="active">
-                                <!-- 不可售建筑面积 -->
-                                <a data-key="unsaleableBuildingArea"></a>
-                                <input type="hidden" value="" name="unsaleableBuildingArea" class="form-control" >
-                            </td>
-                        </tr>
-                        </tfoot>
-                    </table>
-                </div>
-            </div>
-        </div>
+               onclick="economicIndicators.init({economicId:'${mdCostVo.mdCostConstruction.economicId}',attribute:{readonly:'readonly','class':'form-control'} });">
     </div>
 
 
@@ -650,58 +626,6 @@
 
 
 
-    /**经济指标 测算方法*/
-    construction.writeMdDevelopmentIncomeCategoryTable = function () {
-        var resultArr = [];
-        var economicId = '${mdCostVo.mdCostConstruction.economicId}' ;
-        if (economicId){
-            $.ajax({
-                url: '${pageContext.request.contextPath}/mdEconomicIndicators/getEconomicIndicatorsInfo',
-                data: {economicId: economicId},
-                type: 'post',
-                dataType: 'json',
-                success: function (result) {
-                    if (result.ret) {
-                        if (result.data){
-                            var economicIndicatorsItemList = result.data.economicIndicatorsItemList ;
-                            if (economicIndicatorsItemList){
-                                $.each(economicIndicatorsItemList , function (i,item) {
-                                    var economicIndicatorsItem = {};
-
-                                    economicIndicatorsItem.plannedBuildingArea = item.plannedBuildingArea;
-                                    economicIndicatorsItem.saleableArea = item.saleableArea;
-                                    economicIndicatorsItem.number = item.number;
-
-                                    resultArr.push(economicIndicatorsItem);
-                                    var plannedBuildingArea = math.bignumber(0);
-                                    var totalSaleableAreaPrice = math.bignumber(0);
-                                    var saleableArea = math.bignumber(0);
-                                    $.each(resultArr, function (i, n) {
-                                        if ($.isNumeric(n.plannedBuildingArea)) {
-                                            plannedBuildingArea = math.add(plannedBuildingArea, math.bignumber(n.plannedBuildingArea));
-                                        }
-                                        if ($.isNumeric(n.totalSaleableAreaPrice) && $.isNumeric(n.number)) {
-                                            totalSaleableAreaPrice = math.add(totalSaleableAreaPrice, math.bignumber(n.totalSaleableAreaPrice));
-                                        }
-                                        if ($.isNumeric(n.saleableArea)) {
-                                            saleableArea = math.add(saleableArea, math.bignumber(n.saleableArea));
-                                        }
-                                    });
-                                    plannedBuildingArea = plannedBuildingArea.toString();
-                                    totalSaleableAreaPrice = totalSaleableAreaPrice.toString();
-                                    saleableArea = saleableArea.toString();
-                                    construction.target.find("label[name='plannedBuildingArea']").html(plannedBuildingArea);
-                                    construction.target.find("label[name='totalSaleableAreaPrice']").html(totalSaleableAreaPrice);
-                                    construction.target.find("label[name='saleableArea']").html(saleableArea);
-                                });
-                            }
-                        }
-                    }
-                }
-            });
-        }
-    };
-
     construction.callCompareMethod = function (mcId) {
         if ($.isNumeric(mcId)){
             var frame = layer.open({
@@ -736,6 +660,5 @@
     $(function () {
         construction.loadMdDevelopmentInfrastructureChildrenTable() ;
         construction.loadMdCalculatingMethodEngineeringCostTable() ;
-        construction.writeMdDevelopmentIncomeCategoryTable() ;
     });
 </script>

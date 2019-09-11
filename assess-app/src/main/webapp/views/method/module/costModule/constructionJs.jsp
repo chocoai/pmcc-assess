@@ -308,65 +308,9 @@
                 }
             });
         }
-        $('#modalEconomicIndicators').find('.modal-footer').find('button').last().bind('click',function() {
-            construction.writeMdDevelopmentIncomeCategoryTable() ;
-        })
     } ;
 
 
-
-
-    /**经济指标 测算方法*/
-    construction.writeMdDevelopmentIncomeCategoryTable = function () {
-        var resultArr = [];
-        var economicId = '${mdCostVo.mdCostConstruction.economicId}' ;
-        if (economicId){
-            $.ajax({
-                url: '${pageContext.request.contextPath}/mdEconomicIndicators/getEconomicIndicatorsInfo',
-                data: {economicId: economicId},
-                type: 'post',
-                dataType: 'json',
-                success: function (result) {
-                    if (result.ret) {
-                        if (result.data){
-                            var economicIndicatorsItemList = result.data.economicIndicatorsItemList ;
-                            if (economicIndicatorsItemList){
-                                $.each(economicIndicatorsItemList , function (i,item) {
-                                    var economicIndicatorsItem = {};
-
-                                    economicIndicatorsItem.plannedBuildingArea = item.plannedBuildingArea;
-                                    economicIndicatorsItem.saleableArea = item.saleableArea;
-                                    economicIndicatorsItem.number = item.number;
-
-                                    resultArr.push(economicIndicatorsItem);
-                                    var plannedBuildingArea = math.bignumber(0);
-                                    var totalSaleableAreaPrice = math.bignumber(0);
-                                    var saleableArea = math.bignumber(0);
-                                    $.each(resultArr, function (i, n) {
-                                        if ($.isNumeric(n.plannedBuildingArea)) {
-                                            plannedBuildingArea = math.add(plannedBuildingArea, math.bignumber(n.plannedBuildingArea));
-                                        }
-                                        if ($.isNumeric(n.totalSaleableAreaPrice) && $.isNumeric(n.number)) {
-                                            totalSaleableAreaPrice = math.add(totalSaleableAreaPrice, math.bignumber(n.totalSaleableAreaPrice));
-                                        }
-                                        if ($.isNumeric(n.saleableArea)) {
-                                            saleableArea = math.add(saleableArea, math.bignumber(n.saleableArea));
-                                        }
-                                    });
-                                    plannedBuildingArea = plannedBuildingArea.toString();
-                                    totalSaleableAreaPrice = totalSaleableAreaPrice.toString();
-                                    saleableArea = saleableArea.toString();
-                                    construction.target.find("label[name='plannedBuildingArea']").html(plannedBuildingArea);
-                                    construction.target.find("label[name='totalSaleableAreaPrice']").html(totalSaleableAreaPrice);
-                                    construction.target.find("label[name='saleableArea']").html(saleableArea);
-                                });
-                            }
-                        }
-                    }
-                }
-            });
-        }
-    };
 
     /**基础设施建设 table*/
     construction.loadMdDevelopmentInfrastructureChildrenTable = function () {
