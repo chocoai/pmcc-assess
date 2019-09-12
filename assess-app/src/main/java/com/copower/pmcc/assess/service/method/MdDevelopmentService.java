@@ -20,6 +20,7 @@ import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.Transformer;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
@@ -30,6 +31,7 @@ import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -63,12 +65,13 @@ public class MdDevelopmentService {
 
     /**
      * 初始化数据
+     *
      * @param target
      * @param projectPlanDetails
      * @param processInsId
      * @throws BusinessException
      */
-    public void initData(MdDevelopment target, ProjectPlanDetails projectPlanDetails, String processInsId)throws BusinessException {
+    public void initData(MdDevelopment target, ProjectPlanDetails projectPlanDetails, String processInsId) throws BusinessException {
         if (target == null) {
             return;
         }
@@ -130,8 +133,8 @@ public class MdDevelopmentService {
         }
     }
 
-    public String calculationNumeric(MdDevelopment target) {
-        String value = new MdDevelopmentService().getFieldObjectValueHandle(BaseReportFieldEnum.Development_Price, target);
+    public void calculationNumeric(MdDevelopment target) {
+       getFieldObjectValueHandle(BaseReportFieldEnum.Development_Price, target);
         if (target.getId() != null && target.getId() != 0) {
             taskExecutor.execute(new Runnable() {
                 @Override
@@ -140,7 +143,6 @@ public class MdDevelopmentService {
                 }
             });
         }
-        return value;
     }
 
 
@@ -155,16 +157,28 @@ public class MdDevelopmentService {
     private String getFieldObjectValueHandle(BaseReportFieldEnum key, MdDevelopment target) {
         switch (key) {
             case Development_projectConstructionPeriod: {
+                if (!ArithmeticUtils.checkNotNull(new BigDecimal[]{target.getDevelopedYear(), target.getRemainingDevelopmentYear()})) {
+                    return "";
+                }
                 BigDecimal bigDecimal = ArithmeticUtils.add(target.getDevelopedYear(), target.getRemainingDevelopmentYear());
                 target.setProjectConstructionPeriod(bigDecimal);
                 return ArithmeticUtils.getBigDecimalString(bigDecimal);
             }
             case Development_total_saleableArea: {//f18
+                if (!ArithmeticUtils.checkNotNull(new BigDecimal[]{target.getSaleableArea(), target.getUnsaleableBuildingArea()})) {
+                    return "";
+                }
                 BigDecimal bigDecimal = ArithmeticUtils.addModel(target.getSaleableArea(), target.getUnsaleableBuildingArea(), null, null);
                 return ArithmeticUtils.getBigDecimalString(bigDecimal);
             }
             case Development_constructionInstallationEngineeringFee: {//d21 or e21
                 String f18 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_total_saleableArea, target);
+                if (!ArithmeticUtils.checkNotNull(f18)) {
+                    return "";
+                }
+                if (!ArithmeticUtils.checkNotNull(target.getConstructionInstallationEngineeringFee())) {
+                    return "";
+                }
                 BigDecimal v = ArithmeticUtils.multiply(target.getConstructionInstallationEngineeringFee(), ArithmeticUtils.createBigDecimal(f18));
                 BigDecimal bigDecimal = ArithmeticUtils.div(v, ArithmeticUtils.createBigDecimal(10000));
                 return ArithmeticUtils.getBigDecimalString(bigDecimal);
@@ -172,6 +186,15 @@ public class MdDevelopmentService {
             case Development_reconnaissanceDesign: {//d20 or e20
                 //=F18*F21*F20/10000
                 String f18 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_total_saleableArea, target);
+                if (!ArithmeticUtils.checkNotNull(f18)) {
+                    return "";
+                }
+                if (!ArithmeticUtils.checkNotNull(target.getConstructionInstallationEngineeringFee())) {
+                    return "";
+                }
+                if (!ArithmeticUtils.checkNotNull(target.getReconnaissanceDesign())) {
+                    return "";
+                }
                 BigDecimal bigDecimal = ArithmeticUtils.multiply(ArithmeticUtils.createBigDecimal(f18), target.getConstructionInstallationEngineeringFee());
                 bigDecimal = ArithmeticUtils.multiply(bigDecimal, target.getReconnaissanceDesign());
                 bigDecimal = ArithmeticUtils.div(bigDecimal, ArithmeticUtils.createBigDecimal(10000));
@@ -180,6 +203,12 @@ public class MdDevelopmentService {
             case Development_infrastructureCost: {//d22 or e22
                 //F18*F22/10000
                 String f18 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_total_saleableArea, target);
+                if (!ArithmeticUtils.checkNotNull(f18)) {
+                    return "";
+                }
+                if (!ArithmeticUtils.checkNotNull(target.getInfrastructureCost())) {
+                    return "";
+                }
                 BigDecimal bigDecimal = ArithmeticUtils.multiply(ArithmeticUtils.createBigDecimal(f18), target.getInfrastructureCost());
                 bigDecimal = ArithmeticUtils.div(bigDecimal, ArithmeticUtils.createBigDecimal(10000));
                 return ArithmeticUtils.getBigDecimalString(bigDecimal);
@@ -187,6 +216,12 @@ public class MdDevelopmentService {
             case Development_infrastructureMatchingCost: {//d23 or e23
                 //F18*F23/10000
                 String f18 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_total_saleableArea, target);
+                if (!ArithmeticUtils.checkNotNull(f18)) {
+                    return "";
+                }
+                if (!ArithmeticUtils.checkNotNull(target.getInfrastructureMatchingCost())) {
+                    return "";
+                }
                 BigDecimal bigDecimal = ArithmeticUtils.multiply(ArithmeticUtils.createBigDecimal(f18), target.getInfrastructureMatchingCost());
                 bigDecimal = ArithmeticUtils.div(bigDecimal, ArithmeticUtils.createBigDecimal(10000));
                 return ArithmeticUtils.getBigDecimalString(bigDecimal);
@@ -194,6 +229,12 @@ public class MdDevelopmentService {
             case Development_devDuring: {//d24 or e24
                 //F18*F24/10000
                 String f18 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_total_saleableArea, target);
+                if (!ArithmeticUtils.checkNotNull(f18)) {
+                    return "";
+                }
+                if (!ArithmeticUtils.checkNotNull(target.getDevDuring())) {
+                    return "";
+                }
                 BigDecimal bigDecimal = ArithmeticUtils.multiply(ArithmeticUtils.createBigDecimal(f18), target.getDevDuring());
                 bigDecimal = ArithmeticUtils.div(bigDecimal, ArithmeticUtils.createBigDecimal(10000));
                 return ArithmeticUtils.getBigDecimalString(bigDecimal);
@@ -201,6 +242,12 @@ public class MdDevelopmentService {
             case Development_otherEngineeringCost: {//d25 or e25
                 //F18*F25/10000
                 String f18 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_total_saleableArea, target);
+                if (!ArithmeticUtils.checkNotNull(f18)) {
+                    return "";
+                }
+                if (!ArithmeticUtils.checkNotNull(target.getOtherEngineeringCost())) {
+                    return "";
+                }
                 BigDecimal bigDecimal = ArithmeticUtils.multiply(ArithmeticUtils.createBigDecimal(f18), target.getOtherEngineeringCost());
                 bigDecimal = ArithmeticUtils.div(bigDecimal, ArithmeticUtils.createBigDecimal(10000));
                 return ArithmeticUtils.getBigDecimalString(bigDecimal);
@@ -213,19 +260,41 @@ public class MdDevelopmentService {
                 String d23 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_infrastructureMatchingCost, target);
                 String d24 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_devDuring, target);
                 String d25 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_otherEngineeringCost, target);
-                double[] doubles = new double[]{Double.valueOf(d20), Double.valueOf(d21), Double.valueOf(d22), Double.valueOf(d23), Double.valueOf(d24), Double.valueOf(d25)};
-                double value = ArithmeticUtils.add(doubles);
-                target.setConstructionCostSubtotal(ArithmeticUtils.round(ArithmeticUtils.createBigDecimal(value), 2, BigDecimal.ROUND_HALF_UP));
+                String[] strings = new String[]{d20, d21, d22, d23, d24, d25};
+                if (!ArithmeticUtils.checkNotNull(strings)) {
+                    return "";
+                }
+                BigDecimal[] bigDecimals = new BigDecimal[strings.length];
+                Transformer<String, BigDecimal> transformer = new Transformer<String, BigDecimal>() {
+                    @Override
+                    public BigDecimal transform(String s) {
+                        return ArithmeticUtils.createBigDecimal(s);
+                    }
+                };
+                for (int i = 0; i < strings.length; i++) {
+                    bigDecimals[i] = transformer.transform(strings[i]);
+                }
+                BigDecimal value = ArithmeticUtils.add(bigDecimals);
+                target.setConstructionCostSubtotal(ArithmeticUtils.round(value, 2, BigDecimal.ROUND_HALF_UP));
                 return String.valueOf(value);
             }
             case Development_unforeseenExpenses: {//d27 or e27
                 //SUM(D20:E25)*F27
                 String d26 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_constructionSubtotal, target);
+                if (!ArithmeticUtils.checkNotNull(d26)) {
+                    return "";
+                }
+                if (!ArithmeticUtils.checkNotNull(target.getUnforeseenExpenses())) {
+                    return "";
+                }
                 BigDecimal bigDecimal = ArithmeticUtils.multiply(ArithmeticUtils.createBigDecimal(d26), target.getUnforeseenExpenses());
                 return ArithmeticUtils.getBigDecimalString(bigDecimal);
             }
             case Development_LandGetCost: {//d28
                 //1+D29+D30
+                if (!ArithmeticUtils.checkNotNull(new BigDecimal[]{target.getDeedTaxRate(), target.getTransactionTaxRate()})) {
+                    return "";
+                }
                 BigDecimal bigDecimal = ArithmeticUtils.add(ArithmeticUtils.createBigDecimal(1), target.getDeedTaxRate());
                 bigDecimal = ArithmeticUtils.add(bigDecimal, target.getTransactionTaxRate());
                 return ArithmeticUtils.getBigDecimalString(bigDecimal);
@@ -233,6 +302,12 @@ public class MdDevelopmentService {
             case Development_managementExpenseCorrectRate: {//d32
                 //=G32*D28
                 String d28 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_LandGetCost, target);
+                if (!ArithmeticUtils.checkNotNull(d28)) {
+                    return "";
+                }
+                if (!ArithmeticUtils.checkNotNull(target.getManagementExpense())) {
+                    return "";
+                }
                 BigDecimal bigDecimal = ArithmeticUtils.multiply(ArithmeticUtils.createBigDecimal(d28), target.getManagementExpense());
                 return ArithmeticUtils.getBigDecimalString(bigDecimal);
             }
@@ -240,6 +315,12 @@ public class MdDevelopmentService {
                 //(SUM(D26+D27)+F31)*G32
                 String d26 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_constructionSubtotal, target);
                 String d27 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_unforeseenExpenses, target);
+                if (!ArithmeticUtils.checkNotNull(Arrays.asList(d26, d27))) {
+                    return "";
+                }
+                if (!ArithmeticUtils.checkNotNullList(Arrays.asList(target.getManagementExpense(), target.getLandGetRelevant()))) {
+                    return "";
+                }
                 BigDecimal[] doubles = new BigDecimal[]{ArithmeticUtils.createBigDecimal(d26), ArithmeticUtils.createBigDecimal(d27), target.getLandGetRelevant()};
                 BigDecimal bigDecimal = ArithmeticUtils.add(doubles);
                 bigDecimal = ArithmeticUtils.multiply(bigDecimal, target.getManagementExpense());
@@ -248,6 +329,12 @@ public class MdDevelopmentService {
             case Development_salesFee: {//f33
                 //=IF(E16=" "," ",E16*G33)
                 BigDecimal e16 = target.getTotalSaleableAreaPrice();
+                if (!ArithmeticUtils.checkNotNull(e16)) {
+                    return "";
+                }
+                if (!ArithmeticUtils.checkNotNull(target.getSalesFee())) {
+                    return "";
+                }
                 BigDecimal bigDecimal = ArithmeticUtils.multiply(e16, target.getSalesFee());
                 return ArithmeticUtils.getBigDecimalString(bigDecimal);
             }
@@ -257,6 +344,12 @@ public class MdDevelopmentService {
                 String d3 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_projectConstructionPeriod, target);
                 String d28 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_LandGetCost, target);
                 String d32 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_managementExpenseCorrectRate, target);
+                if (!ArithmeticUtils.checkNotNull(Arrays.asList(d3, d28, d32))) {
+                    return "";
+                }
+                if (!ArithmeticUtils.checkNotNull(g34)) {
+                    return "";
+                }
                 double c1 = (Math.pow(1 + g34.doubleValue(), Double.valueOf(d3)) - 1) * Double.valueOf(d28);
                 double c2 = (Math.pow(1 + g34.doubleValue(), Double.valueOf(d3) / 2) - 1) * Double.valueOf(d32);
                 double c = c1 + c2;
@@ -276,14 +369,27 @@ public class MdDevelopmentService {
                 String f32 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_managementExpense, target);
                 String d3 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_projectConstructionPeriod, target);
                 BigDecimal f31 = target.getLandGetRelevant();
-                BigDecimal a = ArithmeticUtils.add(new BigDecimal[]{
-                        ArithmeticUtils.createBigDecimal(d21),
-                        ArithmeticUtils.createBigDecimal(d23),
-                        ArithmeticUtils.createBigDecimal(d24),
-                        ArithmeticUtils.createBigDecimal(d25),
-                        ArithmeticUtils.createBigDecimal(d27),
-                        ArithmeticUtils.createBigDecimal(f32),
-                        ArithmeticUtils.createBigDecimal(f33)});
+                List<String> stringList = Arrays.asList(d21,d23,d24,d25,d27,f32,f33) ;
+                if (!ArithmeticUtils.checkNotNull(stringList)) {
+                    return "";
+                }
+                if (!ArithmeticUtils.checkNotNull(g34)) {
+                    return "";
+                }
+                if (!ArithmeticUtils.checkNotNull(d3)) {
+                    return "";
+                }
+                if (!ArithmeticUtils.checkNotNull(d22)) {
+                    return "";
+                }
+                if (!ArithmeticUtils.checkNotNull(d20)) {
+                    return "";
+                }
+                if (!ArithmeticUtils.checkNotNull(f31)) {
+                    return "";
+                }
+                List<BigDecimal> bigDecimalList = stringList.stream().map(s -> ArithmeticUtils.createBigDecimal(s)).collect(Collectors.toList());
+                BigDecimal a = ArithmeticUtils.add(bigDecimalList);
                 double b = Math.pow(1 + g34.doubleValue(), Double.valueOf(d3) / 2) - 1;
                 BigDecimal c1 = ArithmeticUtils.multiply(a, ArithmeticUtils.createBigDecimal(b));
                 double c2 = (Double.valueOf(d20) + Double.valueOf(d22) + f31.doubleValue()) * (Math.pow(1 + g34.doubleValue(), Double.valueOf(d3)) - 1);
@@ -296,6 +402,12 @@ public class MdDevelopmentService {
                 String d28 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_LandGetCost, target);
                 String d32 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_managementExpenseCorrectRate, target);
                 BigDecimal g35 = target.getInvestmentProfitTax();
+                if (!ArithmeticUtils.checkNotNull(Arrays.asList(d28, d32))) {
+                    return "";
+                }
+                if (!ArithmeticUtils.checkNotNull(g35)) {
+                    return "";
+                }
                 BigDecimal bigDecimal = ArithmeticUtils.add(ArithmeticUtils.createBigDecimal(d28), ArithmeticUtils.createBigDecimal(d32));
                 bigDecimal = ArithmeticUtils.multiply(bigDecimal, g35);
                 return ArithmeticUtils.getBigDecimalString(bigDecimal);
@@ -307,13 +419,24 @@ public class MdDevelopmentService {
                 String f33 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_salesFee, target);
                 String f32 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_managementExpense, target);
                 BigDecimal f31 = target.getLandGetRelevant();
-                BigDecimal a = ArithmeticUtils.add(new BigDecimal[]{
+                BigDecimal g35 = target.getInvestmentProfitTax();
+                if (!ArithmeticUtils.checkNotNull(f31)) {
+                    return "";
+                }
+                if (!ArithmeticUtils.checkNotNull(g35)) {
+                    return "";
+                }
+                BigDecimal[] bigDecimals = new BigDecimal[]{
                         ArithmeticUtils.createBigDecimal(d26),
                         ArithmeticUtils.createBigDecimal(d27),
                         ArithmeticUtils.createBigDecimal(f32),
                         ArithmeticUtils.createBigDecimal(f33),
-                        f31});
-                BigDecimal g35 = target.getInvestmentProfitTax();
+                        f31};
+
+                if (!ArithmeticUtils.checkNotNull(bigDecimals)) {
+                    return "";
+                }
+                BigDecimal a = ArithmeticUtils.add(bigDecimals);
                 BigDecimal bigDecimal = ArithmeticUtils.multiply(a, g35);
                 target.setInvestmentProfit(ArithmeticUtils.round(bigDecimal, 2, BigDecimal.ROUND_HALF_UP));
                 return ArithmeticUtils.getBigDecimalString(bigDecimal);
@@ -343,6 +466,12 @@ public class MdDevelopmentService {
                 //E16*D36
                 String d36 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_projectDevelopmentIncomeCorrectRate, target);
                 BigDecimal e16 = target.getTotalSaleableAreaPrice();
+                if (!ArithmeticUtils.checkNotNull(d36)) {
+                    return "";
+                }
+                if (!ArithmeticUtils.checkNotNull(e16)) {
+                    return "";
+                }
                 BigDecimal bigDecimal = ArithmeticUtils.multiply(ArithmeticUtils.createBigDecimal(d36), e16);
                 return ArithmeticUtils.getBigDecimalString(bigDecimal);
             }
@@ -353,6 +482,12 @@ public class MdDevelopmentService {
                 String d32 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_managementExpenseCorrectRate, target);
                 String d34 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_interestInvestmentCorrectRate, target);
                 String d35 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_investmentProfitCorrectRate, target);
+                if (!ArithmeticUtils.checkNotNull(new BigDecimal[]{d29,d30})) {
+                    return "";
+                }
+                if (!ArithmeticUtils.checkNotNull(new String[]{d32,d34,d35})) {
+                    return "";
+                }
                 BigDecimal bigDecimal = ArithmeticUtils.add(new BigDecimal[]{
                         ArithmeticUtils.createBigDecimal(d35),
                         ArithmeticUtils.createBigDecimal(d34),
@@ -372,7 +507,12 @@ public class MdDevelopmentService {
                 String f36 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_projectDevelopmentIncomeValue, target);
                 String f34 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_interestInvestment, target);
                 String f35 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_investmentProfit, target);
-
+                if (!ArithmeticUtils.checkNotNull(new String[]{d26,d27,f32,f33,f36,f34,f35})) {
+                    return "";
+                }
+                if (!ArithmeticUtils.checkNotNull(new BigDecimal[]{e16,f31})) {
+                    return "";
+                }
                 BigDecimal bigDecimal = ArithmeticUtils.add(new BigDecimal[]{
                         ArithmeticUtils.createBigDecimal(d26),
                         ArithmeticUtils.createBigDecimal(d27),
@@ -390,6 +530,9 @@ public class MdDevelopmentService {
                 //=F40/(1+H40)
                 String f40 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_LandPriceCorrectValue, target);
                 String h40 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_LandPriceCorrectRate, target);
+                if (!ArithmeticUtils.checkNotNull(new String[]{f40,h40})) {
+                    return "";
+                }
                 BigDecimal bigDecimal = ArithmeticUtils.add(String.valueOf(1), h40);
                 bigDecimal = ArithmeticUtils.div(ArithmeticUtils.createBigDecimal(f40), bigDecimal);
                 return ArithmeticUtils.getBigDecimalString(bigDecimal);
@@ -398,6 +541,9 @@ public class MdDevelopmentService {
                 //=E40/F18*10000
                 String e40 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_LandPriceValue, target);
                 String f18 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_total_saleableArea, target);
+                if (!ArithmeticUtils.checkNotNull(new String[]{e40,f18})) {
+                    return "";
+                }
                 BigDecimal bigDecimal = ArithmeticUtils.div(ArithmeticUtils.createBigDecimal(e40), ArithmeticUtils.createBigDecimal(f18));
                 bigDecimal = ArithmeticUtils.multiply(bigDecimal, ArithmeticUtils.createBigDecimal(10000));
                 target.setAssessPrice(ArithmeticUtils.round(bigDecimal, 2, BigDecimal.ROUND_HALF_UP));
@@ -408,6 +554,9 @@ public class MdDevelopmentService {
                 BigDecimal e43 = target.getRemunerationRate();
                 BigDecimal g43 = target.getRemainingYears();
                 BigDecimal f43 = target.getStatutoryLife();
+                if (!ArithmeticUtils.checkNotNull(new BigDecimal[]{e43,g43,f43})) {
+                    return "";
+                }
                 double a = 1 - 1 / Math.pow(1 + e43.doubleValue(), g43.doubleValue());
                 double b = 1 - 1 / Math.pow(1 + e43.doubleValue(), f43.doubleValue());
                 BigDecimal bigDecimal = ArithmeticUtils.div(ArithmeticUtils.createBigDecimal(a), ArithmeticUtils.createBigDecimal(b));
@@ -420,6 +569,12 @@ public class MdDevelopmentService {
                 BigDecimal d44 = target.getAmendmentStatusRights();
                 BigDecimal d45 = target.getOtherAmendments();
                 BigDecimal d46 = target.getDevelopmentDegreeRevision();
+                if (!ArithmeticUtils.checkNotNull(new BigDecimal[]{d44,d45,d46})) {
+                    return "";
+                }
+                if (!ArithmeticUtils.checkNotNull(new String[]{d41,d43})) {
+                    return "";
+                }
                 double d = ArithmeticUtils.mul(new double[]{Double.valueOf(d41), Double.valueOf(d43), d44.doubleValue(), d45.doubleValue()});
                 BigDecimal bigDecimal = ArithmeticUtils.add(ArithmeticUtils.createBigDecimal(d), d46);
                 bigDecimal = ArithmeticUtils.round(bigDecimal, 2, BigDecimal.ROUND_HALF_UP);
@@ -444,7 +599,7 @@ public class MdDevelopmentService {
         return mdDevelopmentDao.getMdDevelopmentById(id);
     }
 
-    public void saveAndUpdateData(String formData,ProjectPlanDetails projectPlanDetails){
+    public void saveAndUpdateData(String formData, ProjectPlanDetails projectPlanDetails) {
         MdDevelopment mdDevelopment = JSONObject.parseObject(formData, MdDevelopment.class);
 
         this.saveAndUpdateMdDevelopment(mdDevelopment);

@@ -5,7 +5,9 @@ package com.copower.pmcc.assess.common;
  * 2019-09-04重新构造
  */
 
+import com.google.common.base.Preconditions;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -14,7 +16,9 @@ import java.math.MathContext;
 import java.math.RoundingMode;
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -79,11 +83,19 @@ public class ArithmeticUtils implements Serializable {
     }
 
     public static BigDecimal add(List<BigDecimal> bigDecimalList) {
-        BigDecimal[] doubles = new BigDecimal[bigDecimalList.size()] ;
+        BigDecimal[] doubles = new BigDecimal[bigDecimalList.size()];
         for (int i = 0; i < bigDecimalList.size(); i++) {
-            doubles[i] = bigDecimalList.get(i) ;
+            doubles[i] = bigDecimalList.get(i);
         }
-        return add(doubles) ;
+        return add(doubles);
+    }
+
+    public static String add(String[] strings) {
+        List<BigDecimal> bigDecimalList = new ArrayList<>() ;
+        for (String s:strings){
+            bigDecimalList.add(createBigDecimal(s)) ;
+        }
+        return add(bigDecimalList).toString() ;
     }
 
     /**
@@ -310,6 +322,7 @@ public class ArithmeticUtils implements Serializable {
 
     /**
      * 默认精度10
+     *
      * @param v1
      * @param v2
      * @return
@@ -320,6 +333,7 @@ public class ArithmeticUtils implements Serializable {
 
     /**
      * 默认精度10
+     *
      * @param v1
      * @param v2
      * @return
@@ -469,41 +483,45 @@ public class ArithmeticUtils implements Serializable {
 
     /**
      * 百分数转数字
+     *
      * @param value
      * @return
      * @throws ParseException
      */
-    public static String parseFormatString(String value)throws ParseException {
-       return parseFormatNumber(value).toString();
+    public static String parseFormatString(String value) throws ParseException {
+        return parseFormatNumber(value).toString();
     }
 
     /**
      * 百分数转数字
+     *
      * @param value
      * @return
      * @throws ParseException
      */
-    public static BigDecimal parseFormatBigDecimal(String value)throws ParseException {
-       return createBigDecimal(parseFormatNumber(value).toString());
+    public static BigDecimal parseFormatBigDecimal(String value) throws ParseException {
+        return createBigDecimal(parseFormatNumber(value).toString());
     }
 
     /**
      * 百分数转数字
+     *
      * @param value
      * @return
      * @throws ParseException
      */
-    public static double parseFormatDouble(String value)throws ParseException {
-       return parseFormatNumber(value).doubleValue();
+    public static double parseFormatDouble(String value) throws ParseException {
+        return parseFormatNumber(value).doubleValue();
     }
 
     /**
      * 百分数转数字
+     *
      * @param value
      * @return
      * @throws ParseException
      */
-    public static Number parseFormatNumber(String value)throws ParseException {
+    public static Number parseFormatNumber(String value) throws ParseException {
         NumberFormat nf = NumberFormat.getPercentInstance();
         Number m = nf.parse(value);
         return m;
@@ -630,6 +648,90 @@ public class ArithmeticUtils implements Serializable {
         }
     }
 
+    /**
+     * 检验是否为非空
+     *
+     * @param bigDecimalList
+     * @return
+     */
+    public static boolean checkNotNullList(List<BigDecimal> bigDecimalList) {
+        BigDecimal[] bigDecimals = bigDecimalList.toArray(new BigDecimal[bigDecimalList.size()]) ;
+        return checkNotNull(bigDecimals) ;
+    }
+
+    /**
+     * 检验是否为非空
+     *
+     * @param bigDecimals
+     * @return
+     */
+    public static boolean checkNotNull(BigDecimal[] bigDecimals) {
+        for (BigDecimal bigDecimal : bigDecimals) {
+            try {
+                Preconditions.checkArgument(bigDecimal != null);
+            } catch (Exception e) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * 检验是否为非空
+     *
+     * @param bigDecimal
+     * @return
+     */
+    public static boolean checkNotNull(BigDecimal bigDecimal) {
+        try {
+            Preconditions.checkArgument(bigDecimal != null);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * 检验是否为非空
+     *
+     * @param strings
+     * @return
+     */
+    public static boolean checkNotNull(String[] strings) {
+        for (String s : strings) {
+            try {
+                Preconditions.checkArgument(StringUtils.isNoneBlank(s) && NumberUtils.isNumber(s));
+            } catch (Exception e) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * 检验是否为非空
+     * @param stringList
+     * @return
+     */
+    public static boolean checkNotNull(List<String> stringList){
+        String[] strings = stringList.toArray(new String[stringList.size()]) ;
+        return checkNotNull(strings) ;
+    }
+
+    /**
+     * 检验是否为非空
+     *
+     * @param s
+     * @return
+     */
+    public static boolean checkNotNull(String s) {
+        try {
+            Preconditions.checkArgument(StringUtils.isNoneBlank(s) && NumberUtils.isNumber(s));
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
 
     public static BigDecimal createBigDecimal(String value) {
         return createBigDecimal(value, MathContext.UNLIMITED);
@@ -681,38 +783,4 @@ public class ArithmeticUtils implements Serializable {
         return new BigDecimal(value, context);
     }
 
-//    public static void addTest(){
-//        System.out.println(ArithmeticUtils.add(2.1, 2.3));
-//        System.out.println(ArithmeticUtils.add("235.1", "2623.2"));
-//        System.out.println(ArithmeticUtils.add("235.463", "2623.473",2));
-//    }
-
-//    public static void subTet(){
-//        System.out.println(ArithmeticUtils.sub(3.14, 2.1));
-//        System.out.println(ArithmeticUtils.sub("3.14", "2.1"));
-//        System.out.println(ArithmeticUtils.sub("3.16", "2.1",2));
-//    }
-
-//    public static void mulTest(){
-//        System.out.println(ArithmeticUtils.mul(23.26, 10.0));
-//        System.out.println(ArithmeticUtils.mul("23.26", "10.0"));
-//        System.out.println(ArithmeticUtils.mul("23.26", "10.0",2));
-//    }
-
-//    public static void divTest(){
-//        System.out.println(ArithmeticUtils.div(3.1, 2.0));
-//        System.out.println(ArithmeticUtils.div("3.1", "2.0"));
-//        System.out.println(ArithmeticUtils.div("3.1", "2.0",2));
-//    }
-
-//    public static void remainderTest(){
-//        System.out.println(ArithmeticUtils.remainder("3", "2", 1));
-//        System.out.println(ArithmeticUtils.remainderModel(new BigDecimal(3), new BigDecimal(2),null,null));
-//    }
-
-//    public static void isIntegerTest(){
-//        System.out.println(ArithmeticUtils.isInteger(new BigDecimal(1.0)));
-//        System.out.println(ArithmeticUtils.isInteger(new BigDecimal(-1.0)));
-//        System.out.println(ArithmeticUtils.isInteger(new BigDecimal(-1.04)));
-//    }
 }

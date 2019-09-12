@@ -239,6 +239,10 @@ public class GenerateMdCostService implements Serializable {
                 BigDecimal v = ArithmeticUtils.add(new BigDecimal[]{ArithmeticUtils.createBigDecimal(param1), ArithmeticUtils.createBigDecimal(param2), target.getAdditionalCostLandAcquisition()});
                 return ArithmeticUtils.round(v.toString(), 0);
             }
+            case MarketCost_additionalCostLandAcquisition:{
+                BigDecimal bigDecimal = ArithmeticUtils.multiply(target.getAdditionalCostLandAcquisition(),ArithmeticUtils.createBigDecimal(10000)) ;
+                return ArithmeticUtils.round(bigDecimal.toString(), 0);
+            }
             case MarketCost_reconnaissanceDesign:{
                 BigDecimal bigDecimal = ArithmeticUtils.multiply(target.getReconnaissanceDesign(),target.getConstructionInstallationEngineeringFee()) ;
                 return ArithmeticUtils.round(bigDecimal.toString(), 0);
@@ -416,10 +420,6 @@ public class GenerateMdCostService implements Serializable {
             break;
             case MarketCost_investmentProfitRate: {
                 generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), ArithmeticUtils.getPercentileSystem(target.getInvestmentProfitTax(), 2));
-            }
-            break;
-            case MarketCost_additionalCostLandAcquisition: {
-                generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), ArithmeticUtils.round(target.getAdditionalCostLandAcquisition().toString(), 2));
             }
             break;
             case MarketCost_developYearNumberTax: {

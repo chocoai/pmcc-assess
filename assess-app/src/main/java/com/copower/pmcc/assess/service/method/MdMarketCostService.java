@@ -28,6 +28,7 @@ import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -58,7 +59,6 @@ public class MdMarketCostService {
     private DeclareBuildEngineeringAndEquipmentCenterService declareBuildEngineeringAndEquipmentCenterService;
 
 
-
     public MdCost initExplore(SchemeJudgeObject schemeJudgeObject) {
         if (schemeJudgeObject == null) return null;
         MdCost mdCost = new MdCost();
@@ -70,6 +70,7 @@ public class MdMarketCostService {
 
     /**
      * 初始化数据
+     *
      * @param mdCost
      * @param projectPlanDetails
      * @param processInsId
@@ -162,7 +163,6 @@ public class MdMarketCostService {
         saveMdCostConstructionAndUpdate(mdCostConstruction);
 
 
-
     }
 
     public void saveMdCostConstructionAndUpdate(MdCostConstruction mdCostConstruction) {
@@ -246,113 +246,116 @@ public class MdMarketCostService {
                 return ArithmeticUtils.getBigDecimalString(target.getDevelopYearNumberTax());
             }
             case MarketCost_UnitAreaLandPrice: {
-                try {
-                    String start = getFieldObjectValue(BaseReportFieldEnum.MarketCost_landPurchasePrice, target);
-                    BigDecimal bigDecimal = ArithmeticUtils.divide(ArithmeticUtils.createBigDecimal(start), target.getDevelopLandAreaTax(), 2);
-                    return ArithmeticUtils.getBigDecimalString(bigDecimal);
-                } catch (Exception e) {
-                    return "";
+                String start = getFieldObjectValue(BaseReportFieldEnum.MarketCost_landPurchasePrice, target);
+                if (!ArithmeticUtils.checkNotNull(start)){
+                    return "" ;
                 }
+                if (!ArithmeticUtils.checkNotNull(target.getDevelopLandAreaTax())){
+                    return "" ;
+                }
+                BigDecimal bigDecimal = ArithmeticUtils.divide(ArithmeticUtils.createBigDecimal(start), target.getDevelopLandAreaTax(), 2);
+                return ArithmeticUtils.getBigDecimalString(bigDecimal);
             }
             case MarketCost_landPurchasePrice: {
-                try {
-                    BigDecimal start = ArithmeticUtils.divide(ArithmeticUtils.multiply(target.getLandPurchasePrice(), target.getDevelopLandAreaTax()), ArithmeticUtils.createBigDecimal(10000), 2);
-                    return ArithmeticUtils.getBigDecimalString(start);
-                } catch (Exception e) {
-                    return "0";
+                if (!ArithmeticUtils.checkNotNullList(Arrays.asList(target.getLandPurchasePrice(),target.getDevelopLandAreaTax()))){
+                    return "" ;
                 }
+                BigDecimal start = ArithmeticUtils.divide(ArithmeticUtils.multiply(target.getLandPurchasePrice(), target.getDevelopLandAreaTax()), ArithmeticUtils.createBigDecimal(10000), 2);
+                return ArithmeticUtils.getBigDecimalString(start);
             }
             case MarketCost_landGetRelevant: {
-                try {
-                    String start = getFieldObjectValue(BaseReportFieldEnum.MarketCost_landPurchasePrice, target);
-                    return ArithmeticUtils.mul(start, target.getLandGetRelevant().toString(), 2);
-                } catch (Exception e) {
-                    return "0";
+                String start = getFieldObjectValue(BaseReportFieldEnum.MarketCost_landPurchasePrice, target);
+                if (!ArithmeticUtils.checkNotNull(start)){
+                    return "" ;
                 }
+                if (!ArithmeticUtils.checkNotNull(target.getLandGetRelevant())){
+                    return "" ;
+                }
+                return ArithmeticUtils.mul(start, target.getLandGetRelevant().toString(), 2);
             }
             case MarketCost_landGetRelevantRate: {
                 return ArithmeticUtils.getBigDecimalString(target.getLandGetRelevant());
             }
             case MarketCost_additionalCostLandAcquisition: {
-                try {
-                    BigDecimal bigDecimal = ArithmeticUtils.div(target.getAdditionalCostLandAcquisition(), target.getDevelopLandAreaTax());
-                    BigDecimal start = ArithmeticUtils.multiply(bigDecimal, ArithmeticUtils.createBigDecimal(10000), 2);
-                    return ArithmeticUtils.getBigDecimalString(start);
-                } catch (Exception e) {
-                    return "0";
+                if (!ArithmeticUtils.checkNotNullList(Arrays.asList(target.getAdditionalCostLandAcquisition(),target.getDevelopLandAreaTax()))){
+                    return "" ;
                 }
+                BigDecimal bigDecimal = ArithmeticUtils.div(target.getAdditionalCostLandAcquisition(), target.getDevelopLandAreaTax());
+                BigDecimal start = ArithmeticUtils.multiply(bigDecimal, ArithmeticUtils.createBigDecimal(10000), 2);
+                return ArithmeticUtils.getBigDecimalString(start);
             }
             case MarketCost_reconnaissanceDesignRate: {
                 return ArithmeticUtils.getBigDecimalString(target.getReconnaissanceDesign());
             }
             case MarketCost_reconnaissanceDesign: {
-                try {
-                    String start = getFieldObjectValue(BaseReportFieldEnum.MarketCost_constructionInstallationEngineeringFee, target);
-                    String string = ArithmeticUtils.mul(start, target.getReconnaissanceDesign().toString(), 2);
-                    return string;
-                } catch (Exception e) {
-                    return "";
+                String start = getFieldObjectValue(BaseReportFieldEnum.MarketCost_constructionInstallationEngineeringFee, target);
+                if (!ArithmeticUtils.checkNotNull(start)){
+                    return "" ;
                 }
+                if (!ArithmeticUtils.checkNotNull(target.getReconnaissanceDesign())){
+                    return "" ;
+                }
+                return ArithmeticUtils.mul(start, target.getReconnaissanceDesign().toString(), 2);
             }
             case MarketCost_constructionInstallationEngineeringFee: {
-                try {
-                    BigDecimal bigDecimal = ArithmeticUtils.multiply(target.getConstructionInstallationEngineeringFee(), target.getDevelopBuildAreaTax(), 2);
-                    BigDecimal start = ArithmeticUtils.divide(bigDecimal, ArithmeticUtils.createBigDecimal(10000), 2);
-                    return ArithmeticUtils.getBigDecimalString(start);
-                } catch (Exception e) {
-                    return "";
+                if (!ArithmeticUtils.checkNotNullList(Arrays.asList(target.getDevelopBuildAreaTax(),target.getConstructionInstallationEngineeringFee()))){
+                    return "" ;
                 }
+                BigDecimal bigDecimal = ArithmeticUtils.multiply(target.getConstructionInstallationEngineeringFee(), target.getDevelopBuildAreaTax(), 2);
+                BigDecimal start = ArithmeticUtils.divide(bigDecimal, ArithmeticUtils.createBigDecimal(10000), 2);
+                return ArithmeticUtils.getBigDecimalString(start);
             }
             case MarketCost_infrastructureCost: {
-                try {
-                    String two = ArithmeticUtils.mul(target.getDevelopBuildAreaTax().toString(), target.getInfrastructureCost().toString()).toString();
-                    return ArithmeticUtils.div(two, "10000", 2);
-                } catch (Exception e) {
-                    return "";
+                if (!ArithmeticUtils.checkNotNullList(Arrays.asList(target.getDevelopBuildAreaTax(),target.getInfrastructureCost()))){
+                    return "" ;
                 }
+                String two = ArithmeticUtils.mul(target.getDevelopBuildAreaTax().toString(), target.getInfrastructureCost().toString()).toString();
+                return ArithmeticUtils.div(two, "10000", 2);
             }
             case MarketCost_infrastructureMatchingCost: {
-                try {
-                    String two = ArithmeticUtils.mul(target.getDevelopBuildAreaTax().toString(), target.getInfrastructureMatchingCost().toString()).toString();
-                    return ArithmeticUtils.div(two, "10000", 2);
-                } catch (Exception e) {
-                    return "";
+                if (!ArithmeticUtils.checkNotNullList(Arrays.asList(target.getDevelopBuildAreaTax(),target.getInfrastructureMatchingCost()))){
+                    return "" ;
                 }
+                String two = ArithmeticUtils.mul(target.getDevelopBuildAreaTax().toString(), target.getInfrastructureMatchingCost().toString()).toString();
+                return ArithmeticUtils.div(two, "10000", 2);
             }
             case MarketCost_devDuring: {
-                try {
-                    String two = ArithmeticUtils.mul(target.getDevelopBuildAreaTax().toString(), target.getDevDuring().toString()).toString();
-                    return ArithmeticUtils.div(two, "10000", 2);
-                } catch (Exception e) {
-                    return "";
+                if (!ArithmeticUtils.checkNotNullList(Arrays.asList(target.getDevelopBuildAreaTax(),target.getDevDuring()))){
+                    return "" ;
                 }
+                String two = ArithmeticUtils.mul(target.getDevelopBuildAreaTax().toString(), target.getDevDuring().toString()).toString();
+                return ArithmeticUtils.div(two, "10000", 2);
             }
             case MarketCost_otherEngineeringCost: {
-                try {
-                    String two = ArithmeticUtils.mul(target.getDevelopBuildAreaTax().toString(), target.getOtherEngineeringCost().toString()).toString();
-                    return ArithmeticUtils.div(two, "10000", 2);
-                } catch (Exception e) {
-                    return "";
+                if (!ArithmeticUtils.checkNotNullList(Arrays.asList(target.getDevelopBuildAreaTax(),target.getOtherEngineeringCost()))){
+                    return "" ;
                 }
+                String two = ArithmeticUtils.mul(target.getDevelopBuildAreaTax().toString(), target.getOtherEngineeringCost().toString()).toString();
+                return ArithmeticUtils.div(two, "10000", 2);
             }
             case MarketCost_constructionSubtotal: {
-                try {
-                    String v1 = getFieldObjectValue(BaseReportFieldEnum.MarketCost_reconnaissanceDesign, target);
-                    String v2 = getFieldObjectValue(BaseReportFieldEnum.MarketCost_constructionInstallationEngineeringFee, target);
-                    String v3 = getFieldObjectValue(BaseReportFieldEnum.MarketCost_infrastructureCost, target);
-                    String v4 = getFieldObjectValue(BaseReportFieldEnum.MarketCost_infrastructureMatchingCost, target);
-                    String v5 = getFieldObjectValue(BaseReportFieldEnum.MarketCost_devDuring, target);
-                    String v6 = getFieldObjectValue(BaseReportFieldEnum.MarketCost_otherEngineeringCost, target);
-                    double[] doubles = new double[]{Double.valueOf(v1), Double.valueOf(v2), Double.valueOf(v3), Double.valueOf(v4), Double.valueOf(v5), Double.valueOf(v6)};
-                    double value = ArithmeticUtils.add(doubles);
-                    target.setConstructionSubtotal(String.valueOf(value));
-                    return String.valueOf(value);
-                } catch (Exception e) {
-                    return "";
+                String v1 = getFieldObjectValue(BaseReportFieldEnum.MarketCost_reconnaissanceDesign, target);
+                String v2 = getFieldObjectValue(BaseReportFieldEnum.MarketCost_constructionInstallationEngineeringFee, target);
+                String v3 = getFieldObjectValue(BaseReportFieldEnum.MarketCost_infrastructureCost, target);
+                String v4 = getFieldObjectValue(BaseReportFieldEnum.MarketCost_infrastructureMatchingCost, target);
+                String v5 = getFieldObjectValue(BaseReportFieldEnum.MarketCost_devDuring, target);
+                String v6 = getFieldObjectValue(BaseReportFieldEnum.MarketCost_otherEngineeringCost, target);
+                String[] strings = new String[] {v1,v2,v3,v4,v5,v6} ;
+                if (!ArithmeticUtils.checkNotNull(strings)){
+                    return "" ;
                 }
+                String value = ArithmeticUtils.add(strings);
+                target.setConstructionSubtotal(ArithmeticUtils.round(value,2));
+                return value;
             }
             case MarketCost_unforeseenExpenses: {
                 String v = getFieldObjectValue(BaseReportFieldEnum.MarketCost_constructionSubtotal, target);
+                if (!ArithmeticUtils.checkNotNull(v)){
+                    return "" ;
+                }
+                if (!ArithmeticUtils.checkNotNull(target.getUnforeseenExpenses())){
+                    return "" ;
+                }
                 String value = ArithmeticUtils.mul(v, target.getUnforeseenExpenses().toString(), 2);
                 return value;
             }
@@ -363,30 +366,41 @@ public class MdMarketCostService {
                 return ArithmeticUtils.getBigDecimalString(target.getUnforeseenExpenses());
             }
             case MarketCost_managementExpense: {
-                try {
-                    double e17 = Double.valueOf(getFieldObjectValue(BaseReportFieldEnum.MarketCost_constructionSubtotal, target));
-                    double e18 = Double.valueOf(getFieldObjectValue(BaseReportFieldEnum.MarketCost_unforeseenExpenses, target));
-                    double e9 = Double.valueOf(getFieldObjectValue(BaseReportFieldEnum.MarketCost_landGetCostTotal, target));
-                    double v1 = ArithmeticUtils.add(new double[]{e17, e18, e9});
-                    double d19 = target.getManagementExpense().doubleValue();
-                    double v = ArithmeticUtils.mul(v1, d19, 2);
-                    return String.valueOf(v);
-                } catch (Exception e) {
-                    return "";
+                String e17 = getFieldObjectValue(BaseReportFieldEnum.MarketCost_constructionSubtotal, target) ;
+                String e18 = getFieldObjectValue(BaseReportFieldEnum.MarketCost_unforeseenExpenses, target) ;
+                String e9 = getFieldObjectValue(BaseReportFieldEnum.MarketCost_landGetCostTotal, target) ;
+                String[] strings = new String[] {e17,e18,e9} ;
+                if (!ArithmeticUtils.checkNotNull(strings)){
+                    return "" ;
                 }
+                if (!ArithmeticUtils.checkNotNull(target.getManagementExpense())){
+                    return "" ;
+                }
+                String v1 = ArithmeticUtils.add(strings);
+                String d19 = target.getManagementExpense().toString();
+                return ArithmeticUtils.mul(v1, d19, 2);
             }
             case MarketCost_managementExpenseRate: {
                 return ArithmeticUtils.getBigDecimalString(target.getManagementExpense());
             }
             case MarketCost_salesFee: {
-                String v = getFieldObjectValue(BaseReportFieldEnum.MarketCost_constructionAssessmentValue, target) ;
-                String v1 = getFieldObjectValue(BaseReportFieldEnum.MarketCost_salesFeeRate, target) ;
-                return ArithmeticUtils.mul(v,v1,2) ;
+                String v = getFieldObjectValue(BaseReportFieldEnum.MarketCost_constructionAssessmentValue, target);
+                String v1 = getFieldObjectValue(BaseReportFieldEnum.MarketCost_salesFeeRate, target);
+                if (!ArithmeticUtils.checkNotNull(new String[]{v,v1})){
+                    return "" ;
+                }
+                return ArithmeticUtils.mul(v, v1, 2);
             }
-            case MarketCost_salesTaxAndAdditionalTotal:{
-                String v = getFieldObjectValue(BaseReportFieldEnum.MarketCost_constructionAssessmentValue, target) ;
+            case MarketCost_salesTaxAndAdditionalTotal: {
+                String v = getFieldObjectValue(BaseReportFieldEnum.MarketCost_constructionAssessmentValue, target);
+                if (!ArithmeticUtils.checkNotNull(v)){
+                    return "" ;
+                }
+                if (!ArithmeticUtils.checkNotNull(target.getSalesTaxAndAdditional())){
+                    return "" ;
+                }
                 String v1 = target.getSalesTaxAndAdditional().toString();
-                return ArithmeticUtils.mul(v,v1,2) ;
+                return ArithmeticUtils.mul(v, v1, 2);
             }
             case MarketCost_salesFeeRate: {
                 return ArithmeticUtils.getBigDecimalString(target.getSalesFee());
