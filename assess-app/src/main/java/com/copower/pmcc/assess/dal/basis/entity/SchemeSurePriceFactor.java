@@ -8,6 +8,8 @@ public class SchemeSurePriceFactor {
 
     private Integer declareId;
 
+    private Integer judgeObjectId;
+
     private String factor;
 
     private String remark;
@@ -36,6 +38,14 @@ public class SchemeSurePriceFactor {
 
     public void setDeclareId(Integer declareId) {
         this.declareId = declareId;
+    }
+
+    public Integer getJudgeObjectId() {
+        return judgeObjectId;
+    }
+
+    public void setJudgeObjectId(Integer judgeObjectId) {
+        this.judgeObjectId = judgeObjectId;
     }
 
     public String getFactor() {

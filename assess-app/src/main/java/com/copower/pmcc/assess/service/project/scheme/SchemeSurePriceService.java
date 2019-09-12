@@ -312,8 +312,8 @@ public class SchemeSurePriceService {
                 Map<Integer, List<BigDecimal>> integerBigDecimalMap = Maps.newHashMap();
                 if (bisRestart) {
                     //不更新作为标准的哪个估价对象
-                    if (!Objects.equal(judgeObject.getId(), schemeJudgeObject.getId()) && judgeObject.getDeclareRecordId() != null) {
-                        List<SchemeSurePriceFactor> schemeSurePriceFactorList = schemeSurePriceFactorService.getSurePriceFactors(judgeObject.getDeclareRecordId());
+                    if (!Objects.equal(judgeObject.getId(), schemeJudgeObject.getId())) {
+                        List<SchemeSurePriceFactor> schemeSurePriceFactorList = schemeSurePriceFactorService.getSurePriceFactors(judgeObject.getId());
                         if (CollectionUtils.isNotEmpty(schemeSurePriceFactorList)) {
                             for (SchemeSurePriceFactor priceFactor : schemeSurePriceFactorList) {
                                 if (priceFactor.getType() == null || priceFactor.getCoefficient() == null) {

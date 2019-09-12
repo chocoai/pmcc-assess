@@ -8,7 +8,6 @@ import com.copower.pmcc.assess.dto.input.project.scheme.SchemeSurePriceApplyDto;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
-import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import org.slf4j.LoggerFactory;
@@ -51,7 +50,7 @@ public class ProjectTaskSurePriceAssist implements ProjectTaskInterface {
         }
         modelAndView.addObject("schemeSurePrice", schemeSurePrice);
         modelAndView.addObject("judgeObjectName", projectPlanDetailsService.getProjectPlanDetailsById(projectPlanDetails.getPid()).getProjectPhaseName());
-        modelAndView.addObject("subJudgeObjectList", schemeJudgeObjectService.getListByPid(projectPlanDetails.getJudgeObjectId()));
+        modelAndView.addObject("subJudgeObjectList", schemeJudgeObjectService.getAdjustObjectListByPid(projectPlanDetails.getJudgeObjectId()));
         return modelAndView;
     }
 
@@ -77,7 +76,7 @@ public class ProjectTaskSurePriceAssist implements ProjectTaskInterface {
         } catch (BusinessException e) {
             logger.error(e.getMessage(),e);
         }
-        modelAndView.addObject("subJudgeObjectList", schemeJudgeObjectService.getListByPid(projectPlanDetails.getJudgeObjectId()));
+        modelAndView.addObject("subJudgeObjectList", schemeJudgeObjectService.getAdjustObjectListByPid(projectPlanDetails.getJudgeObjectId()));
         return modelAndView;
     }
 
@@ -97,7 +96,7 @@ public class ProjectTaskSurePriceAssist implements ProjectTaskInterface {
         SchemeSurePrice schemeSurePrice = schemeSurePriceService.getSurePriceByPlanDetailsId(projectPlanDetails.getId());
         modelAndView.addObject("schemeSurePrice", schemeSurePrice == null ? new SchemeSurePrice() : schemeSurePrice);
         modelAndView.addObject("judgeObjectName", projectPlanDetailsService.getProjectPlanDetailsById(projectPlanDetails.getPid()).getProjectPhaseName());
-        modelAndView.addObject("subJudgeObjectList", schemeJudgeObjectService.getListByPid(projectPlanDetails.getJudgeObjectId()));
+        modelAndView.addObject("subJudgeObjectList", schemeJudgeObjectService.getAdjustObjectListByPid(projectPlanDetails.getJudgeObjectId()));
         return modelAndView;
     }
 
@@ -118,7 +117,7 @@ public class ProjectTaskSurePriceAssist implements ProjectTaskInterface {
         } catch (BusinessException e) {
             logger.error(e.getMessage(),e);
         }
-        modelAndView.addObject("subJudgeObjectList", schemeJudgeObjectService.getListByPid(projectPlanDetails.getJudgeObjectId()));
+        modelAndView.addObject("subJudgeObjectList", schemeJudgeObjectService.getAdjustObjectListByPid(projectPlanDetails.getJudgeObjectId()));
         return modelAndView;
     }
 

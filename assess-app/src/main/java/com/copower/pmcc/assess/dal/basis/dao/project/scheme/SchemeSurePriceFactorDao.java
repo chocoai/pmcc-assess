@@ -55,9 +55,9 @@ public class SchemeSurePriceFactorDao {
         return schemeSurePriceFactorMapper.selectByExample(example);
     }
 
-    public List<SchemeSurePriceFactor> getFactorListByDeclareId(Integer declareId) {
+    public List<SchemeSurePriceFactor> getFactorListByJudgeObjectId(Integer judgeObjectId) {
         SchemeSurePriceFactorExample example = new SchemeSurePriceFactorExample();
-        example.createCriteria().andDeclareIdEqualTo(declareId);
+        example.createCriteria().andJudgeObjectIdEqualTo(judgeObjectId);
         return schemeSurePriceFactorMapper.selectByExample(example);
     }
 
@@ -91,9 +91,9 @@ public class SchemeSurePriceFactorDao {
         return schemeSurePriceFactorMapper.deleteByPrimaryKey(id) > 0;
     }
 
-    public boolean deleteSurePriceFactorByDeclareId(Integer declareId) {
+    public boolean deleteSurePriceFactorByJudgeObjectId(Integer declareId) {
         SchemeSurePriceFactorExample example = new SchemeSurePriceFactorExample();
-        example.createCriteria().andDeclareIdEqualTo(declareId);
+        example.createCriteria().andJudgeObjectIdEqualTo(declareId);
         return schemeSurePriceFactorMapper.deleteByExample(example) > 0;
     }
 }

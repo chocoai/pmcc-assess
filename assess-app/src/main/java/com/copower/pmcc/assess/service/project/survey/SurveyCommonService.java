@@ -283,7 +283,8 @@ public class SurveyCommonService {
         if (basicApply == null || basicBuilding == null) return buildingUsableYear;
         if (BasicApplyTypeEnum.RESIDENCE.getId().equals(basicApply.getType())) {
             BaseDataDic baseDataDic = baseDataDicService.getDataDicById(basicBuilding.getResidenceUseYear());
-            buildingUsableYear = Integer.valueOf(baseDataDic.getRemark());
+            if (baseDataDic != null)
+                buildingUsableYear = Integer.valueOf(baseDataDic.getRemark());
         } else if (BasicApplyTypeEnum.INDUSTRY.getId().equals(basicApply.getType())) {
             DataBuildingNewRate buildingNewRate = dataBuildingNewRateService.getByiDdataBuildingNewRate(basicBuilding.getIndustryUseYear());
             buildingUsableYear = buildingNewRate.getDurableLife();

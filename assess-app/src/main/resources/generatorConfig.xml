@@ -44,14 +44,14 @@
         <!--<columnOverride column="json_content" jdbcType="VARCHAR"></columnOverride>-->
 
         <!-- 具体表 -->
-        <table tableName="tb_md_cost_construction" domainObjectName="MdCostConstruction">
+        <table tableName="tb_scheme_sure_price_factor" domainObjectName="SchemeSurePriceFactor">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-            <columnOverride column="json_content" jdbcType="VARCHAR"></columnOverride>
+            <!--<columnOverride column="json_content" jdbcType="VARCHAR"></columnOverride>-->
         </table>
-        <table tableName="tb_md_development" domainObjectName="MdDevelopment">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-            <columnOverride column="head_content" jdbcType="VARCHAR"></columnOverride>
-            <columnOverride column="content" jdbcType="VARCHAR"></columnOverride>
-        </table>
+        <!--<table tableName="tb_md_development" domainObjectName="MdDevelopment">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+            <!--<columnOverride column="head_content" jdbcType="VARCHAR"></columnOverride>-->
+            <!--<columnOverride column="content" jdbcType="VARCHAR"></columnOverride>-->
+        <!--</table>-->
     </context>
 </generatorConfiguration>

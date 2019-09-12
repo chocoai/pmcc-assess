@@ -86,6 +86,7 @@
                             <th width="5%"><input type="checkbox" onclick="surePrice.checkboxToggle(this);"></th>
                             <th width="10%">权证号</th>
                             <th width="10%">证载面积</th>
+                            <th width="10%">评估面积</th>
                             <th width="10%">楼层</th>
                             <th width="10%">房号</th>
                             <th width="10%">价格</th>
@@ -99,6 +100,7 @@
                                 <td><input type="checkbox"></td>
                                 <td>${item.name}</td>
                                 <td>${item.floorArea}</td>
+                                <td>${item.evaluationArea}</td>
                                 <td>${item.floor}</td>
                                 <td>${item.roomNumber}</td>
                                 <td data-name="price">${item.price}</td>
@@ -425,11 +427,11 @@
     }
 
     //调整因素
-    surePrice.adjustFactor = function (judgeObjectId, declareId) {
+    surePrice.adjustFactor = function (judgeObjectId) {
         $.ajax({
             url: "${pageContext.request.contextPath}/schemeSurePrice/getSurePriceFactors",
             data: {
-                declareId: declareId
+                judgeObjectId: judgeObjectId
             },
             type: "get",
             dataType: "json",
