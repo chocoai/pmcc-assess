@@ -91,10 +91,10 @@
                         <table class="table table-condensed">
                             <tfoot>
                             <tr>
-                                <td>规划建筑面积</td>
-                                <td>总可售面积售价</td>
-                                <td>可售面积</td>
-                                <td>不可售建筑面积</td>
+                                <td>规划建筑面积 (㎡)</td>
+                                <td>总可售面积售价 (万元)</td>
+                                <td>可售面积 (㎡)</td>
+                                <td>不可售建筑面积 (㎡)</td>
                             </tr>
                             <tr>
                                 <td class="active">
@@ -166,11 +166,11 @@
             <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
-                        建筑安装工程费
+                        建筑安装工程费 (元/㎡)
                     </label>
                     <div class=" col-xs-1  col-sm-1  col-md-1  col-lg-1 ">
                         <input type="text" readonly="readonly"  class="form-control" onblur="checkParams(this);"
-                               name="constructionInstallationEngineeringFee"  value="${mdDevelopment.constructionInstallationEngineeringFee}" >
+                               name="constructionInstallationEngineeringFee" placeholder="建筑安装工程费 (元/㎡)"  value="${mdDevelopment.constructionInstallationEngineeringFee}" >
                     </div>
                 </div>
                 <div class="x-valid">
@@ -185,12 +185,12 @@
             <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
-                        基础设施配套费 <span class="symbol required"></span>
+                        基础设施配套费(元/㎡) <span class="symbol required"></span>
                     </label>
                     <div class="col-sm-3">
                         <div class="input-group">
                             <input type="text" required="required"
-                                   placeholder="基础设施配套费"  class="form-control"
+                                   placeholder="基础设施配套费(元/㎡)"  class="form-control"
                                    name="infrastructureCost" onblur="checkParams(this);" value="${mdDevelopment.infrastructureCost}">
                             <span class="input-group-btn">
                             </span>
@@ -243,12 +243,12 @@
             <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
-                        公共配套设施建设费<span class="symbol required"></span>
+                        公共配套设施建设费 (元/㎡)<span class="symbol required"></span>
                     </label>
                     <div class="x-valid">
                         <div class="col-sm-3">
                             <input type="text" required="required"
-                                   placeholder="公共配套设施建设费"  class="form-control"
+                                   placeholder="公共配套设施建设费 (元/㎡)"  class="form-control"
                                    name="infrastructureMatchingCost" onblur="checkParams(this);" value="${mdDevelopment.infrastructureMatchingCost}">
                         </div>
                     </div>
@@ -276,11 +276,11 @@
             <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
-                        开发期间税费<span class="symbol required"></span>
+                        开发期间税费 (元/㎡)<span class="symbol required"></span>
                     </label>
                     <div class="col-sm-3">
                         <input type="text" required="required"
-                               placeholder="开发期间税费"  class="form-control"
+                               placeholder="开发期间税费 (元/㎡)"  class="form-control"
                                name="devDuring" onblur="checkParams(this);" value="${mdDevelopment.devDuring}">
                     </div>
                 </div>
@@ -429,7 +429,7 @@
             <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
-                        土地取得附加成本
+                        土地取得附加成本 (万元)
                     </label>
                     <div class="col-sm-3">
                         <input type="text" placeholder="土地取得附加成本" class="form-control" data-rule-number='true'
