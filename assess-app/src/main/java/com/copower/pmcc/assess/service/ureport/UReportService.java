@@ -167,7 +167,7 @@ public class UReportService {
             sql.append(String.format(" AND (Date(A.preaudit_number_date) >= '%s' OR Date(A.result_number_date) >= '%s')", queryStartTime, queryStartTime));
         }
         if (StringUtil.isNotEmpty(queryEndTime)) {
-            sql.append(String.format(" AND Date(A.preaudit_number_date) <= '%s' OR Date(A.result_number_date) <= '%s'", queryEndTime, queryEndTime));
+            sql.append(String.format(" AND (Date(A.preaudit_number_date) <= '%s' OR Date(A.result_number_date) <= '%s')", queryEndTime, queryEndTime));
         }
         if (StringUtils.isNotBlank(userAccount)) {
             sql.append(String.format(" AND B.user_account_manager = '%s'", userAccount));

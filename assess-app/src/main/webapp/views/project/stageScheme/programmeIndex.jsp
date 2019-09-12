@@ -995,7 +995,7 @@
             }
         })
         if (!standardJudgeId) {
-            Alert('参与合并的估价对象中未设置标准房地产');
+            toastr.warning('参与合并的估价对象中未设置标准房地产');
             return false;
         }
         Loading.progressShow();
@@ -1014,11 +1014,11 @@
                     layer.close(programme.config.judgePopIndex);
                     programme.loadJudgeObjectList(panel);
                 } else {
-                    Alert("委估对象合并失败:" + result.errmsg);
+                    layer.alert("委估对象合并失败:" + result.errmsg);
                 }
             },
             error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+                toastr.error(result.errmsg, 1, null, null);
             }
         });
     };
@@ -1041,7 +1041,7 @@
                     toastr.success('委估对象取消合并成功');
                     programme.loadJudgeObjectList($(_this).closest('.area_panel'));
                 } else {
-                    Alert("权证拆分失败:" + result.errmsg);
+                    Alert(result.errmsg);
                 }
             },
             error: function (result) {
