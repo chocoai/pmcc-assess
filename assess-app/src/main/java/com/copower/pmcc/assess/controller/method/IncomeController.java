@@ -414,4 +414,23 @@ public class IncomeController {
             return HttpResult.newErrorResult("获取失败");
         }
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/getSameNameHistoryList", name = "同类物品历史数据列表", method = RequestMethod.GET)
+    public BootstrapTableVo getSameNameHistoryList(Integer historyId,Integer formType,Integer incomeId) {
+        return mdIncomeService.getSameNameHistoryList(historyId,formType,incomeId);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/affirmQuoteMoney", method = {RequestMethod.POST}, name = "计算引用的历史金额")
+    public HttpResult affirmQuoteMoney(@RequestParam(value = "ids")String ids,Integer historyId) {
+        try {
+            if (StringUtils.isNotBlank(ids))
+                mdIncomeService.affirmQuoteMoney(FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(ids)),historyId);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
 }
