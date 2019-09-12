@@ -708,11 +708,11 @@ public class ProjectPlanService {
             res = lock.tryLock(10, 20, TimeUnit.SECONDS);
             if (!res) {//加锁不成功,不执行逻辑
                 logger.debug("----enterNextStage, Did not get the lock");
-                throw new BusinessException("已有任务在执行请不要重复操作");
+                return;
             }
             boolean isAllFinish = projectPlanDetailsService.isAllPlanDetailsFinish(planId);
             if (!isAllFinish) {
-                throw new BusinessException("还有未完成的任务，请完成该阶段的所有任务");
+                return;
             }
             //1.将当前阶段设置结束，并清理所有任务
             ProjectPlan projectPlan = projectPlanDao.getProjectPlanById(planId);
