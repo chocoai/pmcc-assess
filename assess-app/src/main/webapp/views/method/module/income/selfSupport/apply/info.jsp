@@ -301,6 +301,35 @@
         </div>
     </div>
 </div>
+
+<div id="modal_same_name_item" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">同类历史数据</h3>
+            </div>
+            <div class="modal-body">
+                <form id="frm_same_name" class="form-horizontal">
+                    <input type="hidden" name="historyId">
+                    <table class="table table-bordered" id="tb_md_same_name_item_list">
+                    </table>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">
+                    取消
+                </button>
+                <button type="button" class="btn btn-primary" onclick="selfSupport.affirmQuoteMoney();">
+                    确认
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 <%--成本预测数据--%>
 <div id="modal_forecast_cost" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
@@ -720,6 +749,7 @@
                 var str = '<div class="btn-margin">';
                 str += '<a class="btn btn-xs btn-success tooltips" data-placement="top" data-original-title="编辑" onclick="selfSupport.editForecastIncomeItem(' + index + ');" ><i class="fa fa-edit fa-white"></i></a>';
                 str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="selfSupport.deleteForecastIncomeItem(' + row.id + ')"><i class="fa fa-minus fa-white"></i></a>';
+                str += '<a class="btn btn-xs btn-primary tooltips" data-placement="top" data-original-title="引用历史金额" onclick="selfSupport.showSameNameItemModel(' + row.id + ')">引用历史金额</a>';
                 str += '</div>';
                 return str;
             }
@@ -841,7 +871,103 @@
             }
         })
     }
+    //相同名称历史数据modal
+    selfSupport.showSameNameItemModel = function (historyId) {
+        $("#frm_same_name").clearAll();
+        if(incomeIndex.getFormType()==0){
+            selfSupport.loadSameNameListDefault(historyId);
+        }else{
+            selfSupport.loadSameNameListRepast(historyId);
+        }
+        $("#frm_same_name").find("[name=historyId]").val(historyId);
+        $('#modal_same_name_item').modal();
+    }
+    //默认表单加载同类物品历史数据信息
+    selfSupport.loadSameNameListDefault = function (historyId) {
+        var cols = [];
+        cols.push({field: 'year', title: '年度'});
+        cols.push({field: 'month', title: '月度'});
+        cols.push({field: 'amountMoney', title: '金额'});
+        $("#tb_md_same_name_item_list").bootstrapTable('destroy');
+        TableInit("tb_md_same_name_item_list", "${pageContext.request.contextPath}/income/getSameNameHistoryList", cols, {
+            historyId: historyId,
+            formType: incomeIndex.getFormType(),
+            incomeId: incomeIndex.getInComeId()
+        }, {
+            showColumns: false,
+            showRefresh: false,
+            search: false,
+            onLoadSuccess: function () {
+                $(".tooltips").tooltip();
+            }
+        }, true);
+    }
 
+    //餐饮加载同类物品历史数据信息
+    selfSupport.loadSameNameListRepast = function (historyId) {
+        var cols = [];
+        cols.push({
+            field: 'beginDate', title: '开始时间', formatter: function (value, row, index) {
+                return formatDate(row.beginDate, false);
+            }
+        });
+        cols.push({
+            field: 'endDate', title: '结束时间', formatter: function (value, row, index) {
+                return formatDate(row.endDate, false);
+            }
+        });
+        cols.push({field: 'amountMoney', title: '金额'});
+        $("#tb_md_same_name_item_list").bootstrapTable('destroy');
+        TableInit("tb_md_same_name_item_list", "${pageContext.request.contextPath}/income/getSameNameHistoryList", cols, {
+            historyId: historyId,
+            type:0,
+            formType: incomeIndex.getFormType(),
+            incomeId: incomeIndex.getInComeId()
+        }, {
+            showColumns: false,
+            showRefresh: false,
+            search: false,
+            onLoadSuccess: function () {
+                $(".tooltips").tooltip();
+            }
+        }, true);
+    }
+
+    //确认引用历史数据金额
+    selfSupport.affirmQuoteMoney = function (type) {
+        var rows = $("#tb_md_same_name_item_list").bootstrapTable('getSelections');
+        if (rows && rows.length > 0) {
+            var arrayId = [];
+            $.each(rows, function (i, row) {
+                arrayId.push(row.id);
+            })
+            console.log(arrayId)
+            Loading.progressShow();
+            $.ajax({
+                url: "${pageContext.request.contextPath}/income/affirmQuoteMoney",
+                type: "post",
+                dataType: "json",
+                data: {
+                    ids: arrayId.join(),
+                    historyId: $("#frm_same_name").find("[name=historyId]").val()
+                },
+                success: function (result) {
+                    Loading.progressHide();
+                    if (result.ret) {
+                        $('#modal_same_name_item').modal('hide');
+                        selfSupport.loadIncomeForecastItemList();
+                    }
+                    else {
+                        Alert("删除数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Loading.progressHide();
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        }
+    }
 
     selfSupport.editForecastCost = function (index) {
         var row = $("#tb_forecast_cost_list").bootstrapTable('getData')[index];
@@ -881,6 +1007,7 @@
                 Loading.progressHide();
                 if (result.ret) {
                     toastr.success('保存成功');
+                    selfSupport.loadForecastIncomeList();
                     selfSupport.loadCalculationResult();
                     $('#modal_forecast_income').modal('hide');
                 }
@@ -940,6 +1067,11 @@
             }
         });
         cols.push({field: 'yearCount', title: '年份数'});
+        cols.push({
+            field: 'growthRate', title: '增长率', formatter: function (value, row, index) {
+                return AssessCommon.pointToPercent(value);
+            }
+        });
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';

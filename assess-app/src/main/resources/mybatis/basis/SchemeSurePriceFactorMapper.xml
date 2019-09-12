@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.SchemeSurePriceFactor" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="declare_id" property="declareId" jdbcType="INTEGER" />
+    <result column="judge_object_id" property="judgeObjectId" jdbcType="INTEGER" />
     <result column="factor" property="factor" jdbcType="VARCHAR" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
     <result column="type" property="type" jdbcType="INTEGER" />
@@ -71,7 +72,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, declare_id, factor, remark, type, coefficient, creator, gmt_created, gmt_modified
+    id, declare_id, judge_object_id, factor, remark, type, coefficient, creator, gmt_created, 
+    gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeSurePriceFactorExample" >
     select
@@ -107,12 +109,14 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_scheme_sure_price_factor (declare_id, factor, remark, 
-      type, coefficient, creator, 
-      gmt_created, gmt_modified)
-    values (#{declareId,jdbcType=INTEGER}, #{factor,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
-      #{type,jdbcType=INTEGER}, #{coefficient,jdbcType=DECIMAL}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_scheme_sure_price_factor (declare_id, judge_object_id, factor, 
+      remark, type, coefficient, 
+      creator, gmt_created, gmt_modified
+      )
+    values (#{declareId,jdbcType=INTEGER}, #{judgeObjectId,jdbcType=INTEGER}, #{factor,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{coefficient,jdbcType=DECIMAL}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeSurePriceFactor" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -122,6 +126,9 @@
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="declareId != null" >
         declare_id,
+      </if>
+      <if test="judgeObjectId != null" >
+        judge_object_id,
       </if>
       <if test="factor != null" >
         factor,
@@ -148,6 +155,9 @@
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="declareId != null" >
         #{declareId,jdbcType=INTEGER},
+      </if>
+      <if test="judgeObjectId != null" >
+        #{judgeObjectId,jdbcType=INTEGER},
       </if>
       <if test="factor != null" >
         #{factor,jdbcType=VARCHAR},
@@ -187,6 +197,9 @@
       <if test="record.declareId != null" >
         declare_id = #{record.declareId,jdbcType=INTEGER},
       </if>
+      <if test="record.judgeObjectId != null" >
+        judge_object_id = #{record.judgeObjectId,jdbcType=INTEGER},
+      </if>
       <if test="record.factor != null" >
         factor = #{record.factor,jdbcType=VARCHAR},
       </if>
@@ -217,6 +230,7 @@
     update tb_scheme_sure_price_factor
     set id = #{record.id,jdbcType=INTEGER},
       declare_id = #{record.declareId,jdbcType=INTEGER},
+      judge_object_id = #{record.judgeObjectId,jdbcType=INTEGER},
       factor = #{record.factor,jdbcType=VARCHAR},
       remark = #{record.remark,jdbcType=VARCHAR},
       type = #{record.type,jdbcType=INTEGER},
@@ -233,6 +247,9 @@
     <set >
       <if test="declareId != null" >
         declare_id = #{declareId,jdbcType=INTEGER},
+      </if>
+      <if test="judgeObjectId != null" >
+        judge_object_id = #{judgeObjectId,jdbcType=INTEGER},
       </if>
       <if test="factor != null" >
         factor = #{factor,jdbcType=VARCHAR},
@@ -261,6 +278,7 @@
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeSurePriceFactor" >
     update tb_scheme_sure_price_factor
     set declare_id = #{declareId,jdbcType=INTEGER},
+      judge_object_id = #{judgeObjectId,jdbcType=INTEGER},
       factor = #{factor,jdbcType=VARCHAR},
       remark = #{remark,jdbcType=VARCHAR},
       type = #{type,jdbcType=INTEGER},

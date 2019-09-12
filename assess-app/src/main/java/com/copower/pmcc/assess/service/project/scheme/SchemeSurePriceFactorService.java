@@ -2,9 +2,8 @@ package com.copower.pmcc.assess.service.project.scheme;
 
 import com.copower.pmcc.assess.common.enums.ComputeDataTypeEnum;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeSurePriceFactorDao;
-import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
-import com.copower.pmcc.assess.dal.basis.entity.SchemeSurePriceFactor;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
+import com.copower.pmcc.assess.dal.basis.entity.SchemeSurePriceFactor;
 import com.copower.pmcc.assess.dto.output.project.scheme.SchemeJudgeObjectVo;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.erp.common.CommonService;
@@ -43,16 +42,15 @@ public class SchemeSurePriceFactorService {
      * @param factors
      * @throws BusinessException
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public SchemeJudgeObjectVo saveSurePriceFactor(Integer judgeObjectId, BigDecimal price, List<SchemeSurePriceFactor> factors) throws BusinessException {
         if (CollectionUtils.isEmpty(factors))
             return null;
         SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
-        DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
         BigDecimal resultPrice = schemeJudgeObject.getOriginalPrice();
         if (resultPrice == null) resultPrice = price;
         //先删除
-        schemeSurePriceFactorDao.deleteSurePriceFactorByDeclareId(schemeJudgeObject.getDeclareRecordId());
+        schemeSurePriceFactorDao.deleteSurePriceFactorByJudgeObjectId(schemeJudgeObject.getId());
         //再添加
         for (SchemeSurePriceFactor factor : factors) {
             if (factor.getType().equals(ComputeDataTypeEnum.ABSOLUTE.getId())) {
@@ -60,27 +58,22 @@ public class SchemeSurePriceFactorService {
             } else {
                 resultPrice = resultPrice.multiply(factor.getCoefficient().add(new BigDecimal("1")));
             }
-            factor.setDeclareId(schemeJudgeObject.getDeclareRecordId());
+            factor.setJudgeObjectId(schemeJudgeObject.getId());
             factor.setCreator(commonService.thisUserAccount());
             schemeSurePriceFactorDao.addSurePriceFactor(factor);
         }
         //更新调整后的价格
-        resultPrice = resultPrice.setScale(2, BigDecimal.ROUND_HALF_UP);
-        declareRecord.setPrice(resultPrice);
-        declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
         schemeJudgeObject.setPrice(resultPrice);
         schemeJudgeObjectService.updateSchemeJudgeObject(schemeJudgeObject);
 
         SchemeJudgeObjectVo schemeJudgeObjectVo = new SchemeJudgeObjectVo();
         schemeJudgeObjectVo.setPrice(resultPrice);
-        schemeJudgeObjectVo.setCoefficient(schemeJudgeObjectService.getCoefficientByDeclareId(declareRecord.getId()));
+        schemeJudgeObjectVo.setCoefficient(schemeJudgeObjectService.getFactorListByJudgeObjectId(judgeObjectId));
         return schemeJudgeObjectVo;
     }
 
-    public List<SchemeSurePriceFactor> getSurePriceFactors(Integer declareId) {
-        SchemeSurePriceFactor examle = new SchemeSurePriceFactor();
-        examle.setDeclareId(declareId);
-        List<SchemeSurePriceFactor> certAdjustmentFactorList = schemeSurePriceFactorDao.getSurePriceFactorList(examle);
+    public List<SchemeSurePriceFactor> getSurePriceFactors(Integer judgeObjectId) {
+        List<SchemeSurePriceFactor> certAdjustmentFactorList = schemeSurePriceFactorDao.getFactorListByJudgeObjectId(judgeObjectId);
         return certAdjustmentFactorList;
     }
 
@@ -90,36 +83,28 @@ public class SchemeSurePriceFactorService {
      * @param beCopyJudgeId
      * @param judgeIds
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void copySurePriceFactor(Integer beCopyJudgeId, List<Integer> judgeIds) {
         //除了复制调整因素信息，还需调整申报记录与委估对象中的价格
         if (CollectionUtils.isEmpty(judgeIds)) return;
         SchemeJudgeObject beCopyJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(beCopyJudgeId);
         if (beCopyJudgeObject == null) return;
-        List<SchemeSurePriceFactor> factorList = schemeSurePriceFactorDao.getFactorListByDeclareId(beCopyJudgeObject.getDeclareRecordId());
+        List<SchemeSurePriceFactor> factorList = schemeSurePriceFactorDao.getFactorListByJudgeObjectId(beCopyJudgeObject.getDeclareRecordId());
         if (CollectionUtils.isEmpty(factorList)) return;
         for (Integer judgeId : judgeIds) {
             SchemeJudgeObject judgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeId);
             //清空原调整因素
-            schemeSurePriceFactorDao.deleteSurePriceFactorByDeclareId(judgeObject.getDeclareRecordId());
+            schemeSurePriceFactorDao.deleteSurePriceFactorByJudgeObjectId(judgeObject.getId());
 
             for (SchemeSurePriceFactor factor : factorList) {
                 SchemeSurePriceFactor surePriceFactor = new SchemeSurePriceFactor();
                 BeanUtils.copyProperties(factor, surePriceFactor);
                 surePriceFactor.setId(null);
-                surePriceFactor.setDeclareId(judgeObject.getDeclareRecordId());
+                surePriceFactor.setJudgeObjectId(judgeObject.getId());
                 schemeSurePriceFactorDao.addSurePriceFactor(surePriceFactor);
             }
             judgeObject.setPrice(beCopyJudgeObject.getPrice());
             schemeJudgeObjectService.updateSchemeJudgeObject(judgeObject);
-
-            DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(judgeObject.getDeclareRecordId());
-            declareRecord.setPrice(beCopyJudgeObject.getPrice());
-            try {
-                declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
-            } catch (BusinessException e) {
-                logger.error(e.getMessage(), e);
-            }
         }
     }
 }

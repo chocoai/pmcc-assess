@@ -56,8 +56,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 /**
  * 估价对象
@@ -209,7 +212,7 @@ public class SchemeJudgeObjectService {
         for (SchemeJudgeObject judgeObject : judgeObjectList) {
             SchemeJudgeObjectVo schemeJudgeObjectVo = new SchemeJudgeObjectVo();
             BeanUtils.copyProperties(judgeObject, schemeJudgeObjectVo);
-            schemeJudgeObjectVo.setCoefficient(getCoefficientByDeclareId(judgeObject.getDeclareRecordId()));
+            schemeJudgeObjectVo.setCoefficient(getFactorListByJudgeObjectId(judgeObject.getId()));
             for (DeclareRecord declareRecord : declareRecords) {
                 if (declareRecord.getId().equals(judgeObject.getDeclareRecordId())) {
                     schemeJudgeObjectVo.setFloor(declareRecord.getFloor());
@@ -236,8 +239,20 @@ public class SchemeJudgeObjectService {
         return judgeObjectVoList;
     }
 
-    public String getCoefficientByDeclareId(Integer declareId) {
-        List<SchemeSurePriceFactor> factorList = schemeSurePriceFactorDao.getFactorListByDeclareId(declareId);
+    /**
+     * 获取待调整价格的估价对象
+     * @param judgeObjectId
+     * @return
+     */
+    public List<SchemeJudgeObjectVo> getAdjustObjectListByPid(Integer judgeObjectId) {
+        SchemeJudgeObject judgeObject = getSchemeJudgeObject(judgeObjectId);
+        List<SchemeJudgeObjectVo> vos = getListByPid(judgeObjectId);
+        if (CollectionUtils.isEmpty(vos)) return null;
+        return vos.stream().filter(o -> !o.getId().equals(judgeObject.getStandardJudgeId())).collect(Collectors.toList());
+    }
+
+    public String getFactorListByJudgeObjectId(Integer declareId) {
+        List<SchemeSurePriceFactor> factorList = schemeSurePriceFactorDao.getFactorListByJudgeObjectId(declareId);
         if (CollectionUtils.isNotEmpty(factorList)) {
             StringBuilder coefficient = new StringBuilder();
             for (SchemeSurePriceFactor schemeSurePriceFactor : factorList) {
@@ -327,11 +342,9 @@ public class SchemeJudgeObjectService {
             if (bestUseDescription != null)
                 schemeJudgeObjectVo.setBestUseName(bestUseDescription.getName());
         }
-        if (schemeJudgeObjectVo.getDeclareRecordId() != null) {
-            String s = getCoefficientByDeclareId(schemeJudgeObjectVo.getDeclareRecordId());
-            if (StringUtils.isNotBlank(s)) {
-                schemeJudgeObjectVo.setCoefficient(s);
-            }
+        String s = getFactorListByJudgeObjectId(schemeJudgeObjectVo.getId());
+        if (StringUtils.isNotBlank(s)) {
+            schemeJudgeObjectVo.setCoefficient(s);
         }
         return schemeJudgeObjectVo;
     }
@@ -349,6 +362,7 @@ public class SchemeJudgeObjectService {
         List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getListByNumber(projectId, areaGroupId, schemeJudgeObject.getNumber());
         if (judgeObjectList.size() == 1) {
             schemeJudgeObject.setSplitNumber(1);
+            schemeJudgeObject.setName(String.format("%s-%s%s", schemeJudgeObject.getNumber(), schemeJudgeObject.getSplitNumber(), BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME));
             schemeJudgeObject.setEvaluationArea(new BigDecimal("0"));
             schemeJudgeObjectDao.updateSchemeJudgeObject(schemeJudgeObject);
         }
@@ -360,7 +374,7 @@ public class SchemeJudgeObjectService {
         splitJudgeObject.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
         splitJudgeObject.setNumber(schemeJudgeObject.getNumber());
         splitJudgeObject.setSplitNumber(judgeObjectList.size() + 1);
-        splitJudgeObject.setName(String.format("%s-%s%s", schemeJudgeObject.getNumber(), schemeJudgeObject.getSplitNumber(), BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME));
+        splitJudgeObject.setName(String.format("%s-%s%s", schemeJudgeObject.getNumber(), splitJudgeObject.getSplitNumber(), BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME));
         splitJudgeObject.setCertName(schemeJudgeObject.getCertName());
         splitJudgeObject.setOwnership(schemeJudgeObject.getOwnership());
         splitJudgeObject.setSeat(schemeJudgeObject.getSeat());
@@ -399,6 +413,7 @@ public class SchemeJudgeObjectService {
         if (judgeObjectList.size() == 1) {
             judgeObject = judgeObjectList.get(0);
             judgeObject.setSplitNumber(0);
+            judgeObject.setName(String.format("%s%s", schemeJudgeObject.getNumber(), BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME));
             schemeJudgeObjectDao.updateSchemeJudgeObject(judgeObject);
         } else {
             for (SchemeJudgeObject object : judgeObjectList) {
@@ -557,7 +572,7 @@ public class SchemeJudgeObjectService {
                 projectPlanDetailsService.deletePlanDetailsByPlanId(plan.getId());
 
                 //清除task任务
-                bpmRpcProjectTaskService.deleteProjectTaskByPlanId(applicationConstant.getAppKey(),plan.getId());
+                bpmRpcProjectTaskService.deleteProjectTaskByPlanId(applicationConstant.getAppKey(), plan.getId());
             }
         }
         projectPlanDetailsService.deletePlanDetailsByPlanId(planId);
@@ -681,7 +696,6 @@ public class SchemeJudgeObjectService {
     }
 
 
-
     /**
      * 根据权证id获取估价对象编号
      *
@@ -748,24 +762,25 @@ public class SchemeJudgeObjectService {
 
     /**
      * 重启申报阶段后根据申报记录id更新一下估价对象
+     *
      * @param declareRecordIds
      * @param projectId
      */
-    public void reStartDeclareApplyByDeclareRecordId(List<Integer> declareRecordIds,Integer projectId){
-        List<SchemeJudgeObject> schemeJudgeObjectList = getJudgeObjectListByProjectId(projectId) ;
-        if (CollectionUtils.isEmpty(schemeJudgeObjectList)){
+    public void reStartDeclareApplyByDeclareRecordId(List<Integer> declareRecordIds, Integer projectId) {
+        List<SchemeJudgeObject> schemeJudgeObjectList = getJudgeObjectListByProjectId(projectId);
+        if (CollectionUtils.isEmpty(schemeJudgeObjectList)) {
             return;
         }
-        for (SchemeJudgeObject schemeJudgeObject:schemeJudgeObjectList){
-            if (schemeJudgeObject.getDeclareRecordId() == null){
+        for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+            if (schemeJudgeObject.getDeclareRecordId() == null) {
                 continue;
             }
             //确保属于更新的是重启后修改的申报数据
-            if (!declareRecordIds.contains(schemeJudgeObject.getDeclareRecordId())){
+            if (!declareRecordIds.contains(schemeJudgeObject.getDeclareRecordId())) {
                 continue;
             }
-            DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId()) ;
-            if (declareRecord == null){
+            DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
+            if (declareRecord == null) {
                 continue;
             }
             schemeJudgeObject.setFloorArea(declareRecord.getFloorArea());
@@ -775,7 +790,7 @@ public class SchemeJudgeObjectService {
             schemeJudgeObject.setCertUse(declareRecord.getCertUse());
             schemeJudgeObject.setPracticalUse(declareRecord.getPracticalUse());
             schemeJudgeObject.setEvaluationArea(declareRecord.getPracticalArea());
-            schemeJudgeObjectDao.updateSchemeJudgeObject(schemeJudgeObject) ;
+            schemeJudgeObjectDao.updateSchemeJudgeObject(schemeJudgeObject);
         }
     }
 }

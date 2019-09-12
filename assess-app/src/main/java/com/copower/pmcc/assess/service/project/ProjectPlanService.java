@@ -700,7 +700,7 @@ public class ProjectPlanService {
      * @param planId 当前阶段所处的总计划
      */
     @Transactional(rollbackFor = Exception.class)
-    public void enterNextStage(Integer planId) throws Exception {
+    public void enterNextStage(Integer planId) throws BusinessException {
         //先获取分布式锁 保证进入下个阶段只有一个线程执行
         RLock lock = redissonClient.getLock(String.format("%s_%s_%s", applicationConstant.getAppKey(), ProjectPlanService.class.getSimpleName(), planId));
         boolean res = false;
@@ -770,6 +770,8 @@ public class ProjectPlanService {
             }
         } catch (InterruptedException e) {
             logger.error("get the lock error;" + e.getMessage(), e);
+        } catch (BpmException e) {
+            logger.error(e.getMessage(), e);
         } finally {
             lock.unlock();
         }

@@ -312,7 +312,7 @@ public class ProjectInfoController {
         //区域
         modelAndView.addObject("areaGroupList", schemeAreaGroupService.getAreaGroupList(projectId));
         //项目发文件
-        List<DocumentTemplate> documentTemplateList = documentTemplateService.getDocumentTemplateList("",baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_TEMPLATE_TYPE_DISPATCH).getId());
+        List<DocumentTemplate> documentTemplateList = documentTemplateService.getDocumentTemplateList("", baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_TEMPLATE_TYPE_DISPATCH).getId());
         modelAndView.addObject("documentTemplateList", documentTemplateList);
         modelAndView.addObject("sysUrl", baseParameterService.getParameterValues(BaseParameterEnum.SYS_URL_KEY.getParameterKey()));
         modelAndView.addObject("companyId", publicService.getCurrentCompany().getCompanyId());
@@ -433,11 +433,13 @@ public class ProjectInfoController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/enterNextStage", name = "进入项目下个阶段", method = RequestMethod.GET)
+    @RequestMapping(value = "/enterNextStage", name = "进入项目下个阶段", method = RequestMethod.POST)
     public HttpResult enterNextStage(Integer projectId) {
         try {
             projectInfoService.enterNextStage(projectId);
             return HttpResult.newCorrectResult();
+        } catch (BusinessException e) {
+            return HttpResult.newErrorResult(e.getMessage());
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return HttpResult.newErrorResult("进入项目下个阶段");

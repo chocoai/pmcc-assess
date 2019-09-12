@@ -672,6 +672,11 @@
         });
         cols.push({field: 'yearCount', title: '年份数'});
         cols.push({
+            field: 'growthRate', title: '增长率', formatter: function (value, row, index) {
+                return AssessCommon.pointToPercent(value);
+            }
+        });
+        cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
                 str += '<a class="btn btn-xs btn-success tooltips" data-placement="top" data-original-title="明细" onclick="selfSupport.editForecastIncome(' + row.id + ');" >明细</a>';

@@ -198,10 +198,10 @@
                                 <option>请选择</option>
                                 <c:forEach items="${dataInfrastructureList}" var="item">
                                     <c:if test="${item.infrastructureSupportingFacilities != 0}">
-                                        <c:if test="${mdDevelopment.f22 != item.infrastructureSupportingFacilities}">
+                                        <c:if test="${mdDevelopment.infrastructureCost != item.infrastructureSupportingFacilities}">
                                             <option value="${item.infrastructureSupportingFacilities}" data-key="${item.id}" data-type="${item.type}">${item.timeSlot} 金额:${item.infrastructureSupportingFacilities}</option>
                                         </c:if>
-                                        <c:if test="${mdDevelopment.f22 == item.infrastructureSupportingFacilities}">
+                                        <c:if test="${mdDevelopment.infrastructureCost == item.infrastructureSupportingFacilities}">
                                             <option value="${item.infrastructureSupportingFacilities}" selected="selected"  data-key="${item.id}"  data-type="${item.type}">${item.timeSlot} 金额:${item.infrastructureSupportingFacilities}</option>
                                         </c:if>
                                     </c:if>

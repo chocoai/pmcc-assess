@@ -51,9 +51,9 @@ public class SchemeSurePriceController {
 
     @GetMapping(value = "/getSurePriceFactors", name = "获取调整单价系数")
     @ResponseBody
-    public HttpResult getSurePriceFactors(Integer declareId) {
+    public HttpResult getSurePriceFactors(Integer judgeObjectId) {
         try {
-            List<SchemeSurePriceFactor> certAdjustmentFactors = schemeSurePriceFactorService.getSurePriceFactors(declareId);
+            List<SchemeSurePriceFactor> certAdjustmentFactors = schemeSurePriceFactorService.getSurePriceFactors(judgeObjectId);
             return HttpResult.newCorrectResult(certAdjustmentFactors);
         } catch (Exception e) {
             return HttpResult.newErrorResult("获取数据异常");

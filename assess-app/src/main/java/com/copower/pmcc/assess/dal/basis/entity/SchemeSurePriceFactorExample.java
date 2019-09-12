@@ -226,6 +226,66 @@ public class SchemeSurePriceFactorExample {
             return (Criteria) this;
         }
 
+        public Criteria andJudgeObjectIdIsNull() {
+            addCriterion("judge_object_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeObjectIdIsNotNull() {
+            addCriterion("judge_object_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeObjectIdEqualTo(Integer value) {
+            addCriterion("judge_object_id =", value, "judgeObjectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeObjectIdNotEqualTo(Integer value) {
+            addCriterion("judge_object_id <>", value, "judgeObjectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeObjectIdGreaterThan(Integer value) {
+            addCriterion("judge_object_id >", value, "judgeObjectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeObjectIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("judge_object_id >=", value, "judgeObjectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeObjectIdLessThan(Integer value) {
+            addCriterion("judge_object_id <", value, "judgeObjectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeObjectIdLessThanOrEqualTo(Integer value) {
+            addCriterion("judge_object_id <=", value, "judgeObjectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeObjectIdIn(List<Integer> values) {
+            addCriterion("judge_object_id in", values, "judgeObjectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeObjectIdNotIn(List<Integer> values) {
+            addCriterion("judge_object_id not in", values, "judgeObjectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeObjectIdBetween(Integer value1, Integer value2) {
+            addCriterion("judge_object_id between", value1, value2, "judgeObjectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeObjectIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("judge_object_id not between", value1, value2, "judgeObjectId");
+            return (Criteria) this;
+        }
+
         public Criteria andFactorIsNull() {
             addCriterion("factor is null");
             return (Criteria) this;
