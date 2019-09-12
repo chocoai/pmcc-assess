@@ -11,6 +11,7 @@ import com.copower.pmcc.assess.dto.input.method.MdEconomicIndicatorsApplyDto;
 import com.copower.pmcc.assess.dto.output.MergeCellModel;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateLandStateVo;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateVo;
+import com.copower.pmcc.assess.dto.output.data.DataBuildingInstallCostVo;
 import com.copower.pmcc.assess.dto.output.method.MdCostConstructionVo;
 import com.copower.pmcc.assess.dto.output.method.MdCostVo;
 import com.copower.pmcc.assess.dto.output.project.scheme.SchemeJudgeObjectVo;
@@ -19,6 +20,7 @@ import com.copower.pmcc.assess.service.assist.ResidueRatioService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseReportFieldService;
+import com.copower.pmcc.assess.service.data.DataBuildingInstallCostService;
 import com.copower.pmcc.assess.service.method.MdArchitecturalObjService;
 import com.copower.pmcc.assess.service.method.MdCalculatingMethodEngineeringCostService;
 import com.copower.pmcc.assess.service.method.MdEconomicIndicatorsService;
@@ -39,6 +41,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.context.ApplicationContext;
 import org.springframework.core.task.TaskExecutor;
 
 import java.io.Serializable;
@@ -79,6 +82,8 @@ public class GenerateMdCostService implements Serializable {
     private ProjectPlanDetailsService projectPlanDetailsService;
     private MdArchitecturalObjService mdArchitecturalObjService;
     private MdEconomicIndicatorsService mdEconomicIndicatorsService;
+    private DataBuildingInstallCostService dataBuildingInstallCostService;
+    private ApplicationContext applicationContext;
 
 
     public synchronized String generateCompareFile() throws Exception {
@@ -206,6 +211,121 @@ public class GenerateMdCostService implements Serializable {
         }
     }
 
+
+    /**
+     * 报告计算 只适合报告
+     *
+     * @param target
+     * @param key
+     * @return
+     */
+    private String getReportDataValue(final MdCostConstructionVo target, BaseReportFieldEnum key) {
+        switch (key) {
+            case MarketCost_UnitAreaLandPrice: {//成本法单位面积地价
+                return ArithmeticUtils.getBigDecimalString(target.getLandPurchasePrice());
+            }
+            case MarketCost_landPurchasePrice: {//成本法土地购买价格
+                BigDecimal bigDecimal = ArithmeticUtils.multiply(target.getDevelopLandAreaTax(), target.getLandPurchasePrice(), 2);
+                return ArithmeticUtils.round(bigDecimal.toString(), 0);
+            }
+            case MarketCost_landGetRelevant: {//成本法土地取得税费
+                String param1 = getReportDataValue(target, BaseReportFieldEnum.MarketCost_landPurchasePrice);
+                BigDecimal bigDecimal = ArithmeticUtils.multiply(ArithmeticUtils.createBigDecimal(param1), target.getLandGetRelevant());
+                return ArithmeticUtils.round(bigDecimal.toString(), 0);
+            }
+            case MarketCost_landGetCost: {//成本法土地取得成本
+                String param1 = getReportDataValue(target, BaseReportFieldEnum.MarketCost_landPurchasePrice);
+                String param2 = getReportDataValue(target, BaseReportFieldEnum.MarketCost_landGetRelevant);
+                BigDecimal v = ArithmeticUtils.add(new BigDecimal[]{ArithmeticUtils.createBigDecimal(param1), ArithmeticUtils.createBigDecimal(param2), target.getAdditionalCostLandAcquisition()});
+                return ArithmeticUtils.round(v.toString(), 0);
+            }
+            case MarketCost_reconnaissanceDesign:{
+                BigDecimal bigDecimal = ArithmeticUtils.multiply(target.getReconnaissanceDesign(),target.getConstructionInstallationEngineeringFee()) ;
+                return ArithmeticUtils.round(bigDecimal.toString(), 0);
+            }
+            case MarketCost_reconnaissanceDesignTotal:{//成本法勘察设计和前期工程费总计
+                return mdMarketCostService.getFieldObjectValue(BaseReportFieldEnum.MarketCost_reconnaissanceDesign, target);
+            }
+            case MarketCost_infrastructureCostTotal:{//成本法基础设施建设费总计
+                return mdMarketCostService.getFieldObjectValue(BaseReportFieldEnum.MarketCost_infrastructureCost, target);
+            }
+            case MarketCost_infrastructureMatchingCostTotal:{//成本法基础设施建设费总计
+                return mdMarketCostService.getFieldObjectValue(BaseReportFieldEnum.MarketCost_infrastructureMatchingCost, target);
+            }
+            case MarketCost_devDuringTotal:{//成本法开发期间税费总计
+                return mdMarketCostService.getFieldObjectValue(BaseReportFieldEnum.MarketCost_devDuring, target);
+            }
+            case MarketCost_otherEngineeringCostTotal:{//成本法其他工程费总计
+                return mdMarketCostService.getFieldObjectValue(BaseReportFieldEnum.MarketCost_otherEngineeringCost, target);
+            }
+            case MarketCost_landGetCostTotal: {//成本法土地取得成本总计
+                return mdMarketCostService.getFieldObjectValue(BaseReportFieldEnum.MarketCost_landGetCostTotal, target);
+            }
+            case MarketCost_constructionSub: {//成本法建设成本
+                String param1 = target.getConstructionInstallationEngineeringFee().toString();
+                String param2 = ArithmeticUtils.mul(param1, target.getReconnaissanceDesign().toString(), 2);
+                BigDecimal param3 = target.getInfrastructureCost();
+                BigDecimal param4 = target.getInfrastructureMatchingCost();
+                BigDecimal param5 = target.getDevDuring();
+                BigDecimal param6 = target.getOtherEngineeringCost();
+                BigDecimal bigDecimal = ArithmeticUtils.add(new BigDecimal[]{ArithmeticUtils.createBigDecimal(param1), ArithmeticUtils.createBigDecimal(param2), param3, param4, param5, param6});
+                return ArithmeticUtils.round(bigDecimal.toString(), 2);
+            }
+            case MarketCost_constructionSubtotal: {//成本法建设成本总计
+                String param1 = getReportDataValue(target, BaseReportFieldEnum.MarketCost_constructionSub);
+                BigDecimal bigDecimal = ArithmeticUtils.mul(param1, target.getDevelopBuildAreaTax().toString());
+                bigDecimal = ArithmeticUtils.div(bigDecimal, ArithmeticUtils.createBigDecimal(10000));
+                return ArithmeticUtils.round(bigDecimal.toString(), 2);
+            }
+            case MarketCost_unforeseenExpensesTotal: {//成本法不可预见费总计
+                String param1 = getReportDataValue(target, BaseReportFieldEnum.MarketCost_constructionSubtotal);
+                BigDecimal bigDecimal = ArithmeticUtils.mul(param1, target.getUnforeseenExpenses().toString());
+                return ArithmeticUtils.round(bigDecimal.toString(), 2);
+            }
+            case MarketCost_managementExpenseTotal: {//成本法管理费总计
+                return mdMarketCostService.getFieldObjectValue(BaseReportFieldEnum.MarketCost_managementExpense, target);
+            }
+            case MarketCost_salesFeeTotal: {//成本法销售费总计
+                return mdMarketCostService.getFieldObjectValue(BaseReportFieldEnum.MarketCost_salesFee, target);
+            }
+            case MarketCost_salesTaxAndAdditionalTotal:{//成本法销售税金及附加总计
+                return mdMarketCostService.getFieldObjectValue(BaseReportFieldEnum.MarketCost_salesTaxAndAdditionalTotal, target);
+            }
+            case MarketCost_constructionInstallationEngineeringFeeTotal: {//成本法建筑安装工程费总计
+                return mdMarketCostService.getFieldObjectValue(BaseReportFieldEnum.MarketCost_constructionInstallationEngineeringFee, target);
+            }
+            case MarketCost_EstateLandPrice: {//成本法楼面土地单价
+                String v = getReportDataValue(target, BaseReportFieldEnum.MarketCost_landGetCost);
+                v = ArithmeticUtils.div(v, target.getDevelopBuildAreaTax().toString());
+                return ArithmeticUtils.round(v, 0);
+            }
+            case MarketCost_developBuildArea: {//成本法开发建筑面积
+                return ArithmeticUtils.round(target.getDevelopBuildAreaTax().toString(), 0);
+            }
+            case MarketCost_CompleteCostTotalValue: {//成本法完全成本计算值总计 万元
+                return target.getConstructionAssessmentValue();
+            }
+            case MarketCost_CompleteCostValue: {//成本法完全成本计算值
+                String v = getReportDataValue(target, BaseReportFieldEnum.MarketCost_CompleteCostTotalValue);
+                return ArithmeticUtils.mul(v, "10000", 0);
+            }
+            case MarketCost_constructionAssessmentPriceCorrecting: {//成本法单价
+                String param1 = getReportDataValue(target, BaseReportFieldEnum.MarketCost_CompleteCostValue);
+                String value = ArithmeticUtils.div(param1, target.getDevelopBuildAreaTax().toString());
+                return ArithmeticUtils.round(value, 0);
+            }
+            case MarketCost_constructionAssessmentPriceCorrecting2:{
+                String v = getReportDataValue(target, BaseReportFieldEnum.MarketCost_constructionAssessmentPriceCorrecting);
+                if (target.getResidueRatio() != null){
+                    v = ArithmeticUtils.mul(v,target.getResidueRatio().toString(),2) ;
+                }
+                return v;
+            }
+            default:
+                return "";
+        }
+    }
+
     /**
      * 传入的待组装对象最好是不可变的对象或者副本对象
      *
@@ -220,10 +340,9 @@ public class GenerateMdCostService implements Serializable {
      */
     private void setFieldObjectValue(BaseReportFieldEnum key, final ConcurrentHashMap<String, String> textMap, final ConcurrentHashMap<String, String> fileMap, final ConcurrentHashMap<String, String> bookmarkMap, MdCostVo mdCostVo, SchemeAreaGroup schemeAreaGroup, SchemeJudgeObject schemeJudgeObject, ToolResidueRatio toolResidueRatio, MdEconomicIndicatorsApplyDto mdEconomicIndicatorsApplyDto) throws Exception {
         MdCostConstructionVo target = mdCostVo.getMdCostConstruction();
-        //计算类数据
-        String value = mdMarketCostService.getFieldObjectValue(key, target);
-        if (StringUtils.isNotBlank(value)) {
-            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), value);
+        String algsValue = getReportDataValue(target, key);
+        if (StringUtils.isNotBlank(algsValue)) {
+            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), algsValue);
         }
         //非计算类数据
         switch (key) {
@@ -247,48 +366,72 @@ public class GenerateMdCostService implements Serializable {
                 generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), v);
             }
             break;
+            case MarketCost_infrastructureCost: {
+                generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), ArithmeticUtils.round(target.getInfrastructureCost().toString(), 2));
+                break;
+            }
+            case MarketCost_infrastructureMatchingCost: {
+                generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), ArithmeticUtils.round(target.getInfrastructureMatchingCost().toString(), 2));
+                break;
+            }
+            case MarketCost_devDuring: {
+                generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), ArithmeticUtils.round(target.getDevDuring().toString(), 2));
+                break;
+            }
+            case MarketCost_otherEngineeringCost: {
+                generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), ArithmeticUtils.round(target.getOtherEngineeringCost().toString(), 2));
+                break;
+            }
             case MarketCost_Assessment_land_use_right_area: {
                 generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), ArithmeticUtils.getBigDecimalString(target.getDevelopLandAreaTax()));
-            }
-            break;
-            case MarketCost_UnitAreaLandPrice: {
-                generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), ArithmeticUtils.getBigDecimalString(target.getLandPurchasePrice()));
-            }
-            break;
-            case MarketCost_landPurchasePrice: {//成本法土地购买价格
-                BigDecimal bigDecimal = ArithmeticUtils.multiply(target.getDevelopLandAreaTax(), target.getLandPurchasePrice(), 2);
-                generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), ArithmeticUtils.getBigDecimalString(bigDecimal));
             }
             break;
             case MarketCost_landGetRelevantRate: {
                 generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), ArithmeticUtils.getPercentileSystem(target.getLandGetRelevant(), 2));
             }
             break;
-            case MarketCost_landGetRelevant: { //成本法土地取得税费
-                BigDecimal bigDecimal = ArithmeticUtils.multiply(target.getDevelopLandAreaTax(), target.getLandPurchasePrice());
-                bigDecimal = ArithmeticUtils.multiply(bigDecimal, target.getLandGetRelevant());
-                generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), ArithmeticUtils.round(bigDecimal.toString(), 2));
+            case MarketCost_managementExpenseRate: {
+                generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), ArithmeticUtils.getPercentileSystem(target.getManagementExpense(), 2));
+            }
+            break;
+            case MarketCost_salesTaxAndAdditionalRate: {
+                generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), ArithmeticUtils.getPercentileSystem(target.getSalesTaxAndAdditional(), 2));
+            }
+            break;
+            case MarketCost_salesFeeRate: {
+                generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), ArithmeticUtils.getPercentileSystem(target.getSalesFee(), 2));
+            }
+            break;
+            case MarketCost_reconnaissanceDesignRate: {
+                generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), ArithmeticUtils.getPercentileSystem(target.getReconnaissanceDesign(), 2));
+            }
+            break;
+            case MarketCost_unforeseenExpensesRate: {
+                generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), ArithmeticUtils.getPercentileSystem(target.getUnforeseenExpenses(), 2));
+            }
+            break;
+            case MarketCost_interestInvestmentRate: {
+                generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), ArithmeticUtils.getPercentileSystem(target.getInterestInvestmentTax(), 2));
+            }
+            break;
+            case MarketCost_investmentProfitRate: {
+                generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), ArithmeticUtils.getPercentileSystem(target.getInvestmentProfitTax(), 2));
             }
             break;
             case MarketCost_additionalCostLandAcquisition: {
                 generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), ArithmeticUtils.round(target.getAdditionalCostLandAcquisition().toString(), 2));
             }
             break;
-            case MarketCost_landGetCostTotal: {
-                BigDecimal bigDecimal = ArithmeticUtils.multiply(target.getDevelopLandAreaTax(), target.getLandPurchasePrice());
-                BigDecimal landGetRelevant = ArithmeticUtils.multiply(bigDecimal, target.getLandGetRelevant());
-                BigDecimal additionalCostLandAcquisition = target.getAdditionalCostLandAcquisition();
-                BigDecimal v = ArithmeticUtils.add(new BigDecimal[]{bigDecimal, landGetRelevant, additionalCostLandAcquisition});
-                generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), ArithmeticUtils.round(v.toString(), 2));
+            case MarketCost_developYearNumberTax: {
+                generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), ArithmeticUtils.round(target.getDevelopYearNumberTax().toString(), 2));
             }
             break;
-            case MarketCost_EstateLandPrice: {
-                BigDecimal bigDecimal = ArithmeticUtils.multiply(target.getDevelopLandAreaTax(), target.getLandPurchasePrice());
-                BigDecimal landGetRelevant = ArithmeticUtils.multiply(bigDecimal, target.getLandGetRelevant());
-                BigDecimal additionalCostLandAcquisition = target.getAdditionalCostLandAcquisition();
-                BigDecimal v = ArithmeticUtils.add(new BigDecimal[]{bigDecimal, landGetRelevant, additionalCostLandAcquisition});
-                v = ArithmeticUtils.divide(v,target.getDevelopBuildAreaTax(),2) ;
-                generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), ArithmeticUtils.round(v.toString(), 2));
+            case MarketCost_interestInvestment: {
+                generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), target.getInterestInvestment());
+            }
+            break;
+            case MarketCost_investmentProfit: {
+                generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), target.getInvestmentProfit());
             }
             break;
             case MarketCost_Method: {
@@ -356,7 +499,8 @@ public class GenerateMdCostService implements Serializable {
             case MarketCost_intra_territorial_setting: {
             }
             break;
-            case MarketCost_GroundFloor_AreaCounted_volume_ratio: {
+            case MarketCost_GroundFloor_AreaCounted_volume_ratio://并列case 匹配
+            case MarketCost_EconomicIndicatorsField1: {
                 String str = "groundBuildingArea";
                 if (mdEconomicIndicatorsApplyDto == null) {
                     break;
@@ -382,19 +526,20 @@ public class GenerateMdCostService implements Serializable {
                 }
             }
             break;
-            case MarketCost_EconomicIndicatorsField1: {
-                setFieldObjectValue(BaseReportFieldEnum.MarketCost_GroundFloor_AreaCounted_volume_ratio, textMap, fileMap, bookmarkMap, mdCostVo, schemeAreaGroup, schemeJudgeObject, toolResidueRatio, mdEconomicIndicatorsApplyDto);
-            }
-            break;
             case MarketCost_constructionInstallationEngineeringFee: {
-                BigDecimal start = ArithmeticUtils.divide(ArithmeticUtils.multiply(target.getConstructionAssessmentPriceCorrecting(), target.getDevelopLandAreaTax(), 2), ArithmeticUtils.createBigDecimal(10000), 2);
-                generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), ArithmeticUtils.getBigDecimalString(start));
-            }
-            break;
-            case MarketCost_constructionInstallationEngineeringFee_Sheet: {
+                generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), ArithmeticUtils.getBigDecimalString(target.getConstructionInstallationEngineeringFee()));
             }
             break;
             case MarketCost_constructionInstallationEngineeringFee_Basis: {
+                StringBuilder stringBuilder = new StringBuilder(8);
+                List<DataBuildingInstallCostVo> dataBuildingInstallCostVos = dataBuildingInstallCostService.dataBuildingInstallCostVos(schemeAreaGroup.getProvince(), schemeAreaGroup.getCity(), schemeAreaGroup.getDistrict());
+                if (CollectionUtils.isNotEmpty(dataBuildingInstallCostVos)) {
+                    for (DataBuildingInstallCostVo costVo : dataBuildingInstallCostVos) {
+                        stringBuilder.append(costVo.getContent());
+                    }
+                }
+                String value = StringUtils.isNotBlank(stringBuilder.toString()) ? stringBuilder.toString() : "无";
+                generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), value);
             }
             break;
             case MarketCost_Planning_land_area_construction: {
@@ -482,12 +627,6 @@ public class GenerateMdCostService implements Serializable {
                 generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), ArithmeticUtils.getPercentileSystem(target.getResidueRatio(), 2));
             }
             break;
-            case MarketCost_constructionAssessmentPriceCorrecting2: {
-                if (target.getResidueRatio() != null) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), ArithmeticUtils.divide(target.getConstructionAssessmentPriceCorrecting(), target.getResidueRatio(), 2).toString());
-                }
-            }
-            break;
             case MarketCost_ResidueRatio_method: {
                 if (target.getResidueRatioId() != null) {
                     if (toolResidueRatio == null) {
@@ -556,21 +695,6 @@ public class GenerateMdCostService implements Serializable {
                 }
             }
             break;
-            case MarketCost_CompleteCostValue: {
-                try {
-                    String v1 = mdMarketCostService.getFieldObjectValue(BaseReportFieldEnum.MarketCost_landGetCostTotal, target);
-                    String v2 = mdMarketCostService.getFieldObjectValue(BaseReportFieldEnum.MarketCost_constructionSubtotal, target);
-                    String v3 = mdMarketCostService.getFieldObjectValue(BaseReportFieldEnum.MarketCost_unforeseenExpenses, target);
-                    String v4 = mdMarketCostService.getFieldObjectValue(BaseReportFieldEnum.MarketCost_managementExpense, target);
-                    String v5 = NumberUtils.isNumber(mdMarketCostService.getFieldObjectValue(BaseReportFieldEnum.MarketCost_salesFee, target)) ? mdMarketCostService.getFieldObjectValue(BaseReportFieldEnum.MarketCost_salesFee, target) : "0";
-                    String v6 = NumberUtils.isNumber(mdMarketCostService.getFieldObjectValue(BaseReportFieldEnum.MarketCost_salesTaxAndAdditional, target)) ? mdMarketCostService.getFieldObjectValue(BaseReportFieldEnum.MarketCost_salesTaxAndAdditional, target) : "0";
-                    String v7 = mdMarketCostService.getFieldObjectValue(BaseReportFieldEnum.MarketCost_investmentProfit, target);
-                    double v = ArithmeticUtils.add(new double[]{Double.valueOf(v1), Double.valueOf(v2), Double.valueOf(v3), Double.valueOf(v4), Double.valueOf(v5), Double.valueOf(v6), Double.valueOf(v7)});
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), String.valueOf(v));
-                } catch (Exception e) {
-                }
-            }
-            break;
             default: {
             }
             break;
@@ -627,7 +751,7 @@ public class GenerateMdCostService implements Serializable {
         this.projectId = projectId;
         this.schemeInfo = schemeInfo;
         this.areaId = areaId;
-
+        this.applicationContext = SpringContextUtils.getApplicationContext();
         this.schemeJudgeObjectService = SpringContextUtils.getBean(SchemeJudgeObjectService.class);
         this.declareRecordService = SpringContextUtils.getBean(DeclareRecordService.class);
         this.baseDataDicService = SpringContextUtils.getBean(BaseDataDicService.class);
@@ -642,6 +766,7 @@ public class GenerateMdCostService implements Serializable {
         this.projectPlanDetailsService = SpringContextUtils.getBean(ProjectPlanDetailsService.class);
         this.mdArchitecturalObjService = SpringContextUtils.getBean(MdArchitecturalObjService.class);
         this.mdEconomicIndicatorsService = SpringContextUtils.getBean(MdEconomicIndicatorsService.class);
+        this.dataBuildingInstallCostService = SpringContextUtils.getBean(DataBuildingInstallCostService.class);
     }
 
 

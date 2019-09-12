@@ -240,7 +240,7 @@ public class MdMarketCostService {
      * @param target
      * @return
      */
-    public String getFieldObjectValue(BaseReportFieldEnum key, MdCostConstruction target) {
+    public synchronized String getFieldObjectValue(BaseReportFieldEnum key, MdCostConstruction target) {
         switch (key) {
             case MarketCost_developYearNumberTax: {
                 return ArithmeticUtils.getBigDecimalString(target.getDevelopYearNumberTax());
@@ -379,7 +379,14 @@ public class MdMarketCostService {
                 return ArithmeticUtils.getBigDecimalString(target.getManagementExpense());
             }
             case MarketCost_salesFee: {
-                return String.join("", getFieldObjectValue(BaseReportFieldEnum.MarketCost_salesFeeRate, target), "v");
+                String v = getFieldObjectValue(BaseReportFieldEnum.MarketCost_constructionAssessmentValue, target) ;
+                String v1 = getFieldObjectValue(BaseReportFieldEnum.MarketCost_salesFeeRate, target) ;
+                return ArithmeticUtils.mul(v,v1,2) ;
+            }
+            case MarketCost_salesTaxAndAdditionalTotal:{
+                String v = getFieldObjectValue(BaseReportFieldEnum.MarketCost_constructionAssessmentValue, target) ;
+                String v1 = target.getSalesTaxAndAdditional().toString();
+                return ArithmeticUtils.mul(v,v1,2) ;
             }
             case MarketCost_salesFeeRate: {
                 return ArithmeticUtils.getBigDecimalString(target.getSalesFee());
