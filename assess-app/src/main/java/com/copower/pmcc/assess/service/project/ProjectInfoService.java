@@ -765,14 +765,12 @@ public class ProjectInfoService {
      * 进入项目下个阶段
      * @param projectId
      */
-    public void enterNextStage(Integer projectId) throws Exception {
+    public void enterNextStage(Integer projectId) throws BusinessException{
         List<ProjectPlan> planList = projectPlanService.getCurrentProjectPlans(projectId);
-        if(CollectionUtils.isEmpty(planList)) return;
+        if(CollectionUtils.isEmpty(planList))
+            throw new BusinessException("未找到进行中的阶段");
         //判断当前阶段是否任务是否完成
         Integer planId=planList.get(0).getId();
-        boolean isAllFinish = projectPlanDetailsService.isAllPlanDetailsFinish(planId);
-        if(isAllFinish){
-            projectPlanService.enterNextStage(planId);
-        }
+        projectPlanService.enterNextStage(planId);
     }
 }

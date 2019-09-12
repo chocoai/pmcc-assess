@@ -700,7 +700,7 @@ public class ProjectPlanService {
      * @param planId 当前阶段所处的总计划
      */
     @Transactional(rollbackFor = Exception.class)
-    public void enterNextStage(Integer planId) throws Exception {
+    public void enterNextStage(Integer planId) throws BusinessException {
         //先获取分布式锁 保证进入下个阶段只有一个线程执行
         RLock lock = redissonClient.getLock(String.format("%s_%s_%s", applicationConstant.getAppKey(), ProjectPlanService.class.getSimpleName(), planId));
         boolean res = false;
@@ -708,11 +708,11 @@ public class ProjectPlanService {
             res = lock.tryLock(10, 20, TimeUnit.SECONDS);
             if (!res) {//加锁不成功,不执行逻辑
                 logger.debug("----enterNextStage, Did not get the lock");
-                return;
+                throw new BusinessException("已有任务在执行请不要重复操作");
             }
             boolean isAllFinish = projectPlanDetailsService.isAllPlanDetailsFinish(planId);
             if (!isAllFinish) {
-                return;
+                throw new BusinessException("还有未完成的任务，请完成该阶段的所有任务");
             }
             //1.将当前阶段设置结束，并清理所有任务
             ProjectPlan projectPlan = projectPlanDao.getProjectPlanById(planId);
@@ -770,6 +770,8 @@ public class ProjectPlanService {
             }
         } catch (InterruptedException e) {
             logger.error("get the lock error;" + e.getMessage(), e);
+        } catch (BpmException e) {
+            logger.error(e.getMessage(), e);
         } finally {
             lock.unlock();
         }
