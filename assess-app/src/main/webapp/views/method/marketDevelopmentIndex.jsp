@@ -194,7 +194,7 @@
 
             var landGetRelevant = frm.find("input[placeholder='在建工程修复费用']") ;
             landGetRelevant.attr({placeholder:"土地取得附加成本"}) ;
-            landGetRelevant.closest(".form-group").find("label").first().text("土地取得附加成本") ;
+            landGetRelevant.closest(".form-group").find("label").first().text("土地取得附加成本(万元)") ;
 
             var interestInvestmentTax = frm.find("input[placeholder='续建投资利息率']") ;
             interestInvestmentTax.attr({placeholder:"投资利息率"}) ;
@@ -211,7 +211,7 @@
 
             var landGetRelevant = frm.find("input[placeholder='土地取得附加成本']") ;
             landGetRelevant.attr({placeholder:"在建工程修复费用"}) ;
-            landGetRelevant.closest(".form-group").find("label").first().text("在建工程修复费用") ;
+            landGetRelevant.closest(".form-group").find("label").first().text("在建工程修复费用(万元)") ;
 
             var interestInvestmentTax = frm.find("input[placeholder='投资利息率']") ;
             interestInvestmentTax.attr({placeholder:"续建投资利息率"}) ;

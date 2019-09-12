@@ -13,6 +13,7 @@ import com.copower.pmcc.assess.dto.output.MergeCellModel;
 import com.copower.pmcc.assess.dto.output.method.MdCostConstructionVo;
 import com.copower.pmcc.assess.service.method.MdDevelopmentService;
 import com.copower.pmcc.assess.service.method.MdMarketCostService;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.*;
 import jodd.util.URLDecoder;
 import org.apache.commons.collections.CollectionUtils;
@@ -165,6 +166,17 @@ public class ZCHDemo {
                 } catch (Exception e) {
                 }
             }
+        }
+    }
+
+    @Test
+    public void checkTest(){
+        List<Integer> list = new ArrayList<Integer>();
+        list.add(1);
+        list.add(2);
+        Integer[] array = list.toArray(new Integer[list.size()]);
+        for(int element:array){
+            System.out.println(element);
         }
     }
 

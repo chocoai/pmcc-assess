@@ -94,10 +94,10 @@
                             </tr>
                             <tr>
                                 <td>收入类预期销售合计:</td>
-                                <td class="info">规划建筑面积<label name="plannedBuildingArea" class="label label-default">${mdDevelopment.plannedBuildingArea}</label></td>
-                                <td class="info">总可售面积售价<label name="totalSaleableAreaPrice" class="label label-default">${mdDevelopment.totalSaleableAreaPrice}</label></td>
-                                <td class="info">可售面积<label name="saleableArea" class="label label-default">${mdDevelopment.saleableArea}</label></td>
-                                <td class="active">不可售建筑面积<label name="unsaleableBuildingArea" class="label label-default">${mdDevelopment.unsaleableBuildingArea}</label></td>
+                                <td class="info">规划建筑面积 (㎡)<label name="plannedBuildingArea" class="label label-default">${mdDevelopment.plannedBuildingArea}</label></td>
+                                <td class="info">总可售面积售价 (万元)<label name="totalSaleableAreaPrice" class="label label-default">${mdDevelopment.totalSaleableAreaPrice}</label></td>
+                                <td class="info">可售面积 (㎡)<label name="saleableArea" class="label label-default">${mdDevelopment.saleableArea}</label></td>
+                                <td class="active">不可售建筑面积 (㎡)<label name="unsaleableBuildingArea" class="label label-default">${mdDevelopment.unsaleableBuildingArea}</label></td>
                             </tr>
                             </tfoot>
                         </table>
@@ -142,7 +142,7 @@
                             <div class="input-group">
                                 <span class="input-group-btn">
                                     <button type="button" class="btn btn-info disabled">
-                                        建筑安装工程费
+                                        建筑安装工程费 (元/㎡)
                                     </button>
                                 </span>
                                 <span class="input-group-btn">
@@ -160,7 +160,7 @@
             <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
-                        基础设施配套费<span class="symbol required"></span>
+                        基础设施配套费 (元/㎡)<span class="symbol required"></span>
                     </label>
                     <div class="col-sm-3">
                         <label class="form-control">${mdDevelopment.infrastructureCost}</label>
@@ -180,7 +180,7 @@
             <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
-                        公共配套设施建设费<span class="symbol required"></span>
+                        公共配套设施建设费 (元/㎡)<span class="symbol required"></span>
                     </label>
                     <div class="col-sm-3">
                         <label class="form-control">${mdDevelopment.infrastructureMatchingCost}</label>
@@ -200,7 +200,7 @@
             <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
-                        开发期间税费<span class="symbol required"></span>
+                        开发期间税费 (元/㎡)<span class="symbol required"></span>
                     </label>
                     <div class="col-sm-3">
                         <label class="form-control">${mdDevelopment.devDuring}</label>
@@ -349,11 +349,11 @@
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
                         <c:if test="${mdDevelopment.type == 1}">
-                            土地取得附加成本
+                            土地取得附加成本 (万元)
                         </c:if>
 
                         <c:if test="${mdDevelopment.type == 2}">
-                            在建工程修复费用
+                            在建工程修复费用 (万元)
                         </c:if>
                         <span class="symbol required"></span>
                     </label>
