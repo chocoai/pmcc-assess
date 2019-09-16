@@ -104,6 +104,8 @@ public class AssessDataDicKeyConstant {
      * 测算方法配置
      */
     public static final String MD_INCOME_HISTORY_TYPE_INCOME = "md.income.history.type.income"; //收入类
+    public static final String MD_INCOME_HISTORY_TYPE_INCOME_MAIN = "md.income.history.type.income.main"; //主营业务收入类
+    public static final String MD_INCOME_HISTORY_TYPE_INCOME_OTHER = "md.income.history.type.income.other"; //其他业务收入类
     public static final String MD_INCOME_HISTORY_TYPE_COST = "md.income.history.type.cost"; //成本类
     public static final String MD_INCOME_HISTORY_TYPE_MAIN_MANAGER_COST = "md.income.history.type.main.manager.cost"; //主经营成本
     public static final String MD_INCOME_HISTORY_TYPE_OTHER_MANAGER_COST = "md.income.history.type.other.manager.cost"; //其他经营成本
