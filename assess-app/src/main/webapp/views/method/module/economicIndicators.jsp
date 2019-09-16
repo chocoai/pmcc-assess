@@ -322,6 +322,9 @@
                             });
                             economicIndicators.autoSummary();
                         }
+                        if (defaluts.targetCallback){
+                            defaluts.targetCallback($("#frmEconomicIndicatorsItem")) ;
+                        }
                     } else {
                         Alert(result.errmsg);
                     }
@@ -338,7 +341,7 @@
             $("#modalEconomicIndicators").find(".modal-footer").find("button").eq(1).before(html) ;
         }
         if (defaluts.targetCallback){
-            defaluts.targetCallback() ;
+            defaluts.targetCallback($("#frmEconomicIndicatorsItem")) ;
         }
         if (defaluts.attribute){
             $("#frmEconomicIndicatorsItem").find("tr").each(function (i,n) {

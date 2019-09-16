@@ -54,6 +54,7 @@
         var item = $(_this).find('option:selected');
         var pid = item.attr('data-key');
         var type = item.attr('data-type');
+        var master = developmentCommon.isNotBlank('${mdCostVo.mdCostConstruction.id}') ? '${mdCostVo.mdCostConstruction.id}' : '0';
         if (pid) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/dataInfrastructureChildren/getDataList",
@@ -71,7 +72,7 @@
                             var obj = {name: n.name, number: n.number, tax: n.tax};
                             obj.planDetailsId = '${projectPlanDetails.id}';
                             obj.type = construction.type;
-                            obj.pid = developmentCommon.isNotBlank('${mdCostConstruction.id}') ? '${mdCostConstruction.id}' : '0';
+                            obj.pid = master;
                             arr.push(obj);
                         });
                         developmentCommon.infrastructureChildren.saveArray(arr, function () {
@@ -317,7 +318,9 @@
     construction.showMdDevelopmentIncomeCategory = function () {
         var economicId = '${mdCostVo.mdCostConstruction.economicId}' ;
         if (economicId){
-            economicIndicators.init({economicId:economicId});
+            economicIndicators.init({economicId:economicId,targetCallback:function (target) {
+                target.find("tbody").find("input[name='unitPrice']").attr({disabled:'disabled'});
+            }});
         }else {
             economicIndicators.init({
                 planDetailsId: '${projectPlanDetails.id}',
