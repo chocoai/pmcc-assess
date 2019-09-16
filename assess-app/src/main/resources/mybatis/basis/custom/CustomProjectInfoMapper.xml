@@ -78,6 +78,9 @@
         <if test="queryLoanType!=null">
             AND A.loan_type = #{queryLoanType}
         </if>
+        <if test="queryDepartmentId!=null">
+            AND A.department_id = #{queryDepartmentId}
+        </if>
         ORDER BY A.id DESC
     </select>
 </mapper>
