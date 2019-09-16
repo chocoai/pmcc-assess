@@ -171,11 +171,13 @@
         if (value == cost.one){
             target.find("input").each(function () {
                 var text = $(this).val() ;
-                var className = $(this).prop("class") ;
-                if (className.indexOf('x-percent') != -1){
-                    text = $(this).attr("data-value");
+                if (text){
+                    var className = $(this).prop("class") ;
+                    if (className.indexOf('x-percent') != -1){
+                        text = $(this).attr("data-value");
+                    }
+                    $(this).attr({'data-value':0,'obj-value':text}).val(0);
                 }
-                $(this).attr({'data-value':0,'obj-value':text}).val(0);
             }) ;
             target.hide() ;
             var landGetCostTotal = cost.constructionFrm.find("input[name='landGetCostTotal']").val() ;
@@ -186,15 +188,18 @@
             target.show() ;
             target.find("input").each(function () {
                 var text = $(this).attr("obj-value");
-                $(this).attr({'data-value':text,'obj-value':0}).val(text);
-                var className = $(this).prop("class") ;
-                if (className.indexOf('x-percent') != -1){
-                    var vv = Number(text)*100;
-                    vv = vv.toFixed(2);
-                    vv += "%" ;
-                    $(this).val(vv);
+                if (text){
+                    $(this).attr({'data-value':text,'obj-value':0}).val(text);
+                    var className = $(this).prop("class") ;
+                    if (className.indexOf('x-percent') != -1){
+                        var vv = Number(text)*100;
+                        vv = vv.toFixed(2);
+                        vv += "%" ;
+                        $(this).val(vv);
+                    }
                 }
             }) ;
+
             var landGetCostTotal2 = cost.constructionFrm.find("input[name='landGetCostTotal']").attr('obj-value') ;
             cost.constructionFrm.find("input[name='landGetCostTotal']").val(landGetCostTotal2) ;
             cost.constructionFrm.find(".landGetCostTotal").parent().parent().show() ;

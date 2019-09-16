@@ -116,7 +116,7 @@
                     <div class="col-sm-3">
                         <input type="text" name="landGetRelevant"
                                placeholder="土地取得相关税费率" class="form-control x-percent"  onblur="cost.checkParams(this);"
-                               required="required" value="${mdCostVo.mdCostConstruction.landGetRelevant}" data-value="${mdCostVo.mdCostConstruction.landGetRelevant}">
+                               required="required" data-value="${mdCostVo.mdCostConstruction.landGetRelevant}">
                     </div>
                 </div>
 
@@ -135,11 +135,11 @@
             <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
-                        土地取得附加成本(万元)<span class="symbol required"></span>
+                        土地取得单价(元/㎡)<span class="symbol required"></span>
                     </label>
                     <div class="col-sm-3">
                         <input type="text" name="additionalCostLandAcquisition" required="required"
-                               placeholder="土地取得附加成本" class="form-control" data-rule-number='true' onblur="cost.checkParams(this);" value="${mdCostVo.mdCostConstruction.additionalCostLandAcquisition}">
+                               placeholder="土地取得单价(元/㎡)" class="form-control" data-rule-number='true' onblur="cost.checkParams(this);" value="${mdCostVo.mdCostConstruction.additionalCostLandAcquisition}">
                     </div>
                 </div>
 

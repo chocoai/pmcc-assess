@@ -8,6 +8,7 @@ import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdCostConstructionDao;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdCostDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dto.input.method.MdEconomicIndicatorsApplyDto;
 import com.copower.pmcc.assess.dto.output.method.MdCostConstructionVo;
 import com.copower.pmcc.assess.dto.output.method.MdCostVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -57,6 +58,8 @@ public class MdMarketCostService {
     private DeclareRecordService declareRecordService;
     @Autowired
     private DeclareBuildEngineeringAndEquipmentCenterService declareBuildEngineeringAndEquipmentCenterService;
+    @Autowired
+    private MdEconomicIndicatorsService mdEconomicIndicatorsService;
 
 
     public MdCost initExplore(SchemeJudgeObject schemeJudgeObject) {
@@ -126,6 +129,21 @@ public class MdMarketCostService {
             schemeInfo.setProcessInsId(StringUtils.isNotEmpty(processInsId) ? processInsId : "0");
             schemeInfo.setMethodDataId(mdCost.getId());
             schemeInfoService.saveSchemeInfo(schemeInfo);
+
+            MdEconomicIndicatorsApplyDto mdEconomicIndicators = mdEconomicIndicatorsService.getEconomicIndicatorsInfo(mdCostConstruction.getEconomicId());
+            if (mdEconomicIndicators == null) {
+                return;
+            }
+            if (mdEconomicIndicators.getEconomicIndicators() == null) {
+               return;
+            }
+            if (mdEconomicIndicators.getEconomicIndicators().getAssessUseLandArea() != null) {
+                mdCostConstruction.setDevelopLandAreaTax(mdEconomicIndicators.getEconomicIndicators().getAssessUseLandArea());
+            }
+            if (mdEconomicIndicators.getEconomicIndicators().getAssessTotalBuildArea() != null) {
+                mdCostConstruction.setDevelopBuildAreaTax(mdEconomicIndicators.getEconomicIndicators().getAssessTotalBuildArea());
+            }
+            saveMdCostConstruction(mdCostConstruction);
         }
 
     }
@@ -247,29 +265,29 @@ public class MdMarketCostService {
             }
             case MarketCost_UnitAreaLandPrice: {
                 String start = getFieldObjectValue(BaseReportFieldEnum.MarketCost_landPurchasePrice, target);
-                if (!ArithmeticUtils.checkNotNull(start)){
-                    return "" ;
+                if (!ArithmeticUtils.checkNotNull(start)) {
+                    return "";
                 }
-                if (!ArithmeticUtils.checkNotNull(target.getDevelopLandAreaTax())){
-                    return "" ;
+                if (!ArithmeticUtils.checkNotNull(target.getDevelopLandAreaTax())) {
+                    return "";
                 }
                 BigDecimal bigDecimal = ArithmeticUtils.divide(ArithmeticUtils.createBigDecimal(start), target.getDevelopLandAreaTax(), 2);
                 return ArithmeticUtils.getBigDecimalString(bigDecimal);
             }
             case MarketCost_landPurchasePrice: {
-                if (!ArithmeticUtils.checkNotNullList(Arrays.asList(target.getLandPurchasePrice(),target.getDevelopLandAreaTax()))){
-                    return "" ;
+                if (!ArithmeticUtils.checkNotNullList(Arrays.asList(target.getLandPurchasePrice(), target.getDevelopLandAreaTax()))) {
+                    return "";
                 }
                 BigDecimal start = ArithmeticUtils.divide(ArithmeticUtils.multiply(target.getLandPurchasePrice(), target.getDevelopLandAreaTax()), ArithmeticUtils.createBigDecimal(10000), 2);
                 return ArithmeticUtils.getBigDecimalString(start);
             }
             case MarketCost_landGetRelevant: {
                 String start = getFieldObjectValue(BaseReportFieldEnum.MarketCost_landPurchasePrice, target);
-                if (!ArithmeticUtils.checkNotNull(start)){
-                    return "" ;
+                if (!ArithmeticUtils.checkNotNull(start)) {
+                    return "";
                 }
-                if (!ArithmeticUtils.checkNotNull(target.getLandGetRelevant())){
-                    return "" ;
+                if (!ArithmeticUtils.checkNotNull(target.getLandGetRelevant())) {
+                    return "";
                 }
                 return ArithmeticUtils.mul(start, target.getLandGetRelevant().toString(), 2);
             }
@@ -277,11 +295,11 @@ public class MdMarketCostService {
                 return ArithmeticUtils.getBigDecimalString(target.getLandGetRelevant());
             }
             case MarketCost_additionalCostLandAcquisition: {
-                if (!ArithmeticUtils.checkNotNullList(Arrays.asList(target.getAdditionalCostLandAcquisition(),target.getDevelopLandAreaTax()))){
-                    return "" ;
+                if (!ArithmeticUtils.checkNotNullList(Arrays.asList(target.getAdditionalCostLandAcquisition(), target.getDevelopLandAreaTax()))) {
+                    return "";
                 }
-                BigDecimal bigDecimal = ArithmeticUtils.div(target.getAdditionalCostLandAcquisition(), target.getDevelopLandAreaTax());
-                BigDecimal start = ArithmeticUtils.multiply(bigDecimal, ArithmeticUtils.createBigDecimal(10000), 2);
+                BigDecimal bigDecimal = ArithmeticUtils.multiply(target.getAdditionalCostLandAcquisition(), target.getDevelopLandAreaTax());
+                BigDecimal start = ArithmeticUtils.divide(bigDecimal, ArithmeticUtils.createBigDecimal(10000), 10);
                 return ArithmeticUtils.getBigDecimalString(start);
             }
             case MarketCost_reconnaissanceDesignRate: {
@@ -289,46 +307,46 @@ public class MdMarketCostService {
             }
             case MarketCost_reconnaissanceDesign: {
                 String start = getFieldObjectValue(BaseReportFieldEnum.MarketCost_constructionInstallationEngineeringFee, target);
-                if (!ArithmeticUtils.checkNotNull(start)){
-                    return "" ;
+                if (!ArithmeticUtils.checkNotNull(start)) {
+                    return "";
                 }
-                if (!ArithmeticUtils.checkNotNull(target.getReconnaissanceDesign())){
-                    return "" ;
+                if (!ArithmeticUtils.checkNotNull(target.getReconnaissanceDesign())) {
+                    return "";
                 }
                 return ArithmeticUtils.mul(start, target.getReconnaissanceDesign().toString(), 2);
             }
             case MarketCost_constructionInstallationEngineeringFee: {
-                if (!ArithmeticUtils.checkNotNullList(Arrays.asList(target.getDevelopBuildAreaTax(),target.getConstructionInstallationEngineeringFee()))){
-                    return "" ;
+                if (!ArithmeticUtils.checkNotNullList(Arrays.asList(target.getDevelopBuildAreaTax(), target.getConstructionInstallationEngineeringFee()))) {
+                    return "";
                 }
                 BigDecimal bigDecimal = ArithmeticUtils.multiply(target.getConstructionInstallationEngineeringFee(), target.getDevelopBuildAreaTax(), 2);
                 BigDecimal start = ArithmeticUtils.divide(bigDecimal, ArithmeticUtils.createBigDecimal(10000), 2);
                 return ArithmeticUtils.getBigDecimalString(start);
             }
             case MarketCost_infrastructureCost: {
-                if (!ArithmeticUtils.checkNotNullList(Arrays.asList(target.getDevelopBuildAreaTax(),target.getInfrastructureCost()))){
-                    return "" ;
+                if (!ArithmeticUtils.checkNotNullList(Arrays.asList(target.getDevelopBuildAreaTax(), target.getInfrastructureCost()))) {
+                    return "";
                 }
                 String two = ArithmeticUtils.mul(target.getDevelopBuildAreaTax().toString(), target.getInfrastructureCost().toString()).toString();
                 return ArithmeticUtils.div(two, "10000", 2);
             }
             case MarketCost_infrastructureMatchingCost: {
-                if (!ArithmeticUtils.checkNotNullList(Arrays.asList(target.getDevelopBuildAreaTax(),target.getInfrastructureMatchingCost()))){
-                    return "" ;
+                if (!ArithmeticUtils.checkNotNullList(Arrays.asList(target.getDevelopBuildAreaTax(), target.getInfrastructureMatchingCost()))) {
+                    return "";
                 }
                 String two = ArithmeticUtils.mul(target.getDevelopBuildAreaTax().toString(), target.getInfrastructureMatchingCost().toString()).toString();
                 return ArithmeticUtils.div(two, "10000", 2);
             }
             case MarketCost_devDuring: {
-                if (!ArithmeticUtils.checkNotNullList(Arrays.asList(target.getDevelopBuildAreaTax(),target.getDevDuring()))){
-                    return "" ;
+                if (!ArithmeticUtils.checkNotNullList(Arrays.asList(target.getDevelopBuildAreaTax(), target.getDevDuring()))) {
+                    return "";
                 }
                 String two = ArithmeticUtils.mul(target.getDevelopBuildAreaTax().toString(), target.getDevDuring().toString()).toString();
                 return ArithmeticUtils.div(two, "10000", 2);
             }
             case MarketCost_otherEngineeringCost: {
-                if (!ArithmeticUtils.checkNotNullList(Arrays.asList(target.getDevelopBuildAreaTax(),target.getOtherEngineeringCost()))){
-                    return "" ;
+                if (!ArithmeticUtils.checkNotNullList(Arrays.asList(target.getDevelopBuildAreaTax(), target.getOtherEngineeringCost()))) {
+                    return "";
                 }
                 String two = ArithmeticUtils.mul(target.getDevelopBuildAreaTax().toString(), target.getOtherEngineeringCost().toString()).toString();
                 return ArithmeticUtils.div(two, "10000", 2);
@@ -340,21 +358,21 @@ public class MdMarketCostService {
                 String v4 = getFieldObjectValue(BaseReportFieldEnum.MarketCost_infrastructureMatchingCost, target);
                 String v5 = getFieldObjectValue(BaseReportFieldEnum.MarketCost_devDuring, target);
                 String v6 = getFieldObjectValue(BaseReportFieldEnum.MarketCost_otherEngineeringCost, target);
-                String[] strings = new String[] {v1,v2,v3,v4,v5,v6} ;
-                if (!ArithmeticUtils.checkNotNull(strings)){
-                    return "" ;
+                String[] strings = new String[]{v1, v2, v3, v4, v5, v6};
+                if (!ArithmeticUtils.checkNotNull(strings)) {
+                    return "";
                 }
                 String value = ArithmeticUtils.add(strings);
-                target.setConstructionSubtotal(ArithmeticUtils.round(value,2));
+                target.setConstructionSubtotal(ArithmeticUtils.round(value, 2));
                 return value;
             }
             case MarketCost_unforeseenExpenses: {
                 String v = getFieldObjectValue(BaseReportFieldEnum.MarketCost_constructionSubtotal, target);
-                if (!ArithmeticUtils.checkNotNull(v)){
-                    return "" ;
+                if (!ArithmeticUtils.checkNotNull(v)) {
+                    return "";
                 }
-                if (!ArithmeticUtils.checkNotNull(target.getUnforeseenExpenses())){
-                    return "" ;
+                if (!ArithmeticUtils.checkNotNull(target.getUnforeseenExpenses())) {
+                    return "";
                 }
                 String value = ArithmeticUtils.mul(v, target.getUnforeseenExpenses().toString(), 2);
                 return value;
@@ -366,15 +384,15 @@ public class MdMarketCostService {
                 return ArithmeticUtils.getBigDecimalString(target.getUnforeseenExpenses());
             }
             case MarketCost_managementExpense: {
-                String e17 = getFieldObjectValue(BaseReportFieldEnum.MarketCost_constructionSubtotal, target) ;
-                String e18 = getFieldObjectValue(BaseReportFieldEnum.MarketCost_unforeseenExpenses, target) ;
-                String e9 = getFieldObjectValue(BaseReportFieldEnum.MarketCost_landGetCostTotal, target) ;
-                String[] strings = new String[] {e17,e18,e9} ;
-                if (!ArithmeticUtils.checkNotNull(strings)){
-                    return "" ;
+                String e17 = getFieldObjectValue(BaseReportFieldEnum.MarketCost_constructionSubtotal, target);
+                String e18 = getFieldObjectValue(BaseReportFieldEnum.MarketCost_unforeseenExpenses, target);
+                String e9 = getFieldObjectValue(BaseReportFieldEnum.MarketCost_landGetCostTotal, target);
+                String[] strings = new String[]{e17, e18, e9};
+                if (!ArithmeticUtils.checkNotNull(strings)) {
+                    return "";
                 }
-                if (!ArithmeticUtils.checkNotNull(target.getManagementExpense())){
-                    return "" ;
+                if (!ArithmeticUtils.checkNotNull(target.getManagementExpense())) {
+                    return "";
                 }
                 String v1 = ArithmeticUtils.add(strings);
                 String d19 = target.getManagementExpense().toString();
@@ -386,18 +404,18 @@ public class MdMarketCostService {
             case MarketCost_salesFee: {
                 String v = getFieldObjectValue(BaseReportFieldEnum.MarketCost_constructionAssessmentValue, target);
                 String v1 = getFieldObjectValue(BaseReportFieldEnum.MarketCost_salesFeeRate, target);
-                if (!ArithmeticUtils.checkNotNull(new String[]{v,v1})){
-                    return "" ;
+                if (!ArithmeticUtils.checkNotNull(new String[]{v, v1})) {
+                    return "";
                 }
                 return ArithmeticUtils.mul(v, v1, 2);
             }
             case MarketCost_salesTaxAndAdditionalTotal: {
                 String v = getFieldObjectValue(BaseReportFieldEnum.MarketCost_constructionAssessmentValue, target);
-                if (!ArithmeticUtils.checkNotNull(v)){
-                    return "" ;
+                if (!ArithmeticUtils.checkNotNull(v)) {
+                    return "";
                 }
-                if (!ArithmeticUtils.checkNotNull(target.getSalesTaxAndAdditional())){
-                    return "" ;
+                if (!ArithmeticUtils.checkNotNull(target.getSalesTaxAndAdditional())) {
+                    return "";
                 }
                 String v1 = target.getSalesTaxAndAdditional().toString();
                 return ArithmeticUtils.mul(v, v1, 2);
@@ -527,10 +545,10 @@ public class MdMarketCostService {
                 try {
                     String v1 = getFieldObjectValue(BaseReportFieldEnum.MarketCost_landPurchasePrice, target);
                     String v2 = getFieldObjectValue(BaseReportFieldEnum.MarketCost_landGetRelevant, target);
-                    String v3 = target.getAdditionalCostLandAcquisition().toString();
+                    String v3 = getFieldObjectValue(BaseReportFieldEnum.MarketCost_additionalCostLandAcquisition, target);
                     double[] doubles = new double[]{Double.valueOf(v1), Double.valueOf(v2), Double.valueOf(v3)};
                     String value = String.valueOf(ArithmeticUtils.add(doubles));
-                    target.setLandGetCostTotal(value);
+                    target.setLandGetCostTotal(ArithmeticUtils.round(value, 2));
                     return value;
                 } catch (Exception e) {
                     return "";

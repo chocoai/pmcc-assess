@@ -188,7 +188,7 @@ public class ZCHDemo {
         vo.setDevelopYearNumberTax(new BigDecimal(2));
         vo.setLandPurchasePrice(new BigDecimal(1000));
         vo.setLandGetRelevant(new BigDecimal(0.05));
-        vo.setAdditionalCostLandAcquisition(new BigDecimal(120));
+        vo.setAdditionalCostLandAcquisition(new BigDecimal(18.19));
 
         vo.setReconnaissanceDesign(new BigDecimal(0.06));
         vo.setConstructionInstallationEngineeringFee(new BigDecimal(1500));

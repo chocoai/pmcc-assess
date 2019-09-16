@@ -225,8 +225,8 @@
                             <tr>
                                 <td>预期销售合计:</td>
                                 <td class="info">规划建筑面积<label name="plannedBuildingArea" class="label label-default"></label></td>
-                                <td class="info">总可售面积售价<label name="totalSaleableAreaPrice" class="label label-default"></label></td>
                                 <td class="info">可售面积<label name="saleableArea" class="label label-default"></label></td>
+                                <td class="info">总可售面积售价(万元)<label name="totalSaleableAreaPrice" class="label label-default"></label></td>
                             </tr>
                         </tfoot>
                     </table>
@@ -414,7 +414,10 @@
      */
     economicIndicators.getFormData = function () {
         var target = $("#frmEconomicIndicatorsItem").find("table").find("tfoot") ;
+        var head = formSerializeArray($("#frmEconomicIndicators")) ;
         var data = {} ;
+        data.developLandAreaTax = head.assessUseLandArea;
+        data.developBuildAreaTax = head.assessTotalBuildArea;
         data.plannedBuildingArea = target.find("label[name='plannedBuildingArea']").html() ;
         data.totalSaleableAreaPrice = target.find("label[name='totalSaleableAreaPrice']").html() ;
         data.saleableArea = target.find("label[name='saleableArea']").html() ;
@@ -457,26 +460,26 @@
             $(this).find('[name=unitPrice]').text('');
 
             if (plannedBuildingAreaTotal > 0){
-                $(this).find('[name=plannedBuildingArea]').text(plannedBuildingAreaTotal);
+                $(this).find('[name=plannedBuildingArea]').text(plannedBuildingAreaTotal.toFixed(2));
                 plannedBuildingAreaValue += plannedBuildingAreaTotal ;
             }
             if (saleableAreaTotal > 0){
-                $(this).find('[name=saleableArea]').text(saleableAreaTotal);
+                $(this).find('[name=saleableArea]').text(saleableAreaTotal.toFixed(2));
                 saleableAreaValue += saleableAreaTotal ;
             }
             if (numberTotal > 0){
-                $(this).find('[name=number]').text(numberTotal);
+                $(this).find('[name=number]').text(numberTotal.toFixed(2));
             }
             if (unitPriceTotal > 0){
-                $(this).find('[name=unitPrice]').text(unitPriceTotal);
+                $(this).find('[name=unitPrice]').text(unitPriceTotal.toFixed(2));
             }
             if (totalSaleableAreaPrice > 0){
                 totalSaleableAreaPriceValue += totalSaleableAreaPrice ;
             }
 
         });
-        target.find("table").find("tfoot").find("label[name='plannedBuildingArea']").html(plannedBuildingAreaValue);
-        target.find("table").find("tfoot").find("label[name='totalSaleableAreaPrice']").html(totalSaleableAreaPriceValue);
-        target.find("table").find("tfoot").find("label[name='saleableArea']").html(saleableAreaValue);
+        target.find("table").find("tfoot").find("label[name='plannedBuildingArea']").html(plannedBuildingAreaValue.toFixed(2));
+        target.find("table").find("tfoot").find("label[name='totalSaleableAreaPrice']").html(totalSaleableAreaPriceValue.toFixed(2));
+        target.find("table").find("tfoot").find("label[name='saleableArea']").html(saleableAreaValue.toFixed(2));
     }
 </script> 
