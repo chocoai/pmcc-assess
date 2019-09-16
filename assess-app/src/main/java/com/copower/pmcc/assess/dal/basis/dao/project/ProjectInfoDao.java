@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * 描述: 项目基础数据DAO
  *
- * @author: Calvin(qiudong@copowercpa.com)
+ * @author: Calvin(qiudong @ copowercpa.com)
  * @data: 2017/8/31
  * @time: 16:00
  */
@@ -28,7 +28,7 @@ public class ProjectInfoDao {
     @Autowired
     private CustomProjectInfoMapper customProjectInfoMapper;
 
-    public boolean deleteByProjectInfoId(Integer id){
+    public boolean deleteByProjectInfoId(Integer id) {
         return projectInfoMapper.deleteByPrimaryKey(id) == 1;
     }
 
@@ -76,12 +76,13 @@ public class ProjectInfoDao {
 
     /**
      * 根据部门id查询项目数据
+     *
      * @param orgIds
      * @param projectName
      * @param projectStatus
      * @return
      */
-    public List<ProjectInfo> getProjectListByOrgIds(List<Integer> orgIds,String projectName,String projectStatus) {
+    public List<ProjectInfo> getProjectListByOrgIds(List<Integer> orgIds, String projectName, String projectStatus) {
         ProjectInfoExample example = new ProjectInfoExample();
         ProjectInfoExample.Criteria criteria = example.createCriteria();
         if (CollectionUtils.isNotEmpty(orgIds)) {
@@ -113,10 +114,11 @@ public class ProjectInfoDao {
         return projectInfoMapper.selectByExample(example);
     }
 
-    public List<ProjectInfo> getProjectListByUserAccount(String userAccount, String projectName, String projectStatus,String queryCreator,String queryMember,Integer entrustPurpose,
-                                                         String queryManager, Date queryTimeStart, Date queryTimeEnd,String queryConsignor ,Integer queryUseUnit,String queryEstateName, Integer queryLoanType) {
-        return customProjectInfoMapper.getProjectListByUserAccount(userAccount, projectName, projectStatus,queryCreator,queryMember,entrustPurpose,
-                queryManager,queryTimeStart,queryTimeEnd,queryConsignor,queryUseUnit, queryEstateName, queryLoanType);
+    public List<ProjectInfo> getProjectListByUserAccount(String userAccount, String projectName, String projectStatus, String queryCreator, String queryMember, Integer entrustPurpose,
+                                                         String queryManager, Date queryTimeStart, Date queryTimeEnd, String queryConsignor, Integer queryUseUnit, String queryEstateName,
+                                                         Integer queryLoanType, Integer queryDepartmentId) {
+        return customProjectInfoMapper.getProjectListByUserAccount(userAccount, projectName, projectStatus, queryCreator, queryMember, entrustPurpose,
+                queryManager, queryTimeStart, queryTimeEnd, queryConsignor, queryUseUnit, queryEstateName, queryLoanType, queryDepartmentId);
     }
 
 

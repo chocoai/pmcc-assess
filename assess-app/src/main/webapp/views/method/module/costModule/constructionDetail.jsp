@@ -136,7 +136,7 @@
             <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
-                        土地取得附加成本(万元)
+                        土地取得单价(元/㎡) <span class="symbol required"></span>
                     </label>
                     <div class="col-sm-3">
 

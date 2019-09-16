@@ -147,6 +147,20 @@
                                             </select>
                                         </div>
                                     </div>
+                                    <div class="x-valid">
+                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                            评估部门
+                                        </label>
+                                        <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                            <input id="queryDepartmentId" name="queryDepartmentId"
+                                                   class="form-control" type="hidden"/>
+                                            <input id="queryDepartmentName" name="queryDepartmentName" class="form-control"
+                                                   placeholder="评估部门"
+                                                   onclick="selectDepartment(this)" readonly="readonly"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group ">
                                     <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                         <button type="button" class="btn btn-primary"
                                                 onclick="loadProjectList()">
@@ -182,6 +196,7 @@
         var cols = [];
         cols.push({field: 'projectName', title: '项目名称'});
         cols.push({field: 'useUnitName', title: '使用报告单位'});
+        cols.push({field: 'departmentName', title: '评估部门'});
         cols.push({
             field: 'serviceEnd', width: '15%', title: '项目成员', formatter: function (value, row, index) {
                 var s = "";
@@ -257,7 +272,8 @@
             queryTimeEnd:$("#queryTimeEnd").val(),
             queryConsignor:$("#queryConsignor").val(),
             queryUseUnit:$("#queryUseUnit").val(),
-            queryLoanType:$("#queryLoanType").val()
+            queryLoanType:$("#queryLoanType").val(),
+            queryDepartmentId:$("#queryDepartmentId").val()
         }, {
             showColumns: false,
             showRefresh: false,
@@ -348,6 +364,17 @@
         $("#frmQuery").find("input").val("");
         $("#frmQuery").find("select").val("");
     }
+
+    //部门
+    function selectDepartment(this_) {
+        var options = {
+            onSelected: function (nodes) {
+                $("#queryDepartmentId").val(nodes[0].id);
+                $("#queryDepartmentName").val(nodes[0].text);
+            }
+        };
+        erpDepartment.select(options);
+    };
 </script>
 </body>
 </html>

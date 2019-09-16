@@ -7,7 +7,6 @@ import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.method.*;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.method.MdIncomeResultDto;
-import com.copower.pmcc.assess.dto.output.data.DataEvaluationHypothesisVo;
 import com.copower.pmcc.assess.dto.output.method.*;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
@@ -1083,7 +1082,7 @@ public class MdIncomeService {
             };
             Collections.sort(vos, comparator);
         }
-        vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<DataEvaluationHypothesisVo>() : vos);
+        vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<MdIncomeHistoryVo>() : vos);
         vo.setTotal(page.getTotal());
         return vo;
     }
@@ -1157,8 +1156,7 @@ public class MdIncomeService {
             mdIncomeForecastYear.setAmount(totalAmount.setScale(2, BigDecimal.ROUND_HALF_UP));
             mdIncomeForecastYear.setCreator(commonService.thisUserAccount());
             mdIncomeForecastYearDao.addForecastYear(mdIncomeForecastYear);
-        }
-        else {
+        } else {
             //第一年和最后一年单独处理
             int beginTempYear = DateUtils.getYear(firstDayOfTemp);
             int endYear = DateUtils.getYear(endDate);
@@ -1226,7 +1224,7 @@ public class MdIncomeService {
 //            for (MdIncomeForecastYear yearItem : list) {
 //                totalAmount = totalAmount.add(yearItem.getAmount());
 //            }
-            totalAmount=totalAmount.add(list.get(0).getAmount());
+            totalAmount = totalAmount.add(list.get(0).getAmount());
             incomeDateSection.setIncomeTotal(totalAmount);
         }
 
@@ -1309,7 +1307,7 @@ public class MdIncomeService {
 
         List<MdIncomeForecast> historyList = mdIncomeForecastDao.getForecastList(where);
         List<MdIncomeForecastVo> vos = LangUtils.transform(historyList, p -> getForecastVo(p));
-        vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<DataEvaluationHypothesisVo>() : vos);
+        vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<MdIncomeForecastVo>() : vos);
         vo.setTotal(page.getTotal());
         return vo;
     }
@@ -1881,5 +1879,67 @@ public class MdIncomeService {
             incomeForecastItem.setAmountMoney(totalPrice.divide(new BigDecimal(ids.size()), 2, BigDecimal.ROUND_HALF_UP));
             mdIncomeForecastItemDao.updateIncomeForecastItem(incomeForecastItem);
         }
+    }
+
+    //收益法自营经营情况
+    public String getEngageSituation(Integer incomeId, Integer formType, Integer type, String fieldName) {
+        BaseDataDic dic = baseDataDicService.getCacheDataDicByFieldName(fieldName);
+        MdIncomeHistory mdIncomeHistory = new MdIncomeHistory();
+        mdIncomeHistory.setIncomeId(incomeId);
+        mdIncomeHistory.setFormType(formType);
+        mdIncomeHistory.setAccountingSubject(dic.getId());
+        mdIncomeHistory.setType(type);
+        List<MdIncomeHistory> MdIncomeHistorys = mdIncomeHistoryDao.getHistoryList(mdIncomeHistory);
+        if (CollectionUtils.isEmpty(MdIncomeHistorys)) return null;
+        List<List<MdIncomeHistory>> allGoods = Lists.newArrayList();
+        for (MdIncomeHistory item : MdIncomeHistorys) {
+            if (StringUtils.isNotEmpty(item.getFirstLevelNumber())) {
+                if (CollectionUtils.isEmpty(allGoods)) {
+                    List<MdIncomeHistory> goods = Lists.newArrayList();
+                    goods.add(item);
+                    allGoods.add(goods);
+                } else {
+                    //该类型物品是否已存在
+                    boolean flag = false;
+                    step:
+                    for (List<MdIncomeHistory> list : allGoods) {
+                        for (MdIncomeHistory good : list) {
+                            if (item.getFirstLevelNumber().equals(good.getFirstLevelNumber())) {
+                                list.add(item);
+                                flag = true;
+                                break step;
+                            }
+                        }
+                    }
+                    //不存在则造一个list存放
+                    if (!flag) {
+                        List<MdIncomeHistory> goods = Lists.newArrayList();
+                        goods.add(item);
+                        allGoods.add(goods);
+                    }
+                }
+            }
+        }
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(dic.getName()).append(":");
+        for (List<MdIncomeHistory> sameFirstLevel : allGoods) {
+            sb.append(sameFirstLevel.get(0).getFirstLevelNumber()).append("(");
+            boolean flag = false;
+            for (MdIncomeHistory item : sameFirstLevel) {
+                if (StringUtils.isNotEmpty(item.getSecondLevelNumber()) && !sb.toString().contains
+                        (item.getSecondLevelNumber())) {
+                    sb.append(item.getSecondLevelNumber()).append("、");
+                    flag = true;
+                }
+            }
+            sb.deleteCharAt(sb.length() - 1);
+            if (flag) {
+                sb.append(")");
+            }
+            sb.append(",");
+        }
+        sb.deleteCharAt(sb.length() - 1);
+        return sb.toString();
     }
 }

@@ -15,6 +15,7 @@ import com.copower.pmcc.assess.service.project.csr.CsrProjectInfoService;
 import com.copower.pmcc.assess.service.project.initiate.InitiateUnitInformationService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.api.provider.ErpRpcDepartmentService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.DateUtils;
@@ -63,6 +64,8 @@ public class ProjectCenterService {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private InitiateUnitInformationService initiateUnitInformationService;
+    @Autowired
+    private ErpRpcDepartmentService erpRpcDepartmentService;
 
     /**
      * 获取项目列表
@@ -71,7 +74,7 @@ public class ProjectCenterService {
      */
     public BootstrapTableVo getProjectList(String queryName, String projectStatus, String queryCreator, String queryMember, Integer entrustPurpose,
                                            String queryManager, String queryTimeStart, String queryTimeEnd, String queryConsignor,
-                                           Integer queryUseUnit,String queryEstateName,Integer queryLoanType) throws Exception {
+                                           Integer queryUseUnit, String queryEstateName, Integer queryLoanType, Integer queryDepartmentId) throws Exception {
 
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         List<Integer> orgIds = null;
@@ -97,7 +100,7 @@ public class ProjectCenterService {
             endTimeParse = c.getTime();
         }
         List<ProjectInfo> projectInfoList = projectInfoDao.getProjectListByUserAccount("", queryName, projectStatus, queryCreator, queryMember, entrustPurpose,
-                queryManager, startTimeParse, endTimeParse, queryConsignor, queryUseUnit,queryEstateName,queryLoanType);
+                queryManager, startTimeParse, endTimeParse, queryConsignor, queryUseUnit, queryEstateName, queryLoanType, queryDepartmentId);
         List<ProjectInfoVo> projectInfoVos = getProjectInfoVos(projectInfoList);
         bootstrapTableVo.setTotal(page.getTotal());
         bootstrapTableVo.setRows(projectInfoVos);
@@ -123,8 +126,11 @@ public class ProjectCenterService {
                         projectInfoVo.setUserAccountMemberName(projectMember.getUserAccountMemberName());
                     }
                     InitiateUnitInformationVo initiateUnitInformation = initiateUnitInformationService.getDataByProjectId(item.getId());
-                    if(initiateUnitInformation != null) {
+                    if (initiateUnitInformation != null) {
                         projectInfoVo.setUseUnitName(initiateUnitInformation.getuUseUnitName());
+                    }
+                    if (item.getDepartmentId() != null) {
+                        projectInfoVo.setDepartmentName(erpRpcDepartmentService.getDepartmentById(item.getDepartmentId()).getName());
                     }
                     projectInfoVo.setProjectClassName(baseProjectClassifyService.getNameById(item.getProjectClassId()));
                     projectInfoVo.setProjectTypeName(baseProjectClassifyService.getNameById(item.getProjectTypeId()));
@@ -198,7 +204,7 @@ public class ProjectCenterService {
      * @return
      */
     public BootstrapTableVo getParticipationProject(String projectName, String projectStatus, String queryCreator, String queryMember, Integer entrustPurpose,
-                                                    String queryManager, String queryTimeStart, String queryTimeEnd, String queryConsignor, Integer queryUseUnit, Integer queryLoanType) throws Exception {
+                                                    String queryManager, String queryTimeStart, String queryTimeEnd, String queryConsignor, Integer queryUseUnit, Integer queryLoanType, Integer queryDepartmentId) throws Exception {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
@@ -215,7 +221,7 @@ public class ProjectCenterService {
             endTimeParse = c.getTime();
         }
         List<ProjectInfo> list = projectInfoDao.getProjectListByUserAccount(processControllerComponent.getThisUser(), projectName, projectStatus, queryCreator, queryMember, entrustPurpose,
-                queryManager, startTimeParse, endTimeParse, queryConsignor, queryUseUnit,null, queryLoanType);
+                queryManager, startTimeParse, endTimeParse, queryConsignor, queryUseUnit, null, queryLoanType, queryDepartmentId);
         List<ProjectInfoVo> projectInfoVos = getProjectInfoVos(list);
         vo.setTotal(page.getTotal());
         vo.setRows(ObjectUtils.isEmpty(projectInfoVos) ? Lists.newArrayList() : projectInfoVos);

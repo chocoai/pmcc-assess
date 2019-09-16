@@ -153,8 +153,18 @@ public class GenerateMdCostService implements Serializable {
             }
             //能够阻塞线程 直到调用N次end.countDown() 方法才释放线程
             countDownLatch.await(time, TimeUnit.SECONDS);
+
+//            for (Map.Entry<BaseReportFieldEnum, String> enumStringEntry : map.entrySet()) {
+//                try {
+//                    setFieldObjectValue(enumStringEntry.getKey(), textMap, fileMap, bookmarkMap, mdCostVo, schemeAreaGroup, schemeJudgeObject, toolResidueRatio, mdEconomicIndicatorsApplyDto);
+//                    setFieldObjectOtherValue(enumStringEntry.getKey(), textMap, fileMap, bookmarkMap, costJSONObjectMap);
+//                } catch (Exception e) {
+//                    baseService.writeExceptionInfo(e);
+//                }
+//            }
+
         }
-        //
+
         //替换
         if (!textMap.isEmpty()) {
             AsposeUtils.replaceText(localPath, textMap);
@@ -236,11 +246,12 @@ public class GenerateMdCostService implements Serializable {
             case MarketCost_landGetCost: {//成本法土地取得成本
                 String param1 = getReportDataValue(target, BaseReportFieldEnum.MarketCost_landPurchasePrice);
                 String param2 = getReportDataValue(target, BaseReportFieldEnum.MarketCost_landGetRelevant);
-                BigDecimal v = ArithmeticUtils.add(new BigDecimal[]{ArithmeticUtils.createBigDecimal(param1), ArithmeticUtils.createBigDecimal(param2), target.getAdditionalCostLandAcquisition()});
+                String param3 = getReportDataValue(target, BaseReportFieldEnum.MarketCost_additionalCostLandAcquisition);
+                BigDecimal v = ArithmeticUtils.add(new BigDecimal[]{ArithmeticUtils.createBigDecimal(param1), ArithmeticUtils.createBigDecimal(param2), ArithmeticUtils.createBigDecimal(param3)});
                 return ArithmeticUtils.round(v.toString(), 0);
             }
             case MarketCost_additionalCostLandAcquisition:{
-                BigDecimal bigDecimal = ArithmeticUtils.multiply(target.getAdditionalCostLandAcquisition(),ArithmeticUtils.createBigDecimal(10000)) ;
+                BigDecimal bigDecimal = ArithmeticUtils.multiply(target.getAdditionalCostLandAcquisition(), target.getDevelopLandAreaTax());
                 return ArithmeticUtils.round(bigDecimal.toString(), 0);
             }
             case MarketCost_reconnaissanceDesign:{
@@ -263,7 +274,7 @@ public class GenerateMdCostService implements Serializable {
                 return mdMarketCostService.getFieldObjectValue(BaseReportFieldEnum.MarketCost_otherEngineeringCost, target);
             }
             case MarketCost_landGetCostTotal: {//成本法土地取得成本总计
-                return mdMarketCostService.getFieldObjectValue(BaseReportFieldEnum.MarketCost_landGetCostTotal, target);
+                return ArithmeticUtils.round(mdMarketCostService.getFieldObjectValue(BaseReportFieldEnum.MarketCost_landGetCostTotal, target),2);
             }
             case MarketCost_constructionSub: {//成本法建设成本
                 String param1 = target.getConstructionInstallationEngineeringFee().toString();
