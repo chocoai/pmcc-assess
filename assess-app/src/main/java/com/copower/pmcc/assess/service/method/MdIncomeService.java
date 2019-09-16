@@ -1223,9 +1223,10 @@ public class MdIncomeService {
         if (forecast.getType().equals(MethodDataTypeEnum.INCOME.getId())) {
             List<MdIncomeForecastYear> list = getIncomeForecastYearListByMasterId(incomeForecastId);
             BigDecimal totalAmount = new BigDecimal("0");//总金额
-            for (MdIncomeForecastYear yearItem : list) {
-                totalAmount = totalAmount.add(yearItem.getAmount());
-            }
+//            for (MdIncomeForecastYear yearItem : list) {
+//                totalAmount = totalAmount.add(yearItem.getAmount());
+//            }
+            totalAmount=totalAmount.add(list.get(0).getAmount());
             incomeDateSection.setIncomeTotal(totalAmount);
         }
 

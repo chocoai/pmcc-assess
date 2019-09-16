@@ -36,7 +36,7 @@
             <div class="clearfix"></div>
         </div>
         <div class="x_content">
-            <form  class="form-horizontal">
+            <form class="form-horizontal">
                 <button type="button" class="btn btn-success"
                         onclick="priceInvestigation.prototype.showModel()"
                         data-toggle="modal" href="#divBox"> 新增
@@ -47,7 +47,7 @@
             </table>
         </div>
     </div>
-    
+
     <div class="x_panel">
         <div class="x_title collapse-link">
             <ul class="nav navbar-right panel_toolbox">
@@ -651,7 +651,8 @@
     </div>
 </div>
 
-<div id="modal_price_investigation" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+<div id="modal_price_investigation" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -680,7 +681,8 @@
                                             价格<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" name="price"class="form-control" data-rule-number="true" required="required">
+                                            <input type="text" name="price" class="form-control" data-rule-number="true"
+                                                   required="required">
                                         </div>
                                     </div>
                                 </div>
@@ -781,7 +783,7 @@
             return false;
         }
         var data = formSerializeArray(selfSupport.frmForecastIncomeItem);
-        data.incomeForecastId=selfSupport.frmForecastIncome.find('[name=incomeForecastId]').val()
+        data.incomeForecastId = selfSupport.frmForecastIncome.find('[name=incomeForecastId]').val()
         Loading.progressShow();
         $.ajax({
             url: "${pageContext.request.contextPath}/income/saveIncomeForecastItem",
@@ -874,9 +876,9 @@
     //相同名称历史数据modal
     selfSupport.showSameNameItemModel = function (historyId) {
         $("#frm_same_name").clearAll();
-        if(incomeIndex.getFormType()==0){
+        if (incomeIndex.getFormType() == 0) {
             selfSupport.loadSameNameListDefault(historyId);
-        }else{
+        } else {
             selfSupport.loadSameNameListRepast(historyId);
         }
         $("#frm_same_name").find("[name=historyId]").val(historyId);
@@ -920,7 +922,7 @@
         $("#tb_md_same_name_item_list").bootstrapTable('destroy');
         TableInit("tb_md_same_name_item_list", "${pageContext.request.contextPath}/income/getSameNameHistoryList", cols, {
             historyId: historyId,
-            type:0,
+            type: 0,
             formType: incomeIndex.getFormType(),
             incomeId: incomeIndex.getInComeId()
         }, {
@@ -1410,40 +1412,40 @@
         //总收入
         var incomeTotal = form.find('[name=incomeTotal]').val();
         var initialAmount = 0;
-        var operatingCostRatio =  AssessCommon.percentToPoint(form.find('[name=operatingCostRatio]').val());
+        var operatingCostRatio = AssessCommon.percentToPoint(form.find('[name=operatingCostRatio]').val());
         if (operatingCostRatio) {
-            form.find('[name=operatingCost]').val(accMul(operatingCostRatio,incomeTotal).toFixed(2));
-            initialAmount += parseFloat(accMul(operatingCostRatio,incomeTotal).toFixed(2));
+            form.find('[name=operatingCost]').val(accMul(operatingCostRatio, incomeTotal).toFixed(2));
+            initialAmount += parseFloat(accMul(operatingCostRatio, incomeTotal).toFixed(2));
         }
         var operatingExpensesRatio = AssessCommon.percentToPoint(form.find('[name=operatingExpensesRatio]').val());
         if (operatingExpensesRatio) {
-            form.find('[name=operatingExpenses]').val(accMul(operatingExpensesRatio,incomeTotal).toFixed(2));
-            initialAmount += parseFloat(accMul(operatingExpensesRatio,incomeTotal).toFixed(2));
+            form.find('[name=operatingExpenses]').val(accMul(operatingExpensesRatio, incomeTotal).toFixed(2));
+            initialAmount += parseFloat(accMul(operatingExpensesRatio, incomeTotal).toFixed(2));
         }
         var operatingTaxRatio = AssessCommon.percentToPoint(form.find('[name=operatingTaxRatio]').val());
         if (operatingTaxRatio) {
-            form.find('[name=operatingTax]').val(accMul(operatingTaxRatio,incomeTotal).toFixed(2));
-            initialAmount += parseFloat(accMul(operatingTaxRatio,incomeTotal).toFixed(2));
+            form.find('[name=operatingTax]').val(accMul(operatingTaxRatio, incomeTotal).toFixed(2));
+            initialAmount += parseFloat(accMul(operatingTaxRatio, incomeTotal).toFixed(2));
         }
         var managementCostRatio = AssessCommon.percentToPoint(form.find('[name=managementCostRatio]').val());
         if (managementCostRatio) {
-            form.find('[name=managementCost]').val(accMul(managementCostRatio,incomeTotal).toFixed(2));
-            initialAmount += parseFloat(accMul(managementCostRatio,incomeTotal).toFixed(2));
+            form.find('[name=managementCost]').val(accMul(managementCostRatio, incomeTotal).toFixed(2));
+            initialAmount += parseFloat(accMul(managementCostRatio, incomeTotal).toFixed(2));
         }
         var financialCostRatio = AssessCommon.percentToPoint(form.find('[name=financialCostRatio]').val());
         if (financialCostRatio) {
-            form.find('[name=financialCost]').val(accMul(financialCostRatio,incomeTotal).toFixed(2));
-            initialAmount += parseFloat(accMul(financialCostRatio,incomeTotal).toFixed(2));
+            form.find('[name=financialCost]').val(accMul(financialCostRatio, incomeTotal).toFixed(2));
+            initialAmount += parseFloat(accMul(financialCostRatio, incomeTotal).toFixed(2));
         }
         var operatingProfitRatio = AssessCommon.percentToPoint(form.find('[name=operatingProfitRatio]').val());
         if (operatingProfitRatio) {
-            form.find('[name=operatingProfit]').val(accMul(operatingProfitRatio,incomeTotal).toFixed(2));
-            initialAmount += parseFloat(accMul(operatingProfitRatio,incomeTotal).toFixed(2));
+            form.find('[name=operatingProfit]').val(accMul(operatingProfitRatio, incomeTotal).toFixed(2));
+            initialAmount += parseFloat(accMul(operatingProfitRatio, incomeTotal).toFixed(2));
         }
         var excessProfitRatio = AssessCommon.percentToPoint(form.find('[name=excessProfitRatio]').val());
         if (excessProfitRatio) {
-            form.find('[name=excessProfit]').val(accMul(excessProfitRatio,incomeTotal).toFixed(2));
-            initialAmount += parseFloat(accMul(excessProfitRatio,incomeTotal).toFixed(2));
+            form.find('[name=excessProfit]').val(accMul(excessProfitRatio, incomeTotal).toFixed(2));
+            initialAmount += parseFloat(accMul(excessProfitRatio, incomeTotal).toFixed(2));
         }
         form.find('[name=initialAmount]').val(initialAmount.toFixed(2));
     }
@@ -1458,15 +1460,15 @@
         $("#selfSupportResultBody").find('tr').each(function () {
             var incomeTotal = $(this).find('[data-name=incomeTotal]').text();
             var costTotal = $(this).find('[data-name=costTotal]').text();
-            if (!AssessCommon.isNumber(incomeTotal)) return false;
-            if (!AssessCommon.isNumber(costTotal)) return false;
-            incomeTotal = parseFloat(incomeTotal);
-            costTotal = parseFloat(costTotal);
-            var operatingProfit = (incomeTotal * averageProfitRate).toFixed(2);
-            $(this).find('[data-name=operatingProfit]').text(operatingProfit);
-            //净收益
-            var netProfit = incomeTotal - costTotal - operatingProfit;
-            $(this).find('[data-name=netProfit]').text(netProfit.toFixed(2));
+            if (AssessCommon.isNumber(incomeTotal) && AssessCommon.isNumber(costTotal)) {
+                incomeTotal = parseFloat(incomeTotal);
+                costTotal = parseFloat(costTotal);
+                var operatingProfit = (incomeTotal * averageProfitRate).toFixed(2);
+                $(this).find('[data-name=operatingProfit]').text(operatingProfit);
+                //净收益
+                var netProfit = incomeTotal - costTotal - operatingProfit;
+                $(this).find('[data-name=netProfit]').text(netProfit.toFixed(2));
+            }
         })
 
         selfSupport.computePrice();
@@ -1480,14 +1482,14 @@
         var incomePriceTotal = 0;//收益价格合计
         $("#selfSupportResultBody").find('tr').each(function () {
             var n = $(this).find('[data-name=yearCount]').text();
-            if (!AssessCommon.isNumber(n)) return false;
+            if (!AssessCommon.isNumber(n)) return true;
             n = parseInt(n);
             var h = (1 - Math.pow(1 / (1 + r), n)).toFixed(6);//年期修正系数
             var k = (h / r).toFixed(6);//收益现值系数
             $(this).find('[data-name=correctionFactor]').text(h);
             $(this).find('[data-name=presentValueFactor]').text(k);
             var netProfit = $(this).find('[data-name=netProfit]').text();
-            if (!AssessCommon.isNumber(netProfit)) return false;
+            if (!AssessCommon.isNumber(netProfit)) return true;
             netProfit = parseFloat(netProfit);
             var incomePrice = (netProfit * k).toFixed(2);
             incomePriceTotal = incomePriceTotal + parseFloat(incomePrice);
@@ -1495,7 +1497,7 @@
         })
         //计算委估对象单价 （单价=收益价格合计\委估对象面积）
         var area = $("#selfSupportResult").find('[data-name=area]').text();
-        if (!AssessCommon.isNumber(area)) return false;
+        if (!AssessCommon.isNumber(area)) return true;
         area = parseFloat(area);
         $("#selfSupportResult").find('[data-name=price]').text((incomePriceTotal / area).toFixed(2));
     }
