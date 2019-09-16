@@ -1,23 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <form class="form-horizontal" id="mdDevelopmentLandFrm">
-    <div class="x_content">
-        <div class="col-sm-12 form-group">
-                <span class="col-sm-1">
-                    <label>经营方式</label><span class="symbol required"></span>
-                </span>
-            <span class="col-sm-2 col-sm-offset-1 checkbox-inline">
-                     <input type="radio" id="developmentLand" name="type" value="1" checked="checked">
-                    <label for="developmentLand">土地</label>
-                </span>
-            <span class="col-sm-2  checkbox-inline">
-                    <input type="radio" id="developmentEngineering" name="type" value="2">
-                    <label for="developmentEngineering">在建工程</label>
-                </span>
-        </div>
-        <input type="hidden" name="id" value="${mdDevelopment.id}">
-        <input type="hidden" name="economicId" value="${mdDevelopment.economicId}" onblur="checkParams(this);">
-    </div>
+
     <div class="x_panel">
         <div class="x_title collapse-link">
             <ul class="nav navbar-right panel_toolbox">
@@ -26,6 +10,10 @@
             <h3>基本参数</h3>
             <div class="clearfix"></div>
         </div>
+
+        <input type="hidden" name="type" value="${mdDevelopment.type}">
+        <input type="hidden" name="id" value="${mdDevelopment.id}">
+        <input type="hidden" name="economicId" value="${mdDevelopment.economicId}" onblur="checkParams(this);">
 
         <div class="x_content">
             <div class="form-group">

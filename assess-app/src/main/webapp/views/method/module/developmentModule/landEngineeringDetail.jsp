@@ -682,7 +682,7 @@
 
     var landEngineering = {};
     landEngineering.target = $("#developmentFrm");
-    landEngineering.type = '${mdDevelopment.type == 1}'?'land':'engineering' ;
+    landEngineering.type = '${mdDevelopment.type}' ;
 
     landEngineering.constructionInstallationEngineeringFeeEvent = function (id) {
         var target = $("#boxLandEngineering");
@@ -709,7 +709,7 @@
     };
 
     landEngineering.loadMdCalculatingMethodEngineeringCostTable = function () {
-        var obj = {planDetailsId:'${projectPlanDetails.id}'} ;
+        var obj = {planDetailsId:'${projectPlanDetails.id}',type:landEngineering.type} ;
         var cols = [];
         cols.push({
             field: 'id', title: '建筑安装工程费明细', formatter: function (value, row, index) {
@@ -720,20 +720,12 @@
             }
         });
         developmentCommon.loadMdCalculatingMethodEngineeringCostTable($("#landConstructionInstallationEngineeringFeeInfoTarget"),obj,$("#toolbarMdCalculatingMethodEngineeringCostLand"),function () {
-
         },cols) ;
     };
 
     landEngineering.loadMdDevelopmentInfrastructureChildrenTable = function () {
-        var cols = [];
-        cols.push({field: 'name', title: '名称'});
-        cols.push({field: 'number', title: '金额'});
-        $("#landMdDevelopmentInfrastructureChildrenTable").bootstrapTable('destroy');
-        TableInit('landMdDevelopmentInfrastructureChildrenTable', "${pageContext.request.contextPath}/mdDevelopmentInfrastructureChildren/getBootstrapTableVo?pid=${mdDevelopment.id}", cols, {}, {
-            showColumns: true,
-            showRefresh: true,
-            search: false
-        });
+        var data = {pid:'${mdDevelopment.id}'} ;
+        developmentCommon.infrastructureChildren.loadTable2(data,$("#landMdDevelopmentInfrastructureChildrenTable"),null) ;
     };
 
 

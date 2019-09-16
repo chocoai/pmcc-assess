@@ -43,7 +43,7 @@ public class MdCostConstructionController {
     @PostMapping(value = "/setMdCalculatingMethodEngineeringCost", name = "设置工程费")
     public HttpResult setMdCalculatingMethodEngineeringCost(Integer planDetailsId){
         try {
-            mdCalculatingMethodEngineeringCostService.setMdCalculatingMethodEngineeringCost(planDetailsId, FormatUtils.entityNameConvertToTableName(MdCost.class));
+            mdCalculatingMethodEngineeringCostService.setMdCalculatingMethodEngineeringCost(planDetailsId, FormatUtils.entityNameConvertToTableName(MdCost.class),null);
             return HttpResult.newCorrectResult("success");
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);

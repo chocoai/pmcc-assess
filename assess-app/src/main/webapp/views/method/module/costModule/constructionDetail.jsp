@@ -595,15 +595,8 @@
     };
 
     construction.loadMdDevelopmentInfrastructureChildrenTable = function () {
-        var cols = [];
-        cols.push({field: 'name', title: '名称'});
-        cols.push({field: 'number', title: '金额'});
-        $("#landMdCostConstructionChildrenTable").bootstrapTable('destroy');
-        TableInit('landMdCostConstructionChildrenTable', "${pageContext.request.contextPath}/mdDevelopmentInfrastructureChildren/getBootstrapTableVo?pid=${mdCostVo.mdCostConstruction.id}", cols, {}, {
-            showColumns: true,
-            showRefresh: true,
-            search: false
-        });
+        var data = {pid:'${mdCostVo.mdCostConstruction.id}'} ;
+        developmentCommon.infrastructureChildren.loadTable2(data,$("#landMdCostConstructionChildrenTable"),null) ;
     };
 
 

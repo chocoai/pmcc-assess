@@ -834,8 +834,8 @@ developmentCommon.infrastructureChildren = {
     loadTable2: function (data, selectId, toolbar) {
         var cols = [];
         cols.push({checkbox: true});
-        cols.push({field: 'name', title: '名称'});
-        cols.push({field: 'number', title: '金额'});
+        cols.push({field: 'name', title: '设施名称'});
+        cols.push({field: 'number', title: '价钱(元/㎡)'});
         selectId.bootstrapTable('destroy');
         TableInit(selectId.attr("id"), getContextPath() +"/mdDevelopmentInfrastructureChildren/getBootstrapTableVo", cols, data, {
             showColumns: true,

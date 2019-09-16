@@ -82,7 +82,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">子类税费</h3>
+                <h3 class="modal-title">基础设施配套</h3>
             </div>
             <div class="panel-body">
                 <form id="basicMdDevelopmentInfrastructureChildrenModalFrm" class="form-horizontal">
@@ -103,10 +103,10 @@
                     <div class="form-group">
                         <div class="x-valid">
                             <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
-                                金额<span class="symbol required"></span>
+                                价钱(元/㎡)<span class="symbol required"></span>
                             </label>
                             <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
-                                <input type="text" name="number" placeholder="金额" class="form-control"
+                                <input type="text" name="number" placeholder="价钱" class="form-control"
                                        data-rule-number='true'
                                        required="required">
                             </div>

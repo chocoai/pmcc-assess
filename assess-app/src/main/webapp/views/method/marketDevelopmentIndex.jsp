@@ -11,6 +11,21 @@
     </div>
 
     <div class="x_content">
+
+        <div class="col-sm-12 form-group" id="developmentCheckboxTool">
+                <span class="col-sm-1">
+                    <label>经营方式</label><span class="symbol required"></span>
+                </span>
+            <span class="col-sm-2 col-sm-offset-1 checkbox-inline">
+                     <input type="radio" id="developmentLand" name="type" value="1" checked="checked">
+                    <label for="developmentLand">土地</label>
+                </span>
+            <span class="col-sm-2  checkbox-inline">
+                    <input type="radio" id="developmentEngineering" name="type" value="2">
+                    <label for="developmentEngineering">在建工程</label>
+                </span>
+        </div>
+
         <%@include file="/views/method/module/developmentModule/landEngineering.jsp" %>
     </div>
 
@@ -182,11 +197,12 @@
         }
         landEngineering.loadMdDevelopmentInfrastructureChildrenTable() ;
         landEngineering.unsaleableBuildingAreaFunHandle() ;
-        landEngineering.loadMdCalculatingMethodEngineeringCostTable('${!empty mdDevelopment.type}'?'${mdDevelopment.type}':undefined) ;
+        landEngineering.loadMdCalculatingMethodEngineeringCostTable() ;
     };
 
-    development.writeValueEvent = function (value) {
+    development.writeValueEvent = function (value,callback) {
         var frm = $(development.config.frm);
+        frm.find("input[name='type']").val(value) ;
         if (value == 1){
             var managementExpense = frm.find("input[placeholder='续建管理费率']") ;
             managementExpense.attr({placeholder:"管理费率"}) ;
@@ -221,6 +237,9 @@
             investmentProfitTax.attr({placeholder:"续建投资利润率"}) ;
             investmentProfitTax.closest(".form-group").find("label").first().text("续建投资利润率") ;
         }
+        if (callback){
+            callback(value) ;
+        }
     };
 
     $(document).ready(function () {
@@ -230,22 +249,27 @@
         var frm = $(development.config.frm);
         var type = '${mdDevelopment.type}' ;
         if (development.isNotBlank(type)){
-            development.writeValueEvent(type) ;
             if (type == '1') {
-                $("#developmentLand").attr('checked','true').trigger('change');
-                $("#developmentEngineering").attr('checked','false').trigger('change');
+                $("#developmentLand").attr('checked','true');
+                $("#developmentEngineering").removeAttr("checked");
             }
             if (type == '2') {
-                $("#developmentEngineering").attr('checked','true').trigger('change');
-                $("#developmentLand").attr('checked','false').trigger('change');
+                $("#developmentEngineering").attr('checked','true');
+                $("#developmentLand").removeAttr("checked");
             }
-            landEngineering.loadMdCalculatingMethodEngineeringCostTable(type) ;
-            landEngineering.infrastructureChildrenTable.bootstrapTable('refresh');
+            development.writeValueEvent(type,function () {
+                landEngineering.loadMdCalculatingMethodEngineeringCostTable() ;
+                landEngineering.infrastructureChildrenTable.bootstrapTable('refresh');
+            }) ;
         }
-        frm.find("input[type='radio'][name='type']").change(function () {
+
+        $("#developmentCheckboxTool").find("input[type='radio'][name='type']").change(function () {
             var value = $(this).val();
-            landEngineering.loadMdCalculatingMethodEngineeringCostTable() ;
-            development.writeValueEvent(value) ;
+            development.writeValueEvent(value,function () {
+                landEngineering.loadMdCalculatingMethodEngineeringCostTable() ;
+
+            }) ;
         });
+
     });
 </script>
