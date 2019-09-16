@@ -53,10 +53,11 @@ public class ProjectCenterController {
     public ModelAndView myProject() {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/myProject");
         List<KeyValueDto> statusEnumList = ProjectStatusEnum.getProjectStatusEnumList(ProjectStatusEnum.NORMAL.getKey(),
-                ProjectStatusEnum.FINISH.getKey(),ProjectStatusEnum.CLOSE.getKey());
+                ProjectStatusEnum.FINISH.getKey(), ProjectStatusEnum.CLOSE.getKey());
         modelAndView.addObject("statusEnumList", statusEnumList);
         return modelAndView;
     }
+
     @ResponseBody
     @RequestMapping(value = "/getMyProjectList", name = "取得我的立项", method = RequestMethod.GET)
     public BootstrapTableVo getMyProjectList(String queryName, String projectStatus) {
@@ -67,7 +68,7 @@ public class ProjectCenterController {
     public ModelAndView myParticipation() {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/myParticipation");
         List<KeyValueDto> statusEnumList = ProjectStatusEnum.getProjectStatusEnumList(ProjectStatusEnum.NORMAL.getKey(),
-                ProjectStatusEnum.FINISH.getKey(),ProjectStatusEnum.CLOSE.getKey());
+                ProjectStatusEnum.FINISH.getKey(), ProjectStatusEnum.CLOSE.getKey());
         modelAndView.addObject("companyId", publicService.getCurrentCompany().getCompanyId());
         modelAndView.addObject("statusEnumList", statusEnumList);
         //委托目的
@@ -78,17 +79,17 @@ public class ProjectCenterController {
 
     @ResponseBody
     @RequestMapping(value = "/getParticipationProject", name = "取得参与项目", method = RequestMethod.GET)
-    public BootstrapTableVo getParticipationProject (String queryName, String projectStatus, String queryCreator, String queryMember, Integer entrustPurpose,
-                                                    String queryManager, String queryTimeStart, String queryTimeEnd,String queryConsignor ,Integer queryUseUnit, Integer queryLoanType) throws Exception {
-        return projectCenterService.getParticipationProject(queryName, projectStatus,queryCreator,queryMember,entrustPurpose,
-                queryManager,queryTimeStart,queryTimeEnd,queryConsignor, queryUseUnit, null);
+    public BootstrapTableVo getParticipationProject(String queryName, String projectStatus, String queryCreator, String queryMember, Integer entrustPurpose,
+                                                    String queryManager, String queryTimeStart, String queryTimeEnd, String queryConsignor, Integer queryUseUnit, Integer queryDepartmentId) throws Exception {
+        return projectCenterService.getParticipationProject(queryName, projectStatus, queryCreator, queryMember, entrustPurpose,
+                queryManager, queryTimeStart, queryTimeEnd, queryConsignor, queryUseUnit, null, queryDepartmentId);
     }
 
     @RequestMapping(value = "/projectList", name = "所有项目")
     public ModelAndView projectList() {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/projectList");
         List<KeyValueDto> statusEnumList = ProjectStatusEnum.getProjectStatusEnumList(ProjectStatusEnum.NORMAL.getKey(),
-                ProjectStatusEnum.FINISH.getKey(),ProjectStatusEnum.CLOSE.getKey(),ProjectStatusEnum.DRAFT.getKey());
+                ProjectStatusEnum.FINISH.getKey(), ProjectStatusEnum.CLOSE.getKey(), ProjectStatusEnum.DRAFT.getKey());
         modelAndView.addObject("statusEnumList", statusEnumList);
         //委托目的
         List<BaseDataDic> entrustPurposeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE);
@@ -102,10 +103,11 @@ public class ProjectCenterController {
 
     @ResponseBody
     @RequestMapping(value = "/getProjectList", name = "取得所有项目列表", method = RequestMethod.GET)
-    public BootstrapTableVo getProjectList(String queryName, String projectStatus,String queryCreator,String queryMember,Integer entrustPurpose,
-                                           String queryManager, String queryTimeStart, String queryTimeEnd,String queryConsignor ,Integer queryUseUnit,String queryEstateName,Integer queryLoanType) throws Exception{
-        return projectCenterService.getProjectList(queryName, projectStatus,queryCreator,queryMember,entrustPurpose,
-                queryManager,queryTimeStart,queryTimeEnd,queryConsignor,queryUseUnit,queryEstateName, queryLoanType);
+    public BootstrapTableVo getProjectList(String queryName, String projectStatus, String queryCreator, String queryMember, Integer entrustPurpose,
+                                           String queryManager, String queryTimeStart, String queryTimeEnd, String queryConsignor, Integer queryUseUnit,
+                                           String queryEstateName, Integer queryLoanType, Integer queryDepartmentId) throws Exception {
+        return projectCenterService.getProjectList(queryName, projectStatus, queryCreator, queryMember, entrustPurpose,
+                queryManager, queryTimeStart, queryTimeEnd, queryConsignor, queryUseUnit, queryEstateName, queryLoanType, queryDepartmentId);
     }
 
     @ResponseBody
