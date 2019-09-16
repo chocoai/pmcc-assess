@@ -604,7 +604,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">工程费</h3>
+                <h3 class="modal-title">建筑安装工程费</h3>
             </div>
             <input type="hidden" name="id">
             <input type="hidden" name="masterId">
@@ -629,7 +629,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-xs-2  col-sm-2  col-md-2  col-lg-2 control-label">
-                                            面积<span class="symbol required"></span>
+                                            建筑面积<span class="symbol required"></span>
                                         </label>
                                         <div class="col-xs-10  col-sm-10  col-md-10  col-lg-10">
                                             <input type="text" class="form-control" name="area"

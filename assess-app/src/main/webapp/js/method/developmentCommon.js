@@ -367,48 +367,10 @@ developmentCommon.getMdCalculatingMethodEngineeringCostList = function (data, ca
 
 developmentCommon.loadMdCalculatingMethodEngineeringCostTable = function (table, quarm, toolbar, callback, array) {
     var cols = [];
-    cols.push({checkbox: true, width: "5%"});
-    // cols.push({
-    //     field: 'dataTableName', title: '工程表绑定类型', formatter: function (value, row, index) {
-    //         if (value == AssessDBKey.BasicEstate) {
-    //             return "楼盘";
-    //         }
-    //         if (value == AssessDBKey.BasicBuilding) {
-    //             return "楼栋";
-    //         }
-    //         return "未设定";
-    //     }
-    // });
-    cols.push({
-        field: 'name', title: '名称', width: "20%", class: 'editable', editable: {
-            type: 'text',
-            validate: function (value) {
-                if ($.trim(value) == '') {
-                    return '名称不能为空!';
-                }
-            }
-        }
-    });
-    cols.push({
-        field: 'area', title: '建筑面积', width: "10%", class: 'editable', editable: {
-            type: 'text',
-            validate: function (value) {
-                if (!$.isNumeric(value)) {
-                    return '必须是数字!';
-                }
-            }
-        }
-    });
-    cols.push({
-        field: 'price', title: '建筑安装工程费计算价格 (元/㎡)', width: "20%", class: 'editable', editable: {
-            type: 'text',
-            validate: function (value) {
-                if (!$.isNumeric(value)) {
-                    return '必须是数字!';
-                }
-            }
-        }
-    });
+    cols.push({checkbox: true,});
+    cols.push({field: 'name', title: '名称'});
+    cols.push({field: 'area', title: '建筑面积'});
+    cols.push({field: 'price', title: '单价 (元/㎡)'});
     if (array) {
         $.each(array, function (i, item) {
             cols.push(item);
@@ -426,8 +388,8 @@ developmentCommon.loadMdCalculatingMethodEngineeringCostTable = function (table,
                 toastr.success('编辑失败!');
             });
         },
-        showColumns: true,
-        showRefresh: true,
+        showColumns: false,
+        showRefresh: false,
         search: false,
         onLoadSuccess: function () {//加载成功时执行
             if (callback) {
@@ -835,11 +797,11 @@ developmentCommon.infrastructureChildren = {
         var cols = [];
         cols.push({checkbox: true});
         cols.push({field: 'name', title: '设施名称'});
-        cols.push({field: 'number', title: '价钱(元/㎡)'});
+        cols.push({field: 'number', title: '单价(元/㎡)'});
         selectId.bootstrapTable('destroy');
         TableInit(selectId.attr("id"), getContextPath() +"/mdDevelopmentInfrastructureChildren/getBootstrapTableVo", cols, data, {
-            showColumns: true,
-            showRefresh: true,
+            showColumns: false,
+            showRefresh: false,
             search: false
         });
         if (toolbar){

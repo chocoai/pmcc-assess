@@ -398,8 +398,8 @@
                     target.editable({
                         type: "text",                //编辑框的类型。支持text|textarea|select|date|checklist等
                         disabled: false,             //是否禁用编辑 ,默认 false
-                        emptytext: "不可售建筑面积(请输入数字最多保留两位小数)",          //空值的默认文本
-                        mode: "inline",              //编辑框的模式：支持popup和inline两种模式，默认是popup
+                        emptytext: "0",          //空值的默认文本
+                        mode: "popup",              //编辑框的模式：支持popup和inline两种模式，默认是popup
                         validate: function (value) { //字段验证
                             if ($.isNumeric(value)){
                                 landEngineering.target.find("input[name='"+key+"']").val(value).trigger('blur');

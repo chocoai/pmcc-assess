@@ -516,7 +516,7 @@ public class PoiTest {
 
     @org.junit.Test
     public void testComputeDate() throws Exception {
-        System.out.print(getDistanceAge(DateUtils.convertDate("2059-03-13"), DateUtils.convertDate("2019-03-13")));
+        System.out.print(getDistanceAge(DateUtils.convertDate("2017-07-24"), DateUtils.convertDate("2016-07-25")));
     }
 
     @Test

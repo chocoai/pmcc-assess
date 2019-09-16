@@ -19,7 +19,7 @@
             <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
-                        项目建设期年( 已开发时间+剩余开发时间)<span class="symbol required"></span>
+                        项目建设期年<span class="symbol required"></span>
                     </label>
                     <div class="col-sm-3">
                         <input type="text" value="${mdDevelopment.projectConstructionPeriod}" required="required"
@@ -87,25 +87,22 @@
                             <tr>
                                 <td class="active">
                                     <!-- 规划建筑面积 -->
-                                    <a data-key="plannedBuildingArea">${mdDevelopment.plannedBuildingArea}</a>
+                                    <a data-key="plannedBuildingArea" style="cursor: pointer">${mdDevelopment.plannedBuildingArea}</a>
                                     <input type="hidden"  value="${mdDevelopment.plannedBuildingArea}" name="plannedBuildingArea" onblur="checkParams(this);">
                                 </td>
-
                                 <td class="active">
                                     <!-- 总可售面积售价 -->
-                                    <a data-key="totalSaleableAreaPrice">${mdDevelopment.totalSaleableAreaPrice}</a>
+                                    <a data-key="totalSaleableAreaPrice" style="cursor: pointer">${mdDevelopment.totalSaleableAreaPrice}</a>
                                     <input type="hidden"  value="${mdDevelopment.totalSaleableAreaPrice}" name="totalSaleableAreaPrice" onblur="checkParams(this);">
                                 </td>
-
                                 <td class="active">
                                     <!-- 可售面积 -->
-                                    <a data-key="saleableArea">${mdDevelopment.saleableArea}</a>
+                                    <a data-key="saleableArea" style="cursor: pointer">${mdDevelopment.saleableArea}</a>
                                     <input type="hidden"  value="${mdDevelopment.saleableArea}" name="saleableArea" onblur="checkParams(this);">
                                 </td>
-
                                 <td class="active">
                                     <!-- 不可售建筑面积 -->
-                                    <a data-key="unsaleableBuildingArea">${mdDevelopment.unsaleableBuildingArea}</a>
+                                    <a data-key="unsaleableBuildingArea" style="cursor: pointer">${mdDevelopment.unsaleableBuildingArea}</a>
                                     <input type="hidden" value="${mdDevelopment.unsaleableBuildingArea}" name="unsaleableBuildingArea" class="form-control" onblur="checkParams(this);">
                                 </td>
                             </tr>
@@ -123,10 +120,9 @@
             <ul class="nav navbar-right panel_toolbox">
                 <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
             </ul>
-            <h3>单位成本或费率</h3>
+            <h3>单位成本</h3>
             <div class="clearfix"></div>
         </div>
-
         <div class="x_content">
             <div class="form-group">
                 <div class="x-valid">
@@ -150,11 +146,11 @@
                     </div>
                 </div>
             </div>
-
+            <div class="x_title"></div>
             <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
-                        建筑安装工程费 (元/㎡)
+                        建筑安装工程费(元/㎡)<span class="symbol required"></span>
                     </label>
                     <div class=" col-xs-1  col-sm-1  col-md-1  col-lg-1 ">
                         <input type="text" readonly="readonly"  class="form-control" onblur="checkParams(this);"
@@ -163,17 +159,15 @@
                 </div>
                 <div class="x-valid">
                     <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
-                        <table class="table table-striped" id="landConstructionInstallationEngineeringFeeInfoTarget" >
-
-                        </table>
+                        <table class="table table-striped" id="landConstructionInstallationEngineeringFeeInfoTarget" ></table>
                     </div>
                 </div>
             </div>
-
+            <div class="x_title"></div>
             <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
-                        基础设施配套费(元/㎡) <span class="symbol required"></span>
+                        基础设施配套费(元/㎡)<span class="symbol required"></span>
                     </label>
                     <div class="col-sm-3">
                         <div class="input-group">
@@ -194,7 +188,6 @@
                                         </c:if>
                                     </c:if>
                                 </c:forEach>
-                                <option value="100">2012-2017 金额100</option>
                             </select>
                         </div>
                     </div>
@@ -227,17 +220,15 @@
                     </div>
                 </div>
             </div>
-
+            <div class="x_title"></div>
             <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
-                        公共配套设施建设费 (元/㎡)<span class="symbol required"></span>
+                        公共配套设施建设费(元/㎡)
                     </label>
                     <div class="x-valid">
                         <div class="col-sm-3">
-                            <input type="text" required="required"
-                                   placeholder="公共配套设施建设费 (元/㎡)"  class="form-control"
-                                   name="infrastructureMatchingCost" onblur="checkParams(this);" value="${mdDevelopment.infrastructureMatchingCost}">
+                            <input type="text" placeholder="公共配套设施建设费 (元/㎡)"  class="form-control" name="infrastructureMatchingCost" onblur="checkParams(this);" value="${mdDevelopment.infrastructureMatchingCost}">
                         </div>
                     </div>
                 </div>
@@ -264,12 +255,10 @@
             <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
-                        开发期间税费 (元/㎡)<span class="symbol required"></span>
+                        开发期间税费(元/㎡)
                     </label>
                     <div class="col-sm-3">
-                        <input type="text" required="required"
-                               placeholder="开发期间税费 (元/㎡)"  class="form-control"
-                               name="devDuring" onblur="checkParams(this);" value="${mdDevelopment.devDuring}">
+                        <input type="text" placeholder="开发期间税费 (元/㎡)"  class="form-control" name="devDuring" onblur="checkParams(this);" value="${mdDevelopment.devDuring}">
                     </div>
                 </div>
                 <div class="x-valid">
@@ -286,10 +275,10 @@
             <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
-                        其它工程费率<span class="symbol required"></span>
+                        其它工程费率
                     </label>
                     <div class="col-sm-3">
-                        <input type="text" value="${mdDevelopment.otherEngineeringCost}" required="required"
+                        <input type="text" value="${mdDevelopment.otherEngineeringCost}"
                                placeholder="其它工程费率" class="form-control x-percent" name="otherEngineeringCost" onblur="checkParams(this);"  data-value="${mdDevelopment.otherEngineeringCost}">
                     </div>
                 </div>
@@ -303,18 +292,27 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
 
+    <div class="x_panel">
+        <div class="x_title collapse-link">
+            <ul class="nav navbar-right panel_toolbox">
+                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+            </ul>
+            <h3>参数比率</h3>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
             <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
-                        不可预见费率<span class="symbol required"></span>
+                        不可预见费率
                     </label>
                     <div class="col-sm-3">
-                        <input type="text" required="required"
-                               placeholder="不可预见费率" class="form-control x-percent" name="unforeseenExpenses" onblur="checkParams(this);"  value="${mdDevelopment.unforeseenExpenses}" data-value="${mdDevelopment.unforeseenExpenses}">
+                        <input type="text" placeholder="不可预见费率" class="form-control x-percent" name="unforeseenExpenses" onblur="checkParams(this);"  value="${mdDevelopment.unforeseenExpenses}" data-value="${mdDevelopment.unforeseenExpenses}">
                     </div>
                 </div>
-
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
                         说明
@@ -325,22 +323,7 @@
                     </div>
                 </div>
             </div>
-        </div>
-
-
-
-    </div>
-
-    <div class="x_panel">
-        <div class="x_title collapse-link">
-            <ul class="nav navbar-right panel_toolbox">
-                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-            </ul>
-            <h3>设计费参数比率</h3>
-            <div class="clearfix"></div>
-        </div>
-
-        <div class="x_content">
+            <div class="x_title">取得成本</div>
             <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
@@ -364,7 +347,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
@@ -387,21 +369,36 @@
                     </div>
                 </div>
             </div>
-
             <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
-
-                        管理费率
-                        <span class="symbol required"></span>
+                        土地取得附加成本 (万元)
                     </label>
                     <div class="col-sm-3">
-                        <input type="text"
-                               placeholder="管理费率" class="form-control x-percent" required="required"
+                        <input type="text" placeholder="土地取得附加成本" class="form-control" data-rule-number='true'
+                               name="landGetRelevant" onblur="checkParams(this);" value="${mdDevelopment.landGetRelevant}" >
+                    </div>
+                </div>
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">
+                        说明
+                    </label>
+                    <div class="col-sm-3">
+                        <input type="text" placeholder="说明" class="form-control" name="landGetRelevantExplain" value="${mdDevelopment.landGetRelevantExplain}">
+                    </div>
+                </div>
+            </div>
+            <div class="x_title"></div>
+            <div class="form-group">
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">
+                        管理费率
+                    </label>
+                    <div class="col-sm-3">
+                        <input type="text" placeholder="管理费率" class="form-control x-percent"
                                name="managementExpense" onblur="checkParams(this);" value="${mdDevelopment.managementExpense}"  data-value="${mdDevelopment.managementExpense}">
                     </div>
                 </div>
-
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
                         费率说明
@@ -413,28 +410,6 @@
                     </div>
                 </div>
             </div>
-
-            <div class="form-group">
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">
-                        土地取得附加成本 (万元)
-                    </label>
-                    <div class="col-sm-3">
-                        <input type="text" placeholder="土地取得附加成本" class="form-control" data-rule-number='true'
-                               name="landGetRelevant" onblur="checkParams(this);" value="${mdDevelopment.landGetRelevant}" >
-                    </div>
-                </div>
-
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">
-                        说明
-                    </label>
-                    <div class="col-sm-3">
-                        <input type="text" placeholder="说明" class="form-control" name="landGetRelevantExplain" value="${mdDevelopment.landGetRelevantExplain}">
-                    </div>
-                </div>
-            </div>
-
             <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
@@ -446,7 +421,6 @@
                                name="salesFee" onblur="checkParams(this);" value="${mdDevelopment.salesFee}"   data-value="${mdDevelopment.salesFee}">
                     </div>
                 </div>
-
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
                         费率说明
@@ -456,7 +430,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
@@ -467,7 +440,6 @@
                                name="interestInvestmentTax" onblur="checkParams(this);" value="${mdDevelopment.interestInvestmentTax}"  data-value="${mdDevelopment.interestInvestmentTax}">
                     </div>
                 </div>
-
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
                         费率说明
@@ -498,18 +470,17 @@
                     </div>
                 </div>
             </div>
-
+            <div class="x_title">项目开发税及附加</div>
             <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
-                        销售环节增值税及附加<span class="symbol required"></span>
+                        销售环节增值税及附加
                     </label>
                     <div class="col-sm-3">
-                        <input type="text" placeholder="销售环节增值税及附加" class="form-control x-percent" required="required"
+                        <input type="text" placeholder="销售环节增值税及附加" class="form-control x-percent"
                                name="salesTaxAndAdditional" onblur="checkParams(this);" value="${mdDevelopment.salesTaxAndAdditional}"  data-value="${mdDevelopment.salesTaxAndAdditional}">
                     </div>
                 </div>
-
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
                         费率说明
@@ -523,14 +494,13 @@
             <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
-                        土地增值税<span class="symbol required"></span>
+                        土地增值税
                     </label>
                     <div class="col-sm-3">
-                        <input type="text" placeholder="土地增值税" class="form-control x-percent" required="required"
+                        <input type="text" placeholder="土地增值税" class="form-control x-percent"
                                name="landValueAddedTax" onblur="checkParams(this);" value="${mdDevelopment.landValueAddedTax}"   data-value="${mdDevelopment.landValueAddedTax}">
                     </div>
                 </div>
-
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
                         费率说明
@@ -540,7 +510,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
@@ -551,7 +520,6 @@
                                name="projectDevelopmentIncomeTax" onblur="checkParams(this);" value="${mdDevelopment.projectDevelopmentIncomeTax}"   data-value="${mdDevelopment.projectDevelopmentIncomeTax}">
                     </div>
                 </div>
-
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
                         费率说明
@@ -574,61 +542,50 @@
         </div>
 
         <div class="x_content">
-
+            <div class="x_title">修正系数</div>
             <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
-                        土地还原率或者报酬率<span class="symbol required"></span>
+                        土地还原率
                     </label>
-
                     <div class="col-sm-3">
                         <div class="input-group">
-                            <input type="text" required="required" class="form-control x-percent" name="remunerationRate" value="${mdDevelopment.remunerationRate}"
+                            <input type="text" class="form-control x-percent" name="remunerationRate" value="${mdDevelopment.remunerationRate}"
                                    placeholder="报酬率"  data-value="${mdDevelopment.remunerationRate}" onblur="checkParams(this);">
                                 <span class="input-group-btn">
                                         <input type="hidden" name="rewardRateId" value="${mdDevelopment.rewardRateId}">
-                                  <input type="button" class="btn btn-primary" value="报酬率测算"
+                                  <input type="button" class="btn btn-primary" value="土地还原率"
                                          onclick="landEngineering.getRewardRate(this);"/>
                                 </span>
                         </div>
                     </div>
                 </div>
-
-
-            </div>
-
-            <div class="form-group">
                 <label class="col-sm-1 control-label">
-                    法定年限<span class="symbol required"></span>
+                    法定年限
                 </label>
                 <div class="x-valid">
                     <div class="col-sm-3">
-                        <input type="text" placeholder="法定年限" class="form-control" required="required"
-                               name="statutoryLife" onblur="checkParams(this);" value="${mdDevelopment.statutoryLife}">
+                        <input type="text" placeholder="法定年限" class="form-control" name="statutoryLife" onblur="checkParams(this);" value="${mdDevelopment.statutoryLife}">
                     </div>
                 </div>
 
                 <label class="col-sm-1 control-label">
-                    剩余年限<span class="symbol required"></span>
+                    剩余年限
                 </label>
                 <div class="x-valid">
                     <div class="col-sm-3">
-                        <input type="text" placeholder="剩余年限" class="form-control" required="required"
-                               name="remainingYears" onblur="checkParams(this);" value="${mdDevelopment.remainingYears}">
+                        <input type="text" placeholder="剩余年限" class="form-control" name="remainingYears" onblur="checkParams(this);" value="${mdDevelopment.remainingYears}">
                     </div>
                 </div>
             </div>
-
-
-
+            <div class="x_title"></div>
             <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
-                        权利状况修正<span class="symbol required"></span>
+                        权利状况修正
                     </label>
                     <div class="col-sm-3">
-                        <input type="text" placeholder="权利状况修正" class="form-control" required="required"
-                               name="amendmentStatusRights" onblur="checkParams(this);" value="${mdDevelopment.amendmentStatusRights}">
+                        <input type="text" placeholder="权利状况修正" class="form-control" name="amendmentStatusRights" onblur="checkParams(this);" value="${mdDevelopment.amendmentStatusRights}">
                     </div>
                 </div>
 
@@ -645,14 +602,12 @@
             <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
-                        其他修正<span class="symbol required"></span>
+                        其他修正
                     </label>
                     <div class="col-sm-3">
-                        <input type="text" placeholder="其他修正" class="form-control" required="required"
-                               name="otherAmendments" onblur="checkParams(this);" value="${mdDevelopment.otherAmendments}">
+                        <input type="text" placeholder="其他修正" class="form-control" name="otherAmendments" onblur="checkParams(this);" value="${mdDevelopment.otherAmendments}">
                     </div>
                 </div>
-
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
                         说明
@@ -662,18 +617,15 @@
                     </div>
                 </div>
             </div>
-
             <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
-                        开发程度修正<span class="symbol required"></span>
+                        开发程度修正
                     </label>
                     <div class="col-sm-3">
-                        <input type="text" placeholder="开发程度修正" class="form-control" required="required"
-                               name="developmentDegreeRevision" onblur="checkParams(this);" value="${mdDevelopment.developmentDegreeRevision}">
+                        <input type="text" placeholder="开发程度修正" class="form-control" name="developmentDegreeRevision" onblur="checkParams(this);" value="${mdDevelopment.developmentDegreeRevision}">
                     </div>
                 </div>
-
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
                         说明
@@ -792,7 +744,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">工程费</h3>
+                <h3 class="modal-title">建筑安装工程费</h3>
             </div>
             <input type="hidden" name="id">
             <input type="hidden" name="masterId">
@@ -817,7 +769,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-xs-2  col-sm-2  col-md-2  col-lg-2 control-label">
-                                            面积<span class="symbol required"></span>
+                                            建筑面积<span class="symbol required"></span>
                                         </label>
                                         <div class="col-xs-10  col-sm-10  col-md-10  col-lg-10">
                                             <input type="text" class="form-control" name="area"
