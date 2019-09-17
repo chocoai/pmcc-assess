@@ -52,6 +52,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Pattern;
 
 /**
  * Created by zch on 2019-8-26.
@@ -172,9 +173,29 @@ public class GenerateMdCostService implements Serializable {
         if (!bookmarkMap.isEmpty()) {
             AsposeUtils.replaceBookmark(localPath, bookmarkMap, true);
         }
+        try {
+            if (!fileMap.isEmpty()) {
+                for (Map.Entry<String, String> stringStringEntry : fileMap.entrySet()) {
+                    Pattern compile = Pattern.compile(AsposeUtils.escapeExprSpecialWord(stringStringEntry.getKey()));
+                    IReplacingCallback callback = new IReplacingCallback() {
+                        @Override
+                        public int replacing(ReplacingArgs e) throws Exception {
+                            DocumentBuilder iReplacingCallback = new DocumentBuilder((Document) e.getMatchNode().getDocument());
+                            iReplacingCallback.moveTo(e.getMatchNode());
+                            Document doc = new Document(stringStringEntry.getValue());
+                            iReplacingCallback.insertDocument(doc, ImportFormatMode.KEEP_SOURCE_FORMATTING);
+                            return ReplaceAction.REPLACE;
+                        }
+                    };
+                    document.getRange().replace(compile, callback, false);
+                }
+                AsposeUtils.saveWord(localPath, document);
+            }
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
+        }
         if (!fileMap.isEmpty()) {
             AsposeUtils.replaceTextToFile(localPath, fileMap);
-            AsposeUtils.replaceBookmarkToFile(localPath, fileMap);
         }
         return localPath;
     }
@@ -186,8 +207,6 @@ public class GenerateMdCostService implements Serializable {
                     break;
                 }
                 String path = generateCommonMethod.getLocalPath(RandomStringUtils.randomAlphanumeric(4));
-                LinkedList<String> linkedList = Lists.newLinkedList();
-                Set<MergeCellModel> mergeCellModelList = Sets.newHashSet();
                 Document document = new Document();
                 DocumentBuilder documentBuilder = new DocumentBuilder(document);
                 //设置具体宽度自动适应
@@ -204,13 +223,8 @@ public class GenerateMdCostService implements Serializable {
                 documentBuilder.getFont().setSize(10.5);
                 documentBuilder.getFont().setName(AsposeUtils.ImitationSongGB2312FontName);
 
-                final AtomicInteger atomicInteger = new AtomicInteger(0);
-                com.aspose.words.Table table = documentBuilder.startTable();
-                mdArchitecturalObjService.writeCalculatingMethodEngineeringCostSheet(documentBuilder, linkedList, costJSONObjectMap, mergeCellModelList, atomicInteger);
-                if (CollectionUtils.isNotEmpty(mergeCellModelList)) {
-                    generateCommonMethod.mergeCellTable(mergeCellModelList, table);
-                }
-                documentBuilder.endTable();
+                mdArchitecturalObjService.writeCalculatingMethodEngineeringCostSheet(documentBuilder, costJSONObjectMap);
+
                 AsposeUtils.saveWord(path, document);
                 generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, key.getName(), path);
             }

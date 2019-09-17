@@ -7,14 +7,22 @@ import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.enums.BaseReportFieldEnum;
 import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dto.input.method.MdEconomicIndicatorsApplyDto;
 import com.copower.pmcc.assess.dto.output.MergeCellModel;
+import com.copower.pmcc.assess.dto.output.basic.BasicEstateLandStateVo;
+import com.copower.pmcc.assess.dto.output.basic.BasicEstateVo;
+import com.copower.pmcc.assess.dto.output.data.DataBuildingInstallCostVo;
+import com.copower.pmcc.assess.dto.output.method.MdCostVo;
 import com.copower.pmcc.assess.dto.output.project.scheme.MdDevelopmentVo;
+import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseReportFieldService;
+import com.copower.pmcc.assess.service.data.DataBuildingInstallCostService;
 import com.copower.pmcc.assess.service.data.DataSetUseFieldService;
 import com.copower.pmcc.assess.service.method.MdArchitecturalObjService;
 import com.copower.pmcc.assess.service.method.MdDevelopmentService;
+import com.copower.pmcc.assess.service.method.MdEconomicIndicatorsService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
@@ -37,6 +45,7 @@ import java.util.*;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Pattern;
 
 /**
  * Created by zch on 2019/7/9.
@@ -65,6 +74,9 @@ public class GenerateMdDevelopmentService {
     private DataSetUseFieldService dataSetUseFieldService;
     private MdArchitecturalObjService mdArchitecturalObjService;
     private ProjectPlanDetailsService projectPlanDetailsService;
+    private BaseService baseService;
+    private DataBuildingInstallCostService dataBuildingInstallCostService;
+    private MdEconomicIndicatorsService mdEconomicIndicatorsService;
 
     public GenerateMdDevelopmentService(Integer projectId, SchemeInfo schemeInfo, Integer areaId) {
         this.projectId = projectId;
@@ -83,6 +95,9 @@ public class GenerateMdDevelopmentService {
         this.dataSetUseFieldService = SpringContextUtils.getBean(DataSetUseFieldService.class);
         this.mdArchitecturalObjService = SpringContextUtils.getBean(MdArchitecturalObjService.class);
         this.projectPlanDetailsService = SpringContextUtils.getBean(ProjectPlanDetailsService.class);
+        this.baseService = SpringContextUtils.getBean(BaseService.class);
+        this.dataBuildingInstallCostService = SpringContextUtils.getBean(DataBuildingInstallCostService.class);
+        this.mdEconomicIndicatorsService = SpringContextUtils.getBean(MdEconomicIndicatorsService.class);
     }
 
 
@@ -124,13 +139,11 @@ public class GenerateMdDevelopmentService {
         SchemeAreaGroup schemeAreaGroup = getSchemeAreaGroup();
         SchemeJudgeObject schemeJudgeObject = getSchemeJudgeObject();
         if (!map.isEmpty()) {
-            //发起线程组
             for (Map.Entry<BaseReportFieldEnum, String> enumStringEntry : map.entrySet()) {
                 try {
                     setFieldObjectValue(enumStringEntry.getKey(), textMap, fileMap, bookmarkMap, getMdDevelopmentVo());
                     setMdDevelopmentCommonValue(enumStringEntry.getKey(), textMap, fileMap, bookmarkMap, getMdDevelopmentVo(), schemeJudgeObject, schemeAreaGroup, projectPlanDetails);
                 } catch (Exception e) {
-                    String error = e.getMessage();
                     throw e;
                 }
             }
@@ -142,9 +155,29 @@ public class GenerateMdDevelopmentService {
         if (!bookmarkMap.isEmpty()) {
             AsposeUtils.replaceBookmark(localPath, bookmarkMap, true);
         }
+        try {
+            if (!fileMap.isEmpty()) {
+                for (Map.Entry<String, String> stringStringEntry : fileMap.entrySet()) {
+                    Pattern compile = Pattern.compile(AsposeUtils.escapeExprSpecialWord(stringStringEntry.getKey()));
+                    IReplacingCallback callback = new IReplacingCallback() {
+                        @Override
+                        public int replacing(ReplacingArgs e) throws Exception {
+                            DocumentBuilder builder = new DocumentBuilder((Document) e.getMatchNode().getDocument());
+                            builder.moveTo(e.getMatchNode());
+                            Document doc = new Document(stringStringEntry.getValue());
+                            builder.insertDocument(doc, ImportFormatMode.KEEP_SOURCE_FORMATTING);
+                            return ReplaceAction.REPLACE;
+                        }
+                    };
+                    document.getRange().replace(compile, callback, false);
+                }
+                AsposeUtils.saveWord(localPath, document);
+            }
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
+        }
         if (!fileMap.isEmpty()) {
             AsposeUtils.replaceTextToFile(localPath, fileMap);
-            AsposeUtils.replaceBookmarkToFile(localPath, fileMap);
         }
         return localPath;
     }
@@ -182,6 +215,48 @@ public class GenerateMdDevelopmentService {
                     Document doc = new Document();
                     DocumentBuilder builder = new DocumentBuilder(doc);
                     generateCommonMethod.settingBuildingTable(builder);
+                    //设置具体宽度自动适应
+                    PreferredWidth preferredWidth = PreferredWidth.AUTO;
+                    builder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
+                    builder.getCellFormat().setPreferredWidth(preferredWidth);
+                    builder.getCellFormat().setVerticalMerge(CellVerticalAlignment.CENTER);
+                    builder.getCellFormat().setVerticalAlignment(CellVerticalAlignment.CENTER);
+                    builder.getCellFormat().setHorizontalMerge(CellVerticalAlignment.CENTER);
+                    MdEconomicIndicatorsApplyDto mdEconomicIndicatorsApplyDto = getMdEconomicIndicatorsApplyDto();
+                    List<MdEconomicIndicatorsItem> itemList = Lists.newArrayList();
+                    if (mdEconomicIndicatorsApplyDto != null && CollectionUtils.isNotEmpty(mdEconomicIndicatorsApplyDto.getEconomicIndicatorsItemList())) {
+                        itemList.addAll(mdEconomicIndicatorsApplyDto.getEconomicIndicatorsItemList());
+                    }
+                    if (CollectionUtils.isNotEmpty(itemList)){
+                        LinkedList<String> stringLinkedList = Lists.newLinkedList();
+                        builder.startTable();
+                        stringLinkedList.addAll(Arrays.asList("名称","规划建筑面积 ㎡","可出售面积 ㎡","个数","单位售价(元/㎡)","备注"));
+                        AsposeUtils.writeWordTitle(builder,stringLinkedList);
+                        stringLinkedList.clear();
+                        for (MdEconomicIndicatorsItem indicatorsItem:itemList){
+                            stringLinkedList.add(StringUtils.isNotBlank(indicatorsItem.getName())?indicatorsItem.getName():"") ;
+                            stringLinkedList.add(ArithmeticUtils.getBigDecimalString(indicatorsItem.getPlannedBuildingArea())) ;
+                            stringLinkedList.add(ArithmeticUtils.getBigDecimalString(indicatorsItem.getSaleableArea())) ;
+                            stringLinkedList.add(indicatorsItem.getNumber() == null?"":indicatorsItem.getNumber().toString()) ;
+                            stringLinkedList.add(ArithmeticUtils.getBigDecimalString(indicatorsItem.getUnitPrice())) ;
+                            stringLinkedList.add(StringUtils.isNotBlank(indicatorsItem.getRemark())?indicatorsItem.getRemark():"") ;
+                            AsposeUtils.writeWordTitle(builder,stringLinkedList);
+                            stringLinkedList.clear();
+                        }
+                        builder.endTable();
+                    }
+                    String localPath = generateCommonMethod.getLocalPath();
+                    doc.save(localPath);
+                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, key.getName(), localPath);
+                } catch (Exception e) {
+                }
+                break;
+            }
+            case Development_PriceForecast: {//假设法售价预测
+                try {
+                    Document doc = new Document();
+                    DocumentBuilder builder = new DocumentBuilder(doc);
+                    generateCommonMethod.settingBuildingTable(builder);
                     String localPath = generateCommonMethod.getLocalPath();
                     doc.save(localPath);
                     generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, key.getName(), localPath);
@@ -196,8 +271,6 @@ public class GenerateMdDevelopmentService {
                     break;
                 }
                 String path = generateCommonMethod.getLocalPath(RandomStringUtils.randomAlphanumeric(4));
-                LinkedList<String> linkedList = Lists.newLinkedList();
-                Set<MergeCellModel> mergeCellModelList = Sets.newHashSet();
                 try {
                     Document document = new Document();
                     DocumentBuilder documentBuilder = new DocumentBuilder(document);
@@ -214,24 +287,74 @@ public class GenerateMdDevelopmentService {
                     documentBuilder.getCellFormat().setRightPadding(0);
                     documentBuilder.getFont().setSize(10.5);
                     documentBuilder.getFont().setName(AsposeUtils.ImitationSongGB2312FontName);
+                    documentBuilder.writeln();
+                    mdArchitecturalObjService.writeCalculatingMethodEngineeringCostSheet(documentBuilder, costJSONObjectMap);
 
-                    final AtomicInteger atomicInteger = new AtomicInteger(0);
-                    Table table = documentBuilder.startTable();
-                    mdArchitecturalObjService.writeCalculatingMethodEngineeringCostSheet(documentBuilder, linkedList, costJSONObjectMap, mergeCellModelList, atomicInteger);
-                    if (CollectionUtils.isNotEmpty(mergeCellModelList)) {
-                        generateCommonMethod.mergeCellTable(mergeCellModelList, table);
-                    }
-                    documentBuilder.endTable();
                     AsposeUtils.saveWord(path, document);
                     generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, key.getName(), path);
                 } catch (Exception e) {
+                    String error = e.getMessage();
+                    if (StringUtils.isNotBlank(error)) {
+                        baseService.writeExceptionInfo(e);
+                    }
                 }
-
+                break;
+            }
+            case Development_constructionInstallationEngineeringFee_Basis: {
+                StringBuilder stringBuilder = new StringBuilder(8);
+                List<DataBuildingInstallCostVo> dataBuildingInstallCostVos = dataBuildingInstallCostService.dataBuildingInstallCostVos(schemeAreaGroup.getProvince(), schemeAreaGroup.getCity(), schemeAreaGroup.getDistrict());
+                if (CollectionUtils.isNotEmpty(dataBuildingInstallCostVos)) {
+                    for (DataBuildingInstallCostVo costVo : dataBuildingInstallCostVos) {
+                        stringBuilder.append(costVo.getContent());
+                    }
+                }
+                String value = StringUtils.isNotBlank(stringBuilder.toString()) ? stringBuilder.toString() : "无";
+                generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), value);
+                break;
+            }
+            case Development_extraterritorial_reality:{
+                BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
+                if (basicApply == null) {
+                    break;
+                }
+                GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
+                BasicEstateVo basicEstateVo = generateBaseExamineService.getEstate();
+                if (basicEstateVo != null) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), basicEstateVo.getInfrastructureName());
+                }
+                break;
+            }
+            case Development_intra_territorial_reality:{
+                BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
+                if (basicApply == null) {
+                    break;
+                }
+                GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
+                try {
+                    BasicEstateLandStateVo basicEstateLandStateVo = generateBaseExamineService.getBasicEstateLandState();
+                    if (basicEstateLandStateVo != null) {
+                        generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), basicEstateLandStateVo.getDevelopmentDegreeContentName());
+                    }
+                } catch (Exception e) {
+                }
+                break;
+            }
+            case Development_PublicTrialRealEstateComputing:{
+                String result = "单价*面积*(1-估价时点完工程度)" ;
+                generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), result);
                 break;
             }
         }
     }
 
+    private MdEconomicIndicatorsApplyDto getMdEconomicIndicatorsApplyDto() {
+        MdDevelopmentVo mdDevelopmentVo = getMdDevelopmentVo();
+        MdEconomicIndicatorsApplyDto mdEconomicIndicatorsApplyDto = new MdEconomicIndicatorsApplyDto();
+        if (mdDevelopmentVo.getEconomicId() != null) {
+            mdEconomicIndicatorsApplyDto = mdEconomicIndicatorsService.getEconomicIndicatorsInfo(mdDevelopmentVo.getEconomicId());
+        }
+        return mdEconomicIndicatorsApplyDto;
+    }
 
     private SchemeInfo getSchemeInfo() {
         return schemeInfo;
@@ -272,32 +395,40 @@ public class GenerateMdDevelopmentService {
     private synchronized void setFieldObjectValue(BaseReportFieldEnum key, final ConcurrentHashMap<String, String> textMap, final ConcurrentHashMap<String, String> fileMap, final ConcurrentHashMap<String, String> bookmarkMap, MdDevelopment target) {
         String value = mdDevelopmentService.getFieldObjectValue(key, target);
         switch (key) {
-            case Development_SalesTaxAndAdditional: {
-                value = ArithmeticUtils.getBigDecimalString(target.getSalesTaxAndAdditional());
+            case Development_total_area: {
+                MdEconomicIndicatorsApplyDto mdEconomicIndicatorsApplyDto = getMdEconomicIndicatorsApplyDto();
+                if (mdEconomicIndicatorsApplyDto != null && mdEconomicIndicatorsApplyDto.getEconomicIndicators() != null) {
+                    value = ArithmeticUtils.getBigDecimalString(mdEconomicIndicatorsApplyDto.getEconomicIndicators().getAssessUseLandArea());
+                }
                 break;
             }
+            //穿透一下
+            case Development_SalesTaxAndAdditional2:
+            case Development_SalesTaxAndAdditional:
+                value = ArithmeticUtils.getBigDecimalString(target.getSalesTaxAndAdditional());
+                break;
             case Development_reconnaissanceDesignRate:
-                value = ArithmeticUtils.getBigDecimalString(target.getReconnaissanceDesign());
+                value = ArithmeticUtils.getPercentileSystem(target.getReconnaissanceDesign(), 2);
                 break;
             case Development_unforeseenExpensesTax:
-                value = ArithmeticUtils.getBigDecimalString(target.getUnforeseenExpenses());
+                value = ArithmeticUtils.getPercentileSystem(target.getUnforeseenExpenses(), 2);
                 break;
             case Development_deedCorrecting:
-                value = ArithmeticUtils.getBigDecimalString(target.getDeedTaxRate());
+                value = ArithmeticUtils.getPercentileSystem(target.getDeedTaxRate(), 2);
                 break;
             case Development_transactionCostCorrecting:
-                value = ArithmeticUtils.getBigDecimalString(target.getTransactionTaxRate());
+                value = ArithmeticUtils.getPercentileSystem(target.getTransactionTaxRate(), 2);
                 break;
             case Development_LandAcquisitionCost: {
                 value = mdDevelopmentService.getFieldObjectValue(BaseReportFieldEnum.Development_LandGetCost, target);
                 break;
             }
             case Development_LandAcquisitionCostTax: {
-                value = ArithmeticUtils.getBigDecimalString(target.getLandGetRelevant());
+                value = ArithmeticUtils.round(target.getLandGetRelevant().toString(), 2);
                 break;
             }
             case Development_managementExpenseRate: {
-                value = ArithmeticUtils.getBigDecimalString(target.getManagementExpense());
+                value = ArithmeticUtils.getPercentileSystem(target.getManagementExpense(), 2);
                 break;
             }
             case Development_constructionSubtotal2: {
@@ -309,19 +440,19 @@ public class GenerateMdDevelopmentService {
                 break;
             }
             case Development_salesFeeTax: {
-                value = ArithmeticUtils.getBigDecimalString(target.getSalesFee());
+                value = ArithmeticUtils.getPercentileSystem(target.getSalesFee(), 2);
                 break;
             }
             case Development_interestInvestmentRate: {
-                value = ArithmeticUtils.getBigDecimalString(target.getInterestInvestmentTax());
+                value = ArithmeticUtils.getPercentileSystem(target.getInterestInvestmentTax(), 2);
                 break;
             }
             case Development_investmentProfitRate: {
-                value = ArithmeticUtils.getBigDecimalString(target.getInvestmentProfitTax());
+                value = ArithmeticUtils.getPercentileSystem(target.getInvestmentProfitTax(), 2);
                 break;
             }
             case Development_landIncrementTax: {
-                value = ArithmeticUtils.getBigDecimalString(target.getLandValueAddedTax());
+                value = ArithmeticUtils.getPercentileSystem(target.getLandValueAddedTax(), 2);
                 break;
             }
             case Development_AmendmentStatusRights: {
@@ -342,6 +473,14 @@ public class GenerateMdDevelopmentService {
             }
             case Development_OtherAmendmentsRemark: {
                 value = target.getOtherAmendmentsExplain();
+                break;
+            }
+            case Development_constructionSubtotalContent: {
+                value = errorStr;
+                break;
+            }
+            case Development_TotalCompletedPriceRealEstateDevelopment: {
+                value = ArithmeticUtils.round(target.getTotalSaleableAreaPrice(), 2);
                 break;
             }
         }

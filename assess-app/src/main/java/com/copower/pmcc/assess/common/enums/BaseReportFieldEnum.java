@@ -216,6 +216,8 @@ public enum BaseReportFieldEnum implements Serializable {
     BACKGROUND_ANALYSIS_BLOCK("同类房地产市场版块状况"),
     BACKGROUND_ANALYSIS_PROPERTY("背景估价对象区域物业总体状况"),
 
+    Development_extraterritorial_reality("假设法宗地外设定开发程度"),
+    Development_intra_territorial_reality("假设法宗地内设定开发程度"),
     Development_projectConstructionPeriod("假设法开发周期"),
     Development_totalSaleableAreaPrice("假设法总可售面积售价"),
     Development_saleableArea("假设法可售面积"),//f16
@@ -257,6 +259,7 @@ public enum BaseReportFieldEnum implements Serializable {
     Development_Land_SetUse("假设法土地设定用途"),
     Development_SetUse("假设法设定用途"),
     Development_RelevantBasisEconomicIndicators("假设法技术经济指标相关依据"),
+    Development_PriceForecasting("假设法售价预测"),
     Development_PlanningConstraints("假设法规划限制条件"),
     Development_region("假设法区域"),
     Development_EconomicIndicators("假设法估价对象技术经济指标"),
@@ -270,8 +273,10 @@ public enum BaseReportFieldEnum implements Serializable {
     Development_LandAcquisitionCost("假设法地价总额"),//土地取得成本 同
     Development_LandAcquisitionCostTax("假设法土地取得税费"),
     Development_SalesTaxAndAdditional("假设法增值税金及附加"),
+    Development_SalesTaxAndAdditional2("假设法增值税及附加"),
     Development_landIncrementTax("假设法土地增值税率"),
     Development_TotalCompletedPriceRealEstateDevelopment("假设法不动产开发完成总价"),
+    Development_PublicTrialRealEstateComputing("假设法不动产计算公试"),
     Development_total_area("假设法总面积"),
     Development_OtherAmendments("假设法其他修正值"),
     Development_OtherAmendmentsRemark("假设法其他修正说明"),

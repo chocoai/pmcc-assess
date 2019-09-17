@@ -42,8 +42,8 @@ developmentCommon.architecturalB = {
         }
         var resultValue = "";
         if (!$.isNumeric(value)) {
-            var reg = new RegExp(/^[0-9]+%$/);
-            if (!reg.test(value)) {
+            value = $(that).attr('data-value');
+            if (!$.isNumeric(value)) {
                 $(that).val('');
                 alert("不符合，必须是数字!");
                 return false;

@@ -39,13 +39,11 @@ import java.util.stream.Collectors;
  */
 public class ZCHDemo {
     final public String jsonData =
-            "[{\"name\": \"建筑工程\", \"role\": \"parent\", \"dataKey\": \"soil_engineering_project_market_cost\"}, {\"name\": \" 地下基础\", \"role\": \"child\", \"price\": \"346\", \"remark\": \"\", \"dataKey\": \"soil_engineering_project_market_cost\", \"valuationDateDegreeCompletion\": \"46%\"}, {\"name\": \" 地下室\", \"role\": \"child\", \"price\": \"\", \"remark\": \"\", \"dataKey\": \"soil_engineering_project_market_cost\", \"valuationDateDegreeCompletion\": \"\"}, {\"name\": \" 地上主体\", \"role\": \"child\", \"price\": \"\", \"remark\": \"\", \"dataKey\": \"soil_engineering_project_market_cost\", \"valuationDateDegreeCompletion\": \"\"}, {\"name\": \"安装工程\", \"role\": \"parent\", \"dataKey\": \"erect_engineering_project_market_cost\"}, {\"name\": \" 电气工程\", \"role\": \"child\", \"price\": \"\", \"remark\": \"\", \"dataKey\": \"erect_engineering_project_market_cost\", \"valuationDateDegreeCompletion\": \"\"}, {\"name\": \" 给排水工程\", \"role\": \"child\", \"price\": \"\", \"remark\": \"\", \"dataKey\": \"erect_engineering_project_market_cost\", \"valuationDateDegreeCompletion\": \"\"}, {\"name\": \"装饰工程\", \"role\": \"parent\", \"dataKey\": \"decorate_engineering_project_market_cost\"}, {\"name\": \" 楼地面工程\", \"role\": \"child\", \"price\": \"\", \"remark\": \"\", \"dataKey\": \"decorate_engineering_project_market_cost\", \"valuationDateDegreeCompletion\": \"\"}, {\"name\": \" 外墙墙柱面工程\", \"role\": \"child\", \"price\": \"\", \"remark\": \"\", \"dataKey\": \"decorate_engineering_project_market_cost\", \"valuationDateDegreeCompletion\": \"\"}, {\"name\": \" 内墙墙柱面工程\", \"role\": \"child\", \"price\": \"\", \"remark\": \"\", \"dataKey\": \"decorate_engineering_project_market_cost\", \"valuationDateDegreeCompletion\": \"\"}, {\"name\": \" 天棚工程\", \"role\": \"child\", \"price\": \"\", \"remark\": \"\", \"dataKey\": \"decorate_engineering_project_market_cost\", \"valuationDateDegreeCompletion\": \"\"}, {\"name\": \" 门窗工程\", \"role\": \"child\", \"price\": \"\", \"remark\": \"\", \"dataKey\": \"decorate_engineering_project_market_cost\", \"valuationDateDegreeCompletion\": \"\"}, {\"name\": \" 外墙（油漆、涂料、裱糊）工程\", \"role\": \"child\", \"price\": \"\", \"remark\": \"\", \"dataKey\": \"decorate_engineering_project_market_cost\", \"valuationDateDegreeCompletion\": \"\"}, {\"name\": \" 内墙（油漆、涂料、裱糊）工程\", \"role\": \"child\", \"price\": \"\", \"remark\": \"\", \"dataKey\": \"decorate_engineering_project_market_cost\", \"valuationDateDegreeCompletion\": \"\"}, {\"name\": \"附属工程\", \"role\": \"parent\", \"dataKey\": \"subsidiary_engineering_project_market_cost\"}, {\"name\": \" 道路\", \"role\": \"child\", \"price\": \"\", \"remark\": \"\", \"dataKey\": \"subsidiary_engineering_project_market_cost\", \"valuationDateDegreeCompletion\": \"\"}, {\"name\": \" 围墙\", \"role\": \"child\", \"price\": \"\", \"remark\": \"\", \"dataKey\": \"subsidiary_engineering_project_market_cost\", \"valuationDateDegreeCompletion\": \"\"}, {\"name\": \" 大门\", \"role\": \"child\", \"price\": \"\", \"remark\": \"\", \"dataKey\": \"subsidiary_engineering_project_market_cost\", \"valuationDateDegreeCompletion\": \"\"}, {\"name\": \" 绿化\", \"role\": \"child\", \"price\": \"\", \"remark\": \"\", \"dataKey\": \"subsidiary_engineering_project_market_cost\", \"valuationDateDegreeCompletion\": \"\"}, {\"name\": \" 园林\", \"role\": \"child\", \"price\": \"\", \"remark\": \"\", \"dataKey\": \"subsidiary_engineering_project_market_cost\", \"valuationDateDegreeCompletion\": \"\"}, {\"name\": \" 景观\", \"role\": \"child\", \"price\": \"\", \"remark\": \"\", \"dataKey\": \"subsidiary_engineering_project_market_cost\", \"valuationDateDegreeCompletion\": \"\"}, {\"name\": \"二装工程\", \"role\": \"parent\", \"dataKey\": \"twoLoading_engineering_project_market_cost\"}, {\"name\": \" 第二次装修\", \"role\": \"child\", \"price\": \"525\", \"remark\": \"fcdfdfdfj\", \"dataKey\": \"twoLoading_engineering_project_market_cost\", \"valuationDateDegreeCompletion\": \"34%\"}]";
+            "[{\"area\": \"\", \"name\": \"建筑工程\", \"role\": \"parent\", \"price\": \"\", \"remark\": \"\", \"dataKey\": \"soil_engineering_project_market_cost\", \"valuationDateDegreeCompletion\": \"\"}, {\"area\": \"347\", \"name\": \"地下基础\", \"role\": \"child\", \"price\": \"\", \"remark\": \"\", \"dataKey\": \"soil_engineering_project_market_cost\", \"valuationDateDegreeCompletion\": \"\"}, {\"area\": \"\", \"name\": \"地下室\", \"role\": \"child\", \"price\": \"\", \"remark\": \"\", \"dataKey\": \"soil_engineering_project_market_cost\", \"valuationDateDegreeCompletion\": \"\"}, {\"area\": \"\", \"name\": \"地上主体\", \"role\": \"child\", \"price\": \"\", \"remark\": \"\", \"dataKey\": \"soil_engineering_project_market_cost\", \"valuationDateDegreeCompletion\": \"\"}, {\"area\": \"\", \"name\": \"安装工程\", \"role\": \"parent\", \"price\": \"\", \"remark\": \"\", \"dataKey\": \"erect_engineering_project_market_cost\", \"valuationDateDegreeCompletion\": \"\"}, {\"area\": \"\", \"name\": \"电气工程\", \"role\": \"child\", \"price\": \"\", \"remark\": \"\", \"dataKey\": \"erect_engineering_project_market_cost\", \"valuationDateDegreeCompletion\": \"\"}, {\"area\": \"\", \"name\": \"给排水工程\", \"role\": \"child\", \"price\": \"\", \"remark\": \"\", \"dataKey\": \"erect_engineering_project_market_cost\", \"valuationDateDegreeCompletion\": \"\"}, {\"area\": \"\", \"name\": \"装饰工程\", \"role\": \"parent\", \"price\": \"\", \"remark\": \"\", \"dataKey\": \"decorate_engineering_project_market_cost\", \"valuationDateDegreeCompletion\": \"\"}, {\"area\": \"\", \"name\": \"楼地面工程\", \"role\": \"child\", \"price\": \"\", \"remark\": \"\", \"dataKey\": \"decorate_engineering_project_market_cost\", \"valuationDateDegreeCompletion\": \"\"}, {\"area\": \"\", \"name\": \"外墙墙柱面工程\", \"role\": \"child\", \"price\": \"\", \"remark\": \"\", \"dataKey\": \"decorate_engineering_project_market_cost\", \"valuationDateDegreeCompletion\": \"\"}, {\"area\": \"\", \"name\": \"内墙墙柱面工程\", \"role\": \"child\", \"price\": \"\", \"remark\": \"\", \"dataKey\": \"decorate_engineering_project_market_cost\", \"valuationDateDegreeCompletion\": \"\"}, {\"area\": \"\", \"name\": \"天棚工程\", \"role\": \"child\", \"price\": \"\", \"remark\": \"\", \"dataKey\": \"decorate_engineering_project_market_cost\", \"valuationDateDegreeCompletion\": \"\"}, {\"area\": \"\", \"name\": \"门窗工程\", \"role\": \"child\", \"price\": \"\", \"remark\": \"\", \"dataKey\": \"decorate_engineering_project_market_cost\", \"valuationDateDegreeCompletion\": \"\"}, {\"area\": \"\", \"name\": \"外墙（油漆、涂料、裱糊）工程\", \"role\": \"child\", \"price\": \"\", \"remark\": \"\", \"dataKey\": \"decorate_engineering_project_market_cost\", \"valuationDateDegreeCompletion\": \"\"}, {\"area\": \"43\", \"name\": \"内墙（油漆、涂料、裱糊）工程\", \"role\": \"child\", \"price\": \"34\", \"remark\": \"dfjdfj\", \"dataKey\": \"decorate_engineering_project_market_cost\", \"valuationDateDegreeCompletion\": \"4%\"}, {\"area\": \"\", \"name\": \"附属工程\", \"role\": \"parent\", \"price\": \"\", \"remark\": \"\", \"dataKey\": \"subsidiary_engineering_project_market_cost\", \"valuationDateDegreeCompletion\": \"\"}, {\"area\": \"\", \"name\": \"道路\", \"role\": \"child\", \"price\": \"\", \"remark\": \"\", \"dataKey\": \"subsidiary_engineering_project_market_cost\", \"valuationDateDegreeCompletion\": \"\"}, {\"area\": \"\", \"name\": \"围墙\", \"role\": \"child\", \"price\": \"\", \"remark\": \"\", \"dataKey\": \"subsidiary_engineering_project_market_cost\", \"valuationDateDegreeCompletion\": \"\"}, {\"area\": \"\", \"name\": \"大门\", \"role\": \"child\", \"price\": \"\", \"remark\": \"\", \"dataKey\": \"subsidiary_engineering_project_market_cost\", \"valuationDateDegreeCompletion\": \"\"}, {\"area\": \"4\", \"name\": \"绿化\", \"role\": \"child\", \"price\": \"43\", \"remark\": \"fjdfj\", \"dataKey\": \"subsidiary_engineering_project_market_cost\", \"valuationDateDegreeCompletion\": \"4%\"}, {\"area\": \"34\", \"name\": \"园林\", \"role\": \"child\", \"price\": \"43\", \"remark\": \"dfjfdj\", \"dataKey\": \"subsidiary_engineering_project_market_cost\", \"valuationDateDegreeCompletion\": \"34%\"}, {\"area\": \"43\", \"name\": \"景观\", \"role\": \"child\", \"price\": \"743\", \"remark\": \"fjdfjd\", \"dataKey\": \"subsidiary_engineering_project_market_cost\", \"valuationDateDegreeCompletion\": \"4%\"}, {\"area\": \"\", \"name\": \"二装工程\", \"role\": \"parent\", \"price\": \"\", \"remark\": \"\", \"dataKey\": \"twoLoading_engineering_project_market_cost\", \"valuationDateDegreeCompletion\": \"\"}, {\"area\": \"43\", \"name\": \"第二次装修\", \"role\": \"child\", \"price\": \"43\", \"remark\": \"dfdjdjf\", \"dataKey\": \"twoLoading_engineering_project_market_cost\", \"valuationDateDegreeCompletion\": \"4%\"}]";
 
     @Test
     public void testSheet() throws Exception {
         String path = "C:\\Users\\HP\\Documents\\" + RandomStringUtils.randomNumeric(7) + ".doc";
-        LinkedList<String> linkedList = Lists.newLinkedList();
-        Set<MergeCellModel> mergeCellModelList = Sets.newHashSet();
         Document document = new Document();
         DocumentBuilder documentBuilder = new DocumentBuilder(document);
 
@@ -65,36 +63,37 @@ public class ZCHDemo {
         documentBuilder.getFont().setName(AsposeUtils.ImitationSong);
 
 
-        List<MdCalculatingMethodEngineeringCost> costList = Lists.newArrayList();
-        JSONArray jsonArrayA = JSONArray.parseArray(jsonData);
-        MdCalculatingMethodEngineeringCost mdCalculatingMethodEngineeringCost = new MdCalculatingMethodEngineeringCost();
-        mdCalculatingMethodEngineeringCost.setName("2栋");
-        mdCalculatingMethodEngineeringCost.setPrice(new BigDecimal(22.5));
-        mdCalculatingMethodEngineeringCost.setArea(new BigDecimal(322.1));
-        costList.add(mdCalculatingMethodEngineeringCost);
         LinkedHashMap<MdCalculatingMethodEngineeringCost, JSONArray> costJSONObjectMap = Maps.newLinkedHashMap();
-        costJSONObjectMap.put(mdCalculatingMethodEngineeringCost, jsonArrayA);
-        final AtomicInteger atomicInteger = new AtomicInteger(0);
-
-        com.aspose.words.Table table = documentBuilder.startTable();
-        writeCalculatingMethodEngineeringCostSheet(documentBuilder, linkedList, costJSONObjectMap, mergeCellModelList, atomicInteger);
-        if (CollectionUtils.isNotEmpty(mergeCellModelList)) {
-            mergeCellTable(mergeCellModelList, table);
+        for (int i = 0; i < 2; i++) {
+            List<MdCalculatingMethodEngineeringCost> costList = Lists.newArrayList();
+            JSONArray jsonArrayA = JSONArray.parseArray(jsonData);
+            MdCalculatingMethodEngineeringCost mdCalculatingMethodEngineeringCost = new MdCalculatingMethodEngineeringCost();
+            mdCalculatingMethodEngineeringCost.setName("2栋");
+            mdCalculatingMethodEngineeringCost.setPrice(new BigDecimal(22.5));
+            mdCalculatingMethodEngineeringCost.setArea(new BigDecimal(322.1));
+            costList.add(mdCalculatingMethodEngineeringCost);
+            costJSONObjectMap.put(mdCalculatingMethodEngineeringCost, jsonArrayA);
         }
-        documentBuilder.endTable();
+
+        writeCalculatingMethodEngineeringCostSheet(documentBuilder, costJSONObjectMap);
 
         AsposeUtils.saveWord(path, document);
     }
 
-    private void writeCalculatingMethodEngineeringCostSheet(DocumentBuilder documentBuilder, LinkedList<String> linkedList, LinkedHashMap<MdCalculatingMethodEngineeringCost, JSONArray> costJSONObjectMap, Set<MergeCellModel> mergeCellModelList, final AtomicInteger atomicInteger) throws Exception {
+    private void writeCalculatingMethodEngineeringCostSheet(DocumentBuilder documentBuilder, LinkedHashMap<MdCalculatingMethodEngineeringCost, JSONArray> costJSONObjectMap) throws Exception {
+        Set<MergeCellModel> mergeCellModelList = Sets.newHashSet();
+        LinkedList<String> linkedList = Lists.newLinkedList();
         for (Map.Entry<MdCalculatingMethodEngineeringCost, JSONArray> entry : costJSONObjectMap.entrySet()) {
-            linkedList.addAll(Arrays.asList(String.join("工程名称:","",entry.getKey().getName()), "", "", "", ""));
+            documentBuilder.writeln();
+            com.aspose.words.Table table = documentBuilder.startTable();
+            final AtomicInteger atomicInteger = new AtomicInteger(0);
+            linkedList.addAll(Arrays.asList(String.join("", "工程名称:", entry.getKey().getName()), "", "", "", "", ""));
             AsposeUtils.writeWordTitle(documentBuilder, linkedList);
             mergeCellModelList.add(new MergeCellModel(atomicInteger.get(), 0, atomicInteger.get(), linkedList.size() - 1));
             linkedList.clear();
             atomicInteger.incrementAndGet();
 
-            linkedList.addAll(Arrays.asList("列表属性", "", "估价时点完工程度", "单方造价(元/㎡)", "估价时点单价(元/㎡)"));
+            linkedList.addAll(Arrays.asList("列表属性", "", "估价时点完工程度", "单方(元/㎡)", "面积(㎡)", "估价时点单价(元/㎡)"));
             AsposeUtils.writeWordTitle(documentBuilder, linkedList);
             mergeCellModelList.add(new MergeCellModel(atomicInteger.get(), 0, atomicInteger.get(), 1));
             atomicInteger.incrementAndGet();
@@ -104,28 +103,30 @@ public class ZCHDemo {
             JSONArray jsonArray = entry.getValue();
             for (int i = 0; i < jsonArray.size(); i++) {
                 JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+                String role = jsonObject.getString("role");
                 //父级
-                if (jsonObject.size() == 3) {
-                    linkedList.add(String.join("",jsonObject.getString("name"),StringUtils.repeat(" ",1),"(父级)"));
+                if ("parent".equals(role)) {
+                    linkedList.add(String.join("", jsonObject.getString("name"), StringUtils.repeat(" ", 1), "(父级)"));
                     linkedList.add("");
-
                     linkedList.add("/");
+                    linkedList.add("");
                     linkedList.add("");
                     linkedList.add("");
                     AsposeUtils.writeWordTitle(documentBuilder, linkedList);
                     mergeCellModelList.add(new MergeCellModel(atomicInteger.get(), 0, atomicInteger.get(), linkedList.size() - 1));
                     linkedList.clear();
+                    atomicInteger.incrementAndGet();
                 }
                 //子级
-                if (jsonObject.size() != 3) {
+                if ("child".equals(role)) {
                     linkedList.add("");
                     linkedList.add(jsonObject.getString("name"));
-
                     String valuationDateDegreeCompletion = jsonObject.getString("valuationDateDegreeCompletion");
                     String price = jsonObject.getString("price");
-
+                    String area = jsonObject.getString("area");
                     linkedList.add(StringUtils.isNotBlank(valuationDateDegreeCompletion) ? valuationDateDegreeCompletion : "");
                     linkedList.add(StringUtils.isNotBlank(price) ? price : "");
+                    linkedList.add(StringUtils.isNotBlank(area) ? area : "");
                     if (StringUtils.isNotBlank(valuationDateDegreeCompletion) && StringUtils.isNotBlank(price)) {
                         try {
                             String string = ArithmeticUtils.parseFormatString(valuationDateDegreeCompletion);
@@ -139,9 +140,14 @@ public class ZCHDemo {
                     }
                     AsposeUtils.writeWordTitle(documentBuilder, linkedList);
                     linkedList.clear();
+                    atomicInteger.incrementAndGet();
                 }
-                atomicInteger.incrementAndGet();
             }
+            if (CollectionUtils.isNotEmpty(mergeCellModelList)) {
+                mergeCellTable(mergeCellModelList, table);
+            }
+            documentBuilder.endTable();
+            mergeCellModelList.clear();
         }
     }
 
@@ -170,12 +176,12 @@ public class ZCHDemo {
     }
 
     @Test
-    public void checkTest(){
+    public void checkTest() {
         List<Integer> list = new ArrayList<Integer>();
         list.add(1);
         list.add(2);
         Integer[] array = list.toArray(new Integer[list.size()]);
-        for(int element:array){
+        for (int element : array) {
             System.out.println(element);
         }
     }
@@ -207,14 +213,14 @@ public class ZCHDemo {
     }
 
     @Test
-    public void testAlgsMdDevelopmentTest(){
+    public void testAlgsMdDevelopmentTest() {
         MdDevelopment mdDevelopment = new MdDevelopment();
         mdDevelopment.setDevelopedYear(ArithmeticUtils.createBigDecimal(1.5));
         mdDevelopment.setRemainingDevelopmentYear(ArithmeticUtils.createBigDecimal(0.5));
 
         mdDevelopment.setUnsaleableBuildingArea(ArithmeticUtils.createBigDecimal(1200.00));
-        mdDevelopment.setSaleableArea(ArithmeticUtils.createBigDecimal( 65850.00));
-        mdDevelopment.setTotalSaleableAreaPrice(ArithmeticUtils.createBigDecimal(30069.00)) ;
+        mdDevelopment.setSaleableArea(ArithmeticUtils.createBigDecimal(65850.00));
+        mdDevelopment.setTotalSaleableAreaPrice(ArithmeticUtils.createBigDecimal(30069.00));
 
         mdDevelopment.setReconnaissanceDesign(new BigDecimal(0.06));
         mdDevelopment.setConstructionInstallationEngineeringFee(new BigDecimal(1500));
@@ -243,7 +249,7 @@ public class ZCHDemo {
         mdDevelopment.setOtherAmendments(new BigDecimal(1));
         mdDevelopment.setDevelopmentDegreeRevision(new BigDecimal(-20));
 
-        String value = new MdDevelopmentService().getFieldObjectValue(BaseReportFieldEnum.Development_Price,mdDevelopment) ;
+        String value = new MdDevelopmentService().getFieldObjectValue(BaseReportFieldEnum.Development_Price, mdDevelopment);
         System.out.println(value);
     }
 

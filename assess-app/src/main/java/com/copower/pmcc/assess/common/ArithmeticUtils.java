@@ -402,6 +402,10 @@ public class ArithmeticUtils implements Serializable {
         return round(createBigDecimal(v), scale, BigDecimal.ROUND_HALF_UP).toString();
     }
 
+    public static String round(BigDecimal bigDecimal, int scale) {
+        return round(getBigDecimalString(bigDecimal), scale);
+    }
+
     public static BigDecimal round(BigDecimal v, int scale, int roundingMode) {
         if (scale < 0) {
             throw new IllegalArgumentException(
