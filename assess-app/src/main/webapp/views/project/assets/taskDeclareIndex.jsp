@@ -15,6 +15,10 @@
             <div class="x_panel">
                 <div class="x_content form-horizontal">
                     <form class="form-horizontal" id="declareApplyForm">
+
+                        <input type="hidden" name="planDetailsId" value="${projectPlanDetails.id}">
+                        <input type="hidden" name="projectId" value="${projectPlanDetails.projectId}">
+
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
@@ -62,8 +66,18 @@
 </div>
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
-<script type="application/javascript">
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/assets/declare/declare.common.js"></script>
+<script type="text/javascript">
 
+    $(document).ready(function () {
+        $.each(declareCommon.fileArray,function (i,n) {
+            declareCommon.fileUpload(n,AssessDBKey.ProjectPlanDetails,'${projectPlanDetails.id}',false,n) ;
+            declareCommon.showFile(n,AssessDBKey.ProjectPlanDetails,'${projectPlanDetails.id}',false,n) ;
+        });
+    });
+
+</script>
+<script type="application/javascript">
     //提交表单
     function submit(mustUseBox) {
         var frm = $("#declareApplyForm") ;
