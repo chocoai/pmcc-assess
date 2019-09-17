@@ -8,12 +8,14 @@ import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeReportFileDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeReportFileItemDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateTaggingVo;
+import com.copower.pmcc.assess.dto.output.data.DataLocaleSurveyPictureVo;
 import com.copower.pmcc.assess.dto.output.project.scheme.SchemeReportFileItemVo;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.basic.*;
+import com.copower.pmcc.assess.service.data.DataLocaleSurveyPictureService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryContentService;
@@ -79,6 +81,8 @@ public class SchemeReportFileService extends BaseService {
     private PublicService publicService;
     @Autowired
     private BasicHouseRoomService basicHouseRoomService;
+    @Autowired
+    private DataLocaleSurveyPictureService dataLocaleSurveyPictureService;
 
     /**
      * 保存数据
@@ -375,6 +379,27 @@ public class SchemeReportFileService extends BaseService {
     }
 
     /**
+     * 获取权属证明文件
+     *
+     * @param declareRecordId
+     * @return
+     */
+    public List<SysAttachmentDto> getOwnershipCertFileAll(Integer declareRecordId) {
+        DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(declareRecordId);
+        List<SysAttachmentDto> attachmentDtoList = baseAttachmentService.getByField_tableId(declareRecord.getDataTableId(), null, declareRecord.getDataTableName());
+        return attachmentDtoList;
+    }
+
+    /**
+     * 移除权属证明复印件图片
+     *
+     * @param id
+     */
+    public void removeOwnershipCertFile(Integer id) {
+        baseAttachmentService.deleteAttachment(id);
+    }
+
+    /**
      * 获取该区域证书清查地址不一致附件
      *
      * @param projectId
@@ -600,6 +625,8 @@ public class SchemeReportFileService extends BaseService {
                 stringBuilder.append(baseAttachmentService.getViewHtml(attachmentDto));
             }
             vo.setFileViewName(stringBuilder.toString());
+        }else{
+            vo.setFileViewName("");
         }
         vo.setCertifyPartName(schemeReportFileItem.getCertifyPart() != null ? baseDataDicService.getNameById(schemeReportFileItem.getCertifyPart()) : "");
         vo.setCertifyPartCategoryName(schemeReportFileItem.getCertifyPartCategory() != null ? baseDataDicService.getNameById(schemeReportFileItem.getCertifyPartCategory()) : "");
@@ -618,5 +645,28 @@ public class SchemeReportFileService extends BaseService {
         reportAttachment.setFieldsName("live_situation_select_supplement");
         reportAttachment.setTableId(schemeReportFileItem.getId());
         return baseAttachmentService.getAttachmentList(reportAttachment);
+    }
+
+    public void initSchemeReportFileItems(List<DeclareRecord> declareRecordList) {
+        if (CollectionUtils.isNotEmpty(declareRecordList)) {
+            for (DeclareRecord declareRecord : declareRecordList) {
+                //如果无实况照片则进行初始化
+                List<SchemeReportFileItem> schemeReportFileItems = getListByDeclareRecordId(declareRecord.getId());
+                if(CollectionUtils.isEmpty(schemeReportFileItems)) {
+                    //获取模板
+                    List<DataLocaleSurveyPictureVo> localeSurveyPictures = dataLocaleSurveyPictureService.getDataLocaleSurveyPictureVos(new DataLocaleSurveyPicture());
+                    if(CollectionUtils.isNotEmpty(localeSurveyPictures)) {
+                        for (DataLocaleSurveyPictureVo template: localeSurveyPictures) {
+                            SchemeReportFileItem where = new SchemeReportFileItem();
+                            where.setDeclareRecordId(declareRecord.getId());
+                            where.setFileName(template.getName());
+                            where.setBisEnable(false);
+                            where.setType(AssessUploadEnum.JUDGE_OBJECT_LIVE_SITUATION.getKey());
+                            schemeReportFileItemDao.addReportFileItem(where);
+                        }
+                    }
+                }
+            }
+        }
     }
 }

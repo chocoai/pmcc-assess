@@ -138,39 +138,41 @@
                 </div>
                 <div class="x_content collapse">
                     <c:forEach items="${declareRecordList}" var="declareRecord">
-                        <c:if test="${not empty ownershipCertFileList.get(declareRecord.id)}">
-                            <div class="row">
-                                <div class=" col-xs-6612  col-sm-6612  col-md-6612  col-lg-6612  col-sm-6 col-xs-12">
-                                    <div class="x_panel">
-                                        <div class="x_title"><h4><strong>${declareRecord.name}</strong></h4></div>
-                                        <table class="table table-hover">
-                                            <thead>
-                                            <tr>
-                                                <th>序号</th>
-                                                <th>文件名称</th>
-                                                <th>操作</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <c:forEach items="${ownershipCertFileList.get(declareRecord.id)}" var="item"
-                                                       varStatus="i">
-                                                <tr>
-                                                    <th>${i.index+1}</th>
-                                                    <td>${item.fileName}</td>
-                                                    <td>
-                                                        <input type="button" class="btn btn-xs btn-primary" value="编辑"
-                                                               onclick="FileUtils.editAttachment(${item.id},'${item.fileExtension}');">
-                                                        <input type="button" class="btn btn-xs btn-warning" value="查看"
-                                                               onclick="FileUtils.showAttachment(${item.id},'${item.fileExtension}');">
-                                                    </td>
-                                                </tr>
-                                            </c:forEach>
-                                            </tbody>
-                                        </table>
+
+                        <div class="row">
+                            <div class=" col-xs-6612  col-sm-6612  col-md-6612  col-lg-6612  col-sm-6 col-xs-12">
+                                <div class="x_panel">
+                                    <div class="x_title"><h4><strong>${declareRecord.name}</strong></h4></div>
+                                    <table class="table table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th>序号</th>
+                                            <th>文件名称</th>
+                                            <th>操作</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody data-id="${declareRecord.id}" data-name="ownership_cert_file_list">
+
+
+                                        </tbody>
+                                    </table>
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">复印件</label>
+                                        <div class="col-sm-10">
+                                            <input id="uploadOwnershipCertFile${declareRecord.id}" class="form-control" type="file">
+                                            <div id="_uploadOwnershipCertFile${declareRecord.id}"></div>
+                                        </div>
                                     </div>
                                 </div>
+
                             </div>
-                        </c:if>
+                        </div>
+                        <script type="text/javascript">
+                            $(function () {
+                                uploadOwnershipCertFile("${declareRecord.dataTableName}","${declareRecord.dataTableId}", "uploadOwnershipCertFile${declareRecord.id}",$('tbody[data-id=${declareRecord.id}][data-name=ownership_cert_file_list]'), ${declareRecord.id});
+                                getOwnershipCertFileAll($('tbody[data-id=${declareRecord.id}][data-name=ownership_cert_file_list]'), ${declareRecord.id});
+                            })
+                        </script>
                     </c:forEach>
                 </div>
             </div>
@@ -422,6 +424,66 @@
         loadUploadFiles(AssessDBKey.ProjectInfo, "${projectInfo.id}", AssessUploadKey.PROJECT_PROXY);
     });
 
+    function uploadOwnershipCertFile(tableName, tableId, target,tbody,declareRecordId) {
+        FileUtils.uploadFiles({
+            target: target == undefined ? fieldsName : target,
+            disabledTarget: "btn_submit",
+            formData: {
+                tableName: tableName,
+                tableId: tableId,
+                projectId: "${projectInfo.id}"
+            },
+            onUploadComplete: function () {
+                getOwnershipCertFileAll(tbody,declareRecordId);
+            },
+            editFlag: true,
+            deleteFlag: true
+        });
+    }
+
+    //加载复印件
+    function getOwnershipCertFileAll(tbody,declareRecordId) {
+        $.ajax({
+            url: '${pageContext.request.contextPath}/projectReportFile/getOwnershipCertFileAll',
+            data: {
+                declareRecordId: declareRecordId
+            },
+            success: function (result) {
+                if (result.ret) {
+                    var html = '';
+                    $.each(result.data, function (i, item) {
+                        ++i;
+                        html += '<tr><th scope="row">' + i + '</th><td>' + item.fileName + '</td><td>' +
+                            '<input type="button" class="btn btn-xs btn-primary" value="编辑" onclick="FileUtils.editAttachment(' + item.id + ',\'' + item.fileExtension + '\');">' +
+                            '<input type="button" class="btn btn-xs btn-primary" value="查看" onclick="FileUtils.showAttachment(' + item.id + ',\'' + item.fileExtension + '\');">'+
+                            '<input type="button" class="btn btn-xs btn-warning" value="移除" onclick="removeOwnershipCertFile(' + item.id + ',this)"></td></tr>';
+                    })
+                    tbody.empty().append(html);
+                } else {
+                    Alert(result.errmsg);
+                }
+            }
+        })
+    }
+
+    //移除复印件片
+    function removeOwnershipCertFile(id, _this) {
+        Alert("确认删除", 2, null, function () {
+            $.ajax({
+                url: '${pageContext.request.contextPath}/projectReportFile/removeOwnershipCertFile',
+                data: {
+                    id: id
+                },
+                success: function (result) {
+                    if (result.ret) {
+                        $(_this).closest('tr').remove();
+                    } else {
+                        Alert(result.errmsg);
+                    }
+                }
+            })
+        });
+    }
 
     //加载自定义附件
     function loadReportFileCustomList(declareRecordId) {
