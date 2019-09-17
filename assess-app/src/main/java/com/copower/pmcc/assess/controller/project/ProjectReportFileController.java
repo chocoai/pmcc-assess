@@ -70,4 +70,26 @@ public class ProjectReportFileController {
     }
 
 
+    @ResponseBody
+    @RequestMapping(value = "/getOwnershipCertFileAll", name = "获取权属证明复印件图片", method = RequestMethod.POST)
+    public HttpResult getOwnershipCertFileAll(Integer declareRecordId) {
+        try {
+            return HttpResult.newCorrectResult(schemeReportFileService.getOwnershipCertFileAll(declareRecordId));
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/removeOwnershipCertFile", name = "移除权属证明复印件图片 ", method = RequestMethod.POST)
+    public HttpResult removeOwnershipCertFile(Integer id) {
+        try {
+            schemeReportFileService.removeOwnershipCertFile(id);
+            return HttpResult.newCorrectResult();
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
 }

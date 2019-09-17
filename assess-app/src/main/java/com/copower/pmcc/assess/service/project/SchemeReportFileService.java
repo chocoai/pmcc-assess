@@ -375,6 +375,27 @@ public class SchemeReportFileService extends BaseService {
     }
 
     /**
+     * 获取权属证明文件
+     *
+     * @param declareRecordId
+     * @return
+     */
+    public List<SysAttachmentDto> getOwnershipCertFileAll(Integer declareRecordId) {
+        DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(declareRecordId);
+        List<SysAttachmentDto> attachmentDtoList = baseAttachmentService.getByField_tableId(declareRecord.getDataTableId(), null, declareRecord.getDataTableName());
+        return attachmentDtoList;
+    }
+
+    /**
+     * 移除权属证明复印件图片
+     *
+     * @param id
+     */
+    public void removeOwnershipCertFile(Integer id) {
+        baseAttachmentService.deleteAttachment(id);
+    }
+
+    /**
      * 获取该区域证书清查地址不一致附件
      *
      * @param projectId
