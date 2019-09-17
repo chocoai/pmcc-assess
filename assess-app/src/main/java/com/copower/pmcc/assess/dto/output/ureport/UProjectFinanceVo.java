@@ -26,7 +26,7 @@ public class UProjectFinanceVo {
     private String loanTypeName;//贷款类型
     private String serviceComeFromExplain;//业务来源说明
     private Date projectCreated;//立项时间 -查询
-
+    private BigDecimal debtAmount;//欠款金额
 
     public Integer getId() {
         return id;
@@ -178,5 +178,13 @@ public class UProjectFinanceVo {
 
     public void setServiceComeFromExplain(String serviceComeFromExplain) {
         this.serviceComeFromExplain = serviceComeFromExplain;
+    }
+
+    public BigDecimal getDebtAmount() {
+        return debtAmount;
+    }
+
+    public void setDebtAmount(BigDecimal debtAmount) {
+        this.debtAmount = debtAmount;
     }
 }

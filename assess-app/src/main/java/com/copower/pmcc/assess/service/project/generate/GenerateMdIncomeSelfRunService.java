@@ -60,7 +60,6 @@ import java.util.stream.Collectors;
 public class GenerateMdIncomeSelfRunService implements Serializable {
     private final LinkedList<String> chineseNumbers = Lists.newLinkedList(Arrays.asList("一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二", "十三", "十四", "十五", "十六", "十七", "十八", "十九", "二十"));
     private Integer miId;
-    private Integer projectId;
     private Integer areaId;
     private SchemeInfo schemeInfo;
     private MdIncome mdIncome;
@@ -1272,10 +1271,9 @@ public class GenerateMdIncomeSelfRunService implements Serializable {
         return this.schemeAreaGroup;
     }
 
-    public GenerateMdIncomeSelfRunService(SchemeInfo schemeInfo, Integer projectId, Integer areaId) {
+    public GenerateMdIncomeSelfRunService(SchemeInfo schemeInfo, Integer areaId) {
         this.miId = schemeInfo.getMethodDataId();
         this.schemeInfo = schemeInfo;
-        this.projectId = projectId;
         this.areaId = areaId;
         this.mdIncomeService = SpringContextUtils.getBean(MdIncomeService.class);
         this.baseReportFieldService = SpringContextUtils.getBean(BaseReportFieldService.class);

@@ -114,6 +114,10 @@
                                         onclick="dataBuilder.prototype.loadDataDicList()">
                                     查询
                                 </button>
+                                <button type="button" class="btn btn-primary"
+                                        onclick="dataBuilder.prototype.getOldData()">
+                                    测试
+                                </button>
                             </div>
                         </div>
                     </form>

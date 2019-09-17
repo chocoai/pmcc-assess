@@ -2,20 +2,15 @@ package com.copower.pmcc.assess.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeInfoDao;
 import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecord;
+import com.copower.pmcc.assess.dal.basis.entity.SchemeInfo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.NetInfoRecordService;
+import com.copower.pmcc.assess.service.project.generate.GenerateMdIncomeSelfRunService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
-import com.copower.pmcc.erp.common.exception.BusinessException;
-import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
-import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-import com.github.pagehelper.StringUtil;
-import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,8 +18,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * 描述:
@@ -44,6 +39,8 @@ public class NetInfoRecordController {
     private ErpAreaService erpAreaService;
     @Autowired
     private NetInfoRecordService netInfoRecordService;
+    @Autowired
+    private SchemeInfoDao schemeInfoDao;
 
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public ModelAndView homeMain() {
@@ -59,15 +56,19 @@ public class NetInfoRecordController {
 
     @ResponseBody
     @RequestMapping(value = "/getInfoRecordList", name = "信息列表", method = RequestMethod.GET)
-    public BootstrapTableVo getInfoRecordList(String queryTitle, String queryWebName, String province, String city, String queryContent,String queryType, String queryStartTime, String queryEndTime) throws Exception {
-          return netInfoRecordService.getInfoRecordList(queryTitle,queryWebName,province,city,queryContent,queryType,queryStartTime,queryEndTime);
+    public BootstrapTableVo getInfoRecordList(String queryTitle, String queryWebName, String province, String city, String queryContent, String queryType, String queryStartTime, String queryEndTime) throws Exception {
+        return netInfoRecordService.getInfoRecordList(queryTitle, queryWebName, province, city, queryContent, queryType, queryStartTime, queryEndTime);
     }
 
     @ResponseBody
     @RequestMapping(value = "/getOldData", name = "获取前两年数据", method = RequestMethod.POST)
     public HttpResult getOldData() {
         try {
-            netInfoRecordService.climbingData();
+            //netInfoRecordService.climbingData();
+            SchemeInfo info = schemeInfoDao.getInfoById(582);
+            GenerateMdIncomeSelfRunService generateMdIncomeSelfRunService = new GenerateMdIncomeSelfRunService(info, 382);
+            generateMdIncomeSelfRunService.generateCompareFile();
+
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());
         }
