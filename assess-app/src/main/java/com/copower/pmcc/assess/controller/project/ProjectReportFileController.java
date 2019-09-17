@@ -47,7 +47,8 @@ public class ProjectReportFileController {
         modelAndView.addObject("projectId", projectId);
         //生成位置图
         schemeReportFileService.makeJudgeObjectPosition(declareRecordList);
-
+        //初始实况照片
+        schemeReportFileService.initSchemeReportFileItems(declareRecordList);
         return modelAndView;
     }
 

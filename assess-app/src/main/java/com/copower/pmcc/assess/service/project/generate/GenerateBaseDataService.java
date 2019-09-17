@@ -5292,6 +5292,7 @@ public class GenerateBaseDataService {
                     if (index < schemeReportFileList.size()) {
                         SchemeReportFileItem schemeReportFileItem = schemeReportFileList.get(index);
                         List<SysAttachmentDto> attachmentList = schemeReportFileService.getAttachmentListBySchemeReportFile(schemeReportFileItem);
+                        if(CollectionUtils.isEmpty(attachmentList)) continue;
                         builder.insertCell();
                         String imgPath = "";
                         if (attachmentList.size() == 1) {
