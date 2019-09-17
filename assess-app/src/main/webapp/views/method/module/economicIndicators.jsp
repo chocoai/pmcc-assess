@@ -149,8 +149,8 @@
                             <th>规划项目名称</th>
                             <th>规划建筑面积 ㎡</th>
                             <th>可出售面积 ㎡</th>
-                            <th>个数</th>
-                            <th>单位售价</th>
+                            <th>个数售价(元/㎡)</th>
+                            <th>单位售价(元/㎡)</th>
                             <th>备注</th>
                         </tr>
                         </thead>
@@ -222,12 +222,14 @@
                         </tbody>
 
                         <tfoot>
-                            <tr>
-                                <td>预期销售合计:</td>
-                                <td class="info">规划建筑面积<label name="plannedBuildingArea" class="label label-default"></label></td>
-                                <td class="info">可售面积<label name="saleableArea" class="label label-default"></label></td>
-                                <td class="info">总可售面积售价(万元)<label name="totalSaleableAreaPrice" class="label label-default"></label></td>
-                            </tr>
+                        <tr>
+                            <td>预期销售合计:</td>
+                            <td class="info">规划建筑面积(㎡)<label name="plannedBuildingArea"
+                                                             class="label label-default"></label></td>
+                            <td class="info">可售面积(㎡)<label name="saleableArea" class="label label-default"></label></td>
+                            <td class="info">总可售面积售价(元)<label name="totalSaleableAreaPrice"
+                                                              class="label label-default"></label></td>
+                        </tr>
                         </tfoot>
                     </table>
                 </div>
@@ -289,7 +291,7 @@
         $("#frmEconomicIndicators").find('[name=planDetailsId]').val(defaluts.planDetailsId);
         $("#frmEconomicIndicators").find('[name=centerId]').val(defaluts.centerId);
         //回显数据
-        if(defaluts.economicId){
+        if (defaluts.economicId) {
             $.ajax({
                 url: '${pageContext.request.contextPath}/mdEconomicIndicators/getEconomicIndicatorsInfo',
                 data: {
@@ -300,30 +302,32 @@
                 success: function (result) {
                     if (result.ret) {
                         $("#frmEconomicIndicators").initForm(result.data.economicIndicators);
-                        if(result.data.economicIndicatorsItemList){
-                            $.each(result.data.economicIndicatorsItemList,function (i,item) {
-                                var dataKey=item.dataKey;
+                        $("#frmEconomicIndicators").find("input[name='planDate']").val(formatDate(result.data.economicIndicators.planDate));
+                        $("#frmEconomicIndicators").find("label[name='planDate']").html(formatDate(result.data.economicIndicators.planDate));
+                        if (result.data.economicIndicatorsItemList) {
+                            $.each(result.data.economicIndicatorsItemList, function (i, item) {
+                                var dataKey = item.dataKey;
                                 var parentTr = $("#frmEconomicIndicatorsItem").find('[data-key=' + dataKey + '][data-role="parent"]');
-                                var childTarget = $("#economicIndicatorsItemTemplate") ;
+                                var childTarget = $("#economicIndicatorsItemTemplate");
                                 var html = childTarget.html();
                                 html = html.replace(/{dataKey}/g, dataKey).replace(/{parentIndex}/g, parentTr.attr('data-parent-index'));
                                 html = html.replace(/{currentIndex}/g, $("#frmEconomicIndicatorsItem").find('[data-key=' + dataKey + ']').length);
-                                html = html.replace(/{name}/g,AssessCommon.toString(item.name)).replace(/{plannedBuildingArea}/g, AssessCommon.toString(item.plannedBuildingArea));
+                                html = html.replace(/{name}/g, AssessCommon.toString(item.name)).replace(/{plannedBuildingArea}/g, AssessCommon.toString(item.plannedBuildingArea));
                                 html = html.replace(/{saleableArea}/g, AssessCommon.toString(item.saleableArea)).replace(/{number}/g, AssessCommon.toString(item.number)).replace(/{remark}/g, AssessCommon.toString(item.remark));
-                                html = html.replace(/{unitPrice}/g, AssessCommon.toString(item.unitPrice)) ;
+                                html = html.replace(/{unitPrice}/g, AssessCommon.toString(item.unitPrice));
                                 $("#frmEconomicIndicatorsItem").find('[data-key=' + dataKey + ']').last().after(html);
-                                if (defaluts.attribute){
-                                    $("#frmEconomicIndicatorsItem").find('[data-key=' + dataKey + ']').each(function (i,n) {
-                                        var target = $(n) ;
-                                        target.find("td").first().find("a").remove() ;
+                                if (defaluts.attribute) {
+                                    $("#frmEconomicIndicatorsItem").find('[data-key=' + dataKey + ']').each(function (i, n) {
+                                        var target = $(n);
+                                        target.find("td").first().find("a").remove();
                                     });
-                                    $("#frmEconomicIndicatorsItem").find('[data-key=' + dataKey + ']').last().find("input").attr(defaluts.attribute) ;
+                                    $("#frmEconomicIndicatorsItem").find('[data-key=' + dataKey + ']').last().find("input").attr(defaluts.attribute);
                                 }
                             });
                             economicIndicators.autoSummary();
                         }
-                        if (defaluts.targetCallback){
-                            defaluts.targetCallback($("#frmEconomicIndicatorsItem")) ;
+                        if (defaluts.targetCallback) {
+                            defaluts.targetCallback($("#frmEconomicIndicatorsItem"));
                         }
                     } else {
                         Alert(result.errmsg);
@@ -331,24 +335,24 @@
                 }
             })
         }
-        if (defaluts.attribute){
-            $("#frmEconomicIndicators").find("input").attr(defaluts.attribute) ;
+        if (defaluts.attribute) {
+            $("#frmEconomicIndicators").find("input").attr(defaluts.attribute);
         }
-        if (defaluts.showDelHtml){
-            var html = defaluts.showDelHtml.replace(/{frm}/g, 'frmEconomicIndicators') ;
-            html = html.replace(/{box}/g, 'modalEconomicIndicators') ;
-            $("#modalEconomicIndicators").find(".modal-footer").find(".btn-warning").remove() ;
-            $("#modalEconomicIndicators").find(".modal-footer").find("button").eq(1).before(html) ;
+        if (defaluts.showDelHtml) {
+            var html = defaluts.showDelHtml.replace(/{frm}/g, 'frmEconomicIndicators');
+            html = html.replace(/{box}/g, 'modalEconomicIndicators');
+            $("#modalEconomicIndicators").find(".modal-footer").find(".btn-warning").remove();
+            $("#modalEconomicIndicators").find(".modal-footer").find("button").eq(1).before(html);
         }
-        if (defaluts.targetCallback){
-            defaluts.targetCallback($("#frmEconomicIndicatorsItem")) ;
+        if (defaluts.targetCallback) {
+            defaluts.targetCallback($("#frmEconomicIndicatorsItem"));
         }
-        if (defaluts.attribute){
-            $("#frmEconomicIndicatorsItem").find("tr").each(function (i,n) {
-                var target = $(n) ;
-                target.find("td").first().find("a").remove() ;
+        if (defaluts.attribute) {
+            $("#frmEconomicIndicatorsItem").find("tr").each(function (i, n) {
+                var target = $(n);
+                target.find("td").first().find("a").remove();
             });
-            $("#modalEconomicIndicators").find(".modal-footer").find(".btn-primary").remove() ;
+            $("#modalEconomicIndicators").find(".modal-footer").find(".btn-primary").remove();
         }
         $("#modalEconomicIndicators").modal();
     };
@@ -373,7 +377,7 @@
             economicIndicatorsItem.unitPrice = $(this).find('[name=unitPrice]').val();
             economicIndicatorsItem.remark = $(this).find('[name=remark]').val();
             data.economicIndicatorsItemList.push(economicIndicatorsItem);
-        })
+        });
         $.ajax({
             url: '${pageContext.request.contextPath}/mdEconomicIndicators/save',
             data: {
@@ -386,7 +390,7 @@
                     if (economicIndicators.saveCallback)
                         economicIndicators.saveCallback(result.data.id);
                     $("#modalEconomicIndicators").modal('hide');
-                    if (data.economicIndicatorsItemList.length >= 1){
+                    if (data.economicIndicatorsItemList.length >= 1) {
 
                     }
                 } else {
@@ -413,43 +417,58 @@
      * @returns {{}}
      */
     economicIndicators.getFormData = function () {
-        var target = $("#frmEconomicIndicatorsItem").find("table").find("tfoot") ;
-        var head = formSerializeArray($("#frmEconomicIndicators")) ;
-        var data = {} ;
+        var target = $("#frmEconomicIndicatorsItem").find("table").find("tfoot");
+        var head = formSerializeArray($("#frmEconomicIndicators"));
+        var data = {};
         data.developLandAreaTax = head.assessUseLandArea;
         data.developBuildAreaTax = head.assessTotalBuildArea;
-        data.plannedBuildingArea = target.find("label[name='plannedBuildingArea']").html() ;
-        data.totalSaleableAreaPrice = target.find("label[name='totalSaleableAreaPrice']").html() ;
-        data.saleableArea = target.find("label[name='saleableArea']").html() ;
+        data.plannedBuildingArea = target.find("label[name='plannedBuildingArea']").html();
+        var totalSaleableAreaPrice = "0";
+        try {
+            totalSaleableAreaPrice = target.find("label[name='totalSaleableAreaPrice']").html();
+            totalSaleableAreaPrice = Number(totalSaleableAreaPrice) / 10000;
+            totalSaleableAreaPrice = totalSaleableAreaPrice.toFixed(2) ;
+        } catch (e) {
+        }
+        data.totalSaleableAreaPrice = totalSaleableAreaPrice;
+        data.saleableArea = target.find("label[name='saleableArea']").html();
         return data;
     };
 
     //自动汇总
     economicIndicators.autoSummary = function () {
-        var target = $("#frmEconomicIndicatorsItem") ;
-        var plannedBuildingAreaValue = 0 , totalSaleableAreaPriceValue = 0,saleableAreaValue = 0;
+        var target = $("#frmEconomicIndicatorsItem");
+        var plannedBuildingAreaValue = 0, totalSaleableAreaPriceValue = 0, saleableAreaValue = 0;
         target.find('tr[data-role="parent"]').each(function () {
             var dataKey = $(this).attr('data-key');
-            var numberTotal = 0, saleableAreaTotal = 0, plannedBuildingAreaTotal = 0,unitPriceTotal = 0,totalSaleableAreaPrice = 0;
+            var numberTotal = 0, saleableAreaTotal = 0, plannedBuildingAreaTotal = 0, unitPriceTotal = 0,
+                totalSaleableAreaPrice = 0;
             $("#frmEconomicIndicatorsItem").find('tr[data-role="child"][data-key=' + dataKey + ']').each(function () {
                 var plannedBuildingArea = $(this).find('[name=plannedBuildingArea]').val();
                 var saleableArea = $(this).find('[name=saleableArea]').val();
                 var number = $(this).find('[name=number]').val();
                 var unitPrice = $(this).find('[name=unitPrice]').val();
-                if (AssessCommon.isNumber(plannedBuildingArea)){
+                if ($.isNumeric(plannedBuildingArea)) {
                     plannedBuildingAreaTotal += parseFloat(plannedBuildingArea);
                 }
-                if (AssessCommon.isNumber(saleableArea)){
+                if ($.isNumeric(saleableArea)) {
                     saleableAreaTotal += parseFloat(saleableArea);
                 }
-                if (AssessCommon.isNumber(number)){
+                if ($.isNumeric(number)) {
                     numberTotal += parseFloat(number);
                 }
-                if (AssessCommon.isNumber(unitPrice)){
+                if ($.isNumeric(unitPrice)) {
                     unitPriceTotal += parseFloat(unitPrice);
                 }
-                if ($.isNumeric(saleableArea) && $.isNumeric(unitPrice)){
-                    var temp = ( parseFloat(saleableArea) * parseFloat(unitPrice)  ) / 10000;
+                var algsValue = 0;
+                if ($.isNumeric(unitPrice)) {
+                    algsValue += parseFloat(unitPrice);
+                }
+                if ($.isNumeric(number)) {
+                    algsValue += parseFloat(number);
+                }
+                if ($.isNumeric(saleableArea) && algsValue != 0) {
+                    var temp = parseFloat(saleableArea) * algsValue;
                     totalSaleableAreaPrice += parseFloat(temp);
                 }
             });
@@ -459,22 +478,22 @@
             $(this).find('[name=number]').text('');
             $(this).find('[name=unitPrice]').text('');
 
-            if (plannedBuildingAreaTotal > 0){
+            if (plannedBuildingAreaTotal > 0) {
                 $(this).find('[name=plannedBuildingArea]').text(plannedBuildingAreaTotal.toFixed(2));
-                plannedBuildingAreaValue += plannedBuildingAreaTotal ;
+                plannedBuildingAreaValue += plannedBuildingAreaTotal;
             }
-            if (saleableAreaTotal > 0){
+            if (saleableAreaTotal > 0) {
                 $(this).find('[name=saleableArea]').text(saleableAreaTotal.toFixed(2));
-                saleableAreaValue += saleableAreaTotal ;
+                saleableAreaValue += saleableAreaTotal;
             }
-            if (numberTotal > 0){
+            if (numberTotal > 0) {
                 $(this).find('[name=number]').text(numberTotal.toFixed(2));
             }
-            if (unitPriceTotal > 0){
+            if (unitPriceTotal > 0) {
                 $(this).find('[name=unitPrice]').text(unitPriceTotal.toFixed(2));
             }
-            if (totalSaleableAreaPrice > 0){
-                totalSaleableAreaPriceValue += totalSaleableAreaPrice ;
+            if (totalSaleableAreaPrice > 0) {
+                totalSaleableAreaPriceValue += totalSaleableAreaPrice;
             }
 
         });

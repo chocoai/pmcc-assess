@@ -92,16 +92,17 @@
             obj.price = Number(value) ;
             obj.planDetailsId = '${projectPlanDetails.id}' ;
             obj.id = target.find("input[name='id']").val();
+            developmentCommon.saveMdArchitecturalObj2(developmentCommon.architecturalB.getFomData(table),obj,function (item) {
+                toastr.success('保存成功!');
+            }) ;
             var mdCalculatingMethodEngineeringCost = landEngineering.engineeringFeeInfoTarget.bootstrapTable('getRowByUniqueId', obj.pid);
-            mdCalculatingMethodEngineeringCost.price = obj.price ;
-            if (landEngineering.defaultType == landEngineering.typeData()){
-                developmentCommon.saveMdArchitecturalObj2(developmentCommon.architecturalA.getFomData(table),obj,function (item) {
-                    toastr.success('保存成功!');
-                }) ;
-            }else {
-                developmentCommon.saveMdArchitecturalObj2(developmentCommon.architecturalB.getFomData(table),obj,function (item) {
-                    toastr.success('保存成功!');
-                }) ;
+            try {
+                mdCalculatingMethodEngineeringCost.price = obj.price;
+                if (landEngineering.defaultType != landEngineering.typeData()){
+                    mdCalculatingMethodEngineeringCost.price = Number(obj.price) / Number(mdCalculatingMethodEngineeringCost.area) ;
+                }
+            } catch (e) {
+                console.log(e);
             }
             developmentCommon.saveMdCalculatingMethodEngineeringCost(mdCalculatingMethodEngineeringCost, function (data) {
                 landEngineering.engineeringFeeInfoTarget.bootstrapTable('refresh');
@@ -121,15 +122,13 @@
             target.find("input[name='id']").val('');
             target.find("input[name='masterId']").val('');
             var type = landEngineering.typeData() ;
+            var reckon = "b" ;
             if (landEngineering.defaultType == type){
-                developmentCommon.architecturalA.appendHtml(target.find(".panel-body"), data, null, price, function (tr) {
-
-                });
-            }else {
-                developmentCommon.architecturalB.appendHtml(target.find(".panel-body"), data, null, price, function (tr) {
-
-                });
+                reckon = "a" ;
             }
+            var options = {target:target.find(".panel-body"),obj:data,attribute:null,price:price,reckon:reckon,callback:function (tr) {
+            }};
+            developmentCommon.architecturalB.init(options) ;
             target.modal("show");
         }
     };
@@ -229,12 +228,17 @@
             }
         }
         var price = math.bignumber(0);
+        var k = 0;
         $.each(result, function (i, n) {
             if ($.isNumeric(n.price)) {
+                k++;
                 price = math.add(price, math.bignumber(n.price));
             }
         });
         price = Number(price.toString());
+        if (k != 0){
+            price = price / k;
+        }
         landEngineering.target.find("input[name='constructionInstallationEngineeringFee']").val(price.toFixed(landEngineering.fixed)).trigger('blur');
         landEngineering.target.find("input[name='reconnaissanceDesign']").trigger('blur');
     };

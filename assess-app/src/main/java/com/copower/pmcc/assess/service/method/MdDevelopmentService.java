@@ -220,7 +220,7 @@ public class MdDevelopmentService {
                     return "";
                 }
                 if (!ArithmeticUtils.checkNotNull(target.getInfrastructureMatchingCost())) {
-                    return "";
+                    target.setInfrastructureMatchingCost(ArithmeticUtils.createBigDecimal(0));
                 }
                 BigDecimal bigDecimal = ArithmeticUtils.multiply(ArithmeticUtils.createBigDecimal(f18), target.getInfrastructureMatchingCost());
                 bigDecimal = ArithmeticUtils.div(bigDecimal, ArithmeticUtils.createBigDecimal(10000));
@@ -233,7 +233,7 @@ public class MdDevelopmentService {
                     return "";
                 }
                 if (!ArithmeticUtils.checkNotNull(target.getDevDuring())) {
-                    return "";
+                    target.setDevDuring(ArithmeticUtils.createBigDecimal(0));
                 }
                 BigDecimal bigDecimal = ArithmeticUtils.multiply(ArithmeticUtils.createBigDecimal(f18), target.getDevDuring());
                 bigDecimal = ArithmeticUtils.div(bigDecimal, ArithmeticUtils.createBigDecimal(10000));
@@ -246,7 +246,7 @@ public class MdDevelopmentService {
                     return "";
                 }
                 if (!ArithmeticUtils.checkNotNull(target.getOtherEngineeringCost())) {
-                    return "";
+                   target.setOtherEngineeringCost(ArithmeticUtils.createBigDecimal(0));
                 }
                 BigDecimal bigDecimal = ArithmeticUtils.multiply(ArithmeticUtils.createBigDecimal(f18), target.getOtherEngineeringCost());
                 bigDecimal = ArithmeticUtils.div(bigDecimal, ArithmeticUtils.createBigDecimal(10000));
@@ -285,7 +285,7 @@ public class MdDevelopmentService {
                     return "";
                 }
                 if (!ArithmeticUtils.checkNotNull(target.getUnforeseenExpenses())) {
-                    return "";
+                    target.setUnforeseenExpenses(ArithmeticUtils.createBigDecimal(0));
                 }
                 BigDecimal bigDecimal = ArithmeticUtils.multiply(ArithmeticUtils.createBigDecimal(d26), target.getUnforeseenExpenses());
                 return ArithmeticUtils.getBigDecimalString(bigDecimal);
@@ -306,7 +306,7 @@ public class MdDevelopmentService {
                     return "";
                 }
                 if (!ArithmeticUtils.checkNotNull(target.getManagementExpense())) {
-                    return "";
+                    target.setManagementExpense(ArithmeticUtils.createBigDecimal(0));
                 }
                 BigDecimal bigDecimal = ArithmeticUtils.multiply(ArithmeticUtils.createBigDecimal(d28), target.getManagementExpense());
                 return ArithmeticUtils.getBigDecimalString(bigDecimal);
@@ -318,7 +318,10 @@ public class MdDevelopmentService {
                 if (!ArithmeticUtils.checkNotNull(Arrays.asList(d26, d27))) {
                     return "";
                 }
-                if (!ArithmeticUtils.checkNotNullList(Arrays.asList(target.getManagementExpense(), target.getLandGetRelevant()))) {
+                if (!ArithmeticUtils.checkNotNull(target.getLandGetRelevant())){
+                    target.setLandGetRelevant(ArithmeticUtils.createBigDecimal(0));
+                }
+                if (!ArithmeticUtils.checkNotNullList(Arrays.asList(target.getManagementExpense()))) {
                     return "";
                 }
                 BigDecimal[] doubles = new BigDecimal[]{ArithmeticUtils.createBigDecimal(d26), ArithmeticUtils.createBigDecimal(d27), target.getLandGetRelevant()};
@@ -554,11 +557,26 @@ public class MdDevelopmentService {
                 BigDecimal e43 = target.getRemunerationRate();
                 BigDecimal g43 = target.getRemainingYears();
                 BigDecimal f43 = target.getStatutoryLife();
-                if (!ArithmeticUtils.checkNotNull(new BigDecimal[]{e43,g43,f43})) {
-                    return "";
+                if (!ArithmeticUtils.checkNotNull(e43)){
+                    e43 = ArithmeticUtils.createBigDecimal(0) ;
+                }
+                if (!ArithmeticUtils.checkNotNull(f43)){
+                    f43 = ArithmeticUtils.createBigDecimal(0) ;
+                }
+                if (!ArithmeticUtils.checkNotNull(g43)){
+                    g43 = ArithmeticUtils.createBigDecimal(0) ;
                 }
                 double a = 1 - 1 / Math.pow(1 + e43.doubleValue(), g43.doubleValue());
-                double b = 1 - 1 / Math.pow(1 + e43.doubleValue(), f43.doubleValue());
+                double b = 1 - 1 / Math.pow(1 + e43.doubleValue(), f43.doubleValue());//特殊处理一下
+                //当b= 0的时候
+                if (b == 0 && a != 0){
+                    double c = a;
+                    a = b;
+                    b = c;
+                }
+                if (b == 0 && a == 0){
+                    return "0" ;
+                }
                 BigDecimal bigDecimal = ArithmeticUtils.div(ArithmeticUtils.createBigDecimal(a), ArithmeticUtils.createBigDecimal(b));
                 return ArithmeticUtils.round(bigDecimal.toString(), 4);
             }
@@ -569,8 +587,14 @@ public class MdDevelopmentService {
                 BigDecimal d44 = target.getAmendmentStatusRights();
                 BigDecimal d45 = target.getOtherAmendments();
                 BigDecimal d46 = target.getDevelopmentDegreeRevision();
-                if (!ArithmeticUtils.checkNotNull(new BigDecimal[]{d44,d45,d46})) {
-                    return "";
+                if (!ArithmeticUtils.checkNotNull(d44)) {
+                    d44 = ArithmeticUtils.createBigDecimal(0) ;
+                }
+                if (!ArithmeticUtils.checkNotNull(d45)) {
+                    d45 = ArithmeticUtils.createBigDecimal(0) ;
+                }
+                if (!ArithmeticUtils.checkNotNull(d46)) {
+                    d46 = ArithmeticUtils.createBigDecimal(0) ;
                 }
                 if (!ArithmeticUtils.checkNotNull(new String[]{d41,d43})) {
                     return "";

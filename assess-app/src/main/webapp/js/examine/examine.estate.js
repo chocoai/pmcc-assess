@@ -900,6 +900,7 @@
                 var obj = {disable:'disable',readonly:"readonly",'class':'form-control'} ;
                 $(tr).find("input[name='price']").attr(obj) ;
                 $(tr).find("input[name='remark']").attr(obj) ;
+                $(tr).find("input[name='area']").attr(obj) ;
             });
             target.find("input[name='constructionInstallationEngineeringFeeId']").val(id);
         },

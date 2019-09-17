@@ -590,7 +590,8 @@
             } catch (e) {
                 console.log("解析异常!");
             }
-            developmentCommon.architecturalB.appendHtml(target.find(".panel-body"),data,{readonly:"readonly",'class':'form-control'},item.price) ;
+            var options = {target:target.find(".panel-body"),obj:data,attribute:{readonly:"readonly",'class':'form-control'},price:item.price,reckon:'c'};
+            developmentCommon.architecturalB.init(options) ;
         });
     };
 
@@ -601,7 +602,6 @@
 
 
     construction.loadMdCalculatingMethodEngineeringCostTable = function () {
-        <%--var obj = {type:construction.type,planDetailsId:'${projectPlanDetails.id}'} ;--%>
         var obj = {planDetailsId:'${projectPlanDetails.id}'} ;
         var cols = [];
         cols.push({

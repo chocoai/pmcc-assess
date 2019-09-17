@@ -695,16 +695,15 @@
             } catch (e) {
                 console.log("解析异常!");
             }
+            var reckon = "b" ;
             var attribute = {readonly:"readonly",'class':'form-control'} ;
-            if ('${mdDevelopment.type}' == 1){
-                developmentCommon.architecturalA.appendHtml(target.find(".panel-body"),data,attribute,item.price,function (tr) {
-                    $(tr).find("input").attr(attribute);
-                }) ;
-            }else {
-                developmentCommon.architecturalB.appendHtml(target.find(".panel-body"),data,attribute,item.price,function (tr) {
-                    $(tr).find("input").attr(attribute);
-                }) ;
+            if (landEngineering.type == 1){
+                reckon = "a" ;
             }
+            var options = {target:target.find(".panel-body"),obj:data,attribute:attribute,price:item.price,reckon:reckon,callback:function (tr) {
+                $(tr).find("input").attr(attribute);
+            }};
+            developmentCommon.architecturalB.init(options) ;
         });
     };
 

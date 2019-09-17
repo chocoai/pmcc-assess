@@ -135,7 +135,10 @@
                 toastr.success('保存成功!');
             });
             var mdCalculatingMethodEngineeringCost = $(construction.engineeringFeeInfoTarget).bootstrapTable('getRowByUniqueId', obj.pid);
-            mdCalculatingMethodEngineeringCost.price = obj.price ;
+            try {
+                mdCalculatingMethodEngineeringCost.price = Number(obj.price) / Number(mdCalculatingMethodEngineeringCost.area) ;
+            } catch (e) {
+            }
             developmentCommon.saveMdCalculatingMethodEngineeringCost(mdCalculatingMethodEngineeringCost, function (data) {
                 $(construction.engineeringFeeInfoTarget).bootstrapTable('refresh');
                 construction.writeMdCalculatingMethodEngineeringCost(data);
@@ -155,7 +158,7 @@
             }
             target.find("input[name='id']").val('');
             target.find("input[name='masterId']").val('');
-            developmentCommon.architecturalB.appendHtml(target.find(".panel-body"), data, null, price, function (tr) {
+            var options = {target:target.find(".panel-body"),obj:data,attribute:null,price:price,reckon:'c',callback:function (tr) {
                 if (type == cost.one) {
                     $(tr).find("input[name='valuationDateDegreeCompletion']").val('100%').attr({
                         readonly: 'readonly',
@@ -163,7 +166,8 @@
                         'data-value': '1'
                     });
                 }
-            });
+            }};
+            developmentCommon.architecturalB.init(options) ;
             target.modal("show");
         }
     };
@@ -187,26 +191,6 @@
         developmentCommon.loadMdCalculatingMethodEngineeringCostTable($(construction.engineeringFeeInfoTarget), obj, $("#toolbarMdCalculatingMethodEngineeringCost"), function () {
             construction.writeMdCalculatingMethodEngineeringCost();
         }, cols);
-    };
-
-    /**工程费 事件**/
-    construction.changeMdCalculatingMethodEngineeringCostField = function (index, id) {
-        var value = $(construction.engineeringFeeInfoTarget).find("[data-id='" + "mdCalculatingMethodEngineeringCostField" + id + "']").find("option:selected").val();
-        var mdCalculatingMethodEngineeringCost = $(construction.engineeringFeeInfoTarget).bootstrapTable('getRowByUniqueId', id);
-        if (value == 1) {
-            mdCalculatingMethodEngineeringCost.dataTableName = AssessDBKey.BasicEstate;
-        }
-        if (value == 2) {
-            mdCalculatingMethodEngineeringCost.dataTableName = AssessDBKey.BasicBuilding;
-        }
-        developmentCommon.saveMdCalculatingMethodEngineeringCost(mdCalculatingMethodEngineeringCost, function () {
-            $(construction.engineeringFeeInfoTarget).bootstrapTable('updateCell', {
-                field: 'dataTableName',
-                value: mdCalculatingMethodEngineeringCost.dataTableName
-            });
-            $(construction.engineeringFeeInfoTarget).bootstrapTable('refresh');
-            toastr.success('绑定成功!');
-        });
     };
 
     construction.showMdCalculatingMethodEngineeringCost = function () {
@@ -260,12 +244,17 @@
             }
         }
         var price = math.bignumber(0);
+        var k = 0;
         $.each(result, function (i, n) {
             if ($.isNumeric(n.price)) {
+                k++;
                 price = math.add(price, math.bignumber(n.price));
             }
         });
         price = Number(price.toString());
+        if(k != 0){
+            price = price / k;
+        }
         construction.target.find("input[name='constructionInstallationEngineeringFee']").val(price.toFixed(construction.fixed)).trigger('blur');
         construction.target.find("input[name='reconnaissanceDesign']").trigger('blur');
     };
