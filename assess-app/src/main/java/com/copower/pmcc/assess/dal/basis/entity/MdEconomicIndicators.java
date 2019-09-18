@@ -6,6 +6,10 @@ import java.util.Date;
 public class MdEconomicIndicators {
     private Integer id;
 
+    private String parcelSettingOuter;
+
+    private String parcelSettingInner;
+
     private Integer planDetailsId;
 
     private String name;
@@ -52,6 +56,22 @@ public class MdEconomicIndicators {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getParcelSettingOuter() {
+        return parcelSettingOuter;
+    }
+
+    public void setParcelSettingOuter(String parcelSettingOuter) {
+        this.parcelSettingOuter = parcelSettingOuter == null ? null : parcelSettingOuter.trim();
+    }
+
+    public String getParcelSettingInner() {
+        return parcelSettingInner;
+    }
+
+    public void setParcelSettingInner(String parcelSettingInner) {
+        this.parcelSettingInner = parcelSettingInner == null ? null : parcelSettingInner.trim();
     }
 
     public Integer getPlanDetailsId() {

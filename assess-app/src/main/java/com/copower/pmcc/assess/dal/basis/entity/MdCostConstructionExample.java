@@ -166,6 +166,146 @@ public class MdCostConstructionExample {
             return (Criteria) this;
         }
 
+        public Criteria andParcelSettingOuterIsNull() {
+            addCriterion("parcel_setting_outer is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingOuterIsNotNull() {
+            addCriterion("parcel_setting_outer is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingOuterEqualTo(String value) {
+            addCriterion("parcel_setting_outer =", value, "parcelSettingOuter");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingOuterNotEqualTo(String value) {
+            addCriterion("parcel_setting_outer <>", value, "parcelSettingOuter");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingOuterGreaterThan(String value) {
+            addCriterion("parcel_setting_outer >", value, "parcelSettingOuter");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingOuterGreaterThanOrEqualTo(String value) {
+            addCriterion("parcel_setting_outer >=", value, "parcelSettingOuter");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingOuterLessThan(String value) {
+            addCriterion("parcel_setting_outer <", value, "parcelSettingOuter");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingOuterLessThanOrEqualTo(String value) {
+            addCriterion("parcel_setting_outer <=", value, "parcelSettingOuter");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingOuterLike(String value) {
+            addCriterion("parcel_setting_outer like", value, "parcelSettingOuter");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingOuterNotLike(String value) {
+            addCriterion("parcel_setting_outer not like", value, "parcelSettingOuter");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingOuterIn(List<String> values) {
+            addCriterion("parcel_setting_outer in", values, "parcelSettingOuter");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingOuterNotIn(List<String> values) {
+            addCriterion("parcel_setting_outer not in", values, "parcelSettingOuter");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingOuterBetween(String value1, String value2) {
+            addCriterion("parcel_setting_outer between", value1, value2, "parcelSettingOuter");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingOuterNotBetween(String value1, String value2) {
+            addCriterion("parcel_setting_outer not between", value1, value2, "parcelSettingOuter");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingInnerIsNull() {
+            addCriterion("parcel_setting_inner is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingInnerIsNotNull() {
+            addCriterion("parcel_setting_inner is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingInnerEqualTo(String value) {
+            addCriterion("parcel_setting_inner =", value, "parcelSettingInner");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingInnerNotEqualTo(String value) {
+            addCriterion("parcel_setting_inner <>", value, "parcelSettingInner");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingInnerGreaterThan(String value) {
+            addCriterion("parcel_setting_inner >", value, "parcelSettingInner");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingInnerGreaterThanOrEqualTo(String value) {
+            addCriterion("parcel_setting_inner >=", value, "parcelSettingInner");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingInnerLessThan(String value) {
+            addCriterion("parcel_setting_inner <", value, "parcelSettingInner");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingInnerLessThanOrEqualTo(String value) {
+            addCriterion("parcel_setting_inner <=", value, "parcelSettingInner");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingInnerLike(String value) {
+            addCriterion("parcel_setting_inner like", value, "parcelSettingInner");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingInnerNotLike(String value) {
+            addCriterion("parcel_setting_inner not like", value, "parcelSettingInner");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingInnerIn(List<String> values) {
+            addCriterion("parcel_setting_inner in", values, "parcelSettingInner");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingInnerNotIn(List<String> values) {
+            addCriterion("parcel_setting_inner not in", values, "parcelSettingInner");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingInnerBetween(String value1, String value2) {
+            addCriterion("parcel_setting_inner between", value1, value2, "parcelSettingInner");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingInnerNotBetween(String value1, String value2) {
+            addCriterion("parcel_setting_inner not between", value1, value2, "parcelSettingInner");
+            return (Criteria) this;
+        }
+
         public Criteria andConstructionInstallationEngineeringFeeIdsIsNull() {
             addCriterion("construction_installation_engineering_fee_ids is null");
             return (Criteria) this;

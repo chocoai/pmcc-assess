@@ -3,6 +3,8 @@
 <mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.MdCostConstructionMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.MdCostConstruction" >
     <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="parcel_setting_outer" property="parcelSettingOuter" jdbcType="VARCHAR" />
+    <result column="parcel_setting_inner" property="parcelSettingInner" jdbcType="VARCHAR" />
     <result column="construction_installation_engineering_fee_ids" property="constructionInstallationEngineeringFeeIds" jdbcType="VARCHAR" />
     <result column="construction_assessment_price_correcting" property="constructionAssessmentPriceCorrecting" jdbcType="DECIMAL" />
     <result column="construction_assessment_value" property="constructionAssessmentValue" jdbcType="VARCHAR" />
@@ -112,19 +114,20 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, construction_installation_engineering_fee_ids, construction_assessment_price_correcting, 
-    construction_assessment_value, investment_profit, interest_investment, construction_subtotal, 
-    land_get_cost_total, json_content, develop_land_area_tax, develop_build_area_tax, 
-    develop_year_number_tax, economic_id, mc_id, land_purchase_price, land_purchase_price_explain, 
-    land_get_relevant, land_get_relevant_explain, reconnaissance_design, construction_installation_engineering_fee, 
-    infrastructure_cost, infrastructure_matching_cost, infrastructure_matching_cost_explain, 
-    dev_during, other_engineering_cost, unforeseen_expenses, unforeseen_expenses_explain, 
-    management_expense, management_expense_explain, sales_fee, sales_fee_explain, interest_investment_tax, 
-    interest_investment_tax_explain, sales_tax_and_additional, sales_tax_and_additional_explain, 
-    investment_profit_tax, investment_profit_tax_explain, construction_assessment_value2, 
-    additional_cost_land_acquisition, infrastructure_cost_explain, dev_during_explain, 
-    other_engineering_cost_explain, additional_cost_land_acquisition_explain, reconnaissance_design_explain, 
-    residue_ratio_id, residue_ratio, pid, creator, gmt_modified, gmt_created
+    id, parcel_setting_outer, parcel_setting_inner, construction_installation_engineering_fee_ids, 
+    construction_assessment_price_correcting, construction_assessment_value, investment_profit, 
+    interest_investment, construction_subtotal, land_get_cost_total, json_content, develop_land_area_tax, 
+    develop_build_area_tax, develop_year_number_tax, economic_id, mc_id, land_purchase_price, 
+    land_purchase_price_explain, land_get_relevant, land_get_relevant_explain, reconnaissance_design, 
+    construction_installation_engineering_fee, infrastructure_cost, infrastructure_matching_cost, 
+    infrastructure_matching_cost_explain, dev_during, other_engineering_cost, unforeseen_expenses, 
+    unforeseen_expenses_explain, management_expense, management_expense_explain, sales_fee, 
+    sales_fee_explain, interest_investment_tax, interest_investment_tax_explain, sales_tax_and_additional, 
+    sales_tax_and_additional_explain, investment_profit_tax, investment_profit_tax_explain, 
+    construction_assessment_value2, additional_cost_land_acquisition, infrastructure_cost_explain, 
+    dev_during_explain, other_engineering_cost_explain, additional_cost_land_acquisition_explain, 
+    reconnaissance_design_explain, residue_ratio_id, residue_ratio, pid, creator, gmt_modified, 
+    gmt_created
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdCostConstructionExample" >
     select
@@ -160,7 +163,8 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_md_cost_construction (construction_installation_engineering_fee_ids, construction_assessment_price_correcting, 
+    insert into tb_md_cost_construction (parcel_setting_outer, parcel_setting_inner, 
+      construction_installation_engineering_fee_ids, construction_assessment_price_correcting, 
       construction_assessment_value, investment_profit, 
       interest_investment, construction_subtotal, 
       land_get_cost_total, json_content, develop_land_area_tax, 
@@ -182,7 +186,8 @@
       reconnaissance_design_explain, residue_ratio_id, 
       residue_ratio, pid, creator, 
       gmt_modified, gmt_created)
-    values (#{constructionInstallationEngineeringFeeIds,jdbcType=VARCHAR}, #{constructionAssessmentPriceCorrecting,jdbcType=DECIMAL}, 
+    values (#{parcelSettingOuter,jdbcType=VARCHAR}, #{parcelSettingInner,jdbcType=VARCHAR}, 
+      #{constructionInstallationEngineeringFeeIds,jdbcType=VARCHAR}, #{constructionAssessmentPriceCorrecting,jdbcType=DECIMAL}, 
       #{constructionAssessmentValue,jdbcType=VARCHAR}, #{investmentProfit,jdbcType=VARCHAR}, 
       #{interestInvestment,jdbcType=VARCHAR}, #{constructionSubtotal,jdbcType=VARCHAR}, 
       #{landGetCostTotal,jdbcType=VARCHAR}, #{jsonContent,jdbcType=VARCHAR}, #{developLandAreaTax,jdbcType=DECIMAL}, 
@@ -211,6 +216,12 @@
     </selectKey>
     insert into tb_md_cost_construction
     <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="parcelSettingOuter != null" >
+        parcel_setting_outer,
+      </if>
+      <if test="parcelSettingInner != null" >
+        parcel_setting_inner,
+      </if>
       <if test="constructionInstallationEngineeringFeeIds != null" >
         construction_installation_engineering_fee_ids,
       </if>
@@ -360,6 +371,12 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="parcelSettingOuter != null" >
+        #{parcelSettingOuter,jdbcType=VARCHAR},
+      </if>
+      <if test="parcelSettingInner != null" >
+        #{parcelSettingInner,jdbcType=VARCHAR},
+      </if>
       <if test="constructionInstallationEngineeringFeeIds != null" >
         #{constructionInstallationEngineeringFeeIds,jdbcType=VARCHAR},
       </if>
@@ -521,6 +538,12 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
+      <if test="record.parcelSettingOuter != null" >
+        parcel_setting_outer = #{record.parcelSettingOuter,jdbcType=VARCHAR},
+      </if>
+      <if test="record.parcelSettingInner != null" >
+        parcel_setting_inner = #{record.parcelSettingInner,jdbcType=VARCHAR},
+      </if>
       <if test="record.constructionInstallationEngineeringFeeIds != null" >
         construction_installation_engineering_fee_ids = #{record.constructionInstallationEngineeringFeeIds,jdbcType=VARCHAR},
       </if>
@@ -676,6 +699,8 @@
   <update id="updateByExample" parameterType="map" >
     update tb_md_cost_construction
     set id = #{record.id,jdbcType=INTEGER},
+      parcel_setting_outer = #{record.parcelSettingOuter,jdbcType=VARCHAR},
+      parcel_setting_inner = #{record.parcelSettingInner,jdbcType=VARCHAR},
       construction_installation_engineering_fee_ids = #{record.constructionInstallationEngineeringFeeIds,jdbcType=VARCHAR},
       construction_assessment_price_correcting = #{record.constructionAssessmentPriceCorrecting,jdbcType=DECIMAL},
       construction_assessment_value = #{record.constructionAssessmentValue,jdbcType=VARCHAR},
@@ -732,6 +757,12 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdCostConstruction" >
     update tb_md_cost_construction
     <set >
+      <if test="parcelSettingOuter != null" >
+        parcel_setting_outer = #{parcelSettingOuter,jdbcType=VARCHAR},
+      </if>
+      <if test="parcelSettingInner != null" >
+        parcel_setting_inner = #{parcelSettingInner,jdbcType=VARCHAR},
+      </if>
       <if test="constructionInstallationEngineeringFeeIds != null" >
         construction_installation_engineering_fee_ids = #{constructionInstallationEngineeringFeeIds,jdbcType=VARCHAR},
       </if>
@@ -884,7 +915,9 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdCostConstruction" >
     update tb_md_cost_construction
-    set construction_installation_engineering_fee_ids = #{constructionInstallationEngineeringFeeIds,jdbcType=VARCHAR},
+    set parcel_setting_outer = #{parcelSettingOuter,jdbcType=VARCHAR},
+      parcel_setting_inner = #{parcelSettingInner,jdbcType=VARCHAR},
+      construction_installation_engineering_fee_ids = #{constructionInstallationEngineeringFeeIds,jdbcType=VARCHAR},
       construction_assessment_price_correcting = #{constructionAssessmentPriceCorrecting,jdbcType=DECIMAL},
       construction_assessment_value = #{constructionAssessmentValue,jdbcType=VARCHAR},
       investment_profit = #{investmentProfit,jdbcType=VARCHAR},

@@ -3,6 +3,8 @@
 <mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.MdEconomicIndicatorsMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.MdEconomicIndicators" >
     <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="parcel_setting_outer" property="parcelSettingOuter" jdbcType="VARCHAR" />
+    <result column="parcel_setting_inner" property="parcelSettingInner" jdbcType="VARCHAR" />
     <result column="plan_details_id" property="planDetailsId" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="grade" property="grade" jdbcType="VARCHAR" />
@@ -83,10 +85,11 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, plan_details_id, name, grade, cert_use, building_structure, building_base_coverage, 
-    building_height_limit, volumetric_rate, building_density, green_space_rate, plan_net_construction_land_area, 
-    plan_total_build_area, set_volumetric_rate, assess_use_land_area, assess_total_build_area, 
-    plan_date, remark, creator, gmt_created, gmt_modified
+    id, parcel_setting_outer, parcel_setting_inner, plan_details_id, name, grade, cert_use, 
+    building_structure, building_base_coverage, building_height_limit, volumetric_rate, 
+    building_density, green_space_rate, plan_net_construction_land_area, plan_total_build_area, 
+    set_volumetric_rate, assess_use_land_area, assess_total_build_area, plan_date, remark, 
+    creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdEconomicIndicatorsExample" >
     select
@@ -122,7 +125,8 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_md_economic_indicators (plan_details_id, name, grade, 
+    insert into tb_md_economic_indicators (parcel_setting_outer, parcel_setting_inner, 
+      plan_details_id, name, grade, 
       cert_use, building_structure, building_base_coverage, 
       building_height_limit, volumetric_rate, building_density, 
       green_space_rate, plan_net_construction_land_area, 
@@ -130,7 +134,8 @@
       assess_use_land_area, assess_total_build_area, 
       plan_date, remark, creator, 
       gmt_created, gmt_modified)
-    values (#{planDetailsId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{grade,jdbcType=VARCHAR}, 
+    values (#{parcelSettingOuter,jdbcType=VARCHAR}, #{parcelSettingInner,jdbcType=VARCHAR}, 
+      #{planDetailsId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{grade,jdbcType=VARCHAR}, 
       #{certUse,jdbcType=VARCHAR}, #{buildingStructure,jdbcType=VARCHAR}, #{buildingBaseCoverage,jdbcType=DECIMAL}, 
       #{buildingHeightLimit,jdbcType=DECIMAL}, #{volumetricRate,jdbcType=VARCHAR}, #{buildingDensity,jdbcType=VARCHAR}, 
       #{greenSpaceRate,jdbcType=VARCHAR}, #{planNetConstructionLandArea,jdbcType=DECIMAL}, 
@@ -145,6 +150,12 @@
     </selectKey>
     insert into tb_md_economic_indicators
     <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="parcelSettingOuter != null" >
+        parcel_setting_outer,
+      </if>
+      <if test="parcelSettingInner != null" >
+        parcel_setting_inner,
+      </if>
       <if test="planDetailsId != null" >
         plan_details_id,
       </if>
@@ -207,6 +218,12 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="parcelSettingOuter != null" >
+        #{parcelSettingOuter,jdbcType=VARCHAR},
+      </if>
+      <if test="parcelSettingInner != null" >
+        #{parcelSettingInner,jdbcType=VARCHAR},
+      </if>
       <if test="planDetailsId != null" >
         #{planDetailsId,jdbcType=INTEGER},
       </if>
@@ -281,6 +298,12 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
+      <if test="record.parcelSettingOuter != null" >
+        parcel_setting_outer = #{record.parcelSettingOuter,jdbcType=VARCHAR},
+      </if>
+      <if test="record.parcelSettingInner != null" >
+        parcel_setting_inner = #{record.parcelSettingInner,jdbcType=VARCHAR},
+      </if>
       <if test="record.planDetailsId != null" >
         plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
       </if>
@@ -349,6 +372,8 @@
   <update id="updateByExample" parameterType="map" >
     update tb_md_economic_indicators
     set id = #{record.id,jdbcType=INTEGER},
+      parcel_setting_outer = #{record.parcelSettingOuter,jdbcType=VARCHAR},
+      parcel_setting_inner = #{record.parcelSettingInner,jdbcType=VARCHAR},
       plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
       name = #{record.name,jdbcType=VARCHAR},
       grade = #{record.grade,jdbcType=VARCHAR},
@@ -376,6 +401,12 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdEconomicIndicators" >
     update tb_md_economic_indicators
     <set >
+      <if test="parcelSettingOuter != null" >
+        parcel_setting_outer = #{parcelSettingOuter,jdbcType=VARCHAR},
+      </if>
+      <if test="parcelSettingInner != null" >
+        parcel_setting_inner = #{parcelSettingInner,jdbcType=VARCHAR},
+      </if>
       <if test="planDetailsId != null" >
         plan_details_id = #{planDetailsId,jdbcType=INTEGER},
       </if>
@@ -441,7 +472,9 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdEconomicIndicators" >
     update tb_md_economic_indicators
-    set plan_details_id = #{planDetailsId,jdbcType=INTEGER},
+    set parcel_setting_outer = #{parcelSettingOuter,jdbcType=VARCHAR},
+      parcel_setting_inner = #{parcelSettingInner,jdbcType=VARCHAR},
+      plan_details_id = #{planDetailsId,jdbcType=INTEGER},
       name = #{name,jdbcType=VARCHAR},
       grade = #{grade,jdbcType=VARCHAR},
       cert_use = #{certUse,jdbcType=VARCHAR},

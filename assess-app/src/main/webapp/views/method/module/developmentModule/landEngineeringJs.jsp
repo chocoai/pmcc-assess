@@ -380,6 +380,7 @@
         }
         $('#modalEconomicIndicators').find('.modal-footer').find('button').last().bind('click',function() {
             var data = economicIndicators.getFormData() ;
+            development.initParcelSettingData(data) ;
             landEngineering.target.find("a[data-key='plannedBuildingArea']").html(data.plannedBuildingArea);
             landEngineering.target.find("a[data-key='totalSaleableAreaPrice']").html(data.totalSaleableAreaPrice);
             landEngineering.target.find("a[data-key='saleableArea']").html(data.saleableArea);

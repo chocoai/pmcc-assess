@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.MdEconomicIndicatorsItemMapper" >
-  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.MdEconomicIndicatorsItem" >
+<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.DataAssetsAppraisalDicMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.DataAssetsAppraisalDic" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="pid" property="pid" jdbcType="INTEGER" />
-    <result column="economic_id" property="economicId" jdbcType="INTEGER" />
     <result column="plan_details_id" property="planDetailsId" jdbcType="INTEGER" />
-    <result column="data_key" property="dataKey" jdbcType="VARCHAR" />
+    <result column="project_id" property="projectId" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="setting" property="setting" jdbcType="BIT" />
+    <result column="edit_file_enable" property="editFileEnable" jdbcType="BIT" />
+    <result column="bis_enable" property="bisEnable" jdbcType="BIT" />
+    <result column="bis_delete" property="bisDelete" jdbcType="BIT" />
     <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="planned_building_area" property="plannedBuildingArea" jdbcType="DECIMAL" />
-    <result column="saleable_area" property="saleableArea" jdbcType="DECIMAL" />
-    <result column="assess_area" property="assessArea" jdbcType="DECIMAL" />
-    <result column="number" property="number" jdbcType="INTEGER" />
-    <result column="unit_price" property="unitPrice" jdbcType="DECIMAL" />
+    <result column="field_name" property="fieldName" jdbcType="VARCHAR" />
+    <result column="field_name_list" property="fieldNameList" jdbcType="VARCHAR" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="key_value" property="keyValue" jdbcType="VARCHAR" />
+    <result column="sorting" property="sorting" jdbcType="INTEGER" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -77,16 +80,17 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, pid, economic_id, plan_details_id, data_key, name, planned_building_area, saleable_area, 
-    assess_area, number, unit_price, remark, creator, gmt_created, gmt_modified
+    id, pid, plan_details_id, project_id, type, setting, edit_file_enable, bis_enable, 
+    bis_delete, name, field_name, field_name_list, remark, key_value, sorting, creator, 
+    gmt_created, gmt_modified
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdEconomicIndicatorsItemExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataAssetsAppraisalDicExample" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from tb_md_economic_indicators_item
+    from tb_data_assets_appraisal_dic
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -97,72 +101,83 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from tb_md_economic_indicators_item
+    from tb_data_assets_appraisal_dic
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from tb_md_economic_indicators_item
+    delete from tb_data_assets_appraisal_dic
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdEconomicIndicatorsItemExample" >
-    delete from tb_md_economic_indicators_item
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataAssetsAppraisalDicExample" >
+    delete from tb_data_assets_appraisal_dic
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdEconomicIndicatorsItem" >
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataAssetsAppraisalDic" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_md_economic_indicators_item (pid, economic_id, plan_details_id, 
-      data_key, name, planned_building_area, 
-      saleable_area, assess_area, number, 
-      unit_price, remark, creator, 
+    insert into tb_data_assets_appraisal_dic (pid, plan_details_id, project_id, 
+      type, setting, edit_file_enable, 
+      bis_enable, bis_delete, name, 
+      field_name, field_name_list, remark, 
+      key_value, sorting, creator, 
       gmt_created, gmt_modified)
-    values (#{pid,jdbcType=INTEGER}, #{economicId,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, 
-      #{dataKey,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{plannedBuildingArea,jdbcType=DECIMAL}, 
-      #{saleableArea,jdbcType=DECIMAL}, #{assessArea,jdbcType=DECIMAL}, #{number,jdbcType=INTEGER}, 
-      #{unitPrice,jdbcType=DECIMAL}, #{remark,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+    values (#{pid,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, 
+      #{type,jdbcType=VARCHAR}, #{setting,jdbcType=BIT}, #{editFileEnable,jdbcType=BIT}, 
+      #{bisEnable,jdbcType=BIT}, #{bisDelete,jdbcType=BIT}, #{name,jdbcType=VARCHAR}, 
+      #{fieldName,jdbcType=VARCHAR}, #{fieldNameList,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{keyValue,jdbcType=VARCHAR}, #{sorting,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
       #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdEconomicIndicatorsItem" >
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataAssetsAppraisalDic" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_md_economic_indicators_item
+    insert into tb_data_assets_appraisal_dic
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="pid != null" >
         pid,
       </if>
-      <if test="economicId != null" >
-        economic_id,
-      </if>
       <if test="planDetailsId != null" >
         plan_details_id,
       </if>
-      <if test="dataKey != null" >
-        data_key,
+      <if test="projectId != null" >
+        project_id,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="setting != null" >
+        setting,
+      </if>
+      <if test="editFileEnable != null" >
+        edit_file_enable,
+      </if>
+      <if test="bisEnable != null" >
+        bis_enable,
+      </if>
+      <if test="bisDelete != null" >
+        bis_delete,
       </if>
       <if test="name != null" >
         name,
       </if>
-      <if test="plannedBuildingArea != null" >
-        planned_building_area,
+      <if test="fieldName != null" >
+        field_name,
       </if>
-      <if test="saleableArea != null" >
-        saleable_area,
-      </if>
-      <if test="assessArea != null" >
-        assess_area,
-      </if>
-      <if test="number != null" >
-        number,
-      </if>
-      <if test="unitPrice != null" >
-        unit_price,
+      <if test="fieldNameList != null" >
+        field_name_list,
       </if>
       <if test="remark != null" >
         remark,
+      </if>
+      <if test="keyValue != null" >
+        key_value,
+      </if>
+      <if test="sorting != null" >
+        sorting,
       </if>
       <if test="creator != null" >
         creator,
@@ -178,35 +193,44 @@
       <if test="pid != null" >
         #{pid,jdbcType=INTEGER},
       </if>
-      <if test="economicId != null" >
-        #{economicId,jdbcType=INTEGER},
-      </if>
       <if test="planDetailsId != null" >
         #{planDetailsId,jdbcType=INTEGER},
       </if>
-      <if test="dataKey != null" >
-        #{dataKey,jdbcType=VARCHAR},
+      <if test="projectId != null" >
+        #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="setting != null" >
+        #{setting,jdbcType=BIT},
+      </if>
+      <if test="editFileEnable != null" >
+        #{editFileEnable,jdbcType=BIT},
+      </if>
+      <if test="bisEnable != null" >
+        #{bisEnable,jdbcType=BIT},
+      </if>
+      <if test="bisDelete != null" >
+        #{bisDelete,jdbcType=BIT},
       </if>
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
       </if>
-      <if test="plannedBuildingArea != null" >
-        #{plannedBuildingArea,jdbcType=DECIMAL},
+      <if test="fieldName != null" >
+        #{fieldName,jdbcType=VARCHAR},
       </if>
-      <if test="saleableArea != null" >
-        #{saleableArea,jdbcType=DECIMAL},
-      </if>
-      <if test="assessArea != null" >
-        #{assessArea,jdbcType=DECIMAL},
-      </if>
-      <if test="number != null" >
-        #{number,jdbcType=INTEGER},
-      </if>
-      <if test="unitPrice != null" >
-        #{unitPrice,jdbcType=DECIMAL},
+      <if test="fieldNameList != null" >
+        #{fieldNameList,jdbcType=VARCHAR},
       </if>
       <if test="remark != null" >
         #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="keyValue != null" >
+        #{keyValue,jdbcType=VARCHAR},
+      </if>
+      <if test="sorting != null" >
+        #{sorting,jdbcType=INTEGER},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -219,14 +243,14 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdEconomicIndicatorsItemExample" resultType="java.lang.Integer" >
-    select count(*) from tb_md_economic_indicators_item
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataAssetsAppraisalDicExample" resultType="java.lang.Integer" >
+    select count(*) from tb_data_assets_appraisal_dic
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update tb_md_economic_indicators_item
+    update tb_data_assets_appraisal_dic
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
@@ -234,35 +258,44 @@
       <if test="record.pid != null" >
         pid = #{record.pid,jdbcType=INTEGER},
       </if>
-      <if test="record.economicId != null" >
-        economic_id = #{record.economicId,jdbcType=INTEGER},
-      </if>
       <if test="record.planDetailsId != null" >
         plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
       </if>
-      <if test="record.dataKey != null" >
-        data_key = #{record.dataKey,jdbcType=VARCHAR},
+      <if test="record.projectId != null" >
+        project_id = #{record.projectId,jdbcType=INTEGER},
+      </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=VARCHAR},
+      </if>
+      <if test="record.setting != null" >
+        setting = #{record.setting,jdbcType=BIT},
+      </if>
+      <if test="record.editFileEnable != null" >
+        edit_file_enable = #{record.editFileEnable,jdbcType=BIT},
+      </if>
+      <if test="record.bisEnable != null" >
+        bis_enable = #{record.bisEnable,jdbcType=BIT},
+      </if>
+      <if test="record.bisDelete != null" >
+        bis_delete = #{record.bisDelete,jdbcType=BIT},
       </if>
       <if test="record.name != null" >
         name = #{record.name,jdbcType=VARCHAR},
       </if>
-      <if test="record.plannedBuildingArea != null" >
-        planned_building_area = #{record.plannedBuildingArea,jdbcType=DECIMAL},
+      <if test="record.fieldName != null" >
+        field_name = #{record.fieldName,jdbcType=VARCHAR},
       </if>
-      <if test="record.saleableArea != null" >
-        saleable_area = #{record.saleableArea,jdbcType=DECIMAL},
-      </if>
-      <if test="record.assessArea != null" >
-        assess_area = #{record.assessArea,jdbcType=DECIMAL},
-      </if>
-      <if test="record.number != null" >
-        number = #{record.number,jdbcType=INTEGER},
-      </if>
-      <if test="record.unitPrice != null" >
-        unit_price = #{record.unitPrice,jdbcType=DECIMAL},
+      <if test="record.fieldNameList != null" >
+        field_name_list = #{record.fieldNameList,jdbcType=VARCHAR},
       </if>
       <if test="record.remark != null" >
         remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.keyValue != null" >
+        key_value = #{record.keyValue,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sorting != null" >
+        sorting = #{record.sorting,jdbcType=INTEGER},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -279,19 +312,22 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update tb_md_economic_indicators_item
+    update tb_data_assets_appraisal_dic
     set id = #{record.id,jdbcType=INTEGER},
       pid = #{record.pid,jdbcType=INTEGER},
-      economic_id = #{record.economicId,jdbcType=INTEGER},
       plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
-      data_key = #{record.dataKey,jdbcType=VARCHAR},
+      project_id = #{record.projectId,jdbcType=INTEGER},
+      type = #{record.type,jdbcType=VARCHAR},
+      setting = #{record.setting,jdbcType=BIT},
+      edit_file_enable = #{record.editFileEnable,jdbcType=BIT},
+      bis_enable = #{record.bisEnable,jdbcType=BIT},
+      bis_delete = #{record.bisDelete,jdbcType=BIT},
       name = #{record.name,jdbcType=VARCHAR},
-      planned_building_area = #{record.plannedBuildingArea,jdbcType=DECIMAL},
-      saleable_area = #{record.saleableArea,jdbcType=DECIMAL},
-      assess_area = #{record.assessArea,jdbcType=DECIMAL},
-      number = #{record.number,jdbcType=INTEGER},
-      unit_price = #{record.unitPrice,jdbcType=DECIMAL},
+      field_name = #{record.fieldName,jdbcType=VARCHAR},
+      field_name_list = #{record.fieldNameList,jdbcType=VARCHAR},
       remark = #{record.remark,jdbcType=VARCHAR},
+      key_value = #{record.keyValue,jdbcType=VARCHAR},
+      sorting = #{record.sorting,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -299,41 +335,50 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdEconomicIndicatorsItem" >
-    update tb_md_economic_indicators_item
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataAssetsAppraisalDic" >
+    update tb_data_assets_appraisal_dic
     <set >
       <if test="pid != null" >
         pid = #{pid,jdbcType=INTEGER},
       </if>
-      <if test="economicId != null" >
-        economic_id = #{economicId,jdbcType=INTEGER},
-      </if>
       <if test="planDetailsId != null" >
         plan_details_id = #{planDetailsId,jdbcType=INTEGER},
       </if>
-      <if test="dataKey != null" >
-        data_key = #{dataKey,jdbcType=VARCHAR},
+      <if test="projectId != null" >
+        project_id = #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="setting != null" >
+        setting = #{setting,jdbcType=BIT},
+      </if>
+      <if test="editFileEnable != null" >
+        edit_file_enable = #{editFileEnable,jdbcType=BIT},
+      </if>
+      <if test="bisEnable != null" >
+        bis_enable = #{bisEnable,jdbcType=BIT},
+      </if>
+      <if test="bisDelete != null" >
+        bis_delete = #{bisDelete,jdbcType=BIT},
       </if>
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
       </if>
-      <if test="plannedBuildingArea != null" >
-        planned_building_area = #{plannedBuildingArea,jdbcType=DECIMAL},
+      <if test="fieldName != null" >
+        field_name = #{fieldName,jdbcType=VARCHAR},
       </if>
-      <if test="saleableArea != null" >
-        saleable_area = #{saleableArea,jdbcType=DECIMAL},
-      </if>
-      <if test="assessArea != null" >
-        assess_area = #{assessArea,jdbcType=DECIMAL},
-      </if>
-      <if test="number != null" >
-        number = #{number,jdbcType=INTEGER},
-      </if>
-      <if test="unitPrice != null" >
-        unit_price = #{unitPrice,jdbcType=DECIMAL},
+      <if test="fieldNameList != null" >
+        field_name_list = #{fieldNameList,jdbcType=VARCHAR},
       </if>
       <if test="remark != null" >
         remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="keyValue != null" >
+        key_value = #{keyValue,jdbcType=VARCHAR},
+      </if>
+      <if test="sorting != null" >
+        sorting = #{sorting,jdbcType=INTEGER},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -347,19 +392,22 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdEconomicIndicatorsItem" >
-    update tb_md_economic_indicators_item
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataAssetsAppraisalDic" >
+    update tb_data_assets_appraisal_dic
     set pid = #{pid,jdbcType=INTEGER},
-      economic_id = #{economicId,jdbcType=INTEGER},
       plan_details_id = #{planDetailsId,jdbcType=INTEGER},
-      data_key = #{dataKey,jdbcType=VARCHAR},
+      project_id = #{projectId,jdbcType=INTEGER},
+      type = #{type,jdbcType=VARCHAR},
+      setting = #{setting,jdbcType=BIT},
+      edit_file_enable = #{editFileEnable,jdbcType=BIT},
+      bis_enable = #{bisEnable,jdbcType=BIT},
+      bis_delete = #{bisDelete,jdbcType=BIT},
       name = #{name,jdbcType=VARCHAR},
-      planned_building_area = #{plannedBuildingArea,jdbcType=DECIMAL},
-      saleable_area = #{saleableArea,jdbcType=DECIMAL},
-      assess_area = #{assessArea,jdbcType=DECIMAL},
-      number = #{number,jdbcType=INTEGER},
-      unit_price = #{unitPrice,jdbcType=DECIMAL},
+      field_name = #{fieldName,jdbcType=VARCHAR},
+      field_name_list = #{fieldNameList,jdbcType=VARCHAR},
       remark = #{remark,jdbcType=VARCHAR},
+      key_value = #{keyValue,jdbcType=VARCHAR},
+      sorting = #{sorting,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

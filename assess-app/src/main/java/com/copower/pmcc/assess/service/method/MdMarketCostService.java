@@ -135,7 +135,7 @@ public class MdMarketCostService {
                 return;
             }
             if (mdEconomicIndicators.getEconomicIndicators() == null) {
-               return;
+                return;
             }
             if (mdEconomicIndicators.getEconomicIndicators().getAssessUseLandArea() != null) {
                 mdCostConstruction.setDevelopLandAreaTax(mdEconomicIndicators.getEconomicIndicators().getAssessUseLandArea());
@@ -229,12 +229,34 @@ public class MdMarketCostService {
     }
 
 
-    public MdCostConstructionVo getMdCostConstructionVo(MdCostConstruction mdCostConstruction) {
+    public MdCostConstructionVo getMdCostConstructionVo(MdCostConstruction oo) {
         MdCostConstructionVo vo = new MdCostConstructionVo();
-        if (mdCostConstruction == null) {
+        if (oo == null) {
             return vo;
         }
-        BeanUtils.copyProperties(mdCostConstruction, vo);
+        BeanUtils.copyProperties(oo, vo);
+
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(oo.getParcelSettingOuter())) {
+            List<Integer> ids = FormatUtils.transformString2Integer(oo.getParcelSettingOuter());
+            if (org.apache.commons.collections.CollectionUtils.isNotEmpty(ids)) {
+                List<String> stringList = Lists.newArrayList();
+                for (Integer integer : ids) {
+                    stringList.add(baseDataDicService.getNameById(integer));
+                }
+                vo.setParcelSettingOuterName(org.apache.commons.lang3.StringUtils.join(stringList, "，"));
+            }
+        }
+
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(oo.getParcelSettingInner())) {
+            List<Integer> ids = FormatUtils.transformString2Integer(oo.getParcelSettingInner());
+            if (org.apache.commons.collections.CollectionUtils.isNotEmpty(ids)) {
+                List<String> stringList = Lists.newArrayList();
+                for (Integer integer : ids) {
+                    stringList.add(baseDataDicService.getNameById(integer));
+                }
+                vo.setParcelSettingInnerName(org.apache.commons.lang3.StringUtils.join(stringList, "，"));
+            }
+        }
         return vo;
     }
 

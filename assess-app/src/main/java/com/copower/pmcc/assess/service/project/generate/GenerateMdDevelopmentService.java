@@ -364,7 +364,7 @@ public class GenerateMdDevelopmentService {
         if (this.mdDevelopmentVo == null) {
             MdDevelopment mdDevelopment = mdDevelopmentService.getMdDevelopmentById(schemeInfo.getMethodDataId());
             if (mdDevelopment != null) {
-                this.mdDevelopmentVo = mdDevelopmentService.getMdDevelopmentVo(mdDevelopment, false);
+                this.mdDevelopmentVo = mdDevelopmentService.getMdDevelopmentVo(mdDevelopment);
             } else {
                 this.mdDevelopmentVo = new MdDevelopmentVo();
             }
