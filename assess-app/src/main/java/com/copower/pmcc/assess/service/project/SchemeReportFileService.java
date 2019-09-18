@@ -334,8 +334,8 @@ public class SchemeReportFileService extends BaseService {
     }
 
     //删除自己生成附件
-    public void removeGenerateFile(List<SysAttachmentDto> attachmentDtoList){
-        if(CollectionUtils.isNotEmpty(attachmentDtoList)) {
+    public void removeGenerateFile(List<SysAttachmentDto> attachmentDtoList) {
+        if (CollectionUtils.isNotEmpty(attachmentDtoList)) {
             Iterator<SysAttachmentDto> it = attachmentDtoList.iterator();
             while (it.hasNext()) {
                 SysAttachmentDto item = it.next();
@@ -625,7 +625,7 @@ public class SchemeReportFileService extends BaseService {
                 stringBuilder.append(baseAttachmentService.getViewHtml(attachmentDto));
             }
             vo.setFileViewName(stringBuilder.toString());
-        }else{
+        } else {
             vo.setFileViewName("");
         }
         vo.setCertifyPartName(schemeReportFileItem.getCertifyPart() != null ? baseDataDicService.getNameById(schemeReportFileItem.getCertifyPart()) : "");
@@ -647,26 +647,20 @@ public class SchemeReportFileService extends BaseService {
         return baseAttachmentService.getAttachmentList(reportAttachment);
     }
 
-    public void initSchemeReportFileItems(List<DeclareRecord> declareRecordList) {
-        if (CollectionUtils.isNotEmpty(declareRecordList)) {
-            for (DeclareRecord declareRecord : declareRecordList) {
-                //如果无实况照片则进行初始化
-                List<SchemeReportFileItem> schemeReportFileItems = getListByDeclareRecordId(declareRecord.getId());
-                if(CollectionUtils.isEmpty(schemeReportFileItems)) {
-                    //获取模板
-                    List<DataLocaleSurveyPictureVo> localeSurveyPictures = dataLocaleSurveyPictureService.getDataLocaleSurveyPictureVos(new DataLocaleSurveyPicture());
-                    if(CollectionUtils.isNotEmpty(localeSurveyPictures)) {
-                        for (DataLocaleSurveyPictureVo template: localeSurveyPictures) {
-                            SchemeReportFileItem where = new SchemeReportFileItem();
-                            where.setDeclareRecordId(declareRecord.getId());
-                            where.setFileName(template.getName());
-                            where.setBisEnable(false);
-                            where.setType(AssessUploadEnum.JUDGE_OBJECT_LIVE_SITUATION.getKey());
-                            schemeReportFileItemDao.addReportFileItem(where);
-                        }
-                    }
-                }
+    public void affirmPictureTemplate(Integer type, Integer declareRecordId) {
+        //获取模板
+        DataLocaleSurveyPicture dataLocaleSurveyPicture = new DataLocaleSurveyPicture();
+        dataLocaleSurveyPicture.setType(type);
+        List<DataLocaleSurveyPictureVo> localeSurveyPictures = dataLocaleSurveyPictureService.getDataLocaleSurveyPictureVos(dataLocaleSurveyPicture);
+        if (CollectionUtils.isNotEmpty(localeSurveyPictures)) {
+            for (DataLocaleSurveyPictureVo surveyPictureVo : localeSurveyPictures) {
+                SchemeReportFileItem schemeReportFileItem = new SchemeReportFileItem();
+                BeanUtils.copyProperties(surveyPictureVo, schemeReportFileItem);
+                schemeReportFileItem.setDeclareRecordId(declareRecordId);
+                schemeReportFileItem.setType(AssessUploadEnum.JUDGE_OBJECT_LIVE_SITUATION.getKey());
+                schemeReportFileItemDao.addReportFileItem(schemeReportFileItem);
             }
         }
+
     }
 }

@@ -150,8 +150,17 @@ public class ProjectNumberRecordService {
                     });
                     projectNumberRecords.sort(ordering);
                 }
-                number = projectNumberRecords.get(0).getNumber();
-                reportNumber = reportNumber.replaceAll("\\{number\\}", StringUtils.leftPad(String.valueOf(++number), numberRule.getFigures(), '0'));
+                //判断拿到的最大号是否有效
+                //无效则直接拿最大号
+                if(projectNumberRecords.get(0).getBisDelete()==true){
+                    //直接取最大号
+                    reportNumberService = new ReportNumberService(reportType, year, number, numberRule, reportNumber).invoke();
+                    number = reportNumberService.getNumber();
+                    reportNumber = reportNumberService.getReportNumber();
+                }else {
+                    number = projectNumberRecords.get(0).getNumber();
+                    reportNumber = reportNumber.replaceAll("\\{number\\}", StringUtils.leftPad(String.valueOf(number), numberRule.getFigures(), '0'));
+                }
             } else {
                 //直接取最大号
                 reportNumberService = new ReportNumberService(reportType, year, number, numberRule, reportNumber).invoke();

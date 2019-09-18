@@ -83,6 +83,8 @@
                             </div>
                             <a class="btn btn-primary" href="javascript://"
                                onclick="projectDetails.projectSubsequent()"></i>后续事项</a>
+                            <a class="btn btn-primary" href="javascript://"
+                               onclick="projectDetails.projectTakeNumber()"></i>项目拿号</a>
                         </div>
                     </div>
                 </div>
@@ -251,6 +253,21 @@
                         <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
                     </ul>
                     <h3>
+                        项目拿号
+                    </h3>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content collapse">
+                    <table class="table table-bordered" id="tb_takeNumber">
+                    </table>
+                </div>
+            </div>
+            <div class="x_panel">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                    </ul>
+                    <h3>
                         项目日志
                     </h3>
                     <div class="clearfix"></div>
@@ -405,7 +422,9 @@
 
         projectDetails.getRuningTab().tab('show');
         projectDetails.loadDocumentSend();
+        projectDetails.loadDocumentOpinion();
         projectDetails.loadSubsequent();
+        projectDetails.loadTakeNumber();
         projectDetails.loadProjectLog();
         projectDetails.loadProjectLegwork();
         projectDetails.loadProjectBill();
@@ -742,6 +761,11 @@
             var url = "${pageContext.request.contextPath}/projectSubsequent/apply?projectId=" + ${projectInfo.id};
             window.open(url, '_blank');
         },
+        //项目拿号
+        projectTakeNumber: function () {
+            var url = "${pageContext.request.contextPath}/projectTakeNumber/apply?projectId=" + ${projectInfo.id};
+            window.open(url, '_blank');
+        },
 
         //完成
         finishProject: function () {
@@ -989,7 +1013,7 @@
         },
 
         //项目意见稿
-        loadDocumentSend: function () {
+        loadDocumentOpinion: function () {
             var cols = [];
             cols.push({field: 'areaGroupName', title: '区域名称'});
             cols.push({field: 'reportTypeName', title: '报告类型'});
@@ -1016,6 +1040,31 @@
             cols.push({field: 'fileViewName', title: '附件'});
             $("#tb_subsequentList").bootstrapTable('destroy');
             TableInit("tb_subsequentList", "${pageContext.request.contextPath}/projectSubsequent/getSubsequentList", cols, {
+                projectId: ${projectInfo.id}
+            }, {
+                showColumns: false,
+                showRefresh: false,
+                search: false,
+                onLoadSuccess: function () {
+                    $('.tooltips').tooltip();
+                }
+            });
+        },
+
+        //项目拿号类型、文号、说明、拿号人、拿号时间
+        loadTakeNumber: function () {
+            var cols = [];
+            cols.push({field: 'reportTypeName', title: '报告类型'});
+            cols.push({field: 'numberValue', title: '文号'});
+            cols.push({field: 'remark', title: '说明'});
+            cols.push({field: 'creatorName', title: '拿号人'});
+            cols.push({
+                field: 'takeTime', title: '拿号时间', formatter: function (value, row, index) {
+                    return formatDate(value);
+                }
+            });
+            $("#tb_takeNumber").bootstrapTable('destroy');
+            TableInit("tb_takeNumber", "${pageContext.request.contextPath}/projectTakeNumber/getTakeNumberList", cols, {
                 projectId: ${projectInfo.id}
             }, {
                 showColumns: false,

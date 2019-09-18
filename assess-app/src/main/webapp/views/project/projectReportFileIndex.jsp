@@ -96,6 +96,11 @@
                                                        onclick="getLiveSituationAll(${declareRecord.id})"
                                                        value="选择查勘中图片">
                                             </small>
+                                            <small>
+                                                <input type="button" class="btn btn-success btn-xs"
+                                                       onclick="selectPictureTempale(${declareRecord.id})"
+                                                       value="新增查勘照片模板">
+                                            </small>
                                         </h4>
 
                                     </div>
@@ -159,7 +164,8 @@
                                     <div class="x-valid">
                                         <label class="col-sm-1 control-label">复印件</label>
                                         <div class="col-sm-10">
-                                            <input id="uploadOwnershipCertFile${declareRecord.id}" class="form-control" type="file">
+                                            <input id="uploadOwnershipCertFile${declareRecord.id}" class="form-control"
+                                                   type="file">
                                             <div id="_uploadOwnershipCertFile${declareRecord.id}"></div>
                                         </div>
                                     </div>
@@ -169,7 +175,7 @@
                         </div>
                         <script type="text/javascript">
                             $(function () {
-                                uploadOwnershipCertFile("${declareRecord.dataTableName}","${declareRecord.dataTableId}", "uploadOwnershipCertFile${declareRecord.id}",$('tbody[data-id=${declareRecord.id}][data-name=ownership_cert_file_list]'), ${declareRecord.id});
+                                uploadOwnershipCertFile("${declareRecord.dataTableName}", "${declareRecord.dataTableId}", "uploadOwnershipCertFile${declareRecord.id}", $('tbody[data-id=${declareRecord.id}][data-name=ownership_cert_file_list]'), ${declareRecord.id});
                                 getOwnershipCertFileAll($('tbody[data-id=${declareRecord.id}][data-name=ownership_cert_file_list]'), ${declareRecord.id});
                             })
                         </script>
@@ -282,14 +288,16 @@
                             <div class="panel-body">
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-1 control-label">名称<span class="symbol required"></span></label>
+                                        <label class="col-sm-1 control-label">名称<span
+                                                class="symbol required"></span></label>
                                         <div class="col-sm-3">
                                             <input type="text" class="form-control" required
                                                    name="fileName" placeholder="名称">
                                         </div>
                                     </div>
                                     <div class="x-valid">
-                                        <label class="col-sm-1 control-label">排序<span class="symbol required"></span></label>
+                                        <label class="col-sm-1 control-label">排序<span
+                                                class="symbol required"></span></label>
                                         <div class="col-sm-3">
                                             <input type="text" class="form-control" required
                                                    name="sorting" placeholder="排序">
@@ -298,16 +306,20 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-1 control-label">对应查勘部位<span class="symbol required"></span></label>
+                                        <label class="col-sm-1 control-label">对应查勘部位<span
+                                                class="symbol required"></span></label>
                                         <div class="col-sm-3">
-                                            <select name="certifyPart" class="form-control search-select certifyPart select2" required>
+                                            <select name="certifyPart"
+                                                    class="form-control search-select certifyPart select2" required>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="x-valid">
                                         <label class="col-sm-1 control-label">附件类别<span class="symbol required"></span></label>
                                         <div class="col-sm-3">
-                                            <select name="certifyPartCategory" class="form-control search-select certifyPartCategory select2" required>
+                                            <select name="certifyPartCategory"
+                                                    class="form-control search-select certifyPartCategory select2"
+                                                    required>
                                             </select>
                                         </div>
                                     </div>
@@ -358,7 +370,6 @@
         </div>
     </div>
 </div>
-
 <div id="allExamineFileModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
@@ -402,6 +413,91 @@
         </div>
     </div>
 </div>
+<div id="selectPictureTypeModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">模板类型</h3>
+            </div>
+            <form id="frmPictureType" class="form-horizontal">
+                <input type="hidden" name="declareRecordId">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">类型<span
+                                                class="symbol required"></span></label>
+                                        <div class="col-sm-3">
+                                            <select name="type" class="form-control search-select select2" required>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-default">
+                        关闭
+                    </button>
+                    <button type="button" onclick="affirmPictureTemplate()" class="btn btn-primary">
+                        确认
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div id="addPictureModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">添加照片</h3>
+            </div>
+            <form id="frmPicture" class="form-horizontal">
+                <input type="hidden" name="declareRecordId">
+                <input type="hidden" name="id">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">附件</label>
+                                        <div class="col-sm-10">
+                                            <input id="uploadPicture" placeholder="上传附件" class="form-control"
+                                                   type="file">
+                                            <div id="_uploadPicture"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-default">
+                        关闭
+                    </button>
+                    <button type="button" onclick="savePicture()" class="btn btn-primary">
+                        保存
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <script type="text/html" id="reportFileCustomHtml">
     <div class=" col-xs-6  col-sm-6  col-md-6  col-lg-6 ">
         <div class="x_panel">
@@ -424,7 +520,7 @@
         loadUploadFiles(AssessDBKey.ProjectInfo, "${projectInfo.id}", AssessUploadKey.PROJECT_PROXY);
     });
 
-    function uploadOwnershipCertFile(tableName, tableId, target,tbody,declareRecordId) {
+    function uploadOwnershipCertFile(tableName, tableId, target, tbody, declareRecordId) {
         FileUtils.uploadFiles({
             target: target == undefined ? fieldsName : target,
             disabledTarget: "btn_submit",
@@ -434,7 +530,7 @@
                 projectId: "${projectInfo.id}"
             },
             onUploadComplete: function () {
-                getOwnershipCertFileAll(tbody,declareRecordId);
+                getOwnershipCertFileAll(tbody, declareRecordId);
             },
             editFlag: true,
             deleteFlag: true
@@ -442,7 +538,7 @@
     }
 
     //加载复印件
-    function getOwnershipCertFileAll(tbody,declareRecordId) {
+    function getOwnershipCertFileAll(tbody, declareRecordId) {
         $.ajax({
             url: '${pageContext.request.contextPath}/projectReportFile/getOwnershipCertFileAll',
             data: {
@@ -455,7 +551,7 @@
                         ++i;
                         html += '<tr><th scope="row">' + i + '</th><td>' + item.fileName + '</td><td>' +
                             '<input type="button" class="btn btn-xs btn-primary" value="编辑" onclick="FileUtils.editAttachment(' + item.id + ',\'' + item.fileExtension + '\');">' +
-                            '<input type="button" class="btn btn-xs btn-primary" value="查看" onclick="FileUtils.showAttachment(' + item.id + ',\'' + item.fileExtension + '\');">'+
+                            '<input type="button" class="btn btn-xs btn-primary" value="查看" onclick="FileUtils.showAttachment(' + item.id + ',\'' + item.fileExtension + '\');">' +
                             '<input type="button" class="btn btn-xs btn-warning" value="移除" onclick="removeOwnershipCertFile(' + item.id + ',this)"></td></tr>';
                     })
                     tbody.empty().append(html);
@@ -590,8 +686,9 @@
                     var html = '';
                     $.each(result.data, function (i, item) {
                         html += '<tr><td><input type="text" name="fileName" value="' + item.fileName + '"  onblur="reportFileEditName(' + item.id + ',this);"></td>' +
-                            '<td><input type="text" name="sorting"  value="' + AssessCommon.toString(item.sorting) + '" onblur="reportFileEditName(' + item.id + ',this,'+declareRecordId+');" ></td>' +
-                            '<td>' + item.fileViewName + '</td>' +'<td>' + item.certifyPartName + '</td>' +'<td>' + item.certifyPartCategoryName + '</td>' +'<td>' + item.bisEnableName + '</td><td>' +
+                            '<td><input type="text" name="sorting"  value="' + AssessCommon.toString(item.sorting) + '" onblur="reportFileEditName(' + item.id + ',this,' + declareRecordId + ');" ></td>' +
+                            '<td>' + item.fileViewName + '</td>' + '<td>' + item.certifyPartName + '</td>' + '<td>' + item.certifyPartCategoryName + '</td>' + '<td>' + item.bisEnableName + '</td><td>' +
+                            '<input type="button" class="btn btn-xs btn-primary" value="上传照片" onclick="addPicture(' + item.id + ');">' +
                             '<input type="button" class="btn btn-xs btn-primary" value="编辑" onclick="getAndInit(' + item.id + ');">' +
                             '<input type="button" class="btn btn-xs btn-warning" value="移除" onclick="removeLiveSituation(' + item.id + ',this)"></td></tr>';
                     })
@@ -632,7 +729,7 @@
         });
         //绑定变更事件
         $("#frmItemFile").find("select[name='certifyPart']").on('change', function () {
-            getCategory($(this).val(),false);
+            getCategory($(this).val(), false);
         });
         $("#addItemModal").modal("show");
 
@@ -693,12 +790,12 @@
                 if (result.ret) {
                     $("#frmItemFile").clearAll();
                     $("#frmItemFile").initForm(result.data);
-                    AssessCommon.loadDataDicByKey(AssessDicKey.certifyPart,result.data.certifyPart, function (html, data) {
+                    AssessCommon.loadDataDicByKey(AssessDicKey.certifyPart, result.data.certifyPart, function (html, data) {
                         $("#frmItemFile").find("select[name='certifyPart']").empty().html(html).trigger('change');
                     });
                     //绑定变更事件
                     $("#frmItemFile").find("select[name='certifyPart']").on('change', function () {
-                        getCategory( $(this).val(),result.data.certifyPartCategory);
+                        getCategory($(this).val(), result.data.certifyPartCategory);
                     });
                     uploadFiles(AssessDBKey.DeclareRecord, result.data.id, "live_situation_select_supplement", "uploadSupplementFile");
                     loadUploadFiles(AssessDBKey.DeclareRecord, result.data.id, "live_situation_select_supplement", "uploadSupplementFile");
@@ -739,7 +836,7 @@
     }
 
     //实况照片改名
-    function reportFileEditName(id, _this,declareRecordId) {
+    function reportFileEditName(id, _this, declareRecordId) {
         var newName = $(_this).closest("tr").find("input[name='fileName']").val();
         var newSorting = $(_this).closest("tr").find("input[name='sorting']").val();
         $.ajax({
@@ -791,7 +888,6 @@
 
     function getCategory(pid, value) {
         if (!pid) {
-            console.log("111")
             var option = "<option value=''>-先选择对应查勘部位-</option>";
             $("#frmItemFile").find("select[name='certifyPartCategory']").html(option);
             $("#frmItemFile").find("select[name='certifyPartCategory']").val(['']).trigger('change');
@@ -829,6 +925,94 @@
         })
 
     };
+
+    //选择查勘照片模板类型
+    function selectPictureTempale(declareRecordId) {
+        $("#frmPictureType").clearAll();
+        $("#frmPictureType").find("input[name='declareRecordId']").val(declareRecordId);
+        AssessCommon.loadDataDicByKey(AssessDicKey.DATA_LOCALE_SURVEY_PICTURE_TEMPLATE, '', function (html, data) {
+            $("#frmPictureType").find("select[name='type']").empty().html(html).trigger('change');
+        });
+        $("#selectPictureTypeModal").modal("show");
+
+    }
+
+    //确认模板
+    function affirmPictureTemplate() {
+        if (!$("#frmPictureType").valid()) {
+            return false;
+        }
+        var type = $("#frmPictureType").find("select[name='type']").val();
+        var declareRecordId = $("#frmPictureType").find("input[name='declareRecordId']").val();
+        $.ajax({
+            url: "${pageContext.request.contextPath}/scheme/affirmPictureTemplate",
+            type: "post",
+            dataType: "json",
+            data: {
+                type: type,
+                declareRecordId: declareRecordId
+            },
+            success: function (result) {
+                if (result.ret) {
+                    toastr.success('模板添加成功');
+                    $('#selectPictureTypeModal').modal('hide');
+                    loadLiveSituation($('tbody[data-id="' + declareRecordId + '"][data-name=live_situation_select]'), declareRecordId);
+                }
+                else {
+                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
+    }
+
+    //上传实况照片
+    function addPicture(id) {
+        $.ajax({
+            url: "${pageContext.request.contextPath}/scheme/getSchemeReportFileItemById",
+            type: "get",
+            dataType: "json",
+            data: {id: id},
+            success: function (result) {
+                if (result.ret) {
+                    $("#frmPicture").clearAll();
+                    $("#frmPicture").initForm(result.data);
+                    uploadFiles(AssessDBKey.DeclareRecord, result.data.id, "live_situation_select_supplement", "uploadPicture");
+                    loadUploadFiles(AssessDBKey.DeclareRecord, result.data.id, "live_situation_select_supplement", "uploadPicture");
+                    $('#addPictureModal').modal("show");
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
+    }
+
+    //保存上传照片
+    function savePicture() {
+        var data = formParams("frmPicture");
+        $.ajax({
+            url: "${pageContext.request.contextPath}/scheme/saveToReportFileItem",
+            type: "post",
+            dataType: "json",
+            data: data,
+            success: function (result) {
+                if (result.ret) {
+                    toastr.success('保存成功');
+                    $('#addPictureModal').modal('hide');
+                    loadLiveSituation($('tbody[data-id="' + data.declareRecordId + '"][data-name=live_situation_select]'), data.declareRecordId);
+                }
+                else {
+                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
+    }
 </script>
 
 </html>

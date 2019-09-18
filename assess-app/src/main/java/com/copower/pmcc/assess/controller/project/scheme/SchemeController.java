@@ -159,4 +159,16 @@ public class SchemeController {
             return HttpResult.newErrorResult(e.getMessage());
         }
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/affirmPictureTemplate", name = "确认模板 ", method = RequestMethod.POST)
+    public HttpResult affirmPictureTemplate(Integer type, Integer declareRecordId) {
+        try {
+            schemeReportFileService.affirmPictureTemplate(type, declareRecordId);
+            return HttpResult.newCorrectResult();
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
 }

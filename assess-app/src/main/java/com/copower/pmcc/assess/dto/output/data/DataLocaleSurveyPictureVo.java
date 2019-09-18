@@ -9,6 +9,8 @@ import com.copower.pmcc.assess.dal.basis.entity.DataLocaleSurveyPicture;
  */
 public class DataLocaleSurveyPictureVo extends DataLocaleSurveyPicture {
     private String typeName;
+    private String certifyPartName;
+    private String certifyPartCategoryName;
 
     public String getTypeName() {
         return typeName;
@@ -16,5 +18,21 @@ public class DataLocaleSurveyPictureVo extends DataLocaleSurveyPicture {
 
     public void setTypeName(String typeName) {
         this.typeName = typeName;
+    }
+
+    public String getCertifyPartName() {
+        return certifyPartName;
+    }
+
+    public void setCertifyPartName(String certifyPartName) {
+        this.certifyPartName = certifyPartName;
+    }
+
+    public String getCertifyPartCategoryName() {
+        return certifyPartCategoryName;
+    }
+
+    public void setCertifyPartCategoryName(String certifyPartCategoryName) {
+        this.certifyPartCategoryName = certifyPartCategoryName;
     }
 }

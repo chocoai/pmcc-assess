@@ -42,6 +42,7 @@ public class DataLocaleSurveyPictureDao {
     public List<DataLocaleSurveyPicture> getDataLocaleSurveyPictureList(DataLocaleSurveyPicture dataHousePriceIndex) {
         DataLocaleSurveyPictureExample example = new DataLocaleSurveyPictureExample();
         MybatisUtils.convertObj2Example(dataHousePriceIndex, example);
+        example.setOrderByClause("type,sorting");
         return dataHousePriceIndexMapper.selectByExample(example);
     }
 

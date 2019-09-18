@@ -116,6 +116,7 @@ AssessDicKey.dataLoanType="data.loan.type";//贷款类型
 AssessDicKey.certifyPart="certify.part";//相关证明对应查勘部位
 AssessDicKey.houseInventoryRightCategory="project.survey.house.inventory.right.category";//房产他权类别
 AssessDicKey.build_security_engineering_project_market_cost = "build.security.engineering.project.market.cost";//建安工程项目
+AssessDicKey.DATA_LOCALE_SURVEY_PICTURE_TEMPLATE = "data.locale.survey.picture.template";//现场查勘图片模板
 
 //楼盘
 AssessDicKey.estate_position = "estate.position";//楼盘方位

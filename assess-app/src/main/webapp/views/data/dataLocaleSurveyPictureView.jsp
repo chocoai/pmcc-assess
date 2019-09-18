@@ -96,7 +96,11 @@
         loadDataDicList: function (type) {
             var cols = [];
             cols.push({field: 'typeName', title: '类型'});
-            cols.push({field: 'name', title: '名称'});
+            cols.push({field: 'fileName', title: '名称'});
+            cols.push({field: 'certifyPartName', title: '对应查勘部位'});
+            cols.push({field: 'certifyPartCategoryName', title: '附件类别'});
+            cols.push({field: 'sorting', title: '排序'});
+            cols.push({field: 'remark', title: '备注'});
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
@@ -145,7 +149,13 @@
         },
         showModel: function () {
             $("#" + dataProperty.prototype.config().frm).clearAll();
-
+            AssessCommon.loadDataDicByKey(AssessDicKey.certifyPart, '', function (html, data) {
+                $("#" + dataProperty.prototype.config().frm).find("select[name='certifyPart']").empty().html(html).trigger('change');
+            });
+            //绑定变更事件
+            $("#" + dataProperty.prototype.config().frm).find("select[name='certifyPart']").on('change', function () {
+                dataProperty.prototype.getCategory($(this).val(),false);
+            });
             $('#' + dataProperty.prototype.config().box).modal("show");
         },
         saveData: function () {
@@ -183,6 +193,13 @@
                     if (result.ret) {
                         $("#" + dataProperty.prototype.config().frm).clearAll();
                         $("#" + dataProperty.prototype.config().frm).initForm(result.data);
+                        AssessCommon.loadDataDicByKey(AssessDicKey.certifyPart,result.data.certifyPart, function (html, data) {
+                            $("#" + dataProperty.prototype.config().frm).find("select[name='certifyPart']").empty().html(html).trigger('change');
+                        });
+                        //绑定变更事件
+                        $("#" + dataProperty.prototype.config().frm).find("select[name='certifyPart']").on('change', function () {
+                            dataProperty.prototype.getCategory( $(this).val(),result.data.certifyPartCategory);
+                        });
                         $('#' + dataProperty.prototype.config().box).modal("show");
                     }
                 },
@@ -190,7 +207,46 @@
                     Alert("调用服务端方法失败，失败原因:" + result);
                 }
             })
+        },
+        getCategory:function(pid, value) {
+        if (!pid) {
+            var option = "<option value=''>-先选择对应查勘部位-</option>";
+            $("#" + dataProperty.prototype.config().frm).find("select[name='certifyPartCategory']").html(option);
+            $("#" + dataProperty.prototype.config().frm).find("select[name='certifyPartCategory']").val(['']).trigger('change');
+            return false;
         }
+        $.ajax({
+            url: "${pageContext.request.contextPath}/baseDataDic/getCacheDataDicListByPid",
+            type: "get",
+            dataType: "json",
+            data: {pid: pid},
+            success: function (result) {
+                if (result.ret) {
+                    var data = result.data;
+                    if (data.length >= 1) {
+                        var option = "<option value=''>-请选择-</option>";
+                        for (var i = 0; i < data.length; i++) {
+                            option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                        }
+                        $("#" + dataProperty.prototype.config().frm).find("select[name='certifyPartCategory']").html(option);
+                        if (value) {
+                            $("#" + dataProperty.prototype.config().frm).find("select[name='certifyPartCategory']").val([value]).trigger('change');
+                        } else {
+                            $("#" + dataProperty.prototype.config().frm).find("select[name='certifyPartCategory']").val(['']).trigger('change');
+                        }
+                    }
+
+                }
+                else {
+                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
+
+    }
 
     }
 </script>
@@ -211,11 +267,10 @@
                             <div class="panel-body">
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-1 control-label">类型<span
-                                                class="symbol required"></span></label>
+                                        <label class="col-sm-1 control-label">类型<span class="symbol required"></span></label>
                                         <div class="col-sm-3">
-                                            <select name='type' class='form-control search-select select2'>
-                                                <option value="0">-请选择-</option>
+                                            <select name='type' class='form-control search-select select2' required>
+                                                <option value="">-请选择-</option>
                                                 <c:forEach var="item" items="${pictureTemplates}">
                                                     <option value="${item.id}">${item.name}</option>
                                                 </c:forEach>
@@ -223,12 +278,53 @@
                                         </div>
                                     </div>
                                     <div class="x-valid">
+                                        <label class="col-sm-1 control-label">名称<span class="symbol required"></span></label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control" required
+                                                   name="fileName" placeholder="名称">
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">排序<span class="symbol required"></span></label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control" required
+                                                   name="sorting" placeholder="排序">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">对应查勘部位<span class="symbol required"></span></label>
+                                        <div class="col-sm-3">
+                                            <select name="certifyPart" class="form-control search-select certifyPart select2" required>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">附件类别<span class="symbol required"></span></label>
+                                        <div class="col-sm-3">
+                                            <select name="certifyPartCategory" class="form-control search-select certifyPartCategory select2" required>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
                                         <label class="col-sm-1 control-label">
-                                            名称
+                                            是否上报告
                                         </label>
                                         <div class="col-sm-3">
-                                            <input type="text" class="form-control"
-                                                   name="name" placeholder="名称">
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" id="bisEnable" name="bisEnable"
+                                                       value="true" checked>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">备注</label>
+                                        <div class="col-sm-10">
+                                    <textarea placeholder="备注" name="remark"
+                                              class="form-control"></textarea>
                                         </div>
                                     </div>
                                 </div>

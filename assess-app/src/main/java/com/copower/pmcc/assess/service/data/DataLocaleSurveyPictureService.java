@@ -1,7 +1,6 @@
 package com.copower.pmcc.assess.service.data;
 
 import com.copower.pmcc.assess.dal.basis.dao.data.DataLocaleSurveyPictureDao;
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.DataLocaleSurveyPicture;
 import com.copower.pmcc.assess.dto.output.data.DataLocaleSurveyPictureVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -36,6 +35,8 @@ public class DataLocaleSurveyPictureService {
     private BaseDataDicService baseDataDicService;
 
     public Integer saveAndUpdateDataLocaleSurveyPicture(DataLocaleSurveyPicture dataLocaleSurveyPicture) {
+        if (dataLocaleSurveyPicture.getBisEnable() == null)
+            dataLocaleSurveyPicture.setBisEnable(false);
         if (dataLocaleSurveyPicture.getId() == null) {
             dataLocaleSurveyPicture.setCreator(commonService.thisUserAccount());
             return dataLocaleSurveyPictureDao.addDataLocaleSurveyPicture(dataLocaleSurveyPicture);
@@ -77,14 +78,15 @@ public class DataLocaleSurveyPictureService {
 
     public DataLocaleSurveyPictureVo getDataLocaleSurveyPictureVo(DataLocaleSurveyPicture dataLocaleSurveyPicture) {
         DataLocaleSurveyPictureVo vo = new DataLocaleSurveyPictureVo();
-        BaseDataDic baseDataDic = null;
         BeanUtils.copyProperties(dataLocaleSurveyPicture, vo);
-
         if (dataLocaleSurveyPicture.getType() != null && dataLocaleSurveyPicture.getType() > 0) {
-            baseDataDic = baseDataDicService.getDataDicById(dataLocaleSurveyPicture.getType());
-            if (baseDataDic != null) {
-                vo.setTypeName(baseDataDic.getName());
-            }
+            vo.setTypeName(baseDataDicService.getNameById(dataLocaleSurveyPicture.getType()));
+        }
+        if (dataLocaleSurveyPicture.getCertifyPart() != null && dataLocaleSurveyPicture.getCertifyPart() > 0) {
+            vo.setCertifyPartName(baseDataDicService.getNameById(dataLocaleSurveyPicture.getCertifyPart()));
+        }
+        if (dataLocaleSurveyPicture.getCertifyPartCategory() != null && dataLocaleSurveyPicture.getCertifyPartCategory() > 0) {
+            vo.setCertifyPartCategoryName(baseDataDicService.getNameById(dataLocaleSurveyPicture.getCertifyPartCategory()));
         }
         return vo;
     }
