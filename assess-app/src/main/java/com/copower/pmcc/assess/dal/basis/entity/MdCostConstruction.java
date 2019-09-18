@@ -6,6 +6,10 @@ import java.util.Date;
 public class MdCostConstruction {
     private Integer id;
 
+    private String parcelSettingOuter;
+
+    private String parcelSettingInner;
+
     private String constructionInstallationEngineeringFeeIds;
 
     private BigDecimal constructionAssessmentPriceCorrecting;
@@ -110,6 +114,22 @@ public class MdCostConstruction {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getParcelSettingOuter() {
+        return parcelSettingOuter;
+    }
+
+    public void setParcelSettingOuter(String parcelSettingOuter) {
+        this.parcelSettingOuter = parcelSettingOuter == null ? null : parcelSettingOuter.trim();
+    }
+
+    public String getParcelSettingInner() {
+        return parcelSettingInner;
+    }
+
+    public void setParcelSettingInner(String parcelSettingInner) {
+        this.parcelSettingInner = parcelSettingInner == null ? null : parcelSettingInner.trim();
     }
 
     public String getConstructionInstallationEngineeringFeeIds() {

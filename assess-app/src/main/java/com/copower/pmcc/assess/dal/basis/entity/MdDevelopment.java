@@ -6,6 +6,10 @@ import java.util.Date;
 public class MdDevelopment {
     private Integer id;
 
+    private String parcelSettingOuter;
+
+    private String parcelSettingInner;
+
     private String name;
 
     private BigDecimal area;
@@ -25,8 +29,6 @@ public class MdDevelopment {
     private BigDecimal investmentProfit;
 
     private BigDecimal assessPrice;
-
-    private String headContent;
 
     private String content;
 
@@ -146,6 +148,22 @@ public class MdDevelopment {
         this.id = id;
     }
 
+    public String getParcelSettingOuter() {
+        return parcelSettingOuter;
+    }
+
+    public void setParcelSettingOuter(String parcelSettingOuter) {
+        this.parcelSettingOuter = parcelSettingOuter == null ? null : parcelSettingOuter.trim();
+    }
+
+    public String getParcelSettingInner() {
+        return parcelSettingInner;
+    }
+
+    public void setParcelSettingInner(String parcelSettingInner) {
+        this.parcelSettingInner = parcelSettingInner == null ? null : parcelSettingInner.trim();
+    }
+
     public String getName() {
         return name;
     }
@@ -224,14 +242,6 @@ public class MdDevelopment {
 
     public void setAssessPrice(BigDecimal assessPrice) {
         this.assessPrice = assessPrice;
-    }
-
-    public String getHeadContent() {
-        return headContent;
-    }
-
-    public void setHeadContent(String headContent) {
-        this.headContent = headContent == null ? null : headContent.trim();
     }
 
     public String getContent() {

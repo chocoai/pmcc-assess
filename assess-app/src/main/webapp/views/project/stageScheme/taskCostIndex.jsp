@@ -147,23 +147,70 @@
         }
         //从服务端获取计算后的数据
         cost.calculationNumeric(formSerializeArray(cost.constructionFrm),function (data) {
-            cost.constructionFrm.find("input[name='landGetCostTotal']").val(data.landGetCostTotal);
-            cost.constructionFrm.find(".landGetCostTotal").html(data.landGetCostTotal);
-            cost.constructionFrm.find("input[name='constructionSubtotal']").val(data.constructionSubtotal);
-            cost.constructionFrm.find(".constructionSubtotal").html(data.constructionSubtotal);
-            cost.constructionFrm.find("input[name='interestInvestment']").val(data.interestInvestment);
-            cost.constructionFrm.find(".interestInvestment").html(data.interestInvestment);
-            cost.constructionFrm.find("input[name='investmentProfit']").val(data.investmentProfit);
-            cost.constructionFrm.find(".investmentProfit").html(data.investmentProfit);
-            cost.constructionFrm.find("input[name='constructionAssessmentValue']").val(data.constructionAssessmentValue);
-            cost.constructionFrm.find(".constructionAssessmentValue").html(data.constructionAssessmentValue);
-            cost.constructionFrm.find("input[name='constructionAssessmentPriceCorrecting']").val(data.constructionAssessmentPriceCorrecting);
-            cost.constructionFrm.find(".constructionAssessmentPriceCorrecting").html(data.constructionAssessmentPriceCorrecting);
-
-            if ($("#md_cost_form").size() != 0){
-                $("#md_cost_form").find("input[name='price']").val(data.constructionAssessmentPriceCorrecting) ;
-            }
+            cost.initForm(data) ;
         });
+    };
+
+    cost.checkedFun = function (that, name,flag) {
+        var form = $(that).closest("form");
+        var target = form.find("[name='"+name+"']:checkbox") ;
+        if (flag) {//全选或者全不选
+            var number = 1;
+            target.each(function (i, n) {
+                if ($(this).prop("checked")) {
+                    number++;
+                }
+            });
+            if (number == 1) {
+                target.prop("checked", true);
+            } else {
+                target.prop("checked", false);
+            }
+        } else {
+            //首先让选中的失效
+            target.each(function (i, n) {
+                if ($(this).prop("checked")) {
+                    $(this).prop("disabled", true);
+                }
+            });
+            //然后让没有选中的元素设置为选中
+            target.each(function (i, n) {
+                if (!$(this).prop("checked")) {
+                    $(this).prop("checked", true);
+                }
+            });
+            //最后是让失效的元素恢复,并且使其不选中
+            target.each(function (i, n) {
+                if ($(this).prop("disabled")) {
+                    $(this).prop("disabled", false);
+                    $(this).prop("checked", false);
+                }
+            });
+        }
+    };
+
+    cost.initForm = function (data) {
+
+
+        cost.constructionFrm.initForm(data);
+
+        cost.constructionFrm.find("input[name='landGetCostTotal']").val(data.landGetCostTotal);
+        cost.constructionFrm.find(".landGetCostTotal").html(data.landGetCostTotal);
+        cost.constructionFrm.find("input[name='constructionSubtotal']").val(data.constructionSubtotal);
+        cost.constructionFrm.find(".constructionSubtotal").html(data.constructionSubtotal);
+        cost.constructionFrm.find("input[name='interestInvestment']").val(data.interestInvestment);
+        cost.constructionFrm.find(".interestInvestment").html(data.interestInvestment);
+        cost.constructionFrm.find("input[name='investmentProfit']").val(data.investmentProfit);
+        cost.constructionFrm.find(".investmentProfit").html(data.investmentProfit);
+        cost.constructionFrm.find("input[name='constructionAssessmentValue']").val(data.constructionAssessmentValue);
+        cost.constructionFrm.find(".constructionAssessmentValue").html(data.constructionAssessmentValue);
+        cost.constructionFrm.find("input[name='constructionAssessmentPriceCorrecting']").val(data.constructionAssessmentPriceCorrecting);
+        cost.constructionFrm.find(".constructionAssessmentPriceCorrecting").html(data.constructionAssessmentPriceCorrecting);
+
+        if ($("#md_cost_form").size() != 0){
+            $("#md_cost_form").find("input[name='price']").val(data.constructionAssessmentPriceCorrecting) ;
+        }
+
     };
 
     cost.writeValueEvent = function (value) {
@@ -286,6 +333,61 @@
         construction.loadMdDevelopmentInfrastructureChildrenTable() ;
 
         construction.loadMdCalculatingMethodEngineeringCostTable() ;
+
+
+        var industrySupplyInfoContainer = $("#industrySupplyInfoContainer_BBBBB") ;
+        var developmentDegreeContentContainer = $("#developmentDegreeContentContainer_BBBBB") ;
+
+        industrySupplyInfoContainer.empty() ;
+        developmentDegreeContentContainer.empty() ;
+        //宗地外设定
+        AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estateLandInfrastructure, '', function (html, resultData) {
+            var resultHtml = '';
+            var data = {parcelSettingOuter:'${mdCostVo.mdCostConstruction.parcelSettingOuter}'} ;
+            var array = [];
+            if (data){
+                if (data.parcelSettingOuter) {
+                    array = data.parcelSettingOuter.split(',');
+                }
+            }
+            $.each(resultData, function (i, item) {
+                resultHtml += '<span class="checkbox-inline"><input type="checkbox" ';
+                if ($.inArray(item.id.toString(), array) > -1) {
+                    resultHtml += ' checked="checked" ';
+                }
+                resultHtml += ' id="parcelSettingOuterBBBBB' + item.id + '" name="parcelSettingOuter" value="' + item.id + '">';
+                resultHtml += '<label for="parcelSettingOuterBBBBB' + item.id + '">' + item.name + '</label></span>';
+            });
+            resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '全选或全不选' + "</span>";
+            resultHtml +=    "<input type=\"radio\" name=\"infrastructureSelect\"  onclick=\"cost.checkedFun(this,'parcelSettingOuter',true)\">";
+            resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '反选' + "</span>";
+            resultHtml +=    "<input type=\"radio\" name=\"infrastructureSelect\"  onclick=\"cost.checkedFun(this,'parcelSettingOuter',false)\">";
+            industrySupplyInfoContainer.append(resultHtml);
+        }, true);
+        //宗地内设定
+        AssessCommon.loadDataDicByKey(AssessDicKey.estateDevelopment_degreePrepared_land,'',function (html,resultData) {
+            var resultHtml = '';
+            var array = [];
+            var data = {parcelSettingInner:'${mdCostVo.mdCostConstruction.parcelSettingInner}'} ;
+            if (data){
+                if (data.parcelSettingInner) {
+                    array = data.parcelSettingInner.split(',');
+                }
+            }
+            $.each(resultData, function (i, item) {
+                resultHtml += '<span class="checkbox-inline"><input type="checkbox" ';
+                if ($.inArray(item.id.toString(), array) > -1) {
+                    resultHtml += ' checked="checked" ';
+                }
+                resultHtml += ' id="parcelSettingInnerBBBBB' + item.id + '" name="parcelSettingInner" value="' + item.id + '">';
+                resultHtml += '<label for="parcelSettingInnerBBBBB' + item.id + '">' + item.name + '</label></span>';
+            });
+            resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '全选或全不选' + "</span>";
+            resultHtml +=    "<input type=\"radio\" name=\"infrastructureSelect\"  onclick=\"economicIndicators.checkedFun(this,'parcelSettingInner',true)\">";
+            resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '反选' + "</span>";
+            resultHtml +=    "<input type=\"radio\" name=\"infrastructureSelect\"  onclick=\"economicIndicators.checkedFun(this,'parcelSettingInner',false)\">";
+            developmentDegreeContentContainer.append(resultHtml);
+        }) ;
 
     });
 

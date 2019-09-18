@@ -139,6 +139,20 @@
                             </div>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">宗地外设定</label>
+                            <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5" id="industrySupplyInfoContainer_AAAAA">
+
+                            </div>
+                        </div>
+
+                        <div class="x-valid">
+                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">宗地内设定</label>
+                            <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5  " id="developmentDegreeContentContainer_AAAAA">
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </form>
             <form id="frmEconomicIndicatorsItem" class="form-horizontal">
@@ -149,6 +163,7 @@
                             <th>规划项目名称</th>
                             <th>规划建筑面积 ㎡</th>
                             <th>可出售面积 ㎡</th>
+                            <th>评估面积 ㎡</th>
                             <th>个数</th>
                             <th>单位售价(元/㎡)</th>
                             <th>备注</th>
@@ -164,6 +179,7 @@
                             </td>
                             <td><label name="plannedBuildingArea"></label></td>
                             <td><label name="saleableArea"></label></td>
+                            <td><label name="assessArea"></label></td>
                             <td><label name="number"></label></td>
                             <td><label name="unitPrice"></label></td>
                             <td></td>
@@ -177,6 +193,7 @@
                             </td>
                             <td><label name="plannedBuildingArea"></label></td>
                             <td><label name="saleableArea"></label></td>
+                            <td><label name="assessArea"></label></td>
                             <td><label name="number"></label></td>
                             <td><label name="unitPrice"></label></td>
                             <td></td>
@@ -190,6 +207,7 @@
                             </td>
                             <td><label name="plannedBuildingArea"></label></td>
                             <td><label name="saleableArea"></label></td>
+                            <td><label name="assessArea"></label></td>
                             <td><label name="number"></label></td>
                             <td><label name="unitPrice"></label></td>
                             <td></td>
@@ -203,6 +221,7 @@
                             </td>
                             <td><label name="plannedBuildingArea"></label></td>
                             <td><label name="saleableArea"></label></td>
+                            <td><label name="assessArea"></label></td>
                             <td><label name="number"></label></td>
                             <td><label name="unitPrice"></label></td>
                             <td></td>
@@ -215,6 +234,7 @@
                             </td>
                             <td><label name="plannedBuildingArea"></label></td>
                             <td><label name="saleableArea"></label></td>
+                            <td><label name="assessArea"></label></td>
                             <td><label name="number"></label></td>
                             <td><label name="unitPrice"></label></td>
                             <td></td>
@@ -262,6 +282,10 @@
                    onblur="economicIndicators.autoSummary()"
                    name="saleableArea" data-rule-number="true" style="width: 100px;">
         </td>
+        <td><input type="text" value="{assessArea}"
+                   onblur="economicIndicators.autoSummary()"
+                   name="assessArea" data-rule-number="true" style="width: 100px;">
+        </td>
         <td><input type="text" value="{number}"
                    onblur="economicIndicators.autoSummary()"
                    name="number" data-rule-number="true" style="width: 100px;">
@@ -275,9 +299,15 @@
 </script>
 <script type="text/javascript">
     var economicIndicators = {};
+    economicIndicators.frmItem = $("#frmEconomicIndicatorsItem");
+    economicIndicators.frm = $("#frmEconomicIndicators");
+    economicIndicators.model = $("#modalEconomicIndicators");
+    economicIndicators.template = $("#economicIndicatorsItemTemplate");
     economicIndicators.saveCallback;
     //初始化
     economicIndicators.init = function (options) {
+        var industrySupplyInfoContainer = $("#industrySupplyInfoContainer_AAAAA") ;
+        var developmentDegreeContentContainer = $("#developmentDegreeContentContainer_AAAAA") ;
         var defaluts = {
             planDetailsId: undefined,
             economicId: undefined,
@@ -286,10 +316,12 @@
         defaluts = $.extend({}, defaluts, options);
         economicIndicators.saveCallback = defaluts.saveCallback;
         //先清空
-        $("#frmEconomicIndicators").clearAll();
-        $("#frmEconomicIndicatorsItem").find('[data-role=child]').remove();
-        $("#frmEconomicIndicators").find('[name=planDetailsId]').val(defaluts.planDetailsId);
-        $("#frmEconomicIndicators").find('[name=centerId]').val(defaluts.centerId);
+        economicIndicators.frm.clearAll();
+        economicIndicators.frmItem.find('[data-role=child]').remove();
+        economicIndicators.frm.find('[name=planDetailsId]').val(defaluts.planDetailsId);
+        economicIndicators.frm.find('[name=centerId]').val(defaluts.centerId);
+        industrySupplyInfoContainer.empty() ;
+        developmentDegreeContentContainer.empty() ;
         //回显数据
         if (defaluts.economicId) {
             $.ajax({
@@ -301,33 +333,82 @@
                 dataType: 'json',
                 success: function (result) {
                     if (result.ret) {
-                        $("#frmEconomicIndicators").initForm(result.data.economicIndicators);
-                        $("#frmEconomicIndicators").find("input[name='planDate']").val(formatDate(result.data.economicIndicators.planDate));
-                        $("#frmEconomicIndicators").find("label[name='planDate']").html(formatDate(result.data.economicIndicators.planDate));
+                        if (result.data.economicIndicators){
+                            economicIndicators.frm.initForm(result.data.economicIndicators);
+                            economicIndicators.frm.find("input[name='planDate']").val(formatDate(result.data.economicIndicators.planDate));
+                            economicIndicators.frm.find("label[name='planDate']").html(formatDate(result.data.economicIndicators.planDate));
+                        }
+                        //宗地外设定
+                        AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estateLandInfrastructure, '', function (html, resultData) {
+                            var resultHtml = '';
+                            var array = [];
+                            if (result.data.economicIndicators){
+                                if (result.data.economicIndicators.parcelSettingOuter) {
+                                    array = result.data.economicIndicators.parcelSettingOuter.split(',');
+                                }
+                            }
+                            $.each(resultData, function (i, item) {
+                                resultHtml += '<span class="checkbox-inline"><input type="checkbox" ';
+                                if ($.inArray(item.id.toString(), array) > -1) {
+                                    resultHtml += ' checked="checked" ';
+                                }
+                                resultHtml += ' id="parcelSettingOuterAAAAA' + item.id + '" name="parcelSettingOuter" value="' + item.id + '">';
+                                resultHtml += '<label for="parcelSettingOuterAAAAA' + item.id + '">' + item.name + '</label></span>';
+                            });
+                            resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '全选或全不选' + "</span>";
+                            resultHtml +=    "<input type=\"radio\" name=\"infrastructureSelect\"  onclick=\"economicIndicators.checkedFun(this,'parcelSettingOuter',true)\">";
+                            resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '反选' + "</span>";
+                            resultHtml +=    "<input type=\"radio\" name=\"infrastructureSelect\"  onclick=\"economicIndicators.checkedFun(this,'parcelSettingOuter',false)\">";
+                            industrySupplyInfoContainer.append(resultHtml);
+                        }, true);
+                        //宗地内设定
+                        AssessCommon.loadDataDicByKey(AssessDicKey.estateDevelopment_degreePrepared_land,'',function (html,resultData) {
+                            var resultHtml = '';
+                            var array = [];
+                            if (result.data.economicIndicators){
+                                if (result.data.economicIndicators.parcelSettingInner) {
+                                    array = result.data.economicIndicators.parcelSettingInner.split(',');
+                                }
+                            }
+                            $.each(resultData, function (i, item) {
+                                resultHtml += '<span class="checkbox-inline"><input type="checkbox" ';
+                                if ($.inArray(item.id.toString(), array) > -1) {
+                                    resultHtml += ' checked="checked" ';
+                                }
+                                resultHtml += ' id="parcelSettingInnerAAAAA' + item.id + '" name="parcelSettingInner" value="' + item.id + '">';
+                                resultHtml += '<label for="parcelSettingInnerAAAAA' + item.id + '">' + item.name + '</label></span>';
+                            });
+                            resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '全选或全不选' + "</span>";
+                            resultHtml +=    "<input type=\"radio\" name=\"infrastructureSelect\"  onclick=\"economicIndicators.checkedFun(this,'parcelSettingInner',true)\">";
+                            resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '反选' + "</span>";
+                            resultHtml +=    "<input type=\"radio\" name=\"infrastructureSelect\"  onclick=\"economicIndicators.checkedFun(this,'parcelSettingInner',false)\">";
+                            developmentDegreeContentContainer.append(resultHtml);
+                        }) ;
                         if (result.data.economicIndicatorsItemList) {
                             $.each(result.data.economicIndicatorsItemList, function (i, item) {
                                 var dataKey = item.dataKey;
-                                var parentTr = $("#frmEconomicIndicatorsItem").find('[data-key=' + dataKey + '][data-role="parent"]');
-                                var childTarget = $("#economicIndicatorsItemTemplate");
+                                var parentTr = economicIndicators.frmItem.find('[data-key=' + dataKey + '][data-role="parent"]');
+                                var childTarget = economicIndicators.template;
                                 var html = childTarget.html();
                                 html = html.replace(/{dataKey}/g, dataKey).replace(/{parentIndex}/g, parentTr.attr('data-parent-index'));
-                                html = html.replace(/{currentIndex}/g, $("#frmEconomicIndicatorsItem").find('[data-key=' + dataKey + ']').length);
+                                html = html.replace(/{currentIndex}/g, economicIndicators.frmItem.find('[data-key=' + dataKey + ']').length);
                                 html = html.replace(/{name}/g, AssessCommon.toString(item.name)).replace(/{plannedBuildingArea}/g, AssessCommon.toString(item.plannedBuildingArea));
                                 html = html.replace(/{saleableArea}/g, AssessCommon.toString(item.saleableArea)).replace(/{number}/g, AssessCommon.toString(item.number)).replace(/{remark}/g, AssessCommon.toString(item.remark));
                                 html = html.replace(/{unitPrice}/g, AssessCommon.toString(item.unitPrice));
-                                $("#frmEconomicIndicatorsItem").find('[data-key=' + dataKey + ']').last().after(html);
+                                html = html.replace(/{assessArea}/g, AssessCommon.toString(item.assessArea));
+                                economicIndicators.frmItem.find('[data-key=' + dataKey + ']').last().after(html);
                                 if (defaluts.attribute) {
-                                    $("#frmEconomicIndicatorsItem").find('[data-key=' + dataKey + ']').each(function (i, n) {
+                                    economicIndicators.frmItem.find('[data-key=' + dataKey + ']').each(function (i, n) {
                                         var target = $(n);
                                         target.find("td").first().find("a").remove();
                                     });
-                                    $("#frmEconomicIndicatorsItem").find('[data-key=' + dataKey + ']').last().find("input").attr(defaluts.attribute);
+                                    economicIndicators.frmItem.find('[data-key=' + dataKey + ']').last().find("input").attr(defaluts.attribute);
                                 }
                             });
                             economicIndicators.autoSummary();
                         }
                         if (defaluts.targetCallback) {
-                            defaluts.targetCallback($("#frmEconomicIndicatorsItem"));
+                            defaluts.targetCallback(economicIndicators.frmItem);
                         }
                     } else {
                         Alert(result.errmsg);
@@ -336,43 +417,44 @@
             })
         }
         if (defaluts.attribute) {
-            $("#frmEconomicIndicators").find("input").attr(defaluts.attribute);
+            economicIndicators.frm.find("input").attr(defaluts.attribute);
         }
         if (defaluts.showDelHtml) {
             var html = defaluts.showDelHtml.replace(/{frm}/g, 'frmEconomicIndicators');
             html = html.replace(/{box}/g, 'modalEconomicIndicators');
-            $("#modalEconomicIndicators").find(".modal-footer").find(".btn-warning").remove();
-            $("#modalEconomicIndicators").find(".modal-footer").find("button").eq(1).before(html);
+            economicIndicators.model.find(".modal-footer").find(".btn-warning").remove();
+            economicIndicators.model.find(".modal-footer").find("button").eq(1).before(html);
         }
         if (defaluts.targetCallback) {
-            defaluts.targetCallback($("#frmEconomicIndicatorsItem"));
+            defaluts.targetCallback(economicIndicators.frmItem);
         }
         if (defaluts.attribute) {
-            $("#frmEconomicIndicatorsItem").find("tr").each(function (i, n) {
+            economicIndicators.frmItem.find("tr").each(function (i, n) {
                 var target = $(n);
                 target.find("td").first().find("a").remove();
             });
-            $("#modalEconomicIndicators").find(".modal-footer").find(".btn-primary").remove();
+            economicIndicators.model.find(".modal-footer").find(".btn-primary").remove();
         }
-        $("#modalEconomicIndicators").modal();
+        economicIndicators.model.modal("show");
     };
 
     //保存
     economicIndicators.save = function () {
-        if (!$("#frmEconomicIndicators").valid()) {
+        if (!economicIndicators.frm.valid()) {
             return false;
         }
         var data = {};
 
-        data.economicIndicators = formSerializeArray($("#frmEconomicIndicators"));
+        data.economicIndicators = formSerializeArray(economicIndicators.frm);
         data.economicIndicatorsItemList = [];
-        $("#frmEconomicIndicatorsItem").find('tr[data-role="child"]').each(function () {
+        economicIndicators.frmItem.find('tr[data-role="child"]').each(function () {
             var economicIndicatorsItem = {};
             economicIndicatorsItem.dataKey = $(this).attr('data-key');
             economicIndicatorsItem.planDetailsId = economicIndicators.planDetailsId;
             economicIndicatorsItem.name = $(this).find('[name=name]').val();
             economicIndicatorsItem.plannedBuildingArea = $(this).find('[name=plannedBuildingArea]').val();
             economicIndicatorsItem.saleableArea = $(this).find('[name=saleableArea]').val();
+            economicIndicatorsItem.assessArea = $(this).find('[name=assessArea]').val();
             economicIndicatorsItem.number = $(this).find('[name=number]').val();
             economicIndicatorsItem.unitPrice = $(this).find('[name=unitPrice]').val();
             economicIndicatorsItem.remark = $(this).find('[name=remark]').val();
@@ -389,7 +471,7 @@
                 if (result.ret) {
                     if (economicIndicators.saveCallback)
                         economicIndicators.saveCallback(result.data.id);
-                    $("#modalEconomicIndicators").modal('hide');
+                    economicIndicators.model.modal('hide');
                     if (data.economicIndicatorsItemList.length >= 1) {
 
                     }
@@ -403,13 +485,14 @@
     //添加子项
     economicIndicators.appendItemChildren = function (_this) {
         var dataKey = $(_this).closest('tr').attr('data-key');
-        var html = $("#economicIndicatorsItemTemplate").html();
+        var html = economicIndicators.template.html();
         html = html.replace(/{dataKey}/g, dataKey).replace(/{parentIndex}/g, $(_this).closest('tr').attr('data-parent-index'));
-        html = html.replace(/{currentIndex}/g, $("#frmEconomicIndicatorsItem").find('[data-key=' + dataKey + ']').length);
+        html = html.replace(/{currentIndex}/g, economicIndicators.frmItem.find('[data-key=' + dataKey + ']').length);
         html = html.replace(/{name}/g, '').replace(/{plannedBuildingArea}/g, '');
         html = html.replace(/{saleableArea}/g, '').replace(/{number}/g, '').replace(/{remark}/g, '');
         html = html.replace(/{unitPrice}/g, '');
-        $("#frmEconomicIndicatorsItem").find('[data-key=' + dataKey + ']').last().after(html);
+        html = html.replace(/{assessArea}/g, '');
+        economicIndicators.frmItem.find('[data-key=' + dataKey + ']').last().after(html);
     };
 
     /**
@@ -417,17 +500,19 @@
      * @returns {{}}
      */
     economicIndicators.getFormData = function () {
-        var target = $("#frmEconomicIndicatorsItem").find("table").find("tfoot");
-        var head = formSerializeArray($("#frmEconomicIndicators"));
+        var target = economicIndicators.frmItem.find("table").find("tfoot");
+        var head = formSerializeArray(economicIndicators.frm);
         var data = {};
         data.developLandAreaTax = head.assessUseLandArea;
         data.developBuildAreaTax = head.assessTotalBuildArea;
+        data.parcelSettingOuter = head.parcelSettingOuter;
+        data.parcelSettingInner = head.parcelSettingInner;
         data.plannedBuildingArea = target.find("label[name='plannedBuildingArea']").html();
         var totalSaleableAreaPrice = "0";
         try {
             totalSaleableAreaPrice = target.find("label[name='totalSaleableAreaPrice']").html();
             totalSaleableAreaPrice = Number(totalSaleableAreaPrice) / 10000;
-            totalSaleableAreaPrice = totalSaleableAreaPrice.toFixed(2) ;
+            totalSaleableAreaPrice = totalSaleableAreaPrice.toFixed(2);
         } catch (e) {
         }
         data.totalSaleableAreaPrice = totalSaleableAreaPrice;
@@ -437,16 +522,17 @@
 
     //自动汇总
     economicIndicators.autoSummary = function () {
-        var target = $("#frmEconomicIndicatorsItem");
+        var target = economicIndicators.frmItem;
         var plannedBuildingAreaValue = 0, totalSaleableAreaPriceValue = 0, saleableAreaValue = 0;
         target.find('tr[data-role="parent"]').each(function () {
             var dataKey = $(this).attr('data-key');
-            var numberTotal = 0, saleableAreaTotal = 0, plannedBuildingAreaTotal = 0, unitPriceTotal = 0,
+            var numberTotal = 0, saleableAreaTotal = 0, plannedBuildingAreaTotal = 0, unitPriceTotal = 0,assessAreaTotal = 0,
                 totalSaleableAreaPrice = 0;
-            $("#frmEconomicIndicatorsItem").find('tr[data-role="child"][data-key=' + dataKey + ']').each(function () {
+            economicIndicators.frmItem.find('tr[data-role="child"][data-key=' + dataKey + ']').each(function () {
                 var plannedBuildingArea = $(this).find('[name=plannedBuildingArea]').val();
                 var saleableArea = $(this).find('[name=saleableArea]').val();
                 var number = $(this).find('[name=number]').val();
+                var assessArea = $(this).find('[name=assessArea]').val();
                 var unitPrice = $(this).find('[name=unitPrice]').val();
                 if ($.isNumeric(plannedBuildingArea)) {
                     plannedBuildingAreaTotal += parseFloat(plannedBuildingArea);
@@ -454,27 +540,24 @@
                 if ($.isNumeric(saleableArea)) {
                     saleableAreaTotal += parseFloat(saleableArea);
                 }
+                if ($.isNumeric(assessArea)) {
+                    assessAreaTotal += parseFloat(assessArea);
+                }
                 if ($.isNumeric(number)) {
                     numberTotal += parseFloat(number);
                 }
                 if ($.isNumeric(unitPrice)) {
                     unitPriceTotal += parseFloat(unitPrice);
                 }
-                var algsValue = 0;
-                if ($.isNumeric(unitPrice)) {
-                    algsValue += parseFloat(unitPrice);
-                }
-                if ($.isNumeric(number)) {
-                    algsValue += parseFloat(number);
-                }
-                if ($.isNumeric(saleableArea) && algsValue != 0) {
-                    var temp = parseFloat(saleableArea) * algsValue;
+                if ($.isNumeric(unitPrice) && $.isNumeric(assessArea)) {
+                    var temp = parseFloat(unitPrice) * assessArea;
                     totalSaleableAreaPrice += parseFloat(temp);
                 }
             });
 
             $(this).find('[name=plannedBuildingArea]').text('');
             $(this).find('[name=saleableArea]').text('');
+            $(this).find('[name=assessArea]').text('');
             $(this).find('[name=number]').text('');
             $(this).find('[name=unitPrice]').text('');
 
@@ -489,6 +572,9 @@
             if (numberTotal > 0) {
                 $(this).find('[name=number]').text(numberTotal.toFixed(2));
             }
+            if (assessAreaTotal > 0) {
+                $(this).find('[name=assessArea]').text(assessAreaTotal.toFixed(2));
+            }
             if (unitPriceTotal > 0) {
                 $(this).find('[name=unitPrice]').text(unitPriceTotal.toFixed(2));
             }
@@ -500,5 +586,44 @@
         target.find("table").find("tfoot").find("label[name='plannedBuildingArea']").html(plannedBuildingAreaValue.toFixed(2));
         target.find("table").find("tfoot").find("label[name='totalSaleableAreaPrice']").html(totalSaleableAreaPriceValue.toFixed(2));
         target.find("table").find("tfoot").find("label[name='saleableArea']").html(saleableAreaValue.toFixed(2));
-    }
-</script> 
+    };
+
+    economicIndicators.checkedFun = function (that, name,flag) {
+        var form = $(that).closest("form");
+        var target = form.find("[name='"+name+"']:checkbox") ;
+        if (flag) {//全选或者全不选
+            var number = 1;
+            target.each(function (i, n) {
+                if ($(this).prop("checked")) {
+                    number++;
+                }
+            });
+            if (number == 1) {
+                target.prop("checked", true);
+            } else {
+                target.prop("checked", false);
+            }
+        } else {
+            //首先让选中的失效
+            target.each(function (i, n) {
+                if ($(this).prop("checked")) {
+                    $(this).prop("disabled", true);
+                }
+            });
+            //然后让没有选中的元素设置为选中
+            target.each(function (i, n) {
+                if (!$(this).prop("checked")) {
+                    $(this).prop("checked", true);
+                }
+            });
+            //最后是让失效的元素恢复,并且使其不选中
+            target.each(function (i, n) {
+                if ($(this).prop("disabled")) {
+                    $(this).prop("disabled", false);
+                    $(this).prop("checked", false);
+                }
+            });
+        }
+    };
+
+</script>

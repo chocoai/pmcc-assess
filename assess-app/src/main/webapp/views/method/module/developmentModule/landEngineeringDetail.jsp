@@ -104,6 +104,22 @@
                     </div>
                 </div>
             </div>
+
+            <div class="form-group">
+                <div class="x-valid">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">宗地外设定</label>
+                    <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5" >
+                        ${mdDevelopment.parcelSettingOuterName}
+                    </div>
+                </div>
+
+                <div class="x-valid">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">宗地内设定</label>
+                    <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
+                        ${mdDevelopment.parcelSettingInnerName}
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 

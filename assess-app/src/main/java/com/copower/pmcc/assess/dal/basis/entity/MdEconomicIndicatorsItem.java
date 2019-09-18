@@ -20,6 +20,8 @@ public class MdEconomicIndicatorsItem {
 
     private BigDecimal saleableArea;
 
+    private BigDecimal assessArea;
+
     private Integer number;
 
     private BigDecimal unitPrice;
@@ -94,6 +96,14 @@ public class MdEconomicIndicatorsItem {
 
     public void setSaleableArea(BigDecimal saleableArea) {
         this.saleableArea = saleableArea;
+    }
+
+    public BigDecimal getAssessArea() {
+        return assessArea;
+    }
+
+    public void setAssessArea(BigDecimal assessArea) {
+        this.assessArea = assessArea;
     }
 
     public Integer getNumber() {

@@ -127,7 +127,7 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
             baseService.writeExceptionInfo(e);
         }
         // StringUtils.uncapitalize 首字母小写
-        modelAndView.addObject(StringUtils.uncapitalize(MdDevelopment.class.getSimpleName()),mdDevelopment);
+        modelAndView.addObject(StringUtils.uncapitalize(MdDevelopment.class.getSimpleName()),mdDevelopmentService.getMdDevelopmentVo(mdDevelopment));
         //projectPlanDetails
         modelAndView.addObject(StringUtils.uncapitalize(ProjectPlanDetails.class.getSimpleName()), projectPlanDetails);
     }

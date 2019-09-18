@@ -64,8 +64,26 @@
 
 
         <div class="x_content">
-            <input type="button" class="btn btn-primary" value="经济规划指标"
-                   onclick="construction.showMdDevelopmentIncomeCategory('${mdCostVo.mdCostConstruction.economicId}');">
+            <div class="form-group">
+                <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                    <input type="button" class="btn btn-primary" value="经济规划指标"
+                           onclick="construction.showMdDevelopmentIncomeCategory('${mdCostVo.mdCostConstruction.economicId}');">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="x-valid">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">宗地外设定</label>
+                    <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5" id="industrySupplyInfoContainer_BBBBB">
+
+                    </div>
+                </div>
+
+                <div class="x-valid">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">宗地内设定</label>
+                    <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5  " id="developmentDegreeContentContainer_BBBBB">
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
