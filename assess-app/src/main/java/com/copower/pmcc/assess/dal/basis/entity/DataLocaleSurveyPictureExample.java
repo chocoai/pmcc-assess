@@ -225,73 +225,383 @@ public class DataLocaleSurveyPictureExample {
             return (Criteria) this;
         }
 
-        public Criteria andNameIsNull() {
-            addCriterion("name is null");
+        public Criteria andFileNameIsNull() {
+            addCriterion("file_name is null");
             return (Criteria) this;
         }
 
-        public Criteria andNameIsNotNull() {
-            addCriterion("name is not null");
+        public Criteria andFileNameIsNotNull() {
+            addCriterion("file_name is not null");
             return (Criteria) this;
         }
 
-        public Criteria andNameEqualTo(String value) {
-            addCriterion("name =", value, "name");
+        public Criteria andFileNameEqualTo(String value) {
+            addCriterion("file_name =", value, "fileName");
             return (Criteria) this;
         }
 
-        public Criteria andNameNotEqualTo(String value) {
-            addCriterion("name <>", value, "name");
+        public Criteria andFileNameNotEqualTo(String value) {
+            addCriterion("file_name <>", value, "fileName");
             return (Criteria) this;
         }
 
-        public Criteria andNameGreaterThan(String value) {
-            addCriterion("name >", value, "name");
+        public Criteria andFileNameGreaterThan(String value) {
+            addCriterion("file_name >", value, "fileName");
             return (Criteria) this;
         }
 
-        public Criteria andNameGreaterThanOrEqualTo(String value) {
-            addCriterion("name >=", value, "name");
+        public Criteria andFileNameGreaterThanOrEqualTo(String value) {
+            addCriterion("file_name >=", value, "fileName");
             return (Criteria) this;
         }
 
-        public Criteria andNameLessThan(String value) {
-            addCriterion("name <", value, "name");
+        public Criteria andFileNameLessThan(String value) {
+            addCriterion("file_name <", value, "fileName");
             return (Criteria) this;
         }
 
-        public Criteria andNameLessThanOrEqualTo(String value) {
-            addCriterion("name <=", value, "name");
+        public Criteria andFileNameLessThanOrEqualTo(String value) {
+            addCriterion("file_name <=", value, "fileName");
             return (Criteria) this;
         }
 
-        public Criteria andNameLike(String value) {
-            addCriterion("name like", value, "name");
+        public Criteria andFileNameLike(String value) {
+            addCriterion("file_name like", value, "fileName");
             return (Criteria) this;
         }
 
-        public Criteria andNameNotLike(String value) {
-            addCriterion("name not like", value, "name");
+        public Criteria andFileNameNotLike(String value) {
+            addCriterion("file_name not like", value, "fileName");
             return (Criteria) this;
         }
 
-        public Criteria andNameIn(List<String> values) {
-            addCriterion("name in", values, "name");
+        public Criteria andFileNameIn(List<String> values) {
+            addCriterion("file_name in", values, "fileName");
             return (Criteria) this;
         }
 
-        public Criteria andNameNotIn(List<String> values) {
-            addCriterion("name not in", values, "name");
+        public Criteria andFileNameNotIn(List<String> values) {
+            addCriterion("file_name not in", values, "fileName");
             return (Criteria) this;
         }
 
-        public Criteria andNameBetween(String value1, String value2) {
-            addCriterion("name between", value1, value2, "name");
+        public Criteria andFileNameBetween(String value1, String value2) {
+            addCriterion("file_name between", value1, value2, "fileName");
             return (Criteria) this;
         }
 
-        public Criteria andNameNotBetween(String value1, String value2) {
-            addCriterion("name not between", value1, value2, "name");
+        public Criteria andFileNameNotBetween(String value1, String value2) {
+            addCriterion("file_name not between", value1, value2, "fileName");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertifyPartIsNull() {
+            addCriterion("certify_part is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertifyPartIsNotNull() {
+            addCriterion("certify_part is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertifyPartEqualTo(Integer value) {
+            addCriterion("certify_part =", value, "certifyPart");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertifyPartNotEqualTo(Integer value) {
+            addCriterion("certify_part <>", value, "certifyPart");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertifyPartGreaterThan(Integer value) {
+            addCriterion("certify_part >", value, "certifyPart");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertifyPartGreaterThanOrEqualTo(Integer value) {
+            addCriterion("certify_part >=", value, "certifyPart");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertifyPartLessThan(Integer value) {
+            addCriterion("certify_part <", value, "certifyPart");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertifyPartLessThanOrEqualTo(Integer value) {
+            addCriterion("certify_part <=", value, "certifyPart");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertifyPartIn(List<Integer> values) {
+            addCriterion("certify_part in", values, "certifyPart");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertifyPartNotIn(List<Integer> values) {
+            addCriterion("certify_part not in", values, "certifyPart");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertifyPartBetween(Integer value1, Integer value2) {
+            addCriterion("certify_part between", value1, value2, "certifyPart");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertifyPartNotBetween(Integer value1, Integer value2) {
+            addCriterion("certify_part not between", value1, value2, "certifyPart");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertifyPartCategoryIsNull() {
+            addCriterion("certify_part_category is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertifyPartCategoryIsNotNull() {
+            addCriterion("certify_part_category is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertifyPartCategoryEqualTo(Integer value) {
+            addCriterion("certify_part_category =", value, "certifyPartCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertifyPartCategoryNotEqualTo(Integer value) {
+            addCriterion("certify_part_category <>", value, "certifyPartCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertifyPartCategoryGreaterThan(Integer value) {
+            addCriterion("certify_part_category >", value, "certifyPartCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertifyPartCategoryGreaterThanOrEqualTo(Integer value) {
+            addCriterion("certify_part_category >=", value, "certifyPartCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertifyPartCategoryLessThan(Integer value) {
+            addCriterion("certify_part_category <", value, "certifyPartCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertifyPartCategoryLessThanOrEqualTo(Integer value) {
+            addCriterion("certify_part_category <=", value, "certifyPartCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertifyPartCategoryIn(List<Integer> values) {
+            addCriterion("certify_part_category in", values, "certifyPartCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertifyPartCategoryNotIn(List<Integer> values) {
+            addCriterion("certify_part_category not in", values, "certifyPartCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertifyPartCategoryBetween(Integer value1, Integer value2) {
+            addCriterion("certify_part_category between", value1, value2, "certifyPartCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertifyPartCategoryNotBetween(Integer value1, Integer value2) {
+            addCriterion("certify_part_category not between", value1, value2, "certifyPartCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableIsNull() {
+            addCriterion("bis_enable is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableIsNotNull() {
+            addCriterion("bis_enable is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableEqualTo(Boolean value) {
+            addCriterion("bis_enable =", value, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableNotEqualTo(Boolean value) {
+            addCriterion("bis_enable <>", value, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableGreaterThan(Boolean value) {
+            addCriterion("bis_enable >", value, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_enable >=", value, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableLessThan(Boolean value) {
+            addCriterion("bis_enable <", value, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_enable <=", value, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableIn(List<Boolean> values) {
+            addCriterion("bis_enable in", values, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableNotIn(List<Boolean> values) {
+            addCriterion("bis_enable not in", values, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_enable between", value1, value2, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_enable not between", value1, value2, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingIsNull() {
+            addCriterion("sorting is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingIsNotNull() {
+            addCriterion("sorting is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingEqualTo(Integer value) {
+            addCriterion("sorting =", value, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingNotEqualTo(Integer value) {
+            addCriterion("sorting <>", value, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingGreaterThan(Integer value) {
+            addCriterion("sorting >", value, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingGreaterThanOrEqualTo(Integer value) {
+            addCriterion("sorting >=", value, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingLessThan(Integer value) {
+            addCriterion("sorting <", value, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingLessThanOrEqualTo(Integer value) {
+            addCriterion("sorting <=", value, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingIn(List<Integer> values) {
+            addCriterion("sorting in", values, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingNotIn(List<Integer> values) {
+            addCriterion("sorting not in", values, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingBetween(Integer value1, Integer value2) {
+            addCriterion("sorting between", value1, value2, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingNotBetween(Integer value1, Integer value2) {
+            addCriterion("sorting not between", value1, value2, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkIsNull() {
+            addCriterion("remark is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkIsNotNull() {
+            addCriterion("remark is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkEqualTo(String value) {
+            addCriterion("remark =", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkNotEqualTo(String value) {
+            addCriterion("remark <>", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkGreaterThan(String value) {
+            addCriterion("remark >", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkGreaterThanOrEqualTo(String value) {
+            addCriterion("remark >=", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkLessThan(String value) {
+            addCriterion("remark <", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkLessThanOrEqualTo(String value) {
+            addCriterion("remark <=", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkLike(String value) {
+            addCriterion("remark like", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkNotLike(String value) {
+            addCriterion("remark not like", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkIn(List<String> values) {
+            addCriterion("remark in", values, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkNotIn(List<String> values) {
+            addCriterion("remark not in", values, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkBetween(String value1, String value2) {
+            addCriterion("remark between", value1, value2, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkNotBetween(String value1, String value2) {
+            addCriterion("remark not between", value1, value2, "remark");
             return (Criteria) this;
         }
 
