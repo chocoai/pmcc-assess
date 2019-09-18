@@ -89,17 +89,30 @@
         }
         var target = $(development.config.frm);
         calculationNumeric(formSerializeArray(target),function (data) {
-            target.find("td[name='price']").html(data.price);
-            target.find("input[name='price']").val(data.price);
+            target.find("input[name='projectConstructionPeriod']").val(data.projectConstructionPeriod);
+
             target.find("td[name='constructionCostSubtotal']").html(data.constructionCostSubtotal);
             target.find("input[name='constructionCostSubtotal']").val(data.constructionCostSubtotal);
+
             target.find("td[name='interestInvestment']").html(data.interestInvestment);
             target.find("input[name='interestInvestment']").val(data.interestInvestment);
+
             target.find("td[name='investmentProfit']").html(data.investmentProfit);
             target.find("input[name='investmentProfit']").val(data.investmentProfit);
+
+
             target.find("td[name='assessPrice']").html(data.assessPrice);
             target.find("input[name='assessPrice']").val(data.assessPrice);
-            target.find("input[name='projectConstructionPeriod']").val(data.projectConstructionPeriod);
+            try {
+                if (data.assessPrice){
+                    if (data.price == 0){
+                        data.price = data.assessPrice;
+                    }
+                }
+            } catch (e) {
+            }
+            target.find("td[name='price']").html(data.price);
+            target.find("input[name='price']").val(data.price);
             if ($("#md_development_form").size() != 0){
                 $("#md_development_form") .find("input[name='price']").val(data.price) ;
             }
