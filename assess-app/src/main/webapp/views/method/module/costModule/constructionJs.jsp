@@ -326,6 +326,7 @@
         $('#modalEconomicIndicators').find('.modal-footer').find('button').last().bind('click',function() {
             var data = economicIndicators.getFormData() ;
             if (data){
+                cost.initParcelSettingData(data) ;
                 var developLandAreaTax = data.developLandAreaTax ;
                 if(developLandAreaTax){
                     construction.target.find("input[name='developLandAreaTax']").val(developLandAreaTax).trigger('blur');
