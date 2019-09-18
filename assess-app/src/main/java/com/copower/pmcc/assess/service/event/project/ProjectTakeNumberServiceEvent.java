@@ -41,7 +41,6 @@ public class ProjectTakeNumberServiceEvent extends BaseProcessEvent {
         ProjectTakeNumber data = projectTakeNumberService.getDataByProcessInsId(processExecution.getProcessInstanceId());
         data.setStatus(ProcessStatusEnum.FINISH.getValue());
 
-        projectTakeNumberService.editData(data);
         //获取到该报告类型的最大号
         //增加一条文号记录
         DataNumberRule numberRule = dataNumberRuleService.getDataNumberRule(data.getReportType());
@@ -90,5 +89,7 @@ public class ProjectTakeNumberServiceEvent extends BaseProcessEvent {
         projectNumberRecord.setNumberValue(reportNumber);
         projectNumberRecord.setCreator(data.getCreator());
         projectNumberRecordDao.addProjectNumberRecord(projectNumberRecord);
+        data.setNumberRecordId(projectNumberRecord.getId());
+        projectTakeNumberService.editData(data);
     }
 }
