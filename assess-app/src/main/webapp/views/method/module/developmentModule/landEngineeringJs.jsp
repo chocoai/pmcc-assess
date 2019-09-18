@@ -380,14 +380,16 @@
         }
         $('#modalEconomicIndicators').find('.modal-footer').find('button').last().bind('click',function() {
             var data = economicIndicators.getFormData() ;
-            development.initParcelSettingData(data) ;
-            landEngineering.target.find("a[data-key='plannedBuildingArea']").html(data.plannedBuildingArea);
-            landEngineering.target.find("a[data-key='totalSaleableAreaPrice']").html(data.totalSaleableAreaPrice);
-            landEngineering.target.find("a[data-key='saleableArea']").html(data.saleableArea);
+            if (data){
+                development.initParcelSettingData(data) ;
+                landEngineering.target.find("a[data-key='plannedBuildingArea']").html(data.plannedBuildingArea);
+                landEngineering.target.find("a[data-key='totalSaleableAreaPrice']").html(data.totalSaleableAreaPrice);
+                landEngineering.target.find("a[data-key='saleableArea']").html(data.saleableArea);
 
-            landEngineering.target.find("input[name='plannedBuildingArea']").val(data.plannedBuildingArea).trigger('blur');
-            landEngineering.target.find("input[name='totalSaleableAreaPrice']").val(data.totalSaleableAreaPrice).trigger('blur');
-            landEngineering.target.find("input[name='saleableArea']").val(data.saleableArea).trigger('blur');
+                landEngineering.target.find("input[name='plannedBuildingArea']").val(data.plannedBuildingArea).trigger('blur');
+                landEngineering.target.find("input[name='totalSaleableAreaPrice']").val(data.totalSaleableAreaPrice).trigger('blur');
+                landEngineering.target.find("input[name='saleableArea']").val(data.saleableArea).trigger('blur');
+            }
         });
     };
 

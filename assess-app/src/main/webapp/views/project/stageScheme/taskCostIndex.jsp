@@ -192,7 +192,7 @@
     cost.initForm = function (data) {
 
 
-        cost.constructionFrm.initForm(data);
+//        cost.constructionFrm.initForm(data);
 
         cost.constructionFrm.find("input[name='landGetCostTotal']").val(data.landGetCostTotal);
         cost.constructionFrm.find(".landGetCostTotal").html(data.landGetCostTotal);
@@ -251,6 +251,85 @@
             cost.constructionFrm.find("input[name='landGetCostTotal']").val(landGetCostTotal2) ;
             cost.constructionFrm.find(".landGetCostTotal").parent().parent().show() ;
         }
+    };
+
+    cost.initParcelSettingData = function (data) {
+        var industrySupplyInfoContainer = $("#industrySupplyInfoContainer_BBBBB");
+        var developmentDegreeContentContainer = $("#developmentDegreeContentContainer_BBBBB");
+        industrySupplyInfoContainer.empty();
+        developmentDegreeContentContainer.empty();
+        //宗地外设定
+        AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estateLandInfrastructure, '', function (html, resultData) {
+            var resultHtml = '<div>';
+            var array = [];
+            if (data) {
+                if (data.parcelSettingOuter) {
+                    array = data.parcelSettingOuter.split(',');
+                }
+            }
+            $.each(resultData, function (i, item) {
+                resultHtml += '<span class="checkbox-inline"><input type="checkbox" ';
+                if ($.inArray(item.id.toString(), array) > -1) {
+                    resultHtml += ' checked="checked" ';
+                }
+                resultHtml += ' id="parcelSettingOuterBBBBB' + item.id + '" name="parcelSettingOuter" value="' + item.id + '">';
+                resultHtml += '<label for="parcelSettingOuterBBBBB' + item.id + '">' + item.name + '</label></span>';
+            });
+            resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '全选或全不选' + "</span>";
+            resultHtml += "<input type=\"radio\" name=\"infrastructureSelect\"  onclick=\"development.checkedFun(this,'parcelSettingOuter',true)\">";
+            resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '反选' + "</span>";
+            resultHtml += "<input type=\"radio\" name=\"infrastructureSelect\"  onclick=\"development.checkedFun(this,'parcelSettingOuter',false)\">";
+            resultHtml += "</div>";
+            if (industrySupplyInfoContainer.find("div").size() == 0){
+                industrySupplyInfoContainer.append(resultHtml);
+            }else {
+                $.each(resultData, function (i, item) {
+                    var ele = "#parcelSettingOuterBBBBB"+item.id ;
+                    ele = $(ele) ;
+                    if ($.inArray(item.id.toString(), array) > -1) {
+                        ele.prop("checked", true);
+                    }else {
+                        ele.prop("checked", false);
+                    }
+                });
+            }
+        }, true);
+        //宗地内设定
+        AssessCommon.loadDataDicByKey(AssessDicKey.estateDevelopment_degreePrepared_land, '', function (html, resultData) {
+            var resultHtml = '<div>';
+            var array = [];
+            if (data) {
+                if (data.parcelSettingInner) {
+                    array = data.parcelSettingInner.split(',');
+                }
+            }
+            $.each(resultData, function (i, item) {
+                resultHtml += '<span class="checkbox-inline"><input type="checkbox" ';
+                if ($.inArray(item.id.toString(), array) > -1) {
+                    resultHtml += ' checked="checked" ';
+                }
+                resultHtml += ' id="parcelSettingInnerBBBBB' + item.id + '" name="parcelSettingInner" value="' + item.id + '">';
+                resultHtml += '<label for="parcelSettingInnerBBBBB' + item.id + '">' + item.name + '</label></span>';
+            });
+            resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '全选或全不选' + "</span>";
+            resultHtml += "<input type=\"radio\" name=\"infrastructureSelect\"  onclick=\"development.checkedFun(this,'parcelSettingInner',true)\">";
+            resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '反选' + "</span>";
+            resultHtml += "<input type=\"radio\" name=\"infrastructureSelect\"  onclick=\"development.checkedFun(this,'parcelSettingInner',false)\">";
+            resultHtml += "</div>";
+            if (developmentDegreeContentContainer.find("div").size() == 0){
+                developmentDegreeContentContainer.append(resultHtml);
+            }else {
+                $.each(resultData, function (i, item) {
+                    var ele = "#parcelSettingInnerBBBBB"+item.id ;
+                    ele = $(ele) ;
+                    if ($.inArray(item.id.toString(), array) > -1) {
+                        ele.prop("checked", true);
+                    }else {
+                        ele.prop("checked", false);
+                    }
+                });
+            }
+        });
     };
     
     cost.calculationNumeric = function (data,callback) {
@@ -335,59 +414,12 @@
         construction.loadMdCalculatingMethodEngineeringCostTable() ;
 
 
-        var industrySupplyInfoContainer = $("#industrySupplyInfoContainer_BBBBB") ;
-        var developmentDegreeContentContainer = $("#developmentDegreeContentContainer_BBBBB") ;
+        var data = {
+            parcelSettingInner: '${mdCostVo.mdCostConstruction.parcelSettingInner}',
+            parcelSettingOuter: '${mdCostVo.mdCostConstruction.parcelSettingOuter}'
+        };
+        cost.initParcelSettingData(data) ;
 
-        industrySupplyInfoContainer.empty() ;
-        developmentDegreeContentContainer.empty() ;
-        //宗地外设定
-        AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estateLandInfrastructure, '', function (html, resultData) {
-            var resultHtml = '';
-            var data = {parcelSettingOuter:'${mdCostVo.mdCostConstruction.parcelSettingOuter}'} ;
-            var array = [];
-            if (data){
-                if (data.parcelSettingOuter) {
-                    array = data.parcelSettingOuter.split(',');
-                }
-            }
-            $.each(resultData, function (i, item) {
-                resultHtml += '<span class="checkbox-inline"><input type="checkbox" ';
-                if ($.inArray(item.id.toString(), array) > -1) {
-                    resultHtml += ' checked="checked" ';
-                }
-                resultHtml += ' id="parcelSettingOuterBBBBB' + item.id + '" name="parcelSettingOuter" value="' + item.id + '">';
-                resultHtml += '<label for="parcelSettingOuterBBBBB' + item.id + '">' + item.name + '</label></span>';
-            });
-            resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '全选或全不选' + "</span>";
-            resultHtml +=    "<input type=\"radio\" name=\"infrastructureSelect\"  onclick=\"cost.checkedFun(this,'parcelSettingOuter',true)\">";
-            resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '反选' + "</span>";
-            resultHtml +=    "<input type=\"radio\" name=\"infrastructureSelect\"  onclick=\"cost.checkedFun(this,'parcelSettingOuter',false)\">";
-            industrySupplyInfoContainer.append(resultHtml);
-        }, true);
-        //宗地内设定
-        AssessCommon.loadDataDicByKey(AssessDicKey.estateDevelopment_degreePrepared_land,'',function (html,resultData) {
-            var resultHtml = '';
-            var array = [];
-            var data = {parcelSettingInner:'${mdCostVo.mdCostConstruction.parcelSettingInner}'} ;
-            if (data){
-                if (data.parcelSettingInner) {
-                    array = data.parcelSettingInner.split(',');
-                }
-            }
-            $.each(resultData, function (i, item) {
-                resultHtml += '<span class="checkbox-inline"><input type="checkbox" ';
-                if ($.inArray(item.id.toString(), array) > -1) {
-                    resultHtml += ' checked="checked" ';
-                }
-                resultHtml += ' id="parcelSettingInnerBBBBB' + item.id + '" name="parcelSettingInner" value="' + item.id + '">';
-                resultHtml += '<label for="parcelSettingInnerBBBBB' + item.id + '">' + item.name + '</label></span>';
-            });
-            resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '全选或全不选' + "</span>";
-            resultHtml +=    "<input type=\"radio\" name=\"infrastructureSelect\"  onclick=\"economicIndicators.checkedFun(this,'parcelSettingInner',true)\">";
-            resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '反选' + "</span>";
-            resultHtml +=    "<input type=\"radio\" name=\"infrastructureSelect\"  onclick=\"economicIndicators.checkedFun(this,'parcelSettingInner',false)\">";
-            developmentDegreeContentContainer.append(resultHtml);
-        }) ;
 
     });
 
