@@ -1920,9 +1920,9 @@ public class GenerateBaseDataService {
      */
     public String getHotTip2(final int repeat) throws Exception {
         String value = getHotTipBank(true);
-        if (StringUtils.isNotBlank(value)){
-            if (repeat != 0){
-                value = String.join("",StringUtils.repeat(" ",repeat),value);
+        if (StringUtils.isNotBlank(value)) {
+            if (repeat != 0) {
+                value = String.join("", StringUtils.repeat(" ", repeat), value);
             }
         }
         if (StringUtils.isEmpty(value)) {
@@ -1973,7 +1973,6 @@ public class GenerateBaseDataService {
         }
         return StringUtils.join(stringList, "");
     }
-
 
 
     /**
@@ -5098,6 +5097,7 @@ public class GenerateBaseDataService {
 
     /**
      * 功能描述: 估价对象详细测算过程
+     *
      * @author: zch
      * @date: 2019/3/4 10:30
      */
@@ -5142,8 +5142,17 @@ public class GenerateBaseDataService {
                         baseDetailedCalculationProcessValuationObject(generateMdCompareService.generateCompareFile(), builder, keyValueDtoList, numbers, baseDataDic, map);
                         break;
                     case AssessDataDicKeyConstant.MD_INCOME:
-                        GenerateMdIncomeService generateMdIncomeService = new GenerateMdIncomeService(entry.getKey(), projectId, areaId);
-                        baseDetailedCalculationProcessValuationObject(generateMdIncomeService.generateCompareFile(), builder, keyValueDtoList, numbers, baseDataDic, map);
+                        //判断自营还是租赁
+                        MdIncome mdIncome = mdIncomeService.getIncomeById(entry.getKey().getMethodDataId());
+                        if (mdIncome != null) {
+                            if (MethodIncomeOperationModeEnum.PROPRIETARY.getId().equals(mdIncome.getOperationMode())) {
+                                GenerateMdIncomeSelfRunService generateMdIncomeSelfRunService = new GenerateMdIncomeSelfRunService(entry.getKey(), areaId);
+                                baseDetailedCalculationProcessValuationObject(generateMdIncomeSelfRunService.generateCompareFile(), builder, keyValueDtoList, numbers, baseDataDic, map);
+                            } else if (MethodIncomeOperationModeEnum.LEASE.getId().equals(mdIncome.getOperationMode())) {
+                                GenerateMdIncomeService generateMdIncomeService = new GenerateMdIncomeService(entry.getKey(), projectId, areaId);
+                                baseDetailedCalculationProcessValuationObject(generateMdIncomeService.generateCompareFile(), builder, keyValueDtoList, numbers, baseDataDic, map);
+                            }
+                        }
                         break;
                     case AssessDataDicKeyConstant.MD_COST:
                         GenerateMdCostService mdCostService = new GenerateMdCostService(projectId, entry.getKey(), areaId);
@@ -5292,7 +5301,7 @@ public class GenerateBaseDataService {
                     if (index < schemeReportFileList.size()) {
                         SchemeReportFileItem schemeReportFileItem = schemeReportFileList.get(index);
                         List<SysAttachmentDto> attachmentList = schemeReportFileService.getAttachmentListBySchemeReportFile(schemeReportFileItem);
-                        if(CollectionUtils.isEmpty(attachmentList)) continue;
+                        if (CollectionUtils.isEmpty(attachmentList)) continue;
                         builder.insertCell();
                         String imgPath = "";
                         if (attachmentList.size() == 1) {
@@ -5823,7 +5832,7 @@ public class GenerateBaseDataService {
     public String getICBCValuationCaseInformationSheet() throws Exception {
         String localPath = getLocalPath();
         Document document = new Document();
-        DocumentBuilder documentBuilder = new DocumentBuilder(document) ;
+        DocumentBuilder documentBuilder = new DocumentBuilder(document);
         documentBuilder.getFont().setSize(12);
         documentBuilder.getFont().setName(AsposeUtils.ImitationSong);
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
@@ -5851,7 +5860,7 @@ public class GenerateBaseDataService {
                 BasicEstateVo basicEstate = generateBaseExamineService.getEstate();
                 //描述内容
                 if (StringUtils.isNotBlank(basicEstate.getLocationDescribe())) {
-                    AsposeUtils.insertHtml(documentBuilder,AsposeUtils.getWarpCssHtml(basicEstate.getLocationDescribe(),Lists.newArrayList(new KeyValueDto("text-indent","2em"),new KeyValueDto(AsposeUtils.FontFamily,AsposeUtils.ImitationSong),new KeyValueDto(AsposeUtils.FontSize,"12pt"))));
+                    AsposeUtils.insertHtml(documentBuilder, AsposeUtils.getWarpCssHtml(basicEstate.getLocationDescribe(), Lists.newArrayList(new KeyValueDto("text-indent", "2em"), new KeyValueDto(AsposeUtils.FontFamily, AsposeUtils.ImitationSong), new KeyValueDto(AsposeUtils.FontSize, "12pt"))));
                 }
                 List<MdMarketCompareItem> mdMarketCompareItemList = mdMarketCompareService.getCaseListByMcId(schemeJudgeObjectSchemeInfoEntry.getValue().getMethodDataId());
                 if (CollectionUtils.isNotEmpty(mdMarketCompareItemList)) {
@@ -5873,7 +5882,7 @@ public class GenerateBaseDataService {
     private String getICBCValuationCaseInformationSheet2(List<MdMarketCompareItem> mdMarketCompareItemList) throws Exception {
         String localPath = getLocalPath();
         Document document = new Document();
-        DocumentBuilder documentBuilder = new DocumentBuilder(document) ;
+        DocumentBuilder documentBuilder = new DocumentBuilder(document);
         //设置具体宽度自动适应
         PreferredWidth preferredWidth = PreferredWidth.AUTO;
         documentBuilder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);

@@ -162,8 +162,8 @@
                     <th>开始时间</th>
                     <th>结束时间</th>
                     <th>收益期限(n)</th>
-                    <th>总收入</th>
-                    <th>总成本</th>
+                    <th>收入</th>
+                    <th>成本</th>
                     <th>经营利润</th>
                     <th>房地产年净收益</th>
                     <th>年期修正系数(h)</th>
@@ -171,9 +171,7 @@
                     <th>房地产收益价格</th>
                 </tr>
                 </thead>
-                <tbody id="selfSupportResultBody">
-
-                </tbody>
+                <tbody id="selfSupportResultBody"></tbody>
             </table>
         </div>
     </div>
@@ -708,7 +706,10 @@
 
 <script type="text/html" id="selfSupportResultHtml">
     <tr data-id="{id}">
-        <td><label>{beginDate}</label></td>
+        <td>
+            <input type="hidden" data-name="rentalGrowthRate" value="{rentalGrowthRate}">
+            <label>{beginDate}</label>
+        </td>
         <td><label>{endDate}</label></td>
         <td><label data-name="yearCount">{yearCount}</label></td>
         <td><label data-name="incomeTotal">{incomeTotal}</label></td>
@@ -722,8 +723,6 @@
 </script>
 
 <script type="text/javascript">
-
-
     var selfSupport = {};
     selfSupport.frmForecastIncome = $('#frm_forecast_income');
     selfSupport.frmForecastIncomeItem = $('#frm_forecast_income_item');
@@ -1362,6 +1361,7 @@
                         html = html.replace(/{endDate}/g, formatDate(item.endDate, false)).replace(/{yearCount}/g, item.yearCount);
                         html = html.replace(/{incomeTotal}/g, AssessCommon.toString(item.incomeTotal)).replace(/{costTotal}/g, AssessCommon.toString(item.costTotal));
                         html = html.replace(/{operatingProfit}/g, AssessCommon.toString(item.operatingProfit));
+                        html = html.replace(/{rentalGrowthRate}/g, AssessCommon.toString(item.rentalGrowthRate));
                         html = html.replace(/{netProfit}/g, AssessCommon.toString(item.netProfit)).replace(/{correctionFactor}/g, AssessCommon.toString(item.correctionFactor));
                         html = html.replace(/{presentValueFactor}/g, AssessCommon.toString(item.presentValueFactor)).replace(/{incomePrice}/g, AssessCommon.toString(item.incomePrice));
                         $("#selfSupportResultBody").append(html);
@@ -1474,7 +1474,7 @@
         selfSupport.computePrice();
     }
 
-    //计算年期修正系数[(h)=(1-(1/(1+r))^n]、收益现值系数[(k)=h/r]、房地产收益价格[房地产收益价格*收益现值系数]
+    //计算年期修正系数[(h)=(1-((1+g)/(1+r))^n]、收益现值系数[(k)=h/(r-g)]、房地产收益价格[房地产收益价格*收益现值系数]
     selfSupport.computePrice = function () {
         var r = $("#frm_self_support").find('[name=rewardRate]').attr('data-value');//报酬率
         if (!AssessCommon.isNumber(r)) return false;
@@ -1484,8 +1484,11 @@
             var n = $(this).find('[data-name=yearCount]').text();
             if (!AssessCommon.isNumber(n)) return true;
             n = parseInt(n);
-            var h = (1 - Math.pow(1 / (1 + r), n)).toFixed(6);//年期修正系数
-            var k = (h / r).toFixed(6);//收益现值系数
+            var g = $(this).find('[data-name=rentalGrowthRate]').val();
+            if (!AssessCommon.isNumber(g)) g = 0;
+            g = parseFloat(g);//增长率
+            var h = (1 - Math.pow(1 + g / (1 + r), n)).toFixed(6);//年期修正系数
+            var k = (h / (r - g)).toFixed(6);//收益现值系数
             $(this).find('[data-name=correctionFactor]').text(h);
             $(this).find('[data-name=presentValueFactor]').text(k);
             var netProfit = $(this).find('[data-name=netProfit]').text();
