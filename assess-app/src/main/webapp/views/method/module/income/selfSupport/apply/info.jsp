@@ -1487,7 +1487,7 @@
             var g = $(this).find('[data-name=rentalGrowthRate]').val();
             if (!AssessCommon.isNumber(g)) g = 0;
             g = parseFloat(g);//增长率
-            var h = (1 - Math.pow(1 + g / (1 + r), n)).toFixed(6);//年期修正系数
+            var h = (1 - Math.pow((1 + g) / (1 + r), n)).toFixed(6);//年期修正系数
             var k = (h / (r - g)).toFixed(6);//收益现值系数
             $(this).find('[data-name=correctionFactor]').text(h);
             $(this).find('[data-name=presentValueFactor]').text(k);
