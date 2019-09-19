@@ -12,6 +12,7 @@ import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,13 +35,21 @@ public class DataAssetsAppraisalDicService {
     @Autowired
     private CommonService commonService;
 
-    public boolean saveDataAssetsAppraisalDic(DataAssetsAppraisalDic dataAssetsAppraisalDic) {
+    public boolean saveDataAssetsAppraisalDic(DataAssetsAppraisalDic dataAssetsAppraisalDic) throws Exception{
         if (dataAssetsAppraisalDic == null) {
             return false;
         }
         if (dataAssetsAppraisalDic.getId() != null && dataAssetsAppraisalDic.getId() != 0) {
             return dataAssetsAppraisalDicDao.updateDataAssetsAppraisalDic(dataAssetsAppraisalDic);
         } else {
+            DataAssetsAppraisalDic select = new DataAssetsAppraisalDic();
+            if (StringUtils.isNotBlank(dataAssetsAppraisalDic.getFieldName())){
+                select.setFieldName(dataAssetsAppraisalDic.getFieldName());
+                List<DataAssetsAppraisalDic> dataAssetsAppraisalDics = getDataAssetsAppraisalDicListByExample(select);
+                if (CollectionUtils.isNotEmpty(dataAssetsAppraisalDics)){
+                    throw new Exception("已经存在重复的字段,请检查字段") ;
+                }
+            }
             dataAssetsAppraisalDic.setCreator(commonService.thisUserAccount());
             return dataAssetsAppraisalDicDao.addDataAssetsAppraisalDic(dataAssetsAppraisalDic);
         }

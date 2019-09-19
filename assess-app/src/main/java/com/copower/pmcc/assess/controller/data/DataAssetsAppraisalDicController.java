@@ -53,7 +53,7 @@ public class DataAssetsAppraisalDicController {
             return HttpResult.newCorrectResult(200, dataAssetsAppraisalDic);
         } catch (Exception e) {
             baseService.writeExceptionInfo(e,errorName);
-            return HttpResult.newErrorResult(500, e);
+            return HttpResult.newErrorResult(500, e.getMessage());
         }
     }
 
