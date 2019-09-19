@@ -1139,6 +1139,22 @@ public class MdIncomeService {
 
         //明细
         List<MdIncomeForecastItem> mdIncomeForecastItems = getIncomeForecastItemListByMasterId(forecast.getId());
+
+        //计算增长率 = 盈利:本金
+        //本金
+        BigDecimal principal = new BigDecimal("0");
+        for (MdIncomeForecastItem item : mdIncomeForecastItems) {
+            principal = principal.add(item.getAmountMoney());
+        }
+        //盈利
+        BigDecimal profit = new BigDecimal("0");
+        for (MdIncomeForecastItem item : mdIncomeForecastItems) {
+            profit = profit.add(item.getAmountMoney().multiply(item.getRateIncrease()));
+        }
+        //增长率
+        BigDecimal growthRate = profit.divide(principal, 4, BigDecimal.ROUND_HALF_UP);
+        incomeDateSection.setRentalGrowthRate(growthRate);
+
         //开始年最后一天在结束时间之后
         if (DateUtils.compareDate(lastDayOfBeginYear, endDate) >= 0) {
             BigDecimal yearCount = publicService.diffDateYear(endDate, beginDate);
@@ -1172,9 +1188,7 @@ public class MdIncomeService {
                     //第一年金额
                     BigDecimal beginYearCount = publicService.diffDateYear(lastDayOfBeginYear, beginDate);
                     BigDecimal firstYearAmount = new BigDecimal("0");
-                    for (MdIncomeForecastItem item : mdIncomeForecastItems) {
-                        firstYearAmount = firstYearAmount.add(item.getAmountMoney().multiply(new BigDecimal("1").add(item.getRateIncrease())).multiply(beginYearCount));
-                    }
+                    firstYearAmount = principal.multiply(new BigDecimal("1").add(growthRate)).multiply(beginYearCount);;
                     mdIncomeForecastYear.setAmount(firstYearAmount.setScale(2, BigDecimal.ROUND_HALF_UP));
                     mdIncomeForecastYear.setBeginDate(beginDate);
                     mdIncomeForecastYear.setEndDate(lastDayOfBeginYear);
@@ -1182,16 +1196,14 @@ public class MdIncomeService {
                     //最后一年金额
                     BigDecimal LastYearCount = publicService.diffDateYear(endDate, firstDayOfEndYear);
                     BigDecimal LastAmount = new BigDecimal("0");
-                    for (MdIncomeForecastItem item : mdIncomeForecastItems) {
-                        LastAmount = LastAmount.add(item.getAmountMoney().multiply(new BigDecimal("1").add(item.getRateIncrease()).pow(calcNum + 2)).multiply(LastYearCount));
-                    }
+                    LastAmount = principal.multiply(new BigDecimal("1").add(growthRate).pow(calcNum + 2)).multiply(LastYearCount);;
                     mdIncomeForecastYear.setAmount(LastAmount.setScale(2, BigDecimal.ROUND_HALF_UP));
                     mdIncomeForecastYear.setBeginDate(firstDayOfEndYear);
                     mdIncomeForecastYear.setEndDate(endDate);
                 } else {
                     BigDecimal tempAmount = new BigDecimal("0");//总金额
                     for (MdIncomeForecastItem item : mdIncomeForecastItems) {
-                        tempAmount = tempAmount.add(item.getAmountMoney().multiply(new BigDecimal("1").add(item.getRateIncrease()).pow(i)));
+                        tempAmount = principal.multiply(new BigDecimal("1").add(growthRate).pow(i));;
                     }
                     mdIncomeForecastYear.setAmount(tempAmount.setScale(2, BigDecimal.ROUND_HALF_UP));
                     mdIncomeForecastYear.setBeginDate(DateUtils.addYear(firstDayOfTemp, i - 2));
@@ -1204,19 +1216,7 @@ public class MdIncomeService {
             }
         }
 
-        //计算增长率 = 第二年金额：第一年金额
-        //第一年金额
-        BigDecimal firstYear = new BigDecimal("0");
-        for (MdIncomeForecastItem item : mdIncomeForecastItems) {
-            firstYear = firstYear.add(item.getAmountMoney().multiply(new BigDecimal("1").add(item.getRateIncrease())));
-        }
-        //第二年金额
-        BigDecimal secondYear = new BigDecimal("0");
-        for (MdIncomeForecastItem item : mdIncomeForecastItems) {
-            secondYear = secondYear.add(item.getAmountMoney().multiply(new BigDecimal("1").add(item.getRateIncrease()).pow(2)));
-        }
-        forecast.setGrowthRate(secondYear.divide(firstYear, 4, BigDecimal.ROUND_HALF_UP).subtract(new BigDecimal("1")));
-        mdIncomeForecastDao.updateForecast(forecast);
+
         //更新总收入
         if (forecast.getType().equals(MethodDataTypeEnum.INCOME.getId())) {
             List<MdIncomeForecastYear> list = getIncomeForecastYearListByMasterId(incomeForecastId);
@@ -1322,6 +1322,7 @@ public class MdIncomeService {
             mdIncomeForecastVo.setEndDate(dateSection.getEndDate());
             mdIncomeForecastVo.setYearCount(dateSection.getYearCount());
             mdIncomeForecastVo.setIncomeTotal(dateSection.getIncomeTotal());
+            mdIncomeForecastVo.setRateIncrease(dateSection.getRentalGrowthRate());
         }
         return mdIncomeForecastVo;
     }
