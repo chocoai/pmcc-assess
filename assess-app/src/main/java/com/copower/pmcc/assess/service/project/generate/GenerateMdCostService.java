@@ -305,6 +305,16 @@ public class GenerateMdCostService implements Serializable {
                 BigDecimal bigDecimal = ArithmeticUtils.add(new BigDecimal[]{ArithmeticUtils.createBigDecimal(param1), ArithmeticUtils.createBigDecimal(param2), param3, param4, param5, param6});
                 return ArithmeticUtils.round(bigDecimal.toString(), 2);
             }
+            case MarketCost_Unilateral_cost:{
+                List<BigDecimal> bigDecimalList = Lists.newArrayList();
+                bigDecimalList.add(target.getConstructionInstallationEngineeringFee());
+                bigDecimalList.add(target.getInfrastructureCost());
+                bigDecimalList.add(target.getInfrastructureMatchingCost());
+                bigDecimalList.add(target.getOtherEngineeringCost());
+                bigDecimalList.add(target.getDevDuring());
+                BigDecimal bigDecimal = ArithmeticUtils.add(bigDecimalList) ;
+                return ArithmeticUtils.round(bigDecimal.toString(), 0);
+            }
             case MarketCost_constructionSubtotal: {//成本法建设成本总计
                 String param1 = getReportDataValue(target, BaseReportFieldEnum.MarketCost_constructionSub);
                 BigDecimal bigDecimal = ArithmeticUtils.mul(param1, target.getDevelopBuildAreaTax().toString());

@@ -49,18 +49,21 @@ public class DataAssetsAppraisalDicDao {
     public List<DataAssetsAppraisalDic> getDataAssetsAppraisalDicListByExample(DataAssetsAppraisalDic oo){
         DataAssetsAppraisalDicExample example = new DataAssetsAppraisalDicExample();
         MybatisUtils.convertObj2Example(oo, example);
+        example.setOrderByClause("sorting");
         return mapper.selectByExample(example) ;
     }
 
     public List<DataAssetsAppraisalDic> getDataAssetsAppraisalDicListByTypeAndPlanDetailsId(Integer planDetailsId,String type){
         DataAssetsAppraisalDicExample example = new DataAssetsAppraisalDicExample();
         example.createCriteria().andTypeEqualTo(type).andPlanDetailsIdEqualTo(planDetailsId);
+        example.setOrderByClause("sorting");
         return mapper.selectByExample(example) ;
     }
 
     public List<DataAssetsAppraisalDic> getDataAssetsAppraisalDicListByType(String type){
         DataAssetsAppraisalDicExample example = new DataAssetsAppraisalDicExample();
         example.createCriteria().andTypeEqualTo(type);
+        example.setOrderByClause("sorting");
         return mapper.selectByExample(example) ;
     }
     

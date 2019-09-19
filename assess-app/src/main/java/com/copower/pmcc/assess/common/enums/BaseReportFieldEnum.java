@@ -290,6 +290,7 @@ public enum BaseReportFieldEnum implements Serializable {
     MarketCost_Merge_JudgeObject("成本法合并估价对象"),
     MarketCost_Method("成本法土地测算方法"),
     MarketCost_region("成本法区域"),
+    MarketCost_Unilateral_cost("成本法单方造价"),
     MarketCost_developYearNumberTax("成本法开发周期"),
     MarketCost_constructionInstallationEngineeringFee("成本法建筑安装工程费"),
     MarketCost_constructionInstallationEngineeringFeeTotal("成本法建筑安装工程费总计"),
