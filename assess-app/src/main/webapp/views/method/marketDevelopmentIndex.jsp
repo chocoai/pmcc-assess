@@ -152,6 +152,9 @@
         var frm = $(development.config.frm);
         var data = formSerializeArray(frm);
         data.planDetailsId = '${projectPlanDetails.id}';
+        if (!development.isNotBlank(data.type)){
+            data.type = $("#developmentCheckboxTool").find("input[type='radio'][name='type']:checked");
+        }
         return data;
     };
 
