@@ -142,14 +142,16 @@
                     <div class="form-group">
                         <div class="x-valid">
                             <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">宗地外设定</label>
-                            <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5" id="industrySupplyInfoContainer_AAAAA">
+                            <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11" id="industrySupplyInfoContainer_AAAAA">
 
                             </div>
                         </div>
-
+                    </div>
+                    <div class="form-group">
                         <div class="x-valid">
                             <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">宗地内设定</label>
-                            <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5  " id="developmentDegreeContentContainer_AAAAA">
+                            <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11 "
+                                 id="developmentDegreeContentContainer_AAAAA">
                             </div>
                         </div>
                     </div>
@@ -306,8 +308,8 @@
     economicIndicators.saveCallback;
     //初始化
     economicIndicators.init = function (options) {
-        var industrySupplyInfoContainer = $("#industrySupplyInfoContainer_AAAAA") ;
-        var developmentDegreeContentContainer = $("#developmentDegreeContentContainer_AAAAA") ;
+        var industrySupplyInfoContainer = $("#industrySupplyInfoContainer_AAAAA");
+        var developmentDegreeContentContainer = $("#developmentDegreeContentContainer_AAAAA");
         var defaluts = {
             planDetailsId: undefined,
             economicId: undefined,
@@ -320,8 +322,8 @@
         economicIndicators.frmItem.find('[data-role=child]').remove();
         economicIndicators.frm.find('[name=planDetailsId]').val(defaluts.planDetailsId);
         economicIndicators.frm.find('[name=centerId]').val(defaluts.centerId);
-        industrySupplyInfoContainer.empty() ;
-        developmentDegreeContentContainer.empty() ;
+        industrySupplyInfoContainer.empty();
+        developmentDegreeContentContainer.empty();
         //回显数据
         if (defaluts.economicId) {
             $.ajax({
@@ -333,7 +335,7 @@
                 dataType: 'json',
                 success: function (result) {
                     if (result.ret) {
-                        if (result.data.economicIndicators){
+                        if (result.data.economicIndicators) {
                             economicIndicators.frm.initForm(result.data.economicIndicators);
                             economicIndicators.frm.find("input[name='planDate']").val(formatDate(result.data.economicIndicators.planDate));
                             economicIndicators.frm.find("label[name='planDate']").html(formatDate(result.data.economicIndicators.planDate));
@@ -342,7 +344,7 @@
                         AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estateLandInfrastructure, '', function (html, resultData) {
                             var resultHtml = '';
                             var array = [];
-                            if (result.data.economicIndicators){
+                            if (result.data.economicIndicators) {
                                 if (result.data.economicIndicators.parcelSettingOuter) {
                                     array = result.data.economicIndicators.parcelSettingOuter.split(',');
                                 }
@@ -356,16 +358,16 @@
                                 resultHtml += '<label for="parcelSettingOuterAAAAA' + item.id + '">' + item.name + '</label></span>';
                             });
                             resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '全选或全不选' + "</span>";
-                            resultHtml +=    "<input type=\"radio\" name=\"infrastructureSelect\"  onclick=\"economicIndicators.checkedFun(this,'parcelSettingOuter',true)\">";
+                            resultHtml += "<input type=\"radio\" name=\"infrastructureSelect\"  onclick=\"economicIndicators.checkedFun(this,'parcelSettingOuter',true)\">";
                             resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '反选' + "</span>";
-                            resultHtml +=    "<input type=\"radio\" name=\"infrastructureSelect\"  onclick=\"economicIndicators.checkedFun(this,'parcelSettingOuter',false)\">";
+                            resultHtml += "<input type=\"radio\" name=\"infrastructureSelect\"  onclick=\"economicIndicators.checkedFun(this,'parcelSettingOuter',false)\">";
                             industrySupplyInfoContainer.append(resultHtml);
                         }, true);
                         //宗地内设定
-                        AssessCommon.loadDataDicByKey(AssessDicKey.estateDevelopment_degreePrepared_land,'',function (html,resultData) {
+                        AssessCommon.loadDataDicByKey(AssessDicKey.estateDevelopment_degreePrepared_land, '', function (html, resultData) {
                             var resultHtml = '';
                             var array = [];
-                            if (result.data.economicIndicators){
+                            if (result.data.economicIndicators) {
                                 if (result.data.economicIndicators.parcelSettingInner) {
                                     array = result.data.economicIndicators.parcelSettingInner.split(',');
                                 }
@@ -379,11 +381,11 @@
                                 resultHtml += '<label for="parcelSettingInnerAAAAA' + item.id + '">' + item.name + '</label></span>';
                             });
                             resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '全选或全不选' + "</span>";
-                            resultHtml +=    "<input type=\"radio\" name=\"infrastructureSelect\"  onclick=\"economicIndicators.checkedFun(this,'parcelSettingInner',true)\">";
+                            resultHtml += "<input type=\"radio\" name=\"infrastructureSelect\"  onclick=\"economicIndicators.checkedFun(this,'parcelSettingInner',true)\">";
                             resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '反选' + "</span>";
-                            resultHtml +=    "<input type=\"radio\" name=\"infrastructureSelect\"  onclick=\"economicIndicators.checkedFun(this,'parcelSettingInner',false)\">";
+                            resultHtml += "<input type=\"radio\" name=\"infrastructureSelect\"  onclick=\"economicIndicators.checkedFun(this,'parcelSettingInner',false)\">";
                             developmentDegreeContentContainer.append(resultHtml);
-                        }) ;
+                        });
                         if (result.data.economicIndicatorsItemList) {
                             $.each(result.data.economicIndicatorsItemList, function (i, item) {
                                 var dataKey = item.dataKey;
@@ -526,7 +528,8 @@
         var plannedBuildingAreaValue = 0, totalSaleableAreaPriceValue = 0, saleableAreaValue = 0;
         target.find('tr[data-role="parent"]').each(function () {
             var dataKey = $(this).attr('data-key');
-            var numberTotal = 0, saleableAreaTotal = 0, plannedBuildingAreaTotal = 0, unitPriceTotal = 0,assessAreaTotal = 0,
+            var numberTotal = 0, saleableAreaTotal = 0, plannedBuildingAreaTotal = 0, unitPriceTotal = 0,
+                assessAreaTotal = 0,
                 totalSaleableAreaPrice = 0;
             economicIndicators.frmItem.find('tr[data-role="child"][data-key=' + dataKey + ']').each(function () {
                 var plannedBuildingArea = $(this).find('[name=plannedBuildingArea]').val();
@@ -588,9 +591,9 @@
         target.find("table").find("tfoot").find("label[name='saleableArea']").html(saleableAreaValue.toFixed(2));
     };
 
-    economicIndicators.checkedFun = function (that, name,flag) {
+    economicIndicators.checkedFun = function (that, name, flag) {
         var form = $(that).closest("form");
-        var target = form.find("[name='"+name+"']:checkbox") ;
+        var target = form.find("[name='" + name + "']:checkbox");
         if (flag) {//全选或者全不选
             var number = 1;
             target.each(function (i, n) {

@@ -13,17 +13,17 @@
     <tr class="treegrid-{index}-{childIndex} treegrid-parent-{index}" data-key="{key}" data-role="child">
         <td>{name}</td>
         <td>
-            <input type="text" onblur="developmentCommon.architecturalB.totalResult(this,'{reckon}')" placeholder="单价(数字)"
-                   name="price">
+            <input type="text" onblur="developmentCommon.architecturalB.totalResult(this,'{reckon}')" placeholder=""
+                   name="price" style="width: 50%;">
         </td>
         <td>
-            <input type="text" onblur="developmentCommon.architecturalB.totalResult(this,'{reckon}')" placeholder="面积(数字)"
-                   name="area">
+            <input type="text" onblur="developmentCommon.architecturalB.totalResult(this,'{reckon}')" placeholder=""
+                   name="area" style="width: 50%;">
         </td>
         <td><input type="text" class="x-percent" onblur="developmentCommon.architecturalB.totalResult(this,'{reckon}')"
-                   placeholder="(数字)" name="valuationDateDegreeCompletion">
+                   placeholder="" name="valuationDateDegreeCompletion" style="width: 50%;">
         </td>
-        <td><input type="text" name="remark" placeholder="描述"></td>
+        <td><input type="text" name="remark" placeholder="描述" style="width: 80%;"></td>
         <td name="result"></td>
     </tr>
 </script>
@@ -35,7 +35,7 @@
             <th name="price">单价(元/㎡)</th>
             <th name="area">面积(㎡)</th>
             <th name="valuationDateDegreeCompletion">估价时点完工程度</th>
-            <td name="remark">描述</td>
+            <th name="remark">描述</th>
             <th name="result">计算值</th>
         </tr>
         </thead>
