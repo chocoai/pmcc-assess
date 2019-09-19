@@ -8,87 +8,53 @@
         <ul class="nav navbar-right panel_toolbox">
             <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
         </ul>
-        <h3>开发信息</h3>
+        <h3>开发信息<small><input type="button" class="btn btn-xs btn-primary" value="经济规划指标"
+                              onclick="economicIndicators.init({economicId:'${mdCostVo.mdCostConstruction.economicId}',attribute:{readonly:'readonly','class':'form-control'} });"></small></h3>
         <div class="clearfix"></div>
     </div>
-
     <div class="x_content">
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
-                    开发土地面积(㎡)<span class="symbol required"></span>
+                    开发土地面积(㎡)
                 </label>
                 <div class="col-sm-3">
                     <label  class="form-control"> ${mdCostVo.mdCostConstruction.developLandAreaTax} </label>
                 </div>
             </div>
-
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
-                    开发建筑面积(㎡)<span class="symbol required"></span>
+                    开发建筑面积(㎡)
                 </label>
                 <div class="col-sm-3">
-
                     <label  class="form-control"> ${mdCostVo.mdCostConstruction.developBuildAreaTax} </label>
-
                 </div>
             </div>
-
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
-                    开发期（年）<span class="symbol required"></span>
+                    开发期（年）
                 </label>
                 <div class="col-sm-3">
-
                     <label  class="form-control"> ${mdCostVo.mdCostConstruction.developYearNumberTax} </label>
-
                 </div>
             </div>
         </div>
-    </div>
-
-</div>
-
-<div class="x_panel">
-
-    <div class="x_title collapse-link">
-        <ul class="nav navbar-right panel_toolbox">
-            <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-        </ul>
-        <h3>经济指标(参考值)</h3>
-        <div class="clearfix"></div>
-    </div>
-
-
-    <div class="x_content">
-
-        <div class="form-group">
-            <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
-                <input type="button" class="btn btn-primary" value="经济规划指标"
-                       onclick="economicIndicators.init({economicId:'${mdCostVo.mdCostConstruction.economicId}',attribute:{readonly:'readonly','class':'form-control'} });">
-            </div>
-        </div>
-
         <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">宗地外设定</label>
-                <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5" >
-                    ${mdCostVo.mdCostConstruction.parcelSettingOuterName}
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3" >
+                   <label class="form-control">${mdCostVo.mdCostConstruction.parcelSettingOuterName}</label>
                 </div>
             </div>
-
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">宗地内设定</label>
-                <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
-                    ${mdCostVo.mdCostConstruction.parcelSettingInnerName}
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <label class="form-control">${mdCostVo.mdCostConstruction.parcelSettingInnerName}</label>
                 </div>
             </div>
         </div>
     </div>
-
-
 </div>
-
 <c:if test="${mdCostVo.type == 2}">
     <div class="x_panel">
 
@@ -104,16 +70,16 @@
             <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
-                        土地购买价格 (元/㎡)<span class="symbol required"></span>
+                        土地购买价格 (元/㎡)
                     </label>
                     <div class="col-sm-3">
-                        <div class="input-group">
-                            <label  class="form-control"> ${mdCostVo.mdCostConstruction.landPurchasePrice} </label>
-                            <span class="input-group-btn">
-                                            <input type="button" class="btn btn-primary" value="市场比较法"
-                                                   onclick="construction.callCompareMethod('${mdCostVo.mdCostConstruction.mcId}');">
-                                        </span>
-                        </div>
+                        <label  class="form-control"> ${mdCostVo.mdCostConstruction.landPurchasePrice} </label>
+                        <%--<div class="input-group">--%>
+                            <%--<span class="input-group-btn">--%>
+                                            <%--<input type="button" class="btn btn-primary" value="市场比较法"--%>
+                                                   <%--onclick="construction.callCompareMethod('${mdCostVo.mdCostConstruction.mcId}');">--%>
+                                        <%--</span>--%>
+                        <%--</div>--%>
                     </div>
                 </div>
 
@@ -122,9 +88,7 @@
                         价格说明
                     </label>
                     <div class="col-sm-3">
-
                         <label  class="form-control"> ${mdCostVo.mdCostConstruction.landPurchasePriceExplain} </label>
-
                     </div>
                 </div>
             </div>
@@ -132,7 +96,7 @@
             <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
-                        土地取得相关税费率<span class="symbol required"></span>
+                        土地取得相关税费率
                     </label>
                     <div class="col-sm-3">
                         <label  class="form-control">
@@ -157,7 +121,7 @@
             <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
-                        土地取得单价(元/㎡) <span class="symbol required"></span>
+                        土地取得单价(元/㎡) 
                     </label>
                     <div class="col-sm-3">
 
@@ -194,7 +158,7 @@
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
-                    勘察设计和前期工程费率<span class="symbol required"></span>
+                    勘察设计和前期工程费率
                 </label>
                 <div class="col-sm-3">
 
@@ -246,7 +210,7 @@
 
         <div class="form-group">
             <label class="col-sm-1 control-label">
-                基础设施建设费 (元/㎡)<span class="symbol required"></span>
+                基础设施建设费 (元/㎡)
             </label>
             <div class="x-valid">
                 <div class="col-sm-3">
@@ -277,7 +241,7 @@
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
-                    公共配套设施建设费 (元/㎡)<span class="symbol required"></span>
+                    公共配套设施建设费 (元/㎡)
                 </label>
                 <div class="col-sm-3">
                     <label  class="form-control"> ${mdCostVo.mdCostConstruction.infrastructureMatchingCost} </label>
@@ -297,7 +261,7 @@
 
         <div class="form-group">
             <label class="col-sm-1 control-label">
-                开发期间税费 (元/㎡)<span class="symbol required"></span>
+                开发期间税费 (元/㎡)
             </label>
             <div class="x-valid">
                 <div class="col-sm-3">
@@ -318,7 +282,7 @@
 
         <div class="form-group">
             <label class="col-sm-1 control-label">
-                其它工程费 (元/㎡)<span class="symbol required"></span>
+                其它工程费 (元/㎡)
             </label>
             <div class="x-valid">
                 <div class="col-sm-3">
@@ -351,7 +315,7 @@
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
-                    不可预见费率<span class="symbol required"></span>
+                    不可预见费率
                 </label>
                 <div class="col-sm-3">
                     <label  class="form-control">
@@ -372,7 +336,7 @@
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
-                    管理费率<span class="symbol required"></span>
+                    管理费率
                 </label>
                 <div class="col-sm-3">
                     <label  class="form-control">
@@ -393,7 +357,7 @@
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
-                    销售费率<span class="symbol required"></span>
+                    销售费率
                 </label>
                 <div class="col-sm-3">
                     <label  class="form-control">
@@ -414,7 +378,7 @@
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
-                    投资利息率<span class="symbol required"></span>
+                    投资利息率
                 </label>
                 <div class="col-sm-3">
                     <label  class="form-control">
@@ -435,7 +399,7 @@
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
-                    销售税金及附加率<span class="symbol required"></span>
+                    销售税金及附加率
                 </label>
                 <div class="col-sm-3">
                     <label  class="form-control">
@@ -456,7 +420,7 @@
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
-                    开发利润率<span class="symbol required"></span>
+                    开发利润率
                 </label>
                 <div class="col-sm-3">
                     <label  class="form-control">
