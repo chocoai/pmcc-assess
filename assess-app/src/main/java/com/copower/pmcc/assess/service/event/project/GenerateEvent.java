@@ -1,10 +1,10 @@
 package com.copower.pmcc.assess.service.event.project;
 
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
-import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
+import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlan;
+import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.event.BaseProcessEvent;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
@@ -14,7 +14,6 @@ import com.copower.pmcc.bpm.api.dto.model.ProcessExecution;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.erp.api.dto.SysProjectDto;
 import com.copower.pmcc.erp.api.provider.ErpRpcProjectService;
-import com.copower.pmcc.erp.constant.ApplicationConstant;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,26 +38,28 @@ public class GenerateEvent extends BaseProcessEvent {
     @Autowired
     private ErpRpcProjectService erpRpcProjectService;
     @Autowired
-    private ApplicationConstant applicationConstant;
+    private BaseService baseService;
     @Autowired
     private ProjectNumberRecordService projectNumberRecordService;
-    @Autowired
-    private BaseDataDicService baseDataDicService;
 
     @Override
     public void processFinishExecute(ProcessExecution processExecution) throws Exception {
         super.processFinishExecute(processExecution);
-        ProcessStatusEnum processStatusEnum = ProcessStatusEnum.create(processExecution.getProcessStatus().getValue());
-        if (processStatusEnum == null) return;
-        switch (processStatusEnum) {
-            case FINISH:
-                ProjectPlan projectPlan = projectPlanService.getProjectplanByProcessInsId(processExecution.getProcessInstanceId());
-                if (projectPlan == null) return;
-                projectPlan.setProjectStatus(ProjectStatusEnum.FINISH.getKey());
-                projectPlan.setFinishDate(new Date());
-                projectPlanService.updateProjectPlan(projectPlan);
-                updateDocNumberToErp(projectPlan.getProjectId());
-                break;
+        try {
+            ProcessStatusEnum processStatusEnum = ProcessStatusEnum.create(processExecution.getProcessStatus().getValue());
+            if (processStatusEnum == null) return;
+            switch (processStatusEnum) {
+                case FINISH:
+                    ProjectPlan projectPlan = projectPlanService.getProjectplanByProcessInsId(processExecution.getProcessInstanceId());
+                    if (projectPlan == null) return;
+                    projectPlan.setProjectStatus(ProjectStatusEnum.FINISH.getKey());
+                    projectPlan.setFinishDate(new Date());
+                    projectPlanService.updateProjectPlan(projectPlan);
+                    updateDocNumberToErp(projectPlan.getProjectId());
+                    break;
+            }
+        }catch (Exception e){
+            baseService.writeExceptionInfo(e,"生成报告Event");
         }
     }
 
@@ -72,7 +73,7 @@ public class GenerateEvent extends BaseProcessEvent {
         if (projectInfo == null) return;
         Integer publicProjectId = projectInfo.getPublicProjectId();
         if (publicProjectId == null) return;
-        SysProjectDto sysProjectDto = erpRpcProjectService.getProjectInfoByProjectId(publicProjectId, applicationConstant.getAppKey());
+        SysProjectDto sysProjectDto = erpRpcProjectService.getProjectInfoByProjectId(publicProjectId, BaseConstant.ASSESS_APP_KEY);
         if (sysProjectDto != null && sysProjectDto.getId() > 0) {
             sysProjectDto.setStatus(ProjectStatusEnum.FINISH.getKey());
             List<String> reportNumberList = projectNumberRecordService.getReportNumberList(projectId, null);

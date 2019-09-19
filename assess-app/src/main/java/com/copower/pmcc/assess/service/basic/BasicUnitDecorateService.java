@@ -65,7 +65,7 @@ public class BasicUnitDecorateService {
             basicUnitDecorate.setCreator(commonService.thisUserAccount());
             Integer id = basicUnitDecorateDao.saveBasicUnitDecorate(basicUnitDecorate);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicUnitDecorate.class), id);
-            return  id ;
+            return id;
         } else {
             BasicUnitDecorate oo = basicUnitDecorateDao.getBasicUnitDecorateById(basicUnitDecorate.getId());
             basicUnitDecorateDao.updateBasicUnitDecorate(basicUnitDecorate);
@@ -97,12 +97,13 @@ public class BasicUnitDecorateService {
     }
 
     public List<BasicUnitDecorateVo> getBasicUnitDecorateList(Integer unitId) throws Exception {
-        BasicUnitDecorate where=new BasicUnitDecorate();
+        if (unitId == null) return null;
+        BasicUnitDecorate where = new BasicUnitDecorate();
         where.setUnitId(unitId);
-        return LangUtils.transform(basicUnitDecorateDao.basicUnitDecorateList(where),o->getBasicUnitDecorateVo(o)) ;
+        return LangUtils.transform(basicUnitDecorateDao.basicUnitDecorateList(where), o -> getBasicUnitDecorateVo(o));
     }
 
-    public void removeBasicUnitDecorate(BasicUnitDecorate basicUnitDecorate)throws Exception{
+    public void removeBasicUnitDecorate(BasicUnitDecorate basicUnitDecorate) throws Exception {
         basicUnitDecorateDao.removeBasicUnitDecorate(basicUnitDecorate);
     }
 
@@ -118,12 +119,12 @@ public class BasicUnitDecorateService {
         return vo;
     }
 
-    public BasicUnitDecorateVo getBasicUnitDecorateVo(BasicUnitDecorate basicUnitDecorate){
-        if (basicUnitDecorate==null){
+    public BasicUnitDecorateVo getBasicUnitDecorateVo(BasicUnitDecorate basicUnitDecorate) {
+        if (basicUnitDecorate == null) {
             return null;
         }
         BasicUnitDecorateVo vo = new BasicUnitDecorateVo();
-        BeanUtils.copyProperties(basicUnitDecorate,vo);
+        BeanUtils.copyProperties(basicUnitDecorate, vo);
         vo.setDecorationPartName(baseDataDicService.getNameById(basicUnitDecorate.getDecorationPart()));
         vo.setConstructionTechnologyName(baseDataDicService.getNameById(basicUnitDecorate.getConstructionTechnology()));
         vo.setMaterialPriceName(baseDataDicService.getNameById(basicUnitDecorate.getMaterialPriceRange()));

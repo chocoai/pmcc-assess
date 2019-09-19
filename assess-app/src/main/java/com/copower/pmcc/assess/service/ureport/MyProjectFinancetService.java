@@ -2,7 +2,6 @@ package com.copower.pmcc.assess.service.ureport;
 
 import com.bstek.ureport.build.BeanPageDataSet;
 import com.copower.pmcc.erp.common.CommonService;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,17 +30,5 @@ public class MyProjectFinancetService {
      */
     public BeanPageDataSet getMyProjectFinanceVoList(String dsname, String datasetName, Map<String, Object> maps) throws Exception {
        return uReportService.getProjectFinanceDataSet(maps,commonService.thisUserAccount());
-    }
-
-    private String objectToString(Object obj) {
-        if (obj == null) return "";
-        return StringUtils.defaultString(String.valueOf(obj));
-    }
-
-    private Integer objectToInteger(Object obj) {
-        String string = objectToString(obj);
-        if (StringUtils.isNotBlank(string) && StringUtils.isNumeric(string))
-            return Integer.valueOf(string);
-        return 0;
     }
 }

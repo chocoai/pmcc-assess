@@ -8,6 +8,7 @@ package com.copower.pmcc.assess.constant;
  * @time: 11:25
  */
 public class BaseConstant {
+    public static final String ASSESS_APP_KEY = "pmcc-assess";//pmcc_assess
     public static final String DATABASE_PMCC_ASSESS = "pmcc_assess";//pmcc_assess
     public static final String DATABASE_PMCC_ASSESS_CASE = "pmcc_assess_case";//pmcc_assess_case
 
