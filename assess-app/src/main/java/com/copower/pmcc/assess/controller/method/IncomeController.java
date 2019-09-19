@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.controller.method;
 
 import com.alibaba.fastjson.JSON;
+import com.copower.pmcc.assess.dal.basis.dao.method.MdIncomeForecastDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeIncomeApplyDto;
 import com.copower.pmcc.assess.service.method.MdIncomeDateSectionService;
@@ -35,6 +36,8 @@ public class IncomeController {
     private MdIncomeService mdIncomeService;
     @Autowired
     private MdIncomeDateSectionService mdIncomeDateSectionService;
+    @Autowired
+    private MdIncomeForecastDao mdIncomeForecastDao;
 
     @ResponseBody
     @GetMapping(value = "/getDateSectionList", name = "获取日期分段列表")
@@ -432,5 +435,30 @@ public class IncomeController {
             return HttpResult.newErrorResult(e.getMessage());
         }
         return HttpResult.newCorrectResult();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/saveOperatingCostItem", method = {RequestMethod.POST}, name = "保存经营成本明细")
+    public HttpResult saveOperatingCostItem(Integer id, String operatingCostItem) {
+        try {
+            MdIncomeForecast forecast = mdIncomeForecastDao.getForecastById(id);
+            forecast.setOperatingCostItem(operatingCostItem);
+            mdIncomeForecastDao.updateForecast(forecast);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getForecastById", name = "获取一条数据", method = {RequestMethod.POST})
+    public HttpResult getForecastById(Integer id) {
+        try {
+            MdIncomeForecast forecast = mdIncomeForecastDao.getForecastById(id);
+            return HttpResult.newCorrectResult(forecast);
+        } catch (Exception e) {
+            return HttpResult.newErrorResult("获取失败");
+        }
     }
 }

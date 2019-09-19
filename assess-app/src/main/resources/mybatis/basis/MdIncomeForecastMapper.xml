@@ -34,6 +34,7 @@
     <result column="financial_cost_ratio" property="financialCostRatio" jdbcType="DECIMAL" />
     <result column="operating_profit_ratio" property="operatingProfitRatio" jdbcType="DECIMAL" />
     <result column="excess_profit_ratio" property="excessProfitRatio" jdbcType="DECIMAL" />
+    <result column="operating_cost_item" property="operatingCostItem" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -100,7 +101,7 @@
     operating_profit, operating_profit_remark, excess_profit, excess_profit_remark, growth_rate, 
     growth_rate_remark, creator, gmt_created, gmt_modified, operating_cost_ratio, operating_expenses_ratio, 
     operating_tax_ratio, management_cost_ratio, financial_cost_ratio, operating_profit_ratio, 
-    excess_profit_ratio
+    excess_profit_ratio, operating_cost_item
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeForecastExample" >
     select
@@ -147,8 +148,8 @@
       gmt_created, gmt_modified, operating_cost_ratio, 
       operating_expenses_ratio, operating_tax_ratio, 
       management_cost_ratio, financial_cost_ratio, 
-      operating_profit_ratio, excess_profit_ratio
-      )
+      operating_profit_ratio, excess_profit_ratio, 
+      operating_cost_item)
     values (#{incomeId,jdbcType=INTEGER}, #{sectionId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, 
       #{initialAmount,jdbcType=DECIMAL}, #{initialAmountRemark,jdbcType=VARCHAR}, #{operatingCost,jdbcType=DECIMAL}, 
       #{operatingCostRemark,jdbcType=VARCHAR}, #{operatingExpenses,jdbcType=DECIMAL}, 
@@ -160,8 +161,8 @@
       #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{operatingCostRatio,jdbcType=DECIMAL}, 
       #{operatingExpensesRatio,jdbcType=DECIMAL}, #{operatingTaxRatio,jdbcType=DECIMAL}, 
       #{managementCostRatio,jdbcType=DECIMAL}, #{financialCostRatio,jdbcType=DECIMAL}, 
-      #{operatingProfitRatio,jdbcType=DECIMAL}, #{excessProfitRatio,jdbcType=DECIMAL}
-      )
+      #{operatingProfitRatio,jdbcType=DECIMAL}, #{excessProfitRatio,jdbcType=DECIMAL}, 
+      #{operatingCostItem,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeForecast" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -262,6 +263,9 @@
       <if test="excessProfitRatio != null" >
         excess_profit_ratio,
       </if>
+      <if test="operatingCostItem != null" >
+        operating_cost_item,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="incomeId != null" >
@@ -356,6 +360,9 @@
       </if>
       <if test="excessProfitRatio != null" >
         #{excessProfitRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="operatingCostItem != null" >
+        #{operatingCostItem,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -464,6 +471,9 @@
       <if test="record.excessProfitRatio != null" >
         excess_profit_ratio = #{record.excessProfitRatio,jdbcType=DECIMAL},
       </if>
+      <if test="record.operatingCostItem != null" >
+        operating_cost_item = #{record.operatingCostItem,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -502,7 +512,8 @@
       management_cost_ratio = #{record.managementCostRatio,jdbcType=DECIMAL},
       financial_cost_ratio = #{record.financialCostRatio,jdbcType=DECIMAL},
       operating_profit_ratio = #{record.operatingProfitRatio,jdbcType=DECIMAL},
-      excess_profit_ratio = #{record.excessProfitRatio,jdbcType=DECIMAL}
+      excess_profit_ratio = #{record.excessProfitRatio,jdbcType=DECIMAL},
+      operating_cost_item = #{record.operatingCostItem,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -603,6 +614,9 @@
       <if test="excessProfitRatio != null" >
         excess_profit_ratio = #{excessProfitRatio,jdbcType=DECIMAL},
       </if>
+      <if test="operatingCostItem != null" >
+        operating_cost_item = #{operatingCostItem,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -638,7 +652,8 @@
       management_cost_ratio = #{managementCostRatio,jdbcType=DECIMAL},
       financial_cost_ratio = #{financialCostRatio,jdbcType=DECIMAL},
       operating_profit_ratio = #{operatingProfitRatio,jdbcType=DECIMAL},
-      excess_profit_ratio = #{excessProfitRatio,jdbcType=DECIMAL}
+      excess_profit_ratio = #{excessProfitRatio,jdbcType=DECIMAL},
+      operating_cost_item = #{operatingCostItem,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

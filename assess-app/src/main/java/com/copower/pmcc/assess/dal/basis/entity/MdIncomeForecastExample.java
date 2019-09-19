@@ -2125,6 +2125,76 @@ public class MdIncomeForecastExample {
             addCriterion("excess_profit_ratio not between", value1, value2, "excessProfitRatio");
             return (Criteria) this;
         }
+
+        public Criteria andOperatingCostItemIsNull() {
+            addCriterion("operating_cost_item is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingCostItemIsNotNull() {
+            addCriterion("operating_cost_item is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingCostItemEqualTo(String value) {
+            addCriterion("operating_cost_item =", value, "operatingCostItem");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingCostItemNotEqualTo(String value) {
+            addCriterion("operating_cost_item <>", value, "operatingCostItem");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingCostItemGreaterThan(String value) {
+            addCriterion("operating_cost_item >", value, "operatingCostItem");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingCostItemGreaterThanOrEqualTo(String value) {
+            addCriterion("operating_cost_item >=", value, "operatingCostItem");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingCostItemLessThan(String value) {
+            addCriterion("operating_cost_item <", value, "operatingCostItem");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingCostItemLessThanOrEqualTo(String value) {
+            addCriterion("operating_cost_item <=", value, "operatingCostItem");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingCostItemLike(String value) {
+            addCriterion("operating_cost_item like", value, "operatingCostItem");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingCostItemNotLike(String value) {
+            addCriterion("operating_cost_item not like", value, "operatingCostItem");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingCostItemIn(List<String> values) {
+            addCriterion("operating_cost_item in", values, "operatingCostItem");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingCostItemNotIn(List<String> values) {
+            addCriterion("operating_cost_item not in", values, "operatingCostItem");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingCostItemBetween(String value1, String value2) {
+            addCriterion("operating_cost_item between", value1, value2, "operatingCostItem");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingCostItemNotBetween(String value1, String value2) {
+            addCriterion("operating_cost_item not between", value1, value2, "operatingCostItem");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {
