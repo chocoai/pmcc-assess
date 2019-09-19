@@ -218,6 +218,7 @@ public enum BaseReportFieldEnum implements Serializable {
 
     Development_extraterritorial_reality("假设法宗地外设定开发程度"),
     Development_intra_territorial_reality("假设法宗地内设定开发程度"),
+    Development_Actual_development_level_outside_parcel("假设法宗地外实际开发程度"),
     Development_projectConstructionPeriod("假设法开发周期"),
     Development_totalSaleableAreaPrice("假设法总可售面积售价"),
     Development_saleableArea("假设法可售面积"),//f16
@@ -300,7 +301,7 @@ public enum BaseReportFieldEnum implements Serializable {
     MarketCost_intra_territorial_setting("成本法宗地内设定"),
     MarketCost_GroundFloor_AreaCounted_volume_ratio("成本法地上计入容积率建筑面积"),
     MarketCost_Planning_land_area_construction("成本法规划建设净用地面积"),
-    MarketCost_EconomicIndicatorsField1("成本法地上计入容积率的建筑面积"),
+    MarketCost_EconomicIndicatorsField1("成本法评估面积"),
     MarketCost_AssessBuildArea("成本法评估总建筑面积"),
     MarketCost_AssessUseLandArea("成本法评估用地面积"),
     MarketCost_landPurchasePriceExplain("成本法土地价格说明"),

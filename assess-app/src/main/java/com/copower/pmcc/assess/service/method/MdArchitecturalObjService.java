@@ -103,13 +103,7 @@ public class MdArchitecturalObjService {
         }
         for (MdCalculatingMethodEngineeringCost oo : mdCalculatingMethodEngineeringCostList) {
             MdArchitecturalObj mdArchitecturalObj = getMdArchitecturalObjById(oo.getArchitecturalObjId());
-            if (StringUtils.isEmpty(oo.getType())) {
-                continue;
-            }
             if (mdArchitecturalObj == null) {
-                continue;
-            }
-            if (StringUtils.isEmpty(mdArchitecturalObj.getType())) {
                 continue;
             }
             if (StringUtils.isEmpty(mdArchitecturalObj.getJsonContent())) {

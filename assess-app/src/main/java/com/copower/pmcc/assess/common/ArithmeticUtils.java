@@ -399,7 +399,7 @@ public class ArithmeticUtils implements Serializable {
      * @return 四舍五入后的结果
      */
     public static String round(String v, int scale) {
-        return round(createBigDecimal(v), scale, BigDecimal.ROUND_HALF_UP).toString();
+        return getBigDecimalString(round(createBigDecimal(v), scale, BigDecimal.ROUND_HALF_UP)) ;
     }
 
     public static String round(BigDecimal bigDecimal, int scale) {
