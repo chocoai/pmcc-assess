@@ -182,7 +182,7 @@ public class GenerateMdDevelopmentService {
         return localPath;
     }
 
-    private void setMdDevelopmentCommonValue(BaseReportFieldEnum key, final ConcurrentHashMap<String, String> textMap, final ConcurrentHashMap<String, String> fileMap, final ConcurrentHashMap<String, String> bookmarkMap, MdDevelopment target, SchemeJudgeObject schemeJudgeObject, SchemeAreaGroup schemeAreaGroup, ProjectPlanDetails projectPlanDetails) {
+    private void setMdDevelopmentCommonValue(BaseReportFieldEnum key, final ConcurrentHashMap<String, String> textMap, final ConcurrentHashMap<String, String> fileMap, final ConcurrentHashMap<String, String> bookmarkMap, MdDevelopmentVo target, SchemeJudgeObject schemeJudgeObject, SchemeAreaGroup schemeAreaGroup, ProjectPlanDetails projectPlanDetails) {
         switch (key) {
             case Development_region: {
                 generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), schemeAreaGroup.getAreaName());
@@ -227,20 +227,21 @@ public class GenerateMdDevelopmentService {
                     if (mdEconomicIndicatorsApplyDto != null && CollectionUtils.isNotEmpty(mdEconomicIndicatorsApplyDto.getEconomicIndicatorsItemList())) {
                         itemList.addAll(mdEconomicIndicatorsApplyDto.getEconomicIndicatorsItemList());
                     }
-                    if (CollectionUtils.isNotEmpty(itemList)){
+                    if (CollectionUtils.isNotEmpty(itemList)) {
                         LinkedList<String> stringLinkedList = Lists.newLinkedList();
                         builder.startTable();
-                        stringLinkedList.addAll(Arrays.asList("名称","规划建筑面积 ㎡","可出售面积 ㎡","个数","单位售价(元/㎡)","备注"));
-                        AsposeUtils.writeWordTitle(builder,stringLinkedList);
+                        stringLinkedList.addAll(Arrays.asList("名称", "规划建筑面积 (㎡)", "可出售面积 (㎡)", "个数","评估面积 (㎡)", "单位售价(元/㎡)", "备注"));
+                        AsposeUtils.writeWordTitle(builder, stringLinkedList);
                         stringLinkedList.clear();
-                        for (MdEconomicIndicatorsItem indicatorsItem:itemList){
-                            stringLinkedList.add(StringUtils.isNotBlank(indicatorsItem.getName())?indicatorsItem.getName():"") ;
-                            stringLinkedList.add(ArithmeticUtils.getBigDecimalString(indicatorsItem.getPlannedBuildingArea())) ;
-                            stringLinkedList.add(ArithmeticUtils.getBigDecimalString(indicatorsItem.getSaleableArea())) ;
-                            stringLinkedList.add(indicatorsItem.getNumber() == null?"":indicatorsItem.getNumber().toString()) ;
-                            stringLinkedList.add(ArithmeticUtils.getBigDecimalString(indicatorsItem.getUnitPrice())) ;
-                            stringLinkedList.add(StringUtils.isNotBlank(indicatorsItem.getRemark())?indicatorsItem.getRemark():"") ;
-                            AsposeUtils.writeWordTitle(builder,stringLinkedList);
+                        for (MdEconomicIndicatorsItem indicatorsItem : itemList) {
+                            stringLinkedList.add(StringUtils.isNotBlank(indicatorsItem.getName()) ? indicatorsItem.getName() : "");
+                            stringLinkedList.add(ArithmeticUtils.getBigDecimalString(indicatorsItem.getPlannedBuildingArea()));
+                            stringLinkedList.add(ArithmeticUtils.getBigDecimalString(indicatorsItem.getSaleableArea()));
+                            stringLinkedList.add(indicatorsItem.getNumber() == null ? "" : indicatorsItem.getNumber().toString());
+                            stringLinkedList.add(ArithmeticUtils.getBigDecimalString(indicatorsItem.getAssessArea()));
+                            stringLinkedList.add(ArithmeticUtils.getBigDecimalString(indicatorsItem.getUnitPrice()));
+                            stringLinkedList.add(StringUtils.isNotBlank(indicatorsItem.getRemark()) ? indicatorsItem.getRemark() : "");
+                            AsposeUtils.writeWordTitle(builder, stringLinkedList);
                             stringLinkedList.clear();
                         }
                         builder.endTable();
@@ -293,9 +294,9 @@ public class GenerateMdDevelopmentService {
                     AsposeUtils.saveWord(path, document);
                     generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, key.getName(), path);
                 } catch (Exception e) {
+                    baseService.writeExceptionInfo(e,key.getName());
                     String error = e.getMessage();
                     if (StringUtils.isNotBlank(error)) {
-                        baseService.writeExceptionInfo(e);
                     }
                 }
                 break;
@@ -312,7 +313,7 @@ public class GenerateMdDevelopmentService {
                 generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), value);
                 break;
             }
-            case Development_extraterritorial_reality:{
+            case Development_Actual_development_level_outside_parcel: {
                 BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
                 if (basicApply == null) {
                     break;
@@ -324,23 +325,16 @@ public class GenerateMdDevelopmentService {
                 }
                 break;
             }
-            case Development_intra_territorial_reality:{
-                BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
-                if (basicApply == null) {
-                    break;
-                }
-                GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
-                try {
-                    BasicEstateLandStateVo basicEstateLandStateVo = generateBaseExamineService.getBasicEstateLandState();
-                    if (basicEstateLandStateVo != null) {
-                        generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), basicEstateLandStateVo.getDevelopmentDegreeContentName());
-                    }
-                } catch (Exception e) {
-                }
+            case Development_intra_territorial_reality: {
+                generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(),target.getParcelSettingInnerName());
                 break;
             }
-            case Development_PublicTrialRealEstateComputing:{
-                String result = "单价*面积*(1-估价时点完工程度)" ;
+            case Development_extraterritorial_reality: {
+                generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(),target.getParcelSettingOuterName());
+                break;
+            }
+            case Development_PublicTrialRealEstateComputing: {
+                String result = "单价*面积*(1-估价时点完工程度)";
                 generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), result);
                 break;
             }

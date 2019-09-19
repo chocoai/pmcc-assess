@@ -18,6 +18,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -102,13 +103,7 @@ public class MdArchitecturalObjService {
         }
         for (MdCalculatingMethodEngineeringCost oo : mdCalculatingMethodEngineeringCostList) {
             MdArchitecturalObj mdArchitecturalObj = getMdArchitecturalObjById(oo.getArchitecturalObjId());
-            if (StringUtils.isEmpty(oo.getType())) {
-                continue;
-            }
             if (mdArchitecturalObj == null) {
-                continue;
-            }
-            if (StringUtils.isEmpty(mdArchitecturalObj.getType())) {
                 continue;
             }
             if (StringUtils.isEmpty(mdArchitecturalObj.getJsonContent())) {
@@ -131,20 +126,20 @@ public class MdArchitecturalObjService {
      * @param costJSONObjectMap
      * @throws Exception
      */
-    public void writeCalculatingMethodEngineeringCostSheet(DocumentBuilder documentBuilder, LinkedHashMap<MdCalculatingMethodEngineeringCost, JSONArray> costJSONObjectMap) throws Exception {
+    public synchronized void writeCalculatingMethodEngineeringCostSheet(DocumentBuilder documentBuilder, LinkedHashMap<MdCalculatingMethodEngineeringCost, JSONArray> costJSONObjectMap) throws Exception {
         Set<MergeCellModel> mergeCellModelList = Sets.newHashSet();
         LinkedList<String> linkedList = Lists.newLinkedList();
         for (Map.Entry<MdCalculatingMethodEngineeringCost, JSONArray> entry : costJSONObjectMap.entrySet()) {
             documentBuilder.writeln();
             com.aspose.words.Table table = documentBuilder.startTable();
             final AtomicInteger atomicInteger = new AtomicInteger(0);
-            linkedList.addAll(Arrays.asList(String.join("", "工程名称:", entry.getKey().getName()), "", "", "", "", ""));
+            linkedList.addAll(Arrays.asList(String.join("", "工程名称:", entry.getKey().getName()), "", "", "", "", "",""));
             AsposeUtils.writeWordTitle(documentBuilder, linkedList);
             mergeCellModelList.add(new MergeCellModel(atomicInteger.get(), 0, atomicInteger.get(), linkedList.size() - 1));
             linkedList.clear();
             atomicInteger.incrementAndGet();
 
-            linkedList.addAll(Arrays.asList("列表属性", "", "估价时点完工程度", "单价(元/㎡)", "面积(㎡)", "估价时点单价(元/㎡)"));
+            linkedList.addAll(Arrays.asList("列表属性", "", "估价时点完工程度", "单价(元/㎡)", "面积(㎡)", "计算值(元)","描述"));
             AsposeUtils.writeWordTitle(documentBuilder, linkedList);
             mergeCellModelList.add(new MergeCellModel(atomicInteger.get(), 0, atomicInteger.get(), 1));
             atomicInteger.incrementAndGet();
@@ -155,11 +150,13 @@ public class MdArchitecturalObjService {
             for (int i = 0; i < jsonArray.size(); i++) {
                 JSONObject jsonObject = (JSONObject) jsonArray.get(i);
                 String role = jsonObject.getString("role");
+                String name = jsonObject.getString("name") ;
                 //父级
                 if ("parent".equals(role)) {
-                    linkedList.add(String.join("", jsonObject.getString("name"), StringUtils.repeat(" ", 1), "(父级)"));
+                    linkedList.add(String.join("", StringUtils.isNotBlank(name)?name:"", StringUtils.repeat(" ", 1), "(父级)"));
                     linkedList.add("");
-                    linkedList.add("/");
+                    linkedList.add("");
+                    linkedList.add("");
                     linkedList.add("");
                     linkedList.add("");
                     linkedList.add("");
@@ -170,59 +167,76 @@ public class MdArchitecturalObjService {
                 }
                 //子级
                 if ("child".equals(role)) {
-                    linkedList.add("");
-                    linkedList.add(jsonObject.getString("name"));
                     String valuationDateDegreeCompletion = jsonObject.getString("valuationDateDegreeCompletion");
                     String price = jsonObject.getString("price");
+                    String reckon = jsonObject.getString("reckon");
                     String area = jsonObject.getString("area");
-                    linkedList.add(StringUtils.isNotBlank(valuationDateDegreeCompletion) ? valuationDateDegreeCompletion : "");
-                    linkedList.add(StringUtils.isNotBlank(price) ? price : "");
-                    linkedList.add(StringUtils.isNotBlank(area) ? area : "");
-                    if (StringUtils.isNotBlank(valuationDateDegreeCompletion) && StringUtils.isNotBlank(price)) {
-                        try {
-                            String string = ArithmeticUtils.parseFormatString(valuationDateDegreeCompletion);
-                            String costPrice = ArithmeticUtils.mul(string, price, 2);
-                            linkedList.add(costPrice);
-                        } catch (ParseException e) {
-                            linkedList.add("");
-                        }
-                    } else {
-                        linkedList.add("");
+                    String remark = jsonObject.getString("remark");
+                    if (!NumberUtils.isNumber(price)){
+                        continue;
                     }
+                    linkedList.add(StringUtils.isNotEmpty(name)?name:"");
+                    linkedList.add("");
+                    linkedList.add(StringUtils.isNotEmpty(valuationDateDegreeCompletion) ? valuationDateDegreeCompletion : "");
+                    linkedList.add(StringUtils.isNotEmpty(price) ? ArithmeticUtils.round(price,2) : "");
+                    linkedList.add(StringUtils.isNotEmpty(area)?ArithmeticUtils.round(area,2):"");
+                    linkedList.add(handleDataByReckon(valuationDateDegreeCompletion,area,price,reckon));
+                    linkedList.add(StringUtils.isNotEmpty(remark) ? remark : "");
                     AsposeUtils.writeWordTitle(documentBuilder, linkedList);
+                    mergeCellModelList.add(new MergeCellModel(atomicInteger.get(), 0, atomicInteger.get(), 1));
                     linkedList.clear();
                     atomicInteger.incrementAndGet();
                 }
             }
             if (CollectionUtils.isNotEmpty(mergeCellModelList)) {
-                mergeCellTable(mergeCellModelList, table);
+                AsposeUtils.mergeCellTable(mergeCellModelList, table);
             }
             documentBuilder.endTable();
             mergeCellModelList.clear();
         }
     }
 
-    private void mergeCellTable(Set<MergeCellModel> mergeCellModelList, Table table) {
-        if (CollectionUtils.isNotEmpty(mergeCellModelList)) {
-            for (MergeCellModel mergeCellModel : mergeCellModelList) {
-                try {
-                    Cell cellStartRange = null;
-                    Cell cellEndRange = null;
-                    if (mergeCellModel.getCellEndRange() == null && mergeCellModel.getCellStartRange() == null) {
-                        cellStartRange = table.getRows().get(mergeCellModel.getStartRowIndex()).getCells().get(mergeCellModel.getStartColumnIndex());
-                        cellEndRange = table.getRows().get(mergeCellModel.getEndRowIndex()).getCells().get(mergeCellModel.getEndColumnIndex());
-                    } else {
-                        cellStartRange = mergeCellModel.getCellStartRange();
-                        cellEndRange = mergeCellModel.getCellEndRange();
-                    }
-                    if (cellStartRange != null && cellEndRange != null) {
-                        if (table != null) {
-                            AsposeUtils.mergeCells(cellStartRange, cellEndRange, table);
-                        }
-                    }
-                } catch (Exception e) {
+    private String handleDataByReckon(String valuationDateDegreeCompletion,String area,String price,String reckon){
+        if (StringUtils.isEmpty(reckon)){
+            return "" ;
+        }
+        switch (reckon){
+            case "a":{
+                if (StringUtils.isNotBlank(price)){
+                    return ArithmeticUtils.round(price,2) ;
                 }
+                return "" ;
             }
+            case "b":{
+                if (StringUtils.isNotBlank(valuationDateDegreeCompletion)){
+                    try {
+                        BigDecimal temp = ArithmeticUtils.createBigDecimal(ArithmeticUtils.parseFormatString(valuationDateDegreeCompletion)) ;
+                        if (StringUtils.isNotBlank(price) && StringUtils.isNotBlank(area)){
+                            BigDecimal bigDecimal = ArithmeticUtils.multiply(ArithmeticUtils.sub("1",temp.toString()) , ArithmeticUtils.mul(price,area));
+                            return ArithmeticUtils.round(bigDecimal,2) ;
+                        }
+                    } catch (ParseException e) {
+                        baseService.writeExceptionInfo(e);
+                    }
+                }
+                return "" ;
+            }
+            case "c":{
+                if (StringUtils.isNotBlank(valuationDateDegreeCompletion)){
+                    try {
+                        BigDecimal temp = ArithmeticUtils.createBigDecimal(ArithmeticUtils.parseFormatString(valuationDateDegreeCompletion)) ;
+                        if (StringUtils.isNotBlank(price) && StringUtils.isNotBlank(area)){
+                            BigDecimal bigDecimal = ArithmeticUtils.multiply(temp, ArithmeticUtils.mul(price,area));
+                            return ArithmeticUtils.round(bigDecimal,2) ;
+                        }
+                    } catch (ParseException e) {
+                        baseService.writeExceptionInfo(e);
+                    }
+                }
+                return "" ;
+            }
+            default:
+                return "" ;
         }
     }
 

@@ -13,6 +13,15 @@ public class MdIncomeForecastVo extends MdIncomeForecast {
     private Date endDate;
     private BigDecimal yearCount;
     private BigDecimal incomeTotal;
+    private BigDecimal rateIncrease;
+
+    public BigDecimal getRateIncrease() {
+        return rateIncrease;
+    }
+
+    public void setRateIncrease(BigDecimal rateIncrease) {
+        this.rateIncrease = rateIncrease;
+    }
 
     public Date getBeginDate() {
         return beginDate;

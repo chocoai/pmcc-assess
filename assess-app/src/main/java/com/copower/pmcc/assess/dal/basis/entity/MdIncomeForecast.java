@@ -68,6 +68,8 @@ public class MdIncomeForecast {
 
     private BigDecimal excessProfitRatio;
 
+    private String operatingCostItem;
+
     public Integer getId() {
         return id;
     }
@@ -322,5 +324,13 @@ public class MdIncomeForecast {
 
     public void setExcessProfitRatio(BigDecimal excessProfitRatio) {
         this.excessProfitRatio = excessProfitRatio;
+    }
+
+    public String getOperatingCostItem() {
+        return operatingCostItem;
+    }
+
+    public void setOperatingCostItem(String operatingCostItem) {
+        this.operatingCostItem = operatingCostItem == null ? null : operatingCostItem.trim();
     }
 }

@@ -211,6 +211,7 @@
                 <h3 class="modal-title">运营费</h3>
             </div>
             <form id="frm_forecast_cost_detail" class="form-horizontal">
+                <input type="hidden" name="id">
                 <div class="modal-body">
                     <div class="form-group">
                         <div class="x-valid">
@@ -218,8 +219,18 @@
                                 经营成本比率<span class="symbol required"></span>
                             </label>
                             <div class="col-sm-4">
-                                <input type="text" name="operatingCostRatio" placeholder="经营成本比率"
-                                       onblur="selfSupport.computeInitialAmount(this);" class="form-control x-percent">
+                                <div class="input-group">
+                                    <input type="text" name="operatingCostRatio" placeholder="经营成本比率"
+                                           onblur="selfSupport.computeInitialAmount(this);"
+                                           class="form-control x-percent">
+                                    <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default docs-tooltip"
+                                                    onclick="selfSupport.operatingCostItem()"
+                                                    data-toggle="tooltip" data-original-title="明细">
+                                            <i class="fa fa-edit"></i>
+                                            </button>
+                                    </span>
+                                </div>
                             </div>
                         </div>
                         <div class="x-valid">
@@ -315,26 +326,6 @@
                     <div class="form-group">
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                经营利润比率<span class="symbol required"></span>
-                            </label>
-                            <div class="col-sm-4">
-                                <input type="text" name="operatingProfitRatio" placeholder="经营利润比率"
-                                       onblur="selfSupport.computeInitialAmount(this);" class="form-control x-percent">
-                            </div>
-                        </div>
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                经营利润说明
-                            </label>
-                            <div class="col-sm-4">
-                                <input type="text" name="operatingProfitRemark" placeholder="经营利润说明"
-                                       class="form-control" required="required">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
                                 特许权超额利润比率<span class="symbol required"></span>
                             </label>
                             <div class="col-sm-4">
@@ -393,6 +384,39 @@
         </div>
     </div>
 </div>
+
+<div id="costItemBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">经营成本比率明细</h3>
+            </div>
+            <form id="frmCostItem" class="form-horizontal">
+                <input type="hidden" name="id">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel-body">
+                                <div style="margin-bottom: 8px;" class="system">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-default">
+                        取消
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <input type="file" id="ajaxFileUpload" name="file" style="display: none;" data-type="0"
        onchange="selfSupport.importHistory(this);">
 
@@ -605,11 +629,6 @@
             }
         });
         cols.push({
-            field: 'operatingProfitRatio', title: '经营利润比率', formatter: function (value, row, index) {
-                return AssessCommon.pointToPercent(value);
-            }
-        });
-        cols.push({
             field: 'excessProfitRatio', title: '特许权超额利润比率', formatter: function (value, row, index) {
                 return AssessCommon.pointToPercent(value);
             }
@@ -672,7 +691,7 @@
         });
         cols.push({field: 'yearCount', title: '年份数'});
         cols.push({
-            field: 'growthRate', title: '增长率', formatter: function (value, row, index) {
+            field: 'rateIncrease', title: '增长率', formatter: function (value, row, index) {
                 return AssessCommon.pointToPercent(value);
             }
         });
@@ -728,6 +747,66 @@
                 $(".tooltips").tooltip();
             }
         });
+    }
+
+    //成本明细比率
+    selfSupport.operatingCostItem = function(){
+        $("#frmCostItem").clearAll();
+        var id = $("#frm_forecast_cost_detail").find("input[name='id']").val();
+        console.log(id+"==")
+        $(".system").empty();
+        $.ajax({
+            url: "${pageContext.request.contextPath}/income/getForecastById",
+            type: "post",
+            dataType: "json",
+            data: {id:id},
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    if(result.data.operatingCostItem) {
+                        selfSupport.writeHTMLData(result.data.operatingCostItem);
+                    }
+                }
+                else {
+                    Alert("获取数据失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                Loading.progressHide();
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
+        $('#costItemBox').modal();
+    }
+    selfSupport.writeHTMLData=function(json) {
+        var jsonarray = eval(json);
+        $.each(jsonarray, function (i, n) {
+            var html = "<div class='form-group' >";
+            html += "<div class='x-valid'>";
+            html += "<label class='col-sm-1 control-label'>" + "一级编号" + "</label>";
+            html += "<div class='col-sm-2'>";
+            html += "<input type='text' required class='form-control' name='stairNumber' readonly  value='" + n.stairNumber + "'>";
+            html += "</div>";
+            html += "</div>";
+
+            html += "<div class='x-valid'>";
+            html += "<label class='col-sm-1 control-label'>" + "二级编号" + "</label>";
+            html += "<div class='col-sm-2'>";
+            html += "<input type='text' required class='form-control' name='secondNumber' readonly value='" +n.secondNumber + "'>";
+            html += "</div>";
+            html += "</div>";
+
+
+            html += "<div class='x-valid'>";
+            html += "<label class='col-sm-1 control-label'>" + "比率" + "</label>";
+            html += "<div class='col-sm-2'>";
+            html += "<input type='text' required class='form-control x-percent' name='ratio' readonly value='" + AssessCommon.pointToPercent(n.ratio) + "'>";
+            html += "</div>";
+            html += "</div>";
+
+            html += "</div>";
+            $(".system").append(html);
+        })
     }
 </script>
 <%--商品价格调查--%>

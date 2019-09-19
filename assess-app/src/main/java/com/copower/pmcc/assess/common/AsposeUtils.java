@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.common;
 
 import com.aspose.words.*;
 import com.aspose.words.Shape;
+import com.copower.pmcc.assess.dto.output.MergeCellModel;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -181,6 +182,30 @@ public class AsposeUtils {
                         cell.getCellFormat().setVerticalMerge(CellMerge.FIRST);
                     else
                         cell.getCellFormat().setVerticalMerge(CellMerge.PREVIOUS);
+                }
+            }
+        }
+    }
+
+    public static void mergeCellTable(Set<MergeCellModel> mergeCellModelList, Table table) {
+        if (CollectionUtils.isNotEmpty(mergeCellModelList)) {
+            for (MergeCellModel mergeCellModel : mergeCellModelList) {
+                try {
+                    Cell cellStartRange = null;
+                    Cell cellEndRange = null;
+                    if (mergeCellModel.getCellEndRange() == null && mergeCellModel.getCellStartRange() == null) {
+                        cellStartRange = table.getRows().get(mergeCellModel.getStartRowIndex()).getCells().get(mergeCellModel.getStartColumnIndex());
+                        cellEndRange = table.getRows().get(mergeCellModel.getEndRowIndex()).getCells().get(mergeCellModel.getEndColumnIndex());
+                    } else {
+                        cellStartRange = mergeCellModel.getCellStartRange();
+                        cellEndRange = mergeCellModel.getCellEndRange();
+                    }
+                    if (cellStartRange != null && cellEndRange != null) {
+                        if (table != null) {
+                            AsposeUtils.mergeCells(cellStartRange, cellEndRange, table);
+                        }
+                    }
+                } catch (Exception e) {
                 }
             }
         }

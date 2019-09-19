@@ -33,6 +33,7 @@ developmentCommon.architecturalB = {
     getData: function (type, databaseName, pid, planDetailsId, callback) {
         developmentCommon.getMdArchitecturalObjList(type, databaseName, pid, planDetailsId, callback);
     },
+    reckon:undefined,
     //树中的运算
     totalResult: function (that, reckon) {
         var tr = $(that).closest("tr");
@@ -123,6 +124,7 @@ developmentCommon.architecturalB = {
             reckon: 'b'
         };
         defaultObj = $.extend({}, defaultObj, options);
+        developmentCommon.architecturalB.reckon = defaultObj.reckon;
         var target = defaultObj.target;
         target.append($("#" + developmentCommon.config.architecturalB.id).html());
         developmentCommon.architecturalB.treeGirdParse(target);
@@ -266,6 +268,7 @@ developmentCommon.architecturalB = {
                 price: price,
                 area: area,
                 remark: remark,
+                reckon:developmentCommon.architecturalB.reckon,
                 valuationDateDegreeCompletion: valuationDateDegreeCompletion
             });
         });
