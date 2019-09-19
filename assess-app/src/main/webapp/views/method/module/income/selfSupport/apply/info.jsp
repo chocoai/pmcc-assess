@@ -1480,6 +1480,7 @@
         if (!AssessCommon.isNumber(r)) return false;
         r = parseFloat(r);
         var incomePriceTotal = 0;//收益价格合计
+        var currYearCount = 1;//当前年份数
         $("#selfSupportResultBody").find('tr').each(function () {
             var n = $(this).find('[data-name=yearCount]').text();
             if (!AssessCommon.isNumber(n)) return true;
@@ -1487,7 +1488,7 @@
             var g = $(this).find('[data-name=rentalGrowthRate]').val();
             if (!AssessCommon.isNumber(g)) g = 0;
             g = parseFloat(g);//增长率
-            var h = (1 - Math.pow((1 + g) / (1 + r), n)).toFixed(6);//年期修正系数
+            var h = (1 - Math.pow((1 + g), currYearCount) / Math.pow((1 + r), n)).toFixed(6);//年期修正系数
             var k = (h / (r - g)).toFixed(6);//收益现值系数
             $(this).find('[data-name=correctionFactor]').text(h);
             $(this).find('[data-name=presentValueFactor]').text(k);
@@ -1497,6 +1498,7 @@
             var incomePrice = (netProfit * k).toFixed(2);
             incomePriceTotal = incomePriceTotal + parseFloat(incomePrice);
             $(this).find('[data-name=incomePrice]').text(incomePrice);//收益价格
+            currYearCount += n;
         })
         //计算委估对象单价 （单价=收益价格合计\委估对象面积）
         var area = $("#selfSupportResult").find('[data-name=area]').text();
