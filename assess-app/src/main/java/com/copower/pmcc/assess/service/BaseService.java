@@ -39,27 +39,29 @@ public class BaseService {
      */
     public void writeExceptionInfo(Logger logger,Exception e,String errorName){
         StringBuilder stringBuilder = new StringBuilder(8);
-        stringBuilder.append("{") ;
-        stringBuilder.append("时间:").append(DateUtils.format(new Date(), DateUtils.DATETIME_PATTERN)).append("操作人,");
-
-        stringBuilder.append(commonService.thisUserAccount()) ;
-
-        stringBuilder.append(StringUtils.isNotBlank(errorName)?errorName:"").append("异常").append(",").append("异常具体原因");
+        final String filling = "\r " ;
+        stringBuilder.append("{").append(StringUtils.repeat(filling,1)) ;
+        stringBuilder.append("时间:").append(DateUtils.format(new Date(), DateUtils.DATETIME_PATTERN)).append(StringUtils.repeat(filling,1));
+        try {
+            stringBuilder.append("操作人,").append(commonService.thisUserAccount()).append(StringUtils.repeat(filling,1)) ;
+        } catch (Exception e1) {
+            //可能不能获取当前登陆人
+        }
+        stringBuilder.append(StringUtils.isNotBlank(errorName)?errorName:"").append("异常").append(",").append("异常具体原因").append(StringUtils.repeat(filling,1));
         //默认jdk刚好第一个是调用方法  获取的是堆栈信息
         if (e.getStackTrace().length != 0){
             StackTraceElement stackTraceElement = e.getStackTrace()[0];
             if (stackTraceElement != null) {
-                stringBuilder.append("\r") ;
-                stringBuilder.append("[");
-                stringBuilder.append("declaringClass:").append(stackTraceElement.getClassName());
-                stringBuilder.append("methodName:").append(stackTraceElement.getMethodName());
-                stringBuilder.append("fileName:").append(stackTraceElement.getFileName());
-                stringBuilder.append("lineNumber:").append(stackTraceElement.getLineNumber());
-                stringBuilder.append("message:").append(e.getMessage());
+                stringBuilder.append("[").append(StringUtils.repeat(filling,1));
+                stringBuilder.append("异常class:").append(stackTraceElement.getClassName()).append(StringUtils.repeat(filling,1));
+                stringBuilder.append("方法名称:").append(stackTraceElement.getMethodName()).append(StringUtils.repeat(filling,1));
+                stringBuilder.append("字段名称:").append(stackTraceElement.getFileName()).append(StringUtils.repeat(filling,1));
+                stringBuilder.append("行号:").append(stackTraceElement.getLineNumber()).append(StringUtils.repeat(filling,1));
+                stringBuilder.append("异常:").append(e.getMessage()).append(StringUtils.repeat(filling,1));
                 stringBuilder.append("]");
             }
         }
-        stringBuilder.append("}") ;
+        stringBuilder.append("}").append(StringUtils.repeat(filling,1)) ;
         logger.debug(stringBuilder.toString());
         logger.error(stringBuilder.toString(), e);
     }
