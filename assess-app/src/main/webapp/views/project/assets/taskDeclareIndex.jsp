@@ -67,6 +67,7 @@
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/assets/declare/declare.common.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/assets/dataAssetsAppraisalDic.js"></script>
 <script type="text/javascript">
 
     $(document).ready(function () {
@@ -74,6 +75,9 @@
             declareCommon.fileUpload(n,AssessDBKey.ProjectPlanDetails,'${projectPlanDetails.id}',false,n) ;
             declareCommon.showFile(n,AssessDBKey.ProjectPlanDetails,'${projectPlanDetails.id}',false,n) ;
         });
+
+        console.log(declareCommon.getPlanDetailsId());
+        console.log(declareCommon.getProjectId());
     });
 
 </script>

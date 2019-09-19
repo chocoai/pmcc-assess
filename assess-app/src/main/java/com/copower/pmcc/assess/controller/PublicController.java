@@ -1,18 +1,16 @@
 package com.copower.pmcc.assess.controller;
 
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPhase;
+import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.ErpAreaService;
-import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.bpm.api.dto.AttachmentVo;
 import com.copower.pmcc.bpm.api.dto.BoxApprovalLogVo;
 import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProcessInsManagerService;
-import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.SysAreaDto;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
-import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
@@ -22,8 +20,6 @@ import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +27,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -40,7 +35,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/public")
 public class PublicController {
-    private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private ErpAreaService erpAreaService;
     @Autowired
@@ -53,6 +47,8 @@ public class PublicController {
     private BaseAttachmentService baseAttachmentService;
     @Autowired
     private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
+    @Autowired
+    private BaseService baseService;
 
 
     @RequestMapping(value = "/importAjaxFile", name = "导入文件", method = RequestMethod.POST)
@@ -63,8 +59,8 @@ public class PublicController {
             List<MultipartFile> multipartFileList = Lists.newArrayList();
             if (!multipartFileMultiValueMap.isEmpty()) {
                 multipartFileMultiValueMap.forEach((s, multipartFiles) -> {
-                    if (!multipartFiles.isEmpty()){
-                        multipartFileList.addAll(multipartFiles) ;
+                    if (!multipartFiles.isEmpty()) {
+                        multipartFileList.addAll(multipartFiles);
                     }
                 });
             }
@@ -73,32 +69,38 @@ public class PublicController {
             }
             return HttpResult.newCorrectResult(baseAttachmentService.importAjaxFile(multipartFileList, tableName, tableId, fieldsName));
         } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult(e.getMessage());
         }
     }
 
     @RequestMapping(value = "/getSysAttachmentDto", method = {RequestMethod.GET}, name = "获取附件")
     public HttpResult getSysAttachmentDto(Integer attachmentId) {
-        SysAttachmentDto sysAttachmentDto = baseAttachmentService.getSysAttachmentDto(attachmentId);
-        if (sysAttachmentDto != null) {
+        try {
+            SysAttachmentDto sysAttachmentDto = baseAttachmentService.getSysAttachmentDto(attachmentId);
             return HttpResult.newCorrectResult(sysAttachmentDto);
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
+            return HttpResult.newErrorResult("异常");
         }
-        return HttpResult.newErrorResult("异常");
     }
 
     @RequestMapping(value = "/getSysAttachmentDtoList", method = {RequestMethod.GET}, name = "获取附件列表")
     public HttpResult getSysAttachmentDtoList(SysAttachmentDto sysAttachmentDto) {
-        if (sysAttachmentDto != null) {
+        try {
             return HttpResult.newCorrectResult(baseAttachmentService.getAttachmentList(sysAttachmentDto));
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
+            return HttpResult.newErrorResult("异常");
         }
-        return HttpResult.newErrorResult("异常");
     }
 
     @RequestMapping(value = "/downloadFtpFileToLocal", method = {RequestMethod.GET}, name = "下载ftp附件到本地")
     public HttpResult downloadFtpFileToLocal(Integer attachmentId) {
         try {
             return HttpResult.newCorrectResult(baseAttachmentService.downloadFtpFileToLocal(attachmentId));
-        } catch (Exception e1) {
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult("异常");
         }
     }
@@ -107,22 +109,40 @@ public class PublicController {
     public HttpResult getSysAttachmentViewHtml(Integer attachmentId) {
         try {
             return HttpResult.newCorrectResult(baseAttachmentService.getViewHtml(baseAttachmentService.getSysAttachmentDto(attachmentId)));
-        } catch (Exception e1) {
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult("异常");
         }
     }
 
     @RequestMapping(value = "/saveAndUpdateSysAttachmentDto", method = {RequestMethod.POST}, name = "新增或者更新附件")
     public HttpResult saveAndUpdateSysAttachmentDto(SysAttachmentDto sysAttachmentDto) {
-        if (sysAttachmentDto != null) {
-            if (sysAttachmentDto.getId() == null) {
+        try {
+            if (sysAttachmentDto.getId() == null && sysAttachmentDto.getId() != 0) {
                 baseAttachmentService.addAttachment(sysAttachmentDto);
             } else {
                 baseAttachmentService.updateAttachment(sysAttachmentDto);
             }
             return HttpResult.newCorrectResult(sysAttachmentDto);
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
+            return HttpResult.newErrorResult("异常");
         }
-        return HttpResult.newErrorResult("异常");
+    }
+
+    /**
+     * @param sysAttachmentDto 目标数据
+     * @param masterId         拷贝的源附件
+     * @return
+     */
+    @RequestMapping(value = "/copyFtpAttachment", method = {RequestMethod.POST}, name = "拷贝FTP附件")
+    public HttpResult copyFtpAttachment(SysAttachmentDto sysAttachmentDto, Integer masterId) {
+        try {
+            return HttpResult.newCorrectResult(200, baseAttachmentService.copyFtpAttachment(masterId, sysAttachmentDto));
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
+            return HttpResult.newErrorResult(500, "异常");
+        }
     }
 
     @RequestMapping(value = "/getAreaList", name = "获取区域信息", method = RequestMethod.POST)
@@ -133,7 +153,7 @@ public class PublicController {
                 return sysAreaDtos;
             }
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult(e.getMessage());
         }
         return HttpResult.newCorrectResult();
@@ -141,21 +161,12 @@ public class PublicController {
 
     @RequestMapping(value = "/getAreaById", name = "获取区域单个信息", method = RequestMethod.GET)
     public HttpResult getAreaById(String id) {
-        SysAreaDto sysAreaDto = null;
         try {
-            if (StringUtils.isNotBlank(id)) {
-                sysAreaDto = erpAreaService.getSysAreaDto(id);
-                if (sysAreaDto != null) {
-                    return HttpResult.newCorrectResult(sysAreaDto);
-                } else {
-                    return HttpResult.newErrorResult("没有获取到数据!");
-                }
-            }
+            return HttpResult.newCorrectResult(erpAreaService.getSysAreaDto(id));
         } catch (Exception e) {
-            logger.error(e.getMessage());
-            return HttpResult.newErrorResult(e.getMessage());
+            baseService.writeExceptionInfo(e);
+            return HttpResult.newErrorResult("没有获取到数据!");
         }
-        return HttpResult.newErrorResult("没有获取到数据!");
     }
 
     @RequestMapping(value = "/getApprovalLogByProject", name = "获取项目日志", method = RequestMethod.GET)
@@ -236,7 +247,7 @@ public class PublicController {
             bpmRpcActivitiProcessManageService.closeProcess(processInsId);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
-            logger.error(e.getMessage(), e);
+            baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult("流程关闭异常");
         }
     }

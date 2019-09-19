@@ -27,7 +27,7 @@
                             <div class="pull-left">
                                 <button type="button" data-toggle="modal" href="#modelDataAssetsAppraisalDic"
                                         class="btn btn-default"
-                                        onclick="dataAssetsAppraisalDic.initDataAssetsAppraisalDicForm({});">
+                                        onclick="dataAssetsAppraisalDic.initDataAssetsAppraisalDicForm({id:0});">
                                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增 
                                            
                                 </button>
@@ -81,6 +81,48 @@
 
     dataAssetsAppraisalDic.modelId = "#modelDataAssetsAppraisalDic";
 
+    dataAssetsAppraisalDic.fileUpload = function (target, tableName, id, deleteFlag, fieldsName) {
+        FileUtils.uploadFiles({
+            target: target,
+            disabledTarget: "btn_submit",
+            formData: {
+                tableName: tableName,
+                tableId: id,
+                fieldsName: fieldsName
+                // projectId: id
+            },
+            deleteFlag: deleteFlag
+        });
+        // FileUtils.uploadFiles({
+        //     target: target,
+        //     disabledTarget: "btn_submit",
+        //     onUpload: function (file) {
+        //         var formData = {
+        //             fieldsName: target,
+        //             tableName: tableName,
+        //             tableId: id
+        //         };
+        //         return formData;
+        //     }, onUploadComplete: function (result, file) {
+        //
+        //     },
+        //     deleteFlag: true
+        // });
+    };
+
+    dataAssetsAppraisalDic.showFile = function (target, tableName, id, deleteFlag, fieldsName) {
+        FileUtils.getFileShows({
+            target: target,
+            formData: {
+                tableName: tableName,
+                tableId: id,
+                fieldsName: fieldsName
+                // projectId: id
+            },
+            deleteFlag: deleteFlag
+        })
+    };
+
     /*列表*/
     dataAssetsAppraisalDic.loadBootstrapTable = function () {
         var method = {};
@@ -107,6 +149,7 @@
                 return "否" ;
             }
         });
+        cols.push({field: 'fileViewName', title: '可编辑固定附件', width: "20%"});
         dataAssetsAppraisalDic.table.bootstrapTable('destroy');
         TableInit(dataAssetsAppraisalDic.table.attr("id"), "${pageContext.request.contextPath}/dataAssetsAppraisalDic/getBootstrapTableVo", cols, select, method);
     };
@@ -144,6 +187,11 @@
             retHtml += '>' + item.value + '</option>';
         });
         frm.find("select[name='type']").empty().append(retHtml);
+        $.each(['fileIdDataAssetsAppraisalDic'] , function (i,n) {
+            dataAssetsAppraisalDic.showFile(n,'tb_data_assets_appraisal_dic',data.id,false,n);
+            dataAssetsAppraisalDic.fileUpload(n,'tb_data_assets_appraisal_dic',data.id,false,n);
+
+        })
     };
 
     dataAssetsAppraisalDic.editDataAssetsAppraisalDic = function () {
@@ -299,6 +347,18 @@
                                         <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
                                             <input type="text" required="required" class="form-control" name="sorting"
                                                    placeholder="排序" data-rule-number='true'>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
+                                            附件
+                                        </label>
+                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
+                                            <input id="fileIdDataAssetsAppraisalDic" name="fileIdDataAssetsAppraisalDic" placeholder="上传附件" class="form-control"
+                                                   type="file">
+                                            <div id="_fileIdDataAssetsAppraisalDic"></div>
                                         </div>
                                     </div>
                                 </div>
