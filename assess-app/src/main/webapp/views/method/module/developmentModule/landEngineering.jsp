@@ -600,7 +600,7 @@
                         权利状况修正
                     </label>
                     <div class="col-sm-3">
-                        <input type="text" placeholder="权利状况修正" class="form-control" name="amendmentStatusRights" onblur="loadParamsValue(this);" value="${mdDevelopment.amendmentStatusRights}">
+                        <input type="text" placeholder="权利状况修正" class="form-control x-percent" name="amendmentStatusRights" onblur="loadParamsValue(this);" value="${mdDevelopment.amendmentStatusRights}" data-value="${mdDevelopment.amendmentStatusRights}">
                     </div>
                 </div>
 
@@ -620,7 +620,7 @@
                         其他修正
                     </label>
                     <div class="col-sm-3">
-                        <input type="text" placeholder="其他修正" class="form-control" name="otherAmendments" onblur="loadParamsValue(this);" value="${mdDevelopment.otherAmendments}">
+                        <input type="text" placeholder="其他修正" class="form-control x-percent" name="otherAmendments" onblur="loadParamsValue(this);" value="${mdDevelopment.otherAmendments}" data-value="${mdDevelopment.otherAmendments}">
                     </div>
                 </div>
                 <div class="x-valid">

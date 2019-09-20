@@ -490,7 +490,7 @@
                         土地增值税<span class="symbol required"></span>
                     </label>
                     <div class="col-sm-3">
-                        <label class="form-control"><fmt:formatNumber value="${mdDevelopment.landValueAddedTax}" type="percent"/></label>
+                        <label class="form-control"> <fmt:formatNumber value="${mdDevelopment.landValueAddedTax}" type="percent" maxFractionDigits="4"/></label>
 
                     </div>
                 </div>
@@ -511,7 +511,7 @@
                         项目开发所得税<span class="symbol required"></span>
                     </label>
                     <div class="col-sm-3">
-                        <label class="form-control"><fmt:formatNumber value="${mdDevelopment.projectDevelopmentIncomeTax}" type="percent"/></label>
+                        <label class="form-control"><fmt:formatNumber value="${mdDevelopment.projectDevelopmentIncomeTax}" type="percent" maxFractionDigits="4"/></label>
                     </div>
                 </div>
 
@@ -540,11 +540,11 @@
         </div>
 
         <div class="x_content">
-
+            <div class="x_title">修正系数</div>
             <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
-                        土地还原率或者报酬率<span class="symbol required"></span>
+                        土地还原率或者报酬率
                     </label>
                     <div class="col-sm-3">
 
@@ -559,38 +559,37 @@
                     </div>
                 </div>
 
-
-            </div>
-
-            <div class="form-group">
-                <label class="col-sm-1 control-label">
-                    法定年限<span class="symbol required"></span>
-                </label>
                 <div class="x-valid">
+                    <label class="col-sm-1 control-label">
+                        法定年限
+                    </label>
                     <div class="col-sm-3">
                         <label class="form-control">${mdDevelopment.statutoryLife}</label>
                     </div>
                 </div>
 
-                <label class="col-sm-1 control-label">
-                    剩余年限<span class="symbol required"></span>
-                </label>
                 <div class="x-valid">
+                    <label class="col-sm-1 control-label">
+                        剩余年限
+                    </label>
                     <div class="col-sm-3">
                         <label class="form-control">${mdDevelopment.remainingYears}</label>
                     </div>
                 </div>
+
+
             </div>
+
 
 
 
             <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
-                        权利状况修正<span class="symbol required"></span>
+                        权利状况修正
                     </label>
                     <div class="col-sm-3">
-                        <label class="form-control">${mdDevelopment.amendmentStatusRights}</label>
+                        <label class="form-control"> <fmt:formatNumber value="${mdDevelopment.amendmentStatusRights}" type="percent" maxFractionDigits="4"/></label>
                     </div>
                 </div>
 
@@ -607,10 +606,10 @@
             <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
-                        其他修正<span class="symbol required"></span>
+                        其他修正
                     </label>
                     <div class="col-sm-3">
-                        <label class="form-control">${mdDevelopment.otherAmendments}</label>
+                        <label class="form-control"> <fmt:formatNumber value="${mdDevelopment.otherAmendments}" type="percent" maxFractionDigits="4"/></label>
                     </div>
                 </div>
 
@@ -627,7 +626,7 @@
             <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
-                        开发程度修正<span class="symbol required"></span>
+                        开发程度修正
                     </label>
                     <div class="col-sm-3">
                         <label class="form-control">${mdDevelopment.developmentDegreeRevision}</label>
