@@ -467,8 +467,12 @@
             </div>
             <form id="frmPicture" class="form-horizontal">
                 <input type="hidden" name="declareRecordId">
+                <input type="hidden" name="certifyPartCategory">
                 <input type="hidden" name="id">
                 <div class="modal-body">
+                    <input type="button" class="btn btn-primary btn-xs"
+                           onclick="correspondingSitePic()"
+                           value="选择对应位置查勘图片">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="panel-body">
@@ -546,15 +550,17 @@
             },
             success: function (result) {
                 if (result.ret) {
-                    var html = '';
-                    $.each(result.data, function (i, item) {
-                        ++i;
-                        html += '<tr><th scope="row">' + i + '</th><td>' + item.fileName + '</td><td>' +
-                            '<input type="button" class="btn btn-xs btn-primary" value="编辑" onclick="FileUtils.editAttachment(' + item.id + ',\'' + item.fileExtension + '\');">' +
-                            '<input type="button" class="btn btn-xs btn-primary" value="查看" onclick="FileUtils.showAttachment(' + item.id + ',\'' + item.fileExtension + '\');">' +
-                            '<input type="button" class="btn btn-xs btn-warning" value="移除" onclick="removeOwnershipCertFile(' + item.id + ',this)"></td></tr>';
-                    })
-                    tbody.empty().append(html);
+                    if (result.data) {
+                        var html = '';
+                        $.each(result.data, function (i, item) {
+                            ++i;
+                            html += '<tr><th scope="row">' + i + '</th><td>' + item.fileName + '</td><td>' +
+                                '<input type="button" class="btn btn-xs btn-primary" value="编辑" onclick="FileUtils.editAttachment(' + item.id + ',\'' + item.fileExtension + '\');">' +
+                                '<input type="button" class="btn btn-xs btn-primary" value="查看" onclick="FileUtils.showAttachment(' + item.id + ',\'' + item.fileExtension + '\');">' +
+                                '<input type="button" class="btn btn-xs btn-warning" value="移除" onclick="removeOwnershipCertFile(' + item.id + ',this)"></td></tr>';
+                        })
+                        tbody.empty().append(html);
+                    }
                 } else {
                     Alert(result.errmsg);
                 }
@@ -744,14 +750,16 @@
             },
             success: function (result) {
                 if (result.ret) {
-                    var html = '';
-                    $.each(result.data, function (i, item) {
-                        ++i;
-                        html += '<tr><th scope="row">' + i + '</th><td>' + item.reName + '</td><td>' + item.fileName + '</td><td>' +
-                            '<input type="button" class="btn btn-xs btn-primary" value="查看" onclick="FileUtils.showAttachment(' + item.id + ',\'' + item.fileExtension + '\');">' +
-                            '<input type="button" class="btn btn-xs btn-primary" value="选择" onclick="selectLiveSituation(' + item.id + ',' + declareRecordId + ',\'' + item.reName + '\');"></td></tr>';
-                    })
-                    $("#allExamineFileFrm").find('tbody[data-id=all_live_situation]').empty().append(html);
+                    if (result.data) {
+                        var html = '';
+                        $.each(result.data, function (i, item) {
+                            ++i;
+                            html += '<tr><th scope="row">' + i + '</th><td>' + item.reName + '</td><td>' + item.fileName + '</td><td>' +
+                                '<input type="button" class="btn btn-xs btn-primary" value="查看" onclick="FileUtils.showAttachment(' + item.id + ',\'' + item.fileExtension + '\');">' +
+                                '<input type="button" class="btn btn-xs btn-primary" value="选择" onclick="selectLiveSituation(' + item.id + ',' + declareRecordId + ',\'' + item.reName + '\');"></td></tr>';
+                        })
+                        $("#allExamineFileFrm").find('tbody[data-id=all_live_situation]').empty().append(html);
+                    }
                     $("#allExamineFileModal").modal("show");
                 } else {
                     Alert(result.errmsg);
@@ -1006,6 +1014,65 @@
                 }
                 else {
                     Alert("保存数据失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
+    }
+
+    //加载指定位置查勘图片
+    function correspondingSitePic() {
+        var declareRecordId = $("#frmPicture").find("[name='declareRecordId']").val();
+        var certifyPartCategory = $("#frmPicture").find("[name='certifyPartCategory']").val();
+        if (certifyPartCategory) {
+            $.ajax({
+                url: '${pageContext.request.contextPath}/scheme/correspondingSitePic',
+                data: {
+                    declareRecordId: declareRecordId,
+                    certifyPartCategory: certifyPartCategory
+                },
+                success: function (result) {
+                    if (result.ret) {
+                        if (result.data) {
+                            var reportFileItemId = $("#frmPicture").find("[name='id']").val();
+
+                            var html = '';
+                            $.each(result.data, function (i, item) {
+                                ++i;
+                                html += '<tr><th scope="row">' + i + '</th><td>' + item.reName + '</td><td>' + item.fileName + '</td><td>' +
+                                    '<input type="button" class="btn btn-xs btn-primary" value="查看" onclick="FileUtils.showAttachment(' + item.id + ',\'' + item.fileExtension + '\');">' +
+                                    '<input type="button" class="btn btn-xs btn-primary" value="选择" onclick="selectCorrespondingSitePic(' + item.id + ',' + reportFileItemId + ');"></td></tr>';
+                            })
+                            $("#allExamineFileFrm").find('tbody[data-id=all_live_situation]').empty().append(html);
+                        }
+                        $("#allExamineFileModal").modal("show");
+                    } else {
+                        Alert(result.errmsg);
+                    }
+                }
+            })
+        } else {
+            alert("请先选择查勘部位")
+        }
+    }
+
+    //选择指定位置查勘照片
+    function selectCorrespondingSitePic(attachmentId, reportFileItemId) {
+        Loading.progressShow();
+        $.ajax({
+            url: '${pageContext.request.contextPath}/scheme/selectCorrespondingSitePic',
+            data: {
+                attachmentId: attachmentId,
+                reportFileItemId: reportFileItemId
+            },
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    toastr.success('选择成功');
+                    $("#allExamineFileModal").modal("hide");
+                    loadUploadFiles(AssessDBKey.DeclareRecord, reportFileItemId, "live_situation_select_supplement", "uploadPicture");
                 }
             },
             error: function (result) {
