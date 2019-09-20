@@ -155,9 +155,9 @@ public class BasicUnitService {
     @Transactional(rollbackFor = Exception.class)
     public void clearInvalidData(Integer applyId) throws Exception {
         BasicUnit unit = null;
-        if (applyId.equals(0)) {
+        if (applyId == null || applyId.equals(0)) {
             BasicUnit where = new BasicUnit();
-            where.setApplyId(applyId);
+            where.setApplyId(0);
             where.setCreator(commonService.thisUserAccount());
             List<BasicUnit> unitList = basicUnitDao.basicUnitList(where);
             if (CollectionUtils.isEmpty(unitList)) return;
