@@ -254,6 +254,12 @@
                         </tr>
                         </tfoot>
                     </table>
+
+                    <div class="panel-body panel panel-info">
+                        <h3 class="panel-title">
+                            说明:总可售面积售价 = 单位售价 x 评估面积; 可售面积 = 可出售面积 累加之和; 规划建筑面积 = 规划建筑面积 累加之和
+                        </h3>
+                    </div>
                 </div>
             </form>
             <div class="modal-footer">
