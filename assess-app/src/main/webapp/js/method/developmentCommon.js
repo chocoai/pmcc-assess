@@ -508,6 +508,17 @@ developmentCommon.loadMdCalculatingMethodEngineeringCostTable = function (table,
     }
     var method = {
         onEditableSave: function (field, row, oldValue, $el) {
+            try {
+                if (field == 'area') {
+                    if ($.isNumeric(row.area) && $.isNumeric(row.price) && $.isNumeric(oldValue)) {
+                        var total = Number(oldValue) * Number(row.price);
+                        var price = total / Number(row.area);
+                        price = price.toFixed(2);
+                        row.price = price;
+                    }
+                }
+            } catch (e) {
+            }
             table.bootstrapTable('updateByUniqueId', {id: row.id, row: row});
             developmentCommon.saveMdCalculatingMethodEngineeringCost(row, function () {
                 if (callback) {
