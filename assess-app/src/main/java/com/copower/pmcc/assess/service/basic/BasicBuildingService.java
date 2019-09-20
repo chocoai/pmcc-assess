@@ -277,9 +277,9 @@ public class BasicBuildingService {
     @Transactional(rollbackFor = Exception.class)
     public void clearInvalidData(Integer applyId) throws Exception {
         BasicBuilding basicBuilding = null;
-        if (applyId.equals(0)) {
+        if (applyId == null || applyId.equals(0)) {
             BasicBuilding where = new BasicBuilding();
-            where.setApplyId(applyId);
+            where.setApplyId(0);
             where.setCreator(commonService.thisUserAccount());
             List<BasicBuilding> basicBuildingList = basicBuildingDao.getBasicBuildingList(where);
             if (CollectionUtils.isEmpty(basicBuildingList)) return;

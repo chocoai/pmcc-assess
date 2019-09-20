@@ -205,7 +205,7 @@ public class BasicHouseService {
     @Transactional(rollbackFor = Exception.class)
     public void clearInvalidData(Integer applyId) throws Exception {
         BasicHouse house = null;
-        if (applyId == 0) {
+        if (applyId==null||applyId.equals(0)) {
             BasicHouse where = new BasicHouse();
             where.setApplyId(applyId);
             where.setCreator(commonService.thisUserAccount());
