@@ -3,13 +3,14 @@ package com.copower.pmcc.assess.controller.project;
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
 import com.copower.pmcc.assess.controller.BaseController;
+import com.copower.pmcc.assess.dal.basis.dao.project.ProjectNumberRecordDao;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectNumberRecord;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectTakeNumber;
 import com.copower.pmcc.assess.dto.output.project.ProjectTakeNumberVo;
 import com.copower.pmcc.assess.service.ProjectTakeNumberService;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
-import com.copower.pmcc.assess.service.project.ProjectStateChangeService;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
@@ -37,7 +38,7 @@ public class ProjectTakeNumberController extends BaseController {
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
-    private ProjectStateChangeService stateChangeService;
+    private ProjectNumberRecordDao projectNumberRecordDao;
     @Autowired
     private BaseParameterService baseParameterService;
     @Autowired
@@ -80,6 +81,11 @@ public class ProjectTakeNumberController extends BaseController {
         modelAndView.addObject("projectTakeNumber", projectTakeNumberVo);
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(data.getProjectId());
         modelAndView.addObject("projectInfo", projectInfoService.getSimpleProjectInfoVo(projectInfo));
+        //详情页
+        if(taskId.equals("-1")){
+            ProjectNumberRecord projectNumberRecord = projectNumberRecordDao.getProjectNumberRecord(data.getNumberRecordId());
+            modelAndView.addObject("numberValue", projectNumberRecord.getNumberValue());
+        }
         return modelAndView;
     }
 
