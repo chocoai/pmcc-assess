@@ -63,27 +63,26 @@
         return false
     };
 
-    function checkParams(that) {
+    function loadParamsValue(that) {
         if (!development.isNotBlank(that)) {
             return false;
         }
         var value = $(that).val();
         var i = 0;
-        if (!development.isNotBlank(value)) {
-            return false;
-        }
-        if ($.isNumeric(value)) {
-            i++;
-        }
-        var reg = new RegExp(/^[0-9]+\.?[0-9]*%$/);
-        if (reg.test(value)) {
-            i++;
-        }
-        if (i == 0) {
-            alert("不符合，必须是数字!");
-            $(that).attr("data-value", '');
-            $(that).val('');
-            return false;
+        if (development.isNotBlank(value)) {
+            if ($.isNumeric(value)) {
+                i++;
+            }
+            var reg = new RegExp(/^[0-9]+\.?[0-9]*%$/);
+            if (reg.test(value)) {
+                i++;
+            }
+            if (i == 0) {
+                alert("不符合，必须是数字!");
+                $(that).attr("data-value", '');
+                $(that).val('');
+                return false;
+            }
         }
         var target = $(development.config.frm);
         calculationNumeric(formSerializeArray(target), function (data) {
@@ -115,6 +114,16 @@
                 $("#md_development_form").find("input[name='price']").val(data.price);
             }
         });
+    }
+
+    function checkParams(that) {
+        if (!development.isNotBlank(that)) {
+            return false;
+        }
+        if (!development.isNotBlank($(that).val())) {
+            return false;
+        }
+        loadParamsValue(that) ;
     }
 
     function calculationNumeric(data, callback) {

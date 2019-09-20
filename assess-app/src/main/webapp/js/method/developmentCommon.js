@@ -53,8 +53,9 @@ developmentCommon.architecturalB = {
         switch (reckon) {
             case 'a':
                 var a3 = tr.find("input[name='price']").val();
-                if ($.isNumeric(a3)) {
-                    a3 = Number(a3);
+                var area0 = tr.find("input[name='area']").val();
+                if ($.isNumeric(a3) && $.isNumeric(area0)) {
+                    a3 = Number(a3) * Number(area0);
                     resultValue = a3.toFixed(2);
                 }
                 break;
@@ -137,7 +138,6 @@ developmentCommon.architecturalB = {
                 var parentHtml = "";
                 switch (defaultObj.reckon) {
                     case 'a':
-                        target.find("table").find("thead").find("tr").first().find("th[name='area']").remove();
                         target.find("table").find("thead").find("tr").first().find("th[name='valuationDateDegreeCompletion']").remove();
                         parentHtml = $("#architecturalAModelParent").html();
                         break;

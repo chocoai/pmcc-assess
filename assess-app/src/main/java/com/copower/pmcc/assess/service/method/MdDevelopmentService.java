@@ -583,16 +583,23 @@ public class MdDevelopmentService {
                 BigDecimal d45 = target.getOtherAmendments();
                 BigDecimal d46 = target.getDevelopmentDegreeRevision();
                 if (!ArithmeticUtils.checkNotNull(d44)) {
-                    d44 = ArithmeticUtils.createBigDecimal(0) ;
+                    target.setPrice(ArithmeticUtils.createBigDecimal(0));
+                    return target.getAssessPrice().toBigInteger().toString() ;
                 }
                 if (!ArithmeticUtils.checkNotNull(d45)) {
-                    d45 = ArithmeticUtils.createBigDecimal(0) ;
+                    target.setPrice(ArithmeticUtils.createBigDecimal(0));
+                    return target.getAssessPrice().toBigInteger().toString() ;
+                }
+                if (!ArithmeticUtils.checkNotNull(new String[]{d41,d43})) {
+                    target.setPrice(ArithmeticUtils.createBigDecimal(0));
+                    return target.getAssessPrice().toBigInteger().toString() ;
+                }
+                if (Objects.equal("0",d43)){
+                    target.setPrice(ArithmeticUtils.createBigDecimal(0));
+                    return target.getAssessPrice().toBigInteger().toString() ;
                 }
                 if (!ArithmeticUtils.checkNotNull(d46)) {
                     d46 = ArithmeticUtils.createBigDecimal(0) ;
-                }
-                if (!ArithmeticUtils.checkNotNull(new String[]{d41,d43})) {
-                    return "";
                 }
                 double d = ArithmeticUtils.mul(new double[]{Double.valueOf(d41), Double.valueOf(d43), d44.doubleValue(), d45.doubleValue()});
                 BigDecimal bigDecimal = ArithmeticUtils.add(ArithmeticUtils.createBigDecimal(d), d46);

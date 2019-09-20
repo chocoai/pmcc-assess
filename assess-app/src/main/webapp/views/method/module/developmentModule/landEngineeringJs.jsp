@@ -97,10 +97,7 @@
             }) ;
             var mdCalculatingMethodEngineeringCost = landEngineering.engineeringFeeInfoTarget.bootstrapTable('getRowByUniqueId', obj.pid);
             try {
-                mdCalculatingMethodEngineeringCost.price = obj.price;
-                if (landEngineering.defaultType != landEngineering.typeData()){
-                    mdCalculatingMethodEngineeringCost.price = Number(obj.price) / Number(mdCalculatingMethodEngineeringCost.area) ;
-                }
+                mdCalculatingMethodEngineeringCost.price = Number(obj.price) / Number(mdCalculatingMethodEngineeringCost.area) ;
             } catch (e) {
                 console.log(e);
             }

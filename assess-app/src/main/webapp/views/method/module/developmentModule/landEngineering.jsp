@@ -565,8 +565,8 @@
                     </label>
                     <div class="col-sm-3">
                         <div class="input-group">
-                            <input type="text" class="form-control x-percent" name="remunerationRate" value="${mdDevelopment.remunerationRate}"
-                                   placeholder="报酬率"  data-value="${mdDevelopment.remunerationRate}" onblur="checkParams(this);">
+                            <input type="text" readonly="readonly" class="form-control x-percent" name="remunerationRate" value="${mdDevelopment.remunerationRate}"
+                                   placeholder="报酬率"  data-value="${mdDevelopment.remunerationRate}" onblur="loadParamsValue(this);">
                                 <span class="input-group-btn">
                                         <input type="hidden" name="rewardRateId" value="${mdDevelopment.rewardRateId}">
                                   <input type="button" class="btn btn-primary" value="土地还原率"
@@ -580,7 +580,7 @@
                 </label>
                 <div class="x-valid">
                     <div class="col-sm-3">
-                        <input type="text" placeholder="法定年限" class="form-control" name="statutoryLife" onblur="checkParams(this);" value="${mdDevelopment.statutoryLife}">
+                        <input type="text" placeholder="法定年限" class="form-control" name="statutoryLife" onblur="loadParamsValue(this);" value="${mdDevelopment.statutoryLife}">
                     </div>
                 </div>
 
@@ -589,7 +589,7 @@
                 </label>
                 <div class="x-valid">
                     <div class="col-sm-3">
-                        <input type="text" placeholder="剩余年限" class="form-control" name="remainingYears" onblur="checkParams(this);" value="${mdDevelopment.remainingYears}">
+                        <input type="text" placeholder="剩余年限" class="form-control" name="remainingYears" onblur="loadParamsValue(this);" value="${mdDevelopment.remainingYears}">
                     </div>
                 </div>
             </div>
@@ -600,7 +600,7 @@
                         权利状况修正
                     </label>
                     <div class="col-sm-3">
-                        <input type="text" placeholder="权利状况修正" class="form-control" name="amendmentStatusRights" onblur="checkParams(this);" value="${mdDevelopment.amendmentStatusRights}">
+                        <input type="text" placeholder="权利状况修正" class="form-control" name="amendmentStatusRights" onblur="loadParamsValue(this);" value="${mdDevelopment.amendmentStatusRights}">
                     </div>
                 </div>
 
@@ -620,7 +620,7 @@
                         其他修正
                     </label>
                     <div class="col-sm-3">
-                        <input type="text" placeholder="其他修正" class="form-control" name="otherAmendments" onblur="checkParams(this);" value="${mdDevelopment.otherAmendments}">
+                        <input type="text" placeholder="其他修正" class="form-control" name="otherAmendments" onblur="loadParamsValue(this);" value="${mdDevelopment.otherAmendments}">
                     </div>
                 </div>
                 <div class="x-valid">
@@ -638,7 +638,7 @@
                         开发程度修正
                     </label>
                     <div class="col-sm-3">
-                        <input type="text" placeholder="开发程度修正" class="form-control" name="developmentDegreeRevision" onblur="checkParams(this);" value="${mdDevelopment.developmentDegreeRevision}">
+                        <input type="text" placeholder="开发程度修正" class="form-control" name="developmentDegreeRevision" onblur="loadParamsValue(this);" value="${mdDevelopment.developmentDegreeRevision}">
                     </div>
                 </div>
                 <div class="x-valid">
