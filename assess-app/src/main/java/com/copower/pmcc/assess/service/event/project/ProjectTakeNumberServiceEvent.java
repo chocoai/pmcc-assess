@@ -71,9 +71,7 @@ public class ProjectTakeNumberServiceEvent extends BaseProcessEvent {
                 projectNumberRecords.sort(ordering);
             }
             //最大号
-            if (projectNumberRecords.get(0).getBisDelete() == true) {
-                number = projectNumberRecords.get(0).getNumber();
-            }
+            number = projectNumberRecords.get(0).getNumber();
         }
 
         String reportNumber = numberRule.getNumberRule().replaceAll("\\{prefix\\}", numberRule.getPrefix())

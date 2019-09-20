@@ -30,6 +30,16 @@
                                 <label class="form-control">${projectTakeNumber.reportTypeName}</label>
                             </div>
                         </div>
+                        <c:if test="${not empty numberValue}">
+                            <div>
+                                <label class="col-md-1 col-sm-1 col-xs-12 control-label">
+                                    文号
+                                </label>
+                                <div class="col-md-3 col-sm-3 col-xs-12">
+                                    <label class="form-control">${numberValue}</label>
+                                </div>
+                            </div>
+                        </c:if>
                     </div>
                     <div class="form-group">
                         <div class="x-valid">

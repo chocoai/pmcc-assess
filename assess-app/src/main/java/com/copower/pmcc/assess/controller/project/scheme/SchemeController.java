@@ -57,6 +57,17 @@ public class SchemeController {
     }
 
     @ResponseBody
+    @RequestMapping(value = "/correspondingSitePic", name = "获取对应位置查勘图片 ", method = RequestMethod.POST)
+    public HttpResult getLiveSituationAll(Integer declareRecordId,Integer certifyPartCategory) {
+        try {
+            return HttpResult.newCorrectResult(schemeReportFileService.correspondingSitePic(declareRecordId, certifyPartCategory));
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/getListByDeclareRecordId", name = "获取实况图片", method = RequestMethod.POST)
     public HttpResult getListByDeclareRecordId(Integer declareRecordId) {
         try {
@@ -106,6 +117,18 @@ public class SchemeController {
     public HttpResult selectLiveSituation(Integer attachmentId, Integer declareRecordId, String fileName) {
         try {
             schemeReportFileService.selectLiveSituation(attachmentId, declareRecordId, fileName);
+            return HttpResult.newCorrectResult();
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/selectCorrespondingSitePic", name = "选择指定位置查勘图片 ", method = RequestMethod.POST)
+    public HttpResult selectCorrespondingSitePic(Integer attachmentId, Integer reportFileItemId) {
+        try {
+            schemeReportFileService.selectCorrespondingSitePic(attachmentId, reportFileItemId);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             logger.error(e.getMessage());
