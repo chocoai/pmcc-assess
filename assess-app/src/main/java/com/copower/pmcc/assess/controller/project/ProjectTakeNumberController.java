@@ -83,8 +83,10 @@ public class ProjectTakeNumberController extends BaseController {
         modelAndView.addObject("projectInfo", projectInfoService.getSimpleProjectInfoVo(projectInfo));
         //详情页
         if(taskId.equals("-1")){
-            ProjectNumberRecord projectNumberRecord = projectNumberRecordDao.getProjectNumberRecord(data.getNumberRecordId());
-            modelAndView.addObject("numberValue", projectNumberRecord.getNumberValue());
+            if(data.getNumberRecordId()!=null) {
+                ProjectNumberRecord projectNumberRecord = projectNumberRecordDao.getProjectNumberRecord(data.getNumberRecordId());
+                modelAndView.addObject("numberValue", projectNumberRecord.getNumberValue());
+            }
         }
         return modelAndView;
     }
