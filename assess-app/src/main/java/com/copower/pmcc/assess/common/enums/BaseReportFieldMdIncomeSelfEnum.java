@@ -42,6 +42,7 @@ public enum BaseReportFieldMdIncomeSelfEnum implements Serializable {
     IncomeOperatingProfitRemark("收益法自营商业利润取值说明"),
     IncomeRealtyNetEarning("收益法自营房地产净收益"),
     IncomeOperatingCalculateCollect("估价对象运营费用测算汇总表"),
+    IncomeOperatingGeneral("估价对象运营费一览表"),
     //IncomeOperatingExpenses("收益法自营经营费用"),
     //IncomeManagementCost("收益法自营管理费用"),
     //IncomeFinancialCost("收益法自营财务费用"),
