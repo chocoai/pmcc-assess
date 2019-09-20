@@ -454,7 +454,7 @@
         loadPlanTabInfo: function (tab) {
             var that = $(tab).closest('li');
             $.ajax({
-                url: "${pageContext.request.contextPath}/projectInfo/getTotalPlans",
+                url: "${pageContext.request.contextPath}/projectInfo/getTotalPlanDetails",
                 data: {
                     planId: that.attr('plan-id')
                 },

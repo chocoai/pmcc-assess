@@ -410,10 +410,10 @@ public class ProjectInfoController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getTotalPlans", name = "计划总数", method = RequestMethod.POST)
-    public HttpResult getTotalPlans(Integer planId) {
+    @RequestMapping(value = "/getTotalPlanDetails", name = "计划总数", method = RequestMethod.POST)
+    public HttpResult getTotalPlanDetails(Integer planId) {
         try {
-            Integer total = projectPlanDetailsService.getTotalPlans(planId);
+            Integer total = projectPlanDetailsService.getTotalPlanDetails(planId);
             return HttpResult.newCorrectResult(total);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
