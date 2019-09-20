@@ -83,7 +83,7 @@ public class ProjectTakeNumberController extends BaseController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/detailsView", name = "详情页", method = RequestMethod.GET)
+    @RequestMapping(value = "/detailView", name = "详情页", method = RequestMethod.GET)
     public ModelAndView detailsView(Integer boxId, String processInsId) {
         return approvalView(boxId, processInsId, "-1", "");
     }
