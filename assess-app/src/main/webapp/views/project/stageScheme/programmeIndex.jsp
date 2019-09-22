@@ -165,9 +165,6 @@
                                 </div>
                             </div>
                             <div class="form-group">
-
-                            </div>
-                            <div class="form-group">
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
                                         价值类型<span class="symbol required"></span>
@@ -225,7 +222,10 @@
                                 </div>
                             </div>
                             <div class="form-group">
-
+                                <button type="button" class="btn btn-primary"
+                                        onclick="programme.batchMerge(this);">
+                                    批量合并
+                                </button>
                             </div>
                             <table class="table">
                                 <thead>
@@ -1564,6 +1564,12 @@
                 }
             })
         });
+    }
+
+    programme.batchMerge = function (_this) {
+        $(_this).closest('form').find('.judge-merge').each(function () {
+            $(this).trigger('click');
+        })
     }
 
 </script>
