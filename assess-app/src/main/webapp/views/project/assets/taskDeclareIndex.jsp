@@ -11,14 +11,111 @@
         <div class="right_col" role="main" style="margin-left: 0">
             <%@include file="/views/share/form_head.jsp" %>
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
-            <%@include file="/views/share/project/projectPlanDetails.jsp" %>
-            <div class="x_panel">
-                <div class="x_content form-horizontal">
-                    <form class="form-horizontal" id="declareApplyForm">
+            <form class="form-horizontal" id="declareApplyForm">
+                <input type="hidden" name="planDetailsId" value="${projectPlanDetails.id}">
+                <input type="hidden" name="projectId" value="${projectPlanDetails.projectId}">
+                <input type="hidden" name="assetsSettingId" value="${projectPhase.assetsSettingId}">
 
-                        <input type="hidden" name="planDetailsId" value="${projectPlanDetails.id}">
-                        <input type="hidden" name="projectId" value="${projectPlanDetails.projectId}">
 
+                <div class="x_panel">
+                    <div class="x_title collapse-link">
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                        </ul>
+                        <h3>申报编辑文件
+                            <small><input type="button" class="btn btn-xs btn-primary" value="获取模板"
+                                          onclick="loadAssetsCustomizeDataField(2);">
+                            </small>
+                        </h3>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+
+                    </div>
+                </div>
+
+                <div class="x_panel">
+                    <div class="x_title collapse-link">
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                        </ul>
+                        <h3>申报编辑字段
+                            <small><input type="button" class="btn btn-xs btn-primary" value="获取配置字段"
+                                          onclick="loadAssetsCustomizeDataField(1);">
+                            </small>
+                        </h3>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <div id="assetsCustomizeDataField_Fixed_field">
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="x_panel">
+                    <div class="x_title collapse-link">
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                        </ul>
+                        <h3>自定义附件</h3>
+                        <div class="clearfix"></div>
+                    </div>
+
+                    <div class="x_content">
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                    自定义操作
+                                </label>
+                                <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
+                                    <div class="btn  btn-success" onclick="appendHTML(this)"><i class="fa fa-plus"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <c:forTokens items="${assetsCustomizeDataField.fieldNameList}" delims="," var="item"
+                                     varStatus="status">
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                        自定义名称<span class="symbol required"></span>
+                                    </label>
+                                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                        <input name="fieldNameList" class="form-control" placeholder="自定义名称"
+                                               value="${item}"/>
+                                    </div>
+                                </div>
+                                <div class="x-valid">
+                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                        附件${status.index}
+                                    </label>
+                                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3  ">
+                                        <input id="other_Enclosure${status.index+1}"
+                                               name="other_Enclosure${status.index+1}" type="file" multiple="false">
+                                        <div id="_other_Enclosure${status.index+1}"></div>
+                                    </div>
+                                </div>
+                                <script>
+                                    $(function () {
+                                        var fileId = 'other_Enclosure${status.index+1}';
+                                        declareCommon.showFile(fileId, AssessDBKey.AssetsCustomizeDataField, "${assetsCustomizeDataField.id}", true, fileId);
+                                        declareCommon.fileUpload(fileId, AssessDBKey.AssetsCustomizeDataField, "${assetsCustomizeDataField.id}", true, fileId);
+                                    });
+                                </script>
+                                <div class="x-valid">
+                                    <span class="input-group-btn"><input class="btn btn-warning" type="button" value="X"
+                                                                         onclick="cleanItemHTML(this)"></span>
+                                </div>
+                            </div>
+                        </c:forTokens>
+                    </div>
+                </div>
+
+                <div class="x_panel">
+
+                    <div class="x_content">
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
@@ -30,9 +127,11 @@
                                 </div>
                             </div>
                         </div>
-                    </form>
+                    </div>
                 </div>
-            </div>
+
+            </form>
+            <%@include file="/views/share/project/projectPlanDetails.jsp" %>
             <div class="x_panel">
                 <div class="x_content">
                     <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4    col-xs-offset-5 col-sm-offset-5 col-md-offset-5 col-lg-offset-5">
@@ -66,25 +165,86 @@
 </div>
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
+<script type="text/html" id="other_EnclosureModel">
+    <div class="form-group">
+        <div class="x-valid">
+            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                自定义名称<span class="symbol required"></span>
+            </label>
+            <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                <input name="fieldNameList" class="form-control" placeholder="自定义名称"/>
+            </div>
+        </div>
+        <div class="x-valid">
+            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                附件
+            </label>
+            <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3  ">
+                <input id="other_Enclosure{number}" name="other_Enclosure{number}" type="file" multiple="false">
+                <div id="_other_Enclosure{number}"></div>
+            </div>
+        </div>
+        <div class="x-valid">
+            <span class="input-group-btn"><input class="btn btn-warning" type="button" value="X"
+                                                 onclick="cleanItemHTML(this,'other_Enclosure{number}')"></span>
+        </div>
+    </div>
+</script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/assets/declare/declare.common.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/assets/dataAssetsAppraisalDic.js"></script>
 <script type="text/javascript">
 
-    $(document).ready(function () {
-        $.each(declareCommon.fileArray,function (i,n) {
-            declareCommon.fileUpload(n,AssessDBKey.ProjectPlanDetails,'${projectPlanDetails.id}',false,n) ;
-            declareCommon.showFile(n,AssessDBKey.ProjectPlanDetails,'${projectPlanDetails.id}',false,n) ;
+    function loadAssetsCustomizeDataField(value) {
+        declareCommon.getServerDeclaration(value,function (data) {
+            declareCommon.writeDeclarationHtml(value,data) ;
         });
+    }
 
-        console.log(declareCommon.getPlanDetailsId());
-        console.log(declareCommon.getProjectId());
+
+    function appendHTML(_this) {
+        var frm = $("#declareApplyForm");
+        var target = $(_this).parent().parent().parent();
+        var number = Number(frm.find("input[name='fieldNameList']").size());
+        number++;
+        var html = $("#other_EnclosureModel").html();
+        var fileId = "other_Enclosure" + number;
+        html = html.replace(/{number}/g, number);
+        target.after(html);
+        declareCommon.showFile(fileId, AssessDBKey.AssetsCustomizeDataField, "${assetsCustomizeDataField.id}", true, fileId);
+        declareCommon.fileUpload(fileId, AssessDBKey.AssetsCustomizeDataField, "${assetsCustomizeDataField.id}", true, fileId);
+    }
+
+    function cleanItemHTML(_this, fileId) {
+        $(_this).parent().parent().parent().remove();
+        var select = {};
+        select.tableName = AssessDBKey.AssetsCustomizeDataField;
+        select.tableId = "${assetsCustomizeDataField.id}";
+        select.fieldsName = fileId;
+        declareCommon.getSysAttachmentDtoList(select, function (data) {
+            var array = [];
+            if (data) {
+                for (var i = 0; i < data.length; i++) {
+                    array.push(data[i].id);
+                }
+            }
+            declareCommon.deleteAttachmentById(array, function () {
+                toastr.success('清除成功!');
+            });
+        });
+    }
+
+    $(document).ready(function () {
+        $.each(declareCommon.fileArray, function (i, n) {
+            declareCommon.fileUpload(n, AssessDBKey.ProjectPlanDetails, '${projectPlanDetails.id}', false, n);
+            declareCommon.showFile(n, AssessDBKey.ProjectPlanDetails, '${projectPlanDetails.id}', false, n);
+        });
     });
 
 </script>
 <script type="application/javascript">
     //提交表单
     function submit(mustUseBox) {
-        var frm = $("#declareApplyForm") ;
+        var frm = $("#declareApplyForm");
         if (!frm.valid()) {
             return false;
         }

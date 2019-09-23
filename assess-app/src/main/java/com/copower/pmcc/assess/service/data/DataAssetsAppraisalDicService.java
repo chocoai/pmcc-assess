@@ -41,6 +41,13 @@ public class DataAssetsAppraisalDicService {
     @Autowired
     private BaseAttachmentService baseAttachmentService;
 
+    public List<DataAssetsAppraisalDic> getParamsSetData(){
+        DataAssetsAppraisalDic select = new DataAssetsAppraisalDic();
+        select.setPid(0);
+        select.setBisEnable(true);
+        return getDataAssetsAppraisalDicListByExample(select) ;
+    }
+
     public boolean saveDataAssetsAppraisalDic(DataAssetsAppraisalDic dataAssetsAppraisalDic) throws Exception {
         if (dataAssetsAppraisalDic == null) {
             return false;

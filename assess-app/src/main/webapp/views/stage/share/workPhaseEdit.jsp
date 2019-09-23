@@ -129,6 +129,21 @@
 
                                 <div class="form-group">
                                     <div class="x-valid">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label" for="phaseSort">
+                                            资产字段配置
+                                        </label>
+                                        <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
+                                            <select name="assetsSettingId" class="form-control">
+                                                <c:forEach items="${dataAssetsAppraisalDicList}" var="item">
+                                                    <option value="${item.id}">${item.name}</option>
+                                                </c:forEach>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="x-valid">
                                         <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label" for="workTemplate">
                                             工作模板
                                         </label>

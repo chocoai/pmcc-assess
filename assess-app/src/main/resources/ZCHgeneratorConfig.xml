@@ -43,19 +43,19 @@
 
         <!-- 具体表 -->
 
-        <table tableName="tb_md_development" domainObjectName="MdDevelopment">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-            <columnOverride column="content" jdbcType="VARCHAR"></columnOverride>
-        </table>
+        <!--<table tableName="tb_md_development" domainObjectName="MdDevelopment">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+            <!--<columnOverride column="content" jdbcType="VARCHAR"></columnOverride>-->
+        <!--</table>-->
 
-        <table tableName="tb_md_cost_construction" domainObjectName="MdCostConstruction">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-            <columnOverride column="json_content" jdbcType="VARCHAR"></columnOverride>
-        </table>
+        <!--<table tableName="tb_md_cost_construction" domainObjectName="MdCostConstruction">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+            <!--<columnOverride column="json_content" jdbcType="VARCHAR"></columnOverride>-->
+        <!--</table>-->
 
-        <table tableName="tb_md_economic_indicators" domainObjectName="MdEconomicIndicators">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
+        <!--<table tableName="tb_md_economic_indicators" domainObjectName="MdEconomicIndicators">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
 
         <!--<table tableName="tb_declare_economic_indicators_content" domainObjectName="DeclareEconomicIndicatorsContent">-->
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
@@ -149,9 +149,9 @@
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         <!--</table>-->
 
-        <!--<table tableName="tb_declare_pre_sale_permit" domainObjectName="DeclarePreSalePermit">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
+        <table tableName="tb_assets_customize_data_field" domainObjectName="AssetsCustomizeDataField">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
 
 
 

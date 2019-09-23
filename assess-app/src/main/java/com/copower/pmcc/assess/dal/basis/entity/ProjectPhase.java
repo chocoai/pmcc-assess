@@ -16,6 +16,8 @@ public class ProjectPhase {
 
     private Integer workStageId;
 
+    private Integer assetsSettingId;
+
     private String projectPhaseName;
 
     private BigDecimal phaseTime;
@@ -84,6 +86,14 @@ public class ProjectPhase {
 
     public void setWorkStageId(Integer workStageId) {
         this.workStageId = workStageId;
+    }
+
+    public Integer getAssetsSettingId() {
+        return assetsSettingId;
+    }
+
+    public void setAssetsSettingId(Integer assetsSettingId) {
+        this.assetsSettingId = assetsSettingId;
     }
 
     public String getProjectPhaseName() {

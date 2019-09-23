@@ -145,6 +145,17 @@ public class PublicController {
         }
     }
 
+    @RequestMapping(value = "/deleteAttachmentById", method = {RequestMethod.POST}, name = "删除FTP附件")
+    public HttpResult deleteAttachmentById(String id) {
+        try {
+            baseAttachmentService.deleteAttachmentByIdList(id);
+            return HttpResult.newCorrectResult(200, "success");
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
+            return HttpResult.newErrorResult(500, "异常");
+        }
+    }
+
     @RequestMapping(value = "/getAreaList", name = "获取区域信息", method = RequestMethod.POST)
     public Object getAreaList(String pid) {
         try {

@@ -9,6 +9,7 @@ import com.copower.pmcc.assess.dto.output.project.ProjectPhaseVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectWorkStageVo;
 import com.copower.pmcc.assess.service.base.BaseAssistService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
+import com.copower.pmcc.assess.service.data.DataAssetsAppraisalDicService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
 import com.copower.pmcc.bpm.api.dto.model.BoxReActivityDto;
@@ -62,6 +63,8 @@ public class ProjectPhaseController {
     private BaseAssistService baseAssistService;
     @Autowired
     private BaseProjectClassifyService baseProjectClassifyService;
+    @Autowired
+    private DataAssetsAppraisalDicService dataAssetsAppraisalDicService;
 
     @RequestMapping(value = "/view", name = "阶段事项页面视图", method = RequestMethod.GET)
     public ModelAndView view() {
@@ -76,6 +79,8 @@ public class ProjectPhaseController {
         List<PublicRole> publicRoleConfig = bpmRpcBoxRoleUserService.getPublicRoleConfig();
         modelAndView.addObject("publicRole", publicRoleConfig);
         modelAndView.addObject("projectClassList", baseProjectClassifyService.getCacheProjectClassifyListByPid(0));
+        modelAndView.addObject("dataAssetsAppraisalDicList",dataAssetsAppraisalDicService.getParamsSetData());
+
         return modelAndView;
     }
 

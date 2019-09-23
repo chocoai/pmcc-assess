@@ -1,14 +1,17 @@
 package com.copower.pmcc.assess.controller.data;
 
 import com.alibaba.fastjson.JSONObject;
-import com.copower.pmcc.assess.common.enums.DataAssetsAppraisalTypeEnum;
+import com.copower.pmcc.assess.common.enums.assets.DataAssetsAppraisalTypeEnum;
 import com.copower.pmcc.assess.dal.basis.entity.DataAssetsAppraisalDic;
+import com.copower.pmcc.assess.dto.output.data.DataAssetsAppraisalDicVo;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.data.DataAssetsAppraisalDicService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import com.google.common.collect.Lists;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -79,39 +82,23 @@ public class DataAssetsAppraisalDicController {
         }
     }
 
-    @GetMapping(value = "/getDataAssetsAppraisalDicList")
+    @GetMapping(value = "/getDataAssetsAppraisalDicListVo")
     public HttpResult getDataAssetsAppraisalDicList(DataAssetsAppraisalDic dataAssetsAppraisalDic) {
         try {
             List<DataAssetsAppraisalDic> objs = dataAssetsAppraisalDicService.getDataAssetsAppraisalDicListByExample(dataAssetsAppraisalDic);
-            return HttpResult.newCorrectResult(200, objs);
+            List<DataAssetsAppraisalDicVo> voList = Lists.newArrayList();
+            if (CollectionUtils.isNotEmpty(objs)){
+                objs.forEach(oo -> {
+                    voList.add(dataAssetsAppraisalDicService.getDataAssetsAppraisalDicVo(oo)) ;
+                });
+            }
+            return HttpResult.newCorrectResult(200, voList);
         } catch (Exception e) {
             baseService.writeExceptionInfo(e,errorName);
             return HttpResult.newErrorResult(500, e);
         }
     }
 
-    @GetMapping(value = "/getDataAssetsAppraisalDicListByTypeAndPlanDetailsId")
-    public HttpResult getDataAssetsAppraisalDicListByTypeAndPlanDetailsId(Integer planDetailsId,String type) {
-        try {
-            List<DataAssetsAppraisalDic> objs = dataAssetsAppraisalDicService.getDataAssetsAppraisalDicListByTypeAndPlanDetailsId(planDetailsId, type);
-            return HttpResult.newCorrectResult(200, objs);
-        } catch (Exception e) {
-            baseService.writeExceptionInfo(e,errorName);
-            return HttpResult.newErrorResult(500, e);
-        }
-    }
-
-
-    @GetMapping(value = "/getDataAssetsAppraisalDicListByType")
-    public HttpResult getDataAssetsAppraisalDicListByType(String type) {
-        try {
-            List<DataAssetsAppraisalDic> objs = dataAssetsAppraisalDicService.getDataAssetsAppraisalDicListByType(type);
-            return HttpResult.newCorrectResult(200, objs);
-        } catch (Exception e) {
-            baseService.writeExceptionInfo(e,errorName);
-            return HttpResult.newErrorResult(500, e);
-        }
-    }
 
     @GetMapping("/getBootstrapTableVoByPid")
     public BootstrapTableVo getBootstrapTableVoByPid(Integer pid) {

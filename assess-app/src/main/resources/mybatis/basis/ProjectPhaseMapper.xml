@@ -8,6 +8,7 @@
     <result column="project_type_id" property="projectTypeId" jdbcType="INTEGER" />
     <result column="project_category_id" property="projectCategoryId" jdbcType="INTEGER" />
     <result column="work_stage_id" property="workStageId" jdbcType="INTEGER" />
+    <result column="assets_setting_id" property="assetsSettingId" jdbcType="INTEGER" />
     <result column="project_phase_name" property="projectPhaseName" jdbcType="VARCHAR" />
     <result column="phase_time" property="phaseTime" jdbcType="DECIMAL" />
     <result column="phase_form" property="phaseForm" jdbcType="VARCHAR" />
@@ -79,9 +80,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, pid, project_class_id, project_type_id, project_category_id, work_stage_id, project_phase_name, 
-    phase_time, phase_form, box_name, phase_key, phase_sort, bis_enable, bis_use_box, 
-    bis_can_return, gmt_created, gmt_modified
+    id, pid, project_class_id, project_type_id, project_category_id, work_stage_id, assets_setting_id, 
+    project_phase_name, phase_time, phase_form, box_name, phase_key, phase_sort, bis_enable, 
+    bis_use_box, bis_can_return, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectPhaseExample" >
     select
@@ -118,17 +119,17 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_project_phase (pid, project_class_id, project_type_id, 
-      project_category_id, work_stage_id, project_phase_name, 
-      phase_time, phase_form, box_name, 
-      phase_key, phase_sort, bis_enable, 
-      bis_use_box, bis_can_return, gmt_created, 
-      gmt_modified)
+      project_category_id, work_stage_id, assets_setting_id, 
+      project_phase_name, phase_time, phase_form, 
+      box_name, phase_key, phase_sort, 
+      bis_enable, bis_use_box, bis_can_return, 
+      gmt_created, gmt_modified)
     values (#{pid,jdbcType=INTEGER}, #{projectClassId,jdbcType=INTEGER}, #{projectTypeId,jdbcType=INTEGER}, 
-      #{projectCategoryId,jdbcType=INTEGER}, #{workStageId,jdbcType=INTEGER}, #{projectPhaseName,jdbcType=VARCHAR}, 
-      #{phaseTime,jdbcType=DECIMAL}, #{phaseForm,jdbcType=VARCHAR}, #{boxName,jdbcType=VARCHAR}, 
-      #{phaseKey,jdbcType=VARCHAR}, #{phaseSort,jdbcType=INTEGER}, #{bisEnable,jdbcType=BIT}, 
-      #{bisUseBox,jdbcType=BIT}, #{bisCanReturn,jdbcType=BIT}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{projectCategoryId,jdbcType=INTEGER}, #{workStageId,jdbcType=INTEGER}, #{assetsSettingId,jdbcType=INTEGER}, 
+      #{projectPhaseName,jdbcType=VARCHAR}, #{phaseTime,jdbcType=DECIMAL}, #{phaseForm,jdbcType=VARCHAR}, 
+      #{boxName,jdbcType=VARCHAR}, #{phaseKey,jdbcType=VARCHAR}, #{phaseSort,jdbcType=INTEGER}, 
+      #{bisEnable,jdbcType=BIT}, #{bisUseBox,jdbcType=BIT}, #{bisCanReturn,jdbcType=BIT}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectPhase" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -150,6 +151,9 @@
       </if>
       <if test="workStageId != null" >
         work_stage_id,
+      </if>
+      <if test="assetsSettingId != null" >
+        assets_setting_id,
       </if>
       <if test="projectPhaseName != null" >
         project_phase_name,
@@ -200,6 +204,9 @@
       </if>
       <if test="workStageId != null" >
         #{workStageId,jdbcType=INTEGER},
+      </if>
+      <if test="assetsSettingId != null" >
+        #{assetsSettingId,jdbcType=INTEGER},
       </if>
       <if test="projectPhaseName != null" >
         #{projectPhaseName,jdbcType=VARCHAR},
@@ -263,6 +270,9 @@
       <if test="record.workStageId != null" >
         work_stage_id = #{record.workStageId,jdbcType=INTEGER},
       </if>
+      <if test="record.assetsSettingId != null" >
+        assets_setting_id = #{record.assetsSettingId,jdbcType=INTEGER},
+      </if>
       <if test="record.projectPhaseName != null" >
         project_phase_name = #{record.projectPhaseName,jdbcType=VARCHAR},
       </if>
@@ -309,6 +319,7 @@
       project_type_id = #{record.projectTypeId,jdbcType=INTEGER},
       project_category_id = #{record.projectCategoryId,jdbcType=INTEGER},
       work_stage_id = #{record.workStageId,jdbcType=INTEGER},
+      assets_setting_id = #{record.assetsSettingId,jdbcType=INTEGER},
       project_phase_name = #{record.projectPhaseName,jdbcType=VARCHAR},
       phase_time = #{record.phaseTime,jdbcType=DECIMAL},
       phase_form = #{record.phaseForm,jdbcType=VARCHAR},
@@ -341,6 +352,9 @@
       </if>
       <if test="workStageId != null" >
         work_stage_id = #{workStageId,jdbcType=INTEGER},
+      </if>
+      <if test="assetsSettingId != null" >
+        assets_setting_id = #{assetsSettingId,jdbcType=INTEGER},
       </if>
       <if test="projectPhaseName != null" >
         project_phase_name = #{projectPhaseName,jdbcType=VARCHAR},
@@ -385,6 +399,7 @@
       project_type_id = #{projectTypeId,jdbcType=INTEGER},
       project_category_id = #{projectCategoryId,jdbcType=INTEGER},
       work_stage_id = #{workStageId,jdbcType=INTEGER},
+      assets_setting_id = #{assetsSettingId,jdbcType=INTEGER},
       project_phase_name = #{projectPhaseName,jdbcType=VARCHAR},
       phase_time = #{phaseTime,jdbcType=DECIMAL},
       phase_form = #{phaseForm,jdbcType=VARCHAR},

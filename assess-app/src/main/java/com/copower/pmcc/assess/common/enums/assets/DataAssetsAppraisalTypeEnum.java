@@ -1,4 +1,4 @@
-package com.copower.pmcc.assess.common.enums;
+package com.copower.pmcc.assess.common.enums.assets;
 
 /**
  * Created by zch on 2019/9/17.

@@ -466,6 +466,66 @@ public class ProjectPhaseExample {
             return (Criteria) this;
         }
 
+        public Criteria andAssetsSettingIdIsNull() {
+            addCriterion("assets_setting_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssetsSettingIdIsNotNull() {
+            addCriterion("assets_setting_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssetsSettingIdEqualTo(Integer value) {
+            addCriterion("assets_setting_id =", value, "assetsSettingId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssetsSettingIdNotEqualTo(Integer value) {
+            addCriterion("assets_setting_id <>", value, "assetsSettingId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssetsSettingIdGreaterThan(Integer value) {
+            addCriterion("assets_setting_id >", value, "assetsSettingId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssetsSettingIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("assets_setting_id >=", value, "assetsSettingId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssetsSettingIdLessThan(Integer value) {
+            addCriterion("assets_setting_id <", value, "assetsSettingId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssetsSettingIdLessThanOrEqualTo(Integer value) {
+            addCriterion("assets_setting_id <=", value, "assetsSettingId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssetsSettingIdIn(List<Integer> values) {
+            addCriterion("assets_setting_id in", values, "assetsSettingId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssetsSettingIdNotIn(List<Integer> values) {
+            addCriterion("assets_setting_id not in", values, "assetsSettingId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssetsSettingIdBetween(Integer value1, Integer value2) {
+            addCriterion("assets_setting_id between", value1, value2, "assetsSettingId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssetsSettingIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("assets_setting_id not between", value1, value2, "assetsSettingId");
+            return (Criteria) this;
+        }
+
         public Criteria andProjectPhaseNameIsNull() {
             addCriterion("project_phase_name is null");
             return (Criteria) this;
