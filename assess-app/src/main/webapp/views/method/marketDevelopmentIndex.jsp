@@ -63,12 +63,15 @@
         return false
     };
 
-    function loadParamsValue(that) {
-        if (!development.isNotBlank(that)) {
-            return false;
-        }
+    function loadParamsValue(that,t) {
         var value = $(that).val();
         var i = 0;
+        if (!development.isNotBlank(value)) {
+            if (t != 'not'){
+                $(that).attr("data-value", '0');
+                $(that).val(0);
+            }
+        }
         if (development.isNotBlank(value)) {
             if ($.isNumeric(value)) {
                 i++;
@@ -117,13 +120,15 @@
     }
 
     function checkParams(that) {
+        var value = $(that).val();
         if (!development.isNotBlank(that)) {
             return false;
         }
-        if (!development.isNotBlank($(that).val())) {
-            return false;
+        if (!development.isNotBlank(value)) {
+            $(that).attr("data-value", '');
+            $(that).val('');
         }
-        loadParamsValue(that) ;
+        loadParamsValue(that,'not') ;
     }
 
     function calculationNumeric(data, callback) {

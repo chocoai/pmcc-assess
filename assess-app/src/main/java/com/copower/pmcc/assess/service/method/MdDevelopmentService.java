@@ -129,8 +129,12 @@ public class MdDevelopmentService {
     }
 
     public void calculationNumeric(MdDevelopment target) {
-       getFieldObjectValueHandle(BaseReportFieldEnum.Development_Price, target);
+        getFieldObjectValueHandle(BaseReportFieldEnum.Development_Price, target);
         if (target.getId() != null && target.getId() != 0) {
+            mdDevelopmentDao.updateMdDevelopment(target);
+            if (target != null){
+
+            }
             taskExecutor.execute(new Runnable() {
                 @Override
                 public void run() {
@@ -241,7 +245,7 @@ public class MdDevelopmentService {
                     return "";
                 }
                 if (!ArithmeticUtils.checkNotNull(target.getOtherEngineeringCost())) {
-                   target.setOtherEngineeringCost(ArithmeticUtils.createBigDecimal(0));
+                    target.setOtherEngineeringCost(ArithmeticUtils.createBigDecimal(0));
                 }
                 BigDecimal bigDecimal = ArithmeticUtils.multiply(ArithmeticUtils.createBigDecimal(f18), target.getOtherEngineeringCost());
                 bigDecimal = ArithmeticUtils.div(bigDecimal, ArithmeticUtils.createBigDecimal(10000));
@@ -424,17 +428,11 @@ public class MdDevelopmentService {
                 if (!ArithmeticUtils.checkNotNull(g35)) {
                     return "";
                 }
-                BigDecimal[] bigDecimals = new BigDecimal[]{
-                        ArithmeticUtils.createBigDecimal(d26),
-                        ArithmeticUtils.createBigDecimal(d27),
-                        ArithmeticUtils.createBigDecimal(f32),
-                        ArithmeticUtils.createBigDecimal(f33),
-                        f31};
-
-                if (!ArithmeticUtils.checkNotNull(bigDecimals)) {
+                String[] strings = new String[] {d26,d27,f32,f33} ;
+                if (!ArithmeticUtils.checkNotNull(strings)) {
                     return "";
                 }
-                BigDecimal a = ArithmeticUtils.add(bigDecimals);
+                BigDecimal a = ArithmeticUtils.createBigDecimal(ArithmeticUtils.add(strings));
                 BigDecimal bigDecimal = ArithmeticUtils.multiply(a, g35);
                 target.setInvestmentProfit(ArithmeticUtils.round(bigDecimal, 2, BigDecimal.ROUND_HALF_UP));
                 return ArithmeticUtils.getBigDecimalString(bigDecimal);
@@ -540,6 +538,7 @@ public class MdDevelopmentService {
                 String e40 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_LandPriceValue, target);
                 String f18 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_total_saleableArea, target);
                 if (!ArithmeticUtils.checkNotNull(new String[]{e40,f18})) {
+                    target.setAssessPrice(ArithmeticUtils.createBigDecimal(0));
                     return "";
                 }
                 BigDecimal bigDecimal = ArithmeticUtils.div(ArithmeticUtils.createBigDecimal(e40), ArithmeticUtils.createBigDecimal(f18));
@@ -584,19 +583,19 @@ public class MdDevelopmentService {
                 BigDecimal d46 = target.getDevelopmentDegreeRevision();
                 if (!ArithmeticUtils.checkNotNull(d44)) {
                     target.setPrice(ArithmeticUtils.createBigDecimal(0));
-                    return target.getAssessPrice().toBigInteger().toString() ;
+                    return target.getPrice().toBigInteger().toString() ;
                 }
                 if (!ArithmeticUtils.checkNotNull(d45)) {
                     target.setPrice(ArithmeticUtils.createBigDecimal(0));
-                    return target.getAssessPrice().toBigInteger().toString() ;
+                    return target.getPrice().toBigInteger().toString() ;
                 }
                 if (!ArithmeticUtils.checkNotNull(new String[]{d41,d43})) {
                     target.setPrice(ArithmeticUtils.createBigDecimal(0));
-                    return target.getAssessPrice().toBigInteger().toString() ;
+                    return target.getPrice().toBigInteger().toString() ;
                 }
                 if (Objects.equal("0",d43)){
                     target.setPrice(ArithmeticUtils.createBigDecimal(0));
-                    return target.getAssessPrice().toBigInteger().toString() ;
+                    return target.getPrice().toBigInteger().toString() ;
                 }
                 if (!ArithmeticUtils.checkNotNull(d46)) {
                     d46 = ArithmeticUtils.createBigDecimal(0) ;
@@ -685,14 +684,5 @@ public class MdDevelopmentService {
         return vo;
     }
 
-    private String changeHundred(String value, boolean format) {
-        if (format) {
-            if (NumberUtils.isNumber(value)) {
-                BigDecimal bigDecimal = new BigDecimal(value).multiply(new BigDecimal(100));
-                return String.format("%s%s", bigDecimal.setScale(2, BigDecimal.ROUND_UP).toString(), "%");
-            }
-        }
-        return value;
-    }
 
 }

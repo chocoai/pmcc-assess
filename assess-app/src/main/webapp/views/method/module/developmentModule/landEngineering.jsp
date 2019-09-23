@@ -13,7 +13,7 @@
 
         <input type="hidden" name="type" value="${mdDevelopment.type}">
         <input type="hidden" name="id" value="${mdDevelopment.id}">
-        <input type="hidden" name="economicId" value="${mdDevelopment.economicId}" onblur="checkParams(this);">
+        <input type="hidden" name="economicId" value="${mdDevelopment.economicId}" onblur="loadParamsValue(this);">
 
         <div class="x_content">
             <div class="form-group">
@@ -22,8 +22,8 @@
                         项目建设期年<span class="symbol required"></span>
                     </label>
                     <div class="col-sm-3">
-                        <input type="text" value="${mdDevelopment.projectConstructionPeriod}" required="required"
-                               placeholder="项目建设期(年)"
+                        <input type="text" readonly="readonly" value="${mdDevelopment.projectConstructionPeriod}" required="required"
+                               placeholder="项目建设期(年) = 已开发时间+剩余开发时间"
                                class="form-control"  name="projectConstructionPeriod" onblur="checkParams(this);">
                     </div>
                 </div>
@@ -567,7 +567,7 @@
                         <div class="input-group">
                             <input type="text" readonly="readonly" class="form-control x-percent" name="remunerationRate" value="${mdDevelopment.remunerationRate}"
                                    placeholder="报酬率"  data-value="${mdDevelopment.remunerationRate}" onblur="loadParamsValue(this);">
-                                <span class="input-group-btn">
+                            <span class="input-group-btn">
                                         <input type="hidden" name="rewardRateId" value="${mdDevelopment.rewardRateId}">
                                   <input type="button" class="btn btn-primary" value="土地还原率"
                                          onclick="landEngineering.getRewardRate(this);"/>
