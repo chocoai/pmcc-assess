@@ -378,4 +378,16 @@ public class BasicApplyBatchController extends BaseController {
     public HttpResult getDataByPlanDetailsId(Integer planDetailsId) {
         return HttpResult.newCorrectResult(basicApplyBatchService.getBasicApplyBatchByPlanDetailsId(planDetailsId));
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/paste", name = "粘贴", method = {RequestMethod.POST})
+    public HttpResult paste(Integer pasteBatchDetailId,Integer copyBatchDetailId,String displayName) {
+        try {
+            basicApplyBatchService.paste(pasteBatchDetailId,copyBatchDetailId,displayName);
+            return HttpResult.newCorrectResult();
+        } catch (Exception e1) {
+            log.error(e1.getMessage(), e1);
+            return HttpResult.newErrorResult("保存数据异常");
+        }
+    }
 }

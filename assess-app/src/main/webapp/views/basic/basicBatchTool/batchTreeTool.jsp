@@ -4,7 +4,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 
-<div class="form-group">
+<div class="form-group" id="divTool">
     <a class="btn btn-xs btn-default" onclick="batchTreeTool.showAddModal()">
         新增
     </a>
@@ -17,6 +17,15 @@
     <a class="btn btn-xs btn-default" onclick="batchTreeTool.fillInformation();">
         填写或修改信息
     </a>
+    <c:if test="${!empty projectPlanDetails}">
+        <a class="btn btn-xs btn-primary copy" onclick="batchTreeTool.copy();">
+            复制
+        </a>
+    </c:if>
+    <a class="btn btn-xs btn-primary paste" style="display:none;" onclick="batchTreeTool.paste();">
+        粘贴
+    </a>
+
 </div>
 <div class="col-md-3">
     <ul id="ztree" class="ztree"></ul>
@@ -151,6 +160,7 @@
 
     //初始化tree
     batchTreeTool.ztreeInit = function (data) {
+        console.log(${showTab}+"==")
         batchApply = data;
         zTreeObj = $.fn.zTree.init($("#ztree"), setting, [{
             "id": 0,
@@ -406,6 +416,68 @@
         var planDetailsId = batchApply.planDetailsId ? batchApply.planDetailsId : 0;
         openWin('${pageContext.request.contextPath}/basicApplyBatch/fillInformation?type=' + type + "&id=" + node.id + "&buildingType=" + node.level + "&estateId=" + estateId + "&planDetailsId=" + planDetailsId, function () {
         })
+    }
+
+    //被复制对象
+    batchTreeTool.beCopyObject = undefined;
+
+    //调整因素复制
+    batchTreeTool.copy = function (_this) {
+        //设置被复制元素的id
+        //显示出粘贴按钮
+        var node = zTreeObj.getSelectedNodes()[0];
+        if (node.level == 0) {
+            Alert("不能复制楼盘，重新选择")
+            return false;
+        }
+        batchTreeTool.beCopyObject = {};
+        batchTreeTool.beCopyObject.id = node.id;
+        batchTreeTool.beCopyObject.level = node.level;
+        toastr.success("复制成功");
+        $("#divTool").find('.paste').show();
+    }
+
+    //调整因素粘贴
+    batchTreeTool.paste = function () {
+        if (!batchTreeTool.beCopyObject) {
+            Alert('请选择被复制对象');
+            return false;
+        }
+        var node = zTreeObj.getSelectedNodes()[0];
+        if (node.id == batchTreeTool.beCopyObject.id) {
+            Alert('不能复制粘贴自身');
+            return false;
+        }
+        if (node.level != batchTreeTool.beCopyObject.level) {
+            Alert('请选择相应节点进行粘贴');
+            return false;
+        }
+        bootbox.confirm("将覆盖原来数据，确认要粘贴么？", function (result) {
+            Loading.progressShow();
+            $.ajax({
+                url: "${pageContext.request.contextPath}/basicApplyBatch/paste",
+                data: {
+                    pasteBatchDetailId: node.id,
+                    copyBatchDetailId: batchTreeTool.beCopyObject.id,
+                    displayName: node.displayName
+                },
+                type: "post",
+                dataType: "json",
+                success: function (result) {
+                    Loading.progressHide();
+                    if (result.ret) {
+                        toastr.success("粘贴成功");
+                        //更新元素信息
+                        $("#divTool").find('.paste').hide();
+                        batchTreeTool.ztreeInit(batchApply);
+                    }
+                    else {
+                        Alert("获取数据失败，失败原因:" + result.errmsg, 1, null, null);
+                    }
+                }
+            });
+        });
+
     }
 
 </script>

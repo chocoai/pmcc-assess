@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.method;
 
+import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.PoiUtils;
 import com.copower.pmcc.assess.common.enums.MethodDataTypeEnum;
 import com.copower.pmcc.assess.common.enums.MethodIncomeFormTypeEnum;
@@ -1188,7 +1189,7 @@ public class MdIncomeService {
                     //第一年金额
                     BigDecimal beginYearCount = publicService.diffDateYear(lastDayOfBeginYear, beginDate);
                     BigDecimal firstYearAmount = new BigDecimal("0");
-                    firstYearAmount = principal.multiply(new BigDecimal("1").add(growthRate)).multiply(beginYearCount);;
+                    firstYearAmount = principal.multiply(new BigDecimal("1").add(growthRate)).multiply(beginYearCount);
                     mdIncomeForecastYear.setAmount(firstYearAmount.setScale(2, BigDecimal.ROUND_HALF_UP));
                     mdIncomeForecastYear.setBeginDate(beginDate);
                     mdIncomeForecastYear.setEndDate(lastDayOfBeginYear);
@@ -1196,15 +1197,13 @@ public class MdIncomeService {
                     //最后一年金额
                     BigDecimal LastYearCount = publicService.diffDateYear(endDate, firstDayOfEndYear);
                     BigDecimal LastAmount = new BigDecimal("0");
-                    LastAmount = principal.multiply(new BigDecimal("1").add(growthRate).pow(calcNum + 2)).multiply(LastYearCount);;
+                    LastAmount = principal.multiply(new BigDecimal("1").add(growthRate).pow(calcNum + 2)).multiply(LastYearCount);
                     mdIncomeForecastYear.setAmount(LastAmount.setScale(2, BigDecimal.ROUND_HALF_UP));
                     mdIncomeForecastYear.setBeginDate(firstDayOfEndYear);
                     mdIncomeForecastYear.setEndDate(endDate);
                 } else {
                     BigDecimal tempAmount = new BigDecimal("0");//总金额
-                    for (MdIncomeForecastItem item : mdIncomeForecastItems) {
-                        tempAmount = principal.multiply(new BigDecimal("1").add(growthRate).pow(i));;
-                    }
+                    tempAmount = principal.multiply(new BigDecimal("1").add(growthRate).pow(i));
                     mdIncomeForecastYear.setAmount(tempAmount.setScale(2, BigDecimal.ROUND_HALF_UP));
                     mdIncomeForecastYear.setBeginDate(DateUtils.addYear(firstDayOfTemp, i - 2));
                     Date lastDayOfBeginTempYear = getLastDayOfYear(beginTempYear);
@@ -1229,6 +1228,22 @@ public class MdIncomeService {
         }
 
         mdIncomeDateSectionDao.updateDateSection(incomeDateSection);
+        //更新成本中的经营成本明细
+        List<MdIncomeForecastItemVo> operatingCostItems = Lists.newArrayList();
+        for (MdIncomeForecastItem item : mdIncomeForecastItems) {
+            MdIncomeForecastItemVo vo = new MdIncomeForecastItemVo();
+            BeanUtils.copyProperties(item, vo);
+            vo.setTotal(principal);
+            operatingCostItems.add(vo);
+        }
+        String jsonString = JSONObject.toJSONString(operatingCostItems);
+        MdIncomeForecast mdIncomeForecast = new MdIncomeForecast();
+        mdIncomeForecast.setIncomeId(forecast.getIncomeId());
+        mdIncomeForecast.setSectionId(forecast.getSectionId());
+        mdIncomeForecast.setType(MethodDataTypeEnum.COST.getId());
+        MdIncomeForecast forecastCost = mdIncomeForecastDao.getForecast(mdIncomeForecast);
+        forecastCost.setOperatingCostItem(jsonString);
+        mdIncomeForecastDao.updateForecast(forecastCost);
     }
 
     /**

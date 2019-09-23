@@ -37,7 +37,7 @@
                                 </label>
                                 <div class="col-sm-3">
                                     <select name='type' class='form-control search-select select2'>
-                                        <option value="0">-请选择-</option>
+                                        <option value="">-请选择-</option>
                                         <c:forEach var="item" items="${pictureTemplates}">
                                             <option value="${item.id}">${item.name}</option>
                                         </c:forEach>
