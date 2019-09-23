@@ -785,14 +785,14 @@
             html += "<div class='x-valid'>";
             html += "<label class='col-sm-1 control-label'>" + "一级编号" + "</label>";
             html += "<div class='col-sm-2'>";
-            html += "<input type='text' required class='form-control' name='stairNumber' readonly  value='" + n.stairNumber + "'>";
+            html += "<input type='text' required class='form-control' name='firstLevelNumber' readonly  value='" + n.firstLevelNumber + "'>";
             html += "</div>";
             html += "</div>";
 
             html += "<div class='x-valid'>";
             html += "<label class='col-sm-1 control-label'>" + "二级编号" + "</label>";
             html += "<div class='col-sm-2'>";
-            html += "<input type='text' required class='form-control' name='secondNumber' readonly value='" +n.secondNumber + "'>";
+            html += "<input type='text' required class='form-control' name='secondLevelNumber' readonly value='" +n.secondLevelNumber + "'>";
             html += "</div>";
             html += "</div>";
 
@@ -800,7 +800,11 @@
             html += "<div class='x-valid'>";
             html += "<label class='col-sm-1 control-label'>" + "比率" + "</label>";
             html += "<div class='col-sm-2'>";
-            html += "<input type='text' required class='form-control x-percent' name='ratio' readonly value='" + AssessCommon.pointToPercent(n.ratio) + "'>";
+            if(n.ratio){
+                html += "<input type='text' required class='form-control x-percent' name='ratio' value='" + AssessCommon.pointToPercent(n.ratio) + "'>";
+            }else {
+                html += "<input type='text' required class='form-control x-percent' name='ratio' value=''>";
+            }     
             html += "</div>";
             html += "</div>";
 

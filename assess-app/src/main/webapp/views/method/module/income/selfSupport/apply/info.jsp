@@ -706,7 +706,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="panel-body">
-                                <div class="form-group">
+                                <%--<div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-1 control-label">
                                             添加明细<span class="symbol required"></span>
@@ -717,7 +717,7 @@
                                                     class="fa fa-plus"></i></div>
                                         </div>
                                     </div>
-                                </div>
+                                </div>--%>
                                 <div style="margin-bottom: 8px;" class="system">
 
                                 </div>
@@ -1518,14 +1518,14 @@
         html += "<div class='x-valid'>";
         html += "<label class='col-sm-1 control-label'>" + "一级编号" + "</label>";
         html += "<div class='col-sm-2'>";
-        html += "<input type='text' required class='form-control' name='stairNumber'>";
+        html += "<input type='text' required class='form-control' name='firstLevelNumber'>";
         html += "</div>";
         html += "</div>";
 
         html += "<div class='x-valid'>";
         html += "<label class='col-sm-1 control-label'>" + "二级编号" + "</label>";
         html += "<div class='col-sm-2'>";
-        html += "<input type='text' required class='form-control' name='secondNumber'>";
+        html += "<input type='text' required class='form-control' name='secondLevelNumber'>";
         html += "</div>";
         html += "</div>";
 
@@ -1561,13 +1561,17 @@
         var operatingCostItem = [];
         $("#frmCostItem").find('.system').find('.form-group').each(function () {
             var item = {};
-            var stairNumber = $(this).find('[name^=stairNumber]').val();
-            var secondNumber = $(this).find('[name^=secondNumber]').val();
+            var amountMoney = $(this).find('[name^=amountMoney]').val();
+            var total = $(this).find('[name^=total]').val();
+            var firstLevelNumber = $(this).find('[name^=firstLevelNumber]').val();
+            var secondLevelNumber = $(this).find('[name^=secondLevelNumber]').val();
             var ratio = AssessCommon.percentToPoint($(this).find('[name^=ratio]').val());
-            if(stairNumber&&secondNumber&&ratio) {
-                item.stairNumber = stairNumber;
-                item.secondNumber = secondNumber;
+            if(firstLevelNumber&&secondLevelNumber&&ratio) {
+                item.firstLevelNumber = firstLevelNumber;
+                item.secondLevelNumber = secondLevelNumber;
                 item.ratio = ratio;
+                item.amountMoney = amountMoney;
+                item.total = total;
                 operatingCostItem.push(item);
             }
         });
@@ -1583,13 +1587,19 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    var result = 0;
+                    var costTotal = 0;
+                    var incomeTotal = 0;
                     $.each(operatingCostItem, function (i, n) {
-                        result += Number(n.ratio);
+                        costTotal += Number(n.amountMoney)*Number(n.ratio);
+                        incomeTotal = Number(n.total);
                     })
-                    if(result!=0) {
+                    if(costTotal!=0&&incomeTotal!=0) {
+                        var result = AssessCommon.pointToPercent((costTotal/incomeTotal).toFixed(4));
+                        console.log(result+"===1")
+                        console.log(costTotal+"===2")
+                        console.log(incomeTotal)
+                        $("#frm_forecast_cost").find("[name=operatingCostRatio]").val(result);
                         var incomeTotal = $("#frm_forecast_cost").find('[name=incomeTotal]').val();
-                        $("#frm_forecast_cost").find("[name=operatingCostRatio]").val(AssessCommon.pointToPercent(result));
                         $("#frm_forecast_cost").find('[name=operatingCostRatio]').attr('data-value',result);
                         $("#frm_forecast_cost").find('[name=operatingCost]').val(accMul(result, incomeTotal).toFixed(2));
                         selfSupport.computeInitialAmount("#frm_forecast_cost");
@@ -1611,17 +1621,19 @@
         var jsonarray = eval(json);
         $.each(jsonarray, function (i, n) {
             var html = "<div class='form-group' >";
+            html += "<input type='hidden'  name='amountMoney'  value='" + n.amountMoney + "'>";
+            html += "<input type='hidden'  name='total'  value='" + n.total + "'>";
             html += "<div class='x-valid'>";
             html += "<label class='col-sm-1 control-label'>" + "一级编号" + "</label>";
             html += "<div class='col-sm-2'>";
-            html += "<input type='text' required class='form-control' name='stairNumber'  value='" + n.stairNumber + "'>";
+            html += "<input type='text' required class='form-control' name='firstLevelNumber'  value='" + n.firstLevelNumber + "'>";
             html += "</div>";
             html += "</div>";
 
             html += "<div class='x-valid'>";
             html += "<label class='col-sm-1 control-label'>" + "二级编号" + "</label>";
             html += "<div class='col-sm-2'>";
-            html += "<input type='text' required class='form-control' name='secondNumber' value='" +n.secondNumber + "'>";
+            html += "<input type='text' required class='form-control' name='secondLevelNumber' value='" +n.secondLevelNumber + "'>";
             html += "</div>";
             html += "</div>";
 
@@ -1629,13 +1641,11 @@
             html += "<div class='x-valid'>";
             html += "<label class='col-sm-1 control-label'>" + "比率" + "</label>";
             html += "<div class='col-sm-2'>";
-            html += "<input type='text' required class='form-control x-percent' name='ratio' value='" + AssessCommon.pointToPercent(n.ratio) + "'>";
-            html += "</div>";
-            html += "</div>";
-
-            html += "<div class='x-valid'>";
-            html += " <div class=' col-xs-2  col-sm-2  col-md-2  col-lg-2 '>";
-            html += "<input class='btn btn-warning' type='button' value='X' onclick='selfSupport.cleanHTMLData(this)'>" + "</span>";
+            if(n.ratio){
+                html += "<input type='text' required class='form-control x-percent' name='ratio' value='" + AssessCommon.pointToPercent(n.ratio) + "'>";
+            }else {
+                html += "<input type='text' required class='form-control x-percent' name='ratio' value=''>";
+            }
             html += "</div>";
             html += "</div>";
 
