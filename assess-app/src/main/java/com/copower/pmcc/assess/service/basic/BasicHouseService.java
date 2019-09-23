@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.common.enums.BasicApplyPartInModeEnum;
 import com.copower.pmcc.assess.common.enums.EstateTaggingTypeEnum;
 import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDetailDao;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateTaggingDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicHouseDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
@@ -101,6 +102,8 @@ public class BasicHouseService {
     private CaseEstateTaggingService caseEstateTaggingService;
     @Autowired
     private BasicEstateTaggingService basicEstateTaggingService;
+    @Autowired
+    private BasicApplyDao basicApplyDao;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -143,6 +146,33 @@ public class BasicHouseService {
         return basicHouseDao.deleteBasicHouse(id);
     }
 
+     /**
+     * 删除同一单元下的房屋数据
+     *
+     * @param unitId
+     * @return
+     * @throws Exception
+     */
+    public void deleteHousesByUnitId(Integer unitId) throws Exception {
+        List<BasicHouse> houses = getHousesByUnitId(unitId);
+        if(CollectionUtils.isNotEmpty(houses)){
+            for (BasicHouse houseItem: houses) {
+                this.deleteBasicHouse(houseItem.getId());
+                this.clearInvalidData2(houseItem.getId());
+                //删除标准时，删除原来basicApply的数据
+                BasicApply basicApply = new BasicApply();
+                basicApply.setBasicHouseId(houseItem.getId());
+                BasicApply basicApplyOnly = basicApplyService.getBasicApplyOnly(basicApply);
+                if (basicApplyOnly != null) {
+                    basicApplyDao.deleteBasicApply(basicApplyOnly.getId());
+                }
+            }
+        }
+
+    }
+
+
+
     /**
      * 获取数据列表
      *
@@ -154,6 +184,12 @@ public class BasicHouseService {
         return basicHouseDao.basicHouseList(basicHouse);
     }
 
+    public List<BasicHouse> getHousesByUnitId(Integer unitId) throws Exception {
+        if (unitId == null) return null;
+        BasicHouse basicHouse = new BasicHouse();
+        basicHouse.setUnitId(unitId);
+        return basicHouseDao.basicHouseList(basicHouse);
+    }
 
     public BootstrapTableVo getBootstrapTableVo(BasicHouse basicHouse) throws Exception {
         BootstrapTableVo vo = new BootstrapTableVo();
@@ -205,7 +241,7 @@ public class BasicHouseService {
     @Transactional(rollbackFor = Exception.class)
     public void clearInvalidData(Integer applyId) throws Exception {
         BasicHouse house = null;
-        if (applyId==null||applyId.equals(0)) {
+        if (applyId == null || applyId.equals(0)) {
             BasicHouse where = new BasicHouse();
             where.setApplyId(applyId);
             where.setCreator(commonService.thisUserAccount());
