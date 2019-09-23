@@ -113,6 +113,21 @@ public class DataAssetsAppraisalDicController {
         }
     }
 
+    @GetMapping("/getBootstrapTableVoByPid")
+    public BootstrapTableVo getBootstrapTableVoByPid(Integer pid) {
+        return dataAssetsAppraisalDicService.getDataAssetsAppraisalDicByPid(pid);
+    }
+
+    @PostMapping(value = "/getDataAssetsAppraisalDicLevel", name = "获取层级")
+    public HttpResult getReportFieldLevel(Integer id) {
+        try {
+            return HttpResult.newCorrectResult(200, dataAssetsAppraisalDicService.getDataAssetsAppraisalDicLevel(id));
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
+            return HttpResult.newErrorResult(500, e.getMessage());
+        }
+    }
+
     private void settingParams(ModelAndView modelAndView){
         List<KeyValueDto> keyValueDtoList = new ArrayList<>(4) ;
         for (DataAssetsAppraisalTypeEnum typeEnum: DataAssetsAppraisalTypeEnum.values()){
