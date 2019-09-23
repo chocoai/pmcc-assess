@@ -9,6 +9,7 @@ import com.copower.pmcc.assess.service.data.DataLocaleSurveyPictureService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,7 +68,9 @@ public class DataLocaleSurveyPictureController {
     public BootstrapTableVo getExamineEstateNetworkList(Integer type) {
         BootstrapTableVo vo = null;
         DataLocaleSurveyPicture dataLocaleSurveyPicture = new DataLocaleSurveyPicture();
-        dataLocaleSurveyPicture.setType(type);
+        if (type != null) {
+            dataLocaleSurveyPicture.setType(type);
+        }
         try {
             vo = dataLocaleSurveyPictureService.getDataLocaleSurveyPictureListVos(dataLocaleSurveyPicture);
         } catch (Exception e1) {
