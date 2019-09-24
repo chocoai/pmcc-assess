@@ -783,16 +783,8 @@
         $.each(jsonarray, function (i, n) {
             var html = "<div class='form-group' >";
             html += "<div class='x-valid'>";
-            html += "<label class='col-sm-1 control-label'>" + "一级编号" + "</label>";
-            html += "<div class='col-sm-2'>";
-            html += "<input type='text' required class='form-control' name='firstLevelNumber' readonly  value='" + n.firstLevelNumber + "'>";
-            html += "</div>";
-            html += "</div>";
-
-            html += "<div class='x-valid'>";
-            html += "<label class='col-sm-1 control-label'>" + "二级编号" + "</label>";
-            html += "<div class='col-sm-2'>";
-            html += "<input type='text' required class='form-control' name='secondLevelNumber' readonly value='" +n.secondLevelNumber + "'>";
+            html += "<div class='col-sm-5'>";
+            html +=  n.name ;
             html += "</div>";
             html += "</div>";
 

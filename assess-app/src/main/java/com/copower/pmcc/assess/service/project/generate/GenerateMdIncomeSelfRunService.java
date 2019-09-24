@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.aspose.words.BookmarkCollection;
 import com.aspose.words.Document;
 import com.aspose.words.DocumentBuilder;
+import com.aspose.words.Table;
 import com.copower.pmcc.assess.common.ArithmeticUtils;
 import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.enums.BaseReportFieldMdIncomeSelfEnum;
@@ -17,6 +18,7 @@ import com.copower.pmcc.assess.dal.basis.dao.method.MdIncomeLeaseCostDao;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdIncomePriceInvestigationDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.generate.BookmarkAndRegexDto;
+import com.copower.pmcc.assess.dto.output.MergeCellModel;
 import com.copower.pmcc.assess.dto.output.method.MdIncomeForecastVo;
 import com.copower.pmcc.assess.dto.output.method.MdIncomeLeaseCostVo;
 import com.copower.pmcc.assess.service.BaseService;
@@ -50,7 +52,6 @@ import org.slf4j.LoggerFactory;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * @author: zch
@@ -485,7 +486,7 @@ public class GenerateMdIncomeSelfRunService implements Serializable {
                 step:
                 for (List<MdIncomeForecastVo> list : allGoods) {
                     for (MdIncomeForecastVo good : list) {
-                        if (item.getGrowthRate() != null && item.getGrowthRate().compareTo(good.getGrowthRate()) == 0) {
+                        if (item.getRateIncrease() != null && item.getRateIncrease().compareTo(good.getRateIncrease()) == 0) {
                             list.add(item);
                             flag = true;
                             break step;
@@ -504,18 +505,20 @@ public class GenerateMdIncomeSelfRunService implements Serializable {
         StringBuilder s = new StringBuilder();
         if (allGoods.size() == 1) {
             s.append(DateUtils.format(vos.get(0).getBeginDate(), DateUtils.DATE_CHINESE_PATTERN)).append("至").append(DateUtils.format(vos.get(0).getEndDate(), DateUtils.DATE_CHINESE_PATTERN)).
-                    append("收益法自营增长率为").append(ArithmeticUtils.getPercentileSystem(vos.get(0).getGrowthRate(), 4, BigDecimal.ROUND_HALF_UP)).append("。");
+                    append("收益法自营增长率为").append(ArithmeticUtils.getPercentileSystem(vos.get(0).getRateIncrease(), 4, BigDecimal.ROUND_HALF_UP)).append("。");
         } else {
             for (List<MdIncomeForecastVo> group : allGoods) {
-                if (group.get(0).getGrowthRate() != null) {
+                if (group.get(0).getRateIncrease() != null) {
                     for (MdIncomeForecastVo groupItem : group) {
                         s.append(DateUtils.format(groupItem.getBeginDate(), DateUtils.DATE_CHINESE_PATTERN)).append("至").append(DateUtils.format(groupItem.getEndDate(), DateUtils.DATE_CHINESE_PATTERN)).append("、");
                     }
                     s.deleteCharAt(s.length() - 1);
-                    s.append("收益法自营增长率为").append(ArithmeticUtils.getPercentileSystem(group.get(0).getGrowthRate(), 4, BigDecimal.ROUND_HALF_UP)).append("；");
+                    s.append("收益法自营增长率为").append(ArithmeticUtils.getPercentileSystem(group.get(0).getRateIncrease(), 4, BigDecimal.ROUND_HALF_UP)).append("；");
                 }
             }
-            s.deleteCharAt(s.length() - 1);
+            if (StringUtils.isNotBlank(s.toString())) {
+                s.deleteCharAt(s.length() - 1);
+            }
         }
         if (StringUtils.isNotBlank(s.toString())) {
             return s.toString();
@@ -530,63 +533,9 @@ public class GenerateMdIncomeSelfRunService implements Serializable {
      * @date: 2019/2/28 14:26
      */
     private synchronized String getIncomeOperatingProfitRemark() throws Exception {
-        List<MdIncomeForecastVo> vos = getForecastList(1);
-        //排序
-        Comparator<MdIncomeForecastVo> comparator = new Comparator<MdIncomeForecastVo>() {
-            @Override
-            public int compare(MdIncomeForecastVo o1, MdIncomeForecastVo o2) {
-                return o1.getBeginDate().compareTo(o2.getBeginDate());
-            }
-        };
-        Collections.sort(vos, comparator);
-        //说明一致的放在一个list中
-        List<List<MdIncomeForecastVo>> allGoods = Lists.newArrayList();
-        for (MdIncomeForecastVo item : vos) {
-            if (CollectionUtils.isEmpty(allGoods)) {
-                List<MdIncomeForecastVo> goods = Lists.newArrayList();
-                goods.add(item);
-                allGoods.add(goods);
-            } else {
-                //该类型物品是否已存在
-                boolean flag = false;
-                step:
-                for (List<MdIncomeForecastVo> list : allGoods) {
-                    for (MdIncomeForecastVo good : list) {
-                        if (StringUtils.isNotEmpty(item.getOperatingProfitRemark()) && item.getOperatingProfitRemark().equals(good.getOperatingProfitRemark())) {
-                            list.add(item);
-                            flag = true;
-                            break step;
-                        }
-                    }
-                }
-                //不存在则造一个list存放
-                if (!flag) {
-                    List<MdIncomeForecastVo> goods = Lists.newArrayList();
-                    goods.add(item);
-                    allGoods.add(goods);
-                }
-            }
-        }
-        if (CollectionUtils.isEmpty(allGoods)) return null;
-        StringBuilder s = new StringBuilder();
-        if (allGoods.size() == 1) {
-            s.append(DateUtils.format(vos.get(0).getBeginDate(), DateUtils.DATE_CHINESE_PATTERN)).append("至").append(DateUtils.format(vos.get(0).getEndDate(), DateUtils.DATE_CHINESE_PATTERN)).
-                    append("收益法自营商业利润取值说明为").append(vos.get(0).getOperatingProfitRemark()).append("。");
-        } else {
-            for (List<MdIncomeForecastVo> group : allGoods) {
-                if (StringUtils.isNotEmpty(group.get(0).getOperatingProfitRemark())) {
-                    for (MdIncomeForecastVo groupItem : group) {
-                        s.append(DateUtils.format(groupItem.getBeginDate(), DateUtils.DATE_CHINESE_PATTERN)).append("至").append(DateUtils.format(groupItem.getEndDate(), DateUtils.DATE_CHINESE_PATTERN)).append("、");
-                    }
-                    s.deleteCharAt(s.length() - 1);
-                    s.append("收益法自营商业利润取值说明为").append(group.get(0).getOperatingProfitRemark()).append("；");
-                }
-            }
-            s.deleteCharAt(s.length() - 1);
-            s.append("。");
-        }
-        if (StringUtils.isNotBlank(s.toString())) {
-            return s.toString();
+        String s = getMdIncome().getAverageProfitRateRemark();
+        if (StringUtils.isNotBlank(s)) {
+            return s;
         }
         return errorStr;
     }
@@ -890,14 +839,18 @@ public class GenerateMdIncomeSelfRunService implements Serializable {
         Document document = new Document();
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
         generateCommonMethod.settingBuildingTable(builder);
-        builder.startTable();
-        //开始时间 结束时间	收益期限(n)	总收入	总成本	经营利润	房地产年净收益	年期修正系数(h)	收益现值系数(k)	房地产收益价格
-        generateCommonMethod.writeWordTitle(builder, Lists.newLinkedList(Lists.newArrayList("开始时间", "结束时间", "收益期限", "总收入", "总成本", "经营利润", "房地产年净收益", "房地产收益价格")));
+        Table table = builder.startTable();
+        //开始时间 结束时间	收益期限(n)	  收入	成本	经营利润	房地产年净收益	年期修正系数(h)	收益现值系数(k)	房地产收益价格
+        generateCommonMethod.writeWordTitle(builder, Lists.newLinkedList(Lists.newArrayList("开始时间", "结束时间", "收益期限", "收入", "成本", "经营利润", "房地产年净收益", "房地产收益价格")));
 
         List<MdIncomeDateSection> mdIncomeDateSectionList = getMdIncomeDateSectionList();
         final String nullValue = "";
         LinkedList<String> linkedList = Lists.newLinkedList();
+        int j = 0;
         if (CollectionUtils.isNotEmpty(mdIncomeDateSectionList)) {
+            //需要合并的单元格
+            Set<MergeCellModel> mergeCellModelList = Sets.newHashSet();
+            BigDecimal total = new BigDecimal("0");
             for (MdIncomeDateSection mdIncomeDateSection : mdIncomeDateSectionList) {
                 if (mdIncomeDateSection.getBeginDate() != null) {
                     linkedList.add(DateUtils.format(mdIncomeDateSection.getBeginDate(), DateUtils.DATE_CHINESE_PATTERN));
@@ -935,12 +888,22 @@ public class GenerateMdIncomeSelfRunService implements Serializable {
                     linkedList.add(nullValue);
                 }
                 if (mdIncomeDateSection.getIncomePrice() != null) {
+                    total = total.add(mdIncomeDateSection.getIncomePrice());
                     linkedList.add(mdIncomeDateSection.getIncomePrice().toString());
                 } else {
                     linkedList.add(nullValue);
                 }
                 generateCommonMethod.writeWordTitle(builder, linkedList);
                 linkedList.clear();
+                j++;
+            }
+            //合计
+            linkedList.addAll(Arrays.asList("合计", total.toString(), "", "", "", "", "", ""));
+            AsposeUtils.writeWordTitle(builder, linkedList);
+            linkedList.clear();
+            mergeCellModelList.add(new MergeCellModel(j + 1, 1, j + 1, 7));
+            if (CollectionUtils.isNotEmpty(mergeCellModelList)) {
+                generateCommonMethod.mergeCellTable(mergeCellModelList, table);
             }
         }
         builder.endTable();
@@ -1052,30 +1015,30 @@ public class GenerateMdIncomeSelfRunService implements Serializable {
 
         StringBuilder s = new StringBuilder();
         // At/(Y-g)×[1-(1+g)^t /(1+y)^(N-t)]
-        if(CollectionUtils.isNotEmpty(mdIncomeDateSectionList)){
+        if (CollectionUtils.isNotEmpty(mdIncomeDateSectionList)) {
             BigDecimal t = new BigDecimal("1");
-            for (MdIncomeDateSection section: mdIncomeDateSectionList) {
+            for (MdIncomeDateSection section : mdIncomeDateSectionList) {
                 StringBuilder s2 = new StringBuilder();
                 s2.append(DateUtils.format(section.getBeginDate(), DateUtils.DATE_CHINESE_PATTERN)).append("至").append(DateUtils.format(section.getEndDate(), DateUtils.DATE_CHINESE_PATTERN)).append("：");
                 s.append(generateCommonMethod.getIndentHtml(s2.toString()));
                 BigDecimal yearCount = section.getYearCount();
                 String formula = "At/(Y-g)×[1-(1+g)^t /(1+Y)^(n)]";
-                if(StringUtils.isNoneEmpty(section.getNetProfit())){
-                    formula = formula.replace("At",section.getNetProfit());
+                if (StringUtils.isNoneEmpty(section.getNetProfit())) {
+                    formula = formula.replace("At", section.getNetProfit());
                 }
-                if(StringUtils.isNoneEmpty(mdIncome.getAverageProfitRate())){
-                    formula = formula.replace("Y",ArithmeticUtils.getPercentileSystem(new BigDecimal(mdIncome.getAverageProfitRate()), 4, BigDecimal.ROUND_HALF_UP));
+                if (StringUtils.isNoneEmpty(mdIncome.getAverageProfitRate())) {
+                    formula = formula.replace("Y", ArithmeticUtils.getPercentileSystem(new BigDecimal(mdIncome.getAverageProfitRate()), 4, BigDecimal.ROUND_HALF_UP));
                 }
-                if(section.getRentalGrowthRate()!=null){
-                    formula = formula.replace("g",ArithmeticUtils.getPercentileSystem(section.getRentalGrowthRate(), 4, BigDecimal.ROUND_HALF_UP));
+                if (section.getRentalGrowthRate() != null) {
+                    formula = formula.replace("g", ArithmeticUtils.getPercentileSystem(section.getRentalGrowthRate(), 4, BigDecimal.ROUND_HALF_UP));
                 }
-                if(section.getYearCount()!=null){
-                    formula = formula.replace("n",section.getYearCount().toString());
+                if (section.getYearCount() != null) {
+                    formula = formula.replace("n", section.getYearCount().toString());
                 }
-                if(t.compareTo(new BigDecimal("1"))!=0){
-                    formula = formula.replace("t",t.toString());
-                }else{
-                    formula = formula.replace("^t","");
+                if (t.compareTo(new BigDecimal("1")) != 0) {
+                    formula = formula.replace("t", t.toString());
+                } else {
+                    formula = formula.replace("^t", "");
                 }
                 t = t.add(yearCount);
                 s.append(generateCommonMethod.getIndentHtml(formula));
@@ -1223,18 +1186,13 @@ public class GenerateMdIncomeSelfRunService implements Serializable {
      * @date: 2019/2/28 14:01
      */
     private synchronized String getIncomeYears() throws Exception {
-        List<MdIncomeLeaseCostVo> leaseVoList = getLeaseVoList();
         List<Double> doubleList = Lists.newArrayList(new Double(0));
-        if (CollectionUtils.isNotEmpty(leaseVoList)) {
-            leaseVoList.stream().forEach(mdIncomeLeaseCostVo -> {
-                MdIncomeDateSection mdIncomeDateSection = mdIncomeDateSectionService.getDateSectionById(mdIncomeLeaseCostVo.getSectionId());
-                if (mdIncomeDateSection != null) {
-                    if (mdIncomeDateSection.getYearCount() != null) {
-                        doubleList.add(mdIncomeDateSection.getYearCount().doubleValue());
-                    }
-                }
-            });
-        }
+        List<MdIncomeDateSection> mdIncomeDateSectionList = getMdIncomeDateSectionList();
+        mdIncomeDateSectionList.stream().forEach(mdIncomeDateSection -> {
+            if (mdIncomeDateSection.getYearCount() != null) {
+                doubleList.add(mdIncomeDateSection.getYearCount().doubleValue());
+            }
+        });
         return String.valueOf(doubleList.stream().mapToDouble(Double::doubleValue).sum());
     }
 
@@ -1399,15 +1357,6 @@ public class GenerateMdIncomeSelfRunService implements Serializable {
         return jsonObject;
     }
 
-    private List<MdIncomeLeaseCostVo> getLeaseVoList() {
-        if (CollectionUtils.isEmpty(this.leaseVoList)) {
-            MdIncomeLeaseCost query = new MdIncomeLeaseCost();
-            query.setIncomeId(miId);
-            List<MdIncomeLeaseCost> leaseCostList = mdIncomeLeaseCostDao.getLeaseCostList(query);
-            this.leaseVoList = leaseCostList.stream().map(mdIncomeLeaseCost -> mdIncomeService.getMdIncomeLeaseCostVo(mdIncomeLeaseCost)).collect(Collectors.toList());
-        }
-        return this.leaseVoList;
-    }
 
     private SchemeInfo getSchemeInfo() {
         return schemeInfo;

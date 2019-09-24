@@ -787,7 +787,7 @@
                 var str = '<div class="btn-margin">';
                 str += '<a class="btn btn-xs btn-success tooltips" data-placement="top" data-original-title="编辑" onclick="selfSupport.editForecastIncomeItem(' + index + ');" ><i class="fa fa-edit fa-white"></i></a>';
                 str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="selfSupport.deleteForecastIncomeItem(' + row.id + ')"><i class="fa fa-minus fa-white"></i></a>';
-                str += '<a class="btn btn-xs btn-primary tooltips" data-placement="top" data-original-title="引用历史金额" onclick="selfSupport.showSameNameItemModel(' + row.id + ')">引用历史金额</a>';
+               // str += '<a class="btn btn-xs btn-primary tooltips" data-placement="top" data-original-title="引用历史金额" onclick="selfSupport.showSameNameItemModel(' + row.id + ')">引用历史金额</a>';
                 str += '</div>';
                 return str;
             }
@@ -1563,12 +1563,10 @@
             var item = {};
             var amountMoney = $(this).find('[name^=amountMoney]').val();
             var total = $(this).find('[name^=total]').val();
-            var firstLevelNumber = $(this).find('[name^=firstLevelNumber]').val();
-            var secondLevelNumber = $(this).find('[name^=secondLevelNumber]').val();
+            var name = $(this).find('[name^=name]').val();
             var ratio = AssessCommon.percentToPoint($(this).find('[name^=ratio]').val());
-            if(firstLevelNumber&&secondLevelNumber&&ratio) {
-                item.firstLevelNumber = firstLevelNumber;
-                item.secondLevelNumber = secondLevelNumber;
+            if(ratio) {
+                item.name = name;
                 item.ratio = ratio;
                 item.amountMoney = amountMoney;
                 item.total = total;
@@ -1595,12 +1593,9 @@
                     })
                     if(costTotal!=0&&incomeTotal!=0) {
                         var result = AssessCommon.pointToPercent((costTotal/incomeTotal).toFixed(4));
-                        console.log(result+"===1")
-                        console.log(costTotal+"===2")
-                        console.log(incomeTotal)
                         $("#frm_forecast_cost").find("[name=operatingCostRatio]").val(result);
                         var incomeTotal = $("#frm_forecast_cost").find('[name=incomeTotal]').val();
-                        $("#frm_forecast_cost").find('[name=operatingCostRatio]').attr('data-value',result);
+                        $("#frm_forecast_cost").find('[name=operatingCostRatio]').attr('data-value',AssessCommon.percentToPoint(result));
                         $("#frm_forecast_cost").find('[name=operatingCost]').val(accMul(result, incomeTotal).toFixed(2));
                         selfSupport.computeInitialAmount("#frm_forecast_cost");
                     }
@@ -1623,17 +1618,10 @@
             var html = "<div class='form-group' >";
             html += "<input type='hidden'  name='amountMoney'  value='" + n.amountMoney + "'>";
             html += "<input type='hidden'  name='total'  value='" + n.total + "'>";
+            html += "<input type='hidden'  name='name'  value='" + n.name + "'>";
             html += "<div class='x-valid'>";
-            html += "<label class='col-sm-1 control-label'>" + "一级编号" + "</label>";
-            html += "<div class='col-sm-2'>";
-            html += "<input type='text' required class='form-control' name='firstLevelNumber'  value='" + n.firstLevelNumber + "'>";
-            html += "</div>";
-            html += "</div>";
-
-            html += "<div class='x-valid'>";
-            html += "<label class='col-sm-1 control-label'>" + "二级编号" + "</label>";
-            html += "<div class='col-sm-2'>";
-            html += "<input type='text' required class='form-control' name='secondLevelNumber' value='" +n.secondLevelNumber + "'>";
+            html += "<div class='col-sm-5'>";
+            html +=  n.name ;
             html += "</div>";
             html += "</div>";
 
@@ -1671,6 +1659,8 @@
                 $(this).find('[data-name=operatingProfit]').text(operatingProfit);
                 //净收益
                 var netProfit = incomeTotal - costTotal - operatingProfit;
+                console.log("incomeTotal:"+incomeTotal)
+                console.log("netProfit:"+netProfit)
                 $(this).find('[data-name=netProfit]').text(netProfit.toFixed(2));
             }
         })
