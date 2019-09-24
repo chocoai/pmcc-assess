@@ -5,20 +5,27 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.aspose.words.*;
 import com.copower.pmcc.assess.constant.BaseConstant;
+import com.copower.pmcc.assess.dal.basis.dao.data.DataNumberRuleDao;
+import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordContentDao;
 import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordDao;
-import com.copower.pmcc.assess.dal.basis.dao.net.NetLandTransactionDao;
-import com.copower.pmcc.assess.dal.basis.dao.net.NetResultAnnouncementDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.ProjectNumberRecordDao;
+import com.copower.pmcc.assess.dal.basis.entity.DataNumberRule;
 import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecord;
+import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordContent;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectNumberRecord;
 import com.copower.pmcc.assess.dto.input.net.JDSFDto;
 import com.copower.pmcc.assess.dto.input.net.JDZCDto;
 import com.copower.pmcc.assess.dto.input.net.TBSFDto;
 import com.copower.pmcc.assess.dto.input.net.ZGSFDto;
+import com.copower.pmcc.assess.service.project.generate.GenerateCommonMethod;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.StringUtil;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Ordering;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -36,9 +43,11 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.math.BigDecimal;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.sql.*;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.Date;
@@ -60,9 +69,11 @@ public class Test {
     @Autowired
     private NetInfoRecordDao netInfoRecordDao;
     @Autowired
-    private NetLandTransactionDao netLandTransactionDao;
+    private NetInfoRecordContentDao netInfoRecordContentDao;
     @Autowired
-    private NetResultAnnouncementDao netResultAnnouncementDao;
+    private DataNumberRuleDao dataNumberRuleDao;
+    @Autowired
+    private ProjectNumberRecordDao projectNumberRecordDao;
 
 
     @org.junit.Test
@@ -268,7 +279,7 @@ public class Test {
         Table table = builder.startTable();
         // table.setBorders(0, 0, Color.black);
 
-        int colLength = 2;//列数
+        int colLength = 3;//列数
         int rowLength = (imglist.size() % colLength > 0 ? (imglist.size() / colLength) + 1 : imglist.size() / colLength) * 2;//行数
         Integer index = 0;
         //根据不同列数设置 表格与图片的宽度 总宽度为560
@@ -546,17 +557,15 @@ public class Test {
     public void getNetInfoFromTB() {
         try {
             Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.DATE, -730); //得到前2天
+            calendar.add(Calendar.DATE, -2); //得到前2天
             Date date = calendar.getTime();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             String formatDate = sdf.format(date);
-            Date now = new Date();
-            String nowDate = sdf.format(now);
             String[] needContentType = new String[]{"住宅用房", "商业用房", "工业用房", "其他用房", "股权", "债权", "林权", "矿权", "土地", "资产", "无形资产"};
             List<String> types = Arrays.asList(needContentType);
             Map<String, String> strHrefs = Maps.newHashMap();//用于记录地址
             String urlInfo = "https://sf.taobao.com/item_list.htm?auction_source=0&sorder=2&st_param=-1&auction_start_seg=&" +
-                    "auction_start_from=" + formatDate + "&auction_start_to=" + nowDate + "&&spm=a213w.3064813.9001.2";
+                    "auction_start_from=" + formatDate + "&auction_start_to=" + formatDate + "&&spm=a213w.3064813.9001.2";
             Elements elements = getContent(urlInfo, ".condition", "GBK");
             Elements a = elements.get(0).select("li a");
             for (Element item : a) {
@@ -606,17 +615,36 @@ public class Test {
                         if (itemContent != null) {
                             initPrice = itemContent.get(2).childNodes().get(0).toString().replace(",", "");
                         }
+                        netInfoRecord.setCurrentPrice(getRealMoney(tbsfDto.getCurrentPrice()));
+                        netInfoRecord.setConsultPrice(getRealMoney(tbsfDto.getConsultPrice()));
+                        netInfoRecord.setInitPrice(getRealMoney(initPrice));
+                        netInfoRecord.setLiquidRatios(getLiquidRatios(tbsfDto.getCurrentPrice(), tbsfDto.getConsultPrice()));
                         String content = getContent(tbsfDto.getTitle(), tbsfDto.getType(), tbsfDto.getCurrentPrice(), tbsfDto.getConsultPrice(), initPrice
                                 , DateUtils.format(tbsfDto.getEnd(), DateUtils.DATE_CHINESE_PATTERN), DateUtils.format(tbsfDto.getStart(), DateUtils.DATE_CHINESE_PATTERN));
                         netInfoRecord.setContent(content);
+                        netInfoRecord.setType(tbsfDto.getType());
+                        netInfoRecord.setBeginTime(tbsfDto.getStart());
+                        netInfoRecord.setEndTime(tbsfDto.getEnd());
                         netInfoRecord.setSourceSiteName("淘宝司法拍卖网");
                         netInfoRecordDao.addInfo(netInfoRecord);
+
+                        Elements noticeEles = getContent(String.format("%s" + tbsfDto.getItemUrl(), "https:"), "#J_ItemNotice", "GBK");
+                        if (noticeEles.size() == 0) {
+                            noticeEles = getContent(String.format("%s" + tbsfDto.getItemUrl(), "https:"), "#J_NoticeDetail", "GBK");
+                        }
+                        if (noticeEles.size() != 0) {
+                            String contentHref = noticeEles.get(0).attributes().get("data-from").trim();
+                            Elements body = getContent(String.format("%s" + contentHref, "https:"), "body", "GBK");
+                            NetInfoRecordContent netInfoRecordContent = new NetInfoRecordContent();
+                            netInfoRecordContent.setRecordId(netInfoRecord.getId());
+                            netInfoRecordContent.setFullDescription(body.text());
+                            netInfoRecordContentDao.addInfo(netInfoRecordContent);
+                        }
 
                     }
                 }
 
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -656,14 +684,18 @@ public class Test {
     public void getNetInfoFromJDSF() {
         try {
             Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.DATE, -730); //得到前1天
+            calendar.add(Calendar.DATE, -1); //得到前1天
             Date date = calendar.getTime();
             String[] needContentType = new String[]{"住宅用房", "商业用房", "工业用房", "其他用房", "股权", "债权", "林权", "矿权", "土地", "无形资产"};
             Map<String, List<String>> strHrefs = Maps.newHashMap();
             List<String> types = Arrays.asList(needContentType);
 
+            //首页
             String urlInfo = "http://auction.jd.com/sifa_list.html?callback=jQuery8159673&page=1&limit=40&paimaiStatus=2";
+            //获取数据地址
             String typeHref = "http://auction.jd.com/getJudicatureList.html?paimaiStatus=2";
+            //获取起始价地址
+            String initPriceHref = "https://api.m.jd.com/api?appid=paimai&functionId=getProductBasicInfo&body={%22paimaiId%22:%s}";
             Elements elements = getContent(urlInfo, ".sl-v-list", "");
             Elements a = elements.get(0).select("li a");
             for (Element item : a) {
@@ -705,7 +737,25 @@ public class Test {
                         netInfoRecord.setTitle(jdsfDto.getTitle());
                         netInfoRecord.setProvince(jdsfDto.getProvince());
                         netInfoRecord.setCity(jdsfDto.getCity());
-                        String content = getContent(jdsfDto.getTitle(), entry.getKey(), jdsfDto.getCurrentPriceStr(), jdsfDto.getAssessmentPriceStr(), ""
+                        netInfoRecord.setEndTime(jdsfDto.getEndTime());
+                        netInfoRecord.setBeginTime(jdsfDto.getStartTime());
+                        netInfoRecord.setType(entry.getKey());
+                        String initPrice = "";
+                        try {
+                            String replace = initPriceHref.replace("%s", jdsfDto.getId().toString());
+                            Elements initPriceElements = getContent(replace, "body", "");
+                            String initPriceData = initPriceElements.get(0).childNodes().get(0).toString();
+                            JSONObject initPriceStr = JSON.parseObject(initPriceData);
+                            initPriceStr = JSON.parseObject(initPriceStr.getString("data"));
+                            initPrice = JSON.parseObject(initPriceStr.getString("startPrice"), String.class);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        netInfoRecord.setCurrentPrice(getRealMoney(jdsfDto.getCurrentPriceStr()));
+                        netInfoRecord.setConsultPrice(getRealMoney(jdsfDto.getAssessmentPriceStr()));
+                        netInfoRecord.setInitPrice(getRealMoney(initPrice));
+                        netInfoRecord.setLiquidRatios(getLiquidRatios(jdsfDto.getCurrentPriceStr(), jdsfDto.getAssessmentPriceStr()));
+                        String content = getContent(jdsfDto.getTitle(), entry.getKey(), jdsfDto.getCurrentPriceStr(), jdsfDto.getAssessmentPriceStr(), initPrice
                                 , DateUtils.format(jdsfDto.getEndTime(), DateUtils.DATE_CHINESE_PATTERN), DateUtils.format(jdsfDto.getStartTime(), DateUtils.DATE_CHINESE_PATTERN));
                         netInfoRecord.setContent(content);
                         netInfoRecord.setSourceSiteName("京东司法拍卖网");
@@ -772,11 +822,26 @@ public class Test {
                         netInfoRecord.setTitle(jdzcDto.getTitle());
                         netInfoRecord.setProvince(jdzcDto.getProvince());
                         netInfoRecord.setCity(jdzcDto.getCity());
+                        netInfoRecord.setBeginTime(jdzcDto.getStartTime());
+                        netInfoRecord.setEndTime(jdzcDto.getEndTime());
+                        netInfoRecord.setType(entry.getKey());
+                        netInfoRecord.setCurrentPrice(getRealMoney(jdzcDto.getCurrentPrice()));
+                        netInfoRecord.setInitPrice(getRealMoney(jdzcDto.getStartPrice()));
                         String content = getContent(jdzcDto.getTitle(), entry.getKey(), jdzcDto.getCurrentPrice(), "", jdzcDto.getStartPrice()
                                 , DateUtils.format(jdzcDto.getEndTime(), DateUtils.DATE_CHINESE_PATTERN), DateUtils.format(jdzcDto.getStartTime(), DateUtils.DATE_CHINESE_PATTERN));
                         netInfoRecord.setContent(content);
                         netInfoRecord.setSourceSiteName("京东资产拍卖网");
                         netInfoRecordDao.addInfo(netInfoRecord);
+
+                        Elements noticeEles = getContent(itemHref, "#bid-announce-content", "");
+                        if (noticeEles.size() != 0) {
+//                            String contentHref = noticeEles.get(0).attributes().get("data-from").trim();
+//                            Elements body = getContent(String.format("%s" + contentHref, "https:"), "body", "GBK");
+//                            NetInfoRecordContent netInfoRecordContent = new NetInfoRecordContent();
+//                            netInfoRecordContent.setRecordId(netInfoRecord.getId());
+//                            netInfoRecordContent.setFullDescription(body.text());
+//                            netInfoRecordContentDao.addInfo(netInfoRecordContent);
+                        }
                     }
                 }
             }
@@ -792,7 +857,7 @@ public class Test {
     public void getNetInfoFromZGSF() {
         try {
             Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.DATE, -730); //得到前1天
+            calendar.add(Calendar.DATE, -60); //得到前1天
             Date date = calendar.getTime();
             Map<String, String> needContentType = Maps.newHashMap();
             needContentType.put("房产", "6");
@@ -872,11 +937,28 @@ public class Test {
                         netInfoRecord.setSourceSiteUrl(itemHref);
                         netInfoRecord.setTitle(zgsfDto.getName());
                         netInfoRecord.setProvince(entry.getKey().substring(entry.getKey().indexOf("_") + 1));
-                        String content = getContent(zgsfDto.getName(), entry.getKey(), zgsfDto.getNowPrice(), zgsfDto.getAssessPrice(), zgsfDto.getStartPrice()
+                        netInfoRecord.setBeginTime(zgsfDto.getStartTime());
+                        netInfoRecord.setEndTime(zgsfDto.getEndTime());
+                        netInfoRecord.setType(entry.getKey().substring(0, entry.getKey().indexOf("_")));
+                        netInfoRecord.setCurrentPrice(getRealMoney(zgsfDto.getNowPrice()));
+                        netInfoRecord.setConsultPrice(getRealMoney(zgsfDto.getAssessPrice()));
+                        netInfoRecord.setInitPrice(getRealMoney(zgsfDto.getStartPrice()));
+                        netInfoRecord.setLiquidRatios(getLiquidRatios(zgsfDto.getNowPrice(), zgsfDto.getAssessPrice()));
+                        String content = getContent(zgsfDto.getName(), entry.getKey().substring(0, entry.getKey().indexOf("_")), zgsfDto.getNowPrice(), zgsfDto.getAssessPrice(), zgsfDto.getStartPrice()
                                 , DateUtils.format(zgsfDto.getEndTime(), DateUtils.DATE_CHINESE_PATTERN), DateUtils.format(zgsfDto.getStartTime(), DateUtils.DATE_CHINESE_PATTERN));
                         netInfoRecord.setContent(content);
                         netInfoRecord.setSourceSiteName("中国拍卖行业协会网-司法");
                         netInfoRecordDao.addInfo(netInfoRecord);
+
+                        String contentHref = itemHref.replace("lot", "caa-web-ws/ws/0.1/notice/lot");
+                        contentHref = contentHref.replace(".html", "");
+                        Elements contentBody = getContent(contentHref, "body", "");
+                        if (contentBody.size() != 0 && contentBody != null) {
+                            NetInfoRecordContent netInfoRecordContent = new NetInfoRecordContent();
+                            netInfoRecordContent.setRecordId(netInfoRecord.getId());
+                            netInfoRecordContent.setFullDescription(contentBody.text());
+                            netInfoRecordContentDao.addInfo(netInfoRecordContent);
+                        }
                     }
                 }
             }
@@ -892,7 +974,7 @@ public class Test {
     public void getNetInfoFromZGBD() {
         try {
             Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.DATE, -730); //得到前1天
+            calendar.add(Calendar.DATE, -60); //得到前1天
             Date date = calendar.getTime();
             Map<String, String> needContentType = Maps.newHashMap();
             needContentType.put("房产", "6");
@@ -968,11 +1050,28 @@ public class Test {
                         netInfoRecord.setSourceSiteUrl(itemHref);
                         netInfoRecord.setTitle(zgsfDto.getName());
                         netInfoRecord.setProvince(entry.getKey().substring(entry.getKey().indexOf("_") + 1));
+                        netInfoRecord.setBeginTime(zgsfDto.getStartTime());
+                        netInfoRecord.setEndTime(zgsfDto.getEndTime());
+                        netInfoRecord.setType(entry.getKey().substring(0, entry.getKey().indexOf("_")));
+                        netInfoRecord.setCurrentPrice(getRealMoney(zgsfDto.getNowPrice()));
+                        netInfoRecord.setConsultPrice(getRealMoney(zgsfDto.getAssessPrice()));
+                        netInfoRecord.setInitPrice(getRealMoney(zgsfDto.getStartPrice()));
+                        netInfoRecord.setLiquidRatios(getLiquidRatios(zgsfDto.getNowPrice(), zgsfDto.getAssessPrice()));
                         String content = getContent(zgsfDto.getName(), entry.getKey().substring(0, entry.getKey().indexOf("_")), zgsfDto.getNowPrice(), zgsfDto.getAssessPrice(), zgsfDto.getStartPrice()
                                 , DateUtils.format(zgsfDto.getEndTime(), DateUtils.DATE_CHINESE_PATTERN), DateUtils.format(zgsfDto.getStartTime(), DateUtils.DATE_CHINESE_PATTERN));
                         netInfoRecord.setContent(content);
                         netInfoRecord.setSourceSiteName("中国拍卖行业协会网-标的");
                         netInfoRecordDao.addInfo(netInfoRecord);
+
+                        String contentHref = itemHref.replace("pages/lots/profession.html?lotId=", "wt-web-ws/ws/0.1/lot/");
+                        contentHref = contentHref.replace(String.format("%s%s", "&meetId=", zgsfDto.getMeetId()), "/introduction");
+                        Elements contentBody = getContent(contentHref, "body", "");
+                        if (contentBody.size() != 0 && contentBody != null) {
+                            NetInfoRecordContent netInfoRecordContent = new NetInfoRecordContent();
+                            netInfoRecordContent.setRecordId(netInfoRecord.getId());
+                            netInfoRecordContent.setFullDescription(contentBody.text());
+                            netInfoRecordContentDao.addInfo(netInfoRecordContent);
+                        }
                     }
                 }
             }
@@ -989,7 +1088,7 @@ public class Test {
     public void getNetInfoFromGPW() {
         try {
             Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.DATE, -730); //得到前1天
+            calendar.add(Calendar.DATE, -5); //得到前1天
             Date date = calendar.getTime();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String[] needContentType = new String[]{"房产", "土地", "股权", "无形资产", "林权矿权"};
@@ -1054,22 +1153,47 @@ public class Test {
                             netInfoRecord.setTitle(titleName);
                             netInfoRecord.setSourceSiteUrl(itemHref);
                             String consultPrice = info.get(0).childNodes().get(6).childNodes().get(2).childNodes().get(0).childNodes().get(0).toString();
+                            //单位可能是元或万元
+                            String moneyUnit = info.get(0).childNodes().get(6).childNodes().get(2).childNodes().get(1).toString();
+                            if (moneyUnit.contains("万")) {
+                                NumberFormat format = NumberFormat.getInstance();
+                                BigDecimal bigDecimal = new BigDecimal(format.parse(consultPrice).doubleValue());
+                                consultPrice = bigDecimal.multiply(new BigDecimal("10000")).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+                            }
                             Elements itemContent = getContent(itemHref, ".d-m-infos", "");
                             Elements currentPriceElements = itemContent.get(0).select(".price-red");
                             String currentPrice = currentPriceElements.get(0).childNodes().get(0).toString();
                             Elements tbody_tr = itemContent.get(0).select("tbody td");//consult_price
-                            String initPrice = tbody_tr.get(6).childNodes().get(1).childNodes().get(0).toString();
+                            //起拍价
+                            String initPrice = "";
+                            try {
+                                initPrice = tbody_tr.get(6).childNodes().get(1).childNodes().get(0).toString();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                             netInfoRecord.setProvince(entry.getValue().substring(entry.getValue().indexOf("_") + 1));
                             netInfoRecord.setSourceSiteName("公拍网");
+                            netInfoRecord.setEndTime(endTime);
+                            netInfoRecord.setType(entry.getKey());
+                            netInfoRecord.setCurrentPrice(getRealMoney(currentPrice));
+                            netInfoRecord.setConsultPrice(getRealMoney(consultPrice));
+                            netInfoRecord.setInitPrice(getRealMoney(initPrice));
+                            netInfoRecord.setLiquidRatios(getLiquidRatios(currentPrice, consultPrice));
                             String content = getContent(titleName, entry.getKey(), currentPrice, consultPrice, initPrice
                                     , DateUtils.format(endTime, DateUtils.DATE_CHINESE_PATTERN), "");
                             netInfoRecord.setContent(content);
                             netInfoRecordDao.addInfo(netInfoRecord);
+
+                            Elements contentBody = getContent(itemHref, ".d-article", "");
+                            if (contentBody.size() != 0 && contentBody != null) {
+                                NetInfoRecordContent netInfoRecordContent = new NetInfoRecordContent();
+                                netInfoRecordContent.setRecordId(netInfoRecord.getId());
+                                netInfoRecordContent.setFullDescription(contentBody.get(1).html());
+                                netInfoRecordContentDao.addInfo(netInfoRecordContent);
+                            }
                         } catch (Exception e) {
-
+                            e.printStackTrace();
                         }
-
-
                     }
                 }
 
@@ -1134,6 +1258,7 @@ public class Test {
                         netInfoRecord.setProvince("四川");
                         netInfoRecord.setCity("雅安");
                         netInfoRecord.setSourceSiteName("公共资源交易平台-雅安");
+                        netInfoRecord.setBeginTime(publishtime);
                         StringBuilder content = new StringBuilder();
                         for (int m = 0; m < fieldNames.size(); m++) {
                             content.append(fieldNames.get(m) + "：" + fieldValues.get(m) + "；");
@@ -1153,92 +1278,129 @@ public class Test {
     //公共资源交易平台-成都
     @org.junit.Test
     public void getNetInfoFromGGZYCD() {
+        Integer days = 732;
         try {
             Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.DATE, -730); //得到前1天
+            calendar.add(Calendar.DATE, -days); //得到前1天
             Date date = calendar.getTime();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            String[] needContentType = new String[]{"拍卖公告", "结果公告"};
+            List<String> needTypes = Arrays.asList(needContentType);
 
             String urlInfo = "https://www.cdggzy.com/site/LandTrade/LandList.aspx";
-            Elements elements = getContent(urlInfo, ".row.contentitem", "");
-            for (Element item : elements) {
-
-                Elements publishtimeElement = item.select(".publishtime");
-                String publishtimeStr = publishtimeElement.get(0).childNodes().get(0).toString().substring(1);
-                Date publishtime = sdf.parse(publishtimeStr);
-                if (publishtime == null || publishtime.compareTo(date) < 1) break;
-
-                Elements addressElement = item.select(".col-xs-1");
-                String address = addressElement.get(0).childNodes().get(0).toString();
-                String titleStr = item.select("a").get(0).childNodes().get(0).toString();
-                String link = item.select("a").get(0).attributes().get("href");
-
-                Elements tableElementHrefs = getContent(link, "iframe", "");
-                if (tableElementHrefs.size() <= 0) {
-                    continue;
-                }
-                String s = link.substring(0, link.lastIndexOf("/") + 1);
-
-                String iframeUrl = s + tableElementHrefs.get(0).attributes().get("src");//表格地址
-                Elements tableElements = getContent(iframeUrl, "table", "");
-                Elements tdElements = tableElements.select("tr");
-
-                Integer length = tdElements.get(tdElements.size() - 1).select("td").size();
-                //获取字段名称
-                List<String> fieldNames = Lists.newArrayList();
-                for (int k = 0; k < tdElements.size(); k++) {
-                    Elements select = tdElements.get(k).select("td");
-                    Elements one = tdElements.get(0).select("td");
-                    if (one.size() == 0) {
-                        one = tdElements.get(0).select("th");
-                    }
-                    if (select == null || select.size() == 0) {
-                        select = tdElements.get(k).select("th");
-                    }
-                    Elements tow = tdElements.get(1).select("td");
-                    if (one.size() == tow.size()) {
-                        if (k == 0) {
-                            for (int f = 0; f < length; f++) {
-                                String fieldName = checkNull(select, f);
-                                fieldNames.add(fieldName);
+            //类型
+            Elements typeEelements = getContent(urlInfo, ".optionlist", "");
+            Elements typeDivs = typeEelements.get(0).select("div");
+            for (Element typeDiv : typeDivs) {
+                String typeName = typeDiv.childNodes().get(0).toString().trim();
+                if (needTypes.contains(typeName)) {
+                    String typeValue = typeDiv.attributes().get("data-value");
+                    //取得页数
+                    Elements pageElements = getGGZYCDHtml("#Pager a", "", typeValue);
+                    Integer pageValue = 0;
+                    for (Element pageElement : pageElements) {
+                        if ("尾页".equals(pageElement.childNodes().get(0).toString())) {
+                            String pageHref = pageElement.attributes().get("href");
+                            //包含总页码的字符串
+                            String pageTotalStr = pageHref.substring(pageHref.indexOf(","), pageHref.length() - 1);
+                            String regEx = "[^0-9]";
+                            Pattern p = Pattern.compile(regEx);
+                            Matcher m = p.matcher(pageTotalStr);
+                            String pageValueStr = m.replaceAll("").trim();
+                            if (StringUtils.isNotEmpty(pageValueStr)) {
+                                pageValue = Integer.valueOf(pageValueStr);
                             }
-                            continue;
-                        }
-                    } else {
-                        if (k == 0 || k == 1) {
-                            continue;
                         }
                     }
+                    if (pageValue > 1) {
+                        circ:
+                        for (int i = 1; i <= pageValue; i++) {
+                            //内容信息
+                            Elements elements = getGGZYCDHtml(".row.contentitem", String.valueOf(i), typeValue);
+                            for (Element item : elements) {
+                                Elements publishtimeElement = item.select(".publishtime");
+                                String publishtimeStr = publishtimeElement.get(0).childNodes().get(0).toString().substring(1);
+                                Date publishtime = sdf.parse(publishtimeStr);
+                                if (publishtime == null || publishtime.compareTo(date) < 1) break circ;
 
-                    List<String> fieldValues = Lists.newArrayList();
-                    for (int j = 0; j < length; j++) {
-                        String fieldValue = checkNull(select, j);
-                        fieldValues.add(delHtmlTags(fieldValue));
-                    }
-                    NetInfoRecord netInfoRecord = new NetInfoRecord();
-                    netInfoRecord.setProvince("四川");
-                    netInfoRecord.setCity("成都");
-                    netInfoRecord.setSourceSiteUrl(link);
-                    netInfoRecord.setTitle(titleStr.replaceAll("\n", ""));
-                    netInfoRecord.setSourceSiteName("公共资源交易平台-成都");
-                    StringBuilder content = new StringBuilder();
-                    if (CollectionUtils.isNotEmpty(fieldNames)) {
-                        for (int m = 0; m < fieldNames.size(); m++) {
-                            content.append(fieldNames.get(m) + "：" + fieldValues.get(m) + "；");
-                        }
-                    } else {
-                        for (int m = 0; m < fieldValues.size(); m++) {
-                            content.append(fieldValues.get(m) + "；");
-                        }
-                    }
+                                Elements addressElement = item.select(".col-xs-1");
+                                String address = addressElement.get(0).childNodes().get(0).toString();
+                                String titleStr = item.select("a").get(0).childNodes().get(0).toString();
+                                String link = item.select("a").get(0).attributes().get("href");
 
-                    content.append("发布时间：" + publishtimeStr + "；");
-                    content.append("地址：" + address.replaceAll("\n", "").substring(1, address.length() - 2) + "；");
-                    netInfoRecord.setContent(content.toString());
-                    netInfoRecordDao.addInfo(netInfoRecord);
+                                Elements tableElementHrefs = getContent(link, "iframe", "");
+                                if (tableElementHrefs.size() <= 0) {
+                                    continue;
+                                }
+                                String s = link.substring(0, link.lastIndexOf("/") + 1);
+
+                                String iframeUrl = s + tableElementHrefs.get(0).attributes().get("src");//表格地址
+                                Elements tableElements = getContent(iframeUrl, "table", "");
+                                Elements tdElements = tableElements.select("tr");
+
+                                Integer length = tdElements.get(tdElements.size() - 1).select("td").size();
+                                //获取字段名称
+                                List<String> fieldNames = Lists.newArrayList();
+                                for (int k = 0; k < tdElements.size(); k++) {
+                                    Elements select = tdElements.get(k).select("td");
+                                    Elements one = tdElements.get(0).select("td");
+                                    if (one.size() == 0) {
+                                        one = tdElements.get(0).select("th");
+                                    }
+                                    if (select == null || select.size() == 0) {
+                                        select = tdElements.get(k).select("th");
+                                    }
+                                    Elements tow = tdElements.get(1).select("td");
+                                    if (one.size() == tow.size()) {
+                                        if (k == 0) {
+                                            for (int f = 0; f < length; f++) {
+                                                String fieldName = checkNull(select, f);
+                                                fieldNames.add(fieldName);
+                                            }
+                                            continue;
+                                        }
+                                    } else {
+                                        if (k == 0 || k == 1) {
+                                            continue;
+                                        }
+                                    }
+
+                                    List<String> fieldValues = Lists.newArrayList();
+                                    for (int j = 0; j < length; j++) {
+                                        String fieldValue = checkNull(select, j);
+                                        fieldValues.add(delHtmlTags(fieldValue));
+                                    }
+                                    NetInfoRecord netInfoRecord = new NetInfoRecord();
+                                    netInfoRecord.setProvince("四川");
+                                    netInfoRecord.setCity("成都");
+                                    netInfoRecord.setType(typeName);
+                                    netInfoRecord.setSourceSiteUrl(link);
+                                    netInfoRecord.setBeginTime(publishtime);
+                                    netInfoRecord.setTitle(titleStr.replaceAll("\n", ""));
+                                    netInfoRecord.setSourceSiteName("公共资源交易平台-成都");
+                                    StringBuilder content = new StringBuilder();
+                                    if (CollectionUtils.isNotEmpty(fieldNames)) {
+                                        for (int m = 0; m < fieldNames.size(); m++) {
+                                            content.append(fieldNames.get(m) + "：" + fieldValues.get(m) + "；");
+                                        }
+                                    } else {
+                                        for (int m = 0; m < fieldValues.size(); m++) {
+                                            content.append(fieldValues.get(m) + "；");
+                                        }
+                                    }
+
+                                    content.append("发布时间：" + publishtimeStr + "；");
+                                    content.append("地址：" + address.replaceAll("\n", "").substring(1, address.length() - 2) + "；");
+                                    netInfoRecord.setContent(content.toString());
+                                    netInfoRecordDao.addInfo(netInfoRecord);
+                                }
+
+                            }
+                        }
+                    }
                 }
-
             }
+
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -1246,6 +1408,258 @@ public class Test {
 
     }
 
+
+    public Elements getGGZYCDHtml(String element, String pageValue, String typeValue) {
+        try {
+            // 1. 获取访问地址URL
+            URL url = new URL("https://www.cdggzy.com/site/LandTrade/LandList.aspx");
+            // 2. 创建HttpURLConnection对象
+            HttpURLConnection connection = (HttpURLConnection) url
+                    .openConnection();
+            /* 3. 设置请求参数等 */
+            // 请求方式
+            connection.setRequestMethod("POST");
+            // 超时时间
+            //connection.setConnectTimeout(3000);
+            // 设置是否输出
+            connection.setDoOutput(true);
+            // 设置是否读入
+            connection.setDoInput(true);
+            // 设置是否使用缓存
+            connection.setUseCaches(false);
+            // 设置此 HttpURLConnection 实例是否应该自动执行 HTTP 重定向
+            connection.setInstanceFollowRedirects(true);
+            // 设置使用标准编码格式编码参数的名-值对
+            connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+            connection.setRequestProperty("Host", "www.cdggzy.com");
+            connection.setRequestProperty("Origin", "https://www.cdggzy.com");
+            connection.setRequestProperty("Referer", "https://www.cdggzy.com/site/LandTrade/LandList.aspx");
+            connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.132 Safari/537.36");
+            // 连接
+            connection.connect();
+            /* 4. 处理输入输出 */
+            // 写入参数到请求中
+            if (StringUtils.isEmpty(pageValue))
+                pageValue = "1";
+            if (StringUtils.isEmpty(typeValue))
+                typeValue = "";
+            String params = "ctl00%24ScriptManager1=ctl00%24ContentPlaceHolder1%24UpdatePanel1%7Cctl00%24ContentPlaceHolder1%24Pager&__EVENTTARGET=ctl00%24ContentPlaceHolder1%24Pager&__EVENTARGUMENT=" + pageValue + "&__VIEWSTATE=%2FwEPDwUKMTU3NDc4MTQ1Nw9kFgJmD2QWAgIDD2QWBAIDD2QWAgIHDxYCHgRUZXh0BY8xPHVsIGNsYXNzPSduYXYgbmF2LXBpbGxzIG5hdi1qdXN0aWZpZWQnPjxsaT48YSBocmVmPScvaW5kZXguYXNweCc%2B6aaW6aG1PC9hPjxzcGFuPjwvc3Bhbj48L2xpPjxsaSAgY2xhc3M9InVsX21lbnUiPjxhICBoZXJmPScjJz7mlL%2FliqHlhazlvIA8L2E%2BPHRhYmxlPiA8dHI%2BPHRkPjxkaXY%2B5Lit5b%2BD5qaC5Ya1PC9kaXY%2BPC90ZD48dGQgICBjbGFzcz0ibWV1bi1pdGVuLWJvZHkiPjxkaXY%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL0dlbmVyYWwvSW5kZXguYXNweD9jaWQ9MDAwMTAwMDEwMDAxMDAwNCIgdGFyZ2V0PSJfYmxhbmsiPuS4reW%2Fg%2BeugOS7izwvYT48L2Rpdj48ZGl2PjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vc2l0ZS9HZW5lcmFsL0luZGV4LmFzcHg%2FY2lkPTAwMDEwMDAxMDAwMTAwMDIiIHRhcmdldD0iX2JsYW5rIj7pooblr7zliIblt6U8L2E%2BPC9kaXY%2BPGRpdj48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvR2VuZXJhbC9JbmRleC5hc3B4P2NpZD0wMDAxMDAwMTAwMDEwMDAzIiB0YXJnZXQ9Il9ibGFuayI%2B6IGU57O75pa55byPPC9hPjwvZGl2PjxkaXY%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL0dlbmVyYWwvSW5kZXguYXNweD9jaWQ9MDAwMTAwMDEwMDAxMDAwMSIgdGFyZ2V0PSJfYmxhbmsiPumDqOmXqOiuvue9rjwvYT48L2Rpdj48L3RkPjwvdHI%2BIDx0cj48dGQ%2BPGRpdj7mlrDpl7vliqjmgIE8L2Rpdj48L3RkPjx0ZCAgIGNsYXNzPSJtZXVuLWl0ZW4tYm9keSI%2BPGRpdj48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvT3BlbkdvdmVybm1lbnQvTGlzdC5hc3B4P2NpZD0wMDAxMDAwMTAwMDIwMDAxIiB0YXJnZXQ9Il9ibGFuayI%2B5bel5L2c5Yqo5oCBPC9hPjwvZGl2PjxkaXY%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL09wZW5Hb3Zlcm5tZW50L0xpc3QuYXNweD9jaWQ9MDAwMTAwMDEwMDAyMDAwMyIgdGFyZ2V0PSJfYmxhbmsiPuS%2FoeeUqOS%2FoeaBrzwvYT48L2Rpdj48L3RkPjwvdHI%2BIDx0cj48dGQ%2BPGRpdj7mlL%2FliqHlhazlvIA8L2Rpdj48L3RkPjx0ZCAgIGNsYXNzPSJtZXVuLWl0ZW4tYm9keSI%2BPGRpdj48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvT3BlbkdvdmVybm1lbnQvTGlzdC5hc3B4P2NpZD0wMDAxMDAwMTAwMDMwMDAxIiB0YXJnZXQ9Il9ibGFuayI%2B5YWs5byA5L%2Bd6ZqcPC9hPjwvZGl2PjxkaXY%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL09wZW5Hb3Zlcm5tZW50L0xpc3QuYXNweD9jaWQ9MDAwMTAwMDEwMDAzMDAwMiIgdGFyZ2V0PSJfYmxhbmsiPuiuoeWIkuaAu%2Be7kzwvYT48L2Rpdj48ZGl2PjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vc2l0ZS9PcGVuR292ZXJubWVudC9MaXN0LmFzcHg%2FY2lkPTAwMDEwMDAxMDAwMzAwMDMiIHRhcmdldD0iX2JsYW5rIj7kurrkuovkv6Hmga88L2E%2BPC9kaXY%2BPGRpdj48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvT3BlbkdvdmVybm1lbnQvTGlzdC5hc3B4P2NpZD0wMDAxMDAwMTAwMDMwMDA0IiB0YXJnZXQ9Il9ibGFuayI%2B6LSi5pS%2F6LWE6YeRPC9hPjwvZGl2PjxkaXY%2BPGEgaHJlZj0iaHR0cDovL2drLmNoZW5nZHUuZ292LmNuL29wZW5BcHBseS9pbmRleC5hY3Rpb24%2FY2lkPTAwMDEwMDAxMDAwMzAwMDUiIHRhcmdldD0iX2JsYW5rIj7kvp3nlLPor7flhazlvIA8L2E%2BPC9kaXY%2BPGRpdj48YSBocmVmPSJodHRwOi8vZ2suY2hlbmdkdS5nb3YuY24vb3BlblN1Z2dlc3Rpb25Cb3gvaW5kZXguYWN0aW9uP2NpZD0wMDAxMDAwMTAwMDMwMDA2IiB0YXJnZXQ9Il9ibGFuayI%2B5YWs5byA5oSP6KeB566xPC9hPjwvZGl2PjxkaXY%2BPGEgaHJlZj0iaHR0cDovL2drLmNoZW5nZHUuZ292LmNuL2dvdkluZm9QdWIvZGVwdC5hY3Rpb24%2FY2xhc3NJZD0wNzAzNjYiIHRhcmdldD0iX2JsYW5rIj7kv6Hmga%2FlhazlvIDmjIfljZc8L2E%2BPC9kaXY%2BPGRpdj48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvUGx1cy9BY2NlcHREYXRhLmFzcHg%2FY2lkPTAwMDEwMDAxMDAwMzAwMDkiIHRhcmdldD0iX2JsYW5rIj7lip7kuovnu5%2ForqE8L2E%2BPC9kaXY%2BPGRpdj48YSBocmVmPSJodHRwOi8vd3d3LmNoZW5nZHUuZ292LmNuL2NoZW5nZHUvY2RtZG0veG1kbV9pbmRleC5zaHRtbD9jaWQ9MDAwMTAwMDEwMDAzMDAwOCIgdGFyZ2V0PSJfYmxhbmsiPuWFmumjjuaUv%2BmjjueDree6vzwvYT48L2Rpdj48L3RkPjwvdHI%2BPC90YWJsZT48L2xpPjxsaSAgY2xhc3M9InVsX21lbnUiPjxhICBoZXJmPScjJz7kuJrliqHlip7nkIY8L2E%2BPHRhYmxlPiA8dHI%2BPHRkPjxkaXY%2B5Y%2BX55CG5Lia5YqhPC9kaXY%2BPC90ZD48dGQgICBjbGFzcz0ibWV1bi1pdGVuLWJvZHkiPjxkaXY%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9jZW50ZXIvaW5kZXguYXNweD9jaWQ9MDAwMjAwMDEwMDIwMDAxIiB0YXJnZXQ9Il9ibGFuayI%2B6aG555uu55m76K6wPC9hPjwvZGl2PjxkaXY%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL1NpdGVTZWFyY2gvbmV3aW5kZXguYXNweD9jaWQ9MDAwMjAwMDEwMDIwMDAyIiB0YXJnZXQ9Il9ibGFuayI%2B5Zy65Zyw5p%2Bl6K%2BiPC9hPjwvZGl2PjwvdGQ%2BPC90cj4gPHRyPjx0ZD48ZGl2PuS6pOaYk%2BS%2FoeaBrzwvZGl2PjwvdGQ%2BPHRkICAgY2xhc3M9Im1ldW4taXRlbi1ib2R5Ij48ZGl2PjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vc2l0ZS9KU0dDL0xpc3QuYXNweCIgdGFyZ2V0PSJfYmxhbmsiPuW3peeoi%2BW7uuiuvjwvYT48L2Rpdj48ZGl2PjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vc2l0ZS9Ob3RpY2UvWkZDRy9Ob3RpY2VWZXJzaW9uT25lTGlzdC5hc3B4IiB0YXJnZXQ9Il9ibGFuayI%2B5pS%2F5bqc6YeH6LStPC9hPjwvZGl2PjxkaXY%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL0xhbmRUcmFkZS9MYW5kTGlzdC5hc3B4IiB0YXJnZXQ9Il9ibGFuayI%2B5Zyf5Zyw55%2B%2F5p2DPC9hPjwvZGl2PjxkaXY%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL0Fzc2V0UmVzb3VyY2UvRGVhbE5vdGljZUxpc3QuYXNweCIgdGFyZ2V0PSJfYmxhbmsiPui1hOS6p%2Bi1hOa6kDwvYT48L2Rpdj48L3RkPjwvdHI%2BIDx0cj48dGQ%2BPGRpdj7mm7TlpJrkuJrliqE8L2Rpdj48L3RkPjx0ZCAgIGNsYXNzPSJtZXVuLWl0ZW4tYm9keSI%2BPGRpdj48YSBocmVmPSJodHRwOi8vd3d3LmNkZ2d6eS5jb20vbWFsbC9JbmRleC5hc3B4P2NpZD0wMDAyMDAwMTAwMzAwMDEiIHRhcmdldD0iX2JsYW5rIj7mlL%2Flupzph4fotK3nlLXlrZDllYbln448L2E%2BPC9kaXY%2BPGRpdj48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL0xvZ2luLmFzcHg%2FY2lkPTAwMDIwMDAxMDAzMDAwMiIgdGFyZ2V0PSJfYmxhbmsiPui1hOS6p%2Bi1hOa6kOe9keS4iuernuS7tzwvYT48L2Rpdj48ZGl2PjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vc2l0ZS9CYW5rQm9ycm93L0luZGV4LmFzcHg%2FY2lkPTAwMDIwMDAxMDAzMDAwNCIgdGFyZ2V0PSJfYmxhbmsiPuaUv%2BmHh%2BS%2FoeeUqOaLheS%2Fneiejei1hDwvYT48L2Rpdj48L3RkPjwvdHI%2BIDx0cj48dGQ%2BPGRpdj7mnI3liqHmjIflvJU8L2Rpdj48L3RkPjx0ZCAgIGNsYXNzPSJtZXVuLWl0ZW4tYm9keSI%2BPGRpdj48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvUGx1cy9Ob3RpY2VMaXN0LmFzcHg%2FY2lkPTAwMDIwMDAxMDA0MDAwMSIgdGFyZ2V0PSJfYmxhbmsiPumAmuefpeWFrOWRijwvYT48L2Rpdj48ZGl2PjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vc2l0ZS9JbnN0cnVjdGlvbi9JbmRleC5hc3B4P2NpZD0wMDAyMDAwMTAwNDAwMDIiIHRhcmdldD0iX2JsYW5rIj7lip7kuovmjIfljZc8L2E%2BPC9kaXY%2BPGRpdj48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvUG9saWNpZXNhbmRyZWd1bGF0aW9ucy9JbmRleC5hc3B4P2NpZD0wMDAyMDAwMTAwNDAwMDMiIHRhcmdldD0iX2JsYW5rIj7mlL%2FnrZbms5Xop4Q8L2E%2BPC9kaXY%2BPGRpdj48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvQ2FvenVvL2luZGV4LmFzcHg%2FY2lkPTAwMDIwMDAxMDA0MDAwNCIgdGFyZ2V0PSJfYmxhbmsiPuaTjeS9nOaJi%2BWGjDwvYT48L2Rpdj48ZGl2PjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vc2l0ZS9Eb3duQ2VudGVyLmFzcHg%2FY2lkPTAwMDIwMDAxMDA0MDAwNSIgdGFyZ2V0PSJfYmxhbmsiPuS4i%2Bi9veS4k%2BWMujwvYT48L2Rpdj48L3RkPjwvdHI%2BPC90YWJsZT48L2xpPjxsaSBjbGFzcz0idWxfbWVudSI%2BPGEgdGFyZ2V0PSJfYmxhbmsiPuS6kuWKqOS6pOa1gTwvYT48dWw%2BIDxsaT48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvSW50ZXJhY3Rpb24vSW50ZXJhY3Rpb25MaXN0TmV3MS5hc3B4IiB0YXJnZXQ9Il9ibGFuayI%2B5Li75Lu75L%2Bh566xPC9hPjwvbGk%2BIDxsaT48YSBocmVmPSJodHRwOi8vMjAxMy5jZGdnenkuY29tL2FwcDEvdHdvL3dqZGMuanNwP2NpZD0wMDAxMDAwMjAwMDIiIHRhcmdldD0iX2JsYW5rIj7osIPmn6XlvoHpm4Y8L2E%2BPC9saT4gPGxpPjxhIGhyZWY9Imh0dHA6Ly93ZWliby5jb20vdS8zOTczMzM4ODM2IyEvdS8zOTczMzM4ODM2P2lzX2hvdD0xP2NpZD0wMDAxMDAwMjAwMDMiIHRhcmdldD0iX2JsYW5rIj7mlrDmtarlvq7ljZo8L2E%2BPC9saT48L3VsPjwvbGk%2BPGxpIGNsYXNzPSJ1bF9tZW51Ij48YSB0YXJnZXQ9Il9ibGFuayI%2B5YiG5Lit5b%2BDPC9hPjx1bD4gPGxpPjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vbG9uZ3F1YW55aT9jaWQ9MDAwMTAwMDMwMDAzIiB0YXJnZXQ9Il9ibGFuayI%2B6b6Z5rOJ6am%2F5Yy6PC9hPjwvbGk%2BIDxsaT48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3FpbmdiYWlqaWFuZz9jaWQ9MDAwMTAwMDMwMDAzIiB0YXJnZXQ9Il9ibGFuayI%2B6Z2S55m95rGf5Yy6PC9hPjwvbGk%2BIDxsaT48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3hpbmR1P2NpZD0wMDAxMDAwMzAwMDMiIHRhcmdldD0iX2JsYW5rIj7mlrDpg73ljLo8L2E%2BPC9saT4gPGxpPjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vd2Vuamlhbmc%2FY2lkPTAwMDEwMDAzMDAwMyIgdGFyZ2V0PSJfYmxhbmsiPua4qeaxn%2BWMujwvYT48L2xpPiA8bGk%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaHVhbmdsaXU%2FY2lkPTAwMDEwMDAzMDAwMyIgdGFyZ2V0PSJfYmxhbmsiPuWPjOa1geWMujwvYT48L2xpPiA8bGk%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9waWR1P2NpZD0wMDAxMDAwMzAwMDMiIHRhcmdldD0iX2JsYW5rIj7pg6vpg73ljLo8L2E%2BPC9saT4gPGxpPjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vamlhbnlhbmc%2FY2lkPTAwMDEwMDAzMDAwMyIgdGFyZ2V0PSJfYmxhbmsiPueugOmYs%2BW4gjwvYT48L2xpPiA8bGk%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9kdWppYW5neWFuP2NpZD0wMDAxMDAwMzAwMDMiIHRhcmdldD0iX2JsYW5rIj7pg73msZ%2FloLDluII8L2E%2BPC9saT4gPGxpPjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vcGVuZ3pob3U%2FY2lkPTAwMDEwMDAzMDAwMyIgdGFyZ2V0PSJfYmxhbmsiPuW9reW3nuW4gjwvYT48L2xpPiA8bGk%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9xaW9uZ2xhaT9jaWQ9MDAwMTAwMDMwMDAzIiB0YXJnZXQ9Il9ibGFuayI%2B6YKb5bSD5biCPC9hPjwvbGk%2BIDxsaT48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL2Nob25nemhvdT9jaWQ9MDAwMTAwMDMwMDAzIiB0YXJnZXQ9Il9ibGFuayI%2B5bSH5bee5biCPC9hPjwvbGk%2BIDxsaT48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL2ppbmd0YW5nP2NpZD0wMDAxMDAwMzAwMDMiIHRhcmdldD0iX2JsYW5rIj7ph5HloILljr88L2E%2BPC9saT4gPGxpPjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20veGluamluP2NpZD0wMDAxMDAwMzAwMDMiIHRhcmdldD0iX2JsYW5rIj7mlrDmtKXljr88L2E%2BPC9saT4gPGxpPjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vZGF5aT9jaWQ9MDAwMTAwMDMwMDAzIiB0YXJnZXQ9Il9ibGFuayI%2B5aSn6YKR5Y6%2FPC9hPjwvbGk%2BIDxsaT48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3B1amlhbmc%2FY2lkPTAwMDEwMDAzMDAwMyIgdGFyZ2V0PSJfYmxhbmsiPuiSsuaxn%2BWOvzwvYT48L2xpPjwvdWw%2BPC9saT4gPC91bD5kAgcPZBYGAgEPFgIfAAWKAemhtemdouWKoOi9veaAu%2BaXtumXtO%2B8mjkz5q%2Br56eSPGJyLz7mn6Xor6LliJfooajmgLvml7bpl7TvvJo2Muavq%2Benkjxici8%2B5p%2Bl6K%2Bi5p2h5Lu25oC75pe26Ze077yaMzHmr6vnp5I8YnIvPuacrOacuklQ77yaMTc4LjE4LjEuNzY8YnIvPmQCCw8WAh4LXyFJdGVtQ291bnQCEBYgZg9kFgJmDxUCBjUxMDEwMQnluILmnKznuqdkAgEPZBYCZg8VAgY1MTAxMTIM6b6Z5rOJ6am%2F5Yy6ZAICD2QWAmYPFQIGNTEwMTEzDOmdkueZveaxn%2BWMumQCAw9kFgJmDxUCBjUxMDExNAnmlrDpg73ljLpkAgQPZBYCZg8VAgY1MTAxMTUJ5rip5rGf5Yy6ZAIFD2QWAmYPFQIGNTEwMTE2CeWPjOa1geWMumQCBg9kFgJmDxUCBjUxMDE4NQnnroDpmLPluIJkAgcPZBYCZg8VAgY1MTAxODEM6YO95rGf5aCw5biCZAIID2QWAmYPFQIGNTEwMTgyCeW9reW3nuW4gmQCCQ9kFgJmDxUCBjUxMDE4MwnpgpvltIPluIJkAgoPZBYCZg8VAgY1MTAxODQJ5bSH5bee5biCZAILD2QWAmYPFQIGNTEwMTI0CemDq%2BmDveWMumQCDA9kFgJmDxUCBjUxMDEyMQnph5HloILljr9kAg0PZBYCZg8VAgY1MTAxMzIJ5paw5rSl5Y6%2FZAIOD2QWAmYPFQIGNTEwMTI5CeWkp%2BmCkeWOv2QCDw9kFgJmDxUCBjUxMDEzMQnokrLmsZ%2Fljr9kAhEPZBYCZg9kFgYCAw8PFgIfAAUFMS8xOTlkZAIJDxYCHwECChYUZg9kFgZmDxUBCeW4guacrOe6p2QCAQ8PFgIeC05hdmlnYXRlVXJsBWBodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvTGFuZFRyYWRlL0xhbmROb3RpY2VDb250ZW50LmFzcHg%2FaWQ9MzE2ZWM3NWJiZTEyNDNkZTg4NjkwNjgyOTFjZTYwOGNkFgJmDxUBMeaLjeWNluS8muaIkOS6pOe7k%2BaenOS4gOiniOihqCgyMDE55bm0MDjmnIgyOeaXpSlkAgIPFQIKMjAxOS0wOC0yOSk8ZGl2IGNsYXNzPSIgZW50ZXJpbmciPiZuYnNwOyZuYnNwOzwvZGl2PmQCAQ9kFgZmDxUBDOmdkueZveaxn%2BWMumQCAQ8PFgIfAgVgaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL0xhbmRUcmFkZS9MYW5kTm90aWNlQ29udGVudC5hc3B4P2lkPUEzOThCRkIzNUE5MTRDNkM5QjZDNUQwNzNDRURCRjEzZBYCZg8VAT%2FmjILniYzkvJrnu5PmnpzkuIDop4jooagoMjAxOeW5tDA45pyIMTXml6XliLAyMDE55bm0MDjmnIgyOeaXpSlkAgIPFQIKMjAxOS0wOC0yOSk8ZGl2IGNsYXNzPSIgZW50ZXJpbmciPiZuYnNwOyZuYnNwOzwvZGl2PmQCAg9kFgZmDxUBCemDq%2BmDveWMumQCAQ8PFgIfAgVgaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL0xhbmRUcmFkZS9MYW5kTm90aWNlQ29udGVudC5hc3B4P2lkPUQxMDBCMkYxRDJFQjQ3QUJCRTdFNTRCMjYwNUFBNDIxZBYCZg8VAV7pg6vpg73ljLrmjILniYzlh7rorqnlm73mnInlu7rorr7nlKjlnLDkvb%2FnlKjmnYPlhazlkYoo6YOr6YO95oiQ5YWs6LWE5Zyf572R5oyC5ZGKKDIwMTkpMDXlj7cpZAICDxUCCjIwMTktMDgtMjkiPGRpdiBjbGFzcz0iICAiPuWNs%2BWwhuaKpeWQjTwvZGl2PmQCAw9kFgZmDxUBCeW4guacrOe6p2QCAQ8PFgIfAgVgaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL0xhbmRUcmFkZS9MYW5kTm90aWNlQ29udGVudC5hc3B4P2lkPTU4NjhhODU1MzA4NDRkNDlhMWVkZWEzZjkyMGI1NmI2ZBYCZg8VAT%2FmjILniYzkvJrnu5PmnpzkuIDop4jooagoMjAxOeW5tDA45pyIMTTml6XliLAyMDE55bm0MDjmnIgyOOaXpSlkAgIPFQIKMjAxOS0wOC0yOCk8ZGl2IGNsYXNzPSIgZW50ZXJpbmciPiZuYnNwOyZuYnNwOzwvZGl2PmQCBA9kFgZmDxUBCeW4guacrOe6p2QCAQ8PFgIfAgVgaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL0xhbmRUcmFkZS9MYW5kTm90aWNlQ29udGVudC5hc3B4P2lkPTgxOTRlMTY1M2Q5NzRjODk5MjExYmFkMTcyZGFiY2JiZBYCZg8VAT%2FmjILniYzkvJrnu5PmnpzkuIDop4jooagoMjAxOeW5tDA45pyIMTTml6XliLAyMDE55bm0MDjmnIgyOOaXpSlkAgIPFQIKMjAxOS0wOC0yOCk8ZGl2IGNsYXNzPSIgZW50ZXJpbmciPiZuYnNwOyZuYnNwOzwvZGl2PmQCBQ9kFgZmDxUBCeW4guacrOe6p2QCAQ8PFgIfAgVgaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL0xhbmRUcmFkZS9MYW5kTm90aWNlQ29udGVudC5hc3B4P2lkPTA2MTIxOTRiODM4ODRmNmY5Y2ViZDcyZjQ1OTkzZWFjZBYCZg8VATHmi43ljZbkvJrmiJDkuqTnu5PmnpzkuIDop4jooagoMjAxOeW5tDA45pyIMjjml6UpZAICDxUCCjIwMTktMDgtMjgpPGRpdiBjbGFzcz0iIGVudGVyaW5nIj4mbmJzcDsmbmJzcDs8L2Rpdj5kAgYPZBYGZg8VAQzpnZLnmb3msZ%2FljLpkAgEPDxYCHwIFYGh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vc2l0ZS9MYW5kVHJhZGUvTGFuZE5vdGljZUNvbnRlbnQuYXNweD9pZD03MjJGNUY1ODU4OUU0QkJEQkYwNDhDM0U5REI4RTU1MmQWAmYPFQFq5oiQ6YO95biC6Z2S55m95rGf5Yy65oyC54mM5Ye66K6p5Zu95pyJ5bu66K6%2B55So5Zyw5L2%2F55So5p2D5YWs5ZGKKOmdkueZveaIkOWFrOi1hOWcn%2Be9keaMguWRiigyMDE5KTA55Y%2B3KWQCAg8VAgoyMDE5LTA4LTI4IjxkaXYgY2xhc3M9IiAgIj7ljbPlsIbmiqXlkI08L2Rpdj5kAgcPZBYGZg8VAQnltIflt57luIJkAgEPDxYCHwIFYGh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vc2l0ZS9MYW5kVHJhZGUvTGFuZE5vdGljZUNvbnRlbnQuYXNweD9pZD0yQTAzNjVEM0JBNEY0QThCQTlBQ0MxNzBGRTk2NkM2MmQWAmYPFQFb5oyC54mM5Ye66K6p5Zu95pyJ5bu66K6%2B55So5Zyw5L2%2F55So5p2D5pu05q2j5YWs5ZGKKOW0h%2BW3nuaIkOWFrOi1hOWcn%2Be9keaMguWRiigyMDE5KTAz5Y%2B3KWQCAg8VAgoyMDE5LTA4LTI2KTxkaXYgY2xhc3M9IiBlbnRlcmluZyI%2BJm5ic3A7Jm5ic3A7PC9kaXY%2BZAIID2QWBmYPFQEJ6JKy5rGf5Y6%2FZAIBDw8WAh8CBWBodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvTGFuZFRyYWRlL0xhbmROb3RpY2VDb250ZW50LmFzcHg%2FaWQ9ODNGNjVEN0ZCMjc3NDkwRUFCRkEwNTkzMTA2ODZCODlkFgJmDxUBP%2BaMgueJjOS8mue7k%2BaenOS4gOiniOihqCgyMDE55bm0MDjmnIgxMuaXpeWIsDIwMTnlubQwOOaciDI25pelKWQCAg8VAgoyMDE5LTA4LTI2KTxkaXYgY2xhc3M9IiBlbnRlcmluZyI%2BJm5ic3A7Jm5ic3A7PC9kaXY%2BZAIJD2QWBmYPFQEJ6YKb5bSD5biCZAIBDw8WAh8CBWBodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvTGFuZFRyYWRlL0xhbmROb3RpY2VDb250ZW50LmFzcHg%2FaWQ9RkVCMDRBNkU5Nzg2NEI1ODhCNjlERUUyRDREQkMwMTBkFgJmDxUBP%2BaMgueJjOS8mue7k%2BaenOS4gOiniOihqCgyMDE55bm0MDjmnIgxMuaXpeWIsDIwMTnlubQwOOaciDI25pelKWQCAg8VAgoyMDE5LTA4LTI2KTxkaXYgY2xhc3M9IiBlbnRlcmluZyI%2BJm5ic3A7Jm5ic3A7PC9kaXY%2BZAILDw8WBB4IUGFnZVNpemUCCh4LUmVjb3JkY291bnQCxA9kZGTv1CBLQbXMRSGjAJECk9TSeNfqzg%3D%3D&__VIEWSTATEGENERATOR=87A20B68&__EVENTVALIDATION=%2FwEdAAhZEJ%2BEThIyeDEYVfC4x1M%2BZi7H72kkAvPqROrOG28FXID8g%2FxeCzDZJOPgpGV4zViznYSIw3B963y%2FxzaOhgoHdty0mXvz7f%2B9YtBAL8kV3WV246YQ%2BCegotD9lFFwpmUKfH5ngHtxPmfpcq0XKJP7jDu35o5CUn6umW4JNpE1pw6EfP%2FV%2BB%2F5nifQQj5cjCIHDeZu&ctl00%24ContentPlaceHolder1%24displaytypeval=" + typeValue + "&ctl00%24ContentPlaceHolder1%24displaystateval=0&ctl00%24ContentPlaceHolder1%24dealaddressval=0&ctl00%24ContentPlaceHolder1%24keyword=&__ASYNCPOST=true&";
+
+            OutputStream out = connection.getOutputStream();
+            out.write(params.getBytes());
+            out.flush();
+            out.close();
+            // 从连接中读取响应信息
+            StringBuilder sb = new StringBuilder();
+            int code = connection.getResponseCode();
+            if (code == 200) {
+                BufferedReader reader = new BufferedReader(
+                        new InputStreamReader(connection.getInputStream()));
+                String line;
+
+                while ((line = reader.readLine()) != null) {
+                    sb.append(line);
+                    ;
+                }
+                reader.close();
+            }
+            // 5. 断开连接
+            connection.disconnect();
+
+            // 处理结果
+            org.jsoup.nodes.Document doc = Jsoup.parse(sb.toString());
+            Elements elements = doc.select(element);
+            return elements;
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    //公共资源交易平台-成都（资产资源）
+    @org.junit.Test
+    public void getNetInfoFromGGZYCD2() {
+        Integer days = 732;
+        try {
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.DATE, -days); //得到前1天
+            Date date = calendar.getTime();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            String[] needContentType = new String[]{"结果公告"};
+            List<String> needTypes = Arrays.asList(needContentType);
+
+            String urlInfo = "https://www.cdggzy.com/site/AssetResource/DealNoticeList.aspx";
+            //类型
+            Elements typeEelements = getContent(urlInfo, ".optionlist", "");
+            Elements typeDivs = typeEelements.get(0).select("div");
+            for (Element typeDiv : typeDivs) {
+                String typeName = typeDiv.childNodes().get(0).toString().trim();
+                if (needTypes.contains(typeName)) {
+                    String typeValue = typeDiv.attributes().get("data-value");
+                    //取得页数
+                    Elements pageElements = getGGZYCDHtml2("#Pager a", "", typeValue);
+                    Integer pageValue = 0;
+                    for (Element pageElement : pageElements) {
+                        if ("尾页".equals(pageElement.childNodes().get(0).toString())) {
+                            String pageHref = pageElement.attributes().get("href");
+                            //包含总页码的字符串
+                            String pageTotalStr = pageHref.substring(pageHref.indexOf(","), pageHref.length() - 1);
+                            String regEx = "[^0-9]";
+                            Pattern p = Pattern.compile(regEx);
+                            Matcher m = p.matcher(pageTotalStr);
+                            String pageValueStr = m.replaceAll("").trim();
+                            if (StringUtils.isNotEmpty(pageValueStr)) {
+                                pageValue = Integer.valueOf(pageValueStr);
+                            }
+                        }
+                    }
+                    if (pageValue > 1) {
+                        circ:
+                        for (int i = 1; i <= pageValue; i++) {
+                            //内容信息
+                            Elements elements = getGGZYCDHtml2(".row.contentitem", String.valueOf(i), typeValue);
+                            for (Element item : elements) {
+
+                                Elements publishtimeElement = item.select(".publishtime");
+                                String publishtimeStr = publishtimeElement.get(0).childNodes().get(0).toString().substring(1);
+                                Date publishtime = sdf.parse(publishtimeStr);
+                                if (publishtime == null || publishtime.compareTo(date) < 1) break circ;
+
+                                Elements addressElement = item.select(".col-xs-1");
+                                String address = addressElement.get(0).childNodes().get(0).toString();
+                                String titleStr = item.select("a").get(0).childNodes().get(0).toString();
+                                String link = item.select("a").get(0).attributes().get("href");
+
+                                Elements tableElementHrefs = getContent(link, ".noticecontent", "");
+                                if (tableElementHrefs.size() <= 0) {
+                                    continue;
+                                }
+                                //String s = link.substring(0, link.lastIndexOf("/") + 1);
+
+                                //String iframeUrl = s + tableElementHrefs.get(0).attributes().get("src");//表格地址
+                                //Elements tableElements = getContent(link, ".noticecontent", "");
+                                Elements tableElements = tableElementHrefs.select("table");
+                                if (tableElements == null || tableElements.size() == 0) continue;
+                                Elements tdElements = null;
+                                if (tableElements.size() > 1) {
+                                    tdElements = tableElements.get(1).select("tr");
+                                } else {
+                                    tdElements = tableElements.get(0).select("tr");
+                                }
+                                Integer length = tdElements.get(0).select("th").size() != 0 ? tdElements.get(0).select("th").size() : tdElements.get(0).select("tb").size();
+                                //获取字段名称
+                                for (int k = 0; k < tdElements.size(); k++) {
+                                    Elements select = tdElements.get(k).select("td");
+                                    if (select.size() == 0) continue;
+                                    List<String> fieldValues = Lists.newArrayList();
+                                    for (int j = 0; j < length; j++) {
+                                        try {
+                                            String fieldValue = checkNull(select, j);
+                                            fieldValues.add(delHtmlTags(fieldValue));
+                                        } catch (Exception e) {
+                                        }
+                                    }
+                                    NetInfoRecord netInfoRecord = new NetInfoRecord();
+                                    netInfoRecord.setProvince("四川");
+                                    netInfoRecord.setCity("成都");
+                                    netInfoRecord.setType(typeName);
+                                    netInfoRecord.setSourceSiteUrl(link);
+                                    netInfoRecord.setBeginTime(publishtime);
+                                    netInfoRecord.setTitle(titleStr.replaceAll("\n", ""));
+                                    netInfoRecord.setSourceSiteName("公共资源交易平台-成都");
+                                    StringBuilder content = new StringBuilder();
+                                    for (int m = 0; m < fieldValues.size(); m++) {
+                                        content.append(fieldValues.get(m) + "；");
+                                    }
+
+                                    content.append("发布时间：" + publishtimeStr + "；");
+                                    content.append("地址：" + address.replaceAll("\n", "").substring(1, address.length() - 2) + "；");
+                                    netInfoRecord.setContent(content.toString());
+                                    netInfoRecordDao.addInfo(netInfoRecord);
+                                }
+
+                            }
+                        }
+                    }
+                }
+            }
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public Elements getGGZYCDHtml2(String element, String pageValue, String typeValue) {
+        try {
+            // 1. 获取访问地址URL
+            URL url = new URL("https://www.cdggzy.com/site/AssetResource/DealNoticeList.aspx");
+            // 2. 创建HttpURLConnection对象
+            HttpURLConnection connection = (HttpURLConnection) url
+                    .openConnection();
+            /* 3. 设置请求参数等 */
+            // 请求方式
+            connection.setRequestMethod("POST");
+            // 超时时间
+            //connection.setConnectTimeout(3000);
+            // 设置是否输出
+            connection.setDoOutput(true);
+            // 设置是否读入
+            connection.setDoInput(true);
+            // 设置是否使用缓存
+            connection.setUseCaches(false);
+            // 设置此 HttpURLConnection 实例是否应该自动执行 HTTP 重定向
+            connection.setInstanceFollowRedirects(true);
+            // 设置使用标准编码格式编码参数的名-值对
+            connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+            connection.setRequestProperty("Host", "www.cdggzy.com");
+            connection.setRequestProperty("Origin", "https://www.cdggzy.com");
+            connection.setRequestProperty("Referer", "https://www.cdggzy.com/site/LandTrade/LandList.aspx");
+            connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.132 Safari/537.36");
+            // 连接
+            connection.connect();
+            /* 4. 处理输入输出 */
+            // 写入参数到请求中
+            if (StringUtils.isEmpty(pageValue))
+                pageValue = "1";
+            if (StringUtils.isEmpty(typeValue))
+                typeValue = "";
+            String params = "ctl00%24ScriptManager1=ctl00%24ContentPlaceHolder1%24UpdatePanel1%7Cctl00%24ContentPlaceHolder1%24Pager&ctl00%24ContentPlaceHolder1%24displaytypeval=" + typeValue + "&ctl00%24ContentPlaceHolder1%24displaystateval=0&ctl00%24ContentPlaceHolder1%24dealaddressval=0&ctl00%24ContentPlaceHolder1%24keyword=&__VIEWSTATE=%2FwEPDwUKMTE2OTUxMzc2Nw9kFgJmD2QWAgIDD2QWBAIDD2QWAgIHDxYCHgRUZXh0BY8xPHVsIGNsYXNzPSduYXYgbmF2LXBpbGxzIG5hdi1qdXN0aWZpZWQnPjxsaT48YSBocmVmPScvaW5kZXguYXNweCc%2B6aaW6aG1PC9hPjxzcGFuPjwvc3Bhbj48L2xpPjxsaSAgY2xhc3M9InVsX21lbnUiPjxhICBoZXJmPScjJz7mlL%2FliqHlhazlvIA8L2E%2BPHRhYmxlPiA8dHI%2BPHRkPjxkaXY%2B5Lit5b%2BD5qaC5Ya1PC9kaXY%2BPC90ZD48dGQgICBjbGFzcz0ibWV1bi1pdGVuLWJvZHkiPjxkaXY%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL0dlbmVyYWwvSW5kZXguYXNweD9jaWQ9MDAwMTAwMDEwMDAxMDAwNCIgdGFyZ2V0PSJfYmxhbmsiPuS4reW%2Fg%2BeugOS7izwvYT48L2Rpdj48ZGl2PjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vc2l0ZS9HZW5lcmFsL0luZGV4LmFzcHg%2FY2lkPTAwMDEwMDAxMDAwMTAwMDIiIHRhcmdldD0iX2JsYW5rIj7pooblr7zliIblt6U8L2E%2BPC9kaXY%2BPGRpdj48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvR2VuZXJhbC9JbmRleC5hc3B4P2NpZD0wMDAxMDAwMTAwMDEwMDAzIiB0YXJnZXQ9Il9ibGFuayI%2B6IGU57O75pa55byPPC9hPjwvZGl2PjxkaXY%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL0dlbmVyYWwvSW5kZXguYXNweD9jaWQ9MDAwMTAwMDEwMDAxMDAwMSIgdGFyZ2V0PSJfYmxhbmsiPumDqOmXqOiuvue9rjwvYT48L2Rpdj48L3RkPjwvdHI%2BIDx0cj48dGQ%2BPGRpdj7mlrDpl7vliqjmgIE8L2Rpdj48L3RkPjx0ZCAgIGNsYXNzPSJtZXVuLWl0ZW4tYm9keSI%2BPGRpdj48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvT3BlbkdvdmVybm1lbnQvTGlzdC5hc3B4P2NpZD0wMDAxMDAwMTAwMDIwMDAxIiB0YXJnZXQ9Il9ibGFuayI%2B5bel5L2c5Yqo5oCBPC9hPjwvZGl2PjxkaXY%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL09wZW5Hb3Zlcm5tZW50L0xpc3QuYXNweD9jaWQ9MDAwMTAwMDEwMDAyMDAwMyIgdGFyZ2V0PSJfYmxhbmsiPuS%2FoeeUqOS%2FoeaBrzwvYT48L2Rpdj48L3RkPjwvdHI%2BIDx0cj48dGQ%2BPGRpdj7mlL%2FliqHlhazlvIA8L2Rpdj48L3RkPjx0ZCAgIGNsYXNzPSJtZXVuLWl0ZW4tYm9keSI%2BPGRpdj48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvT3BlbkdvdmVybm1lbnQvTGlzdC5hc3B4P2NpZD0wMDAxMDAwMTAwMDMwMDAxIiB0YXJnZXQ9Il9ibGFuayI%2B5YWs5byA5L%2Bd6ZqcPC9hPjwvZGl2PjxkaXY%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL09wZW5Hb3Zlcm5tZW50L0xpc3QuYXNweD9jaWQ9MDAwMTAwMDEwMDAzMDAwMiIgdGFyZ2V0PSJfYmxhbmsiPuiuoeWIkuaAu%2Be7kzwvYT48L2Rpdj48ZGl2PjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vc2l0ZS9PcGVuR292ZXJubWVudC9MaXN0LmFzcHg%2FY2lkPTAwMDEwMDAxMDAwMzAwMDMiIHRhcmdldD0iX2JsYW5rIj7kurrkuovkv6Hmga88L2E%2BPC9kaXY%2BPGRpdj48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvT3BlbkdvdmVybm1lbnQvTGlzdC5hc3B4P2NpZD0wMDAxMDAwMTAwMDMwMDA0IiB0YXJnZXQ9Il9ibGFuayI%2B6LSi5pS%2F6LWE6YeRPC9hPjwvZGl2PjxkaXY%2BPGEgaHJlZj0iaHR0cDovL2drLmNoZW5nZHUuZ292LmNuL29wZW5BcHBseS9pbmRleC5hY3Rpb24%2FY2lkPTAwMDEwMDAxMDAwMzAwMDUiIHRhcmdldD0iX2JsYW5rIj7kvp3nlLPor7flhazlvIA8L2E%2BPC9kaXY%2BPGRpdj48YSBocmVmPSJodHRwOi8vZ2suY2hlbmdkdS5nb3YuY24vb3BlblN1Z2dlc3Rpb25Cb3gvaW5kZXguYWN0aW9uP2NpZD0wMDAxMDAwMTAwMDMwMDA2IiB0YXJnZXQ9Il9ibGFuayI%2B5YWs5byA5oSP6KeB566xPC9hPjwvZGl2PjxkaXY%2BPGEgaHJlZj0iaHR0cDovL2drLmNoZW5nZHUuZ292LmNuL2dvdkluZm9QdWIvZGVwdC5hY3Rpb24%2FY2xhc3NJZD0wNzAzNjYiIHRhcmdldD0iX2JsYW5rIj7kv6Hmga%2FlhazlvIDmjIfljZc8L2E%2BPC9kaXY%2BPGRpdj48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvUGx1cy9BY2NlcHREYXRhLmFzcHg%2FY2lkPTAwMDEwMDAxMDAwMzAwMDkiIHRhcmdldD0iX2JsYW5rIj7lip7kuovnu5%2ForqE8L2E%2BPC9kaXY%2BPGRpdj48YSBocmVmPSJodHRwOi8vd3d3LmNoZW5nZHUuZ292LmNuL2NoZW5nZHUvY2RtZG0veG1kbV9pbmRleC5zaHRtbD9jaWQ9MDAwMTAwMDEwMDAzMDAwOCIgdGFyZ2V0PSJfYmxhbmsiPuWFmumjjuaUv%2BmjjueDree6vzwvYT48L2Rpdj48L3RkPjwvdHI%2BPC90YWJsZT48L2xpPjxsaSAgY2xhc3M9InVsX21lbnUiPjxhICBoZXJmPScjJz7kuJrliqHlip7nkIY8L2E%2BPHRhYmxlPiA8dHI%2BPHRkPjxkaXY%2B5Y%2BX55CG5Lia5YqhPC9kaXY%2BPC90ZD48dGQgICBjbGFzcz0ibWV1bi1pdGVuLWJvZHkiPjxkaXY%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9jZW50ZXIvaW5kZXguYXNweD9jaWQ9MDAwMjAwMDEwMDIwMDAxIiB0YXJnZXQ9Il9ibGFuayI%2B6aG555uu55m76K6wPC9hPjwvZGl2PjxkaXY%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL1NpdGVTZWFyY2gvbmV3aW5kZXguYXNweD9jaWQ9MDAwMjAwMDEwMDIwMDAyIiB0YXJnZXQ9Il9ibGFuayI%2B5Zy65Zyw5p%2Bl6K%2BiPC9hPjwvZGl2PjwvdGQ%2BPC90cj4gPHRyPjx0ZD48ZGl2PuS6pOaYk%2BS%2FoeaBrzwvZGl2PjwvdGQ%2BPHRkICAgY2xhc3M9Im1ldW4taXRlbi1ib2R5Ij48ZGl2PjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vc2l0ZS9KU0dDL0xpc3QuYXNweCIgdGFyZ2V0PSJfYmxhbmsiPuW3peeoi%2BW7uuiuvjwvYT48L2Rpdj48ZGl2PjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vc2l0ZS9Ob3RpY2UvWkZDRy9Ob3RpY2VWZXJzaW9uT25lTGlzdC5hc3B4IiB0YXJnZXQ9Il9ibGFuayI%2B5pS%2F5bqc6YeH6LStPC9hPjwvZGl2PjxkaXY%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL0xhbmRUcmFkZS9MYW5kTGlzdC5hc3B4IiB0YXJnZXQ9Il9ibGFuayI%2B5Zyf5Zyw55%2B%2F5p2DPC9hPjwvZGl2PjxkaXY%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL0Fzc2V0UmVzb3VyY2UvRGVhbE5vdGljZUxpc3QuYXNweCIgdGFyZ2V0PSJfYmxhbmsiPui1hOS6p%2Bi1hOa6kDwvYT48L2Rpdj48L3RkPjwvdHI%2BIDx0cj48dGQ%2BPGRpdj7mm7TlpJrkuJrliqE8L2Rpdj48L3RkPjx0ZCAgIGNsYXNzPSJtZXVuLWl0ZW4tYm9keSI%2BPGRpdj48YSBocmVmPSJodHRwOi8vd3d3LmNkZ2d6eS5jb20vbWFsbC9JbmRleC5hc3B4P2NpZD0wMDAyMDAwMTAwMzAwMDEiIHRhcmdldD0iX2JsYW5rIj7mlL%2Flupzph4fotK3nlLXlrZDllYbln448L2E%2BPC9kaXY%2BPGRpdj48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL0xvZ2luLmFzcHg%2FY2lkPTAwMDIwMDAxMDAzMDAwMiIgdGFyZ2V0PSJfYmxhbmsiPui1hOS6p%2Bi1hOa6kOe9keS4iuernuS7tzwvYT48L2Rpdj48ZGl2PjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vc2l0ZS9CYW5rQm9ycm93L0luZGV4LmFzcHg%2FY2lkPTAwMDIwMDAxMDAzMDAwNCIgdGFyZ2V0PSJfYmxhbmsiPuaUv%2BmHh%2BS%2FoeeUqOaLheS%2Fneiejei1hDwvYT48L2Rpdj48L3RkPjwvdHI%2BIDx0cj48dGQ%2BPGRpdj7mnI3liqHmjIflvJU8L2Rpdj48L3RkPjx0ZCAgIGNsYXNzPSJtZXVuLWl0ZW4tYm9keSI%2BPGRpdj48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvUGx1cy9Ob3RpY2VMaXN0LmFzcHg%2FY2lkPTAwMDIwMDAxMDA0MDAwMSIgdGFyZ2V0PSJfYmxhbmsiPumAmuefpeWFrOWRijwvYT48L2Rpdj48ZGl2PjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vc2l0ZS9JbnN0cnVjdGlvbi9JbmRleC5hc3B4P2NpZD0wMDAyMDAwMTAwNDAwMDIiIHRhcmdldD0iX2JsYW5rIj7lip7kuovmjIfljZc8L2E%2BPC9kaXY%2BPGRpdj48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvUG9saWNpZXNhbmRyZWd1bGF0aW9ucy9JbmRleC5hc3B4P2NpZD0wMDAyMDAwMTAwNDAwMDMiIHRhcmdldD0iX2JsYW5rIj7mlL%2FnrZbms5Xop4Q8L2E%2BPC9kaXY%2BPGRpdj48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvQ2FvenVvL2luZGV4LmFzcHg%2FY2lkPTAwMDIwMDAxMDA0MDAwNCIgdGFyZ2V0PSJfYmxhbmsiPuaTjeS9nOaJi%2BWGjDwvYT48L2Rpdj48ZGl2PjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vc2l0ZS9Eb3duQ2VudGVyLmFzcHg%2FY2lkPTAwMDIwMDAxMDA0MDAwNSIgdGFyZ2V0PSJfYmxhbmsiPuS4i%2Bi9veS4k%2BWMujwvYT48L2Rpdj48L3RkPjwvdHI%2BPC90YWJsZT48L2xpPjxsaSBjbGFzcz0idWxfbWVudSI%2BPGEgdGFyZ2V0PSJfYmxhbmsiPuS6kuWKqOS6pOa1gTwvYT48dWw%2BIDxsaT48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvSW50ZXJhY3Rpb24vSW50ZXJhY3Rpb25MaXN0TmV3MS5hc3B4IiB0YXJnZXQ9Il9ibGFuayI%2B5Li75Lu75L%2Bh566xPC9hPjwvbGk%2BIDxsaT48YSBocmVmPSJodHRwOi8vMjAxMy5jZGdnenkuY29tL2FwcDEvdHdvL3dqZGMuanNwP2NpZD0wMDAxMDAwMjAwMDIiIHRhcmdldD0iX2JsYW5rIj7osIPmn6XlvoHpm4Y8L2E%2BPC9saT4gPGxpPjxhIGhyZWY9Imh0dHA6Ly93ZWliby5jb20vdS8zOTczMzM4ODM2IyEvdS8zOTczMzM4ODM2P2lzX2hvdD0xP2NpZD0wMDAxMDAwMjAwMDMiIHRhcmdldD0iX2JsYW5rIj7mlrDmtarlvq7ljZo8L2E%2BPC9saT48L3VsPjwvbGk%2BPGxpIGNsYXNzPSJ1bF9tZW51Ij48YSB0YXJnZXQ9Il9ibGFuayI%2B5YiG5Lit5b%2BDPC9hPjx1bD4gPGxpPjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vbG9uZ3F1YW55aT9jaWQ9MDAwMTAwMDMwMDAzIiB0YXJnZXQ9Il9ibGFuayI%2B6b6Z5rOJ6am%2F5Yy6PC9hPjwvbGk%2BIDxsaT48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3FpbmdiYWlqaWFuZz9jaWQ9MDAwMTAwMDMwMDAzIiB0YXJnZXQ9Il9ibGFuayI%2B6Z2S55m95rGf5Yy6PC9hPjwvbGk%2BIDxsaT48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3hpbmR1P2NpZD0wMDAxMDAwMzAwMDMiIHRhcmdldD0iX2JsYW5rIj7mlrDpg73ljLo8L2E%2BPC9saT4gPGxpPjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vd2Vuamlhbmc%2FY2lkPTAwMDEwMDAzMDAwMyIgdGFyZ2V0PSJfYmxhbmsiPua4qeaxn%2BWMujwvYT48L2xpPiA8bGk%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaHVhbmdsaXU%2FY2lkPTAwMDEwMDAzMDAwMyIgdGFyZ2V0PSJfYmxhbmsiPuWPjOa1geWMujwvYT48L2xpPiA8bGk%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9waWR1P2NpZD0wMDAxMDAwMzAwMDMiIHRhcmdldD0iX2JsYW5rIj7pg6vpg73ljLo8L2E%2BPC9saT4gPGxpPjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vamlhbnlhbmc%2FY2lkPTAwMDEwMDAzMDAwMyIgdGFyZ2V0PSJfYmxhbmsiPueugOmYs%2BW4gjwvYT48L2xpPiA8bGk%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9kdWppYW5neWFuP2NpZD0wMDAxMDAwMzAwMDMiIHRhcmdldD0iX2JsYW5rIj7pg73msZ%2FloLDluII8L2E%2BPC9saT4gPGxpPjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vcGVuZ3pob3U%2FY2lkPTAwMDEwMDAzMDAwMyIgdGFyZ2V0PSJfYmxhbmsiPuW9reW3nuW4gjwvYT48L2xpPiA8bGk%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9xaW9uZ2xhaT9jaWQ9MDAwMTAwMDMwMDAzIiB0YXJnZXQ9Il9ibGFuayI%2B6YKb5bSD5biCPC9hPjwvbGk%2BIDxsaT48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL2Nob25nemhvdT9jaWQ9MDAwMTAwMDMwMDAzIiB0YXJnZXQ9Il9ibGFuayI%2B5bSH5bee5biCPC9hPjwvbGk%2BIDxsaT48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL2ppbmd0YW5nP2NpZD0wMDAxMDAwMzAwMDMiIHRhcmdldD0iX2JsYW5rIj7ph5HloILljr88L2E%2BPC9saT4gPGxpPjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20veGluamluP2NpZD0wMDAxMDAwMzAwMDMiIHRhcmdldD0iX2JsYW5rIj7mlrDmtKXljr88L2E%2BPC9saT4gPGxpPjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vZGF5aT9jaWQ9MDAwMTAwMDMwMDAzIiB0YXJnZXQ9Il9ibGFuayI%2B5aSn6YKR5Y6%2FPC9hPjwvbGk%2BIDxsaT48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3B1amlhbmc%2FY2lkPTAwMDEwMDAzMDAwMyIgdGFyZ2V0PSJfYmxhbmsiPuiSsuaxn%2BWOvzwvYT48L2xpPjwvdWw%2BPC9saT4gPC91bD5kAgcPZBYEAgcPFgIeC18hSXRlbUNvdW50AhAWIGYPZBYCZg8VAgY1MTAxMDEJ5biC5pys57qnZAIBD2QWAmYPFQIGNTEwMTEyDOm%2Bmeaziempv%2BWMumQCAg9kFgJmDxUCBjUxMDExMwzpnZLnmb3msZ%2FljLpkAgMPZBYCZg8VAgY1MTAxMTQJ5paw6YO95Yy6ZAIED2QWAmYPFQIGNTEwMTE1Cea4qeaxn%2BWMumQCBQ9kFgJmDxUCBjUxMDExNgnlj4zmtYHljLpkAgYPZBYCZg8VAgY1MTAxODUJ566A6Ziz5biCZAIHD2QWAmYPFQIGNTEwMTgxDOmDveaxn%2BWgsOW4gmQCCA9kFgJmDxUCBjUxMDE4Mgnlva3lt57luIJkAgkPZBYCZg8VAgY1MTAxODMJ6YKb5bSD5biCZAIKD2QWAmYPFQIGNTEwMTg0CeW0h%2BW3nuW4gmQCCw9kFgJmDxUCBjUxMDEyNAnpg6vpg73ljLpkAgwPZBYCZg8VAgY1MTAxMjEJ6YeR5aCC5Y6%2FZAIND2QWAmYPFQIGNTEwMTMyCeaWsOa0peWOv2QCDg9kFgJmDxUCBjUxMDEyOQnlpKfpgpHljr9kAg8PZBYCZg8VAgY1MTAxMzEJ6JKy5rGf5Y6%2FZAIND2QWAmYPZBYGAgMPDxYCHwAFBTEvMzExZGQCCQ8WAh8BAgoWFGYPZBYGZg8VAQnph5HniZvljLpkAgEPDxYCHgtOYXZpZ2F0ZVVybAVkaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL0Fzc2V0UmVzb3VyY2UvRGVhbE5vdGljZUNvbnRlbnQuYXNweD9pZD1lMGQ0NzcwNWQxZDg0NTUxOWQ0OWU1ZDVkNmU2YWFiNWQWAmYPFQKDAeaIkOmDveW4gumHkeeJm%2BWMuuW4guWcuuebkeedo%2BeuoeeQhuWxgO%2B8iOaIkOmDveW4gumHkeeJm%2BWMuuefpeivhuS6p%2Badg%2BWxgO%2B8iei1hOS6p%2BWkhOe9ruernuS7t%2Be7k%2BaenOWFrOekuu%2B8iDIwMTnlubQwOeaciDA05pel77yJAGQCAg8VAgoyMDE5LTA5LTA0KDxkaXYgY2xhc3M9ImVudGVyaW5nIj4mbmJzcDsmbmJzcDs8L2Rpdj5kAgEPZBYGZg8VAQnluILmnKznuqdkAgEPDxYCHwIFZGh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vc2l0ZS9Bc3NldFJlc291cmNlL0RlYWxOb3RpY2VDb250ZW50LmFzcHg%2FaWQ9OWIwMDhlNmY5OWQxNGU4Y2IxYWY3MjYzZmIyNjRiZjFkFgJmDxUCVuaIkOmDvea2pumUpuWfjuWunuS4muaciemZkOWFrOWPuOi1hOS6p%2BWHuuenn%2BernuS7t%2Be7k%2BaenOWFrOekuu%2B8iDIwMTnlubQwOeaciDA05pel77yJAGQCAg8VAgoyMDE5LTA5LTA0KDxkaXYgY2xhc3M9ImVudGVyaW5nIj4mbmJzcDsmbmJzcDs8L2Rpdj5kAgIPZBYGZg8VAQnluILmnKznuqdkAgEPDxYCHwIFZGh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vc2l0ZS9Bc3NldFJlc291cmNlL0RlYWxOb3RpY2VDb250ZW50LmFzcHg%2FaWQ9NDc1OWNhNDYzYmEwNGNlOTk2MjdjNzNlNTJhYWJkMGZkFgJmDxUCWeaIkOmDveW3peaKlei1hOS6p%2Be7j%2BiQpeaciemZkOWFrOWPuOi1hOS6p%2BWHuuenn%2BernuS7t%2Be7k%2BaenOWFrOekuu%2B8iDIwMTnlubQwOeaciDA05pel77yJAGQCAg8VAgoyMDE5LTA5LTA0KDxkaXYgY2xhc3M9ImVudGVyaW5nIj4mbmJzcDsmbmJzcDs8L2Rpdj5kAgMPZBYGZg8VAQzpvpnms4npqb%2FljLpkAgEPDxYCHwIFZGh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vc2l0ZS9Bc3NldFJlc291cmNlL0RlYWxOb3RpY2VDb250ZW50LmFzcHg%2FaWQ9REVDQzNFNjQ3QkM2NEM1NkJEMzIwNzU3OUU1NzBDNDNkFgJmDxUCaOaIkOmDvee7j%2Ba1juaKgOacr%2BW8gOWPkeWMuuW7uuiuvuWPkeWxleaciemZkOWFrOWPuOi1hOS6p%2BWHuuenn%2BS6pOaYk%2Be7k%2BaenOWFrOWRiu%2B8iDIwMTnlubQwOeaciDA05pel77yJAGQCAg8VAgoyMDE5LTA5LTA0KDxkaXYgY2xhc3M9ImVudGVyaW5nIj4mbmJzcDsmbmJzcDs8L2Rpdj5kAgQPZBYGZg8VAQzpnZLnmb3msZ%2FljLpkAgEPDxYCHwIFZGh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vc2l0ZS9Bc3NldFJlc291cmNlL0RlYWxOb3RpY2VDb250ZW50LmFzcHg%2FaWQ9MzYwMUNEQ0NGNzc3NDdGOTgxRjRBQ0FEMTcyRDI2QUZkFgJmDxUCceaIkOmDveW4gumdkueZveaxn%2BWMuuaWh%2BWMluS9k%2BiCsuWSjOaXhea4uOWxgOi1hOS6p%2BWkhOe9ru%2B8iOesrOS6jOasoe%2B8ieS6pOaYk%2Be7k%2BaenOWFrOWRiu%2B8iDIwMTnlubQwOeaciDA05pel77yJAGQCAg8VAgoyMDE5LTA5LTA0KDxkaXYgY2xhc3M9ImVudGVyaW5nIj4mbmJzcDsmbmJzcDs8L2Rpdj5kAgUPZBYGZg8VAQzpg73msZ%2FloLDluIJkAgEPDxYCHwIFZGh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vc2l0ZS9Bc3NldFJlc291cmNlL0RlYWxOb3RpY2VDb250ZW50LmFzcHg%2FaWQ9MzA0RDAwNENBRDhBNDEwQkI1RkUxRkMxNTQ0REFEOUFkFgJmDxUCcumDveaxn%2BWgsOW4guWcn%2BWcsOWCqOWkh%2BS4reW%2Fg%2BmdkuWfjuWbvemZhemFkuW6l%2BmFjeWll%2BiuvuaWveWPiumFjeWll%2BeUqOaIv%2Bi1hOS6p%2Bi9rOiuqeWFrOW8gOaLjeWNlueahOe7k%2BaenOWFrOWRiioo6YO95rGf5aCw5biC5YWs6LWE5ouN5ZGK44CUMjAxOeOAlTAwMuWPtylkAgIPFQIKMjAxOS0wOS0wMyg8ZGl2IGNsYXNzPSJlbnRlcmluZyI%2BJm5ic3A7Jm5ic3A7PC9kaXY%2BZAIGD2QWBmYPFQEJ6auY5paw5Yy6ZAIBDw8WAh8CBWRodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvQXNzZXRSZXNvdXJjZS9EZWFsTm90aWNlQ29udGVudC5hc3B4P2lkPWRmNmIzOGU0MWY2YzQ4OWViMGRlNjMxMzk1ZTFlNTJlZBYCZg8VAmvmiJDpg73pq5jmlrDmioDmnK%2FkuqfkuJrlvIDlj5HljLrmoYLmuqrooZfpgZPlip7kuovlpITotYTkuqflh7rnp5%2Fnq57ku7fnu5PmnpzlhaznpLrvvIgyMDE55bm0MDnmnIgwM%2BaXpe%2B8iQBkAgIPFQIKMjAxOS0wOS0wMyg8ZGl2IGNsYXNzPSJlbnRlcmluZyI%2BJm5ic3A7Jm5ic3A7PC9kaXY%2BZAIHD2QWBmYPFQEJ6ZSm5rGf5Yy6ZAIBDw8WAh8CBWRodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvQXNzZXRSZXNvdXJjZS9EZWFsTm90aWNlQ29udGVudC5hc3B4P2lkPTE0Njg5YTM3MGI4NDQwNjc5MjNjOGU4MGM2MWQ5M2QzZBYCZg8VAmvmiJDpg73luILplKbmsZ%2FljLrkurrmsJHmlL%2FlupznnaPpmaLooZfooZfpgZPlip7kuovlpITotYTkuqflh7rnp5%2Fnq57ku7fnu5PmnpzlhaznpLrvvIgyMDE55bm0MDnmnIgwM%2BaXpe%2B8iQBkAgIPFQIKMjAxOS0wOS0wMyg8ZGl2IGNsYXNzPSJlbnRlcmluZyI%2BJm5ic3A7Jm5ic3A7PC9kaXY%2BZAIID2QWBmYPFQEM6Z2S55m95rGf5Yy6ZAIBDw8WAh8CBWRodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvQXNzZXRSZXNvdXJjZS9EZWFsTm90aWNlQ29udGVudC5hc3B4P2lkPTIwQkQwRTlCQ0NDMTQ2OTVBQUY5MkUxQ0VDQjgxQzdFZBYCZg8VAnTmiJDpg73luILpnZLnmb3msZ%2FljLrop4TliJLlkozoh6rnhLbotYTmupDlsYDotYTkuqfvvIjmiqXlup%2FnlLXmoq%2FvvInlpITnva7kuqTmmJPnu5PmnpzlhazlkYrvvIgyMDE55bm0MDnmnIgwM%2BaXpe%2B8iQBkAgIPFQIKMjAxOS0wOS0wMyg8ZGl2IGNsYXNzPSJlbnRlcmluZyI%2BJm5ic3A7Jm5ic3A7PC9kaXY%2BZAIJD2QWBmYPFQEJ5oiQ5Y2O5Yy6ZAIBDw8WAh8CBWRodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvQXNzZXRSZXNvdXJjZS9EZWFsTm90aWNlQ29udGVudC5hc3B4P2lkPTA3OWY4ZWU0MGIwZjQwYjM4MTUzYWExMmUxMzAxNDFlZBYCZg8VAl%2FmiJDpg73plKbln47ljY7liJvnva7kuJrmnInpmZDotKPku7vlhazlj7jotYTkuqflh7rnp5%2Fnq57ku7fnu5PmnpzlhaznpLrvvIgyMDE55bm0MDnmnIgwMuaXpe%2B8iQBkAgIPFQIKMjAxOS0wOS0wMig8ZGl2IGNsYXNzPSJlbnRlcmluZyI%2BJm5ic3A7Jm5ic3A7PC9kaXY%2BZAILDw8WBB4IUGFnZVNpemUCCh4LUmVjb3JkY291bnQCoxhkZGToQIM0jGXbRunG4oQvUHqnRvBRwA%3D%3D&__VIEWSTATEGENERATOR=78551C4F&__EVENTTARGET=ctl00%24ContentPlaceHolder1%24Pager&__EVENTARGUMENT=" + pageValue + "&__EVENTVALIDATION=%2FwEdAAhVqX2pcQlTUmDpEA4oDqT2ZXbjphD4J6Ci0P2UUXCmZQp8fmeAe3E%2BZ%2BlyrRcok%2FuMO7fmjkJSfq6Zbgk2kTWnZi7H72kkAvPqROrOG28FXID8g%2FxeCzDZJOPgpGV4zViznYSIw3B963y%2FxzaOhgoHdty0mXvz7f%2B9YtBAL8kV3R34bUsJ2ZRENSCc%2Ba1xvhmnz5L6&__ASYNCPOST=true&";
+            OutputStream out = connection.getOutputStream();
+            out.write(params.getBytes());
+            out.flush();
+            out.close();
+            // 从连接中读取响应信息
+            StringBuilder sb = new StringBuilder();
+            int code = connection.getResponseCode();
+            if (code == 200) {
+                BufferedReader reader = new BufferedReader(
+                        new InputStreamReader(connection.getInputStream()));
+                String line;
+
+                while ((line = reader.readLine()) != null) {
+                    sb.append(line);
+                    ;
+                }
+                reader.close();
+            }
+            // 5. 断开连接
+            connection.disconnect();
+
+            // 处理结果
+            org.jsoup.nodes.Document doc = Jsoup.parse(sb.toString());
+            Elements elements = doc.select(element);
+            return elements;
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     private String checkNull(Elements select, Integer index) {
         Elements elements = select.get(index).select("p span");
@@ -1340,5 +1754,137 @@ public class Test {
 
     }
 
+    public String getLiquidRatios(String currentPriceStr, String consultPriceStr) throws Exception {
+        if (StringUtil.isEmpty(currentPriceStr) || StringUtil.isEmpty(consultPriceStr))
+            return null;
+        BigDecimal verifyValue = new BigDecimal("0");
+        NumberFormat format = NumberFormat.getInstance();
+        BigDecimal currentPrice = new BigDecimal(format.parse(currentPriceStr).doubleValue());
+        BigDecimal consultPrice = new BigDecimal(format.parse(consultPriceStr).doubleValue());
+        //起始价，评估价不为0
+        if (verifyValue.compareTo(currentPrice) == 0 || verifyValue.compareTo(consultPrice) == 0)
+            return null;
+        BigDecimal liquidRatiosValue = currentPrice.multiply(new BigDecimal("100")).divide(consultPrice, 2, BigDecimal.ROUND_HALF_UP);
+        return String.format("%s%s", liquidRatiosValue, "%");
+    }
 
+    //price格式为000000.00或者000,000,000.00
+    public String getRealMoney(String price) throws Exception {
+        NumberFormat format = NumberFormat.getInstance();
+        if (StringUtil.isNotEmpty(price)) {
+            return new BigDecimal(format.parse(price).doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+        } else {
+            return "";
+        }
+    }
+
+    @org.junit.Test
+    public void test44() {
+        String a = "21.00876";
+        String hours = a.substring(0, a.indexOf("."));
+        String moments = String.format("%s%s", "0.", a.substring(a.indexOf(".") + 1));
+        BigDecimal bigDecimal = new BigDecimal(moments);
+        String s = bigDecimal.multiply(new BigDecimal("60")).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+        if (s.equals("")) {
+
+        }
+    }
+
+
+    /**
+     * 获取指定年份的最后一天
+     *
+     * @param
+     * @return
+     */
+    public Date getLastDayOfYear(Integer year) {
+        Calendar cal = Calendar.getInstance();
+        //设置年份
+        cal.set(Calendar.YEAR, year);
+        //获取最大月
+        int maxMonth = cal.getActualMaximum(Calendar.MONTH);
+        //设置月份
+        cal.set(Calendar.MONTH, maxMonth);
+        //获取某月最大天数
+        int lastDay = cal.getActualMaximum(Calendar.DATE);
+        cal.set(Calendar.DATE, lastDay);
+        return cal.getTime();
+    }
+
+    /**
+     * 获取指定年份的第一天
+     *
+     * @param
+     * @return
+     */
+    public Date getFirstDayOfYear(Integer year) {
+        Calendar cal = Calendar.getInstance();
+        //设置年份
+        cal.set(Calendar.YEAR, year);
+        //获取最大月
+        int maxMonth = cal.getActualMinimum(Calendar.MONTH);
+        //设置月份
+        cal.set(Calendar.MONTH, maxMonth);
+        //获取某月最大天数
+        int lastDay = cal.getActualMinimum(Calendar.DATE);
+        cal.set(Calendar.DATE, lastDay);
+        return cal.getTime();
+    }
+
+    @org.junit.Test
+    public void testTakeNumber() {
+        // ProjectTakeNumber data = projectTakeNumberService.getDataByProcessInsId(processExecution.getProcessInstanceId());
+        //获取到该报告类型的最大号
+        //增加一条文号记录
+        DataNumberRule numberRule = dataNumberRuleDao.getDataNumberRule(2025).get(0);
+        int number = 1;
+        if (numberRule.getStartNumber() != null)
+            number = numberRule.getStartNumber();
+        int year = DateUtils.getYear(new Date());
+
+        //一个分组下的reportType
+        DataNumberRule dataNumberRule = new DataNumberRule();
+        dataNumberRule.setGroupName(numberRule.getGroupName());
+        List<DataNumberRule> numberRuleGroup = dataNumberRuleDao.getDataNumberRule(dataNumberRule);
+        List<Integer> reportTypes = LangUtils.transform(numberRuleGroup, o -> o.getReportType());
+        //去重
+        List<Integer> reportTypeList = removeDuplicate(reportTypes);
+        List<ProjectNumberRecord> projectNumberRecords = Lists.newArrayList();
+        for (Integer reportTypeValue : reportTypeList) {
+            ProjectNumberRecord projectNumberRecord = new ProjectNumberRecord();
+            projectNumberRecord.setReportType(reportTypeValue);
+            List<ProjectNumberRecord> numberRecords = projectNumberRecordDao.getProjectNumberRecordList(projectNumberRecord);
+            if (CollectionUtils.isNotEmpty(numberRecords))
+                projectNumberRecords.addAll(numberRecords);
+        }
+        if (CollectionUtils.isNotEmpty(projectNumberRecords)) {
+            if (projectNumberRecords.size() >= 2) {
+                //排序
+                Ordering<ProjectNumberRecord> ordering = Ordering.from((o1, o2) -> {
+                    return (o2.getNumber().compareTo(o1.getNumber()));
+                });
+                projectNumberRecords.sort(ordering);
+            }
+            //最大号
+            if (projectNumberRecords.get(0).getBisDelete() == true) {
+                number = projectNumberRecords.get(0).getNumber();
+            }
+        }
+    }
+
+    /**
+     * list去重复元素
+     *
+     * @param list
+     * @return
+     */
+    public List removeDuplicate(List list) {
+        List listTemp = new ArrayList();
+        for (int i = 0; i < list.size(); i++) {
+            if (!listTemp.contains(list.get(i))) {
+                listTemp.add(list.get(i));
+            }
+        }
+        return listTemp;
+    }
 }
