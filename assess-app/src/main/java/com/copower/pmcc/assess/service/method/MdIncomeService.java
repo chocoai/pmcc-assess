@@ -1234,6 +1234,10 @@ public class MdIncomeService {
             MdIncomeForecastItemVo vo = new MdIncomeForecastItemVo();
             BeanUtils.copyProperties(item, vo);
             vo.setTotal(principal);
+            if (item.getAccountingSubject() != null && item.getAccountingSubject() > 0) {
+                String accountingSubjectName = baseDataDicService.getNameById(item.getAccountingSubject());
+                vo.setName(String.format("%s/%s/%s", accountingSubjectName, item.getFirstLevelNumber(), item.getSecondLevelNumber()));
+            }
             operatingCostItems.add(vo);
         }
         String jsonString = JSONObject.toJSONString(operatingCostItems);

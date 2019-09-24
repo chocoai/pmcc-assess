@@ -388,8 +388,8 @@ public class PublicService {
         //平均年份天数（相差年份的天数/计算的年份）
         Integer ages = year2 - year1 + 1;
         BigDecimal averageDay = new BigDecimal(timeDistance).divide(new BigDecimal(ages), 2, BigDecimal.ROUND_HALF_UP);
-        //开始日期与结束日期相差天数
-        int days = DateUtils.diffDate(endDate, startDate);
+        //开始日期与结束日期相差天数(默认从开始时间0点到结束时间24点)
+        int days = DateUtils.diffDate(endDate, startDate)+1;
         //相差年份
         BigDecimal distanceAge = new BigDecimal(days).divide(averageDay, 2, BigDecimal.ROUND_HALF_UP);
         return distanceAge;
