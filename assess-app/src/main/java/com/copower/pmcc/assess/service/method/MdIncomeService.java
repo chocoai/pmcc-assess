@@ -1782,21 +1782,63 @@ public class MdIncomeService {
                 mdIncomeForecastItemDao.deleteIncomeForecastItem(item.getId());
             }
         }
+        //拿到对应的id集合
+        //判断当前id的索引位置
+        //不为0则取上一个时间段收入预测的物品
+        MdIncomeForecast mdIncomeForecast = new MdIncomeForecast();
+        mdIncomeForecast.setIncomeId(incomeId);
+        mdIncomeForecast.setType(MethodDataTypeEnum.INCOME.getId());
+        List<MdIncomeForecast> forecastList = mdIncomeForecastDao.getForecastList(mdIncomeForecast);
+        List<MdIncomeForecastVo> vos = LangUtils.transform(forecastList, p -> getForecastVo(p));
+        int index = -1;
+        //当前时间段开始年份
+        int nowYear = 0;
+        for (int i = 0; i < vos.size(); i++) {
+            if(vos.get(i).getId().equals(incomeForecastId)){
+                index = i;
+                nowYear = DateUtils.getYear(vos.get(i).getBeginDate());
+                break;
+            }
+        }
 
-        MdIncomeForecastAnalyse forecastAnalyse = new MdIncomeForecastAnalyse();
-        forecastAnalyse.setIncomeId(incomeId);
-        forecastAnalyse.setType(0);
-        forecastAnalyse.setFormType(formType);
-        List<MdIncomeForecastAnalyse> analyseList = mdIncomeForecastAnalyseDao.getForecastAnalyseList(forecastAnalyse);
-        if (CollectionUtils.isNotEmpty(analyseList)) {
-            Integer forecastAnalyseId = analyseList.get(analyseList.size() - 1).getId();
-            List<MdIncomeForecastAnalyseItem> forecastAnalyseItemList = getForecastAnalyseItemListByMasterId(forecastAnalyseId);
-            for (MdIncomeForecastAnalyseItem analyseItem : forecastAnalyseItemList) {
-                MdIncomeForecastItem incomeForecastItem = new MdIncomeForecastItem();
-                BeanUtils.copyProperties(analyseItem, incomeForecastItem);
-                incomeForecastItem.setIncomeForecastId(incomeForecastId);
-                incomeForecastItem.setCreator(commonService.thisUserAccount());
-                mdIncomeForecastItemDao.addIncomeForecastItem(incomeForecastItem);
+        if(index<0) return;
+        if (index == 0) {
+            MdIncomeForecastAnalyse forecastAnalyse = new MdIncomeForecastAnalyse();
+            forecastAnalyse.setIncomeId(incomeId);
+            forecastAnalyse.setType(0);
+            forecastAnalyse.setFormType(formType);
+            List<MdIncomeForecastAnalyse> analyseList = mdIncomeForecastAnalyseDao.getForecastAnalyseList(forecastAnalyse);
+            if (CollectionUtils.isNotEmpty(analyseList)) {
+                Integer forecastAnalyseId = analyseList.get(analyseList.size() - 1).getId();
+                List<MdIncomeForecastAnalyseItem> forecastAnalyseItemList = getForecastAnalyseItemListByMasterId(forecastAnalyseId);
+                for (MdIncomeForecastAnalyseItem analyseItem : forecastAnalyseItemList) {
+                    MdIncomeForecastItem incomeForecastItem = new MdIncomeForecastItem();
+                    BeanUtils.copyProperties(analyseItem, incomeForecastItem);
+                    incomeForecastItem.setIncomeForecastId(incomeForecastId);
+                    incomeForecastItem.setCreator(commonService.thisUserAccount());
+                    mdIncomeForecastItemDao.addIncomeForecastItem(incomeForecastItem);
+                }
+            }
+        }else{
+            //获取次方值：当前时间段开始年份-上一个时间段开始年份
+            int initialYear = DateUtils.getYear(vos.get(index-1).getBeginDate());
+            int yearCount = nowYear - initialYear;
+            //获取到上一个时间段收入预测的物品
+            MdIncomeForecast forecast = forecastList.get(index-1);
+            List<MdIncomeForecastItem> frontData = getIncomeForecastItemListByMasterId(forecast.getId());
+            if (CollectionUtils.isNotEmpty(frontData)) {
+                for (MdIncomeForecastItem item : frontData) {
+                    MdIncomeForecastItem incomeForecastItem = new MdIncomeForecastItem();
+                    BeanUtils.copyProperties(item, incomeForecastItem);
+                    incomeForecastItem.setRateIncreaseExplain(null);
+                    incomeForecastItem.setRateIncrease(null);
+                    incomeForecastItem.setIncomeForecastId(incomeForecastId);
+                    incomeForecastItem.setCreator(commonService.thisUserAccount());
+                    //计算物品价格
+                    incomeForecastItem.setAmountMoney(item.getAmountMoney().multiply(new BigDecimal("1").add(item.getRateIncrease()).pow(yearCount)).setScale(2, BigDecimal.ROUND_HALF_UP));
+                    mdIncomeForecastItemDao.addIncomeForecastItem(incomeForecastItem);
+
+                }
             }
         }
     }
