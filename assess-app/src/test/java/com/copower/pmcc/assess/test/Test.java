@@ -236,31 +236,26 @@ public class Test {
     @org.junit.Test
     public void imageInsertWordTest() throws Exception {
         //list为图片地址
+        String basePath = "D:\\test\\land1";
         List<Map<String, String>> imglist = Lists.newArrayList();
-        Map<String, String> imgMap = Maps.newHashMap();
-        imgMap.put("D:\\test\\1.jpg", "1");
-        imglist.add(imgMap);
-        Map<String, String> imgMap2 = Maps.newHashMap();
-        imgMap2.put("D:\\test\\2.jpg", "2");
-        imglist.add(imgMap2);
-        Map<String, String> imgMap3 = Maps.newHashMap();
-        imgMap3.put("D:\\test\\1.jpg", "1");
-        imglist.add(imgMap3);
-        Map<String, String> imgMap4 = Maps.newHashMap();
-        imgMap4.put("D:\\test\\2.jpg", "2");
-        imglist.add(imgMap4);
-        Map<String, String> imgMap5 = Maps.newHashMap();
-        imgMap5.put("D:\\test\\1.jpg", "1");
-        imglist.add(imgMap5);
-        Map<String, String> imgMap6 = Maps.newHashMap();
-        imgMap6.put("D:\\test\\2.jpg", "2");
-        imglist.add(imgMap6);
-        Map<String, String> imgMap7 = Maps.newHashMap();
-        imgMap7.put("D:\\test\\1.jpg", "1");
-        imglist.add(imgMap7);
+        for (int i = 1; i <= 139; i++) {
+            if(i==41||i==42||i==43||i==44||i==45||i==127||i==128||i==129) continue;
+            Map<String, String> imgMap = Maps.newHashMap();
+            imgMap.put(basePath + "\\" + i  + "...jpg", "");
+            imglist.add(imgMap);
+
+            imgMap = Maps.newHashMap();
+            imgMap.put(basePath + "\\" + i + "..jpg","");
+            imglist.add(imgMap);
+
+            imgMap = Maps.newHashMap();
+            imgMap.put(basePath + "\\" + i + ".jpg", "");
+            imglist.add(imgMap);
+        }
         Document document = new Document();
         DocumentBuilder builder = new DocumentBuilder(document);
-
+        builder.getPageSetup().setTopMargin(0.5);
+        builder.getPageSetup().setBottomMargin(0.5);
         builder.getCellFormat().setVerticalMerge(CellVerticalAlignment.CENTER);
         builder.getCellFormat().setVerticalAlignment(CellVerticalAlignment.CENTER);
         builder.getCellFormat().setHorizontalMerge(CellVerticalAlignment.CENTER);
@@ -268,11 +263,11 @@ public class Test {
         Table table = builder.startTable();
         // table.setBorders(0, 0, Color.black);
 
-        int colLength = 2;//列数
+        int colLength = 1;//列数
         int rowLength = (imglist.size() % colLength > 0 ? (imglist.size() / colLength) + 1 : imglist.size() / colLength) * 2;//行数
         Integer index = 0;
         //根据不同列数设置 表格与图片的宽度 总宽度为560
-        int maxWidth = 560;
+        int maxWidth = 460;
         int cellWidth = maxWidth / colLength;
         int imageMaxWidth = cellWidth - (60 / colLength);
         for (int j = 0; j < rowLength; j++) {
@@ -291,7 +286,7 @@ public class Test {
                         int targetWidth = sourceImg.getWidth() > imageMaxWidth ? imageMaxWidth : sourceImg.getWidth();
                         int targeHeight = getImageTargeHeight(sourceImg.getWidth(), targetWidth, sourceImg.getHeight());
                         builder.insertImage(imgPath, RelativeHorizontalPosition.MARGIN, 10,
-                                RelativeVerticalPosition.MARGIN, 0, targetWidth, targeHeight, WrapType.INLINE);
+                                RelativeVerticalPosition.MARGIN, 0, targetWidth, 230, WrapType.INLINE);
                         //设置样式
                         builder.getCellFormat().getBorders().setColor(Color.white);
                         builder.getCellFormat().getBorders().getLeft().setLineWidth(1.0);
@@ -326,9 +321,96 @@ public class Test {
         }
 
         //this.completeTableBorder(document);
-        document.save("D:\\test\\2.doc");
+        document.save("D:\\test\\td.doc");
     }
 
+    //图片插入到word测试
+    @org.junit.Test
+    public void imageInsertWordTestFc() throws Exception {
+        //list为图片地址
+        String basePath = "D:\\test\\house";
+        List<Map<String, String>> imglist = Lists.newArrayList();
+        for (int i = 1; i < 136; i++) {
+            Map<String, String> imgMap = Maps.newHashMap();
+
+            imgMap = Maps.newHashMap();
+            imgMap.put(basePath + "\\" + i + "..jpg","");
+            imglist.add(imgMap);
+
+            imgMap = Maps.newHashMap();
+            imgMap.put(basePath + "\\" + i + ".jpg", "");
+            imglist.add(imgMap);
+        }
+        Document document = new Document();
+        DocumentBuilder builder = new DocumentBuilder(document);
+
+        builder.getCellFormat().setVerticalMerge(CellVerticalAlignment.CENTER);
+        builder.getCellFormat().setVerticalAlignment(CellVerticalAlignment.CENTER);
+        builder.getCellFormat().setHorizontalMerge(CellVerticalAlignment.CENTER);
+
+        Table table = builder.startTable();
+        // table.setBorders(0, 0, Color.black);
+
+        int colLength = 1;//列数
+        int rowLength = (imglist.size() % colLength > 0 ? (imglist.size() / colLength) + 1 : imglist.size() / colLength) * 2;//行数
+        Integer index = 0;
+        //根据不同列数设置 表格与图片的宽度 总宽度为560
+        int maxWidth = 460;
+        int cellWidth = maxWidth / colLength;
+        int imageMaxWidth = cellWidth - (60 / colLength);
+        for (int j = 0; j < rowLength; j++) {
+            if (j % 2 == 0) {
+                for (int k = 0; k < colLength; k++) {
+                    builder.insertCell();
+                    index = j / 2 * colLength + k;
+                    if (index < imglist.size()) {
+                        Map<String, String> stringStringMap = imglist.get(index);
+                        String imgPath = "";
+                        for (String key : stringStringMap.keySet()) {
+                            imgPath = key;
+                        }
+                        File file = new File(imgPath);
+                        BufferedImage sourceImg = ImageIO.read(new FileInputStream(file));
+                        int targetWidth = sourceImg.getWidth() > imageMaxWidth ? imageMaxWidth : sourceImg.getWidth();
+                        int targeHeight = getImageTargeHeight(sourceImg.getWidth(), targetWidth, sourceImg.getHeight());
+                        builder.insertImage(imgPath, RelativeHorizontalPosition.MARGIN, 10,
+                                RelativeVerticalPosition.MARGIN, 0, targetWidth, 290, WrapType.INLINE);
+                        //设置样式
+                        builder.getCellFormat().getBorders().setColor(Color.white);
+                        builder.getCellFormat().getBorders().getLeft().setLineWidth(1.0);
+                        builder.getCellFormat().getBorders().getRight().setLineWidth(1.0);
+                        builder.getCellFormat().getBorders().getTop().setLineWidth(1.0);
+                        builder.getCellFormat().getBorders().getBottom().setLineWidth(1.0);
+                        builder.getCellFormat().setWidth(cellWidth);
+                        builder.getCellFormat().setVerticalMerge(CellVerticalAlignment.CENTER);
+                        builder.getRowFormat().setAlignment(RowAlignment.CENTER);
+                        builder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
+                    }
+                }
+                builder.endRow();
+            }
+            if (j % 2 != 0) {
+                for (int k = 0; k < colLength; k++) {
+                    builder.insertCell();
+                    index = j / 2 * colLength + k;
+                    if (index < imglist.size()) {
+                        Map<String, String> stringStringMap = imglist.get(index);
+                        String imgName = "";
+                        for (String key : stringStringMap.keySet()) {
+                            imgName = stringStringMap.get(key);
+                        }
+                        //设置样式
+                        builder.write(imgName);
+                    }
+                }
+                builder.endRow();
+            }
+
+        }
+
+        //this.completeTableBorder(document);
+        document.save("D:\\test\\fc.doc");
+    }
 
     public static int getImageTargeHeight(int sourceWidth, int targeWidth, int sourceHeight) {
         int targetHeight = sourceHeight / (sourceWidth / targeWidth);
