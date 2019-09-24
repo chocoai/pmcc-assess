@@ -11,44 +11,116 @@
         <div class="right_col" role="main" style="margin-left: 0">
             <%@include file="/views/share/form_head.jsp" %>
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
+
             <form class="form-horizontal" id="declareApplyForm">
+
                 <input type="hidden" name="planDetailsId" value="${projectPlanDetails.id}">
                 <input type="hidden" name="projectId" value="${projectPlanDetails.projectId}">
                 <input type="hidden" name="assetsSettingId" value="${projectPhase.assetsSettingId}">
 
+            </form>
 
+            <div class="form-horizontal">
                 <div class="x_panel">
-                    <div class="x_title collapse-link">
+                    <div class="x_title">
                         <ul class="nav navbar-right panel_toolbox">
                             <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                         </ul>
                         <h3>申报编辑文件
                             <small><input type="button" class="btn btn-xs btn-primary" value="获取模板"
-                                          onclick="loadAssetsCustomizeDataField(2);">
+                                          onclick="declareCommon.writeDeclarationHtml(2);">
                             </small>
                         </h3>
                         <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
-
+                        <div id="assetsCustomizeDataField_Fixed_FileId">
+                            <c:forEach items="${fixedDataFieldAndFile}" var="item">
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                            名称<span class="symbol required"></span>
+                                        </label>
+                                        <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                            <input name="name" class="form-control" placeholder="名称" readonly="readonly"
+                                                   value="${item.name}" onblur="dataAssetsAppraisalDic.inputBlur(this,${item.id})"/>
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                            附件
+                                        </label>
+                                        <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3  ">
+                                            <input id="assetsCustomizeDataField_Fixed_file${item.id}"
+                                                   name="assetsCustomizeDataField_Fixed_file${item.id}" type="file" multiple="false">
+                                            <div id="_assetsCustomizeDataField_Fixed_file${item.id}"></div>
+                                        </div>
+                                    </div>
+                                    <script type="text/javascript">
+                                        $(function () {
+                                            var fileId = 'assetsCustomizeDataField_Fixed_file${item.id}';
+                                            declareCommon.showFile2(fileId, AssessDBKey.AssetsCustomizeDataField, "${item.id}", false,true, fileId);
+                                            declareCommon.fileUpload2(fileId, AssessDBKey.AssetsCustomizeDataField, "${item.id}", false, true,fileId);
+                                        });
+                                    </script>
+                                    <div class="x-valid">
+                                        <span class="input-group-btn"><input class="btn btn-warning" type="button" value="X"
+                                                                             onclick="declareCommon.cleanItemHTML(this,'assetsCustomizeDataField_Fixed_file${item.id}',2,'${item.id}');"></span>
+                                    </div>
+                                </div>
+                            </c:forEach>
+                        </div>
                     </div>
                 </div>
 
                 <div class="x_panel">
-                    <div class="x_title collapse-link">
+                    <div class="x_title">
                         <ul class="nav navbar-right panel_toolbox">
                             <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                         </ul>
                         <h3>申报编辑字段
                             <small><input type="button" class="btn btn-xs btn-primary" value="获取配置字段"
-                                          onclick="loadAssetsCustomizeDataField(1);">
+                                          onclick="declareCommon.writeDeclarationHtml(1);">
                             </small>
                         </h3>
                         <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
-                        <div id="assetsCustomizeDataField_Fixed_field">
-
+                        <div id="assetsCustomizeDataField_Fixed_fieldId">
+                            <c:forEach items="${fixedDataField}" var="item">
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                            名称<span class="symbol required"></span>
+                                        </label>
+                                        <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                            <input name="name" class="form-control" placeholder="名称"
+                                                   value="${item.name}" onblur="dataAssetsAppraisalDic.inputBlur(this,${item.id})"/>
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                            附件
+                                        </label>
+                                        <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3  ">
+                                            <input id="assetsCustomizeDataField_Fixed${item.id}"
+                                                   name="assetsCustomizeDataField_Fixed${item.id}" type="file" multiple="false">
+                                            <div id="_assetsCustomizeDataField_Fixed${item.id}"></div>
+                                        </div>
+                                    </div>
+                                    <script type="text/javascript">
+                                        $(function () {
+                                            var fileId = 'assetsCustomizeDataField_Fixed${item.id}';
+                                            declareCommon.showFile(fileId, AssessDBKey.AssetsCustomizeDataField, "${item.id}", true, fileId);
+                                            declareCommon.fileUpload(fileId, AssessDBKey.AssetsCustomizeDataField, "${item.id}", true, fileId);
+                                        });
+                                    </script>
+                                    <div class="x-valid">
+                                        <span class="input-group-btn"><input class="btn btn-warning" type="button" value="X"
+                                                                             onclick="declareCommon.cleanItemHTML(this,'assetsCustomizeDataField_Fixed${item.id}',1,'${item.id}');"></span>
+                                    </div>
+                                </div>
+                            </c:forEach>
                         </div>
                     </div>
                 </div>
@@ -69,52 +141,51 @@
                                     自定义操作
                                 </label>
                                 <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
-                                    <div class="btn  btn-success" onclick="appendHTML(this)"><i class="fa fa-plus"></i>
+                                    <div class="btn  btn-success" onclick="declareCommon.writeDeclarationHtml(0)"><i class="fa fa-plus"></i>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-                        <c:forTokens items="${assetsCustomizeDataField.fieldNameList}" delims="," var="item"
-                                     varStatus="status">
-                            <div class="form-group">
-                                <div class="x-valid">
-                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                        自定义名称<span class="symbol required"></span>
-                                    </label>
-                                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                        <input name="fieldNameList" class="form-control" placeholder="自定义名称"
-                                               value="${item}"/>
+                        <div id="assetsCustomizeDataOther_fieldId">
+                            <c:forEach items="${customizeDataField}" var="item">
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                            自定义名称<span class="symbol required"></span>
+                                        </label>
+                                        <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                            <input name="name" class="form-control" placeholder="自定义名称"
+                                                   value="${item.name}" onblur="dataAssetsAppraisalDic.inputBlur(this,${item.id})"/>
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                            附件
+                                        </label>
+                                        <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3  ">
+                                            <input id="other_Enclosure${item.id}"
+                                                   name="other_Enclosure${item.id}" type="file" multiple="false">
+                                            <div id="_other_Enclosure${item.id}"></div>
+                                        </div>
+                                    </div>
+                                    <script type="text/javascript">
+                                        $(function () {
+                                            var fileId = 'other_Enclosure${item.id}';
+                                            declareCommon.showFile(fileId, AssessDBKey.AssetsCustomizeDataField, "${item.id}", true, fileId);
+                                            declareCommon.fileUpload(fileId, AssessDBKey.AssetsCustomizeDataField, "${item.id}", true, fileId);
+                                        });
+                                    </script>
+                                    <div class="x-valid">
+                                        <span class="input-group-btn"><input class="btn btn-warning" type="button" value="X"
+                                                                             onclick="declareCommon.cleanItemHTML(this,'other_Enclosure${item.id}',0,'${item.id}');"></span>
                                     </div>
                                 </div>
-                                <div class="x-valid">
-                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                        附件${status.index}
-                                    </label>
-                                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3  ">
-                                        <input id="other_Enclosure${status.index+1}"
-                                               name="other_Enclosure${status.index+1}" type="file" multiple="false">
-                                        <div id="_other_Enclosure${status.index+1}"></div>
-                                    </div>
-                                </div>
-                                <script>
-                                    $(function () {
-                                        var fileId = 'other_Enclosure${status.index+1}';
-                                        declareCommon.showFile(fileId, AssessDBKey.AssetsCustomizeDataField, "${assetsCustomizeDataField.id}", true, fileId);
-                                        declareCommon.fileUpload(fileId, AssessDBKey.AssetsCustomizeDataField, "${assetsCustomizeDataField.id}", true, fileId);
-                                    });
-                                </script>
-                                <div class="x-valid">
-                                    <span class="input-group-btn"><input class="btn btn-warning" type="button" value="X"
-                                                                         onclick="cleanItemHTML(this)"></span>
-                                </div>
-                            </div>
-                        </c:forTokens>
+                            </c:forEach>
+                        </div>
                     </div>
                 </div>
 
                 <div class="x_panel">
-
                     <div class="x_content">
                         <div class="form-group">
                             <div class="x-valid">
@@ -130,8 +201,12 @@
                     </div>
                 </div>
 
-            </form>
+            </div>
+
+
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
+            <%@include file="./commonFieldHtmlModel.jsp" %>
+
             <div class="x_panel">
                 <div class="x_content">
                     <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4    col-xs-offset-5 col-sm-offset-5 col-md-offset-5 col-lg-offset-5">
@@ -165,78 +240,14 @@
 </div>
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
-<script type="text/html" id="other_EnclosureModel">
-    <div class="form-group">
-        <div class="x-valid">
-            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                自定义名称<span class="symbol required"></span>
-            </label>
-            <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                <input name="fieldNameList" class="form-control" placeholder="自定义名称"/>
-            </div>
-        </div>
-        <div class="x-valid">
-            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                附件
-            </label>
-            <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3  ">
-                <input id="other_Enclosure{number}" name="other_Enclosure{number}" type="file" multiple="false">
-                <div id="_other_Enclosure{number}"></div>
-            </div>
-        </div>
-        <div class="x-valid">
-            <span class="input-group-btn"><input class="btn btn-warning" type="button" value="X"
-                                                 onclick="cleanItemHTML(this,'other_Enclosure{number}')"></span>
-        </div>
-    </div>
-</script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/assets/declare/declare.common.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/assets/dataAssetsAppraisalDic.js"></script>
 <script type="text/javascript">
 
-    function loadAssetsCustomizeDataField(value) {
-        declareCommon.getServerDeclaration(value,function (data) {
-            declareCommon.writeDeclarationHtml(value,data) ;
-        });
-    }
-
-
-    function appendHTML(_this) {
-        var frm = $("#declareApplyForm");
-        var target = $(_this).parent().parent().parent();
-        var number = Number(frm.find("input[name='fieldNameList']").size());
-        number++;
-        var html = $("#other_EnclosureModel").html();
-        var fileId = "other_Enclosure" + number;
-        html = html.replace(/{number}/g, number);
-        target.after(html);
-        declareCommon.showFile(fileId, AssessDBKey.AssetsCustomizeDataField, "${assetsCustomizeDataField.id}", true, fileId);
-        declareCommon.fileUpload(fileId, AssessDBKey.AssetsCustomizeDataField, "${assetsCustomizeDataField.id}", true, fileId);
-    }
-
-    function cleanItemHTML(_this, fileId) {
-        $(_this).parent().parent().parent().remove();
-        var select = {};
-        select.tableName = AssessDBKey.AssetsCustomizeDataField;
-        select.tableId = "${assetsCustomizeDataField.id}";
-        select.fieldsName = fileId;
-        declareCommon.getSysAttachmentDtoList(select, function (data) {
-            var array = [];
-            if (data) {
-                for (var i = 0; i < data.length; i++) {
-                    array.push(data[i].id);
-                }
-            }
-            declareCommon.deleteAttachmentById(array, function () {
-                toastr.success('清除成功!');
-            });
-        });
-    }
-
     $(document).ready(function () {
         $.each(declareCommon.fileArray, function (i, n) {
-            declareCommon.fileUpload(n, AssessDBKey.ProjectPlanDetails, '${projectPlanDetails.id}', false, n);
-            declareCommon.showFile(n, AssessDBKey.ProjectPlanDetails, '${projectPlanDetails.id}', false, n);
+            declareCommon.fileUpload2(n, AssessDBKey.ProjectPlanDetails, '${projectPlanDetails.id}', false,false, n);
+            declareCommon.showFile2(n, AssessDBKey.ProjectPlanDetails, '${projectPlanDetails.id}', false,false, n);
         });
     });
 

@@ -2,10 +2,12 @@ package com.copower.pmcc.assess.controller.project.assets;
 
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.dal.basis.entity.AssetsCustomizeDataField;
+import com.copower.pmcc.assess.dto.input.project.assets.AssetsCustomizeDataFieldDto;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.project.assets.AssetsCustomizeDataFieldService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,9 +37,21 @@ public class AssetsCustomizeDataFieldController {
     @PostMapping(value = "/saveAssetsCustomizeDataField")
     public HttpResult saveAssetsCustomizeDataField(String formData) {
         try {
-            AssetsCustomizeDataField assetsCustomizeDataField = JSONObject.parseObject(formData, AssetsCustomizeDataField.class);
-            dataAssetsAppraisalDicService.saveDataAssetsAppraisalDic(assetsCustomizeDataField);
+            AssetsCustomizeDataFieldDto assetsCustomizeDataField = JSONObject.parseObject(formData, AssetsCustomizeDataFieldDto.class);
+            dataAssetsAppraisalDicService.save(assetsCustomizeDataField);
             return HttpResult.newCorrectResult(200, assetsCustomizeDataField);
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e,errorName);
+            return HttpResult.newErrorResult(500, e.getMessage());
+        }
+    }
+
+    @PostMapping(value = "/saveAssetsCustomizeDataFieldAll")
+    public HttpResult saveAssetsCustomizeDataFieldAll(String formData) {
+        try {
+            List<AssetsCustomizeDataFieldDto> assetsCustomizeDataFieldList = JSONObject.parseArray(formData, AssetsCustomizeDataFieldDto.class);
+            dataAssetsAppraisalDicService.saveAll(assetsCustomizeDataFieldList);
+            return HttpResult.newCorrectResult(200, assetsCustomizeDataFieldList);
         } catch (Exception e) {
             baseService.writeExceptionInfo(e,errorName);
             return HttpResult.newErrorResult(500, e.getMessage());

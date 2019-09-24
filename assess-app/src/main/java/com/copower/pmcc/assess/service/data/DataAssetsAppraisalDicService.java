@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by zch on 2019-9-18.
@@ -170,6 +171,7 @@ public class DataAssetsAppraisalDicService {
                 builder.append(baseAttachmentService.getEditHtml(sysAttachmentDto, true)).append(" ");
             }
             vo.setFileViewName(builder.toString());
+            vo.setFileId(StringUtils.join(sysAttachmentDtoList.stream().map(sysAttachmentDto -> sysAttachmentDto.getId().toString()).collect(Collectors.toList()), ","));
         }
         return vo;
     }
