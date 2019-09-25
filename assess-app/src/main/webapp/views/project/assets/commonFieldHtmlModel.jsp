@@ -17,7 +17,6 @@
                 附件
             </label>
             <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3  ">
-                <input id="assetsCustomizeDataField_Fixed_file{number}" name="assetsCustomizeDataField_Fixed_file{number}" type="file" multiple="false">
                 <div id="_assetsCustomizeDataField_Fixed_file{number}"></div>
             </div>
         </div>

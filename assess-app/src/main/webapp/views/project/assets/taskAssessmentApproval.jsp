@@ -11,6 +11,7 @@
         <div class="right_col" role="main" style="margin-left: 0">
             <%@include file="/views/share/form_head.jsp" %>
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
+            <%@include file="/views/share/project/projectPlanDetails.jsp" %>
 
 
             <div class="form-horizontal">
@@ -56,21 +57,7 @@
                                 </div>
                             </c:forEach>
                         </div>
-                    </div>
-                </div>
 
-                <div class="x_panel">
-                    <div class="x_title">
-                        <ul class="nav navbar-right panel_toolbox">
-                            <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                        </ul>
-                        <h3>申报编辑字段
-                            <small>
-                            </small>
-                        </h3>
-                        <div class="clearfix"></div>
-                    </div>
-                    <div class="x_content">
                         <div id="assetsCustomizeDataField_Fixed_fieldId">
                             <c:forEach items="${fixedDataField}" var="item">
                                 <div class="form-group">
@@ -103,6 +90,8 @@
                         </div>
                     </div>
                 </div>
+
+
 
                 <div class="x_panel">
                     <div class="x_title collapse-link">
@@ -149,7 +138,7 @@
                 </div>
             </div>
             
-            <%@include file="/views/share/project/projectPlanDetails.jsp" %>
+
             <div class="x_panel">
                 <div class="x_content form-horizontal">
                     <form class="form-horizontal" id="declareApplyForm">

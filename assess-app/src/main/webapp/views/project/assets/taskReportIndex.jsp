@@ -1,3 +1,4 @@
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en" class="no-js">
@@ -11,6 +12,7 @@
         <div class="right_col" role="main" style="margin-left: 0">
             <%@include file="/views/share/form_head.jsp" %>
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
+            <%@include file="/views/share/project/projectPlanDetails.jsp" %>
 
 
             <form class="form-horizontal" id="declareApplyForm">
@@ -28,8 +30,7 @@
                             <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                         </ul>
                         <h3>申报编辑文件
-                            <small><input type="button" class="btn btn-xs btn-primary" value="获取模板"
-                                          onclick="reprot.writeDeclarationHtml(2);">
+                            <small>
                             </small>
                         </h3>
                         <div class="clearfix"></div>
@@ -52,8 +53,6 @@
                                             附件
                                         </label>
                                         <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3  ">
-                                            <input id="assetsCustomizeDataField_Fixed_file${item.id}"
-                                                   name="assetsCustomizeDataField_Fixed_file${item.id}" type="file" multiple="false">
                                             <div id="_assetsCustomizeDataField_Fixed_file${item.id}"></div>
                                         </div>
                                     </div>
@@ -61,7 +60,6 @@
                                         $(function () {
                                             var fileId = 'assetsCustomizeDataField_Fixed_file${item.id}';
                                             reprot.showFile2(fileId, AssessDBKey.AssetsCustomizeDataField, "${item.id}", false,true, fileId);
-                                            reprot.fileUpload2(fileId, AssessDBKey.AssetsCustomizeDataField, "${item.id}", false, true,fileId);
                                         });
                                     </script>
                                     <div class="x-valid">
@@ -70,23 +68,15 @@
                                     </div>
                                 </div>
                             </c:forEach>
+                            <c:if test="${fixedDataFieldAndFile== null || fn:length(fixedDataFieldAndFile) == 0}">
+                                <script type="text/javascript">
+                                    $(document).ready(function () {
+                                        reprot.writeDeclarationHtml(2);
+                                    }) ;
+                                </script>
+                            </c:if>
                         </div>
-                    </div>
-                </div>
 
-                <div class="x_panel">
-                    <div class="x_title">
-                        <ul class="nav navbar-right panel_toolbox">
-                            <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                        </ul>
-                        <h3>申报编辑字段
-                            <small><input type="button" class="btn btn-xs btn-primary" value="获取配置字段"
-                                          onclick="reprot.writeDeclarationHtml(1);">
-                            </small>
-                        </h3>
-                        <div class="clearfix"></div>
-                    </div>
-                    <div class="x_content">
                         <div id="assetsCustomizeDataField_Fixed_fieldId">
                             <c:forEach items="${fixedDataField}" var="item">
                                 <div class="form-group">
@@ -122,9 +112,18 @@
                                     </div>
                                 </div>
                             </c:forEach>
+                            <c:if test="${fixedDataField== null || fn:length(fixedDataField) == 0}">
+                                <script type="text/javascript">
+                                    $(document).ready(function () {
+                                        reprot.writeDeclarationHtml(1);
+                                    }) ;
+                                </script>
+                            </c:if>
                         </div>
                     </div>
                 </div>
+
+
 
                 <div class="x_panel">
                     <div class="x_title collapse-link">
@@ -205,7 +204,7 @@
             </div>
 
 
-            <%@include file="/views/share/project/projectPlanDetails.jsp" %>
+
             <%@include file="./commonFieldHtmlModel.jsp" %>
 
             <div class="x_panel">
