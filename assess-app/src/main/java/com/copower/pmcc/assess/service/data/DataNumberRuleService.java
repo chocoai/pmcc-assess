@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.dal.basis.dao.data.DataNumberRuleDao;
 import com.copower.pmcc.assess.dal.basis.entity.DataNumberRule;
 import com.copower.pmcc.assess.dto.output.data.DataNumberRuleVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.project.generate.GenerateCommonMethod;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
@@ -30,6 +31,8 @@ public class DataNumberRuleService {
 
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private GenerateCommonMethod generateCommonMethod;
 
     @Autowired
     private ProcessControllerComponent processControllerComponent;
@@ -91,5 +94,15 @@ public class DataNumberRuleService {
         dataNumberRule.setGroupName(groupName);
         List<DataNumberRule> dataNumberRulesList = dataNumberRuleDao.getDataNumberRule(dataNumberRule);
         return dataNumberRulesList;
+    }
+
+    public List<Integer> getSameGroupReportType(Integer reportType){
+        DataNumberRule dataNumberRulesList = getDataNumberRule(reportType);
+        List<DataNumberRule> numberRuleGroup = getDataNumberRuleByGroup(dataNumberRulesList.getGroupName());
+        //一个分组下的reportType
+        List<Integer> reportTypes = LangUtils.transform(numberRuleGroup, o -> o.getReportType());
+        //去重
+        List<Integer> reportTypeList = generateCommonMethod.removeDuplicate(reportTypes);
+        return  reportTypeList;
     }
 }

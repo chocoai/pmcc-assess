@@ -1,0 +1,464 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.ReportProjectDebtMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.ReportProjectDebt" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="project_id" property="projectId" jdbcType="INTEGER" />
+    <result column="public_project_id" property="publicProjectId" jdbcType="INTEGER" />
+    <result column="project_name" property="projectName" jdbcType="VARCHAR" />
+    <result column="consignor_name" property="consignorName" jdbcType="VARCHAR" />
+    <result column="entrust_purpose_name" property="entrustPurposeName" jdbcType="VARCHAR" />
+    <result column="department_name" property="departmentName" jdbcType="VARCHAR" />
+    <result column="loan_type_name" property="loanTypeName" jdbcType="VARCHAR" />
+    <result column="report_use_unit_name" property="reportUseUnitName" jdbcType="VARCHAR" />
+    <result column="preaudit_number" property="preauditNumber" jdbcType="VARCHAR" />
+    <result column="result_number" property="resultNumber" jdbcType="VARCHAR" />
+    <result column="project_manager_name" property="projectManagerName" jdbcType="VARCHAR" />
+    <result column="contract_price" property="contractPrice" jdbcType="DECIMAL" />
+    <result column="amount" property="amount" jdbcType="DECIMAL" />
+    <result column="actual_amount" property="actualAmount" jdbcType="DECIMAL" />
+    <result column="pay_amount" property="payAmount" jdbcType="DECIMAL" />
+    <result column="debt_amount" property="debtAmount" jdbcType="DECIMAL" />
+    <result column="bis_has_debt" property="bisHasDebt" jdbcType="BIT" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
+    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, project_id, public_project_id, project_name, consignor_name, entrust_purpose_name, 
+    department_name, loan_type_name, report_use_unit_name, preaudit_number, result_number, 
+    project_manager_name, contract_price, amount, actual_amount, pay_amount, debt_amount, 
+    bis_has_debt, creator, gmt_created, gmt_modified
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.ReportProjectDebtExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_report_project_debt
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_report_project_debt
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_report_project_debt
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ReportProjectDebtExample" >
+    delete from tb_report_project_debt
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.ReportProjectDebt" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_report_project_debt (project_id, public_project_id, project_name, 
+      consignor_name, entrust_purpose_name, department_name, 
+      loan_type_name, report_use_unit_name, preaudit_number, 
+      result_number, project_manager_name, contract_price, 
+      amount, actual_amount, pay_amount, 
+      debt_amount, bis_has_debt, creator, 
+      gmt_created, gmt_modified)
+    values (#{projectId,jdbcType=INTEGER}, #{publicProjectId,jdbcType=INTEGER}, #{projectName,jdbcType=VARCHAR}, 
+      #{consignorName,jdbcType=VARCHAR}, #{entrustPurposeName,jdbcType=VARCHAR}, #{departmentName,jdbcType=VARCHAR}, 
+      #{loanTypeName,jdbcType=VARCHAR}, #{reportUseUnitName,jdbcType=VARCHAR}, #{preauditNumber,jdbcType=VARCHAR}, 
+      #{resultNumber,jdbcType=VARCHAR}, #{projectManagerName,jdbcType=VARCHAR}, #{contractPrice,jdbcType=DECIMAL}, 
+      #{amount,jdbcType=DECIMAL}, #{actualAmount,jdbcType=DECIMAL}, #{payAmount,jdbcType=DECIMAL}, 
+      #{debtAmount,jdbcType=DECIMAL}, #{bisHasDebt,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ReportProjectDebt" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_report_project_debt
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="projectId != null" >
+        project_id,
+      </if>
+      <if test="publicProjectId != null" >
+        public_project_id,
+      </if>
+      <if test="projectName != null" >
+        project_name,
+      </if>
+      <if test="consignorName != null" >
+        consignor_name,
+      </if>
+      <if test="entrustPurposeName != null" >
+        entrust_purpose_name,
+      </if>
+      <if test="departmentName != null" >
+        department_name,
+      </if>
+      <if test="loanTypeName != null" >
+        loan_type_name,
+      </if>
+      <if test="reportUseUnitName != null" >
+        report_use_unit_name,
+      </if>
+      <if test="preauditNumber != null" >
+        preaudit_number,
+      </if>
+      <if test="resultNumber != null" >
+        result_number,
+      </if>
+      <if test="projectManagerName != null" >
+        project_manager_name,
+      </if>
+      <if test="contractPrice != null" >
+        contract_price,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="actualAmount != null" >
+        actual_amount,
+      </if>
+      <if test="payAmount != null" >
+        pay_amount,
+      </if>
+      <if test="debtAmount != null" >
+        debt_amount,
+      </if>
+      <if test="bisHasDebt != null" >
+        bis_has_debt,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created,
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="projectId != null" >
+        #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="publicProjectId != null" >
+        #{publicProjectId,jdbcType=INTEGER},
+      </if>
+      <if test="projectName != null" >
+        #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="consignorName != null" >
+        #{consignorName,jdbcType=VARCHAR},
+      </if>
+      <if test="entrustPurposeName != null" >
+        #{entrustPurposeName,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentName != null" >
+        #{departmentName,jdbcType=VARCHAR},
+      </if>
+      <if test="loanTypeName != null" >
+        #{loanTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="reportUseUnitName != null" >
+        #{reportUseUnitName,jdbcType=VARCHAR},
+      </if>
+      <if test="preauditNumber != null" >
+        #{preauditNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="resultNumber != null" >
+        #{resultNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="projectManagerName != null" >
+        #{projectManagerName,jdbcType=VARCHAR},
+      </if>
+      <if test="contractPrice != null" >
+        #{contractPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="actualAmount != null" >
+        #{actualAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="payAmount != null" >
+        #{payAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="debtAmount != null" >
+        #{debtAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="bisHasDebt != null" >
+        #{bisHasDebt,jdbcType=BIT},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null" >
+        #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ReportProjectDebtExample" resultType="java.lang.Integer" >
+    select count(*) from tb_report_project_debt
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_report_project_debt
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.projectId != null" >
+        project_id = #{record.projectId,jdbcType=INTEGER},
+      </if>
+      <if test="record.publicProjectId != null" >
+        public_project_id = #{record.publicProjectId,jdbcType=INTEGER},
+      </if>
+      <if test="record.projectName != null" >
+        project_name = #{record.projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.consignorName != null" >
+        consignor_name = #{record.consignorName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.entrustPurposeName != null" >
+        entrust_purpose_name = #{record.entrustPurposeName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.departmentName != null" >
+        department_name = #{record.departmentName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.loanTypeName != null" >
+        loan_type_name = #{record.loanTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.reportUseUnitName != null" >
+        report_use_unit_name = #{record.reportUseUnitName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.preauditNumber != null" >
+        preaudit_number = #{record.preauditNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.resultNumber != null" >
+        result_number = #{record.resultNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.projectManagerName != null" >
+        project_manager_name = #{record.projectManagerName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.contractPrice != null" >
+        contract_price = #{record.contractPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.amount != null" >
+        amount = #{record.amount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.actualAmount != null" >
+        actual_amount = #{record.actualAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.payAmount != null" >
+        pay_amount = #{record.payAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.debtAmount != null" >
+        debt_amount = #{record.debtAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.bisHasDebt != null" >
+        bis_has_debt = #{record.bisHasDebt,jdbcType=BIT},
+      </if>
+      <if test="record.creator != null" >
+        creator = #{record.creator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gmtCreated != null" >
+        gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gmtModified != null" >
+        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_report_project_debt
+    set id = #{record.id,jdbcType=INTEGER},
+      project_id = #{record.projectId,jdbcType=INTEGER},
+      public_project_id = #{record.publicProjectId,jdbcType=INTEGER},
+      project_name = #{record.projectName,jdbcType=VARCHAR},
+      consignor_name = #{record.consignorName,jdbcType=VARCHAR},
+      entrust_purpose_name = #{record.entrustPurposeName,jdbcType=VARCHAR},
+      department_name = #{record.departmentName,jdbcType=VARCHAR},
+      loan_type_name = #{record.loanTypeName,jdbcType=VARCHAR},
+      report_use_unit_name = #{record.reportUseUnitName,jdbcType=VARCHAR},
+      preaudit_number = #{record.preauditNumber,jdbcType=VARCHAR},
+      result_number = #{record.resultNumber,jdbcType=VARCHAR},
+      project_manager_name = #{record.projectManagerName,jdbcType=VARCHAR},
+      contract_price = #{record.contractPrice,jdbcType=DECIMAL},
+      amount = #{record.amount,jdbcType=DECIMAL},
+      actual_amount = #{record.actualAmount,jdbcType=DECIMAL},
+      pay_amount = #{record.payAmount,jdbcType=DECIMAL},
+      debt_amount = #{record.debtAmount,jdbcType=DECIMAL},
+      bis_has_debt = #{record.bisHasDebt,jdbcType=BIT},
+      creator = #{record.creator,jdbcType=VARCHAR},
+      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ReportProjectDebt" >
+    update tb_report_project_debt
+    <set >
+      <if test="projectId != null" >
+        project_id = #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="publicProjectId != null" >
+        public_project_id = #{publicProjectId,jdbcType=INTEGER},
+      </if>
+      <if test="projectName != null" >
+        project_name = #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="consignorName != null" >
+        consignor_name = #{consignorName,jdbcType=VARCHAR},
+      </if>
+      <if test="entrustPurposeName != null" >
+        entrust_purpose_name = #{entrustPurposeName,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentName != null" >
+        department_name = #{departmentName,jdbcType=VARCHAR},
+      </if>
+      <if test="loanTypeName != null" >
+        loan_type_name = #{loanTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="reportUseUnitName != null" >
+        report_use_unit_name = #{reportUseUnitName,jdbcType=VARCHAR},
+      </if>
+      <if test="preauditNumber != null" >
+        preaudit_number = #{preauditNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="resultNumber != null" >
+        result_number = #{resultNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="projectManagerName != null" >
+        project_manager_name = #{projectManagerName,jdbcType=VARCHAR},
+      </if>
+      <if test="contractPrice != null" >
+        contract_price = #{contractPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="actualAmount != null" >
+        actual_amount = #{actualAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="payAmount != null" >
+        pay_amount = #{payAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="debtAmount != null" >
+        debt_amount = #{debtAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="bisHasDebt != null" >
+        bis_has_debt = #{bisHasDebt,jdbcType=BIT},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.ReportProjectDebt" >
+    update tb_report_project_debt
+    set project_id = #{projectId,jdbcType=INTEGER},
+      public_project_id = #{publicProjectId,jdbcType=INTEGER},
+      project_name = #{projectName,jdbcType=VARCHAR},
+      consignor_name = #{consignorName,jdbcType=VARCHAR},
+      entrust_purpose_name = #{entrustPurposeName,jdbcType=VARCHAR},
+      department_name = #{departmentName,jdbcType=VARCHAR},
+      loan_type_name = #{loanTypeName,jdbcType=VARCHAR},
+      report_use_unit_name = #{reportUseUnitName,jdbcType=VARCHAR},
+      preaudit_number = #{preauditNumber,jdbcType=VARCHAR},
+      result_number = #{resultNumber,jdbcType=VARCHAR},
+      project_manager_name = #{projectManagerName,jdbcType=VARCHAR},
+      contract_price = #{contractPrice,jdbcType=DECIMAL},
+      amount = #{amount,jdbcType=DECIMAL},
+      actual_amount = #{actualAmount,jdbcType=DECIMAL},
+      pay_amount = #{payAmount,jdbcType=DECIMAL},
+      debt_amount = #{debtAmount,jdbcType=DECIMAL},
+      bis_has_debt = #{bisHasDebt,jdbcType=BIT},
+      creator = #{creator,jdbcType=VARCHAR},
+      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
