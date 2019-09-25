@@ -2,7 +2,9 @@ package com.copower.pmcc.assess.controller.base;
 
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
+import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.ureport.ProjectDebtService;
 import com.copower.pmcc.erp.api.dto.ReportProviderFileDto;
 import com.copower.pmcc.erp.api.provider.ErpRpcReportProviderFileService;
 import com.copower.pmcc.erp.common.CommonService;
@@ -11,10 +13,7 @@ import com.copower.pmcc.erp.constant.ApplicationConstant;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -30,6 +29,10 @@ public class ReportDesignerController {
     private ErpRpcReportProviderFileService erpFileReportProvider;
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private ProjectDebtService projectDebtService;
+    @Autowired
+    private BaseService baseService;
 
 
     @GetMapping(value = "/index")
@@ -38,15 +41,15 @@ public class ReportDesignerController {
         return modelAndView;
     }
 
-    @GetMapping(value = "/reportHome/{uuid}",name = "报表页面")
+    @GetMapping(value = "/reportHome/{uuid}", name = "报表页面")
     public ModelAndView reportHome(@PathVariable("uuid") String uuid) {
         ModelAndView modelAndView = commonService.baseView("/reportManage/vacationReport");
         ReportProviderFileDto reportProviderFile = erpFileReportProvider.getOneReportProviderFileByUuid(applicationConstant.getAppKey(), uuid);
-        modelAndView.addObject("reportProviderFile",reportProviderFile);
+        modelAndView.addObject("reportProviderFile", reportProviderFile);
         return modelAndView;
     }
 
-    @GetMapping(value = "/fetchReportProvider",name = "获取报表信息集合")
+    @GetMapping(value = "/fetchReportProvider", name = "获取报表信息集合")
     @ResponseBody
     public HttpResult fetchReportProvider() {
         try {
@@ -57,12 +60,12 @@ public class ReportDesignerController {
         }
     }
 
-    @GetMapping(value = "/deleteReport",name = "删除报表")
+    @GetMapping(value = "/deleteReport", name = "删除报表")
     @ResponseBody
     public HttpResult deleteReport(String reportName) {
         try {
-            if(StringUtils.isNotBlank(reportName)){
-                erpFileReportProvider.deleteReportProviderFile(applicationConstant.getAppKey(),reportName);
+            if (StringUtils.isNotBlank(reportName)) {
+                erpFileReportProvider.deleteReportProviderFile(applicationConstant.getAppKey(), reportName);
             }
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
@@ -70,13 +73,13 @@ public class ReportDesignerController {
         }
     }
 
-    @GetMapping(value = "/workLog",name = "工作日志报表页面")
+    @GetMapping(value = "/workLog", name = "工作日志报表页面")
     public ModelAndView summary() {
         ModelAndView modelAndView = commonService.baseView("/reportManage/workLog");
         return modelAndView;
     }
 
-    @GetMapping(value = "/projectFinance",name = "项目收款报表页面")
+    @GetMapping(value = "/projectFinance", name = "项目收款报表页面")
     public ModelAndView projectFinance() {
         ModelAndView modelAndView = commonService.baseView("/reportManage/projectFinance");
         List<BaseDataDic> entrustmentList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE);
@@ -86,13 +89,13 @@ public class ReportDesignerController {
         return modelAndView;
     }
 
-    @GetMapping(value = "/projectWorkItem",name = "项目工作事项报表页面")
+    @GetMapping(value = "/projectWorkItem", name = "项目工作事项报表页面")
     public ModelAndView projectWorkItem() {
         ModelAndView modelAndView = commonService.baseView("/reportManage/projectWorkItem");
         return modelAndView;
     }
 
-    @GetMapping(value = "/myProjectFinance",name = "项目收款报表页面")
+    @GetMapping(value = "/myProjectFinance", name = "项目收款报表页面")
     public ModelAndView MyProjectFinance() {
         ModelAndView modelAndView = commonService.baseView("/reportManage/myProjectFinance");
         List<BaseDataDic> entrustmentList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE);
@@ -100,5 +103,29 @@ public class ReportDesignerController {
         modelAndView.addObject("entrustmentList", entrustmentList);
         modelAndView.addObject("loanTypeList", loanTypeList);
         return modelAndView;
+    }
+
+    @GetMapping(value = "/projectDebt", name = "项目欠款报表页面")
+    public ModelAndView projectDebt() {
+        //数据初始化
+        projectDebtService.init();
+        ModelAndView modelAndView = commonService.baseView("/reportManage/projectDebt");
+        List<BaseDataDic> entrustmentList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE);
+        List<BaseDataDic> loanTypeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_LOAN_TYPE);
+        modelAndView.addObject("entrustmentList", entrustmentList);
+        modelAndView.addObject("loanTypeList", loanTypeList);
+        return modelAndView;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/projectDebtRefresh", name = "刷新欠款数据", method = RequestMethod.POST)
+    public HttpResult projectDebtRefresh() {
+        try {
+            projectDebtService.init();
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
     }
 }
