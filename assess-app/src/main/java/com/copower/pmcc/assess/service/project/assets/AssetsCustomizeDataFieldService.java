@@ -1,7 +1,9 @@
 package com.copower.pmcc.assess.service.project.assets;
 
+import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.dal.basis.dao.assets.AssetsCustomizeDataFieldDao;
 import com.copower.pmcc.assess.dal.basis.entity.AssetsCustomizeDataField;
+import com.copower.pmcc.assess.dto.input.project.assets.AssetsCustomizeDataFieldDto;
 import com.copower.pmcc.assess.dto.output.data.DataAssetsAppraisalDicVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
@@ -47,6 +49,36 @@ public class AssetsCustomizeDataFieldService {
             dataAssetsAppraisalDicDao.addAssetsCustomizeDataField(assetsCustomizeDataField);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(AssetsCustomizeDataField.class), assetsCustomizeDataField.getId());
             return true;
+        }
+    }
+
+    public void saveAll(List<AssetsCustomizeDataFieldDto> assetsCustomizeDataFieldList)throws Exception{
+        if (CollectionUtils.isNotEmpty(assetsCustomizeDataFieldList)){
+            for (AssetsCustomizeDataFieldDto target:assetsCustomizeDataFieldList){
+                this.save(target) ;
+            }
+        }
+    }
+
+    public void save(AssetsCustomizeDataFieldDto target)throws Exception{
+        saveDataAssetsAppraisalDic(target);
+        if (StringUtils.isEmpty(target.getFileId()) ){
+            return;
+        }
+        List<String> stringList = FormatUtils.transformString2List(target.getFileId()) ;
+        if (CollectionUtils.isEmpty(stringList)){
+            return;
+        }
+        List<String> ids = Lists.newArrayList();
+        SysAttachmentDto example = new SysAttachmentDto();
+        example.setTableName(FormatUtils.entityNameConvertToTableName(AssetsCustomizeDataField.class));
+        for (String string:stringList){
+            example.setTableId(target.getId());
+            SysAttachmentDto sysAttachmentDto = baseAttachmentService.copyFtpAttachment(Integer.parseInt(string),example);
+            ids.add(sysAttachmentDto.getId().toString()) ;
+        }
+        if (CollectionUtils.isNotEmpty(ids)){
+            target.setFileId(StringUtils.join(ids,","));
         }
     }
 

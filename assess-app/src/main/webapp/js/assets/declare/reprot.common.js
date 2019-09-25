@@ -1,21 +1,21 @@
 /**
  * Created by kings on 2018-12-20.
  */
-var declareCommon = {};
+var reprot = {};
 
-declareCommon.fileArray = ["project_proxy"];
+reprot.fileArray = ["project_proxy"];
 
 
-declareCommon.declareApplyForm = $('#declareApplyForm');
+reprot.declareApplyForm = $('#declareApplyForm');
 
-declareCommon.getPlanDetailsId = function () {
-    return declareCommon.declareApplyForm.find('[name=planDetailsId]').val();
+reprot.getPlanDetailsId = function () {
+    return reprot.declareApplyForm.find('[name=planDetailsId]').val();
 };
-declareCommon.getProjectId = function () {
-    return declareCommon.declareApplyForm.find('[name=projectId]').val();
+reprot.getProjectId = function () {
+    return reprot.declareApplyForm.find('[name=projectId]').val();
 };
 
-declareCommon.isNotBlank = function (item) {
+reprot.isNotBlank = function (item) {
     if (item) {
         return true;
     }
@@ -23,11 +23,11 @@ declareCommon.isNotBlank = function (item) {
 };
 
 
-declareCommon.fileUpload = function (target, tableName, id, deleteFlag, fieldsName) {
-    declareCommon.fileUpload2(target, tableName, id, deleteFlag, true, fieldsName);
+reprot.fileUpload = function (target, tableName, id, deleteFlag, fieldsName) {
+    reprot.fileUpload2(target, tableName, id, deleteFlag, true, fieldsName);
 };
 
-declareCommon.fileUpload2 = function (target, tableName, id, deleteFlag, editFlag, fieldsName) {
+reprot.fileUpload2 = function (target, tableName, id, deleteFlag, editFlag, fieldsName) {
     FileUtils.uploadFiles({
         target: target,
         disabledTarget: "btn_submit",
@@ -57,11 +57,11 @@ declareCommon.fileUpload2 = function (target, tableName, id, deleteFlag, editFla
     // });
 };
 
-declareCommon.showFile = function (target, tableName, id, deleteFlag, fieldsName) {
-    declareCommon.showFile2(target, tableName, id, deleteFlag, true, fieldsName);
+reprot.showFile = function (target, tableName, id, deleteFlag, fieldsName) {
+    reprot.showFile2(target, tableName, id, deleteFlag, true, fieldsName);
 };
 
-declareCommon.showFile2 = function (target, tableName, id, deleteFlag, editFlag, fieldsName) {
+reprot.showFile2 = function (target, tableName, id, deleteFlag, editFlag, fieldsName) {
     FileUtils.getFileShows({
         target: target,
         formData: {
@@ -81,7 +81,7 @@ declareCommon.showFile2 = function (target, tableName, id, deleteFlag, editFlag,
  * @param array
  * @param callback
  */
-declareCommon.deleteAttachmentById = function (array, callback) {
+reprot.deleteAttachmentById = function (array, callback) {
     $.ajax({
         url: getContextPath() + "/public/deleteAttachmentById",
         type: "post",
@@ -107,7 +107,7 @@ declareCommon.deleteAttachmentById = function (array, callback) {
  * @param data
  * @param callback
  */
-declareCommon.getSysAttachmentDtoList = function (data, callback) {
+reprot.getSysAttachmentDtoList = function (data, callback) {
     $.ajax({
         url: getContextPath() + "/public/getSysAttachmentDtoList",
         type: "get",
@@ -133,7 +133,7 @@ declareCommon.getSysAttachmentDtoList = function (data, callback) {
  * @param data
  * @param callback
  */
-declareCommon.batchUpdateSysAttachmentDto = function (data, callback) {
+reprot.batchUpdateSysAttachmentDto = function (data, callback) {
     $.ajax({
         url: getContextPath() + "/public/batchUpdateSysAttachmentDto",
         type: "post",
@@ -159,8 +159,8 @@ declareCommon.batchUpdateSysAttachmentDto = function (data, callback) {
  * @param value
  * @param callback
  */
-declareCommon.getServerDeclaration = function (value, callback) {
-    var data = {setting: true, pid: declareCommon.declareApplyForm.find('[name=assetsSettingId]').val()};
+reprot.getServerDeclaration = function (value, callback) {
+    var data = {setting: true, pid: reprot.declareApplyForm.find('[name=assetsSettingId]').val()};
     dataAssetsAppraisalDic.getDataAssetsAppraisalDicList(data, function (item) {
         if (callback) {
             var arr = [];
@@ -169,8 +169,8 @@ declareCommon.getServerDeclaration = function (value, callback) {
                     if (obj.fileId) {
                         arr.push({
                             name: obj.name,
-                            projectId: declareCommon.getProjectId(),
-                            planDetailsId: declareCommon.getPlanDetailsId(),
+                            projectId: reprot.getProjectId(),
+                            planDetailsId: reprot.getPlanDetailsId(),
                             type: value,
                             fileId: obj.fileId
                         })
@@ -182,8 +182,8 @@ declareCommon.getServerDeclaration = function (value, callback) {
                     } else {
                         arr.push({
                             name: obj.name,
-                            projectId: declareCommon.getProjectId(),
-                            planDetailsId: declareCommon.getPlanDetailsId(),
+                            projectId: reprot.getProjectId(),
+                            planDetailsId: reprot.getPlanDetailsId(),
                             type: value
                         })
                     }
@@ -202,10 +202,10 @@ declareCommon.getServerDeclaration = function (value, callback) {
  * 页面载入html
  * @param value
  */
-declareCommon.writeDeclarationHtml = function (value) {
+reprot.writeDeclarationHtml = function (value) {
     var target = undefined;
     if (value == '2') {
-        declareCommon.getServerDeclaration(value, function (data) {
+        reprot.getServerDeclaration(value, function (data) {
             target = $("#assetsCustomizeDataField_Fixed_FileId");
             if (data.length == 0) {
                 return null;
@@ -217,25 +217,25 @@ declareCommon.writeDeclarationHtml = function (value) {
                 html = html.replace(/{name}/g, item.name);
                 html = html.replace(/{id}/g, item.id);
                 html = html.replace(/{value}/g, value);
-                html = html.replace(/{method}/g, 'declareCommon');
+                html = html.replace(/{method}/g, 'reprot');
                 target.append(html);
                 var select = {};
                 select.tableName = AssessDBKey.AssetsCustomizeDataField;
                 select.tableId = item.id;
-                declareCommon.getSysAttachmentDtoList(select, function (obj) {
+                reprot.getSysAttachmentDtoList(select, function (obj) {
                     $.each(obj, function (i, n) {
                         n.fieldsName = fileId;
                     });
-                    declareCommon.batchUpdateSysAttachmentDto(obj, function () {
-                        declareCommon.showFile2(fileId, AssessDBKey.AssetsCustomizeDataField, item.id, false, true, fileId);
-                        declareCommon.fileUpload2(fileId, AssessDBKey.AssetsCustomizeDataField, item.id, false, true, fileId);
+                    reprot.batchUpdateSysAttachmentDto(obj, function () {
+                        reprot.showFile2(fileId, AssessDBKey.AssetsCustomizeDataField, item.id, false, true, fileId);
+                        reprot.fileUpload2(fileId, AssessDBKey.AssetsCustomizeDataField, item.id, false, true, fileId);
                     })
                 });
             });
         });
     }
     if (value == '1') {
-        declareCommon.getServerDeclaration(value, function (data) {
+        reprot.getServerDeclaration(value, function (data) {
             target = $("#assetsCustomizeDataField_Fixed_fieldId");
             if (data.length == 0) {
                 return null;
@@ -247,17 +247,17 @@ declareCommon.writeDeclarationHtml = function (value) {
                 html = html.replace(/{name}/g, item.name);
                 html = html.replace(/{id}/g, item.id);
                 html = html.replace(/{value}/g, value);
-                html = html.replace(/{method}/g, 'declareCommon');
+                html = html.replace(/{method}/g, 'reprot');
                 target.append(html);
-                declareCommon.showFile(fileId, AssessDBKey.AssetsCustomizeDataField, item.id, true, fileId);
-                declareCommon.fileUpload(fileId, AssessDBKey.AssetsCustomizeDataField, item.id, true, fileId);
+                reprot.showFile(fileId, AssessDBKey.AssetsCustomizeDataField, item.id, true, fileId);
+                reprot.fileUpload(fileId, AssessDBKey.AssetsCustomizeDataField, item.id, true, fileId);
             });
         });
     }
     if (value == '0') {
         var item = {
-            projectId: declareCommon.getProjectId(),
-            planDetailsId: declareCommon.getPlanDetailsId(),
+            projectId: reprot.getProjectId(),
+            planDetailsId: reprot.getPlanDetailsId(),
             type: value
         };
         dataAssetsAppraisalDic.saveAssetsCustomizeDataField([item], function (data) {
@@ -269,10 +269,10 @@ declareCommon.writeDeclarationHtml = function (value) {
                 //
                 html = html.replace(/{id}/g, item.id);
                 html = html.replace(/{value}/g, value);
-                html = html.replace(/{method}/g, 'declareCommon');
+                html = html.replace(/{method}/g, 'reprot');
                 target.append(html);
-                declareCommon.showFile(fileId, AssessDBKey.AssetsCustomizeDataField, item.id, true, fileId);
-                declareCommon.fileUpload(fileId, AssessDBKey.AssetsCustomizeDataField, item.id, true, fileId);
+                reprot.showFile(fileId, AssessDBKey.AssetsCustomizeDataField, item.id, true, fileId);
+                reprot.fileUpload(fileId, AssessDBKey.AssetsCustomizeDataField, item.id, true, fileId);
             });
         });
 
@@ -286,7 +286,7 @@ declareCommon.writeDeclarationHtml = function (value) {
  * @param value
  * @param id
  */
-declareCommon.cleanItemHTML = function (_this, fileId, value, id) {
+reprot.cleanItemHTML = function (_this, fileId, value, id) {
     var target = $(_this).closest(".form-group");
     target.remove();
     var select = {};
@@ -315,7 +315,7 @@ declareCommon.cleanItemHTML = function (_this, fileId, value, id) {
     dataAssetsAppraisalDic.deleteAssetsCustomizeDataFieldById(id, null);
     var arr = Object.values(select);
     if (arr.length == 3) {
-        declareCommon.getSysAttachmentDtoList(select, function (data) {
+        reprot.getSysAttachmentDtoList(select, function (data) {
             var array = [];
             if (data) {
                 for (var i = 0; i < data.length; i++) {
@@ -323,7 +323,7 @@ declareCommon.cleanItemHTML = function (_this, fileId, value, id) {
                 }
             }
             if (array.length != 0) {
-                declareCommon.deleteAttachmentById(array, function () {
+                reprot.deleteAttachmentById(array, function () {
                     toastr.success('清除附件成功!');
                 });
             }

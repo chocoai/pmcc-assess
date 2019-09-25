@@ -115,6 +115,22 @@ public class MdMarketCompareFieldService extends BaseService {
             BasicHouseTrading houseTrading = null;
             houseTrading = basicHouseTradingService.getTradingByHouseId(examineHouse.getId());
             houseTrading = houseTrading == null ? new BasicHouseTrading() : houseTrading;
+            //处理下bug ,必要得否则null id 会把子类所有得数据查出来
+            if (houseTrading.getId() == null){
+                houseTrading.setId(0);
+            }
+            if (examineHouse.getId() == null){
+                examineHouse.setId(0);
+            }
+            if (examineUnit.getId() == null){
+                examineUnit.setId(0);
+            }
+            if (examineBuilding.getId() == null){
+                examineBuilding.setId(0);
+            }
+            if (examineEstate.getId() == null){
+                examineEstate.setId(0);
+            }
             //取得申报记录信息
             DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(judgeObject.getDeclareRecordId());
             declareRecord = declareRecord == null ? new DeclareRecord() : declareRecord;

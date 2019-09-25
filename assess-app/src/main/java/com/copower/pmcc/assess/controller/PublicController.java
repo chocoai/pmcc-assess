@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPhase;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.ErpAreaService;
@@ -118,12 +119,32 @@ public class PublicController {
     @RequestMapping(value = "/saveAndUpdateSysAttachmentDto", method = {RequestMethod.POST}, name = "新增或者更新附件")
     public HttpResult saveAndUpdateSysAttachmentDto(SysAttachmentDto sysAttachmentDto) {
         try {
-            if (sysAttachmentDto.getId() == null && sysAttachmentDto.getId() != 0) {
-                baseAttachmentService.addAttachment(sysAttachmentDto);
-            } else {
-                baseAttachmentService.updateAttachment(sysAttachmentDto);
-            }
+            saveAndUpdateSysAttachmentDto2(sysAttachmentDto) ;
             return HttpResult.newCorrectResult(sysAttachmentDto);
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
+            return HttpResult.newErrorResult("异常");
+        }
+    }
+
+    private void saveAndUpdateSysAttachmentDto2(SysAttachmentDto sysAttachmentDto){
+        if (sysAttachmentDto.getId() == null && sysAttachmentDto.getId() != 0) {
+            baseAttachmentService.addAttachment(sysAttachmentDto);
+        } else {
+            baseAttachmentService.updateAttachment(sysAttachmentDto);
+        }
+    }
+
+    @RequestMapping(value = "/batchUpdateSysAttachmentDto", method = {RequestMethod.POST}, name = "批量新增或者更新附件")
+    public HttpResult batchUpdateSysAttachmentDto(String formData) {
+        try {
+           List<SysAttachmentDto> sysAttachmentDtoList = JSONObject.parseArray(formData,SysAttachmentDto.class) ;
+           if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)){
+               for (SysAttachmentDto sysAttachmentDto:sysAttachmentDtoList){
+                   saveAndUpdateSysAttachmentDto2(sysAttachmentDto) ;
+               }
+           }
+            return HttpResult.newCorrectResult(sysAttachmentDtoList);
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult("异常");

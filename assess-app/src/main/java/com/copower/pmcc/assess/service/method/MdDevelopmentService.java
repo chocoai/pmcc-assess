@@ -581,30 +581,33 @@ public class MdDevelopmentService {
                 BigDecimal d44 = target.getAmendmentStatusRights();
                 BigDecimal d45 = target.getOtherAmendments();
                 BigDecimal d46 = target.getDevelopmentDegreeRevision();
-                if (!ArithmeticUtils.checkNotNull(d44)) {
+                //必要得  这个一定不能为null ,核心数据
+                if (!ArithmeticUtils.checkNotNull(d41)) {
                     target.setPrice(ArithmeticUtils.createBigDecimal(0));
                     return target.getPrice().toBigInteger().toString() ;
                 }
-                if (!ArithmeticUtils.checkNotNull(d45)) {
-                    target.setPrice(ArithmeticUtils.createBigDecimal(0));
-                    return target.getPrice().toBigInteger().toString() ;
+
+                BigDecimal result = ArithmeticUtils.createBigDecimal(d41) ;
+
+                if (ArithmeticUtils.checkNotNull(d43) && !Objects.equal("0",d43)){
+                    result = ArithmeticUtils.multiply(result,ArithmeticUtils.createBigDecimal(d43)) ;
                 }
-                if (!ArithmeticUtils.checkNotNull(new String[]{d41,d43})) {
-                    target.setPrice(ArithmeticUtils.createBigDecimal(0));
-                    return target.getPrice().toBigInteger().toString() ;
+
+                if (ArithmeticUtils.checkNotNull(d44) && d44.doubleValue() != 0){
+                    result = ArithmeticUtils.multiply(result,d44) ;
                 }
-                if (Objects.equal("0",d43)){
-                    target.setPrice(ArithmeticUtils.createBigDecimal(0));
-                    return target.getPrice().toBigInteger().toString() ;
+
+                if (ArithmeticUtils.checkNotNull(d45) && d45.doubleValue() != 0){
+                    result = ArithmeticUtils.multiply(result,d45) ;
                 }
-                if (!ArithmeticUtils.checkNotNull(d46)) {
-                    d46 = ArithmeticUtils.createBigDecimal(0) ;
+
+                if (ArithmeticUtils.checkNotNull(d46)  && d46.doubleValue() != 0){
+                    result = ArithmeticUtils.add(result,d46) ;
                 }
-                double d = ArithmeticUtils.mul(new double[]{Double.valueOf(d41), Double.valueOf(d43), d44.doubleValue(), d45.doubleValue()});
-                BigDecimal bigDecimal = ArithmeticUtils.add(ArithmeticUtils.createBigDecimal(d), d46);
-                bigDecimal = ArithmeticUtils.round(bigDecimal, 2, BigDecimal.ROUND_HALF_UP);
-                target.setPrice(bigDecimal);
-                return ArithmeticUtils.getBigDecimalString(bigDecimal);
+
+                result = ArithmeticUtils.round(result, 2, BigDecimal.ROUND_HALF_UP);
+                target.setPrice(result);
+                return ArithmeticUtils.getBigDecimalString(result);
             }
             default:
                 return "0";

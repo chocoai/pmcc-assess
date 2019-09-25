@@ -245,8 +245,8 @@
             }
             if (arr) {
                 $.each(arr, function (i, n) {
-                    dataAssetsAppraisalDic.showFile(n, 'tb_data_assets_appraisal_dic', data.id, false, n);
-                    dataAssetsAppraisalDic.fileUpload(n, 'tb_data_assets_appraisal_dic', data.id, false, n);
+                    dataAssetsAppraisalDic.showFile(n, 'tb_data_assets_appraisal_dic', data.id, true, n);
+                    dataAssetsAppraisalDic.fileUpload(n, 'tb_data_assets_appraisal_dic', data.id, true, n);
 
                 })
             }
@@ -340,7 +340,8 @@
             pid: pid,
             type: data.type,
             bisEnable: true,
-            setting: true
+            setting: true,
+            id:0
         });
     };
 
