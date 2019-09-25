@@ -926,6 +926,66 @@ public class ProjectPhaseExample {
             return (Criteria) this;
         }
 
+        public Criteria andBisWaitIsNull() {
+            addCriterion("bis_wait is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisWaitIsNotNull() {
+            addCriterion("bis_wait is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisWaitEqualTo(Boolean value) {
+            addCriterion("bis_wait =", value, "bisWait");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisWaitNotEqualTo(Boolean value) {
+            addCriterion("bis_wait <>", value, "bisWait");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisWaitGreaterThan(Boolean value) {
+            addCriterion("bis_wait >", value, "bisWait");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisWaitGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_wait >=", value, "bisWait");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisWaitLessThan(Boolean value) {
+            addCriterion("bis_wait <", value, "bisWait");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisWaitLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_wait <=", value, "bisWait");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisWaitIn(List<Boolean> values) {
+            addCriterion("bis_wait in", values, "bisWait");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisWaitNotIn(List<Boolean> values) {
+            addCriterion("bis_wait not in", values, "bisWait");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisWaitBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_wait between", value1, value2, "bisWait");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisWaitNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_wait not between", value1, value2, "bisWait");
+            return (Criteria) this;
+        }
+
         public Criteria andBisEnableIsNull() {
             addCriterion("bis_enable is null");
             return (Criteria) this;

@@ -235,6 +235,9 @@ developmentCommon.architecturalB = {
                 $(tr).find("input").attr(attribute);
             }
         }
+        if (callback) {
+            callback(tr);
+        }
     },
     //收集数据值
     getFomData: function (table) {

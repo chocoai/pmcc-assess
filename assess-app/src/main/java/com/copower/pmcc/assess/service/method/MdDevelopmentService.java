@@ -57,6 +57,8 @@ public class MdDevelopmentService {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private SchemeInfoService schemeInfoService;
+    @Autowired
+    private MdCalculatingMethodEngineeringCostService mdCalculatingMethodEngineeringCostService;
 
     /**
      * 初始化数据
@@ -631,6 +633,7 @@ public class MdDevelopmentService {
         MdDevelopment mdDevelopment = JSONObject.parseObject(formData, MdDevelopment.class);
         mdDevelopment.setContent(formData);
         this.saveAndUpdateMdDevelopment(mdDevelopment);
+        mdCalculatingMethodEngineeringCostService.clearOver(projectPlanDetails.getId(),mdDevelopment.getType());
 
 
     }

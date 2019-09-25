@@ -165,10 +165,6 @@
     development.getFomData = function () {
         var frm = $(development.config.frm);
         var data = formSerializeArray(frm);
-        data.planDetailsId = '${projectPlanDetails.id}';
-        if (!development.isNotBlank(data.type)){
-            data.type = $("#developmentCheckboxTool").find("input[type='radio'][name='type']:checked");
-        }
         return data;
     };
 
@@ -407,11 +403,13 @@
                 $("#developmentEngineering").attr('checked', 'true');
                 $("#developmentLand").removeAttr("checked");
             }
-            development.writeValueEvent(type, function () {
-                landEngineering.loadMdCalculatingMethodEngineeringCostTable();
-                landEngineering.infrastructureChildrenTable.bootstrapTable('refresh');
-            });
+        }else {
+            type = $("#developmentCheckboxTool").find("input[type='radio'][name='type']:checked").val() ;
         }
+        development.writeValueEvent(type, function () {
+            landEngineering.loadMdCalculatingMethodEngineeringCostTable();
+            landEngineering.infrastructureChildrenTable.bootstrapTable('refresh');
+        });
 
         $("#developmentCheckboxTool").find("input[type='radio'][name='type']").change(function () {
             var value = $(this).val();

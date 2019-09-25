@@ -213,8 +213,9 @@
 
     };
 
-    cost.writeValueEvent = function (value) {
+    cost.writeValueEvent = function (value,callback) {
         var target = $("#LAND_ACQUISITION_COST") ;
+        cost.constructionFrm.find("input[name='type']").val(value);
         if (value == cost.one){
             target.find("input").each(function () {
                 var text = $(this).val() ;
@@ -250,6 +251,9 @@
             var landGetCostTotal2 = cost.constructionFrm.find("input[name='landGetCostTotal']").attr('obj-value') ;
             cost.constructionFrm.find("input[name='landGetCostTotal']").val(landGetCostTotal2) ;
             cost.constructionFrm.find(".landGetCostTotal").parent().parent().show() ;
+        }
+        if (callback) {
+            callback(value);
         }
     };
 
@@ -364,11 +368,21 @@
                 $("#construction").attr('checked','true');
                 $("#building").removeAttr("checked");
             }
-            cost.writeValueEvent(type) ;
+        }else {
+            type = $("#costCheckboxTool").find("input[name='type']:checked").val() ;
         }
+        cost.writeValueEvent(type,function () {
+            construction.loadMdCalculatingMethodEngineeringCostTable() ;
+        }) ;
         $("#costCheckboxTool").find("input[name='type']:radio").change(function () {
             var value = $(this).val() ;
-            cost.writeValueEvent(value) ;
+            cost.writeValueEvent(value , function () {
+                try {
+                    construction.loadMdCalculatingMethodEngineeringCostTable() ;
+                } catch (e) {
+                    console.log(e) ;
+                }
+            }) ;
         });
         if (!cost.isNotBlank('${mdCostVo.mdCostConstruction.id}')){
             var query = {province:'${schemeAreaGroup.province}',city:'${schemeAreaGroup.city}',district:'${schemeAreaGroup.district}',bisNationalUnity:true} ;
@@ -411,9 +425,6 @@
 
         construction.loadMdDevelopmentInfrastructureChildrenTable() ;
 
-        construction.loadMdCalculatingMethodEngineeringCostTable() ;
-
-
         var data = {
             parcelSettingInner: '${mdCostVo.mdCostConstruction.parcelSettingInner}',
             parcelSettingOuter: '${mdCostVo.mdCostConstruction.parcelSettingOuter}'
@@ -449,12 +460,10 @@
     });
     //提交
     function submit() {
+        var data = formSerializeArray(cost.constructionFrm);
         if (!cost.constructionFrm.valid()) {
             return false;
         }
-        var data = formSerializeArray(cost.constructionFrm);
-        data.planDetailsId = '${projectPlanDetails.id}';
-        data.type = $("#costCheckboxTool").find("input[name='type']:checked").val() ;
         var item = formSerializeArray($("#md_cost_form")) ;
         if (item){
             if (item.price){

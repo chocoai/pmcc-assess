@@ -14,6 +14,7 @@ import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -66,8 +67,7 @@ public class MdCalculatingMethodEngineeringCostService {
         if (basicApply == null) {
             return;
         }
-        mdArchitecturalObjService.clear(projectPlanDetails.getId());
-        this.clear(projectPlanDetails);
+        this.clear(projectPlanDetails, type);
 
         List<MdArchitecturalObj> mdArchitecturalObjList = Lists.newArrayList();
         MdArchitecturalObj select = new MdArchitecturalObj();
@@ -127,15 +127,44 @@ public class MdCalculatingMethodEngineeringCostService {
         }
     }
 
-    public void clear(ProjectPlanDetails projectPlanDetails) {
+    public void clear(ProjectPlanDetails projectPlanDetails, String type) {
         MdCalculatingMethodEngineeringCost engineeringCost = new MdCalculatingMethodEngineeringCost();
         engineeringCost.setPlanDetailsId(projectPlanDetails.getId());
         engineeringCost.setProjectId(projectPlanDetails.getProjectId());
         engineeringCost.setPrice(new BigDecimal(0));
+        if (StringUtils.isNotBlank(type)) {
+            engineeringCost.setType(type);
+        }
         List<MdCalculatingMethodEngineeringCost> list = getMdCalculatingMethodEngineeringCostListByExample(engineeringCost);
         if (CollectionUtils.isNotEmpty(list)) {
             for (MdCalculatingMethodEngineeringCost obj : list) {
+                if (obj.getArchitecturalObjId() != null) {
+                    mdArchitecturalObjService.deleteMdArchitecturalObjById(obj.getArchitecturalObjId());
+                }
                 deleteMdCalculatingMethodEngineeringCostById(obj.getId());
+            }
+        }
+    }
+
+    /**
+     * 结束的时候清除工程费(清除不属于此type下的数据)
+     * @param planDetailsId
+     * @param type
+     */
+    public void clearOver(Integer planDetailsId, String type) {
+        MdCalculatingMethodEngineeringCost engineeringCost = new MdCalculatingMethodEngineeringCost();
+        engineeringCost.setPlanDetailsId(planDetailsId);
+        List<MdCalculatingMethodEngineeringCost> list = getMdCalculatingMethodEngineeringCostListByExample(engineeringCost);
+        if (CollectionUtils.isNotEmpty(list)) {
+            for (MdCalculatingMethodEngineeringCost obj : list) {
+                if (Objects.equal(type, obj.getType())) {
+                    continue;
+                }
+                deleteMdCalculatingMethodEngineeringCostById(obj.getId());
+                if (obj.getArchitecturalObjId() == null) {
+                    continue;
+                }
+                mdArchitecturalObjService.deleteMdArchitecturalObjById(obj.getArchitecturalObjId());
             }
         }
     }

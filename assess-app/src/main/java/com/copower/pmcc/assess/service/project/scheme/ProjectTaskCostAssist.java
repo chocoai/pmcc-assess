@@ -112,7 +112,7 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
 
     @Override
     public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
-        mdMarketCostService.saveAndUpdateMdCostData(formData);
+        mdMarketCostService.saveAndUpdateMdCostData(formData,projectPlanDetails);
     }
 
 
@@ -122,7 +122,7 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
 
     @Override
     public void returnEditCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
-        mdMarketCostService.saveAndUpdateMdCostData(formData);
+        mdMarketCostService.saveAndUpdateMdCostData(formData,projectPlanDetails);
     }
 
     /**

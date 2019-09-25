@@ -13,6 +13,7 @@
 
         <input type="hidden" name="type" value="${mdDevelopment.type}">
         <input type="hidden" name="id" value="${mdDevelopment.id}">
+        <input type="hidden" name="planDetailsId" value="${projectPlanDetails.id}">
         <input type="hidden" name="economicId" value="${mdDevelopment.economicId}" onblur="loadParamsValue(this);">
 
         <div class="x_content">

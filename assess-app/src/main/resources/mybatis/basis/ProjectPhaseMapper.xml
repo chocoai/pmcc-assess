@@ -15,6 +15,7 @@
     <result column="box_name" property="boxName" jdbcType="VARCHAR" />
     <result column="phase_key" property="phaseKey" jdbcType="VARCHAR" />
     <result column="phase_sort" property="phaseSort" jdbcType="INTEGER" />
+    <result column="bis_wait" property="bisWait" jdbcType="BIT" />
     <result column="bis_enable" property="bisEnable" jdbcType="BIT" />
     <result column="bis_use_box" property="bisUseBox" jdbcType="BIT" />
     <result column="bis_can_return" property="bisCanReturn" jdbcType="BIT" />
@@ -81,8 +82,8 @@
   </sql>
   <sql id="Base_Column_List" >
     id, pid, project_class_id, project_type_id, project_category_id, work_stage_id, assets_setting_id, 
-    project_phase_name, phase_time, phase_form, box_name, phase_key, phase_sort, bis_enable, 
-    bis_use_box, bis_can_return, gmt_created, gmt_modified
+    project_phase_name, phase_time, phase_form, box_name, phase_key, phase_sort, bis_wait, 
+    bis_enable, bis_use_box, bis_can_return, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectPhaseExample" >
     select
@@ -122,14 +123,16 @@
       project_category_id, work_stage_id, assets_setting_id, 
       project_phase_name, phase_time, phase_form, 
       box_name, phase_key, phase_sort, 
-      bis_enable, bis_use_box, bis_can_return, 
-      gmt_created, gmt_modified)
+      bis_wait, bis_enable, bis_use_box, 
+      bis_can_return, gmt_created, gmt_modified
+      )
     values (#{pid,jdbcType=INTEGER}, #{projectClassId,jdbcType=INTEGER}, #{projectTypeId,jdbcType=INTEGER}, 
       #{projectCategoryId,jdbcType=INTEGER}, #{workStageId,jdbcType=INTEGER}, #{assetsSettingId,jdbcType=INTEGER}, 
       #{projectPhaseName,jdbcType=VARCHAR}, #{phaseTime,jdbcType=DECIMAL}, #{phaseForm,jdbcType=VARCHAR}, 
       #{boxName,jdbcType=VARCHAR}, #{phaseKey,jdbcType=VARCHAR}, #{phaseSort,jdbcType=INTEGER}, 
-      #{bisEnable,jdbcType=BIT}, #{bisUseBox,jdbcType=BIT}, #{bisCanReturn,jdbcType=BIT}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+      #{bisWait,jdbcType=BIT}, #{bisEnable,jdbcType=BIT}, #{bisUseBox,jdbcType=BIT}, 
+      #{bisCanReturn,jdbcType=BIT}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectPhase" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -172,6 +175,9 @@
       </if>
       <if test="phaseSort != null" >
         phase_sort,
+      </if>
+      <if test="bisWait != null" >
+        bis_wait,
       </if>
       <if test="bisEnable != null" >
         bis_enable,
@@ -225,6 +231,9 @@
       </if>
       <if test="phaseSort != null" >
         #{phaseSort,jdbcType=INTEGER},
+      </if>
+      <if test="bisWait != null" >
+        #{bisWait,jdbcType=BIT},
       </if>
       <if test="bisEnable != null" >
         #{bisEnable,jdbcType=BIT},
@@ -291,6 +300,9 @@
       <if test="record.phaseSort != null" >
         phase_sort = #{record.phaseSort,jdbcType=INTEGER},
       </if>
+      <if test="record.bisWait != null" >
+        bis_wait = #{record.bisWait,jdbcType=BIT},
+      </if>
       <if test="record.bisEnable != null" >
         bis_enable = #{record.bisEnable,jdbcType=BIT},
       </if>
@@ -326,6 +338,7 @@
       box_name = #{record.boxName,jdbcType=VARCHAR},
       phase_key = #{record.phaseKey,jdbcType=VARCHAR},
       phase_sort = #{record.phaseSort,jdbcType=INTEGER},
+      bis_wait = #{record.bisWait,jdbcType=BIT},
       bis_enable = #{record.bisEnable,jdbcType=BIT},
       bis_use_box = #{record.bisUseBox,jdbcType=BIT},
       bis_can_return = #{record.bisCanReturn,jdbcType=BIT},
@@ -374,6 +387,9 @@
       <if test="phaseSort != null" >
         phase_sort = #{phaseSort,jdbcType=INTEGER},
       </if>
+      <if test="bisWait != null" >
+        bis_wait = #{bisWait,jdbcType=BIT},
+      </if>
       <if test="bisEnable != null" >
         bis_enable = #{bisEnable,jdbcType=BIT},
       </if>
@@ -406,6 +422,7 @@
       box_name = #{boxName,jdbcType=VARCHAR},
       phase_key = #{phaseKey,jdbcType=VARCHAR},
       phase_sort = #{phaseSort,jdbcType=INTEGER},
+      bis_wait = #{bisWait,jdbcType=BIT},
       bis_enable = #{bisEnable,jdbcType=BIT},
       bis_use_box = #{bisUseBox,jdbcType=BIT},
       bis_can_return = #{bisCanReturn,jdbcType=BIT},

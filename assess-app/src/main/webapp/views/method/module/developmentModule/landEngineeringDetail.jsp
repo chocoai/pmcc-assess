@@ -738,7 +738,7 @@
     };
 
     landEngineering.loadMdDevelopmentInfrastructureChildrenTable = function () {
-        var data = {pid:'${mdDevelopment.id}'} ;
+        var data = {pid:'${mdDevelopment.id}',planDetailsId:'${projectPlanDetails.id}'} ;
         developmentCommon.infrastructureChildren.loadTable2(data,$("#landMdDevelopmentInfrastructureChildrenTable"),null) ;
     };
 

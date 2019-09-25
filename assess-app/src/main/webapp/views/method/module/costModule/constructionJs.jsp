@@ -13,6 +13,10 @@
     construction.incomeCategoryFooterHtml = "#mdCostConstructionMdDevelopmentIncomeCategoryFooter";
     construction.type = 'engineering';
 
+    construction.typeData = function () {
+        return construction.target.find("input[name='type']").val();
+    };
+
     /**调用比较法**/
     construction.callCompareMethod = function (this_) {
         var mcId = construction.target.find('[name=mcId]').val();
@@ -137,6 +141,7 @@
             var mdCalculatingMethodEngineeringCost = $(construction.engineeringFeeInfoTarget).bootstrapTable('getRowByUniqueId', obj.pid);
             try {
                 mdCalculatingMethodEngineeringCost.price = Number(obj.price) / Number(mdCalculatingMethodEngineeringCost.area) ;
+                mdCalculatingMethodEngineeringCost.type = construction.typeData();
             } catch (e) {
             }
             developmentCommon.saveMdCalculatingMethodEngineeringCost(mdCalculatingMethodEngineeringCost, function (data) {
@@ -176,8 +181,7 @@
      * 工程费表格加载
      */
     construction.loadMdCalculatingMethodEngineeringCostTable = function () {
-        <%--var obj = {type: construction.type, planDetailsId: '${projectPlanDetails.id}'};--%>
-        var obj = { planDetailsId: '${projectPlanDetails.id}'};
+        var obj = { planDetailsId: '${projectPlanDetails.id}',type:construction.typeData()};
         var cols = [];
         cols.push({
             field: 'id', title: '建筑安装工程费明细', formatter: function (value, row, index) {
@@ -209,7 +213,7 @@
         var data = formSerializeArray(frm);
         data.planDetailsId = '${projectPlanDetails.id}';
         data.projectId = '${projectPlanDetails.projectId}';
-        data.type = construction.type;
+        data.type = construction.typeData();
         developmentCommon.saveMdCalculatingMethodEngineeringCost(data, function (item) {
             construction.writeMdCalculatingMethodEngineeringCost(item);
             target.modal("hide");
@@ -289,7 +293,7 @@
         $.ajax({
             type: "post",
             url: getContextPath() +"/mdCostConstruction/setMdCalculatingMethodEngineeringCost",
-            data: {planDetailsId:planDetailsId},
+            data: {planDetailsId:planDetailsId,type:construction.typeData()},
             success: function (result) {
                 if (result.ret) {
                     toastr.success('成功');

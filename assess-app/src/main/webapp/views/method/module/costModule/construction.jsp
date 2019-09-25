@@ -4,9 +4,10 @@
     <div class="x_panel">
         <input type="hidden" name="id" value="${mdCostVo.mdCostConstruction.id}">
         <input type="hidden" name="pid" value="${mdCostVo.mdCostConstruction.pid}">
+        <input type="hidden" name="type" value="${mdCostVo.type}">
         <input type="hidden" name="mcId" value="${mdCostVo.mdCostConstruction.mcId}">
-        <input type="hidden" name="economicId" value="${mdCostVo.mdCostConstruction.economicId}"
-               onblur="cost.checkParams(this);">
+        <input type="hidden" name="planDetailsId" value="${projectPlanDetails.id}">
+        <input type="hidden" name="economicId" value="${mdCostVo.mdCostConstruction.economicId}" onblur="cost.checkParams(this);">
         <div class="x_title collapse-link">
             <ul class="nav navbar-right panel_toolbox">
                 <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>

@@ -581,7 +581,7 @@
     };
 
     construction.loadMdDevelopmentInfrastructureChildrenTable = function () {
-        var data = {pid:'${mdCostVo.mdCostConstruction.id}'} ;
+        var data = {pid:'${mdCostVo.mdCostConstruction.id}',planDetailsId:'${projectPlanDetails.id}'} ;
         developmentCommon.infrastructureChildren.loadTable2(data,$("#landMdCostConstructionChildrenTable"),null) ;
     };
 

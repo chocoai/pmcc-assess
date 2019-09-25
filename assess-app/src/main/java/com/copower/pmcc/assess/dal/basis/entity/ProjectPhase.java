@@ -30,6 +30,8 @@ public class ProjectPhase {
 
     private Integer phaseSort;
 
+    private Boolean bisWait;
+
     private Boolean bisEnable;
 
     private Boolean bisUseBox;
@@ -142,6 +144,14 @@ public class ProjectPhase {
 
     public void setPhaseSort(Integer phaseSort) {
         this.phaseSort = phaseSort;
+    }
+
+    public Boolean getBisWait() {
+        return bisWait;
+    }
+
+    public void setBisWait(Boolean bisWait) {
+        this.bisWait = bisWait;
     }
 
     public Boolean getBisEnable() {

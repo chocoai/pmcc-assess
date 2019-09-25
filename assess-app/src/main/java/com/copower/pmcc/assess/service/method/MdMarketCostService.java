@@ -60,6 +60,8 @@ public class MdMarketCostService {
     private DeclareBuildEngineeringAndEquipmentCenterService declareBuildEngineeringAndEquipmentCenterService;
     @Autowired
     private MdEconomicIndicatorsService mdEconomicIndicatorsService;
+    @Autowired
+    private MdCalculatingMethodEngineeringCostService mdCalculatingMethodEngineeringCostService;
 
 
     public MdCost initExplore(SchemeJudgeObject schemeJudgeObject) {
@@ -167,7 +169,7 @@ public class MdMarketCostService {
     }
 
 
-    public void saveAndUpdateMdCostData(String formData) {
+    public void saveAndUpdateMdCostData(String formData , ProjectPlanDetails projectPlanDetails) {
         JSONObject jsonObject = JSON.parseObject(formData);
         MdCost mdCost = new MdCost();
         MdCostConstruction mdCostConstruction = JSONObject.parseObject(formData, MdCostConstruction.class);
@@ -179,6 +181,8 @@ public class MdMarketCostService {
 
         mdCostConstruction.setJsonContent(formData);
         saveMdCostConstructionAndUpdate(mdCostConstruction);
+
+        mdCalculatingMethodEngineeringCostService.clearOver(projectPlanDetails.getId(),mdCost.getType());
 
 
     }
