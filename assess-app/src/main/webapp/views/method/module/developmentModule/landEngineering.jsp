@@ -700,7 +700,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td> 测算单价(万元)</td>
+                            <td> 测算单价</td>
                             <td name="price">
                                 ${mdDevelopment.price}
                             </td>
