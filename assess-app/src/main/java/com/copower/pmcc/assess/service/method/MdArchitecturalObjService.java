@@ -2,9 +2,7 @@ package com.copower.pmcc.assess.service.method;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.aspose.words.Cell;
 import com.aspose.words.DocumentBuilder;
-import com.aspose.words.Table;
 import com.copower.pmcc.assess.common.ArithmeticUtils;
 import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdArchitecturalObjDao;
@@ -153,7 +151,7 @@ public class MdArchitecturalObjService {
                 String name = jsonObject.getString("name") ;
                 //父级
                 if ("parent".equals(role)) {
-                    linkedList.add(String.join("", StringUtils.isNotBlank(name)?name:"", StringUtils.repeat(" ", 1), "(父级)"));
+                    linkedList.add(String.join("", StringUtils.isNotBlank(name)?name:"", StringUtils.repeat(" ", 1), ""));
                     linkedList.add("");
                     linkedList.add("");
                     linkedList.add("");

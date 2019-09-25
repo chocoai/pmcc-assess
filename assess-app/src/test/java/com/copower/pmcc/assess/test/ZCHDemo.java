@@ -106,7 +106,7 @@ public class ZCHDemo {
                 String role = jsonObject.getString("role");
                 //父级
                 if ("parent".equals(role)) {
-                    linkedList.add(String.join("", jsonObject.getString("name"), StringUtils.repeat(" ", 1), "(父级)"));
+                    linkedList.add(String.join("", jsonObject.getString("name"), StringUtils.repeat(" ", 1), ""));
                     linkedList.add("");
                     linkedList.add("/");
                     linkedList.add("");
