@@ -428,7 +428,7 @@ public class MdDevelopmentService {
                 if (!ArithmeticUtils.checkNotNull(g35)) {
                     return "";
                 }
-                String[] strings = new String[] {d26,d27,f32,f33} ;
+                String[] strings = new String[] {d26,d27,f32,f33,f31.toString()} ;
                 if (!ArithmeticUtils.checkNotNull(strings)) {
                     return "";
                 }
