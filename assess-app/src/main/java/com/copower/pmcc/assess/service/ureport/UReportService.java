@@ -126,7 +126,7 @@ public class UReportService {
 
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT A.id,A.public_project_id,A.project_name,A.contract_name,A.contract_price,A.entrust_purpose,A.loan_type,A.department_id,A.service_come_from_explain," +
-                "B.user_account_manager,C.cs_entrustment_unit,C.cs_name,D.u_use_unit," +
+                " A.result_number_date,B.user_account_manager,C.cs_entrustment_unit,C.cs_name,D.u_use_unit," +
                 " E.number_value as preaudit_number,F.number_value as technology_number,G.number_value as result_number,H.number_value as consultation_number,A.gmt_created" +
                 " FROM tb_project_info A " +
                 " LEFT JOIN tb_project_member B ON A.id=B.project_id" +
@@ -237,6 +237,10 @@ public class UReportService {
                     Object gmt_created = map.get("gmt_created");
                     if (gmt_created != null) {
                         vo.setProjectCreated(DateUtils.convertDate(String.valueOf(gmt_created)));
+                    }
+                    Object result_number_date = map.get("result_number_date");
+                    if (result_number_date != null) {
+                        vo.setResultNumberDate(DateUtils.convertDate(String.valueOf(result_number_date)));
                     }
                     vo.setContractName(objectToString(map.get("contract_name")));
                     vo.setContractPrice(objectToBigDecimal(map.get("contract_price")));
