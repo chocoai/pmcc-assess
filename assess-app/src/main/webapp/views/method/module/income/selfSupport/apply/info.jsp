@@ -166,8 +166,6 @@
                     <th>成本</th>
                     <th>经营利润</th>
                     <th>房地产年净收益</th>
-                    <th>年期修正系数(h)</th>
-                    <th>收益现值系数(k)</th>
                     <th>房地产收益价格</th>
                 </tr>
                 </thead>
@@ -355,11 +353,11 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <div class="x-valid">
-                                <label class="col-sm-2 control-label">
-                                    经营成本比率<span class="symbol required"></span>
-                                </label>
-                                <div class="col-sm-4">
-                            <div class="input-group">
+                            <label class="col-sm-2 control-label">
+                                经营成本比率<span class="symbol required"></span>
+                            </label>
+                            <div class="col-sm-4">
+                                <div class="input-group">
                                     <input type="text" name="operatingCostRatio" placeholder="经营成本比率"
                                            onblur="selfSupport.computeInitialAmount(this);"
                                            class="form-control x-percent">
@@ -753,8 +751,6 @@
         <td><label data-name="costTotal">{costTotal}</label></td>
         <td><label data-name="operatingProfit">{operatingProfit}</label></td>
         <td><label data-name="netProfit">{netProfit}</label></td>
-        <td><label data-name="correctionFactor">{correctionFactor}</label></td>
-        <td><label data-name="presentValueFactor">{presentValueFactor}</label></td>
         <td><label data-name="incomePrice">{incomePrice}</label></td>
     </tr>
 </script>
@@ -787,7 +783,7 @@
                 var str = '<div class="btn-margin">';
                 str += '<a class="btn btn-xs btn-success tooltips" data-placement="top" data-original-title="编辑" onclick="selfSupport.editForecastIncomeItem(' + index + ');" ><i class="fa fa-edit fa-white"></i></a>';
                 str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="selfSupport.deleteForecastIncomeItem(' + row.id + ')"><i class="fa fa-minus fa-white"></i></a>';
-               // str += '<a class="btn btn-xs btn-primary tooltips" data-placement="top" data-original-title="引用历史金额" onclick="selfSupport.showSameNameItemModel(' + row.id + ')">引用历史金额</a>';
+                // str += '<a class="btn btn-xs btn-primary tooltips" data-placement="top" data-original-title="引用历史金额" onclick="selfSupport.showSameNameItemModel(' + row.id + ')">引用历史金额</a>';
                 str += '</div>';
                 return str;
             }
@@ -1395,8 +1391,8 @@
                         html = html.replace(/{incomeTotal}/g, AssessCommon.toString(item.incomeTotal)).replace(/{costTotal}/g, AssessCommon.toString(item.costTotal));
                         html = html.replace(/{operatingProfit}/g, AssessCommon.toString(item.operatingProfit));
                         html = html.replace(/{rentalGrowthRate}/g, AssessCommon.toString(item.rentalGrowthRate));
-                        html = html.replace(/{netProfit}/g, AssessCommon.toString(item.netProfit)).replace(/{correctionFactor}/g, AssessCommon.toString(item.correctionFactor));
-                        html = html.replace(/{presentValueFactor}/g, AssessCommon.toString(item.presentValueFactor)).replace(/{incomePrice}/g, AssessCommon.toString(item.incomePrice));
+                        html = html.replace(/{netProfit}/g, AssessCommon.toString(item.netProfit));
+                        html = html.replace(/{incomePrice}/g, AssessCommon.toString(item.incomePrice));
                         $("#selfSupportResultBody").append(html);
                     })
                     selfSupport.computeOperatingProfit();
@@ -1484,7 +1480,7 @@
     }
 
     //成本明细比率
-    selfSupport.operatingCostItem = function(){
+    selfSupport.operatingCostItem = function () {
         $("#frmCostItem").clearAll();
         var id = $("#frm_forecast_cost").find("input[name='id']").val();
         $("#frmCostItem").find("input[name='id']").val(id);
@@ -1493,11 +1489,11 @@
             url: "${pageContext.request.contextPath}/income/getForecastById",
             type: "post",
             dataType: "json",
-            data: {id:id},
+            data: {id: id},
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    if(result.data.operatingCostItem) {
+                    if (result.data.operatingCostItem) {
                         selfSupport.writeHTMLData(result.data.operatingCostItem);
                     }
                 }
@@ -1513,7 +1509,7 @@
         $('#costItemBox').modal();
     }
 
-    selfSupport.appendHTML=function() {
+    selfSupport.appendHTML = function () {
         var html = "<div class='form-group' >";
         html += "<div class='x-valid'>";
         html += "<label class='col-sm-1 control-label'>" + "一级编号" + "</label>";
@@ -1547,7 +1543,7 @@
         $(".system").append(html);
     }
 
-    selfSupport.cleanHTMLData=function(item) {
+    selfSupport.cleanHTMLData = function (item) {
         var value = "";
         $(item).parent().parent().parent().remove();
     }
@@ -1557,7 +1553,7 @@
             return false;
         }
         //var data = formParams("frmCostItem");
-        var id=$("#frmCostItem").find("input[name='id']").val();
+        var id = $("#frmCostItem").find("input[name='id']").val();
         var operatingCostItem = [];
         $("#frmCostItem").find('.system').find('.form-group').each(function () {
             var item = {};
@@ -1565,7 +1561,7 @@
             var total = $(this).find('[name^=total]').val();
             var name = $(this).find('[name^=name]').val();
             var ratio = AssessCommon.percentToPoint($(this).find('[name^=ratio]').val());
-            if(ratio) {
+            if (ratio) {
                 item.name = name;
                 item.ratio = ratio;
                 item.amountMoney = amountMoney;
@@ -1579,8 +1575,8 @@
             type: "post",
             dataType: "json",
             data: {
-                id:id,
-                operatingCostItem:JSON.stringify(operatingCostItem)
+                id: id,
+                operatingCostItem: JSON.stringify(operatingCostItem)
             },
             success: function (result) {
                 Loading.progressHide();
@@ -1588,14 +1584,14 @@
                     var costTotal = 0;
                     var incomeTotal = 0;
                     $.each(operatingCostItem, function (i, n) {
-                        costTotal += Number(n.amountMoney)*Number(n.ratio);
+                        costTotal += Number(n.amountMoney) * Number(n.ratio);
                         incomeTotal = Number(n.total);
                     })
-                    if(costTotal!=0&&incomeTotal!=0) {
-                        var result = AssessCommon.pointToPercent((costTotal/incomeTotal).toFixed(4));
+                    if (costTotal != 0 && incomeTotal != 0) {
+                        var result = AssessCommon.pointToPercent((costTotal / incomeTotal).toFixed(4));
                         $("#frm_forecast_cost").find("[name=operatingCostRatio]").val(result);
                         var incomeTotal = $("#frm_forecast_cost").find('[name=incomeTotal]').val();
-                        $("#frm_forecast_cost").find('[name=operatingCostRatio]').attr('data-value',AssessCommon.percentToPoint(result));
+                        $("#frm_forecast_cost").find('[name=operatingCostRatio]').attr('data-value', AssessCommon.percentToPoint(result));
                         $("#frm_forecast_cost").find('[name=operatingCost]').val(accMul(result, incomeTotal).toFixed(2));
                         selfSupport.computeInitialAmount("#frm_forecast_cost");
                     }
@@ -1612,7 +1608,7 @@
         })
     }
 
-    selfSupport.writeHTMLData=function(json) {
+    selfSupport.writeHTMLData = function (json) {
         var jsonarray = eval(json);
         $.each(jsonarray, function (i, n) {
             var html = "<div class='form-group' >";
@@ -1621,7 +1617,7 @@
             html += "<input type='hidden'  name='name'  value='" + n.name + "'>";
             html += "<div class='x-valid'>";
             html += "<div class='col-sm-5'>";
-            html +=  n.name ;
+            html += n.name;
             html += "</div>";
             html += "</div>";
 
@@ -1629,9 +1625,9 @@
             html += "<div class='x-valid'>";
             html += "<label class='col-sm-1 control-label'>" + "比率" + "</label>";
             html += "<div class='col-sm-2'>";
-            if(n.ratio){
+            if (n.ratio) {
                 html += "<input type='text' required class='form-control x-percent' name='ratio' value='" + AssessCommon.pointToPercent(n.ratio) + "'>";
-            }else {
+            } else {
                 html += "<input type='text' required class='form-control x-percent' name='ratio' value=''>";
             }
             html += "</div>";
@@ -1659,8 +1655,8 @@
                 $(this).find('[data-name=operatingProfit]').text(operatingProfit);
                 //净收益
                 var netProfit = incomeTotal - costTotal - operatingProfit;
-                console.log("incomeTotal:"+incomeTotal)
-                console.log("netProfit:"+netProfit)
+                console.log("incomeTotal:" + incomeTotal)
+                console.log("netProfit:" + netProfit)
                 $(this).find('[data-name=netProfit]').text(netProfit.toFixed(2));
             }
         })
@@ -1668,31 +1664,32 @@
         selfSupport.computePrice();
     }
 
-    //计算年期修正系数[(h)=(1-((1+g)/(1+r))^n]、收益现值系数[(k)=h/(r-g)]、房地产收益价格[房地产收益价格*收益现值系数]
+    //计算公式V=A/(Y-g)×[1-(1+g) /(1+y)t] + At/(Y-g)×[1-(1+g) t /(1+y)N-t] 第一年与后续年计算
     selfSupport.computePrice = function () {
-        var r = $("#frm_self_support").find('[name=rewardRate]').attr('data-value');//报酬率
-        if (!AssessCommon.isNumber(r)) return false;
-        r = parseFloat(r);
+        var Y = $("#frm_self_support").find('[name=rewardRate]').attr('data-value');//报酬率
+        if (!AssessCommon.isNumber(Y)) return false;
+        Y = parseFloat(Y);//还原率
         var incomePriceTotal = 0;//收益价格合计
-        var currYearCount = 1;//当前年份数
-        $("#selfSupportResultBody").find('tr').each(function () {
+        var t = 0;//
+        $("#selfSupportResultBody").find('tr').each(function (index) {
             var n = $(this).find('[data-name=yearCount]').text();
             if (!AssessCommon.isNumber(n)) return true;
-            n = parseInt(n);
+            n = parseFloat(n);//收益期限
+            var netProfit = $(this).find('[data-name=netProfit]').text();
+            if (!AssessCommon.isNumber(netProfit)) return true;
+            netProfit = parseFloat(netProfit);//净收益
             var g = $(this).find('[data-name=rentalGrowthRate]').val();
             if (!AssessCommon.isNumber(g)) g = 0;
             g = parseFloat(g);//增长率
-            var h = (1 - Math.pow((1 + g), currYearCount) / Math.pow((1 + r), n)).toFixed(6);//年期修正系数
-            var k = (h / (r - g)).toFixed(6);//收益现值系数
-            $(this).find('[data-name=correctionFactor]').text(h);
-            $(this).find('[data-name=presentValueFactor]').text(k);
-            var netProfit = $(this).find('[data-name=netProfit]').text();
-            if (!AssessCommon.isNumber(netProfit)) return true;
-            netProfit = parseFloat(netProfit);
-            var incomePrice = (netProfit * k).toFixed(2);
+            var incomePrice = 0;
+            if (index == 0) {
+                incomePrice = (netProfit / (Y - g) * (1 - Math.pow(((1 + g) / (1 + Y)), n))).toFixed(2);
+            } else {
+                incomePrice = (netProfit / (Y - g) * (1 - Math.pow((Math.pow((1 + g), t) / (1 + Y)), n))).toFixed(2);
+            }
             incomePriceTotal = incomePriceTotal + parseFloat(incomePrice);
             $(this).find('[data-name=incomePrice]').text(incomePrice);//收益价格
-            currYearCount += n;
+            t += n;
         })
         //计算委估对象单价 （单价=收益价格合计\委估对象面积）
         var area = $("#selfSupportResult").find('[data-name=area]').text();
