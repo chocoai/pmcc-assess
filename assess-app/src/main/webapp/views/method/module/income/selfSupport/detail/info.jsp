@@ -149,8 +149,6 @@
                     <th>总成本</th>
                     <th>经营利润</th>
                     <th>房地产年净收益</th>
-                    <th>年期修正系数(h)</th>
-                    <th>收益现值系数(k)</th>
                     <th>房地产收益价格</th>
                 </tr>
                 </thead>
@@ -429,8 +427,6 @@
         <td><label data-name="costTotal">{costTotal}</label></td>
         <td><label data-name="operatingProfit">{operatingProfit}</label></td>
         <td><label data-name="netProfit">{netProfit}</label></td>
-        <td><label data-name="correctionFactor">{correctionFactor}</label></td>
-        <td><label data-name="presentValueFactor">{presentValueFactor}</label></td>
         <td><label data-name="incomePrice">{incomePrice}</label></td>
     </tr>
 </script>
@@ -576,8 +572,8 @@
                         html = html.replace(/{endDate}/g, formatDate(item.endDate, false)).replace(/{yearCount}/g, item.yearCount);
                         html = html.replace(/{incomeTotal}/g, AssessCommon.toString(item.incomeTotal)).replace(/{costTotal}/g, AssessCommon.toString(item.costTotal));
                         html = html.replace(/{operatingProfit}/g, AssessCommon.toString(item.operatingProfit));
-                        html = html.replace(/{netProfit}/g, AssessCommon.toString(item.netProfit)).replace(/{correctionFactor}/g, AssessCommon.toString(item.correctionFactor));
-                        html = html.replace(/{presentValueFactor}/g, AssessCommon.toString(item.presentValueFactor)).replace(/{incomePrice}/g, AssessCommon.toString(item.incomePrice));
+                        html = html.replace(/{netProfit}/g, AssessCommon.toString(item.netProfit));
+                        html = html.replace(/{incomePrice}/g, AssessCommon.toString(item.incomePrice));
                         $("#selfSupportResultBody").append(html);
                     })
                 }
