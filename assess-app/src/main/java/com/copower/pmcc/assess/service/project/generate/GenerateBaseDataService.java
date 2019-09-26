@@ -151,11 +151,6 @@ public class GenerateBaseDataService {
     private Map<Integer, SchemeJudgeObject> schemeJudgeObjectMap = null;
     //===========================================获取的值===============================
 
-    //报告出具日期
-    public Date getReportIssuanceDate() {
-        return new Date();
-    }
-
     /**
      * 获取文号
      *
@@ -212,7 +207,7 @@ public class GenerateBaseDataService {
             projectDocumentDto.setCustomer(getPrincipal());
             projectDocumentDto.setCompanyName(qualificationDto != null ? qualificationDto.getOrganizationName() : "");
             projectDocumentDto.setDocumentNumber(getWordNumber());
-            projectDocumentDto.setReportDate(getValueTimePoint());
+            projectDocumentDto.setReportDate(DateUtils.formatDate(generateReportInfo.getReportIssuanceDate(),DateUtils.DATE_CHINESE_PATTERN) );
             projectDocumentDto.setReportMember(projectInfo.getUserAccountManagerName());
             projectDocumentDto.setAppKey(applicationConstant.getAppKey());
             projectDocumentDto.setTableName(FormatUtils.entityNameConvertToTableName(GenerateReportInfo.class));
@@ -359,7 +354,7 @@ public class GenerateBaseDataService {
                 if (generateReportInfo.getReportIssuanceDate() != null) {
                     reportIssuanceStr = DateUtils.format(generateReportInfo.getReportIssuanceDate(), DateUtils.DATE_CHINESE_PATTERN);
                 } else {
-                    reportIssuanceStr = DateUtils.format(getReportIssuanceDate(), DateUtils.DATE_CHINESE_PATTERN);
+                    reportIssuanceStr = DateUtils.format(new Date(), DateUtils.DATE_CHINESE_PATTERN);
                 }
                 stringBuilder.append("").append("报告日期:").append(reportIssuanceStr).append(";").append(StringUtils.repeat("\n\r\t", 1));
                 stringBuilder.append("&lang=zh_CN&scene=4");

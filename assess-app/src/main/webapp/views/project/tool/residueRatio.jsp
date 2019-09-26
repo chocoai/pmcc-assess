@@ -13,6 +13,7 @@
                 <div class="col-md-12">
                     <div class="panel-header">
                         <input name="houseId" id="residueRatioHouseId" type="hidden">
+                        <input name="id" type="hidden">
                         <div class="form-group">
                             <div class="x-valid">
                                 <span class="col-sm-2 col-sm-offset-2 radio-inline">
@@ -118,7 +119,7 @@
             usableYear: undefined,//可用年限
             houseId: undefined,//完损度关联的房屋id
             success: function (id, resultValue) {
-
+                defaults.residueRatioId = id;
 
             }
         };
@@ -135,46 +136,54 @@
                 if (!$("#residue_ratio_form").valid()) {
                     return false;
                 }
-                residueRatio.saveData(defaults.success, defaults.residueRatioId);
+                residueRatio.saveData(defaults.success);
                 layer.close(index);
             },
             content: $("#residueRatioHtml").html(),
             success: function () {
-
+                residueRatio.initMasterData(defaults.residueRatioId, defaults.houseId, defaults.success);
                 //填充数据
                 $('#residue_ratio_form').find('[name=usedYear]').val(defaults.usedYear);
                 $('#residue_ratio_form').find('[name=usableYear]').val(defaults.usableYear);
                 $('#residue_ratio_form').find('[name=houseId]').val(defaults.houseId);
-                residueRatio.loadList(defaults.houseId, "residueRatioStructural", AssessDicKey.damaged_degree_structural_part);
-                residueRatio.loadList(defaults.houseId, "residueRatioDecoration", AssessDicKey.damaged_degree_decoration_part);
-                residueRatio.loadList(defaults.houseId, "residueRatioEquipment", AssessDicKey.damaged_degree_equipment_part);
-                residueRatio.loadList(defaults.houseId, "residueRatioOther", AssessDicKey.damaged_degree_other);
 
-                residueRatio.initAgeLimit(defaults.residueRatioId);
-                residueRatio.initObserve(defaults.residueRatioId, defaults.houseId);
                 residueRatio.ratioChange();
             }
         });
     }
     //加载列表数据
-    residueRatio.loadList = function (houseId, tableName, type) {
+    residueRatio.loadList = function (residueRatioId, tableName, type) {
         var cols = [];
         cols.push({field: 'categoryName', title: '类别'});
         cols.push({field: 'standardScore', title: '标准分'});
-        cols.push({field: 'entityConditionName', title: '实体状况'});
-        cols.push({field: 'entityConditionContent', title: '实体状况内容'});
+        cols.push({
+            field: 'entityConditionName', title: '实体状况', width: '20%',
+            formatter: function (value, row, index) {
+                return '<div class="x-valid">' +
+                    '<input placeholder="实体状况" class="form-control"  style="width: 100px" name=entityConditionName' + row.category + ' value=' + row.entityConditionName + ' >' +
+                    '</div>';
+            }
+        });
+        cols.push({
+            field: 'entityConditionContent', title: '实体状况内容', width: '20%',
+            formatter: function (value, row, index) {
+                return '<div class="x-valid">' +
+                    '<input placeholder="实体状况内容" class="form-control"  style="width: 100px" name=entityConditionContent' + row.category + ' value=' + row.entityConditionContent + ' >' +
+                    '</div>';
+            }
+        });
         cols.push({
             field: 'scores', title: '打分', width: 100,
             formatter: function (value, row, index) {
                 return '<div class="x-valid">' +
-                    '<input data-rule-number="true" placeholder="分数" class="form-control" data-rule-range="[0,' + row.standardScore + ']"' +
-                    'required style="width: 100px" name=scores' + row.category + ' id=scores' + row.category + ' onblur=" residueRatio.checkNumberData(' + index + ',\'' + tableName + '\')">' +
+                    '<input data-rule-number="true" placeholder="分数" class="form-control"  data-rule-range="[0,' + row.standardScore + ']"' +
+                    'required style="width: 100px" name=scores' + row.category + '  id=scores' + row.category + ' onblur=" residueRatio.checkNumberData(' + index + ',\'' + tableName + '\')" value=' + row.score + '  >' +
                     '</div>';
             }
         });
         $("#" + tableName).bootstrapTable('destroy');
         TableInit(tableName, "${pageContext.request.contextPath}/residueRatio/getObserveList", cols, {
-            houseId: houseId,
+            residueRatioId: residueRatioId,
             type: type
         }, {
             showColumns: false,
@@ -184,9 +193,8 @@
             search: false
         });
     }
-    residueRatio.saveData = function (callbak, residueRatioId) {
+    residueRatio.saveData = function (callbak) {
         var data = formParams("residue_ratio_form");
-        data.id = residueRatioId;
         Loading.progressShow();
         $.ajax({
             url: "${pageContext.request.contextPath}/residueRatio/saveResidueRatio",
@@ -306,7 +314,7 @@
     residueRatio.getTableScore = function (weight, tableName) {
         var finished = true;
         var tableScore = 0;
-        var arr = $("#" + tableName + " input");
+        var arr = $("#" + tableName + " input[name^=scores]");
         $.each(arr, function (i, item) {
             tableScore += Number(item.value);
             if (!item.value) {
@@ -394,6 +402,41 @@
         $("#residue_ratio_resultValue").val(level + "%");
         return level;
     }
+    //初始化成新率主表及子表数据
+    residueRatio.initMasterData = function (residueRatioId, houseId, callbak) {
+        $.ajax({
+            url: "${pageContext.request.contextPath}/residueRatio/initMasterData",
+            type: "post",
+            dataType: "json",
+            data: {
+                residueRatioId: residueRatioId,
+                houseId: houseId
+            },
+            success: function (result) {
+                if (result.ret) {
+                    if (callbak) {
+                        callbak(result.data.id, result.data.resultValue);
+                    }
+                    $('#residue_ratio_form').find('[name=id]').val(result.data.id);
+                    residueRatio.loadList(result.data.id, "residueRatioStructural", AssessDicKey.damaged_degree_structural_part);
+                    residueRatio.loadList(result.data.id, "residueRatioDecoration", AssessDicKey.damaged_degree_decoration_part);
+                    residueRatio.loadList(result.data.id, "residueRatioEquipment", AssessDicKey.damaged_degree_equipment_part);
+                    residueRatio.loadList(result.data.id, "residueRatioOther", AssessDicKey.damaged_degree_other);
+
+                    residueRatio.initAgeLimit(result.data.id);
+                    residueRatio.initObserve(result.data.id, houseId);
+
+                }
+                else {
+                    Alert("初始化数据失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
+    }
+
 
     //观察法回显数据
     residueRatio.initObserve = function (residueRatioId, houseId) {
@@ -429,7 +472,6 @@
 
     //年限法回显数据
     residueRatio.initAgeLimit = function (residueRatioId) {
-        console.log("init" + residueRatioId);
         $.ajax({
             url: "${pageContext.request.contextPath}/residueRatio/initAgeLimit",
             type: "post",

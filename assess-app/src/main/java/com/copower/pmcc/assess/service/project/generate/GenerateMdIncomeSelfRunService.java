@@ -1019,15 +1019,15 @@ public class GenerateMdIncomeSelfRunService implements Serializable {
             BigDecimal t = new BigDecimal("1");
             for (MdIncomeDateSection section : mdIncomeDateSectionList) {
                 StringBuilder s2 = new StringBuilder();
-                s2.append(DateUtils.format(section.getBeginDate(), DateUtils.DATE_CHINESE_PATTERN)).append("至").append(DateUtils.format(section.getEndDate(), DateUtils.DATE_CHINESE_PATTERN)).append("：");
+                s2.append(DateUtils.format(section.getBeginDate(), DateUtils.DATE_CHINESE_PATTERN)).append("至").append(DateUtils.format(section.getEndDate(), DateUtils.DATE_CHINESE_PATTERN));
                 s.append(generateCommonMethod.getIndentHtml(s2.toString()));
                 BigDecimal yearCount = section.getYearCount();
-                String formula = "At/(Y-g)×[1-(1+g)^t /(1+Y)^(n)]";
+                String formula = "= At/(Y-g)×[1-(1+g)^t /(1+Y)^(n)]";
                 if (StringUtils.isNoneEmpty(section.getNetProfit())) {
                     formula = formula.replace("At", section.getNetProfit());
                 }
-                if (StringUtils.isNoneEmpty(mdIncome.getAverageProfitRate())) {
-                    formula = formula.replace("Y", ArithmeticUtils.getPercentileSystem(new BigDecimal(mdIncome.getAverageProfitRate()), 4, BigDecimal.ROUND_HALF_UP));
+                if (mdIncome.getRewardRate() != null) {
+                    formula = formula.replace("Y", ArithmeticUtils.getPercentileSystem(mdIncome.getRewardRate(), 4, BigDecimal.ROUND_HALF_UP));
                 }
                 if (section.getRentalGrowthRate() != null) {
                     formula = formula.replace("g", ArithmeticUtils.getPercentileSystem(section.getRentalGrowthRate(), 4, BigDecimal.ROUND_HALF_UP));

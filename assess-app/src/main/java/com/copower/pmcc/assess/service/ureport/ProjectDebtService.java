@@ -145,7 +145,12 @@ public class ProjectDebtService {
 
         for (ProjectInfo projectItem : projectInfoList) {
             ReportProjectDebt reportProjectDebt = this.getReportProjectDebt(projectItem.getId());
-            if (reportProjectDebt == null) {
+            if (reportProjectDebt != null) {
+                //无欠款 则不用更新数据
+                if (reportProjectDebt.getBisHasDebt() == false) {
+                    continue;
+                }
+            } else {
                 reportProjectDebt = new ReportProjectDebt();
             }
             reportProjectDebt.setProjectId(projectItem.getId());

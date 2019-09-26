@@ -44,13 +44,13 @@ public class ResidueRatioController {
 
 
     @ResponseBody
-    @RequestMapping(value = "/getObserveList", name = "观察法数据", method = RequestMethod.GET)
-    public BootstrapTableVo getHouseDamagedDegreeList(Integer houseId, String type) throws Exception {
+    @RequestMapping(value = "/getObserveList", name = "观察法完损度部分数据", method = RequestMethod.GET)
+    public BootstrapTableVo getHouseDamagedDegreeList(Integer residueRatioId, String type) throws Exception {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         DataDamagedDegree degree = dataDamagedDegreeService.getCacheDamagedDegreeByFieldName(type);
-        List<BasicHouseDamagedDegreeVo> list = basicHouseDamagedDegreeService.getDamagedDegreeVoList(houseId, degree.getId());
+        List<BasicHouseDamagedDegreeVo> list = residueRatioService.getDamagedDegreeList(residueRatioId, degree.getId());
         vo.setTotal(page.getTotal());
         vo.setRows(ObjectUtils.isEmpty(list) ? new ArrayList<BasicHouseWaterDrainVo>(10) : list);
         return vo;
@@ -85,6 +85,18 @@ public class ResidueRatioController {
         try {
             ToolResidueRatio residueRatio = residueRatioService.initAgeLimit(residueRatioId);
             return HttpResult.newCorrectResult(residueRatio);
+        } catch (Exception e) {
+            logger.error(String.format("exception: %s", e.getMessage()), e);
+            return HttpResult.newErrorResult("获取数据异常");
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/initMasterData", method = {RequestMethod.POST}, name = "初始化数据")
+    public HttpResult initMasterData(Integer residueRatioId, Integer houseId) {
+        try {
+            ToolResidueRatio toolResidueRatio = residueRatioService.initMasterData(residueRatioId, houseId);
+            return HttpResult.newCorrectResult(toolResidueRatio);
         } catch (Exception e) {
             logger.error(String.format("exception: %s", e.getMessage()), e);
             return HttpResult.newErrorResult("获取数据异常");
