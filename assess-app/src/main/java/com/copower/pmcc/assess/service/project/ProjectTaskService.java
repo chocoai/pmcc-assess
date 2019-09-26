@@ -145,7 +145,21 @@ public class ProjectTaskService {
         }
         ProjectTaskInterface bean = (ProjectTaskInterface) SpringContextUtils.getBean(viewUrl);
         try {
-            bean.applyCommit(projectPlanDetails, processUserDto.getProcessInsId(), projectTaskDto.getFormData());
+            boolean hangup = false;
+            //需要放在所在业务bean的下面  例如申报等会有一些操作是下个阶段所需要的
+            if (StringUtils.isNotBlank(processUserDto.getProcessInsId()) && !projectPlanDetails.getBisRestart().booleanValue()){
+                if (projectPhase.getBisWait() != null && projectPhase.getBisWait()) {//可以挂起任务
+                    hangup = true;
+                }
+            }
+            if (hangup){
+                projectPlanDetails.setStatus(ProcessStatusEnum.HANGUP.getValue());//将任务设为挂起
+                projectPlanDetailsDao.updateProjectPlanDetails(projectPlanDetails);
+                bean.applyCommit(projectPlanDetails, processUserDto.getProcessInsId(), projectTaskDto.getFormData());
+                projectPlanService.enterNextStage(projectPlanDetails.getPlanId()); //结束当前阶段进入下一阶段
+            }else {
+                bean.applyCommit(projectPlanDetails, processUserDto.getProcessInsId(), projectTaskDto.getFormData());
+            }
         } catch (Exception e) {
             if (StringUtils.isNotBlank(processUserDto.getProcessInsId())) {
                 bpmRpcActivitiProcessManageService.closeProcess(processUserDto.getProcessInsId());
