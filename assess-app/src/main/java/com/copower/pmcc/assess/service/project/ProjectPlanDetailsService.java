@@ -233,49 +233,51 @@ public class ProjectPlanDetailsService {
             //如果为待提交状态 当前人与任务执行人相同 可提交任务
             //如果为待审批状态 当前人与审批人相同 可审批该任务
             SysProjectEnum sysProjectEnum = SysProjectEnum.getEnumByName(SysProjectEnum.getNameByKey(projectPlanDetailsVo.getStatus()));
-            switch (sysProjectEnum) {
-                case NONE:
-                case CLOSE://业务异常关闭流程错误更新状态的数据
-                case RUNING:
-                    if (StringUtils.equals(projectPlanDetailsVo.getProcessInsId(), "0")) {
-                        if (CollectionUtils.isNotEmpty(projectTaskList)) {
-                            for (ProjectResponsibilityDto responsibilityDto : projectTaskList) {
-                                if (projectPlanDetailsVo.getId().intValue() == responsibilityDto.getPlanDetailsId().intValue()) {
-                                    String executeUrl = String.format(responsibilityDto.getUrl().contains("?") ? "%s&responsibilityId=%s" : "%s?responsibilityId=%s", responsibilityDto.getUrl(), responsibilityDto.getId());
-                                    projectPlanDetailsVo.setExcuteUrl(executeUrl);
-                                    //设置粘贴
-                                    if (CollectionUtils.isNotEmpty(phaseFullIds) && phaseFullIds.contains(projectPlanDetailsVo.getProjectPhaseId())) {
-                                        projectPlanDetailsVo.setCanPaste(true);
+            if (sysProjectEnum != null){
+                switch (sysProjectEnum) {
+                    case NONE:
+                    case CLOSE://业务异常关闭流程错误更新状态的数据
+                    case RUNING:
+                        if (StringUtils.equals(projectPlanDetailsVo.getProcessInsId(), "0")) {
+                            if (CollectionUtils.isNotEmpty(projectTaskList)) {
+                                for (ProjectResponsibilityDto responsibilityDto : projectTaskList) {
+                                    if (projectPlanDetailsVo.getId().intValue() == responsibilityDto.getPlanDetailsId().intValue()) {
+                                        String executeUrl = String.format(responsibilityDto.getUrl().contains("?") ? "%s&responsibilityId=%s" : "%s?responsibilityId=%s", responsibilityDto.getUrl(), responsibilityDto.getId());
+                                        projectPlanDetailsVo.setExcuteUrl(executeUrl);
+                                        //设置粘贴
+                                        if (CollectionUtils.isNotEmpty(phaseFullIds) && phaseFullIds.contains(projectPlanDetailsVo.getProjectPhaseId())) {
+                                            projectPlanDetailsVo.setCanPaste(true);
+                                        }
+                                    }
+                                }
+                            }
+                        } else {
+                            if (CollectionUtils.isNotEmpty(activitiTaskNodeDtos)) {
+                                String processInsId = projectPlanDetailsVo.getProcessInsId();
+                                String taskId = new String();
+                                //根据情况获取对应的审批节点数据activitiTaskNodeDto
+                                ActivitiTaskNodeDto activitiTaskNodeDto = null;
+                                for (ActivitiTaskNodeDto taskNodeDto : activitiTaskNodeDtos) {
+                                    if (StringUtils.equals(taskNodeDto.getProcessInstanceId(), processInsId)) {
+                                        activitiTaskNodeDto = taskNodeDto;
+                                        taskId = taskNodeDto.getTaskId();
+                                    }
+                                }
+                                if (activitiTaskNodeDto != null) {
+                                    BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(Integer.parseInt(activitiTaskNodeDto.getBusinessKey()));
+                                    String approvalUrl = boxReDto.getProcessApprovalUrl();
+                                    if (StringUtils.equals(ProcessActivityEnum.EDIT.getValue(), activitiTaskNodeDto.getTaskKey())) {
+                                        approvalUrl = boxReDto.getProcessEditUrl();
+                                    }
+                                    approvalUrl = String.format("/%s%s?boxId=%s&processInsId=%s&taskId=%s", boxReDto.getGroupName(), approvalUrl, boxReDto.getId(), processInsId, taskId);
+                                    if (activitiTaskNodeDto.getUsers().contains(commonService.thisUserAccount())) {
+                                        projectPlanDetailsVo.setExcuteUrl(approvalUrl);
                                     }
                                 }
                             }
                         }
-                    } else {
-                        if (CollectionUtils.isNotEmpty(activitiTaskNodeDtos)) {
-                            String processInsId = projectPlanDetailsVo.getProcessInsId();
-                            String taskId = new String();
-                            //根据情况获取对应的审批节点数据activitiTaskNodeDto
-                            ActivitiTaskNodeDto activitiTaskNodeDto = null;
-                            for (ActivitiTaskNodeDto taskNodeDto : activitiTaskNodeDtos) {
-                                if (StringUtils.equals(taskNodeDto.getProcessInstanceId(), processInsId)) {
-                                    activitiTaskNodeDto = taskNodeDto;
-                                    taskId = taskNodeDto.getTaskId();
-                                }
-                            }
-                            if (activitiTaskNodeDto != null) {
-                                BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(Integer.parseInt(activitiTaskNodeDto.getBusinessKey()));
-                                String approvalUrl = boxReDto.getProcessApprovalUrl();
-                                if (StringUtils.equals(ProcessActivityEnum.EDIT.getValue(), activitiTaskNodeDto.getTaskKey())) {
-                                    approvalUrl = boxReDto.getProcessEditUrl();
-                                }
-                                approvalUrl = String.format("/%s%s?boxId=%s&processInsId=%s&taskId=%s", boxReDto.getGroupName(), approvalUrl, boxReDto.getId(), processInsId, taskId);
-                                if (activitiTaskNodeDto.getUsers().contains(commonService.thisUserAccount())) {
-                                    projectPlanDetailsVo.setExcuteUrl(approvalUrl);
-                                }
-                            }
-                        }
-                    }
-                    break;
+                        break;
+                }
             }
             if (projectPlanDetailsVo.getBisLastLayer() == Boolean.TRUE)
                 projectPlanDetailsVo.setDisplayUrl(String.format("%s%s", viewUrl, projectPlanDetailsVo.getId()));

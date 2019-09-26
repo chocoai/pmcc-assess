@@ -140,6 +140,18 @@
                                             </select>
                                         </div>
                                     </div>
+                                    <div class="x-valid">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
+                                            流程任务是否允许挂起
+                                        </label>
+                                        <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
+                                            是<input type="checkbox" name="bisWait"
+                                                    value="true">
+                                            否
+                                            <input type="checkbox" name="bisWait"
+                                                   value="false">
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="form-group">
