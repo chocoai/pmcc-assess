@@ -554,7 +554,7 @@
                             <input type="hidden" placeholder="成新率" name="residueRatioId"
                                    value="${mdCostVo.mdCostConstruction.residueRatioId}">
                             <span class="input-group-btn">
-                                <input type="hidden" name="residueRatio" onblur="cost.checkParams(this);"
+                                <input type="hidden" name="residueRatio"
                                        value="${mdCostVo.mdCostConstruction.residueRatio}">
                                 <input type="text" placeholder="成新率(计算值)" class="form-control x-percent"
                                        name="residueRatioShow" readonly="readonly"
