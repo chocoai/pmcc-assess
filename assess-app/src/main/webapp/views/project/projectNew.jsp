@@ -30,8 +30,8 @@
                                                     <div class="icon"><i class="fa fa-bank"></i>
                                                     </div>
                                                     <div class="count">${categoryItem.value}</div>
-                                                    <h3>${typeItem.value}</h3>
-                                                    <p>${classItem.value}</p>
+                                                    <%--<h3>${typeItem.value}</h3>--%>
+                                                    <%--<p>${classItem.value}</p>--%>
                                                 </div>
                                             </div>
                                         </a>
