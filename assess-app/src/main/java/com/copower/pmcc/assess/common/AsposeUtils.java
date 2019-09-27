@@ -520,7 +520,15 @@ public class AsposeUtils {
         return targetHeight;
     }
 
-    public static void imageInsertToWrod2(List<Map<String, String>> imgList, Integer colCount, DocumentBuilder builder) throws Exception {
+    public static void imageInsertToWrod2(List<Map<String, String>> imgList, Integer colCount, DocumentBuilder builder,List<String> paths) throws Exception {
+        if (CollectionUtils.isEmpty(imgList)&&CollectionUtils.isNotEmpty(paths)){
+            imgList = Lists.newArrayList();
+            for (String path:paths) {
+                Map<String, String> map = Maps.newHashMap();
+                map.put(path,"");
+                imgList.add(map);
+            }
+        }
         if (CollectionUtils.isEmpty(imgList)) throw new RuntimeException("imgPathList empty");
         if (colCount == null || colCount <= 0) throw new RuntimeException("colCount empty");
         if (builder == null) throw new RuntimeException("builder empty");
@@ -528,7 +536,7 @@ public class AsposeUtils {
         int rowLength = (imgList.size() % colCount > 0 ? (imgList.size() / colCount) + 1 : imgList.size() / colCount) * 2;//行数
         Integer index = 0;
         //根据不同列数设置 表格与图片的宽度 总宽度为560
-        int maxWidth = 560;
+        int maxWidth = 432;
         int cellWidth = maxWidth / colCount;
         int imageMaxWidth = cellWidth - (60 / colCount);
         for (int j = 0; j < rowLength; j++) {
@@ -551,7 +559,7 @@ public class AsposeUtils {
                             targeHeight = 250;
                         }
                         builder.insertImage(imgPath, RelativeHorizontalPosition.MARGIN, 10,
-                                RelativeVerticalPosition.MARGIN, 0, targetWidth, targeHeight, WrapType.INLINE);
+                                RelativeVerticalPosition.MARGIN, 0, maxWidth, 200, WrapType.INLINE);
                         //设置样式
                         builder.getCellFormat().getBorders().setColor(Color.white);
                         builder.getCellFormat().getBorders().getLeft().setLineWidth(1.0);

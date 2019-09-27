@@ -207,7 +207,7 @@ public class GenerateBaseDataService {
             projectDocumentDto.setCustomer(getPrincipal());
             projectDocumentDto.setCompanyName(qualificationDto != null ? qualificationDto.getOrganizationName() : "");
             projectDocumentDto.setDocumentNumber(getWordNumber());
-            projectDocumentDto.setReportDate(DateUtils.formatDate(generateReportInfo.getReportIssuanceDate(),DateUtils.DATE_CHINESE_PATTERN) );
+            projectDocumentDto.setReportDate(DateUtils.formatDate(generateReportInfo.getReportIssuanceDate(), DateUtils.DATE_CHINESE_PATTERN));
             projectDocumentDto.setReportMember(projectInfo.getUserAccountManagerName());
             projectDocumentDto.setAppKey(applicationConstant.getAppKey());
             projectDocumentDto.setTableName(FormatUtils.entityNameConvertToTableName(GenerateReportInfo.class));
@@ -5357,12 +5357,23 @@ public class GenerateBaseDataService {
         if (CollectionUtils.isNotEmpty(this.schemeJudgeObjectDeclareList)) {
             for (SchemeJudgeObject schemeJudgeObject : this.schemeJudgeObjectDeclareList) {
                 List<SysAttachmentDto> sysAttachmentDtoList = ownershipCertFileList.get(schemeJudgeObject.getDeclareRecordId());
+                List<String> paths = Lists.newArrayList();
+                for (SysAttachmentDto item : sysAttachmentDtoList) {
+                    String path = baseAttachmentService.downloadFtpFileToLocal(item.getId());
+                    if (FileUtils.checkImgSuffix(path)) {
+                        paths.add(path);
+                    }
+                }
                 if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
                     builder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
                     if (this.schemeJudgeObjectDeclareList.size() > 1) {
                         builder.insertHtml(generateCommonMethod.getWarpCssHtml(schemeJudgeObject.getName()), true);
                     }
-                    this.imgComposingByAttachmentDtoList(sysAttachmentDtoList, builder);
+                    //关联的土地复印件
+                    List<String> landFilePathList = schemeReportFileService.getLandFilePathList(schemeJudgeObject.getDeclareRecordId());
+                    paths.addAll(landFilePathList);
+                    AsposeUtils.imageInsertToWrod2(null, 1, builder, paths);
+
                 }
             }
         }
