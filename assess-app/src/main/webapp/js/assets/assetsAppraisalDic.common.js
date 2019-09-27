@@ -64,6 +64,10 @@ commonAssets.showFile = function (target, tableName, id, deleteFlag, fieldsName)
 };
 
 commonAssets.showFile2 = function (target, tableName, id, deleteFlag, editFlag, fieldsName) {
+    commonAssets.showFile3(target, tableName, id, deleteFlag, true, false, fieldsName);
+};
+
+commonAssets.showFile3 = function (target, tableName, id, deleteFlag, editFlag, signatureFlag, fieldsName) {
     FileUtils.getFileShows({
         target: target,
         formData: {
@@ -72,6 +76,7 @@ commonAssets.showFile2 = function (target, tableName, id, deleteFlag, editFlag, 
             fieldsName: fieldsName
             // projectId: id
         },
+        signatureFlag: signatureFlag,
         deleteFlag: deleteFlag,
         editFlag: editFlag
     })
@@ -159,8 +164,8 @@ commonAssets.batchUpdateSysAttachmentDto = function (data, callback) {
 commonAssets.getServerDeclaration2 = function (callback) {
     var data = {setting: true, pid: commonAssets.declareApplyForm.find('[name=assetsSettingId]').val()};
     dataAssetsAppraisalDic.getDataAssetsAppraisalDicList(data, function (item) {
-        if (callback){
-            callback(item) ;
+        if (callback) {
+            callback(item);
         }
     });
 };
@@ -204,7 +209,7 @@ commonAssets.getServerDeclaration = function (value, callback) {
                 });
             }
         }
-    }) ;
+    });
 };
 
 /**
@@ -280,8 +285,8 @@ commonAssets.writeDeclarationHtml = function (value) {
                 html = html.replace(/{value}/g, value);
                 html = html.replace(/{method}/g, 'commonAssets');
                 target.append(html);
-                var group = $(".other_EnclosureModel"+item.id) ;
-                dataAssetsAppraisalDic.initForm({},group) ;
+                var group = $(".other_EnclosureModel" + item.id);
+                dataAssetsAppraisalDic.initForm({}, group);
                 commonAssets.showFile(fileId, AssessDBKey.AssetsCustomizeDataField, item.id, true, fileId);
                 commonAssets.fileUpload(fileId, AssessDBKey.AssetsCustomizeDataField, item.id, true, fileId);
             });
