@@ -258,17 +258,19 @@ public class MdIncomeService {
         analyseWhere.setBisParticipateIn(true);
         List<MdIncomeForecastAnalyse> analyseList = mdIncomeForecastAnalyseDao.getForecastAnalyseList(analyseWhere);
 
+        //删除原来的明细
+        MdIncomeForecastAnalyseItem oldItem = new MdIncomeForecastAnalyseItem();
+        oldItem.setIncomeId(incomeId);
+        oldItem.setType(type);
+        oldItem.setFormType(formType);
+        List<MdIncomeForecastAnalyseItem> oldForecastAnalyseItemList = mdIncomeForecastAnalyseItemDao.getForecastAnalyseItemList(oldItem);
+        if (CollectionUtils.isNotEmpty(oldForecastAnalyseItemList)) {
+            for (MdIncomeForecastAnalyseItem old : oldForecastAnalyseItemList) {
+                mdIncomeForecastAnalyseItemDao.deleteForecastAnalyseItem(old.getId());
+            }
+        }
         if (CollectionUtils.isNotEmpty(analyseList)) {
             for (int i = 0; i < analyseList.size(); i++) {
-                //删除原来的明细
-                MdIncomeForecastAnalyseItem oldItem = new MdIncomeForecastAnalyseItem();
-                oldItem.setForecastAnalyseId(analyseList.get(i).getId());
-                List<MdIncomeForecastAnalyseItem> oldForecastAnalyseItemList = mdIncomeForecastAnalyseItemDao.getForecastAnalyseItemList(oldItem);
-                if (CollectionUtils.isNotEmpty(oldForecastAnalyseItemList)) {
-                    for (MdIncomeForecastAnalyseItem old : oldForecastAnalyseItemList) {
-                        mdIncomeForecastAnalyseItemDao.deleteForecastAnalyseItem(old.getId());
-                    }
-                }
                 //历史数据添加到分析明细
                 MdIncomeHistory historyWhere = new MdIncomeHistory();
                 historyWhere.setForecastAnalyseId(analyseList.get(i).getId());
@@ -537,7 +539,15 @@ public class MdIncomeService {
                     BeanUtils.copyProperties(analyseItems.get(i), mdIncomeForecastAnalyseItemVo);
                     if (analyseItems.get(i).getAccountingSubject() != null && analyseItems.get(i).getAccountingSubject() > 0) {
                         String accountingSubjectName = baseDataDicService.getNameById(analyseItems.get(i).getAccountingSubject());
-                        mdIncomeForecastAnalyseItemVo.setName(String.format("%s/%s/%s", accountingSubjectName, analyseItems.get(i).getFirstLevelNumber(), analyseItems.get(i).getSecondLevelNumber()));
+                        StringBuilder name = new StringBuilder();
+                        if(StringUtils.isNotEmpty(accountingSubjectName)){
+                            name.append(accountingSubjectName);
+                        }if(StringUtils.isNotEmpty(analyseItems.get(i).getFirstLevelNumber())){
+                            name.append("/").append(analyseItems.get(i).getFirstLevelNumber());
+                        }if(StringUtils.isNotEmpty(analyseItems.get(i).getSecondLevelNumber())){
+                            name.append("/").append(analyseItems.get(i).getSecondLevelNumber());
+                        }
+                        mdIncomeForecastAnalyseItemVo.setName(name.toString());
                     }
                     if (i == 0) {
                         vos.add(mdIncomeForecastAnalyseItemVo);
@@ -890,14 +900,14 @@ public class MdIncomeService {
         //如果只填主营业务收入，则只以主营业务分析，如果细填到二级编号则以二级编号分析，则不显示一级编号与主营业务收入的分析
         //以第一条数据为例
         MdIncomeForecastAnalyseItem example = list.get(0);
-        if (StringUtils.isNotEmpty(example.getFirstLevelNumber()) && StringUtils.isNotEmpty(example.getSecondLevelNumber())) {
-            vos = getSecondLevelTrend(forecastAnalyseId);
-        } else if (StringUtils.isNotEmpty(example.getFirstLevelNumber()) && StringUtils.isEmpty(example.getSecondLevelNumber())) {
-            vos = getStairTrend(forecastAnalyseId);
-        } else {
-            vos = getAccountingSubjectTrend(forecastAnalyseId);
-        }
-
+//        if (StringUtils.isNotEmpty(example.getFirstLevelNumber()) && StringUtils.isNotEmpty(example.getSecondLevelNumber())) {
+//            vos = getSecondLevelTrend(forecastAnalyseId);
+//        } else if (StringUtils.isNotEmpty(example.getFirstLevelNumber()) && StringUtils.isEmpty(example.getSecondLevelNumber())) {
+//            vos = getStairTrend(forecastAnalyseId);
+//        } else {
+//            vos = getAccountingSubjectTrend(forecastAnalyseId);
+//        }
+        vos = getSecondLevelTrend(forecastAnalyseId);
         vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<MdIncomeForecastAnalyseItemVo>() : vos);
         vo.setTotal((long) list.size());
         return vo;

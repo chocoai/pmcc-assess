@@ -366,6 +366,76 @@ public class MdEconomicIndicatorsExample {
             return (Criteria) this;
         }
 
+        public Criteria andProjectFileNameIsNull() {
+            addCriterion("project_file_name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectFileNameIsNotNull() {
+            addCriterion("project_file_name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectFileNameEqualTo(String value) {
+            addCriterion("project_file_name =", value, "projectFileName");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectFileNameNotEqualTo(String value) {
+            addCriterion("project_file_name <>", value, "projectFileName");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectFileNameGreaterThan(String value) {
+            addCriterion("project_file_name >", value, "projectFileName");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectFileNameGreaterThanOrEqualTo(String value) {
+            addCriterion("project_file_name >=", value, "projectFileName");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectFileNameLessThan(String value) {
+            addCriterion("project_file_name <", value, "projectFileName");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectFileNameLessThanOrEqualTo(String value) {
+            addCriterion("project_file_name <=", value, "projectFileName");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectFileNameLike(String value) {
+            addCriterion("project_file_name like", value, "projectFileName");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectFileNameNotLike(String value) {
+            addCriterion("project_file_name not like", value, "projectFileName");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectFileNameIn(List<String> values) {
+            addCriterion("project_file_name in", values, "projectFileName");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectFileNameNotIn(List<String> values) {
+            addCriterion("project_file_name not in", values, "projectFileName");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectFileNameBetween(String value1, String value2) {
+            addCriterion("project_file_name between", value1, value2, "projectFileName");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectFileNameNotBetween(String value1, String value2) {
+            addCriterion("project_file_name not between", value1, value2, "projectFileName");
+            return (Criteria) this;
+        }
+
         public Criteria andNameIsNull() {
             addCriterion("name is null");
             return (Criteria) this;

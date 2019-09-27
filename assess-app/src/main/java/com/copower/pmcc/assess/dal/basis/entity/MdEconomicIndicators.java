@@ -12,6 +12,8 @@ public class MdEconomicIndicators {
 
     private Integer planDetailsId;
 
+    private String projectFileName;
+
     private String name;
 
     private String grade;
@@ -80,6 +82,14 @@ public class MdEconomicIndicators {
 
     public void setPlanDetailsId(Integer planDetailsId) {
         this.planDetailsId = planDetailsId;
+    }
+
+    public String getProjectFileName() {
+        return projectFileName;
+    }
+
+    public void setProjectFileName(String projectFileName) {
+        this.projectFileName = projectFileName == null ? null : projectFileName.trim();
     }
 
     public String getName() {
