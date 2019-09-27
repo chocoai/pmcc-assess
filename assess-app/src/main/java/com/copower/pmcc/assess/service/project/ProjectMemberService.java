@@ -4,6 +4,7 @@ package com.copower.pmcc.assess.service.project;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectMemberDao;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectMember;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectMemberHistory;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dto.output.project.ProjectMemberVo;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
@@ -50,8 +51,8 @@ public class ProjectMemberService {
     @Autowired
     private PublicService publicService;
 
-    public boolean deleteProjectMemberById(Integer id){
-        return projectMemberDao.deleteProjectMemberById(id) ;
+    public boolean deleteProjectMemberById(Integer id) {
+        return projectMemberDao.deleteProjectMemberById(id);
     }
 
     public Map<String, SysUserDto> relationUserMap(List<SysUserDto> sysUserList) {
@@ -63,11 +64,11 @@ public class ProjectMemberService {
     }
 
     public void saveProjectMemeber(ProjectMember projectMember) throws BusinessException {
-        if (projectMember == null){
+        if (projectMember == null) {
             return;
         }
-        List<ProjectMember> projectMemberList = projectMemberDao.getProjectMemberList(projectMember.getProjectId()) ;
-        if (CollectionUtils.isNotEmpty(projectMemberList)){
+        List<ProjectMember> projectMemberList = projectMemberDao.getProjectMemberList(projectMember.getProjectId());
+        if (CollectionUtils.isNotEmpty(projectMemberList)) {
             projectMember.setId(projectMemberList.get(0).getId());
         }
         if (projectMember.getId() != null && projectMember.getId() > 0) {
@@ -192,11 +193,53 @@ public class ProjectMemberService {
      */
     public boolean isProjectMember(Integer projectId, String userAccount) {
         ProjectMemberVo projectMember = getProjectMember(projectId);
-        if(projectMember==null) return false;
-        if(StringUtils.defaultString(projectMember.getUserAccountManager()).contains(userAccount))
+        if (projectMember == null) return false;
+        if (StringUtils.defaultString(projectMember.getUserAccountManager()).contains(userAccount))
             return true;
-        if(StringUtils.defaultString(projectMember.getUserAccountMember()).contains(userAccount))
+        if (StringUtils.defaultString(projectMember.getUserAccountMember()).contains(userAccount))
             return true;
         return false;
+    }
+
+    /**
+     * 确定每次任务完成时任务自动添加为项目成员
+     *
+     * @param projectPlanDetails
+     */
+    public void autoAddFinishTaskMember(ProjectPlanDetails projectPlanDetails) {
+        if (projectPlanDetails == null) {
+            return;
+        }
+        if (StringUtils.isEmpty(projectPlanDetails.getExecuteUserAccount())) {
+            return;
+        }
+        if (projectPlanDetails.getProjectId() == null){
+            return;
+        }
+        ProjectMember projectMember = projectMemberDao.getProjectMemberItem(projectPlanDetails.getProjectId());
+        if (projectMember == null) {
+            return;
+        }
+        //在原来得基础上添加项目成员
+        if (StringUtils.isNotBlank(projectMember.getUserAccountMember())) {
+            try {
+                List<String> stringList = FormatUtils.transformString2List(projectMember.getUserAccountMember());
+                try {
+                    List<String> stringList2 = FormatUtils.transformString2List(projectPlanDetails.getExecuteUserAccount());
+                    stringList.addAll(stringList2);
+                } catch (Exception e) {
+                    stringList.add(projectPlanDetails.getExecuteUserAccount());
+                }
+                projectMember.setUserAccountMember(StringUtils.join(stringList, ","));
+            } catch (Exception e) {
+                String v = String.join("", projectMember.getUserAccountMember(), ",", projectPlanDetails.getExecuteUserAccount());
+                projectMember.setUserAccountMember(v);
+            }
+        }
+        //从未添加过项目成员情况
+        if (StringUtils.isEmpty(projectMember.getUserAccountMember())){
+            projectMember.setUserAccountMember(projectPlanDetails.getExecuteUserAccount());
+        }
+        projectMemberDao.updateProjectMember(projectMember);
     }
 }

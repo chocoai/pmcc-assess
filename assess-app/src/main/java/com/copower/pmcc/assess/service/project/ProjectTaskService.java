@@ -82,6 +82,8 @@ public class ProjectTaskService {
     private ProjectTaskReturnRecordDao projectTaskReturnRecordDao;
     @Autowired
     private ErpRpcUserService erpRpcUserService;
+    @Autowired
+    private ProjectMemberService projectMemberService;
 
     @Transactional(rollbackFor = Exception.class)
     public void submitTask(ProjectTaskDto projectTaskDto) throws Exception {
@@ -177,7 +179,7 @@ public class ProjectTaskService {
                 projectPlanService.enterNextStage(projectPlanDetails.getPlanId()); //结束当前阶段进入下一阶段
         }
         bpmRpcProjectTaskService.deleteProjectTask(projectTaskDto.getResponsibilityId());
-
+        projectMemberService.autoAddFinishTaskMember(projectPlanDetails);
         if (CollectionUtils.isNotEmpty(processUserDto.getSkipActivity())) {
             try {
                 processControllerComponent.autoProcessSubmitLoopTaskNodeArg(processInfo, processUserDto);
@@ -223,7 +225,7 @@ public class ProjectTaskService {
             projectPlanDetails.setTaskRemarks(taskRemarks);
             projectPlanDetailsDao.updateProjectPlanDetails(projectPlanDetails);
         }
-
+        projectMemberService.autoAddFinishTaskMember(projectPlanDetails);
         try {
             processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
         } catch (BpmException e) {
