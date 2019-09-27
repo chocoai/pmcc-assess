@@ -6,6 +6,7 @@
     <result column="parcel_setting_outer" property="parcelSettingOuter" jdbcType="VARCHAR" />
     <result column="parcel_setting_inner" property="parcelSettingInner" jdbcType="VARCHAR" />
     <result column="plan_details_id" property="planDetailsId" jdbcType="INTEGER" />
+    <result column="project_file_name" property="projectFileName" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="grade" property="grade" jdbcType="VARCHAR" />
     <result column="cert_use" property="certUse" jdbcType="VARCHAR" />
@@ -85,11 +86,11 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, parcel_setting_outer, parcel_setting_inner, plan_details_id, name, grade, cert_use, 
-    building_structure, building_base_coverage, building_height_limit, volumetric_rate, 
-    building_density, green_space_rate, plan_net_construction_land_area, plan_total_build_area, 
-    set_volumetric_rate, assess_use_land_area, assess_total_build_area, plan_date, remark, 
-    creator, gmt_created, gmt_modified
+    id, parcel_setting_outer, parcel_setting_inner, plan_details_id, project_file_name, 
+    name, grade, cert_use, building_structure, building_base_coverage, building_height_limit, 
+    volumetric_rate, building_density, green_space_rate, plan_net_construction_land_area, 
+    plan_total_build_area, set_volumetric_rate, assess_use_land_area, assess_total_build_area, 
+    plan_date, remark, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdEconomicIndicatorsExample" >
     select
@@ -126,21 +127,21 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_md_economic_indicators (parcel_setting_outer, parcel_setting_inner, 
-      plan_details_id, name, grade, 
-      cert_use, building_structure, building_base_coverage, 
-      building_height_limit, volumetric_rate, building_density, 
-      green_space_rate, plan_net_construction_land_area, 
-      plan_total_build_area, set_volumetric_rate, 
-      assess_use_land_area, assess_total_build_area, 
+      plan_details_id, project_file_name, name, 
+      grade, cert_use, building_structure, 
+      building_base_coverage, building_height_limit, 
+      volumetric_rate, building_density, green_space_rate, 
+      plan_net_construction_land_area, plan_total_build_area, 
+      set_volumetric_rate, assess_use_land_area, assess_total_build_area, 
       plan_date, remark, creator, 
       gmt_created, gmt_modified)
     values (#{parcelSettingOuter,jdbcType=VARCHAR}, #{parcelSettingInner,jdbcType=VARCHAR}, 
-      #{planDetailsId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{grade,jdbcType=VARCHAR}, 
-      #{certUse,jdbcType=VARCHAR}, #{buildingStructure,jdbcType=VARCHAR}, #{buildingBaseCoverage,jdbcType=DECIMAL}, 
-      #{buildingHeightLimit,jdbcType=DECIMAL}, #{volumetricRate,jdbcType=VARCHAR}, #{buildingDensity,jdbcType=VARCHAR}, 
-      #{greenSpaceRate,jdbcType=VARCHAR}, #{planNetConstructionLandArea,jdbcType=DECIMAL}, 
-      #{planTotalBuildArea,jdbcType=DECIMAL}, #{setVolumetricRate,jdbcType=VARCHAR}, 
-      #{assessUseLandArea,jdbcType=DECIMAL}, #{assessTotalBuildArea,jdbcType=DECIMAL}, 
+      #{planDetailsId,jdbcType=INTEGER}, #{projectFileName,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{grade,jdbcType=VARCHAR}, #{certUse,jdbcType=VARCHAR}, #{buildingStructure,jdbcType=VARCHAR}, 
+      #{buildingBaseCoverage,jdbcType=DECIMAL}, #{buildingHeightLimit,jdbcType=DECIMAL}, 
+      #{volumetricRate,jdbcType=VARCHAR}, #{buildingDensity,jdbcType=VARCHAR}, #{greenSpaceRate,jdbcType=VARCHAR}, 
+      #{planNetConstructionLandArea,jdbcType=DECIMAL}, #{planTotalBuildArea,jdbcType=DECIMAL}, 
+      #{setVolumetricRate,jdbcType=VARCHAR}, #{assessUseLandArea,jdbcType=DECIMAL}, #{assessTotalBuildArea,jdbcType=DECIMAL}, 
       #{planDate,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
       #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
@@ -158,6 +159,9 @@
       </if>
       <if test="planDetailsId != null" >
         plan_details_id,
+      </if>
+      <if test="projectFileName != null" >
+        project_file_name,
       </if>
       <if test="name != null" >
         name,
@@ -226,6 +230,9 @@
       </if>
       <if test="planDetailsId != null" >
         #{planDetailsId,jdbcType=INTEGER},
+      </if>
+      <if test="projectFileName != null" >
+        #{projectFileName,jdbcType=VARCHAR},
       </if>
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
@@ -307,6 +314,9 @@
       <if test="record.planDetailsId != null" >
         plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
       </if>
+      <if test="record.projectFileName != null" >
+        project_file_name = #{record.projectFileName,jdbcType=VARCHAR},
+      </if>
       <if test="record.name != null" >
         name = #{record.name,jdbcType=VARCHAR},
       </if>
@@ -375,6 +385,7 @@
       parcel_setting_outer = #{record.parcelSettingOuter,jdbcType=VARCHAR},
       parcel_setting_inner = #{record.parcelSettingInner,jdbcType=VARCHAR},
       plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
+      project_file_name = #{record.projectFileName,jdbcType=VARCHAR},
       name = #{record.name,jdbcType=VARCHAR},
       grade = #{record.grade,jdbcType=VARCHAR},
       cert_use = #{record.certUse,jdbcType=VARCHAR},
@@ -409,6 +420,9 @@
       </if>
       <if test="planDetailsId != null" >
         plan_details_id = #{planDetailsId,jdbcType=INTEGER},
+      </if>
+      <if test="projectFileName != null" >
+        project_file_name = #{projectFileName,jdbcType=VARCHAR},
       </if>
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
@@ -475,6 +489,7 @@
     set parcel_setting_outer = #{parcelSettingOuter,jdbcType=VARCHAR},
       parcel_setting_inner = #{parcelSettingInner,jdbcType=VARCHAR},
       plan_details_id = #{planDetailsId,jdbcType=INTEGER},
+      project_file_name = #{projectFileName,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
       grade = #{grade,jdbcType=VARCHAR},
       cert_use = #{certUse,jdbcType=VARCHAR},

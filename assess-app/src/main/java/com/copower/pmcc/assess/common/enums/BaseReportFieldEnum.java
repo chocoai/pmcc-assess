@@ -284,6 +284,8 @@ public enum BaseReportFieldEnum implements Serializable {
     Development_TotalCompletedPriceRealEstateDevelopment("假设法不动产开发完成总价"),
     Development_total_area("假设法总面积"),
     Development_PublicTrialRealEstateComputing("假设法不动产计算公试"),
+    Development_Planning_constraints("假设法规划限制条件"),
+    Development_Relevant_basis_technical_economic_indicators("假设法技术经济指标相关依据"),
 
     Development_infrastructureCost_FileName("假设法基础设施费文件名称"),//暂时不确定删除
     Development_constructionSubtotalContent("假设法建设成本内容"),//暂时不确定删除

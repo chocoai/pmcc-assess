@@ -118,8 +118,7 @@
                             <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                 <input type="text"
                                        placeholder="评估用地面积（㎡）" name="assessUseLandArea" class="form-control"
-                                       data-rule-maxlength="100" data-rule-number='true'
-                                >
+                                       data-rule-maxlength="100" data-rule-number='true'>
                             </div>
                         </div>
                         <div class="x-valid">
@@ -136,6 +135,15 @@
                                 <input placeholder="规划日期"
                                        name="planDate" data-date-format="yyyy-mm-dd"
                                        class="form-control date-picker dbdate roomTime">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">项目文件名称</label>
+                            <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                <input type="text"
+                                       placeholder="项目文件名称" name="projectFileName" class="form-control">
                             </div>
                         </div>
                     </div>

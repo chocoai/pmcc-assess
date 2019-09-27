@@ -283,14 +283,14 @@ public class GenerateMdDevelopmentService {
                             stringLinkedList.clear();
                         }
                     }
-                    String totalSaleableAreaPrice = "" ;
-                    if (target.getTotalSaleableAreaPrice() != null){
-                        totalSaleableAreaPrice = ArithmeticUtils.mul(target.getTotalSaleableAreaPrice().toString(),"10000",0) ;
+                    String totalSaleableAreaPrice = "";
+                    if (target.getTotalSaleableAreaPrice() != null) {
+                        totalSaleableAreaPrice = ArithmeticUtils.mul(target.getTotalSaleableAreaPrice().toString(), "10000", 0);
                     }
                     stringLinkedList.addAll(Arrays.asList("预期销售合计",
-                            String.join("","规划建筑面积(㎡)",ArithmeticUtils.getBigDecimalString(target.getPlannedBuildingArea())),
-                            String.join("","可售面积(㎡)",ArithmeticUtils.getBigDecimalString(target.getSaleableArea())),
-                            String.join("","总可售面积售价(元)",totalSaleableAreaPrice)));
+                            String.join("", "规划建筑面积(㎡)", ArithmeticUtils.getBigDecimalString(target.getPlannedBuildingArea())),
+                            String.join("", "可售面积(㎡)", ArithmeticUtils.getBigDecimalString(target.getSaleableArea())),
+                            String.join("", "总可售面积售价(元)", totalSaleableAreaPrice)));
                     AsposeUtils.writeWordTitle(builder, stringLinkedList);
                     stringLinkedList.clear();
                     builder.endTable();
@@ -299,6 +299,38 @@ public class GenerateMdDevelopmentService {
                     generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, key.getName(), localPath);
                 } catch (Exception e) {
                 }
+                break;
+            }
+            case Development_Planning_constraints: {
+                MdEconomicIndicatorsApplyDto mdEconomicIndicatorsApplyDto = getMdEconomicIndicatorsApplyDto();
+                MdEconomicIndicators economicIndicators = mdEconomicIndicatorsApplyDto.getEconomicIndicators();
+                if (economicIndicators == null) {
+                    break;
+                }
+                StringBuilder stringBuilder = new StringBuilder(24);
+                stringBuilder.append("根据委托方提供的");
+                stringBuilder.append("技术经济指标相关依据显示,");
+                stringBuilder.append("其中容积率为").append(economicIndicators.getVolumetricRate());
+                stringBuilder.append("、");
+                stringBuilder.append("建筑密度为").append(economicIndicators.getBuildingDensity());
+                stringBuilder.append("、");
+                stringBuilder.append("绿地率为").append(economicIndicators.getGreenSpaceRate());
+                stringBuilder.append("、");
+                stringBuilder.append("建设净用地面积").append(ArithmeticUtils.getBigDecimalString(economicIndicators.getPlanNetConstructionLandArea())).append("平方");
+                stringBuilder.append("、");
+                stringBuilder.append("建筑基底占地面积").append(ArithmeticUtils.getBigDecimalString(economicIndicators.getBuildingBaseCoverage())).append("平方");
+                stringBuilder.append("、");
+                stringBuilder.append("建筑限高").append(ArithmeticUtils.getBigDecimalString(economicIndicators.getBuildingHeightLimit())).append("米");
+                generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), stringBuilder.toString());
+                break;
+            }
+            case Development_Relevant_basis_technical_economic_indicators: {
+                MdEconomicIndicatorsApplyDto mdEconomicIndicatorsApplyDto = getMdEconomicIndicatorsApplyDto();
+                MdEconomicIndicators economicIndicators = mdEconomicIndicatorsApplyDto.getEconomicIndicators();
+                if (economicIndicators == null || StringUtils.isEmpty(economicIndicators.getProjectFileName())) {
+                    break;
+                }
+                generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), economicIndicators.getProjectFileName());
                 break;
             }
             case Development_PriceForecast: {//假设法售价预测
