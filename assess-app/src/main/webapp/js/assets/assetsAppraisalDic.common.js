@@ -1,21 +1,23 @@
 /**
+ * Created by zch on 2019-9-27.
+ */
+
+
+/**
  * Created by kings on 2018-12-20.
  */
-var declareCommon = {};
+var commonAssets = {};
 
-declareCommon.fileArray = ["project_proxy"];
+commonAssets.declareApplyForm = $('#declareApplyForm');
 
-
-declareCommon.declareApplyForm = $('#declareApplyForm');
-
-declareCommon.getPlanDetailsId = function () {
-    return declareCommon.declareApplyForm.find('[name=planDetailsId]').val();
+commonAssets.getPlanDetailsId = function () {
+    return commonAssets.declareApplyForm.find('[name=planDetailsId]').val();
 };
-declareCommon.getProjectId = function () {
-    return declareCommon.declareApplyForm.find('[name=projectId]').val();
+commonAssets.getProjectId = function () {
+    return commonAssets.declareApplyForm.find('[name=projectId]').val();
 };
 
-declareCommon.isNotBlank = function (item) {
+commonAssets.isNotBlank = function (item) {
     if (item) {
         return true;
     }
@@ -23,11 +25,11 @@ declareCommon.isNotBlank = function (item) {
 };
 
 
-declareCommon.fileUpload = function (target, tableName, id, deleteFlag, fieldsName) {
-    declareCommon.fileUpload2(target, tableName, id, deleteFlag, true, fieldsName);
+commonAssets.fileUpload = function (target, tableName, id, deleteFlag, fieldsName) {
+    commonAssets.fileUpload2(target, tableName, id, deleteFlag, true, fieldsName);
 };
 
-declareCommon.fileUpload2 = function (target, tableName, id, deleteFlag, editFlag, fieldsName) {
+commonAssets.fileUpload2 = function (target, tableName, id, deleteFlag, editFlag, fieldsName) {
     FileUtils.uploadFiles({
         target: target,
         disabledTarget: "btn_submit",
@@ -57,11 +59,11 @@ declareCommon.fileUpload2 = function (target, tableName, id, deleteFlag, editFla
     // });
 };
 
-declareCommon.showFile = function (target, tableName, id, deleteFlag, fieldsName) {
-    declareCommon.showFile2(target, tableName, id, deleteFlag, true, fieldsName);
+commonAssets.showFile = function (target, tableName, id, deleteFlag, fieldsName) {
+    commonAssets.showFile2(target, tableName, id, deleteFlag, true, fieldsName);
 };
 
-declareCommon.showFile2 = function (target, tableName, id, deleteFlag, editFlag, fieldsName) {
+commonAssets.showFile2 = function (target, tableName, id, deleteFlag, editFlag, fieldsName) {
     FileUtils.getFileShows({
         target: target,
         formData: {
@@ -81,7 +83,7 @@ declareCommon.showFile2 = function (target, tableName, id, deleteFlag, editFlag,
  * @param array
  * @param callback
  */
-declareCommon.deleteAttachmentById = function (array, callback) {
+commonAssets.deleteAttachmentById = function (array, callback) {
     $.ajax({
         url: getContextPath() + "/public/deleteAttachmentById",
         type: "post",
@@ -107,7 +109,7 @@ declareCommon.deleteAttachmentById = function (array, callback) {
  * @param data
  * @param callback
  */
-declareCommon.getSysAttachmentDtoList = function (data, callback) {
+commonAssets.getSysAttachmentDtoList = function (data, callback) {
     $.ajax({
         url: getContextPath() + "/public/getSysAttachmentDtoList",
         type: "get",
@@ -133,7 +135,7 @@ declareCommon.getSysAttachmentDtoList = function (data, callback) {
  * @param data
  * @param callback
  */
-declareCommon.batchUpdateSysAttachmentDto = function (data, callback) {
+commonAssets.batchUpdateSysAttachmentDto = function (data, callback) {
     $.ajax({
         url: getContextPath() + "/public/batchUpdateSysAttachmentDto",
         type: "post",
@@ -154,14 +156,21 @@ declareCommon.batchUpdateSysAttachmentDto = function (data, callback) {
     })
 };
 
+commonAssets.getServerDeclaration2 = function (callback) {
+    var data = {setting: true, pid: commonAssets.declareApplyForm.find('[name=assetsSettingId]').val()};
+    dataAssetsAppraisalDic.getDataAssetsAppraisalDicList(data, function (item) {
+        if (callback){
+            callback(item) ;
+        }
+    });
+};
 /**
  * 获取配置项
  * @param value
  * @param callback
  */
-declareCommon.getServerDeclaration = function (value, callback) {
-    var data = {setting: true, pid: declareCommon.declareApplyForm.find('[name=assetsSettingId]').val()};
-    dataAssetsAppraisalDic.getDataAssetsAppraisalDicList(data, function (item) {
+commonAssets.getServerDeclaration = function (value, callback) {
+    commonAssets.getServerDeclaration2(function (item) {
         if (callback) {
             var arr = [];
             $.each(item, function (i, obj) {
@@ -169,8 +178,8 @@ declareCommon.getServerDeclaration = function (value, callback) {
                     if (obj.fileId) {
                         arr.push({
                             name: obj.name,
-                            projectId: declareCommon.getProjectId(),
-                            planDetailsId: declareCommon.getPlanDetailsId(),
+                            projectId: commonAssets.getProjectId(),
+                            planDetailsId: commonAssets.getPlanDetailsId(),
                             type: value,
                             fileId: obj.fileId
                         })
@@ -182,8 +191,8 @@ declareCommon.getServerDeclaration = function (value, callback) {
                     } else {
                         arr.push({
                             name: obj.name,
-                            projectId: declareCommon.getProjectId(),
-                            planDetailsId: declareCommon.getPlanDetailsId(),
+                            projectId: commonAssets.getProjectId(),
+                            planDetailsId: commonAssets.getPlanDetailsId(),
                             type: value
                         })
                     }
@@ -195,17 +204,17 @@ declareCommon.getServerDeclaration = function (value, callback) {
                 });
             }
         }
-    });
+    }) ;
 };
 
 /**
  * 页面载入html
  * @param value
  */
-declareCommon.writeDeclarationHtml = function (value) {
+commonAssets.writeDeclarationHtml = function (value) {
     var target = undefined;
     if (value == '2') {
-        declareCommon.getServerDeclaration(value, function (data) {
+        commonAssets.getServerDeclaration(value, function (data) {
             target = $("#assetsCustomizeDataField_Fixed_FileId");
             if (data.length == 0) {
                 return null;
@@ -217,25 +226,25 @@ declareCommon.writeDeclarationHtml = function (value) {
                 html = html.replace(/{name}/g, item.name);
                 html = html.replace(/{id}/g, item.id);
                 html = html.replace(/{value}/g, value);
-                html = html.replace(/{method}/g, 'declareCommon');
+                html = html.replace(/{method}/g, 'commonAssets');
                 target.append(html);
                 var select = {};
                 select.tableName = AssessDBKey.AssetsCustomizeDataField;
                 select.tableId = item.id;
-                declareCommon.getSysAttachmentDtoList(select, function (obj) {
+                commonAssets.getSysAttachmentDtoList(select, function (obj) {
                     $.each(obj, function (i, n) {
                         n.fieldsName = fileId;
                     });
-                    declareCommon.batchUpdateSysAttachmentDto(obj, function () {
-                        declareCommon.showFile2(fileId, AssessDBKey.AssetsCustomizeDataField, item.id, false, true, fileId);
-                        declareCommon.fileUpload2(fileId, AssessDBKey.AssetsCustomizeDataField, item.id, false, true, fileId);
+                    commonAssets.batchUpdateSysAttachmentDto(obj, function () {
+                        commonAssets.showFile2(fileId, AssessDBKey.AssetsCustomizeDataField, item.id, false, true, fileId);
+                        commonAssets.fileUpload2(fileId, AssessDBKey.AssetsCustomizeDataField, item.id, false, true, fileId);
                     })
                 });
             });
         });
     }
     if (value == '1') {
-        declareCommon.getServerDeclaration(value, function (data) {
+        commonAssets.getServerDeclaration(value, function (data) {
             target = $("#assetsCustomizeDataField_Fixed_fieldId");
             if (data.length == 0) {
                 return null;
@@ -247,17 +256,17 @@ declareCommon.writeDeclarationHtml = function (value) {
                 html = html.replace(/{name}/g, item.name);
                 html = html.replace(/{id}/g, item.id);
                 html = html.replace(/{value}/g, value);
-                html = html.replace(/{method}/g, 'declareCommon');
+                html = html.replace(/{method}/g, 'commonAssets');
                 target.append(html);
-                declareCommon.showFile(fileId, AssessDBKey.AssetsCustomizeDataField, item.id, true, fileId);
-                declareCommon.fileUpload(fileId, AssessDBKey.AssetsCustomizeDataField, item.id, true, fileId);
+                commonAssets.showFile(fileId, AssessDBKey.AssetsCustomizeDataField, item.id, true, fileId);
+                commonAssets.fileUpload(fileId, AssessDBKey.AssetsCustomizeDataField, item.id, true, fileId);
             });
         });
     }
     if (value == '0') {
         var item = {
-            projectId: declareCommon.getProjectId(),
-            planDetailsId: declareCommon.getPlanDetailsId(),
+            projectId: commonAssets.getProjectId(),
+            planDetailsId: commonAssets.getPlanDetailsId(),
             type: value
         };
         dataAssetsAppraisalDic.saveAssetsCustomizeDataField([item], function (data) {
@@ -269,10 +278,12 @@ declareCommon.writeDeclarationHtml = function (value) {
                 //
                 html = html.replace(/{id}/g, item.id);
                 html = html.replace(/{value}/g, value);
-                html = html.replace(/{method}/g, 'declareCommon');
+                html = html.replace(/{method}/g, 'commonAssets');
                 target.append(html);
-                declareCommon.showFile(fileId, AssessDBKey.AssetsCustomizeDataField, item.id, true, fileId);
-                declareCommon.fileUpload(fileId, AssessDBKey.AssetsCustomizeDataField, item.id, true, fileId);
+                var group = $(".other_EnclosureModel"+item.id) ;
+                dataAssetsAppraisalDic.initForm({},group) ;
+                commonAssets.showFile(fileId, AssessDBKey.AssetsCustomizeDataField, item.id, true, fileId);
+                commonAssets.fileUpload(fileId, AssessDBKey.AssetsCustomizeDataField, item.id, true, fileId);
             });
         });
 
@@ -286,7 +297,7 @@ declareCommon.writeDeclarationHtml = function (value) {
  * @param value
  * @param id
  */
-declareCommon.cleanItemHTML = function (_this, fileId, value, id) {
+commonAssets.cleanItemHTML = function (_this, fileId, value, id) {
     var target = $(_this).closest(".form-group");
     target.remove();
     var select = {};
@@ -315,7 +326,7 @@ declareCommon.cleanItemHTML = function (_this, fileId, value, id) {
     dataAssetsAppraisalDic.deleteAssetsCustomizeDataFieldById(id, null);
     var arr = Object.values(select);
     if (arr.length == 3) {
-        declareCommon.getSysAttachmentDtoList(select, function (data) {
+        commonAssets.getSysAttachmentDtoList(select, function (data) {
             var array = [];
             if (data) {
                 for (var i = 0; i < data.length; i++) {
@@ -323,7 +334,7 @@ declareCommon.cleanItemHTML = function (_this, fileId, value, id) {
                 }
             }
             if (array.length != 0) {
-                declareCommon.deleteAttachmentById(array, function () {
+                commonAssets.deleteAttachmentById(array, function () {
                     toastr.success('清除附件成功!');
                 });
             }

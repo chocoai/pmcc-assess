@@ -13,10 +13,12 @@
                         <div class="input-group">
                             <input type="hidden" name="uUseUnit"
                                    value="${projectInfo.unitInformationVo.uUseUnit}">
-                            <input type="text" readonly="readonly" required="required"
+                            <input type="text" required="required"
                                    placeholder="单位" class="form-control" name="uUseUnitName"
-                                   value="${projectInfo.unitInformationVo.uUseUnitName}"
-                                   onclick="objProject.selectCustomer(this)">
+                                   value="${projectInfo.unitInformationVo.uUseUnitName}">
+                            <span class="input-group-btn">
+                                <div class="btn btn-primary" onclick="objProject.selectCustomer(this)">选择</div>
+                            </span>
                             <span class="input-group-addon">
                                 <input type="checkbox" name="infoWrite" value="true">回写
                             </span>

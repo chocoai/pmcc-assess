@@ -9,7 +9,13 @@ public class AssetsCustomizeDataField {
 
     private Integer projectId;
 
+    private Integer category;
+
+    private Integer typeCustomize;
+
     private String type;
+
+    private String remark;
 
     private String name;
 
@@ -47,12 +53,36 @@ public class AssetsCustomizeDataField {
         this.projectId = projectId;
     }
 
+    public Integer getCategory() {
+        return category;
+    }
+
+    public void setCategory(Integer category) {
+        this.category = category;
+    }
+
+    public Integer getTypeCustomize() {
+        return typeCustomize;
+    }
+
+    public void setTypeCustomize(Integer typeCustomize) {
+        this.typeCustomize = typeCustomize;
+    }
+
     public String getType() {
         return type;
     }
 
     public void setType(String type) {
         this.type = type == null ? null : type.trim();
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark == null ? null : remark.trim();
     }
 
     public String getName() {

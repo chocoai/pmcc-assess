@@ -5,7 +5,10 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="plan_details_id" property="planDetailsId" jdbcType="INTEGER" />
     <result column="project_id" property="projectId" jdbcType="INTEGER" />
+    <result column="category" property="category" jdbcType="INTEGER" />
+    <result column="type_customize" property="typeCustomize" jdbcType="INTEGER" />
     <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="field_name_list" property="fieldNameList" jdbcType="VARCHAR" />
     <result column="sorting" property="sorting" jdbcType="INTEGER" />
@@ -72,8 +75,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, plan_details_id, project_id, type, name, field_name_list, sorting, creator, gmt_created, 
-    gmt_modified
+    id, plan_details_id, project_id, category, type_customize, type, remark, name, field_name_list, 
+    sorting, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.AssetsCustomizeDataFieldExample" >
     select
@@ -109,11 +112,13 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_assets_customize_data_field (plan_details_id, project_id, type, 
+    insert into tb_assets_customize_data_field (plan_details_id, project_id, category, 
+      type_customize, type, remark, 
       name, field_name_list, sorting, 
       creator, gmt_created, gmt_modified
       )
-    values (#{planDetailsId,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, 
+    values (#{planDetailsId,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, #{category,jdbcType=INTEGER}, 
+      #{typeCustomize,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
       #{name,jdbcType=VARCHAR}, #{fieldNameList,jdbcType=VARCHAR}, #{sorting,jdbcType=INTEGER}, 
       #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
       )
@@ -130,8 +135,17 @@
       <if test="projectId != null" >
         project_id,
       </if>
+      <if test="category != null" >
+        category,
+      </if>
+      <if test="typeCustomize != null" >
+        type_customize,
+      </if>
       <if test="type != null" >
         type,
+      </if>
+      <if test="remark != null" >
+        remark,
       </if>
       <if test="name != null" >
         name,
@@ -159,8 +173,17 @@
       <if test="projectId != null" >
         #{projectId,jdbcType=INTEGER},
       </if>
+      <if test="category != null" >
+        #{category,jdbcType=INTEGER},
+      </if>
+      <if test="typeCustomize != null" >
+        #{typeCustomize,jdbcType=INTEGER},
+      </if>
       <if test="type != null" >
         #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
       </if>
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
@@ -200,8 +223,17 @@
       <if test="record.projectId != null" >
         project_id = #{record.projectId,jdbcType=INTEGER},
       </if>
+      <if test="record.category != null" >
+        category = #{record.category,jdbcType=INTEGER},
+      </if>
+      <if test="record.typeCustomize != null" >
+        type_customize = #{record.typeCustomize,jdbcType=INTEGER},
+      </if>
       <if test="record.type != null" >
         type = #{record.type,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
       </if>
       <if test="record.name != null" >
         name = #{record.name,jdbcType=VARCHAR},
@@ -231,7 +263,10 @@
     set id = #{record.id,jdbcType=INTEGER},
       plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
       project_id = #{record.projectId,jdbcType=INTEGER},
+      category = #{record.category,jdbcType=INTEGER},
+      type_customize = #{record.typeCustomize,jdbcType=INTEGER},
       type = #{record.type,jdbcType=VARCHAR},
+      remark = #{record.remark,jdbcType=VARCHAR},
       name = #{record.name,jdbcType=VARCHAR},
       field_name_list = #{record.fieldNameList,jdbcType=VARCHAR},
       sorting = #{record.sorting,jdbcType=INTEGER},
@@ -251,8 +286,17 @@
       <if test="projectId != null" >
         project_id = #{projectId,jdbcType=INTEGER},
       </if>
+      <if test="category != null" >
+        category = #{category,jdbcType=INTEGER},
+      </if>
+      <if test="typeCustomize != null" >
+        type_customize = #{typeCustomize,jdbcType=INTEGER},
+      </if>
       <if test="type != null" >
         type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
       </if>
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
@@ -279,7 +323,10 @@
     update tb_assets_customize_data_field
     set plan_details_id = #{planDetailsId,jdbcType=INTEGER},
       project_id = #{projectId,jdbcType=INTEGER},
+      category = #{category,jdbcType=INTEGER},
+      type_customize = #{typeCustomize,jdbcType=INTEGER},
       type = #{type,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
       field_name_list = #{fieldNameList,jdbcType=VARCHAR},
       sorting = #{sorting,jdbcType=INTEGER},

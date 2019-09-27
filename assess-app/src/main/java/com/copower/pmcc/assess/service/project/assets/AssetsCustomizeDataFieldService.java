@@ -1,11 +1,16 @@
 package com.copower.pmcc.assess.service.project.assets;
 
 import com.alibaba.fastjson.JSONObject;
+import com.copower.pmcc.assess.common.enums.assets.AssetsCustomizeDataFieldTypeEnum;
 import com.copower.pmcc.assess.dal.basis.dao.assets.AssetsCustomizeDataFieldDao;
 import com.copower.pmcc.assess.dal.basis.entity.AssetsCustomizeDataField;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectPhase;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dto.input.project.assets.AssetsCustomizeDataFieldDto;
-import com.copower.pmcc.assess.dto.output.data.DataAssetsAppraisalDicVo;
+import com.copower.pmcc.assess.dto.output.project.assets.AssetsCustomizeDataFieldVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -22,6 +27,7 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -37,6 +43,36 @@ public class AssetsCustomizeDataFieldService {
     private CommonService commonService;
     @Autowired
     private BaseAttachmentService baseAttachmentService;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
+    @Autowired
+    private ProjectPhaseService projectPhaseService;
+
+    public void setParams(ModelAndView modelAndView, ProjectPlanDetails projectPlanDetails) {
+        for (AssetsCustomizeDataFieldTypeEnum typeEnum : AssetsCustomizeDataFieldTypeEnum.values()) {
+            modelAndView.addObject(StringUtils.uncapitalize(typeEnum.name()), getDataAssetsAppraisalDicListByTypeAndPlanDetailsIdVo(projectPlanDetails.getId(),String.valueOf(typeEnum.getFileType())));
+        }
+        modelAndView.addObject(StringUtils.uncapitalize(ProjectPlanDetails.class.getSimpleName()), projectPlanDetails);
+        if (projectPlanDetails.getProjectPhaseId() != null){
+            ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseById(projectPlanDetails.getProjectPhaseId()) ;
+            modelAndView.addObject(StringUtils.uncapitalize(ProjectPhase.class.getSimpleName()), projectPhase);
+        }
+
+        AssetsCustomizeDataField customizeDataField = new AssetsCustomizeDataField();
+        customizeDataField.setType(String.valueOf(AssetsCustomizeDataFieldTypeEnum.OtherTypeData.getFileType()));
+        customizeDataField.setPlanDetailsId(projectPlanDetails.getId());
+        customizeDataField.setProjectId(projectPlanDetails.getProjectId());
+        List<AssetsCustomizeDataField> assetsCustomizeDataFieldList = getDataAssetsAppraisalDicListByExample(customizeDataField);
+        if (CollectionUtils.isNotEmpty(assetsCustomizeDataFieldList)) {
+            modelAndView.addObject(StringUtils.uncapitalize(AssetsCustomizeDataField.class.getSimpleName()), assetsCustomizeDataFieldList.stream().findFirst().get());
+        } else {
+           saveDataAssetsAppraisalDic(customizeDataField);
+            modelAndView.addObject(StringUtils.uncapitalize(AssetsCustomizeDataField.class.getSimpleName()), customizeDataField);
+        }
+
+    }
+
+
 
     public boolean saveDataAssetsAppraisalDic(AssetsCustomizeDataField assetsCustomizeDataField)  {
         if (assetsCustomizeDataField == null) {
@@ -87,9 +123,9 @@ public class AssetsCustomizeDataFieldService {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<AssetsCustomizeDataField> childrenList = getDataAssetsAppraisalDicListByExample(oo);
-        List<DataAssetsAppraisalDicVo> voList = Lists.newArrayList();
+        List<AssetsCustomizeDataFieldVo> voList = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(childrenList)) {
-            childrenList.forEach(target -> voList.add(getDataAssetsAppraisalDicVo(target)));
+            childrenList.forEach(target -> voList.add(getAssetsCustomizeDataFieldVo(target)));
         }
         vo.setTotal(page.getTotal());
         vo.setRows(voList);
@@ -119,15 +155,24 @@ public class AssetsCustomizeDataFieldService {
         return dataAssetsAppraisalDicDao.getAssetsCustomizeDataFieldListByTypeAndPlanDetailsId(planDetailsId, type);
     }
 
+    public List<AssetsCustomizeDataFieldVo> getDataAssetsAppraisalDicListByTypeAndPlanDetailsIdVo(Integer planDetailsId, String type) {
+        List<AssetsCustomizeDataFieldVo> voList = Lists.newArrayList();
+        List<AssetsCustomizeDataField> dataFieldList = getDataAssetsAppraisalDicListByTypeAndPlanDetailsId(planDetailsId, type);
+        if (CollectionUtils.isNotEmpty(dataFieldList)){
+            dataFieldList.forEach(po -> voList.add(getAssetsCustomizeDataFieldVo(po)));
+        }
+        return voList;
+    }
+
     public List<AssetsCustomizeDataField> getDataAssetsAppraisalDicListByType(String type) {
         return dataAssetsAppraisalDicDao.getAssetsCustomizeDataFieldListByType(type);
     }
 
-    public DataAssetsAppraisalDicVo getDataAssetsAppraisalDicVo(AssetsCustomizeDataField target) {
+    public AssetsCustomizeDataFieldVo getAssetsCustomizeDataFieldVo(AssetsCustomizeDataField target) {
         if (target == null) {
             return null;
         }
-        DataAssetsAppraisalDicVo vo = new DataAssetsAppraisalDicVo();
+        AssetsCustomizeDataFieldVo vo = new AssetsCustomizeDataFieldVo();
         BeanUtils.copyProperties(target, vo);
         List<SysAttachmentDto> sysAttachmentDtoList = baseAttachmentService.getByField_tableId(target.getId(), null, FormatUtils.entityNameConvertToTableName(AssetsCustomizeDataField.class));
         if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
@@ -137,6 +182,9 @@ public class AssetsCustomizeDataFieldService {
             }
             vo.setFileViewName(builder.toString());
         }
+        vo.setJsonString(JSONObject.toJSONString(target));
+        vo.setCategoryName(baseDataDicService.getNameById(target.getCategory()));
+        vo.setTypeCustomizeName(baseDataDicService.getNameById(target.getTypeCustomize()));
         return vo;
     }
 

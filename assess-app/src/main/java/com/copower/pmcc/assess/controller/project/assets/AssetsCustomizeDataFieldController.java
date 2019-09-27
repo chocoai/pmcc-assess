@@ -7,7 +7,6 @@ import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.project.assets.AssetsCustomizeDataFieldService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
-import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

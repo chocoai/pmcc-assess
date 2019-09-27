@@ -1,15 +1,11 @@
 package com.copower.pmcc.assess.service.project.assets;
 
-import com.copower.pmcc.assess.common.enums.assets.AssetsCustomizeDataFieldTypeEnum;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectPhase;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
-import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.exception.BusinessException;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
@@ -28,8 +24,6 @@ public class AssetsTaskReprotAssist implements ProjectTaskInterface {
     private ProcessControllerComponent processControllerComponent;
     @Autowired
     private AssetsCustomizeDataFieldService assetsCustomizeDataFieldService;
-    @Autowired
-    private ProjectPhaseService projectPhaseService;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
@@ -79,13 +73,6 @@ public class AssetsTaskReprotAssist implements ProjectTaskInterface {
       
     }
     private void setParams(ModelAndView modelAndView, ProjectPlanDetails projectPlanDetails) {
-        for (AssetsCustomizeDataFieldTypeEnum typeEnum : AssetsCustomizeDataFieldTypeEnum.values()) {
-            modelAndView.addObject(StringUtils.uncapitalize(typeEnum.name()), assetsCustomizeDataFieldService.getDataAssetsAppraisalDicListByTypeAndPlanDetailsId(projectPlanDetails.getId(),String.valueOf(typeEnum.getFileType())));
-        }
-        modelAndView.addObject(StringUtils.uncapitalize(ProjectPlanDetails.class.getSimpleName()), projectPlanDetails);
-        if (projectPlanDetails.getProjectPhaseId() != null){
-            ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseById(projectPlanDetails.getProjectPhaseId()) ;
-            modelAndView.addObject(StringUtils.uncapitalize(ProjectPhase.class.getSimpleName()), projectPhase);
-        }
+        assetsCustomizeDataFieldService.setParams(modelAndView, projectPlanDetails);
     }
 }

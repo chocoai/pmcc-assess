@@ -94,8 +94,9 @@ AssessProjectClassifyKey.singleHouseLandCertificateTypeSimple = "single.house.la
 /**
  * 数据字典key
  */
-var AssessDicKey = {}
+var AssessDicKey = {};
 //项目申报
+AssessDicKey.DECLARE_ASSETS_CUSTOMIZE_TYPE = "declare.assets.customize.type";//资产评估 自定义类型
 AssessDicKey.REPORT_TYPE = "report.type";//报告类型
 AssessDicKey.projectDeclareHouseCertificateType = "project.declare.house.certificate.type";//房产证类型
 AssessDicKey.projectDeclareCommonSituation = "project.declare.common.situation";//共有情况

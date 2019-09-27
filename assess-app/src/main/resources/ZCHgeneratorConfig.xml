@@ -149,7 +149,7 @@
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         <!--</table>-->
 
-        <table tableName="tb_project_phase" domainObjectName="ProjectPhase">
+        <table tableName="tb_assets_customize_data_field" domainObjectName="AssetsCustomizeDataField">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 

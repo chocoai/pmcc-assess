@@ -285,6 +285,126 @@ public class AssetsCustomizeDataFieldExample {
             return (Criteria) this;
         }
 
+        public Criteria andCategoryIsNull() {
+            addCriterion("category is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryIsNotNull() {
+            addCriterion("category is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryEqualTo(Integer value) {
+            addCriterion("category =", value, "category");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryNotEqualTo(Integer value) {
+            addCriterion("category <>", value, "category");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryGreaterThan(Integer value) {
+            addCriterion("category >", value, "category");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryGreaterThanOrEqualTo(Integer value) {
+            addCriterion("category >=", value, "category");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryLessThan(Integer value) {
+            addCriterion("category <", value, "category");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryLessThanOrEqualTo(Integer value) {
+            addCriterion("category <=", value, "category");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryIn(List<Integer> values) {
+            addCriterion("category in", values, "category");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryNotIn(List<Integer> values) {
+            addCriterion("category not in", values, "category");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryBetween(Integer value1, Integer value2) {
+            addCriterion("category between", value1, value2, "category");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryNotBetween(Integer value1, Integer value2) {
+            addCriterion("category not between", value1, value2, "category");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeCustomizeIsNull() {
+            addCriterion("type_customize is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeCustomizeIsNotNull() {
+            addCriterion("type_customize is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeCustomizeEqualTo(Integer value) {
+            addCriterion("type_customize =", value, "typeCustomize");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeCustomizeNotEqualTo(Integer value) {
+            addCriterion("type_customize <>", value, "typeCustomize");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeCustomizeGreaterThan(Integer value) {
+            addCriterion("type_customize >", value, "typeCustomize");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeCustomizeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("type_customize >=", value, "typeCustomize");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeCustomizeLessThan(Integer value) {
+            addCriterion("type_customize <", value, "typeCustomize");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeCustomizeLessThanOrEqualTo(Integer value) {
+            addCriterion("type_customize <=", value, "typeCustomize");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeCustomizeIn(List<Integer> values) {
+            addCriterion("type_customize in", values, "typeCustomize");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeCustomizeNotIn(List<Integer> values) {
+            addCriterion("type_customize not in", values, "typeCustomize");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeCustomizeBetween(Integer value1, Integer value2) {
+            addCriterion("type_customize between", value1, value2, "typeCustomize");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeCustomizeNotBetween(Integer value1, Integer value2) {
+            addCriterion("type_customize not between", value1, value2, "typeCustomize");
+            return (Criteria) this;
+        }
+
         public Criteria andTypeIsNull() {
             addCriterion("type is null");
             return (Criteria) this;
@@ -352,6 +472,76 @@ public class AssetsCustomizeDataFieldExample {
 
         public Criteria andTypeNotBetween(String value1, String value2) {
             addCriterion("type not between", value1, value2, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkIsNull() {
+            addCriterion("remark is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkIsNotNull() {
+            addCriterion("remark is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkEqualTo(String value) {
+            addCriterion("remark =", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkNotEqualTo(String value) {
+            addCriterion("remark <>", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkGreaterThan(String value) {
+            addCriterion("remark >", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkGreaterThanOrEqualTo(String value) {
+            addCriterion("remark >=", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkLessThan(String value) {
+            addCriterion("remark <", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkLessThanOrEqualTo(String value) {
+            addCriterion("remark <=", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkLike(String value) {
+            addCriterion("remark like", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkNotLike(String value) {
+            addCriterion("remark not like", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkIn(List<String> values) {
+            addCriterion("remark in", values, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkNotIn(List<String> values) {
+            addCriterion("remark not in", values, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkBetween(String value1, String value2) {
+            addCriterion("remark between", value1, value2, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkNotBetween(String value1, String value2) {
+            addCriterion("remark not between", value1, value2, "remark");
             return (Criteria) this;
         }
 
