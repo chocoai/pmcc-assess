@@ -187,6 +187,50 @@
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                     </ul>
+                    <h3>关联土地证附件</h3>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content collapse">
+                    <c:forEach items="${declareRecordList}" var="declareRecord">
+
+                        <div class="row">
+                            <div class=" col-xs-6612  col-sm-6612  col-md-6612  col-lg-6612  col-sm-6 col-xs-12">
+                                <div class="x_panel">
+                                    <div class="x_title"><h4><strong>${declareRecord.name}</strong></h4></div>
+                                    <table class="table table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th>序号</th>
+                                            <th>文件名称</th>
+                                            <th>操作</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody data-id="${declareRecord.id}" data-name="land_file_list">
+
+
+                                        </tbody>
+                                    </table>
+                                    <div class="x-valid" data-id="${declareRecord.id}" data-name="land_file_btn">
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <script type="text/javascript">
+                            $(function () {
+                                uploadLandFile(AssessDBKey.DeclareRealtyLandCert, "uploadlandFile${declareRecord.id}", $('tbody[data-id=${declareRecord.id}][data-name=land_file_list]'), ${declareRecord.id});
+                                getLandFileAllByDeclareRecord($('tbody[data-id=${declareRecord.id}][data-name=land_file_list]'), ${declareRecord.id});
+                            })
+                        </script>
+                    </c:forEach>
+                </div>
+            </div>
+            <div class="x_panel">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
                     <h3>
                         估价中引用的专用文件资料
                     </h3>
@@ -523,6 +567,99 @@
         uploadFiles(AssessDBKey.ProjectInfo, "${projectInfo.id}", AssessUploadKey.PROJECT_PROXY);
         loadUploadFiles(AssessDBKey.ProjectInfo, "${projectInfo.id}", AssessUploadKey.PROJECT_PROXY);
     });
+
+
+    function getLandFileAllByDeclareRecord(tbody, declareRecordId) {
+        $.ajax({
+            url: '${pageContext.request.contextPath}/projectReportFile/getLandCertId',
+            data: {
+                declareRecordId: declareRecordId
+            },
+            success: function (result) {
+                if (result.ret) {
+                    if (result.data) {
+                        getLandFileAll(tbody, result.data);
+                    }
+                } else {
+                    Alert(result.errmsg);
+                }
+            }
+        })
+
+    }
+
+    function uploadLandFile(tableName, target, tbody, declareRecordId) {
+        $.ajax({
+            url: '${pageContext.request.contextPath}/projectReportFile/getLandCertId',
+            data: {
+                declareRecordId: declareRecordId
+            },
+            success: function (result) {
+                if (result.ret) {
+                    if (result.data) {
+                        var html = '';
+                        html += '<label class="col-sm-1 control-label">附件</label>';
+                        html += '<div class="col-sm-10">';
+                        html += '<input id="uploadlandFile' + declareRecordId + '" class="form-control"type="file">';
+                        html += '<div id="uploadlandFile' + declareRecordId + '">';
+                        html += '</div>';
+                        html += '</div>';
+
+                        $('div[data-id=' + declareRecordId + '][data-name=land_file_btn]').empty().append(html);
+                        var tableId = result.data
+                        FileUtils.uploadFiles({
+                            target: target,
+                            disabledTarget: "btn_submit",
+                            formData: {
+                                tableName: tableName,
+                                tableId: tableId,
+                            },
+                            onUploadComplete: function () {
+                                getLandFileAll(tbody, tableId);
+                            },
+                            editFlag: true,
+                            deleteFlag: true
+                        });
+                    } else {
+                        var html = '';
+                        html += '<label class="control-label">未关联土地证</label>';
+                        $('div[data-id=' + declareRecordId + '][data-name=land_file_btn]').empty().append(html);
+                    }
+                } else {
+                    Alert(result.errmsg);
+                }
+            }
+        })
+
+    }
+
+    //加载土地证附件
+    function getLandFileAll(tbody, tableId) {
+        console.log(tableId + "=2=")
+        $.ajax({
+            url: '${pageContext.request.contextPath}/projectReportFile/getLandFileAll',
+            data: {
+                tableId: tableId
+            },
+            success: function (result) {
+                if (result.ret) {
+                    if (result.data) {
+                        var html = '';
+                        $.each(result.data, function (i, item) {
+                            ++i;
+                            html += '<tr><th scope="row">' + i + '</th><td>' + item.fileName + '</td><td>' +
+                                '<input type="button" class="btn btn-xs btn-primary" value="编辑" onclick="FileUtils.editAttachment(' + item.id + ',\'' + item.fileExtension + '\');">' +
+                                '<input type="button" class="btn btn-xs btn-primary" value="查看" onclick="FileUtils.showAttachment(' + item.id + ',\'' + item.fileExtension + '\');">' +
+                                '<input type="button" class="btn btn-xs btn-warning" value="移除" onclick="removeOwnershipCertFile(' + item.id + ',this)"></td></tr>';
+                        })
+                        tbody.empty().append(html);
+                    }
+                } else {
+                    Alert(result.errmsg);
+                }
+            }
+        })
+    }
 
     function uploadOwnershipCertFile(tableName, tableId, target, tbody, declareRecordId) {
         FileUtils.uploadFiles({

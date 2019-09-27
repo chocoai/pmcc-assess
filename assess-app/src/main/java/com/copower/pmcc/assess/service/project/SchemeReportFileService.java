@@ -1,8 +1,10 @@
 package com.copower.pmcc.assess.service.project;
 
+import com.copower.pmcc.assess.common.FileUtils;
 import com.copower.pmcc.assess.common.enums.AssessUploadEnum;
 import com.copower.pmcc.assess.common.enums.EstateTaggingTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
+import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareBuildEngineeringAndEquipmentCenterDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeReportFileCustomDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeReportFileDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeReportFileItemDao;
@@ -83,6 +85,8 @@ public class SchemeReportFileService extends BaseService {
     private BasicHouseRoomService basicHouseRoomService;
     @Autowired
     private DataLocaleSurveyPictureService dataLocaleSurveyPictureService;
+    @Autowired
+    private DeclareBuildEngineeringAndEquipmentCenterDao declareBuildEngineeringAndEquipmentCenterDao;
 
     /**
      * 保存数据
@@ -496,6 +500,32 @@ public class SchemeReportFileService extends BaseService {
     }
 
     /**
+     * 关联的土地证附件
+     *
+     * @param declareRecordId
+     * @return
+     */
+    public List<String> getLandFilePathList(Integer declareRecordId) throws Exception{
+        List<String> paths = Lists.newArrayList();
+        //关联的土地证附件
+        Integer landCertId = getLandCertId(declareRecordId);
+        if(landCertId!=null){
+            List<SysAttachmentDto> attachmentDtoList = baseAttachmentService.getByField_tableId(landCertId, null, "tb_declare_realty_land_cert");
+            if(CollectionUtils.isNotEmpty(attachmentDtoList)) {
+                for (SysAttachmentDto item : attachmentDtoList) {
+                    String path = baseAttachmentService.downloadFtpFileToLocal(item.getId());
+                    if (FileUtils.checkImgSuffix(path)) {
+                        paths.add(path);
+                    }
+                }
+            }
+        }
+       return paths;
+    }
+
+
+
+    /**
      * 获取权属证明文件
      *
      * @param declareRecordId
@@ -504,6 +534,37 @@ public class SchemeReportFileService extends BaseService {
     public List<SysAttachmentDto> getOwnershipCertFileAll(Integer declareRecordId) {
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(declareRecordId);
         List<SysAttachmentDto> attachmentDtoList = baseAttachmentService.getByField_tableId(declareRecord.getDataTableId(), null, declareRecord.getDataTableName());
+        return attachmentDtoList;
+    }
+
+
+
+    /**
+     * 获取关联土地证id
+     *
+     * @param declareRecordId
+     * @return
+     */
+    public Integer getLandCertId(Integer declareRecordId) {
+        DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(declareRecordId);
+        DeclareBuildEngineeringAndEquipmentCenter equipmentCenter = new DeclareBuildEngineeringAndEquipmentCenter();
+        equipmentCenter.setType("DeclareRealtyHouseCert");
+        equipmentCenter.setHouseId(declareRecord.getDataTableId());
+        List<DeclareBuildEngineeringAndEquipmentCenter> centerList = declareBuildEngineeringAndEquipmentCenterDao.getDeclareBuildEngineeringAndEquipmentCenterList(equipmentCenter);
+        if(CollectionUtils.isNotEmpty(centerList)){
+           return centerList.get(0).getLandId();
+        }
+        return null;
+    }
+
+    /**
+     * 获取关联土地证附件
+     *
+     * @param tableId
+     * @return
+     */
+    public List<SysAttachmentDto> getLandFileAll(Integer tableId) {
+        List<SysAttachmentDto> attachmentDtoList = baseAttachmentService.getByField_tableId(tableId, null, "tb_declare_realty_land_cert");
         return attachmentDtoList;
     }
 

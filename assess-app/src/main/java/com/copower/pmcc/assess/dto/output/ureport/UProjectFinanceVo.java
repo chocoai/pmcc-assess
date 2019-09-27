@@ -26,6 +26,7 @@ public class UProjectFinanceVo {
     private String loanTypeName;//贷款类型
     private String serviceComeFromExplain;//业务来源说明
     private Date projectCreated;//立项时间 -查询
+    private Date resultNumberDate;//结果文号时间
     private BigDecimal debtAmount;//欠款金额
 
     public Integer getId() {
@@ -186,5 +187,13 @@ public class UProjectFinanceVo {
 
     public void setDebtAmount(BigDecimal debtAmount) {
         this.debtAmount = debtAmount;
+    }
+
+    public Date getResultNumberDate() {
+        return resultNumberDate;
+    }
+
+    public void setResultNumberDate(Date resultNumberDate) {
+        this.resultNumberDate = resultNumberDate;
     }
 }

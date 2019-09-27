@@ -91,4 +91,28 @@ public class ProjectReportFileController {
             return HttpResult.newErrorResult(e.getMessage());
         }
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/getLandCertId", name = "获取关联土地证id", method = RequestMethod.POST)
+    public HttpResult getLandCertId(Integer declareRecordId) {
+        try {
+            return HttpResult.newCorrectResult(schemeReportFileService.getLandCertId(declareRecordId));
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
+
+
+    @ResponseBody
+    @RequestMapping(value = "/getLandFileAll", name = "获取权属证明复印件图片", method = RequestMethod.POST)
+    public HttpResult getLandFileAll(Integer tableId) {
+        try {
+            return HttpResult.newCorrectResult(schemeReportFileService.getLandFileAll(tableId));
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
+
 }
