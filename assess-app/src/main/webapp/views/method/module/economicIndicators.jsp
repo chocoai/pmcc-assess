@@ -171,10 +171,10 @@
                         <thead>
                         <tr>
                             <th>规划项目名称</th>
-                            <th>规划建筑面积 ㎡</th>
-                            <th>可出售面积 ㎡</th>
-                            <th>评估面积 ㎡</th>
-                            <th>个数</th>
+                            <th>规划建筑面积/个数</th>
+                            <th>可出售面积/个数</th>
+                            <th>评估面积/个数</th>
+                            <%--<th>个数</th>--%>
                             <th>单位售价(元/㎡)</th>
                             <th>备注</th>
                         </tr>
@@ -190,7 +190,7 @@
                             <td><label name="plannedBuildingArea"></label></td>
                             <td><label name="saleableArea"></label></td>
                             <td><label name="assessArea"></label></td>
-                            <td><label name="number"></label></td>
+                            <%--<td><label name="number"></label></td>--%>
                             <td><label name="unitPrice"></label></td>
                             <td></td>
                         </tr>
@@ -204,7 +204,7 @@
                             <td><label name="plannedBuildingArea"></label></td>
                             <td><label name="saleableArea"></label></td>
                             <td><label name="assessArea"></label></td>
-                            <td><label name="number"></label></td>
+                            <%--<td><label name="number"></label></td>--%>
                             <td><label name="unitPrice"></label></td>
                             <td></td>
                         </tr>
@@ -218,7 +218,7 @@
                             <td><label name="plannedBuildingArea"></label></td>
                             <td><label name="saleableArea"></label></td>
                             <td><label name="assessArea"></label></td>
-                            <td><label name="number"></label></td>
+                            <%--<td><label name="number"></label></td>--%>
                             <td><label name="unitPrice"></label></td>
                             <td></td>
                         </tr>
@@ -232,7 +232,7 @@
                             <td><label name="plannedBuildingArea"></label></td>
                             <td><label name="saleableArea"></label></td>
                             <td><label name="assessArea"></label></td>
-                            <td><label name="number"></label></td>
+                            <%--<td><label name="number"></label></td>--%>
                             <td><label name="unitPrice"></label></td>
                             <td></td>
                         </tr>
@@ -245,7 +245,7 @@
                             <td><label name="plannedBuildingArea"></label></td>
                             <td><label name="saleableArea"></label></td>
                             <td><label name="assessArea"></label></td>
-                            <td><label name="number"></label></td>
+                            <%--<td><label name="number"></label></td>--%>
                             <td><label name="unitPrice"></label></td>
                             <td></td>
                         </tr>
@@ -257,7 +257,7 @@
                             <td class="info">规划建筑面积(㎡)<label name="plannedBuildingArea"
                                                              class="label label-default"></label></td>
                             <td class="info">可售面积(㎡)<label name="saleableArea" class="label label-default"></label></td>
-                            <td class="info">总可售面积售价(元)<label name="totalSaleableAreaPrice"
+                            <td class="info" colspan="2">总可售面积售价(元)<label name="totalSaleableAreaPrice"
                                                               class="label label-default"></label></td>
                         </tr>
                         </tfoot>
@@ -286,27 +286,27 @@
     <tr class="dynamic treegrid-{parentIndex}-{currentIndex} treegrid-parent-{parentIndex}"
         data-key="{dataKey}" data-role="child">
         <td>
-            <input type="text" name="name" value="{name}" style="width: 100px;">
+            <input type="text" name="name" value="{name}" style="width: 100px;" placeholder="名称">
             <a class="btn btn-xs btn-warning tooltips" data-placement="top"
                onclick="$(this).closest('tr').remove();"><i class="fa fa-minus fa-white"></i></a>
         </td>
-        <td><input type="text" value="{plannedBuildingArea}"
+        <td><input type="text" value="{plannedBuildingArea}" placeholder="规划面积"
                    onblur="economicIndicators.autoSummary()"
                    name="plannedBuildingArea" data-rule-number="true" style="width: 100px;">
         </td>
-        <td><input type="text" value="{saleableArea}"
+        <td><input type="text" value="{saleableArea}" placeholder="可售面积"
                    onblur="economicIndicators.autoSummary()"
                    name="saleableArea" data-rule-number="true" style="width: 100px;">
         </td>
-        <td><input type="text" value="{assessArea}"
+        <td><input type="text" value="{assessArea}" placeholder="评估面积"
                    onblur="economicIndicators.autoSummary()"
                    name="assessArea" data-rule-number="true" style="width: 100px;">
         </td>
-        <td><input type="text" value="{number}"
-                   onblur="economicIndicators.autoSummary()"
-                   name="number" data-rule-number="true" style="width: 100px;">
-        </td>
-        <td><input type="text" value="{unitPrice}"
+        <%--<td><input type="text" value="{number}"--%>
+                   <%--onblur="economicIndicators.autoSummary()"--%>
+                   <%--name="number" data-rule-number="true" style="width: 100px;">--%>
+        <%--</td>--%>
+        <td><input type="text" value="{unitPrice}" placeholder="单价"
                    onblur="economicIndicators.autoSummary()"
                    name="unitPrice" data-rule-number="true" style="width: 100px;">
         </td>
