@@ -87,6 +87,10 @@ public class SchemeReportFileService extends BaseService {
     private DataLocaleSurveyPictureService dataLocaleSurveyPictureService;
     @Autowired
     private DeclareBuildEngineeringAndEquipmentCenterDao declareBuildEngineeringAndEquipmentCenterDao;
+    @Autowired
+    private BasicApplyBatchDetailService basicApplyBatchDetailService;
+    @Autowired
+    private BasicApplyBatchService basicApplyBatchService;
 
     /**
      * 保存数据
@@ -157,25 +161,42 @@ public class SchemeReportFileService extends BaseService {
      *
      * @param declareRecordList
      */
-    public void makeJudgeObjectPosition(List<DeclareRecord> declareRecordList) {
+    public void makeJudgeObjectPosition(List<DeclareRecord> declareRecordList) throws Exception {
         if (CollectionUtils.isEmpty(declareRecordList)) return;
         for (DeclareRecord declareRecord : declareRecordList) {
             BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(declareRecord.getId());
             if (basicApply == null) continue;
-            List<BasicEstateTaggingVo> taggingList = basicEstateTaggingService.getEstateTaggingList(basicApply.getId(), EstateTaggingTypeEnum.UNIT.getKey());
-            if (CollectionUtils.isNotEmpty(taggingList)) {
-                BasicEstateTagging tagging = taggingList.get(0);
-                SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
-                sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(DeclareRecord.class));
-                sysAttachmentDto.setProjectId(declareRecord.getProjectId());
-                sysAttachmentDto.setTableId(declareRecord.getId());
-                sysAttachmentDto.setFieldsName(AssessUploadEnum.JUDGE_OBJECT_POSITION.getKey());
-                sysAttachmentDto.setFileName("位置示意图.jpg");
-                // 已存在则不生成
-                List<SysAttachmentDto> attachmentList = baseAttachmentService.getAttachmentList(sysAttachmentDto);
-                if (CollectionUtils.isNotEmpty(attachmentList)) continue;
-                publicService.downLoadLocationImage(tagging.getLng(), tagging.getLat(), sysAttachmentDto);
+            // 删除原位置图
+            SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
+            sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(DeclareRecord.class));
+            sysAttachmentDto.setProjectId(declareRecord.getProjectId());
+            sysAttachmentDto.setTableId(declareRecord.getId());
+            sysAttachmentDto.setFieldsName(AssessUploadEnum.JUDGE_OBJECT_POSITION.getKey());
+            sysAttachmentDto.setFileName("位置示意图.jpg");
+            List<SysAttachmentDto> attachmentList = baseAttachmentService.getAttachmentList(sysAttachmentDto);
+            if (CollectionUtils.isNotEmpty(attachmentList)) {
+                for (SysAttachmentDto attachment : attachmentList) {
+                    baseAttachmentService.deleteAttachmentByDto(attachment);
+                }
             }
+
+            Integer basicEstateId = basicApply.getBasicEstateId();
+            BasicApplyBatch applyBatch = basicApplyBatchService.getBasicApplyBatchByEstateId(basicEstateId);
+            //获取楼栋
+            List<BasicBuilding> buildingListByBatchId = basicApplyBatchDetailService.getBuildingListByBatchId(applyBatch.getId());
+            for (BasicBuilding build : buildingListByBatchId) {
+                //获取单元
+                List<BasicUnit> unitListByBatchId = basicApplyBatchDetailService.getBasicUnitListByBatchId(applyBatch.getId(), build);
+                for (BasicUnit unit : unitListByBatchId) {
+                    List<BasicEstateTaggingVo> taggingList = basicEstateTaggingService.getApplyBatchEstateTaggingsByTableId(unit.getId(), EstateTaggingTypeEnum.UNIT.getKey());
+                    if (CollectionUtils.isNotEmpty(taggingList)) {
+                        //生成位置图
+                        BasicEstateTagging tagging = taggingList.get(0);
+                        publicService.downLoadLocationImage(tagging.getLng(), tagging.getLat(), sysAttachmentDto);
+                    }
+                }
+            }
+
         }
     }
 
@@ -345,7 +366,7 @@ public class SchemeReportFileService extends BaseService {
      * @param certifyPartCategory
      * @return
      */
-    public List<SysAttachmentDto> correspondingSitePic(Integer declareRecordId,Integer certifyPartCategory) throws Exception {
+    public List<SysAttachmentDto> correspondingSitePic(Integer declareRecordId, Integer certifyPartCategory) throws Exception {
         BaseDataDic correspondingSite = baseDataDicService.getDataDicById(certifyPartCategory);
         String fieldName = correspondingSite.getFieldName();
         //1.楼盘外观图 2.楼栋外装图、外观图
@@ -359,7 +380,7 @@ public class SchemeReportFileService extends BaseService {
             BasicHouse basicHouse = basicHouseService.getHouseByApplyId(basicApply.getId());
             List<SysAttachmentDto> dtoList = null;
             if (basicEstate != null) {
-                if(fieldName.equals( AssessUploadEnum.ESTATE_FLOOR_APPEARANCE_FIGURE.getKey())) {
+                if (fieldName.equals(AssessUploadEnum.ESTATE_FLOOR_APPEARANCE_FIGURE.getKey())) {
                     dtoList = baseAttachmentService.getByField_tableId(basicEstate.getId(), AssessUploadEnum.ESTATE_FLOOR_APPEARANCE_FIGURE.getKey(), FormatUtils.entityNameConvertToTableName(BasicEstate.class));
                     removeGenerateFile(dtoList);
                     if (CollectionUtils.isNotEmpty(dtoList)) {
@@ -369,7 +390,7 @@ public class SchemeReportFileService extends BaseService {
                         });
                     }
                 }
-                if(fieldName.equals( AssessUploadEnum.ESTATE_FLOOR_TOTAL_PLAN.getKey())) {
+                if (fieldName.equals(AssessUploadEnum.ESTATE_FLOOR_TOTAL_PLAN.getKey())) {
                     dtoList = baseAttachmentService.getByField_tableId(basicEstate.getId(), AssessUploadEnum.ESTATE_FLOOR_TOTAL_PLAN.getKey(), FormatUtils.entityNameConvertToTableName(BasicEstate.class));
                     removeGenerateFile(dtoList);
                     if (CollectionUtils.isNotEmpty(dtoList)) {
@@ -382,7 +403,7 @@ public class SchemeReportFileService extends BaseService {
             }
 
             if (basicBuilding != null) {
-                if(fieldName.equals( AssessUploadEnum.BUILDING_FIGURE_OUTSIDE.getKey())) {
+                if (fieldName.equals(AssessUploadEnum.BUILDING_FIGURE_OUTSIDE.getKey())) {
                     dtoList = baseAttachmentService.getByField_tableId(basicBuilding.getId(), AssessUploadEnum.BUILDING_FIGURE_OUTSIDE.getKey(), FormatUtils.entityNameConvertToTableName(BasicBuilding.class));
                     removeGenerateFile(dtoList);
                     if (CollectionUtils.isNotEmpty(dtoList)) {
@@ -392,7 +413,7 @@ public class SchemeReportFileService extends BaseService {
                         });
                     }
                 }
-                if(fieldName.equals( AssessUploadEnum.BUILDING_FLOOR_APPEARANCE_FIGURE.getKey())) {
+                if (fieldName.equals(AssessUploadEnum.BUILDING_FLOOR_APPEARANCE_FIGURE.getKey())) {
                     dtoList = baseAttachmentService.getByField_tableId(basicBuilding.getId(), AssessUploadEnum.BUILDING_FLOOR_APPEARANCE_FIGURE.getKey(), FormatUtils.entityNameConvertToTableName(BasicBuilding.class));
                     removeGenerateFile(dtoList);
                     if (CollectionUtils.isNotEmpty(dtoList)) {
@@ -402,7 +423,7 @@ public class SchemeReportFileService extends BaseService {
                         });
                     }
                 }
-                if(fieldName.equals( AssessUploadEnum.BUILDING_FLOOR_PLAN.getKey())) {
+                if (fieldName.equals(AssessUploadEnum.BUILDING_FLOOR_PLAN.getKey())) {
                     dtoList = baseAttachmentService.getByField_tableId(basicBuilding.getId(), AssessUploadEnum.BUILDING_FLOOR_PLAN.getKey(), FormatUtils.entityNameConvertToTableName(BasicBuilding.class));
                     removeGenerateFile(dtoList);
                     if (CollectionUtils.isNotEmpty(dtoList)) {
@@ -415,7 +436,7 @@ public class SchemeReportFileService extends BaseService {
             }
 
             if (basicUnit != null) {
-                if(fieldName.equals( AssessUploadEnum.UNIT_APPEARANCE.getKey())) {
+                if (fieldName.equals(AssessUploadEnum.UNIT_APPEARANCE.getKey())) {
                     dtoList = baseAttachmentService.getByField_tableId(basicUnit.getId(), AssessUploadEnum.UNIT_APPEARANCE.getKey(), FormatUtils.entityNameConvertToTableName(BasicUnit.class));
                     removeGenerateFile(dtoList);
                     if (CollectionUtils.isNotEmpty(dtoList)) {
@@ -428,7 +449,7 @@ public class SchemeReportFileService extends BaseService {
             }
 
             if (basicHouse != null) {
-                if(fieldName.equals( AssessUploadEnum.HOUSE_DECORATE.getKey())) {
+                if (fieldName.equals(AssessUploadEnum.HOUSE_DECORATE.getKey())) {
                     dtoList = baseAttachmentService.getByField_tableId(basicHouse.getId(), AssessUploadEnum.HOUSE_DECORATE.getKey(), FormatUtils.entityNameConvertToTableName(BasicHouse.class));
                     removeGenerateFile(dtoList);
                     if (CollectionUtils.isNotEmpty(dtoList)) {
@@ -438,7 +459,7 @@ public class SchemeReportFileService extends BaseService {
                         });
                     }
                 }
-                if(fieldName.equals( AssessUploadEnum.HOUSE_IMG_PLAN.getKey())) {
+                if (fieldName.equals(AssessUploadEnum.HOUSE_IMG_PLAN.getKey())) {
                     dtoList = baseAttachmentService.getByField_tableId(basicHouse.getId(), AssessUploadEnum.HOUSE_IMG_PLAN.getKey(), FormatUtils.entityNameConvertToTableName(BasicHouse.class));
                     removeGenerateFile(dtoList);
                     if (CollectionUtils.isNotEmpty(dtoList)) {
@@ -505,13 +526,13 @@ public class SchemeReportFileService extends BaseService {
      * @param declareRecordId
      * @return
      */
-    public List<String> getLandFilePathList(Integer declareRecordId) throws Exception{
+    public List<String> getLandFilePathList(Integer declareRecordId) throws Exception {
         List<String> paths = Lists.newArrayList();
         //关联的土地证附件
         Integer landCertId = getLandCertId(declareRecordId);
-        if(landCertId!=null){
+        if (landCertId != null) {
             List<SysAttachmentDto> attachmentDtoList = baseAttachmentService.getByField_tableId(landCertId, null, "tb_declare_realty_land_cert");
-            if(CollectionUtils.isNotEmpty(attachmentDtoList)) {
+            if (CollectionUtils.isNotEmpty(attachmentDtoList)) {
                 for (SysAttachmentDto item : attachmentDtoList) {
                     String path = baseAttachmentService.downloadFtpFileToLocal(item.getId());
                     if (FileUtils.checkImgSuffix(path)) {
@@ -520,9 +541,8 @@ public class SchemeReportFileService extends BaseService {
                 }
             }
         }
-       return paths;
+        return paths;
     }
-
 
 
     /**
@@ -538,7 +558,6 @@ public class SchemeReportFileService extends BaseService {
     }
 
 
-
     /**
      * 获取关联土地证id
      *
@@ -551,8 +570,8 @@ public class SchemeReportFileService extends BaseService {
         equipmentCenter.setType("DeclareRealtyHouseCert");
         equipmentCenter.setHouseId(declareRecord.getDataTableId());
         List<DeclareBuildEngineeringAndEquipmentCenter> centerList = declareBuildEngineeringAndEquipmentCenterDao.getDeclareBuildEngineeringAndEquipmentCenterList(equipmentCenter);
-        if(CollectionUtils.isNotEmpty(centerList)){
-           return centerList.get(0).getLandId();
+        if (CollectionUtils.isNotEmpty(centerList)) {
+            return centerList.get(0).getLandId();
         }
         return null;
     }
