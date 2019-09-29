@@ -310,6 +310,9 @@
     //经济指标show
     construction.showMdDevelopmentIncomeCategory = function () {
         var economicId = '${mdCostVo.mdCostConstruction.economicId}' ;
+        if (!economicId){
+            economicId = construction.target.find("input[name='economicId']").val() ;
+        }
         if (economicId){
             economicIndicators.init({economicId:economicId,targetCallback:function (target) {
                 target.find("tbody").find("input[name='unitPrice']").attr({disabled:'disabled'});
@@ -318,7 +321,6 @@
             economicIndicators.init({
                 planDetailsId: '${projectPlanDetails.id}',
                 saveCallback: function (economicId) {//经济指标id更新到中间表
-                    console.log(economicId);
                     construction.target.find("input[name='economicId']").val(economicId).trigger('blur');
                 },
                 targetCallback:function () {

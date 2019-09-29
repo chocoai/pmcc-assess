@@ -150,7 +150,8 @@
                     <div class="form-group">
                         <div class="x-valid">
                             <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">宗地外设定</label>
-                            <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11" id="industrySupplyInfoContainer_AAAAA">
+                            <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11"
+                                 id="industrySupplyInfoContainer_AAAAA">
 
                             </div>
                         </div>
@@ -258,7 +259,7 @@
                                                              class="label label-default"></label></td>
                             <td class="info">可售面积(㎡)<label name="saleableArea" class="label label-default"></label></td>
                             <td class="info" colspan="2">总可售面积售价(元)<label name="totalSaleableAreaPrice"
-                                                              class="label label-default"></label></td>
+                                                                          class="label label-default"></label></td>
                         </tr>
                         </tfoot>
                     </table>
@@ -303,8 +304,8 @@
                    name="assessArea" data-rule-number="true" style="width: 100px;">
         </td>
         <%--<td><input type="text" value="{number}"--%>
-                   <%--onblur="economicIndicators.autoSummary()"--%>
-                   <%--name="number" data-rule-number="true" style="width: 100px;">--%>
+        <%--onblur="economicIndicators.autoSummary()"--%>
+        <%--name="number" data-rule-number="true" style="width: 100px;">--%>
         <%--</td>--%>
         <td><input type="text" value="{unitPrice}" placeholder="单价"
                    onblur="economicIndicators.autoSummary()"
@@ -320,10 +321,60 @@
     economicIndicators.model = $("#modalEconomicIndicators");
     economicIndicators.template = $("#economicIndicatorsItemTemplate");
     economicIndicators.saveCallback;
-    //初始化
-    economicIndicators.init = function (options) {
+
+    economicIndicators.initForm = function (data) {
+        economicIndicators.frm.initForm(data);
+        economicIndicators.frm.find("input[name='planDate']").val(formatDate(data.planDate));
+        economicIndicators.frm.find("label[name='planDate']").html(formatDate(data.planDate));
         var industrySupplyInfoContainer = $("#industrySupplyInfoContainer_AAAAA");
         var developmentDegreeContentContainer = $("#developmentDegreeContentContainer_AAAAA");
+        industrySupplyInfoContainer.empty();
+        developmentDegreeContentContainer.empty();
+        //宗地外设定
+        AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estateLandInfrastructure, '', function (html, resultData) {
+            var resultHtml = '';
+            var array = [];
+            if (data.parcelSettingOuter) {
+                array = data.parcelSettingOuter.split(',');
+            }
+            $.each(resultData, function (i, item) {
+                resultHtml += '<span class="checkbox-inline"><input type="checkbox" ';
+                if ($.inArray(item.id.toString(), array) > -1) {
+                    resultHtml += ' checked="checked" ';
+                }
+                resultHtml += ' id="parcelSettingOuterAAAAA' + item.id + '" name="parcelSettingOuter" value="' + item.id + '">';
+                resultHtml += '<label for="parcelSettingOuterAAAAA' + item.id + '">' + item.name + '</label></span>';
+            });
+            resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '全选或全不选' + "</span>";
+            resultHtml += "<input type=\"radio\" name=\"infrastructureSelect\"  onclick=\"economicIndicators.checkedFun(this,'parcelSettingOuter',true)\">";
+            resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '反选' + "</span>";
+            resultHtml += "<input type=\"radio\" name=\"infrastructureSelect\"  onclick=\"economicIndicators.checkedFun(this,'parcelSettingOuter',false)\">";
+            industrySupplyInfoContainer.append(resultHtml);
+        }, true);
+        //宗地内设定
+        AssessCommon.loadDataDicByKey(AssessDicKey.estateDevelopment_degreePrepared_land, '', function (html, resultData) {
+            var resultHtml = '';
+            var array = [];
+            if (data.parcelSettingInner) {
+                array = data.parcelSettingInner.split(',');
+            }
+            $.each(resultData, function (i, item) {
+                resultHtml += '<span class="checkbox-inline"><input type="checkbox" ';
+                if ($.inArray(item.id.toString(), array) > -1) {
+                    resultHtml += ' checked="checked" ';
+                }
+                resultHtml += ' id="parcelSettingInnerAAAAA' + item.id + '" name="parcelSettingInner" value="' + item.id + '">';
+                resultHtml += '<label for="parcelSettingInnerAAAAA' + item.id + '">' + item.name + '</label></span>';
+            });
+            resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '全选或全不选' + "</span>";
+            resultHtml += "<input type=\"radio\" name=\"infrastructureSelect\"  onclick=\"economicIndicators.checkedFun(this,'parcelSettingInner',true)\">";
+            resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '反选' + "</span>";
+            resultHtml += "<input type=\"radio\" name=\"infrastructureSelect\"  onclick=\"economicIndicators.checkedFun(this,'parcelSettingInner',false)\">";
+            developmentDegreeContentContainer.append(resultHtml);
+        });
+    };
+    //初始化
+    economicIndicators.init = function (options) {
         var defaluts = {
             planDetailsId: undefined,
             economicId: undefined,
@@ -336,8 +387,6 @@
         economicIndicators.frmItem.find('[data-role=child]').remove();
         economicIndicators.frm.find('[name=planDetailsId]').val(defaluts.planDetailsId);
         economicIndicators.frm.find('[name=centerId]').val(defaluts.centerId);
-        industrySupplyInfoContainer.empty();
-        developmentDegreeContentContainer.empty();
         //回显数据
         if (defaluts.economicId) {
             $.ajax({
@@ -350,56 +399,8 @@
                 success: function (result) {
                     if (result.ret) {
                         if (result.data.economicIndicators) {
-                            economicIndicators.frm.initForm(result.data.economicIndicators);
-                            economicIndicators.frm.find("input[name='planDate']").val(formatDate(result.data.economicIndicators.planDate));
-                            economicIndicators.frm.find("label[name='planDate']").html(formatDate(result.data.economicIndicators.planDate));
+                            economicIndicators.initForm(result.data.economicIndicators);
                         }
-                        //宗地外设定
-                        AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estateLandInfrastructure, '', function (html, resultData) {
-                            var resultHtml = '';
-                            var array = [];
-                            if (result.data.economicIndicators) {
-                                if (result.data.economicIndicators.parcelSettingOuter) {
-                                    array = result.data.economicIndicators.parcelSettingOuter.split(',');
-                                }
-                            }
-                            $.each(resultData, function (i, item) {
-                                resultHtml += '<span class="checkbox-inline"><input type="checkbox" ';
-                                if ($.inArray(item.id.toString(), array) > -1) {
-                                    resultHtml += ' checked="checked" ';
-                                }
-                                resultHtml += ' id="parcelSettingOuterAAAAA' + item.id + '" name="parcelSettingOuter" value="' + item.id + '">';
-                                resultHtml += '<label for="parcelSettingOuterAAAAA' + item.id + '">' + item.name + '</label></span>';
-                            });
-                            resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '全选或全不选' + "</span>";
-                            resultHtml += "<input type=\"radio\" name=\"infrastructureSelect\"  onclick=\"economicIndicators.checkedFun(this,'parcelSettingOuter',true)\">";
-                            resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '反选' + "</span>";
-                            resultHtml += "<input type=\"radio\" name=\"infrastructureSelect\"  onclick=\"economicIndicators.checkedFun(this,'parcelSettingOuter',false)\">";
-                            industrySupplyInfoContainer.append(resultHtml);
-                        }, true);
-                        //宗地内设定
-                        AssessCommon.loadDataDicByKey(AssessDicKey.estateDevelopment_degreePrepared_land, '', function (html, resultData) {
-                            var resultHtml = '';
-                            var array = [];
-                            if (result.data.economicIndicators) {
-                                if (result.data.economicIndicators.parcelSettingInner) {
-                                    array = result.data.economicIndicators.parcelSettingInner.split(',');
-                                }
-                            }
-                            $.each(resultData, function (i, item) {
-                                resultHtml += '<span class="checkbox-inline"><input type="checkbox" ';
-                                if ($.inArray(item.id.toString(), array) > -1) {
-                                    resultHtml += ' checked="checked" ';
-                                }
-                                resultHtml += ' id="parcelSettingInnerAAAAA' + item.id + '" name="parcelSettingInner" value="' + item.id + '">';
-                                resultHtml += '<label for="parcelSettingInnerAAAAA' + item.id + '">' + item.name + '</label></span>';
-                            });
-                            resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '全选或全不选' + "</span>";
-                            resultHtml += "<input type=\"radio\" name=\"infrastructureSelect\"  onclick=\"economicIndicators.checkedFun(this,'parcelSettingInner',true)\">";
-                            resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '反选' + "</span>";
-                            resultHtml += "<input type=\"radio\" name=\"infrastructureSelect\"  onclick=\"economicIndicators.checkedFun(this,'parcelSettingInner',false)\">";
-                            developmentDegreeContentContainer.append(resultHtml);
-                        });
                         if (result.data.economicIndicatorsItemList) {
                             $.each(result.data.economicIndicatorsItemList, function (i, item) {
                                 var dataKey = item.dataKey;
@@ -431,6 +432,8 @@
                     }
                 }
             })
+        }else {
+            economicIndicators.initForm({});
         }
         if (defaluts.attribute) {
             economicIndicators.frm.find("input").attr(defaluts.attribute);
@@ -471,7 +474,7 @@
             economicIndicatorsItem.plannedBuildingArea = $(this).find('[name=plannedBuildingArea]').val();
             economicIndicatorsItem.saleableArea = $(this).find('[name=saleableArea]').val();
             economicIndicatorsItem.assessArea = $(this).find('[name=assessArea]').val();
-            economicIndicatorsItem.number = $(this).find('[name=number]').val();
+//            economicIndicatorsItem.number = $(this).find('[name=number]').val();
             economicIndicatorsItem.unitPrice = $(this).find('[name=unitPrice]').val();
             economicIndicatorsItem.remark = $(this).find('[name=remark]').val();
             data.economicIndicatorsItemList.push(economicIndicatorsItem);
@@ -548,7 +551,7 @@
             economicIndicators.frmItem.find('tr[data-role="child"][data-key=' + dataKey + ']').each(function () {
                 var plannedBuildingArea = $(this).find('[name=plannedBuildingArea]').val();
                 var saleableArea = $(this).find('[name=saleableArea]').val();
-                var number = $(this).find('[name=number]').val();
+//                var number = $(this).find('[name=number]').val();
                 var assessArea = $(this).find('[name=assessArea]').val();
                 var unitPrice = $(this).find('[name=unitPrice]').val();
                 if ($.isNumeric(plannedBuildingArea)) {
@@ -560,9 +563,9 @@
                 if ($.isNumeric(assessArea)) {
                     assessAreaTotal += parseFloat(assessArea);
                 }
-                if ($.isNumeric(number)) {
-                    numberTotal += parseFloat(number);
-                }
+//                if ($.isNumeric(number)) {
+//                    numberTotal += parseFloat(number);
+//                }
                 if ($.isNumeric(unitPrice)) {
                     unitPriceTotal += parseFloat(unitPrice);
                 }
@@ -575,7 +578,7 @@
             $(this).find('[name=plannedBuildingArea]').text('');
             $(this).find('[name=saleableArea]').text('');
             $(this).find('[name=assessArea]').text('');
-            $(this).find('[name=number]').text('');
+//            $(this).find('[name=number]').text('');
             $(this).find('[name=unitPrice]').text('');
 
             if (plannedBuildingAreaTotal > 0) {
@@ -586,9 +589,9 @@
                 $(this).find('[name=saleableArea]').text(saleableAreaTotal.toFixed(2));
                 saleableAreaValue += saleableAreaTotal;
             }
-            if (numberTotal > 0) {
-                $(this).find('[name=number]').text(numberTotal.toFixed(2));
-            }
+//            if (numberTotal > 0) {
+//                $(this).find('[name=number]').text(numberTotal.toFixed(2));
+//            }
             if (assessAreaTotal > 0) {
                 $(this).find('[name=assessArea]').text(assessAreaTotal.toFixed(2));
             }

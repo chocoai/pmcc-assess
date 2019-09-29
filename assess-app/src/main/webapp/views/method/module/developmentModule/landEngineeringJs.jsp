@@ -362,6 +362,9 @@
     //经济指标show
     landEngineering.showMdDevelopmentIncomeCategory = function () {
         var economicId = '${mdDevelopment.economicId}' ;
+        if (!economicId){
+            economicId = landEngineering.target.find("input[name='economicId']").val() ;
+        }
         if (economicId){
             economicIndicators.init({economicId:economicId});
         }else {
