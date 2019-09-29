@@ -64,67 +64,41 @@
                     </div>
                 </form>
             </div>
-            <c:if test="${not empty subJudgeObjectList}">
-                <div class="x_panel">
-                    <div class="x_title collapse-link">
-                        <ul class="nav navbar-right panel_toolbox">
-                            <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                        </ul>
-                        <h3>
-                            调整单价
-                            <small>
-                                <div class="btn btn-xs btn-warning"
-                                     onclick="surePrice.pasteBatch();">粘贴
-                                </div>
-                            </small>
-                        </h3>
-                        <div class="clearfix"></div>
-                    </div>
-                    <table id="adjust_factor_table" class="table">
-                        <thead>
-                        <tr>
-                            <th width="5%"><input type="checkbox" onclick="surePrice.checkboxToggle(this);"></th>
-                            <th width="10%">权证号</th>
-                            <th width="10%">证载面积</th>
-                            <th width="10%">评估面积</th>
-                            <th width="10%">楼层</th>
-                            <th width="10%">房号</th>
-                            <th width="10%">价格</th>
-                            <th width="50%">因素</th>
-                            <th>操作</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <c:forEach items="${subJudgeObjectList}" var="item">
-                            <tr data-id="${item.id}">
-                                <td><input type="checkbox"></td>
-                                <td>${item.name}</td>
-                                <td>${item.floorArea}</td>
-                                <td>${item.evaluationArea}</td>
-                                <td>${item.floor}</td>
-                                <td>${item.roomNumber}</td>
-                                <td data-name="price">${item.price}</td>
-                                <td data-name="coefficient">${item.coefficient}</td>
-                                <td>
-                                    <div class="btn btn-xs btn-primary"
-                                         onclick="surePrice.adjustFactor(${item.id},${item.declareRecordId})">调整
-                                    </div>
-                                    <div class="btn btn-xs btn-primary copy"
-                                         onclick="surePrice.copy(this);">复制
-                                    </div>
-                                    <div class="btn btn-xs btn-primary cancel-copy" style="display:none;"
-                                         onclick="surePrice.cancelCopy(this)">取消复制
-                                    </div>
-                                    <div class="btn btn-xs btn-warning paste" style="display:none;"
-                                         onclick="surePrice.paste(this)">粘贴
-                                    </div>
-                                </td>
-                            </tr>
-                        </c:forEach>
-                        </tbody>
-                    </table>
+
+            <div class="x_panel">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
+                    <h3>
+                        调整单价
+                        <small>
+                            <div class="btn btn-xs btn-warning"
+                                 onclick="surePrice.pasteBatch();">粘贴
+                            </div>
+                        </small>
+                    </h3>
+                    <div class="clearfix"></div>
                 </div>
-            </c:if>
+                <table id="adjust_factor_table" class="table">
+                    <thead>
+                    <tr>
+                        <th width="5%"><input type="checkbox" onclick="surePrice.checkboxToggle(this);"></th>
+                        <th width="10%">权证号</th>
+                        <th width="10%">证载面积</th>
+                        <th width="10%">评估面积</th>
+                        <th width="10%">楼层</th>
+                        <th width="10%">房号</th>
+                        <th width="10%">价格</th>
+                        <th width="50%">因素</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+
             <div class="x_panel">
                 <div class="x_title collapse-link">
                     <ul class="nav navbar-right panel_toolbox">
@@ -168,6 +142,34 @@
         <td>
             <input type="text" class="form-control x-percent" name="weight" data-value="{weight}"
                    onblur="surePrice.computePrice(this);">
+        </td>
+    </tr>
+</script>
+
+<!-- 估价对象模板 -->
+<script type="text/html" id="adjust_JudgeObject_Model">
+    <tr data-id="{id}">
+        <td><input type="checkbox"></td>
+        <td>{name}</td>
+        <td>{floorArea}</td>
+        <td>{evaluationArea}</td>
+        <td>{floor}</td>
+        <td>{roomNumber}</td>
+        <td data-name="price">{price}</td>
+        <td data-name="coefficient">{coefficient}</td>
+        <td>
+            <div class="btn btn-xs btn-primary"
+                 onclick="surePrice.adjustFactor('{id}','{declareRecordId}')">调整
+            </div>
+            <div class="btn btn-xs btn-primary copy"
+                 onclick="surePrice.copy(this);">复制
+            </div>
+            <div class="btn btn-xs btn-primary cancel-copy" style="display:none;"
+                 onclick="surePrice.cancelCopy(this)">取消复制
+            </div>
+            <div class="btn btn-xs btn-warning paste" style="display:none;"
+                 onclick="surePrice.paste(this)">粘贴
+            </div>
         </td>
     </tr>
 </script>
@@ -261,9 +263,10 @@
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="application/javascript">
     $(function () {
-        surePrice.surePrice('${projectPlanDetails.judgeObjectId}');
+        surePrice.surePrice('${projectPlanDetails.judgeObjectId}', true);
+        surePrice.loadAdjustJudgeObject('${projectPlanDetails.judgeObjectId}');
         loadDocumentSend();
-    })
+    });
 
     function submit() {
         var surePriceApply = {};
@@ -281,7 +284,7 @@
             schemeSurePriceItem.id = $(this).find('[name=id]').val();
             schemeSurePriceItem.weight = $(this).find('[name=weight]').attr('data-value');
             surePriceApply.surePriceItemList.push(schemeSurePriceItem);
-        })
+        });
 
         if ("${processInsId}" != "0") {
             submitEditToServer(JSON.stringify(surePriceApply));
@@ -308,20 +311,24 @@
             schemeSurePriceItem.weight = $(this).find('[name=weight]').attr('data-value');
             surePriceApply.surePriceItemList.push(schemeSurePriceItem);
         });
-        $.ajax({
-            url: "${pageContext.request.contextPath}/schemeSurePrice/updateCalculationSchemeSurePrice",
-            data: {
-                fomData: JSON.stringify(surePriceApply), planDetailsId: '${projectPlanDetails.id}'
-            },
-            type: "post",
-            dataType: "json",
-            success: function (result) {
-                if (result.ret) {
-                    window.location.reload(true);
-                } else {
-                    Alert("失败，失败原因:" + result.errmsg, 1, null, null);
+        Alert("确认更新", 2, null, function () {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/schemeSurePrice/updateCalculationSchemeSurePrice",
+                data: {
+                    fomData: JSON.stringify(surePriceApply), planDetailsId: '${projectPlanDetails.id}'
+                },
+                type: "post",
+                dataType: "json",
+                success: function (result) {
+                    if (result.ret) {
+//                        window.location.reload(true);
+                        surePrice.surePrice('${projectPlanDetails.judgeObjectId}', false);
+                        surePrice.loadAdjustJudgeObject('${projectPlanDetails.judgeObjectId}');
+                    } else {
+                        Alert("失败，失败原因:" + result.errmsg, 1, null, null);
+                    }
                 }
-            }
+            });
         });
     }
 
@@ -349,13 +356,61 @@
     }
 
     var surePrice = {};
+
+    /**
+     * 估价对象 table list
+     * @param judgeObjectId
+     */
+    surePrice.loadAdjustJudgeObject = function (judgeObjectId) {
+        var target = $("#adjust_factor_table");
+        $.ajax({
+            url: "${pageContext.request.contextPath}/schemeSurePrice/getAdjustObjectListByPid",
+            data: {judgeObjectId: judgeObjectId},
+            type: "get",
+            dataType: "json",
+            success: function (result) {
+                if (result.ret) {
+                    var data = result.data;
+                    if (!data) {
+                        target.closest(".x_panel").hide();
+                        return false;
+                    }
+                    if (data.length == 0) {
+                        target.closest(".x_panel").hide();
+                        return false;
+                    }
+                    var ele = target.find("tbody");
+                    ele.empty();
+                    $.each(data,function (i, item) {
+                        var model = $("#adjust_JudgeObject_Model");
+                        var html = model.html();
+                        html = html.replace(/{id}/g, item.id);
+                        html = html.replace(/{name}/g, item.name);
+                        html = html.replace(/{floorArea}/g, item.floorArea);
+                        html = html.replace(/{evaluationArea}/g, item.evaluationArea);
+                        html = html.replace(/{floor}/g, item.floor);
+                        html = html.replace(/{price}/g, item.price);
+                        html = html.replace(/{roomNumber}/g, item.roomNumber);
+                        html = html.replace(/{price}/g, item.price);
+                        html = html.replace(/{coefficient}/g, item.coefficient);
+                        html = html.replace(/{declareRecordId}/g, item.declareRecordId);
+                        ele.append(html);
+                    });
+                } else {
+                    Alert("获取数据失败，失败原因:" + result.errmsg, 1, null, null);
+                }
+            }
+        });
+
+    };
+
     //确定单价
-    surePrice.surePrice = function (judgeObjectId) {
+    surePrice.surePrice = function (judgeObjectId, isUpdatePrice) {
         $.ajax({
             url: "${pageContext.request.contextPath}/schemeSurePrice/getSchemeSurePriceItemList",
             data: {
                 judgeObjectId: judgeObjectId,
-                isUpdatePrice: true
+                isUpdatePrice: isUpdatePrice
             },
             type: "get",
             dataType: "json",
@@ -370,10 +425,10 @@
                         html = html.replace(/{trialPrice}/g, AssessCommon.toString(item.trialPrice));
                         html = html.replace(/{weight}/g, AssessCommon.toString(item.weight));
                         $("#tbody_data_section").append(html);
-                    })
+                    });
                     $("#tbody_data_section").find('.x-percent').each(function () {
                         AssessCommon.elementParsePercent($(this));
-                    })
+                    });
                     surePrice.computePrice($("#tbody_data_section").find(':text[name=weight]:first'));
                 }
                 else {
@@ -381,7 +436,7 @@
                 }
             }
         });
-    }
+    };
 
     //计算单价
     surePrice.computePrice = function (_this) {
@@ -498,7 +553,7 @@
                 adjustFactor.coefficient = $(this).find('[name=coefficient-relative]').attr('data-value');
             }
             factorArray.push(adjustFactor);
-        })
+        });
         var judgeObjectId = $("#modal_factor").find('[name=judgeObjectId]').val();
         Loading.progressShow();
         $.ajax({
