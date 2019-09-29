@@ -39,6 +39,8 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
+import static java.util.stream.Collectors.toList;
+
 /**
  * Created by kings on 2019-8-2.
  */
@@ -132,128 +134,143 @@ public class ProjectDebtService {
 
     //初始化数据
     public void init() {
-        //预评报告
-        BaseDataDic preauditReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT);
-        Integer preauditId = preauditReport.getId();
-        //结果报告
-        BaseDataDic resultReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_RESULT);
-        Integer resultId = resultReport.getId();
-
-        //根据项目id查勘该数据是否在欠款表中，有则进行更新，没有则添加
+        // 1. 写入数据
+        // 1.1 比较项目表id集合与欠款表的projectId集合
+        // 1.2 id集合有差值时，则写入数据
+        //2. 更新欠款的财务数据
         ProjectInfo projectInfo = new ProjectInfo();
         List<ProjectInfo> projectInfoList = projectInfoService.getProjectInfoList(projectInfo);
+        List<Integer> projectInfoIds = LangUtils.transform(projectInfoList, o -> o.getId());
+        //财务数据
+        List<FinancialBillMakeOutProjectDto> makeOutList = null;
+        List<Integer> publicProjectIds = LangUtils.transform(projectInfoList, o -> o.getPublicProjectId());
+        try {
+            makeOutList = financeRpcToolService.getProjectBillMakeOutList(LangUtils.filter(publicProjectIds, o -> o.intValue() > 0));
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+        }
 
-        for (ProjectInfo projectItem : projectInfoList) {
-            ReportProjectDebt reportProjectDebt = this.getReportProjectDebt(projectItem.getId());
-            if (reportProjectDebt != null) {
-                //无欠款 则不用更新数据
-                if (reportProjectDebt.getBisHasDebt() == false) {
-                    continue;
-                }
-            } else {
-                reportProjectDebt = new ReportProjectDebt();
-            }
-            reportProjectDebt.setProjectId(projectItem.getId());
-            reportProjectDebt.setProjectName(projectItem.getProjectName());
-            reportProjectDebt.setPublicProjectId(projectItem.getPublicProjectId());
-            //合同金额
-            reportProjectDebt.setContractPrice(projectItem.getContractPrice());
-            //委托人
-            InitiateConsignorVo consignorVo = initiateConsignorService.getDataByProjectId(projectItem.getId());
-            if (consignorVo != null) {
-                reportProjectDebt.setConsignorName(consignorVo.getCsName());
-            }
-            //委托目的
-            if (projectItem.getEntrustPurpose() != null) {
-                reportProjectDebt.setEntrustPurposeName(baseDataDicService.getNameById(projectItem.getEntrustPurpose()));
-            }
-            //部门
-            if (projectItem.getDepartmentId() != null) {
-                reportProjectDebt.setDepartmentName(erpRpcDepartmentService.getDepartmentById(projectItem.getDepartmentId()).getName());
-            }
-            //贷款类型
-            if (projectItem.getLoanType() != null) {
-                reportProjectDebt.setLoanTypeName(baseDataDicService.getNameById(projectItem.getLoanType()));
-            }
-            //报告使用单位
-            InitiateUnitInformationVo initiateUnitInformationVo = initiateUnitInformationService.getDataByProjectId(projectItem.getId());
-            if (initiateUnitInformationVo != null) {
-                reportProjectDebt.setReportUseUnitName(initiateUnitInformationVo.getuUseUnitName());
-            }
-            //预评报告文号
-            List<Integer> sameGroupPreauditType = dataNumberRuleService.getSameGroupReportType(preauditId);
-            List<String> preauditList = Lists.newArrayList();
-            for (Integer type : sameGroupPreauditType) {
-                preauditList.addAll(projectNumberRecordService.getReportNumberList(projectItem.getId(), type));
+        ReportProjectDebt projectDebt = new ReportProjectDebt();
+        List<ReportProjectDebt> reportProjectDebtList = reportProjectDebtDao.getReportProjectDebt(projectDebt);
+        List<Integer> projectDebtIds = LangUtils.transform(reportProjectDebtList, o -> o.getProjectId());
+        //ids与projectIds差值
+        List<Integer> differenceCollect = projectInfoIds.stream().filter(item -> !projectDebtIds.contains(item)).collect(toList());
+        //projectInfoIds.removeAll(projectDebtIds);
+        if (CollectionUtils.isNotEmpty(differenceCollect)) {
+            //预评报告
+            BaseDataDic preauditReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT);
+            Integer preauditId = preauditReport.getId();
+            //结果报告
+            BaseDataDic resultReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_RESULT);
+            Integer resultId = resultReport.getId();
 
-            }
-            if (CollectionUtils.isNotEmpty(preauditList)) {
-                reportProjectDebt.setPreauditNumber(StringUtils.join(preauditList, ","));
-            }
-            //结果报告文号
-            List<Integer> sameGroupResultType = dataNumberRuleService.getSameGroupReportType(resultId);
-            List<String> resultIdList = Lists.newArrayList();
-            for (Integer resultType : sameGroupResultType) {
-                resultIdList.addAll(projectNumberRecordService.getReportNumberList(projectItem.getId(), resultType));
+            List<ProjectInfo> projectInfoByProjectIds = projectInfoService.getProjectInfoByProjectIds(differenceCollect);
+            for (ProjectInfo projectItem : projectInfoByProjectIds) {
+                ReportProjectDebt reportProjectDebt = new ReportProjectDebt();
+                reportProjectDebt.setProjectId(projectItem.getId());
+                reportProjectDebt.setProjectName(projectItem.getProjectName());
+                reportProjectDebt.setPublicProjectId(projectItem.getPublicProjectId());
+                //合同金额
+                reportProjectDebt.setContractPrice(projectItem.getContractPrice());
+                //委托人
+                InitiateConsignorVo consignorVo = initiateConsignorService.getDataByProjectId(projectItem.getId());
+                if (consignorVo != null) {
+                    reportProjectDebt.setConsignorName(consignorVo.getCsName());
+                }
+                //委托目的
+                if (projectItem.getEntrustPurpose() != null) {
+                    reportProjectDebt.setEntrustPurposeName(baseDataDicService.getNameById(projectItem.getEntrustPurpose()));
+                }
+                //部门
+                if (projectItem.getDepartmentId() != null) {
+                    reportProjectDebt.setDepartmentName(erpRpcDepartmentService.getDepartmentById(projectItem.getDepartmentId()).getName());
+                }
+                //贷款类型
+                if (projectItem.getLoanType() != null) {
+                    reportProjectDebt.setLoanTypeName(baseDataDicService.getNameById(projectItem.getLoanType()));
+                }
+                //报告使用单位
+                InitiateUnitInformationVo initiateUnitInformationVo = initiateUnitInformationService.getDataByProjectId(projectItem.getId());
+                if (initiateUnitInformationVo != null) {
+                    reportProjectDebt.setReportUseUnitName(initiateUnitInformationVo.getuUseUnitName());
+                }
+                //预评报告文号
+                List<Integer> sameGroupPreauditType = dataNumberRuleService.getSameGroupReportType(preauditId);
+                List<String> preauditList = Lists.newArrayList();
+                for (Integer type : sameGroupPreauditType) {
+                    preauditList.addAll(projectNumberRecordService.getReportNumberList(projectItem.getId(), type));
 
-            }
-            if (CollectionUtils.isNotEmpty(resultIdList)) {
-                reportProjectDebt.setResultNumber(StringUtils.join(resultIdList, ","));
-            }
-            //项目经理
-            String projectManager = projectMemberService.getProjectManager(projectItem.getId());
-            if (StringUtil.isNotEmpty(projectManager)) {
-                SysUserDto sysUser = erpRpcUserService.getSysUser(projectManager);
-                reportProjectDebt.setProjectManagerName(sysUser.getUserName());
-            }
-            List<Integer> publicProjectIds = Lists.newArrayList();
-            publicProjectIds.add(projectItem.getPublicProjectId());
-            List<FinancialBillMakeOutProjectDto> makeOutList = null;
-            try {
-                makeOutList = financeRpcToolService.getProjectBillMakeOutList(LangUtils.filter(publicProjectIds, o -> o.intValue() > 0));
-            } catch (Exception e) {
-                logger.error(e.getMessage(), e);
-            }
-            if (projectItem.getPublicProjectId() != null && CollectionUtils.isNotEmpty(makeOutList)) {
-                BigDecimal amount = new BigDecimal("0");
-                BigDecimal actualAmount = new BigDecimal("0");
-                BigDecimal payAmount = new BigDecimal("0");
-                for (FinancialBillMakeOutProjectDto makeOutProjectDto : makeOutList) {
-                    if (projectItem.getPublicProjectId().equals(makeOutProjectDto.getProjectId())) {
-                        if (makeOutProjectDto.getAmount() != null)
-                            amount = amount.add(objectToBigDecimal(makeOutProjectDto.getAmount() / 100L));
-                        if (makeOutProjectDto.getActualAmount() != null)
-                            actualAmount = actualAmount.add(objectToBigDecimal(makeOutProjectDto.getActualAmount() / 100L));
-                        if (makeOutProjectDto.getPayAmount() != null)
-                            payAmount = payAmount.add(objectToBigDecimal(makeOutProjectDto.getPayAmount().divide(new BigDecimal("100"))));
-                    }
                 }
-                //开票金额
-                reportProjectDebt.setAmount(amount);
-                //实际开票金额
-                reportProjectDebt.setActualAmount(actualAmount);
-                //付款金额
-                reportProjectDebt.setPayAmount(payAmount);
-                if (projectItem.getContractPrice() != null) {
-                    //欠款金额
-                    reportProjectDebt.setDebtAmount(projectItem.getContractPrice().subtract(payAmount));
-                    //欠款金额>0 则为欠款状态
-                    if (reportProjectDebt.getDebtAmount().compareTo(new BigDecimal("0")) > 0) {
-                        reportProjectDebt.setBisHasDebt(true);
-                    } else {
-                        reportProjectDebt.setBisHasDebt(false);
-                    }
+                if (CollectionUtils.isNotEmpty(preauditList)) {
+                    reportProjectDebt.setPreauditNumber(StringUtils.join(preauditList, ","));
                 }
-            }
-            if (reportProjectDebt.getId() != null) {
-                reportProjectDebtDao.modifyReportProjectDebt(reportProjectDebt);
-            } else {
+                //结果报告文号
+                List<Integer> sameGroupResultType = dataNumberRuleService.getSameGroupReportType(resultId);
+                List<String> resultIdList = Lists.newArrayList();
+                for (Integer resultType : sameGroupResultType) {
+                    resultIdList.addAll(projectNumberRecordService.getReportNumberList(projectItem.getId(), resultType));
+
+                }
+                if (CollectionUtils.isNotEmpty(resultIdList)) {
+                    reportProjectDebt.setResultNumber(StringUtils.join(resultIdList, ","));
+                }
+                //项目经理
+                String projectManager = projectMemberService.getProjectManager(projectItem.getId());
+                if (StringUtil.isNotEmpty(projectManager)) {
+                    SysUserDto sysUser = erpRpcUserService.getSysUser(projectManager);
+                    reportProjectDebt.setProjectManagerName(sysUser.getUserName());
+                }
+                //财务数据
+                this.updateData(projectItem.getPublicProjectId(), reportProjectDebt, projectItem, makeOutList);
                 reportProjectDebtDao.addReportProjectDebt(reportProjectDebt);
             }
+        }
+        //更新欠款的财务数据
+        List<ReportProjectDebt> bisHasDebtList = this.getBisHasDebtList();
+        for (ReportProjectDebt reportProjectDebt : bisHasDebtList) {
+            ProjectInfo projectItem = projectInfoService.getProjectInfoById(reportProjectDebt.getProjectId());
+            if (projectItem == null) {
+                continue;
+            }
+            this.updateData(reportProjectDebt.getPublicProjectId(), reportProjectDebt, projectItem, makeOutList);
+            reportProjectDebtDao.modifyReportProjectDebt(reportProjectDebt);
         }
 
     }
 
+    private void updateData(Integer publicProjectId, ReportProjectDebt reportProjectDebt, ProjectInfo projectItem, List<FinancialBillMakeOutProjectDto> makeOutList) {
+        if (publicProjectId != null && CollectionUtils.isNotEmpty(makeOutList)) {
+            BigDecimal amount = new BigDecimal("0");
+            BigDecimal actualAmount = new BigDecimal("0");
+            BigDecimal payAmount = new BigDecimal("0");
+            for (FinancialBillMakeOutProjectDto makeOutProjectDto : makeOutList) {
+                if (publicProjectId.equals(makeOutProjectDto.getProjectId())) {
+                    if (makeOutProjectDto.getAmount() != null)
+                        amount = amount.add(objectToBigDecimal(makeOutProjectDto.getAmount() / 100L));
+                    if (makeOutProjectDto.getActualAmount() != null)
+                        actualAmount = actualAmount.add(objectToBigDecimal(makeOutProjectDto.getActualAmount() / 100L));
+                    if (makeOutProjectDto.getPayAmount() != null)
+                        payAmount = payAmount.add(objectToBigDecimal(makeOutProjectDto.getPayAmount().divide(new BigDecimal("100"))));
+                }
+            }
+            //开票金额
+            reportProjectDebt.setAmount(amount);
+            //实际开票金额
+            reportProjectDebt.setActualAmount(actualAmount);
+            //付款金额
+            reportProjectDebt.setPayAmount(payAmount);
+            if (projectItem.getContractPrice() != null) {
+                //欠款金额
+                reportProjectDebt.setDebtAmount(projectItem.getContractPrice().subtract(payAmount));
+                //欠款金额>0 则为欠款状态
+                if (reportProjectDebt.getDebtAmount().compareTo(new BigDecimal("0")) > 0) {
+                    reportProjectDebt.setBisHasDebt(true);
+                } else {
+                    reportProjectDebt.setBisHasDebt(false);
+                }
+            }
+        }
+    }
 
     private String objectToString(Object obj) {
         if (obj == null) return "";
@@ -279,6 +296,15 @@ public class ProjectDebtService {
         reportProjectDebt.setProjectId(projectId);
         List<ReportProjectDebt> list = reportProjectDebtDao.getReportProjectDebt(reportProjectDebt);
         if (CollectionUtils.isNotEmpty(list)) return list.get(0);
+        return null;
+    }
+
+    //欠款数据
+    public List<ReportProjectDebt> getBisHasDebtList() {
+        ReportProjectDebt reportProjectDebt = new ReportProjectDebt();
+        reportProjectDebt.setBisHasDebt(true);
+        List<ReportProjectDebt> list = reportProjectDebtDao.getReportProjectDebt(reportProjectDebt);
+        if (CollectionUtils.isNotEmpty(list)) return list;
         return null;
     }
 }
