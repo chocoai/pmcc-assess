@@ -24,7 +24,7 @@
                         <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                             名称<span class="symbol required"></span>
                         </label>
-                        <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                        <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
                             <label class="form-control">
                                     ${item.name}
                             </label>
@@ -55,7 +55,7 @@
                         <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                             名称<span class="symbol required"></span>
                         </label>
-                        <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                        <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
                             <label class="form-control">
                                     ${item.name}
                             </label>
@@ -113,7 +113,7 @@
                             </label>
                         </div>
                     </div>
-                    <div class="x-valid">
+                    <div class="x-valid" style="display: none;">
                         <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                             类型<span class="symbol required"></span>
                         </label>
@@ -123,7 +123,7 @@
                             </label>
                         </div>
                     </div>
-                    <div class="x-valid">
+                    <div class="x-valid" style="display: none;">
                         <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                             类别
                         </label>

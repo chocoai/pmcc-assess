@@ -23,7 +23,7 @@
                         <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                             名称<span class="symbol required"></span>
                         </label>
-                        <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                        <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
                             <input name="name" class="form-control" placeholder="名称" readonly="readonly"
                                    value="${item.name}"
                                    onblur="dataAssetsAppraisalDic.inputBlur(this,${item.id})"/>
@@ -59,7 +59,7 @@
                         <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                             名称<span class="symbol required"></span>
                         </label>
-                        <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                        <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
                             <input name="name" class="form-control" placeholder="名称" required="required"
                                    value="${item.name}"
                                    onblur="dataAssetsAppraisalDic.inputBlur(this,${item.id})"/>
@@ -157,7 +157,7 @@
                         </div>
                     </div>
 
-                    <div class="x-valid">
+                    <div class="x-valid" style="display: none;">
                         <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                             类型<span class="symbol required"></span>
                         </label>
@@ -168,7 +168,7 @@
                         </div>
                     </div>
 
-                    <div class="x-valid">
+                    <div class="x-valid" style="display: none;">
                         <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                             类别
                         </label>
