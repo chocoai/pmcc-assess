@@ -89,7 +89,7 @@ public class SchemeSurePriceFactorService {
         if (CollectionUtils.isEmpty(judgeIds)) return;
         SchemeJudgeObject beCopyJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(beCopyJudgeId);
         if (beCopyJudgeObject == null) return;
-        List<SchemeSurePriceFactor> factorList = schemeSurePriceFactorDao.getFactorListByJudgeObjectId(beCopyJudgeObject.getDeclareRecordId());
+        List<SchemeSurePriceFactor> factorList = schemeSurePriceFactorDao.getFactorListByJudgeObjectId(beCopyJudgeId);
         if (CollectionUtils.isEmpty(factorList)) return;
         for (Integer judgeId : judgeIds) {
             SchemeJudgeObject judgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeId);
