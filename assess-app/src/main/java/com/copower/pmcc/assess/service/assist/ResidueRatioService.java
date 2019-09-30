@@ -16,6 +16,7 @@ import com.copower.pmcc.assess.service.data.DataDamagedDegreeService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -250,9 +251,21 @@ public class ResidueRatioService {
                             observeItem.setCreator(commonService.thisUserAccount());
                             if (houseId != null) {
                                 BasicHouseDamagedDegree houseDamagedDegree = basicHouseDamagedDegreeService.getDamagedDegreeByHouseIdAndCategory(houseId, damagedDegree.getId());
-                                observeItem.setEntityCondition(DataDamagedDegreeEnum.getEnumByKey(houseDamagedDegree.getEntityCondition()).getValue());
-                                observeItem.setEntityConditionContent(houseDamagedDegree.getEntityConditionContent());
-                                observeItem.setScore(houseDamagedDegree.getScore());
+                                if (StringUtils.isNotEmpty(houseDamagedDegree.getEntityCondition())) {
+                                    observeItem.setEntityCondition(DataDamagedDegreeEnum.getEnumByKey(houseDamagedDegree.getEntityCondition()).getValue());
+                                } else {
+                                    observeItem.setEntityCondition("");
+                                }
+                                if (StringUtils.isNotEmpty(houseDamagedDegree.getEntityConditionContent())) {
+                                    observeItem.setEntityConditionContent(houseDamagedDegree.getEntityConditionContent());
+                                } else {
+                                    observeItem.setEntityConditionContent("");
+                                }
+                                if (houseDamagedDegree.getScore() != null) {
+                                    observeItem.setScore(houseDamagedDegree.getScore());
+                                } else {
+                                    observeItem.setScore(new BigDecimal("0"));
+                                }
 
                             }
                             toolResidueRatioObserveDao.addToolResidueRatioObserve(observeItem);
