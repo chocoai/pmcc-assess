@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.aspose.words.*;
 import com.copower.pmcc.assess.common.ArithmeticUtils;
 import com.copower.pmcc.assess.common.AsposeUtils;
+import com.copower.pmcc.assess.common.enums.data.DataBuildingInstallCostTypeEnum;
 import com.copower.pmcc.assess.common.enums.report.BaseReportFieldEnum;
 import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
@@ -385,7 +386,23 @@ public class GenerateMdDevelopmentService {
                 List<DataBuildingInstallCostVo> dataBuildingInstallCostVos = dataBuildingInstallCostService.dataBuildingInstallCostVos(schemeAreaGroup.getProvince(), schemeAreaGroup.getCity(), schemeAreaGroup.getDistrict());
                 if (CollectionUtils.isNotEmpty(dataBuildingInstallCostVos)) {
                     for (DataBuildingInstallCostVo costVo : dataBuildingInstallCostVos) {
-                        stringBuilder.append(costVo.getContent());
+                        if (Objects.equal(costVo.getType(), DataBuildingInstallCostTypeEnum.constructionInstallationEngineeringFee.getKey())) {
+                            stringBuilder.append(costVo.getContent());
+                        }
+                    }
+                }
+                String value = StringUtils.isNotBlank(stringBuilder.toString()) ? stringBuilder.toString() : "无";
+                generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), value);
+                break;
+            }
+            case Development_infrastructureCost_FileName: {
+                StringBuilder stringBuilder = new StringBuilder(8);
+                List<DataBuildingInstallCostVo> dataBuildingInstallCostVos = dataBuildingInstallCostService.dataBuildingInstallCostVos(schemeAreaGroup.getProvince(), schemeAreaGroup.getCity(), schemeAreaGroup.getDistrict());
+                if (CollectionUtils.isNotEmpty(dataBuildingInstallCostVos)) {
+                    for (DataBuildingInstallCostVo costVo : dataBuildingInstallCostVos) {
+                        if (Objects.equal(costVo.getType(), DataBuildingInstallCostTypeEnum.infrastructureCost.getKey())) {
+                            stringBuilder.append(costVo.getContent());
+                        }
                     }
                 }
                 String value = StringUtils.isNotBlank(stringBuilder.toString()) ? stringBuilder.toString() : "无";
@@ -595,6 +612,9 @@ public class GenerateMdDevelopmentService {
             }
             case Development_AmendmentStatusRightsRemark: {
                 value = target.getAmendmentStatusRightsExplain();
+                if (StringUtils.isEmpty(value)){
+                    value = String.join("","无", BaseReportFieldEnum.Development_AmendmentStatusRights.getName(),"修正") ;
+                }
                 break;
             }
             case Development_AmendmentStatusRights: {
@@ -603,6 +623,9 @@ public class GenerateMdDevelopmentService {
             }
             case Development_OtherAmendmentsRemark: {
                 value = target.getOtherAmendmentsExplain();
+                if (StringUtils.isEmpty(value)){
+                    value = String.join("","无", BaseReportFieldEnum.Development_OtherAmendments.getName(),"修正") ;
+                }
                 break;
             }
             case Development_OtherAmendments: {
@@ -649,6 +672,9 @@ public class GenerateMdDevelopmentService {
             }
             case Development_DevelopmentDegreeCorrectionValueRemark: {
                 value = target.getDevelopmentDegreeRevisionExplain();
+                if (StringUtils.isEmpty(value)){
+                    value = String.join("","无", BaseReportFieldEnum.Development_DevelopmentDegreeCorrectionValue.getName(),"修正") ;
+                }
                 break;
             }
             case Development_constructionSubtotalContent: {

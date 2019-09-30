@@ -2,6 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en" class="no-js">
 <head>
+    <title>阶段事项</title>
     <%@include file="/views/share/main_css.jsp" %>
 </head>
 
@@ -20,7 +21,7 @@
                             </ul>
                             <h2>
                                 <i class="fa ${baseViewDto.currentMenu.icon}"></i>
-                                ${baseViewDto.currentMenu.name}
+                                阶段事项
                             </h2>
                             <div class="clearfix"></div>
                         </div>
