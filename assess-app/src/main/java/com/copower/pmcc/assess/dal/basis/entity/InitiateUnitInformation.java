@@ -9,6 +9,8 @@ public class InitiateUnitInformation {
 
     private Boolean infoWrite;
 
+    private String uUseUnitName;
+
     private String uUnitProperties;
 
     private String uScopeOperation;
@@ -53,6 +55,14 @@ public class InitiateUnitInformation {
 
     public void setInfoWrite(Boolean infoWrite) {
         this.infoWrite = infoWrite;
+    }
+
+    public String getuUseUnitName() {
+        return uUseUnitName;
+    }
+
+    public void setuUseUnitName(String uUseUnitName) {
+        this.uUseUnitName = uUseUnitName == null ? null : uUseUnitName.trim();
     }
 
     public String getuUnitProperties() {
