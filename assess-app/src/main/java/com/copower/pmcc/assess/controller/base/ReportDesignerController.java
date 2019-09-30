@@ -37,13 +37,13 @@ public class ReportDesignerController {
 
     @GetMapping(value = "/index")
     public ModelAndView index() {
-        ModelAndView modelAndView = commonService.baseView("/reportManage/configuration");
+        ModelAndView modelAndView = commonService.baseView("/report/configuration");
         return modelAndView;
     }
 
     @GetMapping(value = "/reportHome/{uuid}", name = "报表页面")
     public ModelAndView reportHome(@PathVariable("uuid") String uuid) {
-        ModelAndView modelAndView = commonService.baseView("/reportManage/vacationReport");
+        ModelAndView modelAndView = commonService.baseView("/report/vacationReport");
         ReportProviderFileDto reportProviderFile = erpFileReportProvider.getOneReportProviderFileByUuid(applicationConstant.getAppKey(), uuid);
         modelAndView.addObject("reportProviderFile", reportProviderFile);
         return modelAndView;
@@ -75,13 +75,13 @@ public class ReportDesignerController {
 
     @GetMapping(value = "/workLog", name = "工作日志报表页面")
     public ModelAndView summary() {
-        ModelAndView modelAndView = commonService.baseView("/reportManage/workLog");
+        ModelAndView modelAndView = commonService.baseView("/report/workLog");
         return modelAndView;
     }
 
     @GetMapping(value = "/projectFinance", name = "项目收款报表页面")
     public ModelAndView projectFinance() {
-        ModelAndView modelAndView = commonService.baseView("/reportManage/projectFinance");
+        ModelAndView modelAndView = commonService.baseView("/report/projectFinance");
         List<BaseDataDic> entrustmentList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE);
         List<BaseDataDic> loanTypeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_LOAN_TYPE);
         modelAndView.addObject("entrustmentList", entrustmentList);
@@ -91,13 +91,13 @@ public class ReportDesignerController {
 
     @GetMapping(value = "/projectWorkItem", name = "项目工作事项报表页面")
     public ModelAndView projectWorkItem() {
-        ModelAndView modelAndView = commonService.baseView("/reportManage/projectWorkItem");
+        ModelAndView modelAndView = commonService.baseView("/report/projectWorkItem");
         return modelAndView;
     }
 
     @GetMapping(value = "/myProjectFinance", name = "项目收款报表页面")
     public ModelAndView MyProjectFinance() {
-        ModelAndView modelAndView = commonService.baseView("/reportManage/myProjectFinance");
+        ModelAndView modelAndView = commonService.baseView("/report/myProjectFinance");
         List<BaseDataDic> entrustmentList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE);
         List<BaseDataDic> loanTypeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_LOAN_TYPE);
         modelAndView.addObject("entrustmentList", entrustmentList);
@@ -109,7 +109,7 @@ public class ReportDesignerController {
     public ModelAndView projectDebt() {
         //数据初始化
         projectDebtService.init();
-        ModelAndView modelAndView = commonService.baseView("/reportManage/projectDebt");
+        ModelAndView modelAndView = commonService.baseView("/report/projectDebt");
         List<BaseDataDic> entrustmentList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE);
         List<BaseDataDic> loanTypeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_LOAN_TYPE);
         modelAndView.addObject("entrustmentList", entrustmentList);

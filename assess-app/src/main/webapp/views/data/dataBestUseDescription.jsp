@@ -2,6 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en" class="no-js">
 <head>
+    <title>最佳利用方式</title>
     <%@include file="/views/share/main_css.jsp" %>
     <script src="${pageContext.request.contextPath}/excludes/assets/plugins/laydate/laydate.js" type="text/javascript"></script>
 </head>
@@ -20,7 +21,7 @@
                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                     </ul>
                     <h2><i class="fa ${baseViewDto.currentMenu.icon}"></i>
-                        ${baseViewDto.currentMenu.name} <%--这是用来显示标题的，固定格式--%>
+                        最佳利用方式
                     </h2>
                     <div class="clearfix"></div>
                 </div>

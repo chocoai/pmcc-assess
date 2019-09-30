@@ -10,7 +10,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>报告模板管理</title>
+    <title>基础报告模板</title>
     <%@include file="/views/share/main_css.jsp" %>
 </head>
 
@@ -29,7 +29,7 @@
                             </ul>
                             <h2>
                                 <i class="fa ${baseViewDto.currentMenu.icon}"></i>
-                                ${baseViewDto.currentMenu.name}
+                                基础报告模板
                             </h2>
                             <div class="clearfix"></div>
                         </div>

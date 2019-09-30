@@ -29,28 +29,32 @@
                             <div class="col-md-12 col-sm-12 col-xs-12">
                                 <ul class="stats-overview">
                                     <li>
-                                        <a href="${pageContext.request.contextPath}/baseDataDic/index" ><span class="value text-success"><i class="fa fa-reorder"></i> 数据字典</span></a>
+                                        <a href="${pageContext.request.contextPath}/baseDataDic/index" ><span class="value "><i class="fa fa-reorder"></i> 数据字典</span></a>
                                     </li>
                                     <li>
-                                        <a href="${pageContext.request.contextPath}/ProjectPhase/view" ><span class="value text-success"><i class="fa fa-reorder"></i> 阶段事项</span></a>
+                                        <a href="${pageContext.request.contextPath}/ProjectPhase/view" ><span class="value "><i class="fa fa-reorder"></i> 阶段事项</span></a>
                                     </li>
                                     <li>
-                                        <a href="${pageContext.request.contextPath}/baseProjectClassify/index" ><span class="value text-success"><i class="fa fa-reorder"></i> 项目类型</span></a>
+                                        <a href="${pageContext.request.contextPath}/baseProjectClassify/index" ><span class="value "><i class="fa fa-reorder"></i> 项目类型</span></a>
                                     </li>
                                 </ul>
                                 <ul class="stats-overview">
                                     <li>
-                                        <a href="${pageContext.request.contextPath}/baseFileTemplate/index" ><span class="value text-success"><i class="fa fa-reorder"></i> 文件模板</span></a>
+                                        <a href="${pageContext.request.contextPath}/baseFileTemplate/index" ><span class="value "><i class="fa fa-reorder"></i> 文件模板</span></a>
                                     </li>
                                     <li>
-                                        <a href="${pageContext.request.contextPath}/dataExamineTask/index" ><span class="value text-success"><i class="fa fa-reorder"></i> 查勘内容</span></a>
+                                        <a href="${pageContext.request.contextPath}/dataExamineTask/index" ><span class="value "><i class="fa fa-reorder"></i> 查勘内容</span></a>
                                     </li>
                                     <li>
-                                        <a href="${pageContext.request.contextPath}/setUseField/index" ><span class="value text-success"><i class="fa fa-reorder"></i> 设定用途</span></a>
+                                        <a href="${pageContext.request.contextPath}/setUseField/index" ><span class="value "><i class="fa fa-reorder"></i> 设定用途</span></a>
+                                    </li>
+                                </ul>
+                                <ul class="stats-overview">
+                                    <li>
+                                        <a href="${pageContext.request.contextPath}/assessReport/index" ><span class="value "><i class="fa fa-reorder"></i> 报表管理</span></a>
                                     </li>
                                 </ul>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -58,7 +62,6 @@
         </div>
     </div>
 </div>
-
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
 </body>
