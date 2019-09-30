@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.common.enums.*;
 import com.copower.pmcc.assess.common.enums.basic.BasicApplyFormNameEnum;
 import com.copower.pmcc.assess.common.enums.basic.BasicApplyTypeEnum;
 import com.copower.pmcc.assess.common.enums.basic.EstateTaggingTypeEnum;
+import com.copower.pmcc.assess.common.enums.basic.ExamineFileUpLoadFieldEnum;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.basic.*;
 import com.copower.pmcc.assess.dal.basis.entity.*;
@@ -946,9 +947,10 @@ public class BasicApplyBatchService {
                 SysAttachmentDto example = new SysAttachmentDto();
                 example.setTableId(unitHuxing.getId());
                 example.setTableName(FormatUtils.entityNameConvertToTableName(BasicUnitHuxing.class));
+                example.setFieldsName(ExamineFileUpLoadFieldEnum.houseLatestFamilyPlanV.getName());
 
                 SysAttachmentDto attachmentDto = new SysAttachmentDto();
-                attachmentDto.setTableId(caseUnit.getId());
+                attachmentDto.setTableId(caseUnitHuxing.getId());
                 example.setTableName(FormatUtils.entityNameConvertToTableName(CaseUnitHuxing.class));
                 baseAttachmentService.copyFtpAttachments(example, attachmentDto);
             }
@@ -1052,10 +1054,10 @@ public class BasicApplyBatchService {
                 SysAttachmentDto example = new SysAttachmentDto();
                 example.setTableId(unitHuxing.getId());
                 example.setTableName(FormatUtils.entityNameConvertToTableName(BasicUnitHuxing.class));
+                example.setFieldsName(ExamineFileUpLoadFieldEnum.houseLatestFamilyPlanV.getName());
 
                 SysAttachmentDto attachmentDto = new SysAttachmentDto();
-                attachmentDto.setTableId(basicUnit.getId());
-                example.setTableName(FormatUtils.entityNameConvertToTableName(BasicUnitHuxing.class));
+                attachmentDto.setTableId(basicUnitHuxing.getId());
                 baseAttachmentService.copyFtpAttachments(example, attachmentDto);
             }
         }
