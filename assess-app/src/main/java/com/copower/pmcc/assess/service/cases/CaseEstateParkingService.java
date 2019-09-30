@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.service.cases;
 
-import com.copower.pmcc.assess.common.enums.ExamineFileUpLoadFieldEnum;
+import com.copower.pmcc.assess.common.enums.basic.ExamineFileUpLoadFieldEnum;
 import com.copower.pmcc.assess.dal.cases.dao.CaseEstateParkingDao;
 import com.copower.pmcc.assess.dal.cases.entity.CaseEstateParking;
 import com.copower.pmcc.assess.dto.output.cases.CaseEstateParkingVo;

@@ -2,9 +2,9 @@ package com.copower.pmcc.assess.controller.cases;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.copower.pmcc.assess.common.enums.ExamineEstateSupplyEnumType;
-import com.copower.pmcc.assess.common.enums.ExamineMatchingLeisurePlaceTypeEnum;
-import com.copower.pmcc.assess.common.enums.ExamineMatchingTrafficTypeEnum;
+import com.copower.pmcc.assess.common.enums.basic.ExamineEstateSupplyEnumType;
+import com.copower.pmcc.assess.common.enums.basic.ExamineMatchingLeisurePlaceTypeEnum;
+import com.copower.pmcc.assess.common.enums.basic.ExamineMatchingTrafficTypeEnum;
 import com.copower.pmcc.assess.dal.cases.custom.entity.CustomCaseEntity;
 import com.copower.pmcc.assess.dal.cases.entity.CaseBuilding;
 import com.copower.pmcc.assess.dal.cases.entity.CaseEstate;

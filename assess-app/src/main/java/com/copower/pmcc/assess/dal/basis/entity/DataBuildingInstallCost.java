@@ -11,6 +11,8 @@ public class DataBuildingInstallCost {
 
     private String district;
 
+    private String type;
+
     private Date publishTime;
 
     private String content;
@@ -51,6 +53,14 @@ public class DataBuildingInstallCost {
 
     public void setDistrict(String district) {
         this.district = district == null ? null : district.trim();
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type == null ? null : type.trim();
     }
 
     public Date getPublishTime() {

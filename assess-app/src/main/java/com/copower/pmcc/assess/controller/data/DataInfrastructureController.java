@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.controller.data;
 
 import com.alibaba.fastjson.JSONObject;
-import com.copower.pmcc.assess.common.enums.DataInfrastructureEnum;
+import com.copower.pmcc.assess.common.enums.data.DataInfrastructureEnum;
 import com.copower.pmcc.assess.dal.basis.entity.DataInfrastructure;
 import com.copower.pmcc.assess.dto.output.data.InfrastructureVo;
 import com.copower.pmcc.assess.service.data.DataInfrastructureService;

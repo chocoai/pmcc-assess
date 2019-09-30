@@ -2,7 +2,7 @@ package com.copower.pmcc.assess.service.assist;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.copower.pmcc.assess.common.enums.DataDamagedDegreeEnum;
+import com.copower.pmcc.assess.common.enums.data.DataDamagedDegreeEnum;
 import com.copower.pmcc.assess.dal.basis.dao.data.ToolResidueRatioDao;
 import com.copower.pmcc.assess.dal.basis.dao.data.ToolResidueRatioObserveDao;
 import com.copower.pmcc.assess.dal.basis.entity.BasicHouseDamagedDegree;

@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.service.project.generate;
 
-import com.copower.pmcc.assess.common.enums.*;
+import com.copower.pmcc.assess.common.enums.basic.*;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.basic.*;
 import com.copower.pmcc.assess.service.ErpAreaService;

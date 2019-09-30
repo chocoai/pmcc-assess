@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.service.cases;
 
-import com.copower.pmcc.assess.common.enums.DataDamagedDegreeEnum;
+import com.copower.pmcc.assess.common.enums.data.DataDamagedDegreeEnum;
 import com.copower.pmcc.assess.dal.basis.entity.DataDamagedDegree;
 import com.copower.pmcc.assess.dal.cases.dao.CaseHouseDamagedDegreeDao;
 import com.copower.pmcc.assess.dal.cases.dao.CaseHouseDamagedDegreeDetailDao;

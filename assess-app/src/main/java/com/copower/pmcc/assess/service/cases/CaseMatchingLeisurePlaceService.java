@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.service.cases;
 
-import com.copower.pmcc.assess.common.enums.ExamineMatchingLeisurePlaceTypeEnum;
+import com.copower.pmcc.assess.common.enums.basic.ExamineMatchingLeisurePlaceTypeEnum;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.cases.dao.CaseMatchingLeisurePlaceDao;

@@ -2,7 +2,7 @@ package com.copower.pmcc.assess.service.project.generate.land;
 
 import com.aspose.words.Document;
 import com.copower.pmcc.assess.common.AsposeUtils;
-import com.copower.pmcc.assess.common.enums.BaseReportFieldLandCompareEnum;
+import com.copower.pmcc.assess.common.enums.report.BaseReportFieldLandCompareEnum;
 import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
 import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataHousePriceIndexDao;

@@ -1,8 +1,8 @@
 package com.copower.pmcc.assess.service.basic;
 
-import com.copower.pmcc.assess.common.enums.BasicApplyPartInModeEnum;
-import com.copower.pmcc.assess.common.enums.EstateTaggingTypeEnum;
-import com.copower.pmcc.assess.common.enums.ExamineFileUpLoadFieldEnum;
+import com.copower.pmcc.assess.common.enums.basic.BasicApplyPartInModeEnum;
+import com.copower.pmcc.assess.common.enums.basic.EstateTaggingTypeEnum;
+import com.copower.pmcc.assess.common.enums.basic.ExamineFileUpLoadFieldEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicHouseDamagedDegreeDao;
