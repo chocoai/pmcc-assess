@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.aspose.words.*;
 import com.copower.pmcc.assess.common.ArithmeticUtils;
 import com.copower.pmcc.assess.common.AsposeUtils;
+import com.copower.pmcc.assess.common.enums.data.DataBuildingInstallCostTypeEnum;
 import com.copower.pmcc.assess.common.enums.report.BaseReportFieldEnum;
 import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
@@ -603,7 +604,9 @@ public class GenerateMdCostService implements Serializable {
                 List<DataBuildingInstallCostVo> dataBuildingInstallCostVos = dataBuildingInstallCostService.dataBuildingInstallCostVos(schemeAreaGroup.getProvince(), schemeAreaGroup.getCity(), schemeAreaGroup.getDistrict());
                 if (CollectionUtils.isNotEmpty(dataBuildingInstallCostVos)) {
                     for (DataBuildingInstallCostVo costVo : dataBuildingInstallCostVos) {
-                        stringBuilder.append(costVo.getContent());
+                        if (Objects.equal(costVo.getType(), DataBuildingInstallCostTypeEnum.constructionInstallationEngineeringFee.getKey())) {
+                            stringBuilder.append(costVo.getContent());
+                        }
                     }
                 }
                 String value = StringUtils.isNotBlank(stringBuilder.toString()) ? stringBuilder.toString() : "无";
