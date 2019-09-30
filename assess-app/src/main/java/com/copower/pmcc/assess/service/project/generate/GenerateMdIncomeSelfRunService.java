@@ -1014,15 +1014,21 @@ public class GenerateMdIncomeSelfRunService implements Serializable {
         Collections.sort(mdIncomeDateSectionList, comparator);
 
         StringBuilder s = new StringBuilder();
-        // At/(Y-g)×[1-(1+g)^t /(1+y)^(N-t)]
         if (CollectionUtils.isNotEmpty(mdIncomeDateSectionList)) {
-            BigDecimal t = new BigDecimal("1");
+            BigDecimal t = new BigDecimal("0");
             for (MdIncomeDateSection section : mdIncomeDateSectionList) {
                 StringBuilder s2 = new StringBuilder();
                 s2.append(DateUtils.format(section.getBeginDate(), DateUtils.DATE_CHINESE_PATTERN)).append("至").append(DateUtils.format(section.getEndDate(), DateUtils.DATE_CHINESE_PATTERN));
                 s.append(generateCommonMethod.getIndentHtml(s2.toString()));
                 BigDecimal yearCount = section.getYearCount();
-                String formula = "= At/(Y-g)×[1-(1+g)^t /(1+Y)^(n)]";
+                t = t.add(yearCount);
+                String formula = new String();
+                if (yearCount.compareTo(new BigDecimal("1")) < 1) {
+                    formula = "=At×(1 + g)/(1 + Y)^t]";
+                } else {
+                    formula = "=At×(1+Y)^-(T+1)×(1-((1+g)/(1+Y))^n)/(1-(1+g)/(1+Y))";
+                }
+
                 if (StringUtils.isNoneEmpty(section.getNetProfit())) {
                     formula = formula.replace("At", section.getNetProfit());
                 }
@@ -1032,15 +1038,18 @@ public class GenerateMdIncomeSelfRunService implements Serializable {
                 if (section.getRentalGrowthRate() != null) {
                     formula = formula.replace("g", ArithmeticUtils.getPercentileSystem(section.getRentalGrowthRate(), 4, BigDecimal.ROUND_HALF_UP));
                 }
-                if (section.getYearCount() != null) {
-                    formula = formula.replace("n", section.getYearCount().toString());
-                }
                 if (t.compareTo(new BigDecimal("1")) != 0) {
                     formula = formula.replace("t", t.toString());
+                    if (formula.contains("T")) {
+                        formula = formula.replace("T", t.subtract(yearCount).toString());
+                    }
                 } else {
                     formula = formula.replace("^t", "");
                 }
-                t = t.add(yearCount);
+                if (section.getYearCount() != null) {
+                    formula = formula.replace("n", section.getYearCount().toString());
+                }
+
                 s.append(generateCommonMethod.getIndentHtml(formula));
             }
 

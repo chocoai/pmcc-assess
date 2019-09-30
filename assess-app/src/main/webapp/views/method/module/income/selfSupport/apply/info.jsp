@@ -1680,16 +1680,18 @@
             netProfit = parseFloat(netProfit);//净收益
             var g = $(this).find('[data-name=rentalGrowthRate]').val();
             if (!AssessCommon.isNumber(g)) g = 0;
-            g = parseFloat(g);//增长率
+            g = parseFloat(g);//增长率F43
             var incomePrice = 0;
-            if (index == 0) {
-                incomePrice = (netProfit / (Y - g) * (1 - Math.pow(((1 + g) / (1 + Y)), n))).toFixed(2);
+            t += n;
+            if (n <= 1) {
+                incomePrice = (netProfit * (1 + g) / Math.pow((1 + Y), t)).toFixed(2);
             } else {
-                incomePrice = (netProfit / (Y - g) * (1 - Math.pow((Math.pow((1 + g), t) / (1 + Y)), n))).toFixed(2);
+                incomePrice=(netProfit*Math.pow((1+Y),-(t-n+1))*(1-Math.pow(((1+g)/(1+Y)),n))/(1-(1+g)/(1+Y))).toFixed(2);
             }
+
             incomePriceTotal = incomePriceTotal + parseFloat(incomePrice);
             $(this).find('[data-name=incomePrice]').text(incomePrice);//收益价格
-            t += n;
+
         })
         //计算委估对象单价 （单价=收益价格合计\委估对象面积）
         var area = $("#selfSupportResult").find('[data-name=area]').text();
