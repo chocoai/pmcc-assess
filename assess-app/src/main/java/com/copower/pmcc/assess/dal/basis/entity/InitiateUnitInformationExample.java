@@ -285,6 +285,76 @@ public class InitiateUnitInformationExample {
             return (Criteria) this;
         }
 
+        public Criteria andUUseUnitNameIsNull() {
+            addCriterion("u_use_unit_name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUUseUnitNameIsNotNull() {
+            addCriterion("u_use_unit_name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUUseUnitNameEqualTo(String value) {
+            addCriterion("u_use_unit_name =", value, "uUseUnitName");
+            return (Criteria) this;
+        }
+
+        public Criteria andUUseUnitNameNotEqualTo(String value) {
+            addCriterion("u_use_unit_name <>", value, "uUseUnitName");
+            return (Criteria) this;
+        }
+
+        public Criteria andUUseUnitNameGreaterThan(String value) {
+            addCriterion("u_use_unit_name >", value, "uUseUnitName");
+            return (Criteria) this;
+        }
+
+        public Criteria andUUseUnitNameGreaterThanOrEqualTo(String value) {
+            addCriterion("u_use_unit_name >=", value, "uUseUnitName");
+            return (Criteria) this;
+        }
+
+        public Criteria andUUseUnitNameLessThan(String value) {
+            addCriterion("u_use_unit_name <", value, "uUseUnitName");
+            return (Criteria) this;
+        }
+
+        public Criteria andUUseUnitNameLessThanOrEqualTo(String value) {
+            addCriterion("u_use_unit_name <=", value, "uUseUnitName");
+            return (Criteria) this;
+        }
+
+        public Criteria andUUseUnitNameLike(String value) {
+            addCriterion("u_use_unit_name like", value, "uUseUnitName");
+            return (Criteria) this;
+        }
+
+        public Criteria andUUseUnitNameNotLike(String value) {
+            addCriterion("u_use_unit_name not like", value, "uUseUnitName");
+            return (Criteria) this;
+        }
+
+        public Criteria andUUseUnitNameIn(List<String> values) {
+            addCriterion("u_use_unit_name in", values, "uUseUnitName");
+            return (Criteria) this;
+        }
+
+        public Criteria andUUseUnitNameNotIn(List<String> values) {
+            addCriterion("u_use_unit_name not in", values, "uUseUnitName");
+            return (Criteria) this;
+        }
+
+        public Criteria andUUseUnitNameBetween(String value1, String value2) {
+            addCriterion("u_use_unit_name between", value1, value2, "uUseUnitName");
+            return (Criteria) this;
+        }
+
+        public Criteria andUUseUnitNameNotBetween(String value1, String value2) {
+            addCriterion("u_use_unit_name not between", value1, value2, "uUseUnitName");
+            return (Criteria) this;
+        }
+
         public Criteria andUUnitPropertiesIsNull() {
             addCriterion("u_unit_properties is null");
             return (Criteria) this;

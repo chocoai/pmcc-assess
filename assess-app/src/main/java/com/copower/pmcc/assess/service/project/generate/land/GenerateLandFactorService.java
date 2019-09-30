@@ -1,9 +1,9 @@
 package com.copower.pmcc.assess.service.project.generate.land;
 
-import com.copower.pmcc.assess.common.enums.BasicApplyTypeEnum;
-import com.copower.pmcc.assess.common.enums.EnvironmentalScienceEnum;
-import com.copower.pmcc.assess.common.enums.ExamineEstateSupplyEnumType;
-import com.copower.pmcc.assess.common.enums.ExamineMatchingTrafficTypeEnum;
+import com.copower.pmcc.assess.common.enums.basic.BasicApplyTypeEnum;
+import com.copower.pmcc.assess.common.enums.basic.EnvironmentalScienceEnum;
+import com.copower.pmcc.assess.common.enums.basic.ExamineEstateSupplyEnumType;
+import com.copower.pmcc.assess.common.enums.basic.ExamineMatchingTrafficTypeEnum;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateLandStateVo;
 import com.copower.pmcc.assess.dto.output.basic.BasicMatchingFinanceVo;

@@ -2,8 +2,8 @@ package com.copower.pmcc.assess.controller.baisc;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.copower.pmcc.assess.common.enums.BasicApplyFormNameEnum;
-import com.copower.pmcc.assess.common.enums.ExamineHouseEquipmentTypeEnum;
+import com.copower.pmcc.assess.common.enums.basic.BasicApplyFormNameEnum;
+import com.copower.pmcc.assess.common.enums.basic.ExamineHouseEquipmentTypeEnum;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicHouseDamagedDegreeDetailDao;
 import com.copower.pmcc.assess.dal.basis.entity.BasicApply;
 import com.copower.pmcc.assess.dal.basis.entity.BasicHouse;

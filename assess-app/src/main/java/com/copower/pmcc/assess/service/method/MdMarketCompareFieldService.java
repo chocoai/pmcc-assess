@@ -1,9 +1,9 @@
 package com.copower.pmcc.assess.service.method;
 
 import com.alibaba.fastjson.JSON;
-import com.copower.pmcc.assess.common.enums.EnvironmentalScienceEnum;
-import com.copower.pmcc.assess.common.enums.ExamineHouseEquipmentTypeEnum;
-import com.copower.pmcc.assess.common.enums.MethodCompareFieldEnum;
+import com.copower.pmcc.assess.common.enums.basic.EnvironmentalScienceEnum;
+import com.copower.pmcc.assess.common.enums.basic.ExamineHouseEquipmentTypeEnum;
+import com.copower.pmcc.assess.common.enums.basic.MethodCompareFieldEnum;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.method.MarketCompareItemDto;

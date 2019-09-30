@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.controller.cases;
 
 import com.alibaba.fastjson.JSON;
-import com.copower.pmcc.assess.common.enums.EstateTaggingTypeEnum;
+import com.copower.pmcc.assess.common.enums.basic.EstateTaggingTypeEnum;
 import com.copower.pmcc.assess.dal.cases.entity.CaseBaseHouse;
 import com.copower.pmcc.assess.dto.input.cases.CaseEstateTaggingDto;
 import com.copower.pmcc.assess.service.cases.*;

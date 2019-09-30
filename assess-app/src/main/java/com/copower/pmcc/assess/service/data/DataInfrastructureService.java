@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.service.data;
 
-import com.copower.pmcc.assess.common.enums.DataInfrastructureEnum;
+import com.copower.pmcc.assess.common.enums.data.DataInfrastructureEnum;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataInfrastructureDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.data.InfrastructureVo;

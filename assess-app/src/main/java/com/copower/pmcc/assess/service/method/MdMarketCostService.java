@@ -3,7 +3,7 @@ package com.copower.pmcc.assess.service.method;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.ArithmeticUtils;
-import com.copower.pmcc.assess.common.enums.BaseReportFieldEnum;
+import com.copower.pmcc.assess.common.enums.report.BaseReportFieldEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdCostConstructionDao;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdCostDao;

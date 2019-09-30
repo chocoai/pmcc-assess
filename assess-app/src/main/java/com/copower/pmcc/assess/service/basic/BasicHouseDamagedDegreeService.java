@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.service.basic;
 
-import com.copower.pmcc.assess.common.enums.DataDamagedDegreeEnum;
+import com.copower.pmcc.assess.common.enums.data.DataDamagedDegreeEnum;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicHouseDamagedDegreeDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicHouseDamagedDegreeDetailDao;
 import com.copower.pmcc.assess.dal.basis.entity.BasicHouseDamagedDegree;
@@ -28,7 +28,6 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
-import java.awt.*;
 import java.util.List;
 
 /**

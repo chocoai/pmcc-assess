@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.service.project.generate;
 
-import com.copower.pmcc.assess.common.enums.ExamineHouseEquipmentTypeEnum;
+import com.copower.pmcc.assess.common.enums.basic.ExamineHouseEquipmentTypeEnum;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeJudgeObjectDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;

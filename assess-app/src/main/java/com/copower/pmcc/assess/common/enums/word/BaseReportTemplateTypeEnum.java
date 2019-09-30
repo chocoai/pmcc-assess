@@ -1,4 +1,4 @@
-package com.copower.pmcc.assess.common.enums;
+package com.copower.pmcc.assess.common.enums.word;
 
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 

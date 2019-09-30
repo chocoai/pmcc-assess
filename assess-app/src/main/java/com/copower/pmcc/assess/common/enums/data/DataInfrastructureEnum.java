@@ -1,4 +1,4 @@
-package com.copower.pmcc.assess.common.enums;
+package com.copower.pmcc.assess.common.enums.data;
 
 /**
  * Created by zch on 2019/7/3.

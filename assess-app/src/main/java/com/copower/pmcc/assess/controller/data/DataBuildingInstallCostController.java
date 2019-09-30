@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.controller.data;
 
 import com.alibaba.fastjson.JSONObject;
+import com.copower.pmcc.assess.common.enums.data.DataBuildingInstallCostTypeEnum;
 import com.copower.pmcc.assess.controller.BaseController;
 import com.copower.pmcc.assess.dal.basis.entity.DataBuildingInstallCost;
 import com.copower.pmcc.assess.service.ErpAreaService;
@@ -8,14 +9,18 @@ import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataBuildingInstallCostService;
 import com.copower.pmcc.assess.service.project.generate.GenerateMdBaseLandPriceService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 /**
  * @Auther: zch
@@ -41,16 +46,11 @@ public class DataBuildingInstallCostController extends BaseController {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
         //所有省份
         modelAndView.addObject("ProvinceList", erpAreaService.getProvinceList());
-        try {
-//            GenerateMdCompareService generateMdCompareService=new GenerateMdCompareService(488,360,262);
-//            String s = generateMdCompareService.generateCompareFile();
-
-            GenerateMdBaseLandPriceService generateMdBaseLandPriceService = new GenerateMdBaseLandPriceService(2, 543, 323, 542);
-            String s = generateMdBaseLandPriceService.generateBaseLandPriceFile();
-            System.out.print(s);
-        } catch (Exception e) {
-            e.printStackTrace();
+        List<KeyValueDto> dataBuildingInstallCostType = Lists.newArrayList();
+        for (DataBuildingInstallCostTypeEnum typeEnum: DataBuildingInstallCostTypeEnum.values()){
+            dataBuildingInstallCostType.add(new KeyValueDto(typeEnum.getKey(),typeEnum.getValue())) ;
         }
+        modelAndView.addObject("dataBuildingInstallCostType",dataBuildingInstallCostType) ;
         return modelAndView;
     }
 

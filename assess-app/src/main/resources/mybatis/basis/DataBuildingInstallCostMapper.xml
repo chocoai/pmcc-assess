@@ -6,6 +6,7 @@
     <result column="province" property="province" jdbcType="VARCHAR" />
     <result column="city" property="city" jdbcType="VARCHAR" />
     <result column="district" property="district" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
     <result column="publish_time" property="publishTime" jdbcType="TIMESTAMP" />
     <result column="content" property="content" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
@@ -71,7 +72,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, province, city, district, publish_time, content, creator, gmt_created, gmt_modified
+    id, province, city, district, type, publish_time, content, creator, gmt_created, 
+    gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataBuildingInstallCostExample" >
     select
@@ -108,11 +110,13 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_data_building_install_cost (province, city, district, 
-      publish_time, content, creator, 
-      gmt_created, gmt_modified)
+      type, publish_time, content, 
+      creator, gmt_created, gmt_modified
+      )
     values (#{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, 
-      #{publishTime,jdbcType=TIMESTAMP}, #{content,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+      #{type,jdbcType=VARCHAR}, #{publishTime,jdbcType=TIMESTAMP}, #{content,jdbcType=VARCHAR}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataBuildingInstallCost" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -128,6 +132,9 @@
       </if>
       <if test="district != null" >
         district,
+      </if>
+      <if test="type != null" >
+        type,
       </if>
       <if test="publishTime != null" >
         publish_time,
@@ -154,6 +161,9 @@
       </if>
       <if test="district != null" >
         #{district,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
       </if>
       <if test="publishTime != null" >
         #{publishTime,jdbcType=TIMESTAMP},
@@ -193,6 +203,9 @@
       <if test="record.district != null" >
         district = #{record.district,jdbcType=VARCHAR},
       </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=VARCHAR},
+      </if>
       <if test="record.publishTime != null" >
         publish_time = #{record.publishTime,jdbcType=TIMESTAMP},
       </if>
@@ -219,6 +232,7 @@
       province = #{record.province,jdbcType=VARCHAR},
       city = #{record.city,jdbcType=VARCHAR},
       district = #{record.district,jdbcType=VARCHAR},
+      type = #{record.type,jdbcType=VARCHAR},
       publish_time = #{record.publishTime,jdbcType=TIMESTAMP},
       content = #{record.content,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
@@ -239,6 +253,9 @@
       </if>
       <if test="district != null" >
         district = #{district,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
       </if>
       <if test="publishTime != null" >
         publish_time = #{publishTime,jdbcType=TIMESTAMP},
@@ -263,6 +280,7 @@
     set province = #{province,jdbcType=VARCHAR},
       city = #{city,jdbcType=VARCHAR},
       district = #{district,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
       publish_time = #{publishTime,jdbcType=TIMESTAMP},
       content = #{content,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},

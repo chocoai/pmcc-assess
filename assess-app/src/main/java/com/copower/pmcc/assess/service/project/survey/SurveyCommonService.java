@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.service.project.survey;
 
-import com.copower.pmcc.assess.common.enums.BasicApplyTypeEnum;
+import com.copower.pmcc.assess.common.enums.basic.BasicApplyTypeEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;

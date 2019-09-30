@@ -277,6 +277,20 @@
                                                    name="publishTime" placeholder="发布日期">
                                         </div>
                                     </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            发布时间
+                                        </label>
+                                        <div class="col-sm-3">
+                                            <select  name="type"
+                                                    class="form-control search-select select2">
+                                                <option value="">请选择</option>
+                                                <c:forEach items="${dataBuildingInstallCostType}" var="item">
+                                                    <option value="${item.key}">${item.value}</option>
+                                                </c:forEach>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">

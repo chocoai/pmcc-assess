@@ -1,4 +1,4 @@
-package com.copower.pmcc.assess.common.enums;
+package com.copower.pmcc.assess.common.enums.basic;
 
 /**
  * 描述:模板类型表
@@ -7,23 +7,20 @@ package com.copower.pmcc.assess.common.enums;
  * @data: 2017/11/2
  * @time: 15:46
  */
-public enum DataDamagedDegreeEnum {
-    INTACT("intact", "完好"),
-    BASICALLY_INTACT("basicallyIntact", "基本完好"),
-    GENERAL_DAMAGE("generalDamage", "一般损坏"),
-    SERIOUS_DAMAGE("seriousDamage", "严重损坏");
+public enum BasicApplyPartInModeEnum {
+    ADD("add", "添加"), REFERENCE("reference", "引用"), UPGRADE("upgrade", "升版本");
 
     private String key;
     private String value;
 
-    private DataDamagedDegreeEnum(String key, String value) {
+    private BasicApplyPartInModeEnum(String key, String value) {
         this.key = key;
         this.value = value;
     }
 
-    public static DataDamagedDegreeEnum getEnumByKey(String key) {
-        for (DataDamagedDegreeEnum e : DataDamagedDegreeEnum.values()) {
-            if (e.getKey().equals(key)) {
+    public static BasicApplyPartInModeEnum getEnumByKey(String key) {
+        for (BasicApplyPartInModeEnum e : BasicApplyPartInModeEnum.values()) {
+            if (e.getKey() .equals(key)) {
                 return e;
             }
         }

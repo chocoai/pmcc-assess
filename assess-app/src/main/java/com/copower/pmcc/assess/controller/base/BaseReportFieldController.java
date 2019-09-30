@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.controller.base;
 
-import com.copower.pmcc.assess.common.enums.BaseReportTemplateTypeEnum;
+import com.copower.pmcc.assess.common.enums.word.BaseReportTemplateTypeEnum;
 import com.copower.pmcc.assess.dal.basis.entity.BaseReportField;
 import com.copower.pmcc.assess.dto.input.ZtreeDto;
 import com.copower.pmcc.assess.service.BaseService;

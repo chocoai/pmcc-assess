@@ -648,11 +648,12 @@
     };
 
     function showModelCrmContacts() {
-        $('#divBoxCRMContacts').modal("show");
-        findCRMContacts($("#divBoxCRMContacts").find("input[name='name']")[0]);
+        findCRMContacts($("#divBoxCRMContacts").find("input[name='name']")[0] , function () {
+            $('#divBoxCRMContacts').modal("show");
+        });
     }
 
-    function findCRMContacts(that) {
+    function findCRMContacts(that, callback) {
         var text = $(that).parent().parent().prev().find("input[name='name']").val();
         var id = '${projectInfo.unitInformationVo.uUseUnit}';
         var data = {customerId: id, searchCrm: text};
@@ -669,6 +670,9 @@
                 showRefresh: false,
                 search: false
             });
+            if (callback){
+                callback() ;
+            }
         } else {
             Alert("未选择单元");
         }
