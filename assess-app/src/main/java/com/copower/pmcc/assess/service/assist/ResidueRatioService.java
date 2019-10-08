@@ -232,7 +232,7 @@ public class ResidueRatioService {
     }
 
     public ToolResidueRatio initMasterData(Integer residueRatioId, Integer houseId) throws Exception {
-        if (residueRatioId == null) {
+        if (residueRatioId == null||residueRatioId==0) {
             ToolResidueRatio toolResidueRatio = new ToolResidueRatio();
             toolResidueRatio.setCreator(commonService.thisUserAccount());
             toolResidueRatioDao.addToolResidueRatio(toolResidueRatio);
@@ -251,17 +251,17 @@ public class ResidueRatioService {
                             observeItem.setCreator(commonService.thisUserAccount());
                             if (houseId != null) {
                                 BasicHouseDamagedDegree houseDamagedDegree = basicHouseDamagedDegreeService.getDamagedDegreeByHouseIdAndCategory(houseId, damagedDegree.getId());
-                                if (StringUtils.isNotEmpty(houseDamagedDegree.getEntityCondition())) {
+                                if (houseDamagedDegree!=null&&StringUtils.isNotEmpty(houseDamagedDegree.getEntityCondition())) {
                                     observeItem.setEntityCondition(DataDamagedDegreeEnum.getEnumByKey(houseDamagedDegree.getEntityCondition()).getValue());
                                 } else {
                                     observeItem.setEntityCondition("");
                                 }
-                                if (StringUtils.isNotEmpty(houseDamagedDegree.getEntityConditionContent())) {
+                                if (houseDamagedDegree!=null&&StringUtils.isNotEmpty(houseDamagedDegree.getEntityConditionContent())) {
                                     observeItem.setEntityConditionContent(houseDamagedDegree.getEntityConditionContent());
                                 } else {
                                     observeItem.setEntityConditionContent("");
                                 }
-                                if (houseDamagedDegree.getScore() != null) {
+                                if (houseDamagedDegree!=null&&houseDamagedDegree.getScore() != null) {
                                     observeItem.setScore(houseDamagedDegree.getScore());
                                 } else {
                                     observeItem.setScore(new BigDecimal("0"));
