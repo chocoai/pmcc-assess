@@ -56,8 +56,8 @@ public class MdIncomeDateSectionService {
     @Transactional(rollbackFor = Exception.class)
     public void saveDateSection(MdIncomeDateSection mdIncomeDateSection) {
         BigDecimal yearCount = new BigDecimal("0");
-        if (mdIncomeDateSection.getEndDate() != null){
-            yearCount=publicService.diffDateYear(mdIncomeDateSection.getEndDate(),mdIncomeDateSection.getBeginDate());
+        if (mdIncomeDateSection.getEndDate() != null) {
+            yearCount = publicService.diffDateYear(mdIncomeDateSection.getEndDate(), mdIncomeDateSection.getBeginDate());
         }
         if (mdIncomeDateSection.getId() != null && mdIncomeDateSection.getId() > 0) {
             mdIncomeDateSection.setYearCount(yearCount);
@@ -192,7 +192,7 @@ public class MdIncomeDateSectionService {
         MdIncomeDateSection mdIncomeDateSection = new MdIncomeDateSection();
         mdIncomeDateSection.setIncomeId(incomeId);
         mdIncomeDateSection.setOperationMode(operationMode);
-        if(incomeId!=null&&incomeId!=0){
+        if (operationMode == null && incomeId != null && incomeId != 0) {
             MdIncome incomeById = mdIncomeService.getIncomeById(incomeId);
             mdIncomeDateSection.setOperationMode(incomeById.getOperationMode());
         }
