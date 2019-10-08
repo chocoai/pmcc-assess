@@ -158,7 +158,11 @@ public class ProjectTaskCostApproachAssist implements ProjectTaskInterface {
         //代征地比例
 
         DataLandLevelDetail dataLandLevelDetailById = dataLandLevelDetailDao.getDataLandLevelDetailById(landStateByEstateId.getLandLevel());
-        modelAndView.addObject("confiscateLandRatio", dataLandLevelDetailById.getLandAcquisitionProportion());
+        if(dataLandLevelDetailById!=null) {
+            modelAndView.addObject("confiscateLandRatio", dataLandLevelDetailById.getLandAcquisitionProportion());
+        }else {
+            modelAndView.addObject("confiscateLandRatio", "");
+        }
         //宗地个别因素修正(待确认)
     }
 }

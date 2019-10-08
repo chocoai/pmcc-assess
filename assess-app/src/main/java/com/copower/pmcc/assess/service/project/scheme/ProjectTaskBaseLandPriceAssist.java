@@ -137,7 +137,11 @@ public class ProjectTaskBaseLandPriceAssist implements ProjectTaskInterface {
         //基准地价
         BasicEstateLandState landStateByEstateId = basicEstateLandStateService.getLandStateByEstateId(basicEstate.getId());
         DataLandLevelDetail dataLandLevelDetailById = dataLandLevelDetailDao.getDataLandLevelDetailById(landStateByEstateId.getLandLevel());
-        modelAndView.addObject("standardPremium", dataLandLevelDetailById.getPrice());
+        if(dataLandLevelDetailById!=null) {
+            modelAndView.addObject("standardPremium", dataLandLevelDetailById.getPrice());
+        }else{
+            modelAndView.addObject("standardPremium", "");
+        }
 
         //期日修正系数
         modelAndView.addObject("dateAmend", landStateByEstateId.getLandFactorTotalScore());
