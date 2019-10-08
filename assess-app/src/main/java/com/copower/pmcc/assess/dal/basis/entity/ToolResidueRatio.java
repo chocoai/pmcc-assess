@@ -10,11 +10,9 @@ public class ToolResidueRatio {
 
     private Integer houseId;
 
-    private String parameterValue;
+    private BigDecimal usedYear;
 
     private BigDecimal usableYear;
-
-    private BigDecimal usedYear;
 
     private BigDecimal observeRate;
 
@@ -27,6 +25,10 @@ public class ToolResidueRatio {
     private Date gmtCreated;
 
     private Date gmtModified;
+
+    private BigDecimal residualRatio;
+
+    private String parameterValue;
 
     public Integer getId() {
         return id;
@@ -52,12 +54,12 @@ public class ToolResidueRatio {
         this.houseId = houseId;
     }
 
-    public String getParameterValue() {
-        return parameterValue;
+    public BigDecimal getUsedYear() {
+        return usedYear;
     }
 
-    public void setParameterValue(String parameterValue) {
-        this.parameterValue = parameterValue == null ? null : parameterValue.trim();
+    public void setUsedYear(BigDecimal usedYear) {
+        this.usedYear = usedYear;
     }
 
     public BigDecimal getUsableYear() {
@@ -66,14 +68,6 @@ public class ToolResidueRatio {
 
     public void setUsableYear(BigDecimal usableYear) {
         this.usableYear = usableYear;
-    }
-
-    public BigDecimal getUsedYear() {
-        return usedYear;
-    }
-
-    public void setUsedYear(BigDecimal usedYear) {
-        this.usedYear = usedYear;
     }
 
     public BigDecimal getObserveRate() {
@@ -122,5 +116,21 @@ public class ToolResidueRatio {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public BigDecimal getResidualRatio() {
+        return residualRatio;
+    }
+
+    public void setResidualRatio(BigDecimal residualRatio) {
+        this.residualRatio = residualRatio;
+    }
+
+    public String getParameterValue() {
+        return parameterValue;
+    }
+
+    public void setParameterValue(String parameterValue) {
+        this.parameterValue = parameterValue == null ? null : parameterValue.trim();
     }
 }
