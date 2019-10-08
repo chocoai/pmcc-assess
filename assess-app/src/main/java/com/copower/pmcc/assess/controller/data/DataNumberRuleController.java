@@ -32,11 +32,9 @@ public class DataNumberRuleController {
     @Autowired
     private BaseDataDicService baseDataDicService;
 
-    @RequestMapping(value = "/Index", name = "文号规则视图")
+    @RequestMapping(value = "/index", name = "文号规则视图")
     public ModelAndView index() {
-
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/data/dataNumberRule");
-
         List<BaseDataDic> reportTypeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.REPORT_TYPE);
         modelAndView.addObject("assessClassList", null);
         modelAndView.addObject("reportTypeList", reportTypeList);
