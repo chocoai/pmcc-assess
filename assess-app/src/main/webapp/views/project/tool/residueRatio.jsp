@@ -382,7 +382,7 @@
             var ageRate = $("#residue_ratio_ageRate").val();
             var observeRate = $("#residue_ratio_observeRate").val();
             if (observeCxl >= 0 && ageLimitCxl >= 0 && ageRate >= 0 && observeRate >= 0) {
-                $("#residue_ratio_cxl").text(ageLimitCxl * ageRate + observeCxl * observeRate + "%");
+                $("#residue_ratio_cxl").text((ageLimitCxl * ageRate + observeCxl * observeRate).toFixed(2) + "%");
                 $("#residue_ratio_resultValue").val((ageLimitCxl * ageRate + observeCxl * observeRate).toFixed(2) + "%");
             }
         }
