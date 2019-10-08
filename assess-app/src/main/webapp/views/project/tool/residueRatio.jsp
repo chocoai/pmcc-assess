@@ -359,10 +359,11 @@
             var equipmentScore = Number($("#residueRatioEquipmentScore").val());
             var otherScore = Number($("#residueRatioOtherScore").val());
             var observeCxl = structuralScore + decorationScore + equipmentScore + otherScore;
-            if ($("#residueRatioStructuralScore").attr("value") >= 0 &&
-                $("#residueRatioDecorationScore").attr("value") >= 0 &&
-                $("#residueRatioEquipmentScore").attr("value") >= 0 &&
-                $("#residueRatioOtherScore").attr("value") >= 0) {
+            if (structuralScore >= 0 &&
+                decorationScore >= 0 &&
+                equipmentScore >= 0 &&
+                otherScore >= 0) {
+                console.log("111")
                 if (!$("#residueRatioType0").is(":checked")) {
                     observeCxl = residueRatio.getLevel(observeCxl);
                 }
