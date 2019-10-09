@@ -11,6 +11,7 @@ public class DataBuildingInstallCostVo extends DataBuildingInstallCost {
     private String provinceName;
     private String cityName;
     private String districtName;
+    private String typeName;
 
     public String getProvinceName() {
         return provinceName;
@@ -34,5 +35,13 @@ public class DataBuildingInstallCostVo extends DataBuildingInstallCost {
 
     public void setDistrictName(String districtName) {
         this.districtName = districtName;
+    }
+
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
     }
 }

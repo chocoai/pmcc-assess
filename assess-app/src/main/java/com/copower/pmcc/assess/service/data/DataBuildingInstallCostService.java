@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.data;
 
+import com.copower.pmcc.assess.common.enums.data.DataBuildingInstallCostTypeEnum;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataBuildingInstallCostDao;
 import com.copower.pmcc.assess.dal.basis.entity.DataBuildingInstallCost;
 import com.copower.pmcc.assess.dto.output.data.DataBuildingInstallCostVo;
@@ -109,6 +110,11 @@ public class DataBuildingInstallCostService {
         }
         if (StringUtils.isNotBlank(dataBuildingInstallCost.getDistrict())) {
             vo.setDistrictName(erpAreaService.getSysAreaName(dataBuildingInstallCost.getDistrict()));
+        }
+        if (StringUtils.isNotEmpty(dataBuildingInstallCost.getType())){
+            for (DataBuildingInstallCostTypeEnum typeEnum: DataBuildingInstallCostTypeEnum.values()){
+                vo.setTypeName(typeEnum.getValue());
+            }
         }
         return vo;
     }

@@ -97,6 +97,7 @@
             }
         });
         cols.push({field: 'content', title: '内容'});
+        cols.push({field: 'typeName', title: '类型'});
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
@@ -279,7 +280,7 @@
                                     </div>
                                     <div class="x-valid">
                                         <label class="col-sm-1 control-label">
-                                            发布时间
+                                            类型
                                         </label>
                                         <div class="col-sm-3">
                                             <select  name="type"
