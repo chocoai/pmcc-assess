@@ -17,8 +17,6 @@ import java.math.RoundingMode;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -91,11 +89,11 @@ public class ArithmeticUtils implements Serializable {
     }
 
     public static String add(String[] strings) {
-        List<BigDecimal> bigDecimalList = new ArrayList<>() ;
-        for (String s:strings){
-            bigDecimalList.add(createBigDecimal(s)) ;
+        List<BigDecimal> bigDecimalList = new ArrayList<>();
+        for (String s : strings) {
+            bigDecimalList.add(createBigDecimal(s));
         }
-        return add(bigDecimalList).toString() ;
+        return add(bigDecimalList).toString();
     }
 
     /**
@@ -399,14 +397,17 @@ public class ArithmeticUtils implements Serializable {
      * @return 四舍五入后的结果
      */
     public static String round(String v, int scale) {
-        return getBigDecimalString(round(createBigDecimal(v), scale, BigDecimal.ROUND_HALF_UP)) ;
+        if (StringUtils.isBlank(v)) return null;
+        return getBigDecimalString(round(createBigDecimal(v), scale, BigDecimal.ROUND_HALF_UP));
     }
 
     public static String round(BigDecimal bigDecimal, int scale) {
+        if (bigDecimal == null) return null;
         return round(getBigDecimalString(bigDecimal), scale);
     }
 
     public static BigDecimal round(BigDecimal v, int scale, int roundingMode) {
+        if (v == null) return null;
         if (scale < 0) {
             throw new IllegalArgumentException(
                     "The scale must be a positive integer or zero");
@@ -659,8 +660,8 @@ public class ArithmeticUtils implements Serializable {
      * @return
      */
     public static boolean checkNotNullList(List<BigDecimal> bigDecimalList) {
-        BigDecimal[] bigDecimals = bigDecimalList.toArray(new BigDecimal[bigDecimalList.size()]) ;
-        return checkNotNull(bigDecimals) ;
+        BigDecimal[] bigDecimals = bigDecimalList.toArray(new BigDecimal[bigDecimalList.size()]);
+        return checkNotNull(bigDecimals);
     }
 
     /**
@@ -714,12 +715,13 @@ public class ArithmeticUtils implements Serializable {
 
     /**
      * 检验是否为非空
+     *
      * @param stringList
      * @return
      */
-    public static boolean checkNotNull(List<String> stringList){
-        String[] strings = stringList.toArray(new String[stringList.size()]) ;
-        return checkNotNull(strings) ;
+    public static boolean checkNotNull(List<String> stringList) {
+        String[] strings = stringList.toArray(new String[stringList.size()]);
+        return checkNotNull(strings);
     }
 
     /**

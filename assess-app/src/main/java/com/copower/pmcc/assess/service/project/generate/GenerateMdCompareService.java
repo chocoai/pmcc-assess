@@ -976,7 +976,8 @@ public class GenerateMdCompareService {
             for (Integer num : strings) {
                 normalContent.append(String.format("%s%s", "案列对象", num)).append("、");
             }
-            normalContent.deleteCharAt(normalContent.length() - 1);
+            if (StringUtils.isNotBlank(normalContent))
+                normalContent.deleteCharAt(normalContent.length() - 1);
         } else {
             Set<Map.Entry<Integer, Integer>> entries = all.entrySet();
             for (Map.Entry<Integer, Integer> item : entries) {

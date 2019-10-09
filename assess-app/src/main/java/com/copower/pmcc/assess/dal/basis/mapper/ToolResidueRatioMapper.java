@@ -16,15 +16,21 @@ public interface ToolResidueRatioMapper {
 
     int insertSelective(ToolResidueRatio record);
 
+    List<ToolResidueRatio> selectByExampleWithBLOBs(ToolResidueRatioExample example);
+
     List<ToolResidueRatio> selectByExample(ToolResidueRatioExample example);
 
     ToolResidueRatio selectByPrimaryKey(Integer id);
 
     int updateByExampleSelective(@Param("record") ToolResidueRatio record, @Param("example") ToolResidueRatioExample example);
 
+    int updateByExampleWithBLOBs(@Param("record") ToolResidueRatio record, @Param("example") ToolResidueRatioExample example);
+
     int updateByExample(@Param("record") ToolResidueRatio record, @Param("example") ToolResidueRatioExample example);
 
     int updateByPrimaryKeySelective(ToolResidueRatio record);
+
+    int updateByPrimaryKeyWithBLOBs(ToolResidueRatio record);
 
     int updateByPrimaryKey(ToolResidueRatio record);
 }

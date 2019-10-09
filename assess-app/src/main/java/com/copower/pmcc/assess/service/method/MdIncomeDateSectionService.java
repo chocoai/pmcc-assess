@@ -5,10 +5,7 @@ import com.copower.pmcc.assess.common.enums.MethodIncomeOperationModeEnum;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdIncomeDateSectionDao;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdIncomeLeaseCostDao;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdIncomeLeaseDao;
-import com.copower.pmcc.assess.dal.basis.entity.MdIncomeDateSection;
-import com.copower.pmcc.assess.dal.basis.entity.MdIncomeForecast;
-import com.copower.pmcc.assess.dal.basis.entity.MdIncomeLease;
-import com.copower.pmcc.assess.dal.basis.entity.MdIncomeLeaseCost;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
@@ -59,8 +56,8 @@ public class MdIncomeDateSectionService {
     @Transactional(rollbackFor = Exception.class)
     public void saveDateSection(MdIncomeDateSection mdIncomeDateSection) {
         BigDecimal yearCount = new BigDecimal("0");
-        if (mdIncomeDateSection.getEndDate() != null){
-            yearCount=publicService.diffDateYear(mdIncomeDateSection.getEndDate(),mdIncomeDateSection.getBeginDate());
+        if (mdIncomeDateSection.getEndDate() != null) {
+            yearCount = publicService.diffDateYear(mdIncomeDateSection.getEndDate(), mdIncomeDateSection.getBeginDate());
         }
         if (mdIncomeDateSection.getId() != null && mdIncomeDateSection.getId() > 0) {
             mdIncomeDateSection.setYearCount(yearCount);
@@ -195,6 +192,10 @@ public class MdIncomeDateSectionService {
         MdIncomeDateSection mdIncomeDateSection = new MdIncomeDateSection();
         mdIncomeDateSection.setIncomeId(incomeId);
         mdIncomeDateSection.setOperationMode(operationMode);
+        if (operationMode == null && incomeId != null && incomeId != 0) {
+            MdIncome incomeById = mdIncomeService.getIncomeById(incomeId);
+            mdIncomeDateSection.setOperationMode(incomeById.getOperationMode());
+        }
         if (incomeId == 0) {
             mdIncomeDateSection.setCreator(commonService.thisUserAccount());
         }

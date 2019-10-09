@@ -40,9 +40,19 @@
                     <div class="form-group">
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
+                                残值率
+                            </label>
+                            <div class="col-sm-2">
+                                <input type="text" class="form-control x-percent" name="residualRatio" id="residue_residual_ratio"
+                                       required="required"
+                                       placeholder="残值率" onblur="residueRatio.getAgeLimitCxl()">
+                            </div>
+                        </div>
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
                                 已使用年限
                             </label>
-                            <div class="col-sm-4">
+                            <div class="col-sm-2">
                                 <input type="text" class="form-control" name="usedYear" id="residue_ratio_usedYear"
                                        data-rule-number='true' required="required"
                                        placeholder="已使用年限" onblur="residueRatio.getAgeLimitCxl()">
@@ -52,7 +62,7 @@
                             <label class="col-sm-2 control-label">
                                 可用年限
                             </label>
-                            <div class="col-sm-4">
+                            <div class="col-sm-2">
                                 <input type="text" class="form-control" name="usableYear" id="residue_ratio_usableYear"
                                        data-rule-number='true' required="required"
                                        placeholder="可用年限" onblur="residueRatio.getAgeLimitCxl()">
@@ -65,7 +75,7 @@
                             <label class="col-sm-2 control-label">
                                 权重
                             </label>
-                            <div class="col-sm-4">
+                            <div class="col-sm-2">
                                 <input type="text" class="form-control" id="residue_ratio_ageRate"
                                        name="ageRate" data-rule-number='true' required="required"
                                        placeholder="权重" onblur="residueRatio.changeRate()">
@@ -81,7 +91,7 @@
                             <label class="col-sm-2 control-label">
                                 权重
                             </label>
-                            <div class="col-sm-4">
+                            <div class="col-sm-2">
                                 <input type="text" class="form-control" id="residue_ratio_observeRate" readonly
                                        name="observeRate" data-rule-number='true' placeholder="权重">
                             </div>
@@ -195,6 +205,7 @@
     }
     residueRatio.saveData = function (callbak) {
         var data = formParams("residue_ratio_form");
+        data.residualRatio = AssessCommon.percentToPoint($("#residue_residual_ratio").val());
         Loading.progressShow();
         $.ajax({
             url: "${pageContext.request.contextPath}/residueRatio/saveResidueRatio",
@@ -331,15 +342,16 @@
 
     //年限法成新率
     residueRatio.getAgeLimitCxl = function () {
+        var residual = Number(AssessCommon.percentToPoint($("#residue_residual_ratio").val()));
         var usedYear = Number($("#residue_ratio_usedYear").val());
         var usableYear = Number($("#residue_ratio_usableYear").val());
-        if ($("#residue_ratio_usedYear").val() && $("#residue_ratio_usableYear").val()) {
+        if ($("#residue_ratio_usedYear").val() && $("#residue_ratio_usableYear").val() && $("#residue_residual_ratio").val()) {
             if (usedYear > usableYear) {
                 $("#residue_ratio_usedYear").val("");
                 $("#residue_ratio_usableYear").val("");
                 alert("可用年限不能小于已使用年限");
             } else {
-                var ageLimitCxl = 1 - (usedYear / usableYear);
+                var ageLimitCxl = 1 - (1-residual)*(usedYear / usableYear);
                 if ($("#residueRatioType0").is(":checked")) {
                     $("#residue_ratio_cxl").text((ageLimitCxl * 100).toFixed(2) + "%");
                     $("#residue_ratio_resultValue").val((ageLimitCxl * 100).toFixed(2) + "%");
@@ -359,10 +371,11 @@
             var equipmentScore = Number($("#residueRatioEquipmentScore").val());
             var otherScore = Number($("#residueRatioOtherScore").val());
             var observeCxl = structuralScore + decorationScore + equipmentScore + otherScore;
-            if ($("#residueRatioStructuralScore").attr("value") >= 0 &&
-                $("#residueRatioDecorationScore").attr("value") >= 0 &&
-                $("#residueRatioEquipmentScore").attr("value") >= 0 &&
-                $("#residueRatioOtherScore").attr("value") >= 0) {
+            if (structuralScore >= 0 &&
+                decorationScore >= 0 &&
+                equipmentScore >= 0 &&
+                otherScore >= 0) {
+                console.log("111")
                 if (!$("#residueRatioType0").is(":checked")) {
                     observeCxl = residueRatio.getLevel(observeCxl);
                 }
@@ -381,7 +394,7 @@
             var ageRate = $("#residue_ratio_ageRate").val();
             var observeRate = $("#residue_ratio_observeRate").val();
             if (observeCxl >= 0 && ageLimitCxl >= 0 && ageRate >= 0 && observeRate >= 0) {
-                $("#residue_ratio_cxl").text(ageLimitCxl * ageRate + observeCxl * observeRate + "%");
+                $("#residue_ratio_cxl").text((ageLimitCxl * ageRate + observeCxl * observeRate).toFixed(2) + "%");
                 $("#residue_ratio_resultValue").val((ageLimitCxl * ageRate + observeCxl * observeRate).toFixed(2) + "%");
             }
         }
@@ -483,6 +496,7 @@
                 if (result.ret) {
                     if (result.data) {
                         $("#residue_ratio_form").initForm(result.data);
+                       $("#residue_residual_ratio").val( AssessCommon.pointToPercent(result.data.residualRatio))
                         if (result.data.resultValue) {
                             $("#residue_ratio_cxl").text(result.data.resultValue);
                         }

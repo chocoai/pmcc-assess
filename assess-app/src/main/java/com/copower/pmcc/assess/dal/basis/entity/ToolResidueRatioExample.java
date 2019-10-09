@@ -286,73 +286,63 @@ public class ToolResidueRatioExample {
             return (Criteria) this;
         }
 
-        public Criteria andParameterValueIsNull() {
-            addCriterion("parameter_value is null");
+        public Criteria andUsedYearIsNull() {
+            addCriterion("used_year is null");
             return (Criteria) this;
         }
 
-        public Criteria andParameterValueIsNotNull() {
-            addCriterion("parameter_value is not null");
+        public Criteria andUsedYearIsNotNull() {
+            addCriterion("used_year is not null");
             return (Criteria) this;
         }
 
-        public Criteria andParameterValueEqualTo(String value) {
-            addCriterion("parameter_value =", value, "parameterValue");
+        public Criteria andUsedYearEqualTo(BigDecimal value) {
+            addCriterion("used_year =", value, "usedYear");
             return (Criteria) this;
         }
 
-        public Criteria andParameterValueNotEqualTo(String value) {
-            addCriterion("parameter_value <>", value, "parameterValue");
+        public Criteria andUsedYearNotEqualTo(BigDecimal value) {
+            addCriterion("used_year <>", value, "usedYear");
             return (Criteria) this;
         }
 
-        public Criteria andParameterValueGreaterThan(String value) {
-            addCriterion("parameter_value >", value, "parameterValue");
+        public Criteria andUsedYearGreaterThan(BigDecimal value) {
+            addCriterion("used_year >", value, "usedYear");
             return (Criteria) this;
         }
 
-        public Criteria andParameterValueGreaterThanOrEqualTo(String value) {
-            addCriterion("parameter_value >=", value, "parameterValue");
+        public Criteria andUsedYearGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("used_year >=", value, "usedYear");
             return (Criteria) this;
         }
 
-        public Criteria andParameterValueLessThan(String value) {
-            addCriterion("parameter_value <", value, "parameterValue");
+        public Criteria andUsedYearLessThan(BigDecimal value) {
+            addCriterion("used_year <", value, "usedYear");
             return (Criteria) this;
         }
 
-        public Criteria andParameterValueLessThanOrEqualTo(String value) {
-            addCriterion("parameter_value <=", value, "parameterValue");
+        public Criteria andUsedYearLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("used_year <=", value, "usedYear");
             return (Criteria) this;
         }
 
-        public Criteria andParameterValueLike(String value) {
-            addCriterion("parameter_value like", value, "parameterValue");
+        public Criteria andUsedYearIn(List<BigDecimal> values) {
+            addCriterion("used_year in", values, "usedYear");
             return (Criteria) this;
         }
 
-        public Criteria andParameterValueNotLike(String value) {
-            addCriterion("parameter_value not like", value, "parameterValue");
+        public Criteria andUsedYearNotIn(List<BigDecimal> values) {
+            addCriterion("used_year not in", values, "usedYear");
             return (Criteria) this;
         }
 
-        public Criteria andParameterValueIn(List<String> values) {
-            addCriterion("parameter_value in", values, "parameterValue");
+        public Criteria andUsedYearBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("used_year between", value1, value2, "usedYear");
             return (Criteria) this;
         }
 
-        public Criteria andParameterValueNotIn(List<String> values) {
-            addCriterion("parameter_value not in", values, "parameterValue");
-            return (Criteria) this;
-        }
-
-        public Criteria andParameterValueBetween(String value1, String value2) {
-            addCriterion("parameter_value between", value1, value2, "parameterValue");
-            return (Criteria) this;
-        }
-
-        public Criteria andParameterValueNotBetween(String value1, String value2) {
-            addCriterion("parameter_value not between", value1, value2, "parameterValue");
+        public Criteria andUsedYearNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("used_year not between", value1, value2, "usedYear");
             return (Criteria) this;
         }
 
@@ -413,66 +403,6 @@ public class ToolResidueRatioExample {
 
         public Criteria andUsableYearNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("usable_year not between", value1, value2, "usableYear");
-            return (Criteria) this;
-        }
-
-        public Criteria andUsedYearIsNull() {
-            addCriterion("used_year is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andUsedYearIsNotNull() {
-            addCriterion("used_year is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andUsedYearEqualTo(BigDecimal value) {
-            addCriterion("used_year =", value, "usedYear");
-            return (Criteria) this;
-        }
-
-        public Criteria andUsedYearNotEqualTo(BigDecimal value) {
-            addCriterion("used_year <>", value, "usedYear");
-            return (Criteria) this;
-        }
-
-        public Criteria andUsedYearGreaterThan(BigDecimal value) {
-            addCriterion("used_year >", value, "usedYear");
-            return (Criteria) this;
-        }
-
-        public Criteria andUsedYearGreaterThanOrEqualTo(BigDecimal value) {
-            addCriterion("used_year >=", value, "usedYear");
-            return (Criteria) this;
-        }
-
-        public Criteria andUsedYearLessThan(BigDecimal value) {
-            addCriterion("used_year <", value, "usedYear");
-            return (Criteria) this;
-        }
-
-        public Criteria andUsedYearLessThanOrEqualTo(BigDecimal value) {
-            addCriterion("used_year <=", value, "usedYear");
-            return (Criteria) this;
-        }
-
-        public Criteria andUsedYearIn(List<BigDecimal> values) {
-            addCriterion("used_year in", values, "usedYear");
-            return (Criteria) this;
-        }
-
-        public Criteria andUsedYearNotIn(List<BigDecimal> values) {
-            addCriterion("used_year not in", values, "usedYear");
-            return (Criteria) this;
-        }
-
-        public Criteria andUsedYearBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("used_year between", value1, value2, "usedYear");
-            return (Criteria) this;
-        }
-
-        public Criteria andUsedYearNotBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("used_year not between", value1, value2, "usedYear");
             return (Criteria) this;
         }
 
@@ -853,6 +783,66 @@ public class ToolResidueRatioExample {
 
         public Criteria andGmtModifiedNotBetween(Date value1, Date value2) {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
+            return (Criteria) this;
+        }
+
+        public Criteria andResidualRatioIsNull() {
+            addCriterion("residual_ratio is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andResidualRatioIsNotNull() {
+            addCriterion("residual_ratio is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andResidualRatioEqualTo(BigDecimal value) {
+            addCriterion("residual_ratio =", value, "residualRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andResidualRatioNotEqualTo(BigDecimal value) {
+            addCriterion("residual_ratio <>", value, "residualRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andResidualRatioGreaterThan(BigDecimal value) {
+            addCriterion("residual_ratio >", value, "residualRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andResidualRatioGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("residual_ratio >=", value, "residualRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andResidualRatioLessThan(BigDecimal value) {
+            addCriterion("residual_ratio <", value, "residualRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andResidualRatioLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("residual_ratio <=", value, "residualRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andResidualRatioIn(List<BigDecimal> values) {
+            addCriterion("residual_ratio in", values, "residualRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andResidualRatioNotIn(List<BigDecimal> values) {
+            addCriterion("residual_ratio not in", values, "residualRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andResidualRatioBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("residual_ratio between", value1, value2, "residualRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andResidualRatioNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("residual_ratio not between", value1, value2, "residualRatio");
             return (Criteria) this;
         }
     }
