@@ -53,7 +53,7 @@ public class MdCostApproachService {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private CommonService commonService;
-    public static BigDecimal bhou = new BigDecimal("666.67");
+    public static BigDecimal Bhou = new BigDecimal("666.67");
 
     public List<MdCostApproach> getObjectList(MdCostApproach mdCostApproach) {
         return costApproachDao.getObjectList(mdCostApproach);
@@ -248,7 +248,7 @@ public class MdCostApproachService {
                 //耕地比例*标准1*666.67
                 if (mdCostApproachTaxes.getStandardFirst() != null) {
                     mdCostApproachTaxes.setPrice(mdCostApproachTaxes.getStandardFirst().multiply(ploughRatio).setScale(2, BigDecimal.ROUND_HALF_UP)
-                            .multiply(new BigDecimal("666.67")).setScale(2, BigDecimal.ROUND_HALF_UP));
+                            .multiply(Bhou).setScale(2, BigDecimal.ROUND_HALF_UP));
                 }
                 break;
             //耕地开垦费
