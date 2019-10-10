@@ -5,17 +5,30 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="reward_rate_id" property="rewardRateId" jdbcType="INTEGER" />
     <result column="reward_rate" property="rewardRate" jdbcType="VARCHAR" />
-    <result column="imprevision_cost" property="imprevisionCost" jdbcType="VARCHAR" />
     <result column="circulation_expense" property="circulationExpense" jdbcType="DECIMAL" />
+    <result column="circulation_expense_remark" property="circulationExpenseRemark" jdbcType="VARCHAR" />
     <result column="flat_expense" property="flatExpense" jdbcType="DECIMAL" />
+    <result column="flat_expense_remark" property="flatExpenseRemark" jdbcType="VARCHAR" />
     <result column="machine_cycle" property="machineCycle" jdbcType="DECIMAL" />
+    <result column="machine_cycle_remark" property="machineCycleRemark" jdbcType="VARCHAR" />
     <result column="calculated_interest" property="calculatedInterest" jdbcType="VARCHAR" />
+    <result column="calculated_interest_remark" property="calculatedInterestRemark" jdbcType="VARCHAR" />
     <result column="profit_margin" property="profitMargin" jdbcType="VARCHAR" />
+    <result column="profit_margin_remark" property="profitMarginRemark" jdbcType="VARCHAR" />
     <result column="incremental_benefit" property="incrementalBenefit" jdbcType="VARCHAR" />
+    <result column="incremental_benefit_remark" property="incrementalBenefitRemark" jdbcType="VARCHAR" />
     <result column="process_ins_id" property="processInsId" jdbcType="VARCHAR" />
+    <result column="farmland_area" property="farmlandArea" jdbcType="DECIMAL" />
+    <result column="plough_area" property="ploughArea" jdbcType="DECIMAL" />
+    <result column="population_number" property="populationNumber" jdbcType="INTEGER" />
+    <result column="plan_details_id" property="planDetailsId" jdbcType="INTEGER" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+    <result column="plot_ratio_adjust_remark" property="plotRatioAdjustRemark" jdbcType="VARCHAR" />
+    <result column="plot_ratio_adjust" property="plotRatioAdjust" jdbcType="VARCHAR" />
+    <result column="plot_ratio_element_amend_remark" property="plotRatioElementAmendRemark" jdbcType="VARCHAR" />
+    <result column="plot_ratio_element_amend" property="plotRatioElementAmend" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -76,9 +89,12 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, reward_rate_id, reward_rate, imprevision_cost, circulation_expense, flat_expense, 
-    machine_cycle, calculated_interest, profit_margin, incremental_benefit, process_ins_id, 
-    creator, gmt_created, gmt_modified
+    id, reward_rate_id, reward_rate, circulation_expense, circulation_expense_remark, 
+    flat_expense, flat_expense_remark, machine_cycle, machine_cycle_remark, calculated_interest, 
+    calculated_interest_remark, profit_margin, profit_margin_remark, incremental_benefit, 
+    incremental_benefit_remark, process_ins_id, farmland_area, plough_area, population_number, 
+    plan_details_id, creator, gmt_created, gmt_modified, plot_ratio_adjust_remark, plot_ratio_adjust, 
+    plot_ratio_element_amend_remark, plot_ratio_element_amend
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdCostApproachExample" >
     select
@@ -114,16 +130,28 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_md_cost_approach (reward_rate_id, reward_rate, imprevision_cost, 
-      circulation_expense, flat_expense, machine_cycle, 
-      calculated_interest, profit_margin, incremental_benefit, 
-      process_ins_id, creator, gmt_created, 
-      gmt_modified)
-    values (#{rewardRateId,jdbcType=INTEGER}, #{rewardRate,jdbcType=VARCHAR}, #{imprevisionCost,jdbcType=VARCHAR}, 
-      #{circulationExpense,jdbcType=DECIMAL}, #{flatExpense,jdbcType=DECIMAL}, #{machineCycle,jdbcType=DECIMAL}, 
-      #{calculatedInterest,jdbcType=VARCHAR}, #{profitMargin,jdbcType=VARCHAR}, #{incrementalBenefit,jdbcType=VARCHAR}, 
-      #{processInsId,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_md_cost_approach (reward_rate_id, reward_rate, circulation_expense, 
+      circulation_expense_remark, flat_expense, 
+      flat_expense_remark, machine_cycle, machine_cycle_remark, 
+      calculated_interest, calculated_interest_remark, 
+      profit_margin, profit_margin_remark, incremental_benefit, 
+      incremental_benefit_remark, process_ins_id, 
+      farmland_area, plough_area, population_number, 
+      plan_details_id, creator, gmt_created, 
+      gmt_modified, plot_ratio_adjust_remark, plot_ratio_adjust, 
+      plot_ratio_element_amend_remark, plot_ratio_element_amend
+      )
+    values (#{rewardRateId,jdbcType=INTEGER}, #{rewardRate,jdbcType=VARCHAR}, #{circulationExpense,jdbcType=DECIMAL}, 
+      #{circulationExpenseRemark,jdbcType=VARCHAR}, #{flatExpense,jdbcType=DECIMAL}, 
+      #{flatExpenseRemark,jdbcType=VARCHAR}, #{machineCycle,jdbcType=DECIMAL}, #{machineCycleRemark,jdbcType=VARCHAR}, 
+      #{calculatedInterest,jdbcType=VARCHAR}, #{calculatedInterestRemark,jdbcType=VARCHAR}, 
+      #{profitMargin,jdbcType=VARCHAR}, #{profitMarginRemark,jdbcType=VARCHAR}, #{incrementalBenefit,jdbcType=VARCHAR}, 
+      #{incrementalBenefitRemark,jdbcType=VARCHAR}, #{processInsId,jdbcType=VARCHAR}, 
+      #{farmlandArea,jdbcType=DECIMAL}, #{ploughArea,jdbcType=DECIMAL}, #{populationNumber,jdbcType=INTEGER}, 
+      #{planDetailsId,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP}, #{plotRatioAdjustRemark,jdbcType=VARCHAR}, #{plotRatioAdjust,jdbcType=VARCHAR}, 
+      #{plotRatioElementAmendRemark,jdbcType=VARCHAR}, #{plotRatioElementAmend,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdCostApproach" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -137,29 +165,56 @@
       <if test="rewardRate != null" >
         reward_rate,
       </if>
-      <if test="imprevisionCost != null" >
-        imprevision_cost,
-      </if>
       <if test="circulationExpense != null" >
         circulation_expense,
+      </if>
+      <if test="circulationExpenseRemark != null" >
+        circulation_expense_remark,
       </if>
       <if test="flatExpense != null" >
         flat_expense,
       </if>
+      <if test="flatExpenseRemark != null" >
+        flat_expense_remark,
+      </if>
       <if test="machineCycle != null" >
         machine_cycle,
+      </if>
+      <if test="machineCycleRemark != null" >
+        machine_cycle_remark,
       </if>
       <if test="calculatedInterest != null" >
         calculated_interest,
       </if>
+      <if test="calculatedInterestRemark != null" >
+        calculated_interest_remark,
+      </if>
       <if test="profitMargin != null" >
         profit_margin,
+      </if>
+      <if test="profitMarginRemark != null" >
+        profit_margin_remark,
       </if>
       <if test="incrementalBenefit != null" >
         incremental_benefit,
       </if>
+      <if test="incrementalBenefitRemark != null" >
+        incremental_benefit_remark,
+      </if>
       <if test="processInsId != null" >
         process_ins_id,
+      </if>
+      <if test="farmlandArea != null" >
+        farmland_area,
+      </if>
+      <if test="ploughArea != null" >
+        plough_area,
+      </if>
+      <if test="populationNumber != null" >
+        population_number,
+      </if>
+      <if test="planDetailsId != null" >
+        plan_details_id,
       </if>
       <if test="creator != null" >
         creator,
@@ -170,6 +225,18 @@
       <if test="gmtModified != null" >
         gmt_modified,
       </if>
+      <if test="plotRatioAdjustRemark != null" >
+        plot_ratio_adjust_remark,
+      </if>
+      <if test="plotRatioAdjust != null" >
+        plot_ratio_adjust,
+      </if>
+      <if test="plotRatioElementAmendRemark != null" >
+        plot_ratio_element_amend_remark,
+      </if>
+      <if test="plotRatioElementAmend != null" >
+        plot_ratio_element_amend,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="rewardRateId != null" >
@@ -178,29 +245,56 @@
       <if test="rewardRate != null" >
         #{rewardRate,jdbcType=VARCHAR},
       </if>
-      <if test="imprevisionCost != null" >
-        #{imprevisionCost,jdbcType=VARCHAR},
-      </if>
       <if test="circulationExpense != null" >
         #{circulationExpense,jdbcType=DECIMAL},
+      </if>
+      <if test="circulationExpenseRemark != null" >
+        #{circulationExpenseRemark,jdbcType=VARCHAR},
       </if>
       <if test="flatExpense != null" >
         #{flatExpense,jdbcType=DECIMAL},
       </if>
+      <if test="flatExpenseRemark != null" >
+        #{flatExpenseRemark,jdbcType=VARCHAR},
+      </if>
       <if test="machineCycle != null" >
         #{machineCycle,jdbcType=DECIMAL},
+      </if>
+      <if test="machineCycleRemark != null" >
+        #{machineCycleRemark,jdbcType=VARCHAR},
       </if>
       <if test="calculatedInterest != null" >
         #{calculatedInterest,jdbcType=VARCHAR},
       </if>
+      <if test="calculatedInterestRemark != null" >
+        #{calculatedInterestRemark,jdbcType=VARCHAR},
+      </if>
       <if test="profitMargin != null" >
         #{profitMargin,jdbcType=VARCHAR},
+      </if>
+      <if test="profitMarginRemark != null" >
+        #{profitMarginRemark,jdbcType=VARCHAR},
       </if>
       <if test="incrementalBenefit != null" >
         #{incrementalBenefit,jdbcType=VARCHAR},
       </if>
+      <if test="incrementalBenefitRemark != null" >
+        #{incrementalBenefitRemark,jdbcType=VARCHAR},
+      </if>
       <if test="processInsId != null" >
         #{processInsId,jdbcType=VARCHAR},
+      </if>
+      <if test="farmlandArea != null" >
+        #{farmlandArea,jdbcType=DECIMAL},
+      </if>
+      <if test="ploughArea != null" >
+        #{ploughArea,jdbcType=DECIMAL},
+      </if>
+      <if test="populationNumber != null" >
+        #{populationNumber,jdbcType=INTEGER},
+      </if>
+      <if test="planDetailsId != null" >
+        #{planDetailsId,jdbcType=INTEGER},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -210,6 +304,18 @@
       </if>
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="plotRatioAdjustRemark != null" >
+        #{plotRatioAdjustRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="plotRatioAdjust != null" >
+        #{plotRatioAdjust,jdbcType=VARCHAR},
+      </if>
+      <if test="plotRatioElementAmendRemark != null" >
+        #{plotRatioElementAmendRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="plotRatioElementAmend != null" >
+        #{plotRatioElementAmend,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -231,29 +337,56 @@
       <if test="record.rewardRate != null" >
         reward_rate = #{record.rewardRate,jdbcType=VARCHAR},
       </if>
-      <if test="record.imprevisionCost != null" >
-        imprevision_cost = #{record.imprevisionCost,jdbcType=VARCHAR},
-      </if>
       <if test="record.circulationExpense != null" >
         circulation_expense = #{record.circulationExpense,jdbcType=DECIMAL},
+      </if>
+      <if test="record.circulationExpenseRemark != null" >
+        circulation_expense_remark = #{record.circulationExpenseRemark,jdbcType=VARCHAR},
       </if>
       <if test="record.flatExpense != null" >
         flat_expense = #{record.flatExpense,jdbcType=DECIMAL},
       </if>
+      <if test="record.flatExpenseRemark != null" >
+        flat_expense_remark = #{record.flatExpenseRemark,jdbcType=VARCHAR},
+      </if>
       <if test="record.machineCycle != null" >
         machine_cycle = #{record.machineCycle,jdbcType=DECIMAL},
+      </if>
+      <if test="record.machineCycleRemark != null" >
+        machine_cycle_remark = #{record.machineCycleRemark,jdbcType=VARCHAR},
       </if>
       <if test="record.calculatedInterest != null" >
         calculated_interest = #{record.calculatedInterest,jdbcType=VARCHAR},
       </if>
+      <if test="record.calculatedInterestRemark != null" >
+        calculated_interest_remark = #{record.calculatedInterestRemark,jdbcType=VARCHAR},
+      </if>
       <if test="record.profitMargin != null" >
         profit_margin = #{record.profitMargin,jdbcType=VARCHAR},
+      </if>
+      <if test="record.profitMarginRemark != null" >
+        profit_margin_remark = #{record.profitMarginRemark,jdbcType=VARCHAR},
       </if>
       <if test="record.incrementalBenefit != null" >
         incremental_benefit = #{record.incrementalBenefit,jdbcType=VARCHAR},
       </if>
+      <if test="record.incrementalBenefitRemark != null" >
+        incremental_benefit_remark = #{record.incrementalBenefitRemark,jdbcType=VARCHAR},
+      </if>
       <if test="record.processInsId != null" >
         process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.farmlandArea != null" >
+        farmland_area = #{record.farmlandArea,jdbcType=DECIMAL},
+      </if>
+      <if test="record.ploughArea != null" >
+        plough_area = #{record.ploughArea,jdbcType=DECIMAL},
+      </if>
+      <if test="record.populationNumber != null" >
+        population_number = #{record.populationNumber,jdbcType=INTEGER},
+      </if>
+      <if test="record.planDetailsId != null" >
+        plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -263,6 +396,18 @@
       </if>
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.plotRatioAdjustRemark != null" >
+        plot_ratio_adjust_remark = #{record.plotRatioAdjustRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.plotRatioAdjust != null" >
+        plot_ratio_adjust = #{record.plotRatioAdjust,jdbcType=VARCHAR},
+      </if>
+      <if test="record.plotRatioElementAmendRemark != null" >
+        plot_ratio_element_amend_remark = #{record.plotRatioElementAmendRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.plotRatioElementAmend != null" >
+        plot_ratio_element_amend = #{record.plotRatioElementAmend,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -274,17 +419,30 @@
     set id = #{record.id,jdbcType=INTEGER},
       reward_rate_id = #{record.rewardRateId,jdbcType=INTEGER},
       reward_rate = #{record.rewardRate,jdbcType=VARCHAR},
-      imprevision_cost = #{record.imprevisionCost,jdbcType=VARCHAR},
       circulation_expense = #{record.circulationExpense,jdbcType=DECIMAL},
+      circulation_expense_remark = #{record.circulationExpenseRemark,jdbcType=VARCHAR},
       flat_expense = #{record.flatExpense,jdbcType=DECIMAL},
+      flat_expense_remark = #{record.flatExpenseRemark,jdbcType=VARCHAR},
       machine_cycle = #{record.machineCycle,jdbcType=DECIMAL},
+      machine_cycle_remark = #{record.machineCycleRemark,jdbcType=VARCHAR},
       calculated_interest = #{record.calculatedInterest,jdbcType=VARCHAR},
+      calculated_interest_remark = #{record.calculatedInterestRemark,jdbcType=VARCHAR},
       profit_margin = #{record.profitMargin,jdbcType=VARCHAR},
+      profit_margin_remark = #{record.profitMarginRemark,jdbcType=VARCHAR},
       incremental_benefit = #{record.incrementalBenefit,jdbcType=VARCHAR},
+      incremental_benefit_remark = #{record.incrementalBenefitRemark,jdbcType=VARCHAR},
       process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
+      farmland_area = #{record.farmlandArea,jdbcType=DECIMAL},
+      plough_area = #{record.ploughArea,jdbcType=DECIMAL},
+      population_number = #{record.populationNumber,jdbcType=INTEGER},
+      plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      plot_ratio_adjust_remark = #{record.plotRatioAdjustRemark,jdbcType=VARCHAR},
+      plot_ratio_adjust = #{record.plotRatioAdjust,jdbcType=VARCHAR},
+      plot_ratio_element_amend_remark = #{record.plotRatioElementAmendRemark,jdbcType=VARCHAR},
+      plot_ratio_element_amend = #{record.plotRatioElementAmend,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -298,29 +456,56 @@
       <if test="rewardRate != null" >
         reward_rate = #{rewardRate,jdbcType=VARCHAR},
       </if>
-      <if test="imprevisionCost != null" >
-        imprevision_cost = #{imprevisionCost,jdbcType=VARCHAR},
-      </if>
       <if test="circulationExpense != null" >
         circulation_expense = #{circulationExpense,jdbcType=DECIMAL},
+      </if>
+      <if test="circulationExpenseRemark != null" >
+        circulation_expense_remark = #{circulationExpenseRemark,jdbcType=VARCHAR},
       </if>
       <if test="flatExpense != null" >
         flat_expense = #{flatExpense,jdbcType=DECIMAL},
       </if>
+      <if test="flatExpenseRemark != null" >
+        flat_expense_remark = #{flatExpenseRemark,jdbcType=VARCHAR},
+      </if>
       <if test="machineCycle != null" >
         machine_cycle = #{machineCycle,jdbcType=DECIMAL},
+      </if>
+      <if test="machineCycleRemark != null" >
+        machine_cycle_remark = #{machineCycleRemark,jdbcType=VARCHAR},
       </if>
       <if test="calculatedInterest != null" >
         calculated_interest = #{calculatedInterest,jdbcType=VARCHAR},
       </if>
+      <if test="calculatedInterestRemark != null" >
+        calculated_interest_remark = #{calculatedInterestRemark,jdbcType=VARCHAR},
+      </if>
       <if test="profitMargin != null" >
         profit_margin = #{profitMargin,jdbcType=VARCHAR},
+      </if>
+      <if test="profitMarginRemark != null" >
+        profit_margin_remark = #{profitMarginRemark,jdbcType=VARCHAR},
       </if>
       <if test="incrementalBenefit != null" >
         incremental_benefit = #{incrementalBenefit,jdbcType=VARCHAR},
       </if>
+      <if test="incrementalBenefitRemark != null" >
+        incremental_benefit_remark = #{incrementalBenefitRemark,jdbcType=VARCHAR},
+      </if>
       <if test="processInsId != null" >
         process_ins_id = #{processInsId,jdbcType=VARCHAR},
+      </if>
+      <if test="farmlandArea != null" >
+        farmland_area = #{farmlandArea,jdbcType=DECIMAL},
+      </if>
+      <if test="ploughArea != null" >
+        plough_area = #{ploughArea,jdbcType=DECIMAL},
+      </if>
+      <if test="populationNumber != null" >
+        population_number = #{populationNumber,jdbcType=INTEGER},
+      </if>
+      <if test="planDetailsId != null" >
+        plan_details_id = #{planDetailsId,jdbcType=INTEGER},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -331,6 +516,18 @@
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="plotRatioAdjustRemark != null" >
+        plot_ratio_adjust_remark = #{plotRatioAdjustRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="plotRatioAdjust != null" >
+        plot_ratio_adjust = #{plotRatioAdjust,jdbcType=VARCHAR},
+      </if>
+      <if test="plotRatioElementAmendRemark != null" >
+        plot_ratio_element_amend_remark = #{plotRatioElementAmendRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="plotRatioElementAmend != null" >
+        plot_ratio_element_amend = #{plotRatioElementAmend,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -338,17 +535,30 @@
     update tb_md_cost_approach
     set reward_rate_id = #{rewardRateId,jdbcType=INTEGER},
       reward_rate = #{rewardRate,jdbcType=VARCHAR},
-      imprevision_cost = #{imprevisionCost,jdbcType=VARCHAR},
       circulation_expense = #{circulationExpense,jdbcType=DECIMAL},
+      circulation_expense_remark = #{circulationExpenseRemark,jdbcType=VARCHAR},
       flat_expense = #{flatExpense,jdbcType=DECIMAL},
+      flat_expense_remark = #{flatExpenseRemark,jdbcType=VARCHAR},
       machine_cycle = #{machineCycle,jdbcType=DECIMAL},
+      machine_cycle_remark = #{machineCycleRemark,jdbcType=VARCHAR},
       calculated_interest = #{calculatedInterest,jdbcType=VARCHAR},
+      calculated_interest_remark = #{calculatedInterestRemark,jdbcType=VARCHAR},
       profit_margin = #{profitMargin,jdbcType=VARCHAR},
+      profit_margin_remark = #{profitMarginRemark,jdbcType=VARCHAR},
       incremental_benefit = #{incrementalBenefit,jdbcType=VARCHAR},
+      incremental_benefit_remark = #{incrementalBenefitRemark,jdbcType=VARCHAR},
       process_ins_id = #{processInsId,jdbcType=VARCHAR},
+      farmland_area = #{farmlandArea,jdbcType=DECIMAL},
+      plough_area = #{ploughArea,jdbcType=DECIMAL},
+      population_number = #{populationNumber,jdbcType=INTEGER},
+      plan_details_id = #{planDetailsId,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      plot_ratio_adjust_remark = #{plotRatioAdjustRemark,jdbcType=VARCHAR},
+      plot_ratio_adjust = #{plotRatioAdjust,jdbcType=VARCHAR},
+      plot_ratio_element_amend_remark = #{plotRatioElementAmendRemark,jdbcType=VARCHAR},
+      plot_ratio_element_amend = #{plotRatioElementAmend,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

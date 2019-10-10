@@ -612,6 +612,10 @@ public class BasicApplyTransferService {
         BeanUtils.copyProperties(sourceBasicApply, targetBasicApply);
         targetBasicApply.setPlanDetailsId(targetPlanDetailsId);
         targetBasicApply.setStatus(ProjectStatusEnum.STARTAPPLY.getKey());
+        targetBasicApply.setBasicEstateId(0);
+        targetBasicApply.setBasicBuildingId(0);
+        targetBasicApply.setBasicUnitId(0);
+        targetBasicApply.setBasicHouseId(0);
         targetBasicApply.setId(null);
         targetBasicApply.setCreator(commonService.thisUserAccount());
         targetBasicApply.setGmtCreated(new Date());
