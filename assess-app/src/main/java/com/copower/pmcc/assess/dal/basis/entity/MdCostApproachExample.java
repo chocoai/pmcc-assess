@@ -296,76 +296,6 @@ public class MdCostApproachExample {
             return (Criteria) this;
         }
 
-        public Criteria andImprevisionCostIsNull() {
-            addCriterion("imprevision_cost is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andImprevisionCostIsNotNull() {
-            addCriterion("imprevision_cost is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andImprevisionCostEqualTo(String value) {
-            addCriterion("imprevision_cost =", value, "imprevisionCost");
-            return (Criteria) this;
-        }
-
-        public Criteria andImprevisionCostNotEqualTo(String value) {
-            addCriterion("imprevision_cost <>", value, "imprevisionCost");
-            return (Criteria) this;
-        }
-
-        public Criteria andImprevisionCostGreaterThan(String value) {
-            addCriterion("imprevision_cost >", value, "imprevisionCost");
-            return (Criteria) this;
-        }
-
-        public Criteria andImprevisionCostGreaterThanOrEqualTo(String value) {
-            addCriterion("imprevision_cost >=", value, "imprevisionCost");
-            return (Criteria) this;
-        }
-
-        public Criteria andImprevisionCostLessThan(String value) {
-            addCriterion("imprevision_cost <", value, "imprevisionCost");
-            return (Criteria) this;
-        }
-
-        public Criteria andImprevisionCostLessThanOrEqualTo(String value) {
-            addCriterion("imprevision_cost <=", value, "imprevisionCost");
-            return (Criteria) this;
-        }
-
-        public Criteria andImprevisionCostLike(String value) {
-            addCriterion("imprevision_cost like", value, "imprevisionCost");
-            return (Criteria) this;
-        }
-
-        public Criteria andImprevisionCostNotLike(String value) {
-            addCriterion("imprevision_cost not like", value, "imprevisionCost");
-            return (Criteria) this;
-        }
-
-        public Criteria andImprevisionCostIn(List<String> values) {
-            addCriterion("imprevision_cost in", values, "imprevisionCost");
-            return (Criteria) this;
-        }
-
-        public Criteria andImprevisionCostNotIn(List<String> values) {
-            addCriterion("imprevision_cost not in", values, "imprevisionCost");
-            return (Criteria) this;
-        }
-
-        public Criteria andImprevisionCostBetween(String value1, String value2) {
-            addCriterion("imprevision_cost between", value1, value2, "imprevisionCost");
-            return (Criteria) this;
-        }
-
-        public Criteria andImprevisionCostNotBetween(String value1, String value2) {
-            addCriterion("imprevision_cost not between", value1, value2, "imprevisionCost");
-            return (Criteria) this;
-        }
-
         public Criteria andCirculationExpenseIsNull() {
             addCriterion("circulation_expense is null");
             return (Criteria) this;
@@ -423,6 +353,76 @@ public class MdCostApproachExample {
 
         public Criteria andCirculationExpenseNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("circulation_expense not between", value1, value2, "circulationExpense");
+            return (Criteria) this;
+        }
+
+        public Criteria andCirculationExpenseRemarkIsNull() {
+            addCriterion("circulation_expense_remark is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCirculationExpenseRemarkIsNotNull() {
+            addCriterion("circulation_expense_remark is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCirculationExpenseRemarkEqualTo(String value) {
+            addCriterion("circulation_expense_remark =", value, "circulationExpenseRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andCirculationExpenseRemarkNotEqualTo(String value) {
+            addCriterion("circulation_expense_remark <>", value, "circulationExpenseRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andCirculationExpenseRemarkGreaterThan(String value) {
+            addCriterion("circulation_expense_remark >", value, "circulationExpenseRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andCirculationExpenseRemarkGreaterThanOrEqualTo(String value) {
+            addCriterion("circulation_expense_remark >=", value, "circulationExpenseRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andCirculationExpenseRemarkLessThan(String value) {
+            addCriterion("circulation_expense_remark <", value, "circulationExpenseRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andCirculationExpenseRemarkLessThanOrEqualTo(String value) {
+            addCriterion("circulation_expense_remark <=", value, "circulationExpenseRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andCirculationExpenseRemarkLike(String value) {
+            addCriterion("circulation_expense_remark like", value, "circulationExpenseRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andCirculationExpenseRemarkNotLike(String value) {
+            addCriterion("circulation_expense_remark not like", value, "circulationExpenseRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andCirculationExpenseRemarkIn(List<String> values) {
+            addCriterion("circulation_expense_remark in", values, "circulationExpenseRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andCirculationExpenseRemarkNotIn(List<String> values) {
+            addCriterion("circulation_expense_remark not in", values, "circulationExpenseRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andCirculationExpenseRemarkBetween(String value1, String value2) {
+            addCriterion("circulation_expense_remark between", value1, value2, "circulationExpenseRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andCirculationExpenseRemarkNotBetween(String value1, String value2) {
+            addCriterion("circulation_expense_remark not between", value1, value2, "circulationExpenseRemark");
             return (Criteria) this;
         }
 
@@ -486,6 +486,76 @@ public class MdCostApproachExample {
             return (Criteria) this;
         }
 
+        public Criteria andFlatExpenseRemarkIsNull() {
+            addCriterion("flat_expense_remark is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlatExpenseRemarkIsNotNull() {
+            addCriterion("flat_expense_remark is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlatExpenseRemarkEqualTo(String value) {
+            addCriterion("flat_expense_remark =", value, "flatExpenseRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlatExpenseRemarkNotEqualTo(String value) {
+            addCriterion("flat_expense_remark <>", value, "flatExpenseRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlatExpenseRemarkGreaterThan(String value) {
+            addCriterion("flat_expense_remark >", value, "flatExpenseRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlatExpenseRemarkGreaterThanOrEqualTo(String value) {
+            addCriterion("flat_expense_remark >=", value, "flatExpenseRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlatExpenseRemarkLessThan(String value) {
+            addCriterion("flat_expense_remark <", value, "flatExpenseRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlatExpenseRemarkLessThanOrEqualTo(String value) {
+            addCriterion("flat_expense_remark <=", value, "flatExpenseRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlatExpenseRemarkLike(String value) {
+            addCriterion("flat_expense_remark like", value, "flatExpenseRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlatExpenseRemarkNotLike(String value) {
+            addCriterion("flat_expense_remark not like", value, "flatExpenseRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlatExpenseRemarkIn(List<String> values) {
+            addCriterion("flat_expense_remark in", values, "flatExpenseRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlatExpenseRemarkNotIn(List<String> values) {
+            addCriterion("flat_expense_remark not in", values, "flatExpenseRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlatExpenseRemarkBetween(String value1, String value2) {
+            addCriterion("flat_expense_remark between", value1, value2, "flatExpenseRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlatExpenseRemarkNotBetween(String value1, String value2) {
+            addCriterion("flat_expense_remark not between", value1, value2, "flatExpenseRemark");
+            return (Criteria) this;
+        }
+
         public Criteria andMachineCycleIsNull() {
             addCriterion("machine_cycle is null");
             return (Criteria) this;
@@ -543,6 +613,76 @@ public class MdCostApproachExample {
 
         public Criteria andMachineCycleNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("machine_cycle not between", value1, value2, "machineCycle");
+            return (Criteria) this;
+        }
+
+        public Criteria andMachineCycleRemarkIsNull() {
+            addCriterion("machine_cycle_remark is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMachineCycleRemarkIsNotNull() {
+            addCriterion("machine_cycle_remark is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMachineCycleRemarkEqualTo(String value) {
+            addCriterion("machine_cycle_remark =", value, "machineCycleRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andMachineCycleRemarkNotEqualTo(String value) {
+            addCriterion("machine_cycle_remark <>", value, "machineCycleRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andMachineCycleRemarkGreaterThan(String value) {
+            addCriterion("machine_cycle_remark >", value, "machineCycleRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andMachineCycleRemarkGreaterThanOrEqualTo(String value) {
+            addCriterion("machine_cycle_remark >=", value, "machineCycleRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andMachineCycleRemarkLessThan(String value) {
+            addCriterion("machine_cycle_remark <", value, "machineCycleRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andMachineCycleRemarkLessThanOrEqualTo(String value) {
+            addCriterion("machine_cycle_remark <=", value, "machineCycleRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andMachineCycleRemarkLike(String value) {
+            addCriterion("machine_cycle_remark like", value, "machineCycleRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andMachineCycleRemarkNotLike(String value) {
+            addCriterion("machine_cycle_remark not like", value, "machineCycleRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andMachineCycleRemarkIn(List<String> values) {
+            addCriterion("machine_cycle_remark in", values, "machineCycleRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andMachineCycleRemarkNotIn(List<String> values) {
+            addCriterion("machine_cycle_remark not in", values, "machineCycleRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andMachineCycleRemarkBetween(String value1, String value2) {
+            addCriterion("machine_cycle_remark between", value1, value2, "machineCycleRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andMachineCycleRemarkNotBetween(String value1, String value2) {
+            addCriterion("machine_cycle_remark not between", value1, value2, "machineCycleRemark");
             return (Criteria) this;
         }
 
@@ -616,6 +756,76 @@ public class MdCostApproachExample {
             return (Criteria) this;
         }
 
+        public Criteria andCalculatedInterestRemarkIsNull() {
+            addCriterion("calculated_interest_remark is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCalculatedInterestRemarkIsNotNull() {
+            addCriterion("calculated_interest_remark is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCalculatedInterestRemarkEqualTo(String value) {
+            addCriterion("calculated_interest_remark =", value, "calculatedInterestRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andCalculatedInterestRemarkNotEqualTo(String value) {
+            addCriterion("calculated_interest_remark <>", value, "calculatedInterestRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andCalculatedInterestRemarkGreaterThan(String value) {
+            addCriterion("calculated_interest_remark >", value, "calculatedInterestRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andCalculatedInterestRemarkGreaterThanOrEqualTo(String value) {
+            addCriterion("calculated_interest_remark >=", value, "calculatedInterestRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andCalculatedInterestRemarkLessThan(String value) {
+            addCriterion("calculated_interest_remark <", value, "calculatedInterestRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andCalculatedInterestRemarkLessThanOrEqualTo(String value) {
+            addCriterion("calculated_interest_remark <=", value, "calculatedInterestRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andCalculatedInterestRemarkLike(String value) {
+            addCriterion("calculated_interest_remark like", value, "calculatedInterestRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andCalculatedInterestRemarkNotLike(String value) {
+            addCriterion("calculated_interest_remark not like", value, "calculatedInterestRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andCalculatedInterestRemarkIn(List<String> values) {
+            addCriterion("calculated_interest_remark in", values, "calculatedInterestRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andCalculatedInterestRemarkNotIn(List<String> values) {
+            addCriterion("calculated_interest_remark not in", values, "calculatedInterestRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andCalculatedInterestRemarkBetween(String value1, String value2) {
+            addCriterion("calculated_interest_remark between", value1, value2, "calculatedInterestRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andCalculatedInterestRemarkNotBetween(String value1, String value2) {
+            addCriterion("calculated_interest_remark not between", value1, value2, "calculatedInterestRemark");
+            return (Criteria) this;
+        }
+
         public Criteria andProfitMarginIsNull() {
             addCriterion("profit_margin is null");
             return (Criteria) this;
@@ -683,6 +893,76 @@ public class MdCostApproachExample {
 
         public Criteria andProfitMarginNotBetween(String value1, String value2) {
             addCriterion("profit_margin not between", value1, value2, "profitMargin");
+            return (Criteria) this;
+        }
+
+        public Criteria andProfitMarginRemarkIsNull() {
+            addCriterion("profit_margin_remark is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andProfitMarginRemarkIsNotNull() {
+            addCriterion("profit_margin_remark is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andProfitMarginRemarkEqualTo(String value) {
+            addCriterion("profit_margin_remark =", value, "profitMarginRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andProfitMarginRemarkNotEqualTo(String value) {
+            addCriterion("profit_margin_remark <>", value, "profitMarginRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andProfitMarginRemarkGreaterThan(String value) {
+            addCriterion("profit_margin_remark >", value, "profitMarginRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andProfitMarginRemarkGreaterThanOrEqualTo(String value) {
+            addCriterion("profit_margin_remark >=", value, "profitMarginRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andProfitMarginRemarkLessThan(String value) {
+            addCriterion("profit_margin_remark <", value, "profitMarginRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andProfitMarginRemarkLessThanOrEqualTo(String value) {
+            addCriterion("profit_margin_remark <=", value, "profitMarginRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andProfitMarginRemarkLike(String value) {
+            addCriterion("profit_margin_remark like", value, "profitMarginRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andProfitMarginRemarkNotLike(String value) {
+            addCriterion("profit_margin_remark not like", value, "profitMarginRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andProfitMarginRemarkIn(List<String> values) {
+            addCriterion("profit_margin_remark in", values, "profitMarginRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andProfitMarginRemarkNotIn(List<String> values) {
+            addCriterion("profit_margin_remark not in", values, "profitMarginRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andProfitMarginRemarkBetween(String value1, String value2) {
+            addCriterion("profit_margin_remark between", value1, value2, "profitMarginRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andProfitMarginRemarkNotBetween(String value1, String value2) {
+            addCriterion("profit_margin_remark not between", value1, value2, "profitMarginRemark");
             return (Criteria) this;
         }
 
@@ -756,6 +1036,76 @@ public class MdCostApproachExample {
             return (Criteria) this;
         }
 
+        public Criteria andIncrementalBenefitRemarkIsNull() {
+            addCriterion("incremental_benefit_remark is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncrementalBenefitRemarkIsNotNull() {
+            addCriterion("incremental_benefit_remark is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncrementalBenefitRemarkEqualTo(String value) {
+            addCriterion("incremental_benefit_remark =", value, "incrementalBenefitRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncrementalBenefitRemarkNotEqualTo(String value) {
+            addCriterion("incremental_benefit_remark <>", value, "incrementalBenefitRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncrementalBenefitRemarkGreaterThan(String value) {
+            addCriterion("incremental_benefit_remark >", value, "incrementalBenefitRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncrementalBenefitRemarkGreaterThanOrEqualTo(String value) {
+            addCriterion("incremental_benefit_remark >=", value, "incrementalBenefitRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncrementalBenefitRemarkLessThan(String value) {
+            addCriterion("incremental_benefit_remark <", value, "incrementalBenefitRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncrementalBenefitRemarkLessThanOrEqualTo(String value) {
+            addCriterion("incremental_benefit_remark <=", value, "incrementalBenefitRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncrementalBenefitRemarkLike(String value) {
+            addCriterion("incremental_benefit_remark like", value, "incrementalBenefitRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncrementalBenefitRemarkNotLike(String value) {
+            addCriterion("incremental_benefit_remark not like", value, "incrementalBenefitRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncrementalBenefitRemarkIn(List<String> values) {
+            addCriterion("incremental_benefit_remark in", values, "incrementalBenefitRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncrementalBenefitRemarkNotIn(List<String> values) {
+            addCriterion("incremental_benefit_remark not in", values, "incrementalBenefitRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncrementalBenefitRemarkBetween(String value1, String value2) {
+            addCriterion("incremental_benefit_remark between", value1, value2, "incrementalBenefitRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncrementalBenefitRemarkNotBetween(String value1, String value2) {
+            addCriterion("incremental_benefit_remark not between", value1, value2, "incrementalBenefitRemark");
+            return (Criteria) this;
+        }
+
         public Criteria andProcessInsIdIsNull() {
             addCriterion("process_ins_id is null");
             return (Criteria) this;
@@ -823,6 +1173,246 @@ public class MdCostApproachExample {
 
         public Criteria andProcessInsIdNotBetween(String value1, String value2) {
             addCriterion("process_ins_id not between", value1, value2, "processInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andFarmlandAreaIsNull() {
+            addCriterion("farmland_area is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFarmlandAreaIsNotNull() {
+            addCriterion("farmland_area is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFarmlandAreaEqualTo(BigDecimal value) {
+            addCriterion("farmland_area =", value, "farmlandArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andFarmlandAreaNotEqualTo(BigDecimal value) {
+            addCriterion("farmland_area <>", value, "farmlandArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andFarmlandAreaGreaterThan(BigDecimal value) {
+            addCriterion("farmland_area >", value, "farmlandArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andFarmlandAreaGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("farmland_area >=", value, "farmlandArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andFarmlandAreaLessThan(BigDecimal value) {
+            addCriterion("farmland_area <", value, "farmlandArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andFarmlandAreaLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("farmland_area <=", value, "farmlandArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andFarmlandAreaIn(List<BigDecimal> values) {
+            addCriterion("farmland_area in", values, "farmlandArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andFarmlandAreaNotIn(List<BigDecimal> values) {
+            addCriterion("farmland_area not in", values, "farmlandArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andFarmlandAreaBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("farmland_area between", value1, value2, "farmlandArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andFarmlandAreaNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("farmland_area not between", value1, value2, "farmlandArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andPloughAreaIsNull() {
+            addCriterion("plough_area is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPloughAreaIsNotNull() {
+            addCriterion("plough_area is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPloughAreaEqualTo(BigDecimal value) {
+            addCriterion("plough_area =", value, "ploughArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andPloughAreaNotEqualTo(BigDecimal value) {
+            addCriterion("plough_area <>", value, "ploughArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andPloughAreaGreaterThan(BigDecimal value) {
+            addCriterion("plough_area >", value, "ploughArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andPloughAreaGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("plough_area >=", value, "ploughArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andPloughAreaLessThan(BigDecimal value) {
+            addCriterion("plough_area <", value, "ploughArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andPloughAreaLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("plough_area <=", value, "ploughArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andPloughAreaIn(List<BigDecimal> values) {
+            addCriterion("plough_area in", values, "ploughArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andPloughAreaNotIn(List<BigDecimal> values) {
+            addCriterion("plough_area not in", values, "ploughArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andPloughAreaBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("plough_area between", value1, value2, "ploughArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andPloughAreaNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("plough_area not between", value1, value2, "ploughArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andPopulationNumberIsNull() {
+            addCriterion("population_number is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPopulationNumberIsNotNull() {
+            addCriterion("population_number is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPopulationNumberEqualTo(Integer value) {
+            addCriterion("population_number =", value, "populationNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andPopulationNumberNotEqualTo(Integer value) {
+            addCriterion("population_number <>", value, "populationNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andPopulationNumberGreaterThan(Integer value) {
+            addCriterion("population_number >", value, "populationNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andPopulationNumberGreaterThanOrEqualTo(Integer value) {
+            addCriterion("population_number >=", value, "populationNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andPopulationNumberLessThan(Integer value) {
+            addCriterion("population_number <", value, "populationNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andPopulationNumberLessThanOrEqualTo(Integer value) {
+            addCriterion("population_number <=", value, "populationNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andPopulationNumberIn(List<Integer> values) {
+            addCriterion("population_number in", values, "populationNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andPopulationNumberNotIn(List<Integer> values) {
+            addCriterion("population_number not in", values, "populationNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andPopulationNumberBetween(Integer value1, Integer value2) {
+            addCriterion("population_number between", value1, value2, "populationNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andPopulationNumberNotBetween(Integer value1, Integer value2) {
+            addCriterion("population_number not between", value1, value2, "populationNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdIsNull() {
+            addCriterion("plan_details_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdIsNotNull() {
+            addCriterion("plan_details_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdEqualTo(Integer value) {
+            addCriterion("plan_details_id =", value, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdNotEqualTo(Integer value) {
+            addCriterion("plan_details_id <>", value, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdGreaterThan(Integer value) {
+            addCriterion("plan_details_id >", value, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("plan_details_id >=", value, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdLessThan(Integer value) {
+            addCriterion("plan_details_id <", value, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdLessThanOrEqualTo(Integer value) {
+            addCriterion("plan_details_id <=", value, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdIn(List<Integer> values) {
+            addCriterion("plan_details_id in", values, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdNotIn(List<Integer> values) {
+            addCriterion("plan_details_id not in", values, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdBetween(Integer value1, Integer value2) {
+            addCriterion("plan_details_id between", value1, value2, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("plan_details_id not between", value1, value2, "planDetailsId");
             return (Criteria) this;
         }
 
@@ -1013,6 +1603,286 @@ public class MdCostApproachExample {
 
         public Criteria andGmtModifiedNotBetween(Date value1, Date value2) {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioAdjustRemarkIsNull() {
+            addCriterion("plot_ratio_adjust_remark is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioAdjustRemarkIsNotNull() {
+            addCriterion("plot_ratio_adjust_remark is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioAdjustRemarkEqualTo(String value) {
+            addCriterion("plot_ratio_adjust_remark =", value, "plotRatioAdjustRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioAdjustRemarkNotEqualTo(String value) {
+            addCriterion("plot_ratio_adjust_remark <>", value, "plotRatioAdjustRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioAdjustRemarkGreaterThan(String value) {
+            addCriterion("plot_ratio_adjust_remark >", value, "plotRatioAdjustRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioAdjustRemarkGreaterThanOrEqualTo(String value) {
+            addCriterion("plot_ratio_adjust_remark >=", value, "plotRatioAdjustRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioAdjustRemarkLessThan(String value) {
+            addCriterion("plot_ratio_adjust_remark <", value, "plotRatioAdjustRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioAdjustRemarkLessThanOrEqualTo(String value) {
+            addCriterion("plot_ratio_adjust_remark <=", value, "plotRatioAdjustRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioAdjustRemarkLike(String value) {
+            addCriterion("plot_ratio_adjust_remark like", value, "plotRatioAdjustRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioAdjustRemarkNotLike(String value) {
+            addCriterion("plot_ratio_adjust_remark not like", value, "plotRatioAdjustRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioAdjustRemarkIn(List<String> values) {
+            addCriterion("plot_ratio_adjust_remark in", values, "plotRatioAdjustRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioAdjustRemarkNotIn(List<String> values) {
+            addCriterion("plot_ratio_adjust_remark not in", values, "plotRatioAdjustRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioAdjustRemarkBetween(String value1, String value2) {
+            addCriterion("plot_ratio_adjust_remark between", value1, value2, "plotRatioAdjustRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioAdjustRemarkNotBetween(String value1, String value2) {
+            addCriterion("plot_ratio_adjust_remark not between", value1, value2, "plotRatioAdjustRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioAdjustIsNull() {
+            addCriterion("plot_ratio_adjust is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioAdjustIsNotNull() {
+            addCriterion("plot_ratio_adjust is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioAdjustEqualTo(String value) {
+            addCriterion("plot_ratio_adjust =", value, "plotRatioAdjust");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioAdjustNotEqualTo(String value) {
+            addCriterion("plot_ratio_adjust <>", value, "plotRatioAdjust");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioAdjustGreaterThan(String value) {
+            addCriterion("plot_ratio_adjust >", value, "plotRatioAdjust");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioAdjustGreaterThanOrEqualTo(String value) {
+            addCriterion("plot_ratio_adjust >=", value, "plotRatioAdjust");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioAdjustLessThan(String value) {
+            addCriterion("plot_ratio_adjust <", value, "plotRatioAdjust");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioAdjustLessThanOrEqualTo(String value) {
+            addCriterion("plot_ratio_adjust <=", value, "plotRatioAdjust");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioAdjustLike(String value) {
+            addCriterion("plot_ratio_adjust like", value, "plotRatioAdjust");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioAdjustNotLike(String value) {
+            addCriterion("plot_ratio_adjust not like", value, "plotRatioAdjust");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioAdjustIn(List<String> values) {
+            addCriterion("plot_ratio_adjust in", values, "plotRatioAdjust");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioAdjustNotIn(List<String> values) {
+            addCriterion("plot_ratio_adjust not in", values, "plotRatioAdjust");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioAdjustBetween(String value1, String value2) {
+            addCriterion("plot_ratio_adjust between", value1, value2, "plotRatioAdjust");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioAdjustNotBetween(String value1, String value2) {
+            addCriterion("plot_ratio_adjust not between", value1, value2, "plotRatioAdjust");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioElementAmendRemarkIsNull() {
+            addCriterion("plot_ratio_element_amend_remark is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioElementAmendRemarkIsNotNull() {
+            addCriterion("plot_ratio_element_amend_remark is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioElementAmendRemarkEqualTo(String value) {
+            addCriterion("plot_ratio_element_amend_remark =", value, "plotRatioElementAmendRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioElementAmendRemarkNotEqualTo(String value) {
+            addCriterion("plot_ratio_element_amend_remark <>", value, "plotRatioElementAmendRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioElementAmendRemarkGreaterThan(String value) {
+            addCriterion("plot_ratio_element_amend_remark >", value, "plotRatioElementAmendRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioElementAmendRemarkGreaterThanOrEqualTo(String value) {
+            addCriterion("plot_ratio_element_amend_remark >=", value, "plotRatioElementAmendRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioElementAmendRemarkLessThan(String value) {
+            addCriterion("plot_ratio_element_amend_remark <", value, "plotRatioElementAmendRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioElementAmendRemarkLessThanOrEqualTo(String value) {
+            addCriterion("plot_ratio_element_amend_remark <=", value, "plotRatioElementAmendRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioElementAmendRemarkLike(String value) {
+            addCriterion("plot_ratio_element_amend_remark like", value, "plotRatioElementAmendRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioElementAmendRemarkNotLike(String value) {
+            addCriterion("plot_ratio_element_amend_remark not like", value, "plotRatioElementAmendRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioElementAmendRemarkIn(List<String> values) {
+            addCriterion("plot_ratio_element_amend_remark in", values, "plotRatioElementAmendRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioElementAmendRemarkNotIn(List<String> values) {
+            addCriterion("plot_ratio_element_amend_remark not in", values, "plotRatioElementAmendRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioElementAmendRemarkBetween(String value1, String value2) {
+            addCriterion("plot_ratio_element_amend_remark between", value1, value2, "plotRatioElementAmendRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioElementAmendRemarkNotBetween(String value1, String value2) {
+            addCriterion("plot_ratio_element_amend_remark not between", value1, value2, "plotRatioElementAmendRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioElementAmendIsNull() {
+            addCriterion("plot_ratio_element_amend is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioElementAmendIsNotNull() {
+            addCriterion("plot_ratio_element_amend is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioElementAmendEqualTo(String value) {
+            addCriterion("plot_ratio_element_amend =", value, "plotRatioElementAmend");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioElementAmendNotEqualTo(String value) {
+            addCriterion("plot_ratio_element_amend <>", value, "plotRatioElementAmend");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioElementAmendGreaterThan(String value) {
+            addCriterion("plot_ratio_element_amend >", value, "plotRatioElementAmend");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioElementAmendGreaterThanOrEqualTo(String value) {
+            addCriterion("plot_ratio_element_amend >=", value, "plotRatioElementAmend");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioElementAmendLessThan(String value) {
+            addCriterion("plot_ratio_element_amend <", value, "plotRatioElementAmend");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioElementAmendLessThanOrEqualTo(String value) {
+            addCriterion("plot_ratio_element_amend <=", value, "plotRatioElementAmend");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioElementAmendLike(String value) {
+            addCriterion("plot_ratio_element_amend like", value, "plotRatioElementAmend");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioElementAmendNotLike(String value) {
+            addCriterion("plot_ratio_element_amend not like", value, "plotRatioElementAmend");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioElementAmendIn(List<String> values) {
+            addCriterion("plot_ratio_element_amend in", values, "plotRatioElementAmend");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioElementAmendNotIn(List<String> values) {
+            addCriterion("plot_ratio_element_amend not in", values, "plotRatioElementAmend");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioElementAmendBetween(String value1, String value2) {
+            addCriterion("plot_ratio_element_amend between", value1, value2, "plotRatioElementAmend");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioElementAmendNotBetween(String value1, String value2) {
+            addCriterion("plot_ratio_element_amend not between", value1, value2, "plotRatioElementAmend");
             return (Criteria) this;
         }
     }

@@ -30,6 +30,22 @@ public class AssessDataDicKeyConstant {
     public static final String DATA_TEMPLATE_TYPE_OPINION = "data.template.type.opinion";//模板（意见稿）
 
     /*
+     * 土地逼近法补偿配置
+     */
+    public static final String DATA_LAND_APPROXIMATION_METHOD_SETTING = "data.land.approximation.method.setting"; //土地逼近法补偿配置
+    public static final String DATA_LAND_APPROXIMATION_METHOD_LAND_COMPENSATE = "data.land.approximation.method.land.compensate"; //土地补偿费
+    public static final String DATA_LAND_APPROXIMATION_METHOD_PLACEMENT_COMPENSATE = "data.land.approximation.method.placement.compensate"; //安置补助费
+    public static final String DATA_LAND_APPROXIMATION_METHOD_CROPS_COMPENSATE = "data.land.approximation.method.crops.compensate"; //青苗补偿费
+    public static final String DATA_LAND_APPROXIMATION_METHOD_HOUSE_COMPENSATE = "data.land.approximation.method.house.compensate"; //住房安置费
+    public static final String DATA_LAND_APPROXIMATION_METHOD_REMOVAL_AWARD = "data.land.approximation.method.removal.award"; //农房搬迁奖励基金
+    public static final String DATA_LAND_APPROXIMATION_METHOD_VEGETABLE_BUILD = "data.land.approximation.method.vegetable.build"; //菜田建设金
+    public static final String DATA_LAND_APPROXIMATION_METHOD_OCCUPATION_LAND = "data.land.approximation.method.occupation.land"; //耕地占用税
+    public static final String DATA_LAND_APPROXIMATION_METHOD_PLOUGH_RECLAIM = "data.land.approximation.method.plough.reclaim"; //耕地开垦费
+    public static final String DATA_LAND_APPROXIMATION_METHOD_LAND_MANAGER = "data.land.approximation.method.land.manager"; //土地管理费
+    public static final String DATA_LAND_APPROXIMATION_METHOD_CANNOT_FORESEE = "data.land.approximation.method.cannot.foresee"; //不可预见费
+    public static final String DATA_LAND_APPROXIMATION_METHOD_LAND_ACQUISITION = "data.land.approximation.method.land.acquisition"; //代征地比例
+
+    /*
      * 报告配置
      */
     public static final String REPORT_TYPE = "report.type"; //报告类型
