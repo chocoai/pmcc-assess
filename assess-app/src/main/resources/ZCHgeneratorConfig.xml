@@ -149,7 +149,7 @@
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         <!--</table>-->
 
-        <table tableName="tb_assets_customize_data_field" domainObjectName="AssetsCustomizeDataField">
+        <table tableName="tb_tool_map_handle" domainObjectName="ToolMapHandle">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 
