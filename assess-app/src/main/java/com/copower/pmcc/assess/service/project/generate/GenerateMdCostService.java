@@ -717,7 +717,9 @@ public class GenerateMdCostService implements Serializable {
             }
             break;
             case MarketCost_ResidueRatio_remark: {
-                if (target.getResidueRatioId() != null) {
+                if (StringUtils.isNotBlank(target.getResidueRatioRemark())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), target.getResidueRatioRemark());
+                }else {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), "无说明");
                 }
                 break;

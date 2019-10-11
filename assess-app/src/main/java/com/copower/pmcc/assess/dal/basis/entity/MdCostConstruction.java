@@ -98,6 +98,8 @@ public class MdCostConstruction {
 
     private Integer residueRatioId;
 
+    private String residueRatioRemark;
+
     private BigDecimal residueRatio;
 
     private Integer pid;
@@ -482,6 +484,14 @@ public class MdCostConstruction {
 
     public void setResidueRatioId(Integer residueRatioId) {
         this.residueRatioId = residueRatioId;
+    }
+
+    public String getResidueRatioRemark() {
+        return residueRatioRemark;
+    }
+
+    public void setResidueRatioRemark(String residueRatioRemark) {
+        this.residueRatioRemark = residueRatioRemark == null ? null : residueRatioRemark.trim();
     }
 
     public BigDecimal getResidueRatio() {

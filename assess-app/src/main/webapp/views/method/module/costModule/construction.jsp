@@ -568,6 +568,17 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">
+                        说明
+                    </label>
+                    <div class="col-sm-3">
+                        <input type="text"
+                               placeholder="说明" class="form-control " name="residueRatioRemark"
+                              value="${mdCostVo.mdCostConstruction.residueRatioRemark}">
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -3156,6 +3156,76 @@ public class MdCostConstructionExample {
             return (Criteria) this;
         }
 
+        public Criteria andResidueRatioRemarkIsNull() {
+            addCriterion("residue_ratio_remark is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andResidueRatioRemarkIsNotNull() {
+            addCriterion("residue_ratio_remark is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andResidueRatioRemarkEqualTo(String value) {
+            addCriterion("residue_ratio_remark =", value, "residueRatioRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andResidueRatioRemarkNotEqualTo(String value) {
+            addCriterion("residue_ratio_remark <>", value, "residueRatioRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andResidueRatioRemarkGreaterThan(String value) {
+            addCriterion("residue_ratio_remark >", value, "residueRatioRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andResidueRatioRemarkGreaterThanOrEqualTo(String value) {
+            addCriterion("residue_ratio_remark >=", value, "residueRatioRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andResidueRatioRemarkLessThan(String value) {
+            addCriterion("residue_ratio_remark <", value, "residueRatioRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andResidueRatioRemarkLessThanOrEqualTo(String value) {
+            addCriterion("residue_ratio_remark <=", value, "residueRatioRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andResidueRatioRemarkLike(String value) {
+            addCriterion("residue_ratio_remark like", value, "residueRatioRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andResidueRatioRemarkNotLike(String value) {
+            addCriterion("residue_ratio_remark not like", value, "residueRatioRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andResidueRatioRemarkIn(List<String> values) {
+            addCriterion("residue_ratio_remark in", values, "residueRatioRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andResidueRatioRemarkNotIn(List<String> values) {
+            addCriterion("residue_ratio_remark not in", values, "residueRatioRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andResidueRatioRemarkBetween(String value1, String value2) {
+            addCriterion("residue_ratio_remark between", value1, value2, "residueRatioRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andResidueRatioRemarkNotBetween(String value1, String value2) {
+            addCriterion("residue_ratio_remark not between", value1, value2, "residueRatioRemark");
+            return (Criteria) this;
+        }
+
         public Criteria andResidueRatioIsNull() {
             addCriterion("residue_ratio is null");
             return (Criteria) this;
