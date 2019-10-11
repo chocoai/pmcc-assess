@@ -29,32 +29,6 @@
                     <form id="frm_asset" class="form-horizontal">
                         <input type="hidden" name="id" value="${surveyAssetInventory.id}">
                         <div class="form-group">
-
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">评估人员<span
-                                        class="symbol required"></span></label>
-                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <div class="input-group">
-                                        <input type="hidden" id="evaluatorID">
-                                        <input type="text" class="form-control" readonly="readonly"
-                                               value="${thisUserInfo.userName}" required="required"
-                                               id="evaluator" name="evaluator" maxlength="200">
-                                        <span class="input-group-btn">
-                                            <button type="button" class="btn btn-default docs-tooltip"
-                                                    data-toggle="tooltip"
-                                                    data-original-title="选择" onclick="selectEvaluator()">
-                                            <i class="fa fa-search"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-default docs-tooltip"
-                                                    onclick="$(this).closest('.input-group').find('input').val('');"
-                                                    data-toggle="tooltip" data-original-title="清除">
-                                            <i class="fa fa-trash-o"></i>
-                                            </button>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">核对日期<span
                                         class="symbol required"></span></label>
@@ -81,6 +55,13 @@
                                                value="false"><label
                                             for="bisCheckOriginal1">否</label>
                                     </span>
+                                </div>
+                            </div>
+                            <div class="x-valid">
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                    <button type="button" class="btn btn-xs btn-warning" onclick="checkRealEstate()"
+                                            data-toggle="modal"> 查看权证信息
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -148,16 +129,6 @@
                                 <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
                                     <textarea placeholder="说明" class="form-control"
                                               name="remark">${surveyAssetInventory.remark}</textarea>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">权证信息</label>
-                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <button type="button" class="btn btn-success" onclick="checkRealEstate()"
-                                            data-toggle="modal"> 查看
-                                    </button>
                                 </div>
                             </div>
                         </div>

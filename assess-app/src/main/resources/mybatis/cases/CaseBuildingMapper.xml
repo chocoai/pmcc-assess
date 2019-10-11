@@ -26,7 +26,7 @@
     <result column="be_completed_time" property="beCompletedTime" jdbcType="TIMESTAMP" />
     <result column="floor_height" property="floorHeight" jdbcType="DECIMAL" />
     <result column="diameter_depth" property="diameterDepth" jdbcType="DECIMAL" />
-    <result column="land_use_year" property="landUseYear" jdbcType="INTEGER" />
+    <result column="land_use_year" property="landUseYear" jdbcType="DECIMAL" />
     <result column="net_height" property="netHeight" jdbcType="DECIMAL" />
     <result column="building_structure_type" property="buildingStructureType" jdbcType="INTEGER" />
     <result column="building_structure_category" property="buildingStructureCategory" jdbcType="INTEGER" />
@@ -185,7 +185,7 @@
       #{facilitiesUseFee,jdbcType=DECIMAL}, #{buildingHeight,jdbcType=DECIMAL}, #{buildingArea,jdbcType=DECIMAL}, 
       #{coverAnArea,jdbcType=DECIMAL}, #{propertyType,jdbcType=INTEGER}, #{propertyCategory,jdbcType=INTEGER}, 
       #{openTime,jdbcType=TIMESTAMP}, #{roomTime,jdbcType=TIMESTAMP}, #{beCompletedTime,jdbcType=TIMESTAMP}, 
-      #{floorHeight,jdbcType=DECIMAL}, #{diameterDepth,jdbcType=DECIMAL}, #{landUseYear,jdbcType=INTEGER}, 
+      #{floorHeight,jdbcType=DECIMAL}, #{diameterDepth,jdbcType=DECIMAL}, #{landUseYear,jdbcType=DECIMAL}, 
       #{netHeight,jdbcType=DECIMAL}, #{buildingStructureType,jdbcType=INTEGER}, #{buildingStructureCategory,jdbcType=INTEGER}, 
       #{version,jdbcType=INTEGER}, #{useArea,jdbcType=DECIMAL}, #{completedTimeType,jdbcType=INTEGER}, 
       #{inJacketArea,jdbcType=DECIMAL}, #{propertyName,jdbcType=VARCHAR}, #{appearanceNewAndOld,jdbcType=INTEGER}, 
@@ -429,7 +429,7 @@
         #{diameterDepth,jdbcType=DECIMAL},
       </if>
       <if test="landUseYear != null" >
-        #{landUseYear,jdbcType=INTEGER},
+        #{landUseYear,jdbcType=DECIMAL},
       </if>
       <if test="netHeight != null" >
         #{netHeight,jdbcType=DECIMAL},
@@ -596,7 +596,7 @@
         diameter_depth = #{record.diameterDepth,jdbcType=DECIMAL},
       </if>
       <if test="record.landUseYear != null" >
-        land_use_year = #{record.landUseYear,jdbcType=INTEGER},
+        land_use_year = #{record.landUseYear,jdbcType=DECIMAL},
       </if>
       <if test="record.netHeight != null" >
         net_height = #{record.netHeight,jdbcType=DECIMAL},
@@ -710,7 +710,7 @@
       be_completed_time = #{record.beCompletedTime,jdbcType=TIMESTAMP},
       floor_height = #{record.floorHeight,jdbcType=DECIMAL},
       diameter_depth = #{record.diameterDepth,jdbcType=DECIMAL},
-      land_use_year = #{record.landUseYear,jdbcType=INTEGER},
+      land_use_year = #{record.landUseYear,jdbcType=DECIMAL},
       net_height = #{record.netHeight,jdbcType=DECIMAL},
       building_structure_type = #{record.buildingStructureType,jdbcType=INTEGER},
       building_structure_category = #{record.buildingStructureCategory,jdbcType=INTEGER},
@@ -815,7 +815,7 @@
         diameter_depth = #{diameterDepth,jdbcType=DECIMAL},
       </if>
       <if test="landUseYear != null" >
-        land_use_year = #{landUseYear,jdbcType=INTEGER},
+        land_use_year = #{landUseYear,jdbcType=DECIMAL},
       </if>
       <if test="netHeight != null" >
         net_height = #{netHeight,jdbcType=DECIMAL},
@@ -926,7 +926,7 @@
       be_completed_time = #{beCompletedTime,jdbcType=TIMESTAMP},
       floor_height = #{floorHeight,jdbcType=DECIMAL},
       diameter_depth = #{diameterDepth,jdbcType=DECIMAL},
-      land_use_year = #{landUseYear,jdbcType=INTEGER},
+      land_use_year = #{landUseYear,jdbcType=DECIMAL},
       net_height = #{netHeight,jdbcType=DECIMAL},
       building_structure_type = #{buildingStructureType,jdbcType=INTEGER},
       building_structure_category = #{buildingStructureCategory,jdbcType=INTEGER},

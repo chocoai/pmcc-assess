@@ -1616,52 +1616,52 @@ public class CaseBuildingExample {
             return (Criteria) this;
         }
 
-        public Criteria andLandUseYearEqualTo(Integer value) {
+        public Criteria andLandUseYearEqualTo(BigDecimal value) {
             addCriterion("land_use_year =", value, "landUseYear");
             return (Criteria) this;
         }
 
-        public Criteria andLandUseYearNotEqualTo(Integer value) {
+        public Criteria andLandUseYearNotEqualTo(BigDecimal value) {
             addCriterion("land_use_year <>", value, "landUseYear");
             return (Criteria) this;
         }
 
-        public Criteria andLandUseYearGreaterThan(Integer value) {
+        public Criteria andLandUseYearGreaterThan(BigDecimal value) {
             addCriterion("land_use_year >", value, "landUseYear");
             return (Criteria) this;
         }
 
-        public Criteria andLandUseYearGreaterThanOrEqualTo(Integer value) {
+        public Criteria andLandUseYearGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("land_use_year >=", value, "landUseYear");
             return (Criteria) this;
         }
 
-        public Criteria andLandUseYearLessThan(Integer value) {
+        public Criteria andLandUseYearLessThan(BigDecimal value) {
             addCriterion("land_use_year <", value, "landUseYear");
             return (Criteria) this;
         }
 
-        public Criteria andLandUseYearLessThanOrEqualTo(Integer value) {
+        public Criteria andLandUseYearLessThanOrEqualTo(BigDecimal value) {
             addCriterion("land_use_year <=", value, "landUseYear");
             return (Criteria) this;
         }
 
-        public Criteria andLandUseYearIn(List<Integer> values) {
+        public Criteria andLandUseYearIn(List<BigDecimal> values) {
             addCriterion("land_use_year in", values, "landUseYear");
             return (Criteria) this;
         }
 
-        public Criteria andLandUseYearNotIn(List<Integer> values) {
+        public Criteria andLandUseYearNotIn(List<BigDecimal> values) {
             addCriterion("land_use_year not in", values, "landUseYear");
             return (Criteria) this;
         }
 
-        public Criteria andLandUseYearBetween(Integer value1, Integer value2) {
+        public Criteria andLandUseYearBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("land_use_year between", value1, value2, "landUseYear");
             return (Criteria) this;
         }
 
-        public Criteria andLandUseYearNotBetween(Integer value1, Integer value2) {
+        public Criteria andLandUseYearNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("land_use_year not between", value1, value2, "landUseYear");
             return (Criteria) this;
         }
