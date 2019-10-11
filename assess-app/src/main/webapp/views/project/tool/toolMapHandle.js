@@ -68,7 +68,8 @@ toolMapHandleFun.loadMap = function (options) {
         zoom: 19,
         center: {lng: 104.084569, lat: 30.589714},
         viewMode: "2D", // 默认2D
-        id: 0
+        id: 0,
+        instantaneousLifeData:""
     };
     defaultObj = $.extend(defaultObj, options);
     toolMapHandleFun.defaultObj = defaultObj;
@@ -83,6 +84,14 @@ toolMapHandleFun.loadMap = function (options) {
         });
         // 地图 加载完成 load
         toolMapHandleFun.map.on("complete", function () {
+            //假如有数据则恢复
+            if (defaultObj.instantaneousLifeData){
+                try {
+                    toolMapHandleFun.createOverlay(JSON.parse(defaultObj.instantaneousLifeData));
+                } catch (e) {
+                    console.log(e) ;
+                }
+            }
             //地图加载完成后要做的事
             toolMapHandleFun.completeEvent();
         });

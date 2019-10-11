@@ -29,7 +29,7 @@
                             <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                                 <button type="button" data-toggle="modal" href="#modelToolMapHandleView"
                                         class="btn btn-default"
-                                        onclick="toolMapHandleFun.loadMap({drawState:'marker'});">
+                                        onclick="toolMapHandleFun.loadMap({drawState:'marker',instantaneousLifeData:JSON.stringify([{P:30.589982,Q:104.083992,lng:104.083992,lat:30.589982}])});">
                                                   <i class="fa fa-map-marker"></i>
                                     map 
                                            
