@@ -27,12 +27,6 @@
                     <form id="frm_assess" class="form-horizontal">
                         <div class="form-group">
                             <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">评估人员</label>
-                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <label class="form-control">${thisUserInfo.userName}</label>
-                                </div>
-                            </div>
-                            <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">核对日期</label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                     <label class="form-control"><fmt:formatDate
@@ -43,6 +37,13 @@
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">是否查看原件</label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                     <label class="form-control"> ${surveyAssetInventory.bisCheckOriginal eq true? '是':'否'}</label>
+                                </div>
+                            </div>
+                            <div class="x-valid">
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                    <button type="button" class="btn btn-xs btn-warning" onclick="checkRealEstate()"
+                                            data-toggle="modal"> 查看权证信息
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -90,16 +91,6 @@
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">说明</label>
                                 <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
                                     <label class="form-control">${surveyAssetInventory.remark}</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">权证信息</label>
-                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <button type="button" class="btn btn-success" onclick="checkRealEstate()"
-                                            data-toggle="modal"> 查看
-                                    </button>
                                 </div>
                             </div>
                         </div>
