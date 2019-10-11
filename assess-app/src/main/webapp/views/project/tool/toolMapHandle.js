@@ -26,16 +26,7 @@ toolMapHandleFun.config = {
         polyline: {key: "polyline", name: "折线"},
         polygon: {key: "polygon", name: "多边形"},
         circle: {key: "circle", name: "圆形"},
-        rectangle: {key: "rectangle", name: "矩形"},
-
-        line: {key: "map.draw.line", name: "直线"},
-        thinLine: {key: "map.draw.thinline", name: "细线"},
-        meshLine: {key: "map.draw.meshline", name: "宽线"},
-        markeryGroup: {key: "map.draw.markeryGroup", name: "点标记组"},
-        circleAuto: {key: "map.draw.circleAuto", name: "自动圆形"},
-        ellipse: {key: "ellipse", name: "椭圆形覆盖物"},
-        besizerCurve: {key: "map.draw.besizerCurve", name: "贝赛尔曲线"},
-        mesh: {key: "map.draw.mesh", name: "网格Mesh"}
+        rectangle: {key: "rectangle", name: "矩形"}
     },
     //地图存储的类型
     storage: {
@@ -75,7 +66,7 @@ toolMapHandleFun.loadMap = function (options) {
         readonly: false,
         radius: 10,
         zoom: 19,
-        center: {lng: 104.061913, lat: 30.657113},
+        center: {lng: 104.084569, lat: 30.589714},
         viewMode: "2D", // 默认2D
         id: 0
     };
@@ -87,7 +78,8 @@ toolMapHandleFun.loadMap = function (options) {
             resizeEnable: true,
             rotateEnable: true,
             zoom: defaultObj.zoom,
-            viewMode: defaultObj.viewMode
+            viewMode: defaultObj.viewMode,
+            center:[defaultObj.center.lng,defaultObj.center.lat]
         });
         // 地图 加载完成 load
         toolMapHandleFun.map.on("complete", function () {
@@ -176,8 +168,8 @@ toolMapHandleFun.switch3DMap = function () {
         //恢复覆盖物
         if (overlays.length != 0) {
             var result = toolMapHandleFun.getOverlayByType(overlays);
-            // toolMapHandleFun.createOverlay(result);
-            toolMapHandleFun.map.add(overlays);
+            toolMapHandleFun.createOverlay(result);
+            // toolMapHandleFun.map.add(overlays);
         }
     });
 };
@@ -370,19 +362,26 @@ toolMapHandleFun.createOverlay = function (result) {
                     lineJoin: 'round' // 折线拐点连接处样式
                 });
                 break;
-            //1.4.15版本有问题, 暂时不处理 Rectangle类是1.4.2推出的
             case toolMapHandleFun.config.draw.rectangle.key:
-                var bounds = [];
-                $.each(data, function (i, item) {
-                    bounds.push(new AMap.LngLat(item.lng, item.lat));
+                var southWest = new AMap.LngLat(data[0].lng, data[0].lat);
+                var northEast = new AMap.LngLat(data[data.length - 2].lng, data[data.length - 2].lat);
+                var bounds = new AMap.Bounds(southWest, northEast) ;
+                var rectangle = new AMap.Rectangle({
+                    bounds: bounds,
+                    strokeColor: '#0000FF', // 线条颜色
+                    strokeWeight: 2,
+                    strokeOpacity:0.5,
+                    strokeDasharray: [10,10],
+                    strokeStyle: 'solid',
+                    fillColor:'blue',
+                    fillOpacity:0.1,
+                    cursor:'pointer',
+                    zIndex:10
                 });
-                // new AMap.Rectangle({
-                //     bounds: bounds,
-                //     map:toolMapHandleFun.map ,
-                //     borderWeight: 2, // 线条宽度，默认为 1
-                //     strokeColor: 'red', // 线条颜色
-                //     lineJoin: 'round' // 折线拐点连接处样式
-                // });
+                rectangle.setMap(toolMapHandleFun.map) ;
+                // 缩放地图到合适的视野级别
+                // toolMapHandleFun.map.setFitView([ rectangle ]) ;
+                var rectangleEditor = new AMap.RectangleEditor(toolMapHandleFun.map, rectangle) ;
                 break;
             case toolMapHandleFun.config.draw.circle.key:
                 new AMap.Circle({
