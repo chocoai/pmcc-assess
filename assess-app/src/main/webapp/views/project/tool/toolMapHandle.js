@@ -69,36 +69,66 @@ toolMapHandleFun.loadMap = function (options) {
         center: {lng: 104.084569, lat: 30.589714},
         viewMode: "2D", // 默认2D
         id: 0,
-        instantaneousLifeData:""
+        instantaneousLifeData: "",
+        callback: undefined
     };
     defaultObj = $.extend(defaultObj, options);
-    toolMapHandleFun.defaultObj = defaultObj;
+    var target = $("#modelToolMapHandleView");
+    target.modal("show");
     $(document).ready(function () {
-        //初始化地图对象，加载地图
-        toolMapHandleFun.map = new AMap.Map('toolMapHandleContainer', {
-            resizeEnable: true,
-            rotateEnable: true,
-            zoom: defaultObj.zoom,
-            viewMode: defaultObj.viewMode,
-            center:[defaultObj.center.lng,defaultObj.center.lat]
-        });
-        // 地图 加载完成 load
-        toolMapHandleFun.map.on("complete", function () {
-            //假如有数据则恢复
-            if (defaultObj.instantaneousLifeData){
-                try {
-                    toolMapHandleFun.createOverlay(JSON.parse(defaultObj.instantaneousLifeData));
-                } catch (e) {
-                    console.log(e) ;
+        if (defaultObj.id) {
+            toolMapHandleFun.getDataById(defaultObj.id, function (data) {
+                if (data.instantaneousLifeData){
+                    defaultObj.instantaneousLifeData = data.instantaneousLifeData;
                 }
-            }
-            //地图加载完成后要做的事
-            toolMapHandleFun.completeEvent();
-        });
+                toolMapHandleFun.defaultObj = defaultObj;
+                target.find("input[name='toolMapHandleId']").val(defaultObj.id);
+                //初始化地图对象，加载地图
+                toolMapHandleFun.map = new AMap.Map('toolMapHandleContainer', {
+                    resizeEnable: true,
+                    rotateEnable: true,
+                    zoom: defaultObj.zoom,
+                    viewMode: defaultObj.viewMode,
+                    center: [defaultObj.center.lng, defaultObj.center.lat]
+                });
+                // 地图 加载完成 load
+                toolMapHandleFun.map.on("complete", function () {
+                    //假如有数据则恢复
+                    if (defaultObj.instantaneousLifeData) {
+                        try {
+                            toolMapHandleFun.createOverlay(JSON.parse(defaultObj.instantaneousLifeData));
+                        } catch (e) {
+                            console.log(e);
+                        }
+                    }
+                    //地图加载完成后要做的事
+                    toolMapHandleFun.completeEvent();
+                });
+            });
+        } else {
+            toolMapHandleFun.defaultObj = defaultObj;
+            target.find("input[name='toolMapHandleId']").val(defaultObj.id);
+            //初始化地图对象，加载地图
+            toolMapHandleFun.map = new AMap.Map('toolMapHandleContainer', {
+                resizeEnable: true,
+                rotateEnable: true,
+                zoom: defaultObj.zoom,
+                viewMode: defaultObj.viewMode,
+                center: [defaultObj.center.lng, defaultObj.center.lat]
+            });
+            // 地图 加载完成 load
+            toolMapHandleFun.map.on("complete", function () {
+                //地图加载完成后要做的事
+                toolMapHandleFun.completeEvent();
+            });
+
+        }
+
     });
-    var fileId = "toolMapHandleFileId";
-    toolMapHandleFun.fileUpload(fileId, AssessDBKey.ToolMapHandle, defaultObj.id, true, false, fileId);
-    toolMapHandleFun.showFile(fileId, AssessDBKey.ToolMapHandle, defaultObj.id, true, false, false, fileId);
+
+    // var fileId = "toolMapHandleFileId";
+    // toolMapHandleFun.fileUpload(fileId, AssessDBKey.ToolMapHandle, defaultObj.id, true, false, fileId);
+    // toolMapHandleFun.showFile(fileId, AssessDBKey.ToolMapHandle, defaultObj.id, true, false, false, fileId);
 };
 
 /**
@@ -109,7 +139,8 @@ toolMapHandleFun.reset = function () {
     //  var oldObject = toolMapHandleFun.defaultObj ;
     //  var options = jQuery.extend(true, {}, oldObject);
     //  this.loadMap(options) ;
-
+    var overlays = toolMapHandleFun.map.getAllOverlays();//获取覆盖物
+    // console.log(overlays) ;
     toolMapHandleFun.map.clearMap(); // 使用clearMap方法删除所有覆盖物
 };
 
@@ -189,9 +220,9 @@ toolMapHandleFun.switch3DMap = function () {
  */
 toolMapHandleFun.completeEvent = function () {
     var defaultObj = toolMapHandleFun.defaultObj;
-    if (defaultObj.readonly) {
-        return false;
-    }
+    // if (defaultObj.readonly) {
+    //     return false;
+    // }
     if (!toolMapHandleFun.mouseTool) {
         toolMapHandleFun.mouseTool = new AMap.MouseTool(toolMapHandleFun.map);
     }
@@ -228,7 +259,21 @@ toolMapHandleFun.completeEvent = function () {
         default:
             break;
     }
-
+    //添加事件
+    AMap.event.addListener(toolMapHandleFun.mouseTool, 'draw', function (e) {
+        var overlays = toolMapHandleFun.map.getAllOverlays();
+        $.each(overlays, function (i, overlay) {
+            if (overlay._amap_id == e.obj._amap_id) {
+                overlay.on('mouseover', function (e) {
+                    toolMapHandleFun.showOverlayInfo({
+                        amap_id: e.target._amap_id,
+                        title: e.target.B.extData.title,
+                        remark: e.target.B.extData.remark
+                    });
+                });
+            }
+        });
+    });
     //点绘制
     toolMapHandleFun.map.on('click', function (e) {
         switch (defaultObj.drawState) {
@@ -332,15 +377,20 @@ toolMapHandleFun.save = function () {
     data.zoom = toolMapHandleFun.map.getZoom();
     data.centerLat = center.lat;
     data.centerLng = center.lng;
+    data.id = data.toolMapHandleId;
     var overlays = toolMapHandleFun.map.getAllOverlays();
     var result = toolMapHandleFun.getOverlayByType(overlays);//获取覆盖物
     if (result.length != 0) {
         data.instantaneousLifeData = JSON.stringify(result);
     }
-    toolMapHandleFun.saveData(data, function () {
+    toolMapHandleFun.saveData(data, function (item) {
         target.modal("hide");
+        console.log(data);
+        //这里会返回保存的id
+        if (toolMapHandleFun.defaultObj.callback) {
+            toolMapHandleFun.defaultObj.callback(item);
+        }
     });
-    console.log(data);
 };
 
 /**
@@ -354,65 +404,214 @@ toolMapHandleFun.createOverlay = function (result) {
     $.each(result, function (i, data) {
         switch (toolMapHandleFun.defaultObj.drawState) {
             case toolMapHandleFun.config.draw.polyline.key:
-                new AMap.Polyline({
+                var polyline = new AMap.Polyline({
                     path: data,
                     map: toolMapHandleFun.map,
                     borderWeight: 2, // 线条宽度，默认为 1
                     strokeColor: '#0000FF', // 线条颜色
-                    lineJoin: 'round' // 折线拐点连接处样式
+                    lineJoin: 'round', // 折线拐点连接处样式
+                    extData: data
+                });
+                polyline.on('mouseover', function (e) {
+                    var infoData = e.target.B.extData[0];
+                    toolMapHandleFun.showOverlayInfo({
+                        amap_id: e.target._amap_id,
+                        title: infoData.title,
+                        remark: infoData.remark
+                    });
                 });
                 break;
             case toolMapHandleFun.config.draw.polygon.key:
-                new AMap.Polygon({
+                var polygon = new AMap.Polygon({
                     path: data,
                     map: toolMapHandleFun.map,
                     borderWeight: 2, // 线条宽度，默认为 1
                     strokeColor: '#0000FF', // 线条颜色
-                    lineJoin: 'round' // 折线拐点连接处样式
+                    lineJoin: 'round', // 折线拐点连接处样式
+                    extData: data
+                });
+                polygon.on('mouseover', function (e) {
+                    var infoData = e.target.B.extData[0];
+                    toolMapHandleFun.showOverlayInfo({
+                        amap_id: e.target._amap_id,
+                        title: infoData.title,
+                        remark: infoData.remark
+                    });
                 });
                 break;
             case toolMapHandleFun.config.draw.rectangle.key:
                 var southWest = new AMap.LngLat(data[0].lng, data[0].lat);
                 var northEast = new AMap.LngLat(data[data.length - 2].lng, data[data.length - 2].lat);
-                var bounds = new AMap.Bounds(southWest, northEast) ;
+                var bounds = new AMap.Bounds(southWest, northEast);
                 var rectangle = new AMap.Rectangle({
                     bounds: bounds,
                     strokeColor: '#0000FF', // 线条颜色
                     strokeWeight: 2,
-                    strokeOpacity:0.5,
-                    strokeDasharray: [10,10],
+                    strokeOpacity: 0.5,
+                    strokeDasharray: [10, 10],
                     strokeStyle: 'solid',
-                    fillColor:'blue',
-                    fillOpacity:0.1,
-                    cursor:'pointer',
-                    zIndex:10
+                    fillColor: 'blue',
+                    fillOpacity: 0.1,
+                    cursor: 'pointer',
+                    zIndex: 10,
+                    extData: data
                 });
-                rectangle.setMap(toolMapHandleFun.map) ;
+                rectangle.setMap(toolMapHandleFun.map);
                 // 缩放地图到合适的视野级别
                 // toolMapHandleFun.map.setFitView([ rectangle ]) ;
-                var rectangleEditor = new AMap.RectangleEditor(toolMapHandleFun.map, rectangle) ;
+                var rectangleEditor = new AMap.RectangleEditor(toolMapHandleFun.map, rectangle);
+                rectangle.on('mouseover', function (e) {
+                    var infoData = e.target.B.extData[0];
+                    toolMapHandleFun.showOverlayInfo({
+                        amap_id: e.target._amap_id,
+                        title: infoData.title,
+                        remark: infoData.remark
+                    });
+                });
                 break;
-            case toolMapHandleFun.config.draw.circle.key:
-                new AMap.Circle({
+            case toolMapHandleFun.config.draw.circle.key: {
+                var empty = {};
+                jQuery.extend(empty, {title: "未定义标题", remark: "无说明"}, data);
+                data = empty;
+                var circle = new AMap.Circle({
                     center: data.center,
                     map: toolMapHandleFun.map,
                     radius: data.radius, // 半径
                     fillColor: data.fillColor,
-                    strokeColor: data.strokeColor
+                    strokeColor: data.strokeColor,
+                    extData: data
+                });
+                circle.on('mouseover', function (e) {
+                    toolMapHandleFun.showOverlayInfo({
+                        amap_id: e.target._amap_id,
+                        title: e.target.B.extData.title,
+                        remark: e.target.B.extData.remark
+                    });
                 });
                 break;
-            case toolMapHandleFun.config.draw.marker.key:
+            }
+            case toolMapHandleFun.config.draw.marker.key: {
+                var empty = {};
+                jQuery.extend(empty, {title: "未定义标题", remark: "无说明"}, data);
+                data = empty;
                 var marker = new AMap.Marker({
-                    position: data,
+                    position: [data.lng, data.lat],
                     map: toolMapHandleFun.map,
                     icon: '//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png',
-                    offset: new AMap.Pixel(-13, -30)
+                    offset: new AMap.Pixel(-13, -30),
+                    title: data.remark,
+                    extData: data,
+                    content: toolMapHandleFun.getOverlayContent(data.title)
+                });
+                marker.on('click', function (e) {
+                    toolMapHandleFun.showOverlayInfo({
+                        amap_id: e.target._amap_id,
+                        title: e.target.B.extData.title,
+                        remark: e.target.B.extData.remark
+                    });
                 });
                 break;
+            }
         }
     });
-
 };
+
+toolMapHandleFun.getOverlayContent = function (value) {
+    var html = "";
+    switch (toolMapHandleFun.defaultObj.drawState) {
+        case toolMapHandleFun.config.draw.marker.key:
+            var markerContent = '' +
+                '<div class="panel panel-body" style="width:95px;height:55px;">' +
+                '<p style="text-overflow: ellipsis; white-space: nowrap;">' + value +
+                '<img style="height:25.5px;width:19.8px;float: left;" src="http://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png">' +
+                '<div style="clear:both"></div>' +
+                '</p>' +
+                '</div>';
+            html = markerContent;
+            break;
+    }
+    return html;
+};
+
+toolMapHandleFun.showOverlayInfo = function (data) {
+    var target = $("#modelToolMapHandleMarkerView");
+    target.find("form").clearAll();
+    target.find("input[name='amap_id']").val(data.amap_id);
+    target.find("input[name='title']").val(data.title);
+    target.find("textarea[name='remark']").val(data.remark);
+    target.modal("show");
+};
+
+/**
+ * 覆盖物信息数据处理
+ */
+toolMapHandleFun.saveOverlayInfo = function () {
+    var target = $("#modelToolMapHandleMarkerView");
+    var form = target.find("form");
+    if (!form.valid()) {
+        return false;
+    }
+    var data = formSerializeArray(form);
+    var amap_id = target.find("input[name='amap_id']").val();
+    var overlays = [];
+    var result = undefined;
+    $.each(toolMapHandleFun.map.getAllOverlays(), function (i, overlay) {
+        if (amap_id == overlay._amap_id) {
+            overlays.push(overlay);
+            toolMapHandleFun.map.remove(overlay);
+        }
+    });
+    switch (toolMapHandleFun.defaultObj.drawState) {
+        case toolMapHandleFun.config.draw.marker.key: {
+            result = toolMapHandleFun.getOverlayByType(overlays);
+            for (var i = 0; i < result.length; i++) {
+                jQuery.extend(result[i], data);
+            }
+            break;
+        }
+        case toolMapHandleFun.config.draw.polyline.key: {
+            result = toolMapHandleFun.getOverlayByType(overlays);
+            for (var i = 0; i < result.length; i++) {
+                for (var j = 0; j < result[i].length; j++) {
+                    jQuery.extend(result[i][j], data);
+                }
+            }
+            break;
+        }
+        case toolMapHandleFun.config.draw.polygon.key: {
+            result = toolMapHandleFun.getOverlayByType(overlays);
+            for (var i = 0; i < result.length; i++) {
+                for (var j = 0; j < result[i].length; j++) {
+                    jQuery.extend(result[i][j], data);
+                }
+            }
+            break;
+        }
+        case toolMapHandleFun.config.draw.circle.key : {
+            result = toolMapHandleFun.getOverlayByType(overlays);
+            for (var i = 0; i < result.length; i++) {
+                jQuery.extend(result[i], data);
+            }
+            break;
+        }
+        case toolMapHandleFun.config.draw.rectangle.key: {
+            result = toolMapHandleFun.getOverlayByType(overlays);
+            for (var i = 0; i < result.length; i++) {
+                for (var j = 0; j < result[i].length; j++) {
+                    jQuery.extend(result[i][j], data);
+                }
+            }
+            break;
+        }
+        default:
+            break;
+    }
+    if (result) {
+        toolMapHandleFun.createOverlay(result);
+    }
+    target.modal("hide");
+};
+
 
 /**
  * 获取覆盖物中类型的数据
@@ -424,17 +623,38 @@ toolMapHandleFun.getOverlayByType = function (overlays) {
     switch (toolMapHandleFun.defaultObj.drawState) {
         case toolMapHandleFun.config.draw.polyline.key:
             $.each(overlays, function (i, overlay) {
-                result.push(overlay.B.path);
+                var path = overlay.B.path;
+                var extData = overlay.B.extData;
+                if ($.isArray(extData)) {
+                    if (extData.length != 0) {
+                        path = extData;
+                    }
+                }
+                result.push(path);
             });
             break;
         case toolMapHandleFun.config.draw.polygon.key:
             $.each(overlays, function (i, overlay) {
-                result.push(overlay.B.path);
+                var path = overlay.B.path;
+                var extData = overlay.B.extData;
+                if ($.isArray(extData)) {
+                    if (extData.length != 0) {
+                        path = extData;
+                    }
+                }
+                result.push(path);
             });
             break;
         case toolMapHandleFun.config.draw.rectangle.key:
             $.each(overlays, function (i, overlay) {
-                result.push(overlay.Je.path);
+                var path = overlay.Je.path;
+                var extData = overlay.Je.extData;
+                if ($.isArray(extData)) {
+                    if (extData.length != 0) {
+                        path = extData;
+                    }
+                }
+                result.push(path);
             });
             break;
         case toolMapHandleFun.config.draw.circle.key:
@@ -443,14 +663,20 @@ toolMapHandleFun.getOverlayByType = function (overlays) {
                     center: overlay.Je.center,
                     radius: overlay.Je.radius,
                     fillColor: overlay.Je.fillColor,
-                    strokeColor: overlay.Je.strokeColor
+                    strokeColor: overlay.Je.strokeColor,
+                    title: overlay.Je.extData.title,
+                    remark: overlay.Je.extData.remark
                 };
                 result.push(circle);
             });
             break;
         case toolMapHandleFun.config.draw.marker.key:
             $.each(overlays, function (i, overlay) {
-                result.push(overlay.B.position);
+                var extData = overlay.B.extData;
+                var position = overlay.B.position;
+                position.title = extData.title;
+                position.remark = extData.remark;
+                result.push(position);
             });
             break;
     }
@@ -537,15 +763,43 @@ toolMapHandleFun.fileUpload = function (target, tableName, id, deleteFlag, editF
 };
 
 toolMapHandleFun.saveData = function (data, callback) {
-    if (callback) {
-        callback();
-    }
+    $.ajax({
+        type: "POST",
+        url: getContextPath() + "/toolMapHandle/saveToolMapHandle",
+        data: {formData: JSON.stringify(data)},
+        success: function (result) {
+            if (result.ret) {
+                if (callback) {
+                    callback(result.data);
+                }
+            } else {
+                Alert("保存失败:" + result.errmsg);
+            }
+        },
+        error: function (e) {
+            Alert("调用服务端方法失败，失败原因:" + e);
+        }
+    });
 };
 
 toolMapHandleFun.getDataById = function (id, callback) {
-    if (callback) {
-        callback();
-    }
+    $.ajax({
+        type: "get",
+        url: getContextPath() + "/toolMapHandle/getToolMapHandleById",
+        data: {id: id},
+        success: function (result) {
+            if (result.ret) {
+                if (callback) {
+                    callback(result.data);
+                }
+            } else {
+                Alert("失败:" + result.errmsg);
+            }
+        },
+        error: function (e) {
+            Alert("调用服务端方法失败，失败原因:" + e);
+        }
+    });
 };
 
 

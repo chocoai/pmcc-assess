@@ -27,14 +27,13 @@
                     <form class="form-horizontal">
                         <div class="form-group ">
                             <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                                <button type="button" data-toggle="modal" href="#modelToolMapHandleView"
+                                <button type="button"
                                         class="btn btn-default"
-                                        onclick="toolMapHandleFun.loadMap({drawState:'marker',instantaneousLifeData:JSON.stringify([{P:30.589982,Q:104.083992,lng:104.083992,lat:30.589982}])});">
+                                        onclick="toolMapHandleFun.loadMap({drawState:'rectangle'});">
                                                   <i class="fa fa-map-marker"></i>
                                     map 
                                            
                                 </button>
-
                             </div>
                         </div>
                     </form>
@@ -47,7 +46,62 @@
 
 </body>
 
+<script>
+</script>
+
 <%@include file="/views/share/main_footer.jsp" %>
+<script>
+
+</script>
+
+
+<div id="modelToolMapHandleMarkerView" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title"><i class="fa fa-map"></i> 标注信息</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                        <form class="form-horizontal">
+                            <input type="hidden" name="amap_id" placeholder="高德地图所独有的名称id">
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-xs-2  col-sm-2  col-md-2  col-lg-2 control-label">
+                                        标注标题<span class="symbol required"></span>
+                                    </label>
+                                    <div class="col-xs-10  col-sm-10  col-md-10  col-lg-10">
+                                        <input type="text" class="form-control" name="title"
+                                               placeholder="标注标题" required="required">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-xs-2  col-sm-2  col-md-2  col-lg-2 control-label">
+                                    标注说明<span class="symbol required"></span>
+                                </label>
+                                <div class="col-xs-10  col-sm-10  col-md-10  col-lg-10">
+                                    <textarea placeholder="标注说明" required="required" class="form-control" name="remark"></textarea>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">
+                    取消
+                </button>
+                <button type="button" class="btn btn-primary" onclick="toolMapHandleFun.saveOverlayInfo();">
+                    保存
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <div id="modelToolMapHandleView" class="modal fade" tabindex="-1" role="dialog">
@@ -107,7 +161,7 @@
                                     <span class="label label-primary">截取的图层</span>
                                     <img class="img-responsive img-rounded">
                                 </div>
-                                <div class="col-xs-6  col-sm-6  col-md-6  col-lg-6">
+                                <div class="col-xs-6  col-sm-6  col-md-6  col-lg-6" style="display: none;">
                                     <input id="toolMapHandleFileId" name="toolMapHandleFileId" placeholder="截取附件(假如截图了则需要手动上传)" class="form-control" type="file">
                                     <div id="_toolMapHandleFileId"></div>
                                     <span class="label label-info">请把浏览器自动下载的图片使用文件框上传(假如浏览器没有下载则把右边显示的图片用鼠标右键下载下来)</span>
@@ -116,7 +170,6 @@
                             <div class="form-group">
                                 <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                                     <input type="hidden" name="toolMapHandleId">
-                                    <textarea placeholder="标注说明" class="form-control" name="remark"></textarea>
                                 </div>
                             </div>
                         </form>
