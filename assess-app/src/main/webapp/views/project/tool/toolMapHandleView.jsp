@@ -1,59 +1,9 @@
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en" class="no-js">
-<head>
-    <%@include file="/views/share/main_css.jsp" %>
-    <script src="${pageContext.request.contextPath}/assets/html2canvas/html2canvas.js"></script>
-    <script src="${pageContext.request.contextPath}/views/project/tool/toolMapHandle.js"></script>
-</head>
 
-<body class="nav-md footer_fixed">
-<div class="container body">
-    <div class="main_container">
-        <%@include file="/views/share/main_navigation.jsp" %>
-        <%@include file="/views/share/main_head.jsp" %>
-        <div class="right_col" role="main">
-            <div class="x_panel">
-                <div class="x_title">
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                    </ul>
-                    <h2><i class="fa ${baseViewDto.currentMenu.icon}"></i>
-                        ${baseViewDto.currentMenu.name} <%--这是用来显示标题的，固定格式--%>
-                    </h2>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="x_content">
-                    <form class="form-horizontal">
-                        <div class="form-group ">
-                            <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                                <button type="button"
-                                        class="btn btn-default"
-                                        onclick="toolMapHandleFun.loadMap({drawState:'rectangle'});">
-                                                  <i class="fa fa-map-marker"></i>
-                                    map 
-                                           
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- end: MAIN CONTAINER -->
-</div>
-
-</body>
-
-<script>
-</script>
-
-<%@include file="/views/share/main_footer.jsp" %>
-<script>
-
-</script>
-
+<script src="${pageContext.request.contextPath}/assets/html2canvas/html2canvas.js"></script>
+<script src="${pageContext.request.contextPath}/js/tool/toolMapHandle.js"></script>
 
 <div id="modelToolMapHandleMarkerView" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-sm">
@@ -84,7 +34,8 @@
                                     标注说明<span class="symbol required"></span>
                                 </label>
                                 <div class="col-xs-10  col-sm-10  col-md-10  col-lg-10">
-                                    <textarea placeholder="标注说明" required="required" class="form-control" name="remark"></textarea>
+                                    <textarea placeholder="标注说明" required="required" class="form-control"
+                                              name="remark"></textarea>
                                 </div>
                             </div>
                         </form>
@@ -162,7 +113,8 @@
                                     <img class="img-responsive img-rounded">
                                 </div>
                                 <div class="col-xs-6  col-sm-6  col-md-6  col-lg-6" style="display: none;">
-                                    <input id="toolMapHandleFileId" name="toolMapHandleFileId" placeholder="截取附件(假如截图了则需要手动上传)" class="form-control" type="file">
+                                    <input id="toolMapHandleFileId" name="toolMapHandleFileId"
+                                           placeholder="截取附件(假如截图了则需要手动上传)" class="form-control" type="file">
                                     <div id="_toolMapHandleFileId"></div>
                                     <span class="label label-info">请把浏览器自动下载的图片使用文件框上传(假如浏览器没有下载则把右边显示的图片用鼠标右键下载下来)</span>
                                 </div>

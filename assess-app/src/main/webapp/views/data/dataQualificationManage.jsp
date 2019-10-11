@@ -58,6 +58,16 @@
                                         data-toggle="modal" href="#divBox"> 新增
                                 </button>
                             </div>
+
+                            <%--<div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">--%>
+                                <%--<button type="button" class="btn btn-default"--%>
+                                        <%--onclick="toolMapHandleFun.loadMap({drawState:'rectangle',callback:function(item) {--%>
+                                          <%--console.info(item) ;--%>
+                                        <%--}});"><i--%>
+                                        <%--class="fa fa-map-marker"></i>map    --%>
+                                <%--</button>--%>
+                            <%--</div>--%>
+
                         </div>
 
                     </form>
@@ -74,6 +84,7 @@
 </body>
 
 <%@include file="/views/share/main_footer.jsp" %>
+<%@include file="/views/project/tool/toolMapHandleView.jsp" %>
 <script type="text/javascript">
 
     /**
@@ -216,14 +227,14 @@
         personSelect: function (this_) {
             var frm = $(this_).closest("form");
             var item = formParams(frm.attr("id"));
-            if (item.qualificationType){
+            if (item.qualificationType) {
                 erpEmployee.select({
                     multi: false,
                     currOrgId: 1,
                     userName: $("#userAccountName").val(),
                     userAccount: $("#userAccount").val(),
                     onSelected: function (data) {
-                        getAdPersonalIdentityDto(data.account,item.qualificationType, function (item) {
+                        getAdPersonalIdentityDto(data.account, item.qualificationType, function (item) {
                             if (item.length >= 1) {
                                 $("#userAccount").val(data.account);
                                 $("#userAccountName").val(data.name);
@@ -235,7 +246,7 @@
                         });
                     }
                 });
-            }else {
+            } else {
                 Alert("资格类型必须先选择!");
             }
         }
