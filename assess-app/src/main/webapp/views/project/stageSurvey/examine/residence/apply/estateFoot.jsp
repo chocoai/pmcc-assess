@@ -5,11 +5,6 @@
     <div class="x_title">基础设施情况</div>
 
     <div class="form-group">
-        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">基础信息外部</label>
-        <div class=" col-xs-6  col-sm-6  col-md-6  col-lg-6  col-sm-offset-1" id="industrySupplyInfoContainer">
-
-        </div>
-
         <div class="x-valid">
             <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">基础设施完备度<span
                     class="symbol required"></span></label>
@@ -18,6 +13,9 @@
                         name="infrastructureCompleteness" required="required">
                 </select>
             </div>
+        </div>
+        <div class=" col-xs-6  col-sm-6  col-md-6  col-lg-6  col-sm-offset-1" id="industrySupplyInfoContainer">
+
         </div>
     </div>
 

@@ -100,32 +100,14 @@
                 <div class="x-valid">
                     <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">容积率</label>
                     <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                        <c:if test="${!empty caseEstate.volumetricRate}">
-                            <c:choose>
-                                <c:when test="${caseEstate.volumetricRate.matches('[0-9.]+')}">
-                                    <label class="form-control">${caseEstate.volumetricRate*100}%</label>
-                                </c:when>
-                                <c:otherwise>
-                                    <label class="form-control">${caseEstate.volumetricRate}</label>
-                                </c:otherwise>
-                            </c:choose>
-                        </c:if>
+                        <label class="form-control">${caseEstate.volumetricRate}</label>
                     </div>
                 </div>
 
                 <div class="x-valid">
                     <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">绿化率</label>
                     <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                        <c:if test="${!empty caseEstate.greeningRate}">
-                            <c:choose>
-                                <c:when test="${caseEstate.greeningRate.matches('[0-9.]+')}">
-                                    <label class="form-control">${caseEstate.greeningRate*100}%</label>
-                                </c:when>
-                                <c:otherwise>
-                                    <label class="form-control">${caseEstate.greeningRate}</label>
-                                </c:otherwise>
-                            </c:choose>
-                        </c:if>
+                        <label class="form-control">${caseEstate.greeningRate}</label>
                     </div>
                 </div>
             </div>
@@ -394,16 +376,7 @@
                 <div class="x-valid">
                     <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">容积率</label>
                     <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                        <c:if test="${!empty caseEstateLandState.plotRatio}">
-                            <c:choose>
-                                <c:when test="${caseEstateLandState.plotRatio.matches('[0-9.]+')}">
-                                    <label class="form-control">${caseEstateLandState.plotRatio*100}%</label>
-                                </c:when>
-                                <c:otherwise>
-                                    <label class="form-control">${caseEstateLandState.plotRatio}</label>
-                                </c:otherwise>
-                            </c:choose>
-                        </c:if>
+                        <label class="form-control">${caseEstateLandState.plotRatio}</label>
                     </div>
                 </div>
                 <div class="x-valid">
@@ -415,16 +388,7 @@
                 <div class="x-valid">
                     <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">绿地率</label>
                     <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                        <c:if test="${!empty caseEstateLandState.greenSpaceRate}">
-                            <c:choose>
-                                <c:when test="${caseEstateLandState.greenSpaceRate.matches('[0-9.]+')}">
-                                    <label class="form-control">${caseEstateLandState.greenSpaceRate*100}%</label>
-                                </c:when>
-                                <c:otherwise>
-                                    <label class="form-control">${caseEstateLandState.greenSpaceRate}</label>
-                                </c:otherwise>
-                            </c:choose>
-                        </c:if>
+                        <label class="form-control">${caseEstateLandState.greenSpaceRate}</label>
                     </div>
                 </div>
             </div>

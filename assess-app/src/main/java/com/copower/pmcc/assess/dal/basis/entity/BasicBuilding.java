@@ -58,7 +58,7 @@ public class BasicBuilding {
 
     private BigDecimal diameterDepth;
 
-    private Integer landUseYear;
+    private BigDecimal landUseYear;
 
     private BigDecimal netHeight;
 
@@ -322,11 +322,11 @@ public class BasicBuilding {
         this.diameterDepth = diameterDepth;
     }
 
-    public Integer getLandUseYear() {
+    public BigDecimal getLandUseYear() {
         return landUseYear;
     }
 
-    public void setLandUseYear(Integer landUseYear) {
+    public void setLandUseYear(BigDecimal landUseYear) {
         this.landUseYear = landUseYear;
     }
 
