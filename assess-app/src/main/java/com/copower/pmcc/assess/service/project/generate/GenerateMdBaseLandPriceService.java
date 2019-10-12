@@ -284,25 +284,23 @@ public class GenerateMdBaseLandPriceService {
         builder.write("");
         builder.endRow();
         //容积率修正
-        if (mdBaseLandPrice.getHasFractionAmend()) {
-            builder.insertCell();
-            builder.write("容积率修正");
-            builder.insertCell();
-            builder.write(mdBaseLandPrice.getVolumeFractionAmend().toString());
-            builder.insertCell();
-            builder.write("");
-            builder.endRow();
-        }
+        builder.insertCell();
+        builder.write("容积率修正");
+        builder.insertCell();
+        builder.write(mdBaseLandPrice.getVolumeFractionAmend().toString());
+        builder.insertCell();
+        builder.write("");
+        builder.endRow();
+
         //开发程度修正
-        if (mdBaseLandPrice.getHasDevelopCorrect()) {
-            builder.insertCell();
-            builder.write("开发程度修正");
-            builder.insertCell();
-            builder.write(mdBaseLandPrice.getLandSurplusYear().toString());
-            builder.insertCell();
-            builder.write("与基准地价的开发程度一致");
-            builder.endRow();
-        }
+        builder.insertCell();
+        builder.write("开发程度修正");
+        builder.insertCell();
+        builder.write(mdBaseLandPrice.getLandSurplusYear().toString());
+        builder.insertCell();
+        builder.write("与基准地价的开发程度一致");
+        builder.endRow();
+
         //委估宗地单价（元/㎡）
         builder.insertCell();
         builder.write("委估宗地单价（元/㎡）");
@@ -939,9 +937,9 @@ public class GenerateMdBaseLandPriceService {
     public String getBaseLandPriceDevelopmentLevelAmendExplain() {
         SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(this.schemeJudgeObjectId);
         String setUseName = baseDataDicService.getNameById(schemeJudgeObject.getSetUse());
-        if (!getMdBaseLandPrice().getHasDevelopCorrect()) {
-            return String.format("由于本次估价对象%s用地设定的开发程度与对应的基准地价开发程度一致，因此不需要对开发程度修正。", setUseName);
-        }
+//        if (!getMdBaseLandPrice().getHasDevelopCorrect()) {
+//            return String.format("由于本次估价对象%s用地设定的开发程度与对应的基准地价开发程度一致，因此不需要对开发程度修正。", setUseName);
+//        }
         return String.format("由于本次估价对象%s用地设定的开发程度与对应的基准地价开发程度不一致，因此综合考虑需要对估价对象开发程度修正%s元/㎡。", setUseName, getMdBaseLandPrice().getDevelopCorrect());
     }
 
@@ -958,9 +956,9 @@ public class GenerateMdBaseLandPriceService {
     public String getBaseLandPricePlotRatioAmendExplain() {
         SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(this.schemeJudgeObjectId);
         String setUseName = baseDataDicService.getNameById(schemeJudgeObject.getSetUse());
-        if (!getMdBaseLandPrice().getHasFractionAmend()) {
-            return String.format("考虑容积率对%s用地的影响不大，故不对容积率进行修正。", setUseName);
-        }
+//        if (!getMdBaseLandPrice().getHasFractionAmend()) {
+//            return String.format("考虑容积率对%s用地的影响不大，故不对容积率进行修正。", setUseName);
+//        }
 
         String s = "K3=%s=%s。";
         //根据容积率找到配置中对应的容积率修正
