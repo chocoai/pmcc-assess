@@ -60,7 +60,6 @@ public class ProjectTaskCostApproachAssist implements ProjectTaskInterface {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskCostApproachApproval", processInsId, boxId, taskId, agentUserAccount);
         MdCostApproach data = mdCostApproachService.getDataByPlanDetailsId(projectPlanDetails.getId());
         modelAndView.addObject("master", data);
-        setViewParam(projectPlanDetails, modelAndView);
         return modelAndView;
     }
 
@@ -78,7 +77,6 @@ public class ProjectTaskCostApproachAssist implements ProjectTaskInterface {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskCostApproachApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
         MdCostApproach data = mdCostApproachService.getDataByPlanDetailsId(projectPlanDetails.getId());
         modelAndView.addObject("master", data);
-        setViewParam(projectPlanDetails, modelAndView);
         return modelAndView;
     }
 
@@ -110,14 +108,5 @@ public class ProjectTaskCostApproachAssist implements ProjectTaskInterface {
     private void setViewParam(ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) {
         List<BaseDataDic> dataDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_SETTING);
         modelAndView.addObject("taxesTypes", dataDicList);
-
-        //土地剩余年限
-        Integer judgeObjectId = projectPlanDetails.getJudgeObjectId();
-        SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
-        BigDecimal landRemainingYear = schemeJudgeObject.getLandRemainingYear();
-        //landRemainingYear = new BigDecimal("20.01");
-        modelAndView.addObject("landRemainingYear", landRemainingYear);
-
-
     }
 }

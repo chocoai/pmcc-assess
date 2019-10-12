@@ -6,6 +6,16 @@ import java.util.Date;
 public class MdCostApproach {
     private Integer id;
 
+    private Integer planDetailsId;
+
+    private String processInsId;
+
+    private BigDecimal farmlandArea;
+
+    private BigDecimal ploughArea;
+
+    private Integer populationNumber;
+
     private Integer rewardRateId;
 
     private String rewardRate;
@@ -34,15 +44,13 @@ public class MdCostApproach {
 
     private String incrementalBenefitRemark;
 
-    private String processInsId;
+    private String plotRatioAdjust;
 
-    private BigDecimal farmlandArea;
+    private String plotRatioAdjustRemark;
 
-    private BigDecimal ploughArea;
+    private String plotRatioElementAmend;
 
-    private Integer populationNumber;
-
-    private Integer planDetailsId;
+    private String plotRatioElementAmendRemark;
 
     private String creator;
 
@@ -50,13 +58,9 @@ public class MdCostApproach {
 
     private Date gmtModified;
 
-    private String plotRatioAdjustRemark;
+    private BigDecimal landRemainingYear;
 
-    private String plotRatioAdjust;
-
-    private String plotRatioElementAmendRemark;
-
-    private String plotRatioElementAmend;
+    private String landRemainingYearRemark;
 
     public Integer getId() {
         return id;
@@ -64,6 +68,46 @@ public class MdCostApproach {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getPlanDetailsId() {
+        return planDetailsId;
+    }
+
+    public void setPlanDetailsId(Integer planDetailsId) {
+        this.planDetailsId = planDetailsId;
+    }
+
+    public String getProcessInsId() {
+        return processInsId;
+    }
+
+    public void setProcessInsId(String processInsId) {
+        this.processInsId = processInsId == null ? null : processInsId.trim();
+    }
+
+    public BigDecimal getFarmlandArea() {
+        return farmlandArea;
+    }
+
+    public void setFarmlandArea(BigDecimal farmlandArea) {
+        this.farmlandArea = farmlandArea;
+    }
+
+    public BigDecimal getPloughArea() {
+        return ploughArea;
+    }
+
+    public void setPloughArea(BigDecimal ploughArea) {
+        this.ploughArea = ploughArea;
+    }
+
+    public Integer getPopulationNumber() {
+        return populationNumber;
+    }
+
+    public void setPopulationNumber(Integer populationNumber) {
+        this.populationNumber = populationNumber;
     }
 
     public Integer getRewardRateId() {
@@ -178,44 +222,36 @@ public class MdCostApproach {
         this.incrementalBenefitRemark = incrementalBenefitRemark == null ? null : incrementalBenefitRemark.trim();
     }
 
-    public String getProcessInsId() {
-        return processInsId;
+    public String getPlotRatioAdjust() {
+        return plotRatioAdjust;
     }
 
-    public void setProcessInsId(String processInsId) {
-        this.processInsId = processInsId == null ? null : processInsId.trim();
+    public void setPlotRatioAdjust(String plotRatioAdjust) {
+        this.plotRatioAdjust = plotRatioAdjust == null ? null : plotRatioAdjust.trim();
     }
 
-    public BigDecimal getFarmlandArea() {
-        return farmlandArea;
+    public String getPlotRatioAdjustRemark() {
+        return plotRatioAdjustRemark;
     }
 
-    public void setFarmlandArea(BigDecimal farmlandArea) {
-        this.farmlandArea = farmlandArea;
+    public void setPlotRatioAdjustRemark(String plotRatioAdjustRemark) {
+        this.plotRatioAdjustRemark = plotRatioAdjustRemark == null ? null : plotRatioAdjustRemark.trim();
     }
 
-    public BigDecimal getPloughArea() {
-        return ploughArea;
+    public String getPlotRatioElementAmend() {
+        return plotRatioElementAmend;
     }
 
-    public void setPloughArea(BigDecimal ploughArea) {
-        this.ploughArea = ploughArea;
+    public void setPlotRatioElementAmend(String plotRatioElementAmend) {
+        this.plotRatioElementAmend = plotRatioElementAmend == null ? null : plotRatioElementAmend.trim();
     }
 
-    public Integer getPopulationNumber() {
-        return populationNumber;
+    public String getPlotRatioElementAmendRemark() {
+        return plotRatioElementAmendRemark;
     }
 
-    public void setPopulationNumber(Integer populationNumber) {
-        this.populationNumber = populationNumber;
-    }
-
-    public Integer getPlanDetailsId() {
-        return planDetailsId;
-    }
-
-    public void setPlanDetailsId(Integer planDetailsId) {
-        this.planDetailsId = planDetailsId;
+    public void setPlotRatioElementAmendRemark(String plotRatioElementAmendRemark) {
+        this.plotRatioElementAmendRemark = plotRatioElementAmendRemark == null ? null : plotRatioElementAmendRemark.trim();
     }
 
     public String getCreator() {
@@ -242,35 +278,19 @@ public class MdCostApproach {
         this.gmtModified = gmtModified;
     }
 
-    public String getPlotRatioAdjustRemark() {
-        return plotRatioAdjustRemark;
+    public BigDecimal getLandRemainingYear() {
+        return landRemainingYear;
     }
 
-    public void setPlotRatioAdjustRemark(String plotRatioAdjustRemark) {
-        this.plotRatioAdjustRemark = plotRatioAdjustRemark == null ? null : plotRatioAdjustRemark.trim();
+    public void setLandRemainingYear(BigDecimal landRemainingYear) {
+        this.landRemainingYear = landRemainingYear;
     }
 
-    public String getPlotRatioAdjust() {
-        return plotRatioAdjust;
+    public String getLandRemainingYearRemark() {
+        return landRemainingYearRemark;
     }
 
-    public void setPlotRatioAdjust(String plotRatioAdjust) {
-        this.plotRatioAdjust = plotRatioAdjust == null ? null : plotRatioAdjust.trim();
-    }
-
-    public String getPlotRatioElementAmendRemark() {
-        return plotRatioElementAmendRemark;
-    }
-
-    public void setPlotRatioElementAmendRemark(String plotRatioElementAmendRemark) {
-        this.plotRatioElementAmendRemark = plotRatioElementAmendRemark == null ? null : plotRatioElementAmendRemark.trim();
-    }
-
-    public String getPlotRatioElementAmend() {
-        return plotRatioElementAmend;
-    }
-
-    public void setPlotRatioElementAmend(String plotRatioElementAmend) {
-        this.plotRatioElementAmend = plotRatioElementAmend == null ? null : plotRatioElementAmend.trim();
+    public void setLandRemainingYearRemark(String landRemainingYearRemark) {
+        this.landRemainingYearRemark = landRemainingYearRemark == null ? null : landRemainingYearRemark.trim();
     }
 }

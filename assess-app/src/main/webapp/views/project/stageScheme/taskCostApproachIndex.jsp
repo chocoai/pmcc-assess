@@ -46,7 +46,7 @@
                                         </label>
                                         <div class="col-sm-3">
                                             <input type="text" placeholder="农用地总面积" class="form-control"
-                                                   name="farmlandArea" required
+                                                   name="farmlandArea" required onblur="getPloughArearatio()"
                                                    value="${master.farmlandArea}" data-rule-number="true"
                                                    id="farmlandArea">
                                         </div>
@@ -57,7 +57,7 @@
                                         </label>
                                         <div class="col-sm-3">
                                             <input type="text" value="${master.ploughArea}" data-rule-number="true"
-                                                   required
+                                                   required onblur="getPloughArearatio()"
                                                    placeholder="耕地面积" class="form-control" name="ploughArea"
                                                    id="ploughArea">
                                         </div>
@@ -301,6 +301,28 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
+                                        <div class="x-valid">
+                                            <label class="col-sm-1 control-label">
+                                                剩余年限
+                                            </label>
+                                            <div class="col-sm-3">
+                                                <input type="text" placeholder="剩余年限" class="form-control"
+                                                       id="landRemainingYear" data-rule-number="true"
+                                                       name="landRemainingYear" required onblur="getYearFixed()"
+                                                       value="${master.landRemainingYear}">
+                                            </div>
+                                        </div>
+                                        <div class="x-valid">
+                                            <label class="col-sm-1 control-label">
+                                                说明
+                                            </label>
+                                            <div class="col-sm-3">
+                                                <input type="text" value="${master.landRemainingYearRemark}"
+                                                       class="form-control" name="landRemainingYearRemark">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
                                         <label class="col-sm-1 control-label">
                                             还原利率
                                         </label>
@@ -336,12 +358,18 @@
                                         <table class="table table-bordered">
                                             <tbody>
                                             <tr>
+                                                <td> 耕地比例</td>
+                                                <td id="ploughArearatio"></td>
+                                                <td> 非耕地比例</td>
+                                                <td id="noPloughArearatio">
+                                                </td>
+                                            </tr>
+                                            <tr>
                                                 <td> 土地取得费及相关税费(元/亩)</td>
                                                 <td id="landAcquisitionBhou"></td>
                                                 <td> 土地开发费(元/亩)</td>
                                                 <td id="landProductionBhou">
                                                 </td>
-
                                             </tr>
                                             <tr>
                                                 <td> 土地开发利息(元/亩)</td>
@@ -357,7 +385,6 @@
                                                 </td>
                                                 <td> 无限年期土地使用权价格(元/亩)</td>
                                                 <td id="landUseBhou">
-
                                                 </td>
                                             </tr>
                                             <tr>
@@ -366,7 +393,6 @@
                                                 </td>
                                                 <td> 年期修正（元/亩）</td>
                                                 <td id="priceCorrectionBhou">
-
                                                 </td>
                                             </tr>
                                             <tr>
@@ -375,14 +401,12 @@
                                                 </td>
                                                 <td> 容积率修正(元/亩)</td>
                                                 <td id="plotRatioAdjustBhou">
-
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td> 委估宗地价格(元/亩)</td>
                                                 <td id="parcelBhou">
                                                 </td>
-
                                             </tr>
                                             </tbody>
                                         </table>
@@ -547,6 +571,8 @@
         formData.plotRatioElementAmendRemark = formDataOther.plotRatioElementAmendRemark;
         formData.plotRatioAdjust = AssessCommon.pointToPercent(formDataOther.plotRatioAdjust);
         formData.plotRatioAdjustRemark = formDataOther.plotRatioAdjustRemark;
+        formData.landRemainingYear = formDataOther.landRemainingYear;
+        formData.landRemainingYearRemark = formDataOther.landRemainingYearRemark;
 
         if ("${processInsId}" != "0") {
             submitEditToServer(JSON.stringify(formData));
@@ -565,8 +591,24 @@
     $(function () {
         if ("${master}") {
             getLandAcquisitionBhou("${master.id}")
+            getPloughArearatio("${master.farmlandArea}", "${master.ploughArea}");
         }
     })
+
+    //耕地比例
+    function getPloughArearatio(farmlandAreaVal, ploughAreaVal) {
+        var farmlandArea = parseFloat($("#farmlandArea").val()) ? parseFloat($("#farmlandArea").val()) : 0;
+        var ploughArea = parseFloat($("#ploughArea").val()) ? parseFloat($("#ploughArea").val()) : 0;
+        if (farmlandAreaVal && ploughAreaVal) {
+            farmlandArea = parseFloat(farmlandAreaVal);
+            ploughArea = parseFloat(ploughAreaVal);
+        }
+        var ploughArearatio = getSomePlaces(ploughArea/farmlandArea,4);
+        var noPloughArearatio = 1-ploughArearatio;
+        $("#ploughArearatio").text(AssessCommon.pointToPercent(ploughArearatio));
+        $("#noPloughArearatio").text(AssessCommon.pointToPercent(noPloughArearatio));
+
+    }
 
 
     //土地取得费及相关税费(元/亩)
@@ -702,7 +744,7 @@
             rewardRate = AssessCommon.percentToPoint(rewardRatePercent)
         }
         //E29
-        var landRemainingYear = "${landRemainingYear}";
+        var landRemainingYear = parseFloat($("#landRemainingYear").val());
         if (rewardRate && landRemainingYear) {
             var temp = Math.pow(1 + parseFloat(rewardRate), landRemainingYear);
             //年期修正H33
@@ -868,7 +910,7 @@
         loadDataList: function (masterId) {
             var cols = [];
             cols.push({field: 'typeName', title: '类型'});
-            cols.push({field: 'standard', title: '标准1/标准2'});
+            cols.push({field: 'standard', title: '耕地标准/非耕地标准'});
             cols.push({field: 'price', title: '价格(元/亩)'});
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
@@ -993,7 +1035,7 @@
                                 }
                                 case"data.land.approximation.method.occupation.land": {
                                     html += '<div class="x-valid">';
-                                    html += '<label class="col-sm-1 control-label">标准1</label>';
+                                    html += '<label class="col-sm-1 control-label">耕地标准</label>';
                                     html += '<div class="col-sm-3">';
                                     if (result.data.standardFirst != null) {
                                         html += '<input type="text" name="standardFirst" value="' + result.data.standardFirst + '" class="form-control" data-rule-number="true">';
@@ -1003,7 +1045,7 @@
                                     html += '</div>';
                                     html += '</div>';
                                     html += '<div class="x-valid">';
-                                    html += '<label class="col-sm-1 control-label">标准2</label>';
+                                    html += '<label class="col-sm-1 control-label">非耕地标准</label>';
                                     html += '<div class="col-sm-3">';
                                     if (result.data.standardSecond != null) {
                                         html += '<input type="text" name="standardSecond" value="' + result.data.standardSecond + '" class="form-control" data-rule-number="true">';
@@ -1016,7 +1058,7 @@
                                 }
                                 case"data.land.approximation.method.crops.compensate": {
                                     html += '<div class="x-valid">';
-                                    html += '<label class="col-sm-1 control-label">标准1</label>';
+                                    html += '<label class="col-sm-1 control-label">耕地标准</label>';
                                     html += '<div class="col-sm-3">';
                                     if (result.data.standardFirst != null) {
                                         html += '<input type="text" name="standardFirst" class="form-control x-percent" value="' + AssessCommon.pointToPercent(result.data.standardFirst) + '">';
@@ -1026,7 +1068,7 @@
                                     html += '</div>';
                                     html += '</div>';
                                     html += '<div class="x-valid">';
-                                    html += '<label class="col-sm-1 control-label">标准2</label>';
+                                    html += '<label class="col-sm-1 control-label">非耕地标准</label>';
                                     html += '<div class="col-sm-3">';
                                     if (result.data.standardSecond != null) {
                                         html += '<input type="text" name="standardSecond" value="' + result.data.standardSecond + '" class="form-control" data-rule-number="true">';
@@ -1043,7 +1085,7 @@
                                 }
                                 case "data.land.approximation.method.land.acquisition": {
                                     html += '<div class="x-valid">';
-                                    html += '<label class="col-sm-1 control-label">标准1</label>';
+                                    html += '<label class="col-sm-1 control-label">标准</label>';
                                     html += '<div class="col-sm-3">';
                                     if (result.data.standardFirst != null) {
                                         html += '<input type="text" name="standardFirst" class="form-control x-percent" value="' + AssessCommon.pointToPercent(result.data.standardFirst) + '">';
@@ -1083,13 +1125,13 @@
                 }
                 case"data.land.approximation.method.occupation.land": {
                     html += '<div class="x-valid">';
-                    html += '<label class="col-sm-1 control-label">标准1</label>';
+                    html += '<label class="col-sm-1 control-label">耕地标准</label>';
                     html += '<div class="col-sm-3">';
                     html += '<input type="text" name="standardFirst" class="form-control" data-rule-number="true">';
                     html += '</div>';
                     html += '</div>';
                     html += '<div class="x-valid">';
-                    html += '<label class="col-sm-1 control-label">标准2</label>';
+                    html += '<label class="col-sm-1 control-label">非耕地标准</label>';
                     html += '<div class="col-sm-3">';
                     html += '<input type="text" name="standardSecond" class="form-control" data-rule-number="true">';
                     html += '</div>';
@@ -1098,13 +1140,13 @@
                 }
                 case"data.land.approximation.method.crops.compensate": {
                     html += '<div class="x-valid">';
-                    html += '<label class="col-sm-1 control-label">标准1</label>';
+                    html += '<label class="col-sm-1 control-label">耕地标准</label>';
                     html += '<div class="col-sm-3">';
                     html += '<input type="text" name="standardFirst" class="form-control x-percent">';
                     html += '</div>';
                     html += '</div>';
                     html += '<div class="x-valid">';
-                    html += '<label class="col-sm-1 control-label">标准2</label>';
+                    html += '<label class="col-sm-1 control-label">非耕地标准</label>';
                     html += '<div class="col-sm-3">';
                     html += '<input type="text" name="standardSecond" class="form-control" data-rule-number="true">';
                     html += '</div>';
@@ -1117,7 +1159,7 @@
                 }
                 case "data.land.approximation.method.land.acquisition": {
                     html += '<div class="x-valid">';
-                    html += '<label class="col-sm-1 control-label">标准1<span class="symbol required"></span></label>';
+                    html += '<label class="col-sm-1 control-label">标准<span class="symbol required"></span></label>';
                     html += '<div class="col-sm-3">';
                     html += '<input type="text" name="standardFirst" class="form-control x-percent" required>';
                     html += '</div>';

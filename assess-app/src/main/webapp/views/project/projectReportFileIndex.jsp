@@ -513,6 +513,7 @@
                 <input type="hidden" name="declareRecordId">
                 <input type="hidden" name="certifyPartCategory">
                 <input type="hidden" name="id">
+                <input type="hidden" name="bisEnable">
                 <div class="modal-body">
                     <input type="button" class="btn btn-primary btn-xs"
                            onclick="correspondingSitePic()"
