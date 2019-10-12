@@ -6,15 +6,45 @@ import java.util.Date;
 public class MdBaseLandPrice {
     private Integer id;
 
+    private Integer planDetailsId;
+
+    private String processInsId;
+
     private Integer rewardRateId;
 
     private String rewardRate;
 
-    private Boolean hasDevelopCorrect;
+    private BigDecimal standardPremium;
+
+    private String standardPremiumRemark;
+
+    private BigDecimal legalAge;
+
+    private String legalAgeRemark;
+
+    private BigDecimal landSurplusYear;
+
+    private String landSurplusYearRemark;
+
+    private BigDecimal periodAmend;
 
     private BigDecimal developCorrect;
 
-    private BigDecimal periodAmend;
+    private String developCorrectRemark;
+
+    private BigDecimal volumetricRate;
+
+    private String volumetricRateRemark;
+
+    private BigDecimal evaluationArea;
+
+    private String evaluationAreaRemark;
+
+    private BigDecimal dateAmend;
+
+    private BigDecimal volumeFractionAmend;
+
+    private BigDecimal areaAndSeveralAmend;
 
     private BigDecimal parcelPrice;
 
@@ -26,25 +56,7 @@ public class MdBaseLandPrice {
 
     private String correctionDifference;
 
-    private BigDecimal standardPremium;
-
-    private BigDecimal dateAmend;
-
-    private BigDecimal legalAge;
-
-    private BigDecimal landSurplusYear;
-
-    private Boolean hasFractionAmend;
-
-    private BigDecimal volumeFractionAmend;
-
-    private BigDecimal areaAndSeveralAmend;
-
-    private BigDecimal evaluationArea;
-
-    private BigDecimal volumetricRate;
-
-    private String processInsId;
+    private String landLevelContent;
 
     private String creator;
 
@@ -58,6 +70,22 @@ public class MdBaseLandPrice {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getPlanDetailsId() {
+        return planDetailsId;
+    }
+
+    public void setPlanDetailsId(Integer planDetailsId) {
+        this.planDetailsId = planDetailsId;
+    }
+
+    public String getProcessInsId() {
+        return processInsId;
+    }
+
+    public void setProcessInsId(String processInsId) {
+        this.processInsId = processInsId == null ? null : processInsId.trim();
     }
 
     public Integer getRewardRateId() {
@@ -76,12 +104,60 @@ public class MdBaseLandPrice {
         this.rewardRate = rewardRate == null ? null : rewardRate.trim();
     }
 
-    public Boolean getHasDevelopCorrect() {
-        return hasDevelopCorrect;
+    public BigDecimal getStandardPremium() {
+        return standardPremium;
     }
 
-    public void setHasDevelopCorrect(Boolean hasDevelopCorrect) {
-        this.hasDevelopCorrect = hasDevelopCorrect;
+    public void setStandardPremium(BigDecimal standardPremium) {
+        this.standardPremium = standardPremium;
+    }
+
+    public String getStandardPremiumRemark() {
+        return standardPremiumRemark;
+    }
+
+    public void setStandardPremiumRemark(String standardPremiumRemark) {
+        this.standardPremiumRemark = standardPremiumRemark == null ? null : standardPremiumRemark.trim();
+    }
+
+    public BigDecimal getLegalAge() {
+        return legalAge;
+    }
+
+    public void setLegalAge(BigDecimal legalAge) {
+        this.legalAge = legalAge;
+    }
+
+    public String getLegalAgeRemark() {
+        return legalAgeRemark;
+    }
+
+    public void setLegalAgeRemark(String legalAgeRemark) {
+        this.legalAgeRemark = legalAgeRemark == null ? null : legalAgeRemark.trim();
+    }
+
+    public BigDecimal getLandSurplusYear() {
+        return landSurplusYear;
+    }
+
+    public void setLandSurplusYear(BigDecimal landSurplusYear) {
+        this.landSurplusYear = landSurplusYear;
+    }
+
+    public String getLandSurplusYearRemark() {
+        return landSurplusYearRemark;
+    }
+
+    public void setLandSurplusYearRemark(String landSurplusYearRemark) {
+        this.landSurplusYearRemark = landSurplusYearRemark == null ? null : landSurplusYearRemark.trim();
+    }
+
+    public BigDecimal getPeriodAmend() {
+        return periodAmend;
+    }
+
+    public void setPeriodAmend(BigDecimal periodAmend) {
+        this.periodAmend = periodAmend;
     }
 
     public BigDecimal getDevelopCorrect() {
@@ -92,12 +168,68 @@ public class MdBaseLandPrice {
         this.developCorrect = developCorrect;
     }
 
-    public BigDecimal getPeriodAmend() {
-        return periodAmend;
+    public String getDevelopCorrectRemark() {
+        return developCorrectRemark;
     }
 
-    public void setPeriodAmend(BigDecimal periodAmend) {
-        this.periodAmend = periodAmend;
+    public void setDevelopCorrectRemark(String developCorrectRemark) {
+        this.developCorrectRemark = developCorrectRemark == null ? null : developCorrectRemark.trim();
+    }
+
+    public BigDecimal getVolumetricRate() {
+        return volumetricRate;
+    }
+
+    public void setVolumetricRate(BigDecimal volumetricRate) {
+        this.volumetricRate = volumetricRate;
+    }
+
+    public String getVolumetricRateRemark() {
+        return volumetricRateRemark;
+    }
+
+    public void setVolumetricRateRemark(String volumetricRateRemark) {
+        this.volumetricRateRemark = volumetricRateRemark == null ? null : volumetricRateRemark.trim();
+    }
+
+    public BigDecimal getEvaluationArea() {
+        return evaluationArea;
+    }
+
+    public void setEvaluationArea(BigDecimal evaluationArea) {
+        this.evaluationArea = evaluationArea;
+    }
+
+    public String getEvaluationAreaRemark() {
+        return evaluationAreaRemark;
+    }
+
+    public void setEvaluationAreaRemark(String evaluationAreaRemark) {
+        this.evaluationAreaRemark = evaluationAreaRemark == null ? null : evaluationAreaRemark.trim();
+    }
+
+    public BigDecimal getDateAmend() {
+        return dateAmend;
+    }
+
+    public void setDateAmend(BigDecimal dateAmend) {
+        this.dateAmend = dateAmend;
+    }
+
+    public BigDecimal getVolumeFractionAmend() {
+        return volumeFractionAmend;
+    }
+
+    public void setVolumeFractionAmend(BigDecimal volumeFractionAmend) {
+        this.volumeFractionAmend = volumeFractionAmend;
+    }
+
+    public BigDecimal getAreaAndSeveralAmend() {
+        return areaAndSeveralAmend;
+    }
+
+    public void setAreaAndSeveralAmend(BigDecimal areaAndSeveralAmend) {
+        this.areaAndSeveralAmend = areaAndSeveralAmend;
     }
 
     public BigDecimal getParcelPrice() {
@@ -140,84 +272,12 @@ public class MdBaseLandPrice {
         this.correctionDifference = correctionDifference == null ? null : correctionDifference.trim();
     }
 
-    public BigDecimal getStandardPremium() {
-        return standardPremium;
+    public String getLandLevelContent() {
+        return landLevelContent;
     }
 
-    public void setStandardPremium(BigDecimal standardPremium) {
-        this.standardPremium = standardPremium;
-    }
-
-    public BigDecimal getDateAmend() {
-        return dateAmend;
-    }
-
-    public void setDateAmend(BigDecimal dateAmend) {
-        this.dateAmend = dateAmend;
-    }
-
-    public BigDecimal getLegalAge() {
-        return legalAge;
-    }
-
-    public void setLegalAge(BigDecimal legalAge) {
-        this.legalAge = legalAge;
-    }
-
-    public BigDecimal getLandSurplusYear() {
-        return landSurplusYear;
-    }
-
-    public void setLandSurplusYear(BigDecimal landSurplusYear) {
-        this.landSurplusYear = landSurplusYear;
-    }
-
-    public Boolean getHasFractionAmend() {
-        return hasFractionAmend;
-    }
-
-    public void setHasFractionAmend(Boolean hasFractionAmend) {
-        this.hasFractionAmend = hasFractionAmend;
-    }
-
-    public BigDecimal getVolumeFractionAmend() {
-        return volumeFractionAmend;
-    }
-
-    public void setVolumeFractionAmend(BigDecimal volumeFractionAmend) {
-        this.volumeFractionAmend = volumeFractionAmend;
-    }
-
-    public BigDecimal getAreaAndSeveralAmend() {
-        return areaAndSeveralAmend;
-    }
-
-    public void setAreaAndSeveralAmend(BigDecimal areaAndSeveralAmend) {
-        this.areaAndSeveralAmend = areaAndSeveralAmend;
-    }
-
-    public BigDecimal getEvaluationArea() {
-        return evaluationArea;
-    }
-
-    public void setEvaluationArea(BigDecimal evaluationArea) {
-        this.evaluationArea = evaluationArea;
-    }
-
-    public BigDecimal getVolumetricRate() {
-        return volumetricRate;
-    }
-
-    public void setVolumetricRate(BigDecimal volumetricRate) {
-        this.volumetricRate = volumetricRate;
-    }
-
-    public String getProcessInsId() {
-        return processInsId;
-    }
-
-    public void setProcessInsId(String processInsId) {
-        this.processInsId = processInsId == null ? null : processInsId.trim();
+    public void setLandLevelContent(String landLevelContent) {
+        this.landLevelContent = landLevelContent == null ? null : landLevelContent.trim();
     }
 
     public String getCreator() {
