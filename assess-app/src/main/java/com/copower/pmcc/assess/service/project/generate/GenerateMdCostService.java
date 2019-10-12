@@ -301,14 +301,14 @@ public class GenerateMdCostService implements Serializable {
                 BigDecimal bigDecimal = ArithmeticUtils.add(new BigDecimal[]{ArithmeticUtils.createBigDecimal(param1), ArithmeticUtils.createBigDecimal(param2), param3, param4, param5, param6});
                 return ArithmeticUtils.round(bigDecimal.toString(), 2);
             }
-            case MarketCost_Unilateral_cost:{
+            case MarketCost_Unilateral_cost: {
                 List<BigDecimal> bigDecimalList = Lists.newArrayList();
                 bigDecimalList.add(target.getConstructionInstallationEngineeringFee());
                 bigDecimalList.add(target.getInfrastructureCost());
                 bigDecimalList.add(target.getInfrastructureMatchingCost());
                 bigDecimalList.add(target.getOtherEngineeringCost());
                 bigDecimalList.add(target.getDevDuring());
-                BigDecimal bigDecimal = ArithmeticUtils.add(bigDecimalList) ;
+                BigDecimal bigDecimal = ArithmeticUtils.add(bigDecimalList);
                 return ArithmeticUtils.round(bigDecimal.toString(), 0);
             }
             case MarketCost_constructionSubtotal: {//成本法建设成本总计
@@ -719,7 +719,7 @@ public class GenerateMdCostService implements Serializable {
             case MarketCost_ResidueRatio_remark: {
                 if (StringUtils.isNotBlank(target.getResidueRatioRemark())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), target.getResidueRatioRemark());
-                }else {
+                } else {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), "无说明");
                 }
                 break;
@@ -733,13 +733,13 @@ public class GenerateMdCostService implements Serializable {
                 }
                 switch (toolResidueRatio.getType()) {
                     case 0:
-                        generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), "1-(1-残值率)✖已使用年限➗耐用年限");
+                        generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), "1-(1-残值率)×已使用年限÷耐用年限");
                         break;
                     case 1:
                         generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), "主题结构成新率+设备成新率+装饰成新率");
                         break;
                     case 2:
-                        generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), "(1-(1-残值率)✖已使用年限➗耐用年限)✖年限法权重+(主题结构成新率+设备成新率+装饰成新率)✖观察法权重");
+                        generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), "(1-(1-残值率)×已使用年限÷耐用年限)×年限法权重+(主题结构成新率+设备成新率+装饰成新率)×观察法权重");
                         break;
                 }
             }
@@ -759,8 +759,11 @@ public class GenerateMdCostService implements Serializable {
                     if (toolResidueRatio.getAgeRate() != null) {
                         stringBuilder.append("年限权重:").append(ArithmeticUtils.getBigDecimalString(toolResidueRatio.getAgeRate()));
                     }
-//                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), stringBuilder.toString());
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), toolResidueRatio.getResultValue());
+                    if (StringUtils.isNotBlank(stringBuilder.toString())) {
+                        generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), stringBuilder.toString());
+                    } else {
+                        generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), toolResidueRatio.getResultValue());
+                    }
                 } catch (Exception e) {
                 }
             }
