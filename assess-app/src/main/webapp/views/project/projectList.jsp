@@ -51,7 +51,8 @@
                                         </label>
                                         <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
                                             <input type="hidden" id="queryMember">
-                                            <input type="text" data-rule-maxlength="50" readonly onclick="selectProjectMember()"
+                                            <input type="text" data-rule-maxlength="50" readonly
+                                                   onclick="selectProjectMember()"
                                                    placeholder="项目成员" id="queryMemberName" name="queryMemberName"
                                                    class="form-control">
                                         </div>
@@ -62,7 +63,8 @@
                                         </label>
                                         <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
                                             <input type="hidden" id="queryManager">
-                                            <input type="text" data-rule-maxlength="50" readonly onclick="selectProjectManager()"
+                                            <input type="text" data-rule-maxlength="50" readonly
+                                                   onclick="selectProjectManager()"
                                                    placeholder="项目经理" id="queryManagerName" name="queryManagerName"
                                                    class="form-control">
                                         </div>
@@ -75,7 +77,8 @@
                                         </label>
                                         <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
                                             <input type="hidden" id="queryCreator">
-                                            <input type="text" data-rule-maxlength="50" readonly onclick="selectProjectCreator()"
+                                            <input type="text" data-rule-maxlength="50" readonly
+                                                   onclick="selectProjectCreator()"
                                                    placeholder="立项人" id="queryCreatorName" name="queryCreatorName"
                                                    class="form-control">
                                         </div>
@@ -99,7 +102,8 @@
                                         </label>
                                         <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
                                             <input type="text" class="form-control date-picker dbdate"
-                                                   data-date-format="yyyy-mm-dd" id="queryTimeStart" placeholder="开始时间"/>
+                                                   data-date-format="yyyy-mm-dd" id="queryTimeStart"
+                                                   placeholder="开始时间"/>
                                         </div>
                                     </div>
                                     <div>
@@ -154,7 +158,8 @@
                                         <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
                                             <input id="queryDepartmentId" name="queryDepartmentId"
                                                    class="form-control" type="hidden"/>
-                                            <input id="queryDepartmentName" name="queryDepartmentName" class="form-control"
+                                            <input id="queryDepartmentName" name="queryDepartmentName"
+                                                   class="form-control"
                                                    placeholder="评估部门"
                                                    onclick="selectDepartment(this)" readonly="readonly"/>
                                         </div>
@@ -195,6 +200,17 @@
     function loadProjectList() {
         var cols = [];
         cols.push({field: 'projectName', title: '项目名称'});
+
+        <%--cols.push({--%>
+            <%--field: 'projectName', title: '项目任务详细', width: 300, formatter: function (value, row, index) {--%>
+                <%--var str = "";--%>
+                <%--str += "<a target='_blank' href='${pageContext.request.contextPath}/projectCenter/projectTraceMenu?projectId=" + row.id + "' style='margin-left: 5px;' data-placement='top' data-original-title='查看详情' class='tooltips' >" + value + "";--%>
+                <%--str += '<i class="fa fa-tasks" aria-hidden="true"></i>' ;--%>
+                <%--str += "</a>";--%>
+                <%--return str;--%>
+            <%--}--%>
+        <%--});--%>
+
         cols.push({field: 'useUnitName', title: '使用报告单位'});
         cols.push({field: 'departmentName', title: '评估部门'});
         cols.push({
@@ -264,16 +280,16 @@
         TableInit("tb_projectList", "${pageContext.request.contextPath}/projectCenter/getProjectList", cols, {
             queryName: $("#queryName").val(),
             projectStatus: $("#status").val(),
-            queryCreator:$("#queryCreator").val(),
-            queryMember:$("#queryMember").val(),
-            queryManager:$("#queryManager").val(),
-            entrustPurpose:$("#entrustPurpose").val(),
-            queryTimeStart:$("#queryTimeStart").val(),
-            queryTimeEnd:$("#queryTimeEnd").val(),
-            queryConsignor:$("#queryConsignor").val(),
-            queryUseUnit:$("#queryUseUnit").val(),
-            queryLoanType:$("#queryLoanType").val(),
-            queryDepartmentId:$("#queryDepartmentId").val()
+            queryCreator: $("#queryCreator").val(),
+            queryMember: $("#queryMember").val(),
+            queryManager: $("#queryManager").val(),
+            entrustPurpose: $("#entrustPurpose").val(),
+            queryTimeStart: $("#queryTimeStart").val(),
+            queryTimeEnd: $("#queryTimeEnd").val(),
+            queryConsignor: $("#queryConsignor").val(),
+            queryUseUnit: $("#queryUseUnit").val(),
+            queryLoanType: $("#queryLoanType").val(),
+            queryDepartmentId: $("#queryDepartmentId").val()
         }, {
             showColumns: false,
             showRefresh: false,
@@ -319,7 +335,7 @@
         //选择客户
         crmCustomer.select({
             multi: false,//是否允许多选
-            companyId:"${companyId}",
+            companyId: "${companyId}",
             onSelected: function (nodes) {
                 $("#queryUseUnit").val(nodes[0].id);
                 $("#queryUseUnitName").val(nodes[0].name);
