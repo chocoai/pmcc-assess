@@ -1,13 +1,23 @@
 package com.copower.pmcc.assess.service.method;
 
 import com.alibaba.fastjson.JSON;
+import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
+import com.copower.pmcc.assess.dal.basis.dao.data.DataHousePriceIndexDao;
+import com.copower.pmcc.assess.dal.basis.dao.data.DataHousePriceIndexDetailDao;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdBaseLandPriceDao;
-import com.copower.pmcc.assess.dal.basis.entity.MdBaseLandPrice;
+import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.project.ProjectInfoService;
+import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
+import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.google.common.collect.Lists;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -19,19 +29,38 @@ import java.util.List;
 @Service
 public class MdBaseLandPriceService {
     @Autowired
-    private MdBaseLandPriceDao schemeReimbursementDao;
+    private MdBaseLandPriceDao mdBaseLandPriceDao;
     @Autowired
     private ProcessControllerComponent processControllerComponent;
+    @Autowired
+    private ProjectInfoService projectInfoService;
+    @Autowired
+    private SchemeJudgeObjectService schemeJudgeObjectService;
+    @Autowired
+    private DeclareRecordService declareRecordService;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
+    @Autowired
+    private DataHousePriceIndexDao dataHousePriceIndexDao;
+    @Autowired
+    private DataHousePriceIndexDetailDao dataHousePriceIndexDetailDao;
 
     public List<MdBaseLandPrice> getObjectList(MdBaseLandPrice mdBaseLandPrice) {
-        return schemeReimbursementDao.getObjectList(mdBaseLandPrice);
+        return mdBaseLandPriceDao.getObjectList(mdBaseLandPrice);
+    }
+
+
+    public MdBaseLandPrice getDataByPlanDetailsId(Integer planDetailsId) {
+        MdBaseLandPrice where = new MdBaseLandPrice();
+        where.setPlanDetailsId(planDetailsId);
+        return mdBaseLandPriceDao.getMdBaseLandPrice(where);
     }
 
 
     public MdBaseLandPrice getDataByProcessInsId(String processInsId) {
         MdBaseLandPrice where = new MdBaseLandPrice();
         where.setProcessInsId(processInsId);
-        return schemeReimbursementDao.getMdBaseLandPrice(where);
+        return mdBaseLandPriceDao.getMdBaseLandPrice(where);
     }
 
     public void applyCommit(String formData, String processInsId) {
@@ -43,15 +72,15 @@ public class MdBaseLandPriceService {
 
     public void saveMdBaseLandPrice(MdBaseLandPrice mdBaseLandPrice) {
         if (mdBaseLandPrice.getId() != null && mdBaseLandPrice.getId().intValue() > 0) {
-            schemeReimbursementDao.editMdBaseLandPrice(mdBaseLandPrice);
+            mdBaseLandPriceDao.editMdBaseLandPrice(mdBaseLandPrice);
         } else {
             mdBaseLandPrice.setCreator(processControllerComponent.getThisUser());
-            schemeReimbursementDao.addMdBaseLandPrice(mdBaseLandPrice);
+            mdBaseLandPriceDao.addMdBaseLandPrice(mdBaseLandPrice);
         }
     }
 
     public MdBaseLandPrice getSingleObject(Integer id) {
-        return schemeReimbursementDao.getMdBaseLandPrice(id);
+        return mdBaseLandPriceDao.getMdBaseLandPrice(id);
     }
 
 
@@ -67,12 +96,47 @@ public class MdBaseLandPriceService {
         if (rewardRate == null || legalAge == null || surplusYear == null) return null;
 
         BigDecimal pow1 = new BigDecimal(Math.pow(rewardRate.add(new BigDecimal("1")).doubleValue(), surplusYear.doubleValue()));
-        BigDecimal temp1 = new BigDecimal("1").subtract(new BigDecimal("1").divide(pow1,4,BigDecimal.ROUND_HALF_UP));
+        BigDecimal temp1 = new BigDecimal("1").subtract(new BigDecimal("1").divide(pow1, 4, BigDecimal.ROUND_HALF_UP));
 
         BigDecimal pow2 = new BigDecimal(Math.pow(rewardRate.add(new BigDecimal("1")).doubleValue(), legalAge.doubleValue()));
-        BigDecimal temp2 = new BigDecimal("1").subtract(new BigDecimal("1").divide(pow2,4,BigDecimal.ROUND_HALF_UP));
+        BigDecimal temp2 = new BigDecimal("1").subtract(new BigDecimal("1").divide(pow2, 4, BigDecimal.ROUND_HALF_UP));
 
-        return temp1.divide(temp2,4,BigDecimal.ROUND_HALF_UP);
+        return temp1.divide(temp2, 4, BigDecimal.ROUND_HALF_UP);
+    }
+
+    /**
+     * 获取 基准地价期日修正
+     */
+    public BigDecimal getBaseLandPriceDateAmend(Integer schemeJudgeObjectId) {
+        StringBuilder s = new StringBuilder();
+        SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(schemeJudgeObjectId);
+        ProjectInfo projectInfoById = projectInfoService.getProjectInfoById(schemeJudgeObject.getProjectId());
+        DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
+        //评估基准日
+        Date valuationDate = projectInfoById.getValuationDate();
+        //找到评估基准日对应的土地因素
+        BaseDataDic dataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_INDEX_LAND_TYPE);
+        List<DataHousePriceIndex> dataHouseIndexList = Lists.newArrayList();
+        dataHouseIndexList = dataHousePriceIndexDao.getDataHouseIndexList(declareRecord.getProvince(), declareRecord.getCity(), declareRecord.getDistrict(), dataDic.getId());
+        if (CollectionUtils.isEmpty(dataHouseIndexList)) {
+            dataHouseIndexList = dataHousePriceIndexDao.getDataHouseIndexList(declareRecord.getProvince(), declareRecord.getCity(), null, dataDic.getId());
+        }
+        if (CollectionUtils.isNotEmpty(dataHouseIndexList)) {
+            Integer masterId = dataHouseIndexList.get(0).getId();
+            DataHousePriceIndexDetail dataHousePriceIndexDetail = new DataHousePriceIndexDetail();
+            dataHousePriceIndexDetail.setHousePriceId(masterId);
+            List<DataHousePriceIndexDetail> detailList = dataHousePriceIndexDetailDao.getDataHousePriceIndexDetailList(dataHousePriceIndexDetail);
+            //最早月份的指数
+            DataHousePriceIndexDetail firstIndex = detailList.get(0);
+            if (CollectionUtils.isNotEmpty(detailList)) {
+                for (DataHousePriceIndexDetail item : detailList) {
+                    if (item.getStartDate().compareTo(valuationDate) != 1 && item.getEndDate().compareTo(valuationDate) != -1) {
+                        return item.getIndexNumber().divide(firstIndex.getIndexNumber(), 4, BigDecimal.ROUND_HALF_UP);
+                    }
+                }
+            }
+        }
+        return null;
     }
 
 }

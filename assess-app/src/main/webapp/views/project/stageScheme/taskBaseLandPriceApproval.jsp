@@ -21,117 +21,251 @@
                 </div>
 
                 <div class="x_content">
-                    <form class="form-horizontal" id="master">
-                        <input type="hidden" name="id" value="${master.id}">
-                        <div class="form-group">
-                            <div class="col-md-12 col-sm-12">
-                                <table class="table table-bordered">
-                                    <thead>
-                                    <tr>
-                                        <th style="width:30%">项目</th>
-                                        <th style="width:30%">参数</th>
-                                        <th colspan="2" style="width:40%">参数与备注</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td>基准地价（元/㎡）</td>
-                                        <td>${master.standardPremium}</td>
-                                        <td colspan="2" id="bhouPrice"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>期日修正系数</td>
-                                        <td>${master.dateAmend}</td>
-                                        <td colspan="2"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>年期修正系数</td>
-                                        <td>${master.periodAmend}</td>
-                                        <td colspan="2"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>土地还原率</td>
-                                        <td>${master.rewardRate}</td>
-                                        <td colspan="2"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>法定年限</td>
-                                        <td>${master.legalAge}</td>
-                                        <td colspan="2"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>剩余使用年限</td>
-                                        <td>${master.landSurplusYear}</td>
-                                        <td colspan="2"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>容积率是否修正</td>
-                                        <td>
-                                            <input type="checkbox" id="hasFractionAmend" name="hasFractionAmend"
-                                                   value="true" disabled="disabled">
-                                        </td>
-                                        <td colspan="2"></td>
-                                    </tr>
-                                    <tr id="showVolumeFractionAmend">
-                                        <td>容积率修正</td>
-                                        <td>${master.volumeFractionAmend}</td>
-                                        <td colspan="2"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>区域及个别修正系数</td>
-                                        <td id="areaAndSeveralAmend">${master.areaAndSeveralAmend}</td>
-                                        <td colspan="2"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>开发程度是否修正</td>
-                                        <td>
-                                            <input type="checkbox" id="hasDevelopCorrect" name="hasDevelopCorrect"
-                                                   value="true" disabled="disabled">
-                                        </td>
-                                        <td colspan="2"></td>
-                                    </tr>
-                                    <tr id="showDevelopCorrect">
-                                        <td>开发程度修正</td>
-                                        <td>${master.developCorrect}</td>
-                                        <td colspan="2">与基准地价的开发程度一致</td>
-                                    </tr>
-                                    <tr>
-                                        <td>委估宗地单价（元/㎡）</td>
-                                        <td>${master.parcelPrice}</td>
-                                        <td colspan="2">地价＝P×K1×K2×……×（1±∑K）±L</td>
-                                    </tr>
-                                    <tr>
-                                        <td>委估宗地单价（万元/亩）</td>
-                                        <td>${master.parcelBhouPrice}</td>
-                                        <td colspan="2"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>委估宗地面积（㎡）</td>
-                                        <td>${master.evaluationArea}</td>
-                                        <td colspan="2"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>委估宗地总价（万元）</td>
-                                        <td>${master.parcelTotalPrice}</td>
-                                        <td colspan="2"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>${number}号估价对象楼面地价</td>
-                                        <td>${master.floorPremium}</td>
-                                        <td>委估对象容积率</td>
-                                        <td>${master.volumetricRate}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>验证参数合理性</td>
-                                        <td>修正差额（%）</td>
-                                        <td>${master.correctionDifference}</td>
-                                        <td>提示：小于30%</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
+                    <div class="x_panel">
+                        <div class="x_title collapse-link">
+                            <ul class="nav navbar-right panel_toolbox">
+                                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                            </ul>
+                            <h3>土地指数</h3>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <table class="table table-bordered" id="indexDetailTable">
+                                <!-- cerare document add ajax data-->
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="x_panel">
+                        <div class="x_title collapse-link">
+                            <ul class="nav navbar-right panel_toolbox">
+                                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                            </ul>
+                            <h3>容积率修正系数表</h3>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <table class="table table-bordered" id="volumetricRateDetailTable">
+                                <!-- cerare document add ajax data-->
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="x_panel">
+                        <div class="x_title collapse-link">
+                            <ul class="nav navbar-right panel_toolbox">
+                                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                            </ul>
+                            <h3>因素条件说明及修正系数</h3>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <form class="form-horizontal" id="areaAndSeveralAmendForm">
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            区域及个别修正系数
+                                        </label>
+                                        <div class="col-sm-3">
+                                            <label class="form-control">${master.areaAndSeveralAmend}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                                        <table class="table table-striped table-bordered" style="display: none">
+                                            <thead>
+                                            <tr>
+                                                <th width="10%">土地级别类别</th>
+                                                <th width="10%">土地级别类型</th>
+                                                <th width="10%">土地级别等级</th>
+                                                <th width="20%">说明</th>
+                                                <th width="10%">分值</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody id="landLevelTabContent">
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="x_panel">
+                        <div class="x_title collapse-link">
+                            <ul class="nav navbar-right panel_toolbox">
+                                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                            </ul>
+                            <h3>基准地价因素</h3>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <form class="form-horizontal" id="master">
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            基准地价(元/㎡)
+                                        </label>
+                                        <div class="col-sm-3">
+                                            <label class="form-control">${master.standardPremium}</label>
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            说明
+                                        </label>
+                                        <div class="col-sm-3">
+                                            <label class="form-control">${master.standardPremiumRemark}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-1 control-label">
+                                        土地还原利率
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <label class="form-control">${master.rewardRate}</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            法定年限
+                                        </label>
+                                        <div class="col-sm-3">
+                                            <label class="form-control">${master.legalAge}</label>
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            说明
+                                        </label>
+                                        <div class="col-sm-3">
+                                            <label class="form-control">${master.legalAgeRemark}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            剩余使用年限
+                                        </label>
+                                        <div class="col-sm-3">
+                                            <label class="form-control">${master.landSurplusYear}</label>
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            说明
+                                        </label>
+                                        <div class="col-sm-3">
+                                            <label class="form-control">${master.landSurplusYearRemark}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            开发程度修正
+                                        </label>
+                                        <div class="col-sm-3">
+                                            <label class="form-control">${master.developCorrect}</label>
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            说明
+                                        </label>
+                                        <div class="col-sm-3">
+                                            <label class="form-control">${master.developCorrectRemark}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            委估宗地面积(㎡)
+                                        </label>
+                                        <div class="col-sm-3">
+                                            <label class="form-control">${master.evaluationArea}</label>
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            说明
+                                        </label>
+                                        <div class="col-sm-3">
+                                            <label class="form-control">${master.evaluationAreaRemark}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            委估对象容积率
+                                        </label>
+                                        <div class="col-sm-3">
+                                            <label class="form-control">${master.volumetricRate}</label>
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            说明
+                                        </label>
+                                        <div class="col-sm-3">
+                                            <label class="form-control">${master.volumetricRateRemark}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="x_panel">
+                        <div class="x_title collapse-link">
+                            <ul class="nav navbar-right panel_toolbox">
+                                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                            </ul>
+                            <h3>测算结果</h3>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <div class="form-group">
+                                <div class="col-md-12 col-sm-12">
+                                    <table class="table table-bordered">
+                                        <tbody>
+                                        <tr>
+                                            <td>期日修正系数</td>
+                                            <td id="dateAmend">${master.dateAmend}</td>
+                                            <td>年期修正系数</td>
+                                            <td id="periodAmend">${master.periodAmend}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>容积率修正</td>
+                                            <td id="volumeFractionAmend">${master.volumeFractionAmend}</td>
+                                            <td>委估宗地单价（元/㎡）</td>
+                                            <td id="parcelPrice">${master.parcelPrice}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>委估宗地单价（万元/亩）</td>
+                                            <td id="parcelBhouPrice">${master.parcelBhouPrice}</td>
+                                            <td>委估宗地总价（万元）</td>
+                                            <td id="parcelTotalPrice">${master.parcelTotalPrice}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>楼面地价</td>
+                                            <td id="floorPremium">${master.floorPremium}</td>
+                                            <td>修正差额(%)</td>
+                                            <td id="correctionDifference">${master.correctionDifference}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
             <%@include file="/views/share/form_approval.jsp" %>
@@ -141,38 +275,188 @@
 </div>
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.estate.js"></script>
+<script type="text/html" id="landLevelTabContentBody">
+    <tr class="group">
+        <td class="table-cell">
+            {landLevelTypeName}
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td>
+            {landLevelCategoryName}
+        </td>
+        <td>
+            {gradeName}
+        </td>
+        <td>
+            <label name="reamark" class="form-control">{reamark}</label>
+        </td>
+        <td>
+            <label name="landFactorTotalScore" class="form-control">{landFactorTotalScore}</label>
+        </td>
+    </tr>
+</script>
 <script type="application/javascript">
     function saveform() {
         saveApprovalform("");
     }
 
     $(function () {
-        var standardBhouPrice = getBhouPrice("${master.standardPremium}", 2)
-        $("#bhouPrice").text(standardBhouPrice + "万元/亩");
-        //容积率是否修正
-        if("${master.hasFractionAmend}"){
-            $("#hasFractionAmend").attr("checked","checked");
-        }else {
-            $("#showVolumeFractionAmend").hide();
-        }
-        //开发程度是否修正
-        if("${master.hasDevelopCorrect}"){
-            $("#hasDevelopCorrect").attr("checked","checked");
-        }else {
-            $("#showDevelopCorrect").hide();
-        }
+        //土地指数表
+        getLandIndexId();
+        //容积率修正系数表
+        getVolumetricRateId()
+        //因素条件说明及修正系数
+        landLevelLoadHtml()
     });
-
-    //获取一亩的价
-    function getBhouPrice(num, v) {
-        return getSomePlaces(num * AssessCommon.BHOU / 10000, v);
-    }
 
     //v取几位小数
     function getSomePlaces(num, v) {
         var vv = Math.pow(10, v);
         return Math.round(num * vv) / vv;
     }
+
+    //土地指数表
+    function getLandIndexId() {
+        $.ajax({
+            url: "${pageContext.request.contextPath}/baseLandPrice/getLandIndexId",
+            type: "get",
+            dataType: "json",
+            data: {judgeObjectId: '${projectPlanDetails.judgeObjectId}'},
+            success: function (result) {
+                if (result.ret) {
+                    if (result.data) {
+                        showLandIndexDetailList(result.data);
+                    }
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
+
+    }
+
+    function showLandIndexDetailList(landIndexId) {
+        var cols = [];
+        cols.push({
+            field: 'startDate', title: '开始月份', formatter: function (value, row, index) {
+                return formatDate(value);
+            }
+        });
+        cols.push({
+            field: 'endDate', title: '结束月份', formatter: function (value, row, index) {
+                return formatDate(value);
+            }
+        });
+        cols.push({field: 'indexNumber', title: '指数'});
+        $("#indexDetailTable").bootstrapTable('destroy');
+        TableInit("indexDetailTable", "${pageContext.request.contextPath}/dataHousePriceIndexDetail/getBootstrapTableVo", cols, {
+            housePriceId: landIndexId
+        }, {
+            showColumns: false,
+            showRefresh: false,
+            search: false,
+            onLoadSuccess: function () {
+                $('.tooltips').tooltip();
+            }
+        });
+    };
+
+    //容积率修正系数表
+    function getVolumetricRateId() {
+        $.ajax({
+            url: "${pageContext.request.contextPath}/baseLandPrice/getVolumetricRateId",
+            type: "get",
+            dataType: "json",
+            data: {judgeObjectId: '${projectPlanDetails.judgeObjectId}'},
+            success: function (result) {
+                if (result.ret) {
+                    if (result.data) {
+                        showVolumetricRateDetailList(result.data);
+                    }
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
+
+    }
+
+    function showVolumetricRateDetailList(volumeRatioId) {
+        var cols = [];
+        cols.push({field: 'plotRatio', title: '容积率'});
+        cols.push({field: 'correctionFactor', title: '修正系数'});
+        $("#volumetricRateDetailTable").bootstrapTable('destroy');
+        TableInit("volumetricRateDetailTable", "${pageContext.request.contextPath}/dataAllocationCorrectionCoefficientVolumeRatioDetail/getBootstrapTableVo", cols, {
+            allocationVolumeRatioId: volumeRatioId
+        }, {
+            showColumns: false,
+            showRefresh: false,
+            search: false,
+            onLoadSuccess: function () {
+                $('.tooltips').tooltip();
+            }
+        });
+    };
+
+    //因素条件说明及修正系数
+    function landLevelLoadHtml() {
+        var jsonContent = JSON.parse('${master.landLevelContent}');
+        console.log(jsonContent)
+        var data = estateCommon.landLevelFilter(jsonContent);
+        if (jQuery.isEmptyObject(data)) {
+            return false;
+        }
+        var target = $("#landLevelTabContent");
+        target.empty();
+        target.parent().show();
+
+        //由于js来筛选 有大量json 解析或者字符串化 影响代码阅读度，因此改为了后台直接处理,第一次的时候有2此筛选分类这样确实代码可读性差
+        data.forEach(function (dataA, indexM) {
+            $.each(dataA, function (i, obj) {
+                var item;
+                obj.forEach(function (value, index) {
+                    if (value.modelStr == "update") {
+                        item = value;
+                    }
+                });
+                var landLevelBodyHtml = $("#landLevelTabContentBody").html();
+                if (landLevelBodyHtml) {
+                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landFactorTotalScore}/g, item.achievement);
+                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelCategoryName}/g, item.category);
+                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelTypeName}/g, item.typeName);
+                    landLevelBodyHtml = landLevelBodyHtml.replace(/{gradeName}/g, item.gradeName);
+                    var text = "";
+                    $.each(obj, function (i, n) {
+                        text += "等级:" + n.gradeName + "，说明:" + n.reamark + "； \r";
+                    });
+                    landLevelBodyHtml = landLevelBodyHtml.replace(/{reamark}/g, text);
+                    target.append(landLevelBodyHtml);
+                }
+            });
+
+            if (indexM == 0) {
+                target.find("tr").first().find("td").first().attr("rowspan", dataA.length);
+                target.find("tr").each(function (i, n) {
+                    if (i != 0) {
+                        $(n).find("td").first().remove();
+                    }
+                });
+            }
+            if (indexM == 1) {
+                var length = data[0].length;
+                target.find("tr").eq(length).find("td").first().attr("rowspan", dataA.length);
+                target.find("tr").each(function (i, n) {
+                    if (i > length) {
+                        $(n).find("td").first().remove();
+                    }
+                });
+            }
+        });
+    };
 </script>
 </body>
 </html>
