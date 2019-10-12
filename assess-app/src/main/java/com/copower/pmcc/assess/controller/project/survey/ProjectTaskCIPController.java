@@ -44,6 +44,19 @@ public class ProjectTaskCIPController {
     private BasicApplyBatchDetailService basicApplyBatchDetailService;
 
     @ResponseBody
+    @RequestMapping(value = "/saveBasicApplyBatch", method = {RequestMethod.POST}, name = "保存")
+    public HttpResult saveBasicApplyBatch(String formData) {
+        try {
+            BasicApplyBatch applyBatch = JSON.parseObject(formData, BasicApplyBatch.class);
+            applyBatch = basicApplyBatchService.saveApplyInfo(applyBatch);
+            return HttpResult.newCorrectResult(applyBatch);
+        } catch (Exception e) {
+            logger.error(String.format("exception: %s", e.getMessage()), e);
+            return HttpResult.newErrorResult("保存异常");
+        }
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/saveApplyInfo", method = {RequestMethod.POST}, name = "保存")
     public HttpResult save(String formData, Integer planDetailsId) {
         try {

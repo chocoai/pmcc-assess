@@ -24,6 +24,41 @@
                 <div class="x_content">
                     <form id="basicBatchApplyFrm" class="form-horizontal">
                         <input type="hidden" name="id" value="${applyBatch.id}">
+                        <input type="hidden" name="planDetailsId" value="${projectPlanDetails.id}">
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                    大类<span class="symbol required"></span>
+                                </label>
+                                <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
+                                    <select class="form-control" name="classify" required>
+                                        <option value="">-请选择-</option>
+                                        <c:if test="${not empty formClassifyList}">
+                                            <c:forEach var="item" items="${formClassifyList}">
+                                                <option value="${item.id}" data-key="${item.fieldName}" ${item.id eq applyBatch.type?'selected="selected"':''}>${item.name}</option>
+                                            </c:forEach>
+                                        </c:if>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                    类型<span class="symbol required"></span>
+                                </label>
+                                <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
+                                    <select class="form-control" name="type" required>
+                                        <option value="">-请选择-</option>
+                                        <c:if test="${not empty examineFormTypeList}">
+                                            <c:forEach var="item" items="${examineFormTypeList}">
+                                                <option value="${item.key}" ${item.key eq applyBatch.type?'selected="selected"':''}>${item.value}</option>
+                                            </c:forEach>
+                                        </c:if>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
@@ -40,7 +75,8 @@
                                     <c:forEach var="item" items="${examineFormTypeList}">
                                         <span class=" col-xs-6  col-sm-6  col-md-6  col-lg-6 ">
                                             <input type="radio" id="examineFormType_${item.key}" name="type"
-                                                   value='${item.key}' ${item.key eq applyBatch.type?'checked="checked"':''} required>
+                                                   value='${item.key}' ${item.key eq applyBatch.type?'checked="checked"':''}
+                                                   required>
                                             <label for="examineFormType_${item.key}">&nbsp;${item.value}</label>
                                         </span>
                                     </c:forEach>
@@ -183,5 +219,29 @@
         $("#basicBatchApplyFrm").find("input").attr("disabled", "disabled");
         $("#showTree").show();
         batchTreeTool.ztreeInit(basicApplyBatch);
+    }
+
+    //表单大类change
+    function formClassifyChange() {
+
+    }
+
+    //保存主表信息
+    function saveBasicApplyBatch() {
+        $.ajax({
+            url: "${pageContext.request.contextPath}/projectTaskCIP/saveBasicApplyBatch",
+            type: "post",
+            dataType: "json",
+            data: {
+                formData: JSON.stringify(formSerializeArray($("#basicBatchApplyFrm")))
+            },
+            success: function (result) {
+                if (result.ret) {
+                    $("#basicBatchApplyFrm").find('[name=id]').val(result.data.id);
+                } else {
+                    Alert(result.errmsg);
+                }
+            }
+        });
     }
 </script>

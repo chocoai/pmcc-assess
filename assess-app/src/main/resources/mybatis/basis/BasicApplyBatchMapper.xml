@@ -7,17 +7,18 @@
     <result column="plan_details_id" property="planDetailsId" jdbcType="INTEGER" />
     <result column="province" property="province" jdbcType="VARCHAR" />
     <result column="city" property="city" jdbcType="VARCHAR" />
+    <result column="classify" property="classify" jdbcType="INTEGER" />
     <result column="type" property="type" jdbcType="INTEGER" />
     <result column="estate_id" property="estateId" jdbcType="INTEGER" />
     <result column="estate_name" property="estateName" jdbcType="VARCHAR" />
+    <result column="quote_id" property="quoteId" jdbcType="INTEGER" />
+    <result column="base_type" property="baseType" jdbcType="VARCHAR" />
+    <result column="show_tab" property="showTab" jdbcType="BIT" />
     <result column="status" property="status" jdbcType="VARCHAR" />
     <result column="draft_flag" property="draftFlag" jdbcType="BIT" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
-    <result column="quote_id" property="quoteId" jdbcType="INTEGER" />
-    <result column="base_type" property="baseType" jdbcType="VARCHAR" />
-    <result column="show_tab" property="showTab" jdbcType="BIT" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -78,8 +79,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, process_ins_id, plan_details_id, province, city, type, estate_id, estate_name, 
-    status, draft_flag, creator, gmt_created, gmt_modified, quote_id, base_type, show_tab
+    id, process_ins_id, plan_details_id, province, city, classify, type, estate_id, estate_name, 
+    quote_id, base_type, show_tab, status, draft_flag, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchExample" >
     select
@@ -116,17 +117,17 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_basic_apply_batch (process_ins_id, plan_details_id, province, 
-      city, type, estate_id, 
-      estate_name, status, draft_flag, 
-      creator, gmt_created, gmt_modified, 
-      quote_id, base_type, show_tab
-      )
+      city, classify, type, 
+      estate_id, estate_name, quote_id, 
+      base_type, show_tab, status, 
+      draft_flag, creator, gmt_created, 
+      gmt_modified)
     values (#{processInsId,jdbcType=VARCHAR}, #{planDetailsId,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, 
-      #{city,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{estateId,jdbcType=INTEGER}, 
-      #{estateName,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{draftFlag,jdbcType=BIT}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
-      #{quoteId,jdbcType=INTEGER}, #{baseType,jdbcType=VARCHAR}, #{showTab,jdbcType=BIT}
-      )
+      #{city,jdbcType=VARCHAR}, #{classify,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, 
+      #{estateId,jdbcType=INTEGER}, #{estateName,jdbcType=VARCHAR}, #{quoteId,jdbcType=INTEGER}, 
+      #{baseType,jdbcType=VARCHAR}, #{showTab,jdbcType=BIT}, #{status,jdbcType=VARCHAR}, 
+      #{draftFlag,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatch" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -146,6 +147,9 @@
       <if test="city != null" >
         city,
       </if>
+      <if test="classify != null" >
+        classify,
+      </if>
       <if test="type != null" >
         type,
       </if>
@@ -154,6 +158,15 @@
       </if>
       <if test="estateName != null" >
         estate_name,
+      </if>
+      <if test="quoteId != null" >
+        quote_id,
+      </if>
+      <if test="baseType != null" >
+        base_type,
+      </if>
+      <if test="showTab != null" >
+        show_tab,
       </if>
       <if test="status != null" >
         status,
@@ -170,15 +183,6 @@
       <if test="gmtModified != null" >
         gmt_modified,
       </if>
-      <if test="quoteId != null" >
-        quote_id,
-      </if>
-      <if test="baseType != null" >
-        base_type,
-      </if>
-      <if test="showTab != null" >
-        show_tab,
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="processInsId != null" >
@@ -193,6 +197,9 @@
       <if test="city != null" >
         #{city,jdbcType=VARCHAR},
       </if>
+      <if test="classify != null" >
+        #{classify,jdbcType=INTEGER},
+      </if>
       <if test="type != null" >
         #{type,jdbcType=INTEGER},
       </if>
@@ -201,6 +208,15 @@
       </if>
       <if test="estateName != null" >
         #{estateName,jdbcType=VARCHAR},
+      </if>
+      <if test="quoteId != null" >
+        #{quoteId,jdbcType=INTEGER},
+      </if>
+      <if test="baseType != null" >
+        #{baseType,jdbcType=VARCHAR},
+      </if>
+      <if test="showTab != null" >
+        #{showTab,jdbcType=BIT},
       </if>
       <if test="status != null" >
         #{status,jdbcType=VARCHAR},
@@ -216,15 +232,6 @@
       </if>
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="quoteId != null" >
-        #{quoteId,jdbcType=INTEGER},
-      </if>
-      <if test="baseType != null" >
-        #{baseType,jdbcType=VARCHAR},
-      </if>
-      <if test="showTab != null" >
-        #{showTab,jdbcType=BIT},
       </if>
     </trim>
   </insert>
@@ -252,6 +259,9 @@
       <if test="record.city != null" >
         city = #{record.city,jdbcType=VARCHAR},
       </if>
+      <if test="record.classify != null" >
+        classify = #{record.classify,jdbcType=INTEGER},
+      </if>
       <if test="record.type != null" >
         type = #{record.type,jdbcType=INTEGER},
       </if>
@@ -260,6 +270,15 @@
       </if>
       <if test="record.estateName != null" >
         estate_name = #{record.estateName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.quoteId != null" >
+        quote_id = #{record.quoteId,jdbcType=INTEGER},
+      </if>
+      <if test="record.baseType != null" >
+        base_type = #{record.baseType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.showTab != null" >
+        show_tab = #{record.showTab,jdbcType=BIT},
       </if>
       <if test="record.status != null" >
         status = #{record.status,jdbcType=VARCHAR},
@@ -276,15 +295,6 @@
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.quoteId != null" >
-        quote_id = #{record.quoteId,jdbcType=INTEGER},
-      </if>
-      <if test="record.baseType != null" >
-        base_type = #{record.baseType,jdbcType=VARCHAR},
-      </if>
-      <if test="record.showTab != null" >
-        show_tab = #{record.showTab,jdbcType=BIT},
-      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -297,17 +307,18 @@
       plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
       province = #{record.province,jdbcType=VARCHAR},
       city = #{record.city,jdbcType=VARCHAR},
+      classify = #{record.classify,jdbcType=INTEGER},
       type = #{record.type,jdbcType=INTEGER},
       estate_id = #{record.estateId,jdbcType=INTEGER},
       estate_name = #{record.estateName,jdbcType=VARCHAR},
+      quote_id = #{record.quoteId,jdbcType=INTEGER},
+      base_type = #{record.baseType,jdbcType=VARCHAR},
+      show_tab = #{record.showTab,jdbcType=BIT},
       status = #{record.status,jdbcType=VARCHAR},
       draft_flag = #{record.draftFlag,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      quote_id = #{record.quoteId,jdbcType=INTEGER},
-      base_type = #{record.baseType,jdbcType=VARCHAR},
-      show_tab = #{record.showTab,jdbcType=BIT}
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -327,6 +338,9 @@
       <if test="city != null" >
         city = #{city,jdbcType=VARCHAR},
       </if>
+      <if test="classify != null" >
+        classify = #{classify,jdbcType=INTEGER},
+      </if>
       <if test="type != null" >
         type = #{type,jdbcType=INTEGER},
       </if>
@@ -335,6 +349,15 @@
       </if>
       <if test="estateName != null" >
         estate_name = #{estateName,jdbcType=VARCHAR},
+      </if>
+      <if test="quoteId != null" >
+        quote_id = #{quoteId,jdbcType=INTEGER},
+      </if>
+      <if test="baseType != null" >
+        base_type = #{baseType,jdbcType=VARCHAR},
+      </if>
+      <if test="showTab != null" >
+        show_tab = #{showTab,jdbcType=BIT},
       </if>
       <if test="status != null" >
         status = #{status,jdbcType=VARCHAR},
@@ -351,15 +374,6 @@
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
-      <if test="quoteId != null" >
-        quote_id = #{quoteId,jdbcType=INTEGER},
-      </if>
-      <if test="baseType != null" >
-        base_type = #{baseType,jdbcType=VARCHAR},
-      </if>
-      <if test="showTab != null" >
-        show_tab = #{showTab,jdbcType=BIT},
-      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -369,17 +383,18 @@
       plan_details_id = #{planDetailsId,jdbcType=INTEGER},
       province = #{province,jdbcType=VARCHAR},
       city = #{city,jdbcType=VARCHAR},
+      classify = #{classify,jdbcType=INTEGER},
       type = #{type,jdbcType=INTEGER},
       estate_id = #{estateId,jdbcType=INTEGER},
       estate_name = #{estateName,jdbcType=VARCHAR},
+      quote_id = #{quoteId,jdbcType=INTEGER},
+      base_type = #{baseType,jdbcType=VARCHAR},
+      show_tab = #{showTab,jdbcType=BIT},
       status = #{status,jdbcType=VARCHAR},
       draft_flag = #{draftFlag,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      quote_id = #{quoteId,jdbcType=INTEGER},
-      base_type = #{baseType,jdbcType=VARCHAR},
-      show_tab = #{showTab,jdbcType=BIT}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

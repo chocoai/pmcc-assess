@@ -1,8 +1,11 @@
 package com.copower.pmcc.assess.service.project.survey;
 
+import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
+import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.basic.BasicApplyBatchService;
 import com.copower.pmcc.assess.service.event.project.ProjectTaskCIPEven;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
@@ -38,6 +41,8 @@ public class ProjectTaskCIPAssist implements ProjectTaskInterface {
     private SurveyCommonService surveyCommonService;
     @Autowired
     private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
@@ -46,6 +51,7 @@ public class ProjectTaskCIPAssist implements ProjectTaskInterface {
         modelAndView.addObject("declareRecord", declareRecord);
         modelAndView.addObject("projectPlanDetails", projectPlanDetails);
         modelAndView.addObject("applyBatch", basicApplyBatchService.getBasicApplyBatchByPlanDetailsId(projectPlanDetails.getId()));
+        modelAndView.addObject("formClassifyList", baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.PROJECT_SURVEY_FORM_CLASSIFY));
         modelAndView.addObject("examineFormTypeList", surveyCommonService.getExamineFormTypeList());
         surveySceneExploreService.deleteUnfinishedData();//删除未完成数据
         return modelAndView;
@@ -67,6 +73,7 @@ public class ProjectTaskCIPAssist implements ProjectTaskInterface {
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
         modelAndView.addObject("declareRecord", declareRecord);
         modelAndView.addObject("applyBatch", basicApplyBatchService.getBasicApplyBatchByPlanDetailsId(projectPlanDetails.getId()));
+        modelAndView.addObject("formClassifyList", baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.PROJECT_SURVEY_FORM_CLASSIFY));
         modelAndView.addObject("examineFormTypeList", surveyCommonService.getExamineFormTypeList());
         return modelAndView;
     }

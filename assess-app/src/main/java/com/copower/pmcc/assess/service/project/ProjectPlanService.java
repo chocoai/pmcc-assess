@@ -757,15 +757,6 @@ public class ProjectPlanService {
                             }
                         }
                     }
-                } else { //如果没有相应的阶段，则说明项目已经结束，处理更新项目状态的相关事项
-                    projectInfo.setStatus(ProcessStatusEnum.FINISH.getValue());
-                    projectInfo.setProjectStatus(ProjectStatusEnum.FINISH.getKey());
-                    projectInfoDao.updateProjectInfo(projectInfo);
-                    SysProjectDto sysProjectDto = erpRpcProjectService.getProjectInfoByProjectId(projectInfo.getId(), applicationConstant.getAppKey());
-                    if (sysProjectDto != null && sysProjectDto.getId() != null && sysProjectDto.getId() > 0) {
-                        sysProjectDto.setStatus(SysProjectEnum.FINISH.getValue());
-                        erpRpcProjectService.saveProject(sysProjectDto);
-                    }
                 }
             }
         } catch (InterruptedException e) {

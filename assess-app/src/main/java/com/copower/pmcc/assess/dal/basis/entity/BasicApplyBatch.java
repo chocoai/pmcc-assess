@@ -13,11 +13,19 @@ public class BasicApplyBatch {
 
     private String city;
 
+    private Integer classify;
+
     private Integer type;
 
     private Integer estateId;
 
     private String estateName;
+
+    private Integer quoteId;
+
+    private String baseType;
+
+    private Boolean showTab;
 
     private String status;
 
@@ -28,12 +36,6 @@ public class BasicApplyBatch {
     private Date gmtCreated;
 
     private Date gmtModified;
-
-    private Integer quoteId;
-
-    private String baseType;
-
-    private Boolean showTab;
 
     public Integer getId() {
         return id;
@@ -75,6 +77,14 @@ public class BasicApplyBatch {
         this.city = city == null ? null : city.trim();
     }
 
+    public Integer getClassify() {
+        return classify;
+    }
+
+    public void setClassify(Integer classify) {
+        this.classify = classify;
+    }
+
     public Integer getType() {
         return type;
     }
@@ -97,6 +107,30 @@ public class BasicApplyBatch {
 
     public void setEstateName(String estateName) {
         this.estateName = estateName == null ? null : estateName.trim();
+    }
+
+    public Integer getQuoteId() {
+        return quoteId;
+    }
+
+    public void setQuoteId(Integer quoteId) {
+        this.quoteId = quoteId;
+    }
+
+    public String getBaseType() {
+        return baseType;
+    }
+
+    public void setBaseType(String baseType) {
+        this.baseType = baseType == null ? null : baseType.trim();
+    }
+
+    public Boolean getShowTab() {
+        return showTab;
+    }
+
+    public void setShowTab(Boolean showTab) {
+        this.showTab = showTab;
     }
 
     public String getStatus() {
@@ -137,29 +171,5 @@ public class BasicApplyBatch {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public Integer getQuoteId() {
-        return quoteId;
-    }
-
-    public void setQuoteId(Integer quoteId) {
-        this.quoteId = quoteId;
-    }
-
-    public String getBaseType() {
-        return baseType;
-    }
-
-    public void setBaseType(String baseType) {
-        this.baseType = baseType == null ? null : baseType.trim();
-    }
-
-    public Boolean getShowTab() {
-        return showTab;
-    }
-
-    public void setShowTab(Boolean showTab) {
-        this.showTab = showTab;
     }
 }

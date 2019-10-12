@@ -60,7 +60,7 @@ public class AssessDataDicKeyConstant {
     public static final String REPORT_ANALYSIS_CATEGORY_RISK = "report.analysis.category.risk";  //风险提示
     public static final String REPORT_ANALYSIS_CATEGORY_BACKGROUND = "report.analysis.category.background";  //市场背景描述与分析
     public static final String REPORT_ANALYSIS_CATEGORY_BACKGROUND_DEVELOPMENT = "report.analysis.category.background.development"; //社会经济发展概况
-    public static final String REPORT_ANALYSIS_CATEGORY_BACKGROUND_GENERAL= "report.analysis.category.background.general"; //房地产市场总体状况
+    public static final String REPORT_ANALYSIS_CATEGORY_BACKGROUND_GENERAL = "report.analysis.category.background.general"; //房地产市场总体状况
     public static final String REPORT_ANALYSIS_CATEGORY_BACKGROUND_MARKET = "report.analysis.category.background.market"; //同类房地产市场状况
     public static final String REPORT_ANALYSIS_CATEGORY_BACKGROUND_BLOCK = "report.analysis.category.background.block"; //同类房地产市场板块状况
     public static final String REPORT_ANALYSIS_CATEGORY_BACKGROUND_PROPERTY = "report.analysis.category.background.property"; //背景估价对象区域物业总体状况
@@ -71,17 +71,19 @@ public class AssessDataDicKeyConstant {
     public static final String PROJECT_INITIATE_URGENCY = "project.initiate.urgency";  //紧急程度
     public static final String VALUE_TYPE = "value.type";  //价值类型
 
-     /*
-     * 项目申报
-     */
-     public static final String PROJECT_DECLARE_ECONOMIC_INDICATORS = "project.declare.economic.indicators";  //紧急程度
-     public static final String PROJECT_DECLARE_HOUSE_CERTIFICATE_TYPE = "project.declare.house.certificate.type";//房产证类型
-     public static final String PROJECT_DECLARE_COMMON_SITUATION = "project.declare.common.situation";//共有情况
-     public static final String PROJECT_DECLARE_LAND = "project.declare.land";//土地申报类型
-     public static final String PROJECT_DECLARE_LAND_BASE_TRANSACTION = "project.declare.land.base.transaction";//纯土地(交易)
-     public static final String PROJECT_DECLARE_LAND_BASE_LEASE = "project.declare.land.base.lease";//纯土地(出租)
-     public static final String PROJECT_DECLARE_LAND_INCLUDE_HOUSE_TRANSACTION = "project.declare.land.includeHouse.transaction";//	非纯土地(交易)  包含房产
-     public static final String PROJECT_DECLARE_LAND_INCLUDE_HOUSE_LEASE = "project.declare.land.includeHouse.lease";//	非纯土地(出租) 包含房产
+    /*
+    * 项目申报
+    */
+    public static final String PROJECT_DECLARE_ECONOMIC_INDICATORS = "project.declare.economic.indicators";  //紧急程度
+    public static final String PROJECT_DECLARE_HOUSE_CERTIFICATE_TYPE = "project.declare.house.certificate.type";//房产证类型
+    public static final String PROJECT_DECLARE_COMMON_SITUATION = "project.declare.common.situation";//共有情况
+    public static final String PROJECT_DECLARE_LAND = "project.declare.land";//土地申报类型
+    public static final String PROJECT_DECLARE_LAND_BASE_TRANSACTION = "project.declare.land.base.transaction";//纯土地(交易)
+    public static final String PROJECT_DECLARE_LAND_BASE_LEASE = "project.declare.land.base.lease";//纯土地(出租)
+    public static final String PROJECT_DECLARE_LAND_INCLUDE_HOUSE_TRANSACTION = "project.declare.land.includeHouse.transaction";//	非纯土地(交易)  包含房产
+    public static final String PROJECT_DECLARE_LAND_INCLUDE_HOUSE_LEASE = "project.declare.land.includeHouse.lease";//	非纯土地(出租) 包含房产
+
+    public static final String PROJECT_SURVEY_FORM_CLASSIFY = "project.survey.form.classify";//查勘案例表单大类
 
     /*
      * 项目查勘
