@@ -750,14 +750,36 @@ public class GenerateMdCostService implements Serializable {
                 }
                 try {
                     StringBuilder stringBuilder = new StringBuilder(8);
-                    if (toolResidueRatio.getUsedYear() != null) {
-                        stringBuilder.append("已用年限:").append(ArithmeticUtils.getBigDecimalString(toolResidueRatio.getUsedYear()));
-                    }
-                    if (toolResidueRatio.getUsableYear() != null) {
-                        stringBuilder.append("可用年限:").append(ArithmeticUtils.getBigDecimalString(toolResidueRatio.getUsableYear()));
-                    }
-                    if (toolResidueRatio.getAgeRate() != null) {
-                        stringBuilder.append("年限权重:").append(ArithmeticUtils.getBigDecimalString(toolResidueRatio.getAgeRate()));
+                    switch (toolResidueRatio.getType()) {
+                        case 0:
+                            //"1-(1-残值率)×已使用年限÷耐用年限"
+                            stringBuilder.append("1-(1-").append(ArithmeticUtils.getPercentileSystem(toolResidueRatio.getResidualRatio(),2)).append(")");
+                            stringBuilder.append("×") ;
+                            stringBuilder.append(ArithmeticUtils.getBigDecimalString(toolResidueRatio.getUsedYear()));
+                            stringBuilder.append("÷");
+                            stringBuilder.append(ArithmeticUtils.getBigDecimalString(toolResidueRatio.getUsableYear()));
+                            break;
+                        case 1:
+                            break;
+                        case 2:
+                            //(1-(1-残值率)×已使用年限÷耐用年限)×年限法权重+(主题结构成新率+设备成新率+装饰成新率)×观察法权重
+                            stringBuilder.append("(") ;
+                            stringBuilder.append("1-(1-").append(ArithmeticUtils.getPercentileSystem(toolResidueRatio.getResidualRatio(),2)).append(")");
+                            stringBuilder.append("×") ;
+                            stringBuilder.append(ArithmeticUtils.getBigDecimalString(toolResidueRatio.getUsedYear()));
+                            stringBuilder.append("÷");
+                            stringBuilder.append(ArithmeticUtils.getBigDecimalString(toolResidueRatio.getUsableYear()));
+                            stringBuilder.append(")") ;
+                            stringBuilder.append("×") ;
+                            stringBuilder.append(ArithmeticUtils.getPercentileSystem(toolResidueRatio.getAgeRate(),2));
+
+                            stringBuilder.append(" + ") ;
+                            double v = ArithmeticUtils.parseFormatBigDecimal(toolResidueRatio.getResultValue()).doubleValue() ;
+                            double v1 = 1-(1-toolResidueRatio.getResidualRatio().doubleValue()) * toolResidueRatio.getUsedYear().doubleValue()/toolResidueRatio.getUsableYear().doubleValue() ;
+                            double tax = (v-v1)/toolResidueRatio.getObserveRate().doubleValue();
+                            stringBuilder.append(ArithmeticUtils.getPercentileSystem(ArithmeticUtils.createBigDecimal(tax),2)).append("×");
+                            stringBuilder.append(ArithmeticUtils.getPercentileSystem(toolResidueRatio.getObserveRate(),2));
+                            break;
                     }
                     if (StringUtils.isNotBlank(stringBuilder.toString())) {
                         generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), stringBuilder.toString());
