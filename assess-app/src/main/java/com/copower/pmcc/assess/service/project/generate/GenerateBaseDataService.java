@@ -6,10 +6,7 @@ import com.aspose.words.Table;
 import com.copower.pmcc.ad.api.dto.AdCompanyQualificationDto;
 import com.copower.pmcc.ad.api.dto.AdPersonalQualificationDto;
 import com.copower.pmcc.ad.api.enums.AdPersonalEnum;
-import com.copower.pmcc.assess.common.AsposeUtils;
-import com.copower.pmcc.assess.common.CnNumberUtils;
-import com.copower.pmcc.assess.common.FileUtils;
-import com.copower.pmcc.assess.common.PoiUtils;
+import com.copower.pmcc.assess.common.*;
 import com.copower.pmcc.assess.common.enums.*;
 import com.copower.pmcc.assess.common.enums.basic.EnvironmentalScienceEnum;
 import com.copower.pmcc.assess.common.enums.basic.ExamineHouseEquipmentTypeEnum;
@@ -4716,7 +4713,7 @@ public class GenerateBaseDataService {
             {
                 String val = "";
                 if (schemeJudgeObject.getPrice() != null) {
-                    val = generateCommonMethod.getBigDecimalToInteger(schemeJudgeObject.getPrice(), 10);
+                    val = ArithmeticUtils.getBigDecimalToInteger(schemeJudgeObject.getPrice(), 10);
                 }
                 ccb_Pre_Evaluation_Data_FormWriteWord2(documentBuilder, stringLinkedList, "抵押价值单价(元/㎡)", val);
             }
@@ -4725,7 +4722,8 @@ public class GenerateBaseDataService {
                 BigDecimal mortgageValue = new BigDecimal("0");
                 String val = "";
                 if (schemeJudgeObject.getPrice() != null && schemeJudgeObject.getEvaluationArea() != null) {
-                    mortgageValue = schemeJudgeObject.getPrice().multiply(schemeJudgeObject.getEvaluationArea());
+                    BigDecimal price = ArithmeticUtils.createBigDecimal(ArithmeticUtils.getBigDecimalToInteger(schemeJudgeObject.getPrice(), 10));
+                    mortgageValue = price.multiply(schemeJudgeObject.getEvaluationArea());
                     if (generateCommonMethod.isInteger(mortgageValue)) {
                     }
                     val = generateCommonMethod.getBigDecimalRound(mortgageValue, 0, false);
@@ -4736,7 +4734,7 @@ public class GenerateBaseDataService {
             {
                 String val = "";
                 try {
-                    val = getNetAssessmentNumber2(BaseReportFieldEnum.NetAssessmentOne, liquidationAnalysisItemList, schemeJudgeObjectList, schemeJudgeObject);
+                    val = getNetAssessmentNumber2(BaseReportFieldEnum.NetAssessmentOne, liquidationAnalysisItemList, schemeJudgeObjectList, schemeJudgeObject,10);
                 } catch (Exception e) {
                 }
                 ccb_Pre_Evaluation_Data_FormWriteWord2(documentBuilder, stringLinkedList, "抵押净值1(元)", val);
@@ -4744,7 +4742,7 @@ public class GenerateBaseDataService {
             {
                 String val = "";
                 try {
-                    val = getNetAssessmentNumber2(BaseReportFieldEnum.NetAssessmentTwo, liquidationAnalysisItemList, schemeJudgeObjectList, schemeJudgeObject);
+                    val = getNetAssessmentNumber2(BaseReportFieldEnum.NetAssessmentTwo, liquidationAnalysisItemList, schemeJudgeObjectList, schemeJudgeObject,10);
                 } catch (Exception e) {
                 }
                 ccb_Pre_Evaluation_Data_FormWriteWord2(documentBuilder, stringLinkedList, "抵押净值2(元)", val);
@@ -4783,7 +4781,7 @@ public class GenerateBaseDataService {
         if (CollectionUtils.isNotEmpty(liquidationAnalysisItemList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                 if (schemeJudgeObject.getPrice() != null && schemeJudgeObject.getEvaluationArea() != null) {
-                    String value = getNetAssessmentNumber2(reportFieldEnum, liquidationAnalysisItemList, schemeJudgeObjectList, schemeJudgeObject);
+                    String value = getNetAssessmentNumber2(reportFieldEnum, liquidationAnalysisItemList, schemeJudgeObjectList, schemeJudgeObject,null);
                     map.put(
                             generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber())
                             , String.format("%s元", value));
@@ -4796,7 +4794,7 @@ public class GenerateBaseDataService {
         return "/";
     }
 
-    public String getNetAssessmentNumber2(BaseReportFieldEnum reportFieldEnum, List<SchemeLiquidationAnalysisItem> liquidationAnalysisItemList, List<SchemeJudgeObject> schemeJudgeObjectList, SchemeJudgeObject schemeJudgeObject) {
+    public String getNetAssessmentNumber2(BaseReportFieldEnum reportFieldEnum, List<SchemeLiquidationAnalysisItem> liquidationAnalysisItemList, List<SchemeJudgeObject> schemeJudgeObjectList, SchemeJudgeObject schemeJudgeObject, Integer newScalePrice) {
         final String sellerPayment = "卖方";
         final String tradingParties = "双方";
         final String buyerPayment = "买方";
@@ -4828,8 +4826,14 @@ public class GenerateBaseDataService {
         if (totalTaxAmount.intValue() > 0) {
             judgeTaxAmount = schemeJudgeObject.getEvaluationArea().divide(totalEvaluationArea, 2, RoundingMode.HALF_UP).multiply(totalTaxAmount);
         }
-        BigDecimal evaluationPrice = schemeJudgeObject.getPrice().multiply(schemeJudgeObject.getEvaluationArea());
-        BigDecimal mortgageValue = evaluationPrice.subtract(judgeTaxAmount);
+        BigDecimal bigDecimal = null;
+        if (newScalePrice == null) {
+            bigDecimal = schemeJudgeObject.getPrice().multiply(schemeJudgeObject.getEvaluationArea());
+        }else {
+            BigDecimal price = ArithmeticUtils.createBigDecimal(ArithmeticUtils.getBigDecimalToInteger(schemeJudgeObject.getPrice(), newScalePrice));
+            bigDecimal = price.multiply(schemeJudgeObject.getEvaluationArea());
+        }
+        BigDecimal mortgageValue = bigDecimal.subtract(judgeTaxAmount);
         return generateCommonMethod.getBigDecimalRound(mortgageValue, false);
     }
 
@@ -6022,6 +6026,41 @@ public class GenerateBaseDataService {
         return localPath;
     }
 
+    /**
+     * 评估总价分述
+     *
+     * @return
+     */
+    public String getAssessPriceClassification() throws Exception {
+        StringBuilder stringBuilder = new StringBuilder(8);
+        Map<SchemeJudgeObject, String> map = Maps.newHashMap();
+        Map<SchemeJudgeObject, KeyValueDto> map2 = getAssessAssessTotalData();
+        if (!map2.isEmpty()) {
+            for (Map.Entry<SchemeJudgeObject, KeyValueDto> entry : map2.entrySet()) {
+                BigDecimal one = new BigDecimal(entry.getValue().getKey());
+                BigDecimal two = new BigDecimal(entry.getValue().getValue());
+                BigDecimal bigDecimal = ArithmeticUtils.createBigDecimal(generateCommonMethod.getBigDecimalToInteger(one.multiply(two), 100));
+                String value = bigDecimal.divide(new BigDecimal(10000)).setScale(2, BigDecimal.ROUND_DOWN).toString();
+                map.put(entry.getKey(), value);
+            }
+        }
+        if (!map.isEmpty()) {
+            if (map.size() == 1) {
+                stringBuilder.append(StringUtils.trim(map.entrySet().stream().findFirst().get().getValue()));
+            } else {
+                int i = 0;
+                for (Map.Entry<SchemeJudgeObject, String> entry : map.entrySet()) {
+                    stringBuilder.append(generateCommonMethod.getSchemeJudgeObjectShowName(entry.getKey())).append(entry.getValue());
+                    i++;
+                    if (i != map.size()) {
+                        //插入换行符
+                        stringBuilder.append(StringUtils.repeat(ControlChar.LINE_BREAK, 1));
+                    }
+                }
+            }
+        }
+        return stringBuilder.toString();
+    }
 
     //评估面积
     public String getAssessArea() {
@@ -6109,42 +6148,6 @@ public class GenerateBaseDataService {
             }
         }
         return map;
-    }
-
-
-    /**
-     * 评估总价分述
-     *
-     * @return
-     */
-    public String getAssessPriceClassification() throws Exception {
-        StringBuilder stringBuilder = new StringBuilder(8);
-        Map<SchemeJudgeObject, String> map = Maps.newHashMap();
-        Map<SchemeJudgeObject, KeyValueDto> map2 = getAssessAssessTotalData();
-        if (!map2.isEmpty()) {
-            for (Map.Entry<SchemeJudgeObject, KeyValueDto> entry : map2.entrySet()) {
-                BigDecimal one = new BigDecimal(entry.getValue().getKey());
-                BigDecimal two = new BigDecimal(entry.getValue().getValue());
-                String value = one.multiply(two).divide(new BigDecimal(10000)).setScale(2, BigDecimal.ROUND_DOWN).toString();
-                map.put(entry.getKey(), value);
-            }
-        }
-        if (!map.isEmpty()) {
-            if (map.size() == 1) {
-                stringBuilder.append(StringUtils.trim(map.entrySet().stream().findFirst().get().getValue()));
-            } else {
-                int i = 0;
-                for (Map.Entry<SchemeJudgeObject, String> entry : map.entrySet()) {
-                    stringBuilder.append(generateCommonMethod.getSchemeJudgeObjectShowName(entry.getKey())).append(entry.getValue());
-                    i++;
-                    if (i != map.size()) {
-                        //插入换行符
-                        stringBuilder.append(StringUtils.repeat(ControlChar.LINE_BREAK, 1));
-                    }
-                }
-            }
-        }
-        return stringBuilder.toString();
     }
 
 
