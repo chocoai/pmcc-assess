@@ -5,10 +5,11 @@
     <div class="left_col scroll-view">
         <div class="navbar nav_title" style="border: 0;">
 
-            <a href="${pageContext.request.contextPath}/projectInfo/projectDetails?projectId=${projectInfo.id}" class="site_title">
-                <i style="border: none" class="fa fa-trophy"></i>sdsdjsdj
+            <span class="site_title">
+                <i style="border: none" class="fa fa-trophy"></i> ${projectInfo.projectName}
                 <small><span class="label label-info">${projectInfo.projectStatus}</span></small>
-            </a>
+            </span>
+
 
             <div class="profile clearfix">
 
@@ -31,24 +32,10 @@
         <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
             <div class="menu_section">
                 <ul class="nav side-menu">
-
-                    <li><a><i class="fa fa-cogs"></i> 项目管理 <span class="fa fa-chevron-down"></span></a>
-                        <ul class="nav child_menu">
-                            <li><a href="${pageContext.request.contextPath}/projectInfo/sendDocument/${projectInfo.id}">项目发文</a></li>
-                            <%--<li><a href="${pageContext.request.contextPath}/projectInfo/projectDetails?projectId=${projectInfo.id}">保证金</a></li>--%>
-                            <%--<li><a href="${pageContext.request.contextPath}/projectInfo/projectWorkLog/${projectInfo.id}">项目日志</a></li>--%>
-                            <li><a href="${pageContext.request.contextPath}/projectInfo/projectLegwork/${projectInfo.id}">外勤</a></li>
-                            <li><a href="${pageContext.request.contextPath}/projectInfo/projectOvertime/${projectInfo.id}">加班</a></li>
-                            <li><a href="${pageContext.request.contextPath}/projectInfo/projectExpense/${projectInfo.id}">报销</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="${pageContext.request.contextPath}/projectInfo/projectLx/${projectInfo.id}"><i class="fa fa-bookmark"></i> 项目信息</a></li>
-                    <li><a href="${pageContext.request.contextPath}/projectInfo/projectBsqd/${projectInfo.id}"><i class="fa fa-cloud-download"></i> 标书取得</a></li>
-                    <li><a href="${pageContext.request.contextPath}/projectInfo/projectTbfx/${projectInfo.id}"><i class="fa fa-spinner"></i> 投标分析</a></li>
-                    <li><a href="${pageContext.request.contextPath}/projectInfo/projectBszz/${projectInfo.id}"><i class="fa fa-magic"></i> 标书制作</a></li>
-                    <li><a href="${pageContext.request.contextPath}/projectInfo/projectTb/${projectInfo.id}"><i class="fa fa-flag-checkered"></i> 投标</a></li>
-                    <li><a href="${pageContext.request.contextPath}/projectInfo/projectJggz/${projectInfo.id}"><i class="fa fa-coffee"></i> 结果跟踪</a></li>
-
+                    <li><a href="#"><i class="fa fa-bookmark"></i> 资料收集与分析</a></li>
+                    <li><a href="#"><i class="fa fa-bookmark"></i> 现场与案例</a></li>
+                    <li><a href="#"><i class="fa fa-bookmark"></i> 评估工作方案</a></li>
+                    <li><a href="#"><i class="fa fa-bookmark"></i> 报告编写</a></li>
                 </ul>
             </div>
         </div>
