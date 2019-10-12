@@ -234,6 +234,24 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
+                                        <div class="x-valid">
+                                            <label class="col-sm-1 control-label">
+                                                剩余年限
+                                            </label>
+                                            <div class="col-sm-3">
+                                                <label class="form-control">${master.landRemainingYear}</label>
+                                            </div>
+                                        </div>
+                                        <div class="x-valid">
+                                            <label class="col-sm-1 control-label">
+                                                说明
+                                            </label>
+                                            <div class="col-sm-3">
+                                                <label class="form-control">${master.landRemainingYearRemark}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
                                         <label class="col-sm-1 control-label">
                                             还原利率
                                         </label>
@@ -258,12 +276,18 @@
                                         <table class="table table-bordered">
                                             <tbody>
                                             <tr>
+                                                <td> 耕地比例</td>
+                                                <td id="ploughArearatio"></td>
+                                                <td> 非耕地比例</td>
+                                                <td id="noPloughArearatio">
+                                                </td>
+                                            </tr>
+                                            <tr>
                                                 <td> 土地取得费及相关税费(元/亩)</td>
                                                 <td id="landAcquisitionBhou"></td>
                                                 <td> 土地开发费(元/亩)</td>
                                                 <td id="landProductionBhou">
                                                 </td>
-
                                             </tr>
                                             <tr>
                                                 <td> 土地开发利息(元/亩)</td>
@@ -279,7 +303,6 @@
                                                 </td>
                                                 <td> 无限年期土地使用权价格(元/亩)</td>
                                                 <td id="landUseBhou">
-
                                                 </td>
                                             </tr>
                                             <tr>
@@ -288,7 +311,6 @@
                                                 </td>
                                                 <td> 年期修正（元/亩）</td>
                                                 <td id="priceCorrectionBhou">
-
                                                 </td>
                                             </tr>
                                             <tr>
@@ -297,14 +319,12 @@
                                                 </td>
                                                 <td> 容积率修正(元/亩)</td>
                                                 <td id="plotRatioAdjustBhou">
-
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td> 委估宗地价格(元/亩)</td>
                                                 <td id="parcelBhou">
                                                 </td>
-
                                             </tr>
                                             </tbody>
                                         </table>
@@ -328,8 +348,21 @@
     }
 
     $(function () {
-        getLandAcquisitionBhou("${master.id}")
+        getLandAcquisitionBhou("${master.id}");
+        getPloughArearatio();
     });
+
+    //耕地比例
+    function getPloughArearatio() {
+        var farmlandArea = parseFloat("${master.farmlandArea}");
+        var ploughArea = parseFloat("${master.ploughArea}");
+        if (farmlandArea && ploughArea) {
+            var ploughArearatio = getSomePlaces(ploughArea / farmlandArea, 4);
+            var noPloughArearatio = 1 - ploughArearatio;
+            $("#ploughArearatio").text(AssessCommon.pointToPercent(ploughArearatio));
+            $("#noPloughArearatio").text(AssessCommon.pointToPercent(noPloughArearatio));
+        }
+    }
 
     //土地取得费及相关税费(元/亩)
     function getLandAcquisitionBhou(masterId) {
@@ -438,7 +471,7 @@
         //G33
         var rewardRate = AssessCommon.percentToPoint(rewardRatePercent)
         //E29
-        var landRemainingYear = "${landRemainingYear}";
+        var landRemainingYear = parseFloat("${master.landRemainingYear}");
         if (rewardRate && landRemainingYear) {
             var temp = Math.pow(1 + parseFloat(rewardRate), landRemainingYear);
             //年期修正H33
@@ -524,7 +557,7 @@
         loadDataList: function (masterId) {
             var cols = [];
             cols.push({field: 'typeName', title: '类型'});
-            cols.push({field: 'standard', title: '标准1/标准2'});
+            cols.push({field: 'standard', title: '耕地标准/非耕地标准'});
             cols.push({field: 'price', title: '价格(元/亩)'});
             $("#" + taxes.prototype.config().table).bootstrapTable('destroy');
             TableInit(taxes.prototype.config().table, "${pageContext.request.contextPath}/costApproach/getMdCostApproachTaxesList", cols, {

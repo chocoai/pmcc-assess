@@ -284,12 +284,12 @@
                 return formatDate(value);
             }
         });
-        cols.push({field: 'indexNumber', title: '指数'});
         cols.push({
             field: 'endDate', title: '结束月份', formatter: function (value, row, index) {
                 return formatDate(value);
             }
         });
+        cols.push({field: 'indexNumber', title: '指数'});
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
