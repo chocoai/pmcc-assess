@@ -733,13 +733,13 @@ public class GenerateMdCostService implements Serializable {
                 }
                 switch (toolResidueRatio.getType()) {
                     case 0:
-                        generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), "1-已使用年限/可用年限");
+                        generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), "1-(1-残值率)✖已使用年限➗耐用年限");
                         break;
                     case 1:
-                        generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), "取得完损度数据自动计算");
+                        generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), "主题结构成新率+设备成新率+装饰成新率");
                         break;
                     case 2:
-                        generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), "年限法成效率*年限法权重+观察法成新率*观察法权重");
+                        generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), "(1-(1-残值率)✖已使用年限➗耐用年限)✖年限法权重+(主题结构成新率+设备成新率+装饰成新率)✖观察法权重");
                         break;
                 }
             }
@@ -759,7 +759,8 @@ public class GenerateMdCostService implements Serializable {
                     if (toolResidueRatio.getAgeRate() != null) {
                         stringBuilder.append("年限权重:").append(ArithmeticUtils.getBigDecimalString(toolResidueRatio.getAgeRate()));
                     }
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), stringBuilder.toString());
+//                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), stringBuilder.toString());
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), toolResidueRatio.getResultValue());
                 } catch (Exception e) {
                 }
             }
