@@ -50,6 +50,17 @@ public class ProjectPhaseService {
         projectPhaseDao.updateProjectPhaseById(projectPhase);
     }
 
+    public ProjectPhaseVo getProjectPhaseVo(ProjectPhase projectPhase){
+        if (projectPhase == null){
+            return null;
+        }
+        ProjectPhaseVo vo = new ProjectPhaseVo() ;
+        BeanUtils.copyProperties(projectPhase,vo);
+        ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPhase.getWorkStageId());
+        vo.setWorkStageName(projectWorkStage.getWorkStageName());
+        return vo;
+    }
+
     public List<ProjectPhaseVo> queryProjectPhaseByCategory(Integer typeId, Integer categoryId, String search) {
         ProjectPhase projectPhase = new ProjectPhase();
         projectPhase.setBisEnable(true); //没有删除的
@@ -68,11 +79,7 @@ public class ProjectPhaseService {
 
         List<ProjectPhase> customProjectPhase = projectPhaseDao.getCustomProjectPhase(projectPhase);
         List<ProjectPhaseVo> projectPhaseVos = LangUtils.transform(customProjectPhase, o -> {
-            ProjectPhaseVo projectPhaseVo = new ProjectPhaseVo();
-            BeanUtils.copyProperties(o, projectPhaseVo);
-            ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(o.getWorkStageId());
-            projectPhaseVo.setWorkStageName(projectWorkStage.getWorkStageName());
-            return projectPhaseVo;
+            return getProjectPhaseVo(o);
         });
         return projectPhaseVos;
     }

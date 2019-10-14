@@ -33,6 +33,13 @@ public class ProjectPlanDao {
         return projectPlanMapper.selectByExample(example);
     }
 
+    public List<ProjectPlan> getProjectPlanList2(Integer projectId,Integer workStageId , Integer categoryId) {
+        ProjectPlanExample example = new ProjectPlanExample();
+        example.createCriteria().andProjectIdEqualTo(projectId).andWorkStageIdEqualTo(workStageId).andCategoryIdEqualTo(categoryId);
+        example.setOrderByClause(" stage_sort");
+        return projectPlanMapper.selectByExample(example);
+    }
+
 
     public List<ProjectPlan> getProjectPlan(ProjectPlan projectPlan) {
         ProjectPlanExample example = new ProjectPlanExample();

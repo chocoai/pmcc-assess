@@ -3,17 +3,13 @@ package com.copower.pmcc.assess.controller.project;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
-import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.project.ProjectCenterService;
-import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,8 +39,6 @@ public class ProjectCenterController {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private PublicService publicService;
-    @Autowired
-    private ProjectInfoService projectInfoService;
 
     @RequestMapping(value = "/projectNew", name = "新建项目")
     public ModelAndView projectNew() {
@@ -128,29 +122,5 @@ public class ProjectCenterController {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/csr/projectCsrList");
         return modelAndView;
     }
-
-    @RequestMapping(value = "/projectTraceMenu", name = "单个项目模块菜单")
-    public ModelAndView projectTraceMenu(Integer projectId) {
-        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/projectTraceMenu/projectDetails");
-        setProjectTraceMenuParams(projectId,modelAndView) ;
-        return modelAndView;
-    }
-
-    /**
-     * 模块参数设置
-     * @param projectId
-     * @param modelAndView
-     */
-    private void setProjectTraceMenuParams(Integer projectId , ModelAndView modelAndView){
-        if (projectId == null){
-            return;
-        }
-        ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(projectId)) ;
-        if (projectInfoVo == null){
-            return;
-        }
-        modelAndView.addObject(StringUtils.uncapitalize(ProjectInfo.class.getSimpleName()),projectInfoVo) ;
-    }
-
 
 }

@@ -149,7 +149,7 @@
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         <!--</table>-->
 
-        <table tableName="tb_tool_map_handle" domainObjectName="ToolMapHandle">
+        <table tableName="tb_declare_record_group" domainObjectName="DeclareRecordGroup">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 
