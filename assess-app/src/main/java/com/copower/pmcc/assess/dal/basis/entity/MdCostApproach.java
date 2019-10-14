@@ -48,7 +48,7 @@ public class MdCostApproach {
 
     private String plotRatioAdjustRemark;
 
-    private String plotRatioElementAmend;
+    private BigDecimal plotRatioElementAmend;
 
     private String plotRatioElementAmendRemark;
 
@@ -61,6 +61,12 @@ public class MdCostApproach {
     private BigDecimal landRemainingYear;
 
     private String landRemainingYearRemark;
+
+    private String parcelSettingOuter;
+
+    private String parcelSettingInner;
+
+    private String landLevelContent;
 
     public Integer getId() {
         return id;
@@ -238,12 +244,12 @@ public class MdCostApproach {
         this.plotRatioAdjustRemark = plotRatioAdjustRemark == null ? null : plotRatioAdjustRemark.trim();
     }
 
-    public String getPlotRatioElementAmend() {
+    public BigDecimal getPlotRatioElementAmend() {
         return plotRatioElementAmend;
     }
 
-    public void setPlotRatioElementAmend(String plotRatioElementAmend) {
-        this.plotRatioElementAmend = plotRatioElementAmend == null ? null : plotRatioElementAmend.trim();
+    public void setPlotRatioElementAmend(BigDecimal plotRatioElementAmend) {
+        this.plotRatioElementAmend = plotRatioElementAmend;
     }
 
     public String getPlotRatioElementAmendRemark() {
@@ -292,5 +298,29 @@ public class MdCostApproach {
 
     public void setLandRemainingYearRemark(String landRemainingYearRemark) {
         this.landRemainingYearRemark = landRemainingYearRemark == null ? null : landRemainingYearRemark.trim();
+    }
+
+    public String getParcelSettingOuter() {
+        return parcelSettingOuter;
+    }
+
+    public void setParcelSettingOuter(String parcelSettingOuter) {
+        this.parcelSettingOuter = parcelSettingOuter == null ? null : parcelSettingOuter.trim();
+    }
+
+    public String getParcelSettingInner() {
+        return parcelSettingInner;
+    }
+
+    public void setParcelSettingInner(String parcelSettingInner) {
+        this.parcelSettingInner = parcelSettingInner == null ? null : parcelSettingInner.trim();
+    }
+
+    public String getLandLevelContent() {
+        return landLevelContent;
+    }
+
+    public void setLandLevelContent(String landLevelContent) {
+        this.landLevelContent = landLevelContent == null ? null : landLevelContent.trim();
     }
 }

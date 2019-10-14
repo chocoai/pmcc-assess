@@ -57,6 +57,20 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">宗地外设定</label>
+                                        <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3" >
+                                            <label class="form-control">${master.parcelSettingOuterName}</label>
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">宗地内设定</label>
+                                        <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                            <label class="form-control">${master.parcelSettingInnerName}</label>
+                                        </div>
+                                    </div>
+                                </div>
                                 <table class="table table-bordered" id="tb_research_list">
                                     <!-- cerare document add ajax data-->
                                 </table>
@@ -78,6 +92,47 @@
                             </div>
                         </div>
 
+                        <div class="x_panel">
+                            <div class="x_title collapse-link">
+                                <ul class="nav navbar-right panel_toolbox">
+                                    <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                                </ul>
+                                <h3>因素条件说明及修正系数</h3>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <form class="form-horizontal" id="areaAndSeveralAmendForm">
+                                    <div class="form-group">
+                                        <div class="x-valid">
+                                            <label class="col-sm-1 control-label">
+                                                宗地个别因素修正
+                                            </label>
+                                            <div class="col-sm-3">
+                                                <label class="form-control">${master.plotRatioElementAmend}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                                            <table class="table table-striped table-bordered" style="display: none">
+                                                <thead>
+                                                <tr>
+                                                    <th width="10%">土地级别类别</th>
+                                                    <th width="10%">土地级别类型</th>
+                                                    <th width="10%">土地级别等级</th>
+                                                    <th width="20%">说明</th>
+                                                    <th width="10%">分值</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="landLevelTabContent">
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                         <div class="x_panel">
                             <div class="x_title collapse-link">
                                 <ul class="nav navbar-right panel_toolbox">
@@ -197,24 +252,24 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <div class="x-valid">
-                                            <label class="col-sm-1 control-label">
-                                                宗地个别因素修正
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <label class="form-control">${master.plotRatioElementAmend}</label>
-                                            </div>
-                                        </div>
-                                        <div class="x-valid">
-                                            <label class="col-sm-1 control-label">
-                                                说明
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <label class="form-control">${master.plotRatioElementAmendRemark}</label>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <%--<div class="form-group">--%>
+                                        <%--<div class="x-valid">--%>
+                                            <%--<label class="col-sm-1 control-label">--%>
+                                                <%--宗地个别因素修正--%>
+                                            <%--</label>--%>
+                                            <%--<div class="col-sm-3">--%>
+                                                <%--<label class="form-control">${master.plotRatioElementAmend}</label>--%>
+                                            <%--</div>--%>
+                                        <%--</div>--%>
+                                        <%--<div class="x-valid">--%>
+                                            <%--<label class="col-sm-1 control-label">--%>
+                                                <%--说明--%>
+                                            <%--</label>--%>
+                                            <%--<div class="col-sm-3">--%>
+                                                <%--<label class="form-control">${master.plotRatioElementAmendRemark}</label>--%>
+                                            <%--</div>--%>
+                                        <%--</div>--%>
+                                    <%--</div>--%>
                                     <div class="form-group">
                                         <div class="x-valid">
                                             <label class="col-sm-1 control-label">
@@ -342,6 +397,28 @@
 </div>
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
+<script type="text/html" id="landLevelTabContentBody">
+    <tr class="group">
+        <td class="table-cell">
+            {landLevelTypeName}
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td>
+            {landLevelCategoryName}
+        </td>
+        <td>
+            {gradeName}
+        </td>
+        <td>
+            <label name="reamark" class="form-control">{reamark}</label>
+        </td>
+        <td>
+            <label name="landFactorTotalScore" class="form-control">{landFactorTotalScore}</label>
+        </td>
+    </tr>
+</script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.estate.js"></script>
 <script type="application/javascript">
     function saveform() {
         saveApprovalform("");
@@ -350,6 +427,8 @@
     $(function () {
         getLandAcquisitionBhou("${master.id}");
         getPloughArearatio();
+        //因素条件说明及修正系数
+        landLevelLoadHtml()
     });
 
     //耕地比例
@@ -485,7 +564,7 @@
                 $("#priceCorrectionBhou").text(getSomePlaces(priceCorrectionBhou / 10000, 2));
 
                 //宗地个别因素修正
-                var plotRatioElementAmend = parseFloat(AssessCommon.percentToPoint("${master.plotRatioElementAmend}"));
+                var plotRatioElementAmend = parseFloat("${master.plotRatioElementAmend}");
                 var plotRatioElementAmendBhou = getSomePlaces(yearFixed * landUseBhou * (1 + plotRatioElementAmend), 2);
                 $("#plotRatioElementAmendBhou").text(getSomePlaces(plotRatioElementAmendBhou / 10000, 2));
 
@@ -506,6 +585,61 @@
         var vv = Math.pow(10, v);
         return Math.round(num * vv) / vv;
     }
+
+    //因素条件说明及修正系数
+    function landLevelLoadHtml() {
+        var jsonContent = JSON.parse('${master.landLevelContent}');
+        var data = estateCommon.landLevelFilter(jsonContent);
+        if (jQuery.isEmptyObject(data)) {
+            return false;
+        }
+        var target = $("#landLevelTabContent");
+        target.empty();
+        target.parent().show();
+
+        //由于js来筛选 有大量json 解析或者字符串化 影响代码阅读度，因此改为了后台直接处理,第一次的时候有2此筛选分类这样确实代码可读性差
+        data.forEach(function (dataA, indexM) {
+            $.each(dataA, function (i, obj) {
+                var item;
+                obj.forEach(function (value, index) {
+                    if (value.modelStr == "update") {
+                        item = value;
+                    }
+                });
+                var landLevelBodyHtml = $("#landLevelTabContentBody").html();
+                if (landLevelBodyHtml) {
+                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landFactorTotalScore}/g, item.achievement);
+                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelCategoryName}/g, item.category);
+                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelTypeName}/g, item.typeName);
+                    landLevelBodyHtml = landLevelBodyHtml.replace(/{gradeName}/g, item.gradeName);
+                    var text = "";
+                    $.each(obj, function (i, n) {
+                        text += "等级:" + n.gradeName + "，说明:" + n.reamark + "； \r";
+                    });
+                    landLevelBodyHtml = landLevelBodyHtml.replace(/{reamark}/g, text);
+                    target.append(landLevelBodyHtml);
+                }
+            });
+
+            if (indexM == 0) {
+                target.find("tr").first().find("td").first().attr("rowspan", dataA.length);
+                target.find("tr").each(function (i, n) {
+                    if (i != 0) {
+                        $(n).find("td").first().remove();
+                    }
+                });
+            }
+            if (indexM == 1) {
+                var length = data[0].length;
+                target.find("tr").eq(length).find("td").first().attr("rowspan", dataA.length);
+                target.find("tr").each(function (i, n) {
+                    if (i > length) {
+                        $(n).find("td").first().remove();
+                    }
+                });
+            }
+        });
+    };
 </script>
 <%--年平均产值--%>
 <script type="text/javascript">

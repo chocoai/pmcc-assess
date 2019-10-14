@@ -73,7 +73,7 @@
                                         <div class="col-sm-3">
                                             <input type="text" placeholder="区域及个别修正系数" class="form-control"
                                                    id="areaAndSeveralAmend" name="areaAndSeveralAmend" required readonly
-                                                   onblur="getParcelPrice()" data-rule-number="true">
+                                                   data-rule-number="true">
                                         </div>
                                     </div>
                                 </div>
@@ -407,6 +407,8 @@
         });
         if (landLevelContent.length >= 1) {
             formData.landLevelContent = JSON.stringify(landLevelContent);
+        }else{
+            formData.landLevelContent ="";
         }
 
         if ("${processInsId}" != "0") {

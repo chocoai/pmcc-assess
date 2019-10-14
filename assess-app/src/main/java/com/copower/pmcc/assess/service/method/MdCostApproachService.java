@@ -11,12 +11,14 @@ import com.copower.pmcc.assess.dal.basis.entity.MdCostApproach;
 import com.copower.pmcc.assess.dal.basis.entity.MdCostApproachItem;
 import com.copower.pmcc.assess.dal.basis.entity.MdCostApproachTaxes;
 import com.copower.pmcc.assess.dto.output.method.MdCostApproachTaxesVo;
+import com.copower.pmcc.assess.dto.output.method.MdCostApproachVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -382,7 +384,9 @@ public class MdCostApproachService {
         List<MdCostApproachTaxes> costApproachTaxes = getMdCostApproachTaxesListByMasterId(masterId);
         if (CollectionUtils.isNotEmpty(costApproachTaxes)) {
             for (MdCostApproachTaxes item : costApproachTaxes) {
-                total = total.add(item.getPrice());
+                if(item.getPrice()!=null) {
+                    total = total.add(item.getPrice());
+                }
             }
         }
         MdCostApproachTaxes landAcquisition = getMdCostApproachTaxesListByMasterId(masterId, AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_LAND_ACQUISITION);
@@ -392,5 +396,36 @@ public class MdCostApproachService {
         }
 
         return null;
+    }
+
+    public MdCostApproachVo getMdCostApproachVo(MdCostApproach oo) {
+        MdCostApproachVo vo = new MdCostApproachVo();
+        if (oo == null) {
+            return vo;
+        }
+        BeanUtils.copyProperties(oo, vo);
+
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(oo.getParcelSettingOuter())) {
+            List<Integer> ids = FormatUtils.transformString2Integer(oo.getParcelSettingOuter());
+            if (org.apache.commons.collections.CollectionUtils.isNotEmpty(ids)) {
+                List<String> stringList = Lists.newArrayList();
+                for (Integer integer : ids) {
+                    stringList.add(baseDataDicService.getNameById(integer));
+                }
+                vo.setParcelSettingOuterName(org.apache.commons.lang3.StringUtils.join(stringList, "，"));
+            }
+        }
+
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(oo.getParcelSettingInner())) {
+            List<Integer> ids = FormatUtils.transformString2Integer(oo.getParcelSettingInner());
+            if (org.apache.commons.collections.CollectionUtils.isNotEmpty(ids)) {
+                List<String> stringList = Lists.newArrayList();
+                for (Integer integer : ids) {
+                    stringList.add(baseDataDicService.getNameById(integer));
+                }
+                vo.setParcelSettingInnerName(org.apache.commons.lang3.StringUtils.join(stringList, "，"));
+            }
+        }
+        return vo;
     }
 }
