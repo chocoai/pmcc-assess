@@ -24,13 +24,16 @@
     <result column="incremental_benefit_remark" property="incrementalBenefitRemark" jdbcType="VARCHAR" />
     <result column="plot_ratio_adjust" property="plotRatioAdjust" jdbcType="VARCHAR" />
     <result column="plot_ratio_adjust_remark" property="plotRatioAdjustRemark" jdbcType="VARCHAR" />
-    <result column="plot_ratio_element_amend" property="plotRatioElementAmend" jdbcType="VARCHAR" />
+    <result column="plot_ratio_element_amend" property="plotRatioElementAmend" jdbcType="DECIMAL" />
     <result column="plot_ratio_element_amend_remark" property="plotRatioElementAmendRemark" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
     <result column="land_remaining_year" property="landRemainingYear" jdbcType="DECIMAL" />
     <result column="land_remaining_year_remark" property="landRemainingYearRemark" jdbcType="VARCHAR" />
+    <result column="parcel_setting_outer" property="parcelSettingOuter" jdbcType="VARCHAR" />
+    <result column="parcel_setting_inner" property="parcelSettingInner" jdbcType="VARCHAR" />
+    <result column="land_level_content" property="landLevelContent" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -96,7 +99,8 @@
     flat_expense_remark, machine_cycle, machine_cycle_remark, calculated_interest, calculated_interest_remark, 
     profit_margin, profit_margin_remark, incremental_benefit, incremental_benefit_remark, 
     plot_ratio_adjust, plot_ratio_adjust_remark, plot_ratio_element_amend, plot_ratio_element_amend_remark, 
-    creator, gmt_created, gmt_modified, land_remaining_year, land_remaining_year_remark
+    creator, gmt_created, gmt_modified, land_remaining_year, land_remaining_year_remark, 
+    parcel_setting_outer, parcel_setting_inner, land_level_content
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdCostApproachExample" >
     select
@@ -142,8 +146,9 @@
       incremental_benefit_remark, plot_ratio_adjust, 
       plot_ratio_adjust_remark, plot_ratio_element_amend, 
       plot_ratio_element_amend_remark, creator, gmt_created, 
-      gmt_modified, land_remaining_year, land_remaining_year_remark
-      )
+      gmt_modified, land_remaining_year, land_remaining_year_remark, 
+      parcel_setting_outer, parcel_setting_inner, 
+      land_level_content)
     values (#{planDetailsId,jdbcType=INTEGER}, #{processInsId,jdbcType=VARCHAR}, #{farmlandArea,jdbcType=DECIMAL}, 
       #{ploughArea,jdbcType=DECIMAL}, #{populationNumber,jdbcType=INTEGER}, #{rewardRateId,jdbcType=INTEGER}, 
       #{rewardRate,jdbcType=VARCHAR}, #{circulationExpense,jdbcType=DECIMAL}, #{circulationExpenseRemark,jdbcType=VARCHAR}, 
@@ -152,10 +157,11 @@
       #{calculatedInterestRemark,jdbcType=VARCHAR}, #{profitMargin,jdbcType=VARCHAR}, 
       #{profitMarginRemark,jdbcType=VARCHAR}, #{incrementalBenefit,jdbcType=VARCHAR}, 
       #{incrementalBenefitRemark,jdbcType=VARCHAR}, #{plotRatioAdjust,jdbcType=VARCHAR}, 
-      #{plotRatioAdjustRemark,jdbcType=VARCHAR}, #{plotRatioElementAmend,jdbcType=VARCHAR}, 
+      #{plotRatioAdjustRemark,jdbcType=VARCHAR}, #{plotRatioElementAmend,jdbcType=DECIMAL}, 
       #{plotRatioElementAmendRemark,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP}, #{landRemainingYear,jdbcType=DECIMAL}, #{landRemainingYearRemark,jdbcType=VARCHAR}
-      )
+      #{gmtModified,jdbcType=TIMESTAMP}, #{landRemainingYear,jdbcType=DECIMAL}, #{landRemainingYearRemark,jdbcType=VARCHAR}, 
+      #{parcelSettingOuter,jdbcType=VARCHAR}, #{parcelSettingInner,jdbcType=VARCHAR}, 
+      #{landLevelContent,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdCostApproach" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -247,6 +253,15 @@
       <if test="landRemainingYearRemark != null" >
         land_remaining_year_remark,
       </if>
+      <if test="parcelSettingOuter != null" >
+        parcel_setting_outer,
+      </if>
+      <if test="parcelSettingInner != null" >
+        parcel_setting_inner,
+      </if>
+      <if test="landLevelContent != null" >
+        land_level_content,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="planDetailsId != null" >
@@ -313,7 +328,7 @@
         #{plotRatioAdjustRemark,jdbcType=VARCHAR},
       </if>
       <if test="plotRatioElementAmend != null" >
-        #{plotRatioElementAmend,jdbcType=VARCHAR},
+        #{plotRatioElementAmend,jdbcType=DECIMAL},
       </if>
       <if test="plotRatioElementAmendRemark != null" >
         #{plotRatioElementAmendRemark,jdbcType=VARCHAR},
@@ -332,6 +347,15 @@
       </if>
       <if test="landRemainingYearRemark != null" >
         #{landRemainingYearRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="parcelSettingOuter != null" >
+        #{parcelSettingOuter,jdbcType=VARCHAR},
+      </if>
+      <if test="parcelSettingInner != null" >
+        #{parcelSettingInner,jdbcType=VARCHAR},
+      </if>
+      <if test="landLevelContent != null" >
+        #{landLevelContent,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -411,7 +435,7 @@
         plot_ratio_adjust_remark = #{record.plotRatioAdjustRemark,jdbcType=VARCHAR},
       </if>
       <if test="record.plotRatioElementAmend != null" >
-        plot_ratio_element_amend = #{record.plotRatioElementAmend,jdbcType=VARCHAR},
+        plot_ratio_element_amend = #{record.plotRatioElementAmend,jdbcType=DECIMAL},
       </if>
       <if test="record.plotRatioElementAmendRemark != null" >
         plot_ratio_element_amend_remark = #{record.plotRatioElementAmendRemark,jdbcType=VARCHAR},
@@ -430,6 +454,15 @@
       </if>
       <if test="record.landRemainingYearRemark != null" >
         land_remaining_year_remark = #{record.landRemainingYearRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.parcelSettingOuter != null" >
+        parcel_setting_outer = #{record.parcelSettingOuter,jdbcType=VARCHAR},
+      </if>
+      <if test="record.parcelSettingInner != null" >
+        parcel_setting_inner = #{record.parcelSettingInner,jdbcType=VARCHAR},
+      </if>
+      <if test="record.landLevelContent != null" >
+        land_level_content = #{record.landLevelContent,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -460,13 +493,16 @@
       incremental_benefit_remark = #{record.incrementalBenefitRemark,jdbcType=VARCHAR},
       plot_ratio_adjust = #{record.plotRatioAdjust,jdbcType=VARCHAR},
       plot_ratio_adjust_remark = #{record.plotRatioAdjustRemark,jdbcType=VARCHAR},
-      plot_ratio_element_amend = #{record.plotRatioElementAmend,jdbcType=VARCHAR},
+      plot_ratio_element_amend = #{record.plotRatioElementAmend,jdbcType=DECIMAL},
       plot_ratio_element_amend_remark = #{record.plotRatioElementAmendRemark,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       land_remaining_year = #{record.landRemainingYear,jdbcType=DECIMAL},
-      land_remaining_year_remark = #{record.landRemainingYearRemark,jdbcType=VARCHAR}
+      land_remaining_year_remark = #{record.landRemainingYearRemark,jdbcType=VARCHAR},
+      parcel_setting_outer = #{record.parcelSettingOuter,jdbcType=VARCHAR},
+      parcel_setting_inner = #{record.parcelSettingInner,jdbcType=VARCHAR},
+      land_level_content = #{record.landLevelContent,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -538,7 +574,7 @@
         plot_ratio_adjust_remark = #{plotRatioAdjustRemark,jdbcType=VARCHAR},
       </if>
       <if test="plotRatioElementAmend != null" >
-        plot_ratio_element_amend = #{plotRatioElementAmend,jdbcType=VARCHAR},
+        plot_ratio_element_amend = #{plotRatioElementAmend,jdbcType=DECIMAL},
       </if>
       <if test="plotRatioElementAmendRemark != null" >
         plot_ratio_element_amend_remark = #{plotRatioElementAmendRemark,jdbcType=VARCHAR},
@@ -557,6 +593,15 @@
       </if>
       <if test="landRemainingYearRemark != null" >
         land_remaining_year_remark = #{landRemainingYearRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="parcelSettingOuter != null" >
+        parcel_setting_outer = #{parcelSettingOuter,jdbcType=VARCHAR},
+      </if>
+      <if test="parcelSettingInner != null" >
+        parcel_setting_inner = #{parcelSettingInner,jdbcType=VARCHAR},
+      </if>
+      <if test="landLevelContent != null" >
+        land_level_content = #{landLevelContent,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -584,13 +629,16 @@
       incremental_benefit_remark = #{incrementalBenefitRemark,jdbcType=VARCHAR},
       plot_ratio_adjust = #{plotRatioAdjust,jdbcType=VARCHAR},
       plot_ratio_adjust_remark = #{plotRatioAdjustRemark,jdbcType=VARCHAR},
-      plot_ratio_element_amend = #{plotRatioElementAmend,jdbcType=VARCHAR},
+      plot_ratio_element_amend = #{plotRatioElementAmend,jdbcType=DECIMAL},
       plot_ratio_element_amend_remark = #{plotRatioElementAmendRemark,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       land_remaining_year = #{landRemainingYear,jdbcType=DECIMAL},
-      land_remaining_year_remark = #{landRemainingYearRemark,jdbcType=VARCHAR}
+      land_remaining_year_remark = #{landRemainingYearRemark,jdbcType=VARCHAR},
+      parcel_setting_outer = #{parcelSettingOuter,jdbcType=VARCHAR},
+      parcel_setting_inner = #{parcelSettingInner,jdbcType=VARCHAR},
+      land_level_content = #{landLevelContent,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

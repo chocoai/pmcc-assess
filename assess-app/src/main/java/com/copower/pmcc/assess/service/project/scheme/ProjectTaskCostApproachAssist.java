@@ -1,13 +1,13 @@
 package com.copower.pmcc.assess.service.project.scheme;
 
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.basis.entity.MdCostApproach;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
-import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.basic.BasicEstateLandStateService;
+import com.copower.pmcc.assess.service.basic.BasicEstateService;
 import com.copower.pmcc.assess.service.method.MdCostApproachService;
+import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
@@ -18,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -40,6 +39,12 @@ public class ProjectTaskCostApproachAssist implements ProjectTaskInterface {
     private MdCostApproachService mdCostApproachService;
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private BasicEstateLandStateService basicEstateLandStateService;
+    @Autowired
+    private SurveyCommonService surveyCommonService;
+    @Autowired
+    private BasicEstateService basicEstateService;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
@@ -51,6 +56,7 @@ public class ProjectTaskCostApproachAssist implements ProjectTaskInterface {
             mdCostApproachService.saveMdCostApproach(mdCostApproach);
         }
         modelAndView.addObject("master", mdCostApproach);
+        modelAndView.addObject("apply", "apply");
         setViewParam(projectPlanDetails, modelAndView);
         return modelAndView;
     }
@@ -58,7 +64,7 @@ public class ProjectTaskCostApproachAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView approvalView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskCostApproachApproval", processInsId, boxId, taskId, agentUserAccount);
-        MdCostApproach data = mdCostApproachService.getDataByPlanDetailsId(projectPlanDetails.getId());
+        MdCostApproach data = mdCostApproachService.getMdCostApproachVo(mdCostApproachService.getDataByPlanDetailsId(projectPlanDetails.getId()));
         modelAndView.addObject("master", data);
         return modelAndView;
     }
@@ -75,7 +81,7 @@ public class ProjectTaskCostApproachAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView detailsView(ProjectPlanDetails projectPlanDetails, Integer boxId) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskCostApproachApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
-        MdCostApproach data = mdCostApproachService.getDataByPlanDetailsId(projectPlanDetails.getId());
+        MdCostApproach data = mdCostApproachService.getMdCostApproachVo(mdCostApproachService.getDataByPlanDetailsId(projectPlanDetails.getId()));
         modelAndView.addObject("master", data);
         return modelAndView;
     }
@@ -108,5 +114,22 @@ public class ProjectTaskCostApproachAssist implements ProjectTaskInterface {
     private void setViewParam(ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) {
         List<BaseDataDic> dataDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_SETTING);
         modelAndView.addObject("taxesTypes", dataDicList);
+        Integer judgeObjectId = projectPlanDetails.getJudgeObjectId();
+        SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
+        modelAndView.addObject("number", schemeJudgeObject.getNumber());
+        BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
+        BasicEstate basicEstate = null;
+        try {
+            basicEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
+            if (basicEstate == null) {
+                return;
+            }
+        } catch (Exception e) {
+            logger.error(String.format("没有获取到数据 ==> %s", e.getMessage()));
+        }
+
+        BasicEstateLandState landStateByEstateId = basicEstateLandStateService.getLandStateByEstateId(basicEstate.getId());
+        modelAndView.addObject("landFactorTotalScore", landStateByEstateId.getLandFactorTotalScore());
+
     }
 }

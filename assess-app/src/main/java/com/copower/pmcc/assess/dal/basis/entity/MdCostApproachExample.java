@@ -1566,62 +1566,52 @@ public class MdCostApproachExample {
             return (Criteria) this;
         }
 
-        public Criteria andPlotRatioElementAmendEqualTo(String value) {
+        public Criteria andPlotRatioElementAmendEqualTo(BigDecimal value) {
             addCriterion("plot_ratio_element_amend =", value, "plotRatioElementAmend");
             return (Criteria) this;
         }
 
-        public Criteria andPlotRatioElementAmendNotEqualTo(String value) {
+        public Criteria andPlotRatioElementAmendNotEqualTo(BigDecimal value) {
             addCriterion("plot_ratio_element_amend <>", value, "plotRatioElementAmend");
             return (Criteria) this;
         }
 
-        public Criteria andPlotRatioElementAmendGreaterThan(String value) {
+        public Criteria andPlotRatioElementAmendGreaterThan(BigDecimal value) {
             addCriterion("plot_ratio_element_amend >", value, "plotRatioElementAmend");
             return (Criteria) this;
         }
 
-        public Criteria andPlotRatioElementAmendGreaterThanOrEqualTo(String value) {
+        public Criteria andPlotRatioElementAmendGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("plot_ratio_element_amend >=", value, "plotRatioElementAmend");
             return (Criteria) this;
         }
 
-        public Criteria andPlotRatioElementAmendLessThan(String value) {
+        public Criteria andPlotRatioElementAmendLessThan(BigDecimal value) {
             addCriterion("plot_ratio_element_amend <", value, "plotRatioElementAmend");
             return (Criteria) this;
         }
 
-        public Criteria andPlotRatioElementAmendLessThanOrEqualTo(String value) {
+        public Criteria andPlotRatioElementAmendLessThanOrEqualTo(BigDecimal value) {
             addCriterion("plot_ratio_element_amend <=", value, "plotRatioElementAmend");
             return (Criteria) this;
         }
 
-        public Criteria andPlotRatioElementAmendLike(String value) {
-            addCriterion("plot_ratio_element_amend like", value, "plotRatioElementAmend");
-            return (Criteria) this;
-        }
-
-        public Criteria andPlotRatioElementAmendNotLike(String value) {
-            addCriterion("plot_ratio_element_amend not like", value, "plotRatioElementAmend");
-            return (Criteria) this;
-        }
-
-        public Criteria andPlotRatioElementAmendIn(List<String> values) {
+        public Criteria andPlotRatioElementAmendIn(List<BigDecimal> values) {
             addCriterion("plot_ratio_element_amend in", values, "plotRatioElementAmend");
             return (Criteria) this;
         }
 
-        public Criteria andPlotRatioElementAmendNotIn(List<String> values) {
+        public Criteria andPlotRatioElementAmendNotIn(List<BigDecimal> values) {
             addCriterion("plot_ratio_element_amend not in", values, "plotRatioElementAmend");
             return (Criteria) this;
         }
 
-        public Criteria andPlotRatioElementAmendBetween(String value1, String value2) {
+        public Criteria andPlotRatioElementAmendBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("plot_ratio_element_amend between", value1, value2, "plotRatioElementAmend");
             return (Criteria) this;
         }
 
-        public Criteria andPlotRatioElementAmendNotBetween(String value1, String value2) {
+        public Criteria andPlotRatioElementAmendNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("plot_ratio_element_amend not between", value1, value2, "plotRatioElementAmend");
             return (Criteria) this;
         }
@@ -2013,6 +2003,216 @@ public class MdCostApproachExample {
 
         public Criteria andLandRemainingYearRemarkNotBetween(String value1, String value2) {
             addCriterion("land_remaining_year_remark not between", value1, value2, "landRemainingYearRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingOuterIsNull() {
+            addCriterion("parcel_setting_outer is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingOuterIsNotNull() {
+            addCriterion("parcel_setting_outer is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingOuterEqualTo(String value) {
+            addCriterion("parcel_setting_outer =", value, "parcelSettingOuter");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingOuterNotEqualTo(String value) {
+            addCriterion("parcel_setting_outer <>", value, "parcelSettingOuter");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingOuterGreaterThan(String value) {
+            addCriterion("parcel_setting_outer >", value, "parcelSettingOuter");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingOuterGreaterThanOrEqualTo(String value) {
+            addCriterion("parcel_setting_outer >=", value, "parcelSettingOuter");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingOuterLessThan(String value) {
+            addCriterion("parcel_setting_outer <", value, "parcelSettingOuter");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingOuterLessThanOrEqualTo(String value) {
+            addCriterion("parcel_setting_outer <=", value, "parcelSettingOuter");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingOuterLike(String value) {
+            addCriterion("parcel_setting_outer like", value, "parcelSettingOuter");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingOuterNotLike(String value) {
+            addCriterion("parcel_setting_outer not like", value, "parcelSettingOuter");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingOuterIn(List<String> values) {
+            addCriterion("parcel_setting_outer in", values, "parcelSettingOuter");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingOuterNotIn(List<String> values) {
+            addCriterion("parcel_setting_outer not in", values, "parcelSettingOuter");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingOuterBetween(String value1, String value2) {
+            addCriterion("parcel_setting_outer between", value1, value2, "parcelSettingOuter");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingOuterNotBetween(String value1, String value2) {
+            addCriterion("parcel_setting_outer not between", value1, value2, "parcelSettingOuter");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingInnerIsNull() {
+            addCriterion("parcel_setting_inner is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingInnerIsNotNull() {
+            addCriterion("parcel_setting_inner is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingInnerEqualTo(String value) {
+            addCriterion("parcel_setting_inner =", value, "parcelSettingInner");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingInnerNotEqualTo(String value) {
+            addCriterion("parcel_setting_inner <>", value, "parcelSettingInner");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingInnerGreaterThan(String value) {
+            addCriterion("parcel_setting_inner >", value, "parcelSettingInner");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingInnerGreaterThanOrEqualTo(String value) {
+            addCriterion("parcel_setting_inner >=", value, "parcelSettingInner");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingInnerLessThan(String value) {
+            addCriterion("parcel_setting_inner <", value, "parcelSettingInner");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingInnerLessThanOrEqualTo(String value) {
+            addCriterion("parcel_setting_inner <=", value, "parcelSettingInner");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingInnerLike(String value) {
+            addCriterion("parcel_setting_inner like", value, "parcelSettingInner");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingInnerNotLike(String value) {
+            addCriterion("parcel_setting_inner not like", value, "parcelSettingInner");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingInnerIn(List<String> values) {
+            addCriterion("parcel_setting_inner in", values, "parcelSettingInner");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingInnerNotIn(List<String> values) {
+            addCriterion("parcel_setting_inner not in", values, "parcelSettingInner");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingInnerBetween(String value1, String value2) {
+            addCriterion("parcel_setting_inner between", value1, value2, "parcelSettingInner");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingInnerNotBetween(String value1, String value2) {
+            addCriterion("parcel_setting_inner not between", value1, value2, "parcelSettingInner");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelContentIsNull() {
+            addCriterion("land_level_content is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelContentIsNotNull() {
+            addCriterion("land_level_content is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelContentEqualTo(String value) {
+            addCriterion("land_level_content =", value, "landLevelContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelContentNotEqualTo(String value) {
+            addCriterion("land_level_content <>", value, "landLevelContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelContentGreaterThan(String value) {
+            addCriterion("land_level_content >", value, "landLevelContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelContentGreaterThanOrEqualTo(String value) {
+            addCriterion("land_level_content >=", value, "landLevelContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelContentLessThan(String value) {
+            addCriterion("land_level_content <", value, "landLevelContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelContentLessThanOrEqualTo(String value) {
+            addCriterion("land_level_content <=", value, "landLevelContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelContentLike(String value) {
+            addCriterion("land_level_content like", value, "landLevelContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelContentNotLike(String value) {
+            addCriterion("land_level_content not like", value, "landLevelContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelContentIn(List<String> values) {
+            addCriterion("land_level_content in", values, "landLevelContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelContentNotIn(List<String> values) {
+            addCriterion("land_level_content not in", values, "landLevelContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelContentBetween(String value1, String value2) {
+            addCriterion("land_level_content between", value1, value2, "landLevelContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelContentNotBetween(String value1, String value2) {
+            addCriterion("land_level_content not between", value1, value2, "landLevelContent");
             return (Criteria) this;
         }
     }

@@ -74,6 +74,20 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">宗地外设定</label>
+                                        <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5" id="industrySupplyInfoContainer_BBBBB">
+
+                                        </div>
+                                    </div>
+
+                                    <div class="x-valid">
+                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">宗地内设定</label>
+                                        <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5  " id="developmentDegreeContentContainer_BBBBB">
+                                        </div>
+                                    </div>
+                                </div>
                                 <button type="button" class="btn btn-success"
                                         onclick="research.prototype.showModel()"
                                         data-toggle="modal" href="#divBox"> 新增
@@ -104,7 +118,50 @@
                                 </table>
                             </div>
                         </div>
+                        <div class="x_panel">
+                            <div class="x_title collapse-link">
+                                <ul class="nav navbar-right panel_toolbox">
+                                    <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                                </ul>
+                                <h3>因素条件说明及修正系数</h3>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <form class="form-horizontal" id="areaAndSeveralAmendForm">
+                                    <div class="form-group">
+                                        <div class="x-valid">
+                                            <label class="col-sm-1 control-label">
+                                                宗地个别因素修正
+                                            </label>
+                                            <div class="col-sm-3">
+                                                <input type="text" placeholder="宗地个别因素修正" class="form-control"
+                                                       id="plotRatioElementAmend" name="plotRatioElementAmend" required readonly
+                                                       data-rule-number="true">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                                            <table class="table table-striped table-bordered" style="display: none">
+                                                <thead>
+                                                <tr>
+                                                    <th width="10%">土地级别类别</th>
+                                                    <th width="10%">土地级别类型</th>
+                                                    <th width="10%">土地级别等级</th>
+                                                    <th width="20%">说明</th>
+                                                    <th width="10%">分值</th>
+                                                    <th width="5%"></th>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="landLevelTabContent">
 
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                         <div class="x_panel">
                             <div class="x_title collapse-link">
                                 <ul class="nav navbar-right panel_toolbox">
@@ -255,29 +312,29 @@
                                         </div>
 
                                     </div>
-                                    <div class="form-group">
-                                        <div class="x-valid">
-                                            <label class="col-sm-1 control-label">
-                                                宗地个别因素修正
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" placeholder="宗地个别因素修正" class="form-control x-percent"
-                                                       id="plotRatioElementAmend"
-                                                       name="plotRatioElementAmend" required onblur="getYearFixed()"
-                                                       value="${master.plotRatioElementAmend}">
-                                            </div>
-                                        </div>
-                                        <div class="x-valid">
-                                            <label class="col-sm-1 control-label">
-                                                说明
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" value="${master.plotRatioElementAmendRemark}"
-                                                       class="form-control" name="plotRatioElementAmendRemark">
-                                            </div>
-                                        </div>
+                                    <%--<div class="form-group">--%>
+                                        <%--<div class="x-valid">--%>
+                                            <%--<label class="col-sm-1 control-label">--%>
+                                                <%--宗地个别因素修正--%>
+                                            <%--</label>--%>
+                                            <%--<div class="col-sm-3">--%>
+                                                <%--<input type="text" placeholder="宗地个别因素修正" class="form-control x-percent"--%>
+                                                       <%--id="plotRatioElementAmend"--%>
+                                                       <%--name="plotRatioElementAmend" required onblur="getYearFixed()"--%>
+                                                       <%--value="${master.plotRatioElementAmend}">--%>
+                                            <%--</div>--%>
+                                        <%--</div>--%>
+                                        <%--<div class="x-valid">--%>
+                                            <%--<label class="col-sm-1 control-label">--%>
+                                                <%--说明--%>
+                                            <%--</label>--%>
+                                            <%--<div class="col-sm-3">--%>
+                                                <%--<input type="text" value="${master.plotRatioElementAmendRemark}"--%>
+                                                       <%--class="form-control" name="plotRatioElementAmendRemark">--%>
+                                            <%--</div>--%>
+                                        <%--</div>--%>
 
-                                    </div>
+                                    <%--</div>--%>
                                     <div class="form-group">
                                         <div class="x-valid">
                                             <label class="col-sm-1 control-label">
@@ -543,8 +600,40 @@
         </div>
     </div>
 </div>
+<script type="text/html" id="landLevelTabContentBody">
+    <tr class="group">
+        <td class="table-cell">
+            {landLevelTypeName}
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td>
+            {landLevelCategoryName}
+        </td>
+        <td>
+            <select class="form-control" name="landLevelGrade" onchange="estateCommon.landLevelHandle(this);">
+                {landLevelGradeHTML}
+            </select>
+        </td>
+        <td>
+            <label name="reamark" class="form-control">{reamark}</label>
+        </td>
+        <td>
+            <input type="hidden" class="form-control" name="dataLandLevelAchievement"
+                   value="{dataLandLevelAchievement}">
+            <input type="text" class="form-control" name="landFactorTotalScore" value="{landFactorTotalScore}"
+                   onblur="getPlotRatioElementAmend(this)">
+            <input type="hidden" name="landLevelContent" value='{landLevelContent}'>
+        </td>
+        <td>
+            <input class="btn btn-warning" type="button" value="X"
+                   onclick="estateCommon.landLevelEmpty(this)">
+        </td>
+    </tr>
+</script>
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/tree-grid/js/jquery.treegrid.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.estate.js"></script>
 <script type="application/javascript">
     function submit() {
         if (!$("#master").valid()) {
@@ -567,12 +656,35 @@
         formData.profitMarginRemark = formDataOther.profitMarginRemark;
         formData.incrementalBenefit = AssessCommon.pointToPercent(formDataOther.incrementalBenefit);
         formData.incrementalBenefitRemark = formDataOther.incrementalBenefitRemark;
-        formData.plotRatioElementAmend = AssessCommon.pointToPercent(formDataOther.plotRatioElementAmend);
-        formData.plotRatioElementAmendRemark = formDataOther.plotRatioElementAmendRemark;
+        formData.plotRatioElementAmend = $("#plotRatioElementAmend").val();
         formData.plotRatioAdjust = AssessCommon.pointToPercent(formDataOther.plotRatioAdjust);
         formData.plotRatioAdjustRemark = formDataOther.plotRatioAdjustRemark;
         formData.landRemainingYear = formDataOther.landRemainingYear;
         formData.landRemainingYearRemark = formDataOther.landRemainingYearRemark;
+
+        var landLevelContent = [];
+        $("#areaAndSeveralAmendForm").find("input[name='landLevelContent']").each(function (i, n) {
+            var group = $(n).closest(".group");
+            var dataLandLevelAchievement = group.find("input[name='dataLandLevelAchievement']").val();
+            var landFactorTotalScore = group.find("input[name='landFactorTotalScore']").val();
+            var obj = JSON.parse($(n).val());
+            var dataObject = [];
+            obj.forEach(function (value, index) {
+                if (value.id == dataLandLevelAchievement) {
+                    value.modelStr = "update";
+                    value.achievement = landFactorTotalScore;
+                } else {
+                    delete value.modelStr;
+                }
+                dataObject.push(value);
+            });
+            landLevelContent.push(dataObject);
+        });
+        if (landLevelContent.length >= 1) {
+            formData.landLevelContent = JSON.stringify(landLevelContent);
+        }else{
+            formData.landLevelContent ="";
+        }
 
         if ("${processInsId}" != "0") {
             submitEditToServer(JSON.stringify(formData));
@@ -592,7 +704,20 @@
         if ("${master}") {
             getLandAcquisitionBhou("${master.id}")
             getPloughArearatio("${master.farmlandArea}", "${master.ploughArea}");
+            var data = {
+                parcelSettingInner: '${master.parcelSettingInner}',
+                parcelSettingOuter: '${master.parcelSettingOuter}'
+            };
+            initParcelSettingData(data);
+            //因素条件说明及修正系数
+            getLevelDetailId();
+            if ('${master.plotRatioElementAmend}') {
+                $("#plotRatioElementAmend").val('${master.plotRatioElementAmend}');
+            } else {
+                $("#plotRatioElementAmend").val('${landFactorTotalScore}');
+            }
         }
+
     })
 
     //耕地比例
@@ -758,7 +883,7 @@
                 $("#priceCorrectionBhou").text(getSomePlaces(priceCorrectionBhou / 10000, 2));
 
                 //宗地个别因素修正
-                var plotRatioElementAmend = parseFloat(AssessCommon.percentToPoint($("#plotRatioElementAmend").val()));
+                var plotRatioElementAmend = parseFloat($("#plotRatioElementAmend").val());
                 var plotRatioElementAmendBhou = getSomePlaces(yearFixed * landUseBhou * (1 + plotRatioElementAmend), 2);
                 $("#plotRatioElementAmendBhou").text(getSomePlaces(plotRatioElementAmendBhou / 10000, 2));
 
@@ -773,7 +898,244 @@
         }
     }
 
+    //宗地外，宗地内
+    function initParcelSettingData(data) {
+        var industrySupplyInfoContainer = $("#industrySupplyInfoContainer_BBBBB");
+        var developmentDegreeContentContainer = $("#developmentDegreeContentContainer_BBBBB");
+        industrySupplyInfoContainer.empty();
+        developmentDegreeContentContainer.empty();
+        //宗地外设定
+        AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estateLandInfrastructure, '', function (html, resultData) {
+            var resultHtml = '<div>';
+            var array = [];
+            if (data) {
+                if (data.parcelSettingOuter) {
+                    array = data.parcelSettingOuter.split(',');
+                }
+            }
+            $.each(resultData, function (i, item) {
+                resultHtml += '<span class="checkbox-inline"><input type="checkbox" ';
+                if ($.inArray(item.id.toString(), array) > -1) {
+                    resultHtml += ' checked="checked" ';
+                }
+                resultHtml += ' id="parcelSettingOuterBBBBB' + item.id + '" name="parcelSettingOuter" value="' + item.id + '">';
+                resultHtml += '<label for="parcelSettingOuterBBBBB' + item.id + '">' + item.name + '</label></span>';
+            });
+            resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '全选或全不选' + "</span>";
+            resultHtml += "<input type=\"radio\" name=\"infrastructureSelect\"  onclick=\"development.checkedFun(this,'parcelSettingOuter',true)\">";
+            resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '反选' + "</span>";
+            resultHtml += "<input type=\"radio\" name=\"infrastructureSelect\"  onclick=\"development.checkedFun(this,'parcelSettingOuter',false)\">";
+            resultHtml += "</div>";
+            if (industrySupplyInfoContainer.find("div").size() == 0){
+                industrySupplyInfoContainer.append(resultHtml);
+            }else {
+                $.each(resultData, function (i, item) {
+                    var ele = "#parcelSettingOuterBBBBB"+item.id ;
+                    ele = $(ele) ;
+                    if ($.inArray(item.id.toString(), array) > -1) {
+                        ele.prop("checked", true);
+                    }else {
+                        ele.prop("checked", false);
+                    }
+                });
+            }
+        }, true);
+        //宗地内设定
+        AssessCommon.loadDataDicByKey(AssessDicKey.estateDevelopment_degreePrepared_land, '', function (html, resultData) {
+            var resultHtml = '<div>';
+            var array = [];
+            if (data) {
+                if (data.parcelSettingInner) {
+                    array = data.parcelSettingInner.split(',');
+                }
+            }
+            $.each(resultData, function (i, item) {
+                resultHtml += '<span class="checkbox-inline"><input type="checkbox" ';
+                if ($.inArray(item.id.toString(), array) > -1) {
+                    resultHtml += ' checked="checked" ';
+                }
+                resultHtml += ' id="parcelSettingInnerBBBBB' + item.id + '" name="parcelSettingInner" value="' + item.id + '">';
+                resultHtml += '<label for="parcelSettingInnerBBBBB' + item.id + '">' + item.name + '</label></span>';
+            });
+            resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '全选或全不选' + "</span>";
+            resultHtml += "<input type=\"radio\" name=\"infrastructureSelect\"  onclick=\"development.checkedFun(this,'parcelSettingInner',true)\">";
+            resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '反选' + "</span>";
+            resultHtml += "<input type=\"radio\" name=\"infrastructureSelect\"  onclick=\"development.checkedFun(this,'parcelSettingInner',false)\">";
+            resultHtml += "</div>";
+            if (developmentDegreeContentContainer.find("div").size() == 0){
+                developmentDegreeContentContainer.append(resultHtml);
+            }else {
+                $.each(resultData, function (i, item) {
+                    var ele = "#parcelSettingInnerBBBBB"+item.id ;
+                    ele = $(ele) ;
+                    if ($.inArray(item.id.toString(), array) > -1) {
+                        ele.prop("checked", true);
+                    }else {
+                        ele.prop("checked", false);
+                    }
+                });
+            }
+        });
+    };
 
+    //因素条件说明及修正系数
+    function getLevelDetailId() {
+        $.ajax({
+            url: "${pageContext.request.contextPath}/baseLandPrice/getLevelDetailId",
+            type: "get",
+            dataType: "json",
+            data: {judgeObjectId: '${projectPlanDetails.judgeObjectId}'},
+            success: function (result) {
+                if (result.ret) {
+                    if (result.data) {
+                        if ('${apply}' == 'apply') {
+                            //因素条件说明及修正系数
+                            getLandLevelTabContent(result.data);
+                        } else {
+                            //因素条件说明及修正系数
+                            landLevelLoadHtml2('${master.landLevelContent}');
+                        }
+                    }
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
+
+    }
+
+    function getLandLevelTabContent(levelDetailId) {
+        $.ajax({
+            url: getContextPath() + "/dataLandDetailAchievement/landLevelFilter",
+            type: "get",
+            data: {levelDetailId: levelDetailId},
+            success: function (result) {
+                landLevelLoadHtml(result.data);
+            }
+        })
+    }
+
+    function landLevelLoadHtml(data) {
+        if (jQuery.isEmptyObject(data)) {
+            return false;
+        }
+        var target = $("#landLevelTabContent");
+        target.empty();
+        target.parent().show();
+
+        //由于js来筛选 有大量json 解析或者字符串化 影响代码阅读度，因此改为了后台直接处理,第一次的时候有2此筛选分类这样确实代码可读性差
+        data.forEach(function (dataA, indexM) {
+            $.each(dataA, function (i, obj) {
+                var item = estateCommon.getLandLevelFilter(obj);
+                var landLevelBodyHtml = $("#landLevelTabContentBody").html();
+                if (landLevelBodyHtml) {
+                    landLevelBodyHtml = landLevelBodyHtml.replace(/{dataLandLevelAchievement}/g, item.id);
+                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landFactorTotalScore}/g, item.achievement);
+                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelCategoryName}/g, item.category);
+                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelTypeName}/g, item.typeName);
+                    var text = "";
+                    $.each(obj, function (i, n) {
+                        text += "等级:" + n.gradeName + "，说明:" + n.reamark + "； \r";
+                    });
+                    landLevelBodyHtml = landLevelBodyHtml.replace(/{reamark}/g, text);
+                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelContent}/g, JSON.stringify(obj));
+                    AssessCommon.loadAsyncDataDicByKey(AssessDicKey.programmeMarketCostapproachGrade, item.grade, function (html, data) {
+                        landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelGradeHTML}/g, html);
+                        target.append(landLevelBodyHtml);
+                    }, false);
+                }
+            });
+
+            if (indexM == 0) {
+                target.find("tr").first().find("td").first().attr("rowspan", dataA.length);
+                target.find("tr").each(function (i, n) {
+                    if (i != 0) {
+                        $(n).find("td").first().remove();
+                    }
+                });
+            }
+            if (indexM == 1) {
+                var length = data[0].length;
+                target.find("tr").eq(length).find("td").first().attr("rowspan", dataA.length);
+                target.find("tr").each(function (i, n) {
+                    if (i > length) {
+                        $(n).find("td").first().remove();
+                    }
+                });
+            }
+        });
+    };
+
+    function landLevelLoadHtml2(jsonStr) {
+        var jsonParse = JSON.parse(jsonStr);
+        var data = estateCommon.landLevelFilter(jsonParse);
+        if (jQuery.isEmptyObject(data)) {
+            return false;
+        }
+        var target = $("#landLevelTabContent");
+        target.empty();
+        target.parent().show();
+
+        //由于js来筛选 有大量json 解析或者字符串化 影响代码阅读度，因此改为了后台直接处理,第一次的时候有2此筛选分类这样确实代码可读性差
+        data.forEach(function (dataA, indexM) {
+            $.each(dataA, function (i, obj) {
+                var item;
+                obj.forEach(function (value, index) {
+                    if (value.modelStr == "update") {
+                        item = value;
+                    }
+                });
+                var landLevelBodyHtml = $("#landLevelTabContentBody").html();
+                if (landLevelBodyHtml) {
+                    landLevelBodyHtml = landLevelBodyHtml.replace(/{dataLandLevelAchievement}/g, item.id);
+                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landFactorTotalScore}/g, item.achievement);
+                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelCategoryName}/g, item.category);
+                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelTypeName}/g, item.typeName);
+                    var text = "";
+                    $.each(obj, function (i, n) {
+                        text += "等级:" + n.gradeName + "，说明:" + n.reamark + "； \r";
+                    });
+                    landLevelBodyHtml = landLevelBodyHtml.replace(/{reamark}/g, text);
+                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelContent}/g, JSON.stringify(obj));
+                    AssessCommon.loadAsyncDataDicByKey(AssessDicKey.programmeMarketCostapproachGrade, item.grade, function (html, data) {
+                        landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelGradeHTML}/g, html);
+                        target.append(landLevelBodyHtml);
+                    }, false);
+                }
+            });
+
+            if (indexM == 0) {
+                target.find("tr").first().find("td").first().attr("rowspan", dataA.length);
+                target.find("tr").each(function (i, n) {
+                    if (i != 0) {
+                        $(n).find("td").first().remove();
+                    }
+                });
+            }
+            if (indexM == 1) {
+                var length = data[0].length;
+                target.find("tr").eq(length).find("td").first().attr("rowspan", dataA.length);
+                target.find("tr").each(function (i, n) {
+                    if (i > length) {
+                        $(n).find("td").first().remove();
+                    }
+                });
+            }
+        });
+    };
+
+    function getPlotRatioElementAmend(that) {
+        var tbody = $(that).closest('tbody');
+        var landFactorTotalScore = 0;
+        tbody.find('input[name^=landFactorTotalScore]').each(function () {
+            landFactorTotalScore += Number($(this).val());
+        })
+        $("#plotRatioElementAmend").val(getSomePlaces(landFactorTotalScore, 2));
+        //年期修正等
+        getYearFixed();
+
+    }
 </script>
 <%--年平均产值--%>
 <script type="text/javascript">
@@ -983,6 +1345,7 @@
             }
             var data = formParams(taxes.prototype.config().frm);
             data.masterId = ${master.id};
+
             $.ajax({
                 url: "${pageContext.request.contextPath}/costApproach/addCostApproachTaxes",
                 type: "post",
@@ -998,9 +1361,6 @@
                         toastr.success('保存成功');
                         $('#' + taxes.prototype.config().box).modal('hide');
                         taxes.prototype.loadDataList(${master.id});
-                    }
-                    else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
