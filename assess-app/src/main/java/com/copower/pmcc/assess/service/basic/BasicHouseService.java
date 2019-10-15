@@ -158,7 +158,7 @@ public class BasicHouseService {
         if(CollectionUtils.isNotEmpty(houses)){
             for (BasicHouse houseItem: houses) {
                 this.deleteBasicHouse(houseItem.getId());
-                this.clearInvalidData2(houseItem.getId());
+                this.clearInvalidChildData(houseItem.getId());
                 //删除标准时，删除原来basicApply的数据
                 BasicApply basicApply = new BasicApply();
                 basicApply.setBasicHouseId(houseItem.getId());
@@ -260,21 +260,33 @@ public class BasicHouseService {
         where.setTableId(house.getId());
         where.setType("house");
         basicEstateTaggingDao.removeBasicEstateTagging(where);
+        clearInvalidChildData(house.getId());//清理从表数据
         StringBuilder sqlBulder = new StringBuilder();
         String baseSql = "delete from %s where house_id=%s;";
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseTradingSell.class), house.getId()));
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseTradingLease.class), house.getId()));
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseRoom.class), house.getId()));
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseWater.class), house.getId()));
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseIntelligent.class), house.getId()));
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseFaceStreet.class), house.getId()));
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseCorollaryEquipment.class), house.getId()));
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseWaterDrain.class), house.getId()));
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseDamagedDegree.class), house.getId()));
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseDamagedDegreeDetail.class), house.getId()));
-
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseTrading.class), house.getId()));
         sqlBulder.append(String.format("delete from %s where id=%s;", FormatUtils.entityNameConvertToTableName(BasicHouse.class), house.getId()));
+        ddlMySqlAssist.customTableDdl(sqlBulder.toString());
+    }
+
+    /**
+     * 清理从表数据
+     *
+     * @throws Exception
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void clearInvalidChildData(Integer houseId) throws Exception {
+        StringBuilder sqlBulder = new StringBuilder();
+        String baseSql = "delete from %s where house_id=%s;";
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseTradingSell.class), houseId));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseTradingLease.class), houseId));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseRoom.class), houseId));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseWater.class), houseId));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseIntelligent.class), houseId));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseFaceStreet.class), houseId));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseCorollaryEquipment.class), houseId));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseWaterDrain.class), houseId));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseDamagedDegree.class), houseId));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseDamagedDegreeDetail.class), houseId));
         ddlMySqlAssist.customTableDdl(sqlBulder.toString());
     }
 
@@ -828,7 +840,7 @@ public class BasicHouseService {
         if (id == null || tableId == null) {
             throw new Exception("null ponit");
         }
-        this.clearInvalidData2(tableId);
+        this.clearInvalidChildData(tableId);
         //更新批量申请表信息
         BasicApplyBatchDetail batchDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail("tb_basic_house", tableId);
         batchDetail.setQuoteId(id);
@@ -1057,30 +1069,6 @@ public class BasicHouseService {
         for (SysAttachmentDto sysAttachmentDto : attachmentList) {
             baseAttachmentService.copyFtpAttachment(sysAttachmentDto.getId(), attachmentDto);
         }
-    }
-
-    /**
-     * 清理无效数据
-     *
-     * @throws Exception
-     */
-    @Transactional(rollbackFor = Exception.class)
-    public void clearInvalidData2(Integer tableId) throws Exception {
-        StringBuilder sqlBulder = new StringBuilder();
-        String baseSql = "delete from %s where house_id=%s;";
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseTradingSell.class), tableId));
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseTradingLease.class), tableId));
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseRoom.class), tableId));
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseWater.class), tableId));
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseIntelligent.class), tableId));
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseFaceStreet.class), tableId));
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseCorollaryEquipment.class), tableId));
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseWaterDrain.class), tableId));
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseDamagedDegree.class), tableId));
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseDamagedDegreeDetail.class), tableId));
-
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseTrading.class), tableId));
-        ddlMySqlAssist.customTableDdl(sqlBulder.toString());
     }
 
     /**

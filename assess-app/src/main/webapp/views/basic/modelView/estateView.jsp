@@ -20,14 +20,6 @@
     <%@include file="/views/project/stageSurvey/examine/residence/apply/estateLandState.jsp" %>
 </c:if>
 
-
-
-
-
-
-
-
-
 <!-- 从表 -->
 <%@include file="/views/project/stageSurvey/examine/residence/apply/estateNetwork.jsp" %>
 <%@include file="/views/project/stageSurvey/examine/residence/apply/estateParking.jsp" %>

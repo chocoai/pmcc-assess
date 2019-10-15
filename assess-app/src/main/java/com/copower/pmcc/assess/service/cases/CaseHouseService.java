@@ -337,9 +337,9 @@ public class CaseHouseService {
         if (id == null || tableId == null) {
             throw new Exception("null point");
         }
-        basicHouseService.clearInvalidData2(tableId);
+        basicHouseService.clearInvalidChildData(tableId);
         //更新批量申请表信息
-        BasicApplyBatchDetail batchDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail("tb_basic_house", tableId);
+        BasicApplyBatchDetail batchDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(FormatUtils.entityNameConvertToTableName(BasicHouse.class), tableId);
         batchDetail.setQuoteId(id);
         batchDetail.setBaseType(BaseConstant.DATABASE_PMCC_ASSESS_CASE);
         basicApplyBatchDetailDao.updateInfo(batchDetail);

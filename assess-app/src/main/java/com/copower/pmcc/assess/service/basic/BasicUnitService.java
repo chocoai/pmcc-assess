@@ -173,13 +173,25 @@ public class BasicUnitService {
         where.setTableId(unit.getId());
         where.setType("unit");
         basicEstateTaggingDao.removeBasicEstateTagging(where);
+        clearInvalidChildData(unit.getId());
+        StringBuilder sqlBulder = new StringBuilder();
+        sqlBulder.append(String.format("delete from %s where id=%s;", FormatUtils.entityNameConvertToTableName(BasicUnit.class), unit.getId()));
+        ddlMySqlAssist.customTableDdl(sqlBulder.toString());
+    }
+
+    /**
+     * 清理从表数据
+     *
+     * @throws Exception
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void clearInvalidChildData(Integer unitId) throws Exception {
         StringBuilder sqlBulder = new StringBuilder();
         String baseSql = "delete from %s where unit_id=%s;";
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicUnitHuxing.class), unit.getId()));
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicUnitElevator.class), unit.getId()));
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicUnitDecorate.class), unit.getId()));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicUnitHuxing.class), unitId));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicUnitElevator.class), unitId));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicUnitDecorate.class), unitId));
 
-        sqlBulder.append(String.format("delete from %s where id=%s;", FormatUtils.entityNameConvertToTableName(BasicUnit.class), unit.getId()));
         ddlMySqlAssist.customTableDdl(sqlBulder.toString());
     }
 
@@ -433,7 +445,7 @@ public class BasicUnitService {
         if (id == null || tableId == null) {
             throw new BusinessException("null point");
         }
-        clearInvalidData2(tableId);
+        clearInvalidChildData(tableId);
         //更新批量申请表信息
         BasicApplyBatchDetail batchDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail("tb_basic_unit", tableId);
         batchDetail.setQuoteId(id);
@@ -539,20 +551,6 @@ public class BasicUnitService {
         return basicUnit;
     }
 
-    /**
-     * 清理无效数据
-     *
-     * @throws Exception
-     */
-    @Transactional(rollbackFor = Exception.class)
-    public void clearInvalidData2(Integer tableId) throws Exception {
-        StringBuilder sqlBulder = new StringBuilder();
-        String baseSql = "delete from %s where unit_id=%s;";
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicUnitHuxing.class), tableId));
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicUnitElevator.class), tableId));
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicUnitDecorate.class), tableId));
 
-        ddlMySqlAssist.customTableDdl(sqlBulder.toString());
-    }
 
 }

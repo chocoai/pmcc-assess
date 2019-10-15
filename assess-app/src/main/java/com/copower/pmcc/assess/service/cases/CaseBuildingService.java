@@ -274,7 +274,7 @@ public class CaseBuildingService {
         basicApplyBatchDetailDao.updateInfo(batchDetail);
 
         CaseBuilding oldCaseBuilding = this.getCaseBuildingById(id);
-        basicBuildingService.clearInvalidData2(tableId);
+        basicBuildingService.clearInvalidChildData(tableId);
         BasicBuildingVo oldBasicBuilding = basicBuildingService.getBasicBuildingById(tableId);
         BasicBuilding basicBuilding = new BasicBuilding();
         BeanUtils.copyProperties(oldCaseBuilding, basicBuilding);

@@ -67,20 +67,20 @@ public class BasicApplyBatchController extends BaseController {
     /**
      * 获取树
      *
-     * @param pid
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "/getTree", method = RequestMethod.POST)
-    public List<ZtreeDto> getZtreeDto(Integer pid, Integer estateId) throws Exception {
-        return basicApplyBatchService.getZtreeDto(pid, estateId);
+    @RequestMapping(value = "/getBatchApplyTree", method = RequestMethod.GET)
+    public List<ZtreeDto> getZtreeDto(Integer estateId) throws Exception {
+        return basicApplyBatchService.getZtreeDto(estateId);
     }
 
     @ResponseBody
     @RequestMapping(value = "/saveApplyInfo", name = "保存", method = {RequestMethod.POST})
     public HttpResult saveApplyInfo(BasicApplyBatch basicApplyBatch) {
         try {
-            return HttpResult.newCorrectResult(basicApplyBatchService.saveApplyInfo(basicApplyBatch));
+            basicApplyBatchService.saveApplyInfo(basicApplyBatch);
+            return HttpResult.newCorrectResult(basicApplyBatch);
         } catch (Exception e1) {
             log.error(e1.getMessage(), e1);
             return HttpResult.newErrorResult("保存数据异常");
@@ -288,7 +288,8 @@ public class BasicApplyBatchController extends BaseController {
     public HttpResult saveApplyDraftInfo(BasicApplyBatch basicApplyBatch) {
         try {
             basicApplyBatch.setDraftFlag(true);
-            return HttpResult.newCorrectResult(basicApplyBatchService.saveApplyInfo(basicApplyBatch));
+            basicApplyBatchService.saveApplyInfo(basicApplyBatch);
+            return HttpResult.newCorrectResult(basicApplyBatch);
         } catch (Exception e1) {
             log.error(e1.getMessage(), e1);
             return HttpResult.newErrorResult("保存数据异常");
@@ -323,7 +324,7 @@ public class BasicApplyBatchController extends BaseController {
         if (buildingType == 3)
             modelAndView.addObject("buildingType", "house");
 
-        if (id == 0) {
+        if (buildingType == 0) {
             BasicApplyBatch applyBatch = new BasicApplyBatch();
             applyBatch.setEstateId(estateId);
             BasicApplyBatch singleData = basicApplyBatchService.getSingleData(applyBatch);
@@ -381,9 +382,9 @@ public class BasicApplyBatchController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "/paste", name = "粘贴", method = {RequestMethod.POST})
-    public HttpResult paste(Integer pasteBatchDetailId,Integer copyBatchDetailId,String displayName) {
+    public HttpResult paste(Integer sourceBatchDetailId,Integer targeBatchDetailId) {
         try {
-            basicApplyBatchService.paste(pasteBatchDetailId,copyBatchDetailId,displayName);
+            basicApplyBatchService.pasteExamineInfo(sourceBatchDetailId,targeBatchDetailId);
             return HttpResult.newCorrectResult();
         } catch (Exception e1) {
             log.error(e1.getMessage(), e1);

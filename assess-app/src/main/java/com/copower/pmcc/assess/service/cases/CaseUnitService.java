@@ -230,9 +230,9 @@ public class CaseUnitService {
             throw new BusinessException("null point");
         }
         //清除数据
-        basicUnitService.clearInvalidData2(tableId);
+        basicUnitService.clearInvalidChildData(tableId);
         //更新批量申请表信息
-        BasicApplyBatchDetail batchDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail("tb_basic_unit", tableId);
+        BasicApplyBatchDetail batchDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(FormatUtils.entityNameConvertToTableName(BasicUnit.class), tableId);
         batchDetail.setQuoteId(id);
         batchDetail.setBaseType(BaseConstant.DATABASE_PMCC_ASSESS_CASE);
         basicApplyBatchDetailDao.updateInfo(batchDetail);

@@ -2,7 +2,6 @@ package com.copower.pmcc.assess.controller.data;
 
 import com.copower.pmcc.assess.controller.BaseController;
 import com.copower.pmcc.assess.dal.basis.entity.DataBlock;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.NetInfoRecordService;
 import com.copower.pmcc.assess.service.basic.BasicApplyBatchService;
@@ -12,15 +11,12 @@ import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
-import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.util.List;
 
 /**
  * @Auther: zch
@@ -161,44 +157,6 @@ public class DataBlockController extends BaseController {
         try {
             publicBasicService.flowWrite(processInsId);
             return HttpResult.newCorrectResult();
-        } catch (Exception e) {
-            log.error(String.format("exception: %s", e.getMessage()), e);
-            return HttpResult.newErrorResult("写入案例异常");
-        }
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/updateOldData", method = {RequestMethod.GET}, name = "更新老数据")
-    public HttpResult updateOldData(Integer projectId, Integer maxProjectId) {
-        try {
-            if (maxProjectId != null) {
-                List<ProjectInfo> projectInfoList = projectInfoService.getProjectInfoList(new ProjectInfo());
-                if (CollectionUtils.isNotEmpty(projectInfoList)) {
-                    for (ProjectInfo projectInfo : projectInfoList) {
-                        if (projectInfo.getId().intValue() <= maxProjectId.intValue()) {
-                            try{
-                                basicApplyBatchService.updateOldData(projectInfo.getId());
-                            }catch (Exception ex){
-
-                            }
-                        }
-                    }
-                }
-            } else {
-                basicApplyBatchService.updateOldData(projectId);
-            }
-            return HttpResult.newCorrectResult();
-        } catch (Exception e) {
-            log.error(String.format("exception: %s", e.getMessage()), e);
-            return HttpResult.newErrorResult("写入案例异常");
-        }
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/updateBasicNullId", method = {RequestMethod.GET}, name = "更新老数据")
-    public HttpResult updateBasicNullId() {
-        try {
-            return HttpResult.newCorrectResult( basicApplyBatchService.updateBasicNullId());
         } catch (Exception e) {
             log.error(String.format("exception: %s", e.getMessage()), e);
             return HttpResult.newErrorResult("写入案例异常");

@@ -119,8 +119,8 @@ AssessDicKey.certifyPart = "certify.part";//相关证明对应查勘部位
 AssessDicKey.houseInventoryRightCategory = "project.survey.house.inventory.right.category";//房产他权类别
 AssessDicKey.build_security_engineering_project_market_cost = "build.security.engineering.project.market.cost";//建安工程项目
 AssessDicKey.DATA_LOCALE_SURVEY_PICTURE_TEMPLATE = "data.locale.survey.picture.template";//现场查勘图片模板
-AssessDicKey.examineFormClassifySingel = "examine.form.classify.singel";//单套
-AssessDicKey.examineFormClassifyMultiple = "examine.form.classify.multiple";//多套
+AssessDicKey.projectSurveyFormClassifySingel = "project.survey.form.classify.singel";//单套住宅
+AssessDicKey.projectSurveyFormClassifyMultiple = "project.survey.form.classify.multiple";//其他
 
 //楼盘
 AssessDicKey.estate_position = "estate.position";//楼盘方位
