@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.controller.base;
 
-import com.copower.pmcc.assess.common.enums.word.BaseReportTemplateTypeEnum;
 import com.copower.pmcc.assess.dal.basis.entity.BaseReportField;
 import com.copower.pmcc.assess.dto.input.ZtreeDto;
 import com.copower.pmcc.assess.service.BaseService;
@@ -38,7 +37,6 @@ public class BaseReportFieldController {
     @GetMapping(value = "/index", name = "视图")
     public ModelAndView index() {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/base/baseReportField");
-        modelAndView.addObject("replaceType", BaseReportTemplateTypeEnum.getBaseReportTemplateTypeEnumList());
         return modelAndView;
     }
 

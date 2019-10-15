@@ -596,16 +596,7 @@ public class BasicApplyTransferService {
         BasicApply sourceBasicApply = basicApplyService.getBasicApplyByPlanDetailsId(sourcePlanDetailsId);
         if (sourceBasicApply == null)
             throw new BusinessException(HttpReturnEnum.NOTFIND.getName());
-        List<BasicApply> basicApplyList = basicApplyService.getBasicApplyListByPlanDetailsId(targetPlanDetailsId);
-        if (CollectionUtils.isNotEmpty(basicApplyList)) {
-            basicApplyList.forEach(o -> {
-                try {
-                    basicApplyService.deleteBasicApply(o.getId());
-                } catch (Exception e) {
-                    logger.error(e.getMessage(),e);
-                }
-            });
-        }
+
         basicApplyBatchService.deleteBatchByPlanDetailsId(targetPlanDetailsId);
 
         BasicApply  targetBasicApply = new BasicApply();

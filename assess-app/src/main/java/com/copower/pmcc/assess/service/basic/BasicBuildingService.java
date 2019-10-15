@@ -295,13 +295,8 @@ public class BasicBuildingService {
         where.setTableId(basicBuilding.getId());
         where.setType("building");
         basicEstateTaggingDao.removeBasicEstateTagging(where);
+        clearInvalidChildData(basicBuilding.getId());//清理从表数据
         StringBuilder sqlBulder = new StringBuilder();
-        String baseSql = "delete from %s where building_id=%s;";
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicBuildingFunction.class), basicBuilding.getId()));
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicBuildingMaintenance.class), basicBuilding.getId()));
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicBuildingOutfit.class), basicBuilding.getId()));
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicBuildingSurface.class), basicBuilding.getId()));
-
         sqlBulder.append(String.format("delete from %s where id=%s;", FormatUtils.entityNameConvertToTableName(BasicBuilding.class), basicBuilding.getId()));
         ddlMySqlAssist.customTableDdl(sqlBulder.toString());
 
@@ -318,15 +313,19 @@ public class BasicBuildingService {
         }
     }
 
+    /**
+     * 只清理从表数据
+     * @param buildingId
+     * @throws Exception
+     */
     @Transactional(rollbackFor = Exception.class)
-    public void clearInvalidData2(Integer tableId) throws Exception {
+    public void clearInvalidChildData(Integer buildingId) throws Exception {
         StringBuilder sqlBulder = new StringBuilder();
         String baseSql = "delete from %s where building_id=%s;";
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicBuildingFunction.class), tableId));
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicBuildingMaintenance.class), tableId));
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicBuildingOutfit.class), tableId));
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicBuildingSurface.class), tableId));
-
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicBuildingFunction.class), buildingId));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicBuildingMaintenance.class), buildingId));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicBuildingOutfit.class), buildingId));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicBuildingSurface.class), buildingId));
         ddlMySqlAssist.customTableDdl(sqlBulder.toString());
     }
 
@@ -501,7 +500,7 @@ public class BasicBuildingService {
             throw new Exception("null point");
         }
         //清理数据
-        this.clearInvalidData2(tableId);
+        this.clearInvalidChildData(tableId);
 
         //更新批量申请表信息
         BasicApplyBatchDetail batchDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail("tb_basic_building", tableId);
@@ -534,7 +533,6 @@ public class BasicBuildingService {
                 baseAttachmentService.deleteAttachment(item.getId());
             }
         }
-
 
         //附件拷贝
         SysAttachmentDto example = new SysAttachmentDto();

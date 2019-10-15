@@ -83,11 +83,13 @@ public class AssessDataDicKeyConstant {
     public static final String PROJECT_DECLARE_LAND_INCLUDE_HOUSE_TRANSACTION = "project.declare.land.includeHouse.transaction";//	非纯土地(交易)  包含房产
     public static final String PROJECT_DECLARE_LAND_INCLUDE_HOUSE_LEASE = "project.declare.land.includeHouse.lease";//	非纯土地(出租) 包含房产
 
-    public static final String PROJECT_SURVEY_FORM_CLASSIFY = "project.survey.form.classify";//查勘案例表单大类
-
     /*
      * 项目查勘
      */
+    public static final String PROJECT_SURVEY_FORM_CLASSIFY = "project.survey.form.classify";//查勘案例表单大类
+    public static final String PROJECT_SURVEY_FORM_CLASSIFY_SINGEL = "project.survey.form.classify.singel";//查勘案例表单大类-单套住宅
+    public static final String PROJECT_SURVEY_FORM_CLASSIFY_MULTIPLE = "project.survey.form.classify.multiple";//查勘案例表单大类-其他
+
     public static final String INVENTORY_CONTENT = "project.survey.inventory.content"; //清查内容
     public static final String INVENTORY_CONTENT_DEFAULT = "project.survey.inventory.content.default"; //清查内容默认
     public static final String INVENTORY_CONTENT_DEFAULT_ACTUAL_ADDRESS = "project.survey.inventory.content.default.actual.address"; //登记地址与实际地址

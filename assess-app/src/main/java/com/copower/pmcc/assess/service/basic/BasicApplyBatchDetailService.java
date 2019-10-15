@@ -5,7 +5,6 @@ import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDetailDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicBuildingDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
-import com.copower.pmcc.assess.service.project.survey.SurveySceneExploreService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
@@ -30,8 +29,6 @@ public class BasicApplyBatchDetailService {
     private BasicApplyBatchDao basicApplyBatchDao;
     @Autowired
     private ProcessControllerComponent processControllerComponent;
-    @Autowired
-    private SurveySceneExploreService surveySceneExploreService;
     @Autowired
     private BasicApplyService basicApplyService;
     @Autowired
@@ -201,7 +198,7 @@ public class BasicApplyBatchDetailService {
             case "tb_basic_building":
                 //删除原来楼栋数据
                 basicBuildingDao.deleteBasicBuilding(basicApplyBatchDetail.getTableId());
-                basicBuildingService.clearInvalidData2(basicApplyBatchDetail.getTableId());
+                basicBuildingService.clearInvalidChildData(basicApplyBatchDetail.getTableId());
                 List<BasicApplyBatchDetail> unitDetails = getBasicApplyBatchDetailByPid(id, basicApplyBatchDetail.getApplyBatchId());
                 if (CollectionUtils.isNotEmpty(unitDetails)) {
                     for (BasicApplyBatchDetail unit : unitDetails) {
@@ -216,14 +213,14 @@ public class BasicApplyBatchDetailService {
                         basicHouseService.deleteHousesByUnitId(unit.getTableId());
                         //删除单元
                         basicUnitService.deleteBasicUnit(unit.getTableId());
-                        basicUnitService.clearInvalidData2(unit.getTableId());
+                        basicUnitService.clearInvalidChildData(unit.getTableId());
                     }
                 }
                 break;
             case "tb_basic_unit":
                 //删除原来单元数据
                 basicUnitService.deleteBasicUnit(basicApplyBatchDetail.getTableId());
-                basicUnitService.clearInvalidData2(basicApplyBatchDetail.getTableId());
+                basicUnitService.clearInvalidChildData(basicApplyBatchDetail.getTableId());
                 //删除单元下房屋
                 basicHouseService.deleteHousesByUnitId(basicApplyBatchDetail.getTableId());
                 List<BasicApplyBatchDetail> houseDetails = getBasicApplyBatchDetailByPid(id, basicApplyBatchDetail.getApplyBatchId());
@@ -236,7 +233,7 @@ public class BasicApplyBatchDetailService {
             case "tb_basic_house":
                 //删除原来房屋数据
                 basicHouseService.deleteBasicHouse(basicApplyBatchDetail.getTableId());
-                basicHouseService.clearInvalidData2(basicApplyBatchDetail.getTableId());
+                basicHouseService.clearInvalidChildData(basicApplyBatchDetail.getTableId());
                 BasicApply basicApply = new BasicApply();
                 basicApply.setBasicHouseId(basicApplyBatchDetail.getTableId());
                 BasicApply basicApplyOnly = basicApplyService.getBasicApplyOnly(basicApply);

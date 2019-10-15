@@ -21,26 +21,38 @@
                     <h3> ${projectPlanDetails.projectPhaseName}</h3>
                     <div class="clearfix"></div>
                 </div>
-                <div class="x_content">
+                <div class="x_content" style="min-height: 300px;">
                     <form class="form-horizontal">
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    楼盘名称
+                                    大类
                                 </label>
                                 <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                                    <label class="form-control">${applyBatch.estateName}</label>
+                                    <select class="form-control" name="classify" disabled="disabled">
+                                        <option value="">-请选择-</option>
+                                        <c:if test="${not empty formClassifyList}">
+                                            <c:forEach var="item" items="${formClassifyList}">
+                                                <option value="${item.id}" data-key="${item.fieldName}"
+                                                    ${item.id eq applyBatch.classify?'selected="selected"':''}>${item.name}</option>
+                                            </c:forEach>
+                                        </c:if>
+                                    </select>
                                 </div>
                             </div>
                             <div class="x-valid">
-                                <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4 radio-inline">
-                                    <c:forEach var="item" items="${examineFormTypeList}">
-                                        <span class=" col-xs-6  col-sm-6  col-md-6  col-lg-6 ">
-                                            <input type="radio" id="examineFormType_${item.key}" name="type"
-                                                   value='${item.key}' ${item.key eq applyBatch.type?'checked="checked"':''} disabled="disabled">
-                                            <label for="examineFormType_${item.key}">&nbsp;${item.value}</label>
-                                        </span>
-                                    </c:forEach>
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                    类型
+                                </label>
+                                <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
+                                    <select class="form-control" name="type" disabled="disabled">
+                                        <option value="">-请选择-</option>
+                                        <c:if test="${not empty examineFormTypeList}">
+                                            <c:forEach var="item" items="${examineFormTypeList}">
+                                                <option value="${item.key}" ${item.key eq applyBatch.type?'selected="selected"':''}>${item.value}</option>
+                                            </c:forEach>
+                                        </c:if>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -82,16 +94,6 @@
                 rootPId: 0
             }
         },
-        async: {
-            enable: true,
-            url: "${pageContext.request.contextPath}/basicApplyBatch/getTree",
-            otherParam: {
-                estateId: function () {
-                    return ${applyBatch.estateId};
-                }
-            },
-            autoParam: ["id=pid"]
-        },
         // 回调函数
         callback: {
             onClick: function (event, treeId, treeNode, clickFlag) {
@@ -101,18 +103,20 @@
     };
 
     //初始化
-    function ztreeInit(estateName) {
-        zTreeObj = $.fn.zTree.init($("#ztree"), setting, [{
-            "id": 0,
-            "pid": 0,
-            "displayName": estateName,
-            "isParent": true
-        }]);
-        //展开第一级，选中根节点
-        var rootNode = zTreeObj.getNodes()[0];
-        zTreeObj.selectNode(rootNode);
-
-        zTreeObj.expandNode(rootNode, true, false, true);
+    function ztreeInit() {
+        $.ajax({
+            url: '${pageContext.request.contextPath}/basicApplyBatch/getBatchApplyTree',
+            data: {estateId: '${applyBatch.estateId}'},
+            type: 'get',
+            dataType: "json",
+            success: function (result) {
+                zTreeObj = $.fn.zTree.init($("#ztree"), setting, result);
+                //展开第一级，选中根节点
+                var rootNode = zTreeObj.getNodes()[0];
+                zTreeObj.selectNode(rootNode);
+                zTreeObj.expandAll(true);
+            }
+        })
     }
 
     //信息详情页面

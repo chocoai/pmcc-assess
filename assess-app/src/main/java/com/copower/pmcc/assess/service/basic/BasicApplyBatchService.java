@@ -2,12 +2,15 @@ package com.copower.pmcc.assess.service.basic;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.copower.pmcc.assess.common.enums.*;
+import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
+import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.common.enums.basic.BasicApplyFormNameEnum;
 import com.copower.pmcc.assess.common.enums.basic.BasicApplyTypeEnum;
 import com.copower.pmcc.assess.common.enums.basic.EstateTaggingTypeEnum;
 import com.copower.pmcc.assess.common.enums.basic.ExamineFileUpLoadFieldEnum;
+import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
+import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.dao.basic.*;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dal.cases.entity.*;
@@ -19,6 +22,7 @@ import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.assist.DdlMySqlAssist;
 import com.copower.pmcc.assess.service.assist.ResidueRatioService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
 import com.copower.pmcc.assess.service.cases.*;
 import com.copower.pmcc.assess.service.event.basic.BasicApplyBatchEvent;
@@ -26,7 +30,6 @@ import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
-import com.copower.pmcc.assess.service.project.survey.SurveySceneExploreService;
 import com.copower.pmcc.bpm.api.dto.ProcessUserDto;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
@@ -155,7 +158,7 @@ public class BasicApplyBatchService {
     @Autowired
     private BasicHouseDao basicHouseDao;
     @Autowired
-    private SurveySceneExploreService surveySceneExploreService;
+    private BaseDataDicService baseDataDicService;
     @Autowired
     private DeclareRecordService declareRecordService;
     @Autowired
@@ -165,21 +168,25 @@ public class BasicApplyBatchService {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
 
-    public List<ZtreeDto> getZtreeDto(Integer pid, Integer estateId) throws Exception {
-        //主表
-        BasicApplyBatch basicApplyBatch = getBasicApplyBatchByEstateId(estateId);
-        List<BasicApplyBatchDetail> basicApplyBatchDetails = basicApplyBatchDetailService.getBasicApplyBatchDetailByApplyBatchId(basicApplyBatch.getId());
+    public List<ZtreeDto> getZtreeDto(Integer estateId) throws Exception {
         List<ZtreeDto> treeDtos = new ArrayList<>();
+        if (estateId == null) return treeDtos;
+        BasicApplyBatch basicApplyBatch = getBasicApplyBatchByEstateId(estateId);
+        if (basicApplyBatch == null) return treeDtos;
+        ZtreeDto ztreeDto = new ZtreeDto();
+        ztreeDto.setId(estateId);
+        ztreeDto.setPid(0);
+        ztreeDto.setName(basicApplyBatch.getEstateName());
+        ztreeDto.setDisplayName(basicApplyBatch.getEstateName());
+        treeDtos.add(ztreeDto);
+        List<BasicApplyBatchDetail> basicApplyBatchDetails = basicApplyBatchDetailService.getBasicApplyBatchDetailByApplyBatchId(basicApplyBatch.getId());
+        if (CollectionUtils.isEmpty(basicApplyBatchDetails)) return treeDtos;
         for (BasicApplyBatchDetail item : basicApplyBatchDetails) {
             ZtreeDto treeDto2 = new ZtreeDto();
             treeDto2.setId(item.getId());
             treeDto2.setName(item.getName());
             treeDto2.setDisplayName(item.getDisplayName());
-            treeDto2.setPid(item.getPid());
-            //判断是否有子节点
-            if (!haveChilds(item.getId(), basicApplyBatch.getId())) {
-                treeDto2.setIsParent(false);
-            }
+            treeDto2.setPid(item.getPid().equals(0) ? estateId : item.getPid());
             treeDtos.add(treeDto2);
         }
         return treeDtos;
@@ -259,6 +266,16 @@ public class BasicApplyBatchService {
 
     public void deleteBatchByPlanDetailsId(Integer planDetailsId) throws Exception {
         BasicApplyBatch applyBatch = getBasicApplyBatchByPlanDetailsId(planDetailsId);
+        List<BasicApply> basicApplyList = basicApplyService.getBasicApplyListByPlanDetailsId(planDetailsId);
+        if (CollectionUtils.isNotEmpty(basicApplyList)) {
+            basicApplyList.forEach(o -> {
+                try {
+                    basicApplyService.deleteBasicApply(o.getId());
+                } catch (Exception e) {
+                    logger.error(e.getMessage(), e);
+                }
+            });
+        }
         if (applyBatch != null) {
             List<BasicApplyBatchDetail> batchDetailList = basicApplyBatchDetailService.getBasicApplyBatchDetailByApplyBatchId(applyBatch.getId());
             if (CollectionUtils.isNotEmpty(batchDetailList)) {
@@ -280,47 +297,99 @@ public class BasicApplyBatchService {
         }
     }
 
-    /**
-     * 是否子节点
-     *
-     * @param
-     * @return
-     */
-    public Boolean haveChilds(Integer pid, Integer estateId) {
-        List<BasicApplyBatchDetail> list = basicApplyBatchDetailService.getBasicApplyBatchDetailByPid(pid, estateId);
-        if (CollectionUtils.isNotEmpty(list)) {
-            return true;
-        }
-        return false;
-    }
-
     public void addBasicApplyBatch(BasicApplyBatch applyBatch) {
         basicApplyBatchDao.addInfo(applyBatch);
     }
 
-    //保存
-    public BasicApplyBatch saveApplyInfo(BasicApplyBatch basicApplyBatch) throws Exception {
-        if (basicApplyBatch.getId() != null && basicApplyBatch.getId() != 0) {
-            BasicEstate basicEstate = basicEstateService.getBasicEstateById(basicApplyBatch.getEstateId());
-            BeanUtils.copyProperties(basicApplyBatch, basicEstate);
-            basicEstate.setName(basicApplyBatch.getEstateName());
-            basicEstate.setId(basicApplyBatch.getEstateId());
-            basicEstateService.saveAndUpdateBasicEstate(basicEstate);
-            basicApplyBatchDao.updateInfo(basicApplyBatch);
-        } else {
-            BasicEstate basicEstate = new BasicEstate();
-            BeanUtils.copyProperties(basicApplyBatch, basicEstate);
-            basicEstate.setName(basicApplyBatch.getEstateName());
-            basicEstate.setId(null);
-            basicEstateService.saveAndUpdateBasicEstate(basicEstate);
-            basicApplyBatch.setEstateId(basicEstate.getId());
-            basicApplyBatch.setCreator(commonService.thisUserAccount());
-            BasicEstateLandState basicEstateLandState = new BasicEstateLandState();
-            basicEstateLandState.setEstateId(basicEstate.getId());
-            basicEstateLandStateService.saveAndUpdateBasicEstateLandState(basicEstateLandState);
-            basicApplyBatchDao.addInfo(basicApplyBatch);
+    /**
+     * 初始化批量申请信息
+     *
+     * @param basicApplyBatch
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public BasicApplyBatch initBasicApplyBatchInfo(BasicApplyBatch basicApplyBatch) throws Exception {
+        //1.根据不同情况初始化不同的信息结构 2.初始化之前需先将原初始化信息删除
+        deleteBatchByPlanDetailsId(basicApplyBatch.getPlanDetailsId());
+        if (basicApplyBatch.getClassify() == null) return basicApplyBatch;
+        BaseDataDic classifySingle = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.PROJECT_SURVEY_FORM_CLASSIFY_SINGEL);
+        //楼盘
+        BasicEstate basicEstate = new BasicEstate();
+        basicEstate.setCreator(commonService.thisUserAccount());
+        basicEstateService.saveAndUpdateBasicEstate(basicEstate);
+        BasicEstateLandState basicEstateLandState = new BasicEstateLandState();
+        basicEstateLandState.setEstateId(basicEstate.getId());
+        basicEstateLandState.setCreator(commonService.thisUserAccount());
+        basicEstateLandStateService.saveAndUpdateBasicEstateLandState(basicEstateLandState);
+
+        basicApplyBatch.setEstateId(basicEstate.getId());
+        basicApplyBatch.setEstateName("楼盘信息");
+        basicApplyBatch.setCreator(commonService.thisUserAccount());
+        saveApplyInfo(basicApplyBatch);
+        if (classifySingle.getId().equals(basicApplyBatch.getClassify())) { //1.添加applyBatch 2.添加applyBatchDetail 3.添加楼盘、楼栋、单元、房屋主表 4.添加basicApply表
+            //楼栋
+            BasicBuilding basicBuilding = new BasicBuilding();
+            basicBuilding.setCreator(commonService.thisUserAccount());
+            basicBuildingService.saveAndUpdateBasicBuilding(basicBuilding);
+            BasicApplyBatchDetail buildingApplyBatchDetail = new BasicApplyBatchDetail();
+            buildingApplyBatchDetail.setPid(0);
+            buildingApplyBatchDetail.setBisStandard(false);
+            buildingApplyBatchDetail.setApplyBatchId(basicApplyBatch.getId());
+            buildingApplyBatchDetail.setTableName(FormatUtils.entityNameConvertToTableName(BasicBuilding.class));
+            buildingApplyBatchDetail.setTableId(basicBuilding.getId());
+            buildingApplyBatchDetail.setName("楼栋信息");
+            buildingApplyBatchDetail.setDisplayName("楼栋信息");
+            basicApplyBatchDetailService.saveBasicApplyBatchDetail(buildingApplyBatchDetail);
+            //单元
+            BasicUnit basicUnit = new BasicUnit();
+            basicUnit.setCreator(commonService.thisUserAccount());
+            basicUnitService.saveAndUpdateBasicUnit(basicUnit);
+            BasicApplyBatchDetail unitApplyBatchDetail = new BasicApplyBatchDetail();
+            unitApplyBatchDetail.setBisStandard(false);
+            unitApplyBatchDetail.setPid(buildingApplyBatchDetail.getId());
+            unitApplyBatchDetail.setApplyBatchId(basicApplyBatch.getId());
+            unitApplyBatchDetail.setTableName(FormatUtils.entityNameConvertToTableName(BasicUnit.class));
+            unitApplyBatchDetail.setTableId(basicUnit.getId());
+            unitApplyBatchDetail.setName("单元信息");
+            unitApplyBatchDetail.setDisplayName("单元信息");
+            basicApplyBatchDetailService.saveBasicApplyBatchDetail(unitApplyBatchDetail);
+            //房屋
+            BasicHouse basicHouse = new BasicHouse();
+            basicHouse.setCreator(commonService.thisUserAccount());
+            basicHouseService.saveAndUpdateBasicHouse(basicHouse);
+            BasicHouseTrading basicHouseTrading = new BasicHouseTrading();
+            basicHouseTrading.setHouseId(basicHouse.getId());
+            basicHouseTrading.setCreator(commonService.thisUserAccount());
+            basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicHouseTrading);
+            BasicApplyBatchDetail houseApplyBatchDetail = new BasicApplyBatchDetail();
+            houseApplyBatchDetail.setBisStandard(true);
+            houseApplyBatchDetail.setPid(unitApplyBatchDetail.getId());
+            houseApplyBatchDetail.setApplyBatchId(basicApplyBatch.getId());
+            houseApplyBatchDetail.setTableName(FormatUtils.entityNameConvertToTableName(BasicHouse.class));
+            houseApplyBatchDetail.setTableId(basicHouse.getId());
+            houseApplyBatchDetail.setName("房屋信息");
+            houseApplyBatchDetail.setDisplayName("房屋信息");
+            basicApplyBatchDetailService.saveBasicApplyBatchDetail(houseApplyBatchDetail);
+
+            BasicApply basicApply = new BasicApply();
+            basicApply.setPlanDetailsId(basicApplyBatch.getPlanDetailsId());
+            basicApply.setBasicEstateId(basicEstate.getId());
+            basicApply.setBasicBuildingId(basicBuilding.getId());
+            basicApply.setBasicHouseId(basicHouse.getId());
+            basicApply.setCreator(commonService.thisUserAccount());
+            basicApplyService.saveBasicApply(basicApply);
         }
         return basicApplyBatch;
+    }
+
+    //保存
+    public void saveApplyInfo(BasicApplyBatch basicApplyBatch) throws Exception {
+        if (basicApplyBatch.getId() != null && basicApplyBatch.getId() != 0) {
+            basicApplyBatchDao.updateInfo(basicApplyBatch);
+        } else {
+            basicApplyBatch.setCreator(commonService.thisUserAccount());
+            basicApplyBatchDao.addInfo(basicApplyBatch);
+        }
     }
 
     /**
@@ -793,77 +862,52 @@ public class BasicApplyBatchService {
     /**
      * 楼栋复制（basic->basic）
      *
-     * @param buildingOld
-     * @param estateId
-     * @return
+     * @param sourceBuilding
+     * @param targetBuilding
      * @throws Exception
      */
-    private void copyBasicBuildingToBasic(BasicBuilding buildingOld, Integer estateId, BasicApplyBatch basicApplyBatch, BasicApplyBatchDetail oldBasicApplyBatchDetail, String displayName, Integer planDetailsId) throws Exception {
-        BasicBuilding newBasicBuilding = new BasicBuilding();
-        if (buildingOld != null) {
-            BeanUtils.copyProperties(buildingOld, newBasicBuilding);
-            newBasicBuilding.setEstateId(estateId);
-            newBasicBuilding.setId(null);
-            newBasicBuilding.setBuildingNumber(StringUtils.substringBeforeLast(displayName, "栋"));
-            newBasicBuilding.setBuildingName(displayName);
-            newBasicBuilding.setGmtCreated(null);
-            newBasicBuilding.setGmtModified(null);
-            basicBuildingService.saveAndUpdateBasicBuilding(newBasicBuilding);
+    private void copyBasicBuildingToBasic(BasicBuilding sourceBuilding, BasicBuilding targetBuilding) throws Exception {
+        if (sourceBuilding == null || targetBuilding == null) return;
+        BeanUtils.copyProperties(sourceBuilding, targetBuilding, "id", "buildingNumber", "buildingName", "gmtCreated", "gmtModified");
+        basicBuildingService.saveAndUpdateBasicBuilding(targetBuilding);
 
-            //复制批量明细表数据
-            BasicApplyBatchDetail newBasicApplyBatchDetail = new BasicApplyBatchDetail();
-            BeanUtils.copyProperties(oldBasicApplyBatchDetail, newBasicApplyBatchDetail);
-            newBasicApplyBatchDetail.setId(null);
-            newBasicApplyBatchDetail.setPid(0);
-            newBasicApplyBatchDetail.setName(StringUtils.substringBeforeLast(displayName, "栋"));
-            newBasicApplyBatchDetail.setDisplayName(displayName);
-            newBasicApplyBatchDetail.setQuoteId(null);
-            newBasicApplyBatchDetail.setBaseType(null);
-            newBasicApplyBatchDetail.setTableId(newBasicBuilding.getId());
-            basicApplyBatchDetailDao.addInfo(newBasicApplyBatchDetail);
+        SysAttachmentDto example = new SysAttachmentDto();
+        example.setTableId(sourceBuilding.getId());
+        example.setTableName(FormatUtils.entityNameConvertToTableName(BasicBuilding.class));
 
-            SysAttachmentDto example = new SysAttachmentDto();
-            example.setTableId(buildingOld.getId());
-            example.setTableName(FormatUtils.entityNameConvertToTableName(BasicBuilding.class));
+        SysAttachmentDto attachmentDto = new SysAttachmentDto();
+        attachmentDto.setTableId(targetBuilding.getId());
+        example.setTableName(FormatUtils.entityNameConvertToTableName(BasicBuilding.class));
+        baseAttachmentService.copyFtpAttachments(example, attachmentDto);
 
-            SysAttachmentDto attachmentDto = new SysAttachmentDto();
-            attachmentDto.setTableId(newBasicBuilding.getId());
-            example.setTableName(FormatUtils.entityNameConvertToTableName(BasicBuilding.class));
-            baseAttachmentService.copyFtpAttachments(example, attachmentDto);
+        basicBuildingService.clearInvalidChildData(targetBuilding.getId());
+        StringBuilder sqlBuilder = new StringBuilder();
+        SynchronousDataDto synchronousDataDto = new SynchronousDataDto();
+        HashMap<String, String> map = Maps.newHashMap();
+        map.put("building_id", String.valueOf(targetBuilding.getId()));
+        map.put("creator", commonService.thisUserAccount());
+        synchronousDataDto.setFieldDefaultValue(map);
+        synchronousDataDto.setSourceDataBase(BaseConstant.DATABASE_PMCC_ASSESS);
+        synchronousDataDto.setTargeDataBase(BaseConstant.DATABASE_PMCC_ASSESS);
+        synchronousDataDto.setWhereSql("building_id=" + sourceBuilding.getId());
+        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicBuildingOutfit.class));
+        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicBuildingOutfit.class));
+        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//楼栋外装sql
 
-            StringBuilder sqlBuilder = new StringBuilder();
-            SynchronousDataDto synchronousDataDto = new SynchronousDataDto();
-            HashMap<String, String> map = Maps.newHashMap();
-            map.put("building_id", String.valueOf(newBasicBuilding.getId()));
-            map.put("creator", commonService.thisUserAccount());
-            synchronousDataDto.setFieldDefaultValue(map);
-            synchronousDataDto.setSourceDataBase("pmcc_assess");
-            synchronousDataDto.setTargeDataBase("pmcc_assess");
-            synchronousDataDto.setWhereSql("building_id=" + buildingOld.getId());
-            synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicBuildingOutfit.class));
-            synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicBuildingOutfit.class));
-            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//楼栋外装sql
+        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicBuildingMaintenance.class));
+        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicBuildingMaintenance.class));
+        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//维护结构sql
 
-            synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicBuildingMaintenance.class));
-            synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicBuildingMaintenance.class));
-            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//维护结构sql
+        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicBuildingSurface.class));
+        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicBuildingSurface.class));
+        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//层面结构sql
 
-            synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicBuildingSurface.class));
-            synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicBuildingSurface.class));
-            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//层面结构sql
+        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicBuildingFunction.class));
+        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicBuildingFunction.class));
+        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//建筑功能sql
 
-            synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicBuildingFunction.class));
-            synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicBuildingFunction.class));
-            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//建筑功能sql
-
-            sqlBuilder.append(this.copyBasicTaggingToBasic(EstateTaggingTypeEnum.BUILDING, buildingOld.getId(), newBasicBuilding.getId()));
-            ddlMySqlAssist.customTableDdl(sqlBuilder.toString());//执行sql
-            //复制对应的单元
-            List<BasicUnit> oldUnits = basicApplyBatchDetailService.getBasicUnitListByBatchId(basicApplyBatch.getId(), buildingOld);
-            this.copyBasicUnitToBasic(oldUnits, newBasicBuilding.getId(), basicApplyBatch, newBasicApplyBatchDetail.getId(), null, planDetailsId);
-        }
-
-
+        sqlBuilder.append(this.copyBasicTaggingToBasic(EstateTaggingTypeEnum.BUILDING, sourceBuilding.getId(), targetBuilding.getId()));
+        ddlMySqlAssist.customTableDdl(sqlBuilder.toString());//执行sql
     }
 
 
@@ -961,83 +1005,50 @@ public class BasicApplyBatchService {
     /**
      * 单元复制(Basic->Basic)
      *
-     * @param unitOlds
-     * @param basicBuildingId
-     * @return
+     * @param sourceUnit
+     * @param targetUnit
      * @throws Exception
      */
-    private void copyBasicUnitToBasic(List<BasicUnit> unitOlds, Integer basicBuildingId, BasicApplyBatch basicApplyBatch, Integer pid, String displayName, Integer planDetailsId) throws Exception {
-        if (CollectionUtils.isNotEmpty(unitOlds))
-            for (BasicUnit unitOld : unitOlds) {
-                BasicUnit basicUnit = new BasicUnit();
-                BeanUtils.copyProperties(unitOld, basicUnit);
-                basicUnit.setBuildingId(basicBuildingId);
-                if (StringUtils.isNotEmpty(displayName)) {
-                    basicUnit.setUnitNumber(StringUtils.substringBeforeLast(displayName, "单元"));
-                }
-                basicUnit.setBuildingId(basicBuildingId);
-                basicUnit.setId(null);
-                basicUnit.setGmtCreated(null);
-                basicUnit.setGmtModified(null);
-                basicUnitService.saveAndUpdateBasicUnit(basicUnit);
-                BasicApplyBatchDetail oldBasicApplyBatchDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail("tb_basic_unit", unitOld.getId());
-                //复制批量明细表数据
-                BasicApplyBatchDetail newBasicApplyBatchDetail = new BasicApplyBatchDetail();
-                BeanUtils.copyProperties(oldBasicApplyBatchDetail, newBasicApplyBatchDetail);
-                newBasicApplyBatchDetail.setId(null);
-                if (StringUtils.isNotEmpty(displayName)) {
-                    newBasicApplyBatchDetail.setName(StringUtils.substringBeforeLast(displayName, "单元"));
-                    newBasicApplyBatchDetail.setDisplayName(displayName);
-                }
-                newBasicApplyBatchDetail.setPid(pid);
-                newBasicApplyBatchDetail.setQuoteId(null);
-                newBasicApplyBatchDetail.setBaseType(null);
-                newBasicApplyBatchDetail.setTableId(basicUnit.getId());
-                basicApplyBatchDetailDao.addInfo(newBasicApplyBatchDetail);
+    private void copyBasicUnitToBasic(BasicUnit sourceUnit, BasicUnit targetUnit) throws Exception {
+        if (sourceUnit == null || targetUnit == null) return;
+        BeanUtils.copyProperties(sourceUnit, targetUnit, "id", "unitNumber", "gmtCreated", "gmtModified");
+        basicUnitService.saveAndUpdateBasicUnit(targetUnit);
+        basicUnitService.clearInvalidChildData(targetUnit.getId());
+        //附件拷贝
+        SysAttachmentDto example = new SysAttachmentDto();
+        example.setTableId(sourceUnit.getId());
+        example.setTableName(FormatUtils.entityNameConvertToTableName(BasicUnit.class));
+        SysAttachmentDto attachmentDto = new SysAttachmentDto();
+        attachmentDto.setTableId(targetUnit.getId());
+        example.setTableName(FormatUtils.entityNameConvertToTableName(BasicUnit.class));
+        baseAttachmentService.copyFtpAttachments(example, attachmentDto);
 
-                //附件拷贝
-                SysAttachmentDto example = new SysAttachmentDto();
-                example.setTableId(unitOld.getId());
-                example.setTableName(FormatUtils.entityNameConvertToTableName(BasicUnit.class));
-                SysAttachmentDto attachmentDto = new SysAttachmentDto();
-                attachmentDto.setTableId(basicUnit.getId());
-                example.setTableName(FormatUtils.entityNameConvertToTableName(BasicUnit.class));
-                baseAttachmentService.copyFtpAttachments(example, attachmentDto);
+        if (sourceUnit.getId() != null) {
+            BasicUnitHuxing queryBasicUnitHuxing = new BasicUnitHuxing();
+            queryBasicUnitHuxing.setUnitId(sourceUnit.getId());
+            List<BasicUnitHuxing> basicUnitHuxingList = basicUnitHuxingDao.basicUnitHuxingList(queryBasicUnitHuxing);
+            this.copyBasicHuxingToBasic(basicUnitHuxingList, targetUnit);
+        }
 
-                BasicUnitHuxing queryBasicUnitHuxing = new BasicUnitHuxing();
-                if (unitOld != null) {
-                    if (unitOld.getId() != null) {
-                        queryBasicUnitHuxing.setUnitId(unitOld.getId());
-                    }
-                }
-                List<BasicUnitHuxing> basicUnitHuxingList = basicUnitHuxingDao.basicUnitHuxingList(queryBasicUnitHuxing);
-                if (basicUnit != null && basicUnit.getId() != null) {
-                    this.copyBasicHuxingToBasic(basicUnitHuxingList, basicUnit);
+        StringBuilder sqlBuilder = new StringBuilder();
+        SynchronousDataDto synchronousDataDto = new SynchronousDataDto();
+        HashMap<String, String> map = Maps.newHashMap();
+        map.put("unit_id", String.valueOf(targetUnit.getId()));
+        map.put("creator", commonService.thisUserAccount());
+        synchronousDataDto.setFieldDefaultValue(map);
+        synchronousDataDto.setSourceDataBase(BaseConstant.DATABASE_PMCC_ASSESS);
+        synchronousDataDto.setTargeDataBase(BaseConstant.DATABASE_PMCC_ASSESS);
+        synchronousDataDto.setWhereSql("unit_id=" + sourceUnit.getId());
+        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicUnitDecorate.class));
+        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicUnitDecorate.class));
+        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//楼栋内装sql
 
-                    StringBuilder sqlBuilder = new StringBuilder();
-                    SynchronousDataDto synchronousDataDto = new SynchronousDataDto();
-                    HashMap<String, String> map = Maps.newHashMap();
-                    map.put("unit_id", String.valueOf(basicUnit.getId()));
-                    map.put("creator", commonService.thisUserAccount());
-                    synchronousDataDto.setFieldDefaultValue(map);
-                    synchronousDataDto.setSourceDataBase("pmcc_assess");
-                    synchronousDataDto.setTargeDataBase("pmcc_assess");
-                    synchronousDataDto.setWhereSql("unit_id=" + unitOld.getId());
-                    synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicUnitDecorate.class));
-                    synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicUnitDecorate.class));
-                    sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//楼栋内装sql
+        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicUnitElevator.class));
+        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicUnitElevator.class));
+        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//配备电梯sql
 
-                    synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicUnitElevator.class));
-                    synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicUnitElevator.class));
-                    sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//配备电梯sql
-
-                    sqlBuilder.append(this.copyBasicTaggingToBasic(EstateTaggingTypeEnum.UNIT, unitOld.getId(), basicUnit.getId()));
-                    ddlMySqlAssist.customTableDdl(sqlBuilder.toString());//执行sql
-                    //复制房屋
-                    List<BasicHouse> oldHouses = basicApplyBatchDetailService.getBasicHouseListByBatchId(basicApplyBatch.getId(), unitOld);
-                    copyBasicHouseBasic(oldHouses, basicUnit.getId(), newBasicApplyBatchDetail.getId(), null, planDetailsId);
-                }
-            }
+        sqlBuilder.append(this.copyBasicTaggingToBasic(EstateTaggingTypeEnum.UNIT, sourceUnit.getId(), targetUnit.getId()));
+        ddlMySqlAssist.customTableDdl(sqlBuilder.toString());//执行sql
     }
 
     public void copyBasicHuxingToBasic(List<BasicUnitHuxing> basicUnitHuxingList, BasicUnit basicUnit) throws Exception {
@@ -1257,126 +1268,86 @@ public class BasicApplyBatchService {
     /**
      * 房屋 复制（basic->basic）
      *
-     * @param houseOlds
-     * @param newUnitId
+     * @param sourceHouse
+     * @param targetHouse
      * @throws Exception
      */
-    public void copyBasicHouseBasic(List<BasicHouse> houseOlds, Integer newUnitId, Integer pid, String displayName, Integer planDetailsId) throws Exception {
-        if (CollectionUtils.isNotEmpty(houseOlds))
-            for (BasicHouse houseOld : houseOlds) {
-                BasicHouseTrading tradingOld = basicHouseTradingService.getTradingByHouseId(houseOld.getId());
-                BasicHouse basicHouse = new BasicHouse();
-                BasicHouseTrading basicHouseTrading = new BasicHouseTrading();
-                if (houseOld != null) {
-                    BeanUtils.copyProperties(houseOld, basicHouse);
-                    basicHouse.setUnitId(newUnitId);
-                    basicHouse.setId(null);
-                    if (StringUtils.isNotEmpty(displayName)) {
-                        basicHouse.setHouseNumber(displayName);
-                    }
-                    basicHouse.setGmtCreated(null);
-                    basicHouse.setGmtModified(null);
-                    basicHouseService.saveAndUpdateBasicHouse(basicHouse);
-                    BasicApplyBatchDetail oldBasicApplyBatchDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail("tb_basic_house", houseOld.getId());
-                    //复制批量明细表数据
-                    BasicApplyBatchDetail newBasicApplyBatchDetail = new BasicApplyBatchDetail();
-                    BeanUtils.copyProperties(oldBasicApplyBatchDetail, newBasicApplyBatchDetail);
-                    newBasicApplyBatchDetail.setId(null);
-                    newBasicApplyBatchDetail.setPid(pid);
-                    if (StringUtils.isNotEmpty(displayName)) {
-                        newBasicApplyBatchDetail.setName(displayName);
-                        newBasicApplyBatchDetail.setDisplayName(displayName);
-                    }
-                    newBasicApplyBatchDetail.setQuoteId(null);
-                    newBasicApplyBatchDetail.setBaseType(null);
-                    newBasicApplyBatchDetail.setTableId(basicHouse.getId());
-                    basicApplyBatchDetailDao.addInfo(newBasicApplyBatchDetail);
-                    //标准房屋写入basicApply
-                    if (newBasicApplyBatchDetail.getBisStandard() == true) {
-                        basicApplyBatchDetailService.standardIntoBasicApply(newBasicApplyBatchDetail, planDetailsId);
-                    }
-                    if (tradingOld != null) {
-                        BeanUtils.copyProperties(tradingOld, basicHouseTrading);
-                        basicHouseTrading.setId(null);
-                        basicHouseTrading.setGmtCreated(null);
-                        basicHouseTrading.setGmtModified(null);
-                        basicHouseTrading.setHouseId(basicHouse.getId());
-                        basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicHouseTrading);
-                    }
-                }
-                List<BasicHouseRoom> basicHouseRoomList = null;
-                List<BasicHouseCorollaryEquipment> basicHouseCorollaryEquipmentList = null;
+    public void copyBasicHouseBasic(BasicHouse sourceHouse, BasicHouse targetHouse) throws Exception {
+        if (sourceHouse == null || targetHouse == null) return;
+        BeanUtils.copyProperties(sourceHouse, targetHouse, "id", "houseNumber", "gmtCreated", "gmtModified");
+        basicHouseService.saveAndUpdateBasicHouse(targetHouse);
+        basicHouseService.clearInvalidChildData(targetHouse.getId());
+        List<BasicHouseRoom> basicHouseRoomList = null;
+        List<BasicHouseCorollaryEquipment> basicHouseCorollaryEquipmentList = null;
 
-                List<BasicHouseDamagedDegree> basicHouseDamagedDegreeList = null;
-                BasicHouseRoom queryRoom = new BasicHouseRoom();
-                BasicHouseCorollaryEquipment queryBasicHouseCorollaryEquipment = new BasicHouseCorollaryEquipment();
-                BasicHouseDamagedDegree queryHouseDamagedDegree = new BasicHouseDamagedDegree();
+        List<BasicHouseDamagedDegree> basicHouseDamagedDegreeList = null;
+        BasicHouseRoom queryRoom = new BasicHouseRoom();
+        BasicHouseCorollaryEquipment queryBasicHouseCorollaryEquipment = new BasicHouseCorollaryEquipment();
+        BasicHouseDamagedDegree queryHouseDamagedDegree = new BasicHouseDamagedDegree();
 
-                if (houseOld != null && houseOld.getId() != null) {
-                    queryRoom.setHouseId(houseOld.getId());
-                    queryBasicHouseCorollaryEquipment.setHouseId(houseOld.getId());
-                    queryHouseDamagedDegree.setHouseId(houseOld.getId());
-                }
+        if (sourceHouse != null && sourceHouse.getId() != null) {
+            queryRoom.setHouseId(sourceHouse.getId());
+            queryBasicHouseCorollaryEquipment.setHouseId(sourceHouse.getId());
+            queryHouseDamagedDegree.setHouseId(sourceHouse.getId());
+        }
 
-                SysAttachmentDto example = new SysAttachmentDto();
-                example.setTableId(houseOld.getId());
-                example.setTableName(FormatUtils.entityNameConvertToTableName(BasicHouse.class));
-                SysAttachmentDto attachmentDto = new SysAttachmentDto();
-                attachmentDto.setTableId(basicHouse.getId());
-                example.setTableName(FormatUtils.entityNameConvertToTableName(BasicHouse.class));
-                baseAttachmentService.copyFtpAttachments(example, attachmentDto);
+        SysAttachmentDto example = new SysAttachmentDto();
+        example.setTableId(sourceHouse.getId());
+        example.setTableName(FormatUtils.entityNameConvertToTableName(BasicHouse.class));
+        SysAttachmentDto attachmentDto = new SysAttachmentDto();
+        attachmentDto.setTableId(targetHouse.getId());
+        example.setTableName(FormatUtils.entityNameConvertToTableName(BasicHouse.class));
+        baseAttachmentService.copyFtpAttachments(example, attachmentDto);
 
-                basicHouseRoomList = basicHouseRoomService.basicHouseRoomList(queryRoom);
-                basicHouseCorollaryEquipmentList = basicHouseCorollaryEquipmentService.basicHouseCorollaryEquipmentList(queryBasicHouseCorollaryEquipment);
-                basicHouseDamagedDegreeList = basicHouseDamagedDegreeDao.getDamagedDegreeList(queryHouseDamagedDegree);
+        basicHouseRoomList = basicHouseRoomService.basicHouseRoomList(queryRoom);
+        basicHouseCorollaryEquipmentList = basicHouseCorollaryEquipmentService.basicHouseCorollaryEquipmentList(queryBasicHouseCorollaryEquipment);
+        basicHouseDamagedDegreeList = basicHouseDamagedDegreeDao.getDamagedDegreeList(queryHouseDamagedDegree);
 
-                if (basicHouse != null && basicHouse.getId() != null) {
-                    this.copyBasicHouseRoomToBaisc(basicHouseRoomList, basicHouse);
-                    this.copyBasicCorollaryEquipmentToBaisc(basicHouseCorollaryEquipmentList, basicHouse);
-                    this.copyBasicDamagedDegreeToBaisc(basicHouseDamagedDegreeList, basicHouse);
+        if (targetHouse != null && targetHouse.getId() != null) {
+            this.copyBasicHouseRoomToBaisc(basicHouseRoomList, targetHouse);
+            this.copyBasicCorollaryEquipmentToBaisc(basicHouseCorollaryEquipmentList, targetHouse);
+            this.copyBasicDamagedDegreeToBaisc(basicHouseDamagedDegreeList, targetHouse);
 
-                    StringBuilder sqlBuilder = new StringBuilder();
-                    SynchronousDataDto synchronousDataDto = new SynchronousDataDto();
-                    HashMap<String, String> map = Maps.newHashMap();
-                    map.put("house_id", String.valueOf(basicHouse.getId()));
-                    map.put("creator", commonService.thisUserAccount());
-                    synchronousDataDto.setFieldDefaultValue(map);
-                    synchronousDataDto.setWhereSql("house_id=" + houseOld.getId());
-                    synchronousDataDto.setSourceDataBase("pmcc_assess");
-                    synchronousDataDto.setTargeDataBase("pmcc_assess");
-                    synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicHouseTradingSell.class));
-                    synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseTradingSell.class));
-                    sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//房屋出售sql
+            StringBuilder sqlBuilder = new StringBuilder();
+            SynchronousDataDto synchronousDataDto = new SynchronousDataDto();
+            HashMap<String, String> map = Maps.newHashMap();
+            map.put("house_id", String.valueOf(targetHouse.getId()));
+            map.put("creator", commonService.thisUserAccount());
+            synchronousDataDto.setFieldDefaultValue(map);
+            synchronousDataDto.setWhereSql("house_id=" + sourceHouse.getId());
+            synchronousDataDto.setSourceDataBase(BaseConstant.DATABASE_PMCC_ASSESS);
+            synchronousDataDto.setTargeDataBase(BaseConstant.DATABASE_PMCC_ASSESS);
+            synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicHouseTradingSell.class));
+            synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseTradingSell.class));
+            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//房屋出售sql
 
-                    synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicHouseTradingLease.class));
-                    synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseTradingLease.class));
-                    sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//房屋出租sql
+            synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicHouseTradingLease.class));
+            synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseTradingLease.class));
+            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//房屋出租sql
 
-                    synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicHouseWater.class));
-                    synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseWater.class));
-                    sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//供水sql
+            synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicHouseWater.class));
+            synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseWater.class));
+            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//供水sql
 
-                    synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicHouseWaterDrain.class));
-                    synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseWaterDrain.class));
-                    sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//排水sql
+            synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicHouseWaterDrain.class));
+            synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseWaterDrain.class));
+            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//排水sql
 
-                    synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicHouseIntelligent.class));
-                    synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseIntelligent.class));
-                    sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//电力通讯网络sql
+            synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicHouseIntelligent.class));
+            synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseIntelligent.class));
+            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//电力通讯网络sql
 
-                    synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicHouseFaceStreet.class));
-                    synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseFaceStreet.class));
-                    sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//临路状况sql
+            synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicHouseFaceStreet.class));
+            synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseFaceStreet.class));
+            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//临路状况sql
 
-                    synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicHouseEquipment.class));
-                    synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseEquipment.class));
-                    sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//设备sql
+            synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicHouseEquipment.class));
+            synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseEquipment.class));
+            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//设备sql
 
-                    sqlBuilder.append(this.copyBasicTaggingToBasic(EstateTaggingTypeEnum.HOUSE, houseOld.getId(), basicHouse.getId()));
-                    ddlMySqlAssist.customTableDdl(sqlBuilder.toString());//执行sql
-                }
-            }
-
+            sqlBuilder.append(this.copyBasicTaggingToBasic(EstateTaggingTypeEnum.HOUSE, sourceHouse.getId(), targetHouse.getId()));
+            ddlMySqlAssist.customTableDdl(sqlBuilder.toString());//执行sql
+        }
     }
 
     private void copyBasicCorollaryEquipmentToBaisc(List<BasicHouseCorollaryEquipment> basicHouseCorollaryEquipmentList, BasicHouse basicHouseNew) throws Exception {
@@ -1500,8 +1471,8 @@ public class BasicApplyBatchService {
         synchronousDataDto.setWhereSql(String.format("table_id=%s and type='%s'", tableIdSource, typeEnum.getKey()));
         synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicEstateTagging.class));
         synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicEstateTagging.class));
-        synchronousDataDto.setSourceDataBase("pmcc_assess");
-        synchronousDataDto.setTargeDataBase("pmcc_assess");
+        synchronousDataDto.setSourceDataBase(BaseConstant.DATABASE_PMCC_ASSESS);
+        synchronousDataDto.setTargeDataBase(BaseConstant.DATABASE_PMCC_ASSESS);
         HashMap<String, String> map = Maps.newHashMap();
         map.put("table_id", String.valueOf(tableIdTarget));
         map.put("creator", commonService.thisUserAccount());
@@ -1510,250 +1481,35 @@ public class BasicApplyBatchService {
         return sqlBuilder.toString();
     }
 
-
-    //老数据调整
-    @Transactional(rollbackFor = Exception.class)
-    public void updateOldData(Integer projectId) {
-        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
-        if (projectInfo == null) return;
-        Integer projectCategoryId = projectInfo.getProjectCategoryId();//案列与查勘projectCategoryId为345
-        //案列事项
-        ProjectPhase projectCasePhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.COMMON_CASE_STUDY_EXAMINE);
-        ProjectPlanDetails projectCaseDetails = new ProjectPlanDetails();
-        projectCaseDetails.setProjectId(projectId);
-        projectCaseDetails.setProjectPhaseId(projectCasePhase.getId());
-        List<ProjectPlanDetails> caseLists = projectPlanDetailsService.getProjectDetails(projectCaseDetails);
-        if (CollectionUtils.isNotEmpty(caseLists)) {
-            for (ProjectPlanDetails item : caseLists) {
-                //1.添加BasicApplyBatch 2.添加BasicApplyBatchDetail 3.找出BasicApply，并重新设置关联关系
-                BasicApply basicApply = basicApplyService.getBasicApplyByPlanDetailsId(item.getPid());
-                if (basicApply == null) {
-                    continue;
-                }
-                Integer basicApplyId = basicApply.getId();
-                BasicEstate basicEstateWhere = new BasicEstate();
-                basicEstateWhere.setApplyId(basicApplyId);
-                BasicEstate basicEstateByApplyId = basicEstateDao.basicEstateList(basicEstateWhere).get(0);
-                if (basicEstateByApplyId == null) {
-                    continue;
-                }
-                BasicBuilding basicBuildingWhere = new BasicBuilding();
-                basicBuildingWhere.setApplyId(basicApplyId);
-                BasicBuilding basicBuildingByApplyId = basicBuildingDao.getBasicBuildingList(basicBuildingWhere).get(0);
-
-                BasicUnit basicUnitWhere = new BasicUnit();
-                basicUnitWhere.setApplyId(basicApplyId);
-                BasicUnit basicUnitByApplyId = basicUnitDao.basicUnitList(basicUnitWhere).get(0);
-
-                BasicHouse basicHouseWhere = new BasicHouse();
-                basicHouseWhere.setApplyId(basicApplyId);
-                BasicHouse houseByApplyId = basicHouseDao.basicHouseList(basicHouseWhere).get(0);
-                basicApply.setBasicEstateId(basicEstateByApplyId.getId());
-                if (basicBuildingByApplyId != null)
-                    basicApply.setBasicBuildingId(basicBuildingByApplyId.getId());
-                if (basicUnitByApplyId != null)
-                    basicApply.setBasicUnitId(basicUnitByApplyId.getId());
-                if (houseByApplyId != null)
-                    basicApply.setBasicHouseId(houseByApplyId.getId());
-                basicApply.setPlanDetailsId(item.getId());
-                basicApplyDao.updateBasicApply(basicApply);
-
-                //批量主表
-                BasicApplyBatch applyBatch = new BasicApplyBatch();
-                applyBatch.setEstateId(basicEstateByApplyId.getId());
-                applyBatch.setEstateName(basicEstateByApplyId.getName());
-                applyBatch.setType(basicApply.getType());
-                applyBatch.setPlanDetailsId(item.getId());
-                basicApplyBatchDao.addInfo(applyBatch);
-                //楼栋
-                if (basicBuildingByApplyId != null) {
-                    BasicApplyBatchDetail basicApplyBatchDetail = new BasicApplyBatchDetail();
-                    basicApplyBatchDetail.setApplyBatchId(applyBatch.getId());
-                    basicApplyBatchDetail.setTableId(basicBuildingByApplyId.getId());
-                    basicApplyBatchDetail.setTableName("tb_basic_building");
-                    basicApplyBatchDetail.setName(basicBuildingByApplyId.getBuildingNumber());
-                    basicApplyBatchDetail.setDisplayName(String.format("%s%s", basicBuildingByApplyId.getBuildingNumber(), "栋"));
-                    basicApplyBatchDetail.setPid(0);
-                    basicApplyBatchDetailDao.addInfo(basicApplyBatchDetail);
-                    //单元
-                    if (basicUnitByApplyId != null) {
-                        BasicApplyBatchDetail basicApplyBatchDetail2 = new BasicApplyBatchDetail();
-                        basicApplyBatchDetail2.setApplyBatchId(applyBatch.getId());
-                        basicApplyBatchDetail2.setTableId(basicUnitByApplyId.getId());
-                        basicApplyBatchDetail2.setTableName("tb_basic_unit");
-                        basicApplyBatchDetail2.setName(basicUnitByApplyId.getUnitNumber());
-                        basicApplyBatchDetail2.setDisplayName(String.format("%s%s", basicUnitByApplyId.getUnitNumber(), "单元"));
-                        basicApplyBatchDetail2.setPid(basicApplyBatchDetail.getId());
-                        basicApplyBatchDetailDao.addInfo(basicApplyBatchDetail2);
-                        //房屋
-                        if (houseByApplyId != null) {
-                            BasicApplyBatchDetail basicApplyBatchDetail3 = new BasicApplyBatchDetail();
-                            basicApplyBatchDetail3.setApplyBatchId(applyBatch.getId());
-                            basicApplyBatchDetail3.setTableId(houseByApplyId.getId());
-                            basicApplyBatchDetail3.setTableName("tb_basic_house");
-                            basicApplyBatchDetail3.setName(houseByApplyId.getHouseNumber());
-                            basicApplyBatchDetail3.setDisplayName(houseByApplyId.getHouseNumber());
-                            basicApplyBatchDetail3.setPid(basicApplyBatchDetail2.getId());
-                            basicApplyBatchDetailDao.addInfo(basicApplyBatchDetail3);
-                        }
-                    }
-                }
-            }
-        }
-        //查勘事项
-        ProjectPhase projectSurveyPhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.SCENE_EXPLORE, projectCategoryId);
-        ProjectPlanDetails projectPlanDetails = new ProjectPlanDetails();
-        projectPlanDetails.setProjectId(projectId);
-        projectPlanDetails.setProjectPhaseId(projectSurveyPhase.getId());
-        List<ProjectPlanDetails> projectDetailLists = projectPlanDetailsService.getProjectDetails(projectPlanDetails);
-        if (CollectionUtils.isNotEmpty(projectDetailLists)) {
-            if (CollectionUtils.isNotEmpty(projectDetailLists)) {
-                for (ProjectPlanDetails data : projectDetailLists) {
-                    BasicApply basicApply = basicApplyService.getBasicApplyByPlanDetailsId(data.getId());
-                    if (basicApply == null) {
-                        continue;
-                    }
-                    Integer basicApplyId = basicApply.getId();
-                    BasicEstate basicEstateWhere = new BasicEstate();
-                    basicEstateWhere.setApplyId(basicApplyId);
-                    BasicEstate basicEstateByApplyId = basicEstateDao.basicEstateList(basicEstateWhere).get(0);
-                    if (basicEstateByApplyId == null) {
-                        continue;
-                    }
-                    BasicBuilding basicBuildingWhere = new BasicBuilding();
-                    basicBuildingWhere.setApplyId(basicApplyId);
-                    BasicBuilding basicBuildingByApplyId = basicBuildingDao.getBasicBuildingList(basicBuildingWhere).get(0);
-
-                    BasicUnit basicUnitWhere = new BasicUnit();
-                    basicUnitWhere.setApplyId(basicApplyId);
-                    BasicUnit basicUnitByApplyId = basicUnitDao.basicUnitList(basicUnitWhere).get(0);
-
-                    BasicHouse basicHouseWhere = new BasicHouse();
-                    basicHouseWhere.setApplyId(basicApplyId);
-                    BasicHouse houseByApplyId = basicHouseDao.basicHouseList(basicHouseWhere).get(0);
-
-                    basicApply.setBasicEstateId(basicEstateByApplyId.getId());
-                    if (basicBuildingByApplyId != null)
-                        basicApply.setBasicBuildingId(basicBuildingByApplyId.getId());
-                    if (basicUnitByApplyId != null)
-                        basicApply.setBasicUnitId(basicUnitByApplyId.getId());
-                    if (houseByApplyId != null)
-                        basicApply.setBasicHouseId(houseByApplyId.getId());
-                    basicApply.setPlanDetailsId(data.getId());
-                    basicApplyDao.updateBasicApply(basicApply);
-                    //批量主表
-                    BasicApplyBatch applyBatch = new BasicApplyBatch();
-                    applyBatch.setEstateId(basicEstateByApplyId.getId());
-                    applyBatch.setEstateName(basicEstateByApplyId.getName());
-                    applyBatch.setType(basicApply.getType());
-                    applyBatch.setPlanDetailsId(data.getId());
-                    basicApplyBatchDao.addInfo(applyBatch);
-                    //楼栋
-                    if (basicBuildingByApplyId != null) {
-                        BasicApplyBatchDetail basicApplyBatchDetail = new BasicApplyBatchDetail();
-                        basicApplyBatchDetail.setApplyBatchId(applyBatch.getId());
-                        basicApplyBatchDetail.setTableId(basicBuildingByApplyId.getId());
-                        basicApplyBatchDetail.setTableName("tb_basic_building");
-                        basicApplyBatchDetail.setName(basicBuildingByApplyId.getBuildingNumber());
-                        basicApplyBatchDetail.setDisplayName(String.format("%s%s", basicBuildingByApplyId.getBuildingNumber(), "栋"));
-                        basicApplyBatchDetail.setPid(0);
-                        basicApplyBatchDetailDao.addInfo(basicApplyBatchDetail);
-                        //单元
-                        if (basicUnitByApplyId != null) {
-                            BasicApplyBatchDetail basicApplyBatchDetail2 = new BasicApplyBatchDetail();
-                            basicApplyBatchDetail2.setApplyBatchId(applyBatch.getId());
-                            basicApplyBatchDetail2.setTableId(basicUnitByApplyId.getId());
-                            basicApplyBatchDetail2.setTableName("tb_basic_unit");
-                            basicApplyBatchDetail2.setName(basicUnitByApplyId.getUnitNumber());
-                            basicApplyBatchDetail2.setDisplayName(String.format("%s%s", basicUnitByApplyId.getUnitNumber(), "单元"));
-                            basicApplyBatchDetail2.setPid(basicApplyBatchDetail.getId());
-                            basicApplyBatchDetailDao.addInfo(basicApplyBatchDetail2);
-                            //房屋
-                            if (houseByApplyId != null) {
-                                BasicApplyBatchDetail basicApplyBatchDetail3 = new BasicApplyBatchDetail();
-                                basicApplyBatchDetail3.setApplyBatchId(applyBatch.getId());
-                                basicApplyBatchDetail3.setTableId(houseByApplyId.getId());
-                                basicApplyBatchDetail3.setTableName("tb_basic_house");
-                                basicApplyBatchDetail3.setName(houseByApplyId.getHouseNumber());
-                                basicApplyBatchDetail3.setDisplayName(houseByApplyId.getHouseNumber());
-                                basicApplyBatchDetail3.setPid(basicApplyBatchDetail2.getId());
-                                basicApplyBatchDetailDao.addInfo(basicApplyBatchDetail3);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    //处理部分未更新的数据
-    public int updateBasicNullId() {
-        List<BasicApply> basicApplyList = basicApplyDao.getBasicEstateIdNull();
-        if (CollectionUtils.isNotEmpty(basicApplyList)) {
-            for (BasicApply basicApply : basicApplyList) {
-                try {
-                    BasicEstate basicEstateWhere = new BasicEstate();
-                    basicEstateWhere.setApplyId(basicApply.getId());
-                    BasicEstate basicEstateByApplyId = basicEstateDao.basicEstateList(basicEstateWhere).get(0);
-
-                    BasicBuilding basicBuildingWhere = new BasicBuilding();
-                    basicBuildingWhere.setApplyId(basicApply.getId());
-                    BasicBuilding basicBuildingByApplyId = basicBuildingDao.getBasicBuildingList(basicBuildingWhere).get(0);
-
-                    BasicUnit basicUnitWhere = new BasicUnit();
-                    basicUnitWhere.setApplyId(basicApply.getId());
-                    BasicUnit basicUnitByApplyId = basicUnitDao.basicUnitList(basicUnitWhere).get(0);
-
-                    BasicHouse basicHouseWhere = new BasicHouse();
-                    basicHouseWhere.setApplyId(basicApply.getId());
-                    BasicHouse houseByApplyId = basicHouseDao.basicHouseList(basicHouseWhere).get(0);
-
-                    if (basicEstateByApplyId != null)
-                        basicApply.setBasicEstateId(basicEstateByApplyId.getId());
-                    if (basicBuildingByApplyId != null)
-                        basicApply.setBasicBuildingId(basicBuildingByApplyId.getId());
-                    if (basicUnitByApplyId != null)
-                        basicApply.setBasicUnitId(basicUnitByApplyId.getId());
-                    if (houseByApplyId != null)
-                        basicApply.setBasicHouseId(houseByApplyId.getId());
-
-                    basicApplyDao.updateBasicApply(basicApply);
-                } catch (Exception e) {
-
-                }
-            }
-        }
-        return basicApplyList.size();
-    }
-
-    public void paste(Integer pasteBatchDetailId, Integer copyBatchDetailId, String displayName) throws Exception {
-        BasicApplyBatchDetail pasteDetail = basicApplyBatchDetailDao.getInfoById(pasteBatchDetailId);
+    /**
+     * 粘贴调查信息
+     * @param sourceBatchDetailId
+     * @param targetBatchDetailId
+     * @throws Exception
+     */
+    public void pasteExamineInfo(Integer sourceBatchDetailId, Integer targetBatchDetailId) throws Exception {
         //被复制数据
-        BasicApplyBatchDetail oldBasicApplyBatchDetail = basicApplyBatchDetailDao.getInfoById(copyBatchDetailId);
-        //批量主表
-        BasicApplyBatch basicApplyBatch = basicApplyBatchDao.getInfoById(oldBasicApplyBatchDetail.getApplyBatchId());
+        BasicApplyBatchDetail sourceBasicApplyBatchDetail = basicApplyBatchDetailDao.getInfoById(sourceBatchDetailId);
+        BasicApplyBatchDetail targetBasicApplyBatchDetail = basicApplyBatchDetailDao.getInfoById(targetBatchDetailId);
 
         //复制楼栋
-        if (oldBasicApplyBatchDetail.getTableName().equals("tb_basic_building")) {
-            BasicBuilding buildingOld = basicBuildingDao.getBasicBuildingById(oldBasicApplyBatchDetail.getTableId());
-            copyBasicBuildingToBasic(buildingOld, buildingOld.getEstateId(), basicApplyBatch, oldBasicApplyBatchDetail, displayName, basicApplyBatch.getPlanDetailsId());
+        if (sourceBasicApplyBatchDetail.getTableName().equals("tb_basic_building")) {
+            BasicBuilding sourceBuilding = basicBuildingDao.getBasicBuildingById(sourceBasicApplyBatchDetail.getTableId());
+            BasicBuilding targetBuilding = basicBuildingDao.getBasicBuildingById(targetBasicApplyBatchDetail.getTableId());
+            copyBasicBuildingToBasic(sourceBuilding, targetBuilding);
         }
         //复制单元
-        if (oldBasicApplyBatchDetail.getTableName().equals("tb_basic_unit")) {
-            BasicUnit unitOld = basicUnitDao.getBasicUnitById(oldBasicApplyBatchDetail.getTableId());
-            List<BasicUnit> unitOlds = Lists.newArrayList();
-            unitOlds.add(unitOld);
-            copyBasicUnitToBasic(unitOlds, unitOld.getBuildingId(), basicApplyBatch, pasteDetail.getPid(), displayName, basicApplyBatch.getPlanDetailsId());
+        if (sourceBasicApplyBatchDetail.getTableName().equals("tb_basic_unit")) {
+            BasicUnit sourceUnit = basicUnitDao.getBasicUnitById(sourceBasicApplyBatchDetail.getTableId());
+            BasicUnit targeUnit = basicUnitDao.getBasicUnitById(targetBasicApplyBatchDetail.getTableId());
+            copyBasicUnitToBasic(sourceUnit, targeUnit);
         }
         //复制房屋
-        if (oldBasicApplyBatchDetail.getTableName().equals("tb_basic_house")) {
-            BasicHouse basicHouseOld = basicHouseDao.getBasicHouseById(oldBasicApplyBatchDetail.getTableId());
-            List<BasicHouse> basicHouseOlds = Lists.newArrayList();
-            basicHouseOlds.add(basicHouseOld);
-            copyBasicHouseBasic(basicHouseOlds, basicHouseOld.getUnitId(), pasteDetail.getPid(), displayName, basicApplyBatch.getPlanDetailsId());
+        if (sourceBasicApplyBatchDetail.getTableName().equals("tb_basic_house")) {
+            BasicHouse sourceHouse = basicHouseDao.getBasicHouseById(sourceBasicApplyBatchDetail.getTableId());
+            BasicHouse targetHouse = basicHouseDao.getBasicHouseById(targetBasicApplyBatchDetail.getTableId());
+            copyBasicHouseBasic(sourceHouse,targetHouse);
         }
-        //删除原来数据
-        basicApplyBatchDetailService.deleteBasicApplyBatchDetail(pasteBatchDetailId);
     }
 
 }

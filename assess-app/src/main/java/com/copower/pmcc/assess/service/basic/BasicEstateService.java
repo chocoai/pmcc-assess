@@ -227,6 +227,7 @@ public class BasicEstateService {
      */
     @Transactional(rollbackFor = Exception.class)
     public void clearInvalidData(Integer applyId) throws Exception {
+        if (applyId == null) return;
         BasicEstate estate = null;
         if (applyId.equals(0)) {
             BasicEstate where = new BasicEstate();

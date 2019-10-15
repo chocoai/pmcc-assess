@@ -18,8 +18,6 @@ import com.copower.pmcc.assess.service.data.DataBlockService;
 import com.copower.pmcc.assess.service.event.basic.BasicApplyEvent;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
-import com.copower.pmcc.assess.service.project.survey.SurveyCaseStudyService;
-import com.copower.pmcc.assess.service.project.survey.SurveySceneExploreService;
 import com.copower.pmcc.bpm.api.dto.ProcessUserDto;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
@@ -82,12 +80,6 @@ public class BasicApplyService {
     private ProjectPhaseService projectPhaseService;
     @Autowired
     private ProjectPlanDetailsDao projectPlanDetailsDao;
-    @Autowired
-    private SurveySceneExploreService surveySceneExploreService;
-    @Autowired
-    private SurveyCaseStudyService surveyCaseStudyService;
-    @Autowired
-    private CaseEstateService caseEstateService;
 
 
     private final Logger logger = LoggerFactory.getLogger(getClass());

@@ -48,11 +48,26 @@ public class ProjectTaskCIPController {
     public HttpResult saveBasicApplyBatch(String formData) {
         try {
             BasicApplyBatch applyBatch = JSON.parseObject(formData, BasicApplyBatch.class);
-            applyBatch = basicApplyBatchService.saveApplyInfo(applyBatch);
+           basicApplyBatchService.saveApplyInfo(applyBatch);
             return HttpResult.newCorrectResult(applyBatch);
         } catch (Exception e) {
             logger.error(String.format("exception: %s", e.getMessage()), e);
             return HttpResult.newErrorResult("保存异常");
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/initBasicApplyBatchInfo", method = {RequestMethod.POST}, name = "初始化")
+    public HttpResult initBasicApplyBatchInfo(Integer planDetailsId,Integer classify) {
+        try {
+            BasicApplyBatch applyBatch = new BasicApplyBatch();
+            applyBatch.setPlanDetailsId(planDetailsId);
+            applyBatch.setClassify(classify);
+            basicApplyBatchService.initBasicApplyBatchInfo(applyBatch);
+            return HttpResult.newCorrectResult(applyBatch);
+        } catch (Exception e) {
+            logger.error(String.format("exception: %s", e.getMessage()), e);
+            return HttpResult.newErrorResult("初始化异常");
         }
     }
 
