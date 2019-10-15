@@ -9,7 +9,7 @@
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="row">
-    <div class="col-xs-12">
+    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
         <div class="x_panel">
             <div class="x_content">
                 <p id="projectStageToolbar">
@@ -34,25 +34,25 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
                         <div class="panel-body">
                             <form class="form-horizontal">
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                             工作内容
                                         </label>
-                                        <div class="col-sm-10">
+                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
 
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                             任务细名
                                         </label>
-                                        <div class="col-sm-10">
+                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
 
                                         </div>
                                     </div>
@@ -60,37 +60,37 @@
 
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                             开始时间
                                         </label>
-                                        <div class="col-sm-4">
+                                        <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                             <input required type="text" placeholder="开始时间" data-date-format='yyyy-mm-dd' name="planStartDate"
                                                    class="form-control dbdate">
                                         </div>
                                     </div>
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                             结束时间
                                         </label>
-                                        <div class="col-sm-4">
+                                        <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                             <input required type="text" placeholder="结束时间" data-date-format='yyyy-mm-dd' name="planEndDate"
                                                    class="form-control dbdate">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">
+                                    <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                         责任人
                                     </label>
-                                    <div class="col-sm-4">
+                                    <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
 
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">
+                                    <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
                                         说明
                                     </label>
-                                    <div class="col-sm-10">
+                                    <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
                                         <textarea class="form-control" name="planRemarks"
                                                   placeholder="说明"></textarea>
                                     </div>

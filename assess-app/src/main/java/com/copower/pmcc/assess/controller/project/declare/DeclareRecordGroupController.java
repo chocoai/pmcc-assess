@@ -17,15 +17,15 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping(value = "/declareRecordGroup")
 @RestController
 public class DeclareRecordGroupController {
-    private final String errorName = "资产申报 分组" ;
+    private final String errorName = "资产申报 分组";
 
     @Autowired
     private DeclareRecordGroupService declareRecordGroupService;
     @Autowired
     private BaseService baseService;
-   
+
     @GetMapping(value = "/getBootstrapTableVo")
-    public BootstrapTableVo getBootstrapTableVo(DeclareRecordGroup oo){
+    public BootstrapTableVo getBootstrapTableVo(DeclareRecordGroup oo) {
         return declareRecordGroupService.getBootstrapTableVo(oo);
     }
 
@@ -36,7 +36,18 @@ public class DeclareRecordGroupController {
             declareRecordGroupService.saveDeclareRecordGroup(declareRecordGroup);
             return HttpResult.newCorrectResult(200, declareRecordGroup);
         } catch (Exception e) {
-            baseService.writeExceptionInfo(e,errorName);
+            baseService.writeExceptionInfo(e, errorName);
+            return HttpResult.newErrorResult(500, e.getMessage());
+        }
+    }
+
+    @PostMapping(value = "/switchAutoGroup", name = "自动分组")
+    public HttpResult switchAutoGroup(DeclareRecordGroup recordGroup, Integer key) {
+        try {
+            declareRecordGroupService.switchAutoGroup(recordGroup, key);
+            return HttpResult.newCorrectResult(200);
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e, errorName);
             return HttpResult.newErrorResult(500, e.getMessage());
         }
     }
@@ -47,7 +58,7 @@ public class DeclareRecordGroupController {
         try {
             return HttpResult.newCorrectResult(200, declareRecordGroupService.getDeclareRecordGroupById(id));
         } catch (Exception e) {
-            baseService.writeExceptionInfo(e,errorName);
+            baseService.writeExceptionInfo(e, errorName);
             return HttpResult.newErrorResult(500, e);
         }
     }
@@ -55,15 +66,15 @@ public class DeclareRecordGroupController {
     @DeleteMapping(value = "/deleteDeclareRecordGroupById/{id}")
     public HttpResult deleteDeclareRecordGroupById(@PathVariable String id) {
         try {
-            declareRecordGroupService.deleteDeclareRecordGroup(id) ;
+            declareRecordGroupService.deleteDeclareRecordGroup(id);
             return HttpResult.newCorrectResult(200);
         } catch (Exception e) {
-            baseService.writeExceptionInfo(e,errorName);
-            return HttpResult.newErrorResult(500, e);
+            baseService.writeExceptionInfo(e, errorName);
+            return HttpResult.newErrorResult(500, e.getMessage());
         }
     }
 
-    private void settingParams(ModelAndView modelAndView){
+    private void settingParams(ModelAndView modelAndView) {
 
     }
 

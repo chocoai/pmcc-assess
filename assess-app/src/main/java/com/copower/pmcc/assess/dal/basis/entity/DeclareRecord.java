@@ -66,6 +66,8 @@ public class DeclareRecord {
 
     private String housingStructure;
 
+    private Integer groupId;
+
     private Integer areaGroupId;
 
     private Date houseUseEndDate;
@@ -334,6 +336,14 @@ public class DeclareRecord {
 
     public void setHousingStructure(String housingStructure) {
         this.housingStructure = housingStructure == null ? null : housingStructure.trim();
+    }
+
+    public Integer getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(Integer groupId) {
+        this.groupId = groupId;
     }
 
     public Integer getAreaGroupId() {

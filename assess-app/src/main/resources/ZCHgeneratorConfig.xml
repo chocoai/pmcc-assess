@@ -149,7 +149,7 @@
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         <!--</table>-->
 
-        <table tableName="tb_declare_record_group" domainObjectName="DeclareRecordGroup">
+        <table tableName="tb_declare_record" domainObjectName="DeclareRecord">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 

@@ -177,11 +177,7 @@ public class ProjectPlanSurveyService {
                 }
             }
             declareRecord.setBisGenerate(true);
-            try {
-                declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
-            } catch (BusinessException e) {
-                logger.error(e.getMessage(), e);
-            }
+            declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
         }
     }
 }
