@@ -341,19 +341,15 @@
                 </div>
             </div>
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1 ">
-                </label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <label class=" control-label">
-                        建筑安装工程费
-                    </label>
-                    <button type="button" class="btn btn-default"
-                            onclick="buildingCommon.constructionInstallationEngineeringFeeEvent.loadHtml();">
-                        <i class="fa fa-object-group" aria-hidden="true"></i>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 col-lg-offset-1 ">
+                    <button type="button" class="btn btn-xs btn-primary" onclick="buildingCommon.constructionInstallationEngineeringFeeEvent.loadHtml();">
+                        建筑安装完工度调查
                     </button>
                 </div>
             </div>
         </div>
+
+
         <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">

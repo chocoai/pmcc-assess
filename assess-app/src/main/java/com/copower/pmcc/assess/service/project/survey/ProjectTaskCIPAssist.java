@@ -34,8 +34,6 @@ public class ProjectTaskCIPAssist implements ProjectTaskInterface {
     @Autowired
     private DeclareRecordService declareRecordService;
     @Autowired
-    private SurveySceneExploreService surveySceneExploreService;
-    @Autowired
     private BasicApplyBatchService basicApplyBatchService;
     @Autowired
     private SurveyCommonService surveyCommonService;
@@ -53,7 +51,6 @@ public class ProjectTaskCIPAssist implements ProjectTaskInterface {
         modelAndView.addObject("applyBatch", basicApplyBatchService.getBasicApplyBatchByPlanDetailsId(projectPlanDetails.getId()));
         modelAndView.addObject("formClassifyList", baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.PROJECT_SURVEY_FORM_CLASSIFY));
         modelAndView.addObject("examineFormTypeList", surveyCommonService.getExamineFormTypeList());
-        surveySceneExploreService.deleteUnfinishedData();//删除未完成数据
         return modelAndView;
     }
 

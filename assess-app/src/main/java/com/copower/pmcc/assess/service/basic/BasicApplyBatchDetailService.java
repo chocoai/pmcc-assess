@@ -5,7 +5,6 @@ import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDetailDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicBuildingDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
-import com.copower.pmcc.assess.service.project.survey.SurveySceneExploreService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
@@ -30,8 +29,6 @@ public class BasicApplyBatchDetailService {
     private BasicApplyBatchDao basicApplyBatchDao;
     @Autowired
     private ProcessControllerComponent processControllerComponent;
-    @Autowired
-    private SurveySceneExploreService surveySceneExploreService;
     @Autowired
     private BasicApplyService basicApplyService;
     @Autowired

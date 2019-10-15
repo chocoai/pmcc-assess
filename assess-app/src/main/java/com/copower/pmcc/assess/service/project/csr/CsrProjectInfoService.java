@@ -8,13 +8,11 @@ import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.CreateInsertHelp;
 import com.copower.pmcc.assess.common.PoiUtils;
 import com.copower.pmcc.assess.common.enums.*;
-import com.copower.pmcc.assess.common.enums.word.BaseReportTemplateTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessFieldNameConstant;
 import com.copower.pmcc.assess.constant.AssessTableNameConstant;
 import com.copower.pmcc.assess.dal.basis.dao.csr.*;
 import com.copower.pmcc.assess.dal.basis.entity.*;
-import com.copower.pmcc.assess.dto.input.base.BaseReplaceContentDto;
 import com.copower.pmcc.assess.dto.input.project.csr.CsrImportBorrowerDto;
 import com.copower.pmcc.assess.dto.input.project.csr.CsrImportColumnDto;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrProjectInfoGroupVo;
@@ -120,8 +118,6 @@ public class CsrProjectInfoService {
     private CsrLitigationDao csrLitigationDao;
     @Autowired
     private CsrPrincipalInterestDao csrPrincipalInterestDao;
-    @Autowired
-    private BaseReplaceRecordService baseReplaceRecordService;
     @Autowired
     private JdbcTemplate jdbcTemplate;
     @Autowired
@@ -644,7 +640,6 @@ public class CsrProjectInfoService {
 
         SysAttachmentDto queryParam = new SysAttachmentDto();
         queryParam.setTableName(FormatUtils.entityNameConvertToTableName(BaseReportTemplate.class));
-        queryParam.setFieldsName(BaseReportTemplateTypeEnum.REPORT.getKey());
         List<SysAttachmentDto> attachmentList = baseAttachmentService.getAttachmentList(queryParam);
         if (CollectionUtils.isEmpty(attachmentList))
             throw new BusinessException("未找到对应的报告模板附件");
@@ -697,20 +692,6 @@ public class CsrProjectInfoService {
                                 break;
                         }
                     }
-
-                    List<BaseReplaceContentDto> dataReplaceDtoList = Lists.newArrayList();
-
-                    //写入到替换数据表
-                    BaseReplaceRecord baseReplaceRecord = new BaseReplaceRecord();
-                    baseReplaceRecord.setAttachmentId(ftpAttachment.getId());
-                    baseReplaceRecord.setBisReplace(false);
-                    baseReplaceRecord.setCreator(commonService.thisUserAccount());
-                    baseReplaceRecord.setContent(JSON.toJSONString(dataReplaceDtoList));
-                    baseReplaceRecordService.saveBaseReplaceRecord(baseReplaceRecord);
-
-                    //将书签的替换成相应内容
-                    baseReplaceRecordService.replaceRecordContent(baseReplaceRecord);
-
                 }
             } catch (Exception e) {
                 e.printStackTrace();

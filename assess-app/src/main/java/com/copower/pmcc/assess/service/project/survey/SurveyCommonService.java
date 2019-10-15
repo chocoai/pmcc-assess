@@ -50,19 +50,9 @@ import java.util.Map;
 public class SurveyCommonService {
     private Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
-    private BaseAttachmentService baseAttachmentService;
-    @Autowired
-    private FtpUtilsExtense ftpUtilsExtense;
-    @Autowired
-    private ProcessControllerComponent processControllerComponent;
-    @Autowired
     private ProjectPlanDetailsService projectPlanDetailsService;
     @Autowired
     private CommonService commonService;
-    @Autowired
-    private DataExamineTaskService dataExamineTaskService;
-    @Autowired
-    private SurveyExamineTaskService surveyExamineTaskService;
     @Autowired
     private ApplicationConstant applicationConstant;
     @Autowired
@@ -104,131 +94,6 @@ public class SurveyCommonService {
         keyValueDto.setValue(BasicApplyTypeEnum.INDUSTRY.getName());
         keyValueDtoList.add(keyValueDto);
         return keyValueDtoList;
-    }
-
-
-    /**
-     * 获取需处理的任务集合
-     *
-     * @param planDetailsId
-     * @param userAccount
-     * @return
-     */
-    public Map<String, List<SurveyExamineTaskVo>> getExamineTaskByUserAccount(Integer planDetailsId, String userAccount) {
-        Map<String, List<SurveyExamineTaskVo>> map = Maps.newHashMap();
-        List<SurveyExamineTaskVo> estateTaskList = Lists.newArrayList();
-        List<SurveyExamineTaskVo> buildingTaskList = Lists.newArrayList();
-        List<SurveyExamineTaskVo> unitTaskList = Lists.newArrayList();
-        List<SurveyExamineTaskVo> houseTaskList = Lists.newArrayList();
-        SurveyExamineTask surveyExamineTask = new SurveyExamineTask();
-        surveyExamineTask.setPlanDetailsId(planDetailsId);
-        if (StringUtils.isNotBlank(userAccount))
-            surveyExamineTask.setUserAccount(userAccount);
-        List<CustomSurveyExamineTask> examineTaskList = surveyExamineTaskService.getCustomeExamineTaskList(planDetailsId, userAccount);
-        List<SurveyExamineTaskVo> examineTaskVos = surveyExamineTaskService.getSurveyExamineTaskVos(examineTaskList);
-        if (CollectionUtils.isNotEmpty(examineTaskVos)) {
-            for (SurveyExamineTaskVo examineTaskVo : examineTaskVos) {
-                if (StringUtils.isNotBlank(examineTaskVo.getApplyUrl())) {
-                    if (examineTaskVo.getFieldName().contains(AssessExamineTaskConstant.ESTATE))
-                        estateTaskList.add(examineTaskVo);
-                    if (examineTaskVo.getFieldName().contains(AssessExamineTaskConstant.BUILDING))
-                        buildingTaskList.add(examineTaskVo);
-                    if (examineTaskVo.getFieldName().contains(AssessExamineTaskConstant.UNIT))
-                        unitTaskList.add(examineTaskVo);
-                    if (examineTaskVo.getFieldName().contains(AssessExamineTaskConstant.HOUSE))
-                        houseTaskList.add(examineTaskVo);
-                }
-            }
-        }
-        map.put(AssessExamineTaskConstant.ESTATE, estateTaskList);
-        map.put(AssessExamineTaskConstant.BUILDING, buildingTaskList);
-        map.put(AssessExamineTaskConstant.UNIT, unitTaskList);
-        map.put(AssessExamineTaskConstant.HOUSE, houseTaskList);
-        return map;
-    }
-
-    /**
-     * 获取该细任务的所有任务
-     *
-     * @param planDetailsId
-     * @return
-     */
-    public Map<String, List<SurveyExamineTaskVo>> getExamineTaskAll(Integer planDetailsId) {
-        return getExamineTaskByUserAccount(planDetailsId, null);
-    }
-
-
-    /**
-     * 更新任务状态
-     *
-     * @param planDetailsId
-     * @param userAccount
-     * @param projectStatusEnum
-     */
-    @Transactional(rollbackFor = Exception.class)
-    public void updateExamineTaskStatus(Integer planDetailsId, String userAccount, ProjectStatusEnum projectStatusEnum) {
-        //查询条件
-        SurveyExamineTask where = new SurveyExamineTask();
-        where.setPlanDetailsId(planDetailsId);
-        where.setUserAccount(userAccount);
-        //更新内容
-        SurveyExamineTask surveyExamineTask = new SurveyExamineTask();
-        surveyExamineTask.setTaskStatus(projectStatusEnum.getKey());
-        surveyExamineTaskService.updateSurveyExamineTask(surveyExamineTask, where);
-    }
-
-    /**
-     * @param planDetailsId
-     * @return
-     */
-    public boolean isAllTaskFinish(Integer planDetailsId) {
-        SurveyExamineTask where = new SurveyExamineTask();
-        where.setPlanDetailsId(planDetailsId);
-        int allCount = surveyExamineTaskService.getSurveyExamineTaskCount(where);
-
-        where.setTaskStatus(ProjectStatusEnum.FINISH.getKey());
-        int finishCount = surveyExamineTaskService.getSurveyExamineTaskCount(where);
-        return allCount == finishCount;
-    }
-
-    /**
-     * 获取案例调查所有任务
-     *
-     * @param planDetailsId
-     * @return
-     */
-    public List<ProjectPlanDetailsVo> getPlanTaskExamineList(Integer planDetailsId) {
-        ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
-        List<ProjectPlanDetails> planDetailsList = projectPlanDetailsService.getPlanDetailsListRecursion(planDetailsId, true);
-        List<ProjectPlanDetailsVo> planDetailsVoList = LangUtils.transform(planDetailsList, o -> projectPlanDetailsService.getProjectPlanDetailsVo(o));
-        if (CollectionUtils.isNotEmpty(planDetailsVoList)) {
-            //获取当前人该阶段下待处理的任务
-            ProjectResponsibilityDto projectResponsibilityDto = new ProjectResponsibilityDto();
-            projectResponsibilityDto.setProjectId(projectPlanDetails.getProjectId());
-            projectResponsibilityDto.setPlanId(projectPlanDetails.getPlanId());
-            projectResponsibilityDto.setAppKey(applicationConstant.getAppKey());
-            projectResponsibilityDto.setUserAccount(commonService.thisUserAccount());
-            List<ProjectResponsibilityDto> projectTaskList = bpmRpcProjectTaskService.getProjectTaskList(projectResponsibilityDto);
-            String viewUrl = String.format("/%s/ProjectTask/projectTaskDetailsById?planDetailsId=", applicationConstant.getAppKey());
-            for (ProjectPlanDetailsVo projectPlanDetailsVo : planDetailsVoList) {
-                if (projectPlanDetailsVo.getId().equals(planDetailsId)) {
-                    projectPlanDetailsVo.set_parentId(null);//顶级节点parentId必须为空才能显示
-                }
-                if (CollectionUtils.isNotEmpty(projectTaskList)) {
-                    for (ProjectResponsibilityDto responsibilityDto : projectTaskList) {
-                        if (responsibilityDto.getPlanDetailsId().equals(projectPlanDetailsVo.getId())) {
-                            projectPlanDetailsVo.setExcuteUrl(String.format("%s?responsibilityId=%s", responsibilityDto.getUrl(), responsibilityDto.getId()));
-                        }
-                    }
-                }
-
-                //设置查看url
-                if (StringUtils.isNotBlank(projectPlanDetailsVo.getExecuteUserAccount()) && projectPlanDetailsVo.getBisStart()) {
-                    projectPlanDetailsVo.setDisplayUrl(String.format("%s%s", viewUrl, projectPlanDetailsVo.getId()));
-                }
-            }
-        }
-        return planDetailsVoList;
     }
 
     /**
@@ -290,55 +155,6 @@ public class SurveyCommonService {
             buildingUsableYear = buildingNewRate.getDurableLife();
         }
         return buildingUsableYear;
-    }
-
-    /**
-     * 获取调查信息相关表
-     *
-     * @return
-     */
-    public List<String> getTableList() {
-        String dbName = BaseConstant.DATABASE_PMCC_ASSESS;
-        String sql = String.format("select TABLE_NAME from information_schema.`TABLES` where table_schema='%s' and TABLE_NAME LIKE 'tb_examine_%%'", dbName);
-        List<Map<String, Object>> mapList = jdbcTemplate.queryForList(sql);
-        List<String> tableList = Lists.newArrayList();
-        for (Map<String, Object> map : mapList) {
-            tableList.add(String.valueOf(map.get("TABLE_NAME")));
-        }
-        return tableList;
-    }
-
-    /**
-     * 获取同步sql语句
-     *
-     * @param tableName
-     * @param oldPlanDetailsId
-     * @param newPlanDetailsId
-     * @param newDeclareId
-     * @return
-     */
-    public String getSynchronizeSql(String tableName, Integer oldPlanDetailsId, Integer newPlanDetailsId, Integer newDeclareId) {
-        String dbName = BaseConstant.DATABASE_PMCC_ASSESS;
-        String sql = String.format("select column_name from information_schema.columns where table_name='%s' and table_schema='%s'", tableName, dbName);
-        List<Map<String, Object>> mapList = jdbcTemplate.queryForList(sql);
-        //1.去除id 评出sql前半截  拼出sql后半截
-        for (Map<String, Object> map : mapList) {
-            if (map.get("column_name").equals("id")) {
-                mapList.remove(map);
-                break;
-            }
-        }
-        StringBuilder stringBuilder = new StringBuilder();
-        for (Map<String, Object> map : mapList) {
-            stringBuilder.append(map.get("column_name")).append(",");
-        }
-        String columnString = stringBuilder.toString();
-        columnString = columnString.replaceAll(",$", "");
-
-        String resultString = MessageFormat.format("INSERT into {0}({1}) SELECT %s FROM {0} where plan_details_id={2};", tableName, columnString, String.valueOf(oldPlanDetailsId));
-        columnString = columnString.replace("plan_details_id", String.valueOf(newPlanDetailsId)).replace("declare_id", String.valueOf(newDeclareId));
-        resultString = String.format(resultString, columnString);
-        return resultString;
     }
 
     //修改申报实际用途

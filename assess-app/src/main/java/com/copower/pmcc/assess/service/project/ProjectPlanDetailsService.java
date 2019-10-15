@@ -13,8 +13,6 @@ import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.basic.BasicApplyTransferService;
 import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeSurePriceService;
-import com.copower.pmcc.assess.service.project.survey.SurveyExamineInfoService;
-import com.copower.pmcc.assess.service.project.survey.SurveyExamineTaskService;
 import com.copower.pmcc.bpm.api.dto.ActivitiTaskNodeDto;
 import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
@@ -92,19 +90,9 @@ public class ProjectPlanDetailsService {
     @Autowired
     private ProjectWorkStageService projectWorkStageService;
     @Autowired
-    private PublicService publicService;
-    @Autowired
     private BasicApplyTransferService basicApplyTransferService;
     @Autowired
-    private SurveyExamineTaskService surveyExamineTaskService;
-    @Autowired
-    private SurveyExamineInfoService surveyExamineInfoService;
-    @Autowired
     private ProjectMemberService projectMemberService;
-    @Autowired
-    private SchemeSurePriceService schemeSurePriceService;
-    @Autowired
-    private SchemeSurePriceRecordDao schemeSurePriceRecordDao;
     @Autowired
     private ProjectTaskReturnRecordDao projectTaskReturnRecordDao;
     @Autowired
@@ -233,7 +221,7 @@ public class ProjectPlanDetailsService {
             //如果为待提交状态 当前人与任务执行人相同 可提交任务
             //如果为待审批状态 当前人与审批人相同 可审批该任务
             SysProjectEnum sysProjectEnum = SysProjectEnum.getEnumByName(SysProjectEnum.getNameByKey(projectPlanDetailsVo.getStatus()));
-            if (sysProjectEnum != null){
+            if (sysProjectEnum != null) {
                 switch (sysProjectEnum) {
                     case NONE:
                     case CLOSE://业务异常关闭流程错误更新状态的数据
@@ -675,7 +663,6 @@ public class ProjectPlanDetailsService {
             bpmRpcProjectTaskService.updateProjectTask(projectTask);
         }
 
-
         //当任务为现场查勘或案例调查时特殊处理
         ProjectPhase projectPhaseExplore = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.COMMON_SCENE_EXPLORE_EXAMINE);
         ProjectPhase projectPhaseStudy = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.COMMON_CASE_STUDY_EXAMINE);
@@ -686,13 +673,6 @@ public class ProjectPlanDetailsService {
                 parentDetail.setExecuteUserAccount(newExecuteUser);
                 parentDetail.setExecuteDepartmentId(sysUser.getDepartmentId());
                 projectPlanDetailsDao.updateProjectPlanDetails(parentDetail);
-            }
-            List<SurveyExamineTask> taskList = surveyExamineTaskService.getTaskListByPlanDetailsId(projectPlanDetails.getPid());
-            if (CollectionUtils.isNotEmpty(taskList)) {
-                for (SurveyExamineTask surveyExamineTask : taskList) {
-                    surveyExamineTask.setUserAccount(newExecuteUser);
-                    surveyExamineTaskService.saveSurveyExamineTask(surveyExamineTask);
-                }
             }
         }
         return getProjectPlanDetailsVo(projectPlanDetails);
@@ -706,51 +686,10 @@ public class ProjectPlanDetailsService {
      */
     @Transactional(rollbackFor = Exception.class)
     public void batchUpdateExecuteUser(List<Integer> planDetailsIds, String newExecuteUser) throws BusinessException {
-        List<ProjectPlanDetails> projectPlanDetailsByIds = this.getProjectPlanDetailsByIds(planDetailsIds);
-        for (ProjectPlanDetails projectPlanDetails : projectPlanDetailsByIds) {
-            if (projectPlanDetails == null) return;
-            if (StringUtils.isBlank(newExecuteUser))
-                throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
-            if (projectPlanDetails.getBisStart())
-                continue;
-            projectPlanDetails.setExecuteUserAccount(newExecuteUser);
-            SysUserDto sysUser = erpRpcUserService.getSysUser(newExecuteUser);
-            projectPlanDetails.setExecuteDepartmentId(sysUser.getDepartmentId());
-            projectPlanDetailsDao.updateProjectPlanDetails(projectPlanDetails);
-
-            ProjectResponsibilityDto projectResponsibilityDto = new ProjectResponsibilityDto();
-            projectResponsibilityDto.setAppKey(applicationConstant.getAppKey());
-            projectResponsibilityDto.setProjectId(projectPlanDetails.getProjectId());
-            projectResponsibilityDto.setPlanId(projectPlanDetails.getPlanId());
-            projectResponsibilityDto.setPlanDetailsId(projectPlanDetails.getId());
-            ProjectResponsibilityDto projectTask = bpmRpcProjectTaskService.getProjectTask(projectResponsibilityDto);
-            if (projectTask != null) {
-                projectTask.setUserAccount(newExecuteUser);
-                bpmRpcProjectTaskService.updateProjectTask(projectTask);
-            }
-
-
-            //当任务为现场查勘或案例调查时特殊处理
-            ProjectPhase projectPhaseExplore = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.COMMON_SCENE_EXPLORE_EXAMINE);
-            ProjectPhase projectPhaseStudy = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.COMMON_CASE_STUDY_EXAMINE);
-            if (projectPlanDetails.getProjectPhaseId().equals(projectPhaseExplore.getId()) || projectPlanDetails.getProjectPhaseId().equals(projectPhaseStudy.getId())) {
-                //将task任务也移交过去
-                ProjectPlanDetails parentDetail = projectPlanDetailsDao.getProjectPlanDetailsById(projectPlanDetails.getPid());
-                if (parentDetail != null) {
-                    parentDetail.setExecuteUserAccount(newExecuteUser);
-                    parentDetail.setExecuteDepartmentId(sysUser.getDepartmentId());
-                    projectPlanDetailsDao.updateProjectPlanDetails(parentDetail);
-                }
-                List<SurveyExamineTask> taskList = surveyExamineTaskService.getTaskListByPlanDetailsId(projectPlanDetails.getPid());
-                if (CollectionUtils.isNotEmpty(taskList)) {
-                    for (SurveyExamineTask surveyExamineTask : taskList) {
-                        surveyExamineTask.setUserAccount(newExecuteUser);
-                        surveyExamineTaskService.saveSurveyExamineTask(surveyExamineTask);
-                    }
-                }
-            }
+        if (CollectionUtils.isEmpty(planDetailsIds) || StringUtils.isBlank(newExecuteUser)) return;
+        for (Integer planDetailsId : planDetailsIds) {
+            updateExecuteUser(planDetailsId, newExecuteUser);
         }
-
     }
 
     /**
