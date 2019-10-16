@@ -68,7 +68,7 @@ public class NetInfoRecordController {
             //netInfoRecordService.climbingData();
             SchemeInfo info = schemeInfoDao.getInfoById(660);
             GenerateMdCostApproachService generateMdCostApproachService = new GenerateMdCostApproachService(info, 422);
-            generateMdCostApproachService.generateCompareFile();
+            generateMdCostApproachService.generateCostApproachFile();
 
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());
