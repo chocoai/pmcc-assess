@@ -88,7 +88,7 @@ public class GenerateMdCostApproachService implements Serializable {
      * @return
      * @throws Exception
      */
-    public String generateCompareFile() throws Exception {
+    public String generateCostApproachFile() throws Exception {
         BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByFieldName(AssessReportFieldConstant.COST_APPROACH_TEMPLATE);
         List<SysAttachmentDto> dtoList = baseAttachmentService.getByField_tableId(baseReportField.getId(), null, FormatUtils.entityNameConvertToTableName(BaseReportField.class));
         if (CollectionUtils.isEmpty(dtoList)) {
