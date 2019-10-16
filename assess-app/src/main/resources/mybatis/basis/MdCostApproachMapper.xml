@@ -34,6 +34,14 @@
     <result column="parcel_setting_outer" property="parcelSettingOuter" jdbcType="VARCHAR" />
     <result column="parcel_setting_inner" property="parcelSettingInner" jdbcType="VARCHAR" />
     <result column="land_level_content" property="landLevelContent" jdbcType="VARCHAR" />
+    <result column="land_use_price" property="landUsePrice" jdbcType="DECIMAL" />
+    <result column="year_fixed" property="yearFixed" jdbcType="DECIMAL" />
+    <result column="parcel_unit" property="parcelUnit" jdbcType="DECIMAL" />
+    <result column="land_cost_price_unit" property="landCostPriceUnit" jdbcType="DECIMAL" />
+    <result column="land_acquisition_unit" property="landAcquisitionUnit" jdbcType="DECIMAL" />
+    <result column="land_production_profit_unit" property="landProductionProfitUnit" jdbcType="DECIMAL" />
+    <result column="land_production_interest_unit" property="landProductionInterestUnit" jdbcType="DECIMAL" />
+    <result column="have_not_land_acquisition" property="haveNotLandAcquisition" jdbcType="DECIMAL" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -100,7 +108,9 @@
     profit_margin, profit_margin_remark, incremental_benefit, incremental_benefit_remark, 
     plot_ratio_adjust, plot_ratio_adjust_remark, plot_ratio_element_amend, plot_ratio_element_amend_remark, 
     creator, gmt_created, gmt_modified, land_remaining_year, land_remaining_year_remark, 
-    parcel_setting_outer, parcel_setting_inner, land_level_content
+    parcel_setting_outer, parcel_setting_inner, land_level_content, land_use_price, year_fixed, 
+    parcel_unit, land_cost_price_unit, land_acquisition_unit, land_production_profit_unit, 
+    land_production_interest_unit, have_not_land_acquisition
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdCostApproachExample" >
     select
@@ -148,7 +158,10 @@
       plot_ratio_element_amend_remark, creator, gmt_created, 
       gmt_modified, land_remaining_year, land_remaining_year_remark, 
       parcel_setting_outer, parcel_setting_inner, 
-      land_level_content)
+      land_level_content, land_use_price, year_fixed, 
+      parcel_unit, land_cost_price_unit, land_acquisition_unit, 
+      land_production_profit_unit, land_production_interest_unit, 
+      have_not_land_acquisition)
     values (#{planDetailsId,jdbcType=INTEGER}, #{processInsId,jdbcType=VARCHAR}, #{farmlandArea,jdbcType=DECIMAL}, 
       #{ploughArea,jdbcType=DECIMAL}, #{populationNumber,jdbcType=INTEGER}, #{rewardRateId,jdbcType=INTEGER}, 
       #{rewardRate,jdbcType=VARCHAR}, #{circulationExpense,jdbcType=DECIMAL}, #{circulationExpenseRemark,jdbcType=VARCHAR}, 
@@ -161,7 +174,10 @@
       #{plotRatioElementAmendRemark,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
       #{gmtModified,jdbcType=TIMESTAMP}, #{landRemainingYear,jdbcType=DECIMAL}, #{landRemainingYearRemark,jdbcType=VARCHAR}, 
       #{parcelSettingOuter,jdbcType=VARCHAR}, #{parcelSettingInner,jdbcType=VARCHAR}, 
-      #{landLevelContent,jdbcType=VARCHAR})
+      #{landLevelContent,jdbcType=VARCHAR}, #{landUsePrice,jdbcType=DECIMAL}, #{yearFixed,jdbcType=DECIMAL}, 
+      #{parcelUnit,jdbcType=DECIMAL}, #{landCostPriceUnit,jdbcType=DECIMAL}, #{landAcquisitionUnit,jdbcType=DECIMAL}, 
+      #{landProductionProfitUnit,jdbcType=DECIMAL}, #{landProductionInterestUnit,jdbcType=DECIMAL}, 
+      #{haveNotLandAcquisition,jdbcType=DECIMAL})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdCostApproach" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -262,6 +278,30 @@
       <if test="landLevelContent != null" >
         land_level_content,
       </if>
+      <if test="landUsePrice != null" >
+        land_use_price,
+      </if>
+      <if test="yearFixed != null" >
+        year_fixed,
+      </if>
+      <if test="parcelUnit != null" >
+        parcel_unit,
+      </if>
+      <if test="landCostPriceUnit != null" >
+        land_cost_price_unit,
+      </if>
+      <if test="landAcquisitionUnit != null" >
+        land_acquisition_unit,
+      </if>
+      <if test="landProductionProfitUnit != null" >
+        land_production_profit_unit,
+      </if>
+      <if test="landProductionInterestUnit != null" >
+        land_production_interest_unit,
+      </if>
+      <if test="haveNotLandAcquisition != null" >
+        have_not_land_acquisition,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="planDetailsId != null" >
@@ -356,6 +396,30 @@
       </if>
       <if test="landLevelContent != null" >
         #{landLevelContent,jdbcType=VARCHAR},
+      </if>
+      <if test="landUsePrice != null" >
+        #{landUsePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="yearFixed != null" >
+        #{yearFixed,jdbcType=DECIMAL},
+      </if>
+      <if test="parcelUnit != null" >
+        #{parcelUnit,jdbcType=DECIMAL},
+      </if>
+      <if test="landCostPriceUnit != null" >
+        #{landCostPriceUnit,jdbcType=DECIMAL},
+      </if>
+      <if test="landAcquisitionUnit != null" >
+        #{landAcquisitionUnit,jdbcType=DECIMAL},
+      </if>
+      <if test="landProductionProfitUnit != null" >
+        #{landProductionProfitUnit,jdbcType=DECIMAL},
+      </if>
+      <if test="landProductionInterestUnit != null" >
+        #{landProductionInterestUnit,jdbcType=DECIMAL},
+      </if>
+      <if test="haveNotLandAcquisition != null" >
+        #{haveNotLandAcquisition,jdbcType=DECIMAL},
       </if>
     </trim>
   </insert>
@@ -464,6 +528,30 @@
       <if test="record.landLevelContent != null" >
         land_level_content = #{record.landLevelContent,jdbcType=VARCHAR},
       </if>
+      <if test="record.landUsePrice != null" >
+        land_use_price = #{record.landUsePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.yearFixed != null" >
+        year_fixed = #{record.yearFixed,jdbcType=DECIMAL},
+      </if>
+      <if test="record.parcelUnit != null" >
+        parcel_unit = #{record.parcelUnit,jdbcType=DECIMAL},
+      </if>
+      <if test="record.landCostPriceUnit != null" >
+        land_cost_price_unit = #{record.landCostPriceUnit,jdbcType=DECIMAL},
+      </if>
+      <if test="record.landAcquisitionUnit != null" >
+        land_acquisition_unit = #{record.landAcquisitionUnit,jdbcType=DECIMAL},
+      </if>
+      <if test="record.landProductionProfitUnit != null" >
+        land_production_profit_unit = #{record.landProductionProfitUnit,jdbcType=DECIMAL},
+      </if>
+      <if test="record.landProductionInterestUnit != null" >
+        land_production_interest_unit = #{record.landProductionInterestUnit,jdbcType=DECIMAL},
+      </if>
+      <if test="record.haveNotLandAcquisition != null" >
+        have_not_land_acquisition = #{record.haveNotLandAcquisition,jdbcType=DECIMAL},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -502,7 +590,15 @@
       land_remaining_year_remark = #{record.landRemainingYearRemark,jdbcType=VARCHAR},
       parcel_setting_outer = #{record.parcelSettingOuter,jdbcType=VARCHAR},
       parcel_setting_inner = #{record.parcelSettingInner,jdbcType=VARCHAR},
-      land_level_content = #{record.landLevelContent,jdbcType=VARCHAR}
+      land_level_content = #{record.landLevelContent,jdbcType=VARCHAR},
+      land_use_price = #{record.landUsePrice,jdbcType=DECIMAL},
+      year_fixed = #{record.yearFixed,jdbcType=DECIMAL},
+      parcel_unit = #{record.parcelUnit,jdbcType=DECIMAL},
+      land_cost_price_unit = #{record.landCostPriceUnit,jdbcType=DECIMAL},
+      land_acquisition_unit = #{record.landAcquisitionUnit,jdbcType=DECIMAL},
+      land_production_profit_unit = #{record.landProductionProfitUnit,jdbcType=DECIMAL},
+      land_production_interest_unit = #{record.landProductionInterestUnit,jdbcType=DECIMAL},
+      have_not_land_acquisition = #{record.haveNotLandAcquisition,jdbcType=DECIMAL}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -603,6 +699,30 @@
       <if test="landLevelContent != null" >
         land_level_content = #{landLevelContent,jdbcType=VARCHAR},
       </if>
+      <if test="landUsePrice != null" >
+        land_use_price = #{landUsePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="yearFixed != null" >
+        year_fixed = #{yearFixed,jdbcType=DECIMAL},
+      </if>
+      <if test="parcelUnit != null" >
+        parcel_unit = #{parcelUnit,jdbcType=DECIMAL},
+      </if>
+      <if test="landCostPriceUnit != null" >
+        land_cost_price_unit = #{landCostPriceUnit,jdbcType=DECIMAL},
+      </if>
+      <if test="landAcquisitionUnit != null" >
+        land_acquisition_unit = #{landAcquisitionUnit,jdbcType=DECIMAL},
+      </if>
+      <if test="landProductionProfitUnit != null" >
+        land_production_profit_unit = #{landProductionProfitUnit,jdbcType=DECIMAL},
+      </if>
+      <if test="landProductionInterestUnit != null" >
+        land_production_interest_unit = #{landProductionInterestUnit,jdbcType=DECIMAL},
+      </if>
+      <if test="haveNotLandAcquisition != null" >
+        have_not_land_acquisition = #{haveNotLandAcquisition,jdbcType=DECIMAL},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -638,7 +758,15 @@
       land_remaining_year_remark = #{landRemainingYearRemark,jdbcType=VARCHAR},
       parcel_setting_outer = #{parcelSettingOuter,jdbcType=VARCHAR},
       parcel_setting_inner = #{parcelSettingInner,jdbcType=VARCHAR},
-      land_level_content = #{landLevelContent,jdbcType=VARCHAR}
+      land_level_content = #{landLevelContent,jdbcType=VARCHAR},
+      land_use_price = #{landUsePrice,jdbcType=DECIMAL},
+      year_fixed = #{yearFixed,jdbcType=DECIMAL},
+      parcel_unit = #{parcelUnit,jdbcType=DECIMAL},
+      land_cost_price_unit = #{landCostPriceUnit,jdbcType=DECIMAL},
+      land_acquisition_unit = #{landAcquisitionUnit,jdbcType=DECIMAL},
+      land_production_profit_unit = #{landProductionProfitUnit,jdbcType=DECIMAL},
+      land_production_interest_unit = #{landProductionInterestUnit,jdbcType=DECIMAL},
+      have_not_land_acquisition = #{haveNotLandAcquisition,jdbcType=DECIMAL}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

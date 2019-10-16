@@ -68,6 +68,22 @@ public class MdCostApproach {
 
     private String landLevelContent;
 
+    private BigDecimal landUsePrice;
+
+    private BigDecimal yearFixed;
+
+    private BigDecimal parcelUnit;
+
+    private BigDecimal landCostPriceUnit;
+
+    private BigDecimal landAcquisitionUnit;
+
+    private BigDecimal landProductionProfitUnit;
+
+    private BigDecimal landProductionInterestUnit;
+
+    private BigDecimal haveNotLandAcquisition;
+
     public Integer getId() {
         return id;
     }
@@ -322,5 +338,69 @@ public class MdCostApproach {
 
     public void setLandLevelContent(String landLevelContent) {
         this.landLevelContent = landLevelContent == null ? null : landLevelContent.trim();
+    }
+
+    public BigDecimal getLandUsePrice() {
+        return landUsePrice;
+    }
+
+    public void setLandUsePrice(BigDecimal landUsePrice) {
+        this.landUsePrice = landUsePrice;
+    }
+
+    public BigDecimal getYearFixed() {
+        return yearFixed;
+    }
+
+    public void setYearFixed(BigDecimal yearFixed) {
+        this.yearFixed = yearFixed;
+    }
+
+    public BigDecimal getParcelUnit() {
+        return parcelUnit;
+    }
+
+    public void setParcelUnit(BigDecimal parcelUnit) {
+        this.parcelUnit = parcelUnit;
+    }
+
+    public BigDecimal getLandCostPriceUnit() {
+        return landCostPriceUnit;
+    }
+
+    public void setLandCostPriceUnit(BigDecimal landCostPriceUnit) {
+        this.landCostPriceUnit = landCostPriceUnit;
+    }
+
+    public BigDecimal getLandAcquisitionUnit() {
+        return landAcquisitionUnit;
+    }
+
+    public void setLandAcquisitionUnit(BigDecimal landAcquisitionUnit) {
+        this.landAcquisitionUnit = landAcquisitionUnit;
+    }
+
+    public BigDecimal getLandProductionProfitUnit() {
+        return landProductionProfitUnit;
+    }
+
+    public void setLandProductionProfitUnit(BigDecimal landProductionProfitUnit) {
+        this.landProductionProfitUnit = landProductionProfitUnit;
+    }
+
+    public BigDecimal getLandProductionInterestUnit() {
+        return landProductionInterestUnit;
+    }
+
+    public void setLandProductionInterestUnit(BigDecimal landProductionInterestUnit) {
+        this.landProductionInterestUnit = landProductionInterestUnit;
+    }
+
+    public BigDecimal getHaveNotLandAcquisition() {
+        return haveNotLandAcquisition;
+    }
+
+    public void setHaveNotLandAcquisition(BigDecimal haveNotLandAcquisition) {
+        this.haveNotLandAcquisition = haveNotLandAcquisition;
     }
 }
