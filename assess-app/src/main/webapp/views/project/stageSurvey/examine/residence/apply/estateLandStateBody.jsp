@@ -247,7 +247,6 @@
         </div>
     </div>
 </div>
-
 <div class="form-group">
     <div class="x-valid" style="display: none">
         <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">投资强度（万元/亩）</label>
@@ -256,7 +255,6 @@
         </div>
     </div>
 </div>
-
 <div class="form-group">
     <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
         <table class="table table-striped table-bordered" style="display: none">

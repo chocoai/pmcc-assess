@@ -87,8 +87,10 @@ public class AssessDataDicKeyConstant {
      * 项目查勘
      */
     public static final String PROJECT_SURVEY_FORM_CLASSIFY = "project.survey.form.classify";//查勘案例表单大类
-    public static final String PROJECT_SURVEY_FORM_CLASSIFY_SINGEL = "project.survey.form.classify.singel";//查勘案例表单大类-单套住宅
-    public static final String PROJECT_SURVEY_FORM_CLASSIFY_MULTIPLE = "project.survey.form.classify.multiple";//查勘案例表单大类-其他
+    public static final String PROJECT_SURVEY_FORM_CLASSIFY_SINGEL = "project.survey.form.classify.singel";//查勘案例表单大类-单套房产
+    public static final String PROJECT_SURVEY_FORM_CLASSIFY_MULTIPLE = "project.survey.form.classify.multiple";//查勘案例表单大类-多套房产
+    public static final String PROJECT_SURVEY_FORM_CLASSIFY_LAND_ONLY = "project.survey.form.classify.land.only";//查勘案例表单大类-纯土地
+    public static final String PROJECT_SURVEY_FORM_CLASSIFY_LAND = "project.survey.form.classify.land";//查勘案例表单大类-土地带房产
 
     public static final String INVENTORY_CONTENT = "project.survey.inventory.content"; //清查内容
     public static final String INVENTORY_CONTENT_DEFAULT = "project.survey.inventory.content.default"; //清查内容默认

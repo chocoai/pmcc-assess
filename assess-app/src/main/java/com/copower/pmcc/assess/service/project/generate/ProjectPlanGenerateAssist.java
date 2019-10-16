@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.service.project.generate;
 
 import com.copower.pmcc.ad.api.enums.AdPersonalEnum;
-import com.copower.pmcc.assess.common.enums.word.AssessTypeEnum;
+import com.copower.pmcc.assess.common.enums.AssessProjectTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.DocumentTemplate;
@@ -79,7 +79,7 @@ public class ProjectPlanGenerateAssist implements ProjectPlanInterface {
         modelAndView.addObject("qualificationTypes", qualificationTypes);
         modelAndView.addObject("generationVos", generateReportInfoService.initGenerateReportInfo(projectPlan.getProjectId(),projectPlan.getId()));
         List<KeyValueDto> keyValueDtoList = Lists.newArrayList();
-        for (AssessTypeEnum typeEnum:AssessTypeEnum.values()){
+        for (AssessProjectTypeEnum typeEnum: AssessProjectTypeEnum.values()){
             keyValueDtoList.add(new KeyValueDto(typeEnum.getNumber().toString(),typeEnum.getDec())) ;
         }
         modelAndView.addObject("projectCategoryKeyValueDtoList", keyValueDtoList);

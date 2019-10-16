@@ -46,6 +46,8 @@ public class BasicEstate {
 
     private String greeningRate;
 
+    private Date openTime;
+
     private Integer buildingNumber;
 
     private Integer position;
@@ -76,13 +78,17 @@ public class BasicEstate {
 
     private String locationDescribe;
 
+    private Integer basicBuildingId;
+
+    private Integer basicUnitId;
+
+    private Integer basicHouseId;
+
     private String creator;
 
     private Date gmtCreated;
 
     private Date gmtModified;
-
-    private Date openTime;
 
     public Integer getId() {
         return id;
@@ -252,6 +258,14 @@ public class BasicEstate {
         this.greeningRate = greeningRate == null ? null : greeningRate.trim();
     }
 
+    public Date getOpenTime() {
+        return openTime;
+    }
+
+    public void setOpenTime(Date openTime) {
+        this.openTime = openTime;
+    }
+
     public Integer getBuildingNumber() {
         return buildingNumber;
     }
@@ -372,6 +386,30 @@ public class BasicEstate {
         this.locationDescribe = locationDescribe == null ? null : locationDescribe.trim();
     }
 
+    public Integer getBasicBuildingId() {
+        return basicBuildingId;
+    }
+
+    public void setBasicBuildingId(Integer basicBuildingId) {
+        this.basicBuildingId = basicBuildingId;
+    }
+
+    public Integer getBasicUnitId() {
+        return basicUnitId;
+    }
+
+    public void setBasicUnitId(Integer basicUnitId) {
+        this.basicUnitId = basicUnitId;
+    }
+
+    public Integer getBasicHouseId() {
+        return basicHouseId;
+    }
+
+    public void setBasicHouseId(Integer basicHouseId) {
+        this.basicHouseId = basicHouseId;
+    }
+
     public String getCreator() {
         return creator;
     }
@@ -394,13 +432,5 @@ public class BasicEstate {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public Date getOpenTime() {
-        return openTime;
-    }
-
-    public void setOpenTime(Date openTime) {
-        this.openTime = openTime;
     }
 }

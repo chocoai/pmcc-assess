@@ -1,22 +1,25 @@
 package com.copower.pmcc.assess.controller.baisc;
 
 import com.alibaba.fastjson.JSON;
+import com.copower.pmcc.assess.common.enums.basic.BasicApplyTypeEnum;
+import com.copower.pmcc.assess.common.enums.basic.EstateTaggingTypeEnum;
+import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.controller.BaseController;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.ZtreeDto;
 import com.copower.pmcc.assess.dto.output.basic.*;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.basic.*;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
-import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.crm.api.dto.CrmBaseDataDicDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
-import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -31,6 +34,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by kings on 2018-10-24.
@@ -48,15 +52,17 @@ public class BasicApplyBatchController extends BaseController {
     @Autowired
     private PublicBasicService publicBasicService;
     @Autowired
-    private CommonService commonService;
+    private BasicBuildingService basicBuildingService;
     @Autowired
     private ProjectInfoService projectInfoService;
     @Autowired
     private BasicHouseService basicHouseService;
     @Autowired
-    private ProjectPlanDetailsService projectPlanDetailsService;
+    private BaseDataDicService baseDataDicService;
     @Autowired
     private BasicEstateService basicEstateService;
+    @Autowired
+    private BasicUnitService basicUnitService;
 
     @RequestMapping(value = "/basicBatchApplyIndex", name = "申请首页", method = RequestMethod.GET)
     public ModelAndView basicApplyIndex() {
@@ -139,8 +145,62 @@ public class BasicApplyBatchController extends BaseController {
         this.setViewParam(type, id, buildingType, estateId, modelAndView);
 
         return modelAndView;
-
     }
+
+    @RequestMapping(value = "/fillInfo", name = "填写信息页面", method = RequestMethod.GET)
+    public ModelAndView fillInfo(Integer formClassify, Integer formType, Integer tbId, String tbType, Integer planDetailsId) throws Exception {
+        String view = "/project/stageSurvey";
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
+        //根据类型取得所需的数据
+        BasicEstate basicEstate = null;
+        BasicHouse basicHouse = null;
+        BasicHouseTrading basicHouseTrading = null;
+        EstateTaggingTypeEnum estateTaggingTypeEnum = EstateTaggingTypeEnum.getEnumByKey(tbType);
+        switch (estateTaggingTypeEnum) {
+            case ESTATE:
+                Map<String, Object> basicEstateMap = basicEstateService.getBasicEstateMapById(tbId);
+                basicEstate = (BasicEstate) basicEstateMap.get(FormatUtils.toLowerCaseFirstChar(BasicEstate.class.getSimpleName()));
+                modelAndView.addObject("basicEstate", basicEstate);
+                modelAndView.addObject("basicEstateLandState", basicEstateMap.get(FormatUtils.toLowerCaseFirstChar(BasicEstateLandState.class.getSimpleName())));
+                break;
+            case BUILDING:
+                modelAndView.addObject("basicBuilding", basicBuildingService.getBasicBuildingById(tbId));
+                break;
+            case UNIT:
+                modelAndView.addObject("basicUnit", basicUnitService.getBasicUnitById(tbId));
+                break;
+            case HOUSE:
+                Map<String, Object> basicHouseMap = basicHouseService.getBasicHouseMapById(tbId);
+                basicHouse = (BasicHouse) basicHouseMap.get(FormatUtils.toLowerCaseFirstChar(BasicHouse.class.getSimpleName()));
+                basicHouseTrading = (BasicHouseTrading) basicHouseMap.get(FormatUtils.toLowerCaseFirstChar(BasicHouseTrading.class.getSimpleName()));
+                break;
+        }
+
+        //根据表单大类 类型可确定使用哪个view，
+        BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicById(formClassify);
+        if (AssessDataDicKeyConstant.PROJECT_SURVEY_FORM_CLASSIFY_LAND_ONLY.equals(baseDataDic.getFieldName())) {
+            view = view + "/landOnly/index";
+            if (basicEstate != null && basicEstate.getBasicHouseId() != null) {
+                Map<String, Object> basicHouseMap = basicHouseService.getBasicHouseMapById(basicEstate.getBasicHouseId());
+                basicHouse = (BasicHouse) basicHouseMap.get(FormatUtils.toLowerCaseFirstChar(BasicHouse.class.getSimpleName()));
+                basicHouseTrading = (BasicHouseTrading) basicHouseMap.get(FormatUtils.toLowerCaseFirstChar(BasicHouseTrading.class.getSimpleName()));
+            }
+        }
+        if (AssessDataDicKeyConstant.PROJECT_SURVEY_FORM_CLASSIFY_LAND.equals(baseDataDic.getFieldName())) {
+            view = view + "/land/index";
+        }
+        if (AssessDataDicKeyConstant.PROJECT_SURVEY_FORM_CLASSIFY_SINGEL.equals(baseDataDic.getFieldName()) || AssessDataDicKeyConstant.PROJECT_SURVEY_FORM_CLASSIFY_MULTIPLE.equals(baseDataDic.getFieldName())) {
+            view = view + "/house/index";
+        }
+        modelAndView.setViewName(view);
+        modelAndView.addObject("basicHouse", basicHouse);
+        modelAndView.addObject("basicHouseTrading", basicHouseTrading);
+        modelAndView.addObject("planDetailsId", planDetailsId);
+        modelAndView.addObject("tbType", tbType);
+        modelAndView.addObject("formType", BasicApplyTypeEnum.getEnumById(formType).getKey());
+        return modelAndView;
+    }
+
 
     @RequestMapping(value = "/informationDetail", name = "信息详情页面", method = RequestMethod.GET)
     public ModelAndView informationDetail(Integer type, Integer id, Integer buildingType, Integer estateId) throws Exception {
@@ -179,7 +239,7 @@ public class BasicApplyBatchController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "/saveDraft", name = "保存楼盘等")
-    public HttpResult saveDraft(String formData,Integer planDetailsId) {
+    public HttpResult saveDraft(String formData, Integer planDetailsId) {
         try {
             basicApplyBatchService.saveDraft(formData, planDetailsId);
             return HttpResult.newCorrectResult();
@@ -382,9 +442,9 @@ public class BasicApplyBatchController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "/paste", name = "粘贴", method = {RequestMethod.POST})
-    public HttpResult paste(Integer sourceBatchDetailId,Integer targeBatchDetailId) {
+    public HttpResult paste(Integer sourceBatchDetailId, Integer targeBatchDetailId) {
         try {
-            basicApplyBatchService.pasteExamineInfo(sourceBatchDetailId,targeBatchDetailId);
+            basicApplyBatchService.pasteExamineInfo(sourceBatchDetailId, targeBatchDetailId);
             return HttpResult.newCorrectResult();
         } catch (Exception e1) {
             log.error(e1.getMessage(), e1);

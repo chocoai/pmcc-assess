@@ -1,12 +1,11 @@
 package com.copower.pmcc.assess.service.project;
 
 import com.alibaba.fastjson.JSONObject;
-import com.copower.pmcc.ad.api.dto.AdCompanyQualificationDto;
-import com.copower.pmcc.ad.api.provider.AdRpcQualificationsService;
+import com.copower.pmcc.assess.common.enums.AssessProjectTypeEnum;
 import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
-import com.copower.pmcc.assess.common.enums.InitiateContactsEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.common.enums.ResponsibileModelEnum;
+import com.copower.pmcc.assess.constant.AssessProjectClassifyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectInfoDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectMemberDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDao;
@@ -48,7 +47,6 @@ import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.crm.api.dto.CrmBaseDataDicDto;
 import com.copower.pmcc.crm.api.provider.CrmRpcBaseDataDicService;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
-import com.copower.pmcc.erp.api.dto.ProjectDocumentDto;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.SysDepartmentDto;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
@@ -56,7 +54,6 @@ import com.copower.pmcc.erp.api.provider.ErpRpcDepartmentService;
 import com.copower.pmcc.erp.api.provider.ErpRpcToolsService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
-import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
@@ -69,7 +66,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.NumberUtils;
 import org.springframework.util.ObjectUtils;
 
 import java.util.Date;
@@ -779,5 +775,23 @@ public class ProjectInfoService {
             throw new BusinessException("还有未完成的任务，请先完成该阶段所有任务");
         }
         projectPlanService.enterNextStage(planId);
+    }
+
+    /**
+     * 获取当前项目的项目类型
+     * @param projectCategoryId
+     * @return
+     */
+    public AssessProjectTypeEnum getAssessProjectType(Integer projectCategoryId){
+        BaseProjectClassify baseProjectClassify = baseProjectClassifyService.getCacheProjectClassifyById(projectCategoryId);
+        if(baseProjectClassify!=null){
+            if(AssessProjectClassifyConstant.SINGLE_HOUSE_PROPERTY_CERTIFICATE_TYPE_SIMPLE.equals(baseProjectClassify.getFieldName()))
+                return AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_HOUSE;
+            if(AssessProjectClassifyConstant.SINGLE_HOUSE_LAND_CERTIFICATE_TYPE_SIMPLE.equals(baseProjectClassify.getFieldName()))
+                return AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_LAND;
+            if(AssessProjectClassifyConstant.COMPREHENSIVE_ASSETS_TYPE.equals(baseProjectClassify.getFieldName()))
+                return AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_ASSETS;
+        }
+        return null;
     }
 }

@@ -83,16 +83,15 @@
                         <a class="btn btn-xs btn-primary fillInformation" onclick="batchTreeTool.fillInformation();">
                             填写信息
                         </a>
-                        <c:if test="${!empty projectPlanDetails}">
-                            <a class="btn btn-xs btn-warning copy" onclick="batchTreeTool.copy();">
-                                复制
-                            </a>
-                        </c:if>
-                        <a class="btn btn-xs btn-warning paste" style="display:none;" onclick="batchTreeTool.paste();">
+                        <a class="btn btn-xs btn-warning copy" onclick="batchTreeTool.copy();">
+                            复制
+                        </a>
+                        <a class="btn btn-xs btn-warning paste" onclick="batchTreeTool.paste();">
                             粘贴
                         </a>
                     </div>
-                    <div id="detail_modal" class="modal fade bs-example-modal-lg" data-backdrop="static" aria-hidden="true"
+                    <div id="detail_modal" class="modal fade bs-example-modal-lg" data-backdrop="static"
+                         aria-hidden="true"
                          role="dialog" data-keyboard="false" tabindex="1" style="display: none;">
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content">
@@ -125,7 +124,8 @@
                                         <button type="button" data-dismiss="modal" class="btn btn-default">
                                             取消
                                         </button>
-                                        <button type="button" id="btnSave" class="btn btn-primary" onclick="batchTreeTool.saveItemData()">
+                                        <button type="button" id="btnSave" class="btn btn-primary"
+                                                onclick="batchTreeTool.saveItemData()">
                                             保存
                                         </button>
                                     </div>
@@ -133,7 +133,8 @@
                             </div>
                         </div>
                     </div>
-                    <div id="detail_modal_b" class="modal fade bs-example-modal-lg" data-backdrop="static" aria-hidden="true"
+                    <div id="detail_modal_b" class="modal fade bs-example-modal-lg" data-backdrop="static"
+                         aria-hidden="true"
                          role="dialog" data-keyboard="false" tabindex="1" style="display: none;">
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content">
@@ -166,7 +167,8 @@
                                         <button type="button" data-dismiss="modal" class="btn btn-default">
                                             取消
                                         </button>
-                                        <button type="button" class="btn btn-primary" onclick="batchTreeTool.saveEditItemData()">
+                                        <button type="button" class="btn btn-primary"
+                                                onclick="batchTreeTool.saveEditItemData()">
                                             保存
                                         </button>
                                     </div>
@@ -219,20 +221,21 @@
 
     //任务提交
     function submit(useBox) {
-        var count = getStandardCount();
-        if (count && count > 0) {
-            var formData = {};
-            formData.declareId = "${declareRecord.id}";
-            formData.projectId = "${projectInfo.id}";
-            formData.planDetailsId = "${projectPlanDetails.id}";
-            if ("${processInsId}" != "0") {
-                submitEditToServer(JSON.stringify(formData));
+        if (AssessDicKey.projectSurveyFormClassifyMultiple == getClassifyKey()) {
+            if (getStandardCount() <= 0) {
+                Alert("申请中至少包含一个标准对象");
+                return;
             }
-            else {
-                submitToServer(JSON.stringify(formData), useBox);
-            }
-        } else {
-            Alert("申请中至少包含一个标准对象");
+        }
+        var formData = {};
+        formData.declareId = "${declareRecord.id}";
+        formData.projectId = "${projectInfo.id}";
+        formData.planDetailsId = "${projectPlanDetails.id}";
+        if ("${processInsId}" != "0") {
+            submitEditToServer(JSON.stringify(formData));
+        }
+        else {
+            submitToServer(JSON.stringify(formData), useBox);
         }
     }
 
@@ -258,15 +261,19 @@
         return count;
     }
 
+    function getClassifyKey() {
+        var dataKey = $("#basicBatchApplyFrm").find('[name=classify]').find('option:selected').attr("data-key");
+        return dataKey;
+    }
+
     //表单大类change
     function formClassifyChange() {
-        var dataKey = $("#basicBatchApplyFrm").find('[name=classify]').find('option:selected').attr("data-key");
-        if (AssessDicKey.projectSurveyFormClassifySingel == dataKey) {
+        var dataKey = getClassifyKey();
+        if (AssessDicKey.projectSurveyFormClassifySingel == dataKey || AssessDicKey.projectSurveyFormClassifyLandOnly == dataKey) {
             $("#formClassifySingel").show();
             $("#btnGroup").find('.btn').not('.fillInformation').hide();
             $("#formClassifyMultiple").hide();
-        }
-        if (AssessDicKey.projectSurveyFormClassifyMultiple == dataKey) {
+        } else {
             $("#formClassifySingel").hide();
             $("#formClassifyMultiple").show();
             $("#btnGroup").find('.btn').show();
@@ -583,14 +590,26 @@
 
     //进入填写信息页面
     batchTreeTool.fillInformation = function () {
-        if(!$("#basicBatchApplyFrm").valid()){
+        if (!$("#basicBatchApplyFrm").valid()) {
             return false;
         }
         var node = zTreeObj.getSelectedNodes()[0];
-        var estateId = $("#basicBatchApplyFrm").find('[name=estateId]').val();
+        var classify = $("#basicBatchApplyFrm").find('[name=classify]').val();
         var type = $("#basicBatchApplyFrm").find('[name=type]').val();
-        var planDetailsId = '${projectPlanDetails.id}';
-        openWin('${pageContext.request.contextPath}/basicApplyBatch/fillInformation?type=' + type + "&id=" + node.id + "&buildingType=" + node.level + "&estateId=" + estateId + "&planDetailsId=" + planDetailsId, function () {
+        var tbType = "estate";
+        if (node.level == 1)
+            tbType = "building";
+        if (node.level == 2)
+            tbType = "unit";
+        if (node.level == 3)
+            tbType = "house";
+        var url = '${pageContext.request.contextPath}/basicApplyBatch/fillInfo?'
+        url += 'formClassify=' + classify;
+        url += '&formType=' + type;
+        url += '&tbId=' + node.id;
+        url += '&tbType=' + tbType;
+        url += '&planDetailsId=${projectPlanDetails.id}';
+        openWin(url, function () {
         })
     }
 

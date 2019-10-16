@@ -44,7 +44,11 @@
         <!--<columnOverride column="json_content" jdbcType="VARCHAR"></columnOverride>-->
 
         <!-- 具体表 -->
-        <table tableName="tb_basic_apply_batch" domainObjectName="BasicApplyBatch">
+        <table tableName="tb_basic_estate" domainObjectName="BasicEstate">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+            <!--<columnOverride column="json_content" jdbcType="VARCHAR"></columnOverride>-->
+        </table>
+        <table tableName="tb_basic_estate_land_state" domainObjectName="BasicEstateLandState">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
             <!--<columnOverride column="json_content" jdbcType="VARCHAR"></columnOverride>-->
         </table>

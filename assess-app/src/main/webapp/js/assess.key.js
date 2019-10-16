@@ -88,8 +88,8 @@ AssessProjectClassifyKey.singleHousePropertyCertificateType = "single.house.prop
 AssessProjectClassifyKey.singleHouseBuildingCertificateType = "single.house.building.certificate.type";//在建工程
 AssessProjectClassifyKey.singleHousetaskRightCategory = "single.house.property.taskRight.category";//	他项权类别
 
-AssessProjectClassifyKey.singleHousePropertyCertificateTypeSimple = "single.house.property.certificate.type.simple";//	他项权类别
-AssessProjectClassifyKey.singleHouseLandCertificateTypeSimple = "single.house.land.certificate.type.simple";//	他项权类别
+AssessProjectClassifyKey.singleHousePropertyCertificateTypeSimple = "single.house.property.certificate.type.simple";//	房产
+AssessProjectClassifyKey.singleHouseLandCertificateTypeSimple = "single.house.land.certificate.type.simple";//	土地
 
 /**
  * 数据字典key
@@ -119,8 +119,9 @@ AssessDicKey.certifyPart = "certify.part";//相关证明对应查勘部位
 AssessDicKey.houseInventoryRightCategory = "project.survey.house.inventory.right.category";//房产他权类别
 AssessDicKey.build_security_engineering_project_market_cost = "build.security.engineering.project.market.cost";//建安工程项目
 AssessDicKey.DATA_LOCALE_SURVEY_PICTURE_TEMPLATE = "data.locale.survey.picture.template";//现场查勘图片模板
-AssessDicKey.projectSurveyFormClassifySingel = "project.survey.form.classify.singel";//单套住宅
-AssessDicKey.projectSurveyFormClassifyMultiple = "project.survey.form.classify.multiple";//其他
+AssessDicKey.projectSurveyFormClassifySingel = "project.survey.form.classify.singel";//单套房产
+AssessDicKey.projectSurveyFormClassifyMultiple = "project.survey.form.classify.multiple";//多套房产
+AssessDicKey.projectSurveyFormClassifyLandOnly = "project.survey.form.classify.land.only";//纯土地
 
 //楼盘
 AssessDicKey.estate_position = "estate.position";//楼盘方位

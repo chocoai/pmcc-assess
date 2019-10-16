@@ -536,76 +536,6 @@ public class BasicEstateLandStateExample {
             return (Criteria) this;
         }
 
-        public Criteria andLandLevelContentIsNull() {
-            addCriterion("land_level_content is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandLevelContentIsNotNull() {
-            addCriterion("land_level_content is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandLevelContentEqualTo(String value) {
-            addCriterion("land_level_content =", value, "landLevelContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandLevelContentNotEqualTo(String value) {
-            addCriterion("land_level_content <>", value, "landLevelContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandLevelContentGreaterThan(String value) {
-            addCriterion("land_level_content >", value, "landLevelContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandLevelContentGreaterThanOrEqualTo(String value) {
-            addCriterion("land_level_content >=", value, "landLevelContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandLevelContentLessThan(String value) {
-            addCriterion("land_level_content <", value, "landLevelContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandLevelContentLessThanOrEqualTo(String value) {
-            addCriterion("land_level_content <=", value, "landLevelContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandLevelContentLike(String value) {
-            addCriterion("land_level_content like", value, "landLevelContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandLevelContentNotLike(String value) {
-            addCriterion("land_level_content not like", value, "landLevelContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandLevelContentIn(List<String> values) {
-            addCriterion("land_level_content in", values, "landLevelContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandLevelContentNotIn(List<String> values) {
-            addCriterion("land_level_content not in", values, "landLevelContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandLevelContentBetween(String value1, String value2) {
-            addCriterion("land_level_content between", value1, value2, "landLevelContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandLevelContentNotBetween(String value1, String value2) {
-            addCriterion("land_level_content not between", value1, value2, "landLevelContent");
-            return (Criteria) this;
-        }
-
         public Criteria andLandLevelIsNull() {
             addCriterion("land_level is null");
             return (Criteria) this;
@@ -2483,6 +2413,66 @@ public class BasicEstateLandStateExample {
 
         public Criteria andInfrastructureCompletenessNotBetween(Integer value1, Integer value2) {
             addCriterion("infrastructure_completeness not between", value1, value2, "infrastructureCompleteness");
+            return (Criteria) this;
+        }
+
+        public Criteria andDevelopmentTimeIsNull() {
+            addCriterion("development_time is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDevelopmentTimeIsNotNull() {
+            addCriterion("development_time is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDevelopmentTimeEqualTo(Date value) {
+            addCriterion("development_time =", value, "developmentTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andDevelopmentTimeNotEqualTo(Date value) {
+            addCriterion("development_time <>", value, "developmentTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andDevelopmentTimeGreaterThan(Date value) {
+            addCriterion("development_time >", value, "developmentTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andDevelopmentTimeGreaterThanOrEqualTo(Date value) {
+            addCriterion("development_time >=", value, "developmentTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andDevelopmentTimeLessThan(Date value) {
+            addCriterion("development_time <", value, "developmentTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andDevelopmentTimeLessThanOrEqualTo(Date value) {
+            addCriterion("development_time <=", value, "developmentTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andDevelopmentTimeIn(List<Date> values) {
+            addCriterion("development_time in", values, "developmentTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andDevelopmentTimeNotIn(List<Date> values) {
+            addCriterion("development_time not in", values, "developmentTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andDevelopmentTimeBetween(Date value1, Date value2) {
+            addCriterion("development_time between", value1, value2, "developmentTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andDevelopmentTimeNotBetween(Date value1, Date value2) {
+            addCriterion("development_time not between", value1, value2, "developmentTime");
             return (Criteria) this;
         }
 

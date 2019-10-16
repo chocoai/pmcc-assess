@@ -1506,6 +1506,66 @@ public class BasicEstateExample {
             return (Criteria) this;
         }
 
+        public Criteria andOpenTimeIsNull() {
+            addCriterion("open_time is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOpenTimeIsNotNull() {
+            addCriterion("open_time is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOpenTimeEqualTo(Date value) {
+            addCriterion("open_time =", value, "openTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andOpenTimeNotEqualTo(Date value) {
+            addCriterion("open_time <>", value, "openTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andOpenTimeGreaterThan(Date value) {
+            addCriterion("open_time >", value, "openTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andOpenTimeGreaterThanOrEqualTo(Date value) {
+            addCriterion("open_time >=", value, "openTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andOpenTimeLessThan(Date value) {
+            addCriterion("open_time <", value, "openTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andOpenTimeLessThanOrEqualTo(Date value) {
+            addCriterion("open_time <=", value, "openTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andOpenTimeIn(List<Date> values) {
+            addCriterion("open_time in", values, "openTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andOpenTimeNotIn(List<Date> values) {
+            addCriterion("open_time not in", values, "openTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andOpenTimeBetween(Date value1, Date value2) {
+            addCriterion("open_time between", value1, value2, "openTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andOpenTimeNotBetween(Date value1, Date value2) {
+            addCriterion("open_time not between", value1, value2, "openTime");
+            return (Criteria) this;
+        }
+
         public Criteria andBuildingNumberIsNull() {
             addCriterion("building_number is null");
             return (Criteria) this;
@@ -2456,6 +2516,186 @@ public class BasicEstateExample {
             return (Criteria) this;
         }
 
+        public Criteria andBasicBuildingIdIsNull() {
+            addCriterion("basic_building_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicBuildingIdIsNotNull() {
+            addCriterion("basic_building_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicBuildingIdEqualTo(Integer value) {
+            addCriterion("basic_building_id =", value, "basicBuildingId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicBuildingIdNotEqualTo(Integer value) {
+            addCriterion("basic_building_id <>", value, "basicBuildingId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicBuildingIdGreaterThan(Integer value) {
+            addCriterion("basic_building_id >", value, "basicBuildingId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicBuildingIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("basic_building_id >=", value, "basicBuildingId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicBuildingIdLessThan(Integer value) {
+            addCriterion("basic_building_id <", value, "basicBuildingId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicBuildingIdLessThanOrEqualTo(Integer value) {
+            addCriterion("basic_building_id <=", value, "basicBuildingId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicBuildingIdIn(List<Integer> values) {
+            addCriterion("basic_building_id in", values, "basicBuildingId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicBuildingIdNotIn(List<Integer> values) {
+            addCriterion("basic_building_id not in", values, "basicBuildingId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicBuildingIdBetween(Integer value1, Integer value2) {
+            addCriterion("basic_building_id between", value1, value2, "basicBuildingId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicBuildingIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("basic_building_id not between", value1, value2, "basicBuildingId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicUnitIdIsNull() {
+            addCriterion("basic_unit_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicUnitIdIsNotNull() {
+            addCriterion("basic_unit_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicUnitIdEqualTo(Integer value) {
+            addCriterion("basic_unit_id =", value, "basicUnitId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicUnitIdNotEqualTo(Integer value) {
+            addCriterion("basic_unit_id <>", value, "basicUnitId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicUnitIdGreaterThan(Integer value) {
+            addCriterion("basic_unit_id >", value, "basicUnitId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicUnitIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("basic_unit_id >=", value, "basicUnitId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicUnitIdLessThan(Integer value) {
+            addCriterion("basic_unit_id <", value, "basicUnitId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicUnitIdLessThanOrEqualTo(Integer value) {
+            addCriterion("basic_unit_id <=", value, "basicUnitId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicUnitIdIn(List<Integer> values) {
+            addCriterion("basic_unit_id in", values, "basicUnitId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicUnitIdNotIn(List<Integer> values) {
+            addCriterion("basic_unit_id not in", values, "basicUnitId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicUnitIdBetween(Integer value1, Integer value2) {
+            addCriterion("basic_unit_id between", value1, value2, "basicUnitId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicUnitIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("basic_unit_id not between", value1, value2, "basicUnitId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicHouseIdIsNull() {
+            addCriterion("basic_house_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicHouseIdIsNotNull() {
+            addCriterion("basic_house_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicHouseIdEqualTo(Integer value) {
+            addCriterion("basic_house_id =", value, "basicHouseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicHouseIdNotEqualTo(Integer value) {
+            addCriterion("basic_house_id <>", value, "basicHouseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicHouseIdGreaterThan(Integer value) {
+            addCriterion("basic_house_id >", value, "basicHouseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicHouseIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("basic_house_id >=", value, "basicHouseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicHouseIdLessThan(Integer value) {
+            addCriterion("basic_house_id <", value, "basicHouseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicHouseIdLessThanOrEqualTo(Integer value) {
+            addCriterion("basic_house_id <=", value, "basicHouseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicHouseIdIn(List<Integer> values) {
+            addCriterion("basic_house_id in", values, "basicHouseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicHouseIdNotIn(List<Integer> values) {
+            addCriterion("basic_house_id not in", values, "basicHouseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicHouseIdBetween(Integer value1, Integer value2) {
+            addCriterion("basic_house_id between", value1, value2, "basicHouseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicHouseIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("basic_house_id not between", value1, value2, "basicHouseId");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatorIsNull() {
             addCriterion("creator is null");
             return (Criteria) this;
@@ -2643,66 +2883,6 @@ public class BasicEstateExample {
 
         public Criteria andGmtModifiedNotBetween(Date value1, Date value2) {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
-            return (Criteria) this;
-        }
-
-        public Criteria andOpenTimeIsNull() {
-            addCriterion("open_time is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andOpenTimeIsNotNull() {
-            addCriterion("open_time is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andOpenTimeEqualTo(Date value) {
-            addCriterion("open_time =", value, "openTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andOpenTimeNotEqualTo(Date value) {
-            addCriterion("open_time <>", value, "openTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andOpenTimeGreaterThan(Date value) {
-            addCriterion("open_time >", value, "openTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andOpenTimeGreaterThanOrEqualTo(Date value) {
-            addCriterion("open_time >=", value, "openTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andOpenTimeLessThan(Date value) {
-            addCriterion("open_time <", value, "openTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andOpenTimeLessThanOrEqualTo(Date value) {
-            addCriterion("open_time <=", value, "openTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andOpenTimeIn(List<Date> values) {
-            addCriterion("open_time in", values, "openTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andOpenTimeNotIn(List<Date> values) {
-            addCriterion("open_time not in", values, "openTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andOpenTimeBetween(Date value1, Date value2) {
-            addCriterion("open_time between", value1, value2, "openTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andOpenTimeNotBetween(Date value1, Date value2) {
-            addCriterion("open_time not between", value1, value2, "openTime");
             return (Criteria) this;
         }
     }

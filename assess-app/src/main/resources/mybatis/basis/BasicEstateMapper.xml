@@ -23,6 +23,7 @@
     <result column="cover_an_area" property="coverAnArea" jdbcType="DECIMAL" />
     <result column="volumetric_rate" property="volumetricRate" jdbcType="VARCHAR" />
     <result column="greening_rate" property="greeningRate" jdbcType="VARCHAR" />
+    <result column="open_time" property="openTime" jdbcType="TIMESTAMP" />
     <result column="building_number" property="buildingNumber" jdbcType="INTEGER" />
     <result column="position" property="position" jdbcType="INTEGER" />
     <result column="description" property="description" jdbcType="VARCHAR" />
@@ -38,10 +39,12 @@
     <result column="supply_gas" property="supplyGas" jdbcType="INTEGER" />
     <result column="infrastructure_completeness" property="infrastructureCompleteness" jdbcType="INTEGER" />
     <result column="location_describe" property="locationDescribe" jdbcType="VARCHAR" />
+    <result column="basic_building_id" property="basicBuildingId" jdbcType="INTEGER" />
+    <result column="basic_unit_id" property="basicUnitId" jdbcType="INTEGER" />
+    <result column="basic_house_id" property="basicHouseId" jdbcType="INTEGER" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
-    <result column="open_time" property="openTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -104,10 +107,11 @@
   <sql id="Base_Column_List" >
     id, apply_id, type, province, city, district, block_id, block_name, block_description, 
     developer, developer_name, name, street_number, street, number, land_level, attach_number, 
-    floor_area, cover_an_area, volumetric_rate, greening_rate, building_number, position, 
-    description, average_price, price_range, supply_heating, supply_power, supply_communication, 
-    supply_road, supply_water, drain_water, infrastructure, supply_gas, infrastructure_completeness, 
-    location_describe, creator, gmt_created, gmt_modified, open_time
+    floor_area, cover_an_area, volumetric_rate, greening_rate, open_time, building_number, 
+    position, description, average_price, price_range, supply_heating, supply_power, 
+    supply_communication, supply_road, supply_water, drain_water, infrastructure, supply_gas, 
+    infrastructure_completeness, location_describe, basic_building_id, basic_unit_id, 
+    basic_house_id, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicEstateExample" >
     select
@@ -149,28 +153,30 @@
       developer_name, name, street_number, 
       street, number, land_level, 
       attach_number, floor_area, cover_an_area, 
-      volumetric_rate, greening_rate, building_number, 
-      position, description, average_price, 
-      price_range, supply_heating, supply_power, 
-      supply_communication, supply_road, supply_water, 
-      drain_water, infrastructure, supply_gas, 
-      infrastructure_completeness, location_describe, 
-      creator, gmt_created, gmt_modified, 
-      open_time)
+      volumetric_rate, greening_rate, open_time, 
+      building_number, position, description, 
+      average_price, price_range, supply_heating, 
+      supply_power, supply_communication, supply_road, 
+      supply_water, drain_water, infrastructure, 
+      supply_gas, infrastructure_completeness, 
+      location_describe, basic_building_id, basic_unit_id, 
+      basic_house_id, creator, gmt_created, 
+      gmt_modified)
     values (#{applyId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, 
       #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, #{blockId,jdbcType=INTEGER}, 
       #{blockName,jdbcType=VARCHAR}, #{blockDescription,jdbcType=VARCHAR}, #{developer,jdbcType=VARCHAR}, 
       #{developerName,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{streetNumber,jdbcType=VARCHAR}, 
       #{street,jdbcType=VARCHAR}, #{number,jdbcType=VARCHAR}, #{landLevel,jdbcType=INTEGER}, 
       #{attachNumber,jdbcType=VARCHAR}, #{floorArea,jdbcType=DECIMAL}, #{coverAnArea,jdbcType=DECIMAL}, 
-      #{volumetricRate,jdbcType=VARCHAR}, #{greeningRate,jdbcType=VARCHAR}, #{buildingNumber,jdbcType=INTEGER}, 
-      #{position,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}, #{averagePrice,jdbcType=VARCHAR}, 
-      #{priceRange,jdbcType=VARCHAR}, #{supplyHeating,jdbcType=INTEGER}, #{supplyPower,jdbcType=INTEGER}, 
-      #{supplyCommunication,jdbcType=INTEGER}, #{supplyRoad,jdbcType=INTEGER}, #{supplyWater,jdbcType=INTEGER}, 
-      #{drainWater,jdbcType=INTEGER}, #{infrastructure,jdbcType=VARCHAR}, #{supplyGas,jdbcType=INTEGER}, 
-      #{infrastructureCompleteness,jdbcType=INTEGER}, #{locationDescribe,jdbcType=VARCHAR}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
-      #{openTime,jdbcType=TIMESTAMP})
+      #{volumetricRate,jdbcType=VARCHAR}, #{greeningRate,jdbcType=VARCHAR}, #{openTime,jdbcType=TIMESTAMP}, 
+      #{buildingNumber,jdbcType=INTEGER}, #{position,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}, 
+      #{averagePrice,jdbcType=VARCHAR}, #{priceRange,jdbcType=VARCHAR}, #{supplyHeating,jdbcType=INTEGER}, 
+      #{supplyPower,jdbcType=INTEGER}, #{supplyCommunication,jdbcType=INTEGER}, #{supplyRoad,jdbcType=INTEGER}, 
+      #{supplyWater,jdbcType=INTEGER}, #{drainWater,jdbcType=INTEGER}, #{infrastructure,jdbcType=VARCHAR}, 
+      #{supplyGas,jdbcType=INTEGER}, #{infrastructureCompleteness,jdbcType=INTEGER}, 
+      #{locationDescribe,jdbcType=VARCHAR}, #{basicBuildingId,jdbcType=INTEGER}, #{basicUnitId,jdbcType=INTEGER}, 
+      #{basicHouseId,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicEstate" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -238,6 +244,9 @@
       <if test="greeningRate != null" >
         greening_rate,
       </if>
+      <if test="openTime != null" >
+        open_time,
+      </if>
       <if test="buildingNumber != null" >
         building_number,
       </if>
@@ -283,6 +292,15 @@
       <if test="locationDescribe != null" >
         location_describe,
       </if>
+      <if test="basicBuildingId != null" >
+        basic_building_id,
+      </if>
+      <if test="basicUnitId != null" >
+        basic_unit_id,
+      </if>
+      <if test="basicHouseId != null" >
+        basic_house_id,
+      </if>
       <if test="creator != null" >
         creator,
       </if>
@@ -291,9 +309,6 @@
       </if>
       <if test="gmtModified != null" >
         gmt_modified,
-      </if>
-      <if test="openTime != null" >
-        open_time,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -357,6 +372,9 @@
       <if test="greeningRate != null" >
         #{greeningRate,jdbcType=VARCHAR},
       </if>
+      <if test="openTime != null" >
+        #{openTime,jdbcType=TIMESTAMP},
+      </if>
       <if test="buildingNumber != null" >
         #{buildingNumber,jdbcType=INTEGER},
       </if>
@@ -402,6 +420,15 @@
       <if test="locationDescribe != null" >
         #{locationDescribe,jdbcType=VARCHAR},
       </if>
+      <if test="basicBuildingId != null" >
+        #{basicBuildingId,jdbcType=INTEGER},
+      </if>
+      <if test="basicUnitId != null" >
+        #{basicUnitId,jdbcType=INTEGER},
+      </if>
+      <if test="basicHouseId != null" >
+        #{basicHouseId,jdbcType=INTEGER},
+      </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
       </if>
@@ -410,9 +437,6 @@
       </if>
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="openTime != null" >
-        #{openTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -488,6 +512,9 @@
       <if test="record.greeningRate != null" >
         greening_rate = #{record.greeningRate,jdbcType=VARCHAR},
       </if>
+      <if test="record.openTime != null" >
+        open_time = #{record.openTime,jdbcType=TIMESTAMP},
+      </if>
       <if test="record.buildingNumber != null" >
         building_number = #{record.buildingNumber,jdbcType=INTEGER},
       </if>
@@ -533,6 +560,15 @@
       <if test="record.locationDescribe != null" >
         location_describe = #{record.locationDescribe,jdbcType=VARCHAR},
       </if>
+      <if test="record.basicBuildingId != null" >
+        basic_building_id = #{record.basicBuildingId,jdbcType=INTEGER},
+      </if>
+      <if test="record.basicUnitId != null" >
+        basic_unit_id = #{record.basicUnitId,jdbcType=INTEGER},
+      </if>
+      <if test="record.basicHouseId != null" >
+        basic_house_id = #{record.basicHouseId,jdbcType=INTEGER},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -541,9 +577,6 @@
       </if>
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.openTime != null" >
-        open_time = #{record.openTime,jdbcType=TIMESTAMP},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -573,6 +606,7 @@
       cover_an_area = #{record.coverAnArea,jdbcType=DECIMAL},
       volumetric_rate = #{record.volumetricRate,jdbcType=VARCHAR},
       greening_rate = #{record.greeningRate,jdbcType=VARCHAR},
+      open_time = #{record.openTime,jdbcType=TIMESTAMP},
       building_number = #{record.buildingNumber,jdbcType=INTEGER},
       position = #{record.position,jdbcType=INTEGER},
       description = #{record.description,jdbcType=VARCHAR},
@@ -588,10 +622,12 @@
       supply_gas = #{record.supplyGas,jdbcType=INTEGER},
       infrastructure_completeness = #{record.infrastructureCompleteness,jdbcType=INTEGER},
       location_describe = #{record.locationDescribe,jdbcType=VARCHAR},
+      basic_building_id = #{record.basicBuildingId,jdbcType=INTEGER},
+      basic_unit_id = #{record.basicUnitId,jdbcType=INTEGER},
+      basic_house_id = #{record.basicHouseId,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      open_time = #{record.openTime,jdbcType=TIMESTAMP}
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -659,6 +695,9 @@
       <if test="greeningRate != null" >
         greening_rate = #{greeningRate,jdbcType=VARCHAR},
       </if>
+      <if test="openTime != null" >
+        open_time = #{openTime,jdbcType=TIMESTAMP},
+      </if>
       <if test="buildingNumber != null" >
         building_number = #{buildingNumber,jdbcType=INTEGER},
       </if>
@@ -704,6 +743,15 @@
       <if test="locationDescribe != null" >
         location_describe = #{locationDescribe,jdbcType=VARCHAR},
       </if>
+      <if test="basicBuildingId != null" >
+        basic_building_id = #{basicBuildingId,jdbcType=INTEGER},
+      </if>
+      <if test="basicUnitId != null" >
+        basic_unit_id = #{basicUnitId,jdbcType=INTEGER},
+      </if>
+      <if test="basicHouseId != null" >
+        basic_house_id = #{basicHouseId,jdbcType=INTEGER},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -712,9 +760,6 @@
       </if>
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="openTime != null" >
-        open_time = #{openTime,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -741,6 +786,7 @@
       cover_an_area = #{coverAnArea,jdbcType=DECIMAL},
       volumetric_rate = #{volumetricRate,jdbcType=VARCHAR},
       greening_rate = #{greeningRate,jdbcType=VARCHAR},
+      open_time = #{openTime,jdbcType=TIMESTAMP},
       building_number = #{buildingNumber,jdbcType=INTEGER},
       position = #{position,jdbcType=INTEGER},
       description = #{description,jdbcType=VARCHAR},
@@ -756,10 +802,12 @@
       supply_gas = #{supplyGas,jdbcType=INTEGER},
       infrastructure_completeness = #{infrastructureCompleteness,jdbcType=INTEGER},
       location_describe = #{locationDescribe,jdbcType=VARCHAR},
+      basic_building_id = #{basicBuildingId,jdbcType=INTEGER},
+      basic_unit_id = #{basicUnitId,jdbcType=INTEGER},
+      basic_house_id = #{basicHouseId,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      open_time = #{openTime,jdbcType=TIMESTAMP}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

@@ -13,7 +13,7 @@ import com.copower.pmcc.assess.common.enums.basic.ExamineHouseEquipmentTypeEnum;
 import com.copower.pmcc.assess.common.enums.basic.ExamineMatchingLeisurePlaceTypeEnum;
 import com.copower.pmcc.assess.common.enums.basic.ExamineMatchingTrafficTypeEnum;
 import com.copower.pmcc.assess.common.enums.report.BaseReportFieldEnum;
-import com.copower.pmcc.assess.common.enums.word.AssessTypeEnum;
+import com.copower.pmcc.assess.common.enums.AssessProjectTypeEnum;
 import com.copower.pmcc.assess.constant.*;
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInventoryDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
@@ -245,13 +245,13 @@ public class GenerateBaseDataService {
         String key = null;
         Document document = new Document(localPath);
         DocumentBuilder documentBuilder = new DocumentBuilder(document);
-        if (Objects.equal(generateReportInfo.getAssessCategory(), AssessTypeEnum.ASSESS_TYPE_ENUM_ASSETS.getNumber())) {
+        if (Objects.equal(generateReportInfo.getAssessCategory(), AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_ASSETS.getNumber())) {
             key = AssessReportFieldConstant.COVER_ASSETS_TEMPLATE;
         }
-        if (Objects.equal(generateReportInfo.getAssessCategory(), AssessTypeEnum.ASSESS_TYPE_ENUM_LAND.getNumber())) {
+        if (Objects.equal(generateReportInfo.getAssessCategory(), AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_LAND.getNumber())) {
             key = AssessReportFieldConstant.COVER_LAND_TEMPLATE;
         }
-        if (Objects.equal(generateReportInfo.getAssessCategory(), AssessTypeEnum.ASSESS_TYPE_ENUM_HOUSE.getNumber())) {
+        if (Objects.equal(generateReportInfo.getAssessCategory(), AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_HOUSE.getNumber())) {
             key = AssessReportFieldConstant.COVER_HOUSE_TEMPLATE;
         }
         if (StringUtils.isEmpty(key)) {

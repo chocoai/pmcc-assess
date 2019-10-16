@@ -312,7 +312,7 @@ public class BasicApplyBatchService {
         //1.根据不同情况初始化不同的信息结构 2.初始化之前需先将原初始化信息删除
         deleteBatchByPlanDetailsId(basicApplyBatch.getPlanDetailsId());
         if (basicApplyBatch.getClassify() == null) return basicApplyBatch;
-        BaseDataDic classifySingle = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.PROJECT_SURVEY_FORM_CLASSIFY_SINGEL);
+        BaseDataDic classifyDataDic = baseDataDicService.getCacheDataDicById(basicApplyBatch.getClassify());
         //楼盘
         BasicEstate basicEstate = new BasicEstate();
         basicEstate.setCreator(commonService.thisUserAccount());
@@ -321,13 +321,17 @@ public class BasicApplyBatchService {
         basicEstateLandState.setEstateId(basicEstate.getId());
         basicEstateLandState.setCreator(commonService.thisUserAccount());
         basicEstateLandStateService.saveAndUpdateBasicEstateLandState(basicEstateLandState);
-
+        String estateName = "楼盘信息";
+        if (AssessDataDicKeyConstant.PROJECT_SURVEY_FORM_CLASSIFY_LAND.equals(classifyDataDic.getFieldName())
+                || AssessDataDicKeyConstant.PROJECT_SURVEY_FORM_CLASSIFY_LAND_ONLY.equals(classifyDataDic.getFieldName())) {
+            estateName = "地块信息";
+        }
         basicApplyBatch.setEstateId(basicEstate.getId());
-        basicApplyBatch.setEstateName("楼盘信息");
+        basicApplyBatch.setEstateName(estateName);
         basicApplyBatch.setCreator(commonService.thisUserAccount());
         saveApplyInfo(basicApplyBatch);
-        if (classifySingle.getId().equals(basicApplyBatch.getClassify())) { //1.添加applyBatch 2.添加applyBatchDetail 3.添加楼盘、楼栋、单元、房屋主表 4.添加basicApply表
-            //楼栋
+        if (AssessDataDicKeyConstant.PROJECT_SURVEY_FORM_CLASSIFY_SINGEL.equals(classifyDataDic.getFieldName())) {
+            //1.添加applyBatch 2.添加applyBatchDetail 3.添加楼盘、楼栋、单元、房屋主表 4.添加basicApply表
             BasicBuilding basicBuilding = new BasicBuilding();
             basicBuilding.setCreator(commonService.thisUserAccount());
             basicBuildingService.saveAndUpdateBasicBuilding(basicBuilding);
@@ -1483,6 +1487,7 @@ public class BasicApplyBatchService {
 
     /**
      * 粘贴调查信息
+     *
      * @param sourceBatchDetailId
      * @param targetBatchDetailId
      * @throws Exception
@@ -1508,7 +1513,7 @@ public class BasicApplyBatchService {
         if (sourceBasicApplyBatchDetail.getTableName().equals("tb_basic_house")) {
             BasicHouse sourceHouse = basicHouseDao.getBasicHouseById(sourceBasicApplyBatchDetail.getTableId());
             BasicHouse targetHouse = basicHouseDao.getBasicHouseById(targetBasicApplyBatchDetail.getTableId());
-            copyBasicHouseBasic(sourceHouse,targetHouse);
+            copyBasicHouseBasic(sourceHouse, targetHouse);
         }
     }
 
