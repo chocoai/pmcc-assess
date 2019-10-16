@@ -172,6 +172,9 @@
                             </div>
                             <div class="x_content">
                                 <form class="form-horizontal" id="master_other">
+                                    <input type="hidden" name="landProductionInterestUnit" id="landProductionInterestUnit">
+                                    <input type="hidden" name="parcelUnit" id="parcelUnit">
+                                    <input type="hidden" name="landProductionProfitUnit" id="landProductionProfitUnit">
                                     <div class="form-group">
                                         <div class="x-valid">
                                             <label class="col-sm-1 control-label">
@@ -662,6 +665,15 @@
         formData.landRemainingYear = formDataOther.landRemainingYear;
         formData.landRemainingYearRemark = formDataOther.landRemainingYearRemark;
 
+
+        formData.parcelUnit =formDataOther.parcelUnit;
+        formData.landUsePrice =getSomePlaces(parseFloat($("#landUseBhou").text()) / AssessCommon.BHOU, 2);
+        formData.yearFixed =parseFloat($("#yearFixed").text());
+        formData.landCostPriceUnit =parseFloat(getSomePlaces($("#landCostPriceBhou").text()/AssessCommon.BHOU,2));
+        formData.landAcquisitionUnit =parseFloat(getSomePlaces($("#landAcquisitionBhou").text()/AssessCommon.BHOU,2));
+        formData.landProductionProfitUnit =formDataOther.landProductionProfitUnit;
+        formData.landProductionInterestUnit =formDataOther.landProductionInterestUnit;
+
         var landLevelContent = [];
         $("#areaAndSeveralAmendForm").find("input[name='landLevelContent']").each(function (i, n) {
             var group = $(n).closest(".group");
@@ -680,10 +692,11 @@
             });
             landLevelContent.push(dataObject);
         });
+
         if (landLevelContent.length >= 1) {
             formData.landLevelContent = JSON.stringify(landLevelContent);
         }else{
-            formData.landLevelContent ="";
+            formData.landLevelContent ="[]";
         }
 
         if ("${processInsId}" != "0") {
@@ -795,6 +808,7 @@
             var temp2 = Math.pow((1 + calculatedInterest), machineCycle / 2) - 1;
             var landProductionInterestUnit = getSomePlaces(landAcquisitionUnit * temp + landProductionUnit * temp2, 2);
             $("#landProductionInterestBhou").text(getSomePlaces(landProductionInterestUnit * AssessCommon.BHOU, 2));
+            $("#landProductionInterestUnit").val(landProductionInterestUnit);
         }
         //土地开发利润
         getLandProductionProfit();
@@ -817,6 +831,7 @@
             //(E4+E17)*F24
             var landProductionProfitUnit = getSomePlaces((landAcquisitionUnit + landProductionUnit) * profitMargin, 2);
             $("#landProductionProfitBhou").text(getSomePlaces(landProductionProfitUnit * AssessCommon.BHOU, 2));
+            $("#landProductionProfitUnit").val(getSomePlaces(landProductionProfitUnit, 2));
 
             var landProductionProfitBhou = parseFloat($("#landProductionProfitBhou").text());
             var landAcquisitionBhou = parseFloat($("#landAcquisitionBhou").text());
@@ -894,6 +909,7 @@
 
                 //委估宗地价格
                 $("#parcelBhou").text(getSomePlaces(plotRatioAdjustBhou / 10000, 2));
+                $("#parcelUnit").val(getSomePlaces(yearFixed * landUseBhou * (1 + plotRatioElementAmend) * (1 + plotRatioAdjust) / AssessCommon.BHOU, 2));
             }
         }
     }

@@ -61,6 +61,9 @@ public class MdCostApproachService {
         return costApproachDao.getObjectList(mdCostApproach);
     }
 
+    public MdCostApproach getDataById(Integer id) {
+        return costApproachDao.getMdCostApproach(id);
+    }
 
     public MdCostApproach getDataByProcessInsId(String processInsId) {
         MdCostApproach where = new MdCostApproach();
@@ -82,6 +85,13 @@ public class MdCostApproachService {
 
 
     public void saveMdCostApproach(MdCostApproach mdCostApproach) {
+        //不含代征地每平税费 = 土地取得费及相关税费 - 代征地每平税费
+        BigDecimal landAcquisitionBhou = getLandAcquisitionBhou(mdCostApproach.getId());
+        MdCostApproachTaxes landAcquisition = getMdCostApproachTaxesListByMasterId(mdCostApproach.getId(), AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_LAND_ACQUISITION);
+        if (landAcquisition != null) {
+            landAcquisitionBhou = landAcquisitionBhou.subtract(landAcquisition.getPrice());
+        }
+        mdCostApproach.setHaveNotLandAcquisition(landAcquisitionBhou.divide(Bhou, 2, BigDecimal.ROUND_HALF_UP));
         if (mdCostApproach.getId() != null && mdCostApproach.getId().intValue() > 0) {
             costApproachDao.editMdCostApproach(mdCostApproach);
         } else {
@@ -382,20 +392,18 @@ public class MdCostApproachService {
     public BigDecimal getLandAcquisitionBhou(Integer masterId) {
         BigDecimal total = new BigDecimal("0");
         List<MdCostApproachTaxes> costApproachTaxes = getMdCostApproachTaxesListByMasterId(masterId);
+        MdCostApproachTaxes landAcquisition = getMdCostApproachTaxesListByMasterId(masterId, AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_LAND_ACQUISITION);
         if (CollectionUtils.isNotEmpty(costApproachTaxes)) {
             for (MdCostApproachTaxes item : costApproachTaxes) {
-                if(item.getPrice()!=null) {
-                    total = total.add(item.getPrice());
+                if (item.getTypeKey() != landAcquisition.getTypeKey()) {
+                    if (item.getPrice() != null) {
+                        total = total.add(item.getPrice());
+                    }
                 }
             }
         }
-        MdCostApproachTaxes landAcquisition = getMdCostApproachTaxesListByMasterId(masterId, AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_LAND_ACQUISITION);
-        if (landAcquisition != null && landAcquisition.getStandardFirst() != null) {
-            total = total.subtract(landAcquisition.getPrice());
-            return total.divide(new BigDecimal("1").subtract(landAcquisition.getStandardFirst()), 2, BigDecimal.ROUND_HALF_UP);
-        }
 
-        return null;
+        return total;
     }
 
     public MdCostApproachVo getMdCostApproachVo(MdCostApproach oo) {

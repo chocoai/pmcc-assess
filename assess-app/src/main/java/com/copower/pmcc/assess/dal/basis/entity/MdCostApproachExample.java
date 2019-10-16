@@ -2215,6 +2215,486 @@ public class MdCostApproachExample {
             addCriterion("land_level_content not between", value1, value2, "landLevelContent");
             return (Criteria) this;
         }
+
+        public Criteria andLandUsePriceIsNull() {
+            addCriterion("land_use_price is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUsePriceIsNotNull() {
+            addCriterion("land_use_price is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUsePriceEqualTo(BigDecimal value) {
+            addCriterion("land_use_price =", value, "landUsePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUsePriceNotEqualTo(BigDecimal value) {
+            addCriterion("land_use_price <>", value, "landUsePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUsePriceGreaterThan(BigDecimal value) {
+            addCriterion("land_use_price >", value, "landUsePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUsePriceGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("land_use_price >=", value, "landUsePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUsePriceLessThan(BigDecimal value) {
+            addCriterion("land_use_price <", value, "landUsePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUsePriceLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("land_use_price <=", value, "landUsePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUsePriceIn(List<BigDecimal> values) {
+            addCriterion("land_use_price in", values, "landUsePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUsePriceNotIn(List<BigDecimal> values) {
+            addCriterion("land_use_price not in", values, "landUsePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUsePriceBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("land_use_price between", value1, value2, "landUsePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUsePriceNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("land_use_price not between", value1, value2, "landUsePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andYearFixedIsNull() {
+            addCriterion("year_fixed is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andYearFixedIsNotNull() {
+            addCriterion("year_fixed is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andYearFixedEqualTo(BigDecimal value) {
+            addCriterion("year_fixed =", value, "yearFixed");
+            return (Criteria) this;
+        }
+
+        public Criteria andYearFixedNotEqualTo(BigDecimal value) {
+            addCriterion("year_fixed <>", value, "yearFixed");
+            return (Criteria) this;
+        }
+
+        public Criteria andYearFixedGreaterThan(BigDecimal value) {
+            addCriterion("year_fixed >", value, "yearFixed");
+            return (Criteria) this;
+        }
+
+        public Criteria andYearFixedGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("year_fixed >=", value, "yearFixed");
+            return (Criteria) this;
+        }
+
+        public Criteria andYearFixedLessThan(BigDecimal value) {
+            addCriterion("year_fixed <", value, "yearFixed");
+            return (Criteria) this;
+        }
+
+        public Criteria andYearFixedLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("year_fixed <=", value, "yearFixed");
+            return (Criteria) this;
+        }
+
+        public Criteria andYearFixedIn(List<BigDecimal> values) {
+            addCriterion("year_fixed in", values, "yearFixed");
+            return (Criteria) this;
+        }
+
+        public Criteria andYearFixedNotIn(List<BigDecimal> values) {
+            addCriterion("year_fixed not in", values, "yearFixed");
+            return (Criteria) this;
+        }
+
+        public Criteria andYearFixedBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("year_fixed between", value1, value2, "yearFixed");
+            return (Criteria) this;
+        }
+
+        public Criteria andYearFixedNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("year_fixed not between", value1, value2, "yearFixed");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelUnitIsNull() {
+            addCriterion("parcel_unit is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelUnitIsNotNull() {
+            addCriterion("parcel_unit is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelUnitEqualTo(BigDecimal value) {
+            addCriterion("parcel_unit =", value, "parcelUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelUnitNotEqualTo(BigDecimal value) {
+            addCriterion("parcel_unit <>", value, "parcelUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelUnitGreaterThan(BigDecimal value) {
+            addCriterion("parcel_unit >", value, "parcelUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelUnitGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("parcel_unit >=", value, "parcelUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelUnitLessThan(BigDecimal value) {
+            addCriterion("parcel_unit <", value, "parcelUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelUnitLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("parcel_unit <=", value, "parcelUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelUnitIn(List<BigDecimal> values) {
+            addCriterion("parcel_unit in", values, "parcelUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelUnitNotIn(List<BigDecimal> values) {
+            addCriterion("parcel_unit not in", values, "parcelUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelUnitBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("parcel_unit between", value1, value2, "parcelUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelUnitNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("parcel_unit not between", value1, value2, "parcelUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCostPriceUnitIsNull() {
+            addCriterion("land_cost_price_unit is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCostPriceUnitIsNotNull() {
+            addCriterion("land_cost_price_unit is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCostPriceUnitEqualTo(BigDecimal value) {
+            addCriterion("land_cost_price_unit =", value, "landCostPriceUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCostPriceUnitNotEqualTo(BigDecimal value) {
+            addCriterion("land_cost_price_unit <>", value, "landCostPriceUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCostPriceUnitGreaterThan(BigDecimal value) {
+            addCriterion("land_cost_price_unit >", value, "landCostPriceUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCostPriceUnitGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("land_cost_price_unit >=", value, "landCostPriceUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCostPriceUnitLessThan(BigDecimal value) {
+            addCriterion("land_cost_price_unit <", value, "landCostPriceUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCostPriceUnitLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("land_cost_price_unit <=", value, "landCostPriceUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCostPriceUnitIn(List<BigDecimal> values) {
+            addCriterion("land_cost_price_unit in", values, "landCostPriceUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCostPriceUnitNotIn(List<BigDecimal> values) {
+            addCriterion("land_cost_price_unit not in", values, "landCostPriceUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCostPriceUnitBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("land_cost_price_unit between", value1, value2, "landCostPriceUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCostPriceUnitNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("land_cost_price_unit not between", value1, value2, "landCostPriceUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAcquisitionUnitIsNull() {
+            addCriterion("land_acquisition_unit is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAcquisitionUnitIsNotNull() {
+            addCriterion("land_acquisition_unit is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAcquisitionUnitEqualTo(BigDecimal value) {
+            addCriterion("land_acquisition_unit =", value, "landAcquisitionUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAcquisitionUnitNotEqualTo(BigDecimal value) {
+            addCriterion("land_acquisition_unit <>", value, "landAcquisitionUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAcquisitionUnitGreaterThan(BigDecimal value) {
+            addCriterion("land_acquisition_unit >", value, "landAcquisitionUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAcquisitionUnitGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("land_acquisition_unit >=", value, "landAcquisitionUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAcquisitionUnitLessThan(BigDecimal value) {
+            addCriterion("land_acquisition_unit <", value, "landAcquisitionUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAcquisitionUnitLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("land_acquisition_unit <=", value, "landAcquisitionUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAcquisitionUnitIn(List<BigDecimal> values) {
+            addCriterion("land_acquisition_unit in", values, "landAcquisitionUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAcquisitionUnitNotIn(List<BigDecimal> values) {
+            addCriterion("land_acquisition_unit not in", values, "landAcquisitionUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAcquisitionUnitBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("land_acquisition_unit between", value1, value2, "landAcquisitionUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAcquisitionUnitNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("land_acquisition_unit not between", value1, value2, "landAcquisitionUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionProfitUnitIsNull() {
+            addCriterion("land_production_profit_unit is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionProfitUnitIsNotNull() {
+            addCriterion("land_production_profit_unit is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionProfitUnitEqualTo(BigDecimal value) {
+            addCriterion("land_production_profit_unit =", value, "landProductionProfitUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionProfitUnitNotEqualTo(BigDecimal value) {
+            addCriterion("land_production_profit_unit <>", value, "landProductionProfitUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionProfitUnitGreaterThan(BigDecimal value) {
+            addCriterion("land_production_profit_unit >", value, "landProductionProfitUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionProfitUnitGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("land_production_profit_unit >=", value, "landProductionProfitUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionProfitUnitLessThan(BigDecimal value) {
+            addCriterion("land_production_profit_unit <", value, "landProductionProfitUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionProfitUnitLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("land_production_profit_unit <=", value, "landProductionProfitUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionProfitUnitIn(List<BigDecimal> values) {
+            addCriterion("land_production_profit_unit in", values, "landProductionProfitUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionProfitUnitNotIn(List<BigDecimal> values) {
+            addCriterion("land_production_profit_unit not in", values, "landProductionProfitUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionProfitUnitBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("land_production_profit_unit between", value1, value2, "landProductionProfitUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionProfitUnitNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("land_production_profit_unit not between", value1, value2, "landProductionProfitUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionInterestUnitIsNull() {
+            addCriterion("land_production_interest_unit is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionInterestUnitIsNotNull() {
+            addCriterion("land_production_interest_unit is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionInterestUnitEqualTo(BigDecimal value) {
+            addCriterion("land_production_interest_unit =", value, "landProductionInterestUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionInterestUnitNotEqualTo(BigDecimal value) {
+            addCriterion("land_production_interest_unit <>", value, "landProductionInterestUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionInterestUnitGreaterThan(BigDecimal value) {
+            addCriterion("land_production_interest_unit >", value, "landProductionInterestUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionInterestUnitGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("land_production_interest_unit >=", value, "landProductionInterestUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionInterestUnitLessThan(BigDecimal value) {
+            addCriterion("land_production_interest_unit <", value, "landProductionInterestUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionInterestUnitLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("land_production_interest_unit <=", value, "landProductionInterestUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionInterestUnitIn(List<BigDecimal> values) {
+            addCriterion("land_production_interest_unit in", values, "landProductionInterestUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionInterestUnitNotIn(List<BigDecimal> values) {
+            addCriterion("land_production_interest_unit not in", values, "landProductionInterestUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionInterestUnitBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("land_production_interest_unit between", value1, value2, "landProductionInterestUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionInterestUnitNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("land_production_interest_unit not between", value1, value2, "landProductionInterestUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andHaveNotLandAcquisitionIsNull() {
+            addCriterion("have_not_land_acquisition is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHaveNotLandAcquisitionIsNotNull() {
+            addCriterion("have_not_land_acquisition is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHaveNotLandAcquisitionEqualTo(BigDecimal value) {
+            addCriterion("have_not_land_acquisition =", value, "haveNotLandAcquisition");
+            return (Criteria) this;
+        }
+
+        public Criteria andHaveNotLandAcquisitionNotEqualTo(BigDecimal value) {
+            addCriterion("have_not_land_acquisition <>", value, "haveNotLandAcquisition");
+            return (Criteria) this;
+        }
+
+        public Criteria andHaveNotLandAcquisitionGreaterThan(BigDecimal value) {
+            addCriterion("have_not_land_acquisition >", value, "haveNotLandAcquisition");
+            return (Criteria) this;
+        }
+
+        public Criteria andHaveNotLandAcquisitionGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("have_not_land_acquisition >=", value, "haveNotLandAcquisition");
+            return (Criteria) this;
+        }
+
+        public Criteria andHaveNotLandAcquisitionLessThan(BigDecimal value) {
+            addCriterion("have_not_land_acquisition <", value, "haveNotLandAcquisition");
+            return (Criteria) this;
+        }
+
+        public Criteria andHaveNotLandAcquisitionLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("have_not_land_acquisition <=", value, "haveNotLandAcquisition");
+            return (Criteria) this;
+        }
+
+        public Criteria andHaveNotLandAcquisitionIn(List<BigDecimal> values) {
+            addCriterion("have_not_land_acquisition in", values, "haveNotLandAcquisition");
+            return (Criteria) this;
+        }
+
+        public Criteria andHaveNotLandAcquisitionNotIn(List<BigDecimal> values) {
+            addCriterion("have_not_land_acquisition not in", values, "haveNotLandAcquisition");
+            return (Criteria) this;
+        }
+
+        public Criteria andHaveNotLandAcquisitionBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("have_not_land_acquisition between", value1, value2, "haveNotLandAcquisition");
+            return (Criteria) this;
+        }
+
+        public Criteria andHaveNotLandAcquisitionNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("have_not_land_acquisition not between", value1, value2, "haveNotLandAcquisition");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {
