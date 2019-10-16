@@ -7,6 +7,7 @@ import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecord;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeInfo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.NetInfoRecordService;
+import com.copower.pmcc.assess.service.project.generate.GenerateMdCostApproachService;
 import com.copower.pmcc.assess.service.project.generate.GenerateMdIncomeSelfRunService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -65,9 +66,9 @@ public class NetInfoRecordController {
     public HttpResult getOldData() {
         try {
             //netInfoRecordService.climbingData();
-            SchemeInfo info = schemeInfoDao.getInfoById(582);
-            GenerateMdIncomeSelfRunService generateMdIncomeSelfRunService = new GenerateMdIncomeSelfRunService(info, 382);
-            generateMdIncomeSelfRunService.generateCompareFile();
+            SchemeInfo info = schemeInfoDao.getInfoById(660);
+            GenerateMdCostApproachService generateMdCostApproachService = new GenerateMdCostApproachService(info, 422);
+            generateMdCostApproachService.generateCostApproachFile();
 
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());

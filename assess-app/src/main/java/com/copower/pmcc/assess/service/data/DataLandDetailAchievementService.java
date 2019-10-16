@@ -89,7 +89,7 @@ public class DataLandDetailAchievementService {
         return set;
     }
 
-    private List<List<DataLandDetailAchievementVo>> landLevelFilter2(List<DataLandDetailAchievementVo> dataLandDetailAchievementVoList) {
+    public List<List<DataLandDetailAchievementVo>> landLevelFilter2(List<DataLandDetailAchievementVo> dataLandDetailAchievementVoList) {
         Map<String, List<DataLandDetailAchievementVo>> map = Maps.newHashMap();
         if (CollectionUtils.isNotEmpty(dataLandDetailAchievementVoList)) {
             dataLandDetailAchievementVoList.forEach(oo -> {
@@ -110,7 +110,7 @@ public class DataLandDetailAchievementService {
         return listList;
     }
 
-    private Set<List<List<DataLandDetailAchievementVo>>> landLevelFilter1(List<List<DataLandDetailAchievementVo>> listList) {
+    public Set<List<List<DataLandDetailAchievementVo>>> landLevelFilter1(List<List<DataLandDetailAchievementVo>> listList) {
         Set<List<List<DataLandDetailAchievementVo>>> set = Sets.newHashSet();
         Map<Integer, List<List<DataLandDetailAchievementVo>>> map = Maps.newHashMap();
         if (CollectionUtils.isNotEmpty(listList)) {

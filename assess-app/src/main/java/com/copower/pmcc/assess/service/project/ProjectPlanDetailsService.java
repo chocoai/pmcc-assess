@@ -12,6 +12,8 @@ import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.basic.BasicApplyTransferService;
 import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
+import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
+import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeSurePriceService;
 import com.copower.pmcc.bpm.api.dto.ActivitiTaskNodeDto;
 import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
@@ -97,6 +99,10 @@ public class ProjectPlanDetailsService {
     private ProjectTaskReturnRecordDao projectTaskReturnRecordDao;
     @Autowired
     private ErpRpcAttachmentService erpRpcAttachmentService;
+    @Autowired
+    private DeclareRecordService declareRecordService;
+    @Autowired
+    private SchemeJudgeObjectService schemeJudgeObjectService;
 
     public ProjectPlanDetails getProjectPlanDetailsById(Integer id) {
         return projectPlanDetailsDao.getProjectPlanDetailsById(id);
@@ -451,7 +457,22 @@ public class ProjectPlanDetailsService {
         } else {
             projectPlanDetailsVo.setSorting(1000 + projectPlanDetails.getSorting());
         }
-
+        if (projectPlanDetails.getDeclareRecordId() != null) {
+            DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
+            if (declareRecord != null) {
+                projectPlanDetailsVo.setDeclareRecordName(declareRecord.getName());
+            }
+        }
+        if (projectPlanDetails.getJudgeObjectId() != null){
+            SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId()) ;
+            if (schemeJudgeObject != null){
+                if (StringUtils.isNotBlank(projectPlanDetailsVo.getDeclareRecordName())){
+                    projectPlanDetailsVo.setDeclareRecordName(String.join("",schemeJudgeObject.getName(),"-",projectPlanDetailsVo.getDeclareRecordName()));
+                }else {
+                    projectPlanDetailsVo.setDeclareRecordName(String.join("",schemeJudgeObject.getName(),"-",schemeJudgeObject.getCertName()));
+                }
+            }
+        }
         return projectPlanDetailsVo;
     }
 
@@ -662,8 +683,9 @@ public class ProjectPlanDetailsService {
             projectTask.setUserAccount(newExecuteUser);
             bpmRpcProjectTaskService.updateProjectTask(projectTask);
         }
-
+        //新调整后这里应当注释掉或者更改内容
         //当任务为现场查勘或案例调查时特殊处理
+        //----------------------++--------------------------
         ProjectPhase projectPhaseExplore = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.COMMON_SCENE_EXPLORE_EXAMINE);
         ProjectPhase projectPhaseStudy = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.COMMON_CASE_STUDY_EXAMINE);
         if (projectPlanDetails.getProjectPhaseId().equals(projectPhaseExplore.getId()) || projectPlanDetails.getProjectPhaseId().equals(projectPhaseStudy.getId())) {
@@ -675,6 +697,7 @@ public class ProjectPlanDetailsService {
                 projectPlanDetailsDao.updateProjectPlanDetails(parentDetail);
             }
         }
+        //----------------------++--------------------------
         return getProjectPlanDetailsVo(projectPlanDetails);
     }
 

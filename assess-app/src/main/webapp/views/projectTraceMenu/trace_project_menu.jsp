@@ -31,36 +31,14 @@
         <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
             <div class="menu_section">
                 <ul class="nav side-menu">
-                    <li><a> <i class="fa fa-info-circle" aria-hidden="true"></i>项目信息 <span class="fa fa-chevron-down"></span></a>
-                        <ul class="nav child_menu">
-                            <li><a onclick="treeProjectObj.openProjectInfoLink('tb_documentSendList');">项目发文</a></li>
-                            <li><a onclick="treeProjectObj.openProjectInfoLink('tb_documentOpinionList');">项目意见稿</a></li>
-                            <li><a onclick="treeProjectObj.openProjectInfoLink('tb_subsequentList');">后续事项</a></li>
-                            <li><a onclick="treeProjectObj.openProjectInfoLink('tb_takeNumber');">项目拿号</a></li>
-                            <li><a onclick="treeProjectObj.openProjectInfoLink('tb_projectLogList');">项目日志</a></li>
-                            <li><a onclick="treeProjectObj.openProjectInfoLink('tb_projectLegWorkList');">外勤信息</a></li>
-                            <li><a onclick="treeProjectObj.openProjectInfoLink('tb_projectBillList');">开票信息</a></li>
-                        </ul>
-                    </li>
-
-                    <li><a onclick=""> <i class="fa fa-database" aria-hidden="true"></i>资料收集与分析 <span class="fa fa-chevron-down"></span></a>
-                        <ul class="nav child_menu">
-                            <li><a onclick="treeProjectObj.openProjectDeclareLink();">资产申报</a></li>
-                        </ul>
-                    </li>
-
-                    <li><a> <i class="fa fa-sitemap" aria-hidden="true"></i>现场与案例 <span class="fa fa-chevron-down"></span></a>
-                        <ul class="nav child_menu">
-                            <li><a onclick="">资产清查</a></li>
-                            <li><a onclick="">现场查勘</a></li>
-                            <li><a onclick="">交易案例</a></li>
-                            <li><a onclick="">他项权利</a></li>
-                        </ul>
-                    </li>
-
-                    <li><a onclick=""><i class="fa fa-object-group" aria-hidden="true"></i> 评估工作方案</a></li>
-                    <li><a onclick=""><i class="fa fa-file-word-o" aria-hidden="true"></i> 报告编写</a></li>
-                    <li><a onclick=""><i class="fa fa-eye" aria-hidden="true"></i>报告生成</a></li>
+                    <c:forEach items="${workStageList}" var="workStage">
+                        <li>
+                            <a href="${pageContext.request.contextPath}/projectPlanDetails/openProjectMenuLink/${projectInfo.id}/${workStage.id}">
+                                <i class="fa fa-info-circle" aria-hidden="true"></i>
+                                    ${workStage.workStageName}
+                            </a>
+                        </li>
+                    </c:forEach>
                 </ul>
             </div>
         </div>
@@ -83,18 +61,4 @@
         </nav>
     </div>
 </div>
-
-<script type="text/javascript">
-
-    var treeProjectObj = {} ;
-
-    treeProjectObj.openProjectInfoLink = function (key) {
-        window.open("${pageContext.request.contextPath}/projectPlanDetails/projectTraceProjectInfo?projectId=${projectInfo.id}&key="+key, "_blank");
-    };
-
-    treeProjectObj.openProjectDeclareLink = function () {
-        window.open("${pageContext.request.contextPath}/projectPlanDetails/projectTraceProjectDeclare?projectId=${projectInfo.id}", "_blank");
-    };
-
-</script>
 

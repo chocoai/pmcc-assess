@@ -12,11 +12,12 @@ public class AssessReportFieldConstant {
     public static final String DEVELOPMENT_LAND_TEMPLATE = "development.land.template";  // 	假设法（土地）
     public static final String DEVELOPMENT_CONSTRUCTION_TEMPLATE = "development.construction.template";  // 假设法（在建工程）
     public static final String COST_TEMPLATE_BUILDING = "cost.template.building";  // 	成本法（建筑物）
-    public static final String COST_TEMPLATE_CONSTRUCTION = "cost.template.construction";  // 	成本法（在建工程）
+    public static final String COST_TEMPLATE_CONSTRUCTION = "cost.template.construction";  // 	成本法（在建工程）pmcc_assess
     public static final String LAND_COMPARE_TEMPLATE = "land.compare.template";  //土地比较法模板
     public static final String INCOME_TEMPLATE = "income.template";  //收益法模板(租赁)
     public static final String INCOME_TEMPLATE_SELF_SUPPORT = "income.template.self.support";  //收益法模板(自营)
     public static final String BASE_LAND_PRICE_TEMPLATE = "base.land.price.template";  //基准地价模板
+    public static final String COST_APPROACH_TEMPLATE = "cost.approach.template";  //成本逼近法模板
 
     public static final String COVER_HOUSE_TEMPLATE = "cover.house.template";  //房产评估
     public static final String COVER_LAND_TEMPLATE = "cover.land.template";  //土地评估

@@ -45,6 +45,8 @@ public class ProjectTaskCostApproachAssist implements ProjectTaskInterface {
     private SurveyCommonService surveyCommonService;
     @Autowired
     private BasicEstateService basicEstateService;
+    @Autowired
+    private SchemeInfoService schemeInfoService;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
@@ -54,6 +56,19 @@ public class ProjectTaskCostApproachAssist implements ProjectTaskInterface {
             mdCostApproach = new MdCostApproach();
             mdCostApproach.setPlanDetailsId(projectPlanDetails.getId());
             mdCostApproachService.saveMdCostApproach(mdCostApproach);
+        }
+        if (mdCostApproach != null) {
+            SchemeInfo schemeInfo = new SchemeInfo();
+            schemeInfo.setProjectId(projectPlanDetails.getProjectId());
+            schemeInfo.setPlanDetailsId(projectPlanDetails.getId());
+            schemeInfo.setJudgeObjectId(projectPlanDetails.getJudgeObjectId());
+            schemeInfo.setMethodType(baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_COST_APPROACH).getId());
+            schemeInfo.setMethodDataId(mdCostApproach.getId());
+            try {
+                schemeInfoService.saveSchemeInfo(schemeInfo);
+            } catch (BusinessException e) {
+                logger.error(e.getMessage(), e);
+            }
         }
         modelAndView.addObject("master", mdCostApproach);
         modelAndView.addObject("apply", "apply");
@@ -94,6 +109,9 @@ public class ProjectTaskCostApproachAssist implements ProjectTaskInterface {
     @Override
     public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException, BpmException {
         mdCostApproachService.applyCommit(formData, processInsId);
+        SchemeInfo schemeInfo = schemeInfoService.getSchemeInfo(projectPlanDetails.getId());
+        schemeInfo.setProcessInsId(processInsId);
+        schemeInfoService.saveSchemeInfo(schemeInfo);
     }
 
     @Override

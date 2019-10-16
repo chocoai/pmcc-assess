@@ -17,6 +17,7 @@ public class DataLandDetailAchievementVo extends DataLandDetailAchievement imple
     private String categoryName;
     private String gradeName;
     private String jsonObj;
+    private String modelStr;
 
     public String getTypeName() {
         return typeName;
@@ -83,5 +84,13 @@ public class DataLandDetailAchievementVo extends DataLandDetailAchievement imple
 
     public void setJsonObj(String jsonObj) {
         this.jsonObj = jsonObj;
+    }
+
+    public String getModelStr() {
+        return modelStr;
+    }
+
+    public void setModelStr(String modelStr) {
+        this.modelStr = modelStr;
     }
 }
