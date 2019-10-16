@@ -12,6 +12,9 @@
         <div class="right_col" role="main">
 
 
+            <%@include file="/views/share/project/projectInfoSimple.jsp" %>
+
+
             <div class="x_panel">
                 <div class="x_content">
                     <div class="page-title" style="margin: 0px">
@@ -28,7 +31,8 @@
                                         <button type="button" class="btn btn-primary">
                                             项目变更
                                         </button>
-                                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                                        <button type="button" class="btn btn-primary dropdown-toggle"
+                                                data-toggle="dropdown">
                                             <span class="caret"></span>
                                         </button>
                                         <ul class="dropdown-menu" role="menu">
@@ -50,7 +54,8 @@
                                         <button type="button" class="btn btn-primary">
                                             项目发文
                                         </button>
-                                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                                        <button type="button" class="btn btn-primary dropdown-toggle"
+                                                data-toggle="dropdown">
                                             <span class="caret"></span>
                                         </button>
                                         <ul class="dropdown-menu" role="menu">
@@ -73,7 +78,37 @@
                 </div>
             </div>
 
-            <%@include file="/views/share/project/projectInfoSimple.jsp" %>
+            <div class="x_panel">
+                <div class="x_content">
+                    <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                        <div class="list-group">
+                            <a onclick="projectDetails.loadDocumentSend('tb_documentSendList')" class="list-group-item">项目发文
+                                <i class="fa fa-bookmark"></i>
+                            </a>
+                            <a onclick="projectDetails.loadDocumentOpinion('tb_documentOpinionList')"
+                               class="list-group-item">项目意见稿
+                                <i class="fa fa-cloud-download"></i>
+                            </a>
+                            <a onclick="projectDetails.loadSubsequent('tb_subsequentList')" class="list-group-item">后续事项
+                                <i class="fa fa-spinner"></i>
+                            </a>
+                            <a onclick="projectDetails.loadTakeNumber('tb_takeNumber')" class="list-group-item">项目拿号
+                                <i class="fa fa-magic"></i>
+                            </a>
+                            <a onclick="projectDetails.loadProjectLog('tb_projectLogList')" class="list-group-item">项目日志
+                                <i class="fa fa-flag-checkered"></i>
+                            </a>
+                            <a onclick="projectDetails.loadProjectLegwork('tb_projectLegWorkList')" class="list-group-item">外勤信息
+                                <i class="fa fa-coffee"></i>
+                            </a>
+                            <a onclick="projectDetails.loadProjectBill('tb_projectBillList')" class="list-group-item">开票信息
+                                <i class="fa fa-barcode"></i>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
 
             <div class="x_panel" style="display: none;">
                 <div class="x_title collapse-link">
@@ -269,10 +304,10 @@
                     return "<a target='_blank' href='${pageContext.request.contextPath}/documentSend/detailsIndex?processInsId=" + row.processInsId + "' style='margin-left: 5px;' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-search fa-white'></i></a>";
                 }
             });
-            if (key != 'tb_documentSendList'){
-                return false ;
+            if (key != 'tb_documentSendList') {
+                return false;
             }
-            $("#"+key).parent().parent().show() ;
+            $("#" + key).parent().parent().show();
             $("#tb_documentSendList").bootstrapTable('destroy');
             TableInit("tb_documentSendList", "${pageContext.request.contextPath}/documentSend/getDocumentSendVoList", cols, {
                 projectId: ${projectInfo.id}
@@ -292,10 +327,10 @@
             cols.push({field: 'areaGroupName', title: '区域名称'});
             cols.push({field: 'reportTypeName', title: '报告类型'});
             cols.push({field: 'fileViewName', title: '意见稿'});
-            if (key != 'tb_documentOpinionList'){
-                return false ;
+            if (key != 'tb_documentOpinionList') {
+                return false;
             }
-            $("#"+key).parent().parent().show() ;
+            $("#" + key).parent().parent().show();
             $("#tb_documentOpinionList").bootstrapTable('destroy');
             TableInit("tb_documentOpinionList", "${pageContext.request.contextPath}/documentOpinion/getDocumentOpinionVoList", cols, {
                 projectId: ${projectInfo.id}
@@ -316,10 +351,10 @@
             cols.push({field: 'content', title: '内容'});
             cols.push({field: 'suggestion', title: '处理意见'});
             cols.push({field: 'fileViewName', title: '附件'});
-            if (key != 'tb_subsequentList'){
-                return false ;
+            if (key != 'tb_subsequentList') {
+                return false;
             }
-            $("#"+key).parent().parent().show() ;
+            $("#" + key).parent().parent().show();
             $("#tb_subsequentList").bootstrapTable('destroy');
             TableInit("tb_subsequentList", "${pageContext.request.contextPath}/projectSubsequent/getSubsequentList", cols, {
                 projectId: ${projectInfo.id}
@@ -345,10 +380,10 @@
                     return formatDate(value);
                 }
             });
-            if (key != 'tb_takeNumber'){
-                return false ;
+            if (key != 'tb_takeNumber') {
+                return false;
             }
-            $("#"+key).parent().parent().show() ;
+            $("#" + key).parent().parent().show();
             $("#tb_takeNumber").bootstrapTable('destroy');
             TableInit("tb_takeNumber", "${pageContext.request.contextPath}/projectTakeNumber/getTakeNumberList", cols, {
                 projectId: ${projectInfo.id}
@@ -373,10 +408,10 @@
                     return formatDate(value, true);
                 }
             });
-            if (key != 'tb_projectLogList'){
-                return false ;
+            if (key != 'tb_projectLogList') {
+                return false;
             }
-            $("#"+key).parent().parent().show() ;
+            $("#" + key).parent().parent().show();
             $("#tb_projectLogList").bootstrapTable('destroy');
             TableInit("tb_projectLogList", "${pageContext.request.contextPath}/home/getWorkLogByProjectId", cols, {
                 publicProjectId: '${projectInfo.publicProjectId}'
@@ -405,10 +440,10 @@
                     return "<a target='_blank' href='/pmcc-hr/hrBase/detailsIndex?processInsId=" + row.processInsId + "' style='margin-left: 5px;' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-search fa-white'></i></a>";
                 }
             });
-            if (key != 'tb_projectLegWorkList'){
-                return false ;
+            if (key != 'tb_projectLegWorkList') {
+                return false;
             }
-            $("#"+key).parent().parent().show() ;
+            $("#" + key).parent().parent().show();
             $("#tb_projectLegWorkList").bootstrapTable('destroy');
             TableInit("tb_projectLegWorkList", "${pageContext.request.contextPath}/rpcHrService/getHrLegworkList", cols, {
                 publicProjectId: '${projectInfo.publicProjectId}'
@@ -454,10 +489,10 @@
                     return "<a target='_blank' href='/pmcc-finance/FinancialBase/DetailsIndex?processInsId=" + row.processInsId + "' style='margin-left: 5px;' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-search fa-white'></i></a>";
                 }
             });
-            if (key != 'tb_projectBillList'){
-                return false ;
+            if (key != 'tb_projectBillList') {
+                return false;
             }
-            $("#"+key).parent().parent().show() ;
+            $("#" + key).parent().parent().show();
             $("#tb_projectBillList").bootstrapTable('destroy');
             TableInit("tb_projectBillList", "${pageContext.request.contextPath}/rpcFinanceService/getFinancialBillMakeOutList", cols, {
                 publicProjectId: '${projectInfo.publicProjectId}'
@@ -472,14 +507,5 @@
         }
     };
 
-    $(function () {
-        projectDetails.loadDocumentSend('${showTableId}');
-        projectDetails.loadDocumentOpinion('${showTableId}');
-        projectDetails.loadSubsequent('${showTableId}');
-        projectDetails.loadTakeNumber('${showTableId}');
-        projectDetails.loadProjectLog('${showTableId}');
-        projectDetails.loadProjectLegwork('${showTableId}');
-        projectDetails.loadProjectBill('${showTableId}');
-    })
 
 </script>

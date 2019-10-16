@@ -137,4 +137,8 @@ public class ProjectWorkStageService {
         }
         return userAccounts;
     }
+
+    public List<ProjectWorkStage> getProjectWorkStageList(ProjectWorkStage projectWorkStage){
+        return projectWorkStageDao.getProjectWorkStage(projectWorkStage) ;
+    }
 }

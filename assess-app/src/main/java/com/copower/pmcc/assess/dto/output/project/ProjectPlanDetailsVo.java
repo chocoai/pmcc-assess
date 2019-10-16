@@ -16,7 +16,7 @@ public class ProjectPlanDetailsVo extends ProjectPlanDetails {
     private String nodeName;//ztree时显示的节点名称
     private String icon;//图标
     private String _parentId;
-
+    private String declareRecordName;
     private String executeUserName;
 
     private String executeDepartmentName;
@@ -139,5 +139,13 @@ public class ProjectPlanDetailsVo extends ProjectPlanDetails {
 
     public void setIcon(String icon) {
         this.icon = icon;
+    }
+
+    public String getDeclareRecordName() {
+        return declareRecordName;
+    }
+
+    public void setDeclareRecordName(String declareRecordName) {
+        this.declareRecordName = declareRecordName;
     }
 }
