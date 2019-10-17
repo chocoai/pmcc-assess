@@ -51,11 +51,25 @@ public class ProjectPlanDetailsDao {
         return projectPlanDetailsMapper.selectByPrimaryKey(id);
     }
 
-    public List<ProjectPlanDetails> getProjectPlanDetailsByPlanId(Integer planId) {
+    public List<ProjectPlanDetails> getProjectPlanDetailsByPlanId(Integer planId,String executeUserAccount, String projectPhaseName,String planRemarks ) {
         ProjectPlanDetailsExample example = new ProjectPlanDetailsExample();
-        example.createCriteria().andPlanIdEqualTo(planId);
+        ProjectPlanDetailsExample.Criteria  criteria = example.createCriteria();
+        criteria.andPlanIdEqualTo(planId);
+        if (StringUtils.isNotBlank(executeUserAccount)){
+            criteria.andExecuteUserAccountEqualTo(executeUserAccount) ;
+        }
+        if (StringUtils.isNotBlank(projectPhaseName)){
+            criteria.andProjectPhaseNameLike(String.join("","%",projectPhaseName,"%")) ;
+        }
+        if (StringUtils.isNotBlank(planRemarks)){
+            criteria.andPlanRemarksLike(String.join("","%",planRemarks,"%")) ;
+        }
         example.setOrderByClause("sorting");
         return projectPlanDetailsMapper.selectByExample(example);
+    }
+
+    public List<ProjectPlanDetails> getProjectPlanDetailsByPlanId(Integer planId) {
+       return getProjectPlanDetailsByPlanId(planId,null,null,null) ;
     }
 
     public List<ProjectPlanDetails> getRootProjectPlanDetailsByPlanId(Integer planId) {

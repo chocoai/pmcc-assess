@@ -26,6 +26,10 @@
                 </div>
             </div>
 
+            <%@include file="/views/share/form_approval.jsp" %>
+
+            <%@include file="/views/share/form_log.jsp" %>
+
             <%@include file="/views/share/form_details.jsp" %>
 
         </div>
