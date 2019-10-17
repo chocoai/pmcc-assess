@@ -116,6 +116,10 @@ public class ProjectPlanService {
         return projectPlanDao.getProjectPlanByStatus(Lists.newArrayList(projectId), status);
     }
 
+    public List<ProjectPlan> getProjectPlanList2(Integer projectId,Integer workStageId , Integer categoryId){
+        return projectPlanDao.getProjectPlanList2(projectId, workStageId, categoryId) ;
+    }
+
     public List<ProjectPlan> getProjectPlanList(Integer projectId) {
         return projectPlanDao.getProjectPlanList(projectId);
     }

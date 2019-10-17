@@ -1,9 +1,7 @@
 package com.copower.pmcc.assess.controller.project;
 
 import com.alibaba.fastjson.JSONObject;
-import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.constant.AssessProjectClassifyConstant;
-import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectPhaseVo;
@@ -14,6 +12,7 @@ import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
+import com.copower.pmcc.assess.service.project.ProjectPlanService;
 import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
 import com.copower.pmcc.assess.service.project.generate.ProjectPlanGenerateAssist;
 import com.copower.pmcc.assess.service.project.plan.execute.PlanComplieExecute;
@@ -32,7 +31,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -56,7 +54,7 @@ public class ProjectPlanDetailsController {
     @Autowired
     private ProjectPhaseService projectPhaseService;
     @Autowired
-    private ProjectPlanDao projectPlanDao;
+    private ProjectPlanService projectPlanService;
     @Autowired
     private PublicService publicService;
     @Autowired
@@ -124,6 +122,17 @@ public class ProjectPlanDetailsController {
         }
     }
 
+    @PostMapping(name = "删除项目计划详情任务", value = "/deletePlanDetailsById")
+    public HttpResult deletePlanDetailsById(Integer planDetailsId) {
+        try {
+            projectPlanDetailsService.deletePlanDetailsById(planDetailsId);
+            return HttpResult.newCorrectResult("success");
+        } catch (Exception e) {
+            logger.error("删除项目计划详情任务", e);
+            return HttpResult.newErrorResult("删除项目计划详情任务异常");
+        }
+    }
+
     @PostMapping(name = "项目菜单任务分派 添加任务", value = "/saveProjectStagePlan")
     public HttpResult saveProjectStagePlan(String formData) {
         try {
@@ -133,6 +142,28 @@ public class ProjectPlanDetailsController {
         } catch (Exception e) {
             logger.error("任务分派 添加任务", e);
             return HttpResult.newErrorResult("任务分派 添加任务异常");
+        }
+    }
+
+    @PostMapping(name = "发起任务(对任务分派添加的任务发起,更改状态)", value = "/initiateStagePlanTask")
+    public HttpResult initiateStagePlanTask(Integer planId,Integer projectId) {
+        try {
+            projectPlanDetailsService.initiateStagePlanTask(planId,projectId);
+            return HttpResult.newCorrectResult("success");
+        } catch (Exception e) {
+            logger.error("任务分派 添加任务", e);
+            return HttpResult.newErrorResult("任务分派 添加任务异常");
+        }
+    }
+
+    @PostMapping(name = "自动分派改阶段下的所有任务", value = "/autoStagePlanTask")
+    public HttpResult autoStagePlanTask(Integer projectWorkStageId,Integer projectId) {
+        try {
+            projectPlanDetailsService.autoStagePlanTask(projectId,projectWorkStageId);
+            return HttpResult.newCorrectResult("success");
+        } catch (Exception e) {
+            logger.error("自动分派改阶段下的所有任务", e);
+            return HttpResult.newErrorResult("自动分派改阶段下的所有任务异常");
         }
     }
 
@@ -189,7 +220,7 @@ public class ProjectPlanDetailsController {
      */
     private void setProjectTraceMenuParams(ProjectInfoVo projectInfoVo, ProjectWorkStage projectWorkStage, ModelAndView modelAndView) {
         modelAndView.addObject(StringUtils.uncapitalize(SysUserDto.class.getSimpleName()), processControllerComponent.getThisUserInfo());
-        List<ProjectPlan> projectPlans = projectPlanDao.getProjectPlanList2(projectInfoVo.getId(), projectWorkStage.getId(), projectInfoVo.getProjectCategoryId());
+        List<ProjectPlan> projectPlans = projectPlanService.getProjectPlanList2(projectInfoVo.getId(), projectWorkStage.getId(), projectInfoVo.getProjectCategoryId());
         if (CollectionUtils.isEmpty(projectPlans)) {
             return;
         }
