@@ -36,6 +36,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -174,11 +175,18 @@ public class ProjectPlanDetailsController {
         return modelAndView;
     }
 
+    @RequestMapping(value = "/projectTraceProjectInfo", name = "进入项目详情(模块的重新调整后的项目详情)")
+    public ModelAndView projectTraceProjectInfo(Integer projectId) {
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/projectTraceMenu/projectTraceProjectInfo");
+        setBaseMenuParams(projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(projectId)), modelAndView);
+        return modelAndView;
+    }
+
     @RequestMapping(value = "/openProjectMenuLink/{projectId}/{workStageId}", name = "进入单个项目模块")
     public ModelAndView openProjectMenuLink(@PathVariable(name = "projectId", required = true) Integer projectId, @PathVariable(name = "workStageId", required = true) Integer workStageId) {
         ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(workStageId);
-        //默认为项目立项信息
-        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/projectTraceMenu/projectTraceProjectInfo");
+        //默认项目任务页面
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/projectTraceMenu/defaultProjectView");
         ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(projectId));
         setBaseMenuParams(projectInfoVo, modelAndView);
         setProjectTraceMenuParams(projectInfoVo, projectWorkStage, modelAndView);
@@ -206,6 +214,12 @@ public class ProjectPlanDetailsController {
         select.setProjectTypeId(projectInfoVo.getProjectTypeId());
 //        select.setProjectCategoryId(projectInfoVo.getProjectCategoryId());
         List<ProjectWorkStage> workStageList = projectWorkStageService.getProjectWorkStageList(select);
+        Iterator<ProjectWorkStage> projectWorkStageIterator = workStageList.iterator();
+        while (projectWorkStageIterator.hasNext()){
+            if (StringUtils.isEmpty(projectWorkStageIterator.next().getStageForm())){
+                projectWorkStageIterator.remove();
+            }
+        }
         modelAndView.addObject("workStageList", workStageList);
         modelAndView.addObject(StringUtils.uncapitalize(ProjectInfo.class.getSimpleName()), projectInfoVo);
         modelAndView.addObject("companyId", publicService.getCurrentCompany().getCompanyId());

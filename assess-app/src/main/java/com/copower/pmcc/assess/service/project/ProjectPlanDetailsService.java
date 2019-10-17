@@ -303,11 +303,11 @@ public class ProjectPlanDetailsService {
      * @param projectId
      * @return
      */
-    public BootstrapTableVo getPlanDetailListByPlanId(Integer projectId, Integer planId) {
+    public BootstrapTableVo getPlanDetailListByPlanId(Integer projectId, Integer planId,String executeUserAccount, String projectPhaseName,String planRemarks) {
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<ProjectPlanDetails> projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsByPlanId(planId);
+        List<ProjectPlanDetails> projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsByPlanId(planId,executeUserAccount,projectPhaseName,planRemarks);
         if (CollectionUtils.isEmpty(projectPlanDetails)) return bootstrapTableVo;
         List<ProjectPlanDetailsVo> projectPlanDetailsVos = getProjectPlanDetailsVos(projectPlanDetails, false);
 

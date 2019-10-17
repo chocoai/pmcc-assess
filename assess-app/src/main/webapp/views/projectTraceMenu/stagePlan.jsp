@@ -9,19 +9,63 @@
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="row">
+
+
     <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
         <div class="x_panel">
             <div class="x_content">
-                <p id="projectStageToolbar">
-                    <a class="btn btn-info" onclick="projectStagePlan.createTask()">任务分派</a>
-                    <a class="btn btn-info" onclick="projectStagePlan.autoCreateTask();">自动任务分派</a>
-                    <a class="btn btn-danger" onclick="projectStagePlan.startTask()">发起任务</a>
-                    <a class="btn btn-primary" onclick="projectStagePlan.setExecuteUserAccount();">任务执行人员安排</a>
-                    <label class="label label-warning">注意分派的任务执行人是项目经理而不是当前登陆人</label>
-                    <label class="label label-warning">先分派任务，再发起任务！发起任务后才能进行操作</label>
-                </p>
-                <table id="tb_project_stage" class="table table-bordered">
-                </table>
+                <form class="form-horizontal" id="project_stage_query">
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                任务细名
+                            </label>
+                            <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                <input type="text" placeholder="任务细名" name="projectPhaseName" class="form-control">
+                            </div>
+                        </div>
+                        <div class="x-valid">
+                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                描述
+                            </label>
+                            <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                <input type="text" placeholder="描述" name="planRemarks" class="form-control">
+                            </div>
+                        </div>
+                        <div class="x-valid">
+                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                执行人
+                            </label>
+                            <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                <input type="hidden" name="executeUserAccount">
+                                <input type="text" readonly="readonly"
+                                       onclick="projectStagePlan.selectProjectPhaseExecuteUserAccount(this);"
+                                       placeholder="执行人" name="executeUserAccountName" class="form-control">
+                            </div>
+                        </div>
+                        <div class="x-valid">
+                            <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                <button type="button" class="btn btn-success" onclick="projectStagePlan.initStageTable();">搜索<i
+                                        class='fa fa-search fa-white'></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                            <p id="projectStageToolbar">
+                                <a class="btn btn-info" onclick="projectStagePlan.createTask()">任务分派</a>
+                                <a class="btn btn-info" onclick="projectStagePlan.autoCreateTask();">自动任务分派</a>
+                                <a class="btn btn-danger" onclick="projectStagePlan.startTask()">发起任务</a>
+                                <a class="btn btn-primary"
+                                   onclick="projectStagePlan.setExecuteUserAccount();">任务执行人员安排</a>
+                                <label class="label label-warning">注意分派的任务执行人是项目经理而不是当前登陆人</label>
+                                <label class="label label-warning">先分派任务，再发起任务！发起任务后才能进行操作</label>
+                            </p>
+                            <table id="tb_project_stage" class="table table-bordered">
+                            </table>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -269,11 +313,21 @@
             });
             cols.push({field: 'executeUserName', title: '执行人'});
             cols.push({field: 'declareRecordName', title: '申报记录名称'});
-            TableInit(projectStagePlan.stageTable, "${pageContext.request.contextPath}/projectInfo/getPlanDetailListByPlanId", cols, {
+            cols.push({field: 'planRemarks', title: '描述'});
+            var select = {
                 projectId: "${projectInfo.id}",
                 planId: "${projectPlan.id}"
-            }, {
+            };
+            var data = formSerializeArray($("#project_stage_query"));
+            jQuery.extend(select, data);
+            console.log(select);
+            console.log(data);
+            projectStagePlan.stageTable.bootstrapTable('destroy');
+            TableInit(projectStagePlan.stageTable, "${pageContext.request.contextPath}/projectInfo/getPlanDetailListByPlanId", cols, select, {
                 toolbar: '#projectStageToolbar',
+                showColumns: false,
+                showRefresh: false,
+                search: false,
                 onLoadSuccess: function () {
                     $('.tooltips').tooltip();
                 }
@@ -479,7 +533,7 @@
     projectStagePlan.startTask = function () {
         $.ajax({
             url: "${pageContext.request.contextPath}/projectPlanDetails/initiateStagePlanTask",
-            data: {planId:'${projectPlan.id}',projectId:'${projectInfo.id}'},
+            data: {planId: '${projectPlan.id}', projectId: '${projectInfo.id}'},
             type: "post",
             dataType: "json",
             success: function (result) {
@@ -500,7 +554,7 @@
     projectStagePlan.autoCreateTask = function () {
         $.ajax({
             url: "${pageContext.request.contextPath}/projectPlanDetails/autoStagePlanTask",
-            data: {projectId:'${projectInfo.id}' ,projectWorkStageId:'${projectWorkStage.id}'},
+            data: {projectId: '${projectInfo.id}', projectWorkStageId: '${projectWorkStage.id}'},
             type: "post",
             dataType: "json",
             success: function (result) {
@@ -524,7 +578,7 @@
     projectStagePlan.deleteStagePlan = function (id) {
         $.ajax({
             url: "${pageContext.request.contextPath}/projectPlanDetails/deletePlanDetailsById",
-            data: {planDetailsId:id},
+            data: {planDetailsId: id},
             type: "post",
             dataType: "json",
             success: function (result) {

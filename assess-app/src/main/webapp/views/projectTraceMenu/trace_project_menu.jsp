@@ -52,10 +52,10 @@
             <div class="nav toggle"><a id="menu_toggle"><i class="fa fa-bars"></i></a></div>
             <div class=" nav toggle">
                 <h3>
-                    <%--<a target="_blank" class="tooltips" href="${pageContext.request.contextPath}/projectInfo/projectDisplayPage?projectId=${projectInfo.id}" data-placement='bottom'--%>
-                    <%--data-original-title='单击查看项目详情'>--%>
-                    <%--项目详情--%>
-                    <%--</a>--%>
+                    <a target="_blank" class="tooltips" href="${pageContext.request.contextPath}/projectPlanDetails/projectTraceProjectInfo?projectId=${projectInfo.id}" data-placement='bottom'
+                    data-original-title='单击查看项目详情'>
+                    项目详情
+                    </a>
                 </h3>
             </div>
         </nav>
