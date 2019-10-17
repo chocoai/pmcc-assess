@@ -606,7 +606,7 @@
         var url = '${pageContext.request.contextPath}/basicApplyBatch/fillInfo?'
         url += 'formClassify=' + classify;
         url += '&formType=' + type;
-        url += '&tbId=' + node.id;
+        url += '&tbId=' + node.number;
         url += '&tbType=' + tbType;
         url += '&planDetailsId=${projectPlanDetails.id}';
         openWin(url, function () {

@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <form class="form-horizontal" id="frm_estate">
+    <input type="hidden" name="id" value="${basicEstate.id}">
     <div class="form-group">
         <div class="x-valid">
             <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">省
@@ -64,7 +65,7 @@
                         <button type="button" class="btn btn-default docs-tooltip"
                                 data-toggle="tooltip"
                                 data-original-title="选择"
-                                onclick="basicCommon.blockSelect(this)">
+                                onclick="examineCommon.blockSelect(this)">
                         <i class="fa fa-search"></i>
                         </button>
                         <button type="button" class="btn btn-default docs-tooltip"
@@ -234,6 +235,7 @@
     <div class="clearfix"></div>
 </div>
 <form class="form-horizontal" id="frm_estateLandState">
+    <input type="hidden" name="id" value="${basicEstateLandState.id}">
     <div class="form-group">
         <div class="x-valid">
             <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地用途类型</label>
@@ -281,14 +283,14 @@
             <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                 <div class="input-group">
                     <input type="hidden" name="landLevel" value="${basicEstateLandState.landLevel}">
-                    <input type="text" readonly="readonly" onclick="basicCommon.landLevelSelect(this);"
+                    <input type="text" readonly="readonly" onclick="examineCommon.landLevelSelect(this);"
                            placeholder="土地级别" class="form-control" name="landLevelName"
                            value="${basicEstateLandState.landLevelName}">
                     <span class="input-group-btn">
                         <button type="button" class="btn btn-default docs-tooltip"
                                 data-toggle="tooltip"
                                 data-original-title="选择"
-                                onclick="basicCommon.landLevelSelect(this);">
+                                onclick="examineCommon.landLevelSelect(this);">
                         <i class="fa fa-search"></i>
                         </button>
                         <button type="button" class="btn btn-default docs-tooltip"
@@ -367,7 +369,7 @@
         <div class=" col-xs-6  col-sm-6  col-md-6  col-lg-6  col-sm-offset-1" id="developmentDegreeContentContainer">
         </div>
     </div>
-    <div class="x_title">开发限制条件</div>
+    <div class="x_title"></div>
     <div class="form-group">
         <div class="x-valid">
             <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">容积率</label>
@@ -403,43 +405,26 @@
             <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">建筑限高 m²</label>
             <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                 <input type="text" class="form-control" data-rule-number='true'
-                       placeholder="建筑限高 m² (数字)" name="buildingHeightLimit" value="${basicEstateLandState.buildingHeightLimit}">
+                       placeholder="建筑限高 m² (数字)" name="buildingHeightLimit"
+                       value="${basicEstateLandState.buildingHeightLimit}">
             </div>
         </div>
     </div>
 </form>
-<form class="form-horizontal">
-    <div class="form-group">
-        <div class="x-valid">
-            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">面积<span class="symbol required"></span></label>
-            <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                <input type="text" placeholder="面积" name="area" data-rule-number="true" required
-                       class="form-control" value="${basicHouse.area}">
-            </div>
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="x-valid">
-            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">房屋平面图</label>
-            <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                <input id="house_img_plan" placeholder="上传附件" class="form-control" type="file">
-                <div id="_house_img_plan"></div>
-            </div>
-        </div>
-    </div>
+<form id="basicHouseFrm" class="form-horizontal">
+    <input type="hidden" name="id" value="${basicHouse.id}">
+    <input type="hidden" name="houseNumber" value="${basicHouse.houseNumber}">
 </form>
 <div class="x_content">
     <div class="x_title">
-        <h3>
-            房屋交易信息
-        </h3>
         <div class="clearfix"></div>
     </div>
     <form class="form-horizontal" id="basicTradingFrm">
         <input type="hidden" name="id" value="${basicHouseTrading.id}">
         <div class="form-group">
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">财产范围<span class="symbol required"></span></label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">财产范围<span
+                        class="symbol required"></span></label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <select class="form-control search-select select2 scopeProperty" name="scopeProperty" required>
                     </select>
@@ -462,21 +447,24 @@
         </div>
         <div class="form-group">
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">税费负担<span class="symbol required"></span></label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">税费负担<span
+                        class="symbol required"></span></label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <select class="form-control search-select select2 taxBurden" name="taxBurden" required>
                     </select>
                 </div>
             </div>
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">交易情况<span class="symbol required"></span></label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">交易情况<span
+                        class="symbol required"></span></label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <select class="form-control transactionSituation" name="transactionSituation" required>
                     </select>
                 </div>
             </div>
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">价格类型<span class="symbol required"></span></label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">价格类型<span
+                        class="symbol required"></span></label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <select class="form-control " name="priceType" required>
                     </select>

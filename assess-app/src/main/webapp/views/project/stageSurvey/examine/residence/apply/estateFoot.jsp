@@ -3,7 +3,6 @@
 
 <div class="x_content">
     <div class="x_title">基础设施情况</div>
-
     <div class="form-group">
         <div class="x-valid">
             <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">基础设施完备度<span
@@ -18,7 +17,6 @@
 
         </div>
     </div>
-
 </div>
 
 
