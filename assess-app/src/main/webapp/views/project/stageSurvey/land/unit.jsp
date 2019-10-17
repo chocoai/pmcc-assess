@@ -41,6 +41,7 @@
     </form>
 </div>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.unit.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/sonUnitView.js"></script>
 <script type="text/javascript">
     $(function () {
         unitCommon.initById('${basicUnit.id}');

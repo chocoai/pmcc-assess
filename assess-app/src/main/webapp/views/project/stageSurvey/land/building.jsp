@@ -267,6 +267,7 @@
     </form>
 </div>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.build.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/sonBuildView.js"></script>
 <script type="text/javascript">
     $(function () {
         buildingCommon.initById('${basicBuilding.id}');

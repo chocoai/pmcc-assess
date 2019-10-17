@@ -549,7 +549,24 @@
         </script>
     </form>
 </div>
+<div class="x_content">
+    <%@include file="/views/project/stageSurvey/common/estateNetwork.jsp" %>
+    <%@include file="/views/project/stageSurvey/common/estateParking.jsp" %>
+    <%@include file="/views/project/stageSurvey/common/matchingEnvironment.jsp" %>
+    <%@include file="/views/project/stageSurvey/common/matchingFinance.jsp" %>
+    <%@include file="/views/project/stageSurvey/common/matchingEducation.jsp" %>
+    <%@include file="/views/project/stageSurvey/common/matchingRecreation.jsp" %>
+    <%@include file="/views/project/stageSurvey/common/matchingRestaurant.jsp" %>
+    <%@include file="/views/project/stageSurvey/common/matchingMarket.jsp" %>
+    <%@include file="/views/project/stageSurvey/common/matchingMedical.jsp" %>
+    <%@include file="/views/project/stageSurvey/common/matchingTransit.jsp" %>
+    <%@include file="/views/project/stageSurvey/common/matchingTrafficHub.jsp" %>
+    <%@include file="/views/project/stageSurvey/common/matchingMetro.jsp" %>
+    <%@include file="/views/project/stageSurvey/common/matchingMainRoad.jsp" %>
+    <%@include file="/views/project/stageSurvey/common/matchingMainConversion.jsp" %>
+</div>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.estate.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/sonEstateView.js"></script>
 <script src="${pageContext.request.contextPath}/js/select/land.level.select.js"></script>
 <script src="${pageContext.request.contextPath}/js/select/block.select.js"></script>
 <script type="text/javascript">

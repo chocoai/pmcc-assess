@@ -528,7 +528,12 @@
         </div>
     </div>
 </div>
+<div class="x_content">
+    <%@include file="/views/project/stageSurvey/common/buildingFunction.jsp" %>
+    <%@include file="/views/project/stageSurvey/common/buildingOutfit.jsp" %>
+</div>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.build.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/sonBuildView.js"></script>
 <script type="text/javascript">
     $(function () {
         buildingCommon.initById('${basicBuilding.id}');

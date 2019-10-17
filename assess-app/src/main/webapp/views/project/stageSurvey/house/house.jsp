@@ -658,7 +658,19 @@
         </div>
     </div>
 </div>
+<div class="x_content">
+    <%@include file="/views/project/stageSurvey/common/houseFaceStreet.jsp" %>
+    <%@include file="/views/project/stageSurvey/common/houseWater.jsp" %>
+    <%@include file="/views/project/stageSurvey/common/houseWaterDrain.jsp" %>
+    <%@include file="/views/project/stageSurvey/common/houseNewWind.jsp" %>
+    <%@include file="/views/project/stageSurvey/common/houseAirConditioner.jsp" %>
+    <%@include file="/views/project/stageSurvey/common/houseHeating.jsp" %>
+    <%@include file="/views/project/stageSurvey/common/houseIntelligent.jsp" %>
+    <%@include file="/views/project/stageSurvey/common/houseRoom.jsp" %>
+    <%@include file="/views/project/stageSurvey/common/houseDamagedDegree.jsp" %>
+</div>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.house.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/sonHouseView.js"></script>
 <script type="text/javascript">
     $(function () {
         houseCommon.initById('${basicHouse.id}');
