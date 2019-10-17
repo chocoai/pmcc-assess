@@ -7,6 +7,7 @@ import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectTaskReturnRecordDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeSurePriceRecordDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
@@ -45,6 +46,7 @@ import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -54,6 +56,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -136,10 +139,94 @@ public class ProjectPlanDetailsService {
     }
 
     /**
+     * 删除任务
+     * @param planDetailsId
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void deletePlanDetailsById(Integer planDetailsId) {
+        ProjectPlanDetails projectPlanDetails = getProjectPlanDetailsById(planDetailsId) ;
+        projectPlanDetailsDao.deleteProjectPlanDetails(planDetailsId);
+        ProjectResponsibilityDto projectPlanResponsibility = new ProjectResponsibilityDto();
+        projectPlanResponsibility.setPlanId(projectPlanDetails.getPlanId());
+        projectPlanResponsibility.setPlanDetailsId(planDetailsId);
+        projectPlanResponsibility.setProjectId(projectPlanDetails.getProjectId());
+        List<ProjectResponsibilityDto> projectResponsibilityDtoList = bpmRpcProjectTaskService.getProjectTaskList(projectPlanResponsibility);
+        if (CollectionUtils.isNotEmpty(projectResponsibilityDtoList)) {
+            for (ProjectResponsibilityDto oo : projectResponsibilityDtoList) {
+                if (!Objects.equal(projectPlanDetails.getProjectId(), oo.getProjectId())) {
+                    continue;
+                }
+                if (!Objects.equal(projectPlanDetails.getPlanId(), oo.getPlanId())) {
+                    continue;
+                }
+                bpmRpcProjectTaskService.deleteProjectTask(oo.getId());
+            }
+        }
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void initiateStagePlanTask(Integer planId,Integer projectId){
+        ProjectPlanDetails select = new ProjectPlanDetails();
+        select.setProjectId(projectId);
+        select.setPlanId(planId);
+        select.setStatus(ProcessStatusEnum.WAIT.getValue());
+        List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsDao.getListObject(select) ;
+        if (CollectionUtils.isNotEmpty(projectPlanDetailsList)){
+            projectPlanDetailsList.forEach(projectPlanDetails -> {
+                projectPlanDetails.setStatus(ProcessStatusEnum.RUN.getValue());
+                projectPlanDetailsDao.updateProjectPlanDetails(projectPlanDetails) ;
+            });
+        }
+    }
+
+    /**
+     * 自动分派改阶段下的所有任务
+     * @param projectId
+     * @param projectWorkStageId
+     * @throws BpmException
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void autoStagePlanTask(Integer projectId,Integer projectWorkStageId)throws BpmException {
+        ProjectInfoVo projectInfo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(projectId));
+        ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectWorkStageId);
+        ProjectPhase select = new ProjectPhase();
+        select.setProjectClassId(projectInfo.getProjectClassId());
+        select.setProjectTypeId(projectInfo.getProjectTypeId());
+        select.setProjectCategoryId(projectInfo.getProjectCategoryId());
+        select.setWorkStageId(projectWorkStageId);
+        List<ProjectPhase> projectPhaseList = projectPhaseService.getProjectPhaseList(select) ;
+        if (CollectionUtils.isEmpty(projectPhaseList)){
+            return;
+        }
+        List<ProjectPlan> projectPlans = projectPlanService.getProjectPlanList2(projectInfo.getId(), projectWorkStageId, projectInfo.getProjectCategoryId());
+        if (CollectionUtils.isEmpty(projectPlans)){
+            return;
+        }
+        for (ProjectPhase projectPhase:projectPhaseList){
+            int sort = 10;
+            ProjectPlanDetails projectPlanDetails = new ProjectPlanDetails();
+            projectPlanDetails.setPlanStartDate(new Date());
+            projectPlanDetails.setPlanEndDate(new Date());
+            projectPlanDetails.setPlanHours(new BigDecimal(0));
+            projectPlanDetails.setExecuteUserAccount(projectInfo.getProjectMemberVo().getUserAccountManager());
+            projectPlanDetails.setProjectId(projectInfo.getId());
+            projectPlanDetails.setPlanId(projectPlans.get(0).getId());
+            projectPlanDetails.setProjectPhaseId(projectPhase.getId());
+            projectPlanDetails.setProjectWorkStageId(projectWorkStageId);
+            projectPlanDetails.setProjectPhaseName(projectPhase.getProjectPhaseName());
+            projectPlanDetails.setSorting(++sort);
+            projectPlanDetails.setStatus(ProcessStatusEnum.RUN.getValue());
+            projectPlanDetailsDao.addProjectPlanDetails(projectPlanDetails);
+            projectPlanService.saveProjectPlanDetailsResponsibility(projectPlanDetails, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.TASK);
+        }
+    }
+
+    /**
      * 项目菜单任务分派 添加任务
      *
      * @param projectPlanDetails
      */
+    @Transactional(rollbackFor = Exception.class)
     public void saveProjectStagePlan(ProjectPlanDetails projectPlanDetails) {
         if (projectPlanDetails.getId() != null && projectPlanDetails.getId() > 0) {
             projectPlanDetailsDao.updateProjectPlanDetails(projectPlanDetails);
@@ -153,9 +240,16 @@ public class ProjectPlanDetailsService {
                 bpmRpcProjectTaskService.updateProjectTask(projectPlanResponsibility);
             }
         } else {
-            projectPlanDetails.setStatus(SysProjectEnum.NONE.getValue());
+            ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
+            ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlanDetails.getProjectWorkStageId());
+            projectPlanDetails.setStatus(ProcessStatusEnum.WAIT.getValue());
             projectPlanDetails.setCreator(processControllerComponent.getThisUser());
             projectPlanDetailsDao.addProjectPlanDetails(projectPlanDetails);
+            try {
+                projectPlanService.saveProjectPlanDetailsResponsibility(projectPlanDetails, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.TASK);
+            } catch (BpmException e) {
+                logger.error("添加task任务" + e.getMessage(), e);
+            }
         }
     }
 

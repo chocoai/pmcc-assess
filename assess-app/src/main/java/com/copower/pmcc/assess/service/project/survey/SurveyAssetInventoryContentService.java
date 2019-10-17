@@ -101,6 +101,9 @@ public class SurveyAssetInventoryContentService {
      * @return
      */
     public List<SurveyAssetInventoryContent> initAssetInventoryContent(ProjectPlanDetails projectPlanDetails, DeclareRecord declareRecord) {
+        if (declareRecord == null){
+            return new ArrayList<>() ;
+        }
         //房产类型345
         BaseProjectClassify houseProperty = baseProjectClassifyService.getCacheProjectClassifyByFieldName(AssessProjectClassifyConstant.SINGLE_HOUSE_PROPERTY_CERTIFICATE_TYPE_SIMPLE);
         //土地类型346
