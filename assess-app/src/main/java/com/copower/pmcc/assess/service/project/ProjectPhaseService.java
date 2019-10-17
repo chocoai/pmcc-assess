@@ -196,6 +196,10 @@ public class ProjectPhaseService {
         return resultPhaseList;
     }
 
+    public List<ProjectPhase> getProjectPhaseList(ProjectPhase projectPhase){
+        return projectPhaseDao.getProjectPhaseList(projectPhase) ;
+    }
+
     /**
      * 是否为查勘案例的任务
      *

@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.controller.project;
 
+import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.constant.AssessProjectClassifyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDao;
@@ -25,16 +26,14 @@ import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.google.common.base.Objects;
+import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Arrays;
@@ -44,7 +43,7 @@ import java.util.List;
 /**
  * Created by kings on 2018-8-23.
  */
-@Controller
+@RestController
 @RequestMapping("/projectPlanDetails")
 public class ProjectPlanDetailsController {
     private Logger logger = LoggerFactory.getLogger(getClass());
@@ -65,7 +64,6 @@ public class ProjectPlanDetailsController {
     @Autowired
     private BaseProjectClassifyService baseProjectClassifyService;
 
-    @ResponseBody
     @PostMapping(name = "重启任务", value = "/replyProjectPlanDetails")
     public HttpResult replyProjectPlanDetails(Integer planDetailsId, String formData) {
         try {
@@ -79,7 +77,6 @@ public class ProjectPlanDetailsController {
         }
     }
 
-    @ResponseBody
     @PostMapping(name = "调整责任人", value = "/updateExecuteUser")
     public HttpResult updateExecuteUser(Integer planDetailsId, String newExecuteUser) {
         try {
@@ -91,7 +88,6 @@ public class ProjectPlanDetailsController {
         }
     }
 
-    @ResponseBody
     @PostMapping(name = "批量调整责任人", value = "/batchUpdateExecuteUser")
     public HttpResult batchUpdateExecuteUser(String planDetailsIds, String newExecuteUser) {
         try {
@@ -106,7 +102,6 @@ public class ProjectPlanDetailsController {
         }
     }
 
-    @ResponseBody
     @PostMapping(name = "任务信息粘贴", value = "/taskPaste")
     public HttpResult taskPaste(Integer copyPlanDetailsId, Integer pastePlanDetailsId) {
         try {
@@ -118,15 +113,26 @@ public class ProjectPlanDetailsController {
         }
     }
 
-    @ResponseBody
     @PostMapping(name = "获取数据", value = "/getProjectPlanDetailsById")
-    public HttpResult replyProjectPlanDetails(Integer id) {
+    public HttpResult getProjectPlanDetailsById(Integer id) {
         try {
             ProjectPlanDetailsVo projectPlanDetailsVo = projectPlanDetailsService.getPlanDetailListByProjectPlanDetailId(id);
             return HttpResult.newCorrectResult(projectPlanDetailsVo);
         } catch (Exception e) {
             logger.error("获取数据", e);
             return HttpResult.newErrorResult("获取数据异常");
+        }
+    }
+
+    @PostMapping(name = "项目菜单任务分派 添加任务", value = "/saveProjectStagePlan")
+    public HttpResult saveProjectStagePlan(String formData) {
+        try {
+            ProjectPlanDetails projectPlanDetails = JSONObject.parseObject(formData,ProjectPlanDetails.class) ;
+            projectPlanDetailsService.saveProjectStagePlan(projectPlanDetails);
+            return HttpResult.newCorrectResult(projectPlanDetails);
+        } catch (Exception e) {
+            logger.error("任务分派 添加任务", e);
+            return HttpResult.newErrorResult("任务分派 添加任务异常");
         }
     }
 
@@ -189,6 +195,18 @@ public class ProjectPlanDetailsController {
         }
         ProjectPlanVo projectPlanItem = projectInfoService.getProjectPlanItem(projectPlans.get(0).getId());
         modelAndView.addObject(StringUtils.uncapitalize(ProjectPlan.class.getSimpleName()), projectPlanItem);
+        List<ProjectPhaseVo> projectPhaseVoList = Lists.newArrayList();
+        ProjectPhase select = new ProjectPhase();
+        select.setProjectCategoryId(projectInfoVo.getProjectCategoryId());
+        select.setProjectTypeId(projectInfoVo.getProjectTypeId());
+        select.setProjectClassId(projectInfoVo.getProjectClassId());
+        select.setWorkStageId(projectWorkStage.getId());
+        List<ProjectPhase> projectPhaseList = projectPhaseService.getProjectPhaseList(select);
+        if (CollectionUtils.isNotEmpty(projectPhaseList)){
+            projectPhaseList.forEach(projectPhase -> projectPhaseVoList.add(projectPhaseService.getProjectPhaseVo(projectPhase)));
+        }
+        modelAndView.addObject("projectPhaseVoList", projectPhaseVoList);
+        modelAndView.addObject(StringUtils.uncapitalize(ProjectWorkStage.class.getSimpleName()), projectWorkStage);
     }
 
     /**

@@ -41,20 +41,30 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
-                                            工作内容
+                                            工作内容 <span class="symbol required"></span>
                                         </label>
                                         <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
-
+                                            <select required="required" name="projectPhaseId"
+                                                    onchange="projectStagePlan.setPhaseNameDefault(this)"
+                                                    class="form-control search-select select2">
+                                                <option value="">-选择-</option>
+                                                <c:forEach var="item" items="${projectPhaseVoList}">
+                                                    <option value="${item.id}">${item.projectPhaseName}</option>
+                                                </c:forEach>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
-                                            任务细名
+                                            任务细名 <span class="symbol required"></span>
                                         </label>
                                         <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
-
+                                            <input type="hidden" name="id"/>
+                                            <input type="text" placeholder="任务细名" required="required" maxlength="50"
+                                                   name="projectPhaseName"
+                                                   class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -62,7 +72,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
-                                            开始时间
+                                            开始时间 <span class="symbol required"></span>
                                         </label>
                                         <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                             <input required type="text" placeholder="开始时间" data-date-format='yyyy-mm-dd'
@@ -72,7 +82,7 @@
                                     </div>
                                     <div class="x-valid">
                                         <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
-                                            结束时间
+                                            结束时间 <span class="symbol required"></span>
                                         </label>
                                         <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                             <input required type="text" placeholder="结束时间" data-date-format='yyyy-mm-dd'
@@ -83,10 +93,14 @@
                                 </div>
                                 <div class="form-group">
                                     <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
-                                        责任人
+                                        责任人 <span class="symbol required"></span>
                                     </label>
                                     <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
-
+                                        <input type="hidden" name="executeUserAccount">
+                                        <input readonly="readonly"
+                                               onclick="projectStagePlan.selectProjectPhaseExecuteUserAccount(this)"
+                                               class="form-control" placeholder="点击选择责任人" type="text"
+                                               required="required" name="executeUserName"/>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -108,7 +122,7 @@
                 <button type="button" data-dismiss="modal" class="btn btn-default">
                     取消
                 </button>
-                <button type="button" class="btn btn-primary" onclick="">
+                <button type="button" class="btn btn-primary" onclick="projectStagePlan.saveStagePlan(this);">
                     保存
                 </button>
             </div>
@@ -239,8 +253,28 @@
                     return formatDate(value, false)
                 }
             });
+            cols.push({
+                field: 'status', title: '操作', formatter: function (value, row, index) {
+                    var str = "";
+                    switch (value) {
+                        case "runing": {
+                            str += "<a onclick='projectStagePlan.editStagePlan(" + row.id + ")' style='margin-left: 5px;' data-placement='top' data-original-title='编辑' class='btn btn-xs btn-success tooltips'  ><i class='fa fa-edit fa-white'></i></a>";
+                            str += "<a onclick='projectStagePlan.deleteStagePlan(" + row.id + ")' style='margin-left: 5px;' data-placement='top' data-original-title='删除'  class='btn btn-xs btn-warning tooltips' ><i class='fa fa-minus fa-white'></i></a>";
+                            break;
+                        }
+                        case "finish": {
+                            str += "<a onclick='projectStagePlan.editStagePlan(" + row.id + ")' style='margin-left: 5px;' data-placement='top' data-original-title='查看' class='btn btn-xs btn-success tooltips'  ><i class='fa fa-search fa-white'></i></a>";
+                            str += "<a onclick='projectStagePlan.replyTask(" + row.id + ")' style='margin-left: 5px;' data-placement='top' data-original-title='重启' class='btn btn-xs btn-warning tooltips'  ><i class='fa fa-reply fa-white'></i></a>";
+                            break;
+                        }
+                    }
+                    if (row.excuteUrl) {
+                        str += "<a target='_blank' href='" + row.excuteUrl + "' style='margin-left: 5px;' data-placement='top' data-original-title='提交' class='btn btn-xs btn-success tooltips'  ><i class='fa fa-external-link fa-white'></i></a>";
+                    }
+                    return str;
+                }
+            });
             cols.push({field: 'executeUserName', title: '执行人'});
-//            cols.push({field: 'planRemarks', title: '说明'});
             cols.push({field: 'declareRecordName', title: '申报记录名称'});
             TableInit(projectStagePlan.stageTable, "${pageContext.request.contextPath}/projectInfo/getPlanDetailListByPlanId", cols, {
                 projectId: "${projectInfo.id}",
@@ -320,13 +354,13 @@
     /**
      * erp 人员选择
      */
-    projectStagePlan.selectExecuteUserAccount = function (multi,callback) {
+    projectStagePlan.selectExecuteUserAccount = function (multi, callback) {
         erpEmployee.select({
             multi: multi,
             currOrgId: '${companyId}',
             onSelected: function (data) {
-                if (callback){
-                    callback(data) ;
+                if (callback) {
+                    callback(data);
                 }
             }
         });
@@ -343,9 +377,9 @@
 
     /*执行人员安排*/
     projectStagePlan.setExecuteUserAccount = function () {
-        if ('${projectInfo.projectMemberVo.userAccountManager}' != '${sysUserDto.userAccount}'){
+        if ('${projectInfo.projectMemberVo.userAccountManager}' != '${sysUserDto.userAccount}') {
             toastr.info("只有项目经理才能安排任务的执行人员");
-            return false ;
+            return false;
         }
         var rows = projectStagePlan.stageTable.bootstrapTable('getSelections');
         if (!rows || rows.length <= 0) {
@@ -355,7 +389,7 @@
             $.each(rows, function (i, item) {
                 idArray.push(item.id);
             });
-            projectStagePlan.selectExecuteUserAccount(false,function (data) {
+            projectStagePlan.selectExecuteUserAccount(false, function (data) {
                 if (data && data.account) {
                     $.ajax({
                         url: '${pageContext.request.contextPath}/projectPlanDetails/batchUpdateExecuteUser',
@@ -377,6 +411,77 @@
                 }
             });
         }
+    };
+
+    /**
+     * 任务编辑
+     */
+    projectStagePlan.editStagePlan = function (id) {
+        var box = $("#div_plan");
+        var form = box.find("form");
+        var item = projectStagePlan.stageTable.bootstrapTable('getRowByUniqueId', id);
+        form.clearAll();
+        form.initForm(item);
+        box.modal("show");
+    };
+
+    /**
+     * 任务分派选择人员
+     * @param _this
+     */
+    projectStagePlan.selectProjectPhaseExecuteUserAccount = function (_this) {
+        projectStagePlan.selectExecuteUserAccount(false, function (data) {
+            if (data && data.account) {
+                $(_this).val(data.name);
+                $(_this).closest("form").find("[name='executeUserAccount']").val(data.account);
+            } else {
+                Alert("还未选择任何人员");
+            }
+        });
+    };
+
+    projectStagePlan.setPhaseNameDefault = function (_this) {
+        var form = $(_this).closest("form");
+        var name = $(_this).find("option:selected").text();
+        form.find("[name='projectPhaseName']").val(name);
+    };
+
+    /**
+     * 任务分派 添加任务
+     */
+    projectStagePlan.saveStagePlan = function () {
+        var box = $("#div_plan");
+        var form = box.find("form");
+        if (!form.valid()) {
+            return false;
+        }
+        var data = formSerializeArray(form);
+        data.planId = '${projectPlan.id}' ;
+        data.projectId = '${projectInfo.id}' ;
+        data.projectWorkStageId = '${projectWorkStage.id}' ;
+        Loading.progressShow();
+        $.ajax({
+            url: "${pageContext.request.contextPath}/projectPlanDetails/saveProjectStagePlan",
+            data: {formData: JSON.stringify(data)},
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    box.modal("hide");
+                    projectStagePlan.stageTable.bootstrapTable('refresh');
+                } else {
+                    Alert("保存失败:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+            }
+        });
+    };
+
+    projectStagePlan.deleteStagePlan = function (id) {
+        toastr.info("暂时不予实现!");
     };
 
     $(function () {

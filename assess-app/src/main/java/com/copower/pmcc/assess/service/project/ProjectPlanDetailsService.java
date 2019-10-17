@@ -37,9 +37,14 @@ import com.copower.pmcc.erp.api.provider.ErpRpcDepartmentService;
 import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -131,6 +136,30 @@ public class ProjectPlanDetailsService {
     }
 
     /**
+     * 项目菜单任务分派 添加任务
+     *
+     * @param projectPlanDetails
+     */
+    public void saveProjectStagePlan(ProjectPlanDetails projectPlanDetails) {
+        if (projectPlanDetails.getId() != null && projectPlanDetails.getId() > 0) {
+            projectPlanDetailsDao.updateProjectPlanDetails(projectPlanDetails);
+            projectPlanDetailsDao.updateProjectPlanDetails(projectPlanDetails);
+            projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsById(projectPlanDetails.getId());//重新取得新数据
+            if (projectPlanDetails.getReturnDetailsId() != null)//说明已发起待办任务，则修改相应的责任人
+            {
+                ProjectResponsibilityDto projectPlanResponsibility = new ProjectResponsibilityDto();
+                projectPlanResponsibility.setId(projectPlanDetails.getReturnDetailsId());
+                projectPlanResponsibility.setUserAccount(projectPlanDetails.getExecuteUserAccount());
+                bpmRpcProjectTaskService.updateProjectTask(projectPlanResponsibility);
+            }
+        } else {
+            projectPlanDetails.setStatus(SysProjectEnum.NONE.getValue());
+            projectPlanDetails.setCreator(processControllerComponent.getThisUser());
+            projectPlanDetailsDao.addProjectPlanDetails(projectPlanDetails);
+        }
+    }
+
+    /**
      * 获取权证下的调查信息内容
      *
      * @param declareId
@@ -182,6 +211,8 @@ public class ProjectPlanDetailsService {
      */
     public BootstrapTableVo getPlanDetailListByPlanId(Integer projectId, Integer planId) {
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<ProjectPlanDetails> projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsByPlanId(planId);
         if (CollectionUtils.isEmpty(projectPlanDetails)) return bootstrapTableVo;
         List<ProjectPlanDetailsVo> projectPlanDetailsVos = getProjectPlanDetailsVos(projectPlanDetails, false);
@@ -291,7 +322,8 @@ public class ProjectPlanDetailsService {
                 }
             }
         }
-        bootstrapTableVo.setTotal((long) projectPlanDetailsVos.size());
+        bootstrapTableVo.setTotal(page.getTotal());
+//        bootstrapTableVo.setTotal((long) projectPlanDetailsVos.size());
         bootstrapTableVo.setRows(projectPlanDetailsVos);
         return bootstrapTableVo;
     }
@@ -452,10 +484,16 @@ public class ProjectPlanDetailsService {
             projectPlanDetailsVo.setExecuteDepartmentName(departmentById == null ? "" : departmentById.getName());
         }
         if (projectPlanDetails.getPid() > 0) {
-            projectPlanDetailsVo.setSorting(projectPlanDetails.getPid() * 100 + projectPlanDetails.getSorting());
+            if (projectPlanDetails.getSorting() != null) {
+                projectPlanDetailsVo.setSorting(projectPlanDetails.getPid() * 100 + projectPlanDetails.getSorting());
+            }
             projectPlanDetailsVo.set_parentId(projectPlanDetails.getPid().toString());
         } else {
-            projectPlanDetailsVo.setSorting(1000 + projectPlanDetails.getSorting());
+            if (projectPlanDetails.getSorting() != null) {
+                projectPlanDetailsVo.setSorting(1000 + projectPlanDetails.getSorting());
+            } else {
+                projectPlanDetailsVo.setSorting(1000);
+            }
         }
         if (projectPlanDetails.getDeclareRecordId() != null) {
             DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
@@ -463,13 +501,13 @@ public class ProjectPlanDetailsService {
                 projectPlanDetailsVo.setDeclareRecordName(declareRecord.getName());
             }
         }
-        if (projectPlanDetails.getJudgeObjectId() != null){
-            SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId()) ;
-            if (schemeJudgeObject != null){
-                if (StringUtils.isNotBlank(projectPlanDetailsVo.getDeclareRecordName())){
-                    projectPlanDetailsVo.setDeclareRecordName(String.join("",schemeJudgeObject.getName(),"-",projectPlanDetailsVo.getDeclareRecordName()));
-                }else {
-                    projectPlanDetailsVo.setDeclareRecordName(String.join("",schemeJudgeObject.getName(),"-",schemeJudgeObject.getCertName()));
+        if (projectPlanDetails.getJudgeObjectId() != null) {
+            SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId());
+            if (schemeJudgeObject != null) {
+                if (StringUtils.isNotBlank(projectPlanDetailsVo.getDeclareRecordName())) {
+                    projectPlanDetailsVo.setDeclareRecordName(String.join("", schemeJudgeObject.getName(), "-", projectPlanDetailsVo.getDeclareRecordName()));
+                } else {
+                    projectPlanDetailsVo.setDeclareRecordName(String.join("", schemeJudgeObject.getName(), "-", schemeJudgeObject.getCertName()));
                 }
             }
         }

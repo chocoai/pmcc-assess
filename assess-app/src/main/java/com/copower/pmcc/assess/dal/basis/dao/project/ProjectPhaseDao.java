@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.dal.basis.dao.project;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPhase;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPhaseExample;
 import com.copower.pmcc.assess.dal.basis.mapper.ProjectPhaseMapper;
+import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,6 +89,12 @@ public class ProjectPhaseDao {
         }
         example.setOrderByClause("work_stage_id,phase_sort");
         return projectPhaseMapper.selectByExample(example);
+    }
+
+    public List<ProjectPhase> getProjectPhaseList(ProjectPhase projectPhase){
+        ProjectPhaseExample example = new ProjectPhaseExample();
+        MybatisUtils.convertObj2Example(projectPhase,example) ;
+        return projectPhaseMapper.selectByExample(example) ;
     }
 
     /**
