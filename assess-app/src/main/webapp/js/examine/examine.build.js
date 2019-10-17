@@ -262,7 +262,6 @@
         $.each(buildingCommon.buildingFileControlIdArray, function (i, item) {
             buildingCommon.fileShow(item);
         });
-        buildingModelView.prototype.viewInit();
         if (data.vSpecifications) {
             buildingCommon.writeSpecificationsHTMLData(data.vSpecifications);
             buildingCommon.addLableData(data.vSpecifications);

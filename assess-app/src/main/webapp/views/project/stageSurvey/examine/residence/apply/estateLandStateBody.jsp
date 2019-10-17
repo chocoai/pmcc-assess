@@ -27,7 +27,6 @@
         </div>
     </div>
 </div>
-
 <div class="form-group">
     <div class="x-valid">
         <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">东至</label>
@@ -51,7 +50,6 @@
         </div>
     </div>
 </div>
-
 <div class="form-group">
     <div class="x-valid">
         <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地级别</label>
@@ -92,16 +90,6 @@
         </div>
     </div>
 </div>
-
-<%--
-<div class="form-group">
-    <div class="x-valid">
-        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地形状备注</label>
-        <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
-            <textarea class="form-control" name="shapeStateRemark"></textarea>
-        </div>
-    </div>
-</div>--%>
 <div class="form-group">
     <div class="x-valid">
         <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地面积</label>
@@ -149,7 +137,6 @@
     </div>
 </div>
 <div class="form-group">
-
     <div class=" col-xs-6  col-sm-6  col-md-6  col-lg-6  col-sm-offset-1" id="developmentDegreeContentContainer">
     </div>
 </div>
@@ -274,7 +261,6 @@
         </table>
     </div>
 </div>
-
 <script type="text/html" id="landLevelTabContentBody">
     <tr class="group">
         <td  class="table-cell">

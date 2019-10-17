@@ -176,6 +176,7 @@ public class BasicApplyBatchService {
         ZtreeDto ztreeDto = new ZtreeDto();
         ztreeDto.setId(estateId);
         ztreeDto.setPid(0);
+        ztreeDto.setNumber(String.valueOf(estateId));
         ztreeDto.setName(basicApplyBatch.getEstateName());
         ztreeDto.setDisplayName(basicApplyBatch.getEstateName());
         treeDtos.add(ztreeDto);
@@ -187,6 +188,7 @@ public class BasicApplyBatchService {
             treeDto2.setName(item.getName());
             treeDto2.setDisplayName(item.getDisplayName());
             treeDto2.setPid(item.getPid().equals(0) ? estateId : item.getPid());
+            treeDto2.setNumber(String.valueOf(item.getTableId()));
             treeDtos.add(treeDto2);
         }
         return treeDtos;
@@ -382,6 +384,19 @@ public class BasicApplyBatchService {
             basicApply.setBasicHouseId(basicHouse.getId());
             basicApply.setCreator(commonService.thisUserAccount());
             basicApplyService.saveBasicApply(basicApply);
+        } else if (AssessDataDicKeyConstant.PROJECT_SURVEY_FORM_CLASSIFY_LAND_ONLY.equals(classifyDataDic.getFieldName())) {
+            //纯土地中地块包一部分房屋相关信息
+            BasicHouse basicHouse = new BasicHouse();
+            basicHouse.setHouseNumber("0");
+            basicHouse.setCreator(commonService.thisUserAccount());
+            basicHouseService.saveAndUpdateBasicHouse(basicHouse);
+            BasicHouseTrading basicHouseTrading = new BasicHouseTrading();
+            basicHouseTrading.setHouseId(basicHouse.getId());
+            basicHouseTrading.setCreator(commonService.thisUserAccount());
+            basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicHouseTrading);
+
+            basicEstate.setBasicHouseId(basicHouse.getId());
+            basicEstateService.saveAndUpdateBasicEstate(basicEstate);
         }
         return basicApplyBatch;
     }
@@ -439,9 +454,11 @@ public class BasicApplyBatchService {
             if (basicBuilding != null) {
                 basicBuildingService.saveAndUpdateBasicBuilding(basicBuilding);
                 BasicApplyBatchDetail buildingDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail("tb_basic_building", basicBuilding.getId());
-                buildingDetail.setName(basicBuilding.getBuildingNumber());
-                buildingDetail.setDisplayName(String.format("%s%s", basicBuilding.getBuildingNumber(), "栋"));
-                basicApplyBatchDetailDao.updateInfo(buildingDetail);
+                if (buildingDetail != null) {
+                    buildingDetail.setName(basicBuilding.getBuildingNumber());
+                    buildingDetail.setDisplayName(String.format("%s%s", basicBuilding.getBuildingNumber(), "栋"));
+                    basicApplyBatchDetailDao.updateInfo(buildingDetail);
+                }
             }
         }
 
@@ -453,9 +470,11 @@ public class BasicApplyBatchService {
             if (basicUnit != null) {
                 basicUnitService.saveAndUpdateBasicUnit(basicUnit);
                 BasicApplyBatchDetail unitDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail("tb_basic_unit", basicUnit.getId());
-                unitDetail.setName(basicUnit.getUnitNumber());
-                unitDetail.setDisplayName(String.format("%s%s", basicUnit.getUnitNumber(), "单元"));
-                basicApplyBatchDetailDao.updateInfo(unitDetail);
+                if (unitDetail != null) {
+                    unitDetail.setName(basicUnit.getUnitNumber());
+                    unitDetail.setDisplayName(String.format("%s%s", basicUnit.getUnitNumber(), "单元"));
+                    basicApplyBatchDetailDao.updateInfo(unitDetail);
+                }
             }
         }
 
@@ -467,9 +486,11 @@ public class BasicApplyBatchService {
             if (basicHouse != null) {
                 Integer house = basicHouseService.saveAndUpdateBasicHouse(basicHouse);
                 BasicApplyBatchDetail houseDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail("tb_basic_house", basicHouse.getId());
-                houseDetail.setName(basicHouse.getHouseNumber());
-                houseDetail.setDisplayName(basicHouse.getHouseNumber());
-                basicApplyBatchDetailDao.updateInfo(houseDetail);
+                if (houseDetail != null) {
+                    houseDetail.setName(basicHouse.getHouseNumber());
+                    houseDetail.setDisplayName(basicHouse.getHouseNumber());
+                    basicApplyBatchDetailDao.updateInfo(houseDetail);
+                }
                 //交易信息
                 jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_TRADING.getVar());
                 BasicHouseTrading basicTrading = JSONObject.parseObject(jsonContent, BasicHouseTrading.class);
