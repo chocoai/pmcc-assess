@@ -418,7 +418,8 @@
      */
     projectStagePlan.createTask = function () {
         var box = $("#div_plan");
-
+        var form = box.find("form");
+        form.clearAll();
         box.modal("show");
     };
 
