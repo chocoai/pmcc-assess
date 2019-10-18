@@ -15,17 +15,17 @@
 
             <%@include file="./baseView.jsp" %>
 
-            <%@include file="../stagePlan.jsp" %>
-
-
             <div class="x_panel">
                 <div class="x_content">
-
-                </div>
-                <div class="x_content">
-
+                    <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
+                        <button type="button" onclick="setProgramme();" class="btn btn-success btn-xs">
+                            <i class='fa fa-cog fa-white'></i> 设置方案
+                        </button>
+                    </div>
                 </div>
             </div>
+
+            <%@include file="../stagePlan.jsp" %>
 
             <%@include file="/views/share/form_approval.jsp" %>
 
@@ -44,7 +44,12 @@
 
 <script type="text/javascript">
 
-
+    //设置方案
+    function setProgramme() {
+        openWin('${pageContext.request.contextPath}/schemeProgramme/index?projectId=${projectId}&planId=${projectPlan.id}', function () {
+            projectStagePlan.stageTable.bootstrapTable('refresh');
+        });
+    };
 
     $(document).ready(function () {
 
