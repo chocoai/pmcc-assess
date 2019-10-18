@@ -201,15 +201,15 @@
         var cols = [];
         cols.push({field: 'projectName', title: '项目名称'});
 
-        <%--cols.push({--%>
-            <%--field: 'projectName', title: '项目任务详细', width: 300, formatter: function (value, row, index) {--%>
-                <%--var str = "";--%>
-                <%--str += "<a target='_blank' href='${pageContext.request.contextPath}/projectPlanDetails/projectTraceMenu?projectId=" + row.id + "' style='margin-left: 5px;' data-placement='top' data-original-title='查看详情' class='tooltips' >" + value + "";--%>
-                <%--str += '<i class="fa fa-tasks" aria-hidden="true"></i>' ;--%>
-                <%--str += "</a>";--%>
-                <%--return str;--%>
-            <%--}--%>
-        <%--});--%>
+        cols.push({
+            field: 'projectName', title: '项目任务详细', width: 300, formatter: function (value, row, index) {
+                var str = "";
+                str += "<a target='_blank' href='${pageContext.request.contextPath}/projectPlanDetails/projectTraceMenu?projectId=" + row.id + "' style='margin-left: 5px;' data-placement='top' data-original-title='查看详情' class='tooltips' >" + value + "";
+                str += '<i class="fa fa-tasks" aria-hidden="true"></i>' ;
+                str += "</a>";
+                return str;
+            }
+        });
 
         cols.push({field: 'useUnitName', title: '使用报告单位'});
         cols.push({field: 'departmentName', title: '评估部门'});

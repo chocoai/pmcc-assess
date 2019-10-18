@@ -2,30 +2,10 @@
 <div class="col-md-3 left_col">
     <div class="left_col scroll-view">
         <div class="navbar nav_title" style="border: 0;">
-
-            <span class="site_title">
-                <i style="border: none" class="fa fa-trophy"></i> ${projectInfo.projectName}
-                <small><span class="label label-info">${projectInfo.projectStatus}</span></small>
+            <span class="site_title" onclick="openProjectInfoUrl();" style="cursor: pointer">
+                项目详情
             </span>
-            <div class="profile clearfix">
-
-                <a onclick="" style="margin-left: 20px;" data-placement='top' data-original-title='关注'
-                   class='btn btn-xs btn-info tooltips'>
-                    <i class='fa fa-bell-o fa-white'></i></a>
-
-                <a onclick="" style="margin-left: 20px;" data-placement='top' data-original-title='取消关注'
-                   class='btn btn-xs btn-info tooltips'>
-                    <i class='fa fa-bell-slash-o fa-white'></i></a>
-
-                <a target="_blank" data-placement='top' data-original-title='终止'
-                   class='btn btn-xs btn-danger tooltips'><i class='fa fa-stop fa-white'></i></a>
-
-                <a onclick="" data-placement='top' data-original-title='拷贝项目' class='btn btn-xs btn-warning tooltips'><i
-                        class='fa fa-copy fa-white'></i></a>
-
-            </div>
         </div>
-
         <div class="clearfix"></div>
         <br>
         <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
@@ -44,21 +24,20 @@
         </div>
     </div>
 </div>
-
 <div class="top_nav" id="pmcc_head">
-
     <div class="nav_menu">
         <nav>
-            <div class="nav toggle"><a id="menu_toggle"><i class="fa fa-bars"></i></a></div>
-            <div class=" nav toggle">
-                <h3>
-                    <a target="_blank" class="tooltips" href="${pageContext.request.contextPath}/projectPlanDetails/projectTraceProjectInfo?projectId=${projectInfo.id}" data-placement='bottom'
-                    data-original-title='单击查看项目详情'>
-                    项目详情
-                    </a>
-                </h3>
-            </div>
+            <div class="nav toggle">
+                <h3><a id="menu_toggle"><i class="fa fa-bars"></i></a>
+                    <strong onclick="openProjectInfoUrl();" style="cursor: pointer">${projectInfo.projectName}</strong>
+                    <span class="label label-info">${projectInfo.projectStatus}</span>
+                </h3></div>
         </nav>
     </div>
 </div>
+<script type="text/javascript">
+    function openProjectInfoUrl() {
+        window.location.href = '${pageContext.request.contextPath}/projectPlanDetails/projectTraceProjectInfo?projectId=${projectInfo.id}';
+    }
+</script>
 

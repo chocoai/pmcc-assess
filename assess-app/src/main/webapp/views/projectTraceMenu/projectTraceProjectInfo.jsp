@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
 <html lang="en" class="no-js">
 <head>
     <%@include file="/views/share/main_css.jsp" %>
@@ -10,11 +9,7 @@
     <div class="main_container">
         <%@include file="./trace_project_menu.jsp" %>
         <div class="right_col" role="main">
-
-
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
-
-
             <div class="x_panel">
                 <div class="x_content">
                     <div class="page-title" style="margin: 0px">
