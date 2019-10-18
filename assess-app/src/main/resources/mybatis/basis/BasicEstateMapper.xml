@@ -39,9 +39,6 @@
     <result column="supply_gas" property="supplyGas" jdbcType="INTEGER" />
     <result column="infrastructure_completeness" property="infrastructureCompleteness" jdbcType="INTEGER" />
     <result column="location_describe" property="locationDescribe" jdbcType="VARCHAR" />
-    <result column="basic_building_id" property="basicBuildingId" jdbcType="INTEGER" />
-    <result column="basic_unit_id" property="basicUnitId" jdbcType="INTEGER" />
-    <result column="basic_house_id" property="basicHouseId" jdbcType="INTEGER" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -110,8 +107,7 @@
     floor_area, cover_an_area, volumetric_rate, greening_rate, open_time, building_number, 
     position, description, average_price, price_range, supply_heating, supply_power, 
     supply_communication, supply_road, supply_water, drain_water, infrastructure, supply_gas, 
-    infrastructure_completeness, location_describe, basic_building_id, basic_unit_id, 
-    basic_house_id, creator, gmt_created, gmt_modified
+    infrastructure_completeness, location_describe, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicEstateExample" >
     select
@@ -159,8 +155,7 @@
       supply_power, supply_communication, supply_road, 
       supply_water, drain_water, infrastructure, 
       supply_gas, infrastructure_completeness, 
-      location_describe, basic_building_id, basic_unit_id, 
-      basic_house_id, creator, gmt_created, 
+      location_describe, creator, gmt_created, 
       gmt_modified)
     values (#{applyId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, 
       #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, #{blockId,jdbcType=INTEGER}, 
@@ -174,8 +169,7 @@
       #{supplyPower,jdbcType=INTEGER}, #{supplyCommunication,jdbcType=INTEGER}, #{supplyRoad,jdbcType=INTEGER}, 
       #{supplyWater,jdbcType=INTEGER}, #{drainWater,jdbcType=INTEGER}, #{infrastructure,jdbcType=VARCHAR}, 
       #{supplyGas,jdbcType=INTEGER}, #{infrastructureCompleteness,jdbcType=INTEGER}, 
-      #{locationDescribe,jdbcType=VARCHAR}, #{basicBuildingId,jdbcType=INTEGER}, #{basicUnitId,jdbcType=INTEGER}, 
-      #{basicHouseId,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{locationDescribe,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
       #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicEstate" >
@@ -291,15 +285,6 @@
       </if>
       <if test="locationDescribe != null" >
         location_describe,
-      </if>
-      <if test="basicBuildingId != null" >
-        basic_building_id,
-      </if>
-      <if test="basicUnitId != null" >
-        basic_unit_id,
-      </if>
-      <if test="basicHouseId != null" >
-        basic_house_id,
       </if>
       <if test="creator != null" >
         creator,
@@ -419,15 +404,6 @@
       </if>
       <if test="locationDescribe != null" >
         #{locationDescribe,jdbcType=VARCHAR},
-      </if>
-      <if test="basicBuildingId != null" >
-        #{basicBuildingId,jdbcType=INTEGER},
-      </if>
-      <if test="basicUnitId != null" >
-        #{basicUnitId,jdbcType=INTEGER},
-      </if>
-      <if test="basicHouseId != null" >
-        #{basicHouseId,jdbcType=INTEGER},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -560,15 +536,6 @@
       <if test="record.locationDescribe != null" >
         location_describe = #{record.locationDescribe,jdbcType=VARCHAR},
       </if>
-      <if test="record.basicBuildingId != null" >
-        basic_building_id = #{record.basicBuildingId,jdbcType=INTEGER},
-      </if>
-      <if test="record.basicUnitId != null" >
-        basic_unit_id = #{record.basicUnitId,jdbcType=INTEGER},
-      </if>
-      <if test="record.basicHouseId != null" >
-        basic_house_id = #{record.basicHouseId,jdbcType=INTEGER},
-      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -622,9 +589,6 @@
       supply_gas = #{record.supplyGas,jdbcType=INTEGER},
       infrastructure_completeness = #{record.infrastructureCompleteness,jdbcType=INTEGER},
       location_describe = #{record.locationDescribe,jdbcType=VARCHAR},
-      basic_building_id = #{record.basicBuildingId,jdbcType=INTEGER},
-      basic_unit_id = #{record.basicUnitId,jdbcType=INTEGER},
-      basic_house_id = #{record.basicHouseId,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -743,15 +707,6 @@
       <if test="locationDescribe != null" >
         location_describe = #{locationDescribe,jdbcType=VARCHAR},
       </if>
-      <if test="basicBuildingId != null" >
-        basic_building_id = #{basicBuildingId,jdbcType=INTEGER},
-      </if>
-      <if test="basicUnitId != null" >
-        basic_unit_id = #{basicUnitId,jdbcType=INTEGER},
-      </if>
-      <if test="basicHouseId != null" >
-        basic_house_id = #{basicHouseId,jdbcType=INTEGER},
-      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -802,9 +757,6 @@
       supply_gas = #{supplyGas,jdbcType=INTEGER},
       infrastructure_completeness = #{infrastructureCompleteness,jdbcType=INTEGER},
       location_describe = #{locationDescribe,jdbcType=VARCHAR},
-      basic_building_id = #{basicBuildingId,jdbcType=INTEGER},
-      basic_unit_id = #{basicUnitId,jdbcType=INTEGER},
-      basic_house_id = #{basicHouseId,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

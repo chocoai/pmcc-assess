@@ -78,12 +78,6 @@ public class BasicEstate {
 
     private String locationDescribe;
 
-    private Integer basicBuildingId;
-
-    private Integer basicUnitId;
-
-    private Integer basicHouseId;
-
     private String creator;
 
     private Date gmtCreated;
@@ -384,30 +378,6 @@ public class BasicEstate {
 
     public void setLocationDescribe(String locationDescribe) {
         this.locationDescribe = locationDescribe == null ? null : locationDescribe.trim();
-    }
-
-    public Integer getBasicBuildingId() {
-        return basicBuildingId;
-    }
-
-    public void setBasicBuildingId(Integer basicBuildingId) {
-        this.basicBuildingId = basicBuildingId;
-    }
-
-    public Integer getBasicUnitId() {
-        return basicUnitId;
-    }
-
-    public void setBasicUnitId(Integer basicUnitId) {
-        this.basicUnitId = basicUnitId;
-    }
-
-    public Integer getBasicHouseId() {
-        return basicHouseId;
-    }
-
-    public void setBasicHouseId(Integer basicHouseId) {
-        this.basicHouseId = basicHouseId;
     }
 
     public String getCreator() {

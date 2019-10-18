@@ -46,6 +46,8 @@ public class BasicApplyBatchController extends BaseController {
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
+    private BasicApplyService basicApplyService;
+    @Autowired
     private BasicApplyBatchService basicApplyBatchService;
     @Autowired
     private BasicApplyBatchDetailService basicApplyBatchDetailService;
@@ -180,8 +182,9 @@ public class BasicApplyBatchController extends BaseController {
         BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicById(formClassify);
         if (AssessDataDicKeyConstant.PROJECT_SURVEY_FORM_CLASSIFY_LAND_ONLY.equals(baseDataDic.getFieldName())) {
             view = view + "/landOnly/index";
-            if (basicEstate != null && basicEstate.getBasicHouseId() != null) {
-                Map<String, Object> basicHouseMap = basicHouseService.getBasicHouseMapById(basicEstate.getBasicHouseId());
+            BasicApply basicApply = basicApplyService.getBasicApplyByPlanDetailsId(planDetailsId);
+            if (basicApply != null && basicApply.getBasicHouseId() != null) {
+                Map<String, Object> basicHouseMap = basicHouseService.getBasicHouseMapById(basicApply.getBasicHouseId());
                 basicHouse = (BasicHouse) basicHouseMap.get(FormatUtils.toLowerCaseFirstChar(BasicHouse.class.getSimpleName()));
                 basicHouseTrading = (BasicHouseTrading) basicHouseMap.get(FormatUtils.toLowerCaseFirstChar(BasicHouseTrading.class.getSimpleName()));
             }

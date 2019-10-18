@@ -395,8 +395,11 @@ public class BasicApplyBatchService {
             basicHouseTrading.setCreator(commonService.thisUserAccount());
             basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicHouseTrading);
 
-            basicEstate.setBasicHouseId(basicHouse.getId());
-            basicEstateService.saveAndUpdateBasicEstate(basicEstate);
+            BasicApply basicApply = new BasicApply();
+            basicApply.setBasicEstateId(basicEstate.getId());
+            basicApply.setBasicHouseId(basicHouse.getId());
+            basicApply.setPlanDetailsId(basicApplyBatch.getPlanDetailsId());
+            basicApplyService.saveBasicApply(basicApply);
         }
         return basicApplyBatch;
     }
