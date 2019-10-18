@@ -9,10 +9,7 @@ import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanVo;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
-import com.copower.pmcc.assess.service.project.ProjectInfoService;
-import com.copower.pmcc.assess.service.project.ProjectPhaseService;
-import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
-import com.copower.pmcc.assess.service.project.ProjectPlanService;
+import com.copower.pmcc.assess.service.project.*;
 import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
 import com.copower.pmcc.assess.service.project.generate.ProjectPlanGenerateAssist;
 import com.copower.pmcc.assess.service.project.plan.execute.PlanComplieExecute;
@@ -137,7 +134,7 @@ public class ProjectPlanDetailsController {
     @PostMapping(name = "项目菜单任务分派 添加任务", value = "/saveProjectStagePlan")
     public HttpResult saveProjectStagePlan(String formData) {
         try {
-            ProjectPlanDetails projectPlanDetails = JSONObject.parseObject(formData,ProjectPlanDetails.class) ;
+            ProjectPlanDetails projectPlanDetails = JSONObject.parseObject(formData, ProjectPlanDetails.class);
             projectPlanDetailsService.saveProjectStagePlan(projectPlanDetails);
             return HttpResult.newCorrectResult(projectPlanDetails);
         } catch (Exception e) {
@@ -147,9 +144,9 @@ public class ProjectPlanDetailsController {
     }
 
     @PostMapping(name = "发起任务(对任务分派添加的任务发起,更改状态)", value = "/initiateStagePlanTask")
-    public HttpResult initiateStagePlanTask(Integer planId,Integer projectId) {
+    public HttpResult initiateStagePlanTask(Integer planId, Integer projectId) {
         try {
-            projectPlanDetailsService.initiateStagePlanTask(planId,projectId);
+            projectPlanDetailsService.initiateStagePlanTask(planId, projectId);
             return HttpResult.newCorrectResult("success");
         } catch (Exception e) {
             logger.error("任务分派 添加任务", e);
@@ -158,9 +155,9 @@ public class ProjectPlanDetailsController {
     }
 
     @PostMapping(name = "自动分派改阶段下的所有任务", value = "/autoStagePlanTask")
-    public HttpResult autoStagePlanTask(Integer projectWorkStageId,Integer projectId) {
+    public HttpResult autoStagePlanTask(Integer projectWorkStageId, Integer projectId) {
         try {
-            projectPlanDetailsService.autoStagePlanTask(projectId,projectWorkStageId);
+            projectPlanDetailsService.autoStagePlanTask(projectId, projectWorkStageId);
             return HttpResult.newCorrectResult("success");
         } catch (Exception e) {
             logger.error("自动分派改阶段下的所有任务", e);
@@ -215,8 +212,8 @@ public class ProjectPlanDetailsController {
 //        select.setProjectCategoryId(projectInfoVo.getProjectCategoryId());
         List<ProjectWorkStage> workStageList = projectWorkStageService.getProjectWorkStageList(select);
         Iterator<ProjectWorkStage> projectWorkStageIterator = workStageList.iterator();
-        while (projectWorkStageIterator.hasNext()){
-            if (StringUtils.isEmpty(projectWorkStageIterator.next().getStageForm())){
+        while (projectWorkStageIterator.hasNext()) {
+            if (StringUtils.isEmpty(projectWorkStageIterator.next().getStageForm())) {
                 projectWorkStageIterator.remove();
             }
         }
@@ -247,7 +244,7 @@ public class ProjectPlanDetailsController {
         select.setProjectClassId(projectInfoVo.getProjectClassId());
         select.setWorkStageId(projectWorkStage.getId());
         List<ProjectPhase> projectPhaseList = projectPhaseService.getProjectPhaseList(select);
-        if (CollectionUtils.isNotEmpty(projectPhaseList)){
+        if (CollectionUtils.isNotEmpty(projectPhaseList)) {
             projectPhaseList.forEach(projectPhase -> projectPhaseVoList.add(projectPhaseService.getProjectPhaseVo(projectPhase)));
         }
         modelAndView.addObject("projectPhaseVoList", projectPhaseVoList);
@@ -285,6 +282,15 @@ public class ProjectPlanDetailsController {
             //报告生成
             if (Objects.equal(projectWorkStage.getStageForm(), StringUtils.uncapitalize(ProjectPlanGenerateAssist.class.getSimpleName()))) {
                 map.put(projectWorkStage.getStageForm(), "/projectTraceMenu/house/projectReportGeneration");
+            }
+        }
+        //资产申报
+        if (Objects.equal(AssessProjectClassifyConstant.COMPREHENSIVE_ASSETS_TYPE, key)) {
+            if (Objects.equal(projectWorkStage.getStageForm(), StringUtils.uncapitalize(ProjectPlanAssist.class.getSimpleName()))) {
+                map.put(projectWorkStage.getStageForm(), "/projectTraceMenu/assets/projectAssestsBase");
+            }
+            if (Objects.equal(projectWorkStage.getStageForm(), StringUtils.uncapitalize(PlanDefaultExecute.class.getSimpleName()))) {
+                map.put(projectWorkStage.getStageForm(), "/projectTraceMenu/assets/projectAssestsBase");
             }
         }
         return map;

@@ -82,26 +82,27 @@
                 <div class="x_content">
                     <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
                         <div class="list-group">
-                            <a onclick="projectDetails.loadDocumentSend('tb_documentSendList')" class="list-group-item">项目发文
+                            <a onclick="projectDetails.loadTableByKey(1)" class="list-group-item">项目发文
                                 <i class="fa fa-bookmark"></i>
                             </a>
-                            <a onclick="projectDetails.loadDocumentOpinion('tb_documentOpinionList')"
+                            <a onclick="projectDetails.loadTableByKey(2)"
                                class="list-group-item">项目意见稿
                                 <i class="fa fa-cloud-download"></i>
                             </a>
-                            <a onclick="projectDetails.loadSubsequent('tb_subsequentList')" class="list-group-item">后续事项
+                            <a onclick="projectDetails.loadTableByKey(3)" class="list-group-item">后续事项
                                 <i class="fa fa-spinner"></i>
                             </a>
-                            <a onclick="projectDetails.loadTakeNumber('tb_takeNumber')" class="list-group-item">项目拿号
+                            <a onclick="projectDetails.loadTableByKey(4)" class="list-group-item">项目拿号
                                 <i class="fa fa-magic"></i>
                             </a>
-                            <a onclick="projectDetails.loadProjectLog('tb_projectLogList')" class="list-group-item">项目日志
+                            <a onclick="projectDetails.loadTableByKey(5)" class="list-group-item">项目日志
                                 <i class="fa fa-flag-checkered"></i>
                             </a>
-                            <a onclick="projectDetails.loadProjectLegwork('tb_projectLegWorkList')" class="list-group-item">外勤信息
+                            <a onclick="projectDetails.loadTableByKey(6)"
+                               class="list-group-item">外勤信息
                                 <i class="fa fa-coffee"></i>
                             </a>
-                            <a onclick="projectDetails.loadProjectBill('tb_projectBillList')" class="list-group-item">开票信息
+                            <a onclick="projectDetails.loadTableByKey(7)" class="list-group-item">开票信息
                                 <i class="fa fa-barcode"></i>
                             </a>
                         </div>
@@ -289,8 +290,69 @@
             });
         },
 
+        loadTableByKey: function (num) {
+            var data = [];
+            if (num == 1) {
+                var target = $("#tb_documentSendList") ;
+                target.closest('.x_panel').show();
+                projectDetails.loadDocumentSend(target);
+            } else {
+                data.push('tb_documentSendList');
+            }
+
+            if (num == 2) {
+                var target = $("#tb_documentOpinionList") ;
+                target.closest('.x_panel').show();
+                projectDetails.loadDocumentOpinion(target);
+            } else {
+                data.push('tb_documentOpinionList');
+            }
+
+            if (num == 3) {
+                var target = $("#tb_subsequentList") ;
+                target.closest('.x_panel').show();
+                projectDetails.loadSubsequent(target);
+            } else {
+                data.push('tb_subsequentList');
+            }
+
+            if (num == 4) {
+                var target = $("#tb_takeNumber") ;
+                target.closest('.x_panel').show();
+                projectDetails.loadTakeNumber(target);
+            } else {
+                data.push('tb_takeNumber');
+            }
+
+            if (num == 5) {
+                var target = $("#tb_projectLogList") ;
+                target.closest('.x_panel').show();
+                projectDetails.loadProjectLog(target);
+            } else {
+                data.push('tb_projectLogList');
+            }
+
+            if (num == 6) {
+                var target = $("#tb_projectLegWorkList") ;
+                target.closest('.x_panel').show();
+                projectDetails.loadProjectLegwork(target);
+            } else {
+                data.push('tb_projectLegWorkList');
+            }
+
+            if (num == 7) {
+                var target = $("#tb_projectBillList") ;
+                target.closest('.x_panel').show();
+                projectDetails.loadProjectBill(target);
+            } else {
+                data.push('tb_projectBillList');
+            }
+            $.each(data , function (i,item) {
+                $("#" + item).closest('.x_panel').hide();
+            });
+        },
         //项目发文
-        loadDocumentSend: function (key) {
+        loadDocumentSend: function (target) {
             var cols = [];
             cols.push({field: 'title', title: '标题'});
             cols.push({field: 'userName', title: '创建人'});
@@ -304,12 +366,8 @@
                     return "<a target='_blank' href='${pageContext.request.contextPath}/documentSend/detailsIndex?processInsId=" + row.processInsId + "' style='margin-left: 5px;' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-search fa-white'></i></a>";
                 }
             });
-            if (key != 'tb_documentSendList') {
-                return false;
-            }
-            $("#" + key).parent().parent().show();
-            $("#tb_documentSendList").bootstrapTable('destroy');
-            TableInit("tb_documentSendList", "${pageContext.request.contextPath}/documentSend/getDocumentSendVoList", cols, {
+            target.bootstrapTable('destroy');
+            TableInit(target, "${pageContext.request.contextPath}/documentSend/getDocumentSendVoList", cols, {
                 projectId: ${projectInfo.id}
             }, {
                 showColumns: false,
@@ -322,17 +380,13 @@
         },
 
         //项目意见稿
-        loadDocumentOpinion: function (key) {
+        loadDocumentOpinion: function (target) {
             var cols = [];
             cols.push({field: 'areaGroupName', title: '区域名称'});
             cols.push({field: 'reportTypeName', title: '报告类型'});
             cols.push({field: 'fileViewName', title: '意见稿'});
-            if (key != 'tb_documentOpinionList') {
-                return false;
-            }
-            $("#" + key).parent().parent().show();
-            $("#tb_documentOpinionList").bootstrapTable('destroy');
-            TableInit("tb_documentOpinionList", "${pageContext.request.contextPath}/documentOpinion/getDocumentOpinionVoList", cols, {
+            target.bootstrapTable('destroy');
+            TableInit(target, "${pageContext.request.contextPath}/documentOpinion/getDocumentOpinionVoList", cols, {
                 projectId: ${projectInfo.id}
             }, {
                 showColumns: false,
@@ -345,18 +399,14 @@
         },
 
         //后续事项
-        loadSubsequent: function (key) {
+        loadSubsequent: function (target) {
             var cols = [];
             cols.push({field: 'title', title: '标题'});
             cols.push({field: 'content', title: '内容'});
             cols.push({field: 'suggestion', title: '处理意见'});
             cols.push({field: 'fileViewName', title: '附件'});
-            if (key != 'tb_subsequentList') {
-                return false;
-            }
-            $("#" + key).parent().parent().show();
-            $("#tb_subsequentList").bootstrapTable('destroy');
-            TableInit("tb_subsequentList", "${pageContext.request.contextPath}/projectSubsequent/getSubsequentList", cols, {
+            target.bootstrapTable('destroy');
+            TableInit(target, "${pageContext.request.contextPath}/projectSubsequent/getSubsequentList", cols, {
                 projectId: ${projectInfo.id}
             }, {
                 showColumns: false,
@@ -369,7 +419,7 @@
         },
 
         //项目拿号类型、文号、说明、拿号人、拿号时间
-        loadTakeNumber: function (key) {
+        loadTakeNumber: function (target) {
             var cols = [];
             cols.push({field: 'reportTypeName', title: '报告类型'});
             cols.push({field: 'numberValue', title: '文号'});
@@ -380,12 +430,8 @@
                     return formatDate(value);
                 }
             });
-            if (key != 'tb_takeNumber') {
-                return false;
-            }
-            $("#" + key).parent().parent().show();
-            $("#tb_takeNumber").bootstrapTable('destroy');
-            TableInit("tb_takeNumber", "${pageContext.request.contextPath}/projectTakeNumber/getTakeNumberList", cols, {
+            target.bootstrapTable('destroy');
+            TableInit(target, "${pageContext.request.contextPath}/projectTakeNumber/getTakeNumberList", cols, {
                 projectId: ${projectInfo.id}
             }, {
                 showColumns: false,
@@ -398,7 +444,7 @@
         },
 
         //项目日志
-        loadProjectLog: function (key) {
+        loadProjectLog: function (target) {
             var cols = [];
             cols.push({field: 'title', title: '标题'});
             cols.push({field: 'content', title: '内容'});
@@ -408,12 +454,8 @@
                     return formatDate(value, true);
                 }
             });
-            if (key != 'tb_projectLogList') {
-                return false;
-            }
-            $("#" + key).parent().parent().show();
-            $("#tb_projectLogList").bootstrapTable('destroy');
-            TableInit("tb_projectLogList", "${pageContext.request.contextPath}/home/getWorkLogByProjectId", cols, {
+            target.bootstrapTable('destroy');
+            TableInit(target, "${pageContext.request.contextPath}/home/getWorkLogByProjectId", cols, {
                 publicProjectId: '${projectInfo.publicProjectId}'
             }, {
                 showColumns: false,
@@ -426,7 +468,7 @@
         },
 
         //项目外勤
-        loadProjectLegwork: function (key) {
+        loadProjectLegwork: function (target) {
             var cols = [];
             cols.push({field: 'legworkContent', title: '内容'});
             cols.push({field: 'creator', title: '创建人'});
@@ -440,12 +482,8 @@
                     return "<a target='_blank' href='/pmcc-hr/hrBase/detailsIndex?processInsId=" + row.processInsId + "' style='margin-left: 5px;' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-search fa-white'></i></a>";
                 }
             });
-            if (key != 'tb_projectLegWorkList') {
-                return false;
-            }
-            $("#" + key).parent().parent().show();
-            $("#tb_projectLegWorkList").bootstrapTable('destroy');
-            TableInit("tb_projectLegWorkList", "${pageContext.request.contextPath}/rpcHrService/getHrLegworkList", cols, {
+            target.bootstrapTable('destroy');
+            TableInit(target, "${pageContext.request.contextPath}/rpcHrService/getHrLegworkList", cols, {
                 publicProjectId: '${projectInfo.publicProjectId}'
             }, {
                 showColumns: false,
@@ -459,7 +497,7 @@
 
 
         //项目开票
-        loadProjectBill: function (key) {
+        loadProjectBill: function (target) {
             var cols = [];
             cols.push({field: 'billNumber', title: '票号'});
             cols.push({
@@ -489,12 +527,8 @@
                     return "<a target='_blank' href='/pmcc-finance/FinancialBase/DetailsIndex?processInsId=" + row.processInsId + "' style='margin-left: 5px;' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-search fa-white'></i></a>";
                 }
             });
-            if (key != 'tb_projectBillList') {
-                return false;
-            }
-            $("#" + key).parent().parent().show();
-            $("#tb_projectBillList").bootstrapTable('destroy');
-            TableInit("tb_projectBillList", "${pageContext.request.contextPath}/rpcFinanceService/getFinancialBillMakeOutList", cols, {
+            target.bootstrapTable('destroy');
+            TableInit(target, "${pageContext.request.contextPath}/rpcFinanceService/getFinancialBillMakeOutList", cols, {
                 publicProjectId: '${projectInfo.publicProjectId}'
             }, {
                 showColumns: false,
