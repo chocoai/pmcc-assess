@@ -40,6 +40,11 @@
         </div>
     </form>
 </div>
+<div class="x_content">
+    <%@include file="/views/project/stageSurvey/common/unitHuxing.jsp" %>
+    <%@include file="/views/project/stageSurvey/common/unitDecorate.jsp" %>
+    <%@include file="/views/project/stageSurvey/common/unitElevator.jsp" %>
+</div>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.unit.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/sonUnitView.js"></script>
 <script type="text/javascript">

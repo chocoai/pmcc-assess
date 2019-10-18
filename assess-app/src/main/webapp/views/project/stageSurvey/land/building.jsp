@@ -266,6 +266,14 @@
         </div>
     </form>
 </div>
+<div class="x_content">
+    <%@include file="/views/project/stageSurvey/common/buildingFunction.jsp" %>
+    <%@include file="/views/project/stageSurvey/common/buildingOutfit.jsp" %>
+    <c:if test="${formType eq 'industry'}">
+        <%@include file="/views/project/stageSurvey/common/buildingMaintenance.jsp" %>
+        <%@include file="/views/project/stageSurvey/common/buildingSurface.jsp" %>
+    </c:if>
+</div>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.build.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/sonBuildView.js"></script>
 <script type="text/javascript">

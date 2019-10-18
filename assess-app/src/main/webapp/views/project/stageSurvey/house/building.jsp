@@ -15,8 +15,11 @@
                 </label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <div class="input-group">
-                        <input type="text" id="txt_building_search" data-rule-maxlength="100" placeholder="楼栋号" required="required"
-                               name="buildingNumber" class="form-control" onblur="buildingCommon.buildingNumberBlur(this);" value="${basicBuilding.buildingNumber}">
+                        <input type="text" id="txt_building_search" data-rule-maxlength="100" placeholder="楼栋号"
+                               required="required"
+                               name="buildingNumber" class="form-control"
+                               onblur="buildingCommon.buildingNumberBlur(this);"
+                               value="${basicBuilding.buildingNumber}">
                         <span class="input-group-btn">
                           <c:if test="${empty isApplyBatch}">
                             <div onclick="buildingCommon.mapMarker();" class="btn btn-info"><i
@@ -45,11 +48,12 @@
                 </label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <input type="text" placeholder="总层数" data-rule-number="true"
-                           name="floorCount" class="form-control" required="required" value="${basicBuilding.floorCount}">
+                           name="floorCount" class="form-control" required="required"
+                           value="${basicBuilding.floorCount}">
                 </div>
             </div>
         </div>
-        <div  class="form-group">
+        <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                     物业类型
@@ -114,7 +118,8 @@
                     所在位置
                 </label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text" placeholder="所在位置" name="location" class="form-control" value="${basicBuilding.location}">
+                    <input type="text" placeholder="所在位置" name="location" class="form-control"
+                           value="${basicBuilding.location}">
                 </div>
             </div>
             <div class="x-valid">
@@ -123,11 +128,13 @@
                 </label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <c:if test="${basicApply.type == 0 || basicApply.type==null || basicApply.type == 3}">
-                        <select name="residenceUseYear" required class="form-control residenceUseYear search-select select2">
+                        <select name="residenceUseYear" required
+                                class="form-control residenceUseYear search-select select2">
                         </select>
                     </c:if>
                     <c:if test="${basicApply.type == 1}">
-                        <select name="industryUseYear" required class="form-control industryUseYear search-select select2">
+                        <select name="industryUseYear" required
+                                class="form-control industryUseYear search-select select2">
                         </select>
                     </c:if>
                 </div>
@@ -137,7 +144,8 @@
                     户型区间
                 </label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text" placeholder="户型区间" name="unitInterval" class="form-control" value="${basicBuilding.unitInterval}">
+                    <input type="text" placeholder="户型区间" name="unitInterval" class="form-control"
+                           value="${basicBuilding.unitInterval}">
                 </div>
             </div>
         </div>
@@ -255,8 +263,10 @@
                     建筑公司
                 </label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text" placeholder="建筑公司" class="form-control" name="builderName" value="${basicBuilding.builderName}">
-                    <input type="hidden" placeholder="建筑公司" class="form-control" name="builder" value="${basicBuilding.builder}">
+                    <input type="text" placeholder="建筑公司" class="form-control" name="builderName"
+                           value="${basicBuilding.builderName}">
+                    <input type="hidden" placeholder="建筑公司" class="form-control" name="builder"
+                           value="${basicBuilding.builder}">
                 </div>
             </div>
         </div>
@@ -296,7 +306,8 @@
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">楼间距描述</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text" placeholder="楼间距描述" class="form-control" name="betweenDistanceDescription" value="${basicBuilding.betweenDistanceDescription}">
+                    <input type="text" placeholder="楼间距描述" class="form-control" name="betweenDistanceDescription"
+                           value="${basicBuilding.betweenDistanceDescription}">
                 </div>
             </div>
 
@@ -321,7 +332,8 @@
                     竣工时间获取方式<span class="symbol required"></span>
                 </label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <select name="completedTimeType" required class="form-control completedTimeType search-select select2">
+                    <select name="completedTimeType" required
+                            class="form-control completedTimeType search-select select2">
                     </select>
                 </div>
             </div>
@@ -337,7 +349,8 @@
             </div>
             <div class="x-valid">
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 col-lg-offset-1 ">
-                    <button type="button" class="btn btn-xs btn-primary" onclick="buildingCommon.constructionInstallationEngineeringFeeEvent.loadHtml();">
+                    <button type="button" class="btn btn-xs btn-primary"
+                            onclick="buildingCommon.constructionInstallationEngineeringFeeEvent.loadHtml();">
                         建筑安装完工度调查
                     </button>
                 </div>
@@ -351,8 +364,10 @@
                     物业公司名称
                 </label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text" name="propertyName" placeholder="物业公司名称" class="form-control" value="${basicBuilding.propertyName}">
-                    <input type="hidden" name="property" placeholder="物业公司 " class="form-control" value="${basicBuilding.property}">
+                    <input type="text" name="propertyName" placeholder="物业公司名称" class="form-control"
+                           value="${basicBuilding.propertyName}">
+                    <input type="hidden" name="property" placeholder="物业公司 " class="form-control"
+                           value="${basicBuilding.property}">
                 </div>
             </div>
 
@@ -398,19 +413,28 @@
                     <!-- 这个id是不能更改的bootstrap3 强制如此 toolbar -->
                     <div id="toolbarBuildingPropertyServiceItemTable" style="display: none">
                         <div class="btn-group">
-                            <button type="button" class="btn btn-primary" onclick="buildingCommon.deleteBasicBuildingPropertyServiceItem('#basicBuildingPropertyServiceItemTable')">删除</button>
-                            <button type="button" class="btn btn-primary" onclick="buildingCommon.editBasicBuildingPropertyServiceItem('#basicBuildingPropertyServiceItemTable','#basicBuildingPropertyServiceItemModalTool',true)">编辑</button>
-                            <button type="button" class="btn btn-primary" onclick="buildingCommon.editBasicBuildingPropertyServiceItem('#basicBuildingPropertyServiceItemTable','#basicBuildingPropertyServiceItemModalTool',false)">添加</button>
+                            <button type="button" class="btn btn-primary"
+                                    onclick="buildingCommon.deleteBasicBuildingPropertyServiceItem('#basicBuildingPropertyServiceItemTable')">
+                                删除
+                            </button>
+                            <button type="button" class="btn btn-primary"
+                                    onclick="buildingCommon.editBasicBuildingPropertyServiceItem('#basicBuildingPropertyServiceItemTable','#basicBuildingPropertyServiceItemModalTool',true)">
+                                编辑
+                            </button>
+                            <button type="button" class="btn btn-primary"
+                                    onclick="buildingCommon.editBasicBuildingPropertyServiceItem('#basicBuildingPropertyServiceItemTable','#basicBuildingPropertyServiceItemModalTool',false)">
+                                添加
+                            </button>
                         </div>
                     </div>
 
-                    <table class="table table-bordered" id="basicBuildingPropertyServiceItemTable" data-toolbar="#toolbarBuildingPropertyServiceItemTable">
+                    <table class="table table-bordered" id="basicBuildingPropertyServiceItemTable"
+                           data-toolbar="#toolbarBuildingPropertyServiceItemTable">
 
                     </table>
                 </div>
             </div>
         </div>
-
 
 
         <div class="form-group" id="navButtonBuildGroupFileId">
@@ -438,7 +462,8 @@
         </div>
     </form>
 </div>
-<div id="basicBuildingPropertyServiceItemModalTool" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+<div id="basicBuildingPropertyServiceItemModalTool" class="modal fade bs-example-modal-lg" data-backdrop="static"
+     tabindex="-1"
      role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -462,7 +487,8 @@
                                             服务类型<span class="symbol required"></span>
                                         </label>
                                         <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
-                                            <select required="required" name="serviceType" class="form-control serviceType"
+                                            <select required="required" name="serviceType"
+                                                    class="form-control serviceType"
                                                     onchange="">
                                                 <option value="">-请选择-</option>
                                             </select>
@@ -494,7 +520,8 @@
                                             等级评价<span class="symbol required"></span>
                                         </label>
                                         <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
-                                            <select required="required" name="gradeEvaluation" class="form-control search-select select2">
+                                            <select required="required" name="gradeEvaluation"
+                                                    class="form-control search-select select2">
                                                 <option value="">-请选择-</option>
                                             </select>
                                         </div>
@@ -531,6 +558,10 @@
 <div class="x_content">
     <%@include file="/views/project/stageSurvey/common/buildingFunction.jsp" %>
     <%@include file="/views/project/stageSurvey/common/buildingOutfit.jsp" %>
+    <c:if test="${formType eq 'industry'}">
+        <%@include file="/views/project/stageSurvey/common/buildingMaintenance.jsp" %>
+        <%@include file="/views/project/stageSurvey/common/buildingSurface.jsp" %>
+    </c:if>
 </div>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.build.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/sonBuildView.js"></script>

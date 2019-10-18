@@ -441,6 +441,7 @@
                     zTreeObj.addNodes(node, {
                         id: result.data.id,
                         pid: result.data.pid,
+                        number: result.data.tableId,
                         displayName: result.data.displayName
                     });
                     $('#detail_modal').modal('hide');
@@ -545,6 +546,7 @@
                     toastr.success('保存成功');
                     var node = zTreeObj.getSelectedNodes()[0];
                     node.id = result.data.id;
+                    node.number = result.data.tableId;
                     node.name = result.data.name;
                     node.displayName = result.data.displayName;
                     node.pid = result.data.pid;

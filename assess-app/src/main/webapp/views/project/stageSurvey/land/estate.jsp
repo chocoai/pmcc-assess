@@ -31,7 +31,8 @@
     </div>
     <div class="form-group">
         <div class="x-valid">
-            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">地块名称<span class="symbol required"></span></label>
+            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">地块名称<span
+                    class="symbol required"></span></label>
             <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                 <div class="input-group">
                     <input type="text" id="txt_estate_search" data-rule-maxlength="100" placeholder="地块名称"
@@ -48,7 +49,8 @@
                                     class="fa fa-map-marker"></i> 标注</div>
                             </c:if>
 
-                             <div style="display: none" onclick="estateCommon.mapLandMarker(false)" class="btn btn-info">
+                             <div style="display: none" onclick="estateCommon.mapLandMarker(false)"
+                                  class="btn btn-info">
                                 <i class="fa fa-map-marker"></i> 标注
                             </div>
 
@@ -64,7 +66,8 @@
             </div>
         </div>
         <div class="x-valid">
-            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">基础版块<span class="symbol required"></span></label>
+            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">基础版块<span
+                    class="symbol required"></span></label>
             <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                 <div class="input-group">
                     <input type="hidden" name="blockId" value="${basicEstate.blockId}">
@@ -90,7 +93,8 @@
     </div>
     <div class="form-group">
         <div class="x-valid">
-            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">基础版块描述<span class="symbol required"></span></label>
+            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">基础版块描述<span
+                    class="symbol required"></span></label>
             <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
                         <textarea class="form-control" name="blockDescription" id="blockDescription" required
                                   placeholder="基础版块描述">${basicEstate.blockDescription}</textarea>
@@ -99,7 +103,8 @@
     </div>
     <div class="form-group">
         <div class="x-valid">
-            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">街道(乡)名称<span class="symbol required"></span></label>
+            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">街道(乡)名称<span
+                    class="symbol required"></span></label>
             <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                 <input type="text" placeholder="街道(乡)名称" required
                        name="street" class="form-control" value="${basicEstate.street}">
@@ -107,7 +112,8 @@
         </div>
 
         <div class="x-valid">
-            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">街道(村)号<span class="symbol required"></span></label>
+            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">街道(村)号<span
+                    class="symbol required"></span></label>
             <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                 <input type="text" required
                        placeholder="街道(村)号" name="streetNumber" class="form-control"
@@ -151,7 +157,8 @@
     </div>
     <div class="form-group">
         <div class="x-valid">
-            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">总楼栋数<span class="symbol required"></span></label>
+            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">总楼栋数<span
+                    class="symbol required"></span></label>
             <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                 <input type="text" data-rule-maxlength="100" data-rule-number='true'
                        placeholder="总楼栋数(请输入数字)" name="buildingNumber" required
@@ -171,48 +178,90 @@
     </div>
     <div class="form-group">
         <div class="x-valid">
-            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">地块区位分析<span class="symbol required"></span></label>
+            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">地块区位分析<span
+                    class="symbol required"></span></label>
             <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
                         <textarea class="form-control" name="locationDescribe" required
                                   placeholder="地块区位分析">${basicEstate.locationDescribe}</textarea>
             </div>
         </div>
     </div>
-<div class="form-group">
-    <div class="x-valid">
-        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">总平面图</label>
-        <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
-            <input id="estate_floor_total_plan" placeholder="上传附件" class="form-control"
-                   type="file">
-            <div id="_estate_floor_total_plan"></div>
-        </div>
-    </div>
-    <div class="x-valid">
-        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">外观图<span class="symbol required"></span></label>
-        <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
-            <input id="estate_floor_Appearance_figure" placeholder="上传附件" class="form-control"
-                   type="file">
-            <div id="_estate_floor_Appearance_figure"></div>
-        </div>
-    </div>
-</div>
-<div class="x_content">
-    <div class="x_title">基础设施情况</div>
     <div class="form-group">
         <div class="x-valid">
-            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">基础设施完备度<span
-                    class="symbol required"></span></label>
-            <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                <select class="form-control search-select select2 "
-                        name="infrastructureCompleteness" required="required">
-                </select>
+            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">总平面图</label>
+            <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
+                <input id="estate_floor_total_plan" placeholder="上传附件" class="form-control"
+                       type="file">
+                <div id="_estate_floor_total_plan"></div>
             </div>
         </div>
-        <div class=" col-xs-6  col-sm-6  col-md-6  col-lg-6  col-sm-offset-1" id="industrySupplyInfoContainer">
-
+        <div class="x-valid">
+            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">外观图<span
+                    class="symbol required"></span></label>
+            <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
+                <input id="estate_floor_Appearance_figure" placeholder="上传附件" class="form-control"
+                       type="file">
+                <div id="_estate_floor_Appearance_figure"></div>
+            </div>
         </div>
     </div>
-</div>
+    <c:if test="${formType eq 'industry'}">
+        <div class="form-group">
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">供水平面图</label>
+                <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
+                    <input id="estate_water_supply_plan" placeholder="上传附件" class="form-control"
+                           type="file">
+                    <div id="_estate_water_supply_plan"></div>
+                </div>
+            </div>
+
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">供电平面图</label>
+                <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
+                    <input id="estate_power_supply_plan" placeholder="上传附件" class="form-control"
+                           type="file">
+                    <div id="_estate_power_supply_plan"></div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">供气平面图</label>
+                <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
+                    <input id="estate_air_supply_plan" placeholder="上传附件" class="form-control"
+                           type="file">
+                    <div id="_estate_air_supply_plan"></div>
+                </div>
+            </div>
+
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">采暖平面图</label>
+                <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
+                    <input id="estate_heating_plan" placeholder="上传附件" class="form-control"
+                           type="file">
+                    <div id="_estate_heating_plan"></div>
+                </div>
+            </div>
+        </div>
+    </c:if>
+    <div class="x_content">
+        <div class="x_title">基础设施情况</div>
+        <div class="form-group">
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">基础设施完备度<span
+                        class="symbol required"></span></label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <select class="form-control search-select select2 "
+                            name="infrastructureCompleteness" required="required">
+                    </select>
+                </div>
+            </div>
+            <div class=" col-xs-6  col-sm-6  col-md-6  col-lg-6  col-sm-offset-1" id="industrySupplyInfoContainer">
+
+            </div>
+        </div>
+    </div>
 </form>
 <div class="x_content">
     <div class="x_title">
@@ -344,12 +393,14 @@
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地利用现状</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <input type="text" class="form-control"
-                           placeholder="土地利用现状" name="presentSituationLandUse" value="${basicEstateLandState.presentSituationLandUse}">
+                           placeholder="土地利用现状" name="presentSituationLandUse"
+                           value="${basicEstateLandState.presentSituationLandUse}">
                 </div>
             </div>
         </div>
         <div class="form-group">
-            <div class=" col-xs-6  col-sm-6  col-md-6  col-lg-6  col-sm-offset-1" id="developmentDegreeContentContainer">
+            <div class=" col-xs-6  col-sm-6  col-md-6  col-lg-6  col-sm-offset-1"
+                 id="developmentDegreeContentContainer">
             </div>
         </div>
         <div class="x_title">开发限制条件</div>
@@ -388,14 +439,16 @@
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">投资强度（万元/亩）</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <input type="text" class="form-control" data-rule-number='true'
-                           placeholder="投资强度（万元/亩） 数字" name="investmentIntensity" value="${basicEstateLandState.investmentIntensity}">
+                           placeholder="投资强度（万元/亩） 数字" name="investmentIntensity"
+                           value="${basicEstateLandState.investmentIntensity}">
                 </div>
             </div>
             <div class="x-valid" style="display: none">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">建筑限高 m²</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <input type="text" class="form-control" data-rule-number='true'
-                           placeholder="建筑限高 m² (数字)" name="buildingHeightLimit" value="${basicEstateLandState.buildingHeightLimit}">
+                           placeholder="建筑限高 m² (数字)" name="buildingHeightLimit"
+                           value="${basicEstateLandState.buildingHeightLimit}">
                 </div>
             </div>
         </div>
@@ -420,7 +473,7 @@
         </div>
         <script type="text/html" id="landLevelTabContentBody">
             <tr class="group">
-                <td  class="table-cell">
+                <td class="table-cell">
                     {landLevelTypeName}
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -437,7 +490,8 @@
                     <label name="reamark" class="form-control">{reamark}</label>
                 </td>
                 <td>
-                    <input type="hidden" class="form-control" name="dataLandLevelAchievement" value="{dataLandLevelAchievement}">
+                    <input type="hidden" class="form-control" name="dataLandLevelAchievement"
+                           value="{dataLandLevelAchievement}">
                     <input type="text" class="form-control" name="landFactorTotalScore" value="{landFactorTotalScore}">
                     <input type="hidden" name="landLevelContent" value='{landLevelContent}'>
                 </td>
@@ -448,6 +502,27 @@
             </tr>
         </script>
     </form>
+</div>
+<div class="x_content">
+    <%@include file="/views/project/stageSurvey/common/estateNetwork.jsp" %>
+    <%@include file="/views/project/stageSurvey/common/estateParking.jsp" %>
+    <%@include file="/views/project/stageSurvey/common/matchingEnvironment.jsp" %>
+    <%@include file="/views/project/stageSurvey/common/matchingFinance.jsp" %>
+    <c:if test="${formType eq 'residence'}">
+        <%@include file="/views/project/stageSurvey/common/matchingEducation.jsp" %>
+        <%@include file="/views/project/stageSurvey/common/matchingRecreation.jsp" %>
+        <%@include file="/views/project/stageSurvey/common/matchingRestaurant.jsp" %>
+        <%@include file="/views/project/stageSurvey/common/matchingMarket.jsp" %>
+        <%@include file="/views/project/stageSurvey/common/matchingMedical.jsp" %>
+    </c:if>
+    <%@include file="/views/project/stageSurvey/common/matchingTransit.jsp" %>
+    <%@include file="/views/project/stageSurvey/common/matchingTrafficHub.jsp" %>
+    <%@include file="/views/project/stageSurvey/common/matchingMetro.jsp" %>
+    <%@include file="/views/project/stageSurvey/common/matchingMainRoad.jsp" %>
+    <%@include file="/views/project/stageSurvey/common/matchingMainConversion.jsp" %>
+    <c:if test="${formType eq 'industry'}">
+        <%@include file="/views/project/stageSurvey/common/matchingMaterial.jsp" %>
+    </c:if>
 </div>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.estate.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/sonEstateView.js"></script>

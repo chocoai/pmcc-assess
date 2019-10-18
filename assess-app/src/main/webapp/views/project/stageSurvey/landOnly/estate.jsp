@@ -496,6 +496,28 @@
     </form>
 </div>
 <%@include file="/views/project/stageSurvey/common/houseTradingBodyBox.jsp" %>
+<div class="x_content">
+    <%@include file="/views/project/stageSurvey/common/estateNetwork.jsp" %>
+    <%@include file="/views/project/stageSurvey/common/estateParking.jsp" %>
+    <%@include file="/views/project/stageSurvey/common/matchingEnvironment.jsp" %>
+    <%@include file="/views/project/stageSurvey/common/matchingFinance.jsp" %>
+    <c:if test="${formType eq 'residence'}">
+        <%@include file="/views/project/stageSurvey/common/matchingEducation.jsp" %>
+        <%@include file="/views/project/stageSurvey/common/matchingRecreation.jsp" %>
+        <%@include file="/views/project/stageSurvey/common/matchingRestaurant.jsp" %>
+        <%@include file="/views/project/stageSurvey/common/matchingMarket.jsp" %>
+        <%@include file="/views/project/stageSurvey/common/matchingMedical.jsp" %>
+    </c:if>
+    <%@include file="/views/project/stageSurvey/common/matchingTransit.jsp" %>
+    <%@include file="/views/project/stageSurvey/common/matchingTrafficHub.jsp" %>
+    <%@include file="/views/project/stageSurvey/common/matchingMetro.jsp" %>
+    <%@include file="/views/project/stageSurvey/common/matchingMainRoad.jsp" %>
+    <%@include file="/views/project/stageSurvey/common/matchingMainConversion.jsp" %>
+    <c:if test="${formType eq 'industry'}">
+        <%@include file="/views/project/stageSurvey/common/matchingMaterial.jsp" %>
+    </c:if>
+    <%@include file="/views/project/stageSurvey/common/houseFaceStreet.jsp" %>
+</div>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.estate.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.house.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/sonEstateView.js"></script>
