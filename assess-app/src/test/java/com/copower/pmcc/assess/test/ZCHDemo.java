@@ -22,6 +22,9 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.junit.Test;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.text.ParseException;
 import java.util.*;
 import java.util.List;
@@ -297,11 +300,12 @@ public class ZCHDemo {
 
     @Test
     public void testNumber() {
-        double number = 6326;
-        final AtomicInteger atomicInteger = new AtomicInteger(0);
-        number = whileDivide(atomicInteger, number);
-        System.out.println(number);
-        System.out.println(atomicInteger.get());
+        BigDecimal bigDecimal = ArithmeticUtils.createBigDecimal(15522.64364855483) ;
+        String value = ArithmeticUtils.getBigDecimalToInteger(bigDecimal,100) ;
+        System.out.println(value);
+
+        double d = Math.log10(2);
+        System.out.println(d);
     }
 
     @Test
@@ -309,6 +313,7 @@ public class ZCHDemo {
         double number = 252.2623623;
         String start = StringUtils.substringAfterLast(String.valueOf(number), ".");
         System.out.println(start);
+
 
     }
 

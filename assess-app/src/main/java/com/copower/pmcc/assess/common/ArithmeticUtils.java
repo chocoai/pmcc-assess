@@ -568,13 +568,18 @@ public class ArithmeticUtils implements Serializable {
         if (log < 1) {
             throw new IllegalArgumentException("不符合约定哦亲!");
         }
+//        int length = getBigDecimalString(bigDecimal).length();
+        int length = bigDecimal.toBigInteger().toString().length();
         final AtomicInteger atomicInteger = new AtomicInteger(0);
         double result = whileDivide(atomicInteger, bigDecimal.doubleValue());
         int sub = atomicInteger.get() - log;//总int长度 - 需要保留到的int长度
-        BigDecimal temp = new BigDecimal(result).setScale(sub, BigDecimal.ROUND_HALF_UP);
-        result = mul(temp.doubleValue(), Math.pow(10, (double) atomicInteger.get()));
-        BigInteger bigInteger = new BigDecimal(result).toBigInteger();
-        return bigInteger.toString();
+        BigDecimal decimal = new BigDecimal(result).setScale(sub, BigDecimal.ROUND_HALF_UP);
+        BigInteger bigInteger = new BigInteger(String.valueOf(10)).pow(atomicInteger.get()) ;
+        //自定义数学计算模型,并且精确到约定的长度
+        MathContext mathContext = new MathContext(length, RoundingMode.HALF_EVEN) ;
+        BigDecimal target = decimal.multiply(createBigDecimal(bigInteger),mathContext) ;
+//        return target.toString();
+        return target.toBigInteger().toString();
     }
 
     /**
@@ -739,6 +744,10 @@ public class ArithmeticUtils implements Serializable {
         return true;
     }
 
+    public static BigDecimal createBigDecimal(BigInteger value) {
+        return new BigDecimal(value, MathContext.UNLIMITED);
+    }
+
     public static BigDecimal createBigDecimal(String value) {
         return createBigDecimal(value, MathContext.UNLIMITED);
     }
@@ -774,6 +783,10 @@ public class ArithmeticUtils implements Serializable {
     }
 
     public static BigDecimal createBigDecimal(double value, MathContext context) {
+        return new BigDecimal(value, context);
+    }
+
+    public static BigDecimal createBigDecimal(BigInteger value, MathContext context) {
         return new BigDecimal(value, context);
     }
 
