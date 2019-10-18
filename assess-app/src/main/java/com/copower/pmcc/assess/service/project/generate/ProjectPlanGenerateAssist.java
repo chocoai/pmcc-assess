@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.service.project.generate;
 
 import com.copower.pmcc.ad.api.enums.AdPersonalEnum;
-import com.copower.pmcc.assess.common.enums.AssessProjectTypeEnum;
+import com.copower.pmcc.assess.common.enums.report.AssessProjectTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.DocumentTemplate;

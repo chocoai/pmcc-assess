@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.service.method;
 
-import com.copower.pmcc.assess.common.enums.MethodDataTypeEnum;
-import com.copower.pmcc.assess.common.enums.MethodIncomeOperationModeEnum;
+import com.copower.pmcc.assess.common.enums.method.MethodDataTypeEnum;
+import com.copower.pmcc.assess.common.enums.method.MethodIncomeOperationModeEnum;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdIncomeDateSectionDao;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdIncomeLeaseCostDao;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdIncomeLeaseDao;

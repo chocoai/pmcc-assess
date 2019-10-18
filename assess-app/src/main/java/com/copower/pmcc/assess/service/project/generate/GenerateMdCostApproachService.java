@@ -9,7 +9,7 @@ import com.aspose.words.DocumentBuilder;
 import com.aspose.words.Table;
 import com.copower.pmcc.assess.common.ArithmeticUtils;
 import com.copower.pmcc.assess.common.AsposeUtils;
-import com.copower.pmcc.assess.common.enums.ToolRewardRateEnum;
+import com.copower.pmcc.assess.common.enums.tool.ToolRewardRateEnum;
 import com.copower.pmcc.assess.common.enums.report.BaseReportFieldMdCostApproachEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessReportFieldConstant;

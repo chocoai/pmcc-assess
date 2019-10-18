@@ -1,4 +1,4 @@
-package com.copower.pmcc.assess.common.enums;
+package com.copower.pmcc.assess.common.enums.method;
 
 import com.copower.pmcc.erp.api.enums.IEnum;
 import com.copower.pmcc.erp.common.utils.EnumUtils;

@@ -2,8 +2,8 @@ package com.copower.pmcc.assess.service.method;
 
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.PoiUtils;
-import com.copower.pmcc.assess.common.enums.MethodDataTypeEnum;
-import com.copower.pmcc.assess.common.enums.MethodIncomeFormTypeEnum;
+import com.copower.pmcc.assess.common.enums.method.MethodDataTypeEnum;
+import com.copower.pmcc.assess.common.enums.method.MethodIncomeFormTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.method.*;
 import com.copower.pmcc.assess.dal.basis.entity.*;

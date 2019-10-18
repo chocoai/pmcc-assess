@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.service.project.scheme;
 
 import com.alibaba.fastjson.JSON;
-import com.copower.pmcc.assess.common.enums.MethodIncomeOperationModeEnum;
+import com.copower.pmcc.assess.common.enums.method.MethodIncomeOperationModeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeIncomeApplyDto;

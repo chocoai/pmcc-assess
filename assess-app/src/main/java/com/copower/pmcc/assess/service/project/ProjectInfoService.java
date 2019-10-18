@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.service.project;
 
 import com.alibaba.fastjson.JSONObject;
-import com.copower.pmcc.assess.common.enums.AssessProjectTypeEnum;
+import com.copower.pmcc.assess.common.enums.report.AssessProjectTypeEnum;
 import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.common.enums.ResponsibileModelEnum;

@@ -1,4 +1,4 @@
-package com.copower.pmcc.assess.common.enums;
+package com.copower.pmcc.assess.common.enums.initProject;
 
 public enum CustomerTypeEnum {
     NATURAL(0, "自然人"), LEGAL(1, "法人");

@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.service.project.csr;
 
-import com.alibaba.fastjson.JSON;
 import com.aspose.words.Document;
 import com.aspose.words.DocumentBuilder;
 import com.aspose.words.ImportFormatMode;
@@ -8,6 +7,7 @@ import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.CreateInsertHelp;
 import com.copower.pmcc.assess.common.PoiUtils;
 import com.copower.pmcc.assess.common.enums.*;
+import com.copower.pmcc.assess.common.enums.initProject.CustomerTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessFieldNameConstant;
 import com.copower.pmcc.assess.constant.AssessTableNameConstant;
