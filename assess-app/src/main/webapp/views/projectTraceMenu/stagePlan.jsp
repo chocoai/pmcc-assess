@@ -238,7 +238,7 @@
             cols.push({field: 'id', title: 'id', visible: false});
             cols.push({checkbox: true});
             cols.push({
-                field: 'status', title: '状态', formatter: function (value, row, index) {
+                field: 'status', title: '状态(会有延迟)', formatter: function (value, row, index) {
                     var str = "";
                     switch (value) {
                         case "runing": {
@@ -266,7 +266,7 @@
                 field: 'excuteUrl', title: '待执行任务', formatter: function (value, row, index) {
                     var html = "";
                     if (value) {
-                        html += "<button class=\"btn btn-default\" onclick=\"window.open('{server}','_blank')\">" + row.projectPhaseName;
+                        html += "<button type='button' class=\"btn btn-default\" onclick=\"projectStagePlan.performingTask('{server}')\">" + row.projectPhaseName;
                         html = html.replace(/{server}/g, value);
                         html += "<i class='fa fa-arrow-right fa-white'></i>";
                         html += "</button>";
@@ -293,7 +293,8 @@
                             str += "<a onclick='projectStagePlan.editStagePlan(" + row.id + ")' style='margin-left: 5px;' data-placement='top' data-original-title='编辑' class='btn btn-xs btn-success tooltips'  ><i class='fa fa-edit fa-white'></i></a>";
                             str += "<a onclick='projectStagePlan.deleteStagePlan(" + row.id + ")' style='margin-left: 5px;' data-placement='top' data-original-title='删除'  class='btn btn-xs btn-warning tooltips' ><i class='fa fa-minus fa-white'></i></a>";
                             if (row.excuteUrl) {
-                                str += "<a target='_blank' href='" + row.excuteUrl + "' style='margin-left: 5px;' data-placement='top' data-original-title='提交' class='btn btn-xs btn-success tooltips'  ><i class='fa fa-external-link fa-white'></i></a>";
+                                str += "                <a onclick=\"projectStagePlan.performingTask('{url}')\" style=\"margin-left: 5px;\" data-placement=\"top\" data-original-title=\"提交\" class=\"btn btn-xs btn-success tooltips\"><i class=\"fa fa-external-link fa-white\"></i></a>";
+                                str = str.replace(/{url}/g, row.excuteUrl);
                             }
                             break;
                         }
@@ -320,13 +321,11 @@
             };
             var data = formSerializeArray($("#project_stage_query"));
             jQuery.extend(select, data);
-            console.log(select);
-            console.log(data);
             projectStagePlan.stageTable.bootstrapTable('destroy');
             TableInit(projectStagePlan.stageTable, "${pageContext.request.contextPath}/projectInfo/getPlanDetailListByPlanId", cols, select, {
                 toolbar: '#projectStageToolbar',
                 showColumns: false,
-                showRefresh: false,
+                showRefresh: true,
                 search: false,
                 onLoadSuccess: function () {
                     $('.tooltips').tooltip();
@@ -507,24 +506,26 @@
         data.planId = '${projectPlan.id}';
         data.projectId = '${projectInfo.id}';
         data.projectWorkStageId = '${projectWorkStage.id}';
-        Loading.progressShow();
-        $.ajax({
-            url: "${pageContext.request.contextPath}/projectPlanDetails/saveProjectStagePlan",
-            data: {formData: JSON.stringify(data)},
-            type: "post",
-            dataType: "json",
-            success: function (result) {
-                Loading.progressHide();
-                if (result.ret) {
-                    box.modal("hide");
-                    projectStagePlan.stageTable.bootstrapTable('refresh');
-                } else {
-                    Alert("保存失败:" + result.errmsg);
+        Alert("确认数据!确认后如数据填下不正确可能会引发数据丢失。",2,null,function () {
+            Loading.progressShow();
+            $.ajax({
+                url: "${pageContext.request.contextPath}/projectPlanDetails/saveProjectStagePlan",
+                data: {formData: JSON.stringify(data)},
+                type: "post",
+                dataType: "json",
+                success: function (result) {
+                    Loading.progressHide();
+                    if (result.ret) {
+                        box.modal("hide");
+                        projectStagePlan.stageTable.bootstrapTable('refresh');
+                    } else {
+                        Alert("保存失败:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
                 }
-            },
-            error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
-            }
+            });
         });
     };
 
@@ -577,23 +578,48 @@
      * @param id
      */
     projectStagePlan.deleteStagePlan = function (id) {
-        $.ajax({
-            url: "${pageContext.request.contextPath}/projectPlanDetails/deletePlanDetailsById",
-            data: {planDetailsId: id},
-            type: "post",
-            dataType: "json",
-            success: function (result) {
-                if (result.ret) {
-                    toastr.info("任务已经删除!");
-                    projectStagePlan.stageTable.bootstrapTable('refresh');
-                } else {
-                    Alert("失败:" + result.errmsg);
+        Alert("确定删除",2,null,function () {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/projectPlanDetails/deletePlanDetailsById",
+                data: {planDetailsId: id},
+                type: "post",
+                dataType: "json",
+                success: function (result) {
+                    if (result.ret) {
+                        toastr.info("任务已经删除!");
+                        projectStagePlan.stageTable.bootstrapTable('refresh');
+                    } else {
+                        Alert("失败:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
                 }
-            },
-            error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+            });
+        })
+    };
+
+    /**
+     * 可执行任务 run
+     * @param url
+     */
+    projectStagePlan.performingTask = function (url) {
+        projectStagePlan.openUrl(url,function () {
+            projectStagePlan.stageTable.bootstrapTable('refresh');
+        }) ;
+    };
+
+    projectStagePlan.openUrl = function (url ,callback) {
+        openWin(url, function () {
+            try {
+               if (callback){
+                   callback() ;
+               }
+            } catch (e) {
+                console.log(e);
             }
-        });
+        })
+//        window.open(url,'_blank') ;
     };
 
     $(function () {
