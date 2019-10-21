@@ -7,7 +7,7 @@
 <body class="nav-md footer_fixed">
 <div class="container body">
     <div class="main_container">
-        <%@include file="./trace_project_menu.jsp" %>
+        <%@include file="projectNavigation.jsp" %>
         <div class="right_col" role="main">
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <div class="x_panel">
@@ -405,6 +405,4 @@
             });
         }
     };
-
-
 </script>

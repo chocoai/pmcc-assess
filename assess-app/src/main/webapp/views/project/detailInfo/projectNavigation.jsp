@@ -13,11 +13,11 @@
                 <ul class="nav side-menu">
                     <c:forEach items="${projectPlanList}" var="projectPlan">
                         <li>
-                            <a href="${pageContext.request.contextPath}/projectPlanDetails/openProjectMenuLink/${projectInfo.id}/${projectPlan.workStageId}">
+                            <a href="${pageContext.request.contextPath}/projectCenter/projectStageInfo/${projectInfo.id}/${projectPlan.workStageId}">
                                 <i class="fa fa-info-circle" aria-hidden="true"></i>
                                     ${projectPlan.planName}
                                 <c:if test="${projectPlan.projectStatus eq 'planExecute' or projectPlan.projectStatus eq 'task'}">
-                                        <span style="font-size: 3px;">(进行中)</span>
+                                    <span style="font-size: 3px;">(进行中)</span>
                                 </c:if>
                             </a>
                         </li>
@@ -34,13 +34,14 @@
                 <h3><a id="menu_toggle"><i class="fa fa-bars"></i></a>
                     <strong onclick="openProjectInfoUrl();" style="cursor: pointer">${projectInfo.projectName}</strong>
                     <span class="label label-info">${projectInfo.projectStatus}</span>
+                    <a target="_blank" href="${pageContext.request.contextPath}/projectInfo/projectDetails?projectId=${projectId}">老项目详情</a>
                 </h3></div>
         </nav>
     </div>
 </div>
 <script type="text/javascript">
     function openProjectInfoUrl() {
-        window.location.href = '${pageContext.request.contextPath}/projectPlanDetails/projectTraceProjectInfo?projectId=${projectInfo.id}';
+        window.location.href = '${pageContext.request.contextPath}/projectCenter/projectInfo?projectId=${projectInfo.id}';
     }
 </script>
 

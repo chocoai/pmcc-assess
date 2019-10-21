@@ -13,22 +13,17 @@ import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeProgrammeDto;
 import com.copower.pmcc.assess.dto.output.project.scheme.SchemeJudgeObjectVo;
 import com.copower.pmcc.assess.service.PublicService;
-import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.basic.BasicApplyService;
-import com.copower.pmcc.assess.service.basic.BasicEstateTaggingService;
 import com.copower.pmcc.assess.service.basic.BasicHouseService;
 import com.copower.pmcc.assess.service.data.DataBestUseDescriptionService;
 import com.copower.pmcc.assess.service.data.DataSetUseFieldService;
-import com.copower.pmcc.assess.service.project.ProjectInfoService;
-import com.copower.pmcc.assess.service.project.ProjectPhaseService;
-import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
-import com.copower.pmcc.assess.service.project.ProjectPlanService;
+import com.copower.pmcc.assess.service.project.*;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.generate.GenerateReportInfoService;
-import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
+import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.CommonService;
@@ -41,7 +36,6 @@ import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
@@ -56,10 +50,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 /**
@@ -108,7 +101,7 @@ public class SchemeJudgeObjectService {
     @Autowired
     private DeclareRecordService declareRecordService;
     @Autowired
-    private BaseAttachmentService baseAttachmentService;
+    private ProjectMemberService projectMemberService;
     @Autowired
     private SchemeInfoService schemeInfoService;
     @Autowired
@@ -241,6 +234,7 @@ public class SchemeJudgeObjectService {
 
     /**
      * 获取待调整价格的估价对象
+     *
      * @param judgeObjectId
      * @return
      */
@@ -596,6 +590,7 @@ public class SchemeJudgeObjectService {
             throw new BusinessException("还有委估对象未设置评估方法请检查");
         saveProgrammeAll(schemeProgrammeDtos);
         rollBackToProgramme(projectId, planId);
+        String projectManager = projectMemberService.getProjectManager(projectId);
         List<SchemeAreaGroup> areaGroupList = schemeAreaGroupService.getAreaGroupList(projectId);
         if (CollectionUtils.isNotEmpty(areaGroupList)) {
             ProjectPlan projectPlan = projectPlanService.getProjectplanById(planId);
@@ -612,59 +607,38 @@ public class SchemeJudgeObjectService {
                 judgeProjectPhases.add(phaseReimbursement);
             }
             for (SchemeAreaGroup schemeAreaGroup : areaGroupList) {
-                ProjectPlanDetails projectPlanDetails = new ProjectPlanDetails();
-                projectPlanDetails.setProjectWorkStageId(projectPlan.getWorkStageId());
-                projectPlanDetails.setPlanId(projectPlan.getId());
-                projectPlanDetails.setProjectId(projectPlan.getProjectId());
-                projectPlanDetails.setProjectPhaseName(schemeAreaGroup.getAreaName());
-                projectPlanDetails.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
-                projectPlanDetails.setBisLastLayer(false);
-                projectPlanDetails.setSorting(i++);
-                projectPlanDetailsDao.addProjectPlanDetails(projectPlanDetails);
-
                 List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getSchemeJudgeObjectList(schemeAreaGroup.getId());
                 if (CollectionUtils.isNotEmpty(judgeObjectList)) {
                     for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
-                        ProjectPlanDetails planDetails = new ProjectPlanDetails();
-                        planDetails.setProjectWorkStageId(projectPlan.getWorkStageId());
-                        planDetails.setPlanId(projectPlan.getId());
-                        planDetails.setProjectId(projectPlan.getProjectId());
-                        StringBuilder phaseName = new StringBuilder(schemeJudgeObject.getNumber());
+                        StringBuilder phaseName = new StringBuilder();
+                        phaseName.append(schemeAreaGroup.getAreaName()).append("/").append(schemeJudgeObject.getNumber());
                         if (schemeJudgeObject.getSplitNumber() != null && schemeJudgeObject.getSplitNumber() > 0) {
                             phaseName.append("-").append(schemeJudgeObject.getSplitNumber());
                         }
                         phaseName.append(BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME);
-                        planDetails.setProjectPhaseName(phaseName.toString());
-                        planDetails.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
-                        planDetails.setPid(projectPlanDetails.getId());
-                        planDetails.setJudgeObjectId(schemeJudgeObject.getId());
-                        planDetails.setBisLastLayer(false);
-                        planDetails.setSorting(i++);
-                        projectPlanDetailsDao.addProjectPlanDetails(planDetails);
-
                         List<SchemeJudgeFunction> judgeFunctions = schemeJudgeFunctionService.getApplicableJudgeFunctions(schemeJudgeObject.getId());
                         if (CollectionUtils.isNotEmpty(judgeFunctions)) {
                             for (SchemeJudgeFunction judgeFunction : judgeFunctions) {
                                 ProjectPhase projectPhase = phaseMap.get(judgeFunction.getMethodType());
                                 if (projectPhase != null) {
-                                    i = savePlanDetails(projectPlan, i, null, schemeJudgeObject, planDetails, projectPhase);
+                                    i = savePlanDetails(projectPlan, i, null, schemeJudgeObject, phaseName.toString(), projectPhase,projectManager);
                                     i++;
                                 }
                             }
                         }
-                        savePlanDetails(projectPlan, i, null, schemeJudgeObject, planDetails, phaseSurePrice);//确定单价
+                        savePlanDetails(projectPlan, i, null, schemeJudgeObject, phaseName.toString(), phaseSurePrice,projectManager);//确定单价
                     }
                 }
                 if (CollectionUtils.isNotEmpty(judgeProjectPhases)) {
                     for (ProjectPhase projectPhase : judgeProjectPhases) {
-                        savePlanDetails(projectPlan, i, schemeAreaGroup, null, projectPlanDetails, projectPhase);
+                        savePlanDetails(projectPlan, i, schemeAreaGroup, null, schemeAreaGroup.getAreaName(), projectPhase,projectManager);
                     }
                 }
             }
         }
     }
 
-    private int savePlanDetails(ProjectPlan projectPlan, int i, SchemeAreaGroup schemeAreaGroup, SchemeJudgeObject schemeJudgeObject, ProjectPlanDetails planDetails, ProjectPhase projectPhase) {
+    private int savePlanDetails(ProjectPlan projectPlan, int i, SchemeAreaGroup schemeAreaGroup, SchemeJudgeObject schemeJudgeObject, String planRemarks, ProjectPhase projectPhase,String projectManager) {
         ProjectPlanDetails details = new ProjectPlanDetails();
         details.setProjectWorkStageId(projectPlan.getWorkStageId());
         details.setPlanId(projectPlan.getId());
@@ -675,8 +649,12 @@ public class SchemeJudgeObjectService {
             details.setAreaId(schemeAreaGroup.getId());
         if (schemeJudgeObject != null)
             details.setJudgeObjectId(schemeJudgeObject.getId());
-        details.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
-        details.setPid(planDetails.getId());
+        details.setStatus(ProcessStatusEnum.WAIT.getValue());
+        details.setExecuteUserAccount(projectManager);
+        details.setPlanStartDate(new Date());
+        details.setPlanEndDate(new Date());
+        details.setPid(0);
+        details.setPlanRemarks(planRemarks);
         details.setBisLastLayer(true);
         details.setSorting(i++);
         projectPlanDetailsDao.addProjectPlanDetails(details);

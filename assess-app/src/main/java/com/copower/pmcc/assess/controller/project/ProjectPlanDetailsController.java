@@ -1,39 +1,29 @@
 package com.copower.pmcc.assess.controller.project;
 
 import com.alibaba.fastjson.JSONObject;
-import com.copower.pmcc.assess.constant.AssessProjectClassifyConstant;
-import com.copower.pmcc.assess.dal.basis.entity.*;
-import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
-import com.copower.pmcc.assess.dto.output.project.ProjectPhaseVo;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
-import com.copower.pmcc.assess.dto.output.project.ProjectPlanVo;
 import com.copower.pmcc.assess.service.PublicService;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
-import com.copower.pmcc.assess.service.project.*;
+import com.copower.pmcc.assess.service.document.DocumentTemplateService;
+import com.copower.pmcc.assess.service.project.ProjectInfoService;
+import com.copower.pmcc.assess.service.project.ProjectPhaseService;
+import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
+import com.copower.pmcc.assess.service.project.ProjectPlanService;
 import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
-import com.copower.pmcc.assess.service.project.generate.ProjectPlanGenerateAssist;
-import com.copower.pmcc.assess.service.project.plan.execute.PlanComplieExecute;
-import com.copower.pmcc.assess.service.project.plan.execute.PlanDefaultExecute;
-import com.copower.pmcc.assess.service.project.plan.execute.PlanSurveyExecute;
-import com.copower.pmcc.assess.service.project.scheme.ProjectPlanSchemeAssist;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
-import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.copower.pmcc.erp.common.utils.LangUtils;
-import com.google.common.base.Objects;
-import com.google.common.collect.Lists;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -59,6 +49,10 @@ public class ProjectPlanDetailsController {
     private ProjectWorkStageService projectWorkStageService;
     @Autowired
     private BaseProjectClassifyService baseProjectClassifyService;
+    @Autowired
+    private DocumentTemplateService documentTemplateService;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
 
     @PostMapping(name = "重启任务", value = "/replyProjectPlanDetails")
     public HttpResult replyProjectPlanDetails(Integer planDetailsId, String formData) {
@@ -164,137 +158,4 @@ public class ProjectPlanDetailsController {
             return HttpResult.newErrorResult("自动分派改阶段下的所有任务异常");
         }
     }
-
-    @RequestMapping(value = "/projectTraceMenu", name = "进入项目模块菜单")
-    public ModelAndView projectTraceMenu(Integer projectId) {
-        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/projectTraceMenu/projectDetails");
-        setBaseMenuParams(projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(projectId)), modelAndView);
-        return modelAndView;
-    }
-
-    @RequestMapping(value = "/projectTraceProjectInfo", name = "进入项目详情(模块的重新调整后的项目详情)")
-    public ModelAndView projectTraceProjectInfo(Integer projectId) {
-        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/projectTraceMenu/projectTraceProjectInfo");
-        setBaseMenuParams(projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(projectId)), modelAndView);
-        return modelAndView;
-    }
-
-    @RequestMapping(value = "/openProjectMenuLink/{projectId}/{workStageId}", name = "进入单个项目模块")
-    public ModelAndView openProjectMenuLink(@PathVariable(name = "projectId", required = true) Integer projectId, @PathVariable(name = "workStageId", required = true) Integer workStageId) {
-        ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(workStageId);
-        //默认项目任务页面
-        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/projectTraceMenu/defaultProjectView");
-        ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(projectId));
-        setBaseMenuParams(projectInfoVo, modelAndView);
-        setProjectTraceMenuParams(projectInfoVo, projectWorkStage, modelAndView);
-        BaseProjectClassify baseProjectClassify = baseProjectClassifyService.getCacheProjectClassifyById(projectInfoVo.getProjectCategoryId());
-        HashMap<String, String> viewMap = getViewUrlMap(baseProjectClassify.getFieldName(), projectWorkStage);
-        if (!viewMap.isEmpty()) {
-            viewMap.forEach((s, s2) -> {
-                if (Objects.equal(s, projectWorkStage.getStageForm())) {
-                    modelAndView.setViewName(s2);
-                }
-            });
-        }
-        return modelAndView;
-    }
-
-    /**
-     * 模块参数设置 菜单参数
-     *
-     * @param projectInfoVo
-     * @param modelAndView
-     */
-    private void setBaseMenuParams(ProjectInfoVo projectInfoVo, ModelAndView modelAndView) {
-        ProjectWorkStage select = new ProjectWorkStage();
-        select.setProjectClassId(projectInfoVo.getProjectClassId());
-        select.setProjectTypeId(projectInfoVo.getProjectTypeId());
-//        select.setProjectCategoryId(projectInfoVo.getProjectCategoryId());
-        List<ProjectWorkStage> workStageList = projectWorkStageService.getProjectWorkStageList(select);
-        Iterator<ProjectWorkStage> projectWorkStageIterator = workStageList.iterator();
-        while (projectWorkStageIterator.hasNext()) {
-            if (StringUtils.isEmpty(projectWorkStageIterator.next().getStageForm())) {
-                projectWorkStageIterator.remove();
-            }
-        }
-        modelAndView.addObject("workStageList", workStageList);
-        modelAndView.addObject(StringUtils.uncapitalize(ProjectInfo.class.getSimpleName()), projectInfoVo);
-        modelAndView.addObject("companyId", publicService.getCurrentCompany().getCompanyId());
-    }
-
-    /**
-     * 设置参数
-     *
-     * @param projectWorkStage
-     * @param projectInfoVo
-     * @param modelAndView
-     */
-    private void setProjectTraceMenuParams(ProjectInfoVo projectInfoVo, ProjectWorkStage projectWorkStage, ModelAndView modelAndView) {
-        modelAndView.addObject(StringUtils.uncapitalize(SysUserDto.class.getSimpleName()), processControllerComponent.getThisUserInfo());
-        List<ProjectPlan> projectPlans = projectPlanService.getProjectPlanList2(projectInfoVo.getId(), projectWorkStage.getId(), projectInfoVo.getProjectCategoryId());
-        if (CollectionUtils.isEmpty(projectPlans)) {
-            return;
-        }
-        ProjectPlanVo projectPlanItem = projectInfoService.getProjectPlanItem(projectPlans.get(0).getId());
-        modelAndView.addObject(StringUtils.uncapitalize(ProjectPlan.class.getSimpleName()), projectPlanItem);
-        List<ProjectPhaseVo> projectPhaseVoList = Lists.newArrayList();
-        ProjectPhase select = new ProjectPhase();
-        select.setProjectCategoryId(projectInfoVo.getProjectCategoryId());
-        select.setProjectTypeId(projectInfoVo.getProjectTypeId());
-        select.setProjectClassId(projectInfoVo.getProjectClassId());
-        select.setWorkStageId(projectWorkStage.getId());
-        List<ProjectPhase> projectPhaseList = projectPhaseService.getProjectPhaseList(select);
-        if (CollectionUtils.isNotEmpty(projectPhaseList)) {
-            projectPhaseList.forEach(projectPhase -> projectPhaseVoList.add(projectPhaseService.getProjectPhaseVo(projectPhase)));
-        }
-        modelAndView.addObject("projectPhaseVoList", projectPhaseVoList);
-        modelAndView.addObject(StringUtils.uncapitalize(ProjectWorkStage.class.getSimpleName()), projectWorkStage);
-    }
-
-    /**
-     * 配置视图
-     *
-     * @param key
-     * @param projectWorkStage
-     * @return
-     */
-    private HashMap<String, String> getViewUrlMap(String key, ProjectWorkStage projectWorkStage) {
-        //com.copower.pmcc.assess.service.project.ProjectPlanDetailsService.updateExecuteUser() 这需要注释特殊线包含的代码块
-        HashMap<String, String> map = new HashMap<>(6);
-        //房产,简单房产都使用这个view
-        if (Objects.equal(AssessProjectClassifyConstant.SINGLE_HOUSE_PROPERTY_CERTIFICATE_TYPE_SIMPLE, key) || Objects.equal(AssessProjectClassifyConstant.SINGLE_HOUSE_PROPERTY_CERTIFICATE_TYPE, key)) {
-            //申报
-            if (Objects.equal(projectWorkStage.getStageForm(), StringUtils.uncapitalize(PlanDefaultExecute.class.getSimpleName()))) {
-                map.put(projectWorkStage.getStageForm(), "/projectTraceMenu/house/projectTraceProjectDeclare");
-            }
-            //现场查勘
-            if (Objects.equal(projectWorkStage.getStageForm(), StringUtils.uncapitalize(PlanSurveyExecute.class.getSimpleName()))) {
-                map.put(projectWorkStage.getStageForm(), "/projectTraceMenu/house/projectTracePlanSurvey");
-            }
-            //评估方案计划
-            if (Objects.equal(projectWorkStage.getStageForm(), StringUtils.uncapitalize(ProjectPlanSchemeAssist.class.getSimpleName()))) {
-                map.put(projectWorkStage.getStageForm(), "/projectTraceMenu/house/projectWorkingPlan");
-            }
-            //报告编写
-            if (Objects.equal(projectWorkStage.getStageForm(), StringUtils.uncapitalize(PlanComplieExecute.class.getSimpleName()))) {
-                map.put(projectWorkStage.getStageForm(), "/projectTraceMenu/house/projectReportWriting");
-            }
-            //报告生成
-            if (Objects.equal(projectWorkStage.getStageForm(), StringUtils.uncapitalize(ProjectPlanGenerateAssist.class.getSimpleName()))) {
-                map.put(projectWorkStage.getStageForm(), "/projectTraceMenu/house/projectReportGeneration");
-            }
-        }
-        //资产申报
-        if (Objects.equal(AssessProjectClassifyConstant.COMPREHENSIVE_ASSETS_TYPE, key)) {
-            if (Objects.equal(projectWorkStage.getStageForm(), StringUtils.uncapitalize(ProjectPlanAssist.class.getSimpleName()))) {
-                map.put(projectWorkStage.getStageForm(), "/projectTraceMenu/assets/projectAssestsBase");
-            }
-            if (Objects.equal(projectWorkStage.getStageForm(), StringUtils.uncapitalize(PlanDefaultExecute.class.getSimpleName()))) {
-                map.put(projectWorkStage.getStageForm(), "/projectTraceMenu/assets/projectAssestsBase");
-            }
-        }
-        return map;
-    }
-
-
 }

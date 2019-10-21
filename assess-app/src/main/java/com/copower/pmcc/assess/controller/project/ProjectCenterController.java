@@ -1,17 +1,29 @@
 package com.copower.pmcc.assess.controller.project;
 
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
+import com.copower.pmcc.assess.common.enums.report.AssessProjectTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
+import com.copower.pmcc.assess.dal.basis.entity.DocumentTemplate;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectWorkStage;
+import com.copower.pmcc.assess.dto.output.project.ProjectPlanVo;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
+import com.copower.pmcc.assess.service.document.DocumentTemplateService;
 import com.copower.pmcc.assess.service.project.ProjectCenterService;
+import com.copower.pmcc.assess.service.project.ProjectInfoService;
+import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
+import com.copower.pmcc.assess.service.project.plan.execute.PlanSurveyExecute;
+import com.copower.pmcc.assess.service.project.scheme.ProjectPlanSchemeAssist;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -39,6 +51,12 @@ public class ProjectCenterController {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private PublicService publicService;
+    @Autowired
+    private DocumentTemplateService documentTemplateService;
+    @Autowired
+    private ProjectInfoService projectInfoService;
+    @Autowired
+    private ProjectWorkStageService projectWorkStageService;
 
     @RequestMapping(value = "/projectNew", name = "新建项目")
     public ModelAndView projectNew() {
@@ -120,6 +138,45 @@ public class ProjectCenterController {
     @RequestMapping(value = "/projectCsrList", name = "债权项目列表")
     public ModelAndView projectCsrList() {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/csr/projectCsrList");
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/projectInfo", name = "项目详情页面")
+    public ModelAndView projectInfo(Integer projectId) {
+        String viewUrl = "/project/detailInfo/projectDetailInfo";
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView(viewUrl);
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
+        List<ProjectPlanVo> projectPlanList = projectInfoService.getProjectPlanList(projectId);
+        modelAndView.addObject("projectPlanList", projectPlanList);
+        modelAndView.addObject("projectId", projectId);
+        modelAndView.addObject(StringUtils.uncapitalize(ProjectInfo.class.getSimpleName()), projectInfoService.getSimpleProjectInfoVo(projectInfo));
+        modelAndView.addObject("companyId", publicService.getCurrentCompany().getCompanyId());
+        List<DocumentTemplate> documentTemplateList = documentTemplateService.getDocumentTemplateList("", baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_TEMPLATE_TYPE_DISPATCH).getId());
+        modelAndView.addObject("documentTemplateList", documentTemplateList);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/projectStageInfo/{projectId}/{workStageId}", name = "阶段信息页面")
+    public ModelAndView projectStageInfo(@PathVariable(name = "projectId", required = true) Integer projectId, @PathVariable(name = "workStageId", required = true) Integer workStageId) {
+        String viewUrl = "/project/detailInfo/projectStageInfoDefault";
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
+        ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(workStageId);
+        //如果为房产 现场与方案阶段使用不同的页面
+        if(AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_HOUSE.getKey().equals(projectInfoService.getAssessProjectType(projectInfo.getProjectCategoryId()).getKey())){
+            //现场查勘
+            if (StringUtils.equals(projectWorkStage.getStageForm(), StringUtils.uncapitalize(PlanSurveyExecute.class.getSimpleName()))) {
+                viewUrl = "/project/detailInfo/house/surveyStageInfo";
+            }
+            //评估方案计划
+            if (StringUtils.equals(projectWorkStage.getStageForm(), StringUtils.uncapitalize(ProjectPlanSchemeAssist.class.getSimpleName()))) {
+                viewUrl = "/project/detailInfo/house/schemeStageInfo";
+            }
+        }
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView(viewUrl);
+        List<ProjectPlanVo> projectPlanList = projectInfoService.getProjectPlanList(projectId);
+        modelAndView.addObject("projectPlanList", projectPlanList);
+        modelAndView.addObject("projectId", projectId);
+        modelAndView.addObject(StringUtils.uncapitalize(ProjectInfo.class.getSimpleName()), projectInfoService.getSimpleProjectInfoVo(projectInfo));
         return modelAndView;
     }
 

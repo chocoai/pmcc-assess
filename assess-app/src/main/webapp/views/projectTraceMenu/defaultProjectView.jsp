@@ -12,14 +12,6 @@
         <div class="right_col" role="main">
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <%@include file="stagePlan.jsp" %>
-            <div class="x_panel">
-                <div class="x_content">
-                </div>
-                <div class="x_content">
-                </div>
-            </div>
-            <%@include file="/views/share/form_approval.jsp" %>
-            <%@include file="/views/share/form_log.jsp" %>
             <%@include file="/views/share/form_details.jsp" %>
         </div>
     </div>
@@ -27,13 +19,3 @@
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
 </html>
-<script type="text/javascript">
-
-
-
-    $(document).ready(function () {
-
-    });
-
-
-</script>

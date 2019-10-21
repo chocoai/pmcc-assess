@@ -74,8 +74,7 @@ public class ProjectPlanSurveyService {
         if (CollectionUtils.isEmpty(projectPhases)) return;
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
         ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(workStageId);
-        List<ProjectPhase> filter = LangUtils.filter(projectPhases, o -> StringUtils.equals(o.getPhaseKey(), AssessPhaseKeyConstant.CASE_STUDY)
-                || StringUtils.equals(o.getPhaseKey(), AssessPhaseKeyConstant.OTHER_RIGHT));
+        List<ProjectPhase> filter = LangUtils.filter(projectPhases, o -> StringUtils.equals(o.getPhaseKey(), AssessPhaseKeyConstant.OTHER_RIGHT));
         if (CollectionUtils.isNotEmpty(filter)) {//案例调查任务
             projectPhases.removeAll(filter);
             String projectManager = projectMemberService.getProjectManager(projectId);
@@ -131,20 +130,8 @@ public class ProjectPlanSurveyService {
     }
 
     private void generateSurveyPlanDetails(Integer planId, ProjectInfo projectInfo, ProjectWorkStage projectWorkStage, List<ProjectPhase> projectPhases, List<DeclareRecord> declareRecords) {
-        int i = 1;
-        ProjectPlanDetails projectPlanDetails = null;
         String projectManager = projectMemberService.getProjectManager(projectInfo.getId());
         for (DeclareRecord declareRecord : declareRecords) {
-            projectPlanDetails = new ProjectPlanDetails();
-            projectPlanDetails.setProjectWorkStageId(projectWorkStage.getId());
-            projectPlanDetails.setPlanId(planId);
-            projectPlanDetails.setProjectId(projectInfo.getId());
-            projectPlanDetails.setProjectPhaseName(declareRecord.getName());
-            projectPlanDetails.setDeclareRecordId(declareRecord.getId());
-            projectPlanDetails.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
-            projectPlanDetails.setBisLastLayer(false);
-            projectPlanDetails.setSorting(i++);
-            projectPlanDetailsDao.addProjectPlanDetails(projectPlanDetails);
             int j = 0;
             for (ProjectPhase projectPhase : projectPhases) {
                 ProjectPlanDetails projectPlanDetail = new ProjectPlanDetails();
@@ -152,10 +139,11 @@ public class ProjectPlanSurveyService {
                 projectPlanDetail.setPlanId(planId);
                 projectPlanDetail.setProjectId(projectInfo.getId());
                 projectPlanDetail.setProjectPhaseName(projectPhase.getProjectPhaseName());
+                projectPlanDetail.setPlanRemarks(declareRecord.getName());
                 projectPlanDetail.setPlanHours(projectPhase.getPhaseTime());
-                projectPlanDetail.setPid(projectPlanDetails.getId());
+                projectPlanDetail.setPid(0);
                 projectPlanDetail.setDeclareRecordId(declareRecord.getId());
-                projectPlanDetail.setFirstPid(projectPlanDetails.getId());
+                projectPlanDetail.setFirstPid(0);
                 projectPlanDetail.setProjectPhaseId(projectPhase.getId());
                 projectPlanDetail.setSorting(j++);
                 projectPlanDetail.setExecuteUserAccount(projectManager);

@@ -37,8 +37,6 @@ public class PlanComplieExecute implements ProjectPlanExecuteInterface {
     @Autowired
     private ProjectPlanDetailsService projectPlanDetailsService;
     @Autowired
-    private CommonService commonService;
-    @Autowired
     private ProjectMemberService projectMemberService;
     @Autowired
     private ErpRpcUserService erpRpcUserService;
@@ -58,16 +56,6 @@ public class PlanComplieExecute implements ProjectPlanExecuteInterface {
         SysUserDto projectManager = erpRpcUserService.getSysUser(projectMemberService.getProjectManager(projectInfo.getId()));
         ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.REPORT_ANALYSIS_CATEGORY_MARKET, projectInfo.getProjectCategoryId());
         for (SchemeAreaGroup schemeAreaGroup : areaGroupList) {
-            ProjectPlanDetails rootPlanDetails = new ProjectPlanDetails();
-            rootPlanDetails.setProjectWorkStageId(projectPlan.getWorkStageId());
-            rootPlanDetails.setPlanId(projectPlan.getId());
-            rootPlanDetails.setProjectId(projectPlan.getProjectId());
-            rootPlanDetails.setProjectPhaseName(schemeAreaGroup.getAreaName());
-            rootPlanDetails.setAreaId(schemeAreaGroup.getId());
-            rootPlanDetails.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
-            rootPlanDetails.setBisLastLayer(false);
-            rootPlanDetails.setSorting(i++);
-            projectPlanDetailsService.saveProjectPlanDetails(rootPlanDetails);
             //添加子项任务
             ProjectPlanDetails projectPlanDetails = new ProjectPlanDetails();
             projectPlanDetails.setProjectWorkStageId(projectPlan.getWorkStageId());
@@ -81,7 +69,8 @@ public class PlanComplieExecute implements ProjectPlanExecuteInterface {
             projectPlanDetails.setPlanEndDate(new Date());
             projectPlanDetails.setBisEnable(true);
             projectPlanDetails.setProcessInsId("0");
-            projectPlanDetails.setPid(rootPlanDetails.getId());
+            projectPlanDetails.setPlanRemarks(schemeAreaGroup.getAreaName());
+            projectPlanDetails.setPid(0);
             projectPlanDetails.setSorting(i++);
             projectPlanDetails.setAreaId(schemeAreaGroup.getId());
             projectPlanDetails.setStatus(ProjectStatusEnum.RUNING.getKey());

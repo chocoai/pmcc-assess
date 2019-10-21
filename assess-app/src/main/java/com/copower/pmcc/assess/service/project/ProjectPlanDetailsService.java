@@ -166,6 +166,9 @@ public class ProjectPlanDetailsService {
 
     @Transactional(rollbackFor = Exception.class)
     public void initiateStagePlanTask(Integer planId,Integer projectId){
+        ProjectInfoVo projectInfo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(projectId));
+        ProjectPlan projectPlan = projectPlanService.getProjectplanById(planId);
+        ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlan.getWorkStageId());
         ProjectPlanDetails select = new ProjectPlanDetails();
         select.setProjectId(projectId);
         select.setPlanId(planId);
@@ -175,6 +178,11 @@ public class ProjectPlanDetailsService {
             projectPlanDetailsList.forEach(projectPlanDetails -> {
                 projectPlanDetails.setStatus(ProcessStatusEnum.RUN.getValue());
                 projectPlanDetailsDao.updateProjectPlanDetails(projectPlanDetails) ;
+                try {
+                    projectPlanService.saveProjectPlanDetailsResponsibility(projectPlanDetails, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.TASK);
+                } catch (BpmException e) {
+                    logger.error(e.getMessage());
+                }
             });
         }
     }
@@ -303,11 +311,11 @@ public class ProjectPlanDetailsService {
      * @param projectId
      * @return
      */
-    public BootstrapTableVo getPlanDetailListByPlanId(Integer projectId, Integer planId,String executeUserAccount, String projectPhaseName,String planRemarks) {
+    public BootstrapTableVo getPlanDetailListByPlanId(Integer projectId, Integer planId,String executeUserAccount, String projectPhaseName) {
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<ProjectPlanDetails> projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsByPlanId(planId,executeUserAccount,projectPhaseName,planRemarks);
+        List<ProjectPlanDetails> projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsByPlanId(planId,executeUserAccount,projectPhaseName,null);
         if (CollectionUtils.isEmpty(projectPlanDetails)) return bootstrapTableVo;
         List<ProjectPlanDetailsVo> projectPlanDetailsVos = getProjectPlanDetailsVos(projectPlanDetails, false);
 
@@ -815,21 +823,6 @@ public class ProjectPlanDetailsService {
             projectTask.setUserAccount(newExecuteUser);
             bpmRpcProjectTaskService.updateProjectTask(projectTask);
         }
-        //新调整后这里应当注释掉或者更改内容
-        //当任务为现场查勘或案例调查时特殊处理
-        //----------------------++--------------------------
-        ProjectPhase projectPhaseExplore = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.COMMON_SCENE_EXPLORE_EXAMINE);
-        ProjectPhase projectPhaseStudy = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.COMMON_CASE_STUDY_EXAMINE);
-        if (projectPlanDetails.getProjectPhaseId().equals(projectPhaseExplore.getId()) || projectPlanDetails.getProjectPhaseId().equals(projectPhaseStudy.getId())) {
-            //将task任务也移交过去
-            ProjectPlanDetails parentDetail = projectPlanDetailsDao.getProjectPlanDetailsById(projectPlanDetails.getPid());
-            if (parentDetail != null) {
-                parentDetail.setExecuteUserAccount(newExecuteUser);
-                parentDetail.setExecuteDepartmentId(sysUser.getDepartmentId());
-                projectPlanDetailsDao.updateProjectPlanDetails(parentDetail);
-            }
-        }
-        //----------------------++--------------------------
         return getProjectPlanDetailsVo(projectPlanDetails);
     }
 

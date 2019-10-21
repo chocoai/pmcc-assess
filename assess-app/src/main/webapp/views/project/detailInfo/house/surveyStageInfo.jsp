@@ -8,10 +8,10 @@
 <body class="nav-md footer_fixed">
 <div class="container body">
     <div class="main_container">
-        <%@include file="../trace_project_menu.jsp" %>
+        <%@include file="../projectNavigation.jsp" %>
         <div class="right_col" role="main">
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
-            <%@include file="../stagePlan.jsp" %>
+            <%@include file="../projectStagePlan.jsp" %>
             <%@include file="/views/share/form_details.jsp" %>
         </div>
     </div>
@@ -23,7 +23,6 @@
     <input type="button" class="btn btn-xs btn-success" onclick="projectDetailsEnterNextStage();"
            value="添加案例">
 </script>
-
 <script type="text/javascript">
     $(document).ready(function () {
         $('#workStageCustomBtn').append($('#surveyCustomeBtnHtml').html());

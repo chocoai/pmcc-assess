@@ -343,8 +343,8 @@ public class ProjectInfoController {
 
     @ResponseBody
     @RequestMapping(value = "/getPlanDetailListByPlanId", name = "取得阶段工作成果")
-    public BootstrapTableVo getPlanDetailListByPlanId(Integer projectId, Integer planId,String executeUserAccount, String projectPhaseName,String planRemarks) {
-        return projectPlanDetailsService.getPlanDetailListByPlanId(projectId, planId,executeUserAccount,projectPhaseName,planRemarks);
+    public BootstrapTableVo getPlanDetailListByPlanId(Integer projectId, Integer planId,String executeUserAccount, String projectPhaseName,String stringStatus) {
+        return projectPlanDetailsService.getPlanDetailListByPlanId(projectId, planId,executeUserAccount,projectPhaseName);
     }
 
     @ResponseBody

@@ -51,25 +51,32 @@ public class ProjectPlanDetailsDao {
         return projectPlanDetailsMapper.selectByPrimaryKey(id);
     }
 
-    public List<ProjectPlanDetails> getProjectPlanDetailsByPlanId(Integer planId,String executeUserAccount, String projectPhaseName,String planRemarks ) {
+    public List<ProjectPlanDetails> getProjectPlanDetailsByPlanId(Integer planId, String executeUserAccount, String projectPhaseName, List<String> ststusList) {
         ProjectPlanDetailsExample example = new ProjectPlanDetailsExample();
-        ProjectPlanDetailsExample.Criteria  criteria = example.createCriteria();
+        ProjectPlanDetailsExample.Criteria criteria = example.createCriteria();
+        ProjectPlanDetailsExample.Criteria criteria1 = example.createCriteria();
         criteria.andPlanIdEqualTo(planId);
-        if (StringUtils.isNotBlank(executeUserAccount)){
-            criteria.andExecuteUserAccountEqualTo(executeUserAccount) ;
+        criteria1.andPlanIdEqualTo(planId);
+        if (StringUtils.isNotBlank(projectPhaseName)) {
+            criteria.andProjectPhaseNameLike(String.join("", "%", projectPhaseName, "%"));
+            criteria1.andPlanRemarksLike(String.join("", "%", projectPhaseName, "%"));
         }
-        if (StringUtils.isNotBlank(projectPhaseName)){
-            criteria.andProjectPhaseNameLike(String.join("","%",projectPhaseName,"%")) ;
+        if (StringUtils.isNotBlank(executeUserAccount)) {
+            criteria.andExecuteUserAccountEqualTo(executeUserAccount);
+            criteria1.andExecuteUserAccountEqualTo(executeUserAccount);
         }
-        if (StringUtils.isNotBlank(planRemarks)){
-            criteria.andPlanRemarksLike(String.join("","%",planRemarks,"%")) ;
+        if (CollectionUtils.isNotEmpty(ststusList)) {
+            criteria.andStatusIn(ststusList);
+            criteria1.andStatusIn(ststusList);
         }
+        example.or(criteria1);
+
         example.setOrderByClause("sorting");
         return projectPlanDetailsMapper.selectByExample(example);
     }
 
     public List<ProjectPlanDetails> getProjectPlanDetailsByPlanId(Integer planId) {
-       return getProjectPlanDetailsByPlanId(planId,null,null,null) ;
+        return getProjectPlanDetailsByPlanId(planId, null, null, null);
     }
 
     public List<ProjectPlanDetails> getRootProjectPlanDetailsByPlanId(Integer planId) {
@@ -174,7 +181,7 @@ public class ProjectPlanDetailsDao {
         return projectPlanDetailsMapper.deleteByExample(example) > 0;
     }
 
-    public List<ProjectPlanDetails> getProjectPlanDetailsByIds(List<Integer> ids){
+    public List<ProjectPlanDetails> getProjectPlanDetailsByIds(List<Integer> ids) {
         ProjectPlanDetailsExample example = new ProjectPlanDetailsExample();
         ProjectPlanDetailsExample.Criteria criteria = example.createCriteria();
         criteria.andIdIn(ids);
