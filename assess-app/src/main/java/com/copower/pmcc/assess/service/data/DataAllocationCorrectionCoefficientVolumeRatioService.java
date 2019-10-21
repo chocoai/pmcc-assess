@@ -68,11 +68,11 @@ public class DataAllocationCorrectionCoefficientVolumeRatioService {
     public BootstrapTableVo getBootstrapTableVo(DataAllocationCorrectionCoefficientVolumeRatio oo) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
-        if(StringUtils.isBlank(oo.getProvince()))
+        if (StringUtils.isBlank(oo.getProvince()))
             oo.setProvince(null);
-        if(StringUtils.isBlank(oo.getCity()))
+        if (StringUtils.isBlank(oo.getCity()))
             oo.setCity(null);
-        if(StringUtils.isBlank(oo.getDistrict()))
+        if (StringUtils.isBlank(oo.getDistrict()))
             oo.setDistrict(null);
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<DataAllocationCorrectionCoefficientVolumeRatio> list = getDataAllocationCorrectionCoefficientVolumeRatioList(oo);
@@ -106,6 +106,7 @@ public class DataAllocationCorrectionCoefficientVolumeRatioService {
      * @return
      */
     public BigDecimal getAmendByVolumetricRate(String province, String city, String district, String volumetricRate) {
+        if (volumetricRate == null) return null;
         //根据容积率找到配置中对应的容积率修正
         List<DataAllocationCorrectionCoefficientVolumeRatio> coefficientVolumeRatioList;
         coefficientVolumeRatioList = dataLandDetailAchievementDao.getDataAllocationCorrectionCoefficientVolumeRatioList(province, city, district);
@@ -150,14 +151,14 @@ public class DataAllocationCorrectionCoefficientVolumeRatioService {
             //最大值
             DataAllocationCorrectionCoefficientVolumeRatioDetail maxValue = detailList.get(detailList.size() - 1);
             //小于最小值
-            if (minValue.getPlotRatio().compareTo(new BigDecimal(volumetricRate)) == 1){
+            if (minValue.getPlotRatio().compareTo(new BigDecimal(volumetricRate)) == 1) {
                 DataAllocationCorrectionCoefficientVolumeRatioDetail tempValue = detailList.get(1);
                 BigDecimal cardinalNumber = tempValue.getCorrectionFactor().subtract(minValue.getCorrectionFactor()).divide(tempValue.getPlotRatio().subtract(minValue.getPlotRatio()), 2, BigDecimal.ROUND_HALF_UP);
                 BigDecimal amend = minValue.getCorrectionFactor().subtract(cardinalNumber.multiply(minValue.getPlotRatio().subtract(new BigDecimal(volumetricRate))));
                 return amend;
             }
             //大于最大值
-            if (new BigDecimal(volumetricRate).compareTo(maxValue.getPlotRatio()) == 1){
+            if (new BigDecimal(volumetricRate).compareTo(maxValue.getPlotRatio()) == 1) {
                 DataAllocationCorrectionCoefficientVolumeRatioDetail tempValue = detailList.get(detailList.size() - 2);
                 BigDecimal cardinalNumber = maxValue.getCorrectionFactor().subtract(tempValue.getCorrectionFactor()).divide(maxValue.getPlotRatio().subtract(tempValue.getPlotRatio()), 2, BigDecimal.ROUND_HALF_UP);
                 BigDecimal amend = maxValue.getCorrectionFactor().add(cardinalNumber.multiply(new BigDecimal(volumetricRate).subtract(maxValue.getPlotRatio())));

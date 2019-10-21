@@ -3,9 +3,11 @@ package com.copower.pmcc.assess.service.project.generate;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.aspose.words.BookmarkCollection;
 import com.aspose.words.Document;
 import com.aspose.words.DocumentBuilder;
 import com.aspose.words.Table;
+import com.copower.pmcc.assess.common.ArithmeticUtils;
 import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.enums.report.BaseReportFieldMdBaseLandPriceEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
@@ -16,7 +18,10 @@ import com.copower.pmcc.assess.dal.basis.dao.data.DataAllocationCorrectionCoeffi
 import com.copower.pmcc.assess.dal.basis.dao.data.DataHousePriceIndexDao;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataHousePriceIndexDetailDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dto.input.project.generate.BookmarkAndRegexDto;
 import com.copower.pmcc.assess.dto.output.MergeCellModel;
+import com.copower.pmcc.assess.dto.output.data.DataLandDetailAchievementVo;
+import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.ToolRewardRateService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -54,12 +59,14 @@ import org.slf4j.LoggerFactory;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class GenerateMdBaseLandPriceService {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private Integer mlId;
-    private Integer schemeJudgeObjectId;
+    private SchemeInfo schemeInfo;
     private Integer projectId;
+    private SchemeJudgeObject schemeJudgeObject;
     ;
     private Integer areaId;
     private MdBaseLandPrice mdBaseLandPrice;
@@ -88,71 +95,15 @@ public class GenerateMdBaseLandPriceService {
     private DeclareRealtyRealEstateCertService declareRealtyRealEstateCertService;
     private DataLandDetailAchievementService dataLandDetailAchievementService;
     private BaseProjectClassifyService baseProjectClassifyService;
+    private BaseService baseService;
 
-    private GenerateMdBaseLandPriceService() {
-    }
-
-    public GenerateMdBaseLandPriceService(Integer mlId, Integer schemeJudgeObjectId, Integer areaId, Integer projectId) throws Exception {
-        this.mlId = mlId;
-        this.schemeJudgeObjectId = schemeJudgeObjectId;
-        this.areaId = areaId;
-        this.projectId = projectId;
-        ;
-        this.mdBaseLandPriceService = SpringContextUtils.getBean(MdBaseLandPriceService.class);
-        this.baseReportFieldService = SpringContextUtils.getBean(BaseReportFieldService.class);
-        this.baseAttachmentService = SpringContextUtils.getBean(BaseAttachmentService.class);
-        this.generateCommonMethod = SpringContextUtils.getBean(GenerateCommonMethod.class);
-        this.schemeAreaGroupService = SpringContextUtils.getBean(SchemeAreaGroupService.class);
-        this.declareRecordService = SpringContextUtils.getBean(DeclareRecordService.class);
-        this.surveyCommonService = SpringContextUtils.getBean(SurveyCommonService.class);
-        this.schemeJudgeObjectService = SpringContextUtils.getBean(SchemeJudgeObjectService.class);
-        this.basicEstateService = SpringContextUtils.getBean(BasicEstateService.class);
-        this.dataLandLevelDetailService = SpringContextUtils.getBean(DataLandLevelDetailService.class);
-        this.dataLandLevelService = SpringContextUtils.getBean(DataLandLevelService.class);
-        this.basicEstateLandStateService = SpringContextUtils.getBean(BasicEstateLandStateService.class);
-        this.baseDataDicService = SpringContextUtils.getBean(BaseDataDicService.class);
-        this.projectInfoService = SpringContextUtils.getBean(ProjectInfoService.class);
-        this.dataHousePriceIndexDao = SpringContextUtils.getBean(DataHousePriceIndexDao.class);
-        this.dataHousePriceIndexDetailDao = SpringContextUtils.getBean(DataHousePriceIndexDetailDao.class);
-        this.toolRewardRateService = SpringContextUtils.getBean(ToolRewardRateService.class);
-        this.dataLandDetailAchievementDao = SpringContextUtils.getBean(DataAllocationCorrectionCoefficientVolumeRatioDao.class);
-        this.dataAllocationCorrectionCoefficientVolumeRatioDetailDao = SpringContextUtils.getBean(DataAllocationCorrectionCoefficientVolumeRatioDetailDao.class);
-        this.declareRealtyHouseCertService = SpringContextUtils.getBean(DeclareRealtyHouseCertService.class);
-        this.declareRealtyLandCertService = SpringContextUtils.getBean(DeclareRealtyLandCertService.class);
-        this.declareRealtyRealEstateCertService = SpringContextUtils.getBean(DeclareRealtyRealEstateCertService.class);
-        this.dataLandDetailAchievementService = SpringContextUtils.getBean(DataLandDetailAchievementService.class);
-        this.baseProjectClassifyService = SpringContextUtils.getBean(BaseProjectClassifyService.class);
-
-    }
 
     /**
-     * 获取基准地价法主表
+     * 获取替换后的报告模板
      *
      * @return
+     * @throws Exception
      */
-    public MdBaseLandPrice getMdBaseLandPrice() {
-        if (mdBaseLandPrice != null) return mdBaseLandPrice;
-        MdBaseLandPrice mdBaseLandPrice = mdBaseLandPriceService.getSingleObject(this.mlId);
-        this.mdBaseLandPrice = mdBaseLandPrice;
-        return mdBaseLandPrice;
-    }
-
-    private SchemeAreaGroup getSchemeAreaGroup() {
-        if (this.schemeAreaGroup == null) {
-            this.schemeAreaGroup = schemeAreaGroupService.get(areaId);
-        }
-        return this.schemeAreaGroup;
-    }
-
-    private DataLandLevelDetail getDataLandLevelDetail(SchemeJudgeObject schemeJudgeObject) {
-        BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
-        BasicEstate estateByApplyId = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
-        BasicEstateLandState landStateByEstateId = basicEstateLandStateService.getLandStateByEstateId(estateByApplyId.getId());
-        DataLandLevelDetail dataLandLevelDetailById = dataLandLevelDetailService.getDataLandLevelDetailById(landStateByEstateId.getLandLevel());
-        return dataLandLevelDetailById;
-    }
-
-    //生成文件
     public String generateBaseLandPriceFile() throws Exception {
         BaseReportField baseReportField = baseReportFieldService.getCacheReportFieldByFieldName(AssessReportFieldConstant.BASE_LAND_PRICE_TEMPLATE);
         List<SysAttachmentDto> dtoList = baseAttachmentService.getByField_tableId(baseReportField.getId(), null, FormatUtils.entityNameConvertToTableName(BaseReportField.class));
@@ -161,58 +112,159 @@ public class GenerateMdBaseLandPriceService {
         }
         String localPath = baseAttachmentService.downloadFtpFileToLocal(dtoList.get(0).getId());
         Document document = new Document(localPath);
-        Map<String, String> fileMap = AsposeUtils.getRegexExtendList(document);
-        Map<String, String> textMap = AsposeUtils.getRegexExtendList(document);
-
-        try {
-            //文件替换
-            if (fileMap != null && fileMap.size() > 0) {
-                for (Map.Entry<String, String> entry : fileMap.entrySet()) {
-                    fileMap.put(entry.getKey(), this.getValueByKey(entry.getValue()));
-                }
-                AsposeUtils.replaceTextToFile(localPath, fileMap);
+        Set<BookmarkAndRegexDto> bookmarkAndRegexDtoHashSet = Sets.newHashSet();
+        //获取待替换文本的集合
+        List<String> regexS = generateCommonMethod.specialTreatment(AsposeUtils.getRegexList(document, null));
+        //获取所有书签集合
+        BookmarkCollection bookmarkCollection = AsposeUtils.getBookmarks(document);
+        if (bookmarkCollection.getCount() >= 1) {
+            for (int i = 0; i < bookmarkCollection.getCount(); i++) {
+                BookmarkAndRegexDto regexDto = new BookmarkAndRegexDto();
+                regexDto.setChineseName(AsposeUtils.getChinese(bookmarkCollection.get(i).getName())).setName(bookmarkCollection.get(i).getName());
+                bookmarkAndRegexDtoHashSet.add(regexDto);
             }
-            //文本替换
-            if (textMap != null && textMap.size() > 0) {
-                for (Map.Entry<String, String> entry : textMap.entrySet()) {
-                    textMap.put(entry.getKey(), this.getValueText(entry.getValue()));
-                }
-                AsposeUtils.replaceText(localPath, textMap);
+        }
+        if (CollectionUtils.isNotEmpty(regexS)) {
+            for (String name : regexS) {
+                BookmarkAndRegexDto regexDto = new BookmarkAndRegexDto();
+                regexDto.setChineseName(null).setName(name);
+                bookmarkAndRegexDtoHashSet.add(regexDto);
             }
-        } catch (Exception e) {
-            String error = e.getMessage();
-            logger.error(error, e);
+        }
+        Map<String, String> textMap = Maps.newHashMap();
+        Map<String, String> bookmarkMap = Maps.newHashMap();
+        LinkedHashMap<String, String> fileMap = Maps.newLinkedHashMap();
+        if (CollectionUtils.isEmpty(bookmarkAndRegexDtoHashSet)) {
+            return localPath;
+        }
+        for (BookmarkAndRegexDto bookmarkAndRegex : bookmarkAndRegexDtoHashSet) {
+            String name = StringUtils.isNotBlank(bookmarkAndRegex.getChineseName()) ? bookmarkAndRegex.getChineseName() : bookmarkAndRegex.getName();
+            try {
+                //基准地价概要
+                if (Objects.equal(name, BaseReportFieldMdBaseLandPriceEnum.BaseLandPriceProfile.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getBaseLandPriceProfile());
+                }
+                //基准地价区域
+                if (Objects.equal(name, BaseReportFieldMdBaseLandPriceEnum.BaseLandPriceArea.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getBaseLandPriceArea());
+                }
+                //基准地价土地级别名称
+                if (Objects.equal(name, BaseReportFieldMdBaseLandPriceEnum.BaseLandPriceLevelName.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getBaseLandPriceLevelName());
+                }
+                //基准地价单价
+                if (Objects.equal(name, BaseReportFieldMdBaseLandPriceEnum.BaseLandPriceUnivalence.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getBaseLandPriceUnivalence());
+                }
+                //基准地价期日修正计算式
+                if (Objects.equal(name, BaseReportFieldMdBaseLandPriceEnum.BaseLandPriceDateAmendCalculatedMode.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getBaseLandPriceDateAmendCalculatedMode());
+                }
+                //基准地价期日修正计算结果
+                if (Objects.equal(name, BaseReportFieldMdBaseLandPriceEnum.BaseLandPriceDateAmendCalculatedResult.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getBaseLandPriceDateAmendCalculatedResult());
+                }
+                //基准地价使用年限
+                if (Objects.equal(name, BaseReportFieldMdBaseLandPriceEnum.BaseLandPriceDurableYears.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getBaseLandPriceDurableYears());
+                }
+                //基准地价土地剩余年限
+                if (Objects.equal(name, BaseReportFieldMdBaseLandPriceEnum.BaseLandPriceResidueYears.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getBaseLandPriceResidueYears());
+                }
+                //基准地价机会成本说明
+                if (Objects.equal(name, BaseReportFieldMdBaseLandPriceEnum.BaseLandPriceOpportunityCostExplain.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getBaseLandPriceOpportunityCostExplain());
+                }
+                //基准地价机会成本率
+                if (Objects.equal(name, BaseReportFieldMdBaseLandPriceEnum.BaseLandPriceOpportunityCostRatio.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getBaseLandPriceOpportunityCostRatio());
+                }
+                //基准地价报酬率
+                if (Objects.equal(name, BaseReportFieldMdBaseLandPriceEnum.BaseLandPriceRewardRatio.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getBaseLandPriceRewardRatio());
+                }
+                //基准地价设定用途
+                if (Objects.equal(name, BaseReportFieldMdBaseLandPriceEnum.BaseLandPriceSetPurpose.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getBaseLandPriceSetPurpose());
+                }
+                //基准地价年期修正系数
+                if (Objects.equal(name, BaseReportFieldMdBaseLandPriceEnum.BaseLandPeriodAmend.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getBaseLandPeriodAmend());
+                }
+                //基准地价容积率修正系数说明
+                if (Objects.equal(name, BaseReportFieldMdBaseLandPriceEnum.BaseLandPricePlotRatioAmendExplain.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getBaseLandPricePlotRatioAmendExplain());
+                }
+                //基准地价权利状况修正
+//                if (Objects.equal(name, BaseReportFieldMdBaseLandPriceEnum.BaseLandPriceRightStateAmend.getName())) {
+//                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getBaseLandPriceRightStateAmend());
+//                }
+                //基准地价开发程度修正说明
+                if (Objects.equal(name, BaseReportFieldMdBaseLandPriceEnum.BaseLandPriceDevelopmentLevelAmendExplain.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getBaseLandPriceDevelopmentLevelAmendExplain());
+                }
+                //基准地价宗地单价
+                if (Objects.equal(name, BaseReportFieldMdBaseLandPriceEnum.BaseLandPriceParcelUnivalence.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getBaseLandPriceParcelUnivalence());
+                }
+                //基准地价评估面积
+                if (Objects.equal(name, BaseReportFieldMdBaseLandPriceEnum.BaseLandPriceAssessArea.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getBaseLandPriceAssessArea());
+                }
+                //基准地价宗地面积
+                if (Objects.equal(name, BaseReportFieldMdBaseLandPriceEnum.BaseLandPriceParcelArea.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getBaseLandPriceParcelArea());
+                }
+                //基准地价容积率
+                if (Objects.equal(name, BaseReportFieldMdBaseLandPriceEnum.BaseLandPriceVolumeFraction.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getBaseLandPriceVolumeFraction());
+                }
+                //基准地价楼面地价
+                if (Objects.equal(name, BaseReportFieldMdBaseLandPriceEnum.BaseLandPriceFloorPremium.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getBaseLandPriceFloorPremium());
+                }
+                //基准地价价格一览表
+                if (Objects.equal(name, BaseReportFieldMdBaseLandPriceEnum.BaseLandPriceSchedule.getName())) {
+                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, getBaseLandPriceSchedule());
+                }
+                //基准地价因素说明表
+                if (Objects.equal(name, BaseReportFieldMdBaseLandPriceEnum.BaseLandPriceFactorExplain.getName())) {
+                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, getBaseLandPriceFactorExplain(false));
+                }
+                //基准地价因素系数表
+                if (Objects.equal(name, BaseReportFieldMdBaseLandPriceEnum.BaseLandPriceFactorCoefficient.getName())) {
+                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, getBaseLandPriceFactorExplain(true));
+                }
+                //基准地价因素修正表
+                if (Objects.equal(name, BaseReportFieldMdBaseLandPriceEnum.BaseLandPriceFactorAmend.getName())) {
+                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, getBaseLandPriceFactorAmend());
+                }
+                //基准地价基础指数表
+                if (Objects.equal(name, BaseReportFieldMdBaseLandPriceEnum.BaseLandPriceIndex.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getBaseLandPriceIndex());
+                }
+                //基准地价测算过程明细表
+                if (Objects.equal(name, BaseReportFieldMdBaseLandPriceEnum.BaseLandPriceCalculateCourseDetail.getName())) {
+                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, getBaseLandPriceCalculateCourseDetail());
+                }
+            } catch (Exception e) {
+                baseService.writeExceptionInfo(e);
+            }
+        }
+        //替换
+        if (!textMap.isEmpty()) {
+            AsposeUtils.replaceText(localPath, textMap);
+        }
+        if (!bookmarkMap.isEmpty()) {
+            AsposeUtils.replaceBookmark(localPath, bookmarkMap, true);
+        }
+        if (!fileMap.isEmpty()) {
+            AsposeUtils.replaceTextToFile(localPath, fileMap);
         }
         return localPath;
     }
 
-    public String getValueByKey(String key) throws Exception {
-        if (StringUtils.isBlank(key)) return null;
-        BaseReportFieldMdBaseLandPriceEnum baseLandPriceEnum = BaseReportFieldMdBaseLandPriceEnum.getEnumByName(key);
-
-        String localPath = null;
-        if (baseLandPriceEnum != null) {
-            String title = baseLandPriceEnum.getName();
-            switch (baseLandPriceEnum) {
-                case BaseLandPriceSchedule:
-                    localPath = getBaseLandPriceSchedule(title);
-                    break;
-                case BaseLandPriceFactorExplain:
-                    localPath = getBaseLandPriceFactorExplain(false);
-                    break;
-                case BaseLandPriceFactorCoefficient:
-                    localPath = getBaseLandPriceFactorExplain(true);
-                    break;
-                case BaseLandPriceFactorAmend:
-                    localPath = getBaseLandPriceFactorAmend();
-                    break;
-                case BaseLandPriceCalculateCourseDetail:
-                    localPath = getBaseLandPriceCalculateCourseDetail();
-                    break;
-            }
-        }
-        return localPath;
-    }
 
     /**
      * 基准地价测算过程明细表
@@ -337,15 +389,6 @@ public class GenerateMdBaseLandPriceService {
         builder.write("");
         builder.endRow();
         doc.save(localPath);
-        //委估宗地总价（万元）
-        builder.insertCell();
-        builder.write("委估宗地总价（万元）");
-        builder.insertCell();
-        builder.write(mdBaseLandPrice.getParcelTotalPrice().toString());
-        builder.insertCell();
-        builder.write("");
-        builder.endRow();
-        doc.save(localPath);
 
         ProjectInfo projectInfoById = projectInfoService.getProjectInfoById(projectId);
         //房产
@@ -372,320 +415,154 @@ public class GenerateMdBaseLandPriceService {
      * @return
      */
     public String getBaseLandPriceFactorAmend() throws Exception {
-        Document doc = new Document();
-        DocumentBuilder builder = new DocumentBuilder(doc);
-        String localPath = generateCommonMethod.getLocalPath();
-        //设置表格属性
+        String localPath = getLocalPath();
+        Document document = new Document();
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
         generateCommonMethod.settingBuildingTable(builder);
-        SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(this.schemeJudgeObjectId);
-        DataLandLevelDetail dataLandLevelDetail = getDataLandLevelDetail(schemeJudgeObject);
-        BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
-        BasicEstate estateByApplyId = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
-        BasicEstateLandState landStateByEstate = basicEstateLandStateService.getLandStateByEstateId(estateByApplyId.getId());
-        //个别因素
-        BaseDataDic dataIndividual = baseDataDicService.getCacheDataDicByFieldName(AssessReportFieldConstant.PROGRAMME_MARKET_COSTAPPROACH_FACTOR_INDIVIDUAL);
-        //区域因素
-        BaseDataDic area = baseDataDicService.getCacheDataDicByFieldName(AssessReportFieldConstant.PROGRAMME_MARKET_COSTAPPROACH_FACTOR_AREA);
-        //因素等级
-        List<BaseDataDic> dataGradeList = baseDataDicService.getCacheDataDicList(AssessReportFieldConstant.PROGRAMME_MARKET_COSTAPPROACH_GRADE);
-        BaseDataDic excellent = baseDataDicService.getDataDicByName(dataGradeList, "优");
-        BaseDataDic comparativelyExcellent = baseDataDicService.getDataDicByName(dataGradeList, "较优");
-        BaseDataDic ordinary = baseDataDicService.getDataDicByName(dataGradeList, "一般");
-        BaseDataDic inferior = baseDataDicService.getDataDicByName(dataGradeList, "较劣");
-        BaseDataDic bad = baseDataDicService.getDataDicByName(dataGradeList, "劣");
-        List<DataLandDetailAchievement> dataAll = JSON.parseArray(landStateByEstate.getLandLevelContent(), DataLandDetailAchievement.class);
-        //个人因素土地级别详情从表
-        List<DataLandDetailAchievement> individualAchievementList = Lists.newArrayList();
-        //区域因素土地级别详情从表
-        List<DataLandDetailAchievement> areaList = Lists.newArrayList();
-        if (CollectionUtils.isNotEmpty(dataAll)) {
-            for (DataLandDetailAchievement item : dataAll) {
-                if (item.getType().equals(dataIndividual.getId())) {
-                    individualAchievementList.add(item);
-                }
-                if (item.getType().equals(area.getId())) {
-                    areaList.add(item);
+        Table table = builder.startTable();
+        //土地级别类别	土地级别类型	土地级别等级	说明  分值
+        generateCommonMethod.writeWordTitle(builder, Lists.newLinkedList(Lists.newArrayList("土地级别类别", "土地级别类型", "土地级别等级", "说明", "分值")));
+        //地价因素修正数据
+        String landLevelContent = getMdBaseLandPrice().getLandLevelContent();
+        JSONArray objects = JSON.parseArray(landLevelContent);
+        List<DataLandDetailAchievementVo> filterVoList = new ArrayList<>();
+        if (objects.size() > 0) {
+            for (int i = 0; i < objects.size(); i++) {
+                List<DataLandDetailAchievementVo> vos = JSON.parseArray(JSON.toJSONString(objects.get(i)), DataLandDetailAchievementVo.class);
+                for (DataLandDetailAchievementVo item : vos) {
+                    if ("update".equals(item.getModelStr())) {
+                        filterVoList.add(item);
+                    }
                 }
             }
         }
-        List<String> individualCategorys = getCategoryFromLandDetail(individualAchievementList);
-        List<String> areaCategorys = getCategoryFromLandDetail(areaList);
-        //生成表格
-        Table table = builder.startTable();
-        builder.insertCell();
-        builder.insertCell();
-        String level[] = {"优", "较优", "一般", "较劣", "劣"};
-        for (int i = 0; i < level.length; i++) {
-            builder.insertCell();
-            builder.write(level[i]);
-        }
-        builder.endRow();
+        List<List<DataLandDetailAchievementVo>> listList = dataLandDetailAchievementService.landLevelFilter2(filterVoList);
+        Set<List<List<DataLandDetailAchievementVo>>> set = dataLandDetailAchievementService.landLevelFilter1(listList);
+
         //需要合并的单元格
         Set<MergeCellModel> mergeCellModelList = Sets.newHashSet();
-        mergeCellModelList.add(new MergeCellModel(0, 0, 0, 1));
 
-        if (CollectionUtils.isNotEmpty(individualCategorys)) {
-            int firstCellRow = 1;
-            //个人因素
-            for (int i = 0; i < individualCategorys.size(); i++) {
-                builder.insertCell();
-                if (i == 0) {
-                    builder.write("个别因素");
-                } else {
-                    builder.write("");
+        final String nullValue = "";
+        LinkedList<String> linkedList = Lists.newLinkedList();
+        if (CollectionUtils.isNotEmpty(set)) {
+            Integer endRowIndex = 0;
+            for (List<List<DataLandDetailAchievementVo>> types : set) {
+                for (int i = 0; i < types.size(); i++) {
+                    if (i == 0) {
+                        mergeCellModelList.add(new MergeCellModel(endRowIndex + 1, 0, endRowIndex + types.size(), 0));
+                        endRowIndex += types.size();
+                    }
+                    if (StringUtils.isNotEmpty(types.get(i).get(0).getTypeName())) {
+                        linkedList.add(types.get(i).get(0).getTypeName());
+                    } else {
+                        linkedList.add(nullValue);
+                    }
+                    if (StringUtils.isNotEmpty(types.get(i).get(0).getCategoryName())) {
+                        linkedList.add(types.get(i).get(0).getCategoryName());
+                    } else {
+                        linkedList.add(nullValue);
+                    }
+                    for (DataLandDetailAchievementVo item : types.get(i)) {
+                        if (StringUtils.isNotEmpty(item.getGradeName())) {
+                            linkedList.add(item.getGradeName());
+                        } else {
+                            linkedList.add(nullValue);
+                        }
+                        if (StringUtils.isNotEmpty(item.getReamark())) {
+                            linkedList.add(item.getReamark());
+                        } else {
+                            linkedList.add(nullValue);
+                        }
+                        if (item.getAchievement() != null) {
+                            linkedList.add(item.getAchievement().toString());
+                        } else {
+                            linkedList.add(nullValue);
+                        }
+                    }
+
+                    generateCommonMethod.writeWordTitle(builder, linkedList);
+                    linkedList.clear();
                 }
-                //BaseDataDic categoryDic = baseDataDicService.getDataDicById(individualCategorys.get(i));
-                builder.insertCell();
-                builder.write(individualCategorys.get(i));
-                //优
-                DataLandDetailAchievement individualAchievement = getLandDetailFromJsonContent(individualAchievementList, dataLandLevelDetail.getId(), individualCategorys.get(i), excellent.getId(), dataIndividual.getId());
-                builder.insertCell();
-                writeAchievement(builder, individualAchievement, false);
-                //较优
-                DataLandDetailAchievement comparativelyExcellentAchievement = getLandDetailFromJsonContent(individualAchievementList, dataLandLevelDetail.getId(), individualCategorys.get(i), comparativelyExcellent.getId(), dataIndividual.getId());
-                builder.insertCell();
-                writeAchievement(builder, comparativelyExcellentAchievement, false);
-                //一般
-                DataLandDetailAchievement ordinaryAchievement = getLandDetailFromJsonContent(individualAchievementList, dataLandLevelDetail.getId(), individualCategorys.get(i), ordinary.getId(), dataIndividual.getId());
-                builder.insertCell();
-                writeAchievement(builder, ordinaryAchievement, false);
-                //较劣
-                DataLandDetailAchievement inferiorAchievement = getLandDetailFromJsonContent(individualAchievementList, dataLandLevelDetail.getId(), individualCategorys.get(i), inferior.getId(), dataIndividual.getId());
-                builder.insertCell();
-                writeAchievement(builder, inferiorAchievement, false);
-                //劣
-                DataLandDetailAchievement badAchievement = getLandDetailFromJsonContent(individualAchievementList, dataLandLevelDetail.getId(), individualCategorys.get(i), bad.getId(), dataIndividual.getId());
-                builder.insertCell();
-                writeAchievement(builder, badAchievement, false);
-                builder.endRow();
-
-                builder.insertCell();
-                builder.write("");
-                builder.insertCell();
-                builder.write("");
-                //优
-                builder.insertCell();
-                writeAchievement(builder, individualAchievement, true);
-                //较优
-                builder.insertCell();
-                writeAchievement(builder, comparativelyExcellentAchievement, true);
-                //一般
-                builder.insertCell();
-                writeAchievement(builder, ordinaryAchievement, true);
-                //较劣
-                builder.insertCell();
-                writeAchievement(builder, inferiorAchievement, true);
-                //劣
-                builder.insertCell();
-                writeAchievement(builder, badAchievement, true);
-                builder.endRow();
-                mergeCellModelList.add(new MergeCellModel(firstCellRow, 1, firstCellRow + 1, 1));
-                firstCellRow += 2;
             }
-            mergeCellModelList.add(new MergeCellModel(1, 0, individualCategorys.size() * 2, 0));
-        }
-        if (CollectionUtils.isNotEmpty(areaCategorys)) {
-            int firstCellRow = individualCategorys.size() * 2;
-            //区域因素
-            for (int i = 0; i < areaCategorys.size(); i++) {
-                builder.insertCell();
-                if (i == 0) {
-                    builder.write("区域因素");
-                } else {
-                    builder.write("");
-                }
-                //BaseDataDic categoryDic = baseDataDicService.getDataDicById(areaCategorys.get(i));
-                builder.insertCell();
-                builder.write(areaCategorys.get(i));
-                //优
-                DataLandDetailAchievement individualAchievement = getLandDetailFromJsonContent(areaList, dataLandLevelDetail.getId(), areaCategorys.get(i), excellent.getId(), area.getId());
-                builder.insertCell();
-                writeAchievement(builder, individualAchievement, false);
-                //较优
-                DataLandDetailAchievement comparativelyExcellentAchievement = getLandDetailFromJsonContent(areaList, dataLandLevelDetail.getId(), areaCategorys.get(i), comparativelyExcellent.getId(), area.getId());
-                builder.insertCell();
-                writeAchievement(builder, comparativelyExcellentAchievement, false);
-                //一般
-                DataLandDetailAchievement ordinaryAchievement = getLandDetailFromJsonContent(areaList, dataLandLevelDetail.getId(), areaCategorys.get(i), ordinary.getId(), area.getId());
-                builder.insertCell();
-                writeAchievement(builder, ordinaryAchievement, false);
-                //较劣
-                DataLandDetailAchievement inferiorAchievement = getLandDetailFromJsonContent(areaList, dataLandLevelDetail.getId(), areaCategorys.get(i), inferior.getId(), area.getId());
-                builder.insertCell();
-                writeAchievement(builder, inferiorAchievement, false);
-                //劣
-                DataLandDetailAchievement badAchievement = getLandDetailFromJsonContent(areaList, dataLandLevelDetail.getId(), areaCategorys.get(i), bad.getId(), area.getId());
-                builder.insertCell();
-                writeAchievement(builder, badAchievement, false);
-                builder.endRow();
-
-                builder.insertCell();
-                builder.write("");
-                builder.insertCell();
-                builder.write("");
-                //优
-                builder.insertCell();
-                writeAchievement(builder, individualAchievement, true);
-                //较优
-                builder.insertCell();
-                writeAchievement(builder, comparativelyExcellentAchievement, true);
-                //一般
-                builder.insertCell();
-                writeAchievement(builder, ordinaryAchievement, true);
-                //较劣
-                builder.insertCell();
-                writeAchievement(builder, inferiorAchievement, true);
-                //劣
-                builder.insertCell();
-                writeAchievement(builder, badAchievement, true);
-                builder.endRow();
-                mergeCellModelList.add(new MergeCellModel(firstCellRow + 1, 1, firstCellRow + 2, 1));
-                firstCellRow += 2;
-            }
-            mergeCellModelList.add(new MergeCellModel(individualCategorys.size() * 2 + 1, 0, individualCategorys.size() * 2 + areaCategorys.size() * 2, 0));
         }
         generateCommonMethod.mergeCellTable(mergeCellModelList, table);
-
-        doc.save(localPath);
+        builder.endTable();
+        document.save(localPath);
         return localPath;
     }
-
-    public DataLandDetailAchievement getLandDetailFromJsonContent(List<DataLandDetailAchievement> data, Integer levelDetailId, String category, Integer grade, Integer type) {
-        for (DataLandDetailAchievement item : data) {
-            if (item.getLevelDetailId().equals(levelDetailId) && item.getCategory().equals(category) && item.getGrade().equals(grade) && item.getType().equals(type)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
 
     /**
      * 基准地价因素说明/系数表
      *
      * @return
      */
-    public String getBaseLandPriceFactorExplain(boolean isIndex) throws Exception {
-        Document doc = new Document();
-        DocumentBuilder builder = new DocumentBuilder(doc);
-        String localPath = generateCommonMethod.getLocalPath();
-        //设置表格属性
+    public String getBaseLandPriceFactorExplain(boolean index) throws Exception {
+        String localPath = getLocalPath();
+        Document document = new Document();
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
         generateCommonMethod.settingBuildingTable(builder);
-        SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(this.schemeJudgeObjectId);
-        DataLandLevelDetail dataLandLevelDetail = getDataLandLevelDetail(schemeJudgeObject);
-        //个别因素
-        BaseDataDic dataIndividual = baseDataDicService.getCacheDataDicByFieldName(AssessReportFieldConstant.PROGRAMME_MARKET_COSTAPPROACH_FACTOR_INDIVIDUAL);
-        //区域因素
-        BaseDataDic area = baseDataDicService.getCacheDataDicByFieldName(AssessReportFieldConstant.PROGRAMME_MARKET_COSTAPPROACH_FACTOR_AREA);
-        //因素等级
-        List<BaseDataDic> dataGradeList = baseDataDicService.getCacheDataDicList(AssessReportFieldConstant.PROGRAMME_MARKET_COSTAPPROACH_GRADE);
-        BaseDataDic excellent = baseDataDicService.getDataDicByName(dataGradeList, "优");
-        BaseDataDic comparativelyExcellent = baseDataDicService.getDataDicByName(dataGradeList, "较优");
-        BaseDataDic ordinary = baseDataDicService.getDataDicByName(dataGradeList, "一般");
-        BaseDataDic inferior = baseDataDicService.getDataDicByName(dataGradeList, "较劣");
-        BaseDataDic bad = baseDataDicService.getDataDicByName(dataGradeList, "劣");
-        //个人因素土地级别详情从表
-        DataLandDetailAchievement dataLandDetailIndividual = new DataLandDetailAchievement();
-        dataLandDetailIndividual.setLevelDetailId(dataLandLevelDetail.getId());
-        dataLandDetailIndividual.setType(dataIndividual.getId());
-        List<DataLandDetailAchievement> individualAchievementList = dataLandDetailAchievementService.getDataLandDetailAchievementList(dataLandDetailIndividual);
-        List<String> individualCategorys = getCategoryFromLandDetail(individualAchievementList);
-
-        //区域因素土地级别详情从表
-        DataLandDetailAchievement dataLandDetailArea = new DataLandDetailAchievement();
-        dataLandDetailArea.setLevelDetailId(dataLandLevelDetail.getId());
-        dataLandDetailArea.setType(area.getId());
-        List<DataLandDetailAchievement> areaAchievementList = dataLandDetailAchievementService.getDataLandDetailAchievementList(dataLandDetailArea);
-        List<String> areaCategorys = getCategoryFromLandDetail(areaAchievementList);
-        //生成表格
         Table table = builder.startTable();
-        builder.insertCell();
-        builder.insertCell();
-        String level[] = {"优", "较优", "一般", "较劣", "劣"};
-        for (int i = 0; i < level.length; i++) {
-            builder.insertCell();
-            builder.write(level[i]);
-        }
-        builder.endRow();
+        //表头
+        generateCommonMethod.writeWordTitle(builder, Lists.newLinkedList(Lists.newArrayList("土地级别类别", "土地级别类型", "优", "较优", "一般", "较劣", "劣")));
+        //获取土地级别id
+        SchemeJudgeObject schemeJudgeObject = getSchemeJudgeObject();
+        BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
+        BasicEstate basicEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
+        BasicEstateLandState landStateByEstateId = basicEstateLandStateService.getLandStateByEstateId(basicEstate.getId());
+        //拿到土地因素数据
+        DataLandDetailAchievement dataLandDetailAchievement = new DataLandDetailAchievement();
+        dataLandDetailAchievement.setLevelDetailId(landStateByEstateId.getLandLevel());
+        List<DataLandDetailAchievement> dataLandDetailAchievementVoList = dataLandDetailAchievementService.getDataLandDetailAchievementList(dataLandDetailAchievement);
+        List<List<DataLandDetailAchievementVo>> listList = dataLandDetailAchievementService.landLevelFilter2(dataLandDetailAchievementVoList.stream().map(po -> dataLandDetailAchievementService.getDataLandDetailAchievementVo(po)).collect(Collectors.toList()));
+        Set<List<List<DataLandDetailAchievementVo>>> set = dataLandDetailAchievementService.landLevelFilter1(listList);
+
         //需要合并的单元格
         Set<MergeCellModel> mergeCellModelList = Sets.newHashSet();
-        mergeCellModelList.add(new MergeCellModel(0, 0, 0, 1));
 
-        if (CollectionUtils.isNotEmpty(individualCategorys)) {
-            //个人因素
-            for (int i = 0; i < individualCategorys.size(); i++) {
-                builder.insertCell();
-                if (i == 0) {
-                    builder.write("个别因素");
-                } else {
-                    builder.write("");
+        final String nullValue = "";
+        LinkedList<String> linkedList = Lists.newLinkedList();
+        if (CollectionUtils.isNotEmpty(set)) {
+            Integer endRowIndex = 0;
+            for (List<List<DataLandDetailAchievementVo>> types : set) {
+                for (int i = 0; i < types.size(); i++) {
+                    if (i == 0) {
+                        mergeCellModelList.add(new MergeCellModel(endRowIndex + 1, 0, endRowIndex + types.size(), 0));
+                        endRowIndex += types.size();
+                    }
+                    if (StringUtils.isNotEmpty(types.get(i).get(0).getTypeName())) {
+                        linkedList.add(types.get(i).get(0).getTypeName());
+                    } else {
+                        linkedList.add(nullValue);
+                    }
+                    if (StringUtils.isNotEmpty(types.get(i).get(0).getCategoryName())) {
+                        linkedList.add(types.get(i).get(0).getCategoryName());
+                    } else {
+                        linkedList.add(nullValue);
+                    }
+                    for (DataLandDetailAchievementVo item : types.get(i)) {
+                        if (index) {
+                            if (item.getAchievement() != null) {
+                                linkedList.add(item.getAchievement().toString());
+                            } else {
+                                linkedList.add(nullValue);
+                            }
+                        } else {
+                            if (StringUtils.isNotEmpty(item.getReamark())) {
+                                linkedList.add(item.getReamark());
+                            } else {
+                                linkedList.add(nullValue);
+                            }
+                        }
+                    }
+                    generateCommonMethod.writeWordTitle(builder, linkedList);
+                    linkedList.clear();
                 }
-                //BaseDataDic categoryDic = baseDataDicService.getDataDicById(individualCategorys.get(i));
-                builder.insertCell();
-                builder.write(individualCategorys.get(i));
-                //优
-                DataLandDetailAchievement individualAchievement = dataLandDetailAchievementService.getDataLandDetailAchievement(dataLandLevelDetail.getId(), individualCategorys.get(i), excellent.getId(), dataIndividual.getId());
-                builder.insertCell();
-                writeAchievement(builder, individualAchievement, isIndex);
-                //较优
-                DataLandDetailAchievement comparativelyExcellentAchievement = dataLandDetailAchievementService.getDataLandDetailAchievement(dataLandLevelDetail.getId(), individualCategorys.get(i), comparativelyExcellent.getId(), dataIndividual.getId());
-                builder.insertCell();
-                writeAchievement(builder, comparativelyExcellentAchievement, isIndex);
-                //一般
-                DataLandDetailAchievement ordinaryAchievement = dataLandDetailAchievementService.getDataLandDetailAchievement(dataLandLevelDetail.getId(), individualCategorys.get(i), ordinary.getId(), dataIndividual.getId());
-                builder.insertCell();
-                writeAchievement(builder, ordinaryAchievement, isIndex);
-                //较劣
-                DataLandDetailAchievement inferiorAchievement = dataLandDetailAchievementService.getDataLandDetailAchievement(dataLandLevelDetail.getId(), individualCategorys.get(i), inferior.getId(), dataIndividual.getId());
-                builder.insertCell();
-                writeAchievement(builder, inferiorAchievement, isIndex);
-                //劣
-                DataLandDetailAchievement badAchievement = dataLandDetailAchievementService.getDataLandDetailAchievement(dataLandLevelDetail.getId(), individualCategorys.get(i), bad.getId(), dataIndividual.getId());
-                builder.insertCell();
-                writeAchievement(builder, badAchievement, isIndex);
-                builder.endRow();
+
             }
-            mergeCellModelList.add(new MergeCellModel(1, 0, individualCategorys.size(), 0));
-        }
-        if (CollectionUtils.isNotEmpty(areaCategorys)) {
-            //区域因素
-            for (int i = 0; i < areaCategorys.size(); i++) {
-                builder.insertCell();
-                if (i == 0) {
-                    builder.write("区域因素");
-                } else {
-                    builder.write("");
-                }
-                //BaseDataDic categoryDic = baseDataDicService.getDataDicById(areaCategorys.get(i));
-                builder.insertCell();
-                builder.write(areaCategorys.get(i));
-                //优
-                DataLandDetailAchievement individualAchievement = dataLandDetailAchievementService.getDataLandDetailAchievement(dataLandLevelDetail.getId(), areaCategorys.get(i), excellent.getId(), area.getId());
-                builder.insertCell();
-                writeAchievement(builder, individualAchievement, isIndex);
-                //较优
-                DataLandDetailAchievement comparativelyExcellentAchievement = dataLandDetailAchievementService.getDataLandDetailAchievement(dataLandLevelDetail.getId(), areaCategorys.get(i), comparativelyExcellent.getId(), area.getId());
-                builder.insertCell();
-                writeAchievement(builder, comparativelyExcellentAchievement, isIndex);
-                //一般
-                DataLandDetailAchievement ordinaryAchievement = dataLandDetailAchievementService.getDataLandDetailAchievement(dataLandLevelDetail.getId(), areaCategorys.get(i), ordinary.getId(), area.getId());
-                builder.insertCell();
-                writeAchievement(builder, ordinaryAchievement, isIndex);
-                //较劣
-                DataLandDetailAchievement inferiorAchievement = dataLandDetailAchievementService.getDataLandDetailAchievement(dataLandLevelDetail.getId(), areaCategorys.get(i), inferior.getId(), area.getId());
-                builder.insertCell();
-                writeAchievement(builder, inferiorAchievement, isIndex);
-                //劣
-                DataLandDetailAchievement badAchievement = dataLandDetailAchievementService.getDataLandDetailAchievement(dataLandLevelDetail.getId(), areaCategorys.get(i), bad.getId(), area.getId());
-                builder.insertCell();
-                writeAchievement(builder, badAchievement, isIndex);
-                builder.endRow();
-            }
-            mergeCellModelList.add(new MergeCellModel(individualCategorys.size() + 1, 0, individualCategorys.size() + areaCategorys.size(), 0));
         }
         generateCommonMethod.mergeCellTable(mergeCellModelList, table);
-
-        doc.save(localPath);
+        builder.endTable();
+        document.save(localPath);
         return localPath;
     }
 
@@ -706,13 +583,13 @@ public class GenerateMdBaseLandPriceService {
      *
      * @return
      */
-    public String getBaseLandPriceSchedule(String title) throws Exception {
+    public String getBaseLandPriceSchedule() throws Exception {
         Document doc = new Document();
         DocumentBuilder builder = new DocumentBuilder(doc);
         String localPath = generateCommonMethod.getLocalPath();
         //设置表格属性
         generateCommonMethod.settingBuildingTable(builder);
-        SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(this.schemeJudgeObjectId);
+        SchemeJudgeObject schemeJudgeObject = getSchemeJudgeObject();
         DataLandLevelDetail dataLandLevelDetail = getDataLandLevelDetail(schemeJudgeObject);
         DataLandLevel dataLandLevel = dataLandLevelService.getDataLandLevelById(dataLandLevelDetail.getLandLevelId());
         //对应区域下所有的土地级别
@@ -776,92 +653,10 @@ public class GenerateMdBaseLandPriceService {
 
 
     /**
-     * 根据字段key值获取被替换的文本
-     *
-     * @param key
-     * @return
-     */
-    public String getValueText(String key) throws Exception {
-        if (StringUtils.isBlank(key)) return null;
-        BaseReportFieldMdBaseLandPriceEnum baseLandPriceEnum = BaseReportFieldMdBaseLandPriceEnum.getEnumByName(key);
-
-        String str = null;
-        if (baseLandPriceEnum != null) {
-            switch (baseLandPriceEnum) {
-                case BaseLandPriceProfile:
-                    str = getBaseLandPriceProfile();
-                    break;
-                case BaseLandPriceArea:
-                    str = getBaseLandPriceArea();
-                    break;
-                case BaseLandPriceLevelName:
-                    str = getBaseLandPriceLevelName();
-                    break;
-                case BaseLandPriceUnivalence:
-                    str = getBaseLandPriceUnivalence();
-                    break;
-                case BaseLandPriceDateAmendCalculatedMode:
-                    str = getBaseLandPriceDateAmendCalculatedMode();
-                    break;
-                case BaseLandPriceDateAmendCalculatedResult:
-                    str = getBaseLandPriceDateAmendCalculatedResult();
-                    break;
-                case BaseLandPriceDurableYears:
-                    str = getBaseLandPriceDurableYears();
-                    break;
-                case BaseLandPriceResidueYears:
-                    str = getBaseLandPriceResidueYears();
-                    break;
-                case BaseLandPriceOpportunityCostExplain:
-                    str = getBaseLandPriceOpportunityCostExplain();
-                    break;
-                case BaseLandPriceOpportunityCostRatio:
-                    str = getBaseLandPriceOpportunityCostRatio();
-                    break;
-                case BaseLandPriceSetPurpose:
-                    str = getBaseLandPriceSetPurpose();
-                    break;
-                case BaseLandPriceRewardRatio:
-                    str = getBaseLandPriceRewardRatio();
-                    break;
-                case BaseLandPricePlotRatioAmendExplain:
-                    str = getBaseLandPricePlotRatioAmendExplain();
-                    break;
-                case BaseLandPeriodAmend:
-                    str = getBaseLandPeriodAmend();
-                    break;
-                case BaseLandPriceDevelopmentLevelAmendExplain:
-                    str = getBaseLandPriceDevelopmentLevelAmendExplain();
-                    break;
-                case BaseLandPriceParcelUnivalence:
-                    str = getBaseLandPriceParcelUnivalence();
-                    break;
-                case BaseLandPriceAssessArea:
-                    str = getBaseLandPriceAssessArea();
-                    break;
-                case BaseLandPriceParcelArea:
-                    str = getBaseLandPriceParcelArea();
-                    break;
-                case BaseLandPriceVolumeFraction:
-                    str = getBaseLandPriceVolumeFraction();
-                    break;
-                case BaseLandPriceFloorPremium:
-                    str = getBaseLandPriceFloorPremium();
-                    break;
-                case BaseLandPriceIndex:
-                    str = getBaseLandPriceIndex();
-                    break;
-            }
-        }
-
-        return str;
-    }
-
-    /**
      * 功能描述: 基准地价基础指数表
      */
     public String getBaseLandPriceIndex() {
-        SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(this.schemeJudgeObjectId);
+        SchemeJudgeObject schemeJudgeObject = getSchemeJudgeObject();
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
         BaseDataDic dataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_INDEX_LAND_TYPE);
         List<DataHousePriceIndex> dataHouseIndexList = Lists.newArrayList();
@@ -917,7 +712,7 @@ public class GenerateMdBaseLandPriceService {
                 BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(declareRecordById.getId());
                 BasicEstate estateByApplyId = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
                 if (estateByApplyId.getFloorArea() != null) {
-                    result.add(estateByApplyId.getFloorArea());
+                    result = result.add(estateByApplyId.getFloorArea());
                 }
             }
         }
@@ -935,11 +730,11 @@ public class GenerateMdBaseLandPriceService {
      * 功能描述: 基准地价开发程度修正说明
      */
     public String getBaseLandPriceDevelopmentLevelAmendExplain() {
-        SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(this.schemeJudgeObjectId);
+        SchemeJudgeObject schemeJudgeObject = getSchemeJudgeObject();
         String setUseName = baseDataDicService.getNameById(schemeJudgeObject.getSetUse());
-//        if (!getMdBaseLandPrice().getHasDevelopCorrect()) {
-//            return String.format("由于本次估价对象%s用地设定的开发程度与对应的基准地价开发程度一致，因此不需要对开发程度修正。", setUseName);
-//        }
+        if (getMdBaseLandPrice().getDevelopCorrect() == null || getMdBaseLandPrice().getDevelopCorrect().compareTo(new BigDecimal("0")) == 0) {
+            return String.format("由于本次估价对象%s用地设定的开发程度与对应的基准地价开发程度一致，因此不需要对开发程度修正。", setUseName);
+        }
         return String.format("由于本次估价对象%s用地设定的开发程度与对应的基准地价开发程度不一致，因此综合考虑需要对估价对象开发程度修正%s元/㎡。", setUseName, getMdBaseLandPrice().getDevelopCorrect());
     }
 
@@ -954,11 +749,11 @@ public class GenerateMdBaseLandPriceService {
      * 功能描述: 基准地价容积率修正系数说明
      */
     public String getBaseLandPricePlotRatioAmendExplain() {
-        SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(this.schemeJudgeObjectId);
+        SchemeJudgeObject schemeJudgeObject = getSchemeJudgeObject();
         String setUseName = baseDataDicService.getNameById(schemeJudgeObject.getSetUse());
-//        if (!getMdBaseLandPrice().getHasFractionAmend()) {
-//            return String.format("考虑容积率对%s用地的影响不大，故不对容积率进行修正。", setUseName);
-//        }
+        if (getMdBaseLandPrice().getVolumeFractionAmend() == null || getMdBaseLandPrice().getVolumeFractionAmend().compareTo(new BigDecimal("0")) == 0) {
+            return String.format("考虑容积率对%s用地的影响不大，故不对容积率进行修正。", setUseName);
+        }
 
         String s = "K3=%s=%s。";
         //根据容积率找到配置中对应的容积率修正
@@ -1030,7 +825,7 @@ public class GenerateMdBaseLandPriceService {
      * 功能描述: 基准地价设定用途
      */
     public String getBaseLandPriceSetPurpose() {
-        SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(this.schemeJudgeObjectId);
+        SchemeJudgeObject schemeJudgeObject = getSchemeJudgeObject();
         return baseDataDicService.getNameById(schemeJudgeObject.getSetUse());
     }
 
@@ -1041,8 +836,7 @@ public class GenerateMdBaseLandPriceService {
         JSONArray jsonArray = JSONObject.parseArray(toolRewardRateService.getToolRewardRateById(getMdBaseLandPrice().getRewardRateId()).getParameterValue());
         JSONObject jsonObject = getToolRewardRateHelp(jsonArray, "opportunityCost");
         BigDecimal ratio = new BigDecimal(jsonObject.getString("ratio"));
-        String format = String.format("%.2f", ratio.multiply(new BigDecimal("100")));
-        return format + "%";
+        return ArithmeticUtils.getPercentileSystem(ratio, 4, BigDecimal.ROUND_HALF_UP);
     }
 
     /**
@@ -1080,34 +874,34 @@ public class GenerateMdBaseLandPriceService {
      * 功能描述: 基准地价期日修正计算式
      */
     public String getBaseLandPriceDateAmendCalculatedMode() {
-//        StringBuilder s = new StringBuilder();
-//        ProjectInfo projectInfoById = projectInfoService.getProjectInfoById(projectId);
-//        SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(this.schemeJudgeObjectId);
-//        DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
-//        //评估基准日
-//        Date valuationDate = projectInfoById.getValuationDate();
-//        //找到评估基准日对应的土地因素
-//        BaseDataDic dataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_INDEX_LAND_TYPE);
-//        List<DataHousePriceIndex> dataHouseIndexList = Lists.newArrayList();
-//        dataHouseIndexList = dataHousePriceIndexDao.getDataHouseIndexList(declareRecord.getProvince(), declareRecord.getCity(), declareRecord.getDistrict(), dataDic.getId());
-//        if (CollectionUtils.isEmpty(dataHouseIndexList)) {
-//            dataHouseIndexList = dataHousePriceIndexDao.getDataHouseIndexList(declareRecord.getProvince(), declareRecord.getCity(), null, dataDic.getId());
-//        }
-//        if (CollectionUtils.isNotEmpty(dataHouseIndexList)) {
-//            Integer masterId = dataHouseIndexList.get(0).getId();
-//            DataHousePriceIndexDetail dataHousePriceIndexDetail = new DataHousePriceIndexDetail();
-//            dataHousePriceIndexDetail.setHousePriceId(masterId);
-//            List<DataHousePriceIndexDetail> detailList = dataHousePriceIndexDetailDao.getDataHousePriceIndexDetailList(dataHousePriceIndexDetail);
-//            //最早月份的指数
-//            DataHousePriceIndexDetail firstIndex = detailList.get(0);
-//            if (CollectionUtils.isNotEmpty(detailList)) {
-//                for (DataHousePriceIndexDetail item : detailList) {
-//                    if (item.getStartDate().compareTo(valuationDate) != 1 && item.getEndDate().compareTo(valuationDate) != -1) {
-//                        return s.append(item.getIndexNumber().toString()).append("/").append(firstIndex.getIndexNumber().toString()).toString();
-//                    }
-//                }
-//            }
-//        }
+        StringBuilder s = new StringBuilder();
+        ProjectInfo projectInfoById = projectInfoService.getProjectInfoById(projectId);
+        SchemeJudgeObject schemeJudgeObject = getSchemeJudgeObject();
+        DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
+        //评估基准日
+        Date valuationDate = projectInfoById.getValuationDate();
+        //找到评估基准日对应的土地因素
+        BaseDataDic dataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_INDEX_LAND_TYPE);
+        List<DataHousePriceIndex> dataHouseIndexList = Lists.newArrayList();
+        dataHouseIndexList = dataHousePriceIndexDao.getDataHouseIndexList(declareRecord.getProvince(), declareRecord.getCity(), declareRecord.getDistrict(), dataDic.getId());
+        if (CollectionUtils.isEmpty(dataHouseIndexList)) {
+            dataHouseIndexList = dataHousePriceIndexDao.getDataHouseIndexList(declareRecord.getProvince(), declareRecord.getCity(), null, dataDic.getId());
+        }
+        if (CollectionUtils.isNotEmpty(dataHouseIndexList)) {
+            Integer masterId = dataHouseIndexList.get(0).getId();
+            DataHousePriceIndexDetail dataHousePriceIndexDetail = new DataHousePriceIndexDetail();
+            dataHousePriceIndexDetail.setHousePriceId(masterId);
+            List<DataHousePriceIndexDetail> detailList = dataHousePriceIndexDetailDao.getDataHousePriceIndexDetailList(dataHousePriceIndexDetail);
+            //最早月份的指数
+            DataHousePriceIndexDetail firstIndex = detailList.get(0);
+            if (CollectionUtils.isNotEmpty(detailList)) {
+                for (DataHousePriceIndexDetail item : detailList) {
+                    if (item.getStartDate().compareTo(valuationDate) != 1 && item.getEndDate().compareTo(valuationDate) != -1) {
+                        return s.append(item.getIndexNumber().toString()).append("/").append(firstIndex.getIndexNumber().toString()).toString();
+                    }
+                }
+            }
+        }
         return "配置不完全";
     }
 
@@ -1130,7 +924,7 @@ public class GenerateMdBaseLandPriceService {
      */
     public String getBaseLandPriceLevelName() {
         StringBuilder s = new StringBuilder();
-        SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(this.schemeJudgeObjectId);
+        SchemeJudgeObject schemeJudgeObject = getSchemeJudgeObject();
         DataLandLevelDetail dataLandLevelDetail = getDataLandLevelDetail(schemeJudgeObject);
         return s.append(dataLandLevelDetail.getClassify()).append("/").append(dataLandLevelDetail.getType()).toString();
     }
@@ -1143,7 +937,7 @@ public class GenerateMdBaseLandPriceService {
         //区域名称
         String areaName = getSchemeAreaGroup().getAreaName();
 
-        SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(this.schemeJudgeObjectId);
+        SchemeJudgeObject schemeJudgeObject = getSchemeJudgeObject();
         DataLandLevelDetail dataLandLevelDetail = getDataLandLevelDetail(schemeJudgeObject);
         DataLandLevel dataLandLevel = dataLandLevelService.getDataLandLevelById(dataLandLevelDetail.getLandLevelId());
         //编制年度
@@ -1270,4 +1064,103 @@ public class GenerateMdBaseLandPriceService {
         }
         return categorys;
     }
+
+    private GenerateMdBaseLandPriceService() {
+    }
+
+    public GenerateMdBaseLandPriceService(SchemeInfo schemeInfo, Integer areaId) throws Exception {
+        this.mlId = schemeInfo.getMethodDataId();
+        ;
+        this.schemeInfo = schemeInfo;
+        this.areaId = areaId;
+        this.projectId = schemeInfo.getProjectId();
+        ;
+        this.mdBaseLandPriceService = SpringContextUtils.getBean(MdBaseLandPriceService.class);
+        this.baseReportFieldService = SpringContextUtils.getBean(BaseReportFieldService.class);
+        this.baseAttachmentService = SpringContextUtils.getBean(BaseAttachmentService.class);
+        this.generateCommonMethod = SpringContextUtils.getBean(GenerateCommonMethod.class);
+        this.schemeAreaGroupService = SpringContextUtils.getBean(SchemeAreaGroupService.class);
+        this.declareRecordService = SpringContextUtils.getBean(DeclareRecordService.class);
+        this.surveyCommonService = SpringContextUtils.getBean(SurveyCommonService.class);
+        this.schemeJudgeObjectService = SpringContextUtils.getBean(SchemeJudgeObjectService.class);
+        this.basicEstateService = SpringContextUtils.getBean(BasicEstateService.class);
+        this.dataLandLevelDetailService = SpringContextUtils.getBean(DataLandLevelDetailService.class);
+        this.dataLandLevelService = SpringContextUtils.getBean(DataLandLevelService.class);
+        this.basicEstateLandStateService = SpringContextUtils.getBean(BasicEstateLandStateService.class);
+        this.baseDataDicService = SpringContextUtils.getBean(BaseDataDicService.class);
+        this.projectInfoService = SpringContextUtils.getBean(ProjectInfoService.class);
+        this.dataHousePriceIndexDao = SpringContextUtils.getBean(DataHousePriceIndexDao.class);
+        this.dataHousePriceIndexDetailDao = SpringContextUtils.getBean(DataHousePriceIndexDetailDao.class);
+        this.toolRewardRateService = SpringContextUtils.getBean(ToolRewardRateService.class);
+        this.dataLandDetailAchievementDao = SpringContextUtils.getBean(DataAllocationCorrectionCoefficientVolumeRatioDao.class);
+        this.dataAllocationCorrectionCoefficientVolumeRatioDetailDao = SpringContextUtils.getBean(DataAllocationCorrectionCoefficientVolumeRatioDetailDao.class);
+        this.declareRealtyHouseCertService = SpringContextUtils.getBean(DeclareRealtyHouseCertService.class);
+        this.declareRealtyLandCertService = SpringContextUtils.getBean(DeclareRealtyLandCertService.class);
+        this.declareRealtyRealEstateCertService = SpringContextUtils.getBean(DeclareRealtyRealEstateCertService.class);
+        this.dataLandDetailAchievementService = SpringContextUtils.getBean(DataLandDetailAchievementService.class);
+        this.baseProjectClassifyService = SpringContextUtils.getBean(BaseProjectClassifyService.class);
+        this.baseService = SpringContextUtils.getBean(BaseService.class);
+    }
+
+    /**
+     * 获取基准地价法主表
+     *
+     * @return
+     */
+    public MdBaseLandPrice getMdBaseLandPrice() {
+        if (mdBaseLandPrice != null) return mdBaseLandPrice;
+        MdBaseLandPrice mdBaseLandPrice = mdBaseLandPriceService.getSingleObject(this.mlId);
+        this.mdBaseLandPrice = mdBaseLandPrice;
+        return mdBaseLandPrice;
+    }
+
+    private SchemeAreaGroup getSchemeAreaGroup() {
+        if (this.schemeAreaGroup == null) {
+            this.schemeAreaGroup = schemeAreaGroupService.get(areaId);
+        }
+        return this.schemeAreaGroup;
+    }
+
+    private DataLandLevelDetail getDataLandLevelDetail(SchemeJudgeObject schemeJudgeObject) {
+        BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
+        BasicEstate estateByApplyId = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
+        BasicEstateLandState landStateByEstateId = basicEstateLandStateService.getLandStateByEstateId(estateByApplyId.getId());
+        DataLandLevelDetail dataLandLevelDetailById = dataLandLevelDetailService.getDataLandLevelDetailById(landStateByEstateId.getLandLevel());
+        return dataLandLevelDetailById;
+    }
+
+    private SchemeJudgeObject getSchemeJudgeObject() {
+        if (schemeJudgeObject == null) {
+            if (getSchemeInfo().getJudgeObjectId() != null) {
+                schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(getSchemeInfo().getJudgeObjectId());
+            }
+            if (schemeJudgeObject == null) {
+                schemeJudgeObject = new SchemeJudgeObject();
+            }
+        }
+        return schemeJudgeObject;
+    }
+
+    private SchemeInfo getSchemeInfo() {
+        return schemeInfo;
+    }
+
+    /**
+     * 功能描述: 设置默认字体
+     *
+     * @param:
+     * @return:
+     * @author: huhao
+     * @date: 2019/3/1 14:32
+     */
+    private DocumentBuilder getDefaultDocumentBuilderSetting(Document doc) throws Exception {
+        DocumentBuilder builder = new DocumentBuilder(doc);
+        AsposeUtils.setDefaultFontSettings(builder);
+        return builder;
+    }
+
+    private String getLocalPath() {
+        return generateCommonMethod.getLocalPath();
+    }
+
 }

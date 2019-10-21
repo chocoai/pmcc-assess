@@ -12,6 +12,7 @@
     <result column="saleable_area" property="saleableArea" jdbcType="DECIMAL" />
     <result column="assess_area" property="assessArea" jdbcType="DECIMAL" />
     <result column="number" property="number" jdbcType="INTEGER" />
+    <result column="mc_id" property="mcId" jdbcType="INTEGER" />
     <result column="unit_price" property="unitPrice" jdbcType="DECIMAL" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
@@ -78,7 +79,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, pid, economic_id, plan_details_id, data_key, name, planned_building_area, saleable_area, 
-    assess_area, number, unit_price, remark, creator, gmt_created, gmt_modified
+    assess_area, number, mc_id, unit_price, remark, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdEconomicIndicatorsItemExample" >
     select
@@ -117,13 +118,15 @@
     insert into tb_md_economic_indicators_item (pid, economic_id, plan_details_id, 
       data_key, name, planned_building_area, 
       saleable_area, assess_area, number, 
-      unit_price, remark, creator, 
-      gmt_created, gmt_modified)
+      mc_id, unit_price, remark, 
+      creator, gmt_created, gmt_modified
+      )
     values (#{pid,jdbcType=INTEGER}, #{economicId,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, 
       #{dataKey,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{plannedBuildingArea,jdbcType=DECIMAL}, 
       #{saleableArea,jdbcType=DECIMAL}, #{assessArea,jdbcType=DECIMAL}, #{number,jdbcType=INTEGER}, 
-      #{unitPrice,jdbcType=DECIMAL}, #{remark,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+      #{mcId,jdbcType=INTEGER}, #{unitPrice,jdbcType=DECIMAL}, #{remark,jdbcType=VARCHAR}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdEconomicIndicatorsItem" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -157,6 +160,9 @@
       </if>
       <if test="number != null" >
         number,
+      </if>
+      <if test="mcId != null" >
+        mc_id,
       </if>
       <if test="unitPrice != null" >
         unit_price,
@@ -201,6 +207,9 @@
       </if>
       <if test="number != null" >
         #{number,jdbcType=INTEGER},
+      </if>
+      <if test="mcId != null" >
+        #{mcId,jdbcType=INTEGER},
       </if>
       <if test="unitPrice != null" >
         #{unitPrice,jdbcType=DECIMAL},
@@ -258,6 +267,9 @@
       <if test="record.number != null" >
         number = #{record.number,jdbcType=INTEGER},
       </if>
+      <if test="record.mcId != null" >
+        mc_id = #{record.mcId,jdbcType=INTEGER},
+      </if>
       <if test="record.unitPrice != null" >
         unit_price = #{record.unitPrice,jdbcType=DECIMAL},
       </if>
@@ -290,6 +302,7 @@
       saleable_area = #{record.saleableArea,jdbcType=DECIMAL},
       assess_area = #{record.assessArea,jdbcType=DECIMAL},
       number = #{record.number,jdbcType=INTEGER},
+      mc_id = #{record.mcId,jdbcType=INTEGER},
       unit_price = #{record.unitPrice,jdbcType=DECIMAL},
       remark = #{record.remark,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
@@ -329,6 +342,9 @@
       <if test="number != null" >
         number = #{number,jdbcType=INTEGER},
       </if>
+      <if test="mcId != null" >
+        mc_id = #{mcId,jdbcType=INTEGER},
+      </if>
       <if test="unitPrice != null" >
         unit_price = #{unitPrice,jdbcType=DECIMAL},
       </if>
@@ -358,6 +374,7 @@
       saleable_area = #{saleableArea,jdbcType=DECIMAL},
       assess_area = #{assessArea,jdbcType=DECIMAL},
       number = #{number,jdbcType=INTEGER},
+      mc_id = #{mcId,jdbcType=INTEGER},
       unit_price = #{unitPrice,jdbcType=DECIMAL},
       remark = #{remark,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},

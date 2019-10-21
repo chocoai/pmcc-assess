@@ -343,6 +343,15 @@ assessLand.inputFile = function (flag) {
         });
     });
 };
+
+/**
+ * 经济指标
+ * @param id
+ */
+assessLand.showAddModelDeclareEconomicIndicators = function (id) {
+
+};
+
 assessLand.loadLandList = function () {
     var cols = declareCommon.getLandColumn() ;
     cols.push({field: 'fileViewName', title: '附件'});
@@ -350,10 +359,11 @@ assessLand.loadLandList = function () {
         field: 'id', title: '操作', formatter: function (value, row, index) {
             var str = '<div class="btn-margin">';
             if (row.pid) {
-                str += '<a class="btn btn-xs btn-success" href="javascript:assessLand.showAddModelHouse(' + row.id + ');" ><i class="fa fa-check">房产证</i></a>';
+                str += '<a class="btn btn-xs btn-success" href="javascript:assessLand.showAddModelHouse(' + row.id + ');" ><i class="fa fa-building fa-border">房产证</i></a>';
             } else {
-                str += '<a class="btn btn-xs btn-success" href="javascript:assessLand.showAddModelHouse(' + row.id + ');" ><i class="fa fa-remove">房产证</i></a>';
+                str += '<a class="btn btn-xs btn-success" href="javascript:assessLand.showAddModelHouse(' + row.id + ');" ><i class="fa fa-building">房产证</i></a>';
             }
+            str += '<a class="btn btn-xs btn-success" href="javascript:assessLand.showAddModelDeclareEconomicIndicators(' + row.id + ');" ><i class="fa fa-themeisle">经济指标</i></a>';
             str += "<a class='btn btn-xs btn-success tooltips' data-placement='top' data-original-title='土地证附件' onclick='assessLand.landImportEvent(" + row.id + ")'" + ">" + "<i class='fa'>" + "土地证附件" + "</a>";
             str += "<a class='btn btn-xs btn-success tooltips' data-placement='top' data-original-title='房产证附件' onclick='assessLand.houseImportEvent(" + row.id + ")'" + ">" + "<i class='fa'>" + "房产证附件" + "</a>";
             str += '</div>';

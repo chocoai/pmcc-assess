@@ -149,7 +149,7 @@
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         <!--</table>-->
 
-        <table tableName="tb_declare_record" domainObjectName="DeclareRecord">
+        <table tableName="tb_md_economic_indicators_item" domainObjectName="MdEconomicIndicatorsItem">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 

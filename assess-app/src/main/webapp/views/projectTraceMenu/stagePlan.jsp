@@ -9,6 +9,8 @@
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="row">
+
+
     <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
         <div class="x_panel">
             <div class="x_title">
@@ -25,67 +27,58 @@
                 </h3>
             </div>
             <div class="x_content">
-
                 <form class="form-horizontal" id="project_stage_query">
                     <div class="form-group">
                         <div class="x-valid">
                             <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                任务状态
+                                任务细名
                             </label>
                             <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                <input type="text" placeholder="任务状态" name="projectPhaseName" class="form-control">
+                                <input type="text" placeholder="任务细名" name="projectPhaseName" class="form-control">
                             </div>
                         </div>
                         <div class="x-valid">
                             <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                责任人
+                                描述
+                            </label>
+                            <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                <input type="text" placeholder="描述" name="planRemarks" class="form-control">
+                            </div>
+                        </div>
+                        <div class="x-valid">
+                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                执行人
                             </label>
                             <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
                                 <input type="hidden" name="executeUserAccount">
                                 <input type="text" readonly="readonly"
                                        onclick="projectStagePlan.selectProjectPhaseExecuteUserAccount(this);"
-                                       placeholder="责任人" name="executeUserAccountName" class="form-control">
+                                       placeholder="执行人" name="executeUserAccountName" class="form-control">
                             </div>
                         </div>
                         <div class="x-valid">
-                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                开始时间
-                            </label>
                             <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                <input type="text" placeholder="开始时间" name="projectPhaseName" class="form-control">
-                            </div>
-                        </div>
-                        <div class="x-valid">
-                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                结束时间
-                            </label>
-                            <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                <input type="text" placeholder="结束时间" name="projectPhaseName" class="form-control">
+                                <button type="button" class="btn btn-success" onclick="projectStagePlan.initStageTable();">搜索<i
+                                        class='fa fa-search fa-white'></i></button>
                             </div>
                         </div>
                     </div>
                     <div class="form-group">
-                        <div class="x-valid">
-                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                名称
-                            </label>
-                            <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                <input type="text" placeholder="名称" name="projectPhaseName" class="form-control">
-                            </div>
-                        </div>
-                        <div class="x-valid">
-                            <div class=" col-xs-9  col-sm-9  col-md-9  col-lg-9 ">
-                                <a class="btn btn-primary" onclick="projectStagePlan.loadProjectTaskList();">查询</a>
-                                <a class="btn btn-info" onclick="projectStagePlan.createTask()">添加任务</a>
-                                <a class="btn btn-info" onclick="projectStagePlan.autoCreateTask();">一键添加任务</a>
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                            <p id="projectStageToolbar">
+                                <a class="btn btn-info" onclick="projectStagePlan.createTask()">任务分派</a>
+                                <a class="btn btn-info" onclick="projectStagePlan.autoCreateTask();">自动任务分派</a>
                                 <a class="btn btn-danger" onclick="projectStagePlan.startTask()">发起任务</a>
-                                <a class="btn btn-primary" onclick="projectStagePlan.setExecuteUserAccount();">设置责任人</a>
-                            </div>
+                                <a class="btn btn-primary"
+                                   onclick="projectStagePlan.setExecuteUserAccount();">任务执行人员安排</a>
+                                <label class="label label-warning">注意分派的任务执行人是项目经理而不是当前登陆人</label>
+                                <label class="label label-warning">先分派任务，再发起任务！发起任务后才能进行操作</label>
+                            </p>
+                            <table id="tb_project_stage" class="table table-bordered">
+                            </table>
                         </div>
                     </div>
                 </form>
-                <table id="tb_project_stage" class="table table-bordered">
-                </table>
             </div>
         </div>
     </div>
@@ -248,47 +241,15 @@
         </div>
     </div>
 </div>
-<script type="text/javascript">
-    //进入下阶段
-    function projectDetailsEnterNextStage() {
-        $.ajax({
-            url: '${pageContext.request.contextPath}/projectInfo/enterNextStage',
-            data: {
-                projectId: '${projectInfo.id}'
-            },
-            success: function (result) {
-                if (result.ret) {
-                    toastr.success('操作成功');
-                    try {
-                        projectStagePlan.stageTable.bootstrapTable('refresh');
-                    } catch (e) {
-                        console.log(e);
-                    }
-                } else {
-                    Alert(result.errmsg);
-                }
-            }
-        });
-    }
-</script>
+
 <script type="text/javascript">
 
     var projectStagePlan = {
         stageTable: $("#tb_project_stage"),
-        loadProjectTaskList: function () {
+        initStageTable: function () {
             var cols = [];
             cols.push({field: 'id', title: 'id', visible: false});
             cols.push({checkbox: true});
-            cols.push({
-                field: 'projectPhaseName', title: '名称', width: '45%', formatter: function (value, row, index) {
-                    var str = row.projectPhaseName;
-                    if (row.planRemarks) {
-                        str += '<br/>  ' + "<label class='label label-default'>" + row.planRemarks + "</label>";
-                    }
-                    return str;
-                }
-            });
-            cols.push({field: 'executeUserName', title: '责任人'});
             cols.push({
                 field: 'status', title: '状态', formatter: function (value, row, index) {
                     var str = "";
@@ -313,6 +274,20 @@
                     return str;
                 }
             });
+
+            cols.push({
+                field: 'excuteUrl', title: '待执行任务', formatter: function (value, row, index) {
+                    var html = "";
+                    if (value) {
+                        html += "<button class=\"btn btn-default\" onclick=\"window.open('{server}','_blank')\">" + row.projectPhaseName;
+                        html = html.replace(/{server}/g, value);
+                        html += "<i class='fa fa-arrow-right fa-white'></i>";
+                        html += "</button>";
+                    }
+
+                    return html;
+                }
+            });
             cols.push({
                 field: 'planStartDate', title: '开始日期', formatter: function (value, row, index) {
                     return formatDate(value, false)
@@ -324,34 +299,42 @@
                 }
             });
             cols.push({
-                field: 'opt', title: '操作', formatter: function (value, row, index) {
+                field: 'status', title: '操作', formatter: function (value, row, index) {
                     var str = "";
-                    if (row.status == 'wait') {
-                        str += "<a onclick='projectStagePlan.editStagePlan(" + row.id + ")' style='margin-left: 5px;' data-placement='top' data-original-title='编辑' class='btn btn-xs btn-primary tooltips'  ><i class='fa fa-edit fa-white'></i></a>";
-                        str += "<a onclick='projectStagePlan.deleteStagePlan(" + row.id + ")' style='margin-left: 5px;' data-placement='top' data-original-title='删除'  class='btn btn-xs btn-warning tooltips' ><i class='fa fa-minus fa-white'></i></a>";
-                    }
-                    if (row.canReplay) {
-                        str += "<a onclick='projectStagePlan.replyTask(" + row.id + ")' style='margin-left: 5px;' data-placement='top' data-original-title='重启' class='btn btn-xs btn-primary tooltips'  ><i class='fa fa-reply fa-white'></i></a>";
-                    }
-                    if (row.excuteUrl) {
-                        var btnClass = 'btn-success';
-                        if (/processInsId/.test(row.excuteUrl)) {
-                            btnClass = 'btn-primary';
+                    switch (value) {
+                        case "runing": {
+                            str += "<a onclick='projectStagePlan.editStagePlan(" + row.id + ")' style='margin-left: 5px;' data-placement='top' data-original-title='编辑' class='btn btn-xs btn-success tooltips'  ><i class='fa fa-edit fa-white'></i></a>";
+                            str += "<a onclick='projectStagePlan.deleteStagePlan(" + row.id + ")' style='margin-left: 5px;' data-placement='top' data-original-title='删除'  class='btn btn-xs btn-warning tooltips' ><i class='fa fa-minus fa-white'></i></a>";
+                            if (row.excuteUrl) {
+                                str += "<a target='_blank' href='" + row.excuteUrl + "' style='margin-left: 5px;' data-placement='top' data-original-title='提交' class='btn btn-xs btn-success tooltips'  ><i class='fa fa-external-link fa-white'></i></a>";
+                            }
+                            break;
                         }
-                        str += "<a onclick='projectStagePlan.taskOpenWin(\"" + row.excuteUrl + "\")' href='javascript://' style='margin-left: 5px;' data-placement='top' data-original-title='提交' class='btn btn-xs " + btnClass + " tooltips'  ><i class='fa fa-arrow-right fa-white'></i></a>";
-                    }
-                    if (row.displayUrl) {
-                        str += "<a onclick='projectStagePlan.taskOpenWin(\"" + row.displayUrl + "\")' href='javascript://' style='margin-left: 5px;' data-placement='top' data-original-title='查看' class='btn btn-xs btn-warning tooltips'  ><i class='fa fa-search fa-white'></i></a>";
+                        case "finish": {
+                            str += "<a onclick='projectStagePlan.editStagePlan(" + row.id + ")' style='margin-left: 5px;' data-placement='top' data-original-title='编辑' class='btn btn-xs btn-success tooltips'  ><i class='fa fa-edit fa-white'></i></a>";
+                            if (row.displayUrl) {
+                                str += "<a target='_blank' href='" + row.displayUrl + "' style='margin-left: 5px;' data-placement='top' data-original-title='查看' class='btn btn-xs btn-success tooltips'  ><i class='fa fa-search fa-white'></i></a>";
+                            }
+                            if (row.canReplay) {
+                                str += "<a onclick='projectStagePlan.replyTask(" + row.id + ")' style='margin-left: 5px;' data-placement='top' data-original-title='重启' class='btn btn-xs btn-warning tooltips'  ><i class='fa fa-reply fa-white'></i></a>";
+                            }
+                            break;
+                        }
                     }
                     return str;
                 }
             });
+            cols.push({field: 'executeUserName', title: '执行人'});
+            cols.push({field: 'declareRecordName', title: '申报记录名称'});
+            cols.push({field: 'planRemarks', title: '描述'});
             var select = {
                 projectId: "${projectInfo.id}",
                 planId: "${projectPlan.id}"
             };
             var data = formSerializeArray($("#project_stage_query"));
             jQuery.extend(select, data);
+            console.log(select);
+            console.log(data);
             projectStagePlan.stageTable.bootstrapTable('destroy');
             TableInit(projectStagePlan.stageTable, "${pageContext.request.contextPath}/projectInfo/getPlanDetailListByPlanId", cols, select, {
                 toolbar: '#projectStageToolbar',
@@ -413,13 +396,6 @@
                 }
             })
         },
-        //打开任务页面的回调
-        taskOpenWin: function (url) {
-            openWin(url, function () {
-                projectStagePlan.loadProjectTaskList();
-            })
-        },
-
         loadTemplateAttachment: function (planDetailsId) {
             //加载附件
             FileUtils.getFileShows({
@@ -634,7 +610,7 @@
     };
 
     $(function () {
-        projectStagePlan.loadProjectTaskList();
+        projectStagePlan.initStageTable();
     });
 
 </script>

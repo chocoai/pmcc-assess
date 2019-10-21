@@ -5,6 +5,7 @@ import com.aspose.words.*;
 import com.copower.pmcc.assess.common.ArithmeticUtils;
 import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.enums.data.DataBuildingInstallCostTypeEnum;
+import com.copower.pmcc.assess.common.enums.method.EconomicIndicatorsItemEnum;
 import com.copower.pmcc.assess.common.enums.report.BaseReportFieldEnum;
 import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
@@ -140,7 +141,12 @@ public class GenerateMdDevelopmentService {
                 try {
                     setFieldObjectValue(enumStringEntry.getKey(), textMap, fileMap, bookmarkMap, getMdDevelopmentVo());
                     setMdDevelopmentCommonValue(enumStringEntry.getKey(), textMap, fileMap, bookmarkMap, getMdDevelopmentVo(), schemeJudgeObject, schemeAreaGroup, projectPlanDetails);
+                    //经济指标 单独处理
+                    if (Objects.equal(BaseReportFieldEnum.Development_EconomicIndicators.getName(), enumStringEntry.getKey().getName())) {
+                        setDevelopment_EconomicIndicatorsValue(textMap, fileMap, bookmarkMap);
+                    }
                 } catch (Exception e) {
+                    baseService.writeExceptionInfo(e);
                     throw e;
                 }
             }
@@ -179,6 +185,76 @@ public class GenerateMdDevelopmentService {
         return localPath;
     }
 
+    /**
+     * 经济指标
+     *
+     * @param textMap
+     * @param fileMap
+     * @param bookmarkMap
+     */
+    private void setDevelopment_EconomicIndicatorsValue(final ConcurrentHashMap<String, String> textMap, final ConcurrentHashMap<String, String> fileMap, final ConcurrentHashMap<String, String> bookmarkMap)throws Exception {
+        List<MdEconomicIndicatorsItem> filterList = Lists.newArrayList();
+        Document doc = new Document();
+        DocumentBuilder builder = new DocumentBuilder(doc);
+        String localPath = generateCommonMethod.getLocalPath();
+        generateCommonMethod.settingBuildingTable(builder);
+        //设置具体宽度自动适应
+        PreferredWidth preferredWidth = PreferredWidth.AUTO;
+        builder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
+        builder.getCellFormat().setPreferredWidth(preferredWidth);
+        builder.getCellFormat().setVerticalMerge(CellVerticalAlignment.CENTER);
+        builder.getCellFormat().setVerticalAlignment(CellVerticalAlignment.CENTER);
+        builder.getCellFormat().setHorizontalMerge(CellVerticalAlignment.CENTER);
+        MdEconomicIndicatorsApplyDto mdEconomicIndicatorsApplyDto = getMdEconomicIndicatorsApplyDto();
+        List<MdEconomicIndicatorsItem> itemList = Lists.newArrayList();
+        if (mdEconomicIndicatorsApplyDto != null && CollectionUtils.isNotEmpty(mdEconomicIndicatorsApplyDto.getEconomicIndicatorsItemList())) {
+            itemList.addAll(mdEconomicIndicatorsApplyDto.getEconomicIndicatorsItemList());
+            mdEconomicIndicatorsApplyDto.getEconomicIndicatorsItemList().forEach(oo -> {
+                if (oo.getMcId() != null) {
+                    filterList.add(oo);
+                }
+            });
+        }
+        if (CollectionUtils.isNotEmpty(itemList)) {
+            LinkedList<String> stringLinkedList = Lists.newLinkedList();
+            builder.startTable();
+            stringLinkedList.addAll(Arrays.asList("名称", "规划建筑面积 (㎡)", "可出售面积 (㎡)", "个数", "评估面积 (㎡)", "单位售价(元/㎡)", "备注"));
+            AsposeUtils.writeWordTitle(builder, stringLinkedList);
+            stringLinkedList.clear();
+            for (MdEconomicIndicatorsItem indicatorsItem : itemList) {
+                stringLinkedList.add(StringUtils.isNotBlank(indicatorsItem.getName()) ? indicatorsItem.getName() : "");
+                stringLinkedList.add(ArithmeticUtils.getBigDecimalString(indicatorsItem.getPlannedBuildingArea()));
+                stringLinkedList.add(ArithmeticUtils.getBigDecimalString(indicatorsItem.getSaleableArea()));
+                stringLinkedList.add(indicatorsItem.getNumber() == null ? "" : indicatorsItem.getNumber().toString());
+                stringLinkedList.add(ArithmeticUtils.getBigDecimalString(indicatorsItem.getAssessArea()));
+                stringLinkedList.add(ArithmeticUtils.getBigDecimalString(indicatorsItem.getUnitPrice()));
+                stringLinkedList.add(StringUtils.isNotBlank(indicatorsItem.getRemark()) ? indicatorsItem.getRemark() : "");
+                AsposeUtils.writeWordTitle(builder, stringLinkedList);
+                stringLinkedList.clear();
+            }
+            builder.endTable();
+        }
+        if (CollectionUtils.isNotEmpty(filterList)) {
+            for (MdEconomicIndicatorsItem item : filterList) {
+                GenerateMdCompareService generateMdCompareService = new GenerateMdCompareService(getSchemeJudgeObject().getId(), item.getMcId(), areaId);
+                String key = RandomStringUtils.randomAlphabetic(7);
+                StringBuilder stringBuilder = new StringBuilder(24);
+                for (EconomicIndicatorsItemEnum indicatorsItemEnum : EconomicIndicatorsItemEnum.values()) {
+                    if (Objects.equal(indicatorsItemEnum.getKey(), item.getDataKey())) {
+                        stringBuilder.append(indicatorsItemEnum.getDescription());
+                    }
+                }
+                stringBuilder.append(item.getName()).append("使用市场比较法取得单位售价");
+                AsposeUtils.insertHtml(builder, AsposeUtils.getWarpCssHtml(stringBuilder.toString(), AsposeUtils.getKeyValueDtoList()));
+                builder.write(key);
+                fileMap.put(key, generateMdCompareService.generateCompareFile());
+
+            }
+        }
+        AsposeUtils.saveWord(localPath,doc);
+        generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, BaseReportFieldEnum.Development_EconomicIndicators.getName(), localPath);
+    }
+
     private void setMdDevelopmentCommonValue(BaseReportFieldEnum key, final ConcurrentHashMap<String, String> textMap, final ConcurrentHashMap<String, String> fileMap, final ConcurrentHashMap<String, String> bookmarkMap, MdDevelopmentVo target, SchemeJudgeObject schemeJudgeObject, SchemeAreaGroup schemeAreaGroup, ProjectPlanDetails projectPlanDetails) {
         switch (key) {
             case Development_region: {
@@ -205,49 +281,6 @@ public class GenerateMdDevelopmentService {
                     break;
                 }
                 generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), dataSetUseField.getName());
-                break;
-            }
-            case Development_EconomicIndicators: {//经济指标
-                try {
-                    Document doc = new Document();
-                    DocumentBuilder builder = new DocumentBuilder(doc);
-                    generateCommonMethod.settingBuildingTable(builder);
-                    //设置具体宽度自动适应
-                    PreferredWidth preferredWidth = PreferredWidth.AUTO;
-                    builder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
-                    builder.getCellFormat().setPreferredWidth(preferredWidth);
-                    builder.getCellFormat().setVerticalMerge(CellVerticalAlignment.CENTER);
-                    builder.getCellFormat().setVerticalAlignment(CellVerticalAlignment.CENTER);
-                    builder.getCellFormat().setHorizontalMerge(CellVerticalAlignment.CENTER);
-                    MdEconomicIndicatorsApplyDto mdEconomicIndicatorsApplyDto = getMdEconomicIndicatorsApplyDto();
-                    List<MdEconomicIndicatorsItem> itemList = Lists.newArrayList();
-                    if (mdEconomicIndicatorsApplyDto != null && CollectionUtils.isNotEmpty(mdEconomicIndicatorsApplyDto.getEconomicIndicatorsItemList())) {
-                        itemList.addAll(mdEconomicIndicatorsApplyDto.getEconomicIndicatorsItemList());
-                    }
-                    if (CollectionUtils.isNotEmpty(itemList)) {
-                        LinkedList<String> stringLinkedList = Lists.newLinkedList();
-                        builder.startTable();
-                        stringLinkedList.addAll(Arrays.asList("名称", "规划建筑面积 (㎡)", "可出售面积 (㎡)", "个数", "评估面积 (㎡)", "单位售价(元/㎡)", "备注"));
-                        AsposeUtils.writeWordTitle(builder, stringLinkedList);
-                        stringLinkedList.clear();
-                        for (MdEconomicIndicatorsItem indicatorsItem : itemList) {
-                            stringLinkedList.add(StringUtils.isNotBlank(indicatorsItem.getName()) ? indicatorsItem.getName() : "");
-                            stringLinkedList.add(ArithmeticUtils.getBigDecimalString(indicatorsItem.getPlannedBuildingArea()));
-                            stringLinkedList.add(ArithmeticUtils.getBigDecimalString(indicatorsItem.getSaleableArea()));
-                            stringLinkedList.add(indicatorsItem.getNumber() == null ? "" : indicatorsItem.getNumber().toString());
-                            stringLinkedList.add(ArithmeticUtils.getBigDecimalString(indicatorsItem.getAssessArea()));
-                            stringLinkedList.add(ArithmeticUtils.getBigDecimalString(indicatorsItem.getUnitPrice()));
-                            stringLinkedList.add(StringUtils.isNotBlank(indicatorsItem.getRemark()) ? indicatorsItem.getRemark() : "");
-                            AsposeUtils.writeWordTitle(builder, stringLinkedList);
-                            stringLinkedList.clear();
-                        }
-                        builder.endTable();
-                    }
-                    String localPath = generateCommonMethod.getLocalPath();
-                    doc.save(localPath);
-                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, key.getName(), localPath);
-                } catch (Exception e) {
-                }
                 break;
             }
             case Development_developed_value_sheet: {
@@ -298,6 +331,7 @@ public class GenerateMdDevelopmentService {
                     AsposeUtils.saveWord(localPath, doc);
                     generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, key.getName(), localPath);
                 } catch (Exception e) {
+                    baseService.writeExceptionInfo(e);
                 }
                 break;
             }
@@ -342,6 +376,7 @@ public class GenerateMdDevelopmentService {
                     doc.save(localPath);
                     generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, key.getName(), localPath);
                 } catch (Exception e) {
+                    baseService.writeExceptionInfo(e);
                 }
                 break;
             }
@@ -375,9 +410,6 @@ public class GenerateMdDevelopmentService {
                     generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, key.getName(), path);
                 } catch (Exception e) {
                     baseService.writeExceptionInfo(e, key.getName());
-                    String error = e.getMessage();
-                    if (StringUtils.isNotBlank(error)) {
-                    }
                 }
                 break;
             }
@@ -612,8 +644,8 @@ public class GenerateMdDevelopmentService {
             }
             case Development_AmendmentStatusRightsRemark: {
                 value = target.getAmendmentStatusRightsExplain();
-                if (StringUtils.isEmpty(value)){
-                    value = String.join("","无", BaseReportFieldEnum.Development_AmendmentStatusRights.getName(),"修正") ;
+                if (StringUtils.isEmpty(value)) {
+                    value = String.join("", "无", BaseReportFieldEnum.Development_AmendmentStatusRights.getName(), "修正");
                 }
                 break;
             }
@@ -623,8 +655,8 @@ public class GenerateMdDevelopmentService {
             }
             case Development_OtherAmendmentsRemark: {
                 value = target.getOtherAmendmentsExplain();
-                if (StringUtils.isEmpty(value)){
-                    value = String.join("","无", BaseReportFieldEnum.Development_OtherAmendments.getName(),"修正") ;
+                if (StringUtils.isEmpty(value)) {
+                    value = String.join("", "无", BaseReportFieldEnum.Development_OtherAmendments.getName(), "修正");
                 }
                 break;
             }
@@ -672,8 +704,8 @@ public class GenerateMdDevelopmentService {
             }
             case Development_DevelopmentDegreeCorrectionValueRemark: {
                 value = target.getDevelopmentDegreeRevisionExplain();
-                if (StringUtils.isEmpty(value)){
-                    value = String.join("","无", BaseReportFieldEnum.Development_DevelopmentDegreeCorrectionValue.getName(),"修正") ;
+                if (StringUtils.isEmpty(value)) {
+                    value = String.join("", "无", BaseReportFieldEnum.Development_DevelopmentDegreeCorrectionValue.getName(), "修正");
                 }
                 break;
             }
