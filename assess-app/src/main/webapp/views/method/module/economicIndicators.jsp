@@ -307,9 +307,15 @@
         <%--onblur="economicIndicators.autoSummary()"--%>
         <%--name="number" data-rule-number="true" style="width: 100px;">--%>
         <%--</td>--%>
-        <td><input type="text" value="{unitPrice}" placeholder="单价"
+        <td>
+            <input type="text" value="{unitPrice}" placeholder="单价"
                    onblur="economicIndicators.autoSummary()"
                    name="unitPrice" data-rule-number="true" style="width: 100px;">
+            <input type="hidden" name="mcId" value="{mcId}">
+            <c:if test="${!empty projectPlanDetails.judgeObjectId}">
+                <input type="button" class="btn btn-primary" value="市场比较法"
+                       onclick="economicIndicators.callCompareMethod(this);">
+            </c:if>
         </td>
         <td><input type="text" value="{remark}" placeholder="备注" name="remark" style="width: 100px;"></td>
     </tr>
@@ -413,6 +419,7 @@
                                 html = html.replace(/{saleableArea}/g, AssessCommon.toString(item.saleableArea)).replace(/{number}/g, AssessCommon.toString(item.number)).replace(/{remark}/g, AssessCommon.toString(item.remark));
                                 html = html.replace(/{unitPrice}/g, AssessCommon.toString(item.unitPrice));
                                 html = html.replace(/{assessArea}/g, AssessCommon.toString(item.assessArea));
+                                html = html.replace(/{mcId}/g, AssessCommon.toString(item.mcId));
                                 economicIndicators.frmItem.find('[data-key=' + dataKey + ']').last().after(html);
                                 if (defaluts.attribute) {
                                     economicIndicators.frmItem.find('[data-key=' + dataKey + ']').each(function (i, n) {
@@ -477,6 +484,7 @@
 //            economicIndicatorsItem.number = $(this).find('[name=number]').val();
             economicIndicatorsItem.unitPrice = $(this).find('[name=unitPrice]').val();
             economicIndicatorsItem.remark = $(this).find('[name=remark]').val();
+            economicIndicatorsItem.mcId = $(this).find('[name=mcId]').val();
             data.economicIndicatorsItemList.push(economicIndicatorsItem);
         });
         $.ajax({
@@ -511,6 +519,7 @@
         html = html.replace(/{saleableArea}/g, '').replace(/{number}/g, '').replace(/{remark}/g, '');
         html = html.replace(/{unitPrice}/g, '');
         html = html.replace(/{assessArea}/g, '');
+        html = html.replace(/{mcId}/g, '');
         economicIndicators.frmItem.find('[data-key=' + dataKey + ']').last().after(html);
     };
 
@@ -644,6 +653,39 @@
                 }
             });
         }
+    };
+
+    economicIndicators.callCompareMethod = function (this_) {
+        var frame = layer.open({
+            type: 2,
+            title: '比较法',
+            shadeClose: true,
+            shade: true,
+            maxmin: true, //开启最大化最小化按钮
+            area: ['893px', '600px'],
+            content: '${pageContext.request.contextPath}/marketCompare/index?isLand=true&mcId=' + '' + '&judgeObjectId=${projectPlanDetails.judgeObjectId}',
+            cancel: function (index, layero) {
+                var iframe = window[layero.find('iframe')[0]['name']];
+                if (iframe && iframe.marketCompare && iframe.marketCompare.mcId) {
+
+                }
+            },
+            btnAlign: 'c',
+            btn: ['确定使用这个单价!', '关闭'],
+            yes: function (index, layero) {
+                var iframe = window[layero.find('iframe')[0]['name']];
+                iframe.saveResult(function (mcId, price) {
+                    $(this_).closest("td").find("[name='unitPrice']").val(price) ;
+                    $(this_).closest("td").find("[name='mcId']").val(mcId) ;
+                    economicIndicators.autoSummary() ;
+                    layer.closeAll('iframe');
+                });
+            },
+            btn2: function (index, layero) {
+
+            }
+        });
+        layer.full(frame);
     };
 
 </script>

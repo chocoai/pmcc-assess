@@ -24,6 +24,8 @@ public class MdEconomicIndicatorsItem {
 
     private Integer number;
 
+    private Integer mcId;
+
     private BigDecimal unitPrice;
 
     private String remark;
@@ -112,6 +114,14 @@ public class MdEconomicIndicatorsItem {
 
     public void setNumber(Integer number) {
         this.number = number;
+    }
+
+    public Integer getMcId() {
+        return mcId;
+    }
+
+    public void setMcId(Integer mcId) {
+        this.mcId = mcId;
     }
 
     public BigDecimal getUnitPrice() {
