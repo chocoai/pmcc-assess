@@ -587,6 +587,9 @@ declareCommon.initHouse = function (item, form, fileArr, callback) {
     AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareCommonSituation, item.publicSituation, function (html, data) {
         frm.find("select[name='publicSituation']").empty().html(html).trigger('change');
     });
+    AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareHouseCertificateType, item.type, function (html, data) {
+        frm.find("select[name='type']").empty().html(html).trigger('change');
+    });
     AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseLoadUtility, item.certUse, function (html, data) {
         frm.find("select[name='certUse']").empty().html(html).trigger('change');
     });

@@ -26,6 +26,116 @@
                         <input type="hidden" name="id" value="${declare.id}">
                         <input type="hidden" name="planDetailsId" value="${projectPlanDetails.id}">
                         <input type="hidden" name="projectId" value="${projectPlanDetails.projectId}">
+
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                    估价委托书
+                                </label>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3  ">
+                                    <input id="project_proxy" name="project_proxy" type="file" multiple="false">
+                                    <div id="_project_proxy"></div>
+                                </div>
+                            </div>
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                    前次评估报告
+                                </label>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3  ">
+                                    <input id="assess_report_enclosure" name="assess_report_enclosure" type="file" multiple="false">
+                                    <div id="_assess_report_enclosure"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                    前次评估面积
+                                </label>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                    <input name="assessArea" class="form-control" placeholder="前次评估面积" value='${declare.assessArea}'/>
+                                </div>
+                            </div>
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                    前次评估金额
+                                </label>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                    <input name="assessMoney" class="form-control" placeholder="前次评估金额" value='${declare.assessMoney}'/>
+                                </div>
+                            </div>
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                    前次评估基准日
+                                </label>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                    <input placeholder="前次评估基准日" id="dateLimit"
+                                           name="dateLimit" data-date-format="yyyy-mm-dd"
+                                           class="form-control date-picker dbdate" readonly="readonly"
+                                           value="<fmt:formatDate value='${declare.dateLimit}' pattern='yyyy-MM-dd'/>">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                    前次委托单位
+                                </label>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                    <c:choose>
+                                        <c:when test="${empty declare.client}">
+                                            <input name="client" class="form-control" placeholder="前次委托单位" value='${consignor}'/>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <input name="client" class="form-control" placeholder="前次委托单位" value='${declare.client}'/>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                    自定义附件
+                                </label>
+                                <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
+                                    <div class="btn  btn-success" onclick="appendHTML(this)"><i class="fa fa-plus"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                        <c:forTokens items="${declare.name}" delims="," var="item" varStatus="status">
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                        自定义名称<span class="symbol required"></span>
+                                    </label>
+                                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                        <input name="name" class="form-control" placeholder="自定义名称" value="${item}" />
+                                    </div>
+                                </div>
+                                <div class="x-valid">
+                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                        附件${status.index}
+                                    </label>
+                                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3  ">
+                                        <input id="other_Enclosure${status.index+1}" name="other_Enclosure${status.index+1}" type="file" multiple="false">
+                                        <div id="_other_Enclosure${status.index+1}"></div>
+                                    </div>
+                                </div>
+                                <script>
+                                    $(function () {
+                                        var fileId = 'other_Enclosure${status.index+1}' ;
+                                        declareCommon.showFile(fileId, AssessDBKey.ProjectInfo, "${projectPlanDetails.projectId}", true, fileId);
+                                        declareCommon.fileUpload(fileId, AssessDBKey.ProjectInfo, "${projectPlanDetails.projectId}", true, fileId);
+                                    });
+                                </script>
+                                <div class="x-valid">
+                                    <span class="input-group-btn"><input class="btn btn-warning" type="button" value="X" onclick="cleanItemHTML(this)"></span>
+                                </div>
+                            </div>
+                        </c:forTokens>
                     </form>
 
                 </div>
@@ -55,11 +165,64 @@
                 </div>
             </div>
             <%@include file="/views/share/form_log.jsp" %>
+            <%@include file="/views/method/module/economicIndicators.jsp" %>
         </div>
     </div>
 </div>
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
+<script type="text/html" id="other_EnclosureModel">
+    <div class="form-group">
+        <div class="x-valid">
+            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                自定义名称<span class="symbol required"></span>
+            </label>
+            <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                <input name="name" class="form-control" placeholder="自定义名称" />
+            </div>
+        </div>
+        <div class="x-valid">
+            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                附件
+            </label>
+            <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3  ">
+                <input id="other_Enclosure{number}" name="other_Enclosure{number}" type="file" multiple="false">
+                <div id="_other_Enclosure{number}"></div>
+            </div>
+        </div>
+        <div class="x-valid">
+            <span class="input-group-btn"><input class="btn btn-warning" type="button" value="X" onclick="cleanItemHTML(this)"></span>
+        </div>
+    </div>
+</script>
+<script type="text/javascript">
+
+    function appendHTML(_this) {
+        var frm = $("#declareApplyForm") ;
+        var target = $(_this).parent().parent().parent() ;
+        var number = Number(frm.find("input[name='name']").size()) ;
+        number++;
+        var html = $("#other_EnclosureModel").html() ;
+        var fileId = "other_Enclosure" + number;
+        html = html.replace(/{number}/g,number) ;
+        target.after(html) ;
+        declareCommon.showFile(fileId, AssessDBKey.ProjectInfo, "${projectPlanDetails.projectId}", true, fileId);
+        declareCommon.fileUpload(fileId, AssessDBKey.ProjectInfo, "${projectPlanDetails.projectId}", true, fileId);
+    }
+
+    function cleanItemHTML(_this) {
+        $(_this).parent().parent().parent().remove() ;
+    }
+
+    $(document).ready(function () {
+        var fileArr = [AssessUploadKey.PROJECT_PROXY ,AssessUploadKey.ASSESS_REPORT_Enclosure ] ;
+        $.each(fileArr,function (i,n) {
+            declareCommon.showFile(n, AssessDBKey.ProjectInfo, "${projectPlanDetails.projectId}", true, n);
+            declareCommon.fileUpload(n, AssessDBKey.ProjectInfo, "${projectPlanDetails.projectId}", true, n);
+        });
+
+    });
+</script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/declare/declare.common.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/declare/landPure/landPure.cert.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/ajaxfileupload.js"></script>
@@ -78,8 +241,11 @@
 
     //提交表单
     function submitForm(mustUseBox) {
-        var formData = {};
-
+        var frm = $("#declareApplyForm") ;
+        if (!frm.valid()) {
+            return false;
+        }
+        var formData = formSerializeArray(frm);
         if ("${processInsId}" != "0") {
             submitEditToServer(JSON.stringify(formData));
         }

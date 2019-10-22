@@ -3,15 +3,12 @@ package com.copower.pmcc.assess.service.project.declare;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareBuildEngineeringAndEquipmentCenterDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
-import com.copower.pmcc.assess.service.method.MdEconomicIndicatorsService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.task.TaskExecutor;
@@ -39,15 +36,9 @@ public class DeclareBuildEngineeringAndEquipmentCenterService {
     @Autowired
     private DeclareBuildEquipmentInstallService declareBuildEquipmentInstallService;
     @Autowired
-    private DeclareBuildEconomicIndicatorsService declareBuildEconomicIndicatorsService;
-    @Autowired
     private DeclareRealtyHouseCertService declareRealtyHouseCertService;
     @Autowired
     private TaskExecutor executor;
-    @Autowired
-    private MdEconomicIndicatorsService mdEconomicIndicatorsService;
-
-    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     public Integer saveAndUpdateDeclareBuildEngineeringAndEquipmentCenter(DeclareBuildEngineeringAndEquipmentCenter declareBuildEngineeringAndEquipmentCenter) {
         if (declareBuildEngineeringAndEquipmentCenter.getId() == null || declareBuildEngineeringAndEquipmentCenter.getId().intValue() == 0) {
@@ -62,21 +53,6 @@ public class DeclareBuildEngineeringAndEquipmentCenterService {
     }
 
 
-    public List<DeclareBuildEconomicIndicators> getDeclareBuildEconomicIndicatorsList(String type, Integer buildEngineeringId, Integer buildEquipmentId) {
-        List<DeclareBuildEngineeringAndEquipmentCenter> declareBuildEngineeringAndEquipmentCenterList = declareBuildEngineeringAndEquipmentCenterDao.getDeclareBuildEngineeringAndEquipmentCenterList(type, buildEngineeringId, buildEquipmentId);
-        List<DeclareBuildEconomicIndicators> economicIndicators = new ArrayList<DeclareBuildEconomicIndicators>(10);
-        if (!ObjectUtils.isEmpty(declareBuildEngineeringAndEquipmentCenterList)) {
-            for (DeclareBuildEngineeringAndEquipmentCenter buildEngineeringAndEquipmentCenter : declareBuildEngineeringAndEquipmentCenterList) {
-                Integer indicatorId = buildEngineeringAndEquipmentCenter.getIndicatorId();
-                if (indicatorId != null) {
-                    if (CollectionUtils.isNotEmpty(declareBuildEconomicIndicatorsService.getEntityListByPid(indicatorId))) {
-                        economicIndicators.addAll(declareBuildEconomicIndicatorsService.getEntityListByPid(indicatorId));
-                    }
-                }
-            }
-        }
-        return economicIndicators;
-    }
 
     public List<DeclareBuildEngineeringAndEquipmentCenter> declareBuildEngineeringAndEquipmentCenterList(DeclareBuildEngineeringAndEquipmentCenter oo) {
         return declareBuildEngineeringAndEquipmentCenterDao.getDeclareBuildEngineeringAndEquipmentCenterList(oo);
@@ -228,24 +204,6 @@ public class DeclareBuildEngineeringAndEquipmentCenterService {
             if (restrain(equipmentCenter.getPlanDetailsId(), equipmentCenter.getType(), equipmentCenter.getIndicatorId())) {
                 executor.execute(() -> {
 //                    mdEconomicIndicatorsService.deleteById(equipmentCenter.getIndicatorId());
-                    equipmentCenter.setIndicatorId(0);
-                    saveAndUpdateDeclareBuildEngineeringAndEquipmentCenter(equipmentCenter);
-                });
-            }
-        }
-        //新经济指标
-        if (types.contains(DeclareEconomicIndicatorsHead.class.getSimpleName())) {
-            if (restrain(equipmentCenter.getPlanDetailsId(), equipmentCenter.getType(), equipmentCenter.getIndicatorId())) {
-                executor.execute(() -> {
-                    equipmentCenter.setIndicatorId(0);
-                    saveAndUpdateDeclareBuildEngineeringAndEquipmentCenter(equipmentCenter);
-                });
-            }
-        }
-        //经济指标
-        if (types.contains(DeclareBuildEconomicIndicatorsCenter.class.getSimpleName())) {
-            if (restrain(equipmentCenter.getPlanDetailsId(), equipmentCenter.getType(), equipmentCenter.getIndicatorId())) {
-                executor.execute(() -> {
                     equipmentCenter.setIndicatorId(0);
                     saveAndUpdateDeclareBuildEngineeringAndEquipmentCenter(equipmentCenter);
                 });

@@ -443,6 +443,14 @@ public class DeclareRealtyLandCertService {
             }
             vo.setFileViewName(builder.toString());
         }
+        DeclareBuildEngineeringAndEquipmentCenter centerQuery = new DeclareBuildEngineeringAndEquipmentCenter();
+        centerQuery.setLandId(declareRealtyLandCert.getId());
+        centerQuery.setPlanDetailsId(declareRealtyLandCert.getPlanDetailsId());
+        centerQuery.setType(DeclareRealtyLandCert.class.getSimpleName());
+        List<DeclareBuildEngineeringAndEquipmentCenter> centerList = declareBuildEngineeringAndEquipmentCenterService.declareBuildEngineeringAndEquipmentCenterList(centerQuery);
+        if (CollectionUtils.isNotEmpty(centerList)) {
+            vo.setCenterId(centerList.stream().findFirst().get().getId());
+        }
         return vo;
     }
 

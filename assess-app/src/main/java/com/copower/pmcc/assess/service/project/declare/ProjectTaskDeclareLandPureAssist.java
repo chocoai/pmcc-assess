@@ -1,15 +1,24 @@
 package com.copower.pmcc.assess.service.project.declare;
 
+import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
+import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
+import com.copower.pmcc.assess.dal.basis.entity.DeclareApply;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
+import com.copower.pmcc.assess.dto.output.project.initiate.InitiateConsignorVo;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.ErpAreaService;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.project.initiate.InitiateConsignorService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 /**
  * 描述:
@@ -27,31 +36,29 @@ public class ProjectTaskDeclareLandPureAssist implements ProjectTaskInterface {
     private DeclarePublicService declarePublicService;
     @Autowired
     private ErpAreaService erpAreaService;
+    @Autowired
+    private InitiateConsignorService initiateConsignorService;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageDeclare/taskDeclareLandPureIndex", "", 0, "0", "");
-        //所有省份
-        modelAndView.addObject("ProvinceList", erpAreaService.getProvinceList());
-        modelAndView.addObject("projectPlanDetails",projectPlanDetails);
+        setViewParam(projectPlanDetails, modelAndView);
         return modelAndView;
     }
 
     @Override
     public ModelAndView approvalView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageDeclare/taskDeclareLandPureApproval", processInsId, boxId, taskId, agentUserAccount);
-        //所有省份
-        modelAndView.addObject("ProvinceList", erpAreaService.getProvinceList());
-        modelAndView.addObject("projectPlanDetails",projectPlanDetails);
+        setViewParam(projectPlanDetails, modelAndView);
         return modelAndView;
     }
 
     @Override
     public ModelAndView returnEditView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageDeclare/taskDeclareLandPureIndex", processInsId, boxId, taskId, agentUserAccount);
-        //所有省份
-        modelAndView.addObject("ProvinceList", erpAreaService.getProvinceList());
-        modelAndView.addObject("projectPlanDetails",projectPlanDetails);
+        setViewParam(projectPlanDetails, modelAndView);
         return modelAndView;
     }
 
@@ -63,9 +70,7 @@ public class ProjectTaskDeclareLandPureAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView detailsView(ProjectPlanDetails projectPlanDetails, Integer boxId) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageDeclare/taskDeclareLandPureApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
-        //所有省份
-        modelAndView.addObject("ProvinceList", erpAreaService.getProvinceList());
-        modelAndView.addObject("projectPlanDetails",projectPlanDetails);
+        setViewParam(projectPlanDetails, modelAndView);
         return modelAndView;
     }
 
@@ -82,8 +87,23 @@ public class ProjectTaskDeclareLandPureAssist implements ProjectTaskInterface {
     }
 
     @Override
-    public void returnEditCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
+    public void returnEditCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException  {
+        declarePublicService.editCommitTask(projectPlanDetails, processInsId, formData);
+    }
 
+    private void setViewParam(ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) {
+        DeclareApply declare = declarePublicService.getDeclareApplyByProjectId(projectPlanDetails.getProjectId());
+        if (declare == null) {
+            declare = new DeclareApply();
+        }
+        modelAndView.addObject("declare", declare);
+        modelAndView.addObject("ProvinceList", erpAreaService.getProvinceList());//所有省份
+        modelAndView.addObject(StringUtils.uncapitalize(ProjectPlanDetails.class.getSimpleName()), projectPlanDetails);
+        modelAndView.addObject(StringUtils.uncapitalize(DeclareApply.class.getSimpleName()), declare);
+        InitiateConsignorVo consignor = initiateConsignorService.getDataByProjectId(projectPlanDetails.getProjectId());
+        modelAndView.addObject("consignor", StringUtils.isEmpty(consignor.getCsEntrustmentUnit()) ? consignor.getCsName() : consignor.getCsEntrustmentUnit());
+        List<BaseDataDic> certificateTypes = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.PROJECT_DECLARE_HOUSE_CERTIFICATE_TYPE);
+        modelAndView.addObject("certificateTypes", certificateTypes);
     }
 
 }

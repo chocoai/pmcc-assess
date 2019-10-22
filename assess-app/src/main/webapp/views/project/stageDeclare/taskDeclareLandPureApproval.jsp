@@ -13,7 +13,8 @@
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
             <!-- 申报各种类型的html视图 -->
             <%@include file="/views/project/stageDeclare/declareApprovalModel.jsp" %>
-            <script type="text/javascript" src="${pageContext.request.contextPath}/js/declare/declare.common.js"></script>
+            <script type="text/javascript"
+                    src="${pageContext.request.contextPath}/js/declare/declare.common.js"></script>
             <!-- 土地证 -->
             <div class="x_panel" id="viewDeclareRealtyLandCert">
                 <div class="x_content">
@@ -36,7 +37,7 @@
             </div>
 
             <!-- 不动产证 -->
-            <div class="x_panel" >
+            <div class="x_panel">
                 <div class="x_content">
                     <div class="x_title">
                         <h3>
@@ -56,7 +57,91 @@
                 </div>
             </div>
             <div class="x_panel">
+                <div class="x_content form-horizontal">
+                    <form class="form-horizontal" id="declareApplyForm">
 
+                        <input type="hidden" name="id" value="${declare.id}">
+                        <input type="hidden" name="planDetailsId" value="${projectPlanDetails.id}">
+                        <input type="hidden" name="projectId" value="${projectPlanDetails.projectId}">
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1   control-label">
+                                    估价委托书
+                                </label>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3  ">
+                                    <div id="_project_proxy"></div>
+                                </div>
+                            </div>
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                    前次评估报告
+                                </label>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3  ">
+                                    <div id="_assess_report_enclosure"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                    前次评估面积
+                                </label>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                    <label class="form-control">${declare.assessArea}</label>
+                                </div>
+                            </div>
+
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                    前次评估金额
+                                </label>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                    <label class="form-control">${declare.assessMoney}</label>
+                                </div>
+                            </div>
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">前次评估基准日</label>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                    <label class="form-control"><fmt:formatDate value='${declare.dateLimit}'
+                                                                                pattern='yyyy-MM-dd'/></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">前次委托单位</label>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                    <label class="form-control">${declare.client}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <c:forTokens items="${declare.name}" delims="," var="item" varStatus="status">
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                        自定义名称
+                                    </label>
+                                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                        <label class="form-control">${item}</label>
+                                    </div>
+                                </div>
+                                <div class="x-valid">
+                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                        附件
+                                    </label>
+                                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3  ">
+                                        <div id="_other_Enclosure${status.index+1}"></div>
+                                    </div>
+                                </div>
+                                <script>
+                                    $(function () {
+                                        declareCommon.showFile('other_Enclosure${status.index+1}', AssessDBKey.ProjectInfo, "${projectPlanDetails.projectId}", false, 'other_Enclosure${status.index+1}');
+                                    });
+                                </script>
+                            </div>
+                        </c:forTokens>
+                    </form>
+                </div>
             </div>
             <%@include file="/views/share/form_approval.jsp" %>
             <%@include file="/views/share/form_log.jsp" %>
@@ -66,6 +151,7 @@
 </body>
 
 <%@include file="/views/share/main_footer.jsp" %>
+<%@include file="/views/method/module/economicIndicators.jsp" %>
 
 <script type="text/javascript">
     var declareApprovalFun = {};
@@ -88,12 +174,11 @@
         newFileId: declareCommon.config.land.newFileId,
         houseFileId: declareCommon.config.land.houseFileId,
         newHouseFileId: declareCommon.config.land.newHouseFileId,
-        HouseCert:{
-            frm:declareCommon.config.land.HouseCert.frm,
-            box:declareCommon.config.land.HouseCert.box
+        HouseCert: {
+            frm: declareCommon.config.land.HouseCert.frm,
+            box: declareCommon.config.land.HouseCert.box
         }
     };
-
 
 
     //土地证
@@ -118,18 +203,28 @@
     //土地证关联的房产证
     declareApprovalFun.landRelationHouseData = function (id) {
         var item = $("#" + declareApprovalFun.landConfig.table).bootstrapTable('getRowByUniqueId', id);
-        $('#' + declareApprovalFun.landConfig.HouseCert.box).find("#" + commonDeclareApprovalModel.config.house.handleId).remove();
-        $('#' + declareApprovalFun.landConfig.HouseCert.box).find(".panel-body").append(commonDeclareApprovalModel.house.getHtml());
-        if (declareCommon.isNotBlank(item.pid)) {
-            declareCommon.getHouseData(item.pid,function (data) {
-                if (declareCommon.isNotBlank(data)) {
-                    declareCommon.initHouse(data,$("#" + declareApprovalFun.landConfig.HouseCert.frm),[declareApprovalFun.landConfig.houseFileId],null);
-                    $('#' + declareApprovalFun.landConfig.HouseCert.box).modal("show");
-                } else {
-                    toastr.success('关联数据已经被删除了!');
-                }
-            });
+        if (!declareCommon.isNotBlank(item.centerId)) {
+            toastr.success('不合符调整后的数据约定,请联系管理员!');
+            return false;
         }
+        declareCommon.getDeclareBuildCenter(item.centerId, function (centerData) {
+            if (declareCommon.isNotBlank(centerData.houseId)) {//关联情况
+                $('#' + declareApprovalFun.landConfig.HouseCert.box).find("#" + commonDeclareApprovalModel.config.house.handleId).remove();
+                $('#' + declareApprovalFun.landConfig.HouseCert.box).find(".panel-body").append(commonDeclareApprovalModel.house.getHtml());
+                if (declareCommon.isNotBlank(centerData.houseId)) {
+                    declareCommon.getHouseData(centerData.houseId, function (data) {
+                        if (declareCommon.isNotBlank(data)) {
+                            declareCommon.initHouse(data, $("#" + declareApprovalFun.landConfig.HouseCert.frm), [declareApprovalFun.landConfig.houseFileId], null);
+                            $('#' + declareApprovalFun.landConfig.HouseCert.box).modal("show");
+                        } else {
+                            toastr.success('关联数据已经被删除了!');
+                        }
+                    });
+                }
+            }else {
+                toastr.success('土地证关联的房产证无!');
+            }
+        });
     };
 
     //土地 table list
@@ -139,9 +234,8 @@
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                if (row.pid) {
-                    str += '<a class="btn btn-xs btn-success" href="javascript:declareApprovalFun.landRelationHouseData(' + row.id + ');" ><i class="fa fa-check">房产证关联数据查看详情</i></a>';
-                }
+                str += '<a class="btn btn-xs btn-success" href="javascript:declareApprovalFun.landRelationHouseData(' + row.id + ');" ><i class="fa fa-eye">房产证关联数据查看详情</i></a>';
+                str += '<a class="btn btn-xs btn-success" href="javascript:declareApprovalFun.landRelationDeclareEconomicIndicatorsData(' + row.id + ');" ><i class="fa fa-themeisle">经济指标</i></a>';
                 str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="土地证查看详情" onclick="declareApprovalFun.landFindData(' + row.id + ',\'tb_List\')">土地证<i class="fa fa-search fa-white"></i></a>';
                 str += '</div>';
                 return str;
@@ -160,6 +254,27 @@
         });
     };
 
+    declareApprovalFun.landRelationDeclareEconomicIndicatorsData = function (id) {
+        var item = $("#" + declareApprovalFun.landConfig.table).bootstrapTable('getRowByUniqueId', id);
+        if (!declareCommon.isNotBlank(item.centerId)) {
+            toastr.success('不合符调整后的数据约定,请联系管理员!');
+            return false;
+        }
+        var attribute = {readonly:"readonly",'class':'form-control'} ;
+        declareCommon.getDeclareBuildCenter(item.centerId, function (centerData) {
+            if (declareCommon.isNotBlank(centerData.indicatorId)) {//关联情况
+                economicIndicators.init({
+                    planDetailsId: declareCommon.getPlanDetailsId(),
+                    economicId: centerData.indicatorId,
+                    centerId:item.centerId,
+                    attribute:attribute
+                });
+            }else {
+                toastr.success('经济指标无!');
+            }
+        });
+    };
+
     //不动产
     declareApprovalFun.realtyRealEstatefindData = function (id) {
         var item = $("#" + declareApprovalFun.declareRealtyRealEstateCertConfig.table).bootstrapTable('getRowByUniqueId', id);
@@ -172,21 +287,22 @@
             //暂时不处理
             $('#' + declareApprovalFun.declareRealtyRealEstateCertConfig.box).find("#" + commonDeclareApprovalModel.config.realEstateCert.handleId).remove();
             $('#' + declareApprovalFun.declareRealtyRealEstateCertConfig.box).find(".panel-body").append(commonDeclareApprovalModel.realEstateCert.getHtml());
-            declareCommon.showHtmlMastInit($("#" + declareApprovalFun.declareRealtyRealEstateCertConfig.frm),function (area) {
-                declareCommon.initDeclareRealty(item,$("#" + declareApprovalFun.declareRealtyRealEstateCertConfig.frm),[declareApprovalFun.declareRealtyRealEstateCertConfig.newFileId],null);
+            declareCommon.showHtmlMastInit($("#" + declareApprovalFun.declareRealtyRealEstateCertConfig.frm), function (area) {
+                declareCommon.initDeclareRealty(item, $("#" + declareApprovalFun.declareRealtyRealEstateCertConfig.frm), [declareApprovalFun.declareRealtyRealEstateCertConfig.newFileId], null);
                 $('#' + declareApprovalFun.declareRealtyRealEstateCertConfig.box).modal("show");
             });
         });
     };
 
     //不动产
-    declareApprovalFun.realEstateloadList  = function () {
+    declareApprovalFun.realEstateloadList = function () {
         var cols = declareCommon.getRealEstateColumn();
         cols.push({field: 'fileViewName', title: '不动产附件'});
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
                 str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="查看详情" onclick="declareApprovalFun.realtyRealEstatefindData(' + row.id + ',\'exampleList\')"><i class="fa fa-search fa-white"></i></a>';
+                str += '<a class="btn btn-xs btn-success" href="javascript:declareApprovalFun.realtyRealDeclareEconomicIndicators(' + row.id + ');" ><i class="fa fa-themeisle">经济指标</i></a>';
                 str += '</div>';
                 return str;
             }
@@ -200,6 +316,28 @@
             search: false,
             onLoadSuccess: function () {
                 $('.tooltips').tooltip();
+            }
+        });
+    };
+
+    //不动产 经济指标
+    declareApprovalFun.realtyRealDeclareEconomicIndicators = function (id) {
+        var item = $("#" + declareApprovalFun.declareRealtyRealEstateCertConfig.table).bootstrapTable('getRowByUniqueId', id);
+        if (!declareCommon.isNotBlank(item.centerId)) {
+            toastr.success('不合符调整后的数据约定,请联系管理员!');
+            return false;
+        }
+        var attribute = {readonly:"readonly",'class':'form-control'} ;
+        declareCommon.getDeclareBuildCenter(item.centerId, function (centerData) {
+            if (declareCommon.isNotBlank(centerData.indicatorId)) {//关联情况
+                economicIndicators.init({
+                    planDetailsId: declareCommon.getPlanDetailsId(),
+                    economicId: centerData.indicatorId,
+                    centerId:item.centerId,
+                    attribute:attribute
+                });
+            }else {
+                toastr.success('经济指标无!');
             }
         });
     };

@@ -174,7 +174,7 @@
             </div>
             <form id="declareRealtyLandCert_HouseCert_frm" class="form-horizontal">
                 <input type="hidden" name="id">
-                <input type="hidden" name="pid">
+                <input type="hidden" name="centerId">
                 <div class="modal-body">
                     <div class="row">
                         <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
@@ -205,6 +205,7 @@
                 <button type="button" data-dismiss="modal" class="btn btn-default">
                     取消
                 </button>
+                <input type="button" class="btn btn-warning" value="删除"  onclick="assessLand.deleteHouseCenter()">
                 <button type="button" class="btn btn-primary"
                         onclick="assessLand.saveAndUpdateHouse();">
                     保存

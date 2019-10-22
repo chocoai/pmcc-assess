@@ -12,7 +12,8 @@ assessLand.config = {
     HouseCert: {
         frm: "#" + declareCommon.config.land.HouseCert.frm,
         box: "#" + declareCommon.config.land.HouseCert.box
-    }
+    },
+    handleCopy:"#landHandleInputGroup"
 };
 //分为有权证和无权证的情况
 assessLand.showAddModelLandFun = function (flag, item) {
@@ -185,6 +186,7 @@ assessLand.showAddModelHouse = function (id) {
     });
 };
 
+//关联的房产证 save
 assessLand.saveAndUpdateHouse = function () {
     if (!$(assessLand.config.HouseCert.frm).valid()) {
         return false;
@@ -194,16 +196,34 @@ assessLand.saveAndUpdateHouse = function () {
     data.enable = declareCommon.branchData;
     declareCommon.saveHouseData(data, function (houseId) {
         if (houseId) {
-            var landId = data.pid;
-            var item = $(assessLand.config.table).bootstrapTable('getRowByUniqueId', landId);
-            declareCommon.saveLandData({id: landId, pid: houseId}, function () {
-                toastr.success('成功!');
+            declareCommon.declareBuildCenterSaveAndUpdate({houseId: houseId, id: data.centerId}, function () {
+                $(assessLand.config.table).bootstrapTable('refresh');
                 $(assessLand.config.HouseCert.box).modal("hide");
-                assessLand.loadLandList();
             });
         }
     });
 };
+
+/**
+ * 关联的房产证删除
+ */
+assessLand.deleteHouseCenter = function () {
+    var data = formSerializeArray($(assessLand.config.HouseCert.frm));
+    if (declareCommon.isNotBlank(data.centerId)) {
+        declareCommon.getDeclareBuildCenter(data.centerId, function (centerData) {
+            if (declareCommon.isNotBlank(centerData.houseId)) {//关联情况
+                declareCommon.deleteByDeclareBuildCenterType(data.centerId, declareCommon.declareCenterData.houseId.type, function () {
+                    toastr.success('已经删除!');
+                    $(assessLand.config.table).bootstrapTable('refresh');
+                    $(assessLand.config.HouseCert.box).modal("hide");
+                });
+            } else {
+                toastr.success('未添加数据!');
+            }
+        });
+    }
+};
+
 /**
  * 土地证附件触发事件
  */
@@ -211,6 +231,7 @@ assessLand.landImportEvent = function (id) {
     $(assessLand.config.newFileId).attr("data-id", id);
     $(assessLand.config.newFileId).trigger('click');
 };
+
 //房产证附件触发事件
 assessLand.houseImportEvent = function (landId) {
     var data = $(assessLand.config.table).bootstrapTable('getRowByUniqueId', landId);
@@ -361,7 +382,110 @@ assessLand.inputFile = function (flag) {
  * @param id
  */
 assessLand.showAddModelDeclareEconomicIndicators = function (id) {
+    var item = $(assessLand.config.table).bootstrapTable('getRowByUniqueId', id);
+    if (!declareCommon.isNotBlank(item.centerId)) {
+        toastr.success('不合符调整后的数据约定,请联系管理员!');
+        return false;
+    }
+    var showDelHtml = "" ;
+    showDelHtml += declareCommon.declareCenterData.indicatorIdDelHtml;
+    showDelHtml = showDelHtml.replace(/{method}/g, 'assessLand.deleteDeclareEconomicIndicatorsCenter') ;
+    declareCommon.getDeclareBuildCenter(item.centerId, function (centerData) {
+        if (centerData.indicatorId){
+            economicIndicators.init({
+                planDetailsId: declareCommon.getPlanDetailsId(),
+                economicId: centerData.indicatorId,
+                showDelHtml:showDelHtml,
+                centerId:item.centerId
+            });
+        }else {
+            economicIndicators.init({
+                planDetailsId: declareCommon.getPlanDetailsId(),
+                saveCallback: function (economicId) {//经济指标id更新到中间表
+                    declareCommon.declareBuildCenterSaveAndUpdate({indicatorId: economicId, id: item.centerId});
+                },
+                showDelHtml:showDelHtml,
+                centerId:item.centerId,
+                targetCallback:function () {
+                    economicIndicators.autoSummary(true) ;
+                }
+            });
+        }
+    });
+};
 
+/**
+ * 经济指标删除
+ * @param frmEle
+ * @param box
+ */
+assessLand.deleteDeclareEconomicIndicatorsCenter = function (frmEle,box) {
+    var data = formParams(frmEle);
+    if (declareCommon.isNotBlank(data.centerId)) {
+        declareCommon.getDeclareBuildCenter(data.centerId, function (centerData) {
+            if (declareCommon.isNotBlank(centerData.indicatorId)) {//关联情况
+                declareCommon.deleteByDeclareBuildCenterType(data.centerId, declareCommon.declareCenterData.indicatorId.type, function () {
+                    $('#' + box).modal("hide");
+                    toastr.success('已经删除!');
+                    economicIndicators.autoSummary(true) ;
+                    $(assessLand.config.table).bootstrapTable('refresh');
+                });
+            } else {
+                toastr.success('未添加数据!');
+            }
+        });
+    }
+};
+
+assessLand.copyData = function () {
+    var table = $(assessLand.config.table) ;
+    var rows = table.bootstrapTable('getSelections');
+    if (!rows || rows.length <= 0) {
+        toastr.info("请选择要复制的数据");
+    } else if (rows.length == 1) {
+        Alert("确认要复制？", 2, null, function () {
+            $(assessLand.config.handleCopy).find("input[name='name']").val(rows[0].landCertName);
+            $(assessLand.config.handleCopy).find("input[name='id']").val(rows[0].centerId);
+            toastr.info("复制从数据成功!");
+            table.bootstrapTable('uncheckAll');
+        });
+    } else {
+        toastr.info("只能选择一行数据进行复制");
+    }
+};
+
+assessLand.pasteAll = function () {
+    var table = $(assessLand.config.table) ;
+    var rows = table.bootstrapTable('getSelections');
+    if (!rows || rows.length <= 0) {
+        toastr.info("请选择要复制的数据");
+    } else if (rows.length >= 1) {
+        var copyId = $(assessLand.config.handleCopy).find("input[name='id']").val();
+        var idArray = [];
+        rows.forEach(function (ele, index) {
+            idArray.push(ele.centerId);
+        });
+        //过滤一次
+        var filtered = idArray.filter(function (element, index, array) {
+            return element == copyId;
+        });
+        //判断
+        if (filtered.length == 1) {
+            toastr.info("需要粘贴的从数据包含了自身,这样情况是不被允许的");
+            table.bootstrapTable('uncheckAll');
+            return false;
+        }
+        Alert("确认要粘贴？", 2, null, function () {
+            declareCommon.copyDeclareBuildCenter(copyId, idArray.join(","), function () {
+                toastr.info("粘贴从数据成功!");
+                table.bootstrapTable('uncheckAll');
+                $(assessLand.config.handleCopy).find("input").val('');
+                $(assessLand.config.table).bootstrapTable('refresh');
+            });
+        });
+    } else {
+        toastr.info("只能选择一行数据进行复制");
+    }
 };
 
 assessLand.loadLandList = function () {
@@ -405,7 +529,8 @@ declareRealtyRealEstateCert.config = {
     box: declareCommon.config.declareRealty.box,
     fileId: declareCommon.config.declareRealty.fileId,
     newFileId: declareCommon.config.declareRealty.newFileId,
-    fileView: declareCommon.config.declareRealty.fileView
+    fileView: declareCommon.config.declareRealty.fileView,
+    handleCopy: "#realtyRealEstateHandleInputGroup"
 };
 
 //显示不动产模型（分有证和无证情况）
@@ -506,7 +631,7 @@ declareRealtyRealEstateCert.enclosureFun = function () {
         async: false,
         success: function (result) {
             if (result.ret) {
-                declareRealtyRealEstateCert.loadList();
+                $("#" + declareRealtyRealEstateCert.config.table).bootstrapTable('refresh');
             }
         },
         error: function (result, status, e) {
@@ -523,6 +648,58 @@ declareRealtyRealEstateCert.enclosureFun = function () {
 declareRealtyRealEstateCert.enclosure = function (id) {
     $("#" + declareRealtyRealEstateCert.config.fileId).attr("data-id", id);
     $("#" + declareRealtyRealEstateCert.config.fileId).trigger('click');
+};
+
+declareRealtyRealEstateCert.showAddModelDeclareEconomicIndicators = function (id) {
+    var table = $("#" + declareRealtyRealEstateCert.config.table) ;
+    var item = table.bootstrapTable('getRowByUniqueId', id);
+    if (!declareCommon.isNotBlank(item.centerId)) {
+        toastr.success('不合符调整后的数据约定,请联系管理员!');
+        return false;
+    }
+    var showDelHtml = "" ;
+    showDelHtml += declareCommon.declareCenterData.indicatorIdDelHtml;
+    showDelHtml = showDelHtml.replace(/{method}/g, 'declareRealtyRealEstateCert.deleteDeclareEconomicIndicatorsCenter') ;
+    declareCommon.getDeclareBuildCenter(item.centerId, function (centerData) {
+        if (centerData.indicatorId) {
+            economicIndicators.init({
+                planDetailsId: declareCommon.getPlanDetailsId(),
+                economicId: centerData.indicatorId,
+                showDelHtml:showDelHtml,
+                centerId:item.centerId
+            });
+        } else {
+            economicIndicators.init({
+                planDetailsId: declareCommon.getPlanDetailsId(),
+                saveCallback: function (economicId) {//经济指标id更新到中间表
+                    declareCommon.declareBuildCenterSaveAndUpdate({indicatorId: economicId, id: item.centerId});
+                },
+                showDelHtml:showDelHtml,
+                centerId:item.centerId,
+                targetCallback:function () {
+                    economicIndicators.autoSummary(true) ;
+                }
+            });
+        }
+    });
+};
+
+declareRealtyRealEstateCert.deleteDeclareEconomicIndicatorsCenter = function (frmEle,box) {
+    var data = formParams(frmEle);
+    if (declareCommon.isNotBlank(data.centerId)) {
+        declareCommon.getDeclareBuildCenter(data.centerId, function (centerData) {
+            if (declareCommon.isNotBlank(centerData.indicatorId)) {//关联情况
+                declareCommon.deleteByDeclareBuildCenterType(data.centerId, declareCommon.declareCenterData.indicatorId.type, function () {
+                    $('#' + box).modal("hide");
+                    toastr.success('已经删除!');
+                    economicIndicators.autoSummary(true) ;
+                    $("#" + declareRealtyRealEstateCert.config.table).bootstrapTable('refresh');
+                });
+            } else {
+                toastr.success('未添加数据!');
+            }
+        });
+    }
 };
 
 /**
@@ -557,7 +734,7 @@ declareRealtyRealEstateCert.inputFile = function (flag) {
             async: false,
             success: function (result) {
                 if (result.ret) {
-                    declareRealtyRealEstateCert.loadList();
+                    $("#" + declareRealtyRealEstateCert.config.table).bootstrapTable('refresh');
                     Alert(result.data);
                 }
             },
@@ -576,14 +753,15 @@ declareRealtyRealEstateCert.loadList = function () {
     cols.push({
         field: 'id', title: '操作', formatter: function (value, row, index) {
             var str = '<div class="btn-margin">';
-            str += '<a class="btn btn-xs btn-success" href="javascript:assessLand.showAddModelDeclareEconomicIndicators(' + row.id + ');" ><i class="fa fa-themeisle">经济指标</i></a>';
+            str += '<a class="btn btn-xs btn-success" href="javascript:declareRealtyRealEstateCert.showAddModelDeclareEconomicIndicators(' + row.id + ');" ><i class="fa fa-themeisle">经济指标</i></a>';
             str += "<a class='btn btn-xs btn-success tooltips' data-placement='top' data-original-title='不动产附件' onclick='declareRealtyRealEstateCert.enclosure(" + row.id + ")'" + ">" + "<i class='fa'>" + "不动产附件" + "</a>";
             str += '</div>';
             return str;
         }
     });
-    $("#" + declareRealtyRealEstateCert.config.table).bootstrapTable('destroy');
-    TableInit(declareRealtyRealEstateCert.config.table, getContextPath() + "/declareRealtyRealEstateCert/getDeclareRealtyRealEstateCertList", cols, {
+    var table = $("#" + declareRealtyRealEstateCert.config.table) ;
+    table.bootstrapTable('destroy');
+    TableInit(table, getContextPath() + "/declareRealtyRealEstateCert/getDeclareRealtyRealEstateCertList", cols, {
         planDetailsId: declareCommon.getPlanDetailsId(), enable: declareCommon.masterData
     }, {
         showColumns: false,
@@ -605,7 +783,7 @@ declareRealtyRealEstateCert.deleteData = function () {
         Alert("是否删除", 2, null,
             function () {
                 declareCommon.deleteDeclareRealtyData(arr.join(","), function () {
-                    declareRealtyRealEstateCert.loadList();
+                    $("#" + declareRealtyRealEstateCert.config.table).bootstrapTable('refresh');
                     toastr.success('成功!');
                 });
             }
@@ -645,11 +823,74 @@ declareRealtyRealEstateCert.saveAndUpdateData = function () {
             return false;
         }
     }
-    declareCommon.saveDeclareRealtyData(data, function () {
+    declareCommon.saveDeclareRealtyData(data, function (item) {
         toastr.success('成功!');
+        var table = $("#" + declareRealtyRealEstateCert.config.table) ;
         $('#' + declareRealtyRealEstateCert.config.box).modal("hide");
-        declareRealtyRealEstateCert.loadList();
+        table.bootstrapTable('refresh');
+        if (!declareCommon.isNotBlank(data.id)) {
+            declareCommon.declareBuildCenterSaveAndUpdate({
+                realEstateId: item,
+                planDetailsId: declareCommon.getPlanDetailsId(),
+                type: declareCommon.declareCenterData.realEstateId.type
+            }, function () {
+                //重新加载一次
+                table.bootstrapTable('refresh');
+            });
+        }
     });
+};
+
+declareRealtyRealEstateCert.copyData = function () {
+    var table = $("#" + declareRealtyRealEstateCert.config.table) ;
+    var rows = table.bootstrapTable('getSelections');
+    if (!rows || rows.length <= 0) {
+        toastr.info("请选择要复制的数据");
+    } else if (rows.length == 1) {
+        Alert("确认要复制？", 2, null, function () {
+            $(declareRealtyRealEstateCert.config.handleCopy).find("input[name='name']").val(rows[0].certName);
+            $(declareRealtyRealEstateCert.config.handleCopy).find("input[name='id']").val(rows[0].centerId);
+            toastr.info("复制从数据成功!");
+            table.bootstrapTable('uncheckAll');
+        });
+    } else {
+        toastr.info("只能选择一行数据进行复制");
+    }
+};
+
+
+declareRealtyRealEstateCert.pasteAll = function () {
+    var table = $("#" + declareRealtyRealEstateCert.config.table) ;
+    var rows = table.bootstrapTable('getSelections');
+    if (!rows || rows.length <= 0) {
+        toastr.info("请选择要复制的数据");
+    } else if (rows.length >= 1) {
+        var copyId = $(declareRealtyRealEstateCert.config.handleCopy).find("input[name='id']").val();
+        var idArray = [];
+        rows.forEach(function (ele, index) {
+            idArray.push(ele.centerId);
+        });
+        //过滤一次
+        var filtered = idArray.filter(function (element, index, array) {
+            return element == copyId;
+        });
+        //判断
+        if (filtered.length == 1) {
+            toastr.info("需要粘贴的从数据包含了自身,这样情况是不被允许的");
+            table.bootstrapTable('uncheckAll');
+            return false;
+        }
+        Alert("确认要粘贴？", 2, null, function () {
+            declareCommon.copyDeclareBuildCenter(copyId, idArray.join(","), function () {
+                toastr.info("粘贴从数据成功!");
+                table.bootstrapTable('uncheckAll');
+                $(declareRealtyRealEstateCert.config.handleCopy).find("input").val('');
+                table.bootstrapTable('refresh');
+            });
+        });
+    } else {
+        toastr.info("只能选择一行数据进行复制");
+    }
 };
 
 $(document).ready(function () {

@@ -187,6 +187,7 @@ public class ProjectCenterController {
             }
         }
         modelAndView.addObject("projectId", projectId);
+        modelAndView.addObject("companyId", publicService.getCurrentCompany().getCompanyId());
         modelAndView.addObject(StringUtils.uncapitalize(ProjectInfo.class.getSimpleName()), projectInfoService.getSimpleProjectInfoVo(projectInfo));
         modelAndView.addObject(StringUtils.uncapitalize(ProjectWorkStage.class.getSimpleName()),projectWorkStage);
         modelAndView.addObject(StringUtils.uncapitalize(SysUserDto.class.getSimpleName()),processControllerComponent.getThisUserInfo());
