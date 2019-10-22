@@ -75,7 +75,7 @@
                             </div>
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    前次评估报告
+                                    上次评估报告
                                 </label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3  ">
                                     <div id="_assess_report_enclosure"></div>
@@ -85,7 +85,7 @@
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    前次评估面积
+                                    上次评估面积
                                 </label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                     <label class="form-control">${declare.assessArea}</label>
@@ -94,14 +94,14 @@
 
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    前次评估金额
+                                    上次评估金额
                                 </label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                     <label class="form-control">${declare.assessMoney}</label>
                                 </div>
                             </div>
                             <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">前次评估基准日</label>
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">上次评估基准日</label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                     <label class="form-control"><fmt:formatDate value='${declare.dateLimit}'
                                                                                 pattern='yyyy-MM-dd'/></label>
@@ -110,9 +110,21 @@
                         </div>
                         <div class="form-group">
                             <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">前次委托单位</label>
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">上次委托单位</label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                     <label class="form-control">${declare.client}</label>
+                                </div>
+                            </div>
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">上次评估机构</label>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                    <label class="form-control">${declare.assessOrganization}</label>
+                                </div>
+                            </div>
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">备注</label>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                    <label class="form-control">${declare.remark}</label>
                                 </div>
                             </div>
                         </div>

@@ -16,6 +16,8 @@
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="assess_area" property="assessArea" jdbcType="DECIMAL" />
     <result column="assess_money" property="assessMoney" jdbcType="DECIMAL" />
+    <result column="assess_organization" property="assessOrganization" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -77,7 +79,8 @@
   </sql>
   <sql id="Base_Column_List" >
     id, project_id, plan_details_id, process_ins_id, apply_type, client, date_limit, 
-    status, creator, gmt_created, gmt_modified, name, assess_area, assess_money
+    status, creator, gmt_created, gmt_modified, name, assess_area, assess_money, assess_organization, 
+    remark
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareApplyExample" >
     select
@@ -117,12 +120,14 @@
       apply_type, client, date_limit, 
       status, creator, gmt_created, 
       gmt_modified, name, assess_area, 
-      assess_money)
+      assess_money, assess_organization, remark
+      )
     values (#{projectId,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, #{processInsId,jdbcType=VARCHAR}, 
       #{applyType,jdbcType=VARCHAR}, #{client,jdbcType=VARCHAR}, #{dateLimit,jdbcType=TIMESTAMP}, 
       #{status,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
       #{gmtModified,jdbcType=TIMESTAMP}, #{name,jdbcType=VARCHAR}, #{assessArea,jdbcType=DECIMAL}, 
-      #{assessMoney,jdbcType=DECIMAL})
+      #{assessMoney,jdbcType=DECIMAL}, #{assessOrganization,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareApply" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -169,6 +174,12 @@
       <if test="assessMoney != null" >
         assess_money,
       </if>
+      <if test="assessOrganization != null" >
+        assess_organization,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="projectId != null" >
@@ -209,6 +220,12 @@
       </if>
       <if test="assessMoney != null" >
         #{assessMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="assessOrganization != null" >
+        #{assessOrganization,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -263,6 +280,12 @@
       <if test="record.assessMoney != null" >
         assess_money = #{record.assessMoney,jdbcType=DECIMAL},
       </if>
+      <if test="record.assessOrganization != null" >
+        assess_organization = #{record.assessOrganization,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -283,7 +306,9 @@
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       name = #{record.name,jdbcType=VARCHAR},
       assess_area = #{record.assessArea,jdbcType=DECIMAL},
-      assess_money = #{record.assessMoney,jdbcType=DECIMAL}
+      assess_money = #{record.assessMoney,jdbcType=DECIMAL},
+      assess_organization = #{record.assessOrganization,jdbcType=VARCHAR},
+      remark = #{record.remark,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -330,6 +355,12 @@
       <if test="assessMoney != null" >
         assess_money = #{assessMoney,jdbcType=DECIMAL},
       </if>
+      <if test="assessOrganization != null" >
+        assess_organization = #{assessOrganization,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -347,7 +378,9 @@
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       name = #{name,jdbcType=VARCHAR},
       assess_area = #{assessArea,jdbcType=DECIMAL},
-      assess_money = #{assessMoney,jdbcType=DECIMAL}
+      assess_money = #{assessMoney,jdbcType=DECIMAL},
+      assess_organization = #{assessOrganization,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
