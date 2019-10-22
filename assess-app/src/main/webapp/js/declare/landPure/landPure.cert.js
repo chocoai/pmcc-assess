@@ -85,11 +85,19 @@ assessLand.saveAndUpdateLand = function () {
     if (!declareCommon.isNotBlank(data.id)) {
         data.planDetailsId = declareCommon.getPlanDetailsId();
         data.enable = declareCommon.masterData;
-        data.pid = "0";
         data.declareType = declareCommon.declareLandType;
     }
-    declareCommon.saveLandData(data, function () {
-        assessLand.loadLandList();
+    declareCommon.saveLandData(data, function (item) {
+        if (!declareCommon.isNotBlank(data.id)) {
+            declareCommon.declareBuildCenterSaveAndUpdate({
+                landId: item,
+                planDetailsId: declareCommon.getPlanDetailsId(),
+                type: declareCommon.declareCenterData.landId.type
+            }, function () {
+                $(assessLand.config.table).bootstrapTable('refresh');
+            });
+        }
+        $(assessLand.config.table).bootstrapTable('refresh');
         toastr.success('成功!');
         $(assessLand.config.box).modal("hide");
     });
@@ -128,7 +136,7 @@ assessLand.deleteLand = function () {
                     arr.push(item.id);
                 });
                 declareCommon.deleteLandData(arr.join(","), function () {
-                    assessLand.loadLandList();
+                    $(assessLand.config.table).bootstrapTable('refresh');
                     toastr.success('成功!');
                 });
             }
@@ -140,37 +148,41 @@ assessLand.deleteLand = function () {
 
 //显示关联的房产证
 assessLand.showAddModelHouse = function (id) {
+    var item = $(assessLand.config.table).bootstrapTable('getRowByUniqueId', id);
+    if (!declareCommon.isNotBlank(item.centerId)) {
+        toastr.success('不合符调整后的数据约定,请联系管理员!');
+        return false;
+    }
     $(assessLand.config.HouseCert.box).find("#" + commonDeclareApplyModel.config.house.handleId).remove();
     $(assessLand.config.HouseCert.box).find(".panel-body").append(commonDeclareApplyModel.house.getHtml());
+    var data = {
+        centerId: item.centerId,
+        beLocated: item.beLocated,
+        streetNumber: item.streetNumber,
+        attachedNumber: item.attachedNumber,
+        buildingNumber: item.buildingNumber,
+        unit: item.unit,
+        roomNumber: item.roomNumber,
+        floor: item.floor,
+        province: item.province,
+        city: item.city,
+        district: item.district
+    };
     declareCommon.showHtmlMastInit($(assessLand.config.HouseCert.frm), function (area) {
-    });
-    $(assessLand.config.HouseCert.box).modal("show");
-    var item = $(assessLand.config.table).bootstrapTable('getRowByUniqueId', id);
-    if (declareCommon.isNotBlank(item.pid)) {
-        declareCommon.getHouseData(item.pid, function (data) {
-            if (declareCommon.isNotBlank(data)) {
+        $(assessLand.config.HouseCert.box).modal("show");
+        declareCommon.getDeclareBuildCenter(item.centerId, function (centerData) {
+            if (declareCommon.isNotBlank(centerData.houseId)) {//关联情况
+                declareCommon.getHouseData(centerData.houseId, function (data) {
+                    if (declareCommon.isNotBlank(data)) {
+                        data.centerId = item.centerId;
+                        declareCommon.initHouse(data, $(assessLand.config.HouseCert.frm), [$(assessLand.config.houseFileId).prop("id")], null);
+                    }
+                });
+            } else {//未关联情况
                 declareCommon.initHouse(data, $(assessLand.config.HouseCert.frm), [$(assessLand.config.houseFileId).prop("id")], null);
-            } else {
-                toastr.success('关联数据已经被删除了!');
-                toastr.success('请重新填写');
             }
         });
-    } else {
-        var data = {
-            pid: item.id,
-            beLocated: item.beLocated,
-            streetNumber: item.streetNumber,
-            attachedNumber: item.attachedNumber,
-            buildingNumber: item.buildingNumber,
-            unit: item.unit,
-            roomNumber: item.roomNumber,
-            floor: item.floor,
-            province: item.province,
-            city: item.city,
-            district: item.district
-        };
-        declareCommon.initHouse(data, $(assessLand.config.HouseCert.frm), [$(assessLand.config.houseFileId).prop("id")], null);
-    }
+    });
 };
 
 assessLand.saveAndUpdateHouse = function () {
@@ -366,8 +378,9 @@ assessLand.loadLandList = function () {
             return str;
         }
     });
-    $(assessLand.config.table).bootstrapTable('destroy');
-    TableInit($(assessLand.config.table).prop("id"), getContextPath() + "/declareRealtyLandCert/getDeclareRealtyLandCertList", cols, {
+    var table = $(assessLand.config.table) ;
+    table.bootstrapTable('destroy');
+    TableInit(table, getContextPath() + "/declareRealtyLandCert/getDeclareRealtyLandCertList", cols, {
         planDetailsId: declareCommon.getPlanDetailsId(),
         enable: declareCommon.masterData
     }, {

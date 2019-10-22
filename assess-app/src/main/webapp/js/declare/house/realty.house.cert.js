@@ -52,7 +52,6 @@ assessCommonHouse.saveAndUpdateHouse = function () {
     var data = formParams(assessCommonHouse.config.frm);
     if (!declareCommon.isNotBlank(data.id)) {
         data.planDetailsId = declareCommon.getPlanDetailsId();
-        data.pid = "0";
         data.enable = declareCommon.masterData;
         data.declareType = declareCommon.declareHouseType;
     }
