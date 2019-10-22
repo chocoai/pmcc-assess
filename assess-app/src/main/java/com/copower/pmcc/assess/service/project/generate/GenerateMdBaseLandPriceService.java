@@ -293,7 +293,7 @@ public class GenerateMdBaseLandPriceService {
         builder.insertCell();
         builder.write(mdBaseLandPrice.getStandardPremium().toString());
         builder.insertCell();
-        builder.write("");
+        builder.write(mdBaseLandPrice.getStandardPremiumRemark());
         builder.endRow();
         //期日修正系数
         builder.insertCell();
@@ -325,7 +325,7 @@ public class GenerateMdBaseLandPriceService {
         builder.insertCell();
         builder.write(mdBaseLandPrice.getLegalAge().toString());
         builder.insertCell();
-        builder.write("");
+        builder.write(mdBaseLandPrice.getLegalAgeRemark());
         builder.endRow();
         //剩余使用年限
         builder.insertCell();
@@ -333,7 +333,7 @@ public class GenerateMdBaseLandPriceService {
         builder.insertCell();
         builder.write(mdBaseLandPrice.getLandSurplusYear().toString());
         builder.insertCell();
-        builder.write("");
+        builder.write(mdBaseLandPrice.getLandSurplusYearRemark());
         builder.endRow();
         //容积率修正
         builder.insertCell();
@@ -350,7 +350,7 @@ public class GenerateMdBaseLandPriceService {
         builder.insertCell();
         builder.write(mdBaseLandPrice.getLandSurplusYear().toString());
         builder.insertCell();
-        builder.write("与基准地价的开发程度一致");
+        builder.write(mdBaseLandPrice.getLandSurplusYearRemark());
         builder.endRow();
 
         //委估宗地单价（元/㎡）
@@ -377,7 +377,7 @@ public class GenerateMdBaseLandPriceService {
         builder.insertCell();
         builder.write(mdBaseLandPrice.getEvaluationArea().toString());
         builder.insertCell();
-        builder.write("");
+        builder.write(mdBaseLandPrice.getEvaluationAreaRemark());
         builder.endRow();
         doc.save(localPath);
         //委估宗地总价（万元）
