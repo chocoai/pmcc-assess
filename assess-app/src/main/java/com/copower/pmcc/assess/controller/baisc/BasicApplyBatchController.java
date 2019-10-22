@@ -24,7 +24,6 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -489,22 +488,22 @@ public class BasicApplyBatchController extends BaseController {
         }
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/saveApplyInfo", method = {RequestMethod.POST}, name = "保存")
-    public HttpResult save(String formData, Integer planDetailsId) {
-        try {
-            Map<String, Object> objectMap = Maps.newHashMap();
-            BasicApplyBatch applyBatch = JSON.parseObject(formData, BasicApplyBatch.class);
-            applyBatch.setPlanDetailsId(planDetailsId);
-            applyBatch.setShowTab(true);//显示引用案列按钮
-            basicApplyBatchService.saveApplyInfo(applyBatch);
-            objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicApplyBatch.class.getSimpleName()), applyBatch);
-            return HttpResult.newCorrectResult(objectMap);
-        } catch (Exception e) {
-            logger.error(String.format("exception: %s", e.getMessage()), e);
-            return HttpResult.newErrorResult("保存异常");
-        }
-    }
+//    @ResponseBody
+//    @RequestMapping(value = "/saveApplyInfo", method = {RequestMethod.POST}, name = "保存")
+//    public HttpResult save(String formData, Integer planDetailsId) {
+//        try {
+//            Map<String, Object> objectMap = Maps.newHashMap();
+//            BasicApplyBatch applyBatch = JSON.parseObject(formData, BasicApplyBatch.class);
+//            applyBatch.setPlanDetailsId(planDetailsId);
+//            applyBatch.setShowTab(true);//显示引用案列按钮
+//            basicApplyBatchService.saveApplyInfo(applyBatch);
+//            objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicApplyBatch.class.getSimpleName()), applyBatch);
+//            return HttpResult.newCorrectResult(objectMap);
+//        } catch (Exception e) {
+//            logger.error(String.format("exception: %s", e.getMessage()), e);
+//            return HttpResult.newErrorResult("保存异常");
+//        }
+//    }
 
     @ResponseBody
     @RequestMapping(value = "/getStandardCount", name = "获取标准对象数量", method = RequestMethod.POST)
