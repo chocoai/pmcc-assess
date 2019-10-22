@@ -4,17 +4,21 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.NetDownloadUtils;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
+import com.copower.pmcc.assess.constant.AssessCacheConstant;
 import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dto.input.SynchronousDataDto;
 import com.copower.pmcc.assess.dto.output.project.ProjectMemberVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
+import com.copower.pmcc.assess.service.event.project.DeclareRealtyEstateCertEvent;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectMemberService;
 import com.copower.pmcc.assess.service.project.generate.GenerateCommonMethod;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.enums.ProcessActivityEnum;
 import com.copower.pmcc.bpm.api.enums.TaskHandleStateEnum;
+import com.copower.pmcc.bpm.api.exception.BpmException;
+import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
 import com.copower.pmcc.erp.api.dto.*;
 import com.copower.pmcc.erp.api.provider.ErpRpcDepartmentService;
 import com.copower.pmcc.erp.api.provider.ErpRpcProjectService;
@@ -22,6 +26,8 @@ import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.utils.*;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
+import com.copower.pmcc.erp.constant.CacheConstant;
+import com.copower.pmcc.erp.redis.client.SimpleRedisStandalone;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -73,6 +79,8 @@ public class PublicService {
     private ErpRpcProjectService erpRpcProjectService;
     @Autowired
     private ProjectInfoService projectInfoService;
+    @Autowired
+    private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
 
     /**
      * 获取当前公司
@@ -389,7 +397,7 @@ public class PublicService {
         Integer ages = year2 - year1 + 1;
         BigDecimal averageDay = new BigDecimal(timeDistance).divide(new BigDecimal(ages), 2, BigDecimal.ROUND_HALF_UP);
         //开始日期与结束日期相差天数(默认从开始时间0点到结束时间24点)
-        int days = DateUtils.diffDate(endDate, startDate)+1;
+        int days = DateUtils.diffDate(endDate, startDate) + 1;
         //相差年份
         BigDecimal distanceAge = new BigDecimal(days).divide(averageDay, 2, BigDecimal.ROUND_HALF_UP);
         return distanceAge;
@@ -459,5 +467,42 @@ public class PublicService {
 
         htmlStr = htmlStr.replaceAll("&nbsp;", "");
         return htmlStr.trim(); // 返回文本字符串
+    }
+
+    /**
+     * 记录流程监听器名称
+     *
+     * @param processInsId
+     * @param executorName
+     */
+    public void setRedisProcessExecutorName(String processInsId, String executorName) {
+        if (StringUtils.isBlank(processInsId) || StringUtils.isBlank(executorName)) return;
+        SimpleRedisStandalone simpleRedisStandalone = SpringContextUtils.getBean(SimpleRedisStandalone.class);
+        String costsKeyPrefix = CacheConstant.getCostsKeyPrefix(AssessCacheConstant.PMCC_ASSESS_PROCESS_INSTANCE_ID, processInsId);
+        simpleRedisStandalone.setex(costsKeyPrefix, 60, FormatUtils.toLowerCaseFirstChar(executorName));
+    }
+
+    /**
+     * 获取流程监听器名称
+     *
+     * @param processInsId
+     */
+    public String getRedisProcessExecutorName(String processInsId) {
+        if (StringUtils.isBlank(processInsId)) return null;
+        SimpleRedisStandalone simpleRedisStandalone = SpringContextUtils.getBean(SimpleRedisStandalone.class);
+        String costsKeyPrefix = CacheConstant.getCostsKeyPrefix(AssessCacheConstant.PMCC_ASSESS_PROCESS_INSTANCE_ID, processInsId);
+        return simpleRedisStandalone.get(costsKeyPrefix);
+    }
+
+    /**
+     * 更新监听器
+     *
+     * @param processInsId
+     * @param executorName
+     * @throws BpmException
+     */
+    public void updateProcessEventExecutor(String processInsId, String executorName) throws BpmException {
+        setRedisProcessExecutorName(processInsId, executorName);
+        bpmRpcActivitiProcessManageService.setProcessEventExecutor(processInsId, executorName);
     }
 }
