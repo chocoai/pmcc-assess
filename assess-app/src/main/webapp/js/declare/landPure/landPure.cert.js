@@ -45,13 +45,13 @@ assessLand.showAddModelLandFun = function (flag, item) {
         });
         if (landCertGetQuestion == '无权证') {
             $.each(fileArr, function (i, n) {
-                var parent = $("#" + n).parent().parent().parent() ;
-                parent.find(".col-sm-1").text("批文附件") ;
+                var parent = $("#" + n).parent().parent().parent();
+                parent.find(".col-sm-1").text("批文附件");
             });
-        }else {
+        } else {
             $.each(fileArr, function (i, n) {
-                var parent = $("#" + n).parent().parent().parent() ;
-                parent.find(".col-sm-1").text("土地证附件") ;
+                var parent = $("#" + n).parent().parent().parent();
+                parent.find(".col-sm-1").text("土地证附件");
             });
         }
         $(assessLand.config.box).find("input[name='unit']").parent().parent().hide();
@@ -353,16 +353,12 @@ assessLand.showAddModelDeclareEconomicIndicators = function (id) {
 };
 
 assessLand.loadLandList = function () {
-    var cols = declareCommon.getLandColumn() ;
+    var cols = declareCommon.getLandColumn();
     cols.push({field: 'fileViewName', title: '附件'});
     cols.push({
         field: 'id', title: '操作', formatter: function (value, row, index) {
             var str = '<div class="btn-margin">';
-            if (row.pid) {
-                str += '<a class="btn btn-xs btn-success" href="javascript:assessLand.showAddModelHouse(' + row.id + ');" ><i class="fa fa-building fa-border">房产证</i></a>';
-            } else {
-                str += '<a class="btn btn-xs btn-success" href="javascript:assessLand.showAddModelHouse(' + row.id + ');" ><i class="fa fa-building">房产证</i></a>';
-            }
+            str += '<a class="btn btn-xs btn-success" href="javascript:assessLand.showAddModelHouse(' + row.id + ');" ><i class="fa fa-building fa-border">房产证</i></a>';
             str += '<a class="btn btn-xs btn-success" href="javascript:assessLand.showAddModelDeclareEconomicIndicators(' + row.id + ');" ><i class="fa fa-themeisle">经济指标</i></a>';
             str += "<a class='btn btn-xs btn-success tooltips' data-placement='top' data-original-title='土地证附件' onclick='assessLand.landImportEvent(" + row.id + ")'" + ">" + "<i class='fa'>" + "土地证附件" + "</a>";
             str += "<a class='btn btn-xs btn-success tooltips' data-placement='top' data-original-title='房产证附件' onclick='assessLand.houseImportEvent(" + row.id + ")'" + ">" + "<i class='fa'>" + "房产证附件" + "</a>";
@@ -430,11 +426,11 @@ declareRealtyRealEstateCert.showAddModelFun = function (flag, item) {
         });
         $.each(fileArr, function (i, n) {
             if (landCertGetQuestion == '有权证') {
-                var parent = $("#" + n).parent().parent().parent() ;
-                parent.find(".col-sm-1").text("权证附件") ;
-            }else {
-                var parent = $("#" + n).parent().parent().parent() ;
-                parent.find(".col-sm-1").text("批文附件") ;
+                var parent = $("#" + n).parent().parent().parent();
+                parent.find(".col-sm-1").text("权证附件");
+            } else {
+                var parent = $("#" + n).parent().parent().parent();
+                parent.find(".col-sm-1").text("批文附件");
             }
         });
         $('#' + declareRealtyRealEstateCert.config.box).find("input[name='unit']").parent().parent().hide();
@@ -567,6 +563,7 @@ declareRealtyRealEstateCert.loadList = function () {
     cols.push({
         field: 'id', title: '操作', formatter: function (value, row, index) {
             var str = '<div class="btn-margin">';
+            str += '<a class="btn btn-xs btn-success" href="javascript:assessLand.showAddModelDeclareEconomicIndicators(' + row.id + ');" ><i class="fa fa-themeisle">经济指标</i></a>';
             str += "<a class='btn btn-xs btn-success tooltips' data-placement='top' data-original-title='不动产附件' onclick='declareRealtyRealEstateCert.enclosure(" + row.id + ")'" + ">" + "<i class='fa'>" + "不动产附件" + "</a>";
             str += '</div>';
             return str;

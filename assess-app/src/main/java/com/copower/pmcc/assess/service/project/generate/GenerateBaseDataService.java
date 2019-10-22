@@ -4601,6 +4601,7 @@ public class GenerateBaseDataService {
      */
     private String getCCB_Pre_Evaluation_Data_FormWriteWord(SchemeJudgeObject schemeJudgeObject, List<SchemeJudgeObject> schemeJudgeObjectList, List<SchemeLiquidationAnalysisItem> liquidationAnalysisItemList, int size, int i) throws Exception {
         String localPath = getLocalPath();
+        Map<SchemeJudgeObject, KeyValueDto> keyValueDtoMap = getAssessAssessTotalData();
         BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
         LinkedList<String> stringLinkedList = Lists.newLinkedList();
         if (basicApply != null && basicApply.getId() != null && basicApply.getId() != 0) {
@@ -4656,13 +4657,15 @@ public class GenerateBaseDataService {
                 ccb_Pre_Evaluation_Data_FormWriteWord2(documentBuilder, stringLinkedList, "建筑面积(㎡)", val);
             }
             {
-                BigDecimal mortgageValue = new BigDecimal("0");
                 String val = "";
-                if (schemeJudgeObject.getPrice() != null && schemeJudgeObject.getEvaluationArea() != null) {
-                    mortgageValue = schemeJudgeObject.getPrice().multiply(schemeJudgeObject.getEvaluationArea());
-                    if (generateCommonMethod.isInteger(mortgageValue)) {
+                if (!keyValueDtoMap.isEmpty()) {
+                    for (Map.Entry<SchemeJudgeObject, KeyValueDto> schemeJudgeObjectKeyValueDtoEntry : keyValueDtoMap.entrySet()) {
+                        if (Objects.equal(schemeJudgeObjectKeyValueDtoEntry.getKey().getId(), schemeJudgeObject.getId())) {
+                            KeyValueDto keyValueDto = schemeJudgeObjectKeyValueDtoEntry.getValue();
+                            val = ArithmeticUtils.mul(keyValueDto.getKey(), keyValueDto.getValue(), 10);
+                            val = generateCommonMethod.getBigDecimalToInteger(ArithmeticUtils.createBigDecimal(val), 100);
+                        }
                     }
-                    val = generateCommonMethod.getBigDecimalRound(mortgageValue, 0, false);
                 }
                 ccb_Pre_Evaluation_Data_FormWriteWord2(documentBuilder, stringLinkedList, "登记价(元)", val);
             }
@@ -4713,21 +4716,26 @@ public class GenerateBaseDataService {
             ccb_Pre_Evaluation_Data_FormWriteWord2(documentBuilder, stringLinkedList, "卫生间", StringUtils.isNotBlank(linkedHashMap.get(v4)) ? linkedHashMap.get(v4) : "");
             {
                 String val = "";
-                if (schemeJudgeObject.getPrice() != null) {
-                    val = ArithmeticUtils.getBigDecimalToInteger(schemeJudgeObject.getPrice(), 10);
+                if (!keyValueDtoMap.isEmpty()) {
+                    for (Map.Entry<SchemeJudgeObject, KeyValueDto> schemeJudgeObjectKeyValueDtoEntry : keyValueDtoMap.entrySet()) {
+                        if (Objects.equal(schemeJudgeObjectKeyValueDtoEntry.getKey().getId(), schemeJudgeObject.getId())) {
+                            val = schemeJudgeObjectKeyValueDtoEntry.getValue().getValue();
+                        }
+                    }
                 }
                 ccb_Pre_Evaluation_Data_FormWriteWord2(documentBuilder, stringLinkedList, "抵押价值单价(元/㎡)", val);
             }
 
             {
-                BigDecimal mortgageValue = new BigDecimal("0");
                 String val = "";
-                if (schemeJudgeObject.getPrice() != null && schemeJudgeObject.getEvaluationArea() != null) {
-                    BigDecimal price = ArithmeticUtils.createBigDecimal(ArithmeticUtils.getBigDecimalToInteger(schemeJudgeObject.getPrice(), 10));
-                    mortgageValue = price.multiply(schemeJudgeObject.getEvaluationArea());
-                    if (generateCommonMethod.isInteger(mortgageValue)) {
+                if (!keyValueDtoMap.isEmpty()) {
+                    for (Map.Entry<SchemeJudgeObject, KeyValueDto> schemeJudgeObjectKeyValueDtoEntry : keyValueDtoMap.entrySet()) {
+                        if (Objects.equal(schemeJudgeObjectKeyValueDtoEntry.getKey().getId(), schemeJudgeObject.getId())) {
+                            KeyValueDto keyValueDto = schemeJudgeObjectKeyValueDtoEntry.getValue();
+                            val = ArithmeticUtils.mul(keyValueDto.getKey(), keyValueDto.getValue(), 10);
+                            val = generateCommonMethod.getBigDecimalToInteger(ArithmeticUtils.createBigDecimal(val), 100);
+                        }
                     }
-                    val = generateCommonMethod.getBigDecimalRound(mortgageValue, 0, false);
                 }
                 ccb_Pre_Evaluation_Data_FormWriteWord2(documentBuilder, stringLinkedList, "抵押价值(元)", val);
             }
@@ -4735,7 +4743,7 @@ public class GenerateBaseDataService {
             {
                 String val = "";
                 try {
-                    val = getNetAssessmentNumber2(BaseReportFieldEnum.NetAssessmentOne, liquidationAnalysisItemList, schemeJudgeObjectList, schemeJudgeObject,10);
+                    val = getNetAssessmentNumber2(BaseReportFieldEnum.NetAssessmentOne, liquidationAnalysisItemList, schemeJudgeObjectList, schemeJudgeObject, 10);
                 } catch (Exception e) {
                 }
                 ccb_Pre_Evaluation_Data_FormWriteWord2(documentBuilder, stringLinkedList, "抵押净值1(元)", val);
@@ -4743,7 +4751,7 @@ public class GenerateBaseDataService {
             {
                 String val = "";
                 try {
-                    val = getNetAssessmentNumber2(BaseReportFieldEnum.NetAssessmentTwo, liquidationAnalysisItemList, schemeJudgeObjectList, schemeJudgeObject,10);
+                    val = getNetAssessmentNumber2(BaseReportFieldEnum.NetAssessmentTwo, liquidationAnalysisItemList, schemeJudgeObjectList, schemeJudgeObject, 10);
                 } catch (Exception e) {
                 }
                 ccb_Pre_Evaluation_Data_FormWriteWord2(documentBuilder, stringLinkedList, "抵押净值2(元)", val);
@@ -4782,7 +4790,7 @@ public class GenerateBaseDataService {
         if (CollectionUtils.isNotEmpty(liquidationAnalysisItemList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                 if (schemeJudgeObject.getPrice() != null && schemeJudgeObject.getEvaluationArea() != null) {
-                    String value = getNetAssessmentNumber2(reportFieldEnum, liquidationAnalysisItemList, schemeJudgeObjectList, schemeJudgeObject,null);
+                    String value = getNetAssessmentNumber2(reportFieldEnum, liquidationAnalysisItemList, schemeJudgeObjectList, schemeJudgeObject, null);
                     map.put(
                             generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber())
                             , String.format("%s元", value));
@@ -4830,7 +4838,7 @@ public class GenerateBaseDataService {
         BigDecimal bigDecimal = null;
         if (newScalePrice == null) {
             bigDecimal = schemeJudgeObject.getPrice().multiply(schemeJudgeObject.getEvaluationArea());
-        }else {
+        } else {
             BigDecimal price = ArithmeticUtils.createBigDecimal(ArithmeticUtils.getBigDecimalToInteger(schemeJudgeObject.getPrice(), newScalePrice));
             bigDecimal = price.multiply(schemeJudgeObject.getEvaluationArea());
         }

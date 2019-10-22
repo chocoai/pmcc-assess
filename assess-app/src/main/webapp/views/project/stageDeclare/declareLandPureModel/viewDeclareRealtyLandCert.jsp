@@ -9,62 +9,86 @@
     <div class="x_content collapse">
         <form class="form-horizontal">
             <div class="form-group">
-                <div class="btn-group">
-                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">新增
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a class="btn"
-                               onclick="assessLand.showAddModelLand(true)">有权证</a>
-                        </li>
-                        <li><a class="btn"
-                               onclick="assessLand.showAddModelLand(false)">无权证</a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="btn-group">
-                    <div type="button" class="btn btn-primary" onclick="assessLand.editLand()"> 编辑</div>
-                    <c:if test="${projectPlanDetails.bisRestart ne true}">
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">新增
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a class="btn"
+                                   onclick="assessLand.showAddModelLand(true)">有权证</a>
+                            </li>
+                            <li><a class="btn"
+                                   onclick="assessLand.showAddModelLand(false)">无权证</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="btn-group">
+                        <div type="button" class="btn btn-primary" onclick="assessLand.editLand()"> 编辑</div>
                         <div type="button" class="btn btn-primary" onclick="assessLand.deleteLand()"> 删除</div>
-                    </c:if>
+                    </div>
                 </div>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">土地证 下载模板
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a class="btn"
-                               onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftLandOwnershipCertificate)">下载模板 有权证与无权证一致</a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">导入土地证数据
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a class="btn btn-default"
-                               onclick="$('#ajaxFileUploadLand').val('').trigger('click')">导入 有权证</a>
-                        </li>
-                        <li><a class="btn btn-default"
-                               onclick="$('#ajaxFileUploadLandA').val('').trigger('click')">导入 无权证</a>
-                        </li>
-                    </ul>
+                <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">土地证 下载模板
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a class="btn"
+                                   onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftLandOwnershipCertificate)">下载模板 有权证与无权证一致</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">导入土地证数据
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a class="btn btn-default"
+                                   onclick="$('#ajaxFileUploadLand').val('').trigger('click')">导入 有权证</a>
+                            </li>
+                            <li><a class="btn btn-default"
+                                   onclick="$('#ajaxFileUploadLandA').val('').trigger('click')">导入 无权证</a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
 
-                <div class="btn-group">
-                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">导入房产证数据
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a class="btn"
-                               onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftHouseOwnershipCertificate)">下载模板</a>
-                        </li>
-                        <li><a class="btn btn-default"
-                               onclick="$('#ajaxFileUploadLandHouse').val('').trigger('click')">导入</a></li>
-                    </ul>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">导入房产证数据
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a class="btn"
+                                   onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftHouseOwnershipCertificate)">下载模板</a>
+                            </li>
+                            <li><a class="btn btn-default"
+                                   onclick="$('#ajaxFileUploadLandHouse').val('').trigger('click')">导入</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="btn-group">
+                        <div class="btn btn-primary" onclick="assessLand.copyData();"> <i class="fa fa-files-o" aria-hidden="true"></i> 复制</div>
+                        <div class="btn btn-primary" onclick="assessLand.pasteAll();"> <i class="fa fa-clipboard" aria-hidden="true"></i>粘贴</div>
+                    </div>
+                </div>
+
+                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                    <div class="input-group" id="landHandleInputGroup">
+                        <input type="hidden" name="id">
+                        <input type="text" readonly="readonly" name="name" class="form-control" placeholder="暂无复制数据">
+                        <span class="input-group-btn">
+                                <button type="button" class="btn btn-default docs-tooltip"
+                                        onclick="$(this).closest('.input-group').find('input').val('');"
+                                        data-toggle="tooltip" data-original-title="清除">
+                                <i class="fa fa-trash-o"></i>
+                                </button>
+                                </span>
+                    </div>
                 </div>
             </div>
+
             <div class="form-group">
                 <div class="x-valid">
                     <table class="table table-bordered" id="tableDeclareRealtyLandCert">

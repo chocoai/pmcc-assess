@@ -198,8 +198,6 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/tree-grid/js/jquery.treegrid.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/declare/declare.common.js"></script>
 <script type="text/javascript"
-        src="${pageContext.request.contextPath}/js/declare/house/realty.land.cert.js"></script>
-<script type="text/javascript"
         src="${pageContext.request.contextPath}/js/declare/house/realty.house.cert.js"></script>
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/js/declare/house/realty.real.estate.cert.js"></script>
