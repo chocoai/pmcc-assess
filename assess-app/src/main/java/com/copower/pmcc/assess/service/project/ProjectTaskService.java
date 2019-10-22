@@ -6,17 +6,21 @@ import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.ProjectTaskDto;
 import com.copower.pmcc.assess.dto.output.project.ProjectTaskReturnRecordVo;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
+import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
+import com.copower.pmcc.assess.service.event.EmptyProcessEvent;
 import com.copower.pmcc.assess.service.event.project.ProjectTaskEvent;
 import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
 import com.copower.pmcc.bpm.api.dto.ProcessUserDto;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
+import com.copower.pmcc.bpm.api.dto.model.ProcessExecution;
 import com.copower.pmcc.bpm.api.dto.model.ProcessInfo;
 import com.copower.pmcc.bpm.api.enums.ProcessActivityEnum;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.bpm.api.enums.TaskHandleStateEnum;
 import com.copower.pmcc.bpm.api.exception.BpmException;
+import com.copower.pmcc.bpm.api.executor.ProcessEventExecutor;
 import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
@@ -84,6 +88,8 @@ public class ProjectTaskService {
     private ErpRpcUserService erpRpcUserService;
     @Autowired
     private ProjectMemberService projectMemberService;
+    @Autowired
+    private PublicService publicService;
 
     @Transactional(rollbackFor = Exception.class)
     public void submitTask(ProjectTaskDto projectTaskDto) throws Exception {
@@ -116,10 +122,9 @@ public class ProjectTaskService {
             processInfo.setWorkStage(projectWorkStage.getWorkStageName());
             processInfo.setProcessEventExecutorName(ProjectTaskEvent.class.getSimpleName());
             processInfo.setWorkStageId(projectWorkStage.getId());
-
             try {
                 processUserDto = processControllerComponent.processStart(processControllerComponent.getThisUser(), processInfo, projectTaskDto.getNextApproval(), false);
-
+                publicService.setRedisProcessExecutorName(processUserDto.getProcessInsId(),ProjectTaskEvent.class.getSimpleName());
             } catch (BpmException e) {
                 throw new BusinessException(e.getMessage());
             }
@@ -158,7 +163,19 @@ public class ProjectTaskService {
                 projectPlanDetails.setStatus(ProcessStatusEnum.HANGUP.getValue());//将任务设为挂起
                 projectPlanDetailsDao.updateProjectPlanDetails(projectPlanDetails);
                 bean.applyCommit(projectPlanDetails, processUserDto.getProcessInsId(), projectTaskDto.getFormData());
-                projectPlanService.enterNextStage(projectPlanDetails.getPlanId()); //结束当前阶段进入下一阶段
+                //执行监听器逻辑代码
+                String executorName = publicService.getRedisProcessExecutorName(processUserDto.getProcessInsId());
+                if(StringUtils.isNotBlank(executorName)){
+                    ProcessEventExecutor  processEventExecutor = (ProcessEventExecutor) SpringContextUtils.getBean(executorName);
+                    if(processEventExecutor!=null){
+                        ProcessExecution processExecution =new ProcessExecution();
+                        processExecution.setProcessInstanceId(processUserDto.getProcessInsId());
+                        processExecution.setProcessStatus(ProcessStatusEnum.FINISH);
+                        processEventExecutor.processFinishExecute(processExecution);
+                    }
+                }
+                //更新为空监听器
+                bpmRpcActivitiProcessManageService.setProcessEventExecutor(processUserDto.getProcessInsId(), EmptyProcessEvent.class.getSimpleName());
             }else {
                 bean.applyCommit(projectPlanDetails, processUserDto.getProcessInsId(), projectTaskDto.getFormData());
             }

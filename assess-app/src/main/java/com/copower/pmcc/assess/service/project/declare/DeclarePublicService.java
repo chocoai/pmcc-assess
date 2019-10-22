@@ -7,6 +7,7 @@ import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareApplyDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.service.ErpAreaService;
+import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.event.project.DeclareRealtyEstateCertEvent;
 import com.copower.pmcc.assess.service.project.ProjectPlanService;
@@ -52,6 +53,8 @@ public class DeclarePublicService {
     private ProjectPlanService projectPlanService;
     @Autowired
     private ProjectPlanSurveyService projectPlanSurveyService;
+    @Autowired
+    private PublicService publicService;
 
     private final String UNIT = "单元";
     private final String FLOOR = "层";
@@ -1096,7 +1099,7 @@ public class DeclarePublicService {
             }
         } else {
             //修改监听器
-            bpmRpcActivitiProcessManageService.setProcessEventExecutor(processInsId, DeclareRealtyEstateCertEvent.class.getSimpleName());
+            publicService.updateProcessEventExecutor(processInsId, DeclareRealtyEstateCertEvent.class.getSimpleName());
         }
     }
 
