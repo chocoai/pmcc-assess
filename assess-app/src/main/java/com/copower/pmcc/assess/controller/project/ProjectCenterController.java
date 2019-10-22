@@ -20,6 +20,7 @@ import com.copower.pmcc.assess.service.project.scheme.ProjectPlanSchemeAssist;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -175,6 +176,13 @@ public class ProjectCenterController {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(viewUrl);
         List<ProjectPlanVo> projectPlanList = projectInfoService.getProjectPlanList(projectId);
         modelAndView.addObject("projectPlanList", projectPlanList);
+        if(CollectionUtils.isNotEmpty(projectPlanList)){
+            for (ProjectPlanVo projectPlanVo : projectPlanList) {
+                if(projectPlanVo.getWorkStageId().equals(workStageId)){
+                    modelAndView.addObject("projectPlan", projectPlanVo);
+                }
+            }
+        }
         modelAndView.addObject("projectId", projectId);
         modelAndView.addObject(StringUtils.uncapitalize(ProjectInfo.class.getSimpleName()), projectInfoService.getSimpleProjectInfoVo(projectInfo));
         return modelAndView;
