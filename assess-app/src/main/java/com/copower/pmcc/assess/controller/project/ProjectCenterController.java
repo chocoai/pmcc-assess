@@ -17,6 +17,7 @@ import com.copower.pmcc.assess.service.project.plan.execute.PlanSurveyExecute;
 import com.copower.pmcc.assess.service.project.scheme.ProjectPlanSchemeAssist;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
+import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -188,6 +189,7 @@ public class ProjectCenterController {
         modelAndView.addObject("projectId", projectId);
         modelAndView.addObject(StringUtils.uncapitalize(ProjectInfo.class.getSimpleName()), projectInfoService.getSimpleProjectInfoVo(projectInfo));
         modelAndView.addObject(StringUtils.uncapitalize(ProjectWorkStage.class.getSimpleName()),projectWorkStage);
+        modelAndView.addObject(StringUtils.uncapitalize(SysUserDto.class.getSimpleName()),processControllerComponent.getThisUserInfo());
         return modelAndView;
     }
 
