@@ -3,10 +3,7 @@ package com.copower.pmcc.assess.controller.project;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.common.enums.report.AssessProjectTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.basis.entity.DocumentTemplate;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectWorkStage;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanVo;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -14,6 +11,7 @@ import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.document.DocumentTemplateService;
 import com.copower.pmcc.assess.service.project.ProjectCenterService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
+import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
 import com.copower.pmcc.assess.service.project.plan.execute.PlanSurveyExecute;
 import com.copower.pmcc.assess.service.project.scheme.ProjectPlanSchemeAssist;
@@ -58,6 +56,8 @@ public class ProjectCenterController {
     private ProjectInfoService projectInfoService;
     @Autowired
     private ProjectWorkStageService projectWorkStageService;
+    @Autowired
+    private ProjectPhaseService projectPhaseService;
 
     @RequestMapping(value = "/projectNew", name = "新建项目")
     public ModelAndView projectNew() {
@@ -180,6 +180,8 @@ public class ProjectCenterController {
             for (ProjectPlanVo projectPlanVo : projectPlanList) {
                 if(projectPlanVo.getWorkStageId().equals(workStageId)){
                     modelAndView.addObject("projectPlan", projectPlanVo);
+                    modelAndView.addObject("projectPhaseVoList", projectPhaseService.getCacheProjectPhaseByCategoryId(projectInfo.getProjectCategoryId(),workStageId));
+
                 }
             }
         }
