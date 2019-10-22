@@ -60,7 +60,8 @@ public class ProjectTaskCaseAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskCaseIndex", "", 0, "0", "");
-        DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
+        modelAndView.addObject("examineFormTypeList", surveyCommonService.getExamineFormTypeList());
+        modelAndView.addObject("transactionTypeList", baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.EXAMINE_HOUSE_TRANSACTION_TYPE));
         return modelAndView;
     }
 

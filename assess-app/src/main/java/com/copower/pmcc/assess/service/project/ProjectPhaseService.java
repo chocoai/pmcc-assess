@@ -2,7 +2,6 @@ package com.copower.pmcc.assess.service.project;
 
 
 import com.copower.pmcc.assess.constant.AssessCacheConstant;
-import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPhaseDao;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPhase;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectWorkStage;
@@ -199,23 +198,4 @@ public class ProjectPhaseService {
     public List<ProjectPhase> getProjectPhaseList(ProjectPhase projectPhase){
         return projectPhaseDao.getProjectPhaseList(projectPhase) ;
     }
-
-    /**
-     * 是否为查勘案例的任务
-     *
-     * @param phaseId
-     * @return
-     */
-    public boolean isExaminePhase(Integer phaseId) {
-        ProjectPhase projectPhase = getCacheProjectPhaseById(phaseId);
-        if (projectPhase != null) {
-            if (StringUtils.equals(projectPhase.getPhaseKey(), AssessPhaseKeyConstant.SCENE_EXPLORE))
-                return true;
-            if (StringUtils.equals(projectPhase.getPhaseKey(), AssessPhaseKeyConstant.CASE_STUDY))
-                return true;
-        }
-        return false;
-    }
-
-
 }

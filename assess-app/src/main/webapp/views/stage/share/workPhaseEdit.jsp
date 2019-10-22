@@ -130,7 +130,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label" for="phaseSort">
-                                            资产字段配置
+                                            自定义附件模板
                                         </label>
                                         <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                             <select name="assetsSettingId" class="form-control">
@@ -142,7 +142,7 @@
                                     </div>
                                     <div class="x-valid">
                                         <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
-                                            流程任务是否允许挂起
+                                            允许挂起
                                         </label>
                                         <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                             是<input type="checkbox" name="bisWait"

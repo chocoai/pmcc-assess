@@ -11,7 +11,6 @@ import com.copower.pmcc.assess.dto.output.project.ProjectMemberVo;
 import com.copower.pmcc.assess.dto.output.project.initiate.InitiateUnitInformationVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
-import com.copower.pmcc.assess.service.project.csr.CsrProjectInfoService;
 import com.copower.pmcc.assess.service.project.initiate.InitiateUnitInformationService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -54,8 +53,6 @@ public class ProjectCenterService {
     private ProjectInfoDao projectInfoDao;
     @Autowired
     private ProcessControllerComponent processControllerComponent;
-    @Autowired
-    private CsrProjectInfoService csrProjectInfoService;
     @Autowired
     private ProjectMemberService projectMemberService;
     @Autowired
@@ -172,11 +169,6 @@ public class ProjectCenterService {
         }
         return projectInfoVos;
     }
-
-    public BootstrapTableVo csrProjectInfoList(String name) {
-        return csrProjectInfoService.csrProjectInfoList(name);
-    }
-
 
     /**
      * 获取我的立项

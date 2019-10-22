@@ -177,4 +177,44 @@ public class SurveyCommonService {
 
     }
 
+    /**
+     * 获取案例调查所有任务
+     *
+     * @param planDetailsId
+     * @return
+     */
+    public List<ProjectPlanDetailsVo> getPlanTaskExamineList(Integer planDetailsId) {
+        ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
+        List<ProjectPlanDetails> planDetailsList = projectPlanDetailsService.getPlanDetailsListRecursion(planDetailsId, true);
+        List<ProjectPlanDetailsVo> planDetailsVoList = LangUtils.transform(planDetailsList, o -> projectPlanDetailsService.getProjectPlanDetailsVo(o));
+        if (CollectionUtils.isNotEmpty(planDetailsVoList)) {
+            //获取当前人该阶段下待处理的任务
+            ProjectResponsibilityDto projectResponsibilityDto = new ProjectResponsibilityDto();
+            projectResponsibilityDto.setProjectId(projectPlanDetails.getProjectId());
+            projectResponsibilityDto.setPlanId(projectPlanDetails.getPlanId());
+            projectResponsibilityDto.setAppKey(applicationConstant.getAppKey());
+            projectResponsibilityDto.setUserAccount(commonService.thisUserAccount());
+            List<ProjectResponsibilityDto> projectTaskList = bpmRpcProjectTaskService.getProjectTaskList(projectResponsibilityDto);
+            String viewUrl = String.format("/%s/ProjectTask/projectTaskDetailsById?planDetailsId=", applicationConstant.getAppKey());
+            for (ProjectPlanDetailsVo projectPlanDetailsVo : planDetailsVoList) {
+                if (projectPlanDetailsVo.getId().equals(planDetailsId)) {
+                    projectPlanDetailsVo.set_parentId(null);//顶级节点parentId必须为空才能显示
+                }
+                if (CollectionUtils.isNotEmpty(projectTaskList)) {
+                    for (ProjectResponsibilityDto responsibilityDto : projectTaskList) {
+                        if (responsibilityDto.getPlanDetailsId().equals(projectPlanDetailsVo.getId())) {
+                            projectPlanDetailsVo.setExcuteUrl(String.format("%s?responsibilityId=%s", responsibilityDto.getUrl(), responsibilityDto.getId()));
+                        }
+                    }
+                }
+
+                //设置查看url
+                if (StringUtils.isNotBlank(projectPlanDetailsVo.getExecuteUserAccount()) && projectPlanDetailsVo.getBisStart()) {
+                    projectPlanDetailsVo.setDisplayUrl(String.format("%s%s", viewUrl, projectPlanDetailsVo.getId()));
+                }
+            }
+        }
+        return planDetailsVoList;
+    }
+
 }

@@ -32,6 +32,10 @@ public class DeclareApply {
 
     private BigDecimal assessMoney;
 
+    private String assessOrganization;
+
+    private String remark;
+
     public Integer getId() {
         return id;
     }
@@ -142,5 +146,21 @@ public class DeclareApply {
 
     public void setAssessMoney(BigDecimal assessMoney) {
         this.assessMoney = assessMoney;
+    }
+
+    public String getAssessOrganization() {
+        return assessOrganization;
+    }
+
+    public void setAssessOrganization(String assessOrganization) {
+        this.assessOrganization = assessOrganization == null ? null : assessOrganization.trim();
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark == null ? null : remark.trim();
     }
 }
