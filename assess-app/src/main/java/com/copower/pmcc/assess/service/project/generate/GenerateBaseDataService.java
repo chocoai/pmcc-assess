@@ -2487,10 +2487,6 @@ public class GenerateBaseDataService {
             if (Objects.equal(AssessPhaseKeyConstant.SCENE_EXPLORE, projectPhaseVo.getPhaseKey())) {
                 return true;
             }
-            //案例同样通过
-            if (Objects.equal(AssessPhaseKeyConstant.CASE_STUDY, projectPhaseVo.getPhaseKey())) {
-                return true;
-            }
             return false;
         }).collect(Collectors.toList());
         List<ProjectPlanDetails> projectPlanDetailsList = Lists.newArrayList();
@@ -2636,7 +2632,7 @@ public class GenerateBaseDataService {
             if (Objects.equal(AssessPhaseKeyConstant.SCENE_EXPLORE, projectPhaseVo.getPhaseKey())) {
                 return true;
             }
-            if (Objects.equal(AssessPhaseKeyConstant.CASE_STUDY, projectPhaseVo.getPhaseKey())) {
+            if (Objects.equal(AssessPhaseKeyConstant.CASE_STUDY_EXTEND, projectPhaseVo.getPhaseKey())) {
                 return true;
             }
             return false;

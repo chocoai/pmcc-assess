@@ -69,7 +69,7 @@
                             <div class=" col-xs-9  col-sm-9  col-md-9  col-lg-9 ">
                                 <a class="btn btn-primary" onclick="projectStagePlan.loadProjectTaskList();">查询</a>
                                 <a class="btn btn-info" onclick="projectStagePlan.createTask()">添加任务</a>
-                                <a class="btn btn-info" onclick="projectStagePlan.autoCreateTask();">一键添加任务</a>
+                                <%--<a class="btn btn-info" onclick="projectStagePlan.autoCreateTask();">一键添加任务</a>--%>
                                 <a class="btn btn-danger" onclick="projectStagePlan.startTask()">发起任务</a>
                                 <a class="btn btn-primary" onclick="projectStagePlan.setExecuteUserAccount();">设置责任人</a>
                             </div>
@@ -536,26 +536,24 @@
         data.planId = '${projectPlan.id}';
         data.projectId = '${projectInfo.id}';
         data.projectWorkStageId = '${projectWorkStage.id}';
-        Alert("确认数据!确认后如数据填下不正确可能会引发数据丢失。",2,null,function () {
-            Loading.progressShow();
-            $.ajax({
-                url: "${pageContext.request.contextPath}/projectPlanDetails/saveProjectStagePlan",
-                data: {formData: JSON.stringify(data)},
-                type: "post",
-                dataType: "json",
-                success: function (result) {
-                    Loading.progressHide();
-                    if (result.ret) {
-                        box.modal("hide");
-                        projectStagePlan.stageTable.bootstrapTable('refresh');
-                    } else {
-                        Alert("保存失败:" + result.errmsg);
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+        Loading.progressShow();
+        $.ajax({
+            url: "${pageContext.request.contextPath}/projectPlanDetails/saveProjectStagePlan",
+            data: {formData: JSON.stringify(data)},
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    box.modal("hide");
+                    projectStagePlan.stageTable.bootstrapTable('refresh');
+                } else {
+                    Alert("保存失败:" + result.errmsg);
                 }
-            });
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+            }
         });
     };
 

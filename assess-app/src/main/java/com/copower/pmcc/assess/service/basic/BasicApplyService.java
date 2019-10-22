@@ -321,7 +321,7 @@ public class BasicApplyService {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         //案列事项
-        ProjectPhase projectCasePhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.CASE_STUDY, projectCategoryId);
+        ProjectPhase projectCasePhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.CASE_STUDY_EXTEND, projectCategoryId);
         ProjectPlanDetails projectCaseDetails = new ProjectPlanDetails();
         projectCaseDetails.setProjectId(projectId);
         projectCaseDetails.setProjectPhaseId(projectCasePhase.getId());

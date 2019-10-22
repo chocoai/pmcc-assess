@@ -74,7 +74,8 @@ public class ProjectPlanSurveyService {
         if (CollectionUtils.isEmpty(projectPhases)) return;
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
         ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(workStageId);
-        List<ProjectPhase> filter = LangUtils.filter(projectPhases, o -> StringUtils.equals(o.getPhaseKey(), AssessPhaseKeyConstant.OTHER_RIGHT));
+        List<ProjectPhase> filter = LangUtils.filter(projectPhases, o -> StringUtils.equals(o.getPhaseKey(), AssessPhaseKeyConstant.CASE_STUDY_EXTEND)
+                || StringUtils.equals(o.getPhaseKey(), AssessPhaseKeyConstant.OTHER_RIGHT));
         if (CollectionUtils.isNotEmpty(filter)) {//案例调查任务
             projectPhases.removeAll(filter);
             String projectManager = projectMemberService.getProjectManager(projectId);
