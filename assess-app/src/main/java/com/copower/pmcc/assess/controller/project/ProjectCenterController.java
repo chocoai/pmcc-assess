@@ -187,6 +187,7 @@ public class ProjectCenterController {
         }
         modelAndView.addObject("projectId", projectId);
         modelAndView.addObject(StringUtils.uncapitalize(ProjectInfo.class.getSimpleName()), projectInfoService.getSimpleProjectInfoVo(projectInfo));
+        modelAndView.addObject(StringUtils.uncapitalize(ProjectWorkStage.class.getSimpleName()),projectWorkStage);
         return modelAndView;
     }
 
