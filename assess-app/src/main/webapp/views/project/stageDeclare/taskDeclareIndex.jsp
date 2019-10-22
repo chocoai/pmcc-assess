@@ -241,11 +241,6 @@
             submitForm(mustUseBox);
             return false;
         }
-        rows = $("#" + assessCommonLand.config.table).bootstrapTable('getData');
-        if (rows && rows.length > 0) {
-            submitForm(mustUseBox);
-            return false;
-        }
         rows = $("#" + declareRealtyRealEstateCert.config.table).bootstrapTable('getData');
         if (rows && rows.length > 0) {
             submitForm(mustUseBox);
