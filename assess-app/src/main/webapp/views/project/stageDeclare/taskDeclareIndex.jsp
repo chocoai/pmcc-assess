@@ -41,7 +41,7 @@
                             </div>
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    前次评估报告
+                                    上次评估报告
                                 </label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3  ">
                                     <input id="assess_report_enclosure" name="assess_report_enclosure" type="file" multiple="false">
@@ -52,26 +52,26 @@
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    前次评估面积
+                                    上次评估面积
                                 </label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <input name="assessArea" class="form-control" placeholder="前次评估面积" value='${declare.assessArea}'/>
+                                    <input name="assessArea" class="form-control" placeholder="上次评估面积" value='${declare.assessArea}'/>
                                 </div>
                             </div>
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    前次评估金额
+                                    上次评估金额
                                 </label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <input name="assessMoney" class="form-control" placeholder="前次评估金额" value='${declare.assessMoney}'/>
+                                    <input name="assessMoney" class="form-control" placeholder="上次评估金额" value='${declare.assessMoney}'/>
                                 </div>
                             </div>
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    前次评估基准日
+                                    上次评估基准日
                                 </label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <input placeholder="前次评估基准日" id="dateLimit"
+                                    <input placeholder="上次评估基准日" id="dateLimit"
                                            name="dateLimit" data-date-format="yyyy-mm-dd"
                                            class="form-control date-picker dbdate" readonly="readonly"
                                            value="<fmt:formatDate value='${declare.dateLimit}' pattern='yyyy-MM-dd'/>">
@@ -81,17 +81,33 @@
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    前次委托单位
+                                    上次委托单位
                                 </label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                     <c:choose>
                                         <c:when test="${empty declare.client}">
-                                            <input name="client" class="form-control" placeholder="前次委托单位" value='${consignor}'/>
+                                            <input name="client" class="form-control" placeholder="上次委托单位" value='${consignor}'/>
                                         </c:when>
                                         <c:otherwise>
-                                            <input name="client" class="form-control" placeholder="前次委托单位" value='${declare.client}'/>
+                                            <input name="client" class="form-control" placeholder="上次委托单位" value='${declare.client}'/>
                                         </c:otherwise>
                                     </c:choose>
+                                </div>
+                            </div>
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                    上次评估机构
+                                </label>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                    <input name="assessOrganization" class="form-control" placeholder="上次评估机构" value='${declare.assessOrganization}'/>
+                                </div>
+                            </div>
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                    备注
+                                </label>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                    <input name="remark" class="form-control" placeholder="备注" value='${declare.remark}'/>
                                 </div>
                             </div>
                         </div>

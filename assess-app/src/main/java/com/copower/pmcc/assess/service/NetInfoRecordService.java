@@ -87,12 +87,10 @@ public class NetInfoRecordService {
     //来源淘宝网
     public void getNetInfoFromTB(Integer days) {
         try {
-            Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.DATE, -(days + 1)); //得到前1天
-            Date date = calendar.getTime();
+            Date date = getInstanceDate(days+1);//得到前1天
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             String formatDate = sdf.format(date);//开始时间
-            Date endDate = new Date();
+            Date endDate = getInstanceDate(0);
             if (days == 1) {
                 endDate = date;//截止时间时间
             }
@@ -191,9 +189,7 @@ public class NetInfoRecordService {
     //来源京东司法
     public void getNetInfoFromJDSF(Integer days) {
         try {
-            Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.DATE, -days); //得到前1天
-            Date date = calendar.getTime();
+            Date date = getInstanceDate(days);//得到前1天
             String[] needContentType = new String[]{"住宅用房", "商业用房", "工业用房", "其他用房", "股权", "债权", "林权", "矿权", "土地", "无形资产"};
             Map<String, List<String>> strHrefs = Maps.newHashMap();
             List<String> types = Arrays.asList(needContentType);
@@ -240,7 +236,7 @@ public class NetInfoRecordService {
                     for (String dataStr : dataList) {
                         JDSFDto jdsfDto = JSON.parseObject(dataStr, JDSFDto.class);
                         String itemHref = String.format("%s%s", itemHrefStr, jdsfDto.getId());
-                        if (jdsfDto.getEndTime().compareTo(date) < 1) break circ;
+                        if (jdsfDto.getEndTime().compareTo(date) < 0) break circ;
                         NetInfoRecord netInfoRecord = new NetInfoRecord();
                         netInfoRecord.setSourceSiteUrl(itemHref);
                         netInfoRecord.setTitle(jdsfDto.getTitle());
@@ -282,9 +278,7 @@ public class NetInfoRecordService {
     //来源京东资产
     public void getNetInfoFromJDZC(Integer days) {
         try {
-            Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.DATE, -days); //得到前1天
-            Date date = calendar.getTime();
+            Date date = getInstanceDate(days);//得到前1天
             Map<String, List<String>> strHrefs = Maps.newHashMap();
             Map<String, String> needContentType = Maps.newHashMap();
             needContentType.put("房产", "12762");
@@ -324,7 +318,7 @@ public class NetInfoRecordService {
                     for (String dataStr : dataList) {
                         JDZCDto jdzcDto = JSON.parseObject(dataStr, JDZCDto.class);
                         String itemHref = String.format("%s%s", itemHrefStr, jdzcDto.getId());
-                        if (jdzcDto.getEndTime().compareTo(date) < 1) break circ;
+                        if (jdzcDto.getEndTime().compareTo(date) < 0) break circ;
                         NetInfoRecord netInfoRecord = new NetInfoRecord();
                         netInfoRecord.setSourceSiteUrl(itemHref);
                         netInfoRecord.setTitle(jdzcDto.getTitle());
@@ -353,9 +347,7 @@ public class NetInfoRecordService {
     //中国拍卖行业协会网-司法
     public void getNetInfoFromZGSF(Integer days) {
         try {
-            Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.DATE, -days); //得到前1天
-            Date date = calendar.getTime();
+            Date date = getInstanceDate(days);//得到前1天
             Map<String, String> needContentType = Maps.newHashMap();
             needContentType.put("房产", "6");
             needContentType.put("土地使用权", "5");
@@ -429,7 +421,7 @@ public class NetInfoRecordService {
                     for (String dataStr : dataList) {
                         ZGSFDto zgsfDto = JSON.parseObject(dataStr, ZGSFDto.class);
                         String itemHref = String.format("%s%s%s", itemHrefStr, zgsfDto.getId(), ".html");
-                        if (zgsfDto.getEndTime().compareTo(date) < 1) break circ;
+                        if (zgsfDto.getEndTime().compareTo(date) < 0) break circ;
                         NetInfoRecord netInfoRecord = new NetInfoRecord();
                         netInfoRecord.setSourceSiteUrl(itemHref);
                         netInfoRecord.setTitle(zgsfDto.getName());
@@ -469,9 +461,7 @@ public class NetInfoRecordService {
     //中国拍卖行业协会网-标的
     public void getNetInfoFromZGBD(Integer days) {
         try {
-            Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.DATE, -days); //得到前1天
-            Date date = calendar.getTime();
+            Date date = getInstanceDate(days);//得到前1天
             Map<String, String> needContentType = Maps.newHashMap();
             needContentType.put("房产", "6");
             needContentType.put("土地", "7");
@@ -541,7 +531,7 @@ public class NetInfoRecordService {
                     for (String dataStr : dataList) {
                         ZGSFDto zgsfDto = JSON.parseObject(dataStr, ZGSFDto.class);
                         String itemHref = String.format("%s%s%s", itemHrefStr, "lotId=" + zgsfDto.getId(), "&meetId=" + zgsfDto.getMeetId());
-                        if (zgsfDto.getEndTime().compareTo(date) < 1) break circ;
+                        if (zgsfDto.getEndTime().compareTo(date) < 0) break circ;
                         NetInfoRecord netInfoRecord = new NetInfoRecord();
                         netInfoRecord.setSourceSiteUrl(itemHref);
                         netInfoRecord.setTitle(zgsfDto.getName());
@@ -582,9 +572,7 @@ public class NetInfoRecordService {
     //来源公拍网
     public void getNetInfoFromGPW(Integer days) {
         try {
-            Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.DATE, -days); //得到前1天
-            Date date = calendar.getTime();
+            Date date = getInstanceDate(days);//得到前1天
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String[] needContentType = new String[]{"房产", "土地", "股权", "无形资产", "林权矿权"};
             List<String> types = Arrays.asList(needContentType);
@@ -643,7 +631,7 @@ public class NetInfoRecordService {
                             if (StringUtil.isNotEmpty(endTimeStr) && endTimeStr.indexOf(":") > 0) {
                                 endTime = sdf.parse(endTimeStr.substring(endTimeStr.indexOf("：") + 1, endTimeStr.length()));
                             }
-                            if (endTime == null || endTime.compareTo(date) < 1) continue circ;
+                            if (endTime == null || endTime.compareTo(date) < 0) continue circ;
                             NetInfoRecord netInfoRecord = new NetInfoRecord();
                             netInfoRecord.setTitle(titleName);
                             netInfoRecord.setSourceSiteUrl(itemHref);
@@ -669,6 +657,7 @@ public class NetInfoRecordService {
                             netInfoRecord.setProvince(entry.getValue().substring(entry.getValue().indexOf("_") + 1));
                             netInfoRecord.setSourceSiteName("公拍网");
                             netInfoRecord.setEndTime(endTime);
+                            netInfoRecord.setBeginTime(endTime);
                             netInfoRecord.setType(entry.getKey());
                             netInfoRecord.setCurrentPrice(getRealMoney(currentPrice));
                             netInfoRecord.setConsultPrice(getRealMoney(consultPrice));
@@ -705,9 +694,7 @@ public class NetInfoRecordService {
     //公共资源交易平台-雅安
     public void getNetInfoFromGGZYYA(Integer days) {
         try {
-            Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.DATE, -days); //得到前1天
-            Date date = calendar.getTime();
+            Date date = getInstanceDate(days);//得到前1天
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
             String urlInfo = "http://www.yaggzy.org.cn/jyxx/tdsyq/cjqr";
@@ -726,7 +713,7 @@ public class NetInfoRecordService {
                 for (int i = 1; i < itemContent.size(); i++) {
                     String publishtimeStr = itemContent.get(i).childNodes().get(7).childNodes().get(0).toString();
                     Date publishtime = sdf.parse(publishtimeStr);
-                    if (publishtime == null || publishtime.compareTo(date) < 1) break circ;
+                    if (publishtime == null || publishtime.compareTo(date) < 0) break circ;
                     String detailHref = itemContent.get(i).childNodes().get(5).childNodes().get(1).attributes().get("href");
                     Elements tdElements = getContent(String.format("%s%s", "http://www.yaggzy.org.cn", detailHref), "tr", "");
                     Integer length = tdElements.get(1).select("td").size();
@@ -755,6 +742,7 @@ public class NetInfoRecordService {
                         netInfoRecord.setCity("雅安");
                         netInfoRecord.setSourceSiteName("公共资源交易平台-雅安");
                         netInfoRecord.setBeginTime(publishtime);
+                        netInfoRecord.setEndTime(publishtime);
                         StringBuilder content = new StringBuilder();
                         for (int m = 0; m < fieldNames.size(); m++) {
                             content.append(fieldNames.get(m) + "：" + fieldValues.get(m) + "；");
@@ -775,9 +763,7 @@ public class NetInfoRecordService {
     //公共资源交易平台-成都(土地矿权)
     public void getNetInfoFromGGZYCD(Integer days) {
         try {
-            Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.DATE, -days); //得到前1天
-            Date date = calendar.getTime();
+            Date date = getInstanceDate(days);//得到前1天
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             String[] needContentType = new String[]{"拍卖公告", "结果公告"};
             List<String> needTypes = Arrays.asList(needContentType);
@@ -816,7 +802,7 @@ public class NetInfoRecordService {
                                 Elements publishtimeElement = item.select(".publishtime");
                                 String publishtimeStr = publishtimeElement.get(0).childNodes().get(0).toString().substring(1);
                                 Date publishtime = sdf.parse(publishtimeStr);
-                                if (publishtime == null || publishtime.compareTo(date) < 1) break circ;
+                                if (publishtime == null || publishtime.compareTo(date) < 0) break circ;
 
                                 Elements addressElement = item.select(".col-xs-1");
                                 String address = addressElement.get(0).childNodes().get(0).toString();
@@ -871,6 +857,7 @@ public class NetInfoRecordService {
                                     netInfoRecord.setType(typeName);
                                     netInfoRecord.setSourceSiteUrl(link);
                                     netInfoRecord.setBeginTime(publishtime);
+                                    netInfoRecord.setEndTime(publishtime);
                                     netInfoRecord.setTitle(titleStr.replaceAll("\n", ""));
                                     netInfoRecord.setSourceSiteName("公共资源交易平台-成都");
                                     StringBuilder content = new StringBuilder();
@@ -976,9 +963,7 @@ public class NetInfoRecordService {
     //公共资源交易平台-成都（资产资源）
     public void getNetInfoFromGGZYCD2(Integer days) {
         try {
-            Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.DATE, -days); //得到前1天
-            Date date = calendar.getTime();
+            Date date = getInstanceDate(days);//得到前1天
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             String[] needContentType = new String[]{"结果公告"};
             List<String> needTypes = Arrays.asList(needContentType);
@@ -1018,7 +1003,7 @@ public class NetInfoRecordService {
                                 Elements publishtimeElement = item.select(".publishtime");
                                 String publishtimeStr = publishtimeElement.get(0).childNodes().get(0).toString().substring(1);
                                 Date publishtime = sdf.parse(publishtimeStr);
-                                if (publishtime == null || publishtime.compareTo(date) < 1) break circ;
+                                if (publishtime == null || publishtime.compareTo(date) < 0) break circ;
 
                                 Elements addressElement = item.select(".col-xs-1");
                                 String address = addressElement.get(0).childNodes().get(0).toString();
@@ -1056,6 +1041,7 @@ public class NetInfoRecordService {
                                     netInfoRecord.setType(typeName);
                                     netInfoRecord.setSourceSiteUrl(link);
                                     netInfoRecord.setBeginTime(publishtime);
+                                    netInfoRecord.setEndTime(publishtime);
                                     netInfoRecord.setTitle(titleStr.replaceAll("\n", ""));
                                     netInfoRecord.setSourceSiteName("公共资源交易平台-成都");
                                     StringBuilder content = new StringBuilder();
@@ -1324,6 +1310,18 @@ public class NetInfoRecordService {
         return netInfoRecordVo;
     }
 
+
+    //获取前几天的日期
+    public Date getInstanceDate(Integer days){
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE, -days); //得到前几天
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        Date date = calendar.getTime();
+        return date;
+    }
 
     //抓取两年前数据
     public void climbingOldData() {
