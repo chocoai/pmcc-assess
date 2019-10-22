@@ -240,7 +240,7 @@
 
         },
         findData: function (id, buildType, estateId) {
-            var href = "${pageContext.request.contextPath}/projectTaskCIP/informationDetail";
+            var href = "${pageContext.request.contextPath}/basicApplyBatch/informationDetail";
             href += "?id=" + id + "&buildingType=" + buildType + "&estateId=" + estateId;
             window.open(href, "");
         },
@@ -310,7 +310,7 @@
             });
         },
         findData: function (id, buildType, estateId) {
-            var href = "${pageContext.request.contextPath}/projectTaskCIP/informationDetail";
+            var href = "${pageContext.request.contextPath}/basicApplyBatch/informationDetail";
             href += "?id=" + id + "&buildingType=" + buildType + "&estateId=" + estateId;
             window.open(href, "");
         },
@@ -377,7 +377,7 @@
             });
         },
         findData: function (id, buildType, estateId) {
-            var href = "${pageContext.request.contextPath}/projectTaskCIP/informationDetail";
+            var href = "${pageContext.request.contextPath}/basicApplyBatch/informationDetail";
             href += "?id=" + id + "&buildingType=" + buildType + "&estateId=" + estateId;
             window.open(href, "");
         },
@@ -444,7 +444,7 @@
             });
         },
         findData: function (id, buildType, estateId) {
-            var href = "${pageContext.request.contextPath}/projectTaskCIP/informationDetail";
+            var href = "${pageContext.request.contextPath}/basicApplyBatch/informationDetail";
             href += "?id=" + id + "&buildingType=" + buildType + "&estateId=" + estateId;
             window.open(href, "");
         },

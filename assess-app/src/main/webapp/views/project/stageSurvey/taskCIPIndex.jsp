@@ -243,7 +243,7 @@
     function getStandardCount() {
         var count = 0;
         $.ajax({
-            url: "${pageContext.request.contextPath}/projectTaskCIP/getStandardCount",
+            url: "${pageContext.request.contextPath}/basicApplyBatch/getStandardCount",
             data: {
                 planDetailsId: '${projectPlanDetails.id}'
             },
@@ -284,7 +284,7 @@
     //初始化信息
     function initBasicApplyBatchInfo() {
         $.ajax({
-            url: "${pageContext.request.contextPath}/projectTaskCIP/initBasicApplyBatchInfo",
+            url: "${pageContext.request.contextPath}/basicApplyBatch/initBasicApplyBatchInfo",
             type: "post",
             dataType: "json",
             data: {
@@ -306,7 +306,7 @@
     //保存主表信息
     function saveBasicApplyBatch() {
         $.ajax({
-            url: "${pageContext.request.contextPath}/projectTaskCIP/saveBasicApplyBatch",
+            url: "${pageContext.request.contextPath}/basicApplyBatch/saveBasicApplyBatch",
             type: "post",
             dataType: "json",
             data: {
