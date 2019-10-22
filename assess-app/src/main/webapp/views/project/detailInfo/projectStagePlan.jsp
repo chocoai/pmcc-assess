@@ -536,24 +536,26 @@
         data.planId = '${projectPlan.id}';
         data.projectId = '${projectInfo.id}';
         data.projectWorkStageId = '${projectWorkStage.id}';
-        Loading.progressShow();
-        $.ajax({
-            url: "${pageContext.request.contextPath}/projectPlanDetails/saveProjectStagePlan",
-            data: {formData: JSON.stringify(data)},
-            type: "post",
-            dataType: "json",
-            success: function (result) {
-                Loading.progressHide();
-                if (result.ret) {
-                    box.modal("hide");
-                    projectStagePlan.stageTable.bootstrapTable('refresh');
-                } else {
-                    Alert("保存失败:" + result.errmsg);
+        Alert("确认数据!确认后如数据填下不正确可能会引发数据丢失。",2,null,function () {
+            Loading.progressShow();
+            $.ajax({
+                url: "${pageContext.request.contextPath}/projectPlanDetails/saveProjectStagePlan",
+                data: {formData: JSON.stringify(data)},
+                type: "post",
+                dataType: "json",
+                success: function (result) {
+                    Loading.progressHide();
+                    if (result.ret) {
+                        box.modal("hide");
+                        projectStagePlan.stageTable.bootstrapTable('refresh');
+                    } else {
+                        Alert("保存失败:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
                 }
-            },
-            error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
-            }
+            });
         });
     };
 
@@ -606,23 +608,26 @@
      * @param id
      */
     projectStagePlan.deleteStagePlan = function (id) {
-        $.ajax({
-            url: "${pageContext.request.contextPath}/projectPlanDetails/deletePlanDetailsById",
-            data: {planDetailsId: id},
-            type: "post",
-            dataType: "json",
-            success: function (result) {
-                if (result.ret) {
-                    toastr.info("任务已经删除!");
-                    projectStagePlan.stageTable.bootstrapTable('refresh');
-                } else {
-                    Alert("失败:" + result.errmsg);
+        Alert("确定删除",2,null,function () {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/projectPlanDetails/deletePlanDetailsById",
+                data: {planDetailsId: id},
+                type: "post",
+                dataType: "json",
+                success: function (result) {
+                    if (result.ret) {
+                        toastr.info("任务已经删除!");
+                        projectStagePlan.stageTable.bootstrapTable('refresh');
+                    } else {
+                        Alert("失败:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
                 }
-            },
-            error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
-            }
-        });
+            });
+
+        })
     };
 
     $(function () {
