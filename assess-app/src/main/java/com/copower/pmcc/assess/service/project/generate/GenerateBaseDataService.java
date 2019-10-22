@@ -4228,9 +4228,12 @@ public class GenerateBaseDataService {
                 }
                 break;
                 case JudgeObjectLoactionField6: {
-                    if (StringUtils.isNotEmpty(basicEstateLandStateVo.getDevelopmentDegreeContentName())) {
-                        map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), basicEstateLandStateVo.getDevelopmentDegreeContentName());
+                    if (StringUtils.isNotBlank(basicEstateVo.getInfrastructureName())) {
+                        map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), basicEstateVo.getInfrastructureName());
                     }
+//                    if (StringUtils.isNotEmpty(basicEstateLandStateVo.getDevelopmentDegreeContentName())) {
+//                        map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), basicEstateLandStateVo.getDevelopmentDegreeContentName());
+//                    }
                 }
                 break;
                 case JudgeObjectLoactionField6B: {
