@@ -275,7 +275,7 @@
                 field: 'projectPhaseName', title: '名称', width: '45%', formatter: function (value, row, index) {
                     var str = row.projectPhaseName;
                     if (row.planRemarks) {
-                        str += '<br/>  ' + "<label class='label label-default'>" + row.planRemarks + "</label>";
+                        str += '<br/>  ' + "<label class='label label-primary'>" + row.planRemarks + "</label>";
                     }
                     return str;
                 }

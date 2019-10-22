@@ -3,7 +3,10 @@ package com.copower.pmcc.assess.controller.project;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.common.enums.report.AssessProjectTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
+import com.copower.pmcc.assess.dal.basis.entity.DocumentTemplate;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectWorkStage;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanVo;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -13,7 +16,6 @@ import com.copower.pmcc.assess.service.project.ProjectCenterService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
-import com.copower.pmcc.assess.service.project.plan.execute.PlanSurveyExecute;
 import com.copower.pmcc.assess.service.project.scheme.ProjectPlanSchemeAssist;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
@@ -130,12 +132,6 @@ public class ProjectCenterController {
                 queryManager, queryTimeStart, queryTimeEnd, queryConsignor, queryUseUnit, queryEstateName, queryLoanType, queryDepartmentId);
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/getCsrProjectInfoList", name = "取得 债权人列表", method = RequestMethod.GET)
-    public BootstrapTableVo getCsrProjectInfoList(String name) {
-        return projectCenterService.csrProjectInfoList(name);
-    }
-
 
     @RequestMapping(value = "/projectCsrList", name = "债权项目列表")
     public ModelAndView projectCsrList() {
@@ -165,10 +161,6 @@ public class ProjectCenterController {
         ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(workStageId);
         //如果为房产 现场与方案阶段使用不同的页面
         if(AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_HOUSE.getKey().equals(projectInfoService.getAssessProjectType(projectInfo.getProjectCategoryId()).getKey())){
-            //现场查勘
-            if (StringUtils.equals(projectWorkStage.getStageForm(), StringUtils.uncapitalize(PlanSurveyExecute.class.getSimpleName()))) {
-                viewUrl = "/project/detailInfo/house/surveyStageInfo";
-            }
             //评估方案计划
             if (StringUtils.equals(projectWorkStage.getStageForm(), StringUtils.uncapitalize(ProjectPlanSchemeAssist.class.getSimpleName()))) {
                 viewUrl = "/project/detailInfo/house/schemeStageInfo";
