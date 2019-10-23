@@ -48,9 +48,9 @@
 
     //户型选择
     houseCommon.selectHuxing = function (_this) {
-        assessHuxing.select({
-            basicApplyId: basicCommon.getApplyId(),
-            caseUnitId: null,
+        var data = formSerializeArray(houseCommon.houseForm) ;
+        assessHuxing.selectByBasicUnitId({
+            basicUnitId: data.unitId,
             success: function (row) {
                 //1.赋值 2.拷贝附件并显示附件数据
                 $(_this).closest('.input-group').find('[name=huxingId]').val(row.id);

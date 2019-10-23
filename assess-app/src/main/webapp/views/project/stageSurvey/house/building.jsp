@@ -565,6 +565,13 @@
 </div>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.build.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/sonBuildView.js"></script>
+
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/tree-grid/css/jquery.treegrid.css">
+<script type="text/javascript" src="${pageContext.request.contextPath}/assets/tree-grid/js/jquery.treegrid.js"></script>
+<%@include file="/views/data/dataPropertyModelQuote.jsp" %>
+<%@include file="/views/method/module/developmentCommon.jsp" %>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/method/developmentCommon.js"></script>
+
 <script type="text/javascript">
     $(function () {
         buildingCommon.initById('${basicBuilding.id}');

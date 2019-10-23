@@ -26,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -213,7 +214,7 @@ public class ProjectMemberService {
         if (StringUtils.isEmpty(projectPlanDetails.getExecuteUserAccount())) {
             return;
         }
-        if (projectPlanDetails.getProjectId() == null){
+        if (projectPlanDetails.getProjectId() == null) {
             return;
         }
         ProjectMember projectMember = projectMemberDao.getProjectMemberItem(projectPlanDetails.getProjectId());
@@ -226,18 +227,28 @@ public class ProjectMemberService {
                 List<String> stringList = FormatUtils.transformString2List(projectMember.getUserAccountMember());
                 try {
                     List<String> stringList2 = FormatUtils.transformString2List(projectPlanDetails.getExecuteUserAccount());
+                    Iterator<String> stringIterator = stringList2.iterator();
+                    while (stringIterator.hasNext()) {
+                        if (stringList.contains(stringIterator.next())) {
+                            stringIterator.remove();
+                        }
+                    }
                     stringList.addAll(stringList2);
                 } catch (Exception e) {
-                    stringList.add(projectPlanDetails.getExecuteUserAccount());
+                    if (!stringList.contains(projectPlanDetails.getExecuteUserAccount())) {
+                        stringList.add(projectPlanDetails.getExecuteUserAccount());
+                    }
                 }
                 projectMember.setUserAccountMember(StringUtils.join(stringList, ","));
             } catch (Exception e) {
-                String v = String.join("", projectMember.getUserAccountMember(), ",", projectPlanDetails.getExecuteUserAccount());
-                projectMember.setUserAccountMember(v);
+                if (!StringUtils.containsIgnoreCase(projectMember.getUserAccountMember(),projectPlanDetails.getExecuteUserAccount())){
+                    String v = String.join("", projectMember.getUserAccountMember(), ",", projectPlanDetails.getExecuteUserAccount());
+                    projectMember.setUserAccountMember(v);
+                }
             }
         }
         //从未添加过项目成员情况
-        if (StringUtils.isEmpty(projectMember.getUserAccountMember())){
+        if (StringUtils.isEmpty(projectMember.getUserAccountMember())) {
             projectMember.setUserAccountMember(projectPlanDetails.getExecuteUserAccount());
         }
         projectMemberDao.updateProjectMember(projectMember);

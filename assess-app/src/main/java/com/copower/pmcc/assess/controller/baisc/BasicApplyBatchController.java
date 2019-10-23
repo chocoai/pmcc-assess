@@ -206,6 +206,8 @@ public class BasicApplyBatchController extends BaseController {
         modelAndView.addObject("planDetailsId", planDetailsId);
         modelAndView.addObject("tbType", tbType);
         modelAndView.addObject("formType", BasicApplyTypeEnum.getEnumById(formType).getKey());
+        List<CrmBaseDataDicDto> unitPropertiesList = projectInfoService.getUnitPropertiesList();
+        modelAndView.addObject("unitPropertiesList", unitPropertiesList);
         return modelAndView;
     }
 
@@ -396,9 +398,11 @@ public class BasicApplyBatchController extends BaseController {
             BasicApplyBatch applyBatch = new BasicApplyBatch();
             applyBatch.setEstateId(estateId);
             BasicApplyBatch singleData = basicApplyBatchService.getSingleData(applyBatch);
-            modelAndView.addObject("tableId", singleData.getEstateId());
-            //显示引用项目还是案列按钮
-            modelAndView.addObject("showTab", singleData.getShowTab());
+            if (singleData != null){
+                modelAndView.addObject("tableId", singleData.getEstateId());
+                //显示引用项目还是案列按钮
+                modelAndView.addObject("showTab", singleData.getShowTab());
+            }
         } else {
             BasicApplyBatchDetail basicApplyBatchDetail = new BasicApplyBatchDetail();
             basicApplyBatchDetail.setId(id);
