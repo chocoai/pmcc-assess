@@ -1,15 +1,10 @@
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html lang="en" class="no-js">
 <head>
     <%@include file="/views/share/main_css.jsp" %>
-    <link rel="stylesheet"
-          href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/tree.css">
-    <link rel="stylesheet"
-          href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/datagrid.css">
-    <link rel="stylesheet"
-          href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/panel.css">
 </head>
 <body class="nav-md footer_fixed">
 <div class="container body">
@@ -17,6 +12,7 @@
         <div class="right_col" role="main" style="margin-left: 0">
             <%@include file="/views/share/form_head.jsp" %>
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
+            <%@include file="/views/share/project/projectPlanDetails.jsp" %>
             <!--填写表单-->
             <c:forEach items="${generationVos}" var="generationVo">
                 <div class="x_panel area_panel">
@@ -148,6 +144,7 @@
 </div>
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
+</body>
 </html>
 <script type="text/javascript">
     function fileShow(fieldsName, deleteFlag, id) {
@@ -195,34 +192,8 @@
         });
     }
 
-
     function saveform() {
-        if (!$("#frm_approval").valid()) {
-            return false;
-        }
-        Loading.progressShow();
-        $.ajax({
-            url: "${pageContext.request.contextPath}/ProjectPlan/submitPlanApproval",
-            type: "post",
-            dataType: "json",
-            data: formApproval.getFormData(),
-            success: function (result) {
-                Loading.progressHide();
-                if (result.ret) {
-                    Alert("提交数据成功!", 1, null, function () {
-                        window.close();
-                    });
-                }
-                else {
-                    Alert("保存数据失败，失败原因:" + result.errmsg, 1, null, null);
-                }
-            },
-            error: function (result) {
-                Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
-            }
-        })
+        saveApprovalform("");
     }
-
 
 </script>
