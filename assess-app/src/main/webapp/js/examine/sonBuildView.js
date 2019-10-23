@@ -495,5 +495,23 @@ var buildingModelView;
                 }
             }
         }
-    }
+    };
+
+    //绑定事件
+    $("#" + buildingModelView.prototype.config().sonTable).closest('.x_panel').find('.x_title').bind('click', function () {
+        buildingModelView.prototype.sonModelMethod.buildingOutfit.loadDataDicList();
+    });
+    //绑定事件
+    $("#" + buildingModelView.prototype.config().examineBuildingSurfaceTable).closest('.x_panel').find('.x_title').bind('click', function () {
+        buildingModelView.prototype.sonModelMethod.buildingSurface.loadDataDicList();
+    });
+    //绑定事件
+    $("#" + buildingModelView.prototype.config().examineBuildingMaintenanceTable).closest('.x_panel').find('.x_title').bind('click', function () {
+        buildingModelView.prototype.sonModelMethod.buildingMaintenance.loadDataDicList();
+    });
+    //绑定事件
+    $("#" + buildingModelView.prototype.config().examineBuildingFunctionTable).closest('.x_panel').find('.x_title').bind('click', function () {
+        buildingModelView.prototype.sonModelMethod.buildingFunction.loadDataDicList();
+    });
+
 })();

@@ -206,6 +206,8 @@ public class BasicApplyBatchController extends BaseController {
         modelAndView.addObject("planDetailsId", planDetailsId);
         modelAndView.addObject("tbType", tbType);
         modelAndView.addObject("formType", BasicApplyTypeEnum.getEnumById(formType).getKey());
+        List<CrmBaseDataDicDto> unitPropertiesList = projectInfoService.getUnitPropertiesList();
+        modelAndView.addObject("unitPropertiesList", unitPropertiesList);
         return modelAndView;
     }
 
