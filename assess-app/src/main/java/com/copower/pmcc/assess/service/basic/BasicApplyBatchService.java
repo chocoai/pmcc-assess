@@ -45,6 +45,7 @@ import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
@@ -173,23 +174,43 @@ public class BasicApplyBatchService {
         if (estateId == null) return treeDtos;
         BasicApplyBatch basicApplyBatch = getBasicApplyBatchByEstateId(estateId);
         if (basicApplyBatch == null) return treeDtos;
-        ZtreeDto ztreeDto = new ZtreeDto();
-        ztreeDto.setId(estateId);
-        ztreeDto.setPid(0);
-        ztreeDto.setNumber(String.valueOf(estateId));
-        ztreeDto.setName(basicApplyBatch.getEstateName());
-        ztreeDto.setDisplayName(basicApplyBatch.getEstateName());
-        treeDtos.add(ztreeDto);
+        ZtreeDto startDto = new ZtreeDto();
+        startDto.setId(estateId);
+        startDto.setPid(0);
+        startDto.setName(basicApplyBatch.getEstateName());
+        startDto.setDisplayName(basicApplyBatch.getEstateName());
+
+        startDto.setType(EstateTaggingTypeEnum.ESTATE.getKey());
+        startDto.setNumber(String.valueOf(estateId));
+        startDto.setTableId(estateId);
+        startDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicEstate.class));
+
+        treeDtos.add(startDto);
         List<BasicApplyBatchDetail> basicApplyBatchDetails = basicApplyBatchDetailService.getBasicApplyBatchDetailByApplyBatchId(basicApplyBatch.getId());
         if (CollectionUtils.isEmpty(basicApplyBatchDetails)) return treeDtos;
         for (BasicApplyBatchDetail item : basicApplyBatchDetails) {
-            ZtreeDto treeDto2 = new ZtreeDto();
-            treeDto2.setId(item.getId());
-            treeDto2.setName(item.getName());
-            treeDto2.setDisplayName(item.getDisplayName());
-            treeDto2.setPid(item.getPid().equals(0) ? estateId : item.getPid());
-            treeDto2.setNumber(String.valueOf(item.getTableId()));
-            treeDtos.add(treeDto2);
+            if (Objects.equal(item.getPid(),new Integer(0))){
+                continue;
+            }
+            ZtreeDto ztreeDto = new ZtreeDto();
+            ztreeDto.setId(item.getId());
+            ztreeDto.setName(item.getName());
+            ztreeDto.setDisplayName(item.getDisplayName());
+            ztreeDto.setPid(item.getPid());
+
+            ztreeDto.setNumber(String.valueOf(item.getTableId()));
+            ztreeDto.setTableName(item.getTableName());
+            ztreeDto.setTableId(item.getTableId());
+            if (Objects.equal(item.getTableName(),FormatUtils.entityNameConvertToTableName(BasicHouse.class))){
+                ztreeDto.setType(EstateTaggingTypeEnum.HOUSE.getKey());
+            }
+            if (Objects.equal(item.getTableName(),FormatUtils.entityNameConvertToTableName(BasicBuilding.class))){
+                ztreeDto.setType(EstateTaggingTypeEnum.BUILDING.getKey());
+            }
+            if (Objects.equal(item.getTableName(),FormatUtils.entityNameConvertToTableName(BasicUnit.class))){
+                ztreeDto.setType(EstateTaggingTypeEnum.UNIT.getKey());
+            }
+            treeDtos.add(ztreeDto);
         }
         return treeDtos;
 

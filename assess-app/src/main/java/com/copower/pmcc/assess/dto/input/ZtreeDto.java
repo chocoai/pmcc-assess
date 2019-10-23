@@ -1,9 +1,11 @@
 package com.copower.pmcc.assess.dto.input;
 
+import java.io.Serializable;
+
 /**
  * Created by kings on 2018-4-10.
  */
-public class ZtreeDto {
+public class ZtreeDto implements Serializable,Cloneable,Comparable<ZtreeDto> {
     private Integer id;
     private Integer pid;
     private String name;
@@ -13,6 +15,9 @@ public class ZtreeDto {
     private Integer area;
     private String number;
     private Boolean isParent;
+    private String type;
+    private String tableName;
+    private Integer tableId;
 
     public Integer getId() {
         return id;
@@ -93,5 +98,34 @@ public class ZtreeDto {
 
     public void setArea(Integer area) {
         this.area = area;
+    }
+
+    @Override
+    public int compareTo(ZtreeDto o) {
+        return this.getId().compareTo(o.getId());
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getTableName() {
+        return tableName;
+    }
+
+    public void setTableName(String tableName) {
+        this.tableName = tableName;
+    }
+
+    public Integer getTableId() {
+        return tableId;
+    }
+
+    public void setTableId(Integer tableId) {
+        this.tableId = tableId;
     }
 }
