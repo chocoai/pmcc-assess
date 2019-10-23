@@ -335,6 +335,12 @@
                     if (row.displayUrl) {
                         str += "<a onclick='projectStagePlan.taskOpenWin(\"" + row.displayUrl + "\")' href='javascript://' style='margin-left: 5px;' data-placement='top' data-original-title='查看' class='btn btn-xs btn-warning tooltips'  ><i class='fa fa-search fa-white'></i></a>";
                     }
+                    if (row.canCopy) {
+                        str += " <a href='javascript://' onclick='projectStagePlan.taskCopy(this," + row.id + ");' data-planDetailsId='" + row.id + "' title='复制' class='btn btn-xs btn-warning btn-copy' ><i class='fa fa-copy fa-white'></i> <span>复制</span></a>";
+                    }
+                    if (row.canPaste) {
+                        str += " <a href='javascript://' onclick='projectStagePlan.taskPaste(this," + row.id + ");' data-planDetailsId='" + row.id + "' title='粘贴' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-paste fa-white'></i> <span>粘贴</span></a>";
+                    }
                     return str;
                 }
             });
@@ -606,7 +612,7 @@
      * @param id
      */
     projectStagePlan.deleteStagePlan = function (id) {
-        Alert("确定删除",2,null,function () {
+        Alert("确定删除", 2, null, function () {
             $.ajax({
                 url: "${pageContext.request.contextPath}/projectPlanDetails/deletePlanDetailsById",
                 data: {planDetailsId: id},
@@ -627,6 +633,43 @@
 
         })
     };
+    var copyPlanDetailsTempId = undefined;
+    //工作事项复制
+    projectStagePlan.taskCopy = function (_this, id) {
+        $(_this).closest('.tab-pane').find('.btn-copy').each(function () {
+            $(this).find('span').text('复制');
+        });
+        $(_this).find('span').text('已被复制');
+        copyPlanDetailsTempId = id;
+    }
+
+    //工作事项粘贴
+    projectStagePlan.taskPaste = function (_this, id) {
+        if (!copyPlanDetailsTempId) {
+            Alert('请选择复制对象');
+            return false;
+        }
+        if (id == copyPlanDetailsTempId) {
+            Alert('无法粘贴自己');
+            return false;
+        }
+        Loading.progressShow();
+        $.ajax({
+            url: '${pageContext.request.contextPath}/projectPlanDetails/taskPaste',
+            data: {
+                copyPlanDetailsId: copyPlanDetailsTempId,
+                pastePlanDetailsId: id
+            },
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    toastr.success("粘贴完成");
+                } else {
+                    Alert(result.errmsg);
+                }
+            }
+        })
+    }
 
     $(function () {
         projectStagePlan.loadProjectTaskList();

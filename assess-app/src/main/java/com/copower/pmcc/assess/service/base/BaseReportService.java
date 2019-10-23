@@ -88,15 +88,15 @@ public class BaseReportService {
         baseAttachmentService.updateAttachementByExample(baseAttachment, baseAttachmentNew);
     }
 
-    public List<BaseReportTemplate> getBaseReportTemplate(BaseReportTemplate baseReportTemplate,Integer entrustPurpose) {
-        List<BaseReportTemplate> baseReportTemplates = baseReportDao.getBaseReportTemplateByExample(baseReportTemplate,entrustPurpose);
+    public List<BaseReportTemplate> getBaseReportTemplate(BaseReportTemplate baseReportTemplate, Integer entrustPurpose) {
+        List<BaseReportTemplate> baseReportTemplates = baseReportDao.getBaseReportTemplateByExample(baseReportTemplate, entrustPurpose);
         return baseReportTemplates;
     }
 
-    public BootstrapTableVo getBaseReportTemplateByExample(BaseReportTemplate baseReportTemplate,Integer entrustPurpose) {
+    public BootstrapTableVo getBaseReportTemplateByExample(BaseReportTemplate baseReportTemplate, Integer entrustPurpose) {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<BaseReportTemplate> baseReportTemplates = baseReportDao.getBaseReportTemplateByExample(baseReportTemplate,entrustPurpose);
+        List<BaseReportTemplate> baseReportTemplates = baseReportDao.getBaseReportTemplateByExample(baseReportTemplate, entrustPurpose);
         List<BaseReportTemplateVo> transform = LangUtils.transform(baseReportTemplates, o -> getBaseReportTemplateVo(o));
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         bootstrapTableVo.setTotal(page.getTotal());
@@ -136,7 +136,10 @@ public class BaseReportService {
         if (unitInformationVo == null) {
             return null;
         }
-        BaseReportTemplate template = getReportTemplate(projectInfo, Integer.valueOf(unitInformationVo.getuUseUnit()), reportType);
+        BaseReportTemplate template = null;
+        if (StringUtils.isNotBlank(unitInformationVo.getuUseUnit())) {
+            template = getReportTemplate(projectInfo, Integer.valueOf(unitInformationVo.getuUseUnit()), reportType);
+        }
         if (template == null) {
             template = getCompanyTemplate(projectInfo, reportType);
         }
@@ -162,7 +165,7 @@ public class BaseReportService {
         baseReportTemplateWhere.setType(projectInfo.getProjectTypeId());
         baseReportTemplateWhere.setCategory(projectInfo.getProjectCategoryId());
         baseReportTemplateWhere.setBisEnable(true);
-        List<BaseReportTemplate> reportTemplateList = getBaseReportTemplate(baseReportTemplateWhere,projectInfo.getEntrustPurpose());
+        List<BaseReportTemplate> reportTemplateList = getBaseReportTemplate(baseReportTemplateWhere, projectInfo.getEntrustPurpose());
         if (CollectionUtils.isEmpty(reportTemplateList)) {
             CrmCustomerDto customer = crmCustomerService.getCustomer(useUnit);
             if (customer == null) return null;
@@ -185,7 +188,7 @@ public class BaseReportService {
         baseReportTemplateWhere.setType(projectInfo.getProjectTypeId());
         baseReportTemplateWhere.setCategory(projectInfo.getProjectCategoryId());
         baseReportTemplateWhere.setBisEnable(true);
-        List<BaseReportTemplate> reportTemplateList = getBaseReportTemplate(baseReportTemplateWhere,projectInfo.getEntrustPurpose());
+        List<BaseReportTemplate> reportTemplateList = getBaseReportTemplate(baseReportTemplateWhere, projectInfo.getEntrustPurpose());
         return getReportTemplateByLoanType(reportTemplateList, projectInfo.getLoanType());
     }
 

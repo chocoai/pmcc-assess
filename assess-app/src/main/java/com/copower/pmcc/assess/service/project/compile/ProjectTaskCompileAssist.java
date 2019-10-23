@@ -46,7 +46,6 @@ public class ProjectTaskCompileAssist implements ProjectTaskInterface {
             compileReport = new CompileReport();
             compileReport.setProjectId(projectPlanDetails.getProjectId());
             compileReport.setPlanDetailsId(projectPlanDetails.getId());
-            compileReport.setAreaId(pPlanDetails.getAreaId());
             compileReport.setCreator(commonService.thisUserAccount());
             compileReportDao.addCompileReport(compileReport);
         }

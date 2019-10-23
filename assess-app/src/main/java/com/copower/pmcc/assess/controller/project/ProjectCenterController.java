@@ -160,7 +160,8 @@ public class ProjectCenterController {
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
         ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(workStageId);
         //如果为房产 现场与方案阶段使用不同的页面
-        if(AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_HOUSE.getKey().equals(projectInfoService.getAssessProjectType(projectInfo.getProjectCategoryId()).getKey())){
+        String projectTypeKey = projectInfoService.getAssessProjectType(projectInfo.getProjectCategoryId()).getKey();
+        if (AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_HOUSE.getKey().equals(projectTypeKey) || AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_LAND.getKey().equals(projectTypeKey)) {
             //评估方案计划
             if (StringUtils.equals(projectWorkStage.getStageForm(), StringUtils.uncapitalize(ProjectPlanSchemeAssist.class.getSimpleName()))) {
                 viewUrl = "/project/detailInfo/house/schemeStageInfo";
@@ -169,19 +170,19 @@ public class ProjectCenterController {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(viewUrl);
         List<ProjectPlanVo> projectPlanList = projectInfoService.getProjectPlanList(projectId);
         modelAndView.addObject("projectPlanList", projectPlanList);
-        if(CollectionUtils.isNotEmpty(projectPlanList)){
+        if (CollectionUtils.isNotEmpty(projectPlanList)) {
             for (ProjectPlanVo projectPlanVo : projectPlanList) {
-                if(projectPlanVo.getWorkStageId().equals(workStageId)){
+                if (projectPlanVo.getWorkStageId().equals(workStageId)) {
                     modelAndView.addObject("projectPlan", projectPlanVo);
-                    modelAndView.addObject("projectPhaseVoList", projectPhaseService.getCacheProjectPhaseByCategoryId(projectInfo.getProjectCategoryId(),workStageId));
+                    modelAndView.addObject("projectPhaseVoList", projectPhaseService.getCacheProjectPhaseByCategoryId(projectInfo.getProjectCategoryId(), workStageId));
                 }
             }
         }
         modelAndView.addObject("projectId", projectId);
         modelAndView.addObject("companyId", publicService.getCurrentCompany().getCompanyId());
         modelAndView.addObject(StringUtils.uncapitalize(ProjectInfo.class.getSimpleName()), projectInfoService.getSimpleProjectInfoVo(projectInfo));
-        modelAndView.addObject(StringUtils.uncapitalize(ProjectWorkStage.class.getSimpleName()),projectWorkStage);
-        modelAndView.addObject(StringUtils.uncapitalize(SysUserDto.class.getSimpleName()),processControllerComponent.getThisUserInfo());
+        modelAndView.addObject(StringUtils.uncapitalize(ProjectWorkStage.class.getSimpleName()), projectWorkStage);
+        modelAndView.addObject(StringUtils.uncapitalize(SysUserDto.class.getSimpleName()), processControllerComponent.getThisUserInfo());
         return modelAndView;
     }
 

@@ -57,8 +57,8 @@ public class ProjectPlanDetailsController {
     @PostMapping(name = "重启任务", value = "/replyProjectPlanDetails")
     public HttpResult replyProjectPlanDetails(Integer planDetailsId, String formData) {
         try {
-            ProjectPlanDetailsVo projectPlanDetailsVo = projectPlanDetailsService.replyProjectPlanDetails(planDetailsId, formData);
-            return HttpResult.newCorrectResult(projectPlanDetailsService.getPlanDetailListByProjectPlanDetailId(projectPlanDetailsVo.getId()));
+            projectPlanDetailsService.replyProjectPlanDetails(planDetailsId, formData);
+            return HttpResult.newCorrectResult();
         } catch (BusinessException e) {
             return HttpResult.newErrorResult(e.getMessage());
         } catch (Exception e) {
@@ -100,17 +100,6 @@ public class ProjectPlanDetailsController {
         } catch (Exception e) {
             logger.error("项目详情粘贴数据", e);
             return HttpResult.newErrorResult("粘贴数据异常");
-        }
-    }
-
-    @PostMapping(name = "获取数据", value = "/getProjectPlanDetailsById")
-    public HttpResult getProjectPlanDetailsById(Integer id) {
-        try {
-            ProjectPlanDetailsVo projectPlanDetailsVo = projectPlanDetailsService.getPlanDetailListByProjectPlanDetailId(id);
-            return HttpResult.newCorrectResult(projectPlanDetailsVo);
-        } catch (Exception e) {
-            logger.error("获取数据", e);
-            return HttpResult.newErrorResult("获取数据异常");
         }
     }
 

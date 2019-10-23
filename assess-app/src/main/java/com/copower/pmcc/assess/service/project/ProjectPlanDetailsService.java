@@ -348,10 +348,13 @@ public class ProjectPlanDetailsService {
         List<Integer> phaseFullIds = Lists.newArrayList();
         ProjectPhase sceneExplorePhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.SCENE_EXPLORE, projectInfo.getProjectCategoryId());
         ProjectPhase caseStudyChildPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.COMMON_CASE_STUDY_EXAMINE);
+        ProjectPhase caseStudyExtendPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.CASE_STUDY_EXTEND);
         if (sceneExplorePhase != null)
             phaseFullIds.add(sceneExplorePhase.getId());
         if (caseStudyChildPhase != null)
             phaseFullIds.add(caseStudyChildPhase.getId());
+        if (caseStudyExtendPhase != null)
+            phaseFullIds.add(caseStudyExtendPhase.getId());
         String viewUrl = String.format("/%s/ProjectTask/projectTaskDetailsById?planDetailsId=", applicationConstant.getAppKey());
         //判断任务是否结束，如果结束只能查看详情
         for (ProjectPlanDetailsVo projectPlanDetailsVo : projectPlanDetailsVos) {
@@ -425,126 +428,8 @@ public class ProjectPlanDetailsService {
             }
         }
         bootstrapTableVo.setTotal(page.getTotal());
-//        bootstrapTableVo.setTotal((long) projectPlanDetailsVos.size());
         bootstrapTableVo.setRows(projectPlanDetailsVos);
         return bootstrapTableVo;
-    }
-
-
-    public ProjectPlanDetailsVo getPlanDetailListByProjectPlanDetailId(Integer projectPlanDetailId) {
-        ProjectPlanDetails projectPlanDetailsById = projectPlanDetailsDao.getProjectPlanDetailsById(projectPlanDetailId);
-        List<ProjectPlanDetails> projectPlanDetails = Lists.newArrayList();
-        projectPlanDetails.add(projectPlanDetailsById);
-        if (CollectionUtils.isEmpty(projectPlanDetails)) return null;
-        List<ProjectPlanDetailsVo> projectPlanDetailsVos = getProjectPlanDetailsVos(projectPlanDetails, false);
-
-        //获取当前人该阶段下待处理的任务
-        ProjectResponsibilityDto projectResponsibilityDto = new ProjectResponsibilityDto();
-        projectResponsibilityDto.setProjectId(projectPlanDetailsById.getProjectId());
-        projectResponsibilityDto.setPlanId(projectPlanDetailsById.getPlanId());
-        projectResponsibilityDto.setAppKey(applicationConstant.getAppKey());
-        projectResponsibilityDto.setUserAccount(processControllerComponent.getThisUser());
-        List<ProjectResponsibilityDto> projectTaskList = bpmRpcProjectTaskService.getProjectTaskList(projectResponsibilityDto);
-
-        //获取该阶段下正在运行的待审批任务
-        List<String> processInsIds = Lists.newArrayList();
-        for (ProjectPlanDetails projectPlanDetail : projectPlanDetails) {
-            if (StringUtils.equals(projectPlanDetail.getStatus(), SysProjectEnum.RUNING.getValue())) {
-                if (!StringUtils.equals(projectPlanDetail.getProcessInsId(), "0")) {
-                    processInsIds.add(projectPlanDetail.getProcessInsId());
-                }
-            }
-        }
-        List<ActivitiTaskNodeDto> activitiTaskNodeDtos = null;
-        try {
-            activitiTaskNodeDtos = bpmRpcActivitiProcessManageService.queryProcessCurrentTask(processInsIds.toArray(new String[processInsIds.size()]));
-        } catch (BpmException e) {
-            logger.error("计划任务获取流程任务异常", e);
-        }
-        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetailsById.getProjectId());
-        ProjectPhase sceneExplorePhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.SCENE_EXPLORE, projectInfo.getProjectCategoryId());
-        ProjectPhase sceneExploreChildPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.COMMON_SCENE_EXPLORE_EXAMINE);
-        ProjectPhase caseStudyChildPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.COMMON_CASE_STUDY_EXAMINE);
-        List<Integer> phaseIds = Lists.newArrayList(sceneExploreChildPhase.getId(), caseStudyChildPhase.getId());
-        List<Integer> phaseFullIds = Lists.newArrayList(phaseIds);
-        if (sceneExplorePhase != null)
-            phaseFullIds.add(sceneExplorePhase.getId());
-        String viewUrl = String.format("/%s/ProjectTask/projectTaskDetailsById?planDetailsId=", applicationConstant.getAppKey());
-        //判断任务是否结束，如果结束只能查看详情
-        for (ProjectPlanDetailsVo projectPlanDetailsVo : projectPlanDetailsVos) {
-            //任务在进行中，则需判断任务是在提交还是审批的状态
-            // 如果任务是在审批或完成状态可查看详情
-            //如果为待提交状态 当前人与任务执行人相同 可提交任务
-            //如果为待审批状态 当前人与审批人相同 可审批该任务
-            SysProjectEnum sysProjectEnum = SysProjectEnum.getEnumByName(SysProjectEnum.getNameByKey(projectPlanDetailsVo.getStatus()));
-            switch (sysProjectEnum) {
-                case NONE:
-                case CLOSE://业务异常关闭流程错误更新状态的数据
-                case RUNING:
-                    if (StringUtils.equals(projectPlanDetailsVo.getProcessInsId(), "0")) {
-                        if (CollectionUtils.isNotEmpty(projectTaskList)) {
-                            for (ProjectResponsibilityDto responsibilityDto : projectTaskList) {
-                                if (projectPlanDetailsVo.getId().intValue() == responsibilityDto.getPlanDetailsId().intValue()) {
-                                    if (responsibilityDto.getUserAccount().contains(commonService.thisUserAccount())) {
-                                        String executeUrl = String.format(responsibilityDto.getUrl().contains("?") ? "%s&responsibilityId=%s" : "%s?responsibilityId=%s", responsibilityDto.getUrl(), responsibilityDto.getId());
-                                        projectPlanDetailsVo.setExcuteUrl(executeUrl);
-
-                                        //设置粘贴
-                                        if (phaseFullIds.contains(projectPlanDetailsVo.getProjectPhaseId())) {
-                                            projectPlanDetailsVo.setCanPaste(true);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    } else {
-                        if (CollectionUtils.isNotEmpty(activitiTaskNodeDtos)) {
-                            String processInsId = projectPlanDetailsVo.getProcessInsId();
-                            String taskId = new String();
-                            //根据情况获取对应的审批节点数据activitiTaskNodeDto
-                            ActivitiTaskNodeDto activitiTaskNodeDto = null;
-                            for (ActivitiTaskNodeDto taskNodeDto : activitiTaskNodeDtos) {
-                                if (StringUtils.equals(taskNodeDto.getProcessInstanceId(), processInsId)) {
-                                    activitiTaskNodeDto = taskNodeDto;
-                                    taskId = taskNodeDto.getTaskId();
-                                }
-                            }
-                            if (activitiTaskNodeDto != null) {
-                                BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(Integer.parseInt(activitiTaskNodeDto.getBusinessKey()));
-                                String approvalUrl = boxReDto.getProcessApprovalUrl();
-                                if (StringUtils.equals(ProcessActivityEnum.EDIT.getValue(), activitiTaskNodeDto.getTaskKey())) {
-                                    approvalUrl = boxReDto.getProcessEditUrl();
-                                }
-                                approvalUrl = String.format("/%s%s?boxId=%s&processInsId=%s&taskId=%s", boxReDto.getGroupName(), approvalUrl, boxReDto.getId(), processInsId, taskId);
-                                if (activitiTaskNodeDto.getUsers().contains(commonService.thisUserAccount())) {
-                                    projectPlanDetailsVo.setExcuteUrl(approvalUrl);
-                                }
-                            }
-                        }
-                    }
-                    break;
-            }
-            if (projectPlanDetailsVo.getBisLastLayer() == Boolean.TRUE)
-                projectPlanDetailsVo.setDisplayUrl(String.format("%s%s", viewUrl, projectPlanDetailsVo.getId()));
-            //设置复制
-            if (projectPlanDetailsVo.getBisLastLayer() == Boolean.TRUE && phaseIds.contains(projectPlanDetailsVo.getProjectPhaseId())) {
-                projectPlanDetailsVo.setCanCopy(true);
-            }
-            boolean isMember = projectMemberService.isProjectMember(projectPlanDetailsById.getProjectId(), commonService.thisUserAccount());
-            boolean isOperable = projectInfoService.isProjectOperable(projectPlanDetailsById.getProjectId());
-
-            if (isMember && isOperable) {
-                if (StringUtils.isNotBlank(projectPlanDetailsVo.getExecuteUserAccount()) && projectPlanDetailsVo.getBisStart()) {
-                    ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseById(projectPlanDetailsVo.getProjectPhaseId());
-                    if (projectPhase != null) {
-                        projectPlanDetailsVo.setCanReplay(projectPhase.getBisCanReturn());
-                    }
-                }
-            }
-        }
-
-        return projectPlanDetailsVos.get(0);
-
     }
 
     /**
@@ -857,7 +742,8 @@ public class ProjectPlanDetailsService {
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(copyPlanDetails.getProjectId());
         ProjectPhase sceneExplorePhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.SCENE_EXPLORE, projectInfo.getProjectCategoryId());
         ProjectPhase caseStudyChildPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.COMMON_CASE_STUDY_EXAMINE);
-        List<Integer> commonPhaseIds = Lists.newArrayList(sceneExplorePhase.getId(), caseStudyChildPhase.getId());
+        ProjectPhase caseStudyExtendPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.CASE_STUDY_EXTEND);
+        List<Integer> commonPhaseIds = Lists.newArrayList(sceneExplorePhase.getId(), caseStudyChildPhase.getId(),caseStudyExtendPhase.getId());
         //現場查勘案例調查
         if (commonPhaseIds.contains(copyPlanDetails.getProjectPhaseId())) {
             if (commonPhaseIds.contains(pastePlanDetails.getProjectPhaseId())) {

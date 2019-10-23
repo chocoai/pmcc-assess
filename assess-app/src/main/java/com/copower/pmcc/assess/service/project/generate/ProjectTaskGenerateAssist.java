@@ -46,15 +46,17 @@ public class ProjectTaskGenerateAssist implements ProjectTaskInterface {
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
-        return null;
-    }
-
-    @Override
-    public ModelAndView approvalView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageGenerate/planGenerateIndex", "", 0, "-1", "");
         //意见稿模板
         List<DocumentTemplate> documentTemplateList = documentTemplateService.getDocumentTemplateList("",baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_TEMPLATE_TYPE_OPINION).getId());
         modelAndView.addObject("documentTemplateList", documentTemplateList);
+        setModelParam(projectPlanService.getProjectplanById(projectPlanDetails.getPlanId()), modelAndView);
+        return modelAndView;
+    }
+
+    @Override
+    public ModelAndView approvalView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageGenerate/planGenerateApproval", processInsId, boxId, taskId, agentUserAccount);
         setModelParam(projectPlanService.getProjectplanById(projectPlanDetails.getPlanId()), modelAndView);
         return modelAndView;
     }
