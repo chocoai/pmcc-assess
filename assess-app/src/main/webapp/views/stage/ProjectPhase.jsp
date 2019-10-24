@@ -12,75 +12,79 @@
         <%@include file="/views/share/main_navigation.jsp" %>
         <%@include file="/views/share/main_head.jsp" %>
         <div class="right_col" role="main">
-            <div class="row">
-                <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                    <div class="x_panel">
-                        <div class="x_title collapse-link">
-                            <ul class="nav navbar-right panel_toolbox">
-                                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                            </ul>
-                            <h2>
-                                <i class="fa ${baseViewDto.currentMenu.icon}"></i>
-                                阶段事项
-                            </h2>
-                            <div class="clearfix"></div>
-                        </div>
-                        <div class="x_content">
-                            <form id="frm" class="form-horizontal">
-                                <div class="form-group ">
-                                    <div>
-                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                            项目大类:
-                                        </label>
-                                        <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                            <select name="classId" id="classId" class="form-control">
-                                                <option value="">-请选择-</option>
-                                                <c:forEach var="item" items="${projectClassList}">
-                                                    <option value="${item.id}">${item.name}</option>
-                                                </c:forEach>
-                                            </select>
+            <%@include file="/views/share/navigation/systemSetup.jsp" %>
+            <div class="col-xs-12  col-sm-12  col-md-10  col-lg-10 ">
+                <div class="row">
+                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                        <div class="x_panel">
+                            <div class="x_title collapse-link">
+                                <ul class="nav navbar-right panel_toolbox">
+                                    <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                                </ul>
+                                <h2>
+                                    <i class="fa ${baseViewDto.currentMenu.icon}"></i>
+                                    阶段事项
+                                </h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <form id="frm" class="form-horizontal">
+                                    <div class="form-group ">
+                                        <div>
+                                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                                项目大类:
+                                            </label>
+                                            <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                                <select name="classId" id="classId" class="form-control">
+                                                    <option value="">-请选择-</option>
+                                                    <c:forEach var="item" items="${projectClassList}">
+                                                        <option value="${item.id}">${item.name}</option>
+                                                    </c:forEach>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                                项目类型:
+                                            </label>
+                                            <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                                <select name="typeId" id="typeId" class="form-control">
+                                                    <option value="" selected="selected">-请选择-</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                                项目类别:
+                                            </label>
+                                            <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                                <select name="categoryId" id="categoryId" class="form-control">
+                                                    <option value="" selected="selected">-请选择-</option>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div>
-                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                            项目类型:
-                                        </label>
-                                        <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                            <select name="typeId" id="typeId" class="form-control">
-                                                <option value="" selected="selected">-请选择-</option>
-                                            </select>
-                                        </div>
+                                </form>
+                                <div class="x_panel">
+                                    <div id="work_stage_wizard" class="form_wizard wizard_horizontal">
                                     </div>
-                                    <div>
-                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                            项目类别:
-                                        </label>
-                                        <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                            <select name="categoryId" id="categoryId" class="form-control">
-                                                <option value="" selected="selected">-请选择-</option>
-                                            </select>
-                                        </div>
-                                    </div>
+                                    <p id="modelListToolbar">
+                                        <button id="create_work_stage" type="button" class="btn btn-primary"
+                                                data-toggle="modal">
+                                            新增项目阶段
+                                        </button>
+                                        <button id="create_project_phase" type="button" class="btn btn-success"
+                                                data-toggle="modal"> 新增工作事项
+                                        </button>
+                                    </p>
+                                    <table id="project_phase_list_table" class="table table-bordered"></table>
                                 </div>
-                            </form>
-                            <div class="x_panel">
-                                <div id="work_stage_wizard" class="form_wizard wizard_horizontal">
-                                </div>
-                                <p id="modelListToolbar">
-                                    <button id="create_work_stage" type="button" class="btn btn-primary"
-                                            data-toggle="modal">
-                                        新增项目阶段
-                                    </button>
-                                    <button id="create_project_phase" type="button" class="btn btn-success"
-                                            data-toggle="modal"> 新增工作事项
-                                    </button>
-                                </p>
-                                <table id="project_phase_list_table" class="table table-bordered"></table>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 </div>

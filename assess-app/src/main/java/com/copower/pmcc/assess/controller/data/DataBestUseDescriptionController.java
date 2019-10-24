@@ -27,7 +27,7 @@ public class DataBestUseDescriptionController {
     @Autowired
     private DataBestUseDescriptionService dataBestUseDescriptionService;
 
-    @RequestMapping(value = "/Index", name = "最佳利用方式查看 ")
+    @RequestMapping(value = "/index", name = "最佳利用方式查看 ")
     public ModelAndView index() {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/data/dataBestUseDescription");
         return modelAndView;
