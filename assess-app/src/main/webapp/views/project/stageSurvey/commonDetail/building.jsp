@@ -394,8 +394,8 @@
     </form>
 </div>
 
-<%@include file="./buildingOutfit.jsp" %>
-<%@include file="./buildingFunction.jsp" %>
+<%@include file="buildingOutfit.jsp" %>
+<%@include file="buildingFunction.jsp" %>
 <script src="${pageContext.request.contextPath}/js/method/developmentCommon.js"></script>
 <%@include file="/views/method/module/developmentCommon.jsp" %>
 

@@ -11,7 +11,7 @@
     </div>
 
     <form id="frm_estateLandState" class="form-horizontal">
-        <%@include file="/views/project/stageSurvey/examine/residence/detail/estateLandStateBody.jsp" %>
+        <%@include file="estateLandStateBody.jsp" %>
     </form>
 
 </div>

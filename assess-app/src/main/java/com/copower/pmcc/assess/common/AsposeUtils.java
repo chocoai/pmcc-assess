@@ -116,6 +116,48 @@ public class AsposeUtils {
     }
 
     /**
+     * 使用aspose组件获取表格内容
+     * @param document
+     * @return
+     */
+    public static String getWordTableText(Document document) {
+        StringBuilder stringBuilder = new StringBuilder(1024);
+        NodeCollection nodeCollection = null;
+        try {
+            nodeCollection = document.getChildNodes(NodeType.TABLE, true);
+        } catch (Exception e) {
+        }
+        if (nodeCollection == null){
+            return stringBuilder.toString();
+        }
+        if (nodeCollection.getCount() == 0) {
+            return stringBuilder.toString();
+        }
+        for (Node node : nodeCollection.toArray()) {
+            Table table = (Table) node;
+            RowCollection rows = table.getRows();
+            if (rows.getCount() == 0) {
+                continue;
+            }
+            for (Row row : rows.toArray()) {
+                CellCollection cells = row.getCells();
+                if (cells.getCount() == 0) {
+                    continue;
+                }
+                for (int i = 0; i < cells.getCount(); i++) {
+                    Cell cell = cells.get(i);
+                    if (StringUtils.isEmpty(cell.getText())) {
+                        continue;
+                    }
+                    stringBuilder.append(cell.getText());
+                }
+            }
+        }
+        return stringBuilder.toString();
+    }
+
+
+    /**
      * 获取word文本
      *
      * @param document
@@ -520,12 +562,12 @@ public class AsposeUtils {
         return targetHeight;
     }
 
-    public static void imageInsertToWrod2(List<Map<String, String>> imgList, Integer colCount, DocumentBuilder builder,List<String> paths) throws Exception {
-        if (CollectionUtils.isEmpty(imgList)&&CollectionUtils.isNotEmpty(paths)){
+    public static void imageInsertToWrod2(List<Map<String, String>> imgList, Integer colCount, DocumentBuilder builder, List<String> paths) throws Exception {
+        if (CollectionUtils.isEmpty(imgList) && CollectionUtils.isNotEmpty(paths)) {
             imgList = Lists.newArrayList();
-            for (String path:paths) {
+            for (String path : paths) {
                 Map<String, String> map = Maps.newHashMap();
-                map.put(path,"");
+                map.put(path, "");
                 imgList.add(map);
             }
         }
@@ -767,13 +809,13 @@ public class AsposeUtils {
      * @param path
      * @throws Exception
      */
-    public static void saveWord(String path,Document document) throws Exception {
+    public static void saveWord(String path, Document document) throws Exception {
         File file = new File(path);
         String fileName = file.getName();
         String suffix = fileName.substring(fileName.lastIndexOf(".") + 1);
         int[] arr = new int[]{SaveFormat.DOC, SaveFormat.DOT, SaveFormat.DOTX, SaveFormat.DOCM, SaveFormat.DOTX, SaveFormat.DOTM, SaveFormat.HTML};
         for (int i = 0; i < arr.length; i++) {
-            if (StringUtils.equalsIgnoreCase(SaveFormat.getName(arr[i]),suffix)) {
+            if (StringUtils.equalsIgnoreCase(SaveFormat.getName(arr[i]), suffix)) {
                 document.save(path, arr[i]);
                 break;
             }
