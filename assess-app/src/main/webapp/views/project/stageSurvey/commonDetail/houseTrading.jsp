@@ -15,7 +15,7 @@
 
         <input type="hidden" name="id" value="${basicHouseTrading.id}">
 
-        <%@include file="/views/project/stageSurvey/examine/residence/detail/houseTradingBody.jsp" %>
+        <%@include file="houseTradingBody.jsp" %>
     </form>
 </div>
 

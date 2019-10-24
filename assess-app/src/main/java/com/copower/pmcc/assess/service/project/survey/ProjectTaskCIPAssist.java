@@ -55,34 +55,21 @@ public class ProjectTaskCIPAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskCIPIndex", "", 0, "0", "");
-        DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
-        modelAndView.addObject("declareRecord", declareRecord);
-        modelAndView.addObject("projectPlanDetails", projectPlanDetails);
-        modelAndView.addObject("applyBatch", basicApplyBatchService.getBasicApplyBatchByPlanDetailsId(projectPlanDetails.getId()));
-        modelAndView.addObject("formClassifyList", getFormClassifyList(projectPlanDetails.getProjectId()));
-        modelAndView.addObject("examineFormTypeList", surveyCommonService.getExamineFormTypeList());
+        setViewParam(projectPlanDetails,modelAndView) ;
         return modelAndView;
     }
 
     @Override
     public ModelAndView approvalView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskCIPApproval", processInsId, boxId, taskId, agentUserAccount);
-        DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
-        modelAndView.addObject("declareRecord", declareRecord);
-        modelAndView.addObject("applyBatch", basicApplyBatchService.getBasicApplyBatchByPlanDetailsId(projectPlanDetails.getId()));
-        modelAndView.addObject("formClassifyList", getFormClassifyList(projectPlanDetails.getProjectId()));
-        modelAndView.addObject("examineFormTypeList", surveyCommonService.getExamineFormTypeList());
+        setViewParam(projectPlanDetails,modelAndView) ;
         return modelAndView;
     }
 
     @Override
     public ModelAndView returnEditView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskCIPIndex", processInsId, boxId, taskId, agentUserAccount);
-        DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
-        modelAndView.addObject("declareRecord", declareRecord);
-        modelAndView.addObject("applyBatch", basicApplyBatchService.getBasicApplyBatchByPlanDetailsId(projectPlanDetails.getId()));
-        modelAndView.addObject("formClassifyList", getFormClassifyList(projectPlanDetails.getProjectId()));
-        modelAndView.addObject("examineFormTypeList", surveyCommonService.getExamineFormTypeList());
+        setViewParam(projectPlanDetails,modelAndView) ;
         return modelAndView;
     }
 
@@ -94,11 +81,7 @@ public class ProjectTaskCIPAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView detailsView(ProjectPlanDetails projectPlanDetails, Integer boxId) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskCIPApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
-        DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
-        modelAndView.addObject("declareRecord", declareRecord);
-        modelAndView.addObject("applyBatch", basicApplyBatchService.getBasicApplyBatchByPlanDetailsId(projectPlanDetails.getId()));
-        modelAndView.addObject("formClassifyList", getFormClassifyList(projectPlanDetails.getProjectId()));
-        modelAndView.addObject("examineFormTypeList", surveyCommonService.getExamineFormTypeList());
+        setViewParam(projectPlanDetails,modelAndView) ;
         return modelAndView;
     }
 
@@ -120,6 +103,14 @@ public class ProjectTaskCIPAssist implements ProjectTaskInterface {
     @Override
     public void returnEditCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
 
+    }
+
+    private void setViewParam(ProjectPlanDetails projectPlanDetails,ModelAndView modelAndView){
+        DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
+        modelAndView.addObject("declareRecord", declareRecord);
+        modelAndView.addObject("applyBatch", basicApplyBatchService.getBasicApplyBatchByPlanDetailsId(projectPlanDetails.getId()));
+        modelAndView.addObject("formClassifyList", getFormClassifyList(projectPlanDetails.getProjectId()));
+        modelAndView.addObject("examineFormTypeList", surveyCommonService.getExamineFormTypeList());
     }
 
     private List<BaseDataDic> getFormClassifyList(Integer projectId) {

@@ -23,6 +23,7 @@ import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
@@ -30,6 +31,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -70,6 +72,10 @@ public class BasicApplyBatchController extends BaseController {
     private BasicEstateService basicEstateService;
     @Autowired
     private BasicUnitService basicUnitService;
+    @Autowired
+    private BasicHouseTradingService basicHouseTradingService;
+    @Autowired
+    private BasicEstateLandStateService basicEstateLandStateService;
 
     @RequestMapping(value = "/basicBatchApplyIndex", name = "申请首页", method = RequestMethod.GET)
     public ModelAndView basicApplyIndex() {
@@ -213,38 +219,107 @@ public class BasicApplyBatchController extends BaseController {
 
 
     @RequestMapping(value = "/informationDetail", name = "信息详情页面", method = RequestMethod.GET)
-    public ModelAndView informationDetail(Integer type, Integer id, Integer buildingType, Integer estateId) throws Exception {
-        String view = "/basic/informationDetail";
-        ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
-        if (id == 0) {
-            modelAndView.addObject("tableId", estateId);
-            BasicEstateVo basicEstateVo = publicBasicService.getBasicEstateById(estateId);
-            BasicEstateLandStateVo basicEstateLandStateVo = publicBasicService.getEstateLandStateByEstateId(estateId);
-            modelAndView.addObject("basicEstate", basicEstateVo);
-            modelAndView.addObject("basicEstateLandState", basicEstateLandStateVo);
-        } else {
-            BasicApplyBatchDetail detailData = basicApplyBatchDetailService.getDataById(id);
-            switch (detailData.getTableName()) {
-                case "tb_basic_building":
-                    BasicBuildingVo basicBuilding = publicBasicService.getBasicBuildingById(detailData.getTableId());
-                    modelAndView.addObject("basicBuilding", basicBuilding);
-                    break;
-                case "tb_basic_unit":
-                    BasicUnit basicUnit = publicBasicService.getBasicUnitById(detailData.getTableId());
-                    modelAndView.addObject("basicUnit", basicUnit);
-                    break;
-                case "tb_basic_house":
-                    BasicHouseVo basicHouseVo = publicBasicService.getBasicHouseVoById(detailData.getTableId());
-                    modelAndView.addObject("basicHouse", basicHouseVo);
-                    BasicHouseTradingVo basicHouseTradingVo = publicBasicService.getBasicHouseTradingByHouseId(detailData.getTableId());
-                    modelAndView.addObject("basicHouseTrading", basicHouseTradingVo);
-                    break;
+    public ModelAndView informationDetail(Integer formClassify, Integer formType, Integer tableId, String tableName, String tbType, Integer planDetailsId, Integer applyBatchId) throws Exception {
+        final StringBuffer stringBuffer = new StringBuffer("/project/stageSurvey");
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView(stringBuffer.toString());
+        setViewParam(modelAndView, tableName, tbType, tableId, applyBatchId);
+        //根据表单大类 类型可确定使用哪个view，因为现在的查勘分为房屋和土地以及房屋带土地,其中这三者都有可能使用相同的表单,因此上面参数直接使用表单名称和表单id来获取参数，而这里会参照fillInfo()来设计表单view路径
+        BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicById(formClassify);
+        if (AssessDataDicKeyConstant.PROJECT_SURVEY_FORM_CLASSIFY_LAND_ONLY.equals(baseDataDic.getFieldName())) {
+            stringBuffer.append("/landOnly/detail/index");
+            BasicApply basicApply = basicApplyService.getBasicApplyByPlanDetailsId(planDetailsId);
+            if (basicApply != null && basicApply.getBasicHouseId() != null) {
+                setViewParam(modelAndView, FormatUtils.entityNameConvertToTableName(BasicHouse.class), tbType, basicApply.getBasicHouseId(), applyBatchId);
             }
-            modelAndView.addObject("tableId", detailData.getTableId());
         }
-        this.setViewParam(type, id, buildingType, estateId, modelAndView);
+        if (AssessDataDicKeyConstant.PROJECT_SURVEY_FORM_CLASSIFY_LAND.equals(baseDataDic.getFieldName())) {
+            stringBuffer.append("/land/detail/");
+            EstateTaggingTypeEnum estateTaggingTypeEnum = EstateTaggingTypeEnum.getEnumByKey(tbType);
+            if (estateTaggingTypeEnum != null) {
+                switch (estateTaggingTypeEnum) {
+                    case ESTATE:
+                        stringBuffer.append("estate");
+                        break;
+                    case BUILDING:
+                        stringBuffer.append("building");
+                        break;
+                    case UNIT:
+                        stringBuffer.append("unit");
+                        break;
+                    case HOUSE:
+                        stringBuffer.append("house");
+                        break;
+                }
+            }
+            if (estateTaggingTypeEnum == null) {
+                stringBuffer.append("index");
+            }
+            modelAndView.addObject("tbType", tbType);
+        }
+        if (AssessDataDicKeyConstant.PROJECT_SURVEY_FORM_CLASSIFY_SINGEL.equals(baseDataDic.getFieldName()) || AssessDataDicKeyConstant.PROJECT_SURVEY_FORM_CLASSIFY_MULTIPLE.equals(baseDataDic.getFieldName())) {
+            stringBuffer.append("/house/detail/");
+            EstateTaggingTypeEnum estateTaggingTypeEnum = EstateTaggingTypeEnum.getEnumByKey(tbType);
+            if (estateTaggingTypeEnum != null) {
+                switch (estateTaggingTypeEnum) {
+                    case ESTATE:
+                        stringBuffer.append("estate");
+                        break;
+                    case BUILDING:
+                        stringBuffer.append("building");
+                        break;
+                    case UNIT:
+                        stringBuffer.append("unit");
+                        break;
+                    case HOUSE:
+                        stringBuffer.append("house");
+                        break;
+                }
+            }
+            if (estateTaggingTypeEnum == null) {
+                stringBuffer.append("index");
+            }
+        }
+        modelAndView.setViewName(stringBuffer.toString());
         return modelAndView;
+    }
 
+    /**
+     * 设置参数
+     * @param modelAndView
+     * @param tableName
+     * @param tbType
+     * @param tableId
+     * @param applyBatchId
+     * @throws Exception
+     */
+    private void setViewParam(ModelAndView modelAndView, String tableName, String tbType, Integer tableId, Integer applyBatchId) throws Exception {
+        //楼盘表单
+        if (Objects.equal(tableName, FormatUtils.entityNameConvertToTableName(BasicEstate.class)) || Objects.equal(tbType, EstateTaggingTypeEnum.ESTATE.getKey())) {
+            BasicEstateVo basicEstateVo = publicBasicService.getBasicEstateById(tableId);
+            modelAndView.addObject(StringUtils.uncapitalize(BasicEstate.class.getSimpleName()), basicEstateVo);
+            modelAndView.addObject(StringUtils.uncapitalize(BasicEstateLandState.class.getSimpleName()), basicEstateLandStateService.getBasicEstateLandStateVo(basicEstateLandStateService.getLandStateByEstateId(basicEstateVo.getId())));
+        }
+        //楼栋表单
+        if (Objects.equal(tableName, FormatUtils.entityNameConvertToTableName(BasicBuilding.class)) || Objects.equal(tbType, EstateTaggingTypeEnum.BUILDING.getKey())) {
+            modelAndView.addObject(StringUtils.uncapitalize(BasicApplyBatchDetail.class.getSimpleName()), basicApplyBatchDetailService.getBasicApplyBatchDetail(tableName, tableId));
+            modelAndView.addObject(StringUtils.uncapitalize(BasicBuilding.class.getSimpleName()), publicBasicService.getBasicBuildingById(tableId));
+        }
+        //单元表单
+        if (Objects.equal(tableName, FormatUtils.entityNameConvertToTableName(BasicUnit.class)) || Objects.equal(tbType, EstateTaggingTypeEnum.UNIT.getKey())) {
+            modelAndView.addObject(StringUtils.uncapitalize(BasicApplyBatchDetail.class.getSimpleName()), basicApplyBatchDetailService.getBasicApplyBatchDetail(tableName, tableId));
+            modelAndView.addObject(StringUtils.uncapitalize(BasicUnit.class.getSimpleName()), publicBasicService.getBasicUnitById(tableId));
+        }
+        //房屋表单
+        if (Objects.equal(tableName, FormatUtils.entityNameConvertToTableName(BasicHouse.class)) || Objects.equal(tbType, EstateTaggingTypeEnum.HOUSE.getKey())) {
+            modelAndView.addObject(StringUtils.uncapitalize(BasicApplyBatchDetail.class.getSimpleName()), basicApplyBatchDetailService.getBasicApplyBatchDetail(tableName, tableId));
+            BasicHouseVo basicHouseVo = publicBasicService.getBasicHouseVoById(tableId);
+            modelAndView.addObject(StringUtils.uncapitalize(BasicHouse.class.getSimpleName()), basicHouseVo);
+            modelAndView.addObject(StringUtils.uncapitalize(BasicHouseTrading.class.getSimpleName()), basicHouseTradingService.getBasicHouseTradingVo(basicHouseTradingService.getTradingByHouseId(basicHouseVo.getId())));
+        }
+        if (applyBatchId != null) {
+            BasicApplyBatch basicApplyBatch = basicApplyBatchService.getInfoById(applyBatchId);
+            modelAndView.addObject(StringUtils.uncapitalize(BasicApplyBatch.class.getSimpleName()), basicApplyBatch);
+        }
     }
 
     @ResponseBody
@@ -398,7 +473,7 @@ public class BasicApplyBatchController extends BaseController {
             BasicApplyBatch applyBatch = new BasicApplyBatch();
             applyBatch.setEstateId(estateId);
             BasicApplyBatch singleData = basicApplyBatchService.getSingleData(applyBatch);
-            if (singleData != null){
+            if (singleData != null) {
                 modelAndView.addObject("tableId", singleData.getEstateId());
                 //显示引用项目还是案列按钮
                 modelAndView.addObject("showTab", singleData.getShowTab());
@@ -479,7 +554,7 @@ public class BasicApplyBatchController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "/initBasicApplyBatchInfo", method = {RequestMethod.POST}, name = "初始化")
-    public HttpResult initBasicApplyBatchInfo(Integer planDetailsId,Integer classify) {
+    public HttpResult initBasicApplyBatchInfo(Integer planDetailsId, Integer classify) {
         try {
             BasicApplyBatch applyBatch = new BasicApplyBatch();
             applyBatch.setPlanDetailsId(planDetailsId);

@@ -22,22 +22,25 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content" style="min-height: 300px;">
-                    <form class="form-horizontal">
+                    <form class="form-horizontal" id="frmProjectCIP">
+                        <!-- formClassify 大类 , formType 类型-->
+                        <input type="hidden" name="formClassify" value="${applyBatch.classify}">
+                        <input type="hidden" name="formType" value="${applyBatch.type}">
+                        <input type="hidden" name="planDetailsId" value="${applyBatch.planDetailsId}">
+                        <input type="hidden" name="applyBatchId" value="${applyBatch.id}">
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                     大类
                                 </label>
                                 <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                                    <select class="form-control" name="classify" disabled="disabled">
-                                        <option value="">-请选择-</option>
-                                        <c:if test="${not empty formClassifyList}">
-                                            <c:forEach var="item" items="${formClassifyList}">
-                                                <option value="${item.id}" data-key="${item.fieldName}"
-                                                    ${item.id eq applyBatch.classify?'selected="selected"':''}>${item.name}</option>
-                                            </c:forEach>
-                                        </c:if>
-                                    </select>
+                                    <c:if test="${not empty formClassifyList}">
+                                        <c:forEach var="item" items="${formClassifyList}">
+                                            <c:if test="${applyBatch.classify == item.id}">
+                                                <label class="form-control">${item.name}</label>
+                                            </c:if>
+                                        </c:forEach>
+                                    </c:if>
                                 </div>
                             </div>
                             <div class="x-valid">
@@ -45,25 +48,27 @@
                                     类型
                                 </label>
                                 <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                                    <select class="form-control" name="type" disabled="disabled">
-                                        <option value="">-请选择-</option>
-                                        <c:if test="${not empty examineFormTypeList}">
-                                            <c:forEach var="item" items="${examineFormTypeList}">
-                                                <option value="${item.key}" ${item.key eq applyBatch.type?'selected="selected"':''}>${item.value}</option>
-                                            </c:forEach>
-                                        </c:if>
-                                    </select>
+                                    <c:if test="${not empty examineFormTypeList}">
+                                        <c:forEach var="item" items="${examineFormTypeList}">
+                                            <c:if test="${applyBatch.type == item.key}">
+                                                <label class="form-control">${item.value}</label>
+                                            </c:if>
+                                        </c:forEach>
+                                    </c:if>
                                 </div>
                             </div>
                         </div>
+                    </form>
+
+                    <div class="form-horizontal">
                         <div class="form-group">
-                            <div class="col-md-3 col-lg-offset-1">
+                            <div class="col-xs-3  col-sm-3  col-md-3  col-xs-3 col-lg-offset-1 col-sm-offset-1 col-xs-offset-1 col-md-offset-1">
                                 <ul id="ztree" class="ztree"></ul>
                             </div>
-                            <div class="col-md-9">
+                            <div class="col-xs-8  col-sm-8  col-md-8  col-lg-8">
                             </div>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
             <%@include file="/views/share/form_approval.jsp" %>
@@ -79,9 +84,10 @@
     }
 </script>
 <script type="text/javascript">
+
     $(function () {
-        ztreeInit("${applyBatch.estateName}");
-    })
+        ztreeInit();
+    });
     var setting = {
         data: {
             key: {
@@ -97,7 +103,12 @@
         // 回调函数
         callback: {
             onClick: function (event, treeId, treeNode, clickFlag) {
-                informationDetail();
+                var frm = $("#frmProjectCIP");
+                var data = formSerializeArray(frm);
+                data.tbType = treeNode.type;
+                data.tableId = treeNode.tableId;
+                data.tableName = treeNode.tableName;
+                informationDetail(data);
             }
         }
     };
@@ -120,15 +131,45 @@
     }
 
     //信息详情页面
-    function informationDetail() {
-        var node = zTreeObj.getSelectedNodes()[0];
-        var estateId = 0;
-        if (node.id == 0) {
-            estateId = '${applyBatch.estateId}';
-        }
-        var type = 3;
-        window.open('${pageContext.request.contextPath}/basicApplyBatch/informationDetail?type=' + type + "&id=" + node.id + "&buildingType=" + node.level + "&estateId=" + estateId);
+    function informationDetail(data) {
+        window.open('${pageContext.request.contextPath}/basicApplyBatch/informationDetail?'+ parseParam(data) );
     }
+
+    //js对象转成路径参数
+    var parseParam = function (param, key) {
+        var paramStr = "";
+        if (param instanceof String || param instanceof Number || param instanceof Boolean) {
+            paramStr += "&" + key + "=" + encodeURIComponent(param);
+        } else {
+            $.each(param, function (i) {
+                var k = key == null ? i : key + (param instanceof Array ? "[" + i + "]" : "." + i);
+                paramStr += '&' + parseParam(this, k);
+            });
+        }
+        return paramStr.substr(1);
+    };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //test
+    var obj = {name: 'tom', 'class': {className: 'class1'}, classMates: [{name: 'lily'}]};
+//    console.log(parseParam(obj)) ;
+    //output: "name=tom&class.className=class1&classMates[0].name=lily"
+//    console.log(parseParam(obj, 'stu')) ;
+    //output: "stu.name=tom&stu.class.className=class1&stu.classMates[0].name=lily"
 
 
 </script>

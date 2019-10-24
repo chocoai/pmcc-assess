@@ -14,18 +14,8 @@
             <div class="clearfix"></div>
         </div>
 
-        <%@include file="estateHead.jsp" %>
-        <%@include file="estateBody.jsp" %>
+        <%@include file="/views/project/stageSurvey/examine/residence/detail/estateHead.jsp" %>
+        <%@include file="./estateBody.jsp" %>
     </div>
 
-    <div class="x_content">
-        <div class="x_title">基础设施情况</div>
-        <div class="form-horizontal">
-            <div class="x_content">
-                <div class="form-horizontal">
-                    <%@include file="estateFoot.jsp" %>
-                </div>
-            </div>
-        </div>
-    </div>
 </form>
