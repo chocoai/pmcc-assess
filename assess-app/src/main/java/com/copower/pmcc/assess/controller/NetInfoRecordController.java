@@ -8,7 +8,6 @@ import com.copower.pmcc.assess.dal.basis.entity.SchemeInfo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.NetInfoRecordService;
 import com.copower.pmcc.assess.service.project.generate.GenerateMdCostApproachService;
-import com.copower.pmcc.assess.service.project.generate.GenerateMdIncomeSelfRunService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
@@ -46,7 +45,8 @@ public class NetInfoRecordController {
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public ModelAndView homeMain() {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/net/netInfoRecord");
-        String[] webTypeStr = new String[]{"公拍网", "淘宝司法拍卖网", "京东司法拍卖网", "京东资产拍卖网", "中国拍卖行业协会网-司法", "中国拍卖行业协会网-标的", "公共资源交易平台-雅安", "公共资源交易平台-成都"};
+        String[] webTypeStr = new String[]{"公拍网", "淘宝司法拍卖网", "京东司法拍卖网", "京东资产拍卖网", "中国拍卖行业协会网-司法", "中国拍卖行业协会网-标的", "公共资源交易平台-雅安",
+                "公共资源交易平台-成都", "公共资源交易平台-凉山州", "公共资源交易平台-攀枝花", "四川土地矿权交易网", "农村产权交易中心"};
         List<String> webTypes = Arrays.asList(webTypeStr);
         modelAndView.addObject("webTypes", webTypes);
         String[] unitListStr = new String[]{"建筑面积", "土地面积", "生产能力"};
