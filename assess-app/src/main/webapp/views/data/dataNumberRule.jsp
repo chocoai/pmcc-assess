@@ -14,46 +14,49 @@
         <%@include file="/views/share/main_navigation.jsp" %>
         <%@include file="/views/share/main_head.jsp" %>
         <div class="right_col" role="main">
-            <div class="x_panel">
-                <div class="x_title collapse-link">
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                    </ul>
-                    <h2><i class="fa ${baseViewDto.currentMenu.icon}"></i>
-                        文号规则
-                    </h2>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="x_content">
-                    <form id="frmQuery" class="form-horizontal">
-                        <div class="form-group ">
-                            <div>
-                                <label class="col-sm-1 control-label">
-                                    报告类型
-                                </label>
-                                <div class="col-sm-2">
-                                    <select class="form-control" id="queryReportType" name="queryReportType">
-                                        <option value="">-请选择-</option>
-                                        <c:forEach var="items" items="${reportTypeList}">
-                                            <option value="${items.id}">${items.name}</option>
-                                        </c:forEach>
-                                    </select>
+            <%@include file="/views/share/navigation/reportSetup.jsp" %>
+            <div class="col-xs-12  col-sm-12  col-md-10  col-lg-10 ">
+                <div class="x_panel">
+                    <div class="x_title collapse-link">
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                        </ul>
+                        <h2><i class="fa ${baseViewDto.currentMenu.icon}"></i>
+                            文号规则
+                        </h2>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <form id="frmQuery" class="form-horizontal">
+                            <div class="form-group ">
+                                <div>
+                                    <label class="col-sm-1 control-label">
+                                        报告类型
+                                    </label>
+                                    <div class="col-sm-2">
+                                        <select class="form-control" id="queryReportType" name="queryReportType">
+                                            <option value="">-请选择-</option>
+                                            <c:forEach var="items" items="${reportTypeList}">
+                                                <option value="${items.id}">${items.name}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <button type="button" class="btn btn-primary" onclick="loadDataDicList()">
+                                        查询
+                                    </button>
+                                    <button type="button" class="btn btn-success" onclick="addData()"
+                                            data-toggle="modal" href="#divBox"> 新增
+                                    </button>
                                 </div>
                             </div>
-                            <div class="col-sm-3">
-                                <button type="button" class="btn btn-primary" onclick="loadDataDicList()">
-                                    查询
-                                </button>
-                                <button type="button" class="btn btn-success" onclick="addData()"
-                                        data-toggle="modal" href="#divBox"> 新增
-                                </button>
-                            </div>
-                        </div>
 
-                    </form>
-                    <table class="table table-bordered" id="tb_List">
-                        <!-- cerare document add ajax data-->
-                    </table>
+                        </form>
+                        <table class="table table-bordered" id="tb_List">
+                            <!-- cerare document add ajax data-->
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

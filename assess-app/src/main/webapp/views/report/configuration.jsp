@@ -13,40 +13,37 @@
         <%@include file="/views/share/main_navigation.jsp" %>
         <%@include file="/views/share/main_head.jsp" %>
         <div class="right_col" role="main">
-            <div class="x_panel">
-                <div class="x_title collapse-link">
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                    </ul>
-                    <h2><i class="fa ${baseViewDto.currentMenu.icon}"></i>
-                        ${baseViewDto.currentMenu.name} <%--这是用来显示标题的，固定格式--%>
-                    </h2>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="x_content">
-                    <a type="button" class="btn btn-success" target="_blank" href="${pageContext.request.contextPath}/ureport/designer"><i class="fa fa-plus-circle"></i>新加报表</a>
-                    <table id="report_list" class="table table-striped jambo_table bulk_action table-bordered">
+            <%@include file="/views/share/navigation/systemSetup.jsp" %>
+            <div class="col-xs-12  col-sm-12  col-md-10  col-lg-10 ">
+                <div class="x_panel">
+                    <div class="x_title collapse-link">
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                        </ul>
+                        <h2><i class="fa ${baseViewDto.currentMenu.icon}"></i>
+                            ${baseViewDto.currentMenu.name} <%--这是用来显示标题的，固定格式--%>
+                        </h2>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <a type="button" class="btn btn-success" target="_blank" href="${pageContext.request.contextPath}/ureport/designer"><i class="fa fa-plus-circle"></i>新加报表</a>
+                        <table id="report_list" class="table table-striped jambo_table bulk_action table-bordered">
 
-                    </table>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
-
     </div>
     <!-- end: MAIN CONTAINER -->
 </div>
 </body>
-
 <%@include file="/views/share/main_footer.jsp" %>
-
 <script type="application/javascript">
     var reportDesignerObj = {
         report_list: $("#report_list"),
         report_provider: $("#report-provider"),
-
         reportData: [],
-
-
         renderReportTable: function (data) {
             reportDesignerObj.report_list.bootstrapTable('destroy');
 
