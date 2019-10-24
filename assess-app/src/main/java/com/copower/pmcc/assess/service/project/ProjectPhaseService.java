@@ -138,7 +138,7 @@ public class ProjectPhaseService {
         return getCacheProjectPhaseByKey(key, baseProjectClassifyService.getReferenceId(categoryId));
     }
 
-    public ProjectPhase getCacheProjectPhaseByKey(String key, Integer categoryId) {
+    private ProjectPhase getCacheProjectPhaseByKey(String key, Integer categoryId) {
         if (StringUtils.isBlank(key)) return null;
         String fullKey = String.format("%s:%s", key, categoryId);
         String cacheKey = CacheConstant.getCostsKeyPrefix(AssessCacheConstant.PMCC_ASSESS_WORK_PHASE_KEY, fullKey);
