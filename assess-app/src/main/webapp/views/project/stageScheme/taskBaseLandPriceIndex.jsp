@@ -407,8 +407,8 @@
         });
         if (landLevelContent.length >= 1) {
             formData.landLevelContent = JSON.stringify(landLevelContent);
-        }else{
-            formData.landLevelContent ="";
+        } else {
+            formData.landLevelContent = "";
         }
 
         if ("${processInsId}" != "0") {
@@ -461,15 +461,15 @@
         //容积率修正E10
         var volumeFractionAmend = parseFloat($("#volumeFractionAmend").text());
         //区域及个别修正系数E11
-        var areaAndSeveralAmend = parseFloat($("#areaAndSeveralAmend").val());
+        var areaAndSeveralAmend = parseFloat($("#areaAndSeveralAmend").val()) ? parseFloat($("#areaAndSeveralAmend").val()) : 0;
         //开发程度修正E12
-        var developCorrect = parseFloat($("#developCorrect").val());
+        var developCorrect = parseFloat($("#developCorrect").val()) ? parseFloat($("#developCorrect").val()) : 0;
         //委估宗地面积E15
         var evaluationArea = parseFloat($("#evaluationArea").val());
-        //委估宗地面积G17
+        //委估对象容积率G17
         var volumetricRate = parseFloat($("#volumetricRate").val());
 
-        if (standardPremium && dateAmend && periodAmend && volumeFractionAmend && areaAndSeveralAmend && developCorrect) {
+        if (standardPremium && dateAmend && periodAmend && volumeFractionAmend) {
             var money = standardPremium * dateAmend * periodAmend * volumeFractionAmend * (1 + areaAndSeveralAmend) + developCorrect;
             if (money) {
                 //宗地单价
