@@ -69,9 +69,9 @@ public class ProjectPlanSurveyService {
         Integer projectId = projectPlan.getProjectId();
         Integer workStageId = projectPlan.getWorkStageId();
 
-        ProjectPhase inventoryPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.ASSET_INVENTORY, projectPlan.getCategoryId());
-        ProjectPhase explorePhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.SCENE_EXPLORE, projectPlan.getCategoryId());
-        ProjectPhase otherRightPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.OTHER_RIGHT, projectPlan.getCategoryId());
+        ProjectPhase inventoryPhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.ASSET_INVENTORY, projectPlan.getCategoryId());
+        ProjectPhase explorePhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.SCENE_EXPLORE, projectPlan.getCategoryId());
+        ProjectPhase otherRightPhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.OTHER_RIGHT, projectPlan.getCategoryId());
         List<ProjectPhase> projectPhases = Lists.newArrayList(inventoryPhase,explorePhase);
         List<DeclareRecord> declareRecords = declareRecordService.getDeclareRecordList(projectId, false);
         //案例调查任务和他项权利任务与项目挂钩
