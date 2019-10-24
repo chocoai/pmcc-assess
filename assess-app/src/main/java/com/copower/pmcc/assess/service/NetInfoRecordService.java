@@ -87,7 +87,7 @@ public class NetInfoRecordService {
         this.getNetInfoFromGGZYLSZ(1);
         ////公共资源交易平台-攀枝花（交易信息）
         this.getNetInfoFromGGZYPZH(1);
-        ////四川土地矿权交易网
+        ////土流网
         this.getNetInfoFromTDJY(1);
         //农村产权交易中心
         this.getNetInfoFromNCJY(1);
@@ -1316,7 +1316,7 @@ public class NetInfoRecordService {
         return null;
     }
 
-    //四川土地矿权交易网
+    //土流网
     public void getNetInfoFromTDJY(Integer days) {
         try {
             Date date = getInstanceDate(days);//得到前1天
@@ -1373,7 +1373,7 @@ public class NetInfoRecordService {
                     }
                     String content = getContent(titleStr, type, netInfoRecord.getCurrentPrice(), "", netInfoRecord.getInitPrice()
                             , DateUtils.format(netInfoRecord.getEndTime(), DateUtils.DATE_CHINESE_PATTERN), DateUtils.format(netInfoRecord.getBeginTime(), DateUtils.DATE_CHINESE_PATTERN));
-                    netInfoRecord.setSourceSiteName("四川土地矿权交易网");
+                    netInfoRecord.setSourceSiteName("土流网");
                     netInfoRecord.setContent(content);
                     netInfoRecordDao.addInfo(netInfoRecord);
                 }
