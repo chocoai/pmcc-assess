@@ -4,12 +4,16 @@ import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeMarketCompareApplyDto;
+import com.copower.pmcc.assess.dto.output.basic.BasicApplyVo;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.method.MdMarketCompareService;
+import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import com.google.common.collect.Lists;
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +44,8 @@ public class ProjectTaskLandCompareAssist implements ProjectTaskInterface {
     private SchemeJudgeObjectService schemeJudgeObjectService;
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private ProjectInfoService projectInfoService;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
@@ -106,11 +112,14 @@ public class ProjectTaskLandCompareAssist implements ProjectTaskInterface {
      */
     private void setViewParam(ProjectPlanDetails projectPlanDetails, SchemeInfo info,SchemeJudgeObject judgeObject, ModelAndView modelAndView) {
         List<ProjectPlanDetails> caseAll = mdMarketCompareService.getCaseAll(projectPlanDetails.getProjectId());
+        ProjectInfo projectInfo=projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
         modelAndView.addObject("casesAllJSON", JSON.toJSONString(caseAll));
         MdMarketCompare marketCompare = mdMarketCompareService.getMdMarketCompare(info.getMethodDataId());
-        List<DataSetUseField> fieldList = mdMarketCompareService.getShowSetUseFieldList(judgeObject.getSetUse());
+        List<DataSetUseField> fieldList = mdMarketCompareService.getShowSetUseFieldList(projectInfoService.getAssessProjectType(projectInfo.getProjectCategoryId()));
         MdMarketCompareItem evaluationObject = mdMarketCompareService.getEvaluationByMcId(marketCompare.getId());
         List<MdMarketCompareItem> caseList = mdMarketCompareService.getCaseListByMcId(marketCompare.getId());
+        List<BasicApplyVo> standardJudgeList = mdMarketCompareService.getStandardJudgeList(judgeObject);
+        modelAndView.addObject("standardJudgesJSON", JSON.toJSONString(CollectionUtils.isEmpty(standardJudgeList) ? Lists.newArrayList() : standardJudgeList));
         modelAndView.addObject("marketCompareJSON", JSON.toJSONString(marketCompare));
         modelAndView.addObject("fieldsJSON", JSON.toJSONString(fieldList));
         modelAndView.addObject("evaluationJSON", JSON.toJSONString(evaluationObject));

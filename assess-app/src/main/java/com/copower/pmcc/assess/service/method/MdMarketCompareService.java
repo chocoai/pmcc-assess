@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.enums.basic.BasicApplyTypeEnum;
 import com.copower.pmcc.assess.common.enums.ExamineTypeEnum;
+import com.copower.pmcc.assess.common.enums.report.AssessProjectTypeEnum;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdMarketCompareDao;
@@ -122,16 +123,17 @@ public class MdMarketCompareService {
         }
     }
 
-    public List<DataSetUseField> getShowSetUseFieldList(Integer setUseType) {
+    public List<DataSetUseField> getShowSetUseFieldList(AssessProjectTypeEnum projectTypeEnum) {
         List<DataSetUseField> setUseFields = null;
-        if (setUseType != null) {
-            DataSetUseField dataSetUseField = dataSetUseFieldService.getCacheSetUseFieldById(setUseType);
-            if (dataSetUseField != null && StringUtils.isNotBlank(dataSetUseField.getFieldName()))
-                setUseFields = dataSetUseFieldService.getShowSetUseFieldList(dataSetUseField.getFieldName());
-        }
         List<DataSetUseField> fieldList = Lists.newArrayList();
-        if (CollectionUtils.isEmpty(setUseFields))
-            setUseFields = dataSetUseFieldService.getShowSetUseFieldList(BaseConstant.ASSESS_DATA_SET_USE_FIELD_HOUSE);
+        switch (projectTypeEnum){
+            case ASSESS_PROJECT_TYPE_HOUSE:
+                setUseFields = dataSetUseFieldService.getShowSetUseFieldList(BaseConstant.ASSESS_DATA_SET_USE_FIELD_HOUSE);
+                break;
+            case ASSESS_PROJECT_TYPE_LAND:
+                setUseFields = dataSetUseFieldService.getShowSetUseFieldList(BaseConstant.ASSESS_DATA_SET_USE_FIELD_LAND);
+                break;
+        }
         if (CollectionUtils.isNotEmpty(setUseFields)) {
             for (DataSetUseField setUseField : setUseFields) {
                 fieldList.add(setUseField);

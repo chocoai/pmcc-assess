@@ -304,23 +304,23 @@ public class GenerateLandFactorService {
             if (landState == null || landState.getId() == null || landState.getId() == 0) {
                 continue;
             }
-            if (StringUtils.isNotEmpty(landState.getPlotRatio())){
-                stringList.add(String.format("容积率:%s",landState.getPlotRatio()));
+            if (StringUtils.isNotEmpty(landState.getPlotRatio())) {
+                stringList.add(String.format("容积率:%s", landState.getPlotRatio()));
             }
-            if (StringUtils.isNotEmpty(landState.getBuildingDensity())){
-                stringList.add(String.format("建筑密度:%s",landState.getBuildingDensity()));
+            if (StringUtils.isNotEmpty(landState.getBuildingDensity())) {
+                stringList.add(String.format("建筑密度:%s", landState.getBuildingDensity()));
             }
-            if (StringUtils.isNotEmpty(landState.getGreenSpaceRate())){
-                stringList.add(String.format("绿地率:%s",landState.getGreenSpaceRate()));
+            if (StringUtils.isNotEmpty(landState.getGreenSpaceRate())) {
+                stringList.add(String.format("绿地率:%s", landState.getGreenSpaceRate()));
             }
-            if (StringUtils.isNotEmpty(landState.getCompatibleRatio())){
-                stringList.add(String.format("兼容比:%s",landState.getCompatibleRatio()));
+            if (StringUtils.isNotEmpty(landState.getCompatibleRatio())) {
+                stringList.add(String.format("兼容比:%s", landState.getCompatibleRatio()));
             }
-            if (landState.getBuildingHeightLimit() != null){
-                stringList.add(String.format("建筑高度:%s",landState.getBuildingHeightLimit().toString()));
+            if (landState.getBuildingHeightLimit() != null) {
+                stringList.add(String.format("建筑高度:%s", landState.getBuildingHeightLimit().toString()));
             }
-            if (CollectionUtils.isNotEmpty(stringList)){
-                stringBuilder.append(StringUtils.join(stringList,"、"));
+            if (CollectionUtils.isNotEmpty(stringList)) {
+                stringBuilder.append(StringUtils.join(stringList, "、"));
             }
             stringList.clear();
             if (StringUtils.isNotEmpty(stringBuilder.toString().trim())) {
@@ -495,8 +495,10 @@ public class GenerateLandFactorService {
                 stringBuilder.append("国有");
             if ("集用".equals(declareRecord.getLandRightType()))
                 stringBuilder.append("集体");
-            stringBuilder.append(dataBestUseDescriptionService.getBestUseDescriptionById(schemeJudgeObject.getBestUse()).getName());
-            stringBuilder.append(dataSetUseFieldService.getCacheSetUseFieldById(schemeJudgeObject.getSetUse()).getName());
+            if (schemeJudgeObject.getBestUse() != null)
+                stringBuilder.append(dataBestUseDescriptionService.getBestUseDescriptionById(schemeJudgeObject.getBestUse()).getName());
+            if (schemeJudgeObject.getSetUse() != null)
+                stringBuilder.append(dataSetUseFieldService.getCacheSetUseFieldById(schemeJudgeObject.getSetUse()).getName());
             stringBuilder.append("用途开发用地");
             map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), stringBuilder.toString());
         }

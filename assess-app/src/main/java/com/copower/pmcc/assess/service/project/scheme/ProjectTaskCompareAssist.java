@@ -123,9 +123,10 @@ public class ProjectTaskCompareAssist implements ProjectTaskInterface {
         //市场比较法相关
         try{
             List<ProjectPlanDetails> caseAll = mdMarketCompareService.getCaseAll(projectPlanDetails.getProjectId());
+            ProjectInfo projectInfo=projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
             modelAndView.addObject("casesAllJSON", JSON.toJSONString(caseAll));
             MdMarketCompare marketCompare = mdMarketCompareService.getMdMarketCompare(info.getMethodDataId());
-            List<DataSetUseField> fieldList = mdMarketCompareService.getShowSetUseFieldList(judgeObject.getSetUse());
+            List<DataSetUseField> fieldList = mdMarketCompareService.getShowSetUseFieldList(projectInfoService.getAssessProjectType(projectInfo.getProjectCategoryId()));
             MdMarketCompareItem evaluationObject = mdMarketCompareService.getEvaluationByMcId(marketCompare.getId());
             List<MdMarketCompareItem> caseList = mdMarketCompareService.getCaseListByMcId(marketCompare.getId());
             List<BasicApplyVo> standardJudgeList = mdMarketCompareService.getStandardJudgeList(judgeObject);
