@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.enums.ProjectPlanSetEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.common.enums.ResponsibileModelEnum;
-import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
+import com.copower.pmcc.assess.constant.AssessCacheConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectInfoDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
@@ -31,10 +31,8 @@ import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
-import com.copower.pmcc.erp.api.dto.SysProjectDto;
 import com.copower.pmcc.erp.api.enums.CustomTableTypeEnum;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
-import com.copower.pmcc.erp.api.enums.SysProjectEnum;
 import com.copower.pmcc.erp.api.provider.ErpRpcProjectService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -43,7 +41,7 @@ import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.common.utils.SpringContextUtils;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
-import com.google.common.base.*;
+import com.copower.pmcc.erp.constant.CacheConstant;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
 import org.apache.commons.collections.CollectionUtils;
@@ -56,7 +54,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -706,7 +706,8 @@ public class ProjectPlanService {
     @Transactional(rollbackFor = Exception.class)
     public void enterNextStage(Integer planId) throws BusinessException {
         //先获取分布式锁 保证进入下个阶段只有一个线程执行
-        RLock lock = redissonClient.getLock(String.format("%s_%s_%s", applicationConstant.getAppKey(), ProjectPlanService.class.getSimpleName(), planId));
+        String prefix = CacheConstant.getCostsKeyPrefix(String.format("%s_%s_%s", applicationConstant.getAppKey(), ProjectPlanService.class.getSimpleName(), planId), "lock");
+        RLock lock = redissonClient.getLock(prefix);
         boolean res = false;
         try { // 尝试加锁,最多等待10秒,上锁以后20秒自动解锁
             res = lock.tryLock(10, 20, TimeUnit.SECONDS);

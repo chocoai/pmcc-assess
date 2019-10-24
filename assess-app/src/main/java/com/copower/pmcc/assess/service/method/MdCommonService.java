@@ -45,25 +45,29 @@ public class MdCommonService {
         BaseProjectClassify projectClassify = baseProjectClassifyService.getCacheProjectClassifyById(projectCategory);
         String classifyFieldName = projectClassify.getFieldName();
         for (BaseDataDic baseDataDic : allMethodList) {
-            if (AssessDataDicKeyConstant.MD_MARKET_COMPARE.equals(baseDataDic.getFieldName())) {
-                baseMethodList.add(baseDataDic);
-            }
+
             if (AssessDataDicKeyConstant.MD_INCOME.equals(baseDataDic.getFieldName())) {
                 baseMethodList.add(baseDataDic);
             }
             if (StringUtils.isNotBlank(classifyFieldName) && classifyFieldName.contains(AssessProjectClassifyConstant.SINGLE_HOUSE_PROPERTY_CERTIFICATE_TYPE)) {
-                if (AssessDataDicKeyConstant.MD_COST.equals(baseDataDic.getFieldName())) {
+                if (AssessDataDicKeyConstant.MD_MARKET_COMPARE.equals(baseDataDic.getFieldName())) {
                     baseMethodList.add(baseDataDic);
                 }
-                if (AssessDataDicKeyConstant.MD_DEVELOPMENT.equals(baseDataDic.getFieldName())) {
-                    baseMethodList.add(baseDataDic);
-                }
+            }
+            if (AssessDataDicKeyConstant.MD_COST.equals(baseDataDic.getFieldName())) {
+                baseMethodList.add(baseDataDic);
+            }
+            if (AssessDataDicKeyConstant.MD_DEVELOPMENT.equals(baseDataDic.getFieldName())) {
+                baseMethodList.add(baseDataDic);
             }
             if (StringUtils.isNotBlank(classifyFieldName) && classifyFieldName.contains(AssessProjectClassifyConstant.SINGLE_HOUSE_LAND_CERTIFICATE_TYPE)) {
                 if (AssessDataDicKeyConstant.MD_BASE_LAND_PRICE.equals(baseDataDic.getFieldName())) {
                     baseMethodList.add(baseDataDic);
                 }
                 if (AssessDataDicKeyConstant.MD_COST_APPROACH.equals(baseDataDic.getFieldName())) {
+                    baseMethodList.add(baseDataDic);
+                }
+                if (AssessDataDicKeyConstant.MD_LAND_COMPARE.equals(baseDataDic.getFieldName())) {
                     baseMethodList.add(baseDataDic);
                 }
             }
