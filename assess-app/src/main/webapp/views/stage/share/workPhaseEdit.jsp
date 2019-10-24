@@ -116,7 +116,7 @@
                                     </div>
                                     <div class="x-valid">
                                         <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label" for="phaseSort">
-                                            允许退回
+                                            允许重启
                                         </label>
                                         <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                             <label class="checkbox-inline">

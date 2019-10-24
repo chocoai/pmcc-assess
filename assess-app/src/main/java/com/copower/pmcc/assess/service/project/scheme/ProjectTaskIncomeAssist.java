@@ -151,8 +151,10 @@ public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
             BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(declareRecord.getId());
             if (basicApply != null) {
                 BasicBuilding basicBuilding = basicBuildingService.getBasicBuildingByApplyId(basicApply.getId());
-                BigDecimal houseSurplusYear = mdIncomeService.getHouseSurplusYear(basicBuilding.getBeCompletedTime(), areaGroup.getValueTimePoint(), surveyCommonService.getBuildingUsableYear(basicApply, basicBuilding));
-                modelAndView.addObject("houseSurplusYear", houseSurplusYear); //房产使用剩余年限
+                if(basicBuilding!=null){
+                    BigDecimal houseSurplusYear = mdIncomeService.getHouseSurplusYear(basicBuilding.getBeCompletedTime(), areaGroup.getValueTimePoint(), surveyCommonService.getBuildingUsableYear(basicApply, basicBuilding));
+                    modelAndView.addObject("houseSurplusYear", houseSurplusYear); //房产使用剩余年限
+                }
             }
             //土地使用剩余年限
             modelAndView.addObject("landSurplusYear", mdIncomeService.getLandSurplusYear(declareRecord.getLandUseEndDate(), areaGroup.getValueTimePoint()));

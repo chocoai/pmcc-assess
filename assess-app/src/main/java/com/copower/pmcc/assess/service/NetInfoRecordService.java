@@ -11,6 +11,7 @@ import com.copower.pmcc.assess.dto.input.net.JDZCDto;
 import com.copower.pmcc.assess.dto.input.net.TBSFDto;
 import com.copower.pmcc.assess.dto.input.net.ZGSFDto;
 import com.copower.pmcc.assess.dto.output.net.NetInfoRecordVo;
+import com.copower.pmcc.assess.service.project.generate.GenerateCommonMethod;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
@@ -61,6 +62,8 @@ public class NetInfoRecordService {
     private PublicService publicService;
     @Autowired
     private ErpAreaService erpAreaService;
+    @Autowired
+    private GenerateCommonMethod generateCommonMethod;
 
     //抓取数据
     public void climbingData() {
@@ -80,6 +83,14 @@ public class NetInfoRecordService {
         this.getNetInfoFromGGZYCD(1);
         //公共资源交易平台-成都（资产资源）
         this.getNetInfoFromGGZYCD2(1);
+        ////公共资源交易平台-凉山州（交易公告）
+        this.getNetInfoFromGGZYLSZ(1);
+        ////公共资源交易平台-攀枝花（交易信息）
+        this.getNetInfoFromGGZYPZH(1);
+        ////土流网
+        this.getNetInfoFromTDJY(1);
+        //农村产权交易中心
+        this.getNetInfoFromNCJY(1);
         //来源淘宝网
         this.getNetInfoFromTB(1);
     }
@@ -87,7 +98,7 @@ public class NetInfoRecordService {
     //来源淘宝网
     public void getNetInfoFromTB(Integer days) {
         try {
-            Date date = getInstanceDate(days+1);//得到前1天
+            Date date = getInstanceDate(days + 1);//得到前1天
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             String formatDate = sdf.format(date);//开始时间
             Date endDate = getInstanceDate(0);
@@ -695,7 +706,6 @@ public class NetInfoRecordService {
     public void getNetInfoFromGGZYYA(Integer days) {
         try {
             Date date = getInstanceDate(days);//得到前1天
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
             String urlInfo = "http://www.yaggzy.org.cn/jyxx/tdsyq/cjqr";
 
@@ -711,9 +721,10 @@ public class NetInfoRecordService {
             for (String pageHref : pageHrefs) {
                 Elements itemContent = getContent(pageHref, "tbody tr", "");
                 for (int i = 1; i < itemContent.size(); i++) {
-                    String publishtimeStr = itemContent.get(i).childNodes().get(7).childNodes().get(0).toString();
-                    Date publishtime = sdf.parse(publishtimeStr);
-                    if (publishtime == null || publishtime.compareTo(date) < 0) break circ;
+                    String publishtimeStr = itemContent.get(i).childNodes().get(7).childNodes().get(0).toString().trim();
+                    Date publishtime = DateUtils.parse(publishtimeStr);
+                    if (publishtime == null) continue;
+                    if (publishtime.compareTo(date) < 0) break circ;
                     String detailHref = itemContent.get(i).childNodes().get(5).childNodes().get(1).attributes().get("href");
                     Elements tdElements = getContent(String.format("%s%s", "http://www.yaggzy.org.cn", detailHref), "tr", "");
                     Integer length = tdElements.get(1).select("td").size();
@@ -764,7 +775,6 @@ public class NetInfoRecordService {
     public void getNetInfoFromGGZYCD(Integer days) {
         try {
             Date date = getInstanceDate(days);//得到前1天
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             String[] needContentType = new String[]{"拍卖公告", "结果公告"};
             List<String> needTypes = Arrays.asList(needContentType);
 
@@ -800,9 +810,10 @@ public class NetInfoRecordService {
                             Elements elements = getGGZYCDHtml(".row.contentitem", String.valueOf(i), typeValue);
                             for (Element item : elements) {
                                 Elements publishtimeElement = item.select(".publishtime");
-                                String publishtimeStr = publishtimeElement.get(0).childNodes().get(0).toString().substring(1);
-                                Date publishtime = sdf.parse(publishtimeStr);
-                                if (publishtime == null || publishtime.compareTo(date) < 0) break circ;
+                                String publishtimeStr = publishtimeElement.get(0).childNodes().get(0).toString().substring(1).trim();
+                                Date publishtime = DateUtils.parse(publishtimeStr);
+                                if (publishtime == null) continue;
+                                if (publishtime.compareTo(date) < 0) break circ;
 
                                 Elements addressElement = item.select(".col-xs-1");
                                 String address = addressElement.get(0).childNodes().get(0).toString();
@@ -964,7 +975,7 @@ public class NetInfoRecordService {
     public void getNetInfoFromGGZYCD2(Integer days) {
         try {
             Date date = getInstanceDate(days);//得到前1天
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
             String[] needContentType = new String[]{"结果公告"};
             List<String> needTypes = Arrays.asList(needContentType);
 
@@ -999,11 +1010,11 @@ public class NetInfoRecordService {
                             //内容信息
                             Elements elements = getGGZYCDHtml2(".row.contentitem", String.valueOf(i), typeValue);
                             for (Element item : elements) {
-
                                 Elements publishtimeElement = item.select(".publishtime");
-                                String publishtimeStr = publishtimeElement.get(0).childNodes().get(0).toString().substring(1);
-                                Date publishtime = sdf.parse(publishtimeStr);
-                                if (publishtime == null || publishtime.compareTo(date) < 0) break circ;
+                                String publishtimeStr = publishtimeElement.get(0).childNodes().get(0).toString().substring(1).trim();
+                                Date publishtime = DateUtils.parse(publishtimeStr);
+                                if (publishtime == null) continue;
+                                if (publishtime.compareTo(date) < 0) break circ;
 
                                 Elements addressElement = item.select(".col-xs-1");
                                 String address = addressElement.get(0).childNodes().get(0).toString();
@@ -1134,6 +1145,362 @@ public class NetInfoRecordService {
         }
         return null;
     }
+
+
+    //公共资源交易平台-凉山州（交易公告）
+    public void getNetInfoFromGGZYLSZ(Integer days) {
+        try {
+            Date date = getInstanceDate(days);//得到前1天
+            String urlInfo = "http://ggzyjy.lsz.gov.cn/TPFront/jyxx/005004/005004001/";
+            //取得页数
+            Elements pageElements = getContent(urlInfo, ".huifont", "");
+            String pageStr = pageElements.get(0).childNodes().get(0).toString();
+            List<String> strings = Arrays.asList(pageStr.split("/"));
+            Integer pageValue = Integer.valueOf(strings.get(1));
+
+            circ:
+            for (int i = 1; i <= pageValue; i++) {
+                //列表信息
+                Elements elements = getContent("http://ggzyjy.lsz.gov.cn/TPFront/jyxx/005004/005004001/?Paging=" + i, ".morecontent li", "GBK");
+                for (Element item : elements) {
+                    Elements publishtimeElement = item.select(".ewb-date");
+                    String publishtimeStr = publishtimeElement.get(0).childNodes().get(0).toString().trim();
+                    Date publishtime = DateUtils.parse(publishtimeStr);
+                    if (publishtime == null) continue;
+                    if (publishtime.compareTo(date) < 0) break circ;
+
+                    String link = item.select("a").get(0).attributes().get("href");
+                    String titleStr = item.select("a").get(0).childNodes().get(0).toString();
+
+                    Elements tableElementHrefs = getContent(String.format("%s%s", "http://ggzyjy.lsz.gov.cn", link), "#mainContent", "GBK");
+                    if (tableElementHrefs.size() <= 0) {
+                        continue;
+                    }
+                    String content = publicService.delHtmlTags(tableElementHrefs.get(0).text());
+                    if (content.length() > 500) {
+                        content = content.substring(0, 500);
+                    }
+                    NetInfoRecord netInfoRecord = new NetInfoRecord();
+                    netInfoRecord.setProvince("四川");
+                    netInfoRecord.setCity("凉山");
+                    netInfoRecord.setType("交易公告");
+                    netInfoRecord.setSourceSiteUrl(String.format("%s%s", "http://ggzyjy.lsz.gov.cn", link));
+                    netInfoRecord.setBeginTime(publishtime);
+                    netInfoRecord.setEndTime(publishtime);
+                    netInfoRecord.setTitle(titleStr.replaceAll("\n", ""));
+                    netInfoRecord.setSourceSiteName("公共资源交易平台-凉山州");
+                    netInfoRecord.setContent(String.format("%s%s", content, "..."));
+                    netInfoRecordDao.addInfo(netInfoRecord);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    //公共资源交易平台-攀枝花（交易信息）
+    public void getNetInfoFromGGZYPZH(Integer days) {
+        try {
+            Date date = getInstanceDate(days);//得到前1天
+            String urlInfo = "http://ggzy.panzhihua.gov.cn/jyxx/tdsyq/crgg";
+            //取得页数
+            Elements pageElements = getContent(urlInfo, ".mmggxlh a", "");
+            String pageStr = pageElements.get(pageElements.size() - 2).childNodes().get(0).toString();
+            Integer pageValue = Integer.valueOf(pageStr);
+
+            circ:
+            for (int i = 1; i <= pageValue; i++) {
+                //列表信息
+                Elements elements = getGGZYPZHHtml("#p2 tr", String.valueOf(i));
+                for (Element item : elements) {
+                    Elements tbElements = item.select("td");
+                    if (tbElements.size() == 0 || tbElements == null) continue;
+                    String publishTimeStr = tbElements.get(3).childNodes().get(0).toString().trim();
+                    Date publishTime = DateUtils.parse(publishTimeStr);
+                    if (publishTime == null) continue;
+                    if (publishTime.compareTo(date) < 0) break circ;
+                    String titleStr = tbElements.get(1).childNodes().get(0).toString();
+                    String link = item.select("a").get(0).attributes().get("href");
+
+                    Elements tableElementHrefs = getContent(String.format("%s%s", "http://ggzy.panzhihua.gov.cn", link), ".content_all_nr.editor_content", "");
+                    if (tableElementHrefs.size() <= 0) {
+                        continue;
+                    }
+                    String content = null;
+                    content = publicService.delHtmlTags(tableElementHrefs.get(0).text());
+                    if (content.length() > 500) {
+                        content = content.substring(0, 500);
+                    }
+                    NetInfoRecord netInfoRecord = new NetInfoRecord();
+                    netInfoRecord.setProvince("四川");
+                    netInfoRecord.setCity("攀枝花");
+                    netInfoRecord.setType("交易信息");
+                    netInfoRecord.setSourceSiteUrl(String.format("%s%s", "http://ggzy.panzhihua.gov.cn", link));
+                    netInfoRecord.setBeginTime(publishTime);
+                    netInfoRecord.setEndTime(publishTime);
+                    netInfoRecord.setTitle(titleStr.replaceAll("\n", ""));
+                    netInfoRecord.setSourceSiteName("公共资源交易平台-攀枝花");
+                    netInfoRecord.setContent(String.format("%s%s", content, "..."));
+                    netInfoRecordDao.addInfo(netInfoRecord);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public Elements getGGZYPZHHtml(String element, String pageValue) {
+        try {
+            // 1. 获取访问地址URL
+            URL url = new URL("http://ggzy.panzhihua.gov.cn/jyxx/tdsyq/crgg");
+            // 2. 创建HttpURLConnection对象
+            HttpURLConnection connection = (HttpURLConnection) url
+                    .openConnection();
+            /* 3. 设置请求参数等 */
+            // 请求方式
+            connection.setRequestMethod("POST");
+            // 超时时间
+            //connection.setConnectTimeout(3000);
+            // 设置是否输出
+            connection.setDoOutput(true);
+            // 设置是否读入
+            connection.setDoInput(true);
+            // 设置是否使用缓存
+            connection.setUseCaches(false);
+            // 设置此 HttpURLConnection 实例是否应该自动执行 HTTP 重定向
+            connection.setInstanceFollowRedirects(true);
+            // 设置使用标准编码格式编码参数的名-值对
+            connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            connection.setRequestProperty("Host", "ggzy.panzhihua.gov.cn");
+            connection.setRequestProperty("Origin", "http://ggzy.panzhihua.gov.cn");
+            connection.setRequestProperty("Referer", "http://ggzy.panzhihua.gov.cn/jyxx/tdsyq/crgg");
+            connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36");
+            // 连接
+            connection.connect();
+            /* 4. 处理输入输出 */
+            // 写入参数到请求中
+            String params = "currentPage=" + pageValue + "&area=004&secondArea=000";
+
+            OutputStream out = connection.getOutputStream();
+            out.write(params.getBytes());
+            out.flush();
+            out.close();
+            // 从连接中读取响应信息
+            StringBuilder sb = new StringBuilder();
+            int code = connection.getResponseCode();
+            if (code == 200) {
+                BufferedReader reader = new BufferedReader(
+                        new InputStreamReader(connection.getInputStream(), "utf-8"));
+                String line;
+
+                while ((line = reader.readLine()) != null) {
+                    sb.append(line);
+                    ;
+                }
+                reader.close();
+            }
+            // 5. 断开连接
+            connection.disconnect();
+
+            // 处理结果
+            org.jsoup.nodes.Document doc = Jsoup.parse(sb.toString());
+            Elements elements = doc.select(element);
+            return elements;
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    //土流网
+    public void getNetInfoFromTDJY(Integer days) {
+        try {
+            Date date = getInstanceDate(days);//得到前1天
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日");
+            String htmlHref = "https://www.tudinet.com/market-0-0-2-0/";
+            Elements pageElements = getContent(htmlHref, ".paging.clearfix a", "");
+            Integer pageValue = Integer.valueOf(pageElements.get(pageElements.size() - 3).childNodes().get(0).toString());
+
+            circ:
+            for (int i = 1; i <= pageValue; i++) {
+                //列表信息
+                Elements elements = getContent(String.format("%slist-pg%s.html", htmlHref, i), ".land-l-cont dl", "");
+                for (Element item : elements) {
+                    Elements contentElements = item.select("dd p");
+                    String publishtimeStr = contentElements.get(0).childNodes().get(1).toString();
+                    Date publishtime = sdf.parse(publishtimeStr);
+                    if (publishtime == null) continue;
+                    if (publishtime.compareTo(date) < 0) break circ;
+                    Elements titleElements = item.select("dt a");
+                    String titleStr = titleElements.get(0).attributes().get("titl").trim();
+                    String link = titleElements.get(0).attributes().get("href").trim();
+                    String addressStr = contentElements.get(3).childNodes().get(1).toString();
+                    String province = addressStr.substring(0, addressStr.indexOf("-"));
+                    String city = null;
+                    if (addressStr.indexOf("-") == addressStr.lastIndexOf("-")) {
+                        city = addressStr.substring(addressStr.indexOf("-") + 1, addressStr.length());
+                    } else {
+                        city = addressStr.substring(addressStr.indexOf("-") + 1, addressStr.lastIndexOf("-"));
+                    }
+
+                    String type = contentElements.get(5).childNodes().get(1).toString();
+                    NetInfoRecord netInfoRecord = new NetInfoRecord();
+                    netInfoRecord.setProvince(province);
+                    netInfoRecord.setCity(city);
+                    netInfoRecord.setType(type);
+                    netInfoRecord.setSourceSiteUrl(link);
+                    netInfoRecord.setTitle(titleStr);
+                    netInfoRecord.setBeginTime(publishtime);
+
+                    Elements tableElementHrefs = getContent(link, ".row.hh-sort-text", "");
+                    if (tableElementHrefs.size() == 2) {
+                        Elements dealInfo = tableElementHrefs.get(1).select("li span");
+                        String endTimeStr = dealInfo.get(3).childNodes().get(0).toString().trim();
+                        Date endTime = DateUtils.parse(endTimeStr);
+                        netInfoRecord.setEndTime(endTime);
+                        String currentPriceStr = generateCommonMethod.getNumber(dealInfo.get(7).childNodes().get(0).toString());
+                        if (StringUtils.isNotEmpty(currentPriceStr)) {
+                            netInfoRecord.setCurrentPrice(new BigDecimal(currentPriceStr).multiply(new BigDecimal("10000")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+                        }
+                        String initPriceStr = generateCommonMethod.getNumber(dealInfo.get(6).childNodes().get(0).toString());
+                        if (StringUtils.isNotEmpty(initPriceStr)) {
+                            netInfoRecord.setInitPrice(new BigDecimal(initPriceStr).multiply(new BigDecimal("10000")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+                        }
+                    }
+                    String content = getContent(titleStr, type, netInfoRecord.getCurrentPrice(), "", netInfoRecord.getInitPrice()
+                            , DateUtils.format(netInfoRecord.getEndTime(), DateUtils.DATE_CHINESE_PATTERN), DateUtils.format(netInfoRecord.getBeginTime(), DateUtils.DATE_CHINESE_PATTERN));
+                    netInfoRecord.setSourceSiteName("土流网");
+                    netInfoRecord.setContent(content);
+                    netInfoRecordDao.addInfo(netInfoRecord);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+    //农村产权交易中心
+    public void getNetInfoFromNCJY(Integer days) {
+        try {
+            Date date = getInstanceDate(days);//得到前1天
+            Elements pageElements = getNCJYHtml(".page", "1");
+            String pageStr = pageElements.get(0).childNodes().get(0).toString().trim();
+            Integer pageTotal = Integer.valueOf(pageStr.substring(pageStr.indexOf("共") + 1, pageStr.indexOf("页")));
+
+            circ:
+            for (int i = 1; i <= pageTotal; i++) {
+                //列表信息
+                Elements elements = getNCJYHtml("table tr", String.valueOf(i));
+                for (Element item : elements) {
+                    Elements contentElements = item.select(".td5");
+                    if (contentElements.size() == 0) continue;
+                    String publishtimeStr = contentElements.get(0).childNodes().get(0).toString().trim();
+                    Date publishtime = DateUtils.parse(publishtimeStr);
+                    if (publishtime == null) continue;
+                    if (publishtime.compareTo(date) < 0) break circ;
+                    Elements titleElements = item.select(".td2 a");
+                    String titleStr = titleElements.get(0).attributes().get("title").trim();
+                    String link = titleElements.get(0).attributes().get("href").trim();
+                    String param = link.substring(link.indexOf("?") + 1, link.indexOf("&"));
+
+                    Elements contentTable = getContent(String.format("%s%s", "https://www.cdaee.com/portal/pro/UTRN/td.jsp?", param), "table", "");
+                    String content = null;
+                    content = publicService.delHtmlTags(contentTable.get(0).text());
+                    if (content.length() > 500) {
+                        content = content.substring(0, 500);
+                    }
+                    NetInfoRecord netInfoRecord = new NetInfoRecord();
+                    netInfoRecord.setProvince("四川");
+                    netInfoRecord.setType("土地经营权");
+                    netInfoRecord.setSourceSiteUrl(String.format("%s%s", "https://www.cdaee.com", link));
+                    netInfoRecord.setTitle(titleStr);
+                    netInfoRecord.setBeginTime(publishtime);
+                    netInfoRecord.setEndTime(publishtime);
+                    netInfoRecord.setSourceSiteName("农村产权交易中心");
+                    netInfoRecord.setContent(String.format("%s%s", content, "..."));
+                    netInfoRecordDao.addInfo(netInfoRecord);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+    public Elements getNCJYHtml(String element, String pageValue) {
+        try {
+            // 1. 获取访问地址URL
+            URL url = new URL("https://www.cdaee.com/portal/comp/listPro.jsp");
+            // 2. 创建HttpURLConnection对象
+            HttpURLConnection connection = (HttpURLConnection) url
+                    .openConnection();
+            /* 3. 设置请求参数等 */
+            // 请求方式
+            connection.setRequestMethod("POST");
+            // 超时时间
+            //connection.setConnectTimeout(3000);
+            // 设置是否输出
+            connection.setDoOutput(true);
+            // 设置是否读入
+            connection.setDoInput(true);
+            // 设置是否使用缓存
+            connection.setUseCaches(false);
+            // 设置此 HttpURLConnection 实例是否应该自动执行 HTTP 重定向
+            connection.setInstanceFollowRedirects(true);
+            // 设置使用标准编码格式编码参数的名-值对
+            connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+            connection.setRequestProperty("Host", "www.cdaee.com");
+            connection.setRequestProperty("Origin", "https://www.cdaee.com");
+            connection.setRequestProperty("Referer", "https://www.cdaee.com/portal/pro/index.shtml");
+            connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36");
+            // 连接
+            connection.connect();
+            /* 4. 处理输入输出 */
+            // 写入参数到请求中
+            if (StringUtils.isEmpty(pageValue))
+                pageValue = "1";
+            String params = "sysEname=UTRN&template=OrgUTRNSearch&pageIndex=" + pageValue + "&pageSize=15&proType=td";
+
+            OutputStream out = connection.getOutputStream();
+            out.write(params.getBytes());
+            out.flush();
+            out.close();
+            // 从连接中读取响应信息
+            StringBuilder sb = new StringBuilder();
+            int code = connection.getResponseCode();
+            if (code == 200) {
+                BufferedReader reader = new BufferedReader(
+                        new InputStreamReader(connection.getInputStream(), "utf-8"));
+                String line;
+
+                while ((line = reader.readLine()) != null) {
+                    sb.append(line);
+                    ;
+                }
+                reader.close();
+            }
+            // 5. 断开连接
+            connection.disconnect();
+
+            // 处理结果
+            org.jsoup.nodes.Document doc = Jsoup.parse(sb.toString());
+            Elements elements = doc.select(element);
+            return elements;
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
     private String checkNull(Elements select, Integer index) {
         Elements elements = select.get(index).select("p span");
@@ -1312,7 +1679,7 @@ public class NetInfoRecordService {
 
 
     //获取前几天的日期
-    public Date getInstanceDate(Integer days){
+    public Date getInstanceDate(Integer days) {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DATE, -days); //得到前几天
         calendar.set(Calendar.HOUR_OF_DAY, 0);

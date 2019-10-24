@@ -46,7 +46,7 @@ public class ProjectTaskGenerateAssist implements ProjectTaskInterface {
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageGenerate/planGenerateIndex", "", 0, "-1", "");
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageGenerate/taskGenerateIndex", "", 0, "-1", "");
         //意见稿模板
         List<DocumentTemplate> documentTemplateList = documentTemplateService.getDocumentTemplateList("",baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_TEMPLATE_TYPE_OPINION).getId());
         modelAndView.addObject("documentTemplateList", documentTemplateList);
@@ -56,7 +56,7 @@ public class ProjectTaskGenerateAssist implements ProjectTaskInterface {
 
     @Override
     public ModelAndView approvalView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageGenerate/planGenerateApproval", processInsId, boxId, taskId, agentUserAccount);
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageGenerate/taskGenerateApproval", processInsId, boxId, taskId, agentUserAccount);
         setModelParam(projectPlanService.getProjectplanById(projectPlanDetails.getPlanId()), modelAndView);
         return modelAndView;
     }
@@ -92,14 +92,14 @@ public class ProjectTaskGenerateAssist implements ProjectTaskInterface {
 
     @Override
     public ModelAndView returnEditView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageGenerate/planGenerateApproval", processInsId, boxId, taskId, agentUserAccount);
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageGenerate/taskGenerateApproval", processInsId, boxId, taskId, agentUserAccount);
         setModelParam(projectPlanService.getProjectplanById(projectPlanDetails.getPlanId()), modelAndView);
         return modelAndView;
     }
 
     @Override
     public ModelAndView detailsView(ProjectPlanDetails projectPlanDetails, Integer boxId) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageGenerate/planGenerateApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageGenerate/taskGenerateApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
         setModelParam(projectPlanService.getProjectplanById(projectPlanDetails.getPlanId()), modelAndView);
         return modelAndView;
     }

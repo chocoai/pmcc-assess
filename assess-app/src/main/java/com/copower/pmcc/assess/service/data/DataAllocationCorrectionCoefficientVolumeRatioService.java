@@ -106,7 +106,7 @@ public class DataAllocationCorrectionCoefficientVolumeRatioService {
      * @return
      */
     public BigDecimal getAmendByVolumetricRate(String province, String city, String district, String volumetricRate) {
-        if (volumetricRate == null) return null;
+        if (StringUtils.isBlank(volumetricRate)) return null;
         //根据容积率找到配置中对应的容积率修正
         List<DataAllocationCorrectionCoefficientVolumeRatio> coefficientVolumeRatioList;
         coefficientVolumeRatioList = dataLandDetailAchievementDao.getDataAllocationCorrectionCoefficientVolumeRatioList(province, city, district);
@@ -120,6 +120,7 @@ public class DataAllocationCorrectionCoefficientVolumeRatioService {
             List<DataAllocationCorrectionCoefficientVolumeRatioDetail> detailList = dataAllocationCorrectionCoefficientVolumeRatioDetailDao.getDataAllocationCorrectionCoefficientVolumeRatioDetailList(coefficientVolumeRatioDetail);
             for (DataAllocationCorrectionCoefficientVolumeRatioDetail detailItem : detailList) {
                 //直接匹配
+                if(detailItem.getPlotRatio()==null) continue;
                 if (detailItem.getPlotRatio().compareTo(new BigDecimal(volumetricRate)) == 0) {
                     return detailItem.getCorrectionFactor();
                 }
