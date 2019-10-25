@@ -158,10 +158,10 @@ public class UReportService {
             sql.append(String.format(" AND D.u_use_unit = %s", queryReportUseUnitName));
         }
         if (StringUtil.isNotEmpty(queryReportNumber)) {
-            sql.append(String.format(" AND E.number_value LIKE '%s%s%s'", "%", queryReportNumber, "%"));
+            sql.append(String.format(" AND (E.number_value LIKE '%s%s%s'", "%", queryReportNumber, "%"));
             sql.append(String.format(" OR F.number_value LIKE '%s%s%s'", "%", queryReportNumber, "%"));
             sql.append(String.format(" OR G.number_value LIKE '%s%s%s'", "%", queryReportNumber, "%"));
-            sql.append(String.format(" OR H.number_value LIKE '%s%s%s'", "%", queryReportNumber, "%"));
+            sql.append(String.format(" OR H.number_value LIKE '%s%s%s')", "%", queryReportNumber, "%"));
         }
         if (StringUtil.isNotEmpty(queryStartTime)) {
             sql.append(String.format(" AND Date(A.result_number_date) >= '%s'", queryStartTime));
