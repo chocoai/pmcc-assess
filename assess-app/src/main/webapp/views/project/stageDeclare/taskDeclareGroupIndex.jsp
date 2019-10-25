@@ -197,9 +197,9 @@
         }
         if (groupId) {
             select.groupId = groupId;
-            declareRecordGroup.baseDeclareRecordTable(declareRecordGroup.sureDeclareRecordTable, select);
+            declareRecordGroup.baseDeclareRecordTable($(declareRecordGroup.sureDeclareRecordTable.selector), select);
         } else {
-            declareRecordGroup.baseDeclareRecordTable(declareRecordGroup.cancelDeclareRecordTable, select);
+            declareRecordGroup.baseDeclareRecordTable($(declareRecordGroup.cancelDeclareRecordTable.selector), select);
         }
     };
 
@@ -230,11 +230,11 @@
      *确认分组
      */
     declareRecordGroup.submitGroup = function () {
-        var rows = declareRecordGroup.cancelDeclareRecordTable.bootstrapTable('getSelections');
+        var rows = $(declareRecordGroup.cancelDeclareRecordTable.selector).bootstrapTable('getSelections');
         if (!rows || rows.length <= 0) {
             toastr.info("请选择要分组的数据");
         } else {
-            var groupId = declareRecordGroup.groupDispatchModel.find("[name='groupId']").val();
+            var groupId = $(declareRecordGroup.groupDispatchModel.selector).find("[name='groupId']").val();
             var data = [];
             $.each(rows, function (i, row) {
                 var obj = JSON.parse(JSON.stringify(row));
@@ -247,8 +247,8 @@
                 data: {fomData: JSON.stringify(data)},
                 success: function (result) {
                     if (result.ret) {
-                        declareRecordGroup.cancelDeclareRecordTable.bootstrapTable('refresh');
-                        declareRecordGroup.sureDeclareRecordTable.bootstrapTable('refresh');
+                        $(declareRecordGroup.cancelDeclareRecordTable.selector).bootstrapTable('refresh');
+                        $(declareRecordGroup.sureDeclareRecordTable.selector).bootstrapTable('refresh');
                     } else {
                         Alert("失败:" + result.errmsg);
                     }
@@ -262,7 +262,7 @@
 
     /*取消分组*/
     declareRecordGroup.cancelGroup = function () {
-        var rows = declareRecordGroup.sureDeclareRecordTable.bootstrapTable('getSelections');
+        var rows = $(declareRecordGroup.sureDeclareRecordTable.selector).bootstrapTable('getSelections');
         if (!rows || rows.length <= 0) {
             toastr.info("请选择要取消分组的数据");
         } else {
@@ -278,8 +278,8 @@
                 data: {fomData: JSON.stringify(data)},
                 success: function (result) {
                     if (result.ret) {
-                        declareRecordGroup.cancelDeclareRecordTable.bootstrapTable('refresh');
-                        declareRecordGroup.sureDeclareRecordTable.bootstrapTable('refresh');
+                        $(declareRecordGroup.cancelDeclareRecordTable.selector).bootstrapTable('refresh');
+                        $(declareRecordGroup.sureDeclareRecordTable.selector).bootstrapTable('refresh');
                     } else {
                         Alert("失败:" + result.errmsg);
                     }
@@ -295,22 +295,24 @@
      * 显示分组model
      */
     declareRecordGroup.dispatchData = function (groupId) {
-        declareRecordGroup.groupDispatchModel.modal("show");
+        var target = $(declareRecordGroup.groupDispatchModel.selector) ;
+        target.modal("show");
         var data = {};
         data.planId = '${projectPlan.id}';
         data.projectId = '${projectInfo.id}';
         var obj = JSON.parse(JSON.stringify(data));
         data.groupId = groupId;
-        declareRecordGroup.groupDispatchModel.find("[name='groupId']").val(groupId);
-        declareRecordGroup.baseDeclareRecordTable(declareRecordGroup.cancelDeclareRecordTable, obj);
-        declareRecordGroup.baseDeclareRecordTable(declareRecordGroup.sureDeclareRecordTable, data);
+        target.find("[name='groupId']").val(groupId);
+        declareRecordGroup.baseDeclareRecordTable(  $(declareRecordGroup.cancelDeclareRecordTable.selector) , obj);
+        declareRecordGroup.baseDeclareRecordTable(  $(declareRecordGroup.sureDeclareRecordTable.selector), data);
     };
 
     /**
      * 赋值
      */
     declareRecordGroup.initForm = function (data) {
-        var form = declareRecordGroup.groupTargetModel.find("form");
+        var target = $(declareRecordGroup.groupTargetModel.selector) ;
+        var form = target.find("form");
         form.clearAll();
         if (!data.name) {
             var item = declareRecordGroup.groupTargetTable.bootstrapTable('getData');
@@ -371,7 +373,7 @@
             if (rows.length == 1) {
                 var data = rows[0];
                 declareRecordGroup.initForm(data);
-                declareRecordGroup.groupTargetModel.modal("show");
+                $(declareRecordGroup.groupTargetModel.selector).modal("show");
                 declareRecordGroup.groupTargetTable.bootstrapTable('uncheckAll');
             } else {
                 toastr.success('勾选一个!');
@@ -384,7 +386,8 @@
      * @returns {boolean}
      */
     declareRecordGroup.save = function () {
-        var form = declareRecordGroup.groupTargetModel.find("form");
+        var target = $(declareRecordGroup.groupTargetModel.selector) ;
+        var form = target.find("form");
         if (!form.valid()) {
             return false;
         }
@@ -397,7 +400,7 @@
             data: {formData: JSON.stringify(data)},
             success: function (result) {
                 if (result.ret) {
-                    declareRecordGroup.groupTargetModel.modal("hide");
+                    target.modal("hide");
                     declareRecordGroup.groupTargetTable.bootstrapTable('refresh');
                 } else {
                     Alert("保存失败:" + result.errmsg);
