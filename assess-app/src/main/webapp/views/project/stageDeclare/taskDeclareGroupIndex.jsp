@@ -13,6 +13,11 @@
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
 
+            <form id="declareApplyForm">
+                <input type="hidden" name="projectId" value="${projectInfo.id}">
+                <input type="hidden" name="planId" value="${projectPlan.id}">
+            </form>
+
             <div class="x_panel">
                 <div class="x_content">
                     <div id="projectDeclareToolbar" style="display: none">
@@ -429,6 +434,7 @@
         if (!frm.valid()) {
             return false;
         }
+        var formData = formSerializeArray(frm);
         if ("${processInsId}" != "0") {
             submitEditToServer(JSON.stringify(formData));
         }
