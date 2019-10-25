@@ -2225,6 +2225,66 @@ public class BasicHouseExample {
             addCriterion("decorate_situation_description not between", value1, value2, "decorateSituationDescription");
             return (Criteria) this;
         }
+
+        public Criteria andMapIdIsNull() {
+            addCriterion("map_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMapIdIsNotNull() {
+            addCriterion("map_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMapIdEqualTo(Integer value) {
+            addCriterion("map_id =", value, "mapId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMapIdNotEqualTo(Integer value) {
+            addCriterion("map_id <>", value, "mapId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMapIdGreaterThan(Integer value) {
+            addCriterion("map_id >", value, "mapId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMapIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("map_id >=", value, "mapId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMapIdLessThan(Integer value) {
+            addCriterion("map_id <", value, "mapId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMapIdLessThanOrEqualTo(Integer value) {
+            addCriterion("map_id <=", value, "mapId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMapIdIn(List<Integer> values) {
+            addCriterion("map_id in", values, "mapId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMapIdNotIn(List<Integer> values) {
+            addCriterion("map_id not in", values, "mapId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMapIdBetween(Integer value1, Integer value2) {
+            addCriterion("map_id between", value1, value2, "mapId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMapIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("map_id not between", value1, value2, "mapId");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

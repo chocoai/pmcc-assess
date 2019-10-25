@@ -42,7 +42,7 @@
     };
 
     estateCommon.getEstateId = function () {
-        var id = estateCommon.estateForm.find('[name=id]').val()!=null?estateCommon.estateForm.find('[name=id]').val():estateCommon.tableId;
+        var id = estateCommon.estateForm.find('[name=id]').val() != null ? estateCommon.estateForm.find('[name=id]').val() : estateCommon.tableId;
         if (id) {
             return id;
         }
@@ -50,7 +50,7 @@
     };
 
     estateCommon.getEstateName = function () {
-        var estatePartInMode = basicCommon.basicApplyForm.find('[name=estatePartInMode]').val() ;
+        var estatePartInMode = basicCommon.basicApplyForm.find('[name=estatePartInMode]').val();
         try {
             estatePartInMode = basicCommon.basicApplyForm.find('[name=estatePartInMode]').val();
         } catch (e) {
@@ -60,10 +60,10 @@
         if (estatePartInMode) {
             return name;
         }
-        if (estateName){
+        if (estateName) {
             return estateName;
         }
-        if (name){
+        if (name) {
             return name;
         }
     };
@@ -116,8 +116,8 @@
             success: function (result) {
                 if (result.ret) {
                     var data = result.data;
-                    var basicEstate = data.basicEstate ;
-                    var basicEstateLandState = data.basicEstateLandState ;
+                    var basicEstate = data.basicEstate;
+                    var basicEstateLandState = data.basicEstateLandState;
                     estateCommon.initForm({estate: basicEstate, land: basicEstateLandState});
                     if (callback) {
                         callback($(_this).attr('data-mode'));
@@ -144,8 +144,8 @@
             success: function (result) {
                 if (result.ret) {
                     var data = result.data;
-                    var basicEstate = data.basicEstate ;
-                    var basicEstateLandState = data.basicEstateLandState ;
+                    var basicEstate = data.basicEstate;
+                    var basicEstateLandState = data.basicEstateLandState;
                     estateCommon.initForm({estate: basicEstate, land: basicEstateLandState});
                     if (callback) {
                         callback($(_this).attr('data-mode'));
@@ -164,8 +164,8 @@
             success: function (result) {
                 if (result.ret) {
                     var data = result.data;
-                    var basicEstate = data.basicEstate ;
-                    var basicEstateLandState = data.basicEstateLandState ;
+                    var basicEstate = data.basicEstate;
+                    var basicEstateLandState = data.basicEstateLandState;
                     estateCommon.initForm({estate: basicEstate, land: basicEstateLandState});
                     estateCommon.applyId = applyId;
                     if (callback) {
@@ -185,8 +185,8 @@
             success: function (result) {
                 if (result.ret) {
                     var data = result.data;
-                    var basicEstate = data.basicEstate ;
-                    var basicEstateLandState = data.basicEstateLandState ;
+                    var basicEstate = data.basicEstate;
+                    var basicEstateLandState = data.basicEstateLandState;
                     estateCommon.initForm({estate: basicEstate, land: basicEstateLandState});
                     if (callback) {
                         callback(result.data);
@@ -205,8 +205,8 @@
             success: function (result) {
                 if (result.ret) {
                     var data = result.data;
-                    var basicEstate = data.basicEstate ;
-                    var basicEstateLandState = data.basicEstateLandState ;
+                    var basicEstate = data.basicEstate;
+                    var basicEstateLandState = data.basicEstateLandState;
                     estateCommon.initForm({estate: basicEstate, land: basicEstateLandState});
                     estateCommon.applyId = applyId;
                     if (callback) {
@@ -229,8 +229,8 @@
             success: function (result) {
                 if (result.ret) {
                     var data = result.data;
-                    var basicEstate = data.basicEstate ;
-                    var basicEstateLandState = data.basicEstateLandState ;
+                    var basicEstate = data.basicEstate;
+                    var basicEstateLandState = data.basicEstateLandState;
                     estateCommon.initForm({estate: basicEstate, land: basicEstateLandState});
                     estateCommon.applyId = applyId;
                     if (callback) {
@@ -274,8 +274,8 @@
             districtValue: data.estate.district
         });
         AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estateLandInfrastructure, '', function (html, resultData) {
-            var target = $("#industrySupplyInfoContainer") ;
-            target.empty() ;
+            var target = $("#industrySupplyInfoContainer");
+            target.empty();
             var resultHtml = '';
             var array = [];
             if (data.estate.infrastructure) {
@@ -290,9 +290,9 @@
                 resultHtml += '<label for="infrastructure' + item.id + '">' + item.name + '</label></span>';
             });
             resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '全选或全不选' + "</span>";
-            resultHtml +=    "<input type=\"radio\" name=\"infrastructureSelect\"  onclick=\"estateCommon.checkedFun(this,'infrastructure',true)\">";
+            resultHtml += "<input type=\"radio\" name=\"infrastructureSelect\"  onclick=\"estateCommon.checkedFun(this,'infrastructure',true)\">";
             resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '反选' + "</span>";
-            resultHtml +=    "<input type=\"radio\" name=\"infrastructureSelect\"  onclick=\"estateCommon.checkedFun(this,'infrastructure',false)\">";
+            resultHtml += "<input type=\"radio\" name=\"infrastructureSelect\"  onclick=\"estateCommon.checkedFun(this,'infrastructure',false)\">";
             target.append(resultHtml);
         }, true);
         AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estate_position, data.estate.position, function (html, data) {
@@ -418,9 +418,9 @@
                             resultHtml += '<label for="developmentDegreeContent' + item.id + '">' + item.name + '</label></span>';
                         });
                         resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '全选或全不选' + "</span>";
-                        resultHtml +=    "<input type=\"radio\" name=\"developmentDegreeContentSelect\"  onclick=\"estateCommon.checkedFun(this,'developmentDegreeContent',true)\">";
+                        resultHtml += "<input type=\"radio\" name=\"developmentDegreeContentSelect\"  onclick=\"estateCommon.checkedFun(this,'developmentDegreeContent',true)\">";
                         resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '反选' + "</span>";
-                        resultHtml +=    "<input type=\"radio\" name=\"developmentDegreeContentSelect\"  onclick=\"estateCommon.checkedFun(this,'developmentDegreeContent',false)\">";
+                        resultHtml += "<input type=\"radio\" name=\"developmentDegreeContentSelect\"  onclick=\"estateCommon.checkedFun(this,'developmentDegreeContent',false)\">";
                         $("#developmentDegreeContentContainer").html(resultHtml);
                     }
                 });
@@ -432,9 +432,9 @@
     };
 
     //2019-08-23对这个方法进行重构
-    estateCommon.checkedFun = function (that, name,flag) {
+    estateCommon.checkedFun = function (that, name, flag) {
         var form = $(that).closest("form");
-        var target = form.find("[name='"+name+"']:checkbox") ;
+        var target = form.find("[name='" + name + "']:checkbox");
         if (flag) {//全选或者全不选
             var number = 1;
             target.each(function (i, n) {
@@ -519,6 +519,20 @@
                 }
             });
         }
+    };
+
+    estateCommon.mapNewMarker = function (_this, readonly) {
+        var data = {};
+        data.drawState = 'marker';
+        data.id = $(_this).closest('.form-group').find("[name='mapId']").val();
+        data.readonly = readonly;
+        data.multiple = false;//不允许多个标记
+        data.type = "estate" ;//兼容以前数据
+        data.tableId = estateCommon.estateForm.find("input[name='id']").val() ;
+        data.callback = function (item) {
+            $(_this).closest('.form-group').find("[name='mapId']").val(item.id) ;
+        };
+        toolMapHandleFun.loadMap(data);
     };
 
     //楼盘标注
@@ -621,9 +635,9 @@
     };
 
     //楼盘标注（通过tableId）
-    estateCommon.mapMarker2 = function (readonly,tableId) {
+    estateCommon.mapMarker2 = function (readonly, tableId) {
         estateCommon.tableId = tableId;
-        var contentUrl = getContextPath() + '/map/mapMarkerEstateByTableId?tableId=' + estateCommon.tableId+'&tableName='+estateCommon.tableName;
+        var contentUrl = getContextPath() + '/map/mapMarkerEstateByTableId?tableId=' + estateCommon.tableId + '&tableName=' + estateCommon.tableName;
         if (readonly != true) {
             contentUrl += '&click=estateCommon.addMarker2';
         }
@@ -723,7 +737,7 @@
             $.each(dataA, function (i, obj) {
                 var item = estateCommon.getLandLevelFilter(obj);
                 var landLevelBodyHtml = $("#landLevelTabContentBody").html();
-                if (landLevelBodyHtml){
+                if (landLevelBodyHtml) {
                     landLevelBodyHtml = landLevelBodyHtml.replace(/{dataLandLevelAchievement}/g, item.id);
                     landLevelBodyHtml = landLevelBodyHtml.replace(/{landFactorTotalScore}/g, item.achievement);
                     landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelCategoryName}/g, item.category);
@@ -868,56 +882,59 @@
             });
         }
     };
-    
+
     estateCommon.constructionInstallationEngineeringFeeEvent = {
-        loadHtml:function () {
-            developmentCommon.getMdArchitecturalObjList2({databaseName:AssessDBKey.BasicEstate,pid:estateCommon.getEstateId()} , function (objArray) {
-                if (objArray.length >= 1){
-                    developmentCommon.getMdArchitecturalObjById(objArray[0].id,function (item) {
+        loadHtml: function () {
+            developmentCommon.getMdArchitecturalObjList2({
+                databaseName: AssessDBKey.BasicEstate,
+                pid: estateCommon.getEstateId()
+            }, function (objArray) {
+                if (objArray.length >= 1) {
+                    developmentCommon.getMdArchitecturalObjById(objArray[0].id, function (item) {
                         var target = $("#boxLandEngineering_Install");
                         var table = target.find("table");
-                        var data = [] ;
+                        var data = [];
                         try {
-                            data = JSON.parse(item.jsonContent) ;
+                            data = JSON.parse(item.jsonContent);
                         } catch (e) {
                             console.log("解析异常!");
                         }
-                        estateCommon.constructionInstallationEngineeringFeeEvent.appendHTML(data,item.id);
+                        estateCommon.constructionInstallationEngineeringFeeEvent.appendHTML(data, item.id);
                     });
-                }else {
-                    estateCommon.constructionInstallationEngineeringFeeEvent.appendHTML([], 0,'');
+                } else {
+                    estateCommon.constructionInstallationEngineeringFeeEvent.appendHTML([], 0, '');
                 }
-            }) ;
+            });
         },
-        appendHTML:function (data,id) {
+        appendHTML: function (data, id) {
             var target = $("#boxLandEngineering_Install");
-            var html = target.html() ;
+            var html = target.html();
             html = html.replace(/'{method}'/g, 'estateCommon.constructionInstallationEngineeringFeeEvent.save()');
             target.empty().append(html);
             target.modal("show");
-            target.find(".panel-body").empty() ;
+            target.find(".panel-body").empty();
             developmentCommon.architecturalB.appendHtml(target.find(".panel-body"), data, null, '', function (tr) {
-                var obj = {disable:'disable',readonly:"readonly",'class':'form-control'} ;
-                $(tr).find("input[name='price']").attr(obj) ;
-                $(tr).find("input[name='remark']").attr(obj) ;
-                $(tr).find("input[name='area']").attr(obj) ;
+                var obj = {disable: 'disable', readonly: "readonly", 'class': 'form-control'};
+                $(tr).find("input[name='price']").attr(obj);
+                $(tr).find("input[name='remark']").attr(obj);
+                $(tr).find("input[name='area']").attr(obj);
             });
             target.find("input[name='constructionInstallationEngineeringFeeId']").val(id);
         },
-        save:function () {
-            var pid = estateCommon.getEstateId() ;
+        save: function () {
+            var pid = estateCommon.getEstateId();
             var target = $("#boxLandEngineering_Install");
             var table = target.find("table");
-            var obj = {} ;
-            obj.databaseName = AssessDBKey.BasicEstate ;
+            var obj = {};
+            obj.databaseName = AssessDBKey.BasicEstate;
             obj.pid = pid;
             obj.id = target.find("input[name='constructionInstallationEngineeringFeeId']").val();
-            developmentCommon.saveMdArchitecturalObj2(developmentCommon.architecturalB.getFomData(table),obj,function (item) {
+            developmentCommon.saveMdArchitecturalObj2(developmentCommon.architecturalB.getFomData(table), obj, function (item) {
                 toastr.success('保存成功!');
-            }) ;
+            });
             target.modal("hide");
         }
-    } ;
+    };
 
     window.estateCommon = estateCommon;
 })(jQuery);

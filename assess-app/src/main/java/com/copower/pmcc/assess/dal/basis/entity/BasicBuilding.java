@@ -106,6 +106,8 @@ public class BasicBuilding {
 
     private Integer propertyCompanyNature;
 
+    private Integer mapId;
+
     public Integer getId() {
         return id;
     }
@@ -512,5 +514,13 @@ public class BasicBuilding {
 
     public void setPropertyCompanyNature(Integer propertyCompanyNature) {
         this.propertyCompanyNature = propertyCompanyNature;
+    }
+
+    public Integer getMapId() {
+        return mapId;
+    }
+
+    public void setMapId(Integer mapId) {
+        this.mapId = mapId;
     }
 }

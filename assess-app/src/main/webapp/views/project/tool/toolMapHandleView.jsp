@@ -44,9 +44,9 @@
             </div>
             <div class="modal-footer">
                 <button type="button" data-dismiss="modal" class="btn btn-default">
-                    取消
+                    关闭
                 </button>
-                <button type="button" class="btn btn-primary" onclick="toolMapHandleFun.saveOverlayInfo();">
+                <button type="button" class="btn btn-primary mapReadonly" onclick="toolMapHandleFun.saveOverlayInfo();">
                     保存
                 </button>
             </div>
@@ -77,13 +77,13 @@
                                     <span class="label label-warning">当切换3D后 某些线条无法绘制</span>
                                 </div>
                                 <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2  pull-left">
-                                    <button type="button" class="btn-blue btn"
+                                    <button type="button" class="btn-blue btn mapReadonly"
                                             onclick="toolMapHandleFun.reset()">
                                         <i class="fa fa-share-square"></i>
                                         清除地图所有标记
                                     </button>
                                 </div>
-                                <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2  pull-left">
+                                <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2  pull-left mapReadonly">
                                     <button type="button" class="btn-blue btn"
                                             onclick="toolMapHandleFun.html2canvas();">
                                         <i class="fa fa-mouse-pointer" aria-hidden="true"></i>
@@ -130,9 +130,9 @@
             </div>
             <div class="modal-footer">
                 <button type="button" data-dismiss="modal" class="btn btn-default">
-                    取消
+                    关闭
                 </button>
-                <button type="button" class="btn btn-primary" onclick="toolMapHandleFun.save();">
+                <button type="button" class="btn btn-primary mapReadonly" onclick="toolMapHandleFun.save();">
                     保存
                 </button>
             </div>

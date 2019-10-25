@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <form id="frm_estate" class="form-horizontal">
     <input type="hidden" name="id" value="${basicEstate.id}">
@@ -39,21 +40,10 @@
                            required="required"
                            name="name" class="form-control" value="${basicEstate.name}">
                     <span class="input-group-btn">
-
-                             <c:if test="${empty isApplyBatch}">
-                            <div onclick="estateCommon.mapMarker();" class="btn btn-info"><i
-                                    class="fa fa-map-marker"></i> 标注</div>
-                             </c:if>
-                            <c:if test="${isApplyBatch eq 'show'}">
-                            <div onclick="estateCommon.mapMarker2(false,${tableId});" class="btn btn-info"><i
-                                    class="fa fa-map-marker"></i> 标注</div>
-                            </c:if>
-
-                             <div style="display: none" onclick="estateCommon.mapLandMarker(false)"
-                                  class="btn btn-info">
-                                <i class="fa fa-map-marker"></i> 标注
-                            </div>
-
+                            <input type="hidden" name="mapId" value="${basicEstate.mapId}">
+                             <div onclick="estateCommon.mapNewMarker(this,false);" class="btn btn-info">
+                                 <i class="fa fa-map-marker"></i> 标注
+                             </div>
                         </span>
                 </div>
             </div>
@@ -625,6 +615,7 @@
         <%@include file="/views/project/stageSurvey/common/matchingMaterial.jsp" %>
     </c:if>
 </div>
+<%@include file="/views/project/tool/toolMapHandleView.jsp" %>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.estate.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/sonEstateView.js"></script>
 <script src="${pageContext.request.contextPath}/js/select/land.level.select.js"></script>

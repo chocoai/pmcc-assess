@@ -21,6 +21,8 @@ public class BasicUnit {
 
     private String huxingExplain;
 
+    private Integer mapId;
+
     public Integer getId() {
         return id;
     }
@@ -91,5 +93,13 @@ public class BasicUnit {
 
     public void setHuxingExplain(String huxingExplain) {
         this.huxingExplain = huxingExplain == null ? null : huxingExplain.trim();
+    }
+
+    public Integer getMapId() {
+        return mapId;
+    }
+
+    public void setMapId(Integer mapId) {
+        this.mapId = mapId;
     }
 }

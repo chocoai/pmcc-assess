@@ -22,6 +22,7 @@
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+    <result column="table_id" property="tableId" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -84,7 +85,7 @@
   <sql id="Base_Column_List" >
     id, name, type, lat, view_mode, radius, lng, zoom, deg, center_lat, center_lng, instantaneous_life_data, 
     attachment_id, draw_state, view_state, storage_state, remark, creator, gmt_created, 
-    gmt_modified
+    gmt_modified, table_id
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.ToolMapHandleExample" >
     select
@@ -126,14 +127,14 @@
       center_lng, instantaneous_life_data, attachment_id, 
       draw_state, view_state, storage_state, 
       remark, creator, gmt_created, 
-      gmt_modified)
+      gmt_modified, table_id)
     values (#{name,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{lat,jdbcType=DECIMAL}, 
       #{viewMode,jdbcType=VARCHAR}, #{radius,jdbcType=DECIMAL}, #{lng,jdbcType=DECIMAL}, 
       #{zoom,jdbcType=INTEGER}, #{deg,jdbcType=DECIMAL}, #{centerLat,jdbcType=DECIMAL}, 
       #{centerLng,jdbcType=DECIMAL}, #{instantaneousLifeData,jdbcType=VARCHAR}, #{attachmentId,jdbcType=INTEGER}, 
       #{drawState,jdbcType=VARCHAR}, #{viewState,jdbcType=VARCHAR}, #{storageState,jdbcType=VARCHAR}, 
       #{remark,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{gmtModified,jdbcType=TIMESTAMP}, #{tableId,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ToolMapHandle" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -198,6 +199,9 @@
       <if test="gmtModified != null" >
         gmt_modified,
       </if>
+      <if test="tableId != null" >
+        table_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="name != null" >
@@ -256,6 +260,9 @@
       </if>
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tableId != null" >
+        #{tableId,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -328,6 +335,9 @@
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.tableId != null" >
+        table_id = #{record.tableId,jdbcType=INTEGER},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -354,7 +364,8 @@
       remark = #{record.remark,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      table_id = #{record.tableId,jdbcType=INTEGER}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -419,6 +430,9 @@
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="tableId != null" >
+        table_id = #{tableId,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -442,7 +456,8 @@
       remark = #{remark,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      table_id = #{tableId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

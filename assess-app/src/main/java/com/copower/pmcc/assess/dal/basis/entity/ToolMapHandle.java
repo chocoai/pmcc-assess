@@ -44,6 +44,8 @@ public class ToolMapHandle {
 
     private Date gmtModified;
 
+    private Integer tableId;
+
     public Integer getId() {
         return id;
     }
@@ -202,5 +204,13 @@ public class ToolMapHandle {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public Integer getTableId() {
+        return tableId;
+    }
+
+    public void setTableId(Integer tableId) {
+        this.tableId = tableId;
     }
 }

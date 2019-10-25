@@ -1395,6 +1395,66 @@ public class ToolMapHandleExample {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
             return (Criteria) this;
         }
+
+        public Criteria andTableIdIsNull() {
+            addCriterion("table_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTableIdIsNotNull() {
+            addCriterion("table_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTableIdEqualTo(Integer value) {
+            addCriterion("table_id =", value, "tableId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTableIdNotEqualTo(Integer value) {
+            addCriterion("table_id <>", value, "tableId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTableIdGreaterThan(Integer value) {
+            addCriterion("table_id >", value, "tableId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTableIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("table_id >=", value, "tableId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTableIdLessThan(Integer value) {
+            addCriterion("table_id <", value, "tableId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTableIdLessThanOrEqualTo(Integer value) {
+            addCriterion("table_id <=", value, "tableId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTableIdIn(List<Integer> values) {
+            addCriterion("table_id in", values, "tableId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTableIdNotIn(List<Integer> values) {
+            addCriterion("table_id not in", values, "tableId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTableIdBetween(Integer value1, Integer value2) {
+            addCriterion("table_id between", value1, value2, "tableId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTableIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("table_id not between", value1, value2, "tableId");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

@@ -65,16 +65,26 @@ toolMapHandleFun.loadMap = function (options) {
         storageState: toolMapHandleFun.config.storage.select.key,
         readonly: false,
         radius: 10,
-        zoom: 19,
+        zoom: 30,
         center: {lng: 104.084569, lat: 30.589714},
         viewMode: "2D", // 默认2D
         id: 0,
         instantaneousLifeData: "",
-        callback: undefined
+        callback: undefined,
+        multiple:true, //是否多个
+        type:'estate',
+        tableId:"0"
     };
     defaultObj = $.extend(defaultObj, options);
     var target = $("#modelToolMapHandleView");
     target.modal("show");
+    if (defaultObj.readonly){
+        $(".mapReadonly").hide() ;
+        target.find("input").attr({"readonly":'readonly'});
+        target.find("textarea").attr({"readonly":'readonly'});
+        $("#modelToolMapHandleMarkerView").find("input").attr({"readonly":'readonly'});
+        $("#modelToolMapHandleMarkerView").find("textarea").attr({"readonly":'readonly'});
+    }
     $(document).ready(function () {
         if (defaultObj.id) {
             toolMapHandleFun.getDataById(defaultObj.id, function (data) {
@@ -220,9 +230,9 @@ toolMapHandleFun.switch3DMap = function () {
  */
 toolMapHandleFun.completeEvent = function () {
     var defaultObj = toolMapHandleFun.defaultObj;
-    // if (defaultObj.readonly) {
-    //     return false;
-    // }
+    if (defaultObj.readonly) {
+        return false;
+    }
     if (!toolMapHandleFun.mouseTool) {
         toolMapHandleFun.mouseTool = new AMap.MouseTool(toolMapHandleFun.map);
     }
@@ -278,7 +288,14 @@ toolMapHandleFun.completeEvent = function () {
     toolMapHandleFun.map.on('click', function (e) {
         switch (defaultObj.drawState) {
             case toolMapHandleFun.config.draw.marker.key: {
-                toolMapHandleFun.createOverlay([e.lnglat]);
+                var overlays = toolMapHandleFun.map.getAllOverlays();//获取覆盖物
+                var running = true;
+                if (!defaultObj.multiple){
+                    running = (overlays.length == 0) ;
+                }
+                if (running){
+                    toolMapHandleFun.createOverlay([e.lnglat]);
+                }
                 break
             }
             default:
@@ -369,6 +386,8 @@ toolMapHandleFun.save = function () {
     var target = $("#modelToolMapHandleView");
     var form = target.find("form");
     var data = formSerializeArray(form);
+    data.type = toolMapHandleFun.defaultObj.type;
+    data.tableId = toolMapHandleFun.defaultObj.tableId;
     data.drawState = toolMapHandleFun.defaultObj.drawState;
     data.viewState = toolMapHandleFun.defaultObj.viewState;
     data.storageState = toolMapHandleFun.defaultObj.storageState;

@@ -66,19 +66,27 @@
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         <!--</table>-->
 
-        <!--<table tableName="tb_basic_estate" domainObjectName="BasicEstate">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
+        <table tableName="tb_basic_estate" domainObjectName="BasicEstate">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
 
 
 
-        <!--<table tableName="tb_basic_house" domainObjectName="BasicHouse">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
+        <table tableName="tb_basic_house" domainObjectName="BasicHouse">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
 
-        <!--<table tableName="tb_basic_building" domainObjectName="BasicBuilding">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
+        <table tableName="tb_basic_building" domainObjectName="BasicBuilding">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+
+        <table tableName="tb_basic_unit" domainObjectName="BasicUnit">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+
+        <table tableName="tb_tool_map_handle" domainObjectName="ToolMapHandle">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
 
         <!--<table tableName="tb_md_development_infrastructure_children" domainObjectName="MdDevelopmentInfrastructureChildren">-->
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
@@ -149,9 +157,9 @@
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         <!--</table>-->
 
-        <table tableName="tb_md_economic_indicators_item" domainObjectName="MdEconomicIndicatorsItem">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
+        <!--<table tableName="tb_md_economic_indicators_item" domainObjectName="MdEconomicIndicatorsItem">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
 
 
 

@@ -70,6 +70,8 @@ public class BasicHouse {
 
     private String decorateSituationDescription;
 
+    private Integer mapId;
+
     public Integer getId() {
         return id;
     }
@@ -332,5 +334,13 @@ public class BasicHouse {
 
     public void setDecorateSituationDescription(String decorateSituationDescription) {
         this.decorateSituationDescription = decorateSituationDescription == null ? null : decorateSituationDescription.trim();
+    }
+
+    public Integer getMapId() {
+        return mapId;
+    }
+
+    public void setMapId(Integer mapId) {
+        this.mapId = mapId;
     }
 }

@@ -84,6 +84,8 @@ public class BasicEstate {
 
     private Date gmtModified;
 
+    private Integer mapId;
+
     public Integer getId() {
         return id;
     }
@@ -402,5 +404,13 @@ public class BasicEstate {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public Integer getMapId() {
+        return mapId;
+    }
+
+    public void setMapId(Integer mapId) {
+        this.mapId = mapId;
     }
 }
