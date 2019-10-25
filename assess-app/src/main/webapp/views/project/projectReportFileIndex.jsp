@@ -8,287 +8,110 @@
 <div class="container body">
     <div class="main_container">
         <div class="right_col" role="main" style="margin-left: 0">
-            <div class="page-title" style="margin: 0px">
-                <div class="title_left">
-                    <h3>
-                        估价委托书及相关证明
-                    </h3>
-                </div>
-            </div>
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <div class="x_panel">
-                <div class="x_title collapse-link">
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                    </ul>
-                    <h3>估价委托书</h3>
+                <div class="x_title">
+                    <h3> 估价委托书及相关证明</h3>
                     <div class="clearfix"></div>
                 </div>
-                <div class="x_content collapse">
-                    <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
-                        <input id="project_proxy" name="project_proxy" type="file" multiple="false">
-                        <div id="_project_proxy"></div>
+                <div class="x_content">
+                    <div class="x_title">
+                        <h4>点击选择权证</h4>
+                        <div class="clearfix"></div>
                     </div>
-                </div>
-            </div>
-            <div class="x_panel">
-                <div class="x_title collapse-link">
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                    </ul>
-                    <h3>位置示意图</h3>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="x_content collapse">
-                    <div class=" col-xs-6  col-sm-6  col-md-6  col-lg-6 ">
-                        <table class="table table-hover">
-                            <thead>
-                            <tr>
-                                <th>权证对象</th>
-                                <th>位置图</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <c:forEach items="${declareRecordList}" var="declareRecord">
-                                <tr>
-                                    <td>${declareRecord.name} </td>
-                                    <td>
-                                        <input id="judge_object_position${declareRecord.id}" name="project_proxy"
-                                               type="file" multiple="false">
-                                        <div id="_judge_object_position${declareRecord.id}"></div>
-                                    </td>
-                                </tr>
-                                <script type="text/javascript">
-                                    $(function () {
-                                        uploadFiles(AssessDBKey.DeclareRecord, "${declareRecord.id}", AssessUploadKey.JUDGE_OBJECT_POSITION, "judge_object_position${declareRecord.id}");
-                                        loadUploadFiles(AssessDBKey.DeclareRecord, "${declareRecord.id}", AssessUploadKey.JUDGE_OBJECT_POSITION, "judge_object_position${declareRecord.id}");
-                                    })
-                                </script>
-                            </c:forEach>
-                            </tbody>
+                    <div class="x_content">
+                        <table class="table table-bordered" id="declareTable">
+                            <!-- cerare document add ajax data-->
                         </table>
                     </div>
-                </div>
-            </div>
-            <div class="x_panel">
-                <div class="x_title collapse-link">
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                    </ul>
-                    <h3>实况照片</h3>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="x_content collapse">
-                    <c:forEach items="${declareRecordList}" var="declareRecord">
-                        <div class="row">
-                            <input type="hidden" name="declareRecordId" value="${declareRecord.id}">
-                            <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10  col-sm-10 col-xs-10">
-                                <div class="x_panel">
-                                    <div class="x_title">
-                                        <h4><strong>${declareRecord.name}</strong>
-                                            <small>
-                                                <input type="button" class="btn btn-success btn-xs"
-                                                       onclick="addLiveSituationFile(${declareRecord.id})"
-                                                       value="新增照片">
-                                            </small>
-                                            <small>
-                                                <input type="button" class="btn btn-success btn-xs"
-                                                       onclick="getLiveSituationAll(${declareRecord.id})"
-                                                       value="选择查勘中图片">
-                                            </small>
-                                            <small>
-                                                <input type="button" class="btn btn-success btn-xs"
-                                                       onclick="selectPictureTempale(${declareRecord.id})"
-                                                       value="新增查勘照片模板">
-                                            </small>
-                                        </h4>
 
-                                    </div>
-                                    <div class="">
-                                        <table class="table">
-                                            <thead>
-                                            <tr>
-                                                <th>文件名称</th>
-                                                <th>排序</th>
-                                                <th>附件</th>
-                                                <th>对应查勘部位</th>
-                                                <th>附件类别</th>
-                                                <th>是否上报告</th>
-                                                <th>操作</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody data-id="${declareRecord.id}" data-name="live_situation_select">
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
+
+                    <div class="x_panel">
+                        <div class="x_title collapse-link">
+                            <ul class="nav navbar-right panel_toolbox">
+                                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                            </ul>
+                            <h4>估价委托书</h4>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content collapse">
+                            <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
+                                <input id="project_proxy" name="project_proxy" type="file" multiple="false">
+                                <div id="_project_proxy"></div>
                             </div>
                         </div>
-                        <script type="text/javascript">
-                            $(function () {
-                                //1.加载该委估对象所有相关实况照片 2.加载该委估对象已选择的实况照片
-                                loadLiveSituation($('tbody[data-id=${declareRecord.id}][data-name=live_situation_select]'), ${declareRecord.id});
-                            })
-                        </script>
-                    </c:forEach>
-                </div>
-            </div>
-            <div class="x_panel">
-                <div class="x_title collapse-link">
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                    </ul>
-                    <h3>权属证明复印件</h3>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="x_content collapse">
-                    <c:forEach items="${declareRecordList}" var="declareRecord">
-
-                        <div class="row">
-                            <div class=" col-xs-6612  col-sm-6612  col-md-6612  col-lg-6612  col-sm-6 col-xs-12">
-                                <div class="x_panel">
-                                    <div class="x_title"><h4><strong>${declareRecord.name}</strong></h4></div>
-                                    <table class="table table-hover">
-                                        <thead>
-                                        <tr>
-                                            <th>序号</th>
-                                            <th>文件名称</th>
-                                            <th>操作</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody data-id="${declareRecord.id}" data-name="ownership_cert_file_list">
-
-
-                                        </tbody>
-                                    </table>
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">复印件</label>
-                                        <div class="col-sm-10">
-                                            <input id="uploadOwnershipCertFile${declareRecord.id}" class="form-control"
-                                                   type="file">
-                                            <div id="_uploadOwnershipCertFile${declareRecord.id}"></div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
+                    </div>
+                    <div class="x_panel">
+                        <div class="x_title collapse-link">
+                            <ul class="nav navbar-right panel_toolbox">
+                                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                            </ul>
+                            <h4>位置示意图</h4>
+                            <div class="clearfix"></div>
                         </div>
-                        <script type="text/javascript">
-                            $(function () {
-                                uploadOwnershipCertFile("${declareRecord.dataTableName}", "${declareRecord.dataTableId}", "uploadOwnershipCertFile${declareRecord.id}", $('tbody[data-id=${declareRecord.id}][data-name=ownership_cert_file_list]'), ${declareRecord.id});
-                                getOwnershipCertFileAll($('tbody[data-id=${declareRecord.id}][data-name=ownership_cert_file_list]'), ${declareRecord.id});
-                            })
-                        </script>
-                    </c:forEach>
-                </div>
-            </div>
-            <div class="x_panel">
-                <div class="x_title collapse-link">
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                    </ul>
-                    <h3>关联土地证附件</h3>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="x_content collapse">
-                    <c:forEach items="${declareRecordList}" var="declareRecord">
-
-                        <div class="row">
-                            <div class=" col-xs-6612  col-sm-6612  col-md-6612  col-lg-6612  col-sm-6 col-xs-12">
-                                <div class="x_panel">
-                                    <div class="x_title"><h4><strong>${declareRecord.name}</strong></h4></div>
-                                    <table class="table table-hover">
-                                        <thead>
-                                        <tr>
-                                            <th>序号</th>
-                                            <th>文件名称</th>
-                                            <th>操作</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody data-id="${declareRecord.id}" data-name="land_file_list">
-
-
-                                        </tbody>
-                                    </table>
-                                    <div class="x-valid" data-id="${declareRecord.id}" data-name="land_file_btn">
-
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                        <script type="text/javascript">
-                            $(function () {
-                                uploadLandFile(AssessDBKey.DeclareRealtyLandCert, "uploadlandFile${declareRecord.id}", $('tbody[data-id=${declareRecord.id}][data-name=land_file_list]'), ${declareRecord.id});
-                                getLandFileAllByDeclareRecord($('tbody[data-id=${declareRecord.id}][data-name=land_file_list]'), ${declareRecord.id});
-                            })
-                        </script>
-                    </c:forEach>
-                </div>
-            </div>
-            <div class="x_panel">
-                <div class="x_title collapse-link">
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                    </ul>
-                    <h3>
-                        估价中引用的专用文件资料
-                    </h3>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="x_content collapse">
-                    <div class="row">
-                        <c:forEach items="${declareRecordList}" var="declareRecord">
+                        <div class="x_content collapse">
                             <div class=" col-xs-6  col-sm-6  col-md-6  col-lg-6 ">
-                                <div class="x_panel">
-                                    <div class="x_title"><h4><strong>${declareRecord.name}</strong></h4></div>
-                                    <c:if test="${not empty inventoryAddressFileList.get(declareRecord.id)}">
-                                        <div class="x_panel">
-                                            <div class="x_title">登记与实际地址不一致附件</div>
-                                            <div>
-                                                <table class="table table-hover">
-                                                    <thead>
-                                                    <tr>
-                                                        <th>序号</th>
-                                                        <th>文件名称</th>
-                                                        <th>操作</th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    <c:forEach items="${inventoryAddressFileList.get(declareRecord.id)}"
-                                                               var="item" varStatus="i">
-                                                        <tr>
-                                                            <th>${i.index+1}</th>
-                                                            <td>${item.fileName}</td>
-                                                            <td>
-                                                                <input type="button" class="btn btn-xs btn-primary"
-                                                                       value="编辑"
-                                                                       onclick="FileUtils.editAttachment(${item.id},'${item.fileExtension}');">
-                                                                <input type="button" class="btn btn-xs btn-warning"
-                                                                       value="查看"
-                                                                       onclick="FileUtils.showAttachment(${item.id},'${item.fileExtension}');">
-                                                            </td>
-                                                        </tr>
-                                                    </c:forEach>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </c:if>
-                                    <input type="button" class="btn btn-success" value="自定义添加"
-                                           onclick="addReportFileCustom(${declareRecord.id});">
-                                    <div class="row report-file-custom${declareRecord.id}">
-                                    </div>
-                                </div>
+                                <table class="table table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>权证对象</th>
+                                        <th>位置图</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="positionTbody">
+                                    </tbody>
+                                </table>
                             </div>
+                        </div>
+                    </div>
+                    <div class="x_panel">
+                        <div class="x_title collapse-link">
+                            <ul class="nav navbar-right panel_toolbox">
+                                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                            </ul>
+                            <h4>实况照片</h4>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content collapse" id="liveSituationHtml">
+                        </div>
+                    </div>
+                    <div class="x_panel">
+                        <div class="x_title collapse-link">
+                            <ul class="nav navbar-right panel_toolbox">
+                                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                            </ul>
+                            <h4>权属证明复印件</h4>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content collapse" id="ownershipCertHtml">
 
-                            <script type="text/javascript">
-                                $(function () {
-                                    //1.加载该委估对象所有相关实况照片 2.加载该委估对象已选择的实况照片
-                                    loadReportFileCustomList(${declareRecord.id});
-                                })
-                            </script>
-                        </c:forEach>
+                        </div>
+                    </div>
+                    <div class="x_panel">
+                        <div class="x_title collapse-link">
+                            <ul class="nav navbar-right panel_toolbox">
+                                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                            </ul>
+                            <h4>关联土地证附件</h4>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content collapse" id="landFileHtml">
+                        </div>
+                    </div>
+                    <div class="x_panel">
+                        <div class="x_title collapse-link">
+                            <ul class="nav navbar-right panel_toolbox">
+                                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                            </ul>
+                            <h4>
+                                估价中引用的专用文件资料
+                            </h4>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content collapse" id="ReportFileCustom">
+
+
+                        </div>
                     </div>
 
                 </div>
@@ -296,12 +119,12 @@
 
             <div class="x_panel">
                 <div class="x_content">
-                    <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4    col-xs-offset-5 col-sm-offset-5 col-md-offset-5 col-lg-offset-5">
+                    <div class="col-sm-4 col-sm-offset-5">
                         <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
                             取消
                         </button>
-                        <button id="btn_submit" class="btn btn-warning" onclick="submit();">
-                            保存<i style="margin-left: 10px" class="fa fa-save"></i>
+                        <button id="btn_submit" class="btn btn-success" onclick="submit()">
+                            提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
                         </button>
                     </div>
                 </div>
@@ -565,6 +388,7 @@
 </script>
 <script type="application/javascript">
     $(function () {
+        reloadDeclareList();
         uploadFiles(AssessDBKey.ProjectInfo, "${projectInfo.id}", AssessUploadKey.PROJECT_PROXY);
         loadUploadFiles(AssessDBKey.ProjectInfo, "${projectInfo.id}", AssessUploadKey.PROJECT_PROXY);
     });
@@ -1217,6 +1041,138 @@
                 Alert("调用服务端方法失败，失败原因:" + result);
             }
         })
+    }
+
+    //权证列表
+    function reloadDeclareList() {
+        var cols = [];
+        cols.push({field: 'name', title: '名称'});
+        $("#indexDetailTable").bootstrapTable('destroy');
+        TableInit("declareTable", "${pageContext.request.contextPath}/declareRecord/getDeclareRecordList", cols, {
+            projectId: ${projectId}
+        }, {
+            showColumns: false,
+            showRefresh: false,
+            search: false,
+            onClickRow: function (row) {
+                loadPositionHtml(row);
+                loadLiveSituationHtml(row);
+                loadOwnershipCertHtml(row);
+                loadLandFileHtml(row);
+                loadReportFileCustomHtml(row);
+            },
+            onLoadSuccess: function () {
+                $('.tooltips').tooltip();
+            }
+        });
+    };
+
+    //位置示意图html
+    function loadPositionHtml(declareRecord) {
+        var html = '';
+        html += '<tr><td>' + declareRecord.name + '</td><td>' +
+            '<input type="file" multiple="false"  id="judge_object_position' + declareRecord.id + '">' +
+            '<div id="_judge_object_position' + declareRecord.id + '"></div></td></tr>';
+        $("#positionTbody").empty().append(html);
+        uploadFiles(AssessDBKey.DeclareRecord, declareRecord.id, AssessUploadKey.JUDGE_OBJECT_POSITION, "judge_object_position" + declareRecord.id);
+        loadUploadFiles(AssessDBKey.DeclareRecord, declareRecord.id, AssessUploadKey.JUDGE_OBJECT_POSITION, "judge_object_position" + declareRecord.id);
+    }
+
+    //实况照片html
+    function loadLiveSituationHtml(declareRecord) {
+        var html = '';
+        html += '<div class="row">';
+        html += '<input type="hidden" name="declareRecordId" value="' + declareRecord.id + '">';
+        html += '<div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10  col-sm-10 col-xs-10">';
+        html += '<div class="x_panel">';
+        html += '<div class="x_title"><h4>';
+        html += '<strong>' + declareRecord.name + '</strong>';
+        html += '<small><input type="button" value="新增照片" onclick="addLiveSituationFile(' + declareRecord.id + ')" class="btn btn-success btn-xs"></small>';
+        html += '<small><input type="button" value="选择查勘中图片" onclick="getLiveSituationAll(' + declareRecord.id + ')" class="btn btn-success btn-xs"></small>';
+        html += '<small><input type="button" value="新增查勘照片模板" onclick="selectPictureTempale(' + declareRecord.id + ')" class="btn btn-success btn-xs"></small></h4>';
+        html += '</div><table class="table table-hover"><thead><tr><th width="10%">文件名称</th><th width="10%">排序</th><th width="20%">附件</th><th width="15%">对应查勘部位</th><th width="10%">附件类别</th><th width="10%">是否上报告</th><th width="20%">操作</th></tr></thead>';
+        html += '<tbody data-id="' + declareRecord.id + '" data-name="live_situation_select"></tbody></table>';
+        html += '</div></div></div>';
+        $("#liveSituationHtml").empty().append(html);
+        loadLiveSituation($('tbody[data-id=' + declareRecord.id + '][data-name=live_situation_select]'), declareRecord.id);
+    }
+
+    //权属证明复印件html
+    function loadOwnershipCertHtml(declareRecord) {
+        var html = '';
+        html += '<div class="row">';
+        html += '<div class="col-xs-6612  col-sm-6612  col-md-6612  col-lg-6612  col-sm-6 col-xs-12">';
+        html += '<div class="x_panel">';
+        html += '<div class="x_title"><h4><strong>' + declareRecord.name + '</strong></h4></div>';
+        html += '<table class="table table-hover"><thead><tr><th width="20%">序号</th><th width="35%">文件名称</th><th width="45%">操作</th></tr></thead>';
+        html += '<tbody data-id="' + declareRecord.id + '" data-name="ownership_cert_file_list"></tbody></table>';
+        html += '<div class="x-valid">';
+        html += '<label class="col-sm-1 control-label">复印件</label>';
+        html += '<div class="col-sm-10">';
+        html += '<input id="uploadOwnershipCertFile' + declareRecord.id + '" class="form-control" type="file">';
+        html += '<div id="_uploadOwnershipCertFile' + declareRecord.id + '"></div>';
+        html += '</div></div></div></div>';
+
+        $("#ownershipCertHtml").empty().append(html);
+        uploadOwnershipCertFile(declareRecord.dataTableName, declareRecord.dataTableId, "uploadOwnershipCertFile" + declareRecord.id, $('tbody[data-id=' + declareRecord.id + '][data-name=ownership_cert_file_list]'), declareRecord.id);
+        getOwnershipCertFileAll($('tbody[data-id=' + declareRecord.id + '][data-name=ownership_cert_file_list]'), declareRecord.id);
+    }
+
+    //关联土地证附件html
+    function loadLandFileHtml(declareRecord) {
+        var html = '';
+        html += '<div class="row">';
+        html += '<div class="col-xs-6612  col-sm-6612  col-md-6612  col-lg-6612  col-sm-6 col-xs-12">';
+        html += '<div class="x_panel">';
+        html += '<div class="x_title"><h4><strong>' + declareRecord.name + '</strong></h4></div>';
+        html += '<table class="table table-hover"><thead><tr><th width="20%">序号</th><th width="35%">文件名称</th><th width="45%">操作</th></tr></thead>';
+        html += '<tbody data-id="' + declareRecord.id + '" data-name="land_file_list"></tbody></table>';
+        html += '<div class="x-valid" data-id="' + declareRecord.id + '" data-name="land_file_btn">';
+        html += '</div></div></div></div>';
+
+        $("#landFileHtml").empty().append(html);
+        uploadLandFile(AssessDBKey.DeclareRealtyLandCert, "uploadlandFile" + declareRecord.id, $('tbody[data-id=' + declareRecord.id + '][data-name=land_file_list]'), declareRecord.id);
+        getLandFileAllByDeclareRecord($('tbody[data-id=' + declareRecord.id + '][data-name=land_file_list]'), declareRecord.id);
+    }
+
+    //估价中引用的专用文件资料html
+    function loadReportFileCustomHtml(declareRecord) {
+        if (declareRecord) {
+            $.ajax({
+                url: '${pageContext.request.contextPath}/projectReportFile/getAddressFileListByDeclareRecordId',
+                type: "post",
+                dataType: "json",
+                data: {
+                    declareRecordId: declareRecord.id,
+                },
+                success: function (result) {
+                    if (result.ret) {
+                        var html = '';
+                        html += '<div class="row">';
+                        html += '<div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10">';
+                        html += '<div class="x_panel">';
+                        html += '<div class="x_title"><h4><strong>' + declareRecord.name + '</strong></h4></div>';
+                        if (result.data) {
+                            $.each(result.data, function (i, item) {
+                                ++i;
+                                html += '<div class="x_panel"><div class="x_title">登记与实际地址不一致附件</div><div>';
+                                html += '<table class="table table-hover"><thead><tr><th width="20%">序号</th><th width="35%">文件名称</th><th width="45%">操作</th></tr></thead><tbody>';
+                                html += '<tr><th>' + i + '</th><td>' + item.fileName + '</td><td>';
+                                html += '<input type="button" class="btn btn-xs btn-primary"value="编辑"onclick="FileUtils.editAttachment(' + item.id + ',\'' + item.fileExtension + '\');">';
+                                html += '<input type="button" class="btn btn-xs btn-warning"value="查看"onclick="FileUtils.showAttachment(' + item.id + ',\'' + item.fileExtension + '\');">';
+                                html += '</td></tr></tbody></table></div></div>';
+                            })
+                        }
+                        html += '<input type="button" class="btn btn-success" value="自定义添加"onclick="addReportFileCustom(' + declareRecord.id + ');">';
+                        html += '<div class="row report-file-custom' + declareRecord.id + '"></div></div></div></div>';
+                        $("#ReportFileCustom").empty().append(html);
+                        loadReportFileCustomList(declareRecord.id);
+                    } else {
+                        Alert(result.errmsg);
+                    }
+                }
+            })
+        }
     }
 </script>
 

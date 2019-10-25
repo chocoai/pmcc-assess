@@ -614,6 +614,18 @@ public class SchemeReportFileService extends BaseService {
         return map;
     }
 
+    /**
+     * 获取权证证书清查地址不一致附件
+     *
+     * @param declareRecordId
+     * @return
+     */
+    public List<SysAttachmentDto> getAddressFileListByDeclareRecordId(Integer declareRecordId) {
+        DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(declareRecordId);
+        List<SysAttachmentDto> attachmentDtoList = getInventoryContentFile(declareRecord);
+        return attachmentDtoList;
+    }
+
     private List<SysAttachmentDto> getInventoryContentFile(DeclareRecord declareRecord) {
         Integer inventoryContent = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_ACTUAL_ADDRESS).getId();
         SurveyAssetInventory inventory = surveyAssetInventoryService.getDataByDeclareId(declareRecord.getId());
