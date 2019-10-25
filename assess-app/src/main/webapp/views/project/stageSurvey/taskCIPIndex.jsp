@@ -605,8 +605,9 @@
             tbType = "unit";
         if (node.level == 3)
             tbType = "house";
-        var url = '${pageContext.request.contextPath}/basicApplyBatch/fillInfo?'
-        url += 'formClassify=' + classify;
+        var url = '${pageContext.request.contextPath}/basicApplyBatch/fillInfo?';
+        url += 'applyBatchId=' +  $("#basicBatchApplyFrm").find('[name=id]').val();
+        url += '&formClassify=' + classify;
         url += '&formType=' + type;
         url += '&tbId=' + node.number;
         url += '&tbType=' + tbType;

@@ -161,10 +161,11 @@ public class BasicApplyBatchController extends BaseController {
     }
 
     @RequestMapping(value = "/fillInfo", name = "填写信息页面", method = RequestMethod.GET)
-    public ModelAndView fillInfo(Integer formClassify, Integer formType, Integer tbId, String tbType, Integer planDetailsId) throws Exception {
+    public ModelAndView fillInfo(Integer applyBatchId, Integer formClassify, Integer formType, Integer tbId, String tbType, Integer planDetailsId) throws Exception {
         String view = "/project/stageSurvey";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
         //根据类型取得所需的数据
+        Integer quoteId = 0;
         BasicEstate basicEstate = null;
         BasicHouse basicHouse = null;
         BasicHouseTrading basicHouseTrading = null;
@@ -178,14 +179,19 @@ public class BasicApplyBatchController extends BaseController {
                 break;
             case BUILDING:
                 modelAndView.addObject("basicBuilding", basicBuildingService.getBasicBuildingById(tbId));
+                quoteId = basicApplyBatchService.getBasicApplyBatchById(applyBatchId).getQuoteId();
                 break;
             case UNIT:
                 modelAndView.addObject("basicUnit", basicUnitService.getBasicUnitById(tbId));
+                BasicApplyBatchDetail batchDetailUnit = basicApplyBatchDetailService.getBasicApplyBatchDetail(applyBatchId, FormatUtils.entityNameConvertToTableName(BasicUnit.class), tbId);
+                quoteId = basicApplyBatchDetailService.getDataById(batchDetailUnit.getPid()).getQuoteId();
                 break;
             case HOUSE:
                 Map<String, Object> basicHouseMap = basicHouseService.getBasicHouseMapById(tbId);
                 basicHouse = (BasicHouse) basicHouseMap.get(FormatUtils.toLowerCaseFirstChar(BasicHouse.class.getSimpleName()));
                 basicHouseTrading = (BasicHouseTrading) basicHouseMap.get(FormatUtils.toLowerCaseFirstChar(BasicHouseTrading.class.getSimpleName()));
+                BasicApplyBatchDetail batchDetailHouse = basicApplyBatchDetailService.getBasicApplyBatchDetail(applyBatchId, FormatUtils.entityNameConvertToTableName(BasicHouse.class), tbId);
+                quoteId = basicApplyBatchDetailService.getDataById(batchDetailHouse.getPid()).getQuoteId();
                 break;
         }
 
@@ -211,6 +217,8 @@ public class BasicApplyBatchController extends BaseController {
         modelAndView.addObject("basicHouseTrading", basicHouseTrading);
         modelAndView.addObject("planDetailsId", planDetailsId);
         modelAndView.addObject("tbType", tbType);
+        modelAndView.addObject("tbId", tbId);
+        modelAndView.addObject("quoteId", quoteId);
         modelAndView.addObject("formType", BasicApplyTypeEnum.getEnumById(formType).getKey());
         List<CrmBaseDataDicDto> unitPropertiesList = projectInfoService.getUnitPropertiesList();
         modelAndView.addObject("unitPropertiesList", unitPropertiesList);
@@ -285,6 +293,7 @@ public class BasicApplyBatchController extends BaseController {
 
     /**
      * 设置参数
+     *
      * @param modelAndView
      * @param tableName
      * @param tbType
@@ -317,7 +326,7 @@ public class BasicApplyBatchController extends BaseController {
             modelAndView.addObject(StringUtils.uncapitalize(BasicHouseTrading.class.getSimpleName()), basicHouseTradingService.getBasicHouseTradingVo(basicHouseTradingService.getTradingByHouseId(basicHouseVo.getId())));
         }
         if (applyBatchId != null) {
-            BasicApplyBatch basicApplyBatch = basicApplyBatchService.getInfoById(applyBatchId);
+            BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchById(applyBatchId);
             modelAndView.addObject(StringUtils.uncapitalize(BasicApplyBatch.class.getSimpleName()), basicApplyBatch);
         }
     }
@@ -445,7 +454,7 @@ public class BasicApplyBatchController extends BaseController {
     public ModelAndView applyAgain(Integer id) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/basic/basicBatchApplyIndex", "0", 0, "0", "");
         try {
-            BasicApplyBatch applyBatch = basicApplyBatchService.getInfoById(id);
+            BasicApplyBatch applyBatch = basicApplyBatchService.getBasicApplyBatchById(id);
             modelAndView.addObject("applyBatch", applyBatch);
         } catch (Exception e1) {
             log.error(e1.getMessage(), e1);
@@ -483,7 +492,7 @@ public class BasicApplyBatchController extends BaseController {
             basicApplyBatchDetail.setId(id);
             BasicApplyBatchDetail detailData = basicApplyBatchDetailService.getSingleData(basicApplyBatchDetail);
             modelAndView.addObject("tableId", detailData.getTableId());
-            BasicApplyBatch applyBatch = basicApplyBatchService.getInfoById(detailData.getApplyBatchId());
+            BasicApplyBatch applyBatch = basicApplyBatchService.getBasicApplyBatchById(detailData.getApplyBatchId());
             modelAndView.addObject("showTab", applyBatch.getShowTab());
             //上级引用数据Id
             modelAndView.addObject("parentQuoteId", basicApplyBatchDetailService.getParentQuoteId(detailData));

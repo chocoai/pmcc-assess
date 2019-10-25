@@ -105,7 +105,7 @@ public class MapController {
             applyBatch = basicApplyBatchService.getBasicApplyBatchByEstateId(tableId);
         }else {
             BasicApplyBatchDetail basicApplyBatchDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(tableName, tableId);
-            applyBatch = basicApplyBatchService.getInfoById(basicApplyBatchDetail.getApplyBatchId());
+            applyBatch = basicApplyBatchService.getBasicApplyBatchById(basicApplyBatchDetail.getApplyBatchId());
         }
         modelAndView.addObject("estateName", applyBatch.getEstateName());
         modelAndView.addObject("click", click);
