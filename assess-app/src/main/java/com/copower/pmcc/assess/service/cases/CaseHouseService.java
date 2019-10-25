@@ -8,7 +8,6 @@ import com.copower.pmcc.assess.dal.cases.custom.entity.CustomCaseEntity;
 import com.copower.pmcc.assess.dal.cases.dao.CaseHouseDao;
 import com.copower.pmcc.assess.dal.cases.entity.*;
 import com.copower.pmcc.assess.dto.input.SynchronousDataDto;
-import com.copower.pmcc.assess.dto.output.basic.BasicHouseTradingVo;
 import com.copower.pmcc.assess.dto.output.cases.CaseHouseTradingLeaseVo;
 import com.copower.pmcc.assess.dto.output.cases.CaseHouseTradingSellVo;
 import com.copower.pmcc.assess.dto.output.cases.CaseHouseTradingVo;
@@ -39,7 +38,6 @@ import org.springframework.util.ObjectUtils;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @Auther: zch
@@ -333,7 +331,7 @@ public class CaseHouseService {
      * @return
      */
     @Transactional(rollbackFor = Exception.class)
-    public Map<String, Object> quoteCaseHouseToBasic(Integer id, Integer tableId) throws Exception {
+    public BasicHouse quoteCaseHouseToBasic(Integer id, Integer tableId) throws Exception {
         if (id == null || tableId == null) {
             throw new Exception("null point");
         }
@@ -343,36 +341,18 @@ public class CaseHouseService {
         batchDetail.setQuoteId(id);
         batchDetail.setBaseType(BaseConstant.DATABASE_PMCC_ASSESS_CASE);
         basicApplyBatchDetailDao.updateInfo(batchDetail);
-        Map<String, Object> objectMap = new HashMap<String, Object>(2);
-        BasicHouse oldBasicHouse = basicHouseService.getBasicHouseById(tableId);
+        BasicHouse basicHouse = basicHouseService.getBasicHouseById(tableId);
         CaseHouse oldCaseHouse = this.getCaseHouseById(id);
-        BasicHouse basicHouse = new BasicHouse();
-        BeanUtils.copyProperties(oldCaseHouse, basicHouse);
-        basicHouse.setCreator(commonService.thisUserAccount());
-        basicHouse.setGmtCreated(null);
-        basicHouse.setGmtModified(null);
-        basicHouse.setId(tableId);
-        basicHouse.setApplyId(null);
-        basicHouse.setUnitId(oldBasicHouse.getUnitId());
+        BeanUtils.copyProperties(oldCaseHouse, basicHouse,"id");
         basicHouseService.saveAndUpdateBasicHouse(basicHouse);
-        objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicHouse.class.getSimpleName()), basicHouseService.getBasicHouseVo(basicHouse));
 
         CaseHouseTrading queryTrading = new CaseHouseTrading();
         queryTrading.setHouseId(id);
         List<CaseHouseTradingVo> oldCaseHouseTradings = caseHouseTradingService.caseHouseTradingVoList(queryTrading);
         if (!ObjectUtils.isEmpty(oldCaseHouseTradings)) {
-            BasicHouseTrading basicHouseTrading = new BasicHouseTrading();
-            BeanUtils.copyProperties(oldCaseHouseTradings.get(0), basicHouseTrading);
-            basicHouseTrading.setApplyId(null);
-            basicHouseTrading.setHouseId(tableId);
-            basicHouseTrading.setCreator(commonService.thisUserAccount());
-            basicHouseTrading.setId(null);
-            basicHouseTrading.setGmtCreated(null);
-            basicHouseTrading.setGmtModified(null);
+            BasicHouseTrading basicHouseTrading = basicHouseTradingService.getTradingByHouseId(basicHouse.getId());
+            BeanUtils.copyProperties(oldCaseHouseTradings.get(0), basicHouseTrading,"id");
             basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicHouseTrading);
-            objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicHouseTrading.class.getSimpleName()), basicHouseTradingService.getBasicHouseTradingVo(basicHouseTrading));
-        } else {
-            objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicHouseTrading.class.getSimpleName()), new BasicHouseTradingVo());
         }
 
         //删除原有的附件
@@ -534,6 +514,6 @@ public class CaseHouseService {
                 logger.error(e1.getMessage(), e1);
             }
         }
-        return objectMap;
+        return basicHouse;
     }
 }

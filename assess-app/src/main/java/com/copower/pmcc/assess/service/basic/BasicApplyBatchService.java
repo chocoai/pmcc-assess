@@ -179,25 +179,19 @@ public class BasicApplyBatchService {
         startDto.setPid(0);
         startDto.setName(basicApplyBatch.getEstateName());
         startDto.setDisplayName(basicApplyBatch.getEstateName());
-
         startDto.setType(EstateTaggingTypeEnum.ESTATE.getKey());
         startDto.setNumber(String.valueOf(estateId));
         startDto.setTableId(estateId);
         startDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicEstate.class));
-
         treeDtos.add(startDto);
         List<BasicApplyBatchDetail> basicApplyBatchDetails = basicApplyBatchDetailService.getBasicApplyBatchDetailByApplyBatchId(basicApplyBatch.getId());
         if (CollectionUtils.isEmpty(basicApplyBatchDetails)) return treeDtos;
         for (BasicApplyBatchDetail item : basicApplyBatchDetails) {
-            if (Objects.equal(item.getPid(),new Integer(0))){
-                continue;
-            }
             ZtreeDto ztreeDto = new ZtreeDto();
             ztreeDto.setId(item.getId());
             ztreeDto.setName(item.getName());
             ztreeDto.setDisplayName(item.getDisplayName());
-            ztreeDto.setPid(item.getPid());
-
+            ztreeDto.setPid(item.getPid().equals(0) ? estateId : item.getPid());
             ztreeDto.setNumber(String.valueOf(item.getTableId()));
             ztreeDto.setTableName(item.getTableName());
             ztreeDto.setTableId(item.getTableId());
@@ -213,7 +207,6 @@ public class BasicApplyBatchService {
             treeDtos.add(ztreeDto);
         }
         return treeDtos;
-
     }
 
     public BasicApplyBatch getBasicApplyBatchByProcessInsId(String processInsId) throws Exception {
@@ -234,8 +227,8 @@ public class BasicApplyBatchService {
     }
 
 
-    public BasicApplyBatch getInfoById(Integer id) {
-        return basicApplyBatchDao.getInfoById(id);
+    public BasicApplyBatch getBasicApplyBatchById(Integer id) {
+        return basicApplyBatchDao.getBasicApplyBatchById(id);
     }
 
     //删除
@@ -402,6 +395,7 @@ public class BasicApplyBatchService {
             basicApply.setPlanDetailsId(basicApplyBatch.getPlanDetailsId());
             basicApply.setBasicEstateId(basicEstate.getId());
             basicApply.setBasicBuildingId(basicBuilding.getId());
+            basicApply.setBasicUnitId(basicUnit.getId());
             basicApply.setBasicHouseId(basicHouse.getId());
             basicApply.setCreator(commonService.thisUserAccount());
             basicApplyService.saveBasicApply(basicApply);
@@ -569,7 +563,7 @@ public class BasicApplyBatchService {
      * @throws Exception
      */
     public ProcessUserDto processStartSubmit(Integer id) throws Exception {
-        BasicApplyBatch applyBatch = basicApplyBatchDao.getInfoById(id);
+        BasicApplyBatch applyBatch = basicApplyBatchDao.getBasicApplyBatchById(id);
 
         ProcessUserDto processUserDto = null;
         ProcessInfo processInfo = new ProcessInfo();
@@ -700,7 +694,7 @@ public class BasicApplyBatchService {
      * @throws Exception
      */
     public void copy(Integer id) throws Exception {
-        BasicApplyBatch basicApplyBatch = basicApplyBatchDao.getInfoById(id);
+        BasicApplyBatch basicApplyBatch = basicApplyBatchDao.getBasicApplyBatchById(id);
         if (basicApplyBatch != null) {
             //取数据
             BasicEstate basicEstateOld = publicBasicService.getBasicEstateById(basicApplyBatch.getEstateId());

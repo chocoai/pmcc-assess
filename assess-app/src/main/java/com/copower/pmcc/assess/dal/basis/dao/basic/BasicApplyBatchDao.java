@@ -46,7 +46,7 @@ public class BasicApplyBatchDao {
      * @param id
      * @return
      */
-    public BasicApplyBatch getInfoById(Integer id) {
+    public BasicApplyBatch getBasicApplyBatchById(Integer id) {
         return basicApplyBatchMapper.selectByPrimaryKey(id);
     }
 

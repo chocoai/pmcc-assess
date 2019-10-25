@@ -10,7 +10,6 @@ import com.copower.pmcc.assess.dal.cases.custom.entity.CustomCaseEntity;
 import com.copower.pmcc.assess.dal.cases.dao.CaseEstateDao;
 import com.copower.pmcc.assess.dal.cases.entity.*;
 import com.copower.pmcc.assess.dto.input.SynchronousDataDto;
-import com.copower.pmcc.assess.dto.output.basic.BasicEstateLandStateVo;
 import com.copower.pmcc.assess.dto.output.cases.CaseEstateVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.PublicService;
@@ -41,7 +40,6 @@ import org.springframework.util.ObjectUtils;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @Auther: zch
@@ -195,7 +193,7 @@ public class CaseEstateService {
      * @return
      */
     @Transactional(rollbackFor = Exception.class)
-    public Map<String, Object> quoteCaseEstateToBasic(Integer id, Integer tableId) throws Exception {
+    public BasicEstate quoteCaseEstateToBasic(Integer id, Integer tableId) throws Exception {
         if (id == null || tableId == null) {
             throw new BusinessException("null point");
         }
@@ -205,10 +203,9 @@ public class CaseEstateService {
         applyBatch.setBaseType(BaseConstant.DATABASE_PMCC_ASSESS_CASE);
         basicApplyBatchDao.updateInfo(applyBatch);
         //案列数据复制到basic
-        Map<String, Object> objectMap = new HashMap<String, Object>(2);
         CaseEstate oldCaseEstateById = this.getCaseEstateById(id);
         if (oldCaseEstateById == null) {
-            return objectMap;
+            return null;
         }
         BasicEstate basicEstate = new BasicEstate();
         basicEstateService.clearInvalidData2(tableId);
@@ -220,7 +217,6 @@ public class CaseEstateService {
         basicEstate.setId(tableId);
         basicEstate.setApplyId(null);
         basicEstateService.saveAndUpdateBasicEstate(basicEstate);
-        objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicEstate.class.getSimpleName()), basicEstateService.getBasicEstateVo(basicEstate));
 
         //删除原有的附件
         SysAttachmentDto deleteExample = new SysAttachmentDto();
@@ -232,7 +228,6 @@ public class CaseEstateService {
                 baseAttachmentService.deleteAttachment(item.getId());
             }
         }
-
 
         //附件拷贝
         SysAttachmentDto example = new SysAttachmentDto();
@@ -255,9 +250,6 @@ public class CaseEstateService {
             basicEstateLandState.setGmtCreated(null);
             basicEstateLandState.setGmtModified(null);
             basicEstateLandStateDao.saveBasicEstateLandState(basicEstateLandState);
-            objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicEstateLandState.class.getSimpleName()), basicEstateLandStateService.getBasicEstateLandStateVo(basicEstateLandState));
-        } else {
-            objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicEstateLandState.class.getSimpleName()), new BasicEstateLandStateVo());
         }
 
         CaseEstateTagging oldCaseEstateTagging = new CaseEstateTagging();
@@ -274,7 +266,6 @@ public class CaseEstateService {
             basicEstateTagging.setGmtCreated(null);
             basicEstateTagging.setGmtModified(null);
             basicEstateTaggingService.addBasicEstateTagging(basicEstateTagging);
-            objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicEstateTagging.class.getSimpleName()), basicEstateTaggingService.getBasicEstateTaggingVo(basicEstateTagging));
         }
 
         try {
@@ -350,7 +341,7 @@ public class CaseEstateService {
         sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//教育信息sql
 
         ddlMySqlAssist.customTableDdl(sqlBuilder.toString());//执行sql
-        return objectMap;
+        return basicEstate;
     }
 
 

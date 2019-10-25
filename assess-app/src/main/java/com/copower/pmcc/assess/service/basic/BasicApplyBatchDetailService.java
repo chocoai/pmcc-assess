@@ -155,7 +155,7 @@ public class BasicApplyBatchDetailService {
         basicApply.setBasicBuildingId(buildBatchDetail.getTableId());
         basicApply.setBuildingNumber(basicBuildingDao.getBasicBuildingById(buildBatchDetail.getTableId()).getBuildingNumber());
         //楼盘id
-        BasicApplyBatch applyBatch = basicApplyBatchDao.getInfoById(basicApplyBatchDetail.getApplyBatchId());
+        BasicApplyBatch applyBatch = basicApplyBatchDao.getBasicApplyBatchById(basicApplyBatchDetail.getApplyBatchId());
         basicApply.setBasicEstateId(applyBatch.getEstateId());
         basicApply.setType(applyBatch.getType());
         basicApply.setEstateName(basicEstateService.getBasicEstateById(applyBatch.getEstateId()).getName());
@@ -260,15 +260,24 @@ public class BasicApplyBatchDetailService {
     public Integer getParentTableId(BasicApplyBatchDetail basicApplyBatchDetail) {
         if (basicApplyBatchDetail.getPid() != 0)
             return this.getDataById(basicApplyBatchDetail.getPid()).getTableId();
-        return basicApplyBatchDao.getInfoById(basicApplyBatchDetail.getApplyBatchId()).getEstateId();
+        return basicApplyBatchDao.getBasicApplyBatchById(basicApplyBatchDetail.getApplyBatchId()).getEstateId();
     }
 
     //获取上一级引用数据id
     public Integer getParentQuoteId(BasicApplyBatchDetail basicApplyBatchDetail) {
         if (basicApplyBatchDetail.getPid() != 0)
             return this.getDataById(basicApplyBatchDetail.getPid()).getQuoteId();
-        return basicApplyBatchDao.getInfoById(basicApplyBatchDetail.getApplyBatchId()).getQuoteId();
+        return basicApplyBatchDao.getBasicApplyBatchById(basicApplyBatchDetail.getApplyBatchId()).getQuoteId();
     }
+
+    public BasicApplyBatchDetail getBasicApplyBatchDetail(Integer basicApplyBatchId,String tableName,Integer tableId) {
+        BasicApplyBatchDetail where=new BasicApplyBatchDetail();
+        where.setApplyBatchId(basicApplyBatchId);
+        where.setTableName(tableName);
+        where.setTableId(tableId);
+        return basicApplyBatchDetailDao.getBasicApplyBatchDetail(where);
+    }
+
 
 
     //获取楼栋
@@ -332,18 +341,6 @@ public class BasicApplyBatchDetailService {
         basicApplyBatchDetail.setApplyBatchId(id);
         basicApplyBatchDetail.setPid(parent.getId());
         return basicApplyBatchDetailDao.getInfoList(basicApplyBatchDetail);
-    }
-
-
-    //获取房屋交易信息
-    public List<BasicHouseTrading> getBasicHouseTradingsByHouses(List<BasicHouse> houses) throws Exception {
-        List<BasicHouseTrading> basicHouseTradings = Lists.newArrayList();
-        if (CollectionUtils.isNotEmpty(houses))
-            for (BasicHouse item : houses) {
-                basicHouseTradings.add(basicHouseTradingService.getTradingByHouseId(item.getId()));
-            }
-        ;
-        return basicHouseTradings;
     }
 
     public BasicApplyBatchDetail getSingleData(BasicApplyBatchDetail basicApplyBatchDetail) {
