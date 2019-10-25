@@ -83,14 +83,7 @@
                                     前次委托单位
                                 </label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <c:choose>
-                                        <c:when test="${empty declare.client}">
-                                            <input name="client" class="form-control" placeholder="前次委托单位" value='${consignor}'/>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <input name="client" class="form-control" placeholder="前次委托单位" value='${declare.client}'/>
-                                        </c:otherwise>
-                                    </c:choose>
+                                    <input name="client" class="form-control" placeholder="前次委托单位" value='${declare.client}'/>
                                 </div>
                             </div>
                         </div>
@@ -146,21 +139,12 @@
                         <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
                             取消
                         </button>
-                        <c:choose>
-                            <c:when test="${projectPhase.bisUseBox eq false}">
-                                <button id="btn_submit" class="btn btn-success" onclick="submit(false);">
-                                    直接提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
-                                </button>
-                                <button id="btn_submit" class="btn btn-primary" onclick="submit(true);">
-                                    提交审批<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
-                                </button>
-                            </c:when>
-                            <c:otherwise>
-                                <button id="btn_submit" class="btn btn-success" onclick="submit();">
-                                    提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
-                                </button>
-                            </c:otherwise>
-                        </c:choose>
+                        <button class="btn btn-success" onclick="submit(false);">
+                            直接提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
+                        </button>
+                        <button class="btn btn-primary" onclick="submit(true);">
+                            提交审批<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -238,7 +222,6 @@
         submitForm(mustUseBox);
 
     }
-
     //提交表单
     function submitForm(mustUseBox) {
         var frm = $("#declareApplyForm") ;

@@ -393,7 +393,7 @@
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地利用现状</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <input type="text" class="form-control"
-                           placeholder="土地利用现状" name="presentSituationLandUse"
+                           placeholder="未开发，已开发完成投入使用，部分开发" name="presentSituationLandUse"
                            value="${basicEstateLandState.presentSituationLandUse}">
                 </div>
             </div>

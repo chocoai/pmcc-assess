@@ -1565,6 +1565,126 @@ public class NetInfoRecordExample {
             addCriterion("area not between", value1, value2, "area");
             return (Criteria) this;
         }
+
+        public Criteria andNegotiatedTotalPriceIsNull() {
+            addCriterion("negotiated_total_price is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNegotiatedTotalPriceIsNotNull() {
+            addCriterion("negotiated_total_price is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNegotiatedTotalPriceEqualTo(BigDecimal value) {
+            addCriterion("negotiated_total_price =", value, "negotiatedTotalPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andNegotiatedTotalPriceNotEqualTo(BigDecimal value) {
+            addCriterion("negotiated_total_price <>", value, "negotiatedTotalPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andNegotiatedTotalPriceGreaterThan(BigDecimal value) {
+            addCriterion("negotiated_total_price >", value, "negotiatedTotalPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andNegotiatedTotalPriceGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("negotiated_total_price >=", value, "negotiatedTotalPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andNegotiatedTotalPriceLessThan(BigDecimal value) {
+            addCriterion("negotiated_total_price <", value, "negotiatedTotalPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andNegotiatedTotalPriceLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("negotiated_total_price <=", value, "negotiatedTotalPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andNegotiatedTotalPriceIn(List<BigDecimal> values) {
+            addCriterion("negotiated_total_price in", values, "negotiatedTotalPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andNegotiatedTotalPriceNotIn(List<BigDecimal> values) {
+            addCriterion("negotiated_total_price not in", values, "negotiatedTotalPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andNegotiatedTotalPriceBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("negotiated_total_price between", value1, value2, "negotiatedTotalPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andNegotiatedTotalPriceNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("negotiated_total_price not between", value1, value2, "negotiatedTotalPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andNegotiatedDateIsNull() {
+            addCriterion("negotiated_date is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNegotiatedDateIsNotNull() {
+            addCriterion("negotiated_date is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNegotiatedDateEqualTo(Date value) {
+            addCriterion("negotiated_date =", value, "negotiatedDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andNegotiatedDateNotEqualTo(Date value) {
+            addCriterion("negotiated_date <>", value, "negotiatedDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andNegotiatedDateGreaterThan(Date value) {
+            addCriterion("negotiated_date >", value, "negotiatedDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andNegotiatedDateGreaterThanOrEqualTo(Date value) {
+            addCriterion("negotiated_date >=", value, "negotiatedDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andNegotiatedDateLessThan(Date value) {
+            addCriterion("negotiated_date <", value, "negotiatedDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andNegotiatedDateLessThanOrEqualTo(Date value) {
+            addCriterion("negotiated_date <=", value, "negotiatedDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andNegotiatedDateIn(List<Date> values) {
+            addCriterion("negotiated_date in", values, "negotiatedDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andNegotiatedDateNotIn(List<Date> values) {
+            addCriterion("negotiated_date not in", values, "negotiatedDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andNegotiatedDateBetween(Date value1, Date value2) {
+            addCriterion("negotiated_date between", value1, value2, "negotiatedDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andNegotiatedDateNotBetween(Date value1, Date value2) {
+            addCriterion("negotiated_date not between", value1, value2, "negotiatedDate");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

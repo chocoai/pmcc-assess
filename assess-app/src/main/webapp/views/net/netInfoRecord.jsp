@@ -224,10 +224,30 @@
                                         <label class="col-sm-1 control-label">
                                             评估基准日
                                         </label>
-                                        <div class="col-sm-4">
+                                        <div class="col-sm-3">
                                             <input placeholder="评估基准日" readonly
                                                    name="assessBaseDate" data-date-format="yyyy-mm-dd"
                                                    class="form-control date-picker dbdate">
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            协商日期
+                                        </label>
+                                        <div class="col-sm-3">
+                                            <input placeholder="协商日期" readonly
+                                                   name="negotiatedDate" data-date-format="yyyy-mm-dd"
+                                                   class="form-control date-picker dbdate">
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            协商总价
+                                        </label>
+                                        <div class="col-sm-3">
+                                            <input placeholder="协商总价"
+                                                   name="negotiatedTotalPrice"
+                                                   class="form-control">
                                         </div>
                                     </div>
                                 </div>

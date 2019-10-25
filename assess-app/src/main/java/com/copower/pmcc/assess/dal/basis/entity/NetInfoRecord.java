@@ -48,6 +48,10 @@ public class NetInfoRecord {
 
     private BigDecimal area;
 
+    private BigDecimal negotiatedTotalPrice;
+
+    private Date negotiatedDate;
+
     public Integer getId() {
         return id;
     }
@@ -222,5 +226,21 @@ public class NetInfoRecord {
 
     public void setArea(BigDecimal area) {
         this.area = area;
+    }
+
+    public BigDecimal getNegotiatedTotalPrice() {
+        return negotiatedTotalPrice;
+    }
+
+    public void setNegotiatedTotalPrice(BigDecimal negotiatedTotalPrice) {
+        this.negotiatedTotalPrice = negotiatedTotalPrice;
+    }
+
+    public Date getNegotiatedDate() {
+        return negotiatedDate;
+    }
+
+    public void setNegotiatedDate(Date negotiatedDate) {
+        this.negotiatedDate = negotiatedDate;
     }
 }
