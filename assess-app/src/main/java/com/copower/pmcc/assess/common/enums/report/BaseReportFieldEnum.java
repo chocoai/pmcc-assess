@@ -127,6 +127,7 @@ public enum BaseReportFieldEnum implements Serializable {
     JudgeObjectDamagedDegreeField6("建行个贷卫生间装修情况"),
     JudgeObjectDamagedDegreeField7("建行个贷厨房装修情况"),
     JudgeObjectDamagedDegreeField8("建行个贷维护保养状况"),
+    District_Analysis("建行个贷区位分析"),
     JudgeObjectOtherField1("建行个贷个别景观"),
     JudgeObjectOtherField2("建行个贷临街状态"),
     JudgeObjectOtherField3("建行个贷楼间距"),

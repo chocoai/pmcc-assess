@@ -1592,7 +1592,7 @@ public class GenerateBaseDataService {
                 if (bigDecimalSet.size() != 1) {
                     List<String> stringList = Lists.newArrayList();
                     bigDecimalMap.forEach((s, bigDecimal) -> {
-                        stringList.add(String.format("%s:%s", s, bigDecimal.toString()));
+                        stringList.add(String.format("%s:%s米", s, bigDecimal.toString()));
                     });
                     map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), StringUtils.join(stringList, "；"));
                 }
@@ -4213,7 +4213,7 @@ public class GenerateBaseDataService {
                 break;
                 case JudgeObjectLoactionField4: {
                     List<BasicMatchingTrafficVo> basicMatchingTrafficList = generateBaseExamineService.getBasicMatchingTrafficList();
-                    String value = generateLoactionService.getTrafficConditionsPrivate(basicMatchingTrafficList, ExamineMatchingTrafficTypeEnum.TrafficHub, "区域内", false);
+                    String value = generateLoactionService.getTrafficConditionsPrivate(basicMatchingTrafficList, ExamineMatchingTrafficTypeEnum.MainRoad, "区域内", false);
                     if (StringUtils.isNotEmpty(value)) {
                         map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), value);
                     }
@@ -5853,7 +5853,7 @@ public class GenerateBaseDataService {
      * @return
      * @throws Exception
      */
-    public String getICBCValuationCaseInformationSheet() throws Exception {
+    protected String getICBCValuationCaseInformationSheet() throws Exception {
         String localPath = getLocalPath();
         Document document = new Document();
         DocumentBuilder documentBuilder = new DocumentBuilder(document);
@@ -5896,10 +5896,38 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        document.save(localPath, SaveFormat.DOC);
+        AsposeUtils.saveWord(localPath,document);
         if (!stringMap.isEmpty()) {
             AsposeUtils.replaceTextToFile(localPath, stringMap);
         }
+        return localPath;
+    }
+
+    /**
+     * 建行个贷区位分析
+     * @return
+     * @throws Exception
+     */
+    protected String getICBCDistrictAnalysisSheet() throws Exception {
+        String localPath = getLocalPath();
+        Document document = new Document();
+        DocumentBuilder documentBuilder = new DocumentBuilder(document);
+        documentBuilder.getFont().setSize(12);
+        documentBuilder.getFont().setName(AsposeUtils.ImitationSong);
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+          for (SchemeJudgeObject schemeJudgeObject:schemeJudgeObjectList){
+              BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
+              GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
+              BasicEstateVo basicEstate = generateBaseExamineService.getEstate();
+              //描述内容
+              if (StringUtils.isNotBlank(basicEstate.getLocationDescribe())) {
+                  String value = String.join("",generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject),basicEstate.getLocationDescribe()) ;
+                  AsposeUtils.insertHtml(documentBuilder, AsposeUtils.getWarpCssHtml(value, Lists.newArrayList(new KeyValueDto("text-indent", "2em"), new KeyValueDto(AsposeUtils.FontFamily, AsposeUtils.ImitationSong), new KeyValueDto(AsposeUtils.FontSize, "12pt"))));
+              }
+          }
+        }
+        AsposeUtils.saveWord(localPath,document);
         return localPath;
     }
 

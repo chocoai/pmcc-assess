@@ -1093,6 +1093,10 @@ public class GenerateReportService {
         if (Objects.equal(BaseReportFieldEnum.ICBCValuationCaseInformationSheet.getName(), name)) {
             generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getICBCValuationCaseInformationSheet());
         }
+        //建行个贷区位分析
+        if (Objects.equal(BaseReportFieldEnum.District_Analysis.getName(), name)) {
+            generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getICBCDistrictAnalysisSheet());
+        }
     }
 
 
