@@ -39,11 +39,11 @@ public class ProjectReportFileController {
     public ModelAndView index(Integer projectId) throws Exception {
         ModelAndView modelAndView = new ModelAndView("/project/projectReportFileIndex");
         modelAndView.addObject("projectInfo", projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(projectId)));
-        modelAndView.addObject("ownershipCertFileList", schemeReportFileService.getOwnershipCertFileList(projectId));
-        modelAndView.addObject("inventoryAddressFileList", schemeReportFileService.getInventoryAddressFileList(projectId));
-        modelAndView.addObject("reimbursementFileList", schemeReportFileService.getReimbursementFileList(projectId));
+        //modelAndView.addObject("ownershipCertFileList", schemeReportFileService.getOwnershipCertFileList(projectId));
+        //modelAndView.addObject("inventoryAddressFileList", schemeReportFileService.getInventoryAddressFileList(projectId));
+        //modelAndView.addObject("reimbursementFileList", schemeReportFileService.getReimbursementFileList(projectId));
         List<DeclareRecord> declareRecordList = declareRecordService.getDeclareRecordByProjectId(projectId);
-        modelAndView.addObject("declareRecordList", declareRecordList);
+        //modelAndView.addObject("declareRecordList", declareRecordList);
         modelAndView.addObject("projectId", projectId);
         //生成位置图
         schemeReportFileService.makeJudgeObjectPosition(declareRecordList);
@@ -109,6 +109,17 @@ public class ProjectReportFileController {
     public HttpResult getLandFileAll(Integer tableId) {
         try {
             return HttpResult.newCorrectResult(schemeReportFileService.getLandFileAll(tableId));
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getAddressFileListByDeclareRecordId", name = "获取地址不一致附件", method = RequestMethod.POST)
+    public HttpResult getAddressFileListByDeclareRecordId(Integer declareRecordId) {
+        try {
+            return HttpResult.newCorrectResult(schemeReportFileService.getAddressFileListByDeclareRecordId(declareRecordId));
         } catch (Exception e) {
             logger.error(e.getMessage());
             return HttpResult.newErrorResult(e.getMessage());
