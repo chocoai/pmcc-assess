@@ -150,7 +150,9 @@ public class ProjectCenterController {
         modelAndView.addObject(StringUtils.uncapitalize(ProjectInfo.class.getSimpleName()), projectInfoService.getSimpleProjectInfoVo(projectInfo));
         modelAndView.addObject("companyId", publicService.getCurrentCompany().getCompanyId());
         List<DocumentTemplate> documentTemplateList = documentTemplateService.getDocumentTemplateList("", baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_TEMPLATE_TYPE_DISPATCH).getId());
+        List<DocumentTemplate> documentClientTemplateList = documentTemplateService.getDocumentTemplateList("", baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_TEMPLATE_TYPE_DISPATCH_CLIENT).getId());
         modelAndView.addObject("documentTemplateList", documentTemplateList);
+        modelAndView.addObject("documentClientTemplateList", documentClientTemplateList);
         return modelAndView;
     }
 

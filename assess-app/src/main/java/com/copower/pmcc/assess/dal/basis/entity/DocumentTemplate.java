@@ -7,13 +7,15 @@ public class DocumentTemplate {
 
     private String templateName;
 
-    private Date gmtCreated;
-
-    private Date gmtModified;
-
     private String prefix;
 
     private Integer templateType;
+
+    private Date provideDate;
+
+    private Date gmtCreated;
+
+    private Date gmtModified;
 
     public Integer getId() {
         return id;
@@ -31,22 +33,6 @@ public class DocumentTemplate {
         this.templateName = templateName == null ? null : templateName.trim();
     }
 
-    public Date getGmtCreated() {
-        return gmtCreated;
-    }
-
-    public void setGmtCreated(Date gmtCreated) {
-        this.gmtCreated = gmtCreated;
-    }
-
-    public Date getGmtModified() {
-        return gmtModified;
-    }
-
-    public void setGmtModified(Date gmtModified) {
-        this.gmtModified = gmtModified;
-    }
-
     public String getPrefix() {
         return prefix;
     }
@@ -61,5 +47,29 @@ public class DocumentTemplate {
 
     public void setTemplateType(Integer templateType) {
         this.templateType = templateType;
+    }
+
+    public Date getProvideDate() {
+        return provideDate;
+    }
+
+    public void setProvideDate(Date provideDate) {
+        this.provideDate = provideDate;
+    }
+
+    public Date getGmtCreated() {
+        return gmtCreated;
+    }
+
+    public void setGmtCreated(Date gmtCreated) {
+        this.gmtCreated = gmtCreated;
+    }
+
+    public Date getGmtModified() {
+        return gmtModified;
+    }
+
+    public void setGmtModified(Date gmtModified) {
+        this.gmtModified = gmtModified;
     }
 }

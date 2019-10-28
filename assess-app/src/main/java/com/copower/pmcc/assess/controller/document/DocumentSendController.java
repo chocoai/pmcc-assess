@@ -43,10 +43,21 @@ public class DocumentSendController {
     @Autowired
     private DocumentTemplateService documentTemplateService;
 
-    @RequestMapping(value = "/applyIndex/{templateId}&{projectId}", name = "进入发文页面")
+    @RequestMapping(value = "/applyIndex/{templateId}&{projectId}", name = "公司盖章发文页面")
     public ModelAndView applyIndex(@PathVariable("templateId") Integer templateId,@PathVariable("projectId") Integer projectId) {
-        DocumentTemplate documentTemplate = documentTemplateService.getDocumentTemplate(templateId);
         String boxName = baseParameterService.getParameterValues(BaseParameterEnum.PROJECT_DETAILS_DOCUMENT_SEND_PROCESS_KEY.getParameterKey());
+        return getModelAndView(templateId, projectId,boxName);
+    }
+
+    @RequestMapping(value = "/applyClientIndex/{templateId}&{projectId}", name = "委托方盖章发文")
+    public ModelAndView applyClientIndex(@PathVariable("templateId") Integer templateId,@PathVariable("projectId") Integer projectId) {
+        String boxName = baseParameterService.getParameterValues(BaseParameterEnum.PROJECT_DETAILS_DOCUMENT_SEND_CLIENT_PROCESS_KEY.getParameterKey());
+        return getModelAndView(templateId, projectId,boxName);
+    }
+
+    private ModelAndView getModelAndView(Integer templateId, Integer projectId,String boxName) {
+        DocumentTemplate documentTemplate = documentTemplateService.getDocumentTemplate(templateId);
+
         Integer boxId = bpmRpcBoxService.getBoxIdByBoxName(boxName);
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/document/sendApply", "0", boxId, "0", "");
         modelAndView.addObject("currUserInfo", processControllerComponent.getThisUserInfo());
@@ -69,6 +80,7 @@ public class DocumentSendController {
         modelAndView.addObject("fieldsHtml", fieldsHtml);
         return modelAndView;
     }
+
 
     @RequestMapping(value = "/approvalIndex", name = "进入审批页面")
     public ModelAndView approvalIndex(String processInsId, String taskId, Integer boxId, String agentUserAccount) {

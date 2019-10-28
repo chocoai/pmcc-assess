@@ -14,8 +14,6 @@
     <title>模板管理</title>
     <%@include file="/views/share/main_css.jsp" %>
 </head>
-
-
 <body class="nav-md">
 <div class="container body">
     <div class="main_container">
@@ -61,6 +59,14 @@
                             <div class='col-sm-10'>
                                 <input type="hidden" id="templateId" name="id" required class='form-control'>
                                 <input type="text" name="templateName" required class='form-control'>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class='x-valid'>
+                            <label class='col-sm-2 control-label'>提供日期</label>
+                            <div class='col-sm-10'>
+                                <input type="text" placeholder="提供日期" class="form-control date-picker dbdate" data-date-format="yyyy-mm-dd" name="provideDate" readonly="readonly">
                             </div>
                         </div>
                     </div>
@@ -151,6 +157,9 @@
     function loadTemplateList() {
         var cols = [];
         cols.push({field: 'templateName', title: '模板名称'});
+        cols.push({field: 'provideDate', title: '提供日期', formatter: function (value, row, index) {
+            return formatDate(value);
+        }});
         cols.push({field: 'templateTypeName', title: '类型'});
         cols.push({field: 'prefix', title: '文号规则'});
         cols.push({
@@ -209,7 +218,7 @@
             url: "${pageContext.request.contextPath}/DocumentTemplate/saveTemplate",
             type: "post",
             dataType: "json",
-            data: data,
+            data: {formData:JSON.stringify(data)},
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
