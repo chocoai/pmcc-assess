@@ -88,7 +88,8 @@
             </div>
             <div class="x-valid">
                 <div class=" col-xs-31  col-sm-31  col-md-31  col-lg-31  col-sm-offset-1">
-                    <div class="btn btn-success" onclick="houseCommon.orientationFunX(false)">户型图朝向</div>
+                    <input type="hidden" name="mapId" value="${basicHouse.mapId}">
+                    <div class="btn btn-success" onclick="houseCommon.orientationFun(false)">户型图朝向</div>
                 </div>
             </div>
         </div>
@@ -679,7 +680,7 @@
     </c:if>
     <%@include file="/views/project/stageSurvey/common/houseDamagedDegree.jsp" %>
 </div>
-
+<%@include file="/views/project/tool/toolMapHandleView.jsp" %>
 <script src='${pageContext.request.contextPath}/js/common.column.js'></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.common.js"></script>
 

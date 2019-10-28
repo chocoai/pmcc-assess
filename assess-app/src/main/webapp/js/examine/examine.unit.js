@@ -16,7 +16,7 @@
     ];
 
     unitCommon.getUnitId = function () {
-        return unitCommon.unitForm.find('[name=id]').val()!=null?unitCommon.unitForm.find('[name=id]').val():unitCommon.tableId;
+        return unitCommon.unitForm.find('[name=id]').val() != null ? unitCommon.unitForm.find('[name=id]').val() : unitCommon.tableId;
     };
 
     unitCommon.getUnitNumber = function () {
@@ -236,44 +236,51 @@
     };
 
     unitCommon.mapNewMarker = function (_this, readonly) {
-        examineCommon.getBasicApplyBatchDetailList({tableId:unitCommon.getUnitId(),applyBatchId:unitCommon.unitForm.find("input[name='applyBatchId']").val()} ,function (itemA) {
-            if (itemA.length == 0){
-                return false ;
+        examineCommon.getBasicApplyBatchDetailList({
+            tableId: unitCommon.getUnitId(),
+            applyBatchId: unitCommon.unitForm.find("input[name='applyBatchId']").val()
+        }, function (itemA) {
+            if (itemA.length == 0) {
+                return false;
             }
-            examineCommon.getBasicApplyBatchDetailList({id:itemA[0].pid},function (itemB) {
-                if (itemB.length == 0){
-                    return false ;
+            examineCommon.getBasicApplyBatchDetailList({id: itemA[0].pid}, function (itemB) {
+                if (itemB.length == 0) {
+                    return false;
                 }
                 ///-----------------------||----------------------------///
-                var tempObj = {type:"building",tableId:itemB[0].tableId} ;
-                toolMapHandleFun.getToolMapHandleListByExample(tempObj , function (result) {
-                    var objArray = [] ;
-                    if (result.length != 0){
-                        for (var i = 0; i < result.length ;i++){
-                            if (result[i].type != tempObj.type){
+                var tempObj = {type: "building", tableId: itemB[0].tableId};
+                toolMapHandleFun.getToolMapHandleListByExample(tempObj, function (result) {
+                    var objArray = [];
+                    if (result.length != 0) {
+                        for (var i = 0; i < result.length; i++) {
+                            if (result[i].type != tempObj.type) {
                                 continue;
                             }
-                            if (result[i].tableId != tempObj.tableId){
+                            if (result[i].tableId != tempObj.tableId) {
                                 continue;
                             }
-                            objArray.push(result[i]) ;
+                            objArray.push(result[i]);
                         }
                     }
-                    if (objArray.length == 0){
-                        Alert("请先标注楼栋") ;
-                        return false ;
+                    if (!readonly){
+                        if (objArray.length == 0) {
+                            Alert("请先标注楼栋");
+                            return false;
+                        }
                     }
                     var data = {};
                     data.drawState = 'marker';
                     data.id = $(_this).closest('.form-group').find("[name='mapId']").val();
                     data.readonly = readonly;
                     data.multiple = false;//不允许多个标记
-                    data.type = "unit" ;//兼容以前数据
+                    data.type = "unit";//兼容以前数据
                     data.tableId = unitCommon.getUnitId();
-                    data.callback = function (item,result) {
-                        $(_this).closest('.form-group').find("[name='mapId']").val(item.id) ;
+                    data.callback = function (item, result) {
+                        $(_this).closest('.form-group').find("[name='mapId']").val(item.id);
                     };
-                    data.center = {lng:objArray[0].lng ,lat:objArray[0].lat} ;
+                    if (objArray.length != 0) {
+                        data.center = {lng: objArray[0].lng, lat: objArray[0].lat};
+                    }
                     toolMapHandleFun.loadMap(data);
                 });
             });

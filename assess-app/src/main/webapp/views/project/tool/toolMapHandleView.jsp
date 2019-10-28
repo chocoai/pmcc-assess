@@ -107,7 +107,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group" id="toolHtml2Img" style="display: none;">
+                            <div class="form-group" id="toolHtml2Img">
                                 <div class="col-xs-6  col-sm-6  col-md-6  col-lg-6">
                                     <span class="label label-primary">截取的图层</span>
                                     <img class="img-responsive img-rounded">

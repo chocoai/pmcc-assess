@@ -17,7 +17,7 @@
     ];
 
     buildingCommon.getBuildingId = function () {
-        var id = buildingCommon.buildingForm.find('[name=id]').val()!=null?buildingCommon.buildingForm.find('[name=id]').val():buildingCommon.tableId;
+        var id = buildingCommon.buildingForm.find('[name=id]').val() != null ? buildingCommon.buildingForm.find('[name=id]').val() : buildingCommon.tableId;
         if (id) {
             return id;
         }
@@ -29,8 +29,8 @@
     };
 
     buildingCommon.buildingNumberBlur = function (_this) {
-        var value = $(_this).val() ;
-        buildingCommon.buildingForm.find('[name=buildingName]').val(value+'栋');
+        var value = $(_this).val();
+        buildingCommon.buildingForm.find('[name=buildingName]').val(value + '栋');
     };
 
     //添加楼栋
@@ -139,8 +139,10 @@
         $.ajax({
             url: getContextPath() + '/basicBuilding/batchGetDataFromProject',
             type: 'get',
-            data: {applyId: applyId,
-                tableId: tableId},
+            data: {
+                applyId: applyId,
+                tableId: tableId
+            },
             success: function (result) {
                 if (result.ret) {
                     buildingCommon.showBuildingView(result.data);
@@ -154,7 +156,7 @@
     };
 
 
-    buildingCommon.detail = function (id,callback) {
+    buildingCommon.detail = function (id, callback) {
         $.ajax({
             url: getContextPath() + '/basicBuilding/getBasicBuildingByApplyId',
             type: 'get',
@@ -170,7 +172,7 @@
     };
 
     buildingCommon.showBuildingView = function (data) {
-        buildingCommon.initForm(data) ;
+        buildingCommon.initForm(data);
     };
 
     //显示楼栋对应部分信息
@@ -182,7 +184,7 @@
             data: {id: id},
             success: function (result) {
                 if (result.ret) {
-                    buildingCommon.initForm(result.data) ;
+                    buildingCommon.initForm(result.data);
                 }
             }
         })
@@ -340,35 +342,39 @@
 
 
     buildingCommon.mapNewMarker = function (_this, readonly) {
-        var tempObj = {type:"estate",tableId:buildingCommon.buildingForm.find("[name='estateId']").val()} ;
-        toolMapHandleFun.getToolMapHandleListByExample(tempObj , function (result) {
-            var objArray = [] ;
-            if (result.length != 0){
-                for (var i = 0; i < result.length ;i++){
-                    if (result[i].type != tempObj.type){
+        var tempObj = {type: "estate", tableId: buildingCommon.buildingForm.find("[name='estateId']").val()};
+        toolMapHandleFun.getToolMapHandleListByExample(tempObj, function (result) {
+            var objArray = [];
+            if (result.length != 0) {
+                for (var i = 0; i < result.length; i++) {
+                    if (result[i].type != tempObj.type) {
                         continue;
                     }
-                    if (result[i].tableId != tempObj.tableId){
+                    if (result[i].tableId != tempObj.tableId) {
                         continue;
                     }
-                    objArray.push(result[i]) ;
+                    objArray.push(result[i]);
                 }
             }
-            if (objArray.length == 0){
-                Alert("请先标注楼盘") ;
-                return false ;
+            if (!readonly){
+                if (objArray.length == 0) {
+                    Alert("请先标注楼盘");
+                    return false;
+                }
             }
             var data = {};
             data.drawState = 'marker';
             data.id = $(_this).closest('.form-group').find("[name='mapId']").val();
             data.readonly = readonly;
             data.multiple = false;//不允许多个标记
-            data.type = "building" ;//兼容以前数据
+            data.type = "building";//兼容以前数据
             data.tableId = buildingCommon.getBuildingId();
-            data.callback = function (item,result) {
-                $(_this).closest('.form-group').find("[name='mapId']").val(item.id) ;
+            data.callback = function (item, result) {
+                $(_this).closest('.form-group').find("[name='mapId']").val(item.id);
             };
-            data.center = {lng:objArray[0].lng ,lat:objArray[0].lat} ;
+            if (objArray.length != 0) {
+                data.center = {lng: objArray[0].lng, lat: objArray[0].lat};
+            }
             toolMapHandleFun.loadMap(data);
         });
     };
@@ -411,10 +417,10 @@
     };
 
     //楼盘标注（通过tableId）
-    buildingCommon.mapMarker2 = function (readonly,tableId) {
+    buildingCommon.mapMarker2 = function (readonly, tableId) {
         buildingCommon.tableId = tableId;
-        console.log(tableId+"===");
-        var contentUrl = getContextPath() + '/map/mapMarkerEstateByTableId?tableId=' + buildingCommon.tableId+'&tableName='+buildingCommon.tableName;
+        console.log(tableId + "===");
+        var contentUrl = getContextPath() + '/map/mapMarkerEstateByTableId?tableId=' + buildingCommon.tableId + '&tableName=' + buildingCommon.tableName;
         if (readonly != true) {
             contentUrl += '&click=buildingCommon.addMarker2';
         }
@@ -536,12 +542,12 @@
             search: false
         });
         var toolbar = $("#toolbarBuildingPropertyServiceItemTable");
-        if (toolbar.size() != 0){
-            var bootstrapTable = selectId.closest(".bootstrap-table") ;
-            if (bootstrapTable.size() != 0){
-                var fixedTableToolbar = bootstrapTable.find(".fixed-table-toolbar") ;
-                if (fixedTableToolbar.size() != 0){
-                    fixedTableToolbar.append(toolbar.html()) ;
+        if (toolbar.size() != 0) {
+            var bootstrapTable = selectId.closest(".bootstrap-table");
+            if (bootstrapTable.size() != 0) {
+                var fixedTableToolbar = bootstrapTable.find(".fixed-table-toolbar");
+                if (fixedTableToolbar.size() != 0) {
+                    fixedTableToolbar.append(toolbar.html());
                 }
             }
         }
@@ -577,8 +583,8 @@
         }
     };
 
-    buildingCommon.editBasicBuildingPropertyServiceItem = function (table, box,flag) {
-        if (flag){
+    buildingCommon.editBasicBuildingPropertyServiceItem = function (table, box, flag) {
+        if (flag) {
             var rows = $(table).bootstrapTable('getSelections');
             if (rows.length == 1) {
                 var data = rows[0];
@@ -587,20 +593,23 @@
             } else {
                 toastr.success('勾选一个!');
             }
-        }else {
+        } else {
             var masterId = buildingCommon.buildingForm.find('input[name=property]').val();
             $(box).modal('show');
-            dataPropertyModelQuote.initFormDataPropertyServiceItemModalTool($(box).find("form"), {masterId:masterId == undefined?0:masterId,buildingId:buildingCommon.getBuildingId()});
+            dataPropertyModelQuote.initFormDataPropertyServiceItemModalTool($(box).find("form"), {
+                masterId: masterId == undefined ? 0 : masterId,
+                buildingId: buildingCommon.getBuildingId()
+            });
         }
     };
 
     buildingCommon.addBasicBuildingPropertyServiceItem = function (_this) {
         var frm = $(_this).parent().prev().find("form");
         if (!frm.valid()) {
-            return false ;
+            return false;
         }
         var data = formSerializeArray(frm);
-        buildingCommon.saveAndUpdateBasicBuildingPropertyServiceItem([data] , function () {
+        buildingCommon.saveAndUpdateBasicBuildingPropertyServiceItem([data], function () {
             $(_this).parent().parent().parent().parent().modal('hide');
             toastr.success('成功!');
             $("#basicBuildingPropertyServiceItemTable").bootstrapTable('refresh');
@@ -674,54 +683,57 @@
 
 
     buildingCommon.constructionInstallationEngineeringFeeEvent = {
-        loadHtml:function () {
-            developmentCommon.getMdArchitecturalObjList2({databaseName:AssessDBKey.BasicBuilding,pid:buildingCommon.getBuildingId()} , function (objArray) {
-                if (objArray.length >= 1){
-                    developmentCommon.getMdArchitecturalObjById(objArray[0].id,function (item) {
+        loadHtml: function () {
+            developmentCommon.getMdArchitecturalObjList2({
+                databaseName: AssessDBKey.BasicBuilding,
+                pid: buildingCommon.getBuildingId()
+            }, function (objArray) {
+                if (objArray.length >= 1) {
+                    developmentCommon.getMdArchitecturalObjById(objArray[0].id, function (item) {
                         var target = $("#boxLandEngineering_Install");
                         var table = target.find("table");
-                        var data = [] ;
+                        var data = [];
                         try {
-                            data = JSON.parse(item.jsonContent) ;
+                            data = JSON.parse(item.jsonContent);
                         } catch (e) {
                             console.log("解析异常!");
                         }
-                        buildingCommon.constructionInstallationEngineeringFeeEvent.appendHTML(data,item.id);
+                        buildingCommon.constructionInstallationEngineeringFeeEvent.appendHTML(data, item.id);
                     });
-                }else {
-                    buildingCommon.constructionInstallationEngineeringFeeEvent.appendHTML([], 0,'');
+                } else {
+                    buildingCommon.constructionInstallationEngineeringFeeEvent.appendHTML([], 0, '');
                 }
-            }) ;
+            });
         },
-        appendHTML:function (data,id) {
+        appendHTML: function (data, id) {
             var target = $("#boxLandEngineering_Install");
-            var html = target.html() ;
+            var html = target.html();
             html = html.replace(/'{method}'/g, 'buildingCommon.constructionInstallationEngineeringFeeEvent.save()');
             target.empty().append(html);
             target.modal("show");
-            target.find(".panel-body").empty() ;
+            target.find(".panel-body").empty();
             developmentCommon.architecturalB.appendHtml(target.find(".panel-body"), data, null, '', function (tr) {
-                var obj = {disable:'disable',readonly:"readonly",'class':'form-control'} ;
-                $(tr).find("input[name='price']").attr(obj) ;
-                $(tr).find("input[name='remark']").attr(obj) ;
-                $(tr).find("input[name='area']").attr(obj) ;
+                var obj = {disable: 'disable', readonly: "readonly", 'class': 'form-control'};
+                $(tr).find("input[name='price']").attr(obj);
+                $(tr).find("input[name='remark']").attr(obj);
+                $(tr).find("input[name='area']").attr(obj);
             });
             target.find("input[name='constructionInstallationEngineeringFeeId']").val(id);
         },
-        save:function () {
-            var pid = buildingCommon.getBuildingId() ;
+        save: function () {
+            var pid = buildingCommon.getBuildingId();
             var target = $("#boxLandEngineering_Install");
             var table = target.find("table");
-            var obj = {} ;
-            obj.databaseName = AssessDBKey.BasicBuilding ;
+            var obj = {};
+            obj.databaseName = AssessDBKey.BasicBuilding;
             obj.pid = pid;
             obj.id = target.find("input[name='constructionInstallationEngineeringFeeId']").val();
-            developmentCommon.saveMdArchitecturalObj2(developmentCommon.architecturalB.getFomData(table),obj,function (item) {
+            developmentCommon.saveMdArchitecturalObj2(developmentCommon.architecturalB.getFomData(table), obj, function (item) {
                 toastr.success('保存成功!');
-            }) ;
+            });
             target.modal("hide");
         }
-    } ;
+    };
 
 
     window.buildingCommon = buildingCommon;

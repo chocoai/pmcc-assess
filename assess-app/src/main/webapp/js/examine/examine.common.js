@@ -122,19 +122,35 @@ examineCommon.blockSelect = function (this_) {
     })
 };
 
-examineCommon.getBasicApplyBatchDetailList = function (obj , callback) {
+examineCommon.getBasicApplyBatchDetailList = function (obj, callback) {
     $.ajax({
         url: getContextPath() + '/basicApplyBatch/getBasicApplyBatchDetailList',
         data: obj,
-        method:"get" ,
+        method: "get",
         success: function (result) {
-            if (result.ret ) {
-                if (callback){
-                    callback(result.data) ;
+            if (result.ret) {
+                if (callback) {
+                    callback(result.data);
                 }
             }
         }
     })
 };
+
+examineCommon.parseParam = function (param, key) {
+    var paramStr = "";
+    if (param instanceof String || param instanceof Number || param instanceof Boolean) {
+        paramStr += "&" + key + "=" + encodeURIComponent(param);
+    } else {
+        $.each(param, function (i) {
+            var k = key == null ? i : key + (param instanceof Array ? "[" + i + "]" : "." + i);
+            paramStr += '&' + examineCommon.parseParam(this, k);
+        });
+    }
+    return paramStr.substr(1);
+} ;
+
+examineCommon.getMarkerAreaInHeight = '80%';
+examineCommon.getMarkerAreaInWidth = '80%';
 
 window.examineCommon = examineCommon;
