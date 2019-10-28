@@ -41,6 +41,10 @@
     };
 
     unitCommon.initForm = function (data) {
+        try {
+            data.applyBatchId = unitCommon.unitForm.find("input[name='applyBatchId']").val();
+        } catch (e) {
+        }
         unitCommon.unitForm.clearAll();
         unitCommon.unitForm.initForm(data);
         //初始化上传控件
@@ -229,6 +233,51 @@
                 }
             }
         })
+    };
+
+    unitCommon.mapNewMarker = function (_this, readonly) {
+        examineCommon.getBasicApplyBatchDetailList({tableId:unitCommon.getUnitId(),applyBatchId:unitCommon.unitForm.find("input[name='applyBatchId']").val()} ,function (itemA) {
+            if (itemA.length == 0){
+                return false ;
+            }
+            examineCommon.getBasicApplyBatchDetailList({id:itemA[0].pid},function (itemB) {
+                if (itemB.length == 0){
+                    return false ;
+                }
+                ///-----------------------||----------------------------///
+                var tempObj = {type:"building",tableId:itemB[0].tableId} ;
+                toolMapHandleFun.getToolMapHandleListByExample(tempObj , function (result) {
+                    var objArray = [] ;
+                    if (result.length != 0){
+                        for (var i = 0; i < result.length ;i++){
+                            if (result[i].type != tempObj.type){
+                                continue;
+                            }
+                            if (result[i].tableId != tempObj.tableId){
+                                continue;
+                            }
+                            objArray.push(result[i]) ;
+                        }
+                    }
+                    if (objArray.length == 0){
+                        Alert("请先标注楼栋") ;
+                        return false ;
+                    }
+                    var data = {};
+                    data.drawState = 'marker';
+                    data.id = $(_this).closest('.form-group').find("[name='mapId']").val();
+                    data.readonly = readonly;
+                    data.multiple = false;//不允许多个标记
+                    data.type = "unit" ;//兼容以前数据
+                    data.tableId = unitCommon.getUnitId();
+                    data.callback = function (item,result) {
+                        $(_this).closest('.form-group').find("[name='mapId']").val(item.id) ;
+                    };
+                    data.center = {lng:objArray[0].lng ,lat:objArray[0].lat} ;
+                    toolMapHandleFun.loadMap(data);
+                });
+            });
+        });
     };
 
     unitCommon.showUnitView = function (data) {

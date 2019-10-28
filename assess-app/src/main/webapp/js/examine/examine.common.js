@@ -122,4 +122,19 @@ examineCommon.blockSelect = function (this_) {
     })
 };
 
+examineCommon.getBasicApplyBatchDetailList = function (obj , callback) {
+    $.ajax({
+        url: getContextPath() + '/basicApplyBatch/getBasicApplyBatchDetailList',
+        data: obj,
+        method:"get" ,
+        success: function (result) {
+            if (result.ret ) {
+                if (callback){
+                    callback(result.data) ;
+                }
+            }
+        }
+    })
+};
+
 window.examineCommon = examineCommon;

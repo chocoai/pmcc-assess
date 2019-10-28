@@ -8,6 +8,7 @@
     </div>
     <form class="form-horizontal" id="basicBuildingFrm">
         <input type="hidden" name="id" value="${basicBuilding.id}">
+        <input type="hidden" name="estateId" value="${basicApplyBatch.estateId}">
         <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
@@ -21,14 +22,10 @@
                                onblur="buildingCommon.buildingNumberBlur(this);"
                                value="${basicBuilding.buildingNumber}">
                         <span class="input-group-btn">
-                          <c:if test="${empty isApplyBatch}">
-                            <div onclick="buildingCommon.mapMarker();" class="btn btn-info"><i
-                                    class="fa fa-map-marker"></i> 标注</div>
-                          </c:if>
-                                <c:if test="${isApplyBatch eq 'show'}">
-                                 <div onclick="buildingCommon.mapMarker2(false,${tableId});" class="btn btn-info"><i
-                                         class="fa fa-map-marker"></i> 标注</div>
-                                </c:if>
+                             <input type="hidden" name="mapId" value="${basicBuilding.mapId}">
+                             <div onclick="buildingCommon.mapNewMarker(this,false);" class="btn btn-info">
+                                 <i class="fa fa-map-marker"></i> 标注
+                             </div>
                         </span>
                     </div>
                 </div>
@@ -563,6 +560,10 @@
         <%@include file="/views/project/stageSurvey/common/buildingSurface.jsp" %>
     </c:if>
 </div>
+<%@include file="/views/project/tool/toolMapHandleView.jsp" %>
+
+<script src='${pageContext.request.contextPath}/js/common.column.js'></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.common.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.build.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/sonBuildView.js"></script>
 

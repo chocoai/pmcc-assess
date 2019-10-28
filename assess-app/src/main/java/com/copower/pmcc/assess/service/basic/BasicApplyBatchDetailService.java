@@ -69,6 +69,10 @@ public class BasicApplyBatchDetailService {
         }
     }
 
+    public List<BasicApplyBatchDetail> getBasicApplyBatchDetailList(BasicApplyBatchDetail examineInfo){
+        return basicApplyBatchDetailDao.getInfoList(examineInfo) ;
+    }
+
     /**
      * 新增
      *

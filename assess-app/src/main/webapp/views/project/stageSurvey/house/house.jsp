@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="x_content">
     <div class="x_title">
@@ -9,6 +10,7 @@
     <form class="form-horizontal" id="basicHouseFrm">
         <input type="hidden" name="id" value="${basicHouse.id}">
         <input type="hidden" name="unitId" value="${basicHouse.unitId}">
+        <input type="hidden" name="applyBatchId" value="${basicApplyBatch.id}">
         <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">房号<span
@@ -40,7 +42,6 @@
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <div class="input-group">
                         <input type="hidden" name="huxingId" value="${basicHouse.huxingId}">
-                        <c:if test="${empty isApplyBatch}">
                         <input type="text" readonly="readonly" onclick="houseCommon.selectHuxing(this);"
                                placeholder="户型" class="form-control" name="huxingName"
                                value="${basicHouse.huxingName}">
@@ -51,20 +52,6 @@
                                 onclick="houseCommon.selectHuxing(this);">
                              <i class="fa fa-search"></i>
                         </button>
-                        </c:if>
-                        <c:if test="${isApplyBatch eq 'show'}">
-                             <input type="text" readonly="readonly"
-                                    onclick="houseCommon.selectHuxing(this,${tableId});"
-                                    placeholder="户型" class="form-control" name="huxingName"
-                                    value="${basicHouse.huxingName}">
-                        <span class="input-group-btn">
-                        <button type="button" class="btn btn-default docs-tooltip"
-                                data-toggle="tooltip"
-                                data-original-title="选择"
-                                onclick="houseCommon.selectHuxing(this,${tableId});">
-                             <i class="fa fa-search"></i>
-                        </button>
-                        </c:if>
                         <button type="button" class="btn btn-default docs-tooltip"
                                 onclick="$(this).closest('.input-group').find('input').val('');"
                                 data-toggle="tooltip" data-original-title="清除">
@@ -101,13 +88,7 @@
             </div>
             <div class="x-valid">
                 <div class=" col-xs-31  col-sm-31  col-md-31  col-lg-31  col-sm-offset-1">
-                    <div id="container"></div>
-                    <c:if test="${empty isApplyBatch}">
-                        <div class="btn btn-success" onclick="houseCommon.orientationFun(false)">户型图朝向</div>
-                    </c:if>
-                    <c:if test="${isApplyBatch eq 'show'}">
-                        <div class="btn btn-success" onclick="houseCommon.orientationFun2(false,${tableId})">户型图朝向</div>
-                    </c:if>
+                    <div class="btn btn-success" onclick="houseCommon.orientationFunX(false)">户型图朝向</div>
                 </div>
             </div>
         </div>
@@ -698,11 +679,17 @@
     </c:if>
     <%@include file="/views/project/stageSurvey/common/houseDamagedDegree.jsp" %>
 </div>
+
+<script src='${pageContext.request.contextPath}/js/common.column.js'></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.common.js"></script>
+
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.house.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/sonHouseView.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/select/huxing.select.js"></script>
 <script type="text/javascript">
     $(function () {
         houseCommon.initById('${basicHouse.id}');
+
+
     })
 </script>

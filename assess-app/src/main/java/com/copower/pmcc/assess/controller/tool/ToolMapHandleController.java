@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.dal.basis.entity.ToolMapHandle;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.tool.ToolMapHandleService;
-import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,25 +19,15 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping(value = "/toolMapHandle")
 public class ToolMapHandleController {
 
-
-    private final String errorName = "地图插件" ;
+    private final String errorName = "地图插件";
 
     @Autowired
     private ToolMapHandleService toolMapHandleService;
     @Autowired
     private BaseService baseService;
-    @Autowired
-    private ProcessControllerComponent processControllerComponent;
-
-    @RequestMapping(value = "/toolMapHandleView")
-    public ModelAndView index() {
-        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/tool/toolMapHandleView");
-        settingParams(modelAndView) ;
-        return modelAndView;
-    }
 
     @GetMapping(value = "/getBootstrapTableVo")
-    public BootstrapTableVo getBootstrapTableVo(ToolMapHandle oo){
+    public BootstrapTableVo getBootstrapTableVo(ToolMapHandle oo) {
         return toolMapHandleService.getBootstrapTableVo(oo);
     }
 
@@ -49,7 +38,7 @@ public class ToolMapHandleController {
             toolMapHandleService.saveToolMapHandle(toolMapHandle);
             return HttpResult.newCorrectResult(200, toolMapHandle);
         } catch (Exception e) {
-            baseService.writeExceptionInfo(e,errorName);
+            baseService.writeExceptionInfo(e, errorName);
             return HttpResult.newErrorResult(500, e.getMessage());
         }
     }
@@ -60,7 +49,29 @@ public class ToolMapHandleController {
         try {
             return HttpResult.newCorrectResult(200, toolMapHandleService.getToolMapHandleById(id));
         } catch (Exception e) {
-            baseService.writeExceptionInfo(e,errorName);
+            baseService.writeExceptionInfo(e, errorName);
+            return HttpResult.newErrorResult(500, e);
+        }
+    }
+
+    @GetMapping(value = "/getToolMapHandleListByExample")
+    public HttpResult getToolMapHandleListByExample(ToolMapHandle toolMapHandle) {
+        try {
+            return HttpResult.newCorrectResult(200, toolMapHandleService.getToolMapHandleListByExample(toolMapHandle));
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e, errorName);
+            return HttpResult.newErrorResult(500, e);
+        }
+    }
+
+
+    @PostMapping(value = "/removeToolMapHandle")
+    public HttpResult removeToolMapHandle(ToolMapHandle toolMapHandle) {
+        try {
+            toolMapHandleService.removeToolMapHandle(toolMapHandle);
+            return HttpResult.newCorrectResult(200);
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e, errorName);
             return HttpResult.newErrorResult(500, e);
         }
     }
@@ -68,15 +79,15 @@ public class ToolMapHandleController {
     @DeleteMapping(value = "/deleteToolMapHandleById/{id}")
     public HttpResult deleteToolMapHandleById(@PathVariable String id) {
         try {
-            toolMapHandleService.deleteToolMapHandle(id) ;
+            toolMapHandleService.deleteToolMapHandle(id);
             return HttpResult.newCorrectResult(200);
         } catch (Exception e) {
-            baseService.writeExceptionInfo(e,errorName);
+            baseService.writeExceptionInfo(e, errorName);
             return HttpResult.newErrorResult(500, e);
         }
     }
 
-    private void settingParams(ModelAndView modelAndView){
+    private void settingParams(ModelAndView modelAndView) {
 
     }
 

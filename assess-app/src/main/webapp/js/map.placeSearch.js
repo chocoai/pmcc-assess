@@ -3,7 +3,7 @@
  * 需要传入搜索类型,搜索中心的经纬度以及搜索半径
  */
 (function ($) {
-    document.write('<script type="text/javascript" src="//webapi.amap.com/maps?v=1.4.6&key=ac9fb0371e0405ef74cb1ca003fd0eef&plugin=AMap.Autocomplete,AMap.PlaceSearch,AMap.MouseTool,AMap.ToolBar"></script>');
+    document.write('<script type="text/javascript" src="//webapi.amap.com/maps?v=1.4.15&key=ac9fb0371e0405ef74cb1ca003fd0eef&plugin=AMap.Autocomplete,AMap.PlaceSearch,AMap.MouseTool,AMap.ToolBar"></script>');
     document.write('<script src="//webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>');
     document.write('<div id="containerSearchMap" style="display: none;" tabindex="0"></div>');
     document.write("<link rel='stylesheet' type='text/css' href='https://a.amap.com/jsapi_demos/static/demo-center/css/prety-json.css'> </link>");

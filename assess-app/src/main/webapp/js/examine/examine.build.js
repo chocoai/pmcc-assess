@@ -190,6 +190,10 @@
 
 
     buildingCommon.initForm = function (data) {
+        try {
+            data.estateId = buildingCommon.buildingForm.find("input[name='estateId']").val();
+        } catch (e) {
+        }
         buildingCommon.buildingForm.clearAll();
         buildingCommon.buildingForm.initForm(data);
         //1.初始化下拉框；2.初始化上传控件；3.显示已上传的附件信息；4.加载从表数据
@@ -331,6 +335,41 @@
                 buildingCommon.buildingMapiframe = window[layero.find('iframe')[0]['name']];
                 buildingCommon.loadMarkerList();
             }
+        });
+    };
+
+
+    buildingCommon.mapNewMarker = function (_this, readonly) {
+        var tempObj = {type:"estate",tableId:buildingCommon.buildingForm.find("[name='estateId']").val()} ;
+        toolMapHandleFun.getToolMapHandleListByExample(tempObj , function (result) {
+            var objArray = [] ;
+            if (result.length != 0){
+                for (var i = 0; i < result.length ;i++){
+                    if (result[i].type != tempObj.type){
+                        continue;
+                    }
+                    if (result[i].tableId != tempObj.tableId){
+                        continue;
+                    }
+                    objArray.push(result[i]) ;
+                }
+            }
+            if (objArray.length == 0){
+                Alert("请先标注楼盘") ;
+                return false ;
+            }
+            var data = {};
+            data.drawState = 'marker';
+            data.id = $(_this).closest('.form-group').find("[name='mapId']").val();
+            data.readonly = readonly;
+            data.multiple = false;//不允许多个标记
+            data.type = "building" ;//兼容以前数据
+            data.tableId = buildingCommon.getBuildingId();
+            data.callback = function (item,result) {
+                $(_this).closest('.form-group').find("[name='mapId']").val(item.id) ;
+            };
+            data.center = {lng:objArray[0].lng ,lat:objArray[0].lat} ;
+            toolMapHandleFun.loadMap(data);
         });
     };
 

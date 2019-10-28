@@ -94,6 +94,18 @@ public class BasicApplyBatchController extends BaseController {
         return basicApplyBatchService.getZtreeDto(estateId);
     }
 
+
+    @ResponseBody
+    @RequestMapping(value = "/getBasicApplyBatchDetailList", method = RequestMethod.GET)
+    public HttpResult getBasicApplyBatchDetailList(BasicApplyBatchDetail basicApplyBatchDetail) throws Exception {
+        try {
+            return HttpResult.newCorrectResult(basicApplyBatchDetailService.getBasicApplyBatchDetailList(basicApplyBatchDetail));
+        } catch (Exception e1) {
+            log.error(e1.getMessage(), e1);
+            return HttpResult.newErrorResult("异常");
+        }
+    }
+
     @ResponseBody
     @RequestMapping(value = "/saveApplyInfo", name = "保存", method = {RequestMethod.POST})
     public HttpResult saveApplyInfo(BasicApplyBatch basicApplyBatch) {
@@ -222,6 +234,10 @@ public class BasicApplyBatchController extends BaseController {
         modelAndView.addObject("formType", BasicApplyTypeEnum.getEnumById(formType).getKey());
         List<CrmBaseDataDicDto> unitPropertiesList = projectInfoService.getUnitPropertiesList();
         modelAndView.addObject("unitPropertiesList", unitPropertiesList);
+        if (applyBatchId != null) {
+            BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchById(applyBatchId);
+            modelAndView.addObject(StringUtils.uncapitalize(BasicApplyBatch.class.getSimpleName()), basicApplyBatch);
+        }
         return modelAndView;
     }
 
