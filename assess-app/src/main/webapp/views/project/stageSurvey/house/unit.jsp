@@ -6,6 +6,7 @@
     </div>
     <form class="form-horizontal" id="basicUnitFrm">
         <input type="hidden" name="id" value="${basicUnit.id}">
+        <input type="hidden" name="applyBatchId" value="${basicApplyBatch.id}">
         <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">单元编号<span class="symbol required"></span></label>
@@ -14,14 +15,10 @@
                         <input type="text" data-rule-maxlength="100" placeholder="单元编号" required="required"
                                name="unitNumber" class="form-control" value="${basicUnit.unitNumber}" id="txt_Unit_search">
                         <span class="input-group-btn">
-                            <c:if test="${empty isApplyBatch}">
-                            <div onclick="unitCommon.mapMarker();" class="btn btn-info"><i
-                                    class="fa fa-map-marker"></i> 标注</div>
-                            </c:if>
-                              <c:if test="${isApplyBatch eq 'show'}">
-                            <div onclick="unitCommon.mapMarker2(false,${tableId});" class="btn btn-info"><i
-                                    class="fa fa-map-marker"></i> 标注</div>
-                              </c:if>
+                            <input type="hidden" name="mapId" value="${basicUnit.mapId}">
+                             <div onclick="unitCommon.mapNewMarker(this,false);" class="btn btn-info">
+                                 <i class="fa fa-map-marker"></i> 标注
+                             </div>
                         </span>
                     </div>
                 </div>
@@ -45,6 +42,10 @@
     <%@include file="/views/project/stageSurvey/common/unitDecorate.jsp" %>
     <%@include file="/views/project/stageSurvey/common/unitElevator.jsp" %>
 </div>
+<%@include file="/views/project/tool/toolMapHandleView.jsp" %>
+
+<script src='${pageContext.request.contextPath}/js/common.column.js'></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.common.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.unit.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/sonUnitView.js"></script>
 <script type="text/javascript">

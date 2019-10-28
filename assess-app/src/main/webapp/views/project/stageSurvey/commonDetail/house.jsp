@@ -63,13 +63,8 @@
                 </div>
             </div>
             <div class="x-valid">
-                <div class=" col-xs-31  col-sm-31  col-md-31  col-lg-31  col-sm-offset-1">
-                    <c:if test="${empty isApplyBatch}">
-                        <div class="btn btn-success" onclick="houseCommon.orientationFun(true)">户型图朝向</div>
-                    </c:if>
-                    <c:if test="${isApplyBatch eq 'show'}">
-                        <div class="btn btn-success" onclick="houseCommon.orientationFun2(true,${tableId})">户型图朝向</div>
-                    </c:if>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3  col-sm-offset-1">
+                    <div class="btn btn-success" onclick="houseCommon.orientationFun(true)">户型图朝向</div>
                 </div>
             </div>
         </div>

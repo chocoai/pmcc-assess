@@ -24,14 +24,10 @@
                     <div class="input-group">
                         <label class="form-control" name="buildingNumber">${basicBuilding.buildingNumber}</label>
                         <span class="input-group-btn">
-                               <c:if test="${empty isApplyBatch}">
-                            <div onclick="buildingCommon.mapMarker(true);" class="btn btn-info"><i
-                                    class="fa fa-map-marker"></i> 标注</div>
-                               </c:if>
-                                <c:if test="${isApplyBatch eq 'show'}">
-                                 <div onclick="buildingCommon.mapMarker2(true,${tableId});" class="btn btn-info"><i
-                                         class="fa fa-map-marker"></i> 标注</div>
-                                </c:if>
+                            <input type="hidden" name="mapId" value="${basicBuilding.mapId}">
+                             <div onclick="buildingCommon.mapNewMarker(this,true);" class="btn btn-info">
+                                 <i class="fa fa-map-marker"></i> 标注
+                             </div>
                         </span>
                     </div>
                 </div>

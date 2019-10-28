@@ -529,7 +529,7 @@
         data.multiple = false;//不允许多个标记
         data.type = "estate" ;//兼容以前数据
         data.tableId = estateCommon.estateForm.find("input[name='id']").val() ;
-        data.callback = function (item) {
+        data.callback = function (item,result) {
             $(_this).closest('.form-group').find("[name='mapId']").val(item.id) ;
         };
         toolMapHandleFun.loadMap(data);

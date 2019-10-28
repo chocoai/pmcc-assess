@@ -71,25 +71,31 @@ toolMapHandleFun.loadMap = function (options) {
         id: 0,
         instantaneousLifeData: "",
         callback: undefined,
-        multiple:true, //是否多个
-        type:'estate',
-        tableId:"0"
+        multiple: true, //是否多个
+        type: 'estate',
+        tableId: "0"
     };
     defaultObj = $.extend(defaultObj, options);
     var target = $("#modelToolMapHandleView");
     target.modal("show");
-    if (defaultObj.readonly){
-        $(".mapReadonly").hide() ;
-        target.find("input").attr({"readonly":'readonly'});
-        target.find("textarea").attr({"readonly":'readonly'});
-        $("#modelToolMapHandleMarkerView").find("input").attr({"readonly":'readonly'});
-        $("#modelToolMapHandleMarkerView").find("textarea").attr({"readonly":'readonly'});
+    if (defaultObj.readonly) {
+        $(".mapReadonly").hide();
+        target.find("input").attr({"readonly": 'readonly'});
+        target.find("textarea").attr({"readonly": 'readonly'});
+        $("#modelToolMapHandleMarkerView").find("input").attr({"readonly": 'readonly'});
+        $("#modelToolMapHandleMarkerView").find("textarea").attr({"readonly": 'readonly'});
     }
     $(document).ready(function () {
         if (defaultObj.id) {
             toolMapHandleFun.getDataById(defaultObj.id, function (data) {
-                if (data.instantaneousLifeData){
+                if (!data){
+                    return false ;
+                }
+                if (data.instantaneousLifeData) {
                     defaultObj.instantaneousLifeData = data.instantaneousLifeData;
+                }
+                if (data.centerLng){
+                    defaultObj.center = {lng:data.centerLng,lat:data.centerLat} ;
                 }
                 toolMapHandleFun.defaultObj = defaultObj;
                 target.find("input[name='toolMapHandleId']").val(defaultObj.id);
@@ -290,10 +296,10 @@ toolMapHandleFun.completeEvent = function () {
             case toolMapHandleFun.config.draw.marker.key: {
                 var overlays = toolMapHandleFun.map.getAllOverlays();//获取覆盖物
                 var running = true;
-                if (!defaultObj.multiple){
-                    running = (overlays.length == 0) ;
+                if (!defaultObj.multiple) {
+                    running = (overlays.length == 0);
                 }
-                if (running){
+                if (running) {
                     toolMapHandleFun.createOverlay([e.lnglat]);
                 }
                 break
@@ -396,20 +402,28 @@ toolMapHandleFun.save = function () {
     data.zoom = toolMapHandleFun.map.getZoom();
     data.centerLat = center.lat;
     data.centerLng = center.lng;
-    data.id = data.toolMapHandleId;
+    // data.id = data.toolMapHandleId;
     var overlays = toolMapHandleFun.map.getAllOverlays();
     var result = toolMapHandleFun.getOverlayByType(overlays);//获取覆盖物
     if (result.length != 0) {
         data.instantaneousLifeData = JSON.stringify(result);
     }
-    toolMapHandleFun.saveData(data, function (item) {
-        target.modal("hide");
-        console.log(data);
-        //这里会返回保存的id
-        if (toolMapHandleFun.defaultObj.callback) {
-            toolMapHandleFun.defaultObj.callback(item);
+    if (!toolMapHandleFun.defaultObj.multiple) {
+        var filters = ["building", "estate", "unit"];
+        if (jQuery.inArray(toolMapHandleFun.defaultObj.type, filters) != -1) {
+            data.lng = result[0].lng;
+            data.lat = result[0].lat;
         }
-    });
+    }
+    toolMapHandleFun.removeToolMapHandle({tableId:data.tableId,type:data.type,drawState:data.drawState} , function () {
+        toolMapHandleFun.saveData(data, function (item) {
+            target.modal("hide");
+            //这里会返回保存的id
+            if (toolMapHandleFun.defaultObj.callback) {
+                toolMapHandleFun.defaultObj.callback(item, result);
+            }
+        });
+    }) ;
 };
 
 /**
@@ -682,10 +696,14 @@ toolMapHandleFun.getOverlayByType = function (overlays) {
                     center: overlay.Je.center,
                     radius: overlay.Je.radius,
                     fillColor: overlay.Je.fillColor,
-                    strokeColor: overlay.Je.strokeColor,
-                    title: overlay.Je.extData.title,
-                    remark: overlay.Je.extData.remark
+                    strokeColor: overlay.Je.strokeColor
                 };
+                if (overlay.Je.extData.title){
+                    circle.title = overlay.Je.extData.title ;
+                }
+                if (overlay.Je.extData.remark){
+                    circle.remark = overlay.Je.extData.remark ;
+                }
                 result.push(circle);
             });
             break;
@@ -693,8 +711,12 @@ toolMapHandleFun.getOverlayByType = function (overlays) {
             $.each(overlays, function (i, overlay) {
                 var extData = overlay.B.extData;
                 var position = overlay.B.position;
-                position.title = extData.title;
-                position.remark = extData.remark;
+                if (extData.title) {
+                    position.title = extData.title;
+                }
+                if (extData.remark) {
+                    position.remark = extData.remark;
+                }
                 result.push(position);
             });
             break;
@@ -801,11 +823,51 @@ toolMapHandleFun.saveData = function (data, callback) {
     });
 };
 
+toolMapHandleFun.removeToolMapHandle = function (data, callback) {
+    $.ajax({
+        type: "POST",
+        url: getContextPath() + "/toolMapHandle/removeToolMapHandle",
+        data: data,
+        success: function (result) {
+            if (result.ret) {
+                if (callback) {
+                    callback(result.data);
+                }
+            } else {
+                Alert("失败:" + result.errmsg);
+            }
+        },
+        error: function (e) {
+            Alert("调用服务端方法失败，失败原因:" + e);
+        }
+    });
+};
+
 toolMapHandleFun.getDataById = function (id, callback) {
     $.ajax({
         type: "get",
         url: getContextPath() + "/toolMapHandle/getToolMapHandleById",
         data: {id: id},
+        success: function (result) {
+            if (result.ret) {
+                if (callback) {
+                    callback(result.data);
+                }
+            } else {
+                Alert("失败:" + result.errmsg);
+            }
+        },
+        error: function (e) {
+            Alert("调用服务端方法失败，失败原因:" + e);
+        }
+    });
+};
+
+toolMapHandleFun.getToolMapHandleListByExample = function (data, callback) {
+    $.ajax({
+        type: "get",
+        url: getContextPath() + "/toolMapHandle/getToolMapHandleListByExample",
+        data: data,
         success: function (result) {
             if (result.ret) {
                 if (callback) {

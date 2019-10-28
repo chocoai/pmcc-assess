@@ -66,6 +66,10 @@ public class ToolMapHandleService {
         toolMapHandleDao.deleteToolMapHandle(FormatUtils.transformString2Integer(id));
     }
 
+    public void removeToolMapHandle(ToolMapHandle oo){
+        toolMapHandleDao.removeToolMapHandle(oo);
+    }
+
     public List<ToolMapHandle> getToolMapHandleListByExample(ToolMapHandle oo) {
         return toolMapHandleDao.getToolMapHandleListByExample(oo);
     }
