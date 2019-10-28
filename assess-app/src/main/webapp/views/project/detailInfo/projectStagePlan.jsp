@@ -280,7 +280,15 @@
                     return str;
                 }
             });
-            cols.push({field: 'executeUserName', title: '责任人'});
+            cols.push({
+                field: 'executeUserName', title: '责任人/审批人', formatter: function (value, row, index) {
+                    var s = value;
+                    if (row.approverUserName) {
+                        s += '/' + row.approverUserName;
+                    }
+                    return s;
+                }
+            });
             cols.push({
                 field: 'status', title: '状态', formatter: function (value, row, index) {
                     var str = "";

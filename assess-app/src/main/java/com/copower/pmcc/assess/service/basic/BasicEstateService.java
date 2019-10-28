@@ -91,7 +91,7 @@ public class BasicEstateService {
     @Autowired
     private BasicApplyService basicApplyService;
     @Autowired
-    private BasicApplyBatchService basicApplyBatchService;
+    private BasicApplyBatchDetailService basicApplyBatchDetailService;
     @Autowired
     private BasicApplyBatchDao basicApplyBatchDao;
     @Autowired
@@ -267,7 +267,7 @@ public class BasicEstateService {
 
 
     @Transactional(rollbackFor = Exception.class)
-    public void clearInvalidData2(Integer tableId) throws Exception {
+    public void clearInvalidChildData(Integer tableId) throws Exception {
         StringBuilder sqlBulder = new StringBuilder();
         String baseSql = "delete from %s where estate_id=%s;";
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicEstateNetwork.class), tableId));
@@ -657,24 +657,24 @@ public class BasicEstateService {
     /**
      * 引用项目中的数据批量时
      *
-     * @param id      老数据对应id
+     * @param quoteId      老数据对应id
      * @param tableId basicEstate对应id
      * @return
      */
     @Transactional(rollbackFor = Exception.class)
-    public Map<String, Object> quoteEstateData(Integer id, Integer tableId) throws Exception {
-        if (id == null || tableId == null) {
+    public Map<String, Object> quoteEstateData(Integer quoteId, Integer tableId) throws Exception {
+        if (quoteId == null || tableId == null) {
             throw new BusinessException("null point");
         }
-        this.clearInvalidData2(tableId);
+        this.clearInvalidChildData(tableId);
         //更新批量申请表信息
-        BasicApplyBatch applyBatch = basicApplyBatchService.getBasicApplyBatchByEstateId(tableId);
-        applyBatch.setQuoteId(id);
-        applyBatch.setBaseType(BaseConstant.DATABASE_PMCC_ASSESS);
-        basicApplyBatchDao.updateInfo(applyBatch);
+        BasicApplyBatchDetail batchDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail("tb_basic_house", tableId);
+        batchDetail.setQuoteId(quoteId);
+        batchDetail.setBaseType(BaseConstant.DATABASE_PMCC_ASSESS);
+        basicApplyBatchDetailService.saveBasicApplyBatchDetail(batchDetail);
 
         Map<String, Object> objectMap = new HashMap<String, Object>(2);
-        BasicEstate oldEstateByApplyId = this.getBasicEstateById(id);
+        BasicEstate oldEstateByApplyId = this.getBasicEstateById(quoteId);
         if (oldEstateByApplyId == null) {
             return objectMap;
         }
@@ -700,10 +700,9 @@ public class BasicEstateService {
             }
         }
 
-
         //附件拷贝
         SysAttachmentDto example = new SysAttachmentDto();
-        example.setTableId(id);
+        example.setTableId(quoteId);
         example.setTableName(FormatUtils.entityNameConvertToTableName(BasicEstate.class));
         SysAttachmentDto attachmentDto = new SysAttachmentDto();
         attachmentDto.setTableId(tableId);
@@ -711,7 +710,7 @@ public class BasicEstateService {
         baseAttachmentService.copyFtpAttachments(example, attachmentDto);
 
         BasicEstateLandState queryLandState = new BasicEstateLandState();
-        queryLandState.setEstateId(id);
+        queryLandState.setEstateId(quoteId);
         List<BasicEstateLandState> oldBasicEstateLandStateList = basicEstateLandStateService.basicEstateLandStateList(queryLandState);
         if (!ObjectUtils.isEmpty(oldBasicEstateLandStateList)) {
             BasicEstateLandState basicEstateLandState = new BasicEstateLandState();
@@ -728,7 +727,7 @@ public class BasicEstateService {
         }
 
         BasicEstateTagging oldBasicEstateTagging = new BasicEstateTagging();
-        oldBasicEstateTagging.setTableId(id);
+        oldBasicEstateTagging.setTableId(quoteId);
         oldBasicEstateTagging.setType(EstateTaggingTypeEnum.ESTATE.getKey());
         List<BasicEstateTagging> oldBasicEstateTaggingList = basicEstateTaggingService.getBasicEstateTaggingList(oldBasicEstateTagging);
         if (!ObjectUtils.isEmpty(oldBasicEstateTaggingList)) {
@@ -746,7 +745,7 @@ public class BasicEstateService {
 
         try {
             BasicEstateParking estateParking = new BasicEstateParking();
-            estateParking.setEstateId(id);
+            estateParking.setEstateId(quoteId);
             List<BasicEstateParking> oldBasicEstateParkings = basicEstateParkingService.basicEstateParkingList(estateParking);
             if (!ObjectUtils.isEmpty(oldBasicEstateParkings)) {
                 for (BasicEstateParking oldBasicEstateParking : oldBasicEstateParkings) {
@@ -779,7 +778,7 @@ public class BasicEstateService {
         map.put("creator", commonService.thisUserAccount());
         synchronousDataDto.setFieldDefaultValue(map);
         synchronousDataDto.setSourceDataBase(BaseConstant.DATABASE_PMCC_ASSESS);
-        synchronousDataDto.setWhereSql("estate_id=" + id);
+        synchronousDataDto.setWhereSql("estate_id=" + quoteId);
         synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicEstateNetwork.class));
         synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicEstateNetwork.class));
         sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//通信网络sql

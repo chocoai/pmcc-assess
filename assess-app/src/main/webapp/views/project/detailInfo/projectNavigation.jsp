@@ -14,11 +14,18 @@
                     <c:forEach items="${projectPlanList}" var="projectPlan">
                         <li>
                             <a href="${pageContext.request.contextPath}/projectCenter/projectStageInfo/${projectInfo.id}/${projectPlan.workStageId}">
-                                <i class="fa fa-info-circle" aria-hidden="true"></i>
+                                <c:choose>
+                                    <c:when test="${projectPlan.projectStatus eq 'finish'}">
+                                        <i class="fa fa-check" aria-hidden="true"></i>
+                                    </c:when>
+                                    <c:when test="${projectPlan.projectStatus eq 'planExecute' or projectPlan.projectStatus eq 'task'}">
+                                        <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <i class="fa fa-info" aria-hidden="true"></i>
+                                    </c:otherwise>
+                                </c:choose>
                                     ${projectPlan.planName}
-                                <c:if test="${projectPlan.projectStatus eq 'planExecute' or projectPlan.projectStatus eq 'task'}">
-                                    <span style="font-size: 3px;">(进行中)</span>
-                                </c:if>
                             </a>
                         </li>
                     </c:forEach>
@@ -34,7 +41,8 @@
                 <h3><a id="menu_toggle"><i class="fa fa-bars"></i></a>
                     <strong onclick="openProjectInfoUrl();" style="cursor: pointer">${projectInfo.projectName}</strong>
                     <span class="label label-info">${projectInfo.projectStatus}</span>
-                    <a target="_blank" href="${pageContext.request.contextPath}/projectInfo/projectDetails?projectId=${projectId}">老项目详情</a>
+                    <a target="_blank"
+                       href="${pageContext.request.contextPath}/projectInfo/projectDetails?projectId=${projectId}">老项目详情</a>
                 </h3></div>
         </nav>
     </div>

@@ -111,6 +111,8 @@ public class ProjectPlanDetailsService {
     private DeclareRecordService declareRecordService;
     @Autowired
     private SchemeJudgeObjectService schemeJudgeObjectService;
+    @Autowired
+    private PublicService publicService;
 
     public ProjectPlanDetails getProjectPlanDetailsById(Integer id) {
         return projectPlanDetailsDao.getProjectPlanDetailsById(id);
@@ -140,11 +142,12 @@ public class ProjectPlanDetailsService {
 
     /**
      * 删除任务
+     *
      * @param planDetailsId
      */
     @Transactional(rollbackFor = Exception.class)
     public void deletePlanDetailsById(Integer planDetailsId) {
-        ProjectPlanDetails projectPlanDetails = getProjectPlanDetailsById(planDetailsId) ;
+        ProjectPlanDetails projectPlanDetails = getProjectPlanDetailsById(planDetailsId);
         projectPlanDetailsDao.deleteProjectPlanDetails(planDetailsId);
         ProjectResponsibilityDto projectPlanResponsibility = new ProjectResponsibilityDto();
         projectPlanResponsibility.setPlanId(projectPlanDetails.getPlanId());
@@ -165,7 +168,7 @@ public class ProjectPlanDetailsService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void initiateStagePlanTask(Integer planId,Integer projectId){
+    public void initiateStagePlanTask(Integer planId, Integer projectId) {
         ProjectInfoVo projectInfo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(projectId));
         ProjectPlan projectPlan = projectPlanService.getProjectplanById(planId);
         ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlan.getWorkStageId());
@@ -173,11 +176,11 @@ public class ProjectPlanDetailsService {
         select.setProjectId(projectId);
         select.setPlanId(planId);
         select.setStatus(ProcessStatusEnum.WAIT.getValue());
-        List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsDao.getListObject(select) ;
-        if (CollectionUtils.isNotEmpty(projectPlanDetailsList)){
+        List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsDao.getListObject(select);
+        if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
             projectPlanDetailsList.forEach(projectPlanDetails -> {
                 projectPlanDetails.setStatus(ProcessStatusEnum.RUN.getValue());
-                projectPlanDetailsDao.updateProjectPlanDetails(projectPlanDetails) ;
+                projectPlanDetailsDao.updateProjectPlanDetails(projectPlanDetails);
                 try {
                     projectPlanService.saveProjectPlanDetailsResponsibility(projectPlanDetails, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.TASK);
                 } catch (BpmException e) {
@@ -189,12 +192,13 @@ public class ProjectPlanDetailsService {
 
     /**
      * 自动分派改阶段下的所有任务
+     *
      * @param projectId
      * @param projectWorkStageId
      * @throws BpmException
      */
     @Transactional(rollbackFor = Exception.class)
-    public void autoStagePlanTask(Integer projectId,Integer projectWorkStageId)throws BpmException {
+    public void autoStagePlanTask(Integer projectId, Integer projectWorkStageId) throws BpmException {
         ProjectInfoVo projectInfo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(projectId));
         ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectWorkStageId);
         ProjectPhase select = new ProjectPhase();
@@ -202,15 +206,15 @@ public class ProjectPlanDetailsService {
         select.setProjectTypeId(projectInfo.getProjectTypeId());
         select.setProjectCategoryId(projectInfo.getProjectCategoryId());
         select.setWorkStageId(projectWorkStageId);
-        List<ProjectPhase> projectPhaseList = projectPhaseService.getProjectPhaseList(select) ;
-        if (CollectionUtils.isEmpty(projectPhaseList)){
+        List<ProjectPhase> projectPhaseList = projectPhaseService.getProjectPhaseList(select);
+        if (CollectionUtils.isEmpty(projectPhaseList)) {
             return;
         }
         List<ProjectPlan> projectPlans = projectPlanService.getProjectPlanList2(projectInfo.getId(), projectWorkStageId, projectInfo.getProjectCategoryId());
-        if (CollectionUtils.isEmpty(projectPlans)){
+        if (CollectionUtils.isEmpty(projectPlans)) {
             return;
         }
-        for (ProjectPhase projectPhase:projectPhaseList){
+        for (ProjectPhase projectPhase : projectPhaseList) {
             int sort = 10;
             ProjectPlanDetails projectPlanDetails = new ProjectPlanDetails();
             projectPlanDetails.setPlanStartDate(new Date());
@@ -311,11 +315,11 @@ public class ProjectPlanDetailsService {
      * @param projectId
      * @return
      */
-    public BootstrapTableVo getPlanDetailListByPlanId(Integer projectId, Integer planId,String executeUserAccount, String projectPhaseName) {
+    public BootstrapTableVo getPlanDetailListByPlanId(Integer projectId, Integer planId, String executeUserAccount, String projectPhaseName) {
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<ProjectPlanDetails> projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsByPlanId(planId,executeUserAccount,projectPhaseName,null);
+        List<ProjectPlanDetails> projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsByPlanId(planId, executeUserAccount, projectPhaseName, null);
         if (CollectionUtils.isEmpty(projectPlanDetails)) return bootstrapTableVo;
         List<ProjectPlanDetailsVo> projectPlanDetailsVos = getProjectPlanDetailsVos(projectPlanDetails, false);
 
@@ -403,6 +407,7 @@ public class ProjectPlanDetailsService {
                                     if (activitiTaskNodeDto.getUsers().contains(commonService.thisUserAccount())) {
                                         projectPlanDetailsVo.setExcuteUrl(approvalUrl);
                                     }
+                                    projectPlanDetailsVo.setApproverUserName(publicService.getUserNameByAccountList(activitiTaskNodeDto.getUsers()));
                                 }
                             }
                         }
@@ -743,7 +748,7 @@ public class ProjectPlanDetailsService {
         ProjectPhase sceneExplorePhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.SCENE_EXPLORE, projectInfo.getProjectCategoryId());
         ProjectPhase caseStudyChildPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.COMMON_CASE_STUDY_EXAMINE);
         ProjectPhase caseStudyExtendPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.CASE_STUDY_EXTEND);
-        List<Integer> commonPhaseIds = Lists.newArrayList(sceneExplorePhase.getId(), caseStudyChildPhase.getId(),caseStudyExtendPhase.getId());
+        List<Integer> commonPhaseIds = Lists.newArrayList(sceneExplorePhase.getId(), caseStudyChildPhase.getId(), caseStudyExtendPhase.getId());
         //現場查勘案例調查
         if (commonPhaseIds.contains(copyPlanDetails.getProjectPhaseId())) {
             if (commonPhaseIds.contains(pastePlanDetails.getProjectPhaseId())) {

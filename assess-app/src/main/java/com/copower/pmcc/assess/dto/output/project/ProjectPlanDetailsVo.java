@@ -18,7 +18,7 @@ public class ProjectPlanDetailsVo extends ProjectPlanDetails {
     private String _parentId;
     private String declareRecordName;
     private String executeUserName;
-
+    private String approverUserName;
     private String executeDepartmentName;
 
     private String displayUrl;
@@ -147,5 +147,13 @@ public class ProjectPlanDetailsVo extends ProjectPlanDetails {
 
     public void setDeclareRecordName(String declareRecordName) {
         this.declareRecordName = declareRecordName;
+    }
+
+    public String getApproverUserName() {
+        return approverUserName;
+    }
+
+    public void setApproverUserName(String approverUserName) {
+        this.approverUserName = approverUserName;
     }
 }

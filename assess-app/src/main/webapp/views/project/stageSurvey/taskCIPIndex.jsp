@@ -597,20 +597,13 @@
         }
         var node = zTreeObj.getSelectedNodes()[0];
         var classify = $("#basicBatchApplyFrm").find('[name=classify]').val();
-        var type = $("#basicBatchApplyFrm").find('[name=type]').val();
-        var tbType = "estate";
-        if (node.level == 1)
-            tbType = "building";
-        if (node.level == 2)
-            tbType = "unit";
-        if (node.level == 3)
-            tbType = "house";
+        var formType = $("#basicBatchApplyFrm").find('[name=type]').val();
         var url = '${pageContext.request.contextPath}/basicApplyBatch/fillInfo?';
         url += 'applyBatchId=' +  $("#basicBatchApplyFrm").find('[name=id]').val();
         url += '&formClassify=' + classify;
-        url += '&formType=' + type;
-        url += '&tbId=' + node.number;
-        url += '&tbType=' + tbType;
+        url += '&formType=' + formType;
+        url += '&tbId=' + node.tableId;
+        url += '&tbType=' + node.type;
         url += '&planDetailsId=${projectPlanDetails.id}';
         openWin(url, function () {
         })

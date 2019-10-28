@@ -128,36 +128,6 @@
                     <label class="form-control" name="practicalUseName">${basicHouse.practicalUseName}</label>
                 </div>
             </div>
-
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">楼面地价</label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <label class="form-control" name="floorPrice">${basicHouse.floorPrice}</label>
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group" id="replenishLand">
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">地块位置</label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <label class="form-control" name="landLocation">${basicHouse.landLocation}</label>
-                </div>
-            </div>
-
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">使用年限</label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <label class="form-control" name="useYear">${basicHouse.useYear}</label>
-                </div>
-            </div>
-
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">权益限制</label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <label class="form-control" name="rightInterestsRestriction">${basicHouse.rightInterestsRestriction}</label>
-                </div>
-            </div>
         </div>
         <div class="form-group">
             <div class="x-valid">
