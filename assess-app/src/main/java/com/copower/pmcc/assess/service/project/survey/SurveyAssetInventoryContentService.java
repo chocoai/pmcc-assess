@@ -22,6 +22,7 @@ import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.base.*;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -120,6 +121,11 @@ public class SurveyAssetInventoryContentService {
                 BaseDataDic item = iterator.next();
                 if (item.getFieldName().equals(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_FOUR_TO_LAND)) {
                     iterator.remove();
+                }
+                if (com.google.common.base.Objects.equal(FormatUtils.entityNameConvertToTableName(DeclareRealtyRealEstateCert.class),declareRecord.getDataTableName())){
+                    if (item.getFieldName().equals(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_HOUSE_LAND_ADDRESS)) {
+                        iterator.remove();
+                    }
                 }
             }
         }
