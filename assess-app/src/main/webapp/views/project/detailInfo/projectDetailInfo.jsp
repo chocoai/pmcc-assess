@@ -46,7 +46,7 @@
                             </div>
                             <div class="btn-group">
                                 <button type="button" class="btn btn-xs btn-primary">
-                                    项目发文
+                                    公司盖章发文
                                 </button>
                                 <button type="button" class="btn btn-xs btn-primary dropdown-toggle"
                                         data-toggle="dropdown">
@@ -56,6 +56,23 @@
                                     <c:forEach var="item" items="${documentTemplateList}">
                                         <li>
                                             <a href="${pageContext.request.contextPath}/documentSend/applyIndex/${item.id}&${projectInfo.id}"
+                                               target="_blank">${item.templateName}</a>
+                                        </li>
+                                    </c:forEach>
+                                </ul>
+                            </div>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-xs btn-primary">
+                                    委托方盖章发文
+                                </button>
+                                <button type="button" class="btn btn-xs btn-primary dropdown-toggle"
+                                        data-toggle="dropdown">
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <c:forEach var="item" items="${documentClientTemplateList}">
+                                        <li>
+                                            <a href="${pageContext.request.contextPath}/documentSend/applyClientIndex/${item.id}&${projectInfo.id}"
                                                target="_blank">${item.templateName}</a>
                                         </li>
                                     </c:forEach>

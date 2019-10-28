@@ -26,7 +26,8 @@ public enum BaseParameterEnum {
     PROJECT_MEMBER_CHANGE_PROCESS_KEY("project.member.change.process.key", "项目成员变更流程模型", "box"),
     PROJECT_SCHEME_CHANGE_PROCESS_KEY("project.scheme.change.process.key", "项目方案变更流程模型", "box"),
     PROJECT_DETAILS_RESTART_PROCESS_KEY("project.details.restart.process.key", "项目阶段重启流程模型", "box"),
-    PROJECT_DETAILS_DOCUMENT_SEND_PROCESS_KEY("project.details.document.send.process.key", "项目发文审批流程", "box"),
+    PROJECT_DETAILS_DOCUMENT_SEND_PROCESS_KEY("project.details.document.send.process.key", "公司盖章发文审批流程", "box"),
+    PROJECT_DETAILS_DOCUMENT_SEND_CLIENT_PROCESS_KEY("project.details.document.send.client.process.key", "委托方盖章发文审批流程", "box"),
     PROJECT_DETAILS_DOCUMENT_OPINION_PROCESS_KEY("project.details.document.opinion.process.key", "项目意见稿审批流程", "box"),
 
 

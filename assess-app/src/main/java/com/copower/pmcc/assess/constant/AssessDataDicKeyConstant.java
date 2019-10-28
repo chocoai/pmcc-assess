@@ -26,8 +26,10 @@ public class AssessDataDicKeyConstant {
     public static final String DATA_TAXES_BURDEN = "data.taxes.burden";//税费承担方
     public static final String DATA_LOCALE_SURVEY_PICTURE_TEMPLATE = "data.locale.survey.picture.template";//现场查勘图片模板
     public static final String DATA_TEMPLATE_TYPE = "data.template.type";//模板类型
-    public static final String DATA_TEMPLATE_TYPE_DISPATCH = "data.template.type.dispatch";//模板（发文）
+    public static final String DATA_TEMPLATE_TYPE_DISPATCH = "data.template.type.dispatch";//公司发文模板
+    public static final String DATA_TEMPLATE_TYPE_DISPATCH_CLIENT = "data.template.type.dispatch.client";//委托方发文模板
     public static final String DATA_TEMPLATE_TYPE_OPINION = "data.template.type.opinion";//模板（意见稿）
+    public static final String DATA_TEMPLATE_TYPE_REPORT_SIGNFOR = "data.template.type.report.signfor";//模板（报告签收单）
 
     /*
      * 土地逼近法补偿配置

@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.controller.document;
 
+import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.enums.document.DocumentBaseEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
@@ -82,8 +83,9 @@ public class DocumentTemplateController {
 
     @ResponseBody
     @PostMapping(value = "/saveTemplate", name = "保存模板类型")
-    public HttpResult saveTemplate(DocumentTemplate documentTemplate) {
+    public HttpResult saveTemplate(String formData) {
         try {
+            DocumentTemplate documentTemplate = JSON.parseObject(formData, DocumentTemplate.class);
             documentTemplateService.saveTemplate(documentTemplate);
         } catch (Exception e) {
             logger.error("保存模板异常", e);
