@@ -86,9 +86,36 @@
                                 <div class="clearfix"></div>
                             </div>
                             <div class="x_content">
-                                <table class="table table-bordered" id="tb_taxes_list">
-                                    <!-- cerare document add ajax data-->
-                                </table>
+                                <form class="form-horizontal" id="approachTaxesForm">
+                                    <button type="button" class="btn btn-success"
+                                            onclick="taxes.prototype.showModel()"
+                                            data-toggle="modal" href="#divBox"> 新增
+                                    </button>
+                                    <table class="table" id="tb_taxesList">
+                                        <thead>
+                                        <tr>
+                                            <th>类型</th>
+                                            <th>耕地标准</th>
+                                            <th>非耕地标准</th>
+                                            <th>价格(元/亩)</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="tbodyContent">
+                                        <c:forEach items="${taxesVos}" var="approachTaxe" varStatus="s">
+                                            <tr id="content${approachTaxe.id}">
+
+
+                                            </tr>
+                                            <script type="text/javascript">
+                                                $(function () {
+                                                    var html = uploadTaxeHtml("${approachTaxe.id}", "${approachTaxe.typeKey}", "${approachTaxe.typeName}", "${approachTaxe.standardFirst}", "${approachTaxe.standardSecond}", "${approachTaxe.price}");
+                                                    $("#content${approachTaxe.id}").append(html);
+                                                })
+                                            </script>
+                                        </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </form>
                             </div>
                         </div>
 
@@ -340,45 +367,84 @@
                                             <tr>
                                                 <td> 土地取得费及相关税费(元/亩)</td>
                                                 <td id="landAcquisitionBhou"></td>
+                                                <td> 土地取得费及相关税费(元/㎡)</td>
+                                                <td id="landAcquisitionUnit"></td>
+                                            </tr>
+                                            <tr>
                                                 <td> 土地开发费(元/亩)</td>
                                                 <td id="landProductionBhou">
+                                                </td>
+                                                <td> 土地开发费(元/㎡)</td>
+                                                <td id="landProductionUnit">
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td> 土地开发利息(元/亩)</td>
                                                 <td id="landProductionInterestBhou">
                                                 </td>
+                                                <td> 土地开发利息(元/㎡)</td>
+                                                <td id="landProductionInterestUnit">
+                                                </td>
+                                            </tr>
+                                            <tr>
                                                 <td> 土地开发利润(元/亩)</td>
                                                 <td id="landProductionProfitBhou">
+                                                </td>
+                                                <td> 土地开发利润(元/㎡)</td>
+                                                <td id="landProductionProfitUnit">
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td> 土地取得成本（元/亩）</td>
                                                 <td id="landCostPriceBhou">
                                                 </td>
+                                                <td> 土地取得成本（元/㎡）</td>
+                                                <td id="landCostPriceUnit">
+                                                </td>
+                                            </tr>
+                                            <tr>
                                                 <td> 无限年期土地使用权价格(元/亩)</td>
                                                 <td id="landUseBhou">
+                                                </td>
+                                                <td> 无限年期土地使用权价格(元/㎡)</td>
+                                                <td id="landUseUnit">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td> 年期修正（万元/亩）</td>
+                                                <td id="priceCorrectionBhou">
+                                                </td>
+                                                <td> 年期修正（元/㎡）</td>
+                                                <td id="priceCorrectionUnit">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td> 宗地个别因素修正(万元/亩)</td>
+                                                <td id="plotRatioElementAmendBhou">
+                                                </td>
+                                                <td> 宗地个别因素修正(元/㎡)</td>
+                                                <td id="plotRatioElementAmendUnit">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td> 容积率修正(万元/亩)</td>
+                                                <td id="plotRatioAdjustBhou">
+                                                </td>
+                                                <td> 容积率修正(元/㎡)</td>
+                                                <td id="plotRatioAdjustUnit">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td> 委估宗地价格(万元/亩)</td>
+                                                <td id="parcelBhou">
+                                                </td>
+                                                <td> 委估宗地价格(元/㎡)</td>
+                                                <td id="parcelUnit">
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td> 年期修正系数</td>
                                                 <td id="yearFixed">
-                                                </td>
-                                                <td> 年期修正（元/亩）</td>
-                                                <td id="priceCorrectionBhou">
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td> 宗地个别因素修正(元/亩)</td>
-                                                <td id="plotRatioElementAmendBhou">
-                                                </td>
-                                                <td> 容积率修正(元/亩)</td>
-                                                <td id="plotRatioAdjustBhou">
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td> 委估宗地价格(元/亩)</td>
-                                                <td id="parcelBhou">
                                                 </td>
                                             </tr>
                                             </tbody>
@@ -454,6 +520,7 @@
                 if (result.ret) {
                     if (result.data) {
                         $("#landAcquisitionBhou").text(result.data);
+                        $("#landAcquisitionUnit").text(parseFloat(getSomePlaces($("#landAcquisitionBhou").text() / AssessCommon.BHOU, 2)));
                         //计算土地开发费
                         getLandProductionUnit("${master.circulationExpense}", "${master.flatExpense}");
                     }
@@ -478,6 +545,7 @@
             flatExpense = parseFloat(flatExpenseVal);
         }
         $("#landProductionBhou").text(getSomePlaces((circulationExpense + flatExpense) * AssessCommon.BHOU, 2));
+        $("#landProductionUnit").text(getSomePlaces(parseFloat($("#landProductionBhou").text()) / AssessCommon.BHOU, 2));
         //计算土地开发利息
         getLandProductionInterest("${master.machineCycle}", "${master.calculatedInterest}");
     }
@@ -498,6 +566,7 @@
             var temp2 = Math.pow((1 + calculatedInterest), machineCycle / 2) - 1;
             var landProductionInterestUnit = getSomePlaces(landAcquisitionUnit * temp + landProductionUnit * temp2, 2);
             $("#landProductionInterestBhou").text(getSomePlaces(landProductionInterestUnit * AssessCommon.BHOU, 2));
+            $("#landProductionInterestUnit").text(landProductionInterestUnit);
         }
         //土地开发利润
         getLandProductionProfit("${master.profitMargin}");
@@ -516,6 +585,7 @@
             //(E4+E17)*F24
             var landProductionProfitUnit = getSomePlaces((landAcquisitionUnit + landProductionUnit) * profitMargin, 2);
             $("#landProductionProfitBhou").text(getSomePlaces(landProductionProfitUnit * AssessCommon.BHOU, 2));
+            $("#landProductionProfitUnit").text(getSomePlaces(landProductionProfitUnit, 2));
 
             var landProductionProfitBhou = parseFloat($("#landProductionProfitBhou").text());
             var landAcquisitionBhou = parseFloat($("#landAcquisitionBhou").text());
@@ -525,6 +595,7 @@
             //土地成本价格
             var landCostPriceBhou = getSomePlaces(landAcquisitionBhou + landProductionBhou + landProductionProfitBhou + landProductionInterestBhou, 2);
             $("#landCostPriceBhou").text(landCostPriceBhou);
+            $("#landCostPriceUnit").text(getSomePlaces(landCostPriceBhou / AssessCommon.BHOU, 2));
             //无限年期土地使用权价格
             getLandAppreciation("${master.incrementalBenefit}");
         }
@@ -540,6 +611,7 @@
             incrementalBenefit = getSomePlaces(AssessCommon.percentToPoint(incrementalBenefitVal), 2);
         }
         $("#landUseBhou").text(getSomePlaces(landCostPriceBhou / (1 - incrementalBenefit), 2));
+        $("#landUseUnit").text(getSomePlaces(parseFloat($("#landUseBhou").text()) / AssessCommon.BHOU, 2));
 
         //年期修正、价格修正与确定、单价、估价对象楼面地价、委估宗地总价
         getYearFixed("${master.rewardRate}");
@@ -562,19 +634,23 @@
                 //价格修正与确定
                 var priceCorrectionBhou = yearFixed * landUseBhou;
                 $("#priceCorrectionBhou").text(getSomePlaces(priceCorrectionBhou / 10000, 2));
+                $("#priceCorrectionUnit").text(getSomePlaces(priceCorrectionBhou / AssessCommon.BHOU, 2));
 
                 //宗地个别因素修正
                 var plotRatioElementAmend = parseFloat("${master.plotRatioElementAmend}");
                 var plotRatioElementAmendBhou = getSomePlaces(yearFixed * landUseBhou * (1 + plotRatioElementAmend), 2);
                 $("#plotRatioElementAmendBhou").text(getSomePlaces(plotRatioElementAmendBhou / 10000, 2));
+                $("#plotRatioElementAmendUnit").text(getSomePlaces(plotRatioElementAmendBhou / AssessCommon.BHOU, 2));
 
                 //容积率修正
                 var plotRatioAdjust = parseFloat(AssessCommon.percentToPoint("${master.plotRatioAdjust}"));
                 var plotRatioAdjustBhou = getSomePlaces(yearFixed * landUseBhou * (1 + plotRatioElementAmend) * (1 + plotRatioAdjust), 2);
                 $("#plotRatioAdjustBhou").text(getSomePlaces(plotRatioAdjustBhou / 10000, 2));
+                $("#plotRatioAdjustUnit").text(getSomePlaces(plotRatioAdjustBhou / AssessCommon.BHOU, 2));
 
                 //委估宗地价格
                 $("#parcelBhou").text(getSomePlaces(plotRatioAdjustBhou / 10000, 2));
+                $("#parcelUnit").text(getSomePlaces(yearFixed * landUseBhou * (1 + plotRatioElementAmend) * (1 + plotRatioAdjust) / AssessCommon.BHOU, 2));
             }
         }
     }
@@ -705,8 +781,143 @@
                 }
             });
         },
+    }
 
+    function uploadTaxeHtml(id, typeKey, typeName, standardFirst, standardSecond, price) {
+        var html = '';
+        html += '<td>' + typeName + '</td>';
+        switch (typeKey) {
+            case "data.land.approximation.method.land.compensate": {
+            }
+            case "data.land.approximation.method.placement.compensate": {
+            }
+            case "data.land.approximation.method.house.compensate": {
+            }
+            case "data.land.approximation.method.removal.award": {
+            }
+            case"data.land.approximation.method.vegetable.build": {
+            }
+            case"data.land.approximation.method.plough.reclaim": {
+            }
+            case"data.land.approximation.method.occupation.land": {
+                html += '<td>' + standardFirst + '</td>';
+                html += '<td>' + standardSecond + '</td>';
+                html += '<td>' + price + '</td>';
+                break;
+            }
+            case"data.land.approximation.method.crops.compensate": {
+            }
+            case "data.land.approximation.method.land.manager": {
+            }
+            case "data.land.approximation.method.cannot.foresee": {
+            }
+            case "data.land.approximation.method.land.acquisition": {
+                html += '<td>' + AssessCommon.pointToPercent(standardFirst) + '</td>';
+                html += '<td>';
+                html += '/';
+                html += '</td>';
+                html += '<td>' + price + '</td>';
+                break;
+            }default:
+            html += '<td>';
+            html += '/';
+            html += '</td>';
+            html += '<td>';
+            html += '/';
+            html += '</td>';
+            html += '<td>' + price + '</td>';
 
+        }
+
+        return html;
+
+    }
+
+    //清空重填
+    function emptyRefill(_this) {
+        $(_this).closest("tr").find("input").val("");
+    }
+
+    function cleanHTMLData(this_) {
+        var id = $(this_).closest("tr").find("input[name='id']").val();
+        taxes.prototype.removeData(id,this_);
+
+    }
+
+    function getThisPrice(that){
+        var id = $(that).closest("tr").find("input[name='id']").val();
+        var masterId = $("#master").find("input[name='id']").val();
+        var typeKey = $(that).closest("tr").find("input[name='typeKey']").val();
+        var standardFirst = $(that).closest("tr").find("input[name='standardFirst']").val();
+        var standardSecond = $(that).closest("tr").find("input[name='standardSecond']").val();
+        var price = $(that).parent().closest("tr").find("input[name='price']").val();
+        console.log(id+"=="+standardFirst+"+==+"+standardSecond+"+==+"+price);
+        var data = {};
+        data.id=id;
+        data.masterId=masterId;
+        data.typeKey=typeKey;
+        data.standardFirst=percentToPoint(standardFirst);
+        data.standardSecond=percentToPoint(standardSecond);
+        data.price=price;
+        var farmlandArea = $("#farmlandArea").val();
+            if (!farmlandArea) {
+                alert("请填写农用地总面积");
+                return false;
+            }
+            var ploughArea = $("#ploughArea").val();
+            if (!ploughArea) {
+                alert("请填耕地面积");
+                return false;
+            }
+            var populationNumber = $("#populationNumber").val();
+            if (!populationNumber) {
+                alert("请填人口数");
+                return false;
+            }
+            if (!$("#" + taxes.prototype.config().frm).valid()) {
+                return false;
+            }
+
+            $.ajax({
+                url: "${pageContext.request.contextPath}/costApproach/getThisPrice",
+                type: "post",
+                dataType: "json",
+                data: {
+                    formData: JSON.stringify(data),
+                    farmlandArea, farmlandArea,
+                    ploughArea: ploughArea,
+                    populationNumber: populationNumber
+                },
+                success: function (result) {
+                    if (result.ret) {
+                        $(that).closest("tr").find("input[name='price']").val(result.data.price);
+                        getLandAcquisitionBhou(masterId);
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+    }
+
+    //v取几位小数
+    function getSomePlaces(num, v) {
+        var vv = Math.pow(10, v);
+        return Math.round(num * vv) / vv;
+    }
+
+    //百分数转小数
+    function percentToPoint(value) {
+        if (value) {
+            if(value.indexOf("%") >= 0 ) {
+            var value = value.replace("%", "");
+                if (AssessCommon.isNumber(value)) {
+                    return (parseFloat(value) / 100).toFixed(4);
+                }
+            }else{
+                return value;
+            }
+        }
     }
 </script>
 </body>
