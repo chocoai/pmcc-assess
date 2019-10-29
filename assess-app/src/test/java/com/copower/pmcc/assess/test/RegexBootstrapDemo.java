@@ -52,7 +52,7 @@ public class RegexBootstrapDemo {
         stringList.add("taskApproval.jsp");
         stringList.add("taskIndex.jsp");
 
-        final String path = String.format("%s%s", views, "projectTraceMenu\\stagePlan.jsp");
+        final String path = String.format("%s%s", views, "data\\dataLandLevelView.jsp");
         for (String ss : stringList) {
 //            File file = new File(String.format("%s%s", path, ss));
 //            replaceFirst(file);
