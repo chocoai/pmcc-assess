@@ -315,11 +315,11 @@ public class ProjectPlanDetailsService {
      * @param projectId
      * @return
      */
-    public BootstrapTableVo getPlanDetailListByPlanId(Integer projectId, Integer planId, String executeUserAccount, String projectPhaseName) {
+    public BootstrapTableVo getPlanDetailListByPlanId(Integer projectId, Integer planId, String userAccount, String phaseName, Date startDate, Date endDate, String status) {
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<ProjectPlanDetails> projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsByPlanId(planId, executeUserAccount, projectPhaseName, null);
+        List<ProjectPlanDetails> projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsByPlanId(planId, userAccount, phaseName, startDate, endDate, FormatUtils.transformString2List(status));
         if (CollectionUtils.isEmpty(projectPlanDetails)) return bootstrapTableVo;
         List<ProjectPlanDetailsVo> projectPlanDetailsVos = getProjectPlanDetailsVos(projectPlanDetails, false);
 

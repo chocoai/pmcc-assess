@@ -25,7 +25,12 @@
                                 任务状态
                             </label>
                             <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                <input type="text" placeholder="任务状态" name="projectPhaseName" class="form-control">
+                                <select class="form-control" name="status">
+                                    <option value="">-请选择-</option>
+                                    <option value="wait">等待发起</option>
+                                    <option value="runing">进行中</option>
+                                    <option value="finish">完成</option>
+                                </select>
                             </div>
                         </div>
                         <div class="x-valid">
@@ -44,7 +49,8 @@
                                 开始时间
                             </label>
                             <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                <input type="text" placeholder="开始时间" name="projectPhaseName" class="form-control">
+                                <input type="text" placeholder="开始时间" data-date-format="yyyy-mm-dd" name="planStartDate"
+                                       class="form-control dbdate" readonly="readonly">
                             </div>
                         </div>
                         <div class="x-valid">
@@ -52,7 +58,8 @@
                                 结束时间
                             </label>
                             <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                <input type="text" placeholder="结束时间" name="projectPhaseName" class="form-control">
+                                <input type="text" placeholder="结束时间" data-date-format="yyyy-mm-dd" name="planEndDate"
+                                       class="form-control dbdate" readonly="readonly">
                             </div>
                         </div>
                     </div>
@@ -359,7 +366,7 @@
             var data = formSerializeArray($("#project_stage_query"));
             jQuery.extend(select, data);
             projectStagePlan.stageTable.bootstrapTable('destroy');
-            TableInit(projectStagePlan.stageTable, "${pageContext.request.contextPath}/projectInfo/getPlanDetailListByPlanId", cols, select, {
+            TableInit(projectStagePlan.stageTable, "${pageContext.request.contextPath}/projectInfo/getPlanDetailListByPlanId", cols, {formData: JSON.stringify(select)}, {
                 toolbar: '#projectStageToolbar',
                 showColumns: false,
                 showRefresh: false,
