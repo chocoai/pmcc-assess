@@ -39,39 +39,43 @@ public class DataLandLevelService {
     @Autowired
     private BaseAttachmentService baseAttachmentService;
 
-    public void saveAndUpdateDataLandLevel(DataLandLevel dataLandLevel){
-        if (dataLandLevel.getId()==null){
+    public void saveAndUpdateDataLandLevel(DataLandLevel dataLandLevel) {
+        if (dataLandLevel.getId() == null) {
             dataLandLevel.setCreator(commonService.thisUserAccount());
             dataLandLevelDao.addDataLandLevel(dataLandLevel);
-            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(DataLandLevel.class),dataLandLevel.getId());
-        }else {
+            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(DataLandLevel.class), dataLandLevel.getId());
+        } else {
             dataLandLevelDao.updateDataLandLevel(dataLandLevel);
         }
     }
 
-    public DataLandLevel getDataLandLevelById(Integer id){
+    public DataLandLevel getDataLandLevelById(Integer id) {
         return dataLandLevelDao.getDataLandLevelById(id);
     }
 
-    public BootstrapTableVo getDataLandLevelListVos(DataLandLevel dataLandLevel){
+    public List<DataLandLevel> getDataLandLevelList(DataLandLevel query) {
+        return dataLandLevelDao.getDataLandLevelList(query);
+    }
+
+    public BootstrapTableVo getDataLandLevelListVos(DataLandLevel dataLandLevel) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<DataLandLevel> dataLandLevels = dataLandLevelDao.getDataLandLevelList(dataLandLevel);
-        List<SysAttachmentDto> attachmentDtos = baseAttachmentService.getAttachmentListByTableName(FormatUtils.entityNameConvertToTableName(DataLandLevel.class),LangUtils.transform(dataLandLevels,o->o.getId()));
-        List<DataLandLevelVo> vos= LangUtils.transform(dataLandLevels,o->getDataLandLevelVo(o,attachmentDtos));
+        List<DataLandLevel> dataLandLevels = getDataLandLevelList(dataLandLevel);
+        List<SysAttachmentDto> attachmentDtos = baseAttachmentService.getAttachmentListByTableName(FormatUtils.entityNameConvertToTableName(DataLandLevel.class), LangUtils.transform(dataLandLevels, o -> o.getId()));
+        List<DataLandLevelVo> vos = LangUtils.transform(dataLandLevels, o -> getDataLandLevelVo(o, attachmentDtos));
         vo.setTotal(page.getTotal());
         vo.setRows(vos);
         return vo;
     }
 
-    public void removeDataLandLevel(DataLandLevel dataLandLevel){
+    public void removeDataLandLevel(DataLandLevel dataLandLevel) {
         dataLandLevelDao.removeDataLandLevel(dataLandLevel);
     }
 
-    public DataLandLevelVo getDataLandLevelVo(DataLandLevel dataLandLevel,List<SysAttachmentDto> attachmentDtos){
+    public DataLandLevelVo getDataLandLevelVo(DataLandLevel dataLandLevel, List<SysAttachmentDto> attachmentDtos) {
         DataLandLevelVo vo = new DataLandLevelVo();
-        BeanUtils.copyProperties(dataLandLevel,vo);
+        BeanUtils.copyProperties(dataLandLevel, vo);
         if (StringUtils.isNotBlank(dataLandLevel.getProvince())) {
             vo.setProvinceName(erpAreaService.getSysAreaName(dataLandLevel.getProvince()));//省
         }
@@ -81,10 +85,10 @@ public class DataLandLevelService {
         if (StringUtils.isNotBlank(dataLandLevel.getDistrict())) {
             vo.setDistrictName(erpAreaService.getSysAreaName(dataLandLevel.getDistrict()));//县
         }
-        if(!CollectionUtils.isEmpty(attachmentDtos)){
-            StringBuilder stringBuilder=new StringBuilder();
+        if (!CollectionUtils.isEmpty(attachmentDtos)) {
+            StringBuilder stringBuilder = new StringBuilder();
             for (SysAttachmentDto attachmentDto : attachmentDtos) {
-                if(attachmentDto.getTableId().equals(dataLandLevel.getId())){
+                if (attachmentDto.getTableId().equals(dataLandLevel.getId())) {
                     stringBuilder.append(baseAttachmentService.getViewHtml(attachmentDto));
                 }
             }
