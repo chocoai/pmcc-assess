@@ -21,30 +21,30 @@ public class BasicBuildingOutfitDao {
     @Autowired
     private BasicBuildingOutfitMapper basicBuildingOutfitMapper;
 
-    public BasicBuildingOutfit getBasicBuildingOutfitById(Integer id)throws SQLException {
+    public BasicBuildingOutfit getBasicBuildingOutfitById(Integer id) throws SQLException {
         return basicBuildingOutfitMapper.selectByPrimaryKey(id);
     }
 
-    public Integer saveBasicBuildingOutfit(BasicBuildingOutfit basicBuildingOutfit)throws SQLException{
+    public Integer saveBasicBuildingOutfit(BasicBuildingOutfit basicBuildingOutfit) throws SQLException {
         basicBuildingOutfitMapper.insertSelective(basicBuildingOutfit);
         return basicBuildingOutfit.getId();
     }
 
-    public boolean updateBasicBuildingOutfit(BasicBuildingOutfit basicBuildingOutfit)throws SQLException{
-        return basicBuildingOutfitMapper.updateByPrimaryKeySelective(basicBuildingOutfit)==1;
+    public boolean updateBasicBuildingOutfit(BasicBuildingOutfit basicBuildingOutfit, boolean updateNull) throws SQLException {
+        return updateNull ? basicBuildingOutfitMapper.updateByPrimaryKey(basicBuildingOutfit) == 1 : basicBuildingOutfitMapper.updateByPrimaryKeySelective(basicBuildingOutfit) == 1;
     }
 
-    public void removeBasicBuildingOutfit(BasicBuildingOutfit basicBuildingOutfit)throws SQLException{
+    public void removeBasicBuildingOutfit(BasicBuildingOutfit basicBuildingOutfit) throws SQLException {
         BasicBuildingOutfitExample example = new BasicBuildingOutfitExample();
         MybatisUtils.convertObj2Example(basicBuildingOutfit, example);
         basicBuildingOutfitMapper.deleteByExample(example);
     }
 
-    public boolean deleteBasicBuildingOutfit(Integer id)throws SQLException{
-        return  basicBuildingOutfitMapper.deleteByPrimaryKey(id)==1;
+    public boolean deleteBasicBuildingOutfit(Integer id) throws SQLException {
+        return basicBuildingOutfitMapper.deleteByPrimaryKey(id) == 1;
     }
 
-    public List<BasicBuildingOutfit> basicBuildingOutfitList(BasicBuildingOutfit basicBuildingOutfit){
+    public List<BasicBuildingOutfit> basicBuildingOutfitList(BasicBuildingOutfit basicBuildingOutfit) {
         BasicBuildingOutfitExample example = new BasicBuildingOutfitExample();
         MybatisUtils.convertObj2Example(basicBuildingOutfit, example);
         return basicBuildingOutfitMapper.selectByExample(example);

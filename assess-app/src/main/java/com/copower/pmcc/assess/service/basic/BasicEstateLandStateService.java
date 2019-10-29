@@ -65,23 +65,20 @@ public class BasicEstateLandStateService {
      * @return
      * @throws Exception
      */
-    public Integer saveAndUpdateBasicEstateLandState(BasicEstateLandState basicEstateLandState) throws Exception {
-        if (basicEstateLandState.getId() == null || basicEstateLandState.getId().intValue() == 0) {
-            return basicEstateLandStateDao.saveBasicEstateLandState(basicEstateLandState);
-        } else {
-            basicEstateLandStateDao.updateBasicEstateLandState(basicEstateLandState);
-            return null;
-        }
-    }
-
-    public Integer upgradeVersion(BasicEstateLandState basicEstateLandState) throws Exception {
+    public Integer saveAndUpdateBasicEstateLandState(BasicEstateLandState basicEstateLandState, boolean updateNull) throws Exception {
         if (basicEstateLandState.getId() == null || basicEstateLandState.getId().intValue() == 0) {
             basicEstateLandState.setCreator(commonService.thisUserAccount());
-            Integer id = basicEstateLandStateDao.saveBasicEstateLandState(basicEstateLandState);
-            return id;
+            return basicEstateLandStateDao.addBasicEstateLandState(basicEstateLandState);
         } else {
-            basicEstateLandStateDao.updateBasicEstateLandState(basicEstateLandState);
-            return null;
+            if(updateNull){
+                BasicEstateLandState landState = basicEstateLandStateDao.getBasicEstateLandStateById(basicEstateLandState.getId());
+                if (landState != null) {
+                    basicEstateLandState.setCreator(landState.getCreator());
+                    basicEstateLandState.setGmtCreated(landState.getGmtCreated());
+                }
+            }
+            basicEstateLandStateDao.updateBasicEstateLandState(basicEstateLandState, updateNull);
+            return basicEstateLandState.getId();
         }
     }
 
@@ -162,9 +159,9 @@ public class BasicEstateLandStateService {
         vo.setFertilityName(baseDataDicService.getNameById(basicEstateLandState.getFertility()));
         vo.setContaminatedName(baseDataDicService.getNameById(basicEstateLandState.getContaminated()));
         vo.setBearingCapacityName(baseDataDicService.getNameById(basicEstateLandState.getBearingCapacity()));
-        if (org.apache.commons.lang3.StringUtils.isNotEmpty(basicEstateLandState.getDevelopmentDegreeContent())){
+        if (org.apache.commons.lang3.StringUtils.isNotEmpty(basicEstateLandState.getDevelopmentDegreeContent())) {
             List<String> stringList = Lists.newArrayList(basicEstateLandState.getDevelopmentDegreeContent().split(",")).stream().map(s -> baseDataDicService.getNameById(s)).collect(Collectors.toList());
-            vo.setDevelopmentDegreeContentName(org.apache.commons.lang3.StringUtils.join(stringList,"、"));
+            vo.setDevelopmentDegreeContentName(org.apache.commons.lang3.StringUtils.join(stringList, "、"));
         }
         return vo;
     }

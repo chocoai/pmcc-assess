@@ -30,8 +30,8 @@ public class BasicMatchingFinanceDao {
         return basicMatchingFinance.getId();
     }
 
-    public boolean updateBasicMatchingFinance(BasicMatchingFinance basicMatchingFinance) throws SQLException {
-        return basicMatchingFinanceMapper.updateByPrimaryKeySelective(basicMatchingFinance) == 1;
+    public boolean updateBasicMatchingFinance(BasicMatchingFinance basicMatchingFinance, boolean updateNull) throws SQLException {
+        return updateNull ? basicMatchingFinanceMapper.updateByPrimaryKey(basicMatchingFinance) == 1 : basicMatchingFinanceMapper.updateByPrimaryKeySelective(basicMatchingFinance) == 1;
     }
 
     public void removeBasicMatchingFinance(BasicMatchingFinance basicMatchingFinance) throws SQLException {

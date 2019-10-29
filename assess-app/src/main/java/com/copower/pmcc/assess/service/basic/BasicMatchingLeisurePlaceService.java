@@ -62,16 +62,22 @@ public class BasicMatchingLeisurePlaceService {
      * @return
      * @throws Exception
      */
-    public Integer saveAndUpdateBasicMatchingLeisurePlace(BasicMatchingLeisurePlace basicMatchingLeisurePlace) throws Exception {
+    public Integer saveAndUpdateBasicMatchingLeisurePlace(BasicMatchingLeisurePlace basicMatchingLeisurePlace, boolean updateNull) throws Exception {
         if (basicMatchingLeisurePlace.getId() == null || basicMatchingLeisurePlace.getId().intValue() == 0) {
             basicMatchingLeisurePlace.setCreator(commonService.thisUserAccount());
             Integer id = basicMatchingLeisurePlaceDao.saveBasicMatchingLeisurePlace(basicMatchingLeisurePlace);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicMatchingLeisurePlace.class), id);
-            return  id ;
+            return id;
         } else {
-            BasicMatchingLeisurePlace oo = basicMatchingLeisurePlaceDao.getBasicMatchingLeisurePlaceById(basicMatchingLeisurePlace.getId());
-            basicMatchingLeisurePlaceDao.updateBasicMatchingLeisurePlace(basicMatchingLeisurePlace);
-            return null;
+            if (updateNull) {
+                BasicMatchingLeisurePlace matchingLeisurePlace = basicMatchingLeisurePlaceDao.getBasicMatchingLeisurePlaceById(basicMatchingLeisurePlace.getId());
+                if (matchingLeisurePlace != null) {
+                    basicMatchingLeisurePlace.setCreator(matchingLeisurePlace.getCreator());
+                    basicMatchingLeisurePlace.setGmtCreated(matchingLeisurePlace.getGmtCreated());
+                }
+            }
+            basicMatchingLeisurePlaceDao.updateBasicMatchingLeisurePlace(basicMatchingLeisurePlace, updateNull);
+            return basicMatchingLeisurePlace.getId();
         }
     }
 
@@ -98,7 +104,7 @@ public class BasicMatchingLeisurePlaceService {
         return basicMatchingLeisurePlaceDao.basicMatchingLeisurePlaceList(basicMatchingLeisurePlace);
     }
 
-    public void removeBasicMatchingLeisurePlace(BasicMatchingLeisurePlace basicMatchingLeisurePlace)throws Exception{
+    public void removeBasicMatchingLeisurePlace(BasicMatchingLeisurePlace basicMatchingLeisurePlace) throws Exception {
         basicMatchingLeisurePlaceDao.removeBasicMatchingLeisurePlace(basicMatchingLeisurePlace);
     }
 
@@ -114,35 +120,35 @@ public class BasicMatchingLeisurePlaceService {
         return vo;
     }
 
-    public List<BasicMatchingLeisurePlace> getBasicMatchingLeisurePlaceList(Integer estateId){
-        BasicMatchingLeisurePlace where=new BasicMatchingLeisurePlace();
+    public List<BasicMatchingLeisurePlace> getBasicMatchingLeisurePlaceList(Integer estateId) {
+        BasicMatchingLeisurePlace where = new BasicMatchingLeisurePlace();
         where.setEstateId(estateId);
         List<BasicMatchingLeisurePlace> basicMatchingLeisurePlaceList = basicMatchingLeisurePlaceDao.basicMatchingLeisurePlaceList(where);
         return basicMatchingLeisurePlaceList;
     }
 
-    public BasicMatchingLeisurePlaceVo getBasicMatchingLeisurePlaceVo(BasicMatchingLeisurePlace basicMatchingLeisurePlace){
-        if (basicMatchingLeisurePlace==null){
+    public BasicMatchingLeisurePlaceVo getBasicMatchingLeisurePlaceVo(BasicMatchingLeisurePlace basicMatchingLeisurePlace) {
+        if (basicMatchingLeisurePlace == null) {
             return null;
         }
         BasicMatchingLeisurePlaceVo vo = new BasicMatchingLeisurePlaceVo();
-        BeanUtils.copyProperties(basicMatchingLeisurePlace,vo);
+        BeanUtils.copyProperties(basicMatchingLeisurePlace, vo);
         vo.setCategoryName(baseDataDicService.getNameById(basicMatchingLeisurePlace.getCategory()));
         vo.setDistanceName(baseDataDicService.getNameById(basicMatchingLeisurePlace.getDistance()));
         vo.setGradeName(baseDataDicService.getNameById(basicMatchingLeisurePlace.getGrade()));
         return vo;
     }
 
-    public void removeIds(String str){
-        if (StringUtils.isNotBlank(str)){
+    public void removeIds(String str) {
+        if (StringUtils.isNotBlank(str)) {
             List<Integer> ids = new ArrayList<>(10);
-            for (String id:str.split(",")){
-                if (NumberUtils.isNumber(id)){
+            for (String id : str.split(",")) {
+                if (NumberUtils.isNumber(id)) {
                     ids.add(Integer.parseInt(id));
                 }
             }
             basicMatchingLeisurePlaceDao.removeIds(ids);
         }
     }
-    
+
 }

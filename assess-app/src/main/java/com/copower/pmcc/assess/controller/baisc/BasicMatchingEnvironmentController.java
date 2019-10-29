@@ -43,7 +43,7 @@ public class BasicMatchingEnvironmentController {
     @RequestMapping(value = "/saveAndUpdateBasicMatchingEnvironment", name = "新增或者修改", method = {RequestMethod.POST})
     public HttpResult saveAndUpdateBasicMatchingEnvironment(BasicMatchingEnvironment basicMatchingEnvironment){
         try {
-            return HttpResult.newCorrectResult(200,basicMatchingEnvironmentService.saveAndUpdateBasicMatchingEnvironment(basicMatchingEnvironment));
+            return HttpResult.newCorrectResult(200,basicMatchingEnvironmentService.saveAndUpdateBasicMatchingEnvironment(basicMatchingEnvironment,true));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
             return HttpResult.newErrorResult(500,e.getMessage());

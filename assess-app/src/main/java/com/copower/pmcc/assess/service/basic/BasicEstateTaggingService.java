@@ -99,8 +99,15 @@ public class BasicEstateTaggingService {
         return basicEstateTaggingDao.deleteBasicEstateTagging(id);
     }
 
-    public boolean updateBasicEstateTagging(BasicEstateTagging basicEstateTagging) throws SQLException {
-        return basicEstateTaggingDao.updateBasicEstateTagging(basicEstateTagging);
+    public boolean updateBasicEstateTagging(BasicEstateTagging basicEstateTagging, boolean updateNull) {
+        if(updateNull){
+            BasicEstateTagging estateTagging = basicEstateTaggingDao.getBasicEstateTaggingById(basicEstateTagging.getId());
+            if(estateTagging!=null){
+                basicEstateTagging.setCreator(estateTagging.getCreator());
+                basicEstateTagging.setGmtCreated(estateTagging.getGmtCreated());
+            }
+        }
+        return basicEstateTaggingDao.updateBasicEstateTagging(basicEstateTagging,updateNull);
     }
 
     /**

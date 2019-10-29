@@ -60,16 +60,22 @@ public class BasicEstateSupplyService {
      * @return
      * @throws Exception
      */
-    public Integer saveAndUpdateBasicEstateSupply(BasicEstateSupply basicEstateSupply) throws Exception {
+    public Integer saveAndUpdateBasicEstateSupply(BasicEstateSupply basicEstateSupply, boolean updateNull) throws Exception {
         if (basicEstateSupply.getId() == null || basicEstateSupply.getId().intValue() == 0) {
             basicEstateSupply.setCreator(commonService.thisUserAccount());
             Integer id = basicEstateSupplyDao.saveBasicEstateSupply(basicEstateSupply);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicEstateSupply.class), id);
             return  id ;
         } else {
-            BasicEstateSupply oo = basicEstateSupplyDao.getBasicEstateSupplyById(basicEstateSupply.getId());
-            basicEstateSupplyDao.updateBasicEstateSupply(basicEstateSupply);
-            return null;
+            if(updateNull){
+                BasicEstateSupply estateSupply = basicEstateSupplyDao.getBasicEstateSupplyById(basicEstateSupply.getId());
+                if(estateSupply!=null){
+                    basicEstateSupply.setCreator(estateSupply.getCreator());
+                    basicEstateSupply.setGmtCreated(estateSupply.getGmtCreated());
+                }
+            }
+            basicEstateSupplyDao.updateBasicEstateSupply(basicEstateSupply,updateNull);
+            return basicEstateSupply.getId();
         }
     }
 

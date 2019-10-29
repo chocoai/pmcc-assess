@@ -61,15 +61,21 @@ public class BasicHouseWaterService {
      * @return
      * @throws Exception
      */
-    public Integer saveAndUpdateBasicHouseWater(BasicHouseWater basicHouseWater) throws Exception {
+    public Integer saveAndUpdateBasicHouseWater(BasicHouseWater basicHouseWater, boolean updateNull) throws Exception {
         if (basicHouseWater.getId() == null || basicHouseWater.getId().intValue() == 0) {
             basicHouseWater.setCreator(commonService.thisUserAccount());
             Integer id = basicHouseWaterDao.saveBasicHouseWater(basicHouseWater);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicHouseWater.class), id);
-            return  id ;
+            return id;
         } else {
-            BasicHouseWater oo = basicHouseWaterDao.getBasicHouseWaterById(basicHouseWater.getId());
-            basicHouseWaterDao.updateBasicHouseWater(basicHouseWater);
+            if (updateNull) {
+                BasicHouseWater houseWater = basicHouseWaterDao.getBasicHouseWaterById(basicHouseWater.getId());
+                if (houseWater != null) {
+                    basicHouseWater.setCreator(houseWater.getCreator());
+                    basicHouseWater.setGmtCreated(houseWater.getGmtCreated());
+                }
+            }
+            basicHouseWaterDao.updateBasicHouseWater(basicHouseWater, updateNull);
             return null;
         }
     }
@@ -86,7 +92,7 @@ public class BasicHouseWaterService {
         return basicHouseWaterDao.deleteBasicHouseWater(id);
     }
 
-    public boolean deleteBasicHouseWater(BasicHouseWater basicHouseWater)throws Exception{
+    public boolean deleteBasicHouseWater(BasicHouseWater basicHouseWater) throws Exception {
         return basicHouseWaterDao.deleteBasicHouseWater(basicHouseWater);
     }
 
@@ -102,7 +108,7 @@ public class BasicHouseWaterService {
     }
 
     public List<BasicHouseWater> getBasicHouseWaterList(Integer houseId) throws Exception {
-        BasicHouseWater where=new BasicHouseWater();
+        BasicHouseWater where = new BasicHouseWater();
         where.setHouseId(houseId);
         return basicHouseWaterDao.basicHouseWaterList(where);
     }
@@ -119,12 +125,12 @@ public class BasicHouseWaterService {
         return vo;
     }
 
-    public BasicHouseWaterVo getBasicHouseWaterVo(BasicHouseWater basicHouseWater){
-        if (basicHouseWater==null){
+    public BasicHouseWaterVo getBasicHouseWaterVo(BasicHouseWater basicHouseWater) {
+        if (basicHouseWater == null) {
             return null;
         }
         BasicHouseWaterVo vo = new BasicHouseWaterVo();
-        BeanUtils.copyProperties(basicHouseWater,vo);
+        BeanUtils.copyProperties(basicHouseWater, vo);
         vo.setPretreatedWaterName(baseDataDicService.getNameById(basicHouseWater.getPretreatedWater()));
         vo.setPurificationEquipmentPriceName(baseDataDicService.getNameById(basicHouseWater.getPurificationEquipmentPrice()));
         vo.setBoosterEquipmentName(baseDataDicService.getNameById(basicHouseWater.getBoosterEquipment()));
@@ -148,7 +154,7 @@ public class BasicHouseWaterService {
     }
 
 
-    public List<BasicHouseWaterVo> getBasicHouseWaterVoList(Integer houseId)  throws Exception{
+    public List<BasicHouseWaterVo> getBasicHouseWaterVoList(Integer houseId) throws Exception {
         return LangUtils.transform(getBasicHouseWaterList(houseId), o -> getBasicHouseWaterVo(o));
     }
 }

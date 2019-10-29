@@ -55,13 +55,20 @@ public class BasicHouseTradingService {
      * @return
      * @throws Exception
      */
-    public Integer saveAndUpdateBasicHouseTrading(BasicHouseTrading basicHouseTrading)throws Exception{
+    public Integer saveAndUpdateBasicHouseTrading(BasicHouseTrading basicHouseTrading, boolean updateNull)throws Exception{
         if (basicHouseTrading.getId()== null || basicHouseTrading.getId().intValue()==0){
             basicHouseTrading.setCreator(commonService.thisUserAccount());
             return basicHouseTradingDao.saveBasicHouseTrading(basicHouseTrading);
         }else {
-            basicHouseTradingDao.updateBasicHouseTrading(basicHouseTrading);
-            return null;
+            if(updateNull){
+                BasicHouseTrading houseTrading = basicHouseTradingDao.getBasicHouseTradingById(basicHouseTrading.getId());
+                if(houseTrading!=null){
+                    basicHouseTrading.setCreator(houseTrading.getCreator());
+                    basicHouseTrading.setGmtCreated(houseTrading.getGmtCreated());
+                }
+            }
+            basicHouseTradingDao.updateBasicHouseTrading(basicHouseTrading,updateNull);
+            return basicHouseTrading.getId();
         }
     }
 

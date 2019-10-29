@@ -43,7 +43,7 @@ public class BasicEstateNetworkController {
     @RequestMapping(value = "/saveAndUpdateBasicEstateNetwork", name = "新增或者修改", method = {RequestMethod.POST})
     public HttpResult saveAndUpdateBasicEstateNetwork(BasicEstateNetwork basicEstateNetwork){
         try {
-            return HttpResult.newCorrectResult(200,basicEstateNetworkService.saveAndUpdateBasicEstateNetwork(basicEstateNetwork));
+            return HttpResult.newCorrectResult(200,basicEstateNetworkService.saveAndUpdateBasicEstateNetwork(basicEstateNetwork,true));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
             return HttpResult.newErrorResult(500,e.getMessage());

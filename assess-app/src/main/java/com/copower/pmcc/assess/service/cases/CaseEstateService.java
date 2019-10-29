@@ -221,7 +221,7 @@ public class CaseEstateService {
         basicEstate.setGmtModified(null);
         basicEstate.setId(tableId);
         basicEstate.setApplyId(null);
-        basicEstateService.saveAndUpdateBasicEstate(basicEstate);
+        basicEstateService.saveAndUpdateBasicEstate(basicEstate,false);
 
         //删除原有的附件
         SysAttachmentDto deleteExample = new SysAttachmentDto();
@@ -254,7 +254,7 @@ public class CaseEstateService {
             basicEstateLandState.setApplyId(null);
             basicEstateLandState.setGmtCreated(null);
             basicEstateLandState.setGmtModified(null);
-            basicEstateLandStateDao.saveBasicEstateLandState(basicEstateLandState);
+            basicEstateLandStateDao.addBasicEstateLandState(basicEstateLandState);
         }
 
         CaseEstateTagging oldCaseEstateTagging = new CaseEstateTagging();
@@ -286,7 +286,7 @@ public class CaseEstateService {
                     queryBasicEstateParking.setGmtCreated(null);
                     queryBasicEstateParking.setGmtModified(null);
                     queryBasicEstateParking.setCreator(commonService.thisUserAccount());
-                    Integer estateParkingId = basicEstateParkingService.saveAndUpdateBasicEstateParking(queryBasicEstateParking);
+                    Integer estateParkingId = basicEstateParkingService.saveAndUpdateBasicEstateParking(queryBasicEstateParking,false);
 
                     example = new SysAttachmentDto();
                     example.setTableId(oldCaseEstateParking.getId());

@@ -22,57 +22,57 @@ public class BasicMatchingTrafficDao {
     @Autowired
     private BasicMatchingTrafficMapper basicMatchingTrafficMapper;
 
-    public BasicMatchingTraffic getBasicMatchingTrafficById(Integer id)throws SQLException {
+    public BasicMatchingTraffic getBasicMatchingTrafficById(Integer id) throws SQLException {
         return basicMatchingTrafficMapper.selectByPrimaryKey(id);
     }
 
-    public Integer saveBasicMatchingTraffic(BasicMatchingTraffic basicMatchingTraffic)throws SQLException{
+    public Integer saveBasicMatchingTraffic(BasicMatchingTraffic basicMatchingTraffic) throws SQLException {
         basicMatchingTrafficMapper.insertSelective(basicMatchingTraffic);
         return basicMatchingTraffic.getId();
     }
 
-    public boolean updateBasicMatchingTraffic(BasicMatchingTraffic basicMatchingTraffic)throws SQLException{
-        return basicMatchingTrafficMapper.updateByPrimaryKeySelective(basicMatchingTraffic)==1;
+    public boolean updateBasicMatchingTraffic(BasicMatchingTraffic basicMatchingTraffic, boolean updateNull) throws SQLException {
+        return updateNull ? basicMatchingTrafficMapper.updateByPrimaryKey(basicMatchingTraffic) == 1 : basicMatchingTrafficMapper.updateByPrimaryKeySelective(basicMatchingTraffic) == 1;
     }
 
-    public void removeBasicMatchingTraffic(BasicMatchingTraffic basicMatchingTraffic)throws SQLException{
+    public void removeBasicMatchingTraffic(BasicMatchingTraffic basicMatchingTraffic) throws SQLException {
         BasicMatchingTrafficExample example = new BasicMatchingTrafficExample();
         MybatisUtils.convertObj2Example(basicMatchingTraffic, example);
         basicMatchingTrafficMapper.deleteByExample(example);
     }
 
-    public boolean deleteBasicMatchingTraffic(Integer id)throws SQLException{
-        return  basicMatchingTrafficMapper.deleteByPrimaryKey(id)==1;
+    public boolean deleteBasicMatchingTraffic(Integer id) throws SQLException {
+        return basicMatchingTrafficMapper.deleteByPrimaryKey(id) == 1;
     }
 
-    public List<BasicMatchingTraffic> basicMatchingTrafficList(BasicMatchingTraffic basicMatchingTraffic){
+    public List<BasicMatchingTraffic> basicMatchingTrafficList(BasicMatchingTraffic basicMatchingTraffic) {
         BasicMatchingTrafficExample example = new BasicMatchingTrafficExample();
         MybatisUtils.convertObj2Example(basicMatchingTraffic, example);
         example.setOrderByClause("id");
         return basicMatchingTrafficMapper.selectByExample(example);
     }
 
-    public List<BasicMatchingTraffic> findList(BasicMatchingTraffic basicMatchingTraffic){
+    public List<BasicMatchingTraffic> findList(BasicMatchingTraffic basicMatchingTraffic) {
         BasicMatchingTrafficExample example = new BasicMatchingTrafficExample();
         BasicMatchingTrafficExample.Criteria criteria = example.createCriteria();
         criteria.andIdIsNotNull();
-        if (basicMatchingTraffic.getId() != null){
+        if (basicMatchingTraffic.getId() != null) {
             criteria.andIdEqualTo(basicMatchingTraffic.getId());
         }
-        if (basicMatchingTraffic.getEstateId() != null){
+        if (basicMatchingTraffic.getEstateId() != null) {
             criteria.andEstateIdEqualTo(basicMatchingTraffic.getEstateId());
         }
-        if (StringUtils.isNotBlank(basicMatchingTraffic.getType())){
+        if (StringUtils.isNotBlank(basicMatchingTraffic.getType())) {
             criteria.andTypeEqualTo(basicMatchingTraffic.getType());
         }
         return basicMatchingTrafficMapper.selectByExample(example);
     }
 
-    public void remove(List<Integer> ids){
+    public void remove(List<Integer> ids) {
         BasicMatchingTrafficExample example = new BasicMatchingTrafficExample();
         BasicMatchingTrafficExample.Criteria criteria = example.createCriteria();
         criteria.andIdIn(ids);
-        basicMatchingTrafficMapper.deleteByExample(example) ;
+        basicMatchingTrafficMapper.deleteByExample(example);
     }
-    
+
 }

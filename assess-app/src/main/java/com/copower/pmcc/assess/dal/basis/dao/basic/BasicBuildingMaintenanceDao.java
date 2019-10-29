@@ -29,8 +29,8 @@ public class BasicBuildingMaintenanceDao {
         return basicBuildingMaintenance.getId();
     }
 
-    public boolean updateBasicBuildingMaintenance(BasicBuildingMaintenance basicBuildingMaintenance)throws SQLException{
-        return basicBuildingMaintenanceMapper.updateByPrimaryKeySelective(basicBuildingMaintenance)==1;
+    public boolean updateBasicBuildingMaintenance(BasicBuildingMaintenance basicBuildingMaintenance, boolean updateNull)throws SQLException{
+        return updateNull?basicBuildingMaintenanceMapper.updateByPrimaryKey(basicBuildingMaintenance)==1:basicBuildingMaintenanceMapper.updateByPrimaryKeySelective(basicBuildingMaintenance)==1;
     }
 
     public void removeBasicBuildingMaintenance(BasicBuildingMaintenance basicBuildingMaintenance)throws SQLException{

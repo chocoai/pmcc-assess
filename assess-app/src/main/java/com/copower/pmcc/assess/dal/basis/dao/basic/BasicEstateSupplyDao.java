@@ -21,26 +21,26 @@ public class BasicEstateSupplyDao {
     @Autowired
     private BasicEstateSupplyMapper basicEstateSupplyMapper;
 
-    public BasicEstateSupply getBasicEstateSupplyById(Integer id) throws SQLException {
+    public BasicEstateSupply getBasicEstateSupplyById(Integer id)  {
         return basicEstateSupplyMapper.selectByPrimaryKey(id);
     }
 
-    public Integer saveBasicEstateSupply(BasicEstateSupply basicEstateSupply) throws SQLException {
+    public Integer saveBasicEstateSupply(BasicEstateSupply basicEstateSupply)  {
         basicEstateSupplyMapper.insertSelective(basicEstateSupply);
         return basicEstateSupply.getId();
     }
 
-    public boolean updateBasicEstateSupply(BasicEstateSupply basicEstateSupply) throws SQLException {
-        return basicEstateSupplyMapper.updateByPrimaryKeySelective(basicEstateSupply) == 1;
+    public boolean updateBasicEstateSupply(BasicEstateSupply basicEstateSupply, boolean updateNull)  {
+        return updateNull ? basicEstateSupplyMapper.updateByPrimaryKey(basicEstateSupply) == 1 : basicEstateSupplyMapper.updateByPrimaryKeySelective(basicEstateSupply) == 1;
     }
 
-    public void removeBasicEstateSupply(BasicEstateSupply basicEstateSupply) throws SQLException {
+    public void removeBasicEstateSupply(BasicEstateSupply basicEstateSupply)  {
         BasicEstateSupplyExample example = new BasicEstateSupplyExample();
         MybatisUtils.convertObj2Example(basicEstateSupply, example);
         basicEstateSupplyMapper.deleteByExample(example);
     }
 
-    public boolean deleteBasicEstateSupply(Integer id) throws SQLException {
+    public boolean deleteBasicEstateSupply(Integer id)  {
         return basicEstateSupplyMapper.deleteByPrimaryKey(id) == 1;
     }
 

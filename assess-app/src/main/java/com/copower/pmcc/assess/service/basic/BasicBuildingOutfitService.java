@@ -61,16 +61,22 @@ public class BasicBuildingOutfitService {
      * @return
      * @throws Exception
      */
-    public Integer saveAndUpdateBasicBuildingOutfit(BasicBuildingOutfit basicBuildingOutfit) throws Exception {
+    public Integer saveAndUpdateBasicBuildingOutfit(BasicBuildingOutfit basicBuildingOutfit, boolean updateNull) throws Exception {
         if (basicBuildingOutfit.getId() == null || basicBuildingOutfit.getId().intValue() == 0) {
             basicBuildingOutfit.setCreator(commonService.thisUserAccount());
             Integer id = basicBuildingOutfitDao.saveBasicBuildingOutfit(basicBuildingOutfit);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicBuildingOutfit.class), id);
-            return  id ;
+            return id;
         } else {
-            BasicBuildingOutfit oo = basicBuildingOutfitDao.getBasicBuildingOutfitById(basicBuildingOutfit.getId());
-            basicBuildingOutfitDao.updateBasicBuildingOutfit(basicBuildingOutfit);
-            return null;
+            if (updateNull) {
+                BasicBuildingOutfit buildingOutfit = basicBuildingOutfitDao.getBasicBuildingOutfitById(basicBuildingOutfit.getId());
+                if (buildingOutfit != null) {
+                    basicBuildingOutfit.setCreator(buildingOutfit.getCreator());
+                    basicBuildingOutfit.setGmtCreated(buildingOutfit.getGmtCreated());
+                }
+            }
+            basicBuildingOutfitDao.updateBasicBuildingOutfit(basicBuildingOutfit, updateNull);
+            return basicBuildingOutfit.getId();
         }
     }
 
@@ -97,7 +103,7 @@ public class BasicBuildingOutfitService {
         return basicBuildingOutfitDao.basicBuildingOutfitList(basicBuildingOutfit);
     }
 
-    public void removeBasicBuildingOutfit(BasicBuildingOutfit basicBuildingOutfit)throws Exception{
+    public void removeBasicBuildingOutfit(BasicBuildingOutfit basicBuildingOutfit) throws Exception {
         basicBuildingOutfitDao.removeBasicBuildingOutfit(basicBuildingOutfit);
     }
 
@@ -113,24 +119,24 @@ public class BasicBuildingOutfitService {
         return vo;
     }
 
-    public List<BasicBuildingOutfitVo> getBasicBuildingOutfitVos(Integer buildingId){
-        BasicBuildingOutfit where=new BasicBuildingOutfit();
+    public List<BasicBuildingOutfitVo> getBasicBuildingOutfitVos(Integer buildingId) {
+        BasicBuildingOutfit where = new BasicBuildingOutfit();
         where.setBuildingId(buildingId);
         List<BasicBuildingOutfit> basicBuildingOutfitList = basicBuildingOutfitDao.basicBuildingOutfitList(where);
-        return LangUtils.transform(basicBuildingOutfitList,o->getBasicBuildingOutfitVo(o));
+        return LangUtils.transform(basicBuildingOutfitList, o -> getBasicBuildingOutfitVo(o));
     }
 
-    public BasicBuildingOutfitVo getBasicBuildingOutfitVo(BasicBuildingOutfit basicBuildingOutfit){
-        if (basicBuildingOutfit==null){
+    public BasicBuildingOutfitVo getBasicBuildingOutfitVo(BasicBuildingOutfit basicBuildingOutfit) {
+        if (basicBuildingOutfit == null) {
             return null;
         }
         BasicBuildingOutfitVo vo = new BasicBuildingOutfitVo();
-        BeanUtils.copyProperties(basicBuildingOutfit,vo);
+        BeanUtils.copyProperties(basicBuildingOutfit, vo);
         vo.setDecoratingMaterialName(baseDataDicService.getNameById(basicBuildingOutfit.getDecoratingMaterial()));
         vo.setMaterialPriceName(baseDataDicService.getNameById(basicBuildingOutfit.getMaterialPrice()));
         vo.setConstructionTechnologyName(baseDataDicService.getNameById(basicBuildingOutfit.getConstructionTechnology()));
         vo.setMaterialGradeName(baseDataDicService.getNameById(basicBuildingOutfit.getMaterialGrade()));
         return vo;
     }
-    
+
 }

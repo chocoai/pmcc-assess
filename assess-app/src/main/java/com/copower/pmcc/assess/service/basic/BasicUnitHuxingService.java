@@ -99,16 +99,22 @@ public class BasicUnitHuxingService {
      * @return
      * @throws Exception
      */
-    public Integer saveAndUpdateBasicUnitHuxing(BasicUnitHuxing basicUnitHuxing) throws Exception {
+    public Integer saveAndUpdateBasicUnitHuxing(BasicUnitHuxing basicUnitHuxing, boolean updateNull) throws Exception {
         if (basicUnitHuxing.getId() == null || basicUnitHuxing.getId().intValue() == 0) {
             basicUnitHuxing.setCreator(commonService.thisUserAccount());
             Integer id = basicUnitHuxingDao.saveBasicUnitHuxing(basicUnitHuxing);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicUnitHuxing.class), id);
             return id;
         } else {
-            BasicUnitHuxing oo = basicUnitHuxingDao.getBasicUnitHuxingById(basicUnitHuxing.getId());
-            basicUnitHuxingDao.updateBasicUnitHuxing(basicUnitHuxing);
-            return null;
+            if(updateNull){
+                BasicUnitHuxing unitHuxing = basicUnitHuxingDao.getBasicUnitHuxingById(basicUnitHuxing.getId());
+                if(unitHuxing!=null){
+                    basicUnitHuxing.setCreator(unitHuxing.getCreator());
+                    basicUnitHuxing.setGmtCreated(unitHuxing.getGmtCreated());
+                }
+            }
+            basicUnitHuxingDao.updateBasicUnitHuxing(basicUnitHuxing,updateNull);
+            return basicUnitHuxing.getId();
         }
     }
 

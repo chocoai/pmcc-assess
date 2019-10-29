@@ -61,16 +61,22 @@ public class BasicHouseCorollaryEquipmentService {
      * @return
      * @throws Exception
      */
-    public Integer saveAndUpdateBasicHouseCorollaryEquipment(BasicHouseCorollaryEquipment basicHouseCorollaryEquipment) throws Exception {
+    public Integer saveAndUpdateBasicHouseCorollaryEquipment(BasicHouseCorollaryEquipment basicHouseCorollaryEquipment, boolean updateNull) throws Exception {
         if (basicHouseCorollaryEquipment.getId() == null || basicHouseCorollaryEquipment.getId().intValue() == 0) {
             basicHouseCorollaryEquipment.setCreator(commonService.thisUserAccount());
             Integer id = basicHouseCorollaryEquipmentDao.saveBasicHouseCorollaryEquipment(basicHouseCorollaryEquipment);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicHouseCorollaryEquipment.class), id);
-            return  id ;
+            return id;
         } else {
-            BasicHouseCorollaryEquipment oo = basicHouseCorollaryEquipmentDao.getBasicHouseCorollaryEquipmentById(basicHouseCorollaryEquipment.getId());
-            basicHouseCorollaryEquipmentDao.updateBasicHouseCorollaryEquipment(basicHouseCorollaryEquipment);
-            return null;
+            if (updateNull) {
+                BasicHouseCorollaryEquipment corollaryEquipment = basicHouseCorollaryEquipmentDao.getBasicHouseCorollaryEquipmentById(basicHouseCorollaryEquipment.getId());
+                if (corollaryEquipment != null) {
+                    basicHouseCorollaryEquipment.setCreator(corollaryEquipment.getCreator());
+                    basicHouseCorollaryEquipment.setGmtCreated(corollaryEquipment.getGmtCreated());
+                }
+            }
+            basicHouseCorollaryEquipmentDao.updateBasicHouseCorollaryEquipment(basicHouseCorollaryEquipment, updateNull);
+            return basicHouseCorollaryEquipment.getId();
         }
     }
 
@@ -83,11 +89,11 @@ public class BasicHouseCorollaryEquipmentService {
      * @throws Exception
      */
     public boolean deleteBasicHouseCorollaryEquipment(Integer id) throws Exception {
-        if (id==null){
+        if (id == null) {
             return false;
         }
         List<SysAttachmentDto> sysAttachmentDtos = baseAttachmentService.getByField_tableId(id, null, FormatUtils.entityNameConvertToTableName(BasicHouseCorollaryEquipment.class));
-        if (!ObjectUtils.isEmpty(sysAttachmentDtos)){
+        if (!ObjectUtils.isEmpty(sysAttachmentDtos)) {
             sysAttachmentDtos.forEach(oo -> baseAttachmentService.deleteAttachment(oo.getId()));
         }
         return basicHouseCorollaryEquipmentDao.deleteBasicHouseCorollaryEquipment(id);
@@ -104,15 +110,15 @@ public class BasicHouseCorollaryEquipmentService {
         return basicHouseCorollaryEquipmentDao.basicHouseCorollaryEquipmentList(basicHouseCorollaryEquipment);
     }
 
-    public List<BasicHouseCorollaryEquipment> getBasicHouseCorollaryEquipmentList(Integer houseId){
-        BasicHouseCorollaryEquipment where=new BasicHouseCorollaryEquipment();
+    public List<BasicHouseCorollaryEquipment> getBasicHouseCorollaryEquipmentList(Integer houseId) {
+        BasicHouseCorollaryEquipment where = new BasicHouseCorollaryEquipment();
         where.setHouseId(houseId);
         return basicHouseCorollaryEquipmentDao.basicHouseCorollaryEquipmentList(where);
     }
 
-    public void removeBasicHouseCorollaryEquipment(BasicHouseCorollaryEquipment basicHouseCorollaryEquipment)throws Exception{
+    public void removeBasicHouseCorollaryEquipment(BasicHouseCorollaryEquipment basicHouseCorollaryEquipment) throws Exception {
         List<SysAttachmentDto> sysAttachmentDtos = baseAttachmentService.getByField_tableId(basicHouseCorollaryEquipment.getId(), null, FormatUtils.entityNameConvertToTableName(BasicHouseCorollaryEquipment.class));
-        if (!ObjectUtils.isEmpty(sysAttachmentDtos)){
+        if (!ObjectUtils.isEmpty(sysAttachmentDtos)) {
             sysAttachmentDtos.forEach(oo -> baseAttachmentService.deleteAttachment(oo.getId()));
         }
         basicHouseCorollaryEquipmentDao.removeBasicHouseCorollaryEquipment(basicHouseCorollaryEquipment);
@@ -130,12 +136,12 @@ public class BasicHouseCorollaryEquipmentService {
         return vo;
     }
 
-    public BasicHouseCorollaryEquipmentVo getBasicHouseCorollaryEquipmentVo(BasicHouseCorollaryEquipment basicHouseCorollaryEquipment){
-        if (basicHouseCorollaryEquipment==null){
+    public BasicHouseCorollaryEquipmentVo getBasicHouseCorollaryEquipmentVo(BasicHouseCorollaryEquipment basicHouseCorollaryEquipment) {
+        if (basicHouseCorollaryEquipment == null) {
             return null;
         }
         BasicHouseCorollaryEquipmentVo vo = new BasicHouseCorollaryEquipmentVo();
-        BeanUtils.copyProperties(basicHouseCorollaryEquipment,vo);
+        BeanUtils.copyProperties(basicHouseCorollaryEquipment, vo);
         List<SysAttachmentDto> sysAttachmentDtos = baseAttachmentService.getByField_tableId(basicHouseCorollaryEquipment.getId(), null, FormatUtils.entityNameConvertToTableName(BasicHouseCorollaryEquipment.class));
         StringBuilder builder = new StringBuilder();
         if (!ObjectUtils.isEmpty(sysAttachmentDtos)) {
@@ -150,5 +156,5 @@ public class BasicHouseCorollaryEquipmentService {
         vo.setMaintenanceStatusName(baseDataDicService.getNameById(basicHouseCorollaryEquipment.getMaintenanceStatus()));
         return vo;
     }
-    
+
 }

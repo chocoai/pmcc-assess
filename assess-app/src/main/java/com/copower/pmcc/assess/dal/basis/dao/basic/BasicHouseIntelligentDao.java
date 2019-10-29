@@ -30,8 +30,8 @@ public class BasicHouseIntelligentDao {
         return basicHouseIntelligent.getId();
     }
 
-    public boolean updateBasicHouseIntelligent(BasicHouseIntelligent basicHouseIntelligent) throws SQLException {
-        return basicHouseIntelligentMapper.updateByPrimaryKeySelective(basicHouseIntelligent) == 1;
+    public boolean updateBasicHouseIntelligent(BasicHouseIntelligent basicHouseIntelligent, boolean updateNull) throws SQLException {
+        return updateNull ? basicHouseIntelligentMapper.updateByPrimaryKey(basicHouseIntelligent) == 1 : basicHouseIntelligentMapper.updateByPrimaryKeySelective(basicHouseIntelligent) == 1;
     }
 
     public boolean deleteBasicHouseIntelligent(BasicHouseIntelligent basicHouseIntelligent) throws SQLException {
@@ -52,10 +52,11 @@ public class BasicHouseIntelligentDao {
 
     /**
      * 获取数据条数
+     *
      * @param houseId
      * @return
      */
-    public int countByHouseId(Integer houseId){
+    public int countByHouseId(Integer houseId) {
         BasicHouseIntelligentExample example = new BasicHouseIntelligentExample();
         example.createCriteria().andHouseIdEqualTo(houseId);
         return basicHouseIntelligentMapper.countByExample(example);

@@ -28,8 +28,8 @@ public class BasicHouseDamagedDegreeDao {
         return basicHouseDamagedDegree.getId();
     }
 
-    public boolean updateBasicHouseDamagedDegree(BasicHouseDamagedDegree basicHouseDamagedDegree) {
-        return basicHouseDamagedDegreeMapper.updateByPrimaryKeySelective(basicHouseDamagedDegree) == 1;
+    public boolean updateBasicHouseDamagedDegree(BasicHouseDamagedDegree basicHouseDamagedDegree, boolean updateNull) {
+        return updateNull ? basicHouseDamagedDegreeMapper.updateByPrimaryKey(basicHouseDamagedDegree) == 1 : basicHouseDamagedDegreeMapper.updateByPrimaryKeySelective(basicHouseDamagedDegree) == 1;
     }
 
     public boolean deleteBasicHouseDamagedDegree(Integer id) {
@@ -52,10 +52,11 @@ public class BasicHouseDamagedDegreeDao {
 
     /**
      * 获取数据条数
+     *
      * @param houseId
      * @return
      */
-    public int countByHouseId(Integer houseId,Integer type){
+    public int countByHouseId(Integer houseId, Integer type) {
         BasicHouseDamagedDegreeExample example = new BasicHouseDamagedDegreeExample();
         BasicHouseDamagedDegreeExample.Criteria criteria = example.createCriteria();
         criteria.andHouseIdEqualTo(houseId);
@@ -65,7 +66,7 @@ public class BasicHouseDamagedDegreeDao {
         return basicHouseDamagedDegreeMapper.countByExample(example);
     }
 
-    public List<BasicHouseDamagedDegree> getValueDamagedDegreeList(Integer houseId,Integer type) {
+    public List<BasicHouseDamagedDegree> getValueDamagedDegreeList(Integer houseId, Integer type) {
         BasicHouseDamagedDegreeExample example = new BasicHouseDamagedDegreeExample();
         BasicHouseDamagedDegreeExample.Criteria criteria = example.createCriteria();
         criteria.andHouseIdEqualTo(houseId);

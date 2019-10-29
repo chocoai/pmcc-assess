@@ -20,30 +20,30 @@ public class BasicEstateNetworkDao {
     @Autowired
     private BasicEstateNetworkMapper basicEstateNetworkMapper;
 
-    public BasicEstateNetwork getBasicEstateNetworkById(Integer id)throws SQLException {
+    public BasicEstateNetwork getBasicEstateNetworkById(Integer id) throws SQLException {
         return basicEstateNetworkMapper.selectByPrimaryKey(id);
     }
 
-    public Integer saveBasicEstateNetwork(BasicEstateNetwork basicEstateNetwork)throws SQLException{
+    public Integer saveBasicEstateNetwork(BasicEstateNetwork basicEstateNetwork) throws SQLException {
         basicEstateNetworkMapper.insertSelective(basicEstateNetwork);
         return basicEstateNetwork.getId();
     }
 
-    public boolean updateBasicEstateNetwork(BasicEstateNetwork basicEstateNetwork)throws SQLException{
-        return basicEstateNetworkMapper.updateByPrimaryKeySelective(basicEstateNetwork)==1;
+    public boolean updateBasicEstateNetwork(BasicEstateNetwork basicEstateNetwork, boolean updateNull) throws SQLException {
+        return updateNull ? basicEstateNetworkMapper.updateByPrimaryKey(basicEstateNetwork) == 1 : basicEstateNetworkMapper.updateByPrimaryKeySelective(basicEstateNetwork) == 1;
     }
 
-    public void removeBasicEstateNetwork(BasicEstateNetwork basicEstateNetwork)throws SQLException{
+    public void removeBasicEstateNetwork(BasicEstateNetwork basicEstateNetwork) throws SQLException {
         BasicEstateNetworkExample example = new BasicEstateNetworkExample();
         MybatisUtils.convertObj2Example(basicEstateNetwork, example);
         basicEstateNetworkMapper.deleteByExample(example);
     }
 
-    public boolean deleteBasicEstateNetwork(Integer id)throws SQLException{
-        return  basicEstateNetworkMapper.deleteByPrimaryKey(id)==1;
+    public boolean deleteBasicEstateNetwork(Integer id) throws SQLException {
+        return basicEstateNetworkMapper.deleteByPrimaryKey(id) == 1;
     }
 
-    public List<BasicEstateNetwork> basicEstateNetworkList(BasicEstateNetwork basicEstateNetwork){
+    public List<BasicEstateNetwork> basicEstateNetworkList(BasicEstateNetwork basicEstateNetwork) {
         BasicEstateNetworkExample example = new BasicEstateNetworkExample();
         MybatisUtils.convertObj2Example(basicEstateNetwork, example);
         return basicEstateNetworkMapper.selectByExample(example);

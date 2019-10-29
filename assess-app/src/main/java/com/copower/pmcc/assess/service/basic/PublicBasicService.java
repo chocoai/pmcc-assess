@@ -772,7 +772,7 @@ public class PublicBasicService {
 
                     basicEstate.setApplyId(basicApply.getId());
                     basicEstate.setType(basicApply.getType());
-                    basicEstateService.saveAndUpdateBasicEstate(basicEstate);
+                    basicEstateService.saveAndUpdateBasicEstate(basicEstate,true);
                     basicApply.setBasicEstateId(basicEstate.getId());
                     if (basicEstate.getId() != null) {
                         BasicEstateLandState basicEstateLandState = null;
@@ -781,7 +781,7 @@ public class PublicBasicService {
                             if (basicEstateLandState != null) {
                                 basicEstateLandState.setEstateId(basicEstate.getId());
                                 basicEstateLandState.setApplyId(basicApply.getId());
-                                basicEstateLandStateService.saveAndUpdateBasicEstateLandState(basicEstateLandState);
+                                basicEstateLandStateService.saveAndUpdateBasicEstateLandState(basicEstateLandState,true);
                             }
                         }
                     }
@@ -808,7 +808,7 @@ public class PublicBasicService {
                             break;
                     }
                     basicBuilding.setApplyId(basicApply.getId());
-                    basicBuildingService.saveAndUpdateBasicBuilding(basicBuilding);
+                    basicBuildingService.saveAndUpdateBasicBuilding(basicBuilding,false);
                     basicApply.setBasicBuildingId(basicBuilding.getId());
                 }
             }
@@ -833,7 +833,7 @@ public class PublicBasicService {
                             break;
                     }
                     basicUnit.setApplyId(basicApply.getId());
-                    basicUnitService.saveAndUpdateBasicUnit(basicUnit);
+                    basicUnitService.saveAndUpdateBasicUnit(basicUnit,false);
                     basicApply.setBasicUnitId(basicUnit.getId());
                 }
             }
@@ -858,7 +858,7 @@ public class PublicBasicService {
                             break;
                     }
                     basicHouse.setApplyId(basicApply.getId());
-                    Integer house = basicHouseService.saveAndUpdateBasicHouse(basicHouse);
+                    Integer house = basicHouseService.saveAndUpdateBasicHouse(basicHouse,true);
                     basicApply.setBasicHouseId(house);
                     //交易信息
                     jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_TRADING.getVar());
@@ -866,19 +866,19 @@ public class PublicBasicService {
                     if (basicTrading != null) {
                         basicTrading.setHouseId(house);
                         basicTrading.setApplyId(basicApply.getId());
-                        basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicTrading);
+                        basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicTrading,true);
                     }
                     //完损度
                     jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_DAMAGED_DEGREE.getVar());
                     List<BasicHouseDamagedDegree> damagedDegreeList = JSONObject.parseArray(jsonContent, BasicHouseDamagedDegree.class);
                     if (!CollectionUtils.isEmpty(damagedDegreeList)) {
                         for (BasicHouseDamagedDegree degree : damagedDegreeList) {
-                            basicHouseDamagedDegreeService.saveAndUpdateDamagedDegree(degree);
+                            basicHouseDamagedDegreeService.saveAndUpdateDamagedDegree(degree,true);
                         }
                         //写入成新率
                         String newDegree = residueRatioService.getObservationalRatio(basicHouse.getId());
                         basicHouse.setNewDegree(newDegree);
-                        basicHouseService.saveAndUpdateBasicHouse(basicHouse);
+                        basicHouseService.saveAndUpdateBasicHouse(basicHouse,false);
                     }
                 }
             }
@@ -920,7 +920,7 @@ public class PublicBasicService {
                     }
                 }
                 tagging.setApplyId(basicApply.getId());
-                basicEstateTaggingService.updateBasicEstateTagging(tagging);
+                basicEstateTaggingService.updateBasicEstateTagging(tagging,false);
             }
         }
 
@@ -1025,44 +1025,6 @@ public class PublicBasicService {
 
     public BasicHouseVo getBasicHouseVoById(Integer id) throws Exception {
         return basicHouseService.getBasicHouseVo(basicHouseService.getBasicHouseById(id));
-    }
-
-    //处理标注老数据
-    public void disposeTaggingData()throws Exception{
-        //获取applyId不为null的标注
-        List<BasicEstateTagging> basicEstateTaggingList = basicEstateTaggingService.getApplyIdIsNotNullList();
-        for (BasicEstateTagging tagging: basicEstateTaggingList) {
-            if (Objects.equal(tagging.getType(), EstateTaggingTypeEnum.ESTATE.getKey())) {
-                BasicEstate estate = basicEstateService.getBasicEstateByApplyId(tagging.getApplyId());
-                //判断是否已经存在标注
-                if(!basicEstateTaggingService.hasBasicEstateTagging(estate.getId(), EstateTaggingTypeEnum.ESTATE)){
-                    //不存在则写入tableId
-                    tagging.setTableId(estate.getId());
-                    basicEstateTaggingService.updateBasicEstateTagging(tagging);
-                }
-            }
-            if (Objects.equal(tagging.getType(), EstateTaggingTypeEnum.BUILDING.getKey())) {
-                BasicBuildingVo building = basicBuildingService.getBasicBuildingByApplyId(tagging.getApplyId());
-                if(!basicEstateTaggingService.hasBasicEstateTagging(building.getId(), EstateTaggingTypeEnum.BUILDING)) {
-                    tagging.setTableId(building.getId());
-                    basicEstateTaggingService.updateBasicEstateTagging(tagging);
-                }
-            }
-            if (Objects.equal(tagging.getType(), EstateTaggingTypeEnum.UNIT.getKey())) {
-                BasicUnit unit = basicUnitService.getBasicUnitByApplyId(tagging.getApplyId());
-                if(!basicEstateTaggingService.hasBasicEstateTagging(unit.getId(), EstateTaggingTypeEnum.UNIT)) {
-                    tagging.setTableId(unit.getId());
-                    basicEstateTaggingService.updateBasicEstateTagging(tagging);
-                }
-            }
-            if (Objects.equal(tagging.getType(), EstateTaggingTypeEnum.HOUSE.getKey())) {
-                BasicHouse house = basicHouseService.getHouseByApplyId(tagging.getApplyId());
-                if(!basicEstateTaggingService.hasBasicEstateTagging(house.getId(), EstateTaggingTypeEnum.HOUSE)) {
-                    tagging.setTableId(house.getId());
-                    basicEstateTaggingService.updateBasicEstateTagging(tagging);
-                }
-            }
-        }
     }
 
 }

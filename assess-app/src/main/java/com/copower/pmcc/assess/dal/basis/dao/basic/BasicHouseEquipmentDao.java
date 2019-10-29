@@ -30,8 +30,8 @@ public class BasicHouseEquipmentDao {
         return basicHouseEquipment.getId();
     }
 
-    public boolean updateBasicHouseEquipment(BasicHouseEquipment basicHouseEquipment) throws SQLException {
-        return basicHouseEquipmentMapper.updateByPrimaryKeySelective(basicHouseEquipment) == 1;
+    public boolean updateBasicHouseEquipment(BasicHouseEquipment basicHouseEquipment, boolean updateNull) throws SQLException {
+        return updateNull ? basicHouseEquipmentMapper.updateByPrimaryKey(basicHouseEquipment) == 1 : basicHouseEquipmentMapper.updateByPrimaryKeySelective(basicHouseEquipment) == 1;
     }
 
     public boolean deleteBasicHouseEquipment(BasicHouseEquipment basicHouseEquipment) throws SQLException {
@@ -52,10 +52,11 @@ public class BasicHouseEquipmentDao {
 
     /**
      * 获取数据条数
+     *
      * @param houseId
      * @return
      */
-    public int countByHouseId(Integer houseId,String type){
+    public int countByHouseId(Integer houseId, String type) {
         BasicHouseEquipmentExample example = new BasicHouseEquipmentExample();
         example.createCriteria().andHouseIdEqualTo(houseId).andTypeEqualTo(type);
         return basicHouseEquipmentMapper.countByExample(example);

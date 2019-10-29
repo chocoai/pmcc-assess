@@ -248,7 +248,7 @@ public class CaseUnitService {
         basicUnit.setApplyId(null);
         basicUnit.setBuildingId(oldBasicUnit.getBuildingId());
 
-        basicUnitService.saveAndUpdateBasicUnit(basicUnit);
+        basicUnitService.saveAndUpdateBasicUnit(basicUnit,false);
 
         //删除原有的附件
         SysAttachmentDto deleteExample = new SysAttachmentDto();
@@ -298,7 +298,7 @@ public class CaseUnitService {
                     basicUnitHuxing.setId(null);
                     basicUnitHuxing.setGmtCreated(null);
                     basicUnitHuxing.setGmtModified(null);
-                    Integer huxingId = basicUnitHuxingService.saveAndUpdateBasicUnitHuxing(basicUnitHuxing);
+                    Integer huxingId = basicUnitHuxingService.saveAndUpdateBasicUnitHuxing(basicUnitHuxing,false);
 
                     //附件拷贝
                     example = new SysAttachmentDto();

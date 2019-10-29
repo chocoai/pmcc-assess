@@ -61,16 +61,22 @@ public class BasicEstateParkingService {
      * @return
      * @throws Exception
      */
-    public Integer saveAndUpdateBasicEstateParking(BasicEstateParking basicEstateParking) throws Exception {
+    public Integer saveAndUpdateBasicEstateParking(BasicEstateParking basicEstateParking, boolean updateNull) throws Exception {
         if (basicEstateParking.getId() == null || basicEstateParking.getId().intValue() == 0) {
             basicEstateParking.setCreator(commonService.thisUserAccount());
             Integer id = basicEstateParkingDao.saveBasicEstateParking(basicEstateParking);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicEstateParking.class), id);
             return id;
         } else {
-            BasicEstateParking oo = basicEstateParkingDao.getBasicEstateParkingById(basicEstateParking.getId());
-            basicEstateParkingDao.updateBasicEstateParking(basicEstateParking);
-            return null;
+            if (updateNull) {
+                BasicEstateParking estateParking = basicEstateParkingDao.getBasicEstateParkingById(basicEstateParking.getId());
+                if (estateParking != null) {
+                    basicEstateParking.setCreator(estateParking.getCreator());
+                    basicEstateParking.setGmtCreated(estateParking.getGmtCreated());
+                }
+            }
+            basicEstateParkingDao.updateBasicEstateParking(basicEstateParking, updateNull);
+            return basicEstateParking.getId();
         }
     }
 

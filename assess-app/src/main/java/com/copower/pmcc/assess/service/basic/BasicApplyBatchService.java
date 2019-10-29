@@ -9,7 +9,6 @@ import com.copower.pmcc.assess.common.enums.basic.BasicApplyTypeEnum;
 import com.copower.pmcc.assess.common.enums.basic.EstateTaggingTypeEnum;
 import com.copower.pmcc.assess.common.enums.basic.ExamineFileUpLoadFieldEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.dao.basic.*;
 import com.copower.pmcc.assess.dal.basis.entity.*;
@@ -323,12 +322,11 @@ public class BasicApplyBatchService {
         BaseDataDic classifyDataDic = baseDataDicService.getCacheDataDicById(basicApplyBatch.getClassify());
         //楼盘
         BasicEstate basicEstate = new BasicEstate();
-        basicEstate.setCreator(commonService.thisUserAccount());
-        basicEstateService.saveAndUpdateBasicEstate(basicEstate);
+        basicEstateService.saveAndUpdateBasicEstate(basicEstate,false);
         BasicEstateLandState basicEstateLandState = new BasicEstateLandState();
         basicEstateLandState.setEstateId(basicEstate.getId());
         basicEstateLandState.setCreator(commonService.thisUserAccount());
-        basicEstateLandStateService.saveAndUpdateBasicEstateLandState(basicEstateLandState);
+        basicEstateLandStateService.saveAndUpdateBasicEstateLandState(basicEstateLandState,false);
         String estateName = "楼盘信息";
         if (AssessDataDicKeyConstant.PROJECT_SURVEY_FORM_CLASSIFY_LAND.equals(classifyDataDic.getFieldName())
                 || AssessDataDicKeyConstant.PROJECT_SURVEY_FORM_CLASSIFY_LAND_ONLY.equals(classifyDataDic.getFieldName())) {
@@ -353,7 +351,7 @@ public class BasicApplyBatchService {
             //1.添加applyBatch 2.添加applyBatchDetail 3.添加楼盘、楼栋、单元、房屋主表 4.添加basicApply表
             BasicBuilding basicBuilding = new BasicBuilding();
             basicBuilding.setCreator(commonService.thisUserAccount());
-            basicBuildingService.saveAndUpdateBasicBuilding(basicBuilding);
+            basicBuildingService.saveAndUpdateBasicBuilding(basicBuilding,false);
             BasicApplyBatchDetail buildingApplyBatchDetail = new BasicApplyBatchDetail();
             buildingApplyBatchDetail.setPid(estateApplyBatchDetail.getId());
             buildingApplyBatchDetail.setBisStandard(false);
@@ -366,7 +364,7 @@ public class BasicApplyBatchService {
             //单元
             BasicUnit basicUnit = new BasicUnit();
             basicUnit.setCreator(commonService.thisUserAccount());
-            basicUnitService.saveAndUpdateBasicUnit(basicUnit);
+            basicUnitService.saveAndUpdateBasicUnit(basicUnit,false);
             BasicApplyBatchDetail unitApplyBatchDetail = new BasicApplyBatchDetail();
             unitApplyBatchDetail.setBisStandard(false);
             unitApplyBatchDetail.setPid(buildingApplyBatchDetail.getId());
@@ -379,11 +377,11 @@ public class BasicApplyBatchService {
             //房屋
             BasicHouse basicHouse = new BasicHouse();
             basicHouse.setCreator(commonService.thisUserAccount());
-            basicHouseService.saveAndUpdateBasicHouse(basicHouse);
+            basicHouseService.saveAndUpdateBasicHouse(basicHouse,false);
             BasicHouseTrading basicHouseTrading = new BasicHouseTrading();
             basicHouseTrading.setHouseId(basicHouse.getId());
             basicHouseTrading.setCreator(commonService.thisUserAccount());
-            basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicHouseTrading);
+            basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicHouseTrading,false);
             BasicApplyBatchDetail houseApplyBatchDetail = new BasicApplyBatchDetail();
             houseApplyBatchDetail.setBisStandard(true);
             houseApplyBatchDetail.setPid(unitApplyBatchDetail.getId());
@@ -407,11 +405,11 @@ public class BasicApplyBatchService {
             BasicHouse basicHouse = new BasicHouse();
             basicHouse.setHouseNumber("0");
             basicHouse.setCreator(commonService.thisUserAccount());
-            basicHouseService.saveAndUpdateBasicHouse(basicHouse);
+            basicHouseService.saveAndUpdateBasicHouse(basicHouse,false);
             BasicHouseTrading basicHouseTrading = new BasicHouseTrading();
             basicHouseTrading.setHouseId(basicHouse.getId());
             basicHouseTrading.setCreator(commonService.thisUserAccount());
-            basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicHouseTrading);
+            basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicHouseTrading,false);
 
             BasicApply basicApply = new BasicApply();
             basicApply.setBasicEstateId(basicEstate.getId());
@@ -449,7 +447,7 @@ public class BasicApplyBatchService {
         if (StringUtils.isNotBlank(jsonContent)) {
             basicEstate = JSONObject.parseObject(jsonContent, BasicEstate.class);
             if (basicEstate != null) {
-                basicEstateService.saveAndUpdateBasicEstate(basicEstate);
+                basicEstateService.saveAndUpdateBasicEstate(basicEstate,true);
                 BasicApplyBatch basicApplyBatch = getBasicApplyBatchByEstateId(basicEstate.getId());
                 if (basicApplyBatch != null) {
                     basicApplyBatch.setEstateName(basicEstate.getName());
@@ -461,7 +459,7 @@ public class BasicApplyBatchService {
                     basicEstateLandState = JSONObject.parseObject(string, BasicEstateLandState.class);
                     if (basicEstateLandState != null) {
                         basicEstateLandState.setEstateId(basicEstate.getId());
-                        basicEstateLandStateService.saveAndUpdateBasicEstateLandState(basicEstateLandState);
+                        basicEstateLandStateService.saveAndUpdateBasicEstateLandState(basicEstateLandState,true);
                     }
                 }
                 BasicApplyBatchDetail estateDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(FormatUtils.entityNameConvertToTableName(BasicEstate.class), basicEstate.getId());
@@ -479,7 +477,7 @@ public class BasicApplyBatchService {
         if (StringUtils.isNotBlank(jsonContent)) {
             basicBuilding = JSONObject.parseObject(jsonContent, BasicBuilding.class);
             if (basicBuilding != null) {
-                basicBuildingService.saveAndUpdateBasicBuilding(basicBuilding);
+                basicBuildingService.saveAndUpdateBasicBuilding(basicBuilding,true);
                 BasicApplyBatchDetail buildingDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(FormatUtils.entityNameConvertToTableName(BasicBuilding.class), basicBuilding.getId());
                 if (buildingDetail != null) {
                     buildingDetail.setName(basicBuilding.getBuildingNumber());
@@ -495,7 +493,7 @@ public class BasicApplyBatchService {
         if (StringUtils.isNotEmpty(jsonContent)) {
             basicUnit = JSONObject.parseObject(jsonContent, BasicUnit.class);
             if (basicUnit != null) {
-                basicUnitService.saveAndUpdateBasicUnit(basicUnit);
+                basicUnitService.saveAndUpdateBasicUnit(basicUnit,true);
                 BasicApplyBatchDetail unitDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(FormatUtils.entityNameConvertToTableName(BasicUnit.class), basicUnit.getId());
                 if (unitDetail != null) {
                     unitDetail.setName(basicUnit.getUnitNumber());
@@ -511,7 +509,7 @@ public class BasicApplyBatchService {
         if (StringUtils.isNotEmpty(jsonContent)) {
             basicHouse = JSONObject.parseObject(jsonContent, BasicHouse.class);
             if (basicHouse != null) {
-                Integer house = basicHouseService.saveAndUpdateBasicHouse(basicHouse);
+                Integer house = basicHouseService.saveAndUpdateBasicHouse(basicHouse,true);
                 BasicApplyBatchDetail houseDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(FormatUtils.entityNameConvertToTableName(BasicHouse.class), basicHouse.getId());
                 if (houseDetail != null) {
                     houseDetail.setName(basicHouse.getHouseNumber());
@@ -525,7 +523,7 @@ public class BasicApplyBatchService {
                     BasicHouseTrading houseTradingOld = basicHouseTradingService.getTradingByHouseId(basicHouse.getId());
                     basicTrading.setId(houseTradingOld.getId());
                     basicTrading.setHouseId(house);
-                    basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicTrading);
+                    basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicTrading,true);
                 }
                 //完损度
                 jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_DAMAGED_DEGREE.getVar());
@@ -537,12 +535,12 @@ public class BasicApplyBatchService {
                         damagedDegree.setEntityCondition(degree.getEntityCondition());
                         damagedDegree.setEntityConditionContent(degree.getEntityConditionContent());
                         damagedDegree.setScore(degree.getScore());
-                        basicHouseDamagedDegreeService.saveAndUpdateDamagedDegree(damagedDegree);
+                        basicHouseDamagedDegreeService.saveAndUpdateDamagedDegree(damagedDegree,false);
                     }
                     //写入成新率
                     String newDegree = residueRatioService.getObservationalRatio(basicHouse.getId());
                     basicHouse.setNewDegree(newDegree);
-                    basicHouseService.saveAndUpdateBasicHouse(basicHouse);
+                    basicHouseService.saveAndUpdateBasicHouse(basicHouse,false);
                 }
             }
         }
@@ -921,7 +919,7 @@ public class BasicApplyBatchService {
     private void copyBasicBuildingToBasic(BasicBuilding sourceBuilding, BasicBuilding targetBuilding) throws Exception {
         if (sourceBuilding == null || targetBuilding == null) return;
         BeanUtils.copyProperties(sourceBuilding, targetBuilding, "id", "buildingNumber", "buildingName", "gmtCreated", "gmtModified");
-        basicBuildingService.saveAndUpdateBasicBuilding(targetBuilding);
+        basicBuildingService.saveAndUpdateBasicBuilding(targetBuilding,false);
 
         SysAttachmentDto example = new SysAttachmentDto();
         example.setTableId(sourceBuilding.getId());
@@ -1064,7 +1062,7 @@ public class BasicApplyBatchService {
     private void copyBasicUnitToBasic(BasicUnit sourceUnit, BasicUnit targetUnit) throws Exception {
         if (sourceUnit == null || targetUnit == null) return;
         BeanUtils.copyProperties(sourceUnit, targetUnit, "id", "unitNumber", "gmtCreated", "gmtModified");
-        basicUnitService.saveAndUpdateBasicUnit(targetUnit);
+        basicUnitService.saveAndUpdateBasicUnit(targetUnit,false);
         basicUnitService.clearInvalidChildData(targetUnit.getId());
         //附件拷贝
         SysAttachmentDto example = new SysAttachmentDto();
@@ -1112,7 +1110,7 @@ public class BasicApplyBatchService {
                 basicUnitHuxing.setGmtCreated(null);
                 basicUnitHuxing.setGmtModified(null);
                 basicUnitHuxing.setUnitId(basicUnit.getId());
-                basicUnitHuxingService.saveAndUpdateBasicUnitHuxing(basicUnitHuxing);
+                basicUnitHuxingService.saveAndUpdateBasicUnitHuxing(basicUnitHuxing,false);
 
                 SysAttachmentDto example = new SysAttachmentDto();
                 example.setTableId(unitHuxing.getId());
@@ -1327,7 +1325,7 @@ public class BasicApplyBatchService {
     public void copyBasicHouseBasic(BasicHouse sourceHouse, BasicHouse targetHouse) throws Exception {
         if (sourceHouse == null || targetHouse == null) return;
         BeanUtils.copyProperties(sourceHouse, targetHouse, "id", "houseNumber", "gmtCreated", "gmtModified");
-        basicHouseService.saveAndUpdateBasicHouse(targetHouse);
+        basicHouseService.saveAndUpdateBasicHouse(targetHouse,false);
         basicHouseService.clearInvalidChildData(targetHouse.getId());
         List<BasicHouseRoom> basicHouseRoomList = null;
         List<BasicHouseCorollaryEquipment> basicHouseCorollaryEquipmentList = null;
@@ -1412,7 +1410,7 @@ public class BasicApplyBatchService {
                     basicHouseCorollaryEquipment.setGmtCreated(null);
                     basicHouseCorollaryEquipment.setGmtModified(null);
                     basicHouseCorollaryEquipment.setHouseId(basicHouseNew.getId());
-                    basicHouseCorollaryEquipmentService.saveAndUpdateBasicHouseCorollaryEquipment(basicHouseCorollaryEquipment);
+                    basicHouseCorollaryEquipmentService.saveAndUpdateBasicHouseCorollaryEquipment(basicHouseCorollaryEquipment,false);
 
                     SysAttachmentDto example = new SysAttachmentDto();
                     example.setTableId(oo.getId());
@@ -1436,7 +1434,7 @@ public class BasicApplyBatchService {
                 basicHouseRoom.setGmtCreated(null);
                 basicHouseRoom.setGmtModified(null);
                 basicHouseRoom.setHouseId(basicHouseNew.getId());
-                basicHouseRoomService.saveAndUpdateBasicHouseRoom(basicHouseRoom);
+                basicHouseRoomService.saveAndUpdateBasicHouseRoom(basicHouseRoom,false);
 
                 BasicHouseRoomDecorate query = new BasicHouseRoomDecorate();
                 query.setRoomId(oo.getId());
@@ -1449,7 +1447,7 @@ public class BasicApplyBatchService {
                         basicHouseRoomDecorate.setGmtModified(null);
                         basicHouseRoomDecorate.setId(null);
                         basicHouseRoomDecorate.setRoomId(basicHouseRoom.getId());
-                        basicHouseRoomDecorateService.saveAndUpdateBasicHouseRoomDecorate(basicHouseRoomDecorate);
+                        basicHouseRoomDecorateService.saveAndUpdateBasicHouseRoomDecorate(basicHouseRoomDecorate,false);
                     }
                 }
             }
@@ -1465,7 +1463,7 @@ public class BasicApplyBatchService {
                 basicHouseDamagedDegree.setGmtCreated(null);
                 basicHouseDamagedDegree.setGmtModified(null);
                 basicHouseDamagedDegree.setHouseId(basicHouseNew.getId());
-                basicHouseDamagedDegreeService.saveAndUpdateDamagedDegree(basicHouseDamagedDegree);
+                basicHouseDamagedDegreeService.saveAndUpdateDamagedDegree(basicHouseDamagedDegree,false);
 
                 List<BasicHouseDamagedDegreeDetail> degreeDetails = basicHouseDamagedDegreeService.getDamagedDegreeDetails(basicHouseDamagedDegree.getId());
                 if (!CollectionUtils.isEmpty(degreeDetails)) {
@@ -1477,7 +1475,7 @@ public class BasicApplyBatchService {
                         basicHouseDamagedDegreeDetail.setGmtModified(null);
                         basicHouseDamagedDegreeDetail.setDamagedDegreeId(basicHouseDamagedDegree.getId());
                         basicHouseDamagedDegreeDetail.setHouseId(basicHouseNew.getId());
-                        basicHouseDamagedDegreeService.saveAndUpdateDamagedDegreeDetail(basicHouseDamagedDegreeDetail);
+                        basicHouseDamagedDegreeService.saveAndUpdateDamagedDegreeDetail(basicHouseDamagedDegreeDetail,false);
                     }
                 }
             }

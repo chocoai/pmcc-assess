@@ -77,14 +77,16 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">宗地外设定</label>
-                                        <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5" id="industrySupplyInfoContainer_BBBBB">
+                                        <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5"
+                                             id="industrySupplyInfoContainer_BBBBB">
 
                                         </div>
                                     </div>
 
                                     <div class="x-valid">
                                         <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">宗地内设定</label>
-                                        <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5  " id="developmentDegreeContentContainer_BBBBB">
+                                        <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5  "
+                                             id="developmentDegreeContentContainer_BBBBB">
                                         </div>
                                     </div>
                                 </div>
@@ -107,15 +109,41 @@
                                 <div class="clearfix"></div>
                             </div>
                             <div class="x_content">
-                                <form class="form-horizontal">
+                                <form class="form-horizontal" id="approachTaxesForm">
                                     <button type="button" class="btn btn-success"
                                             onclick="taxes.prototype.showModel()"
                                             data-toggle="modal" href="#divBox"> 新增
                                     </button>
+                                    <table class="table" id="tb_taxesList">
+                                        <thead>
+                                        <tr>
+                                            <th>类型</th>
+                                            <th>耕地标准</th>
+                                            <th>非耕地标准</th>
+                                            <th>价格(元/亩)</th>
+                                            <th>操作</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="tbodyContent">
+                                        <c:forEach items="${taxesVos}" var="approachTaxe" varStatus="s">
+                                            <tr id="content${approachTaxe.id}">
+
+
+                                            </tr>
+                                            <script type="text/javascript">
+                                                $(function () {
+                                                    var html = uploadTaxeHtml("${approachTaxe.id}", "${approachTaxe.typeKey}", "${approachTaxe.typeName}", "${approachTaxe.standardFirst}", "${approachTaxe.standardSecond}", "${approachTaxe.price}");
+                                                    $("#content${approachTaxe.id}").append(html);
+                                                })
+                                            </script>
+                                        </c:forEach>
+                                        </tbody>
+                                    </table>
+
                                 </form>
-                                <table class="table table-bordered" id="tb_taxes_list">
-                                    <!-- cerare document add ajax data-->
-                                </table>
+                                <%--<table class="table table-bordered" id="tb_taxes_list">--%>
+                                <%--<!-- cerare document add ajax data-->--%>
+                                <%--</table>--%>
                             </div>
                         </div>
                         <div class="x_panel">
@@ -135,7 +163,8 @@
                                             </label>
                                             <div class="col-sm-3">
                                                 <input type="text" placeholder="宗地个别因素修正" class="form-control"
-                                                       id="plotRatioElementAmend" name="plotRatioElementAmend" required readonly
+                                                       id="plotRatioElementAmend" name="plotRatioElementAmend" required
+                                                       readonly
                                                        data-rule-number="true">
                                             </div>
                                         </div>
@@ -172,9 +201,6 @@
                             </div>
                             <div class="x_content">
                                 <form class="form-horizontal" id="master_other">
-                                    <input type="hidden" name="landProductionInterestUnit" id="landProductionInterestUnit">
-                                    <input type="hidden" name="parcelUnit" id="parcelUnit">
-                                    <input type="hidden" name="landProductionProfitUnit" id="landProductionProfitUnit">
                                     <div class="form-group">
                                         <div class="x-valid">
                                             <label class="col-sm-1 control-label">
@@ -313,31 +339,8 @@
                                                        class="form-control" name="incrementalBenefitRemark">
                                             </div>
                                         </div>
-
                                     </div>
-                                    <%--<div class="form-group">--%>
-                                        <%--<div class="x-valid">--%>
-                                            <%--<label class="col-sm-1 control-label">--%>
-                                                <%--宗地个别因素修正--%>
-                                            <%--</label>--%>
-                                            <%--<div class="col-sm-3">--%>
-                                                <%--<input type="text" placeholder="宗地个别因素修正" class="form-control x-percent"--%>
-                                                       <%--id="plotRatioElementAmend"--%>
-                                                       <%--name="plotRatioElementAmend" required onblur="getYearFixed()"--%>
-                                                       <%--value="${master.plotRatioElementAmend}">--%>
-                                            <%--</div>--%>
-                                        <%--</div>--%>
-                                        <%--<div class="x-valid">--%>
-                                            <%--<label class="col-sm-1 control-label">--%>
-                                                <%--说明--%>
-                                            <%--</label>--%>
-                                            <%--<div class="col-sm-3">--%>
-                                                <%--<input type="text" value="${master.plotRatioElementAmendRemark}"--%>
-                                                       <%--class="form-control" name="plotRatioElementAmendRemark">--%>
-                                            <%--</div>--%>
-                                        <%--</div>--%>
 
-                                    <%--</div>--%>
                                     <div class="form-group">
                                         <div class="x-valid">
                                             <label class="col-sm-1 control-label">
@@ -427,45 +430,84 @@
                                             <tr>
                                                 <td> 土地取得费及相关税费(元/亩)</td>
                                                 <td id="landAcquisitionBhou"></td>
+                                                <td> 土地取得费及相关税费(元/㎡)</td>
+                                                <td id="landAcquisitionUnit"></td>
+                                            </tr>
+                                            <tr>
                                                 <td> 土地开发费(元/亩)</td>
                                                 <td id="landProductionBhou">
+                                                </td>
+                                                <td> 土地开发费(元/㎡)</td>
+                                                <td id="landProductionUnit">
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td> 土地开发利息(元/亩)</td>
                                                 <td id="landProductionInterestBhou">
                                                 </td>
+                                                <td> 土地开发利息(元/㎡)</td>
+                                                <td id="landProductionInterestUnit">
+                                                </td>
+                                            </tr>
+                                            <tr>
                                                 <td> 土地开发利润(元/亩)</td>
                                                 <td id="landProductionProfitBhou">
+                                                </td>
+                                                <td> 土地开发利润(元/㎡)</td>
+                                                <td id="landProductionProfitUnit">
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td> 土地取得成本（元/亩）</td>
                                                 <td id="landCostPriceBhou">
                                                 </td>
+                                                <td> 土地取得成本（元/㎡）</td>
+                                                <td id="landCostPriceUnit">
+                                                </td>
+                                            </tr>
+                                            <tr>
                                                 <td> 无限年期土地使用权价格(元/亩)</td>
                                                 <td id="landUseBhou">
+                                                </td>
+                                                <td> 无限年期土地使用权价格(元/㎡)</td>
+                                                <td id="landUseUnit">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td> 年期修正（万元/亩）</td>
+                                                <td id="priceCorrectionBhou">
+                                                </td>
+                                                <td> 年期修正（元/㎡）</td>
+                                                <td id="priceCorrectionUnit">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td> 宗地个别因素修正(万元/亩)</td>
+                                                <td id="plotRatioElementAmendBhou">
+                                                </td>
+                                                <td> 宗地个别因素修正(元/㎡)</td>
+                                                <td id="plotRatioElementAmendUnit">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td> 容积率修正(万元/亩)</td>
+                                                <td id="plotRatioAdjustBhou">
+                                                </td>
+                                                <td> 容积率修正(元/㎡)</td>
+                                                <td id="plotRatioAdjustUnit">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td> 委估宗地价格(万元/亩)</td>
+                                                <td id="parcelBhou">
+                                                </td>
+                                                <td> 委估宗地价格(元/㎡)</td>
+                                                <td id="parcelUnit">
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td> 年期修正系数</td>
                                                 <td id="yearFixed">
-                                                </td>
-                                                <td> 年期修正（元/亩）</td>
-                                                <td id="priceCorrectionBhou">
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td> 宗地个别因素修正(元/亩)</td>
-                                                <td id="plotRatioElementAmendBhou">
-                                                </td>
-                                                <td> 容积率修正(元/亩)</td>
-                                                <td id="plotRatioAdjustBhou">
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td> 委估宗地价格(元/亩)</td>
-                                                <td id="parcelBhou">
                                                 </td>
                                             </tr>
                                             </tbody>
@@ -569,18 +611,25 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-1 control-label">
-                                            类型<span class="symbol required"></span>
+                                            类型
                                         </label>
-                                        <div class="col-sm-3">
-                                            <select class="form-control" required name="typeKey"
-                                                    id="typeKey" onchange="taxes.prototype.onchange()">
-                                                <option value="">--请选择--</option>
-                                                <c:if test="${not empty taxesTypes}">
-                                                    <c:forEach items="${taxesTypes}" var="item">
-                                                        <option value="${item.fieldName}">${item.name}</option>
+                                        <div class="col-sm-4">
+                                            <div class="input-group">
+                                                <input type="text" id="typeName" name="typeName" list="itemList"
+                                                       class="form-control">
+                                                <datalist id="itemList">
+                                                    <c:forEach var="item" items="${taxesTypes}">
+                                                        <option value="${item.name}">${item.name}</option>
                                                     </c:forEach>
-                                                </c:if>
-                                            </select>
+                                                </datalist>
+                                                <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default docs-tooltip"
+                                                        onclick="$(this).closest('.input-group').find('input').val('');"
+                                                        data-toggle="tooltip" data-original-title="清除">
+                                                <i class="fa fa-trash-o"></i>
+                                                </button>
+                                            </span>
+                                            </div>
                                         </div>
                                     </div>
                                     <div id="StandardContent">
@@ -644,7 +693,7 @@
         }
         var formData = formParams("master");
         var formDataOther = formParams("master_other");
-
+        formData.id = $("#master").find("input[name='id']").val();
         formData.rewardRate = AssessCommon.pointToPercent(formDataOther.rewardRate);
         formData.rewardRateId = formDataOther.rewardRateId;
         formData.circulationExpense = formDataOther.circulationExpense;
@@ -666,13 +715,13 @@
         formData.landRemainingYearRemark = formDataOther.landRemainingYearRemark;
 
 
-        formData.parcelUnit =formDataOther.parcelUnit;
-        formData.landUsePrice =getSomePlaces(parseFloat($("#landUseBhou").text()) / AssessCommon.BHOU, 2);
-        formData.yearFixed =parseFloat($("#yearFixed").text());
-        formData.landCostPriceUnit =parseFloat(getSomePlaces($("#landCostPriceBhou").text()/AssessCommon.BHOU,2));
-        formData.landAcquisitionUnit =parseFloat(getSomePlaces($("#landAcquisitionBhou").text()/AssessCommon.BHOU,2));
-        formData.landProductionProfitUnit =formDataOther.landProductionProfitUnit;
-        formData.landProductionInterestUnit =formDataOther.landProductionInterestUnit;
+        formData.parcelUnit = parseFloat($("#parcelUnit").text());
+        formData.landUsePrice = parseFloat($("#landUseUnit").text());
+        formData.yearFixed = parseFloat($("#yearFixed").text());
+        formData.landCostPriceUnit = parseFloat($("#landCostPriceUnit").text());
+        formData.landAcquisitionUnit = parseFloat($("#landAcquisitionUnit").text());
+        formData.landProductionProfitUnit = parseFloat($("#landProductionProfitUnit").text());
+        formData.landProductionInterestUnit = parseFloat($("#landProductionInterestUnit").text());
 
         var landLevelContent = [];
         $("#areaAndSeveralAmendForm").find("input[name='landLevelContent']").each(function (i, n) {
@@ -695,8 +744,8 @@
 
         if (landLevelContent.length >= 1) {
             formData.landLevelContent = JSON.stringify(landLevelContent);
-        }else{
-            formData.landLevelContent ="[]";
+        } else {
+            formData.landLevelContent = "[]";
         }
 
         if ("${processInsId}" != "0") {
@@ -741,8 +790,8 @@
             farmlandArea = parseFloat(farmlandAreaVal);
             ploughArea = parseFloat(ploughAreaVal);
         }
-        var ploughArearatio = getSomePlaces(ploughArea/farmlandArea,4);
-        var noPloughArearatio = 1-ploughArearatio;
+        var ploughArearatio = getSomePlaces(ploughArea / farmlandArea, 4);
+        var noPloughArearatio = 1 - ploughArearatio;
         $("#ploughArearatio").text(AssessCommon.pointToPercent(ploughArearatio));
         $("#noPloughArearatio").text(AssessCommon.pointToPercent(noPloughArearatio));
 
@@ -760,6 +809,7 @@
                 if (result.ret) {
                     if (result.data) {
                         $("#landAcquisitionBhou").text(result.data);
+                        $("#landAcquisitionUnit").text(parseFloat(getSomePlaces($("#landAcquisitionBhou").text() / AssessCommon.BHOU, 2)));
                         //计算土地开发费
                         getLandProductionUnit("${master.circulationExpense}", "${master.flatExpense}");
                     }
@@ -784,6 +834,7 @@
             flatExpense = parseFloat(flatExpenseVal);
         }
         $("#landProductionBhou").text(getSomePlaces((circulationExpense + flatExpense) * AssessCommon.BHOU, 2));
+        $("#landProductionUnit").text(getSomePlaces(parseFloat($("#landProductionBhou").text()) / AssessCommon.BHOU, 2));
         //计算土地开发利息
         getLandProductionInterest();
     }
@@ -808,7 +859,7 @@
             var temp2 = Math.pow((1 + calculatedInterest), machineCycle / 2) - 1;
             var landProductionInterestUnit = getSomePlaces(landAcquisitionUnit * temp + landProductionUnit * temp2, 2);
             $("#landProductionInterestBhou").text(getSomePlaces(landProductionInterestUnit * AssessCommon.BHOU, 2));
-            $("#landProductionInterestUnit").val(landProductionInterestUnit);
+            $("#landProductionInterestUnit").text(landProductionInterestUnit);
         }
         //土地开发利润
         getLandProductionProfit();
@@ -831,7 +882,7 @@
             //(E4+E17)*F24
             var landProductionProfitUnit = getSomePlaces((landAcquisitionUnit + landProductionUnit) * profitMargin, 2);
             $("#landProductionProfitBhou").text(getSomePlaces(landProductionProfitUnit * AssessCommon.BHOU, 2));
-            $("#landProductionProfitUnit").val(getSomePlaces(landProductionProfitUnit, 2));
+            $("#landProductionProfitUnit").text(getSomePlaces(landProductionProfitUnit, 2));
 
             var landProductionProfitBhou = parseFloat($("#landProductionProfitBhou").text());
             var landAcquisitionBhou = parseFloat($("#landAcquisitionBhou").text());
@@ -841,6 +892,7 @@
             //土地成本价格
             var landCostPriceBhou = getSomePlaces(landAcquisitionBhou + landProductionBhou + landProductionProfitBhou + landProductionInterestBhou, 2);
             $("#landCostPriceBhou").text(landCostPriceBhou);
+            $("#landCostPriceUnit").text(getSomePlaces(landCostPriceBhou / AssessCommon.BHOU, 2));
             //无限年期土地使用权价格
             getLandAppreciation();
         }
@@ -856,6 +908,7 @@
             incrementalBenefit = getSomePlaces(AssessCommon.percentToPoint(incrementalBenefitVal), 2);
         }
         $("#landUseBhou").text(getSomePlaces(landCostPriceBhou / (1 - incrementalBenefit), 2));
+        $("#landUseUnit").text(getSomePlaces(parseFloat($("#landUseBhou").text()) / AssessCommon.BHOU, 2));
 
         //年期修正、价格修正与确定、单价、估价对象楼面地价、委估宗地总价
         getYearFixed();
@@ -896,20 +949,23 @@
                 //价格修正与确定
                 var priceCorrectionBhou = yearFixed * landUseBhou;
                 $("#priceCorrectionBhou").text(getSomePlaces(priceCorrectionBhou / 10000, 2));
+                $("#priceCorrectionUnit").text(getSomePlaces(priceCorrectionBhou / AssessCommon.BHOU, 2));
 
                 //宗地个别因素修正
                 var plotRatioElementAmend = parseFloat($("#plotRatioElementAmend").val());
                 var plotRatioElementAmendBhou = getSomePlaces(yearFixed * landUseBhou * (1 + plotRatioElementAmend), 2);
                 $("#plotRatioElementAmendBhou").text(getSomePlaces(plotRatioElementAmendBhou / 10000, 2));
+                $("#plotRatioElementAmendUnit").text(getSomePlaces(plotRatioElementAmendBhou / AssessCommon.BHOU, 2));
 
                 //容积率修正
                 var plotRatioAdjust = parseFloat(AssessCommon.percentToPoint($("#plotRatioAdjust").val()));
                 var plotRatioAdjustBhou = getSomePlaces(yearFixed * landUseBhou * (1 + plotRatioElementAmend) * (1 + plotRatioAdjust), 2);
                 $("#plotRatioAdjustBhou").text(getSomePlaces(plotRatioAdjustBhou / 10000, 2));
+                $("#plotRatioAdjustUnit").text(getSomePlaces(plotRatioAdjustBhou / AssessCommon.BHOU, 2));
 
                 //委估宗地价格
                 $("#parcelBhou").text(getSomePlaces(plotRatioAdjustBhou / 10000, 2));
-                $("#parcelUnit").val(getSomePlaces(yearFixed * landUseBhou * (1 + plotRatioElementAmend) * (1 + plotRatioAdjust) / AssessCommon.BHOU, 2));
+                $("#parcelUnit").text(getSomePlaces(yearFixed * landUseBhou * (1 + plotRatioElementAmend) * (1 + plotRatioAdjust) / AssessCommon.BHOU, 2));
             }
         }
     }
@@ -942,15 +998,15 @@
             resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '反选' + "</span>";
             resultHtml += "<input type=\"radio\" name=\"infrastructureSelect\"  onclick=\"development.checkedFun(this,'parcelSettingOuter',false)\">";
             resultHtml += "</div>";
-            if (industrySupplyInfoContainer.find("div").size() == 0){
+            if (industrySupplyInfoContainer.find("div").size() == 0) {
                 industrySupplyInfoContainer.append(resultHtml);
-            }else {
+            } else {
                 $.each(resultData, function (i, item) {
-                    var ele = "#parcelSettingOuterBBBBB"+item.id ;
-                    ele = $(ele) ;
+                    var ele = "#parcelSettingOuterBBBBB" + item.id;
+                    ele = $(ele);
                     if ($.inArray(item.id.toString(), array) > -1) {
                         ele.prop("checked", true);
-                    }else {
+                    } else {
                         ele.prop("checked", false);
                     }
                 });
@@ -978,15 +1034,15 @@
             resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '反选' + "</span>";
             resultHtml += "<input type=\"radio\" name=\"infrastructureSelect\"  onclick=\"development.checkedFun(this,'parcelSettingInner',false)\">";
             resultHtml += "</div>";
-            if (developmentDegreeContentContainer.find("div").size() == 0){
+            if (developmentDegreeContentContainer.find("div").size() == 0) {
                 developmentDegreeContentContainer.append(resultHtml);
-            }else {
+            } else {
                 $.each(resultData, function (i, item) {
-                    var ele = "#parcelSettingInnerBBBBB"+item.id ;
-                    ele = $(ele) ;
+                    var ele = "#parcelSettingInnerBBBBB" + item.id;
+                    ele = $(ele);
                     if ($.inArray(item.id.toString(), array) > -1) {
                         ele.prop("checked", true);
-                    }else {
+                    } else {
                         ele.prop("checked", false);
                     }
                 });
@@ -1271,7 +1327,7 @@
 <%--税率配置--%>
 <script type="text/javascript">
     $(function () {
-        taxes.prototype.loadDataList(${master.id});
+
 
     });
     var taxes = function () {
@@ -1313,7 +1369,7 @@
                 }
             });
         },
-        removeData: function (id) {
+        removeData: function (id, this_) {
             Alert("确认删除!", 2, null, function () {
                 $.ajax({
                     url: "${pageContext.request.contextPath}/costApproach/deleteCostApproachTaxes",
@@ -1323,7 +1379,8 @@
                     success: function (result) {
                         if (result.ret) {
                             toastr.success('删除成功');
-                            taxes.prototype.loadDataList(${master.id});
+                            $(this_).parent().parent().remove();
+
                         }
                         else {
                             Alert("保存数据失败，失败原因:" + result.errmsg);
@@ -1341,42 +1398,28 @@
             $('#' + taxes.prototype.config().box).modal("show");
         },
         saveData: function () {
-            var farmlandArea = $("#farmlandArea").val();
-            if (!farmlandArea) {
-                alert("请填写农用地总面积");
-                return false;
-            }
-            var ploughArea = $("#ploughArea").val();
-            if (!ploughArea) {
-                alert("请填耕地面积");
-                return false;
-            }
-            var populationNumber = $("#populationNumber").val();
-            if (!populationNumber) {
-                alert("请填人口数");
-                return false;
-            }
             if (!$("#" + taxes.prototype.config().frm).valid()) {
                 return false;
             }
             var data = formParams(taxes.prototype.config().frm);
-            data.masterId = ${master.id};
-
+            data.masterId = $("#master").find("input[name='id']").val();
             $.ajax({
                 url: "${pageContext.request.contextPath}/costApproach/addCostApproachTaxes",
                 type: "post",
                 dataType: "json",
                 data: {
                     formData: JSON.stringify(data),
-                    farmlandArea, farmlandArea,
-                    ploughArea: ploughArea,
-                    populationNumber: populationNumber
                 },
                 success: function (result) {
                     if (result.ret) {
                         toastr.success('保存成功');
                         $('#' + taxes.prototype.config().box).modal('hide');
-                        taxes.prototype.loadDataList(${master.id});
+                        var html = "<tr>"
+                        html += uploadTaxeHtml(result.data.id, result.data.typeKey, result.data.typeName, "", "", "");
+                        html += "</tr>"
+                        $("#tbodyContent").append(html);
+                    } else {
+                        Alert(result.errmsg);
                     }
                 },
                 error: function (result) {
@@ -1483,70 +1526,182 @@
                 }
             )
         },
-        onchange: function () {
-            var typeKey = $("#typeKey").val();
-            var html = '';
-            switch (typeKey) {
-                case "data.land.approximation.method.land.compensate": {
-                }
-                case "data.land.approximation.method.placement.compensate": {
-                }
-                case "data.land.approximation.method.house.compensate": {
-                }
-                case "data.land.approximation.method.removal.award": {
-                }
-                case"data.land.approximation.method.vegetable.build": {
-                }
-                case"data.land.approximation.method.plough.reclaim": {
-                }
-                case"data.land.approximation.method.occupation.land": {
-                    html += '<div class="x-valid">';
-                    html += '<label class="col-sm-1 control-label">耕地标准</label>';
-                    html += '<div class="col-sm-3">';
-                    html += '<input type="text" name="standardFirst" class="form-control" data-rule-number="true">';
-                    html += '</div>';
-                    html += '</div>';
-                    html += '<div class="x-valid">';
-                    html += '<label class="col-sm-1 control-label">非耕地标准</label>';
-                    html += '<div class="col-sm-3">';
-                    html += '<input type="text" name="standardSecond" class="form-control" data-rule-number="true">';
-                    html += '</div>';
-                    html += '</div>';
-                    break;
-                }
-                case"data.land.approximation.method.crops.compensate": {
-                    html += '<div class="x-valid">';
-                    html += '<label class="col-sm-1 control-label">耕地标准</label>';
-                    html += '<div class="col-sm-3">';
-                    html += '<input type="text" name="standardFirst" class="form-control x-percent">';
-                    html += '</div>';
-                    html += '</div>';
-                    html += '<div class="x-valid">';
-                    html += '<label class="col-sm-1 control-label">非耕地标准</label>';
-                    html += '<div class="col-sm-3">';
-                    html += '<input type="text" name="standardSecond" class="form-control" data-rule-number="true">';
-                    html += '</div>';
-                    html += '</div>';
-                    break;
-                }
-                case "data.land.approximation.method.land.manager": {
-                }
-                case "data.land.approximation.method.cannot.foresee": {
-                }
-                case "data.land.approximation.method.land.acquisition": {
-                    html += '<div class="x-valid">';
-                    html += '<label class="col-sm-1 control-label">标准<span class="symbol required"></span></label>';
-                    html += '<div class="col-sm-3">';
-                    html += '<input type="text" name="standardFirst" class="form-control x-percent" required>';
-                    html += '</div>';
-                    html += '</div>';
-                    break;
-                }
+
+    }
+
+    function uploadTaxeHtml(id, typeKey, typeName, standardFirst, standardSecond, price) {
+        var html = '';
+        html += '<td><input type="hidden" name="id" value="' + id + '">';
+        html += '<input type="hidden" name="typeKey" value="' + typeKey + '">' + typeName + '</td>';
+        switch (typeKey) {
+            case "data.land.approximation.method.land.compensate": {
             }
-            $("#StandardContent").empty().append(html);
+            case "data.land.approximation.method.placement.compensate": {
+            }
+            case "data.land.approximation.method.house.compensate": {
+            }
+            case "data.land.approximation.method.removal.award": {
+            }
+            case"data.land.approximation.method.vegetable.build": {
+            }
+            case"data.land.approximation.method.plough.reclaim": {
+            }
+            case"data.land.approximation.method.occupation.land": {
+                html += '<td>';
+                html += '<div class="x-valid">';
+                html += '<input type="text" data-rule-number="true" name="standardFirst" class="form-control " value="' + standardFirst + '">';
+                html += '</div>';
+                html += '</td>';
+                html += '<td>';
+                html += '<div class="x-valid">';
+                html += '<input type="text"  data-rule-number="true"  name="standardSecond" class="form-control " value="' + standardSecond + '">';
+                html += '</div>';
+                html += '</td>';
+                html += '<td>';
+                html += '<div class="x-valid">';
+                html += '<input type="text" data-rule-number="true" name="price" class="form-control " value="' + price + '" readonly>';
+                html += '</div>';
+                html += '</td>';
+                html += '<td>';
+                html += '<a class="btn btn-xs btn-danger" onclick="getThisPrice(this)">计算价格</a>';
+                html += '<a class="btn btn-xs btn-danger" onclick="emptyRefill(this)">清空</a>';
+                html += ' <a  class="btn btn-xs btn-warning" onclick="cleanHTMLData(this)">移除</a>'
+                html += '</td>';
+                break;
+            }
+            case"data.land.approximation.method.crops.compensate": {
+            }
+            case "data.land.approximation.method.land.manager": {
+            }
+            case "data.land.approximation.method.cannot.foresee": {
+            }
+            case "data.land.approximation.method.land.acquisition": {
+                html += '<td>';
+                html += '<div class="x-valid">';
+                html += '<input type="text" data-rule-number="true" name="standardFirst"  class="form-control x-percent" value="' + AssessCommon.pointToPercent(standardFirst) + '">';
+                html += '</div>';
+                html += '</td>';
+                html += '<td>';
+                html += '/';
+                html += '</td>';
+                html += '<td>';
+                html += '<div class="x-valid">';
+                html += '<input type="text" data-rule-number="true" name="price" class="form-control " value="' + price + '" readonly>';
+                html += '</div>';
+                html += '</td>';
+                html += '<td>';
+                html += '<a class="btn btn-xs btn-danger" onclick="getThisPrice(this)">计算价格</a>';
+                html += '<a class="btn btn-xs btn-danger" onclick="emptyRefill(this)">清空</a>';
+                html += ' <a  class="btn btn-xs btn-warning" onclick="cleanHTMLData(this)">移除</a>'
+                html += '</td>';
+                break;
+            }
+            default:
+                html += '<td>';
+                html += '/';
+                html += '</td>';
+                html += '<td>';
+                html += '/';
+                html += '</td>';
+                html += '<td>';
+                html += '<div class="x-valid">';
+                html += '<input type="text" onblur="getThisPrice(this);" data-rule-number="true" name="price" class="form-control " value="' + price + '">';
+                html += '</div>';
+                html += '</td>';
+                html += '<td>';
+                html += '<a class="btn btn-xs btn-danger" onclick="emptyRefill(this)">清空</a>';
+                html += ' <a  class="btn btn-xs btn-warning" onclick="cleanHTMLData(this)">移除</a>'
+                html += '</td>';
         }
 
+        return html;
 
+    }
+
+    //清空重填
+    function emptyRefill(_this) {
+        $(_this).closest("tr").find("input").val("");
+    }
+
+    function cleanHTMLData(this_) {
+        var id = $(this_).closest("tr").find("input[name='id']").val();
+        taxes.prototype.removeData(id, this_);
+
+    }
+
+    function getThisPrice(that) {
+        var id = $(that).closest("tr").find("input[name='id']").val();
+        var masterId = $("#master").find("input[name='id']").val();
+        var typeKey = $(that).closest("tr").find("input[name='typeKey']").val();
+        var standardFirst = $(that).closest("tr").find("input[name='standardFirst']").val();
+        var standardSecond = $(that).closest("tr").find("input[name='standardSecond']").val();
+        var price = $(that).parent().closest("tr").find("input[name='price']").val();
+        var data = {};
+        data.id = id;
+        data.masterId = masterId;
+        data.typeKey = typeKey;
+        data.standardFirst = percentToPoint(standardFirst);
+        data.standardSecond = percentToPoint(standardSecond);
+        data.price = price;
+        var farmlandArea = $("#farmlandArea").val();
+        if (!farmlandArea) {
+            alert("请填写农用地总面积");
+            return false;
+        }
+        var ploughArea = $("#ploughArea").val();
+        if (!ploughArea) {
+            alert("请填耕地面积");
+            return false;
+        }
+        var populationNumber = $("#populationNumber").val();
+        if (!populationNumber) {
+            alert("请填人口数");
+            return false;
+        }
+        if (!$("#" + taxes.prototype.config().frm).valid()) {
+            return false;
+        }
+
+        $.ajax({
+            url: "${pageContext.request.contextPath}/costApproach/getThisPrice",
+            type: "post",
+            dataType: "json",
+            data: {
+                formData: JSON.stringify(data),
+                farmlandArea, farmlandArea,
+                ploughArea: ploughArea,
+                populationNumber: populationNumber
+            },
+            success: function (result) {
+                if (result.ret) {
+                    $(that).closest("tr").find("input[name='price']").val(result.data.price);
+                    getLandAcquisitionBhou(masterId);
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
+    }
+
+    //v取几位小数
+    function getSomePlaces(num, v) {
+        var vv = Math.pow(10, v);
+        return Math.round(num * vv) / vv;
+    }
+
+    //百分数转小数
+    function percentToPoint(value) {
+        if (value) {
+            if (value.indexOf("%") >= 0) {
+                var value = value.replace("%", "");
+                if (AssessCommon.isNumber(value)) {
+                    return (parseFloat(value) / 100).toFixed(4);
+                }
+            } else {
+                return value;
+            }
+        }
     }
 </script>
 </html>

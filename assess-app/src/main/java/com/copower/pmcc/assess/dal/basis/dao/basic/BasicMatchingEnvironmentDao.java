@@ -21,33 +21,33 @@ public class BasicMatchingEnvironmentDao {
     @Autowired
     private BasicMatchingEnvironmentMapper basicMatchingEnvironmentMapper;
 
-    public BasicMatchingEnvironment getBasicMatchingEnvironmentById(Integer id)throws SQLException {
+    public BasicMatchingEnvironment getBasicMatchingEnvironmentById(Integer id) throws SQLException {
         return basicMatchingEnvironmentMapper.selectByPrimaryKey(id);
     }
 
-    public Integer saveBasicMatchingEnvironment(BasicMatchingEnvironment basicMatchingEnvironment)throws SQLException{
+    public Integer saveBasicMatchingEnvironment(BasicMatchingEnvironment basicMatchingEnvironment) throws SQLException {
         basicMatchingEnvironmentMapper.insertSelective(basicMatchingEnvironment);
         return basicMatchingEnvironment.getId();
     }
 
-    public boolean updateBasicMatchingEnvironment(BasicMatchingEnvironment basicMatchingEnvironment)throws SQLException{
-        return basicMatchingEnvironmentMapper.updateByPrimaryKeySelective(basicMatchingEnvironment)==1;
+    public boolean updateBasicMatchingEnvironment(BasicMatchingEnvironment basicMatchingEnvironment, boolean updateNull) throws SQLException {
+        return updateNull ? basicMatchingEnvironmentMapper.updateByPrimaryKey(basicMatchingEnvironment) == 1 : basicMatchingEnvironmentMapper.updateByPrimaryKeySelective(basicMatchingEnvironment) == 1;
     }
 
-    public void removeBasicMatchingEnvironment(BasicMatchingEnvironment basicMatchingEnvironment)throws SQLException{
+    public void removeBasicMatchingEnvironment(BasicMatchingEnvironment basicMatchingEnvironment) throws SQLException {
         BasicMatchingEnvironmentExample example = new BasicMatchingEnvironmentExample();
         MybatisUtils.convertObj2Example(basicMatchingEnvironment, example);
         basicMatchingEnvironmentMapper.deleteByExample(example);
     }
 
-    public boolean deleteBasicMatchingEnvironment(Integer id)throws SQLException{
-        return  basicMatchingEnvironmentMapper.deleteByPrimaryKey(id)==1;
+    public boolean deleteBasicMatchingEnvironment(Integer id) throws SQLException {
+        return basicMatchingEnvironmentMapper.deleteByPrimaryKey(id) == 1;
     }
 
-    public List<BasicMatchingEnvironment> basicMatchingEnvironmentList(BasicMatchingEnvironment basicMatchingEnvironment){
+    public List<BasicMatchingEnvironment> basicMatchingEnvironmentList(BasicMatchingEnvironment basicMatchingEnvironment) {
         BasicMatchingEnvironmentExample example = new BasicMatchingEnvironmentExample();
         MybatisUtils.convertObj2Example(basicMatchingEnvironment, example);
         return basicMatchingEnvironmentMapper.selectByExample(example);
     }
-    
+
 }

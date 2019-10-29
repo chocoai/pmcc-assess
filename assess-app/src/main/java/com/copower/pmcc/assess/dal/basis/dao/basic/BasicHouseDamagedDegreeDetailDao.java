@@ -28,8 +28,8 @@ public class BasicHouseDamagedDegreeDetailDao {
         return basicHouseDamagedDegreeDetail.getId();
     }
 
-    public boolean updateBasicHouseDamagedDegreeDetail(BasicHouseDamagedDegreeDetail basicHouseDamagedDegreeDetail) {
-        return basicHouseDamagedDegreeDetailMapper.updateByPrimaryKeySelective(basicHouseDamagedDegreeDetail) == 1;
+    public boolean updateBasicHouseDamagedDegreeDetail(BasicHouseDamagedDegreeDetail basicHouseDamagedDegreeDetail, boolean updateNull) {
+        return updateNull ? basicHouseDamagedDegreeDetailMapper.updateByPrimaryKey(basicHouseDamagedDegreeDetail) == 1 : basicHouseDamagedDegreeDetailMapper.updateByPrimaryKeySelective(basicHouseDamagedDegreeDetail) == 1;
     }
 
     public boolean deleteBasicHouseDamagedDegreeDetail(Integer id) {

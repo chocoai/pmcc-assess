@@ -32,13 +32,20 @@ public class BasicHouseTradingLeaseService {
     @Autowired
     private CommonService commonService;
 
-    public Integer saveAndUpdateBasicHouseTradingLease(BasicHouseTradingLease basicHouseTradingLease)throws Exception{
+    public Integer saveAndUpdateBasicHouseTradingLease(BasicHouseTradingLease basicHouseTradingLease, boolean updateNull)throws Exception{
         if (basicHouseTradingLease.getId()==null || basicHouseTradingLease.getId().intValue()==0){
             basicHouseTradingLease.setCreator(commonService.thisUserAccount());
             return basicHouseTradingLeaseDao.saveBasicHouseTradingLease(basicHouseTradingLease);
         }else {
-            basicHouseTradingLeaseDao.updateBasicHouseTradingLease(basicHouseTradingLease);
-            return null;
+            if(updateNull){
+                BasicHouseTradingLease houseTradingLease = basicHouseTradingLeaseDao.getBasicHouseTradingLeaseById(basicHouseTradingLease.getId());
+                if(houseTradingLease!=null){
+                    basicHouseTradingLease.setCreator(houseTradingLease.getCreator());
+                    basicHouseTradingLease.setGmtCreated(houseTradingLease.getGmtCreated());
+                }
+            }
+            basicHouseTradingLeaseDao.updateBasicHouseTradingLease(basicHouseTradingLease,updateNull);
+            return basicHouseTradingLease.getId();
         }
     }
 

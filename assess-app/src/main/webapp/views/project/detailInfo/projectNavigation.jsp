@@ -16,13 +16,13 @@
                             <a href="${pageContext.request.contextPath}/projectCenter/projectStageInfo/${projectInfo.id}/${projectPlan.workStageId}">
                                 <c:choose>
                                     <c:when test="${projectPlan.projectStatus eq 'finish'}">
-                                        <i class="fa fa-check" aria-hidden="true"></i>
+                                        <i class="fa fa-check-square" aria-hidden="true"></i>
                                     </c:when>
                                     <c:when test="${projectPlan.projectStatus eq 'planExecute' or projectPlan.projectStatus eq 'task'}">
-                                        <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                                        <i class="fa fa-check-square-o" aria-hidden="true"></i>
                                     </c:when>
                                     <c:otherwise>
-                                        <i class="fa fa-info" aria-hidden="true"></i>
+                                        <i class="fa fa-square-o" aria-hidden="true"></i>
                                     </c:otherwise>
                                 </c:choose>
                                     ${projectPlan.planName}

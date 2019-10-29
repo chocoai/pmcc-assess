@@ -45,7 +45,7 @@ public class BasicEstateController {
     @RequestMapping(value = "/saveAndUpdateBasicEstate", name = "新增或者修改", method = {RequestMethod.POST})
     public HttpResult saveAndUpdateBasicEstate(BasicEstate basicEstate) {
         try {
-            return HttpResult.newCorrectResult(basicEstateService.saveAndUpdateBasicEstate(basicEstate));
+            return HttpResult.newCorrectResult(basicEstateService.saveAndUpdateBasicEstate(basicEstate,true));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(500, e.getMessage());

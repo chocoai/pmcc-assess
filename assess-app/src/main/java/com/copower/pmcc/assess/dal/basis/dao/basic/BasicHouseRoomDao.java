@@ -29,8 +29,8 @@ public class BasicHouseRoomDao {
         return basicHouseRoom.getId();
     }
 
-    public boolean updateBasicHouseRoom(BasicHouseRoom basicHouseRoom) throws SQLException {
-        return basicHouseRoomMapper.updateByPrimaryKeySelective(basicHouseRoom) == 1;
+    public boolean updateBasicHouseRoom(BasicHouseRoom basicHouseRoom, boolean updateNull) throws SQLException {
+        return updateNull ? basicHouseRoomMapper.updateByPrimaryKey(basicHouseRoom) == 1 : basicHouseRoomMapper.updateByPrimaryKeySelective(basicHouseRoom) == 1;
     }
 
     public boolean deleteBasicHouseRoom(Integer id) throws SQLException {
@@ -46,10 +46,11 @@ public class BasicHouseRoomDao {
 
     /**
      * 获取数据条数
+     *
      * @param houseId
      * @return
      */
-    public int countByHouseId(Integer houseId){
+    public int countByHouseId(Integer houseId) {
         BasicHouseRoomExample example = new BasicHouseRoomExample();
         example.createCriteria().andHouseIdEqualTo(houseId);
         return basicHouseRoomMapper.countByExample(example);

@@ -60,15 +60,21 @@ public class BasicBuildingMaintenanceService {
      * @return
      * @throws Exception
      */
-    public Integer saveAndUpdateBasicBuildingMaintenance(BasicBuildingMaintenance basicBuildingMaintenance) throws Exception {
+    public Integer saveAndUpdateBasicBuildingMaintenance(BasicBuildingMaintenance basicBuildingMaintenance, boolean updateNull) throws Exception {
         if (basicBuildingMaintenance.getId() == null || basicBuildingMaintenance.getId().intValue() == 0) {
             basicBuildingMaintenance.setCreator(commonService.thisUserAccount());
             Integer id = basicBuildingMaintenanceDao.saveBasicBuildingMaintenance(basicBuildingMaintenance);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicBuildingMaintenance.class), id);
             return  id ;
         } else {
-            BasicBuildingMaintenance oo = basicBuildingMaintenanceDao.getBasicBuildingMaintenanceById(basicBuildingMaintenance.getId());
-            basicBuildingMaintenanceDao.updateBasicBuildingMaintenance(basicBuildingMaintenance);
+            if(updateNull){
+                BasicBuildingMaintenance buildingMaintenance = basicBuildingMaintenanceDao.getBasicBuildingMaintenanceById(basicBuildingMaintenance.getId());
+                if(basicBuildingMaintenance!=null){
+                    basicBuildingMaintenance.setCreator(buildingMaintenance.getCreator());
+                    basicBuildingMaintenance.setGmtCreated(buildingMaintenance.getGmtCreated());
+                }
+            }
+            basicBuildingMaintenanceDao.updateBasicBuildingMaintenance(basicBuildingMaintenance,updateNull);
             return null;
         }
     }

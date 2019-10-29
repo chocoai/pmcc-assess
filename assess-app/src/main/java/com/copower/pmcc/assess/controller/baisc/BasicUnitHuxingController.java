@@ -4,10 +4,8 @@ import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchDetail;
 import com.copower.pmcc.assess.dal.basis.entity.BasicUnitHuxing;
 import com.copower.pmcc.assess.service.basic.BasicApplyBatchDetailService;
 import com.copower.pmcc.assess.service.basic.BasicUnitHuxingService;
-import com.copower.pmcc.assess.service.basic.BasicUnitService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
-import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,7 +41,7 @@ public class BasicUnitHuxingController {
     @RequestMapping(value = "/saveAndUpdateBasicUnitHuxing", name = "新增或者修改", method = {RequestMethod.POST})
     public HttpResult saveAndUpdateBasicUnitHuxing(BasicUnitHuxing basicUnitHuxing) {
         try {
-            return HttpResult.newCorrectResult(200, basicUnitHuxingService.saveAndUpdateBasicUnitHuxing(basicUnitHuxing));
+            return HttpResult.newCorrectResult(200, basicUnitHuxingService.saveAndUpdateBasicUnitHuxing(basicUnitHuxing,true));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(500, e.getMessage());

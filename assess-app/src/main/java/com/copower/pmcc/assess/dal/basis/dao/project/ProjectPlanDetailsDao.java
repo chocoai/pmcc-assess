@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.dal.basis.dao.project;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetailsExample;
 import com.copower.pmcc.assess.dal.basis.mapper.ProjectPlanDetailsMapper;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -51,32 +52,44 @@ public class ProjectPlanDetailsDao {
         return projectPlanDetailsMapper.selectByPrimaryKey(id);
     }
 
-    public List<ProjectPlanDetails> getProjectPlanDetailsByPlanId(Integer planId, String executeUserAccount, String projectPhaseName, List<String> ststusList) {
+    public List<ProjectPlanDetails> getProjectPlanDetailsByPlanId(Integer planId, String userAccount, String phaseName, Date startDate, Date endDate, List<String> ststusList) {
         ProjectPlanDetailsExample example = new ProjectPlanDetailsExample();
         ProjectPlanDetailsExample.Criteria criteria = example.createCriteria();
         ProjectPlanDetailsExample.Criteria criteria1 = example.createCriteria();
         criteria.andPlanIdEqualTo(planId);
         criteria1.andPlanIdEqualTo(planId);
-        if (StringUtils.isNotBlank(projectPhaseName)) {
-            criteria.andProjectPhaseNameLike(String.join("", "%", projectPhaseName, "%"));
-            criteria1.andPlanRemarksLike(String.join("", "%", projectPhaseName, "%"));
+        if (StringUtils.isNotBlank(phaseName)) {
+            criteria.andProjectPhaseNameLike(String.join("", "%", phaseName, "%"));
+            criteria1.andPlanRemarksLike(String.join("", "%", phaseName, "%"));
         }
-        if (StringUtils.isNotBlank(executeUserAccount)) {
-            criteria.andExecuteUserAccountEqualTo(executeUserAccount);
-            criteria1.andExecuteUserAccountEqualTo(executeUserAccount);
+        if (StringUtils.isNotBlank(userAccount)) {
+            criteria.andExecuteUserAccountEqualTo(userAccount);
+            criteria1.andExecuteUserAccountEqualTo(userAccount);
+        }
+        if (startDate != null) {
+            criteria.andPlanStartDateGreaterThanOrEqualTo(startDate);
+            criteria1.andPlanStartDateGreaterThanOrEqualTo(startDate);
+        }
+        if (endDate != null) {
+            endDate = DateUtils.addDay(endDate, 1);
+            criteria.andPlanEndDateLessThanOrEqualTo(endDate);
+            criteria1.andPlanEndDateLessThanOrEqualTo(endDate);
         }
         if (CollectionUtils.isNotEmpty(ststusList)) {
             criteria.andStatusIn(ststusList);
             criteria1.andStatusIn(ststusList);
         }
         example.or(criteria1);
-
-        example.setOrderByClause("sorting");
+        example.setOrderByClause("sorting,id desc");
         return projectPlanDetailsMapper.selectByExample(example);
     }
 
     public List<ProjectPlanDetails> getProjectPlanDetailsByPlanId(Integer planId) {
-        return getProjectPlanDetailsByPlanId(planId, null, null, null);
+        ProjectPlanDetailsExample example = new ProjectPlanDetailsExample();
+        ProjectPlanDetailsExample.Criteria criteria = example.createCriteria();
+        criteria.andPlanIdEqualTo(planId);
+        example.setOrderByClause("sorting,id desc");
+        return projectPlanDetailsMapper.selectByExample(example);
     }
 
     public List<ProjectPlanDetails> getRootProjectPlanDetailsByPlanId(Integer planId) {

@@ -21,47 +21,47 @@ public class BasicUnitDao {
     @Autowired
     private BasicUnitMapper basicUnitMapper;
 
-    public BasicUnit getBasicUnitById(Integer id){
+    public BasicUnit getBasicUnitById(Integer id) {
         return basicUnitMapper.selectByPrimaryKey(id);
     }
 
-    public Integer addBasicUnit(BasicUnit basicUnit){
+    public Integer addBasicUnit(BasicUnit basicUnit) {
         basicUnitMapper.insertSelective(basicUnit);
         return basicUnit.getId();
     }
 
-    public boolean updateBasicUnit(BasicUnit basicUnit){
-        return basicUnitMapper.updateByPrimaryKeySelective(basicUnit)==1;
+    public boolean updateBasicUnit(BasicUnit basicUnit, boolean updateNull) {
+        return updateNull ? basicUnitMapper.updateByPrimaryKey(basicUnit) == 1 : basicUnitMapper.updateByPrimaryKeySelective(basicUnit) == 1;
     }
 
-    public boolean deleteBasicUnit(Integer id){
-        return  basicUnitMapper.deleteByPrimaryKey(id)==1;
+    public boolean deleteBasicUnit(Integer id) {
+        return basicUnitMapper.deleteByPrimaryKey(id) == 1;
     }
 
-    public List<BasicUnit> basicUnitList(BasicUnit basicUnit){
+    public List<BasicUnit> basicUnitList(BasicUnit basicUnit) {
         BasicUnitExample example = new BasicUnitExample();
         BasicUnitExample.Criteria criteria = example.createCriteria();
         criteria.andIdIsNotNull();
-        if (basicUnit.getApplyId() != null){
+        if (basicUnit.getApplyId() != null) {
             criteria.andApplyIdEqualTo(basicUnit.getApplyId());
         }
-        if (StringUtils.isNotBlank(basicUnit.getUnitNumber())){
+        if (StringUtils.isNotBlank(basicUnit.getUnitNumber())) {
             criteria.andUnitNumberLike(new StringBuilder("%").append(basicUnit.getUnitNumber()).append("%").toString());
         }
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(basicUnit.getElevatorHouseholdRatio())){
-            criteria.andElevatorHouseholdRatioEqualTo(basicUnit.getElevatorHouseholdRatio()) ;
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(basicUnit.getElevatorHouseholdRatio())) {
+            criteria.andElevatorHouseholdRatioEqualTo(basicUnit.getElevatorHouseholdRatio());
         }
-        if (basicUnit.getBuildingId() != null){
+        if (basicUnit.getBuildingId() != null) {
             criteria.andBuildingIdEqualTo(basicUnit.getBuildingId());
         }
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(basicUnit.getCreator())){
-            criteria.andCreatorEqualTo(basicUnit.getCreator()) ;
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(basicUnit.getCreator())) {
+            criteria.andCreatorEqualTo(basicUnit.getCreator());
         }
         example.setOrderByClause("id desc");
         return basicUnitMapper.selectByExample(example);
     }
 
-    public List<BasicUnit> autoComplete(BasicUnit basicUnit){
-       return this.basicUnitList(basicUnit);
+    public List<BasicUnit> autoComplete(BasicUnit basicUnit) {
+        return this.basicUnitList(basicUnit);
     }
 }

@@ -18,38 +18,38 @@ public class BasicBuildingPropertyServiceItemDao {
     @Autowired
     private BasicBuildingPropertyServiceItemMapper mapper;
 
-    public boolean addBasicBuildingPropertyServiceItem(BasicBuildingPropertyServiceItem oo){
+    public boolean addBasicBuildingPropertyServiceItem(BasicBuildingPropertyServiceItem oo) {
         return mapper.insertSelective(oo) == 1;
     }
 
-    public boolean updateBasicBuildingPropertyServiceItem(BasicBuildingPropertyServiceItem oo){
-        return mapper.updateByPrimaryKeySelective(oo)==1;
+    public boolean updateBasicBuildingPropertyServiceItem(BasicBuildingPropertyServiceItem oo, boolean updateNull) {
+        return updateNull ? mapper.updateByPrimaryKey(oo) == 1 : mapper.updateByPrimaryKeySelective(oo) == 1;
     }
 
-    public void removeIds(List<Integer> integerList){
+    public void removeIds(List<Integer> integerList) {
         BasicBuildingPropertyServiceItemExample example = new BasicBuildingPropertyServiceItemExample();
         example.createCriteria().andIdIn(integerList);
-        mapper.deleteByExample(example) ;
+        mapper.deleteByExample(example);
     }
 
-    public BasicBuildingPropertyServiceItem getBasicBuildingPropertyServiceItemById(Integer id){
-        return mapper.selectByPrimaryKey(id) ;
+    public BasicBuildingPropertyServiceItem getBasicBuildingPropertyServiceItemById(Integer id) {
+        return mapper.selectByPrimaryKey(id);
     }
 
-    public boolean deleteBasicBuildingPropertyServiceItemById(Integer id){
+    public boolean deleteBasicBuildingPropertyServiceItemById(Integer id) {
         return mapper.deleteByPrimaryKey(id) == 1;
     }
 
     @Deprecated
-    public void removeBasicBuildingPropertyServiceItem(BasicBuildingPropertyServiceItem oo){
+    public void removeBasicBuildingPropertyServiceItem(BasicBuildingPropertyServiceItem oo) {
         BasicBuildingPropertyServiceItemExample example = new BasicBuildingPropertyServiceItemExample();
         MybatisUtils.convertObj2Example(oo, example);
-        mapper.deleteByExample(example) ;
+        mapper.deleteByExample(example);
     }
 
-    public List<BasicBuildingPropertyServiceItem> getBasicBuildingPropertyServiceItemListByExample(BasicBuildingPropertyServiceItem oo){
+    public List<BasicBuildingPropertyServiceItem> getBasicBuildingPropertyServiceItemListByExample(BasicBuildingPropertyServiceItem oo) {
         BasicBuildingPropertyServiceItemExample example = new BasicBuildingPropertyServiceItemExample();
         MybatisUtils.convertObj2Example(oo, example);
-        return mapper.selectByExample(example) ;
+        return mapper.selectByExample(example);
     }
 }

@@ -43,7 +43,7 @@ public class BasicMatchingMaterialController {
     @RequestMapping(value = "/saveAndUpdateBasicMatchingMaterial", name = "新增或者修改", method = {RequestMethod.POST})
     public HttpResult saveAndUpdateBasicMatchingMaterial(BasicMatchingMaterial basicMatchingMaterial){
         try {
-            return HttpResult.newCorrectResult(200,basicMatchingMaterialService.saveAndUpdateBasicMatchingMaterial(basicMatchingMaterial));
+            return HttpResult.newCorrectResult(200,basicMatchingMaterialService.saveAndUpdateBasicMatchingMaterial(basicMatchingMaterial,true));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
             return HttpResult.newErrorResult(500,e.getMessage());

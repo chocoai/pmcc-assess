@@ -42,7 +42,7 @@ public class BasicEstateParkingController {
     @RequestMapping(value = "/saveAndUpdateBasicEstateParking", name = "新增或者修改", method = {RequestMethod.POST})
     public HttpResult saveAndUpdateBasicEstateParking(BasicEstateParking basicEstateParking){
         try {
-            return HttpResult.newCorrectResult(200,basicEstateParkingService.saveAndUpdateBasicEstateParking(basicEstateParking));
+            return HttpResult.newCorrectResult(200,basicEstateParkingService.saveAndUpdateBasicEstateParking(basicEstateParking,true));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
             return HttpResult.newErrorResult(500,e.getMessage());

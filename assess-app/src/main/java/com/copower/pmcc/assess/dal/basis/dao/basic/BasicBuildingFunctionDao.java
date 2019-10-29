@@ -20,30 +20,30 @@ public class BasicBuildingFunctionDao {
     @Autowired
     private BasicBuildingFunctionMapper basicBuildingFunctionMapper;
 
-    public BasicBuildingFunction getBasicBuildingFunctionById(Integer id)throws SQLException {
+    public BasicBuildingFunction getBasicBuildingFunctionById(Integer id) throws SQLException {
         return basicBuildingFunctionMapper.selectByPrimaryKey(id);
     }
 
-    public Integer saveBasicBuildingFunction(BasicBuildingFunction basicBuildingFunction)throws SQLException{
+    public Integer saveBasicBuildingFunction(BasicBuildingFunction basicBuildingFunction) throws SQLException {
         basicBuildingFunctionMapper.insertSelective(basicBuildingFunction);
         return basicBuildingFunction.getId();
     }
 
-    public boolean updateBasicBuildingFunction(BasicBuildingFunction basicBuildingFunction)throws SQLException{
-        return basicBuildingFunctionMapper.updateByPrimaryKeySelective(basicBuildingFunction)==1;
+    public boolean updateBasicBuildingFunction(BasicBuildingFunction basicBuildingFunction, boolean updateNull) throws SQLException {
+        return updateNull ? basicBuildingFunctionMapper.updateByPrimaryKey(basicBuildingFunction) == 1 : basicBuildingFunctionMapper.updateByPrimaryKeySelective(basicBuildingFunction) == 1;
     }
 
-    public void removeBasicBuildingFunction(BasicBuildingFunction basicBuildingFunction)throws SQLException{
+    public void removeBasicBuildingFunction(BasicBuildingFunction basicBuildingFunction) throws SQLException {
         BasicBuildingFunctionExample example = new BasicBuildingFunctionExample();
         MybatisUtils.convertObj2Example(basicBuildingFunction, example);
         basicBuildingFunctionMapper.deleteByExample(example);
     }
 
-    public boolean deleteBasicBuildingFunction(Integer id)throws SQLException{
-        return  basicBuildingFunctionMapper.deleteByPrimaryKey(id)==1;
+    public boolean deleteBasicBuildingFunction(Integer id) throws SQLException {
+        return basicBuildingFunctionMapper.deleteByPrimaryKey(id) == 1;
     }
 
-    public List<BasicBuildingFunction> basicBuildingFunctionList(BasicBuildingFunction basicBuildingFunction){
+    public List<BasicBuildingFunction> basicBuildingFunctionList(BasicBuildingFunction basicBuildingFunction) {
         BasicBuildingFunctionExample example = new BasicBuildingFunctionExample();
         MybatisUtils.convertObj2Example(basicBuildingFunction, example);
         return basicBuildingFunctionMapper.selectByExample(example);

@@ -59,16 +59,22 @@ public class BasicUnitElevatorService {
      * @return
      * @throws Exception
      */
-    public Integer saveAndUpdateBasicUnitElevator(BasicUnitElevator basicUnitElevator) throws Exception {
+    public Integer saveAndUpdateBasicUnitElevator(BasicUnitElevator basicUnitElevator, boolean updateNull) throws Exception {
         if (basicUnitElevator.getId() == null || basicUnitElevator.getId().intValue() == 0) {
             basicUnitElevator.setCreator(commonService.thisUserAccount());
             Integer id = basicUnitElevatorDao.saveBasicUnitElevator(basicUnitElevator);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicUnitElevator.class), id);
             return  id ;
         } else {
-            BasicUnitElevator oo = basicUnitElevatorDao.getBasicUnitElevatorById(basicUnitElevator.getId());
-            basicUnitElevatorDao.updateBasicUnitElevator(basicUnitElevator);
-            return null;
+            if(updateNull){
+                BasicUnitElevator unitElevator = basicUnitElevatorDao.getBasicUnitElevatorById(basicUnitElevator.getId());
+                if(unitElevator!=null){
+                    basicUnitElevator.setCreator(unitElevator.getCreator());
+                    basicUnitElevator.setCreator(unitElevator.getCreator());
+                }
+            }
+            basicUnitElevatorDao.updateBasicUnitElevator(basicUnitElevator,updateNull);
+            return basicUnitElevator.getId();
         }
     }
 

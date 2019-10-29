@@ -31,36 +31,43 @@ public class BasicHouseTradingSellService {
     @Autowired
     private BasicHouseTradingSellDao basicHouseTradingSellDao;
 
-    public Integer saveAndUpdateBasicHouseTradingSell(BasicHouseTradingSell basicHouseTradingSell)throws Exception{
-        if (basicHouseTradingSell.getId()==null || basicHouseTradingSell.getId().intValue()==0){
+    public Integer saveAndUpdateBasicHouseTradingSell(BasicHouseTradingSell basicHouseTradingSell, boolean updateNull) throws Exception {
+        if (basicHouseTradingSell.getId() == null || basicHouseTradingSell.getId().intValue() == 0) {
             basicHouseTradingSell.setCreator(commonService.thisUserAccount());
             return basicHouseTradingSellDao.saveBasicHouseTradingSell(basicHouseTradingSell);
-        }else {
-            basicHouseTradingSellDao.updateBasicHouseTradingSell(basicHouseTradingSell);
-            return null;
+        } else {
+            if (updateNull) {
+                BasicHouseTradingSell houseTradingSell = basicHouseTradingSellDao.getBasicHouseTradingSellById(basicHouseTradingSell.getId());
+                if (houseTradingSell != null) {
+                    basicHouseTradingSell.setCreator(houseTradingSell.getCreator());
+                    basicHouseTradingSell.setGmtCreated(houseTradingSell.getGmtCreated());
+                }
+            }
+            basicHouseTradingSellDao.updateBasicHouseTradingSell(basicHouseTradingSell, updateNull);
+            return basicHouseTradingSell.getId();
         }
     }
 
-    public BasicHouseTradingSell getByBasicHouseTradingSellId(Integer id)throws Exception{
+    public BasicHouseTradingSell getByBasicHouseTradingSellId(Integer id) throws Exception {
         return basicHouseTradingSellDao.getBasicHouseTradingSellById(id);
     }
 
-    public boolean deleteBasicHouseTradingSell(Integer id)throws Exception{
+    public boolean deleteBasicHouseTradingSell(Integer id) throws Exception {
         return basicHouseTradingSellDao.deleteBasicHouseTradingSell(id);
     }
 
-    public boolean deleteBasicHouseTradingSell(BasicHouseTradingSell basicHouseTradingSell)throws Exception{
+    public boolean deleteBasicHouseTradingSell(BasicHouseTradingSell basicHouseTradingSell) throws Exception {
         return basicHouseTradingSellDao.deleteBasicHouseTradingSell(basicHouseTradingSell);
     }
 
-    public BootstrapTableVo getBootstrapTableVo(BasicHouseTradingSell basicHouseTradingSell,String type)throws Exception{
+    public BootstrapTableVo getBootstrapTableVo(BasicHouseTradingSell basicHouseTradingSell, String type) throws Exception {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<BasicHouseTradingSellVo> vos = Lists.newArrayList();
         List<BasicHouseTradingSell> basicHouseTradingSellList = basicHouseTradingSellDao.basicHouseTradingSellList(basicHouseTradingSell);
-        if (!ObjectUtils.isEmpty(basicHouseTradingSellList)){
-            for (BasicHouseTradingSell oo:basicHouseTradingSellList){
+        if (!ObjectUtils.isEmpty(basicHouseTradingSellList)) {
+            for (BasicHouseTradingSell oo : basicHouseTradingSellList) {
                 BasicHouseTradingSellVo sellVo = getBasicHouseTradingSellVo(oo);
                 sellVo.setTradingType(type);
                 vos.add(sellVo);
@@ -71,19 +78,19 @@ public class BasicHouseTradingSellService {
         return vo;
     }
 
-    public BasicHouseTradingSellVo getBasicHouseTradingSellVo(BasicHouseTradingSell basicHouseTradingSell){
+    public BasicHouseTradingSellVo getBasicHouseTradingSellVo(BasicHouseTradingSell basicHouseTradingSell) {
         BasicHouseTradingSellVo vo = new BasicHouseTradingSellVo();
-        BeanUtils.copyProperties(basicHouseTradingSell,vo);
-        if (basicHouseTradingSell.getInstalmentPeriodStart() != null){
+        BeanUtils.copyProperties(basicHouseTradingSell, vo);
+        if (basicHouseTradingSell.getInstalmentPeriodStart() != null) {
             vo.setInstalmentPeriodStartName(DateUtils.format(basicHouseTradingSell.getInstalmentPeriodStart()));
         }
-        if (basicHouseTradingSell.getInstalmentPeriodEnd() != null){
+        if (basicHouseTradingSell.getInstalmentPeriodEnd() != null) {
             vo.setInstalmentPeriodEndName(DateUtils.format(basicHouseTradingSell.getInstalmentPeriodEnd()));
         }
         return vo;
     }
 
-    public List<BasicHouseTradingSell> basicHouseTradingSells(BasicHouseTradingSell basicHouseTradingSell)throws Exception{
+    public List<BasicHouseTradingSell> basicHouseTradingSells(BasicHouseTradingSell basicHouseTradingSell) throws Exception {
         return basicHouseTradingSellDao.basicHouseTradingSellList(basicHouseTradingSell);
     }
 

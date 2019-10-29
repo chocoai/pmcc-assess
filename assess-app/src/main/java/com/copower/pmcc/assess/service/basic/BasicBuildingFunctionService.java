@@ -59,16 +59,22 @@ public class BasicBuildingFunctionService {
      * @return
      * @throws Exception
      */
-    public Integer saveAndUpdateBasicBuildingFunction(BasicBuildingFunction basicBuildingFunction) throws Exception {
+    public Integer saveAndUpdateBasicBuildingFunction(BasicBuildingFunction basicBuildingFunction, boolean updateNull) throws Exception {
         if (basicBuildingFunction.getId() == null || basicBuildingFunction.getId().intValue() == 0) {
             basicBuildingFunction.setCreator(commonService.thisUserAccount());
             Integer id = basicBuildingFunctionDao.saveBasicBuildingFunction(basicBuildingFunction);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicBuildingFunction.class), id);
-            return  id ;
+            return id;
         } else {
-            BasicBuildingFunction oo = basicBuildingFunctionDao.getBasicBuildingFunctionById(basicBuildingFunction.getId());
-            basicBuildingFunctionDao.updateBasicBuildingFunction(basicBuildingFunction);
-            return null;
+            if (updateNull) {
+                BasicBuildingFunction buildingFunction = basicBuildingFunctionDao.getBasicBuildingFunctionById(basicBuildingFunction.getId());
+                if(buildingFunction!=null){
+                    basicBuildingFunction.setCreator(buildingFunction.getCreator());
+                    basicBuildingFunction.setGmtCreated(buildingFunction.getGmtCreated());
+                }
+            }
+            basicBuildingFunctionDao.updateBasicBuildingFunction(basicBuildingFunction, updateNull);
+            return basicBuildingFunction.getId();
         }
     }
 
@@ -95,12 +101,12 @@ public class BasicBuildingFunctionService {
         return basicBuildingFunctionDao.basicBuildingFunctionList(basicBuildingFunction);
     }
 
-    public void removeBasicBuildingFunction(BasicBuildingFunction basicBuildingFunction)throws Exception{
+    public void removeBasicBuildingFunction(BasicBuildingFunction basicBuildingFunction) throws Exception {
         basicBuildingFunctionDao.removeBasicBuildingFunction(basicBuildingFunction);
     }
 
-    public List<BasicBuildingFunction> getBasicBuildingFunctionList(Integer buildingId){
-        BasicBuildingFunction where=new BasicBuildingFunction();
+    public List<BasicBuildingFunction> getBasicBuildingFunctionList(Integer buildingId) {
+        BasicBuildingFunction where = new BasicBuildingFunction();
         where.setBuildingId(buildingId);
         return basicBuildingFunctionDao.basicBuildingFunctionList(where);
     }
@@ -117,12 +123,12 @@ public class BasicBuildingFunctionService {
         return vo;
     }
 
-    public BasicBuildingFunctionVo getBasicBuildingFunctionVo(BasicBuildingFunction basicBuildingFunction){
-        if (basicBuildingFunction==null){
+    public BasicBuildingFunctionVo getBasicBuildingFunctionVo(BasicBuildingFunction basicBuildingFunction) {
+        if (basicBuildingFunction == null) {
             return null;
         }
         BasicBuildingFunctionVo vo = new BasicBuildingFunctionVo();
-        BeanUtils.copyProperties(basicBuildingFunction,vo);
+        BeanUtils.copyProperties(basicBuildingFunction, vo);
         if (basicBuildingFunction.getType() != null) {
             vo.setTypeName(baseDataDicService.getNameById(basicBuildingFunction.getType()));
         }

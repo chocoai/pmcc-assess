@@ -43,7 +43,7 @@ public class BasicHouseDamagedDegreeController extends BaseController {
     @RequestMapping(value = "/saveAndUpdateDamagedDegreeDetail", name = "新增或者修改", method = {RequestMethod.POST})
     public HttpResult saveAndUpdateDamagedDegreeDetail(BasicHouseDamagedDegreeDetail basicHouseDamagedDegreeDetail) {
         try {
-            basicHouseDamagedDegreeService.saveAndUpdateDamagedDegreeDetail(basicHouseDamagedDegreeDetail);
+            basicHouseDamagedDegreeService.saveAndUpdateDamagedDegreeDetail(basicHouseDamagedDegreeDetail,true);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             log.error(String.format("Server-side exception:%s", e.getMessage()), e);

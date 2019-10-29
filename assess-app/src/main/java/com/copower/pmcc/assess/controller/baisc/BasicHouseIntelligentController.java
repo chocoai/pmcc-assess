@@ -43,7 +43,7 @@ public class BasicHouseIntelligentController {
     @RequestMapping(value = "/saveAndUpdateBasicHouseIntelligent", name = "新增或者修改", method = {RequestMethod.POST})
     public HttpResult saveAndUpdateBasicHouseIntelligent(BasicHouseIntelligent basicHouseIntelligent){
         try {
-            return HttpResult.newCorrectResult(200,basicHouseIntelligentService.saveAndUpdateBasicHouseIntelligent(basicHouseIntelligent));
+            return HttpResult.newCorrectResult(200,basicHouseIntelligentService.saveAndUpdateBasicHouseIntelligent(basicHouseIntelligent,true));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
             return HttpResult.newErrorResult(500,e.getMessage());

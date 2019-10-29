@@ -74,15 +74,6 @@ public class ProjectCenterService {
                                            Integer queryUseUnit, String queryEstateName, Integer queryLoanType, Integer queryDepartmentId) throws Exception {
 
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
-        List<Integer> orgIds = null;
-        if (!processControllerComponent.userIsAdmin(processControllerComponent.getThisUser())) {
-            //如果是超级管理员，跳过权限过滤
-            //根据当前登录人所处部门确定，只能查看当前部门及下级部门的项目数据
-//            Integer currDepartmentId = processControllerComponent.getThisUserInfo().getDepartmentId();
-//            orgIds = Lists.newArrayList(currDepartmentId);
-//            List<Integer> departmentChildenIds = erpRpcDepartmentService.getDepartmentChildenIds(currDepartmentId);
-//            orgIds.addAll(departmentChildenIds);
-        }
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         Date startTimeParse = null;
@@ -90,11 +81,7 @@ public class ProjectCenterService {
         if (StringUtil.isNotEmpty(queryTimeStart))
             startTimeParse = DateUtils.convertDate(queryTimeStart);
         if (StringUtil.isNotEmpty(queryTimeEnd)) {
-            Date temp = DateUtils.convertDate(queryTimeEnd);
-            Calendar c = Calendar.getInstance();
-            c.setTime(temp);
-            c.add(Calendar.DATE, 1); // 日期加1天
-            endTimeParse = c.getTime();
+            endTimeParse=DateUtils.addDay(queryTimeEnd,1);
         }
         List<ProjectInfo> projectInfoList = projectInfoDao.getProjectListByUserAccount("", queryName, projectStatus, queryCreator, queryMember, entrustPurpose,
                 queryManager, startTimeParse, endTimeParse, queryConsignor, queryUseUnit, queryEstateName, queryLoanType, queryDepartmentId);

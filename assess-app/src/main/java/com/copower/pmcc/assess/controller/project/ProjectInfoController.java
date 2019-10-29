@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.controller.project;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
@@ -41,6 +42,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -342,8 +344,16 @@ public class ProjectInfoController {
 
     @ResponseBody
     @RequestMapping(value = "/getPlanDetailListByPlanId", name = "取得阶段工作成果")
-    public BootstrapTableVo getPlanDetailListByPlanId(Integer projectId, Integer planId,String executeUserAccount, String projectPhaseName,String stringStatus) {
-        return projectPlanDetailsService.getPlanDetailListByPlanId(projectId, planId,executeUserAccount,projectPhaseName);
+    public BootstrapTableVo getPlanDetailListByPlanId(String formData) {
+        ProjectPlanDetails projectPlanDetails = JSON.parseObject(formData, ProjectPlanDetails.class);
+        Integer projectId = projectPlanDetails.getProjectId();
+        Integer planId = projectPlanDetails.getPlanId();
+        String userAccount = projectPlanDetails.getExecuteUserAccount();
+        String phaseName = projectPlanDetails.getProjectPhaseName();
+        String stringStatus = projectPlanDetails.getStatus();
+        Date startDate = projectPlanDetails.getPlanStartDate();
+        Date endDate = projectPlanDetails.getPlanEndDate();
+        return projectPlanDetailsService.getPlanDetailListByPlanId(projectId, planId, userAccount, phaseName, startDate, endDate, stringStatus);
     }
 
     @ResponseBody

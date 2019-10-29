@@ -59,6 +59,20 @@ public class MdCostApproachTaxesDao {
     }
 
     /**
+     * 获取自定义类型列表
+     *
+     * @param masterId
+     * @return
+     */
+    public List<MdCostApproachTaxes> getMdCostApproachTaxesListByCustom(Integer masterId) {
+        MdCostApproachTaxesExample example = new MdCostApproachTaxesExample();
+        MdCostApproachTaxesExample.Criteria criteria = example.createCriteria();
+        criteria.andMasterIdEqualTo(masterId);
+        criteria.andTypeKeyIsNull();
+        return mdCostApproachTaxesMapper.selectByExample(example);
+    }
+
+    /**
      * 新增
      *
      * @param mdCostApproachTaxes

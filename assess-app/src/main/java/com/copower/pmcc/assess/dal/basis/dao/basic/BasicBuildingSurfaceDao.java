@@ -21,33 +21,33 @@ public class BasicBuildingSurfaceDao {
     @Autowired
     private BasicBuildingSurfaceMapper basicBuildingSurfaceMapper;
 
-    public BasicBuildingSurface getBasicBuildingSurfaceById(Integer id)throws SQLException {
+    public BasicBuildingSurface getBasicBuildingSurfaceById(Integer id) throws SQLException {
         return basicBuildingSurfaceMapper.selectByPrimaryKey(id);
     }
 
-    public Integer saveBasicBuildingSurface(BasicBuildingSurface basicBuildingSurface)throws SQLException{
+    public Integer saveBasicBuildingSurface(BasicBuildingSurface basicBuildingSurface) throws SQLException {
         basicBuildingSurfaceMapper.insertSelective(basicBuildingSurface);
         return basicBuildingSurface.getId();
     }
 
-    public boolean updateBasicBuildingSurface(BasicBuildingSurface basicBuildingSurface)throws SQLException{
-        return basicBuildingSurfaceMapper.updateByPrimaryKeySelective(basicBuildingSurface)==1;
+    public boolean updateBasicBuildingSurface(BasicBuildingSurface basicBuildingSurface, boolean updateNull) throws SQLException {
+        return updateNull ? basicBuildingSurfaceMapper.updateByPrimaryKey(basicBuildingSurface) == 1 : basicBuildingSurfaceMapper.updateByPrimaryKeySelective(basicBuildingSurface) == 1;
     }
 
-    public void removeBasicBuildingSurface(BasicBuildingSurface basicBuildingSurface)throws SQLException{
+    public void removeBasicBuildingSurface(BasicBuildingSurface basicBuildingSurface) throws SQLException {
         BasicBuildingSurfaceExample example = new BasicBuildingSurfaceExample();
         MybatisUtils.convertObj2Example(basicBuildingSurface, example);
         basicBuildingSurfaceMapper.deleteByExample(example);
     }
 
-    public boolean deleteBasicBuildingSurface(Integer id)throws SQLException{
-        return  basicBuildingSurfaceMapper.deleteByPrimaryKey(id)==1;
+    public boolean deleteBasicBuildingSurface(Integer id) throws SQLException {
+        return basicBuildingSurfaceMapper.deleteByPrimaryKey(id) == 1;
     }
 
-    public List<BasicBuildingSurface> basicBuildingSurfaceList(BasicBuildingSurface basicBuildingSurface)throws SQLException{
+    public List<BasicBuildingSurface> basicBuildingSurfaceList(BasicBuildingSurface basicBuildingSurface) throws SQLException {
         BasicBuildingSurfaceExample example = new BasicBuildingSurfaceExample();
         MybatisUtils.convertObj2Example(basicBuildingSurface, example);
         return basicBuildingSurfaceMapper.selectByExample(example);
     }
-    
+
 }

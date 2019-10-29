@@ -21,24 +21,24 @@ public class BasicHouseTradingDao {
     @Autowired
     private BasicHouseTradingMapper basicHouseTradingMapper;
 
-    public BasicHouseTrading getBasicHouseTradingById(Integer id)throws SQLException{
+    public BasicHouseTrading getBasicHouseTradingById(Integer id) throws SQLException {
         return basicHouseTradingMapper.selectByPrimaryKey(id);
     }
 
-    public Integer saveBasicHouseTrading(BasicHouseTrading basicHouseTrading)throws SQLException{
+    public Integer saveBasicHouseTrading(BasicHouseTrading basicHouseTrading) throws SQLException {
         basicHouseTradingMapper.insertSelective(basicHouseTrading);
         return basicHouseTrading.getId();
     }
 
-    public boolean updateBasicHouseTrading(BasicHouseTrading basicHouseTrading)throws SQLException{
-        return basicHouseTradingMapper.updateByPrimaryKeySelective(basicHouseTrading)==1;
+    public boolean updateBasicHouseTrading(BasicHouseTrading basicHouseTrading, boolean updateNull) throws SQLException {
+        return updateNull ? basicHouseTradingMapper.updateByPrimaryKey(basicHouseTrading) == 1 : basicHouseTradingMapper.updateByPrimaryKeySelective(basicHouseTrading) == 1;
     }
 
-    public boolean deleteBasicHouseTrading(Integer id)throws SQLException{
-        return  basicHouseTradingMapper.deleteByPrimaryKey(id)==1;
+    public boolean deleteBasicHouseTrading(Integer id) throws SQLException {
+        return basicHouseTradingMapper.deleteByPrimaryKey(id) == 1;
     }
 
-    public List<BasicHouseTrading> basicHouseTradingList(BasicHouseTrading basicHouseTrading)throws SQLException{
+    public List<BasicHouseTrading> basicHouseTradingList(BasicHouseTrading basicHouseTrading) throws SQLException {
         BasicHouseTradingExample example = new BasicHouseTradingExample();
         MybatisUtils.convertObj2Example(basicHouseTrading, example);
         return basicHouseTradingMapper.selectByExample(example);

@@ -99,14 +99,21 @@ public class BasicUnitService {
      * @return
      * @throws Exception
      */
-    public Integer saveAndUpdateBasicUnit(BasicUnit basicUnit) throws Exception {
+    public Integer saveAndUpdateBasicUnit(BasicUnit basicUnit, boolean updateNull) throws Exception {
         if (basicUnit.getId() == null || basicUnit.getId().intValue() == 0) {
             basicUnit.setCreator(commonService.thisUserAccount());
             Integer id = basicUnitDao.addBasicUnit(basicUnit);
             return id;
         } else {
-            basicUnitDao.updateBasicUnit(basicUnit);
-            return null;
+            if(updateNull){
+                BasicUnit unit = basicUnitDao.getBasicUnitById(basicUnit.getId());
+                if(unit!=null){
+                    basicUnit.setCreator(unit.getCreator());
+                    basicUnit.setGmtCreated(unit.getGmtCreated());
+                }
+            }
+            basicUnitDao.updateBasicUnit(basicUnit,updateNull);
+            return basicUnit.getId();
         }
     }
 
@@ -301,7 +308,7 @@ public class BasicUnitService {
                     basicUnitHuxing.setId(null);
                     basicUnitHuxing.setGmtCreated(null);
                     basicUnitHuxing.setGmtModified(null);
-                    Integer id = basicUnitHuxingService.saveAndUpdateBasicUnitHuxing(basicUnitHuxing);
+                    Integer id = basicUnitHuxingService.saveAndUpdateBasicUnitHuxing(basicUnitHuxing,false);
 
                     //附件拷贝
                     example = new SysAttachmentDto();
@@ -356,8 +363,7 @@ public class BasicUnitService {
         basicUnit.setGmtCreated(null);
         basicUnit.setGmtModified(null);
         basicUnit.setId(null);
-
-        this.saveAndUpdateBasicUnit(basicUnit);
+        this.saveAndUpdateBasicUnit(basicUnit,true);
 
 
         //附件拷贝
@@ -396,7 +402,7 @@ public class BasicUnitService {
                     basicUnitHuxing.setId(null);
                     basicUnitHuxing.setGmtCreated(null);
                     basicUnitHuxing.setGmtModified(null);
-                    Integer id = basicUnitHuxingService.saveAndUpdateBasicUnitHuxing(basicUnitHuxing);
+                    Integer id = basicUnitHuxingService.saveAndUpdateBasicUnitHuxing(basicUnitHuxing,false);
 
                     //附件拷贝
                     example = new SysAttachmentDto();
@@ -463,7 +469,7 @@ public class BasicUnitService {
         basicUnit.setApplyId(null);
         basicUnit.setBuildingId(parentTableId);
 
-        this.saveAndUpdateBasicUnit(basicUnit);
+        this.saveAndUpdateBasicUnit(basicUnit,false);
 
 
         //删除原有的附件
@@ -515,7 +521,7 @@ public class BasicUnitService {
                     basicUnitHuxing.setId(null);
                     basicUnitHuxing.setGmtCreated(null);
                     basicUnitHuxing.setGmtModified(null);
-                    Integer huxingId = basicUnitHuxingService.saveAndUpdateBasicUnitHuxing(basicUnitHuxing);
+                    Integer huxingId = basicUnitHuxingService.saveAndUpdateBasicUnitHuxing(basicUnitHuxing,false);
 
                     //附件拷贝
                     example = new SysAttachmentDto();

@@ -20,30 +20,30 @@ public class BasicUnitHuxingDao {
     @Autowired
     private BasicUnitHuxingMapper basicUnitHuxingMapper;
 
-    public BasicUnitHuxing getBasicUnitHuxingById(Integer id)throws SQLException {
+    public BasicUnitHuxing getBasicUnitHuxingById(Integer id) throws SQLException {
         return basicUnitHuxingMapper.selectByPrimaryKey(id);
     }
 
-    public Integer saveBasicUnitHuxing(BasicUnitHuxing basicUnitHuxing)throws SQLException{
+    public Integer saveBasicUnitHuxing(BasicUnitHuxing basicUnitHuxing) throws SQLException {
         basicUnitHuxingMapper.insertSelective(basicUnitHuxing);
         return basicUnitHuxing.getId();
     }
 
-    public boolean updateBasicUnitHuxing(BasicUnitHuxing basicUnitHuxing)throws SQLException{
-        return basicUnitHuxingMapper.updateByPrimaryKeySelective(basicUnitHuxing)==1;
+    public boolean updateBasicUnitHuxing(BasicUnitHuxing basicUnitHuxing, boolean updateNull) throws SQLException {
+        return updateNull ? basicUnitHuxingMapper.updateByPrimaryKey(basicUnitHuxing) == 1 : basicUnitHuxingMapper.updateByPrimaryKeySelective(basicUnitHuxing) == 1;
     }
 
-    public void removeBasicUnitHuxing(BasicUnitHuxing basicUnitHuxing)throws SQLException{
+    public void removeBasicUnitHuxing(BasicUnitHuxing basicUnitHuxing) throws SQLException {
         BasicUnitHuxingExample example = new BasicUnitHuxingExample();
         MybatisUtils.convertObj2Example(basicUnitHuxing, example);
         basicUnitHuxingMapper.deleteByExample(example);
     }
 
-    public boolean deleteBasicUnitHuxing(Integer id)throws SQLException{
-        return  basicUnitHuxingMapper.deleteByPrimaryKey(id)==1;
+    public boolean deleteBasicUnitHuxing(Integer id) throws SQLException {
+        return basicUnitHuxingMapper.deleteByPrimaryKey(id) == 1;
     }
 
-    public List<BasicUnitHuxing> basicUnitHuxingList(BasicUnitHuxing basicUnitHuxing){
+    public List<BasicUnitHuxing> basicUnitHuxingList(BasicUnitHuxing basicUnitHuxing) {
         BasicUnitHuxingExample example = new BasicUnitHuxingExample();
         MybatisUtils.convertObj2Example(basicUnitHuxing, example);
         return basicUnitHuxingMapper.selectByExample(example);
