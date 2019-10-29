@@ -104,15 +104,27 @@ public class MdCostApproachController {
 
 
     @ResponseBody
-    @RequestMapping(value = "/addCostApproachTaxes", method = {RequestMethod.POST}, name = "保存税费")
-    public HttpResult addCostApproachTaxes(String formData, String farmlandArea, String ploughArea, String populationNumber) {
+    @RequestMapping(value = "/getThisPrice", method = {RequestMethod.POST}, name = "计算税费")
+    public HttpResult calculatePrice(String formData, String farmlandArea, String ploughArea, String populationNumber) {
         try {
-            costApproachService.saveCostApproachTaxes(formData, farmlandArea, ploughArea, populationNumber);
+            MdCostApproachTaxes costApproachTaxes = costApproachService.calculatePrice(formData, farmlandArea, ploughArea, populationNumber);
+            return HttpResult.newCorrectResult(costApproachTaxes);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return HttpResult.newErrorResult(e.getMessage());
         }
-        return HttpResult.newCorrectResult();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/addCostApproachTaxes", method = {RequestMethod.POST}, name = "保存税费")
+    public HttpResult addCostApproachTaxes(String formData) {
+        try {
+            MdCostApproachTaxes costApproachTaxes = costApproachService.saveCostApproachTaxes(formData);
+            return HttpResult.newCorrectResult(costApproachTaxes);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
     }
 
     @ResponseBody

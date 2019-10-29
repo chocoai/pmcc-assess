@@ -8,7 +8,7 @@ public class MdCostApproachTaxes {
 
     private Integer masterId;
 
-    private Integer typeId;
+    private String typeName;
 
     private String typeKey;
 
@@ -40,12 +40,12 @@ public class MdCostApproachTaxes {
         this.masterId = masterId;
     }
 
-    public Integer getTypeId() {
-        return typeId;
+    public String getTypeName() {
+        return typeName;
     }
 
-    public void setTypeId(Integer typeId) {
-        this.typeId = typeId;
+    public void setTypeName(String typeName) {
+        this.typeName = typeName == null ? null : typeName.trim();
     }
 
     public String getTypeKey() {

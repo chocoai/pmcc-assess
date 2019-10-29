@@ -16,6 +16,7 @@ import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
+import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
@@ -141,8 +142,11 @@ public class MdCostApproachService {
         if (mdCostApproachTaxes == null) return null;
         MdCostApproachTaxesVo mdCostApproachTaxesVo = new MdCostApproachTaxesVo();
         BeanUtils.copyProperties(mdCostApproachTaxes, mdCostApproachTaxesVo);
-        if (mdCostApproachTaxes.getTypeId() != null && mdCostApproachTaxes.getTypeId() > 0) {
-            mdCostApproachTaxesVo.setTypeName(baseDataDicService.getNameById(mdCostApproachTaxes.getTypeId()));
+        if (StringUtils.isNotEmpty(mdCostApproachTaxes.getTypeKey())) {
+            BaseDataDic dataDic = baseDataDicService.getCacheDataDicByFieldName(mdCostApproachTaxes.getTypeKey());
+            mdCostApproachTaxesVo.setTypeName(dataDic.getName());
+        }else {
+            mdCostApproachTaxesVo.setTypeName(mdCostApproachTaxes.getTypeName());
         }
         StringBuilder s = new StringBuilder();
         switch (mdCostApproachTaxes.getTypeKey()) {
@@ -178,10 +182,13 @@ public class MdCostApproachService {
      * @param ploughArea       耕地面积
      * @param populationNumber 人口数
      */
-    public void saveCostApproachTaxes(String formData, String farmlandArea, String ploughArea, String populationNumber) {
+    public MdCostApproachTaxes calculatePrice(String formData, String farmlandArea, String ploughArea, String populationNumber) {
         MdCostApproachTaxes mdCostApproachTaxes = JSON.parseObject(formData, MdCostApproachTaxes.class);
-        BaseDataDic dic = baseDataDicService.getCacheDataDicByFieldName(mdCostApproachTaxes.getTypeKey());
-        mdCostApproachTaxes.setTypeId(dic.getId());
+        if(StringUtils.equals("null",mdCostApproachTaxes.getTypeKey())){
+            mdCostApproachTaxes.setTypeKey(null);
+        }
+
+        if (StringUtils.isNotEmpty(mdCostApproachTaxes.getTypeKey())) {
         //年平均产值
         BigDecimal yearProductionAverage = new BigDecimal("0");
         List<MdCostApproachItem> mdCostApproachItemList = getMdCostApproachItemListByMasterId(mdCostApproachTaxes.getMasterId());
@@ -284,6 +291,8 @@ public class MdCostApproachService {
                             AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_OCCUPATION_LAND,
                             AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_PLOUGH_RECLAIM};
                     List<MdCostApproachTaxes> list = getMdCostApproachTaxesListByKeys(mdCostApproachTaxes.getMasterId(), keys);
+                    List<MdCostApproachTaxes> custom = getMdCostApproachTaxesListByCustom(mdCostApproachTaxes.getMasterId());
+                    list.addAll(custom);
                     if (CollectionUtils.isNotEmpty(list)) {
                         for (MdCostApproachTaxes item : list) {
                             if (item.getPrice() != null) {
@@ -310,6 +319,8 @@ public class MdCostApproachService {
                             AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_PLOUGH_RECLAIM,
                             AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_LAND_MANAGER};
                     List<MdCostApproachTaxes> list = getMdCostApproachTaxesListByKeys(mdCostApproachTaxes.getMasterId(), keys);
+                    List<MdCostApproachTaxes> custom = getMdCostApproachTaxesListByCustom(mdCostApproachTaxes.getMasterId());
+                    list.addAll(custom);
                     if (CollectionUtils.isNotEmpty(list)) {
                         for (MdCostApproachTaxes item : list) {
                             if (item.getPrice() != null) {
@@ -337,6 +348,8 @@ public class MdCostApproachService {
                             AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_LAND_MANAGER,
                             AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_CANNOT_FORESEE};
                     List<MdCostApproachTaxes> list = getMdCostApproachTaxesListByKeys(mdCostApproachTaxes.getMasterId(), keys);
+                    List<MdCostApproachTaxes> custom = getMdCostApproachTaxesListByCustom(mdCostApproachTaxes.getMasterId());
+                    list.addAll(custom);
                     if (CollectionUtils.isNotEmpty(list)) {
                         for (MdCostApproachTaxes item : list) {
                             if (item.getPrice() != null) {
@@ -349,15 +362,39 @@ public class MdCostApproachService {
                 }
                 break;
         }
+    }
 
+
+    costApproachTaxesDao.updateCostApproachTaxes(mdCostApproachTaxes);
+
+        return mdCostApproachTaxes;
+    }
+
+
+    public MdCostApproachTaxes saveCostApproachTaxes(String formData) throws Exception{
+        MdCostApproachTaxes mdCostApproachTaxes = JSON.parseObject(formData, MdCostApproachTaxes.class);
+        //已经存在该类型
+        List<MdCostApproachTaxes> costApproachTaxesList = costApproachTaxesDao.getCostApproachTaxesList(mdCostApproachTaxes);
+        if(CollectionUtils.isNotEmpty(costApproachTaxesList)){
+            throw new BusinessException("该类型已存在");
+        }
+
+        List<BaseDataDic> dataDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_SETTING);
+        if(CollectionUtils.isNotEmpty(dataDicList)){
+            for (BaseDataDic item: dataDicList) {
+                if(StringUtils.equals(item.getName(),mdCostApproachTaxes.getTypeName())){
+                    mdCostApproachTaxes.setTypeKey(item.getFieldName());
+                }
+            }
+        }
         if (mdCostApproachTaxes.getId() == null) {
             mdCostApproachTaxes.setCreator(commonService.thisUserAccount());
             costApproachTaxesDao.addCostApproachTaxes(mdCostApproachTaxes);
         } else {
             costApproachTaxesDao.updateCostApproachTaxes(mdCostApproachTaxes);
         }
+        return mdCostApproachTaxes;
     }
-
 
     //根据masterId和keys找数据
     public List<MdCostApproachTaxes> getMdCostApproachTaxesListByKeys(Integer masterId, String[] keys) {
@@ -386,6 +423,12 @@ public class MdCostApproachService {
         List<MdCostApproachTaxes> costApproachTaxesList = costApproachTaxesDao.getCostApproachTaxesList(mdCostApproachTaxes);
         if (CollectionUtils.isNotEmpty(costApproachTaxesList)) return costApproachTaxesList.get(0);
         return mdCostApproachTaxes;
+    }
+
+    //根据masterId获取自定义添加类型
+    public List<MdCostApproachTaxes> getMdCostApproachTaxesListByCustom(Integer masterId) {
+        List<MdCostApproachTaxes> costApproachTaxesList = costApproachTaxesDao.getMdCostApproachTaxesListByCustom(masterId);
+        return costApproachTaxesList;
     }
 
     //根据masterId获取土地取得费
