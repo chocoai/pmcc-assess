@@ -43,7 +43,7 @@ public class BasicMatchingTrafficController {
     @RequestMapping(value = "/saveAndUpdateBasicMatchingTraffic", name = "新增或者修改", method = {RequestMethod.POST})
     public HttpResult saveAndUpdateBasicMatchingTraffic(BasicMatchingTraffic basicMatchingTraffic){
         try {
-            return HttpResult.newCorrectResult(200,basicMatchingTrafficService.saveAndUpdateBasicMatchingTraffic(basicMatchingTraffic));
+            return HttpResult.newCorrectResult(200,basicMatchingTrafficService.saveAndUpdateBasicMatchingTraffic(basicMatchingTraffic,true));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
             return HttpResult.newErrorResult(500,e.getMessage());

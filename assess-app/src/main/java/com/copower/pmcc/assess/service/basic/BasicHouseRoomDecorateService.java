@@ -62,15 +62,21 @@ public class BasicHouseRoomDecorateService {
      * @return
      * @throws Exception
      */
-    public Integer saveAndUpdateBasicHouseRoomDecorate(BasicHouseRoomDecorate basicHouseRoomDecorate) throws Exception {
+    public Integer saveAndUpdateBasicHouseRoomDecorate(BasicHouseRoomDecorate basicHouseRoomDecorate, boolean updateNull) throws Exception {
         if (basicHouseRoomDecorate.getId() == null || basicHouseRoomDecorate.getId().intValue() == 0) {
             basicHouseRoomDecorate.setCreator(commonService.thisUserAccount());
             Integer id = basicHouseRoomDecorateDao.saveBasicHouseRoomDecorate(basicHouseRoomDecorate);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicHouseRoomDecorate.class), id);
             return id;
         } else {
-            BasicHouseRoomDecorate oo = basicHouseRoomDecorateDao.getBasicHouseRoomDecorateById(basicHouseRoomDecorate.getId());
-            basicHouseRoomDecorateDao.updateBasicHouseRoomDecorate(basicHouseRoomDecorate);
+            if(updateNull){
+                BasicHouseRoomDecorate houseRoomDecorate = basicHouseRoomDecorateDao.getBasicHouseRoomDecorateById(basicHouseRoomDecorate.getId());
+                if(houseRoomDecorate!=null){
+                    basicHouseRoomDecorate.setCreator(houseRoomDecorate.getCreator());
+                    basicHouseRoomDecorate.setGmtCreated(houseRoomDecorate.getGmtCreated());
+                }
+            }
+            basicHouseRoomDecorateDao.updateBasicHouseRoomDecorate(basicHouseRoomDecorate,updateNull);
             return null;
         }
     }

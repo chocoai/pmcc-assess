@@ -30,8 +30,8 @@ public class BasicHouseFaceStreetDao {
         return basicHouseFaceStreet.getId();
     }
 
-    public boolean updateBasicHouseFaceStreet(BasicHouseFaceStreet basicHouseFaceStreet) throws SQLException {
-        return basicHouseFaceStreetMapper.updateByPrimaryKeySelective(basicHouseFaceStreet) == 1;
+    public boolean updateBasicHouseFaceStreet(BasicHouseFaceStreet basicHouseFaceStreet, boolean updateNull) throws SQLException {
+        return updateNull ? basicHouseFaceStreetMapper.updateByPrimaryKey(basicHouseFaceStreet) == 1 : basicHouseFaceStreetMapper.updateByPrimaryKeySelective(basicHouseFaceStreet) == 1;
     }
 
     public boolean deleteBasicHouseFaceStreet(BasicHouseFaceStreet basicHouseFaceStreet) throws SQLException {
@@ -52,10 +52,11 @@ public class BasicHouseFaceStreetDao {
 
     /**
      * 获取数据条数
+     *
      * @param houseId
      * @return
      */
-    public int countByHouseId(Integer houseId){
+    public int countByHouseId(Integer houseId) {
         BasicHouseFaceStreetExample example = new BasicHouseFaceStreetExample();
         example.createCriteria().andHouseIdEqualTo(houseId);
         return basicHouseFaceStreetMapper.countByExample(example);

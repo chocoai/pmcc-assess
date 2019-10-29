@@ -5,7 +5,6 @@ import com.copower.pmcc.assess.dal.basis.entity.BasicMatchingEnvironment;
 import com.copower.pmcc.assess.dto.output.basic.BasicMatchingEnvironmentVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
-import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
@@ -15,11 +14,7 @@ import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.google.common.base.Function;
-import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,8 +25,6 @@ import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * @Auther: zch
@@ -69,15 +62,21 @@ public class BasicMatchingEnvironmentService {
      * @return
      * @throws Exception
      */
-    public Integer saveAndUpdateBasicMatchingEnvironment(BasicMatchingEnvironment basicMatchingEnvironment) throws Exception {
+    public Integer saveAndUpdateBasicMatchingEnvironment(BasicMatchingEnvironment basicMatchingEnvironment, boolean updateNull) throws Exception {
         if (basicMatchingEnvironment.getId() == null || basicMatchingEnvironment.getId().intValue() == 0) {
             basicMatchingEnvironment.setCreator(commonService.thisUserAccount());
             Integer id = basicMatchingEnvironmentDao.saveBasicMatchingEnvironment(basicMatchingEnvironment);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicMatchingEnvironment.class), id);
             return id;
         } else {
-            BasicMatchingEnvironment oo = basicMatchingEnvironmentDao.getBasicMatchingEnvironmentById(basicMatchingEnvironment.getId());
-            basicMatchingEnvironmentDao.updateBasicMatchingEnvironment(basicMatchingEnvironment);
+            if (updateNull) {
+                BasicMatchingEnvironment matchingEnvironment = basicMatchingEnvironmentDao.getBasicMatchingEnvironmentById(basicMatchingEnvironment.getId());
+                if (matchingEnvironment != null) {
+                    basicMatchingEnvironment.setCreator(matchingEnvironment.getCreator());
+                    basicMatchingEnvironment.setGmtCreated(matchingEnvironment.getGmtCreated());
+                }
+            }
+            basicMatchingEnvironmentDao.updateBasicMatchingEnvironment(basicMatchingEnvironment, updateNull);
             return null;
         }
     }

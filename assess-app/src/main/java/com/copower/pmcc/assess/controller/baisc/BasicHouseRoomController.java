@@ -89,7 +89,7 @@ public class BasicHouseRoomController {
     @RequestMapping(value = "/saveAndUpdateBasicHouseRoom", method = {RequestMethod.POST}, name = "房间 更新或者新增")
     public HttpResult saveAndUpdateBasicHouseRoom(BasicHouseRoom basicHouseRoom) {
         try {
-            basicHouseRoomService.saveAndUpdateBasicHouseRoom(basicHouseRoom);
+            basicHouseRoomService.saveAndUpdateBasicHouseRoom(basicHouseRoom,true);
             return HttpResult.newCorrectResult(200, "success!");
         } catch (Exception e) {
             logger.error(String.format("exception:%s", e.getMessage()), e);
@@ -107,12 +107,12 @@ public class BasicHouseRoomController {
             List<BasicHouseRoomDecorate> roomDecorates = basicHouseRoomDecorateDao.basicHouseRoomDecorateList(basicHouseRoomDecorate);
             //复制主表
             basicHouseRoomById.setId(null);
-            Integer integer = basicHouseRoomService.saveAndUpdateBasicHouseRoom(basicHouseRoomById);
+            Integer integer = basicHouseRoomService.saveAndUpdateBasicHouseRoom(basicHouseRoomById,false);
             //复制子表
             for (BasicHouseRoomDecorate item : roomDecorates) {
                 item.setId(null);
                 item.setRoomId(integer);
-                basicHouseRoomDecorateService.saveAndUpdateBasicHouseRoomDecorate(item);
+                basicHouseRoomDecorateService.saveAndUpdateBasicHouseRoomDecorate(item,false);
             }
             return HttpResult.newCorrectResult(200, "success!");
         } catch (Exception e) {
@@ -139,7 +139,7 @@ public class BasicHouseRoomController {
     @RequestMapping(value = "/saveAndUpdateBasicHouseRoomDecorate", method = {RequestMethod.POST}, name = "房间子类 更新或者新增")
     public HttpResult saveAndUpdateBasicHouseRoomDecorate(BasicHouseRoomDecorate basicHouseRoomDecorate) {
         try {
-            basicHouseRoomDecorateService.saveAndUpdateBasicHouseRoomDecorate(basicHouseRoomDecorate);
+            basicHouseRoomDecorateService.saveAndUpdateBasicHouseRoomDecorate(basicHouseRoomDecorate,true);
             return HttpResult.newCorrectResult(200, basicHouseRoomDecorate.getRoomId());
         } catch (Exception e) {
             logger.error(String.format("exception:%s", e.getMessage()), e);

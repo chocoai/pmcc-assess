@@ -29,8 +29,8 @@ public class BasicHouseRoomDecorateDao {
         return basicHouseRoomDecorate.getId();
     }
 
-    public boolean updateBasicHouseRoomDecorate(BasicHouseRoomDecorate basicHouseRoomDecorate)  {
-        return basicHouseRoomDecorateMapper.updateByPrimaryKeySelective(basicHouseRoomDecorate) == 1;
+    public boolean updateBasicHouseRoomDecorate(BasicHouseRoomDecorate basicHouseRoomDecorate, boolean updateNull)  {
+        return updateNull?basicHouseRoomDecorateMapper.updateByPrimaryKey(basicHouseRoomDecorate) == 1:basicHouseRoomDecorateMapper.updateByPrimaryKeySelective(basicHouseRoomDecorate) == 1;
     }
 
     public boolean deleteBasicHouseRoomDecorate(Integer id) {

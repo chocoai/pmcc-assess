@@ -22,34 +22,34 @@ public class BasicEstateLandStateDao {
     @Autowired
     private BasicEstateLandStateMapper basicEstateLandStateMapper;
 
-    public BasicEstateLandState getBasicEstateLandStateById(Integer id)throws SQLException{
+    public BasicEstateLandState getBasicEstateLandStateById(Integer id) throws SQLException {
         return basicEstateLandStateMapper.selectByPrimaryKey(id);
     }
 
-    public Integer saveBasicEstateLandState(BasicEstateLandState basicEstateLandState)throws SQLException{
+    public Integer addBasicEstateLandState(BasicEstateLandState basicEstateLandState) throws SQLException {
         basicEstateLandStateMapper.insertSelective(basicEstateLandState);
         return basicEstateLandState.getId();
     }
 
-    public boolean updateBasicEstateLandState(BasicEstateLandState basicEstateLandState)throws SQLException{
-        return basicEstateLandStateMapper.updateByPrimaryKeySelective(basicEstateLandState)==1;
+    public boolean updateBasicEstateLandState(BasicEstateLandState basicEstateLandState, boolean updateNull) throws SQLException {
+        return updateNull ? basicEstateLandStateMapper.updateByPrimaryKey(basicEstateLandState) == 1 : basicEstateLandStateMapper.updateByPrimaryKeySelective(basicEstateLandState) == 1;
     }
 
-    public boolean deleteBasicEstateLandState(Integer id)throws SQLException{
-        return  basicEstateLandStateMapper.deleteByPrimaryKey(id)==1;
+    public boolean deleteBasicEstateLandState(Integer id) throws SQLException {
+        return basicEstateLandStateMapper.deleteByPrimaryKey(id) == 1;
     }
 
-    public List<BasicEstateLandState> basicEstateLandStateList(BasicEstateLandState basicEstateLandState)throws SQLException{
+    public List<BasicEstateLandState> basicEstateLandStateList(BasicEstateLandState basicEstateLandState) throws SQLException {
         BasicEstateLandStateExample example = new BasicEstateLandStateExample();
         MybatisUtils.convertObj2Example(basicEstateLandState, example);
         return basicEstateLandStateMapper.selectByExample(example);
     }
 
-    public BasicEstateLandState getLandStateByEstateId(Integer estateId)throws SQLException{
+    public BasicEstateLandState getLandStateByEstateId(Integer estateId) throws SQLException {
         BasicEstateLandStateExample example = new BasicEstateLandStateExample();
         example.createCriteria().andEstateIdEqualTo(estateId);
         List<BasicEstateLandState> landStates = basicEstateLandStateMapper.selectByExample(example);
-        if(CollectionUtils.isEmpty(landStates)) return null;
+        if (CollectionUtils.isEmpty(landStates)) return null;
         return landStates.get(0);
     }
 }

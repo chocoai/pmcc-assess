@@ -80,8 +80,7 @@ public class ProjectPlanDetailsDao {
             criteria1.andStatusIn(ststusList);
         }
         example.or(criteria1);
-
-        example.setOrderByClause("sorting");
+        example.setOrderByClause("sorting,id desc");
         return projectPlanDetailsMapper.selectByExample(example);
     }
 
@@ -89,7 +88,7 @@ public class ProjectPlanDetailsDao {
         ProjectPlanDetailsExample example = new ProjectPlanDetailsExample();
         ProjectPlanDetailsExample.Criteria criteria = example.createCriteria();
         criteria.andPlanIdEqualTo(planId);
-        example.setOrderByClause("sorting");
+        example.setOrderByClause("sorting,id desc");
         return projectPlanDetailsMapper.selectByExample(example);
     }
 

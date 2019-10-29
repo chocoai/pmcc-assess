@@ -62,15 +62,21 @@ public class BasicHouseEquipmentService {
      * @return
      * @throws Exception
      */
-    public Integer saveAndUpdateBasicHouseEquipment(BasicHouseEquipment basicHouseEquipment) throws Exception {
+    public Integer saveAndUpdateBasicHouseEquipment(BasicHouseEquipment basicHouseEquipment, boolean updateNull) throws Exception {
         if (basicHouseEquipment.getId() == null || basicHouseEquipment.getId().intValue() == 0) {
             basicHouseEquipment.setCreator(commonService.thisUserAccount());
             Integer id = basicHouseEquipmentDao.saveBasicHouseEquipment(basicHouseEquipment);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicHouseEquipment.class), id);
             return id;
         } else {
-            BasicHouseEquipment oo = basicHouseEquipmentDao.getBasicHouseEquipmentById(basicHouseEquipment.getId());
-            basicHouseEquipmentDao.updateBasicHouseEquipment(basicHouseEquipment);
+            if (updateNull) {
+                BasicHouseEquipment houseEquipment = basicHouseEquipmentDao.getBasicHouseEquipmentById(basicHouseEquipment.getId());
+                if (houseEquipment != null) {
+                    basicHouseEquipment.setCreator(houseEquipment.getCreator());
+                    basicHouseEquipment.setGmtCreated(houseEquipment.getGmtCreated());
+                }
+            }
+            basicHouseEquipmentDao.updateBasicHouseEquipment(basicHouseEquipment, updateNull);
             return null;
         }
     }

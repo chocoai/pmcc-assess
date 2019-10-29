@@ -38,7 +38,7 @@ public class BasicHouseWaterDrainController {
     @PostMapping(value = "/saveAndUpdate",name = "saveAndUpdate")
     public HttpResult saveAndUpdate(BasicHouseWaterDrain basicHouseWaterDrain){
         try {
-            return HttpResult.newCorrectResult(200, basicHouseWaterDrainService.saveAndUpdateBasicHouseWaterDrain(basicHouseWaterDrain));
+            return HttpResult.newCorrectResult(200, basicHouseWaterDrainService.saveAndUpdateBasicHouseWaterDrain(basicHouseWaterDrain,true));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(500, e.getMessage());

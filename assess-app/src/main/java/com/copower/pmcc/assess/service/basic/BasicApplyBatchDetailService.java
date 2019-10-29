@@ -88,18 +88,18 @@ public class BasicApplyBatchDetailService {
                     BasicBuilding building = basicBuildingDao.getBasicBuildingById(basicApplyBatchDetail.getTableId());
                     building.setBuildingNumber(basicApplyBatchDetail.getName());
                     building.setBuildingName(basicApplyBatchDetail.getDisplayName());
-                    basicBuildingDao.updateBasicBuilding(building);
+                    basicBuildingDao.updateBasicBuilding(building,false);
                     break;
                 case "tb_basic_unit":
                     basicApplyBatchDetail.setDisplayName(String.format("%s单元", basicApplyBatchDetail.getName()));
                     BasicUnit unit = basicUnitService.getBasicUnitById(basicApplyBatchDetail.getTableId());
                     unit.setUnitNumber(basicApplyBatchDetail.getName());
-                    basicUnitService.saveAndUpdateBasicUnit(unit);
+                    basicUnitService.saveAndUpdateBasicUnit(unit,false);
                     break;
                 case "tb_basic_house":
                     BasicHouse house = basicHouseService.getBasicHouseById(basicApplyBatchDetail.getTableId());
                     house.setHouseNumber(basicApplyBatchDetail.getName());
-                    basicHouseService.saveAndUpdateBasicHouse(house);
+                    basicHouseService.saveAndUpdateBasicHouse(house,false);
                     break;
             }
             basicApplyBatchDetailDao.updateInfo(basicApplyBatchDetail);
@@ -121,18 +121,18 @@ public class BasicApplyBatchDetailService {
                     BasicUnit unit = new BasicUnit();
                     unit.setUnitNumber(basicApplyBatchDetail.getName());
                     unit.setBuildingId(this.getParentTableId(basicApplyBatchDetail));
-                    basicUnitService.saveAndUpdateBasicUnit(unit);
+                    basicUnitService.saveAndUpdateBasicUnit(unit,false);
                     basicApplyBatchDetail.setTableId(unit.getId());
                     break;
                 case "tb_basic_house":
                     BasicHouse house = new BasicHouse();
                     house.setHouseNumber(basicApplyBatchDetail.getName());
                     house.setUnitId(this.getParentTableId(basicApplyBatchDetail));
-                    basicHouseService.saveAndUpdateBasicHouse(house);
+                    basicHouseService.saveAndUpdateBasicHouse(house,false);
                     basicApplyBatchDetail.setTableId(house.getId());
                     BasicHouseTrading houseTrading = new BasicHouseTrading();
                     houseTrading.setHouseId(house.getId());
-                    basicHouseTradingService.saveAndUpdateBasicHouseTrading(houseTrading);
+                    basicHouseTradingService.saveAndUpdateBasicHouseTrading(houseTrading,false);
 
                     break;
             }

@@ -32,12 +32,12 @@ public class BasicHouseTradingLeaseAndSellDtoService {
             if (Objects.equal(tradingType, AssessExamineTaskConstant.EXAMINE_HOUSE_TRANSACTION_TYPE_LEASE)) {
                 BasicHouseTradingLease basicHouseTradingLease = new BasicHouseTradingLease();
                 BeanUtils.copyProperties(basicHouseTradingLeaseAndSellDto, basicHouseTradingLease);
-                basicHouseTradingLeaseService.saveAndUpdateBasicHouseTradingLease(basicHouseTradingLease);
+                basicHouseTradingLeaseService.saveAndUpdateBasicHouseTradingLease(basicHouseTradingLease,true);
             }
             if (Objects.equal(tradingType, AssessExamineTaskConstant.EXAMINE_HOUSE_TRANSACTION_TYPE_SELL)) {
                 BasicHouseTradingSell basicHouseTradingSell = new BasicHouseTradingSell();
                 BeanUtils.copyProperties(basicHouseTradingLeaseAndSellDto, basicHouseTradingSell);
-                basicHouseTradingSellService.saveAndUpdateBasicHouseTradingSell(basicHouseTradingSell);
+                basicHouseTradingSellService.saveAndUpdateBasicHouseTradingSell(basicHouseTradingSell,true);
             }
         }
     }

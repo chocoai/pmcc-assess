@@ -43,7 +43,7 @@ public class BasicBuildingOutfitController {
     @RequestMapping(value = "/saveAndUpdateBasicBuildingOutfit", name = "新增或者修改", method = {RequestMethod.POST})
     public HttpResult saveAndUpdateBasicBuildingOutfit(BasicBuildingOutfit basicBuildingOutfit){
         try {
-            return HttpResult.newCorrectResult(200,basicBuildingOutfitService.saveAndUpdateBasicBuildingOutfit(basicBuildingOutfit));
+            return HttpResult.newCorrectResult(200,basicBuildingOutfitService.saveAndUpdateBasicBuildingOutfit(basicBuildingOutfit,true));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
             return HttpResult.newErrorResult(500,e.getMessage());

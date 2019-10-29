@@ -61,12 +61,12 @@ public class BasicHouseDamagedDegreeService {
         return basicHouseDamagedDegreeDao.getBasicHouseDamagedDegreeById(id);
     }
 
-    public BasicHouseDamagedDegree getDamagedDegreeByHouseIdAndCategory(Integer houseId,Integer category) throws Exception {
+    public BasicHouseDamagedDegree getDamagedDegreeByHouseIdAndCategory(Integer houseId, Integer category) throws Exception {
         BasicHouseDamagedDegree basicHouseDamagedDegree = new BasicHouseDamagedDegree();
         basicHouseDamagedDegree.setHouseId(houseId);
         basicHouseDamagedDegree.setCategory(category);
         List<BasicHouseDamagedDegree> damagedDegreeList = basicHouseDamagedDegreeDao.getDamagedDegreeList(basicHouseDamagedDegree);
-        if(CollectionUtils.isEmpty(damagedDegreeList)) return null;
+        if (CollectionUtils.isEmpty(damagedDegreeList)) return null;
         return damagedDegreeList.get(0);
     }
 
@@ -77,12 +77,19 @@ public class BasicHouseDamagedDegreeService {
      * @return
      * @throws Exception
      */
-    public void saveAndUpdateDamagedDegree(BasicHouseDamagedDegree basicHouseDamagedDegree) throws Exception {
+    public void saveAndUpdateDamagedDegree(BasicHouseDamagedDegree basicHouseDamagedDegree, boolean updateNull) throws Exception {
         if (basicHouseDamagedDegree.getId() == null || basicHouseDamagedDegree.getId().intValue() == 0) {
             basicHouseDamagedDegree.setCreator(commonService.thisUserAccount());
             basicHouseDamagedDegreeDao.saveBasicHouseDamagedDegree(basicHouseDamagedDegree);
         } else {
-            basicHouseDamagedDegreeDao.updateBasicHouseDamagedDegree(basicHouseDamagedDegree);
+            if (updateNull) {
+                BasicHouseDamagedDegree damagedDegree = basicHouseDamagedDegreeDao.getBasicHouseDamagedDegreeById(basicHouseDamagedDegree.getId());
+                if (damagedDegree != null) {
+                    basicHouseDamagedDegree.setCreator(damagedDegree.getCreator());
+                    basicHouseDamagedDegree.setGmtCreated(damagedDegree.getGmtCreated());
+                }
+            }
+            basicHouseDamagedDegreeDao.updateBasicHouseDamagedDegree(basicHouseDamagedDegree, updateNull);
         }
     }
 
@@ -164,7 +171,6 @@ public class BasicHouseDamagedDegreeService {
     }
 
 
-
     /**
      * 新增或者修改
      *
@@ -172,12 +178,19 @@ public class BasicHouseDamagedDegreeService {
      * @return
      * @throws Exception
      */
-    public void saveAndUpdateDamagedDegreeDetail(BasicHouseDamagedDegreeDetail basicHouseDamagedDegreeDetail) throws Exception {
+    public void saveAndUpdateDamagedDegreeDetail(BasicHouseDamagedDegreeDetail basicHouseDamagedDegreeDetail, boolean updateNull) throws Exception {
         if (basicHouseDamagedDegreeDetail.getId() == null || basicHouseDamagedDegreeDetail.getId().intValue() == 0) {
             basicHouseDamagedDegreeDetail.setCreator(commonService.thisUserAccount());
             basicHouseDamagedDegreeDetailDao.saveBasicHouseDamagedDegreeDetail(basicHouseDamagedDegreeDetail);
         } else {
-            basicHouseDamagedDegreeDetailDao.updateBasicHouseDamagedDegreeDetail(basicHouseDamagedDegreeDetail);
+            if (updateNull) {
+                BasicHouseDamagedDegreeDetail damagedDegreeDetail = basicHouseDamagedDegreeDetailDao.getBasicHouseDamagedDegreeDetailById(basicHouseDamagedDegreeDetail.getId());
+                if (damagedDegreeDetail != null) {
+                    basicHouseDamagedDegreeDetail.setCreator(damagedDegreeDetail.getCreator());
+                    basicHouseDamagedDegreeDetail.setGmtCreated(damagedDegreeDetail.getGmtCreated());
+                }
+            }
+            basicHouseDamagedDegreeDetailDao.updateBasicHouseDamagedDegreeDetail(basicHouseDamagedDegreeDetail, updateNull);
         }
     }
 

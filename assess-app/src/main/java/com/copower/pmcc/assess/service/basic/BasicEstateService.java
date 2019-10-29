@@ -120,14 +120,21 @@ public class BasicEstateService {
      * @return
      * @throws Exception
      */
-    public Integer saveAndUpdateBasicEstate(BasicEstate basicEstate) throws Exception {
+    public Integer saveAndUpdateBasicEstate(BasicEstate basicEstate, boolean updateNull) throws Exception {
         if (basicEstate.getId() == null || basicEstate.getId().intValue() == 0) {
             basicEstate.setCreator(commonService.thisUserAccount());
             Integer id = basicEstateDao.addBasicEstate(basicEstate);
             return id;
         } else {
-            basicEstateDao.updateBasicEstate(basicEstate);
-            return null;
+            if (updateNull) {
+                BasicEstate estate = basicEstateDao.getBasicEstateById(basicEstate.getId());
+                if (estate != null) {
+                    basicEstate.setCreator(estate.getCreator());
+                    basicEstate.setGmtCreated(estate.getGmtCreated());
+                }
+            }
+            basicEstateDao.updateBasicEstate(basicEstate, updateNull);
+            return basicEstate.getId();
         }
     }
 
@@ -352,7 +359,7 @@ public class BasicEstateService {
         basicEstateLandState.setName(estateName);
         basicEstateLandState.setEstateId(basicEstate.getId());
         basicEstateLandState.setCreator(commonService.thisUserAccount());
-        basicEstateLandStateDao.saveBasicEstateLandState(basicEstateLandState);
+        basicEstateLandStateDao.addBasicEstateLandState(basicEstateLandState);
         objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicEstateLandState.class.getSimpleName()), basicEstateLandStateService.getBasicEstateLandStateVo(basicEstateLandState));
         return objectMap;
     }
@@ -410,7 +417,7 @@ public class BasicEstateService {
             basicEstateLandState.setApplyId(applyId == null ? 0 : applyId);
             basicEstateLandState.setGmtCreated(null);
             basicEstateLandState.setGmtModified(null);
-            basicEstateLandStateDao.saveBasicEstateLandState(basicEstateLandState);
+            basicEstateLandStateDao.addBasicEstateLandState(basicEstateLandState);
             objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicEstateLandState.class.getSimpleName()), basicEstateLandStateService.getBasicEstateLandStateVo(basicEstateLandState));
         } else {
             objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicEstateLandState.class.getSimpleName()), new BasicEstateLandStateVo());
@@ -445,7 +452,7 @@ public class BasicEstateService {
                     queryBasicEstateParking.setGmtCreated(null);
                     queryBasicEstateParking.setGmtModified(null);
                     queryBasicEstateParking.setCreator(commonService.thisUserAccount());
-                    Integer id = basicEstateParkingService.saveAndUpdateBasicEstateParking(queryBasicEstateParking);
+                    Integer id = basicEstateParkingService.saveAndUpdateBasicEstateParking(queryBasicEstateParking,false);
 
                     example = new SysAttachmentDto();
                     example.setTableId(caseEstateParking.getId());
@@ -531,7 +538,7 @@ public class BasicEstateService {
         basicEstate.setGmtModified(null);
         basicEstate.setId(null);
 
-        this.saveAndUpdateBasicEstate(basicEstate);
+        this.saveAndUpdateBasicEstate(basicEstate,false);
         objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicEstate.class.getSimpleName()), getBasicEstateVo(basicEstate));
 
 
@@ -555,7 +562,7 @@ public class BasicEstateService {
             basicEstateLandState.setApplyId(0);
             basicEstateLandState.setGmtCreated(null);
             basicEstateLandState.setGmtModified(null);
-            basicEstateLandStateDao.saveBasicEstateLandState(basicEstateLandState);
+            basicEstateLandStateDao.addBasicEstateLandState(basicEstateLandState);
             objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicEstateLandState.class.getSimpleName()), basicEstateLandStateService.getBasicEstateLandStateVo(basicEstateLandState));
         } else {
             objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicEstateLandState.class.getSimpleName()), new BasicEstateLandStateVo());
@@ -590,7 +597,7 @@ public class BasicEstateService {
                     queryBasicEstateParking.setGmtCreated(null);
                     queryBasicEstateParking.setGmtModified(null);
                     queryBasicEstateParking.setCreator(commonService.thisUserAccount());
-                    Integer id = basicEstateParkingService.saveAndUpdateBasicEstateParking(queryBasicEstateParking);
+                    Integer id = basicEstateParkingService.saveAndUpdateBasicEstateParking(queryBasicEstateParking,false);
 
                     example = new SysAttachmentDto();
                     example.setTableId(oldBasicEstateParking.getId());
@@ -657,7 +664,7 @@ public class BasicEstateService {
     /**
      * 引用项目中的数据批量时
      *
-     * @param quoteId      老数据对应id
+     * @param quoteId 老数据对应id
      * @param tableId basicEstate对应id
      * @return
      */
@@ -686,7 +693,7 @@ public class BasicEstateService {
         basicEstate.setId(tableId);
         basicEstate.setApplyId(null);
 
-        this.saveAndUpdateBasicEstate(basicEstate);
+        this.saveAndUpdateBasicEstate(basicEstate,false);
         objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicEstate.class.getSimpleName()), getBasicEstateVo(basicEstate));
 
         //删除原有的附件
@@ -720,7 +727,7 @@ public class BasicEstateService {
             basicEstateLandState.setApplyId(null);
             basicEstateLandState.setGmtCreated(null);
             basicEstateLandState.setGmtModified(null);
-            basicEstateLandStateDao.saveBasicEstateLandState(basicEstateLandState);
+            basicEstateLandStateDao.addBasicEstateLandState(basicEstateLandState);
             objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicEstateLandState.class.getSimpleName()), basicEstateLandStateService.getBasicEstateLandStateVo(basicEstateLandState));
         } else {
             objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicEstateLandState.class.getSimpleName()), new BasicEstateLandStateVo());
@@ -756,7 +763,7 @@ public class BasicEstateService {
                     queryBasicEstateParking.setGmtCreated(null);
                     queryBasicEstateParking.setGmtModified(null);
                     queryBasicEstateParking.setCreator(commonService.thisUserAccount());
-                    Integer parkingId = basicEstateParkingService.saveAndUpdateBasicEstateParking(queryBasicEstateParking);
+                    Integer parkingId = basicEstateParkingService.saveAndUpdateBasicEstateParking(queryBasicEstateParking,false);
 
                     example = new SysAttachmentDto();
                     example.setTableId(oldBasicEstateParking.getId());

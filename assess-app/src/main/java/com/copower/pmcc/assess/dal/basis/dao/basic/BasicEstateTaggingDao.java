@@ -21,20 +21,20 @@ public class BasicEstateTaggingDao {
     @Autowired
     private BasicEstateTaggingMapper basicEstateTaggingMapper;
 
-    public BasicEstateTagging getBasicEstateTaggingById(Integer id)  {
+    public BasicEstateTagging getBasicEstateTaggingById(Integer id) {
         return basicEstateTaggingMapper.selectByPrimaryKey(id);
     }
 
-    public Integer addBasicEstateTagging(BasicEstateTagging basicEstateTagging) throws SQLException {
+    public Integer addBasicEstateTagging(BasicEstateTagging basicEstateTagging)  {
         basicEstateTaggingMapper.insertSelective(basicEstateTagging);
         return basicEstateTagging.getId();
     }
 
-    public boolean updateBasicEstateTagging(BasicEstateTagging basicEstateTagging) throws SQLException {
-        return basicEstateTaggingMapper.updateByPrimaryKeySelective(basicEstateTagging) == 1;
+    public boolean updateBasicEstateTagging(BasicEstateTagging basicEstateTagging, boolean updateNull)  {
+        return updateNull ? basicEstateTaggingMapper.updateByPrimaryKey(basicEstateTagging) == 1 : basicEstateTaggingMapper.updateByPrimaryKeySelective(basicEstateTagging) == 1;
     }
 
-    public void removeBasicEstateTagging(BasicEstateTagging basicEstateTagging) throws SQLException {
+    public void removeBasicEstateTagging(BasicEstateTagging basicEstateTagging)  {
         BasicEstateTaggingExample example = new BasicEstateTaggingExample();
         MybatisUtils.convertObj2Example(basicEstateTagging, example);
         basicEstateTaggingMapper.deleteByExample(example);

@@ -62,15 +62,21 @@ public class BasicMatchingTrafficService {
      * @return
      * @throws Exception
      */
-    public Integer saveAndUpdateBasicMatchingTraffic(BasicMatchingTraffic basicMatchingTraffic) throws Exception {
+    public Integer saveAndUpdateBasicMatchingTraffic(BasicMatchingTraffic basicMatchingTraffic, boolean updateNull) throws Exception {
         if (basicMatchingTraffic.getId() == null || basicMatchingTraffic.getId().intValue() == 0) {
             basicMatchingTraffic.setCreator(commonService.thisUserAccount());
             Integer id = basicMatchingTrafficDao.saveBasicMatchingTraffic(basicMatchingTraffic);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicMatchingTraffic.class), id);
             return  id ;
         } else {
-            BasicMatchingTraffic oo = basicMatchingTrafficDao.getBasicMatchingTrafficById(basicMatchingTraffic.getId());
-            basicMatchingTrafficDao.updateBasicMatchingTraffic(basicMatchingTraffic);
+            if(updateNull){
+                BasicMatchingTraffic matchingTraffic = basicMatchingTrafficDao.getBasicMatchingTrafficById(basicMatchingTraffic.getId());
+                if(matchingTraffic!=null){
+                    basicMatchingTraffic.setCreator(matchingTraffic.getCreator());
+                    basicMatchingTraffic.setGmtCreated(matchingTraffic.getGmtCreated());
+                }
+            }
+            basicMatchingTrafficDao.updateBasicMatchingTraffic(basicMatchingTraffic,updateNull);
             return null;
         }
     }

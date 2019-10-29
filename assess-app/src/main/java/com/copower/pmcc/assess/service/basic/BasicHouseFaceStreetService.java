@@ -61,16 +61,22 @@ public class BasicHouseFaceStreetService {
      * @return
      * @throws Exception
      */
-    public Integer saveAndUpdateBasicHouseFaceStreet(BasicHouseFaceStreet basicHouseFaceStreet) throws Exception {
+    public Integer saveAndUpdateBasicHouseFaceStreet(BasicHouseFaceStreet basicHouseFaceStreet, boolean updateNull) throws Exception {
         if (basicHouseFaceStreet.getId() == null || basicHouseFaceStreet.getId().intValue() == 0) {
             basicHouseFaceStreet.setCreator(commonService.thisUserAccount());
             Integer id = basicHouseFaceStreetDao.saveBasicHouseFaceStreet(basicHouseFaceStreet);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicHouseFaceStreet.class), id);
-            return  id ;
+            return id;
         } else {
-            BasicHouseFaceStreet oo = basicHouseFaceStreetDao.getBasicHouseFaceStreetById(basicHouseFaceStreet.getId());
-            basicHouseFaceStreetDao.updateBasicHouseFaceStreet(basicHouseFaceStreet);
-            return null;
+            if (updateNull) {
+                BasicHouseFaceStreet houseFaceStreet = basicHouseFaceStreetDao.getBasicHouseFaceStreetById(basicHouseFaceStreet.getId());
+                if (houseFaceStreet != null) {
+                    basicHouseFaceStreet.setCreator(houseFaceStreet.getCreator());
+                    basicHouseFaceStreet.setGmtCreated(houseFaceStreet.getGmtCreated());
+                }
+            }
+            basicHouseFaceStreetDao.updateBasicHouseFaceStreet(basicHouseFaceStreet, updateNull);
+            return basicHouseFaceStreet.getId();
         }
     }
 
@@ -97,7 +103,7 @@ public class BasicHouseFaceStreetService {
         return basicHouseFaceStreetDao.basicHouseFaceStreetList(basicHouseFaceStreet);
     }
 
-    public boolean deleteBasicHouseFaceStreet(BasicHouseFaceStreet basicHouseFaceStreet)throws Exception{
+    public boolean deleteBasicHouseFaceStreet(BasicHouseFaceStreet basicHouseFaceStreet) throws Exception {
         return basicHouseFaceStreetDao.deleteBasicHouseFaceStreet(basicHouseFaceStreet);
     }
 
@@ -113,12 +119,12 @@ public class BasicHouseFaceStreetService {
         return vo;
     }
 
-    public BasicHouseFaceStreetVo getBasicHouseFaceStreetVo(BasicHouseFaceStreet basicHouseFaceStreet){
-        if (basicHouseFaceStreet==null){
+    public BasicHouseFaceStreetVo getBasicHouseFaceStreetVo(BasicHouseFaceStreet basicHouseFaceStreet) {
+        if (basicHouseFaceStreet == null) {
             return null;
         }
         BasicHouseFaceStreetVo vo = new BasicHouseFaceStreetVo();
-        BeanUtils.copyProperties(basicHouseFaceStreet,vo);
+        BeanUtils.copyProperties(basicHouseFaceStreet, vo);
         vo.setVisitorsFlowrateName(baseDataDicService.getNameById(basicHouseFaceStreet.getVisitorsFlowrate()));
         vo.setTrafficFlowName(baseDataDicService.getNameById(basicHouseFaceStreet.getTrafficFlow()));
         vo.setStreetLevelName(baseDataDicService.getNameById(basicHouseFaceStreet.getStreetLevel()));
@@ -128,11 +134,12 @@ public class BasicHouseFaceStreetService {
 
     /**
      * 根据查询条件判断是否有数据
+     *
      * @param houseId
      * @return
      */
-    public boolean hasHouseFaceStreetData(Integer houseId){
-        return basicHouseFaceStreetDao.countByHouseId(houseId)>0;
+    public boolean hasHouseFaceStreetData(Integer houseId) {
+        return basicHouseFaceStreetDao.countByHouseId(houseId) > 0;
     }
 
     public List<BasicHouseFaceStreet> getBasicHouseFaceStreetList(Integer houseId) {
@@ -141,7 +148,7 @@ public class BasicHouseFaceStreetService {
         List<BasicHouseFaceStreet> basicHouseFaceStreetList = basicHouseFaceStreetDao.basicHouseFaceStreetList(basicHouseFaceStreet);
         return basicHouseFaceStreetList;
     }
-    
+
     public List<BasicHouseFaceStreetVo> getBasicHouseFaceStreetVoList(Integer houseId) {
         return LangUtils.transform(getBasicHouseFaceStreetList(houseId), o -> getBasicHouseFaceStreetVo(o));
     }

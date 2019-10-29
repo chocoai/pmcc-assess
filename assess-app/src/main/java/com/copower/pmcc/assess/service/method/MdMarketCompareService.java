@@ -367,7 +367,7 @@ public class MdMarketCompareService {
                     BasicHouse basicHouse = basicHouseService.getHouseByApplyId(basicApply.getId());
                     if (basicHouse != null) {
                         basicHouse.setAreaDesc(mdCompareCaseVo.getAreaDesc());
-                        basicHouseService.saveAndUpdateBasicHouse(basicHouse);
+                        basicHouseService.saveAndUpdateBasicHouse(basicHouse,false);
                     }
                 }
                 i++;

@@ -43,7 +43,7 @@ public class BasicBuildingSurfaceController {
     @RequestMapping(value = "/saveAndUpdateBasicBuildingSurface", name = "新增或者修改", method = {RequestMethod.POST})
     public HttpResult saveAndUpdateBasicBuildingSurface(BasicBuildingSurface basicBuildingSurface){
         try {
-            return HttpResult.newCorrectResult(200,basicBuildingSurfaceService.saveAndUpdateBasicBuildingSurface(basicBuildingSurface));
+            return HttpResult.newCorrectResult(200,basicBuildingSurfaceService.saveAndUpdateBasicBuildingSurface(basicBuildingSurface,true));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
             return HttpResult.newErrorResult(500,e.getMessage());

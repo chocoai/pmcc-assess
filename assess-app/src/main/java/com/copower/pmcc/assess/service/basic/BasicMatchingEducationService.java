@@ -62,16 +62,22 @@ public class BasicMatchingEducationService {
      * @return
      * @throws Exception
      */
-    public Integer saveAndUpdateBasicMatchingEducation(BasicMatchingEducation basicMatchingEducation) throws Exception {
+    public Integer saveAndUpdateBasicMatchingEducation(BasicMatchingEducation basicMatchingEducation, boolean updateNull) throws Exception {
         if (basicMatchingEducation.getId() == null || basicMatchingEducation.getId().intValue() == 0) {
             basicMatchingEducation.setCreator(commonService.thisUserAccount());
             Integer id = basicMatchingEducationDao.saveBasicMatchingEducation(basicMatchingEducation);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicMatchingEducation.class), id);
-            return  id ;
+            return id;
         } else {
-            BasicMatchingEducation oo = basicMatchingEducationDao.getBasicMatchingEducationById(basicMatchingEducation.getId());
-            basicMatchingEducationDao.updateBasicMatchingEducation(basicMatchingEducation);
-            return null;
+            if (updateNull) {
+                BasicMatchingEducation matchingEducation = basicMatchingEducationDao.getBasicMatchingEducationById(basicMatchingEducation.getId());
+                if (matchingEducation != null) {
+                    basicMatchingEducation.setCreator(matchingEducation.getCreator());
+                    basicMatchingEducation.setGmtCreated(matchingEducation.getGmtCreated());
+                }
+            }
+            basicMatchingEducationDao.updateBasicMatchingEducation(basicMatchingEducation, updateNull);
+            return basicMatchingEducation.getId();
         }
     }
 
@@ -98,7 +104,7 @@ public class BasicMatchingEducationService {
         return basicMatchingEducationDao.basicMatchingEducationList(basicMatchingEducation);
     }
 
-    public void removeBasicMatchingEducation(BasicMatchingEducation basicMatchingEducation)throws Exception{
+    public void removeBasicMatchingEducation(BasicMatchingEducation basicMatchingEducation) throws Exception {
         basicMatchingEducationDao.removeBasicMatchingEducation(basicMatchingEducation);
     }
 
@@ -114,35 +120,35 @@ public class BasicMatchingEducationService {
         return vo;
     }
 
-    public List<BasicMatchingEducation> getBasicMatchingEducationList(Integer estateId){
-        BasicMatchingEducation where=new BasicMatchingEducation();
+    public List<BasicMatchingEducation> getBasicMatchingEducationList(Integer estateId) {
+        BasicMatchingEducation where = new BasicMatchingEducation();
         where.setEstateId(estateId);
         return basicMatchingEducationDao.basicMatchingEducationList(where);
     }
 
-    public BasicMatchingEducationVo getBasicMatchingEducationVo(BasicMatchingEducation basicMatchingEducation){
-        if (basicMatchingEducation==null){
+    public BasicMatchingEducationVo getBasicMatchingEducationVo(BasicMatchingEducation basicMatchingEducation) {
+        if (basicMatchingEducation == null) {
             return null;
         }
         BasicMatchingEducationVo vo = new BasicMatchingEducationVo();
-        BeanUtils.copyProperties(basicMatchingEducation,vo);
+        BeanUtils.copyProperties(basicMatchingEducation, vo);
         vo.setDistanceName(baseDataDicService.getNameById(basicMatchingEducation.getDistance()));
         vo.setSchoolNatureName(baseDataDicService.getNameById(basicMatchingEducation.getSchoolNature()));
         vo.setSchoolGradationName(baseDataDicService.getNameById(basicMatchingEducation.getSchoolGradation()));
-        vo.setSchoolLevelName(baseDataDicService.getNameById(NumberUtils.isNumber(basicMatchingEducation.getSchoolLevel())?Integer.parseInt(basicMatchingEducation.getSchoolLevel()):null));
+        vo.setSchoolLevelName(baseDataDicService.getNameById(NumberUtils.isNumber(basicMatchingEducation.getSchoolLevel()) ? Integer.parseInt(basicMatchingEducation.getSchoolLevel()) : null));
         return vo;
     }
 
-    public void removeIds(String str){
-        if (StringUtils.isNotBlank(str)){
+    public void removeIds(String str) {
+        if (StringUtils.isNotBlank(str)) {
             List<Integer> ids = new ArrayList<>(10);
-            for (String id:str.split(",")){
-                if (NumberUtils.isNumber(id)){
-                    ids.add(Integer.parseInt(id)) ;
+            for (String id : str.split(",")) {
+                if (NumberUtils.isNumber(id)) {
+                    ids.add(Integer.parseInt(id));
                 }
             }
             basicMatchingEducationDao.removeIds(ids);
         }
     }
-    
+
 }

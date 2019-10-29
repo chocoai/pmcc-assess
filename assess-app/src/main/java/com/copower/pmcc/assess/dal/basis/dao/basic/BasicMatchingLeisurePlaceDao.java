@@ -30,8 +30,8 @@ public class BasicMatchingLeisurePlaceDao {
         return basicMatchingLeisurePlace.getId();
     }
 
-    public boolean updateBasicMatchingLeisurePlace(BasicMatchingLeisurePlace basicMatchingLeisurePlace) throws SQLException {
-        return basicMatchingLeisurePlaceMapper.updateByPrimaryKeySelective(basicMatchingLeisurePlace) == 1;
+    public boolean updateBasicMatchingLeisurePlace(BasicMatchingLeisurePlace basicMatchingLeisurePlace, boolean updateNull) throws SQLException {
+        return updateNull ? basicMatchingLeisurePlaceMapper.updateByPrimaryKey(basicMatchingLeisurePlace) == 1 : basicMatchingLeisurePlaceMapper.updateByPrimaryKeySelective(basicMatchingLeisurePlace) == 1;
     }
 
     public void removeBasicMatchingLeisurePlace(BasicMatchingLeisurePlace basicMatchingLeisurePlace) throws SQLException {

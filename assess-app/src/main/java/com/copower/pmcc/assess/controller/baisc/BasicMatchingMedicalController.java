@@ -43,7 +43,7 @@ public class BasicMatchingMedicalController {
     @RequestMapping(value = "/saveAndUpdateBasicMatchingMedical", name = "新增或者修改", method = {RequestMethod.POST})
     public HttpResult saveAndUpdateBasicMatchingMedical(BasicMatchingMedical basicMatchingMedical){
         try {
-            return HttpResult.newCorrectResult(200,basicMatchingMedicalService.saveAndUpdateBasicMatchingMedical(basicMatchingMedical));
+            return HttpResult.newCorrectResult(200,basicMatchingMedicalService.saveAndUpdateBasicMatchingMedical(basicMatchingMedical,true));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
             return HttpResult.newErrorResult(500,e.getMessage());

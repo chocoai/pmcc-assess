@@ -63,15 +63,21 @@ public class BasicMatchingFinanceService {
      * @return
      * @throws Exception
      */
-    public Integer saveAndUpdateBasicMatchingFinance(BasicMatchingFinance basicMatchingFinance) throws Exception {
+    public Integer saveAndUpdateBasicMatchingFinance(BasicMatchingFinance basicMatchingFinance, boolean updateNull) throws Exception {
         if (basicMatchingFinance.getId() == null || basicMatchingFinance.getId().intValue() == 0) {
             basicMatchingFinance.setCreator(commonService.thisUserAccount());
             Integer id = basicMatchingFinanceDao.saveBasicMatchingFinance(basicMatchingFinance);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicMatchingFinance.class), id);
             return id;
         } else {
-            BasicMatchingFinance oo = basicMatchingFinanceDao.getBasicMatchingFinanceById(basicMatchingFinance.getId());
-            basicMatchingFinanceDao.updateBasicMatchingFinance(basicMatchingFinance);
+            if(updateNull){
+                BasicMatchingFinance matchingFinance = basicMatchingFinanceDao.getBasicMatchingFinanceById(basicMatchingFinance.getId());
+                if(matchingFinance!=null){
+                    basicMatchingFinance.setCreator(matchingFinance.getCreator());
+                    basicMatchingFinance.setGmtCreated(matchingFinance.getGmtCreated());
+                }
+            }
+            basicMatchingFinanceDao.updateBasicMatchingFinance(basicMatchingFinance,updateNull);
             return null;
         }
     }

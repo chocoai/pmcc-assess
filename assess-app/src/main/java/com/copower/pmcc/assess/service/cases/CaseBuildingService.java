@@ -285,7 +285,7 @@ public class CaseBuildingService {
         basicBuilding.setApplyId(null);
         basicBuilding.setEstateId(oldBasicBuilding.getEstateId());
 
-        basicBuildingService.saveAndUpdateBasicBuilding(basicBuilding);
+        basicBuildingService.saveAndUpdateBasicBuilding(basicBuilding,false);
 
         //删除原有的附件
         SysAttachmentDto deleteExample = new SysAttachmentDto();

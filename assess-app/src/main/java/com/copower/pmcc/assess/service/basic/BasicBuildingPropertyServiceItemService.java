@@ -34,25 +34,30 @@ public class BasicBuildingPropertyServiceItemService {
     @Autowired
     private BasicBuildingPropertyServiceItemDao serviceItemDao;
 
-    public boolean saveBasicBuildingPropertyServiceItem(BasicBuildingPropertyServiceItem BasicBuildingPropertyServiceItem){
-        if (BasicBuildingPropertyServiceItem == null){
-            return false;
-        }
-        if (BasicBuildingPropertyServiceItem.getId() != null && BasicBuildingPropertyServiceItem.getId() != 0){
-            return serviceItemDao.updateBasicBuildingPropertyServiceItem(BasicBuildingPropertyServiceItem);
-        }else {
-            BasicBuildingPropertyServiceItem.setCreator(commonService.thisUserAccount());
-            return serviceItemDao.addBasicBuildingPropertyServiceItem(BasicBuildingPropertyServiceItem) ;
+    public boolean saveBasicBuildingPropertyServiceItem(BasicBuildingPropertyServiceItem basicBuildingPropertyServiceItem, boolean updateNull) {
+        if (basicBuildingPropertyServiceItem == null) return false;
+        if (basicBuildingPropertyServiceItem.getId() != null && basicBuildingPropertyServiceItem.getId() != 0) {
+            if(updateNull){
+               BasicBuildingPropertyServiceItem propertyServiceItem = serviceItemDao.getBasicBuildingPropertyServiceItemById(basicBuildingPropertyServiceItem.getId());
+               if(propertyServiceItem!=null){
+                   basicBuildingPropertyServiceItem.setCreator(propertyServiceItem.getCreator());
+                   basicBuildingPropertyServiceItem.setGmtCreated(propertyServiceItem.getGmtCreated());
+               }
+            }
+            return serviceItemDao.updateBasicBuildingPropertyServiceItem(basicBuildingPropertyServiceItem,updateNull);
+        } else {
+            basicBuildingPropertyServiceItem.setCreator(commonService.thisUserAccount());
+            return serviceItemDao.addBasicBuildingPropertyServiceItem(basicBuildingPropertyServiceItem);
         }
     }
 
-    public BootstrapTableVo getBootstrapTableVo(BasicBuildingPropertyServiceItem oo){
+    public BootstrapTableVo getBootstrapTableVo(BasicBuildingPropertyServiceItem oo) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<BasicBuildingPropertyServiceItem> serviceItemList = getBasicBuildingPropertyServiceItemListByExample(oo);
         List<BasicBuildingPropertyServiceItemVo> vos = Lists.newArrayList();
-        if (org.apache.commons.collections.CollectionUtils.isNotEmpty(serviceItemList)){
+        if (org.apache.commons.collections.CollectionUtils.isNotEmpty(serviceItemList)) {
             serviceItemList.forEach(po -> {
                 vos.add(getBasicBuildingPropertyServiceItemVo(po));
             });
@@ -62,34 +67,34 @@ public class BasicBuildingPropertyServiceItemService {
         return vo;
     }
 
-    public BasicBuildingPropertyServiceItem getBasicBuildingPropertyServiceItemById(Integer id){
-        return serviceItemDao.getBasicBuildingPropertyServiceItemById(id) ;
+    public BasicBuildingPropertyServiceItem getBasicBuildingPropertyServiceItemById(Integer id) {
+        return serviceItemDao.getBasicBuildingPropertyServiceItemById(id);
     }
 
-    public void removeIds(List<Integer> integerList){
+    public void removeIds(List<Integer> integerList) {
         serviceItemDao.removeIds(integerList);
     }
 
-    public boolean deleteBasicBuildingPropertyServiceItemById(Integer id){
-        return serviceItemDao.deleteBasicBuildingPropertyServiceItemById(id) ;
+    public boolean deleteBasicBuildingPropertyServiceItemById(Integer id) {
+        return serviceItemDao.deleteBasicBuildingPropertyServiceItemById(id);
     }
 
 
-    public List<BasicBuildingPropertyServiceItem> getBasicBuildingPropertyServiceItemListByExample(BasicBuildingPropertyServiceItem oo){
+    public List<BasicBuildingPropertyServiceItem> getBasicBuildingPropertyServiceItemListByExample(BasicBuildingPropertyServiceItem oo) {
         return serviceItemDao.getBasicBuildingPropertyServiceItemListByExample(oo);
     }
 
 
-    public BasicBuildingPropertyServiceItemVo getBasicBuildingPropertyServiceItemVo(BasicBuildingPropertyServiceItem oo){
-        if (oo == null){
+    public BasicBuildingPropertyServiceItemVo getBasicBuildingPropertyServiceItemVo(BasicBuildingPropertyServiceItem oo) {
+        if (oo == null) {
             return null;
         }
         BasicBuildingPropertyServiceItemVo vo = new BasicBuildingPropertyServiceItemVo();
-        BeanUtils.copyProperties(oo,vo);
+        BeanUtils.copyProperties(oo, vo);
         vo.setGradeEvaluationName(baseDataDicService.getNameById(oo.getGradeEvaluation()));
         vo.setServiceTypeName(baseDataDicService.getNameById(oo.getServiceType()));
         vo.setServiceContentName(baseDataDicService.getNameById(oo.getServiceContent()));
         return vo;
     }
-    
+
 }

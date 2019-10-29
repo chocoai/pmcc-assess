@@ -29,8 +29,8 @@ public class BasicUnitElevatorDao {
         return basicUnitElevator.getId();
     }
 
-    public boolean updateBasicUnitElevator(BasicUnitElevator basicUnitElevator) throws SQLException {
-        return basicUnitElevatorMapper.updateByPrimaryKeySelective(basicUnitElevator) == 1;
+    public boolean updateBasicUnitElevator(BasicUnitElevator basicUnitElevator, boolean updateNull) throws SQLException {
+        return updateNull ? basicUnitElevatorMapper.updateByPrimaryKey(basicUnitElevator) == 1 : basicUnitElevatorMapper.updateByPrimaryKeySelective(basicUnitElevator) == 1;
     }
 
     public void removeBasicUnitElevator(BasicUnitElevator basicUnitElevator) throws SQLException {

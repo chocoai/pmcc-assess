@@ -29,8 +29,8 @@ public class BasicHouseTradingLeaseDao {
         return basicHouseTradingLease.getId();
     }
 
-    public boolean updateBasicHouseTradingLease(BasicHouseTradingLease basicHouseTradingLease) throws SQLException {
-        return basicHouseTradingLeaseMapper.updateByPrimaryKeySelective(basicHouseTradingLease) == 1;
+    public boolean updateBasicHouseTradingLease(BasicHouseTradingLease basicHouseTradingLease, boolean updateNull) throws SQLException {
+        return updateNull ? basicHouseTradingLeaseMapper.updateByPrimaryKey(basicHouseTradingLease) == 1 : basicHouseTradingLeaseMapper.updateByPrimaryKeySelective(basicHouseTradingLease) == 1;
     }
 
     public boolean deleteBasicHouseTradingLease(Integer id) throws SQLException {

@@ -60,16 +60,22 @@ public class BasicEstateNetworkService {
      * @return
      * @throws Exception
      */
-    public Integer saveAndUpdateBasicEstateNetwork(BasicEstateNetwork basicEstateNetwork) throws Exception {
+    public Integer saveAndUpdateBasicEstateNetwork(BasicEstateNetwork basicEstateNetwork, boolean updateNull) throws Exception {
         if (basicEstateNetwork.getId() == null || basicEstateNetwork.getId().intValue() == 0) {
             basicEstateNetwork.setCreator(commonService.thisUserAccount());
             Integer id = basicEstateNetworkDao.saveBasicEstateNetwork(basicEstateNetwork);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicEstateNetwork.class), id);
             return id;
         } else {
-            BasicEstateNetwork oo = basicEstateNetworkDao.getBasicEstateNetworkById(basicEstateNetwork.getId());
-            basicEstateNetworkDao.updateBasicEstateNetwork(basicEstateNetwork);
-            return null;
+            if (updateNull) {
+                BasicEstateNetwork estateNetwork = basicEstateNetworkDao.getBasicEstateNetworkById(basicEstateNetwork.getId());
+                if (estateNetwork != null) {
+                    basicEstateNetwork.setCreator(estateNetwork.getCreator());
+                    basicEstateNetwork.setGmtCreated(estateNetwork.getGmtCreated());
+                }
+            }
+            basicEstateNetworkDao.updateBasicEstateNetwork(basicEstateNetwork, updateNull);
+            return basicEstateNetwork.getId();
         }
     }
 

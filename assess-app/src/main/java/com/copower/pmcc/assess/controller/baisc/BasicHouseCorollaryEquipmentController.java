@@ -43,7 +43,7 @@ public class BasicHouseCorollaryEquipmentController {
     @RequestMapping(value = "/saveAndUpdateBasicHouseCorollaryEquipment", name = "新增或者修改", method = {RequestMethod.POST})
     public HttpResult saveAndUpdateBasicHouseCorollaryEquipment(BasicHouseCorollaryEquipment basicHouseCorollaryEquipment){
         try {
-            return HttpResult.newCorrectResult(200,basicHouseCorollaryEquipmentService.saveAndUpdateBasicHouseCorollaryEquipment(basicHouseCorollaryEquipment));
+            return HttpResult.newCorrectResult(200,basicHouseCorollaryEquipmentService.saveAndUpdateBasicHouseCorollaryEquipment(basicHouseCorollaryEquipment,true));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
             return HttpResult.newErrorResult(500,e.getMessage());

@@ -30,8 +30,8 @@ public class BasicHouseWaterDrainDao {
         return basicHouseWaterDrain.getId();
     }
 
-    public boolean updateBasicHouseWaterDrain(BasicHouseWaterDrain basicHouseWaterDrain) throws SQLException {
-        return basicHouseWaterDrainMapper.updateByPrimaryKeySelective(basicHouseWaterDrain) == 1;
+    public boolean updateBasicHouseWaterDrain(BasicHouseWaterDrain basicHouseWaterDrain, boolean updateNull) throws SQLException {
+        return updateNull ? basicHouseWaterDrainMapper.updateByPrimaryKey(basicHouseWaterDrain) == 1 : basicHouseWaterDrainMapper.updateByPrimaryKeySelective(basicHouseWaterDrain) == 1;
     }
 
     public boolean deleteBasicHouseWaterDrain(BasicHouseWaterDrain basicHouseWaterDrain) throws SQLException {
@@ -52,10 +52,11 @@ public class BasicHouseWaterDrainDao {
 
     /**
      * 获取数据条数
+     *
      * @param houseId
      * @return
      */
-    public int countByHouseId(Integer houseId){
+    public int countByHouseId(Integer houseId) {
         BasicHouseWaterDrainExample example = new BasicHouseWaterDrainExample();
         example.createCriteria().andHouseIdEqualTo(houseId);
         return basicHouseWaterDrainMapper.countByExample(example);

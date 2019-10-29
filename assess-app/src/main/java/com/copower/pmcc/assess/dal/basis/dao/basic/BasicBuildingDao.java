@@ -21,24 +21,24 @@ public class BasicBuildingDao {
     @Autowired
     private BasicBuildingMapper basicBuildingMapper;
 
-    public BasicBuilding getBasicBuildingById(Integer id){
+    public BasicBuilding getBasicBuildingById(Integer id) {
         return basicBuildingMapper.selectByPrimaryKey(id);
     }
 
-    public Integer addBasicBuilding(BasicBuilding basicBuilding){
+    public Integer addBasicBuilding(BasicBuilding basicBuilding) {
         basicBuildingMapper.insertSelective(basicBuilding);
         return basicBuilding.getId();
     }
 
-    public boolean updateBasicBuilding(BasicBuilding basicBuilding){
-        return basicBuildingMapper.updateByPrimaryKeySelective(basicBuilding)==1;
+    public boolean updateBasicBuilding(BasicBuilding basicBuilding, boolean updateNull) {
+        return updateNull ? basicBuildingMapper.updateByPrimaryKey(basicBuilding) == 1 : basicBuildingMapper.updateByPrimaryKeySelective(basicBuilding) == 1;
     }
 
-    public boolean deleteBasicBuilding(Integer id){
-        return  basicBuildingMapper.deleteByPrimaryKey(id)==1;
+    public boolean deleteBasicBuilding(Integer id) {
+        return basicBuildingMapper.deleteByPrimaryKey(id) == 1;
     }
 
-    public List<BasicBuilding> getBasicBuildingList(BasicBuilding basicBuilding){
+    public List<BasicBuilding> getBasicBuildingList(BasicBuilding basicBuilding) {
         BasicBuildingExample example = new BasicBuildingExample();
         MybatisUtils.convertObj2Example(basicBuilding, example);
         return basicBuildingMapper.selectByExample(example);

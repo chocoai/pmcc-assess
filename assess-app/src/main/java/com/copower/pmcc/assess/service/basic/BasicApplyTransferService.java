@@ -101,7 +101,7 @@ public class BasicApplyTransferService {
             basicEstateNew.setId(null);
             basicEstateNew.setGmtCreated(null);
             basicEstateNew.setGmtModified(null);
-            basicEstateService.saveAndUpdateBasicEstate(basicEstateNew);
+            basicEstateService.saveAndUpdateBasicEstate(basicEstateNew,false);
 
             SysAttachmentDto example = new SysAttachmentDto();
             example.setTableId(basicEstateOld.getId());
@@ -118,7 +118,7 @@ public class BasicApplyTransferService {
                 basicEstateLandStateNew.setEstateId(basicEstateNew.getId());
                 basicEstateLandStateNew.setGmtCreated(null);
                 basicEstateLandStateNew.setGmtModified(null);
-                basicEstateLandStateService.saveAndUpdateBasicEstateLandState(basicEstateLandStateNew);
+                basicEstateLandStateService.saveAndUpdateBasicEstateLandState(basicEstateLandStateNew,false);
             }
         }
         BasicEstateParking queryBasicEstateParkingOld = new BasicEstateParking();
@@ -191,7 +191,7 @@ public class BasicApplyTransferService {
                 estateParking.setGmtModified(null);
                 estateParking.setGmtCreated(null);
                 estateParking.setEstateId(basicEstateNew.getId());
-                basicEstateParkingService.saveAndUpdateBasicEstateParking(estateParking);
+                basicEstateParkingService.saveAndUpdateBasicEstateParking(estateParking,false);
 
                 List<SysAttachmentDto> sysAttachmentDtoList = null;
                 SysAttachmentDto query = new SysAttachmentDto();
@@ -228,7 +228,7 @@ public class BasicApplyTransferService {
             basicBuildingNew.setId(null);
             basicBuildingNew.setGmtCreated(null);
             basicBuildingNew.setGmtModified(null);
-            basicBuildingService.saveAndUpdateBasicBuilding(basicBuildingNew);
+            basicBuildingService.saveAndUpdateBasicBuilding(basicBuildingNew,false);
 
             SysAttachmentDto example = new SysAttachmentDto();
             example.setTableId(buildingOld.getId());
@@ -284,7 +284,7 @@ public class BasicApplyTransferService {
             basicUnitNew.setId(null);
             basicUnitNew.setGmtCreated(null);
             basicUnitNew.setGmtModified(null);
-            basicUnitService.saveAndUpdateBasicUnit(basicUnitNew);
+            basicUnitService.saveAndUpdateBasicUnit(basicUnitNew,false);
 
             //附件拷贝
             SysAttachmentDto example = new SysAttachmentDto();
@@ -334,7 +334,7 @@ public class BasicApplyTransferService {
                 basicUnitHuxing.setGmtCreated(null);
                 basicUnitHuxing.setGmtModified(null);
                 basicUnitHuxing.setUnitId(basicUnitNew.getId());
-                basicUnitHuxingService.saveAndUpdateBasicUnitHuxing(basicUnitHuxing);
+                basicUnitHuxingService.saveAndUpdateBasicUnitHuxing(basicUnitHuxing,false);
 
                 SysAttachmentDto example = new SysAttachmentDto();
                 example.setTableId(unitHuxing.getId());
@@ -366,7 +366,7 @@ public class BasicApplyTransferService {
             basicHouseNew.setId(null);
             basicHouseNew.setGmtCreated(null);
             basicHouseNew.setGmtModified(null);
-            basicHouseService.saveAndUpdateBasicHouse(basicHouseNew);
+            basicHouseService.saveAndUpdateBasicHouse(basicHouseNew,false);
 
             if (tradingOld != null) {
                 BeanUtils.copyProperties(tradingOld, basicHouseTrading);
@@ -375,7 +375,7 @@ public class BasicApplyTransferService {
                 basicHouseTrading.setGmtCreated(null);
                 basicHouseTrading.setGmtModified(null);
                 basicHouseTrading.setHouseId(basicHouseNew.getId());
-                basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicHouseTrading);
+                basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicHouseTrading,false);
             }
         }
         List<BasicHouseRoom> basicHouseRoomList = null;
@@ -460,7 +460,7 @@ public class BasicApplyTransferService {
                     basicHouseCorollaryEquipment.setGmtCreated(null);
                     basicHouseCorollaryEquipment.setGmtModified(null);
                     basicHouseCorollaryEquipment.setHouseId(basicHouseNew.getId());
-                    basicHouseCorollaryEquipmentService.saveAndUpdateBasicHouseCorollaryEquipment(basicHouseCorollaryEquipment);
+                    basicHouseCorollaryEquipmentService.saveAndUpdateBasicHouseCorollaryEquipment(basicHouseCorollaryEquipment,false);
 
                     SysAttachmentDto example = new SysAttachmentDto();
                     example.setTableId(oo.getId());
@@ -484,7 +484,7 @@ public class BasicApplyTransferService {
                 basicHouseRoom.setGmtCreated(null);
                 basicHouseRoom.setGmtModified(null);
                 basicHouseRoom.setHouseId(basicHouseNew.getId());
-                basicHouseRoomService.saveAndUpdateBasicHouseRoom(basicHouseRoom);
+                basicHouseRoomService.saveAndUpdateBasicHouseRoom(basicHouseRoom,false);
 
                 BasicHouseRoomDecorate query = new BasicHouseRoomDecorate();
                 query.setRoomId(oo.getId());
@@ -497,7 +497,7 @@ public class BasicApplyTransferService {
                         basicHouseRoomDecorate.setGmtModified(null);
                         basicHouseRoomDecorate.setId(null);
                         basicHouseRoomDecorate.setRoomId(basicHouseRoom.getId());
-                        basicHouseRoomDecorateService.saveAndUpdateBasicHouseRoomDecorate(basicHouseRoomDecorate);
+                        basicHouseRoomDecorateService.saveAndUpdateBasicHouseRoomDecorate(basicHouseRoomDecorate,false);
                     }
                 }
             }
@@ -513,7 +513,7 @@ public class BasicApplyTransferService {
                 basicHouseDamagedDegree.setGmtCreated(null);
                 basicHouseDamagedDegree.setGmtModified(null);
                 basicHouseDamagedDegree.setHouseId(basicHouseNew.getId());
-                basicHouseDamagedDegreeService.saveAndUpdateDamagedDegree(basicHouseDamagedDegree);
+                basicHouseDamagedDegreeService.saveAndUpdateDamagedDegree(basicHouseDamagedDegree,false);
 
                 List<BasicHouseDamagedDegreeDetail> degreeDetails = basicHouseDamagedDegreeService.getDamagedDegreeDetails(basicHouseDamagedDegree.getId());
                 if (!CollectionUtils.isEmpty(degreeDetails)) {
@@ -525,7 +525,7 @@ public class BasicApplyTransferService {
                         basicHouseDamagedDegreeDetail.setGmtModified(null);
                         basicHouseDamagedDegreeDetail.setDamagedDegreeId(basicHouseDamagedDegree.getId());
                         basicHouseDamagedDegreeDetail.setHouseId(basicHouseNew.getId());
-                        basicHouseDamagedDegreeService.saveAndUpdateDamagedDegreeDetail(basicHouseDamagedDegreeDetail);
+                        basicHouseDamagedDegreeService.saveAndUpdateDamagedDegreeDetail(basicHouseDamagedDegreeDetail,false);
                     }
                 }
             }

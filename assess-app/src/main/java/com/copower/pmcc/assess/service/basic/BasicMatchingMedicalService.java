@@ -62,16 +62,22 @@ public class BasicMatchingMedicalService {
      * @return
      * @throws Exception
      */
-    public Integer saveAndUpdateBasicMatchingMedical(BasicMatchingMedical basicMatchingMedical) throws Exception {
+    public Integer saveAndUpdateBasicMatchingMedical(BasicMatchingMedical basicMatchingMedical, boolean updateNull) throws Exception {
         if (basicMatchingMedical.getId() == null || basicMatchingMedical.getId().intValue() == 0) {
             basicMatchingMedical.setCreator(commonService.thisUserAccount());
             Integer id = basicMatchingMedicalDao.saveBasicMatchingMedical(basicMatchingMedical);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicMatchingMedical.class), id);
-            return  id ;
+            return id;
         } else {
-            BasicMatchingMedical oo = basicMatchingMedicalDao.getBasicMatchingMedicalById(basicMatchingMedical.getId());
-            basicMatchingMedicalDao.updateBasicMatchingMedical(basicMatchingMedical);
-            return null;
+            if (updateNull) {
+                BasicMatchingMedical matchingMedical = basicMatchingMedicalDao.getBasicMatchingMedicalById(basicMatchingMedical.getId());
+                if (matchingMedical != null) {
+                    basicMatchingMedical.setCreator(matchingMedical.getCreator());
+                    basicMatchingMedical.setGmtCreated(matchingMedical.getGmtCreated());
+                }
+            }
+            basicMatchingMedicalDao.updateBasicMatchingMedical(basicMatchingMedical, updateNull);
+            return basicMatchingMedical.getId();
         }
     }
 
@@ -98,7 +104,7 @@ public class BasicMatchingMedicalService {
         return basicMatchingMedicalDao.basicMatchingMedicalList(basicMatchingMedical);
     }
 
-    public void removeBasicMatchingMedical(BasicMatchingMedical basicMatchingMedical)throws Exception{
+    public void removeBasicMatchingMedical(BasicMatchingMedical basicMatchingMedical) throws Exception {
         basicMatchingMedicalDao.removeBasicMatchingMedical(basicMatchingMedical);
     }
 
@@ -114,35 +120,35 @@ public class BasicMatchingMedicalService {
         return vo;
     }
 
-    public List<BasicMatchingMedical> getBasicMatchingMedicalList(Integer estateId){
-        BasicMatchingMedical where=new BasicMatchingMedical();
+    public List<BasicMatchingMedical> getBasicMatchingMedicalList(Integer estateId) {
+        BasicMatchingMedical where = new BasicMatchingMedical();
         where.setEstateId(estateId);
         List<BasicMatchingMedical> basicMatchingMedicalList = basicMatchingMedicalDao.basicMatchingMedicalList(where);
         return basicMatchingMedicalList;
     }
 
-    public BasicMatchingMedicalVo getBasicMatchingMedicalVo(BasicMatchingMedical basicMatchingMedical){
-        if (basicMatchingMedical==null){
+    public BasicMatchingMedicalVo getBasicMatchingMedicalVo(BasicMatchingMedical basicMatchingMedical) {
+        if (basicMatchingMedical == null) {
             return null;
         }
         BasicMatchingMedicalVo vo = new BasicMatchingMedicalVo();
-        BeanUtils.copyProperties(basicMatchingMedical,vo);
+        BeanUtils.copyProperties(basicMatchingMedical, vo);
         vo.setOrganizationLevelName(baseDataDicService.getNameById(basicMatchingMedical.getOrganizationLevel()));
         vo.setBedNumberName(baseDataDicService.getNameById(basicMatchingMedical.getBedNumber()));
         vo.setDistanceName(baseDataDicService.getNameById(basicMatchingMedical.getDistance()));
         return vo;
     }
 
-    public void removeIds(String str){
-        if (StringUtils.isNotBlank(str)){
-            List<Integer> ids = new ArrayList<>(10) ;
-            for (String id:str.split(",")){
-                if (NumberUtils.isNumber(id)){
+    public void removeIds(String str) {
+        if (StringUtils.isNotBlank(str)) {
+            List<Integer> ids = new ArrayList<>(10);
+            for (String id : str.split(",")) {
+                if (NumberUtils.isNumber(id)) {
                     ids.add(Integer.parseInt(id));
                 }
             }
             basicMatchingMedicalDao.removeIds(ids);
         }
     }
-    
+
 }

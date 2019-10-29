@@ -30,69 +30,69 @@ public class BasicMatchingFinanceController {
 
     @ResponseBody
     @RequestMapping(value = "/getBasicMatchingFinanceById", name = "获取数据", method = {RequestMethod.GET})
-    public HttpResult getBasicMatchingFinanceById(Integer id){
+    public HttpResult getBasicMatchingFinanceById(Integer id) {
         try {
-            return HttpResult.newCorrectResult(200,basicMatchingFinanceService.getBasicMatchingFinanceById(id));
+            return HttpResult.newCorrectResult(200, basicMatchingFinanceService.getBasicMatchingFinanceById(id));
         } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
-            return HttpResult.newErrorResult(500,e.getMessage());
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(500, e.getMessage());
         }
     }
 
     @ResponseBody
     @RequestMapping(value = "/saveAndUpdateBasicMatchingFinance", name = "新增或者修改", method = {RequestMethod.POST})
-    public HttpResult saveAndUpdateBasicMatchingFinance(BasicMatchingFinance basicMatchingFinance){
+    public HttpResult saveAndUpdateBasicMatchingFinance(BasicMatchingFinance basicMatchingFinance) {
         try {
-            return HttpResult.newCorrectResult(200,basicMatchingFinanceService.saveAndUpdateBasicMatchingFinance(basicMatchingFinance));
+            return HttpResult.newCorrectResult(200, basicMatchingFinanceService.saveAndUpdateBasicMatchingFinance(basicMatchingFinance, true));
         } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
-            return HttpResult.newErrorResult(500,e.getMessage());
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(500, e.getMessage());
         }
     }
 
     @ResponseBody
     @RequestMapping(value = "/deleteBasicMatchingFinance", name = "删除数据", method = {RequestMethod.POST})
-    public HttpResult deleteBasicMatchingFinance(Integer id){
+    public HttpResult deleteBasicMatchingFinance(Integer id) {
         try {
-            return HttpResult.newCorrectResult(200,basicMatchingFinanceService.deleteBasicMatchingFinance(id));
+            return HttpResult.newCorrectResult(200, basicMatchingFinanceService.deleteBasicMatchingFinance(id));
         } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
-            return HttpResult.newErrorResult(500,e.getMessage());
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(500, e.getMessage());
         }
     }
 
     @ResponseBody
     @RequestMapping(value = "/removeIds", name = "删除数据", method = {RequestMethod.POST})
-    public HttpResult removeIds(String ids){
+    public HttpResult removeIds(String ids) {
         try {
             basicMatchingFinanceService.removeIds(ids);
-            return HttpResult.newCorrectResult(200,ids);
+            return HttpResult.newCorrectResult(200, ids);
         } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
-            return HttpResult.newErrorResult(500,e.getMessage());
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(500, e.getMessage());
         }
     }
 
     @ResponseBody
     @RequestMapping(value = "/getBootstrapTableVo", method = {RequestMethod.GET})
-    public BootstrapTableVo getBootstrapTableVo(BasicMatchingFinance basicMatchingFinance,@RequestParam(required = true, name = "approval", defaultValue = "false") Boolean approval){
+    public BootstrapTableVo getBootstrapTableVo(BasicMatchingFinance basicMatchingFinance, @RequestParam(required = true, name = "approval", defaultValue = "false") Boolean approval) {
         try {
             return basicMatchingFinanceService.getBootstrapTableVo(basicMatchingFinance);
         } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return null;
         }
     }
 
     @ResponseBody
     @RequestMapping(value = "/basicMatchingFinanceList", name = "获取数据列表", method = {RequestMethod.GET})
-    public HttpResult basicMatchingFinanceList(BasicMatchingFinance basicMatchingFinance){
+    public HttpResult basicMatchingFinanceList(BasicMatchingFinance basicMatchingFinance) {
         try {
-            return HttpResult.newCorrectResult(200,basicMatchingFinanceService.basicMatchingFinanceList(basicMatchingFinance));
+            return HttpResult.newCorrectResult(200, basicMatchingFinanceService.basicMatchingFinanceList(basicMatchingFinance));
         } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
-            return HttpResult.newErrorResult(500,e.getMessage());
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(500, e.getMessage());
         }
     }
-    
+
 }

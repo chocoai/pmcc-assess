@@ -29,8 +29,8 @@ public class BasicHouseTradingSellDao {
         return basicHouseTradingSell.getId();
     }
 
-    public boolean updateBasicHouseTradingSell(BasicHouseTradingSell basicHouseTradingSell) throws SQLException {
-        return basicHouseTradingSellMapper.updateByPrimaryKeySelective(basicHouseTradingSell) == 1;
+    public boolean updateBasicHouseTradingSell(BasicHouseTradingSell basicHouseTradingSell, boolean updateNull) throws SQLException {
+        return updateNull?basicHouseTradingSellMapper.updateByPrimaryKey(basicHouseTradingSell) == 1:basicHouseTradingSellMapper.updateByPrimaryKeySelective(basicHouseTradingSell) == 1;
     }
 
     public boolean deleteBasicHouseTradingSell(Integer id) throws SQLException {

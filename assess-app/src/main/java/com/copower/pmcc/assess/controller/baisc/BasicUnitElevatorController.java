@@ -30,56 +30,56 @@ public class BasicUnitElevatorController {
 
     @ResponseBody
     @RequestMapping(value = "/getBasicUnitElevatorById", name = "获取数据", method = {RequestMethod.GET})
-    public HttpResult getBasicUnitElevatorById(Integer id){
+    public HttpResult getBasicUnitElevatorById(Integer id) {
         try {
-            return HttpResult.newCorrectResult(200,basicUnitElevatorService.getBasicUnitElevatorById(id));
+            return HttpResult.newCorrectResult(200, basicUnitElevatorService.getBasicUnitElevatorById(id));
         } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
-            return HttpResult.newErrorResult(500,e.getMessage());
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(500, e.getMessage());
         }
     }
 
     @ResponseBody
     @RequestMapping(value = "/saveAndUpdateBasicUnitElevator", name = "新增或者修改", method = {RequestMethod.POST})
-    public HttpResult saveAndUpdateBasicUnitElevator(BasicUnitElevator basicUnitElevator){
+    public HttpResult saveAndUpdateBasicUnitElevator(BasicUnitElevator basicUnitElevator) {
         try {
-            return HttpResult.newCorrectResult(200,basicUnitElevatorService.saveAndUpdateBasicUnitElevator(basicUnitElevator));
+            return HttpResult.newCorrectResult(200, basicUnitElevatorService.saveAndUpdateBasicUnitElevator(basicUnitElevator, true));
         } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
-            return HttpResult.newErrorResult(500,e.getMessage());
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(500, e.getMessage());
         }
     }
 
     @ResponseBody
     @RequestMapping(value = "/deleteBasicUnitElevator", name = "删除数据", method = {RequestMethod.POST})
-    public HttpResult deleteBasicUnitElevator(Integer id){
+    public HttpResult deleteBasicUnitElevator(Integer id) {
         try {
-            return HttpResult.newCorrectResult(200,basicUnitElevatorService.deleteBasicUnitElevator(id));
+            return HttpResult.newCorrectResult(200, basicUnitElevatorService.deleteBasicUnitElevator(id));
         } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
-            return HttpResult.newErrorResult(500,e.getMessage());
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(500, e.getMessage());
         }
     }
 
     @ResponseBody
     @RequestMapping(value = "/getBootstrapTableVo", method = {RequestMethod.GET})
-    public BootstrapTableVo getBootstrapTableVo(BasicUnitElevator basicUnitElevator, @RequestParam(required = true, name = "approval", defaultValue = "false") Boolean approval){
+    public BootstrapTableVo getBootstrapTableVo(BasicUnitElevator basicUnitElevator, @RequestParam(required = true, name = "approval", defaultValue = "false") Boolean approval) {
         try {
             return basicUnitElevatorService.getBootstrapTableVo(basicUnitElevator);
         } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return null;
         }
     }
 
     @ResponseBody
     @RequestMapping(value = "/basicUnitElevatorList", name = "获取数据列表", method = {RequestMethod.GET})
-    public HttpResult basicUnitElevatorList(BasicUnitElevator basicUnitElevator){
+    public HttpResult basicUnitElevatorList(BasicUnitElevator basicUnitElevator) {
         try {
-            return HttpResult.newCorrectResult(200,basicUnitElevatorService.basicUnitElevatorList(basicUnitElevator));
+            return HttpResult.newCorrectResult(200, basicUnitElevatorService.basicUnitElevatorList(basicUnitElevator));
         } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
-            return HttpResult.newErrorResult(500,e.getMessage());
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(500, e.getMessage());
         }
     }
 }

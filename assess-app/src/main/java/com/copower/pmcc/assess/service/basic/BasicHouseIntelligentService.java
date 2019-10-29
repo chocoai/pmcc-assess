@@ -64,15 +64,21 @@ public class BasicHouseIntelligentService {
      * @return
      * @throws Exception
      */
-    public Integer saveAndUpdateBasicHouseIntelligent(BasicHouseIntelligent basicHouseIntelligent) throws Exception {
+    public Integer saveAndUpdateBasicHouseIntelligent(BasicHouseIntelligent basicHouseIntelligent, boolean updateNull) throws Exception {
         if (basicHouseIntelligent.getId() == null || basicHouseIntelligent.getId().intValue() == 0) {
             basicHouseIntelligent.setCreator(commonService.thisUserAccount());
             Integer id = basicHouseIntelligentDao.saveBasicHouseIntelligent(basicHouseIntelligent);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicHouseIntelligent.class), id);
             return id;
         } else {
-            BasicHouseIntelligent oo = basicHouseIntelligentDao.getBasicHouseIntelligentById(basicHouseIntelligent.getId());
-            basicHouseIntelligentDao.updateBasicHouseIntelligent(basicHouseIntelligent);
+            if (updateNull) {
+                BasicHouseIntelligent houseIntelligent = basicHouseIntelligentDao.getBasicHouseIntelligentById(basicHouseIntelligent.getId());
+                if (houseIntelligent != null) {
+                    basicHouseIntelligent.setCreator(houseIntelligent.getCreator());
+                    basicHouseIntelligent.setGmtCreated(houseIntelligent.getGmtCreated());
+                }
+            }
+            basicHouseIntelligentDao.updateBasicHouseIntelligent(basicHouseIntelligent, updateNull);
             return null;
         }
     }
@@ -117,9 +123,9 @@ public class BasicHouseIntelligentService {
     }
 
     public List<BasicHouseIntelligentVo> getBasicHouseIntelligentVos(Integer houseId) {
-        BasicHouseIntelligent where=new BasicHouseIntelligent();
+        BasicHouseIntelligent where = new BasicHouseIntelligent();
         where.setHouseId(houseId);
-        return LangUtils.transform(basicHouseIntelligentDao.basicHouseIntelligentList(where),o->getBasicHouseIntelligentVo(o)) ;
+        return LangUtils.transform(basicHouseIntelligentDao.basicHouseIntelligentList(where), o -> getBasicHouseIntelligentVo(o));
     }
 
     public BasicHouseIntelligentVo getBasicHouseIntelligentVo(BasicHouseIntelligent basicHouseIntelligent) {

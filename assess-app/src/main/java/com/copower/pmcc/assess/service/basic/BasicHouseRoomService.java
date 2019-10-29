@@ -69,7 +69,7 @@ public class BasicHouseRoomService {
      * @return
      * @throws Exception
      */
-    public Integer saveAndUpdateBasicHouseRoom(BasicHouseRoom basicHouseRoom) throws Exception {
+    public Integer saveAndUpdateBasicHouseRoom(BasicHouseRoom basicHouseRoom, boolean updateNull) throws Exception {
         if (basicHouseRoom.getId() == null || basicHouseRoom.getId().intValue() == 0) {
             basicHouseRoom.setCreator(commonService.thisUserAccount());
             Integer id = basicHouseRoomDao.saveBasicHouseRoom(basicHouseRoom);
@@ -77,8 +77,14 @@ public class BasicHouseRoomService {
             basicHouseRoom.setId(id);
             return id;
         } else {
-            BasicHouseRoom oo = basicHouseRoomDao.getBasicHouseRoomById(basicHouseRoom.getId());
-            basicHouseRoomDao.updateBasicHouseRoom(basicHouseRoom);
+            if (updateNull) {
+                BasicHouseRoom houseRoom = basicHouseRoomDao.getBasicHouseRoomById(basicHouseRoom.getId());
+                if (houseRoom != null) {
+                    basicHouseRoom.setCreator(houseRoom.getCreator());
+                    basicHouseRoom.setGmtCreated(houseRoom.getGmtCreated());
+                }
+            }
+            basicHouseRoomDao.updateBasicHouseRoom(basicHouseRoom, updateNull);
             return null;
         }
     }

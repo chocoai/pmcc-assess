@@ -120,10 +120,6 @@ public class BasicBuildingService {
         return getBasicBuildingVo(basicBuilding);
     }
 
-    public boolean update(BasicBuilding basicBuilding) {
-        return basicBuildingDao.updateBasicBuilding(basicBuilding);
-    }
-
     /**
      * 新增或者修改
      *
@@ -131,15 +127,22 @@ public class BasicBuildingService {
      * @return
      * @throws Exception
      */
-    public Integer saveAndUpdateBasicBuilding(BasicBuilding basicBuilding) throws Exception {
+    public Integer saveAndUpdateBasicBuilding(BasicBuilding basicBuilding, boolean updateNull) throws Exception {
         if (basicBuilding.getId() == null || basicBuilding.getId().intValue() == 0) {
             basicBuilding.setCreator(commonService.thisUserAccount());
             Integer id = basicBuildingDao.addBasicBuilding(basicBuilding);
             this.updateSysAttachmentDto(basicBuilding, id);
             return id;
         } else {
-            basicBuildingDao.updateBasicBuilding(basicBuilding);
-            return null;
+            if (updateNull) {
+                BasicBuilding building = basicBuildingDao.getBasicBuildingById(basicBuilding.getId());
+                if (building != null) {
+                    basicBuilding.setCreator(building.getCreator());
+                    basicBuilding.setGmtCreated(building.getGmtCreated());
+                }
+            }
+            basicBuildingDao.updateBasicBuilding(basicBuilding, updateNull);
+            return basicBuilding.getId();
         }
     }
 
@@ -315,6 +318,7 @@ public class BasicBuildingService {
 
     /**
      * 只清理从表数据
+     *
      * @param buildingId
      * @throws Exception
      */
@@ -432,7 +436,7 @@ public class BasicBuildingService {
         basicBuilding.setGmtCreated(null);
         basicBuilding.setGmtModified(null);
         basicBuilding.setId(null);
-        this.saveAndUpdateBasicBuilding(basicBuilding);
+        this.saveAndUpdateBasicBuilding(basicBuilding,false);
 
         //附件拷贝
         SysAttachmentDto example = new SysAttachmentDto();
@@ -521,7 +525,7 @@ public class BasicBuildingService {
         basicBuilding.setId(tableId);
         basicBuilding.setApplyId(null);
         basicBuilding.setEstateId(parentTableId);
-        this.saveAndUpdateBasicBuilding(basicBuilding);
+        this.saveAndUpdateBasicBuilding(basicBuilding,false);
 
         //删除原有的附件
         SysAttachmentDto deleteExample = new SysAttachmentDto();

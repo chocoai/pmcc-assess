@@ -21,24 +21,24 @@ public class BasicHouseDao {
     @Autowired
     private BasicHouseMapper basicHouseMapper;
 
-    public BasicHouse getBasicHouseById(Integer id){
+    public BasicHouse getBasicHouseById(Integer id) {
         return basicHouseMapper.selectByPrimaryKey(id);
     }
 
-    public Integer addBasicHouse(BasicHouse basicHouse){
+    public Integer addBasicHouse(BasicHouse basicHouse) {
         basicHouseMapper.insertSelective(basicHouse);
         return basicHouse.getId();
     }
 
-    public boolean updateBasicHouse(BasicHouse basicHouse){
-        return basicHouseMapper.updateByPrimaryKeySelective(basicHouse)==1;
+    public boolean updateBasicHouse(BasicHouse basicHouse, boolean updateNull) {
+        return updateNull ? basicHouseMapper.updateByPrimaryKey(basicHouse) == 1 : basicHouseMapper.updateByPrimaryKeySelective(basicHouse) == 1;
     }
 
-    public boolean deleteBasicHouse(Integer id){
-        return  basicHouseMapper.deleteByPrimaryKey(id)==1;
+    public boolean deleteBasicHouse(Integer id) {
+        return basicHouseMapper.deleteByPrimaryKey(id) == 1;
     }
 
-    public List<BasicHouse> basicHouseList(BasicHouse basicHouse){
+    public List<BasicHouse> basicHouseList(BasicHouse basicHouse) {
         BasicHouseExample example = new BasicHouseExample();
         MybatisUtils.convertObj2Example(basicHouse, example);
         return basicHouseMapper.selectByExample(example);

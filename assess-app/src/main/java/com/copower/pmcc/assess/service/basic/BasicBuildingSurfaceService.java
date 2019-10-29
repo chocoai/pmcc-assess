@@ -61,16 +61,22 @@ public class BasicBuildingSurfaceService {
      * @return
      * @throws Exception
      */
-    public Integer saveAndUpdateBasicBuildingSurface(BasicBuildingSurface basicBuildingSurface) throws Exception {
+    public Integer saveAndUpdateBasicBuildingSurface(BasicBuildingSurface basicBuildingSurface, boolean updateNull) throws Exception {
         if (basicBuildingSurface.getId() == null || basicBuildingSurface.getId().intValue() == 0) {
             basicBuildingSurface.setCreator(commonService.thisUserAccount());
             Integer id = basicBuildingSurfaceDao.saveBasicBuildingSurface(basicBuildingSurface);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicBuildingSurface.class), id);
             return  id ;
         } else {
-            BasicBuildingSurface oo = basicBuildingSurfaceDao.getBasicBuildingSurfaceById(basicBuildingSurface.getId());
-            basicBuildingSurfaceDao.updateBasicBuildingSurface(basicBuildingSurface);
-            return null;
+            if(updateNull){
+                BasicBuildingSurface buildingSurface = basicBuildingSurfaceDao.getBasicBuildingSurfaceById(basicBuildingSurface.getId());
+                if(buildingSurface!=null){
+                    basicBuildingSurface.setCreator(buildingSurface.getCreator());
+                    basicBuildingSurface.setGmtCreated(buildingSurface.getGmtCreated());
+                }
+            }
+            basicBuildingSurfaceDao.updateBasicBuildingSurface(basicBuildingSurface,updateNull);
+            return basicBuildingSurface.getId();
         }
     }
 

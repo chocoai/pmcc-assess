@@ -76,7 +76,7 @@ public class BasicBuildingPropertyServiceItemController {
             List<BasicBuildingPropertyServiceItem> itemList = JSONObject.parseArray(formData, BasicBuildingPropertyServiceItem.class);
             if (CollectionUtils.isNotEmpty(itemList)) {
                 for (BasicBuildingPropertyServiceItem oo : itemList) {
-                    basicBuildingPropertyServiceItemService.saveBasicBuildingPropertyServiceItem(oo);
+                    basicBuildingPropertyServiceItemService.saveBasicBuildingPropertyServiceItem(oo,true);
                 }
             }
             return HttpResult.newCorrectResult("保存 success!");

@@ -43,7 +43,7 @@ public class BasicUnitDecorateController {
     @RequestMapping(value = "/saveAndUpdateBasicUnitDecorate", name = "新增或者修改", method = {RequestMethod.POST})
     public HttpResult saveAndUpdateBasicUnitDecorate(BasicUnitDecorate basicUnitDecorate){
         try {
-            return HttpResult.newCorrectResult(200,basicUnitDecorateService.saveAndUpdateBasicUnitDecorate(basicUnitDecorate));
+            return HttpResult.newCorrectResult(200,basicUnitDecorateService.saveAndUpdateBasicUnitDecorate(basicUnitDecorate,true));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
             return HttpResult.newErrorResult(500,e.getMessage());

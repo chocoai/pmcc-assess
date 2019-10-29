@@ -43,7 +43,7 @@ public class BasicHouseWaterController {
     @RequestMapping(value = "/saveAndUpdateBasicHouseWater", name = "新增或者修改", method = {RequestMethod.POST})
     public HttpResult saveAndUpdateBasicHouseWater(BasicHouseWater basicHouseWater){
         try {
-            return HttpResult.newCorrectResult(200,basicHouseWaterService.saveAndUpdateBasicHouseWater(basicHouseWater));
+            return HttpResult.newCorrectResult(200,basicHouseWaterService.saveAndUpdateBasicHouseWater(basicHouseWater,true));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
             return HttpResult.newErrorResult(500,e.getMessage());

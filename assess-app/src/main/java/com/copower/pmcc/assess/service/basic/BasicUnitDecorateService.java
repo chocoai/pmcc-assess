@@ -60,16 +60,22 @@ public class BasicUnitDecorateService {
      * @return
      * @throws Exception
      */
-    public Integer saveAndUpdateBasicUnitDecorate(BasicUnitDecorate basicUnitDecorate) throws Exception {
+    public Integer saveAndUpdateBasicUnitDecorate(BasicUnitDecorate basicUnitDecorate, boolean updateNull) throws Exception {
         if (basicUnitDecorate.getId() == null || basicUnitDecorate.getId().intValue() == 0) {
             basicUnitDecorate.setCreator(commonService.thisUserAccount());
             Integer id = basicUnitDecorateDao.saveBasicUnitDecorate(basicUnitDecorate);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicUnitDecorate.class), id);
             return id;
         } else {
-            BasicUnitDecorate oo = basicUnitDecorateDao.getBasicUnitDecorateById(basicUnitDecorate.getId());
-            basicUnitDecorateDao.updateBasicUnitDecorate(basicUnitDecorate);
-            return null;
+            if (updateNull) {
+                BasicUnitDecorate unitDecorate = basicUnitDecorateDao.getBasicUnitDecorateById(basicUnitDecorate.getId());
+                if (unitDecorate != null) {
+                    basicUnitDecorate.setCreator(unitDecorate.getCreator());
+                    basicUnitDecorate.setGmtCreated(unitDecorate.getGmtCreated());
+                }
+            }
+            basicUnitDecorateDao.updateBasicUnitDecorate(basicUnitDecorate, updateNull);
+            return basicUnitDecorate.getId();
         }
     }
 
