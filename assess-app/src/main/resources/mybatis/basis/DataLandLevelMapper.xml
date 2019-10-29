@@ -8,13 +8,17 @@
     <result column="district" property="district" jdbcType="VARCHAR" />
     <result column="release_date" property="releaseDate" jdbcType="TIMESTAMP" />
     <result column="valuation_date" property="valuationDate" jdbcType="TIMESTAMP" />
+    <result column="execution_time" property="executionTime" jdbcType="TIMESTAMP" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
     <result column="word_symbol" property="wordSymbol" jdbcType="VARCHAR" />
     <result column="land_definition" property="landDefinition" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
-    <result column="title" property="title" jdbcType="VARCHAR" />
-    <result column="execution_time" property="executionTime" jdbcType="TIMESTAMP" />
+    <result column="land_right_type" property="landRightType" jdbcType="INTEGER" />
+    <result column="town_ship_name" property="townShipName" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="process_ins_id" property="processInsId" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -75,8 +79,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, province, city, district, release_date, valuation_date, word_symbol, land_definition, 
-    creator, gmt_created, gmt_modified, title, execution_time
+    id, province, city, district, release_date, valuation_date, execution_time, title, 
+    word_symbol, land_definition, creator, gmt_created, gmt_modified, land_right_type, 
+    town_ship_name, status, process_ins_id
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataLandLevelExample" >
     select
@@ -113,15 +118,17 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_data_land_level (province, city, district, 
-      release_date, valuation_date, word_symbol, 
-      land_definition, creator, gmt_created, 
-      gmt_modified, title, execution_time
-      )
+      release_date, valuation_date, execution_time, 
+      title, word_symbol, land_definition, 
+      creator, gmt_created, gmt_modified, 
+      land_right_type, town_ship_name, status, 
+      process_ins_id)
     values (#{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, 
-      #{releaseDate,jdbcType=TIMESTAMP}, #{valuationDate,jdbcType=TIMESTAMP}, #{wordSymbol,jdbcType=VARCHAR}, 
-      #{landDefinition,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP}, #{title,jdbcType=VARCHAR}, #{executionTime,jdbcType=TIMESTAMP}
-      )
+      #{releaseDate,jdbcType=TIMESTAMP}, #{valuationDate,jdbcType=TIMESTAMP}, #{executionTime,jdbcType=TIMESTAMP}, 
+      #{title,jdbcType=VARCHAR}, #{wordSymbol,jdbcType=VARCHAR}, #{landDefinition,jdbcType=VARCHAR}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
+      #{landRightType,jdbcType=INTEGER}, #{townShipName,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{processInsId,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataLandLevel" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -144,6 +151,12 @@
       <if test="valuationDate != null" >
         valuation_date,
       </if>
+      <if test="executionTime != null" >
+        execution_time,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
       <if test="wordSymbol != null" >
         word_symbol,
       </if>
@@ -159,11 +172,17 @@
       <if test="gmtModified != null" >
         gmt_modified,
       </if>
-      <if test="title != null" >
-        title,
+      <if test="landRightType != null" >
+        land_right_type,
       </if>
-      <if test="executionTime != null" >
-        execution_time,
+      <if test="townShipName != null" >
+        town_ship_name,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="processInsId != null" >
+        process_ins_id,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -182,6 +201,12 @@
       <if test="valuationDate != null" >
         #{valuationDate,jdbcType=TIMESTAMP},
       </if>
+      <if test="executionTime != null" >
+        #{executionTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
       <if test="wordSymbol != null" >
         #{wordSymbol,jdbcType=VARCHAR},
       </if>
@@ -197,11 +222,17 @@
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
       </if>
-      <if test="title != null" >
-        #{title,jdbcType=VARCHAR},
+      <if test="landRightType != null" >
+        #{landRightType,jdbcType=INTEGER},
       </if>
-      <if test="executionTime != null" >
-        #{executionTime,jdbcType=TIMESTAMP},
+      <if test="townShipName != null" >
+        #{townShipName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="processInsId != null" >
+        #{processInsId,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -232,6 +263,12 @@
       <if test="record.valuationDate != null" >
         valuation_date = #{record.valuationDate,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.executionTime != null" >
+        execution_time = #{record.executionTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.title != null" >
+        title = #{record.title,jdbcType=VARCHAR},
+      </if>
       <if test="record.wordSymbol != null" >
         word_symbol = #{record.wordSymbol,jdbcType=VARCHAR},
       </if>
@@ -247,11 +284,17 @@
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.title != null" >
-        title = #{record.title,jdbcType=VARCHAR},
+      <if test="record.landRightType != null" >
+        land_right_type = #{record.landRightType,jdbcType=INTEGER},
       </if>
-      <if test="record.executionTime != null" >
-        execution_time = #{record.executionTime,jdbcType=TIMESTAMP},
+      <if test="record.townShipName != null" >
+        town_ship_name = #{record.townShipName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.processInsId != null" >
+        process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -266,13 +309,17 @@
       district = #{record.district,jdbcType=VARCHAR},
       release_date = #{record.releaseDate,jdbcType=TIMESTAMP},
       valuation_date = #{record.valuationDate,jdbcType=TIMESTAMP},
+      execution_time = #{record.executionTime,jdbcType=TIMESTAMP},
+      title = #{record.title,jdbcType=VARCHAR},
       word_symbol = #{record.wordSymbol,jdbcType=VARCHAR},
       land_definition = #{record.landDefinition,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      title = #{record.title,jdbcType=VARCHAR},
-      execution_time = #{record.executionTime,jdbcType=TIMESTAMP}
+      land_right_type = #{record.landRightType,jdbcType=INTEGER},
+      town_ship_name = #{record.townShipName,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=VARCHAR},
+      process_ins_id = #{record.processInsId,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -295,6 +342,12 @@
       <if test="valuationDate != null" >
         valuation_date = #{valuationDate,jdbcType=TIMESTAMP},
       </if>
+      <if test="executionTime != null" >
+        execution_time = #{executionTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
       <if test="wordSymbol != null" >
         word_symbol = #{wordSymbol,jdbcType=VARCHAR},
       </if>
@@ -310,11 +363,17 @@
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
-      <if test="title != null" >
-        title = #{title,jdbcType=VARCHAR},
+      <if test="landRightType != null" >
+        land_right_type = #{landRightType,jdbcType=INTEGER},
       </if>
-      <if test="executionTime != null" >
-        execution_time = #{executionTime,jdbcType=TIMESTAMP},
+      <if test="townShipName != null" >
+        town_ship_name = #{townShipName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="processInsId != null" >
+        process_ins_id = #{processInsId,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -326,13 +385,17 @@
       district = #{district,jdbcType=VARCHAR},
       release_date = #{releaseDate,jdbcType=TIMESTAMP},
       valuation_date = #{valuationDate,jdbcType=TIMESTAMP},
+      execution_time = #{executionTime,jdbcType=TIMESTAMP},
+      title = #{title,jdbcType=VARCHAR},
       word_symbol = #{wordSymbol,jdbcType=VARCHAR},
       land_definition = #{landDefinition,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      title = #{title,jdbcType=VARCHAR},
-      execution_time = #{executionTime,jdbcType=TIMESTAMP}
+      land_right_type = #{landRightType,jdbcType=INTEGER},
+      town_ship_name = #{townShipName,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      process_ins_id = #{processInsId,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

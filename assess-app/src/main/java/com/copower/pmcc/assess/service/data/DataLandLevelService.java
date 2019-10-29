@@ -1,10 +1,19 @@
 package com.copower.pmcc.assess.service.data;
 
+import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
+import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataLandLevelDao;
 import com.copower.pmcc.assess.dal.basis.entity.DataLandLevel;
 import com.copower.pmcc.assess.dto.output.data.DataLandLevelVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.base.BaseParameterService;
+import com.copower.pmcc.bpm.api.dto.ProcessUserDto;
+import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
+import com.copower.pmcc.bpm.api.dto.model.ProcessInfo;
+import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -19,6 +28,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
@@ -38,6 +48,41 @@ public class DataLandLevelService {
     private ErpAreaService erpAreaService;
     @Autowired
     private BaseAttachmentService baseAttachmentService;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
+    @Autowired
+    private BaseParameterService baseParameterService;
+    @Autowired
+    private ProcessControllerComponent processControllerComponent;
+    @Autowired
+    private BpmRpcBoxService bpmRpcBoxService;
+
+    /**
+     * 发起流程
+     * @param dataLandLevel
+     */
+    @Transactional(rollbackFor = {Exception.class})
+    public void submit(DataLandLevel dataLandLevel)throws Exception{
+        saveAndUpdateDataLandLevel(dataLandLevel) ;
+        ProcessUserDto processUserDto = null;
+        ProcessInfo processInfo = new ProcessInfo();
+        //流程描述
+        processInfo.setFolio("土地级别描述1111");
+        final String boxName = baseParameterService.getParameterValues(BaseParameterEnum.DATA_LAND_LEVEL_APPLY_KEY.getParameterKey());
+        BoxReDto boxReDto = bpmRpcBoxService.getBoxReByBoxName(boxName);
+        processInfo.setTableName(FormatUtils.entityNameConvertToTableName(DataLandLevel.class));
+        processInfo.setBoxId(boxReDto.getId());
+        processInfo.setProcessName(boxReDto.getProcessName());
+        processInfo.setGroupName(boxReDto.getGroupName());
+//        processInfo.setProcessEventExecutor(BasicApplyEvent.class);
+        processInfo.setRemarks(ProjectStatusEnum.STARTAPPLY.getKey());
+//        processInfo.setProcessEventExecutorName(BasicApplyEvent.class.getSimpleName());
+        processInfo.setTableId(dataLandLevel.getId());
+        processUserDto = processControllerComponent.processStart(processControllerComponent.getThisUser(), processInfo, processControllerComponent.getThisUser(), false);
+        dataLandLevel.setProcessInsId(processUserDto.getProcessInsId());
+        dataLandLevel.setStatus(ProjectStatusEnum.DRAFT.getKey());
+        saveAndUpdateDataLandLevel(dataLandLevel) ;
+    }
 
     public void saveAndUpdateDataLandLevel(DataLandLevel dataLandLevel) {
         if (dataLandLevel.getId() == null) {
@@ -94,6 +139,7 @@ public class DataLandLevelService {
             }
             vo.setFileViewName(stringBuilder.toString());
         }
+        vo.setLandRightTypeName(baseDataDicService.getNameById(dataLandLevel.getLandRightType()));
         return vo;
     }
 }

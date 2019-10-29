@@ -66,27 +66,31 @@
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         <!--</table>-->
 
-        <table tableName="tb_basic_estate" domainObjectName="BasicEstate">
+        <table tableName="tb_data_land_level" domainObjectName="DataLandLevel">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 
+        <!--<table tableName="tb_basic_estate" domainObjectName="BasicEstate">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
 
 
-        <table tableName="tb_basic_house" domainObjectName="BasicHouse">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
 
-        <table tableName="tb_basic_building" domainObjectName="BasicBuilding">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
+        <!--<table tableName="tb_basic_house" domainObjectName="BasicHouse">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
 
-        <table tableName="tb_basic_unit" domainObjectName="BasicUnit">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
+        <!--<table tableName="tb_basic_building" domainObjectName="BasicBuilding">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
 
-        <table tableName="tb_tool_map_handle" domainObjectName="ToolMapHandle">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
+        <!--<table tableName="tb_basic_unit" domainObjectName="BasicUnit">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
+
+        <!--<table tableName="tb_tool_map_handle" domainObjectName="ToolMapHandle">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
 
         <!--<table tableName="tb_md_development_infrastructure_children" domainObjectName="MdDevelopmentInfrastructureChildren">-->
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->

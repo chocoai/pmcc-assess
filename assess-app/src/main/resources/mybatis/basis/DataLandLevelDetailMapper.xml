@@ -15,6 +15,9 @@
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+    <result column="mu_price" property="muPrice" jdbcType="DECIMAL" />
+    <result column="legal_age" property="legalAge" jdbcType="DECIMAL" />
+    <result column="volume_rate" property="volumeRate" jdbcType="DECIMAL" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -76,7 +79,8 @@
   </sql>
   <sql id="Base_Column_List" >
     id, land_level_id, classify, type, category, level_range, main_street, bis_delete, 
-    land_acquisition_proportion, price, creator, gmt_created, gmt_modified
+    land_acquisition_proportion, price, creator, gmt_created, gmt_modified, mu_price, 
+    legal_age, volume_rate
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataLandLevelDetailExample" >
     select
@@ -115,12 +119,14 @@
     insert into tb_data_land_level_detail (land_level_id, classify, type, 
       category, level_range, main_street, 
       bis_delete, land_acquisition_proportion, price, 
-      creator, gmt_created, gmt_modified
+      creator, gmt_created, gmt_modified, 
+      mu_price, legal_age, volume_rate
       )
     values (#{landLevelId,jdbcType=INTEGER}, #{classify,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, 
       #{category,jdbcType=VARCHAR}, #{levelRange,jdbcType=VARCHAR}, #{mainStreet,jdbcType=VARCHAR}, 
       #{bisDelete,jdbcType=BIT}, #{landAcquisitionProportion,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
+      #{muPrice,jdbcType=DECIMAL}, #{legalAge,jdbcType=DECIMAL}, #{volumeRate,jdbcType=DECIMAL}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataLandLevelDetail" >
@@ -165,6 +171,15 @@
       <if test="gmtModified != null" >
         gmt_modified,
       </if>
+      <if test="muPrice != null" >
+        mu_price,
+      </if>
+      <if test="legalAge != null" >
+        legal_age,
+      </if>
+      <if test="volumeRate != null" >
+        volume_rate,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="landLevelId != null" >
@@ -202,6 +217,15 @@
       </if>
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="muPrice != null" >
+        #{muPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="legalAge != null" >
+        #{legalAge,jdbcType=DECIMAL},
+      </if>
+      <if test="volumeRate != null" >
+        #{volumeRate,jdbcType=DECIMAL},
       </if>
     </trim>
   </insert>
@@ -253,6 +277,15 @@
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.muPrice != null" >
+        mu_price = #{record.muPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.legalAge != null" >
+        legal_age = #{record.legalAge,jdbcType=DECIMAL},
+      </if>
+      <if test="record.volumeRate != null" >
+        volume_rate = #{record.volumeRate,jdbcType=DECIMAL},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -272,7 +305,10 @@
       price = #{record.price,jdbcType=DECIMAL},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      mu_price = #{record.muPrice,jdbcType=DECIMAL},
+      legal_age = #{record.legalAge,jdbcType=DECIMAL},
+      volume_rate = #{record.volumeRate,jdbcType=DECIMAL}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -316,6 +352,15 @@
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="muPrice != null" >
+        mu_price = #{muPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="legalAge != null" >
+        legal_age = #{legalAge,jdbcType=DECIMAL},
+      </if>
+      <if test="volumeRate != null" >
+        volume_rate = #{volumeRate,jdbcType=DECIMAL},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -332,7 +377,10 @@
       price = #{price,jdbcType=DECIMAL},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      mu_price = #{muPrice,jdbcType=DECIMAL},
+      legal_age = #{legalAge,jdbcType=DECIMAL},
+      volume_rate = #{volumeRate,jdbcType=DECIMAL}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
