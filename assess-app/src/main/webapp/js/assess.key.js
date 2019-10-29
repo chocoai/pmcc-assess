@@ -105,6 +105,8 @@ AssessDicKey.projectDeclareUseRightType = "project.declare.use.right.type";//权
 AssessDicKey.projectDeclareRoomType = "project.declare.room.type";//房屋性质
 
 //基础数据
+AssessDicKey.DATA_LAND_LEVEL_CLASSIFY = "data.land.level.classify";//土地级别类型
+AssessDicKey.DATA_LAND_LEVEL_ROMAN = "data.land.level.roman";//土地级别(罗马数字)
 AssessDicKey.DATA_SERVICE_CONTENT = "data.service.content";//物业服务
 AssessDicKey.dataTaxRateAllocation = "data.tax.rate.allocation";//税率配置
 AssessDicKey.dataEntrustmentPurpose = "data.entrustment.purpose";//委托目的

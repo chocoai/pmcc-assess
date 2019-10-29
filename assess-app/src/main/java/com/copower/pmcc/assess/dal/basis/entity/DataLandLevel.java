@@ -15,6 +15,10 @@ public class DataLandLevel {
 
     private Date valuationDate;
 
+    private Date executionTime;
+
+    private String title;
+
     private String wordSymbol;
 
     private String landDefinition;
@@ -25,9 +29,13 @@ public class DataLandLevel {
 
     private Date gmtModified;
 
-    private String title;
+    private Integer landRightType;
 
-    private Date executionTime;
+    private String townShipName;
+
+    private String status;
+
+    private String processInsId;
 
     public Integer getId() {
         return id;
@@ -77,6 +85,22 @@ public class DataLandLevel {
         this.valuationDate = valuationDate;
     }
 
+    public Date getExecutionTime() {
+        return executionTime;
+    }
+
+    public void setExecutionTime(Date executionTime) {
+        this.executionTime = executionTime;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title == null ? null : title.trim();
+    }
+
     public String getWordSymbol() {
         return wordSymbol;
     }
@@ -117,19 +141,35 @@ public class DataLandLevel {
         this.gmtModified = gmtModified;
     }
 
-    public String getTitle() {
-        return title;
+    public Integer getLandRightType() {
+        return landRightType;
     }
 
-    public void setTitle(String title) {
-        this.title = title == null ? null : title.trim();
+    public void setLandRightType(Integer landRightType) {
+        this.landRightType = landRightType;
     }
 
-    public Date getExecutionTime() {
-        return executionTime;
+    public String getTownShipName() {
+        return townShipName;
     }
 
-    public void setExecutionTime(Date executionTime) {
-        this.executionTime = executionTime;
+    public void setTownShipName(String townShipName) {
+        this.townShipName = townShipName == null ? null : townShipName.trim();
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status == null ? null : status.trim();
+    }
+
+    public String getProcessInsId() {
+        return processInsId;
+    }
+
+    public void setProcessInsId(String processInsId) {
+        this.processInsId = processInsId == null ? null : processInsId.trim();
     }
 }

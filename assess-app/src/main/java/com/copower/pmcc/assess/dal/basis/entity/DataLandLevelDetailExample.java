@@ -955,6 +955,186 @@ public class DataLandLevelDetailExample {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
             return (Criteria) this;
         }
+
+        public Criteria andMuPriceIsNull() {
+            addCriterion("mu_price is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMuPriceIsNotNull() {
+            addCriterion("mu_price is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMuPriceEqualTo(BigDecimal value) {
+            addCriterion("mu_price =", value, "muPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andMuPriceNotEqualTo(BigDecimal value) {
+            addCriterion("mu_price <>", value, "muPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andMuPriceGreaterThan(BigDecimal value) {
+            addCriterion("mu_price >", value, "muPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andMuPriceGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("mu_price >=", value, "muPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andMuPriceLessThan(BigDecimal value) {
+            addCriterion("mu_price <", value, "muPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andMuPriceLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("mu_price <=", value, "muPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andMuPriceIn(List<BigDecimal> values) {
+            addCriterion("mu_price in", values, "muPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andMuPriceNotIn(List<BigDecimal> values) {
+            addCriterion("mu_price not in", values, "muPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andMuPriceBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("mu_price between", value1, value2, "muPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andMuPriceNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("mu_price not between", value1, value2, "muPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andLegalAgeIsNull() {
+            addCriterion("legal_age is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLegalAgeIsNotNull() {
+            addCriterion("legal_age is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLegalAgeEqualTo(BigDecimal value) {
+            addCriterion("legal_age =", value, "legalAge");
+            return (Criteria) this;
+        }
+
+        public Criteria andLegalAgeNotEqualTo(BigDecimal value) {
+            addCriterion("legal_age <>", value, "legalAge");
+            return (Criteria) this;
+        }
+
+        public Criteria andLegalAgeGreaterThan(BigDecimal value) {
+            addCriterion("legal_age >", value, "legalAge");
+            return (Criteria) this;
+        }
+
+        public Criteria andLegalAgeGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("legal_age >=", value, "legalAge");
+            return (Criteria) this;
+        }
+
+        public Criteria andLegalAgeLessThan(BigDecimal value) {
+            addCriterion("legal_age <", value, "legalAge");
+            return (Criteria) this;
+        }
+
+        public Criteria andLegalAgeLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("legal_age <=", value, "legalAge");
+            return (Criteria) this;
+        }
+
+        public Criteria andLegalAgeIn(List<BigDecimal> values) {
+            addCriterion("legal_age in", values, "legalAge");
+            return (Criteria) this;
+        }
+
+        public Criteria andLegalAgeNotIn(List<BigDecimal> values) {
+            addCriterion("legal_age not in", values, "legalAge");
+            return (Criteria) this;
+        }
+
+        public Criteria andLegalAgeBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("legal_age between", value1, value2, "legalAge");
+            return (Criteria) this;
+        }
+
+        public Criteria andLegalAgeNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("legal_age not between", value1, value2, "legalAge");
+            return (Criteria) this;
+        }
+
+        public Criteria andVolumeRateIsNull() {
+            addCriterion("volume_rate is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andVolumeRateIsNotNull() {
+            addCriterion("volume_rate is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andVolumeRateEqualTo(BigDecimal value) {
+            addCriterion("volume_rate =", value, "volumeRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andVolumeRateNotEqualTo(BigDecimal value) {
+            addCriterion("volume_rate <>", value, "volumeRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andVolumeRateGreaterThan(BigDecimal value) {
+            addCriterion("volume_rate >", value, "volumeRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andVolumeRateGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("volume_rate >=", value, "volumeRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andVolumeRateLessThan(BigDecimal value) {
+            addCriterion("volume_rate <", value, "volumeRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andVolumeRateLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("volume_rate <=", value, "volumeRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andVolumeRateIn(List<BigDecimal> values) {
+            addCriterion("volume_rate in", values, "volumeRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andVolumeRateNotIn(List<BigDecimal> values) {
+            addCriterion("volume_rate not in", values, "volumeRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andVolumeRateBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("volume_rate between", value1, value2, "volumeRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andVolumeRateNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("volume_rate not between", value1, value2, "volumeRate");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

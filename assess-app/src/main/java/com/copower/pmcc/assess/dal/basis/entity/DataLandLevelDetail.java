@@ -30,6 +30,12 @@ public class DataLandLevelDetail {
 
     private Date gmtModified;
 
+    private BigDecimal muPrice;
+
+    private BigDecimal legalAge;
+
+    private BigDecimal volumeRate;
+
     public Integer getId() {
         return id;
     }
@@ -132,5 +138,29 @@ public class DataLandLevelDetail {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public BigDecimal getMuPrice() {
+        return muPrice;
+    }
+
+    public void setMuPrice(BigDecimal muPrice) {
+        this.muPrice = muPrice;
+    }
+
+    public BigDecimal getLegalAge() {
+        return legalAge;
+    }
+
+    public void setLegalAge(BigDecimal legalAge) {
+        this.legalAge = legalAge;
+    }
+
+    public BigDecimal getVolumeRate() {
+        return volumeRate;
+    }
+
+    public void setVolumeRate(BigDecimal volumeRate) {
+        this.volumeRate = volumeRate;
     }
 }

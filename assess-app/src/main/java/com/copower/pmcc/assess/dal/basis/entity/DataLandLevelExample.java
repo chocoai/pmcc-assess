@@ -495,6 +495,136 @@ public class DataLandLevelExample {
             return (Criteria) this;
         }
 
+        public Criteria andExecutionTimeIsNull() {
+            addCriterion("execution_time is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andExecutionTimeIsNotNull() {
+            addCriterion("execution_time is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andExecutionTimeEqualTo(Date value) {
+            addCriterion("execution_time =", value, "executionTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andExecutionTimeNotEqualTo(Date value) {
+            addCriterion("execution_time <>", value, "executionTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andExecutionTimeGreaterThan(Date value) {
+            addCriterion("execution_time >", value, "executionTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andExecutionTimeGreaterThanOrEqualTo(Date value) {
+            addCriterion("execution_time >=", value, "executionTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andExecutionTimeLessThan(Date value) {
+            addCriterion("execution_time <", value, "executionTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andExecutionTimeLessThanOrEqualTo(Date value) {
+            addCriterion("execution_time <=", value, "executionTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andExecutionTimeIn(List<Date> values) {
+            addCriterion("execution_time in", values, "executionTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andExecutionTimeNotIn(List<Date> values) {
+            addCriterion("execution_time not in", values, "executionTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andExecutionTimeBetween(Date value1, Date value2) {
+            addCriterion("execution_time between", value1, value2, "executionTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andExecutionTimeNotBetween(Date value1, Date value2) {
+            addCriterion("execution_time not between", value1, value2, "executionTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andTitleIsNull() {
+            addCriterion("title is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTitleIsNotNull() {
+            addCriterion("title is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTitleEqualTo(String value) {
+            addCriterion("title =", value, "title");
+            return (Criteria) this;
+        }
+
+        public Criteria andTitleNotEqualTo(String value) {
+            addCriterion("title <>", value, "title");
+            return (Criteria) this;
+        }
+
+        public Criteria andTitleGreaterThan(String value) {
+            addCriterion("title >", value, "title");
+            return (Criteria) this;
+        }
+
+        public Criteria andTitleGreaterThanOrEqualTo(String value) {
+            addCriterion("title >=", value, "title");
+            return (Criteria) this;
+        }
+
+        public Criteria andTitleLessThan(String value) {
+            addCriterion("title <", value, "title");
+            return (Criteria) this;
+        }
+
+        public Criteria andTitleLessThanOrEqualTo(String value) {
+            addCriterion("title <=", value, "title");
+            return (Criteria) this;
+        }
+
+        public Criteria andTitleLike(String value) {
+            addCriterion("title like", value, "title");
+            return (Criteria) this;
+        }
+
+        public Criteria andTitleNotLike(String value) {
+            addCriterion("title not like", value, "title");
+            return (Criteria) this;
+        }
+
+        public Criteria andTitleIn(List<String> values) {
+            addCriterion("title in", values, "title");
+            return (Criteria) this;
+        }
+
+        public Criteria andTitleNotIn(List<String> values) {
+            addCriterion("title not in", values, "title");
+            return (Criteria) this;
+        }
+
+        public Criteria andTitleBetween(String value1, String value2) {
+            addCriterion("title between", value1, value2, "title");
+            return (Criteria) this;
+        }
+
+        public Criteria andTitleNotBetween(String value1, String value2) {
+            addCriterion("title not between", value1, value2, "title");
+            return (Criteria) this;
+        }
+
         public Criteria andWordSymbolIsNull() {
             addCriterion("word_symbol is null");
             return (Criteria) this;
@@ -825,133 +955,273 @@ public class DataLandLevelExample {
             return (Criteria) this;
         }
 
-        public Criteria andTitleIsNull() {
-            addCriterion("title is null");
+        public Criteria andLandRightTypeIsNull() {
+            addCriterion("land_right_type is null");
             return (Criteria) this;
         }
 
-        public Criteria andTitleIsNotNull() {
-            addCriterion("title is not null");
+        public Criteria andLandRightTypeIsNotNull() {
+            addCriterion("land_right_type is not null");
             return (Criteria) this;
         }
 
-        public Criteria andTitleEqualTo(String value) {
-            addCriterion("title =", value, "title");
+        public Criteria andLandRightTypeEqualTo(Integer value) {
+            addCriterion("land_right_type =", value, "landRightType");
             return (Criteria) this;
         }
 
-        public Criteria andTitleNotEqualTo(String value) {
-            addCriterion("title <>", value, "title");
+        public Criteria andLandRightTypeNotEqualTo(Integer value) {
+            addCriterion("land_right_type <>", value, "landRightType");
             return (Criteria) this;
         }
 
-        public Criteria andTitleGreaterThan(String value) {
-            addCriterion("title >", value, "title");
+        public Criteria andLandRightTypeGreaterThan(Integer value) {
+            addCriterion("land_right_type >", value, "landRightType");
             return (Criteria) this;
         }
 
-        public Criteria andTitleGreaterThanOrEqualTo(String value) {
-            addCriterion("title >=", value, "title");
+        public Criteria andLandRightTypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("land_right_type >=", value, "landRightType");
             return (Criteria) this;
         }
 
-        public Criteria andTitleLessThan(String value) {
-            addCriterion("title <", value, "title");
+        public Criteria andLandRightTypeLessThan(Integer value) {
+            addCriterion("land_right_type <", value, "landRightType");
             return (Criteria) this;
         }
 
-        public Criteria andTitleLessThanOrEqualTo(String value) {
-            addCriterion("title <=", value, "title");
+        public Criteria andLandRightTypeLessThanOrEqualTo(Integer value) {
+            addCriterion("land_right_type <=", value, "landRightType");
             return (Criteria) this;
         }
 
-        public Criteria andTitleLike(String value) {
-            addCriterion("title like", value, "title");
+        public Criteria andLandRightTypeIn(List<Integer> values) {
+            addCriterion("land_right_type in", values, "landRightType");
             return (Criteria) this;
         }
 
-        public Criteria andTitleNotLike(String value) {
-            addCriterion("title not like", value, "title");
+        public Criteria andLandRightTypeNotIn(List<Integer> values) {
+            addCriterion("land_right_type not in", values, "landRightType");
             return (Criteria) this;
         }
 
-        public Criteria andTitleIn(List<String> values) {
-            addCriterion("title in", values, "title");
+        public Criteria andLandRightTypeBetween(Integer value1, Integer value2) {
+            addCriterion("land_right_type between", value1, value2, "landRightType");
             return (Criteria) this;
         }
 
-        public Criteria andTitleNotIn(List<String> values) {
-            addCriterion("title not in", values, "title");
+        public Criteria andLandRightTypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("land_right_type not between", value1, value2, "landRightType");
             return (Criteria) this;
         }
 
-        public Criteria andTitleBetween(String value1, String value2) {
-            addCriterion("title between", value1, value2, "title");
+        public Criteria andTownShipNameIsNull() {
+            addCriterion("town_ship_name is null");
             return (Criteria) this;
         }
 
-        public Criteria andTitleNotBetween(String value1, String value2) {
-            addCriterion("title not between", value1, value2, "title");
+        public Criteria andTownShipNameIsNotNull() {
+            addCriterion("town_ship_name is not null");
             return (Criteria) this;
         }
 
-        public Criteria andExecutionTimeIsNull() {
-            addCriterion("execution_time is null");
+        public Criteria andTownShipNameEqualTo(String value) {
+            addCriterion("town_ship_name =", value, "townShipName");
             return (Criteria) this;
         }
 
-        public Criteria andExecutionTimeIsNotNull() {
-            addCriterion("execution_time is not null");
+        public Criteria andTownShipNameNotEqualTo(String value) {
+            addCriterion("town_ship_name <>", value, "townShipName");
             return (Criteria) this;
         }
 
-        public Criteria andExecutionTimeEqualTo(Date value) {
-            addCriterion("execution_time =", value, "executionTime");
+        public Criteria andTownShipNameGreaterThan(String value) {
+            addCriterion("town_ship_name >", value, "townShipName");
             return (Criteria) this;
         }
 
-        public Criteria andExecutionTimeNotEqualTo(Date value) {
-            addCriterion("execution_time <>", value, "executionTime");
+        public Criteria andTownShipNameGreaterThanOrEqualTo(String value) {
+            addCriterion("town_ship_name >=", value, "townShipName");
             return (Criteria) this;
         }
 
-        public Criteria andExecutionTimeGreaterThan(Date value) {
-            addCriterion("execution_time >", value, "executionTime");
+        public Criteria andTownShipNameLessThan(String value) {
+            addCriterion("town_ship_name <", value, "townShipName");
             return (Criteria) this;
         }
 
-        public Criteria andExecutionTimeGreaterThanOrEqualTo(Date value) {
-            addCriterion("execution_time >=", value, "executionTime");
+        public Criteria andTownShipNameLessThanOrEqualTo(String value) {
+            addCriterion("town_ship_name <=", value, "townShipName");
             return (Criteria) this;
         }
 
-        public Criteria andExecutionTimeLessThan(Date value) {
-            addCriterion("execution_time <", value, "executionTime");
+        public Criteria andTownShipNameLike(String value) {
+            addCriterion("town_ship_name like", value, "townShipName");
             return (Criteria) this;
         }
 
-        public Criteria andExecutionTimeLessThanOrEqualTo(Date value) {
-            addCriterion("execution_time <=", value, "executionTime");
+        public Criteria andTownShipNameNotLike(String value) {
+            addCriterion("town_ship_name not like", value, "townShipName");
             return (Criteria) this;
         }
 
-        public Criteria andExecutionTimeIn(List<Date> values) {
-            addCriterion("execution_time in", values, "executionTime");
+        public Criteria andTownShipNameIn(List<String> values) {
+            addCriterion("town_ship_name in", values, "townShipName");
             return (Criteria) this;
         }
 
-        public Criteria andExecutionTimeNotIn(List<Date> values) {
-            addCriterion("execution_time not in", values, "executionTime");
+        public Criteria andTownShipNameNotIn(List<String> values) {
+            addCriterion("town_ship_name not in", values, "townShipName");
             return (Criteria) this;
         }
 
-        public Criteria andExecutionTimeBetween(Date value1, Date value2) {
-            addCriterion("execution_time between", value1, value2, "executionTime");
+        public Criteria andTownShipNameBetween(String value1, String value2) {
+            addCriterion("town_ship_name between", value1, value2, "townShipName");
             return (Criteria) this;
         }
 
-        public Criteria andExecutionTimeNotBetween(Date value1, Date value2) {
-            addCriterion("execution_time not between", value1, value2, "executionTime");
+        public Criteria andTownShipNameNotBetween(String value1, String value2) {
+            addCriterion("town_ship_name not between", value1, value2, "townShipName");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusIsNull() {
+            addCriterion("status is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusIsNotNull() {
+            addCriterion("status is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusEqualTo(String value) {
+            addCriterion("status =", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusNotEqualTo(String value) {
+            addCriterion("status <>", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusGreaterThan(String value) {
+            addCriterion("status >", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusGreaterThanOrEqualTo(String value) {
+            addCriterion("status >=", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusLessThan(String value) {
+            addCriterion("status <", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusLessThanOrEqualTo(String value) {
+            addCriterion("status <=", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusLike(String value) {
+            addCriterion("status like", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusNotLike(String value) {
+            addCriterion("status not like", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusIn(List<String> values) {
+            addCriterion("status in", values, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusNotIn(List<String> values) {
+            addCriterion("status not in", values, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusBetween(String value1, String value2) {
+            addCriterion("status between", value1, value2, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusNotBetween(String value1, String value2) {
+            addCriterion("status not between", value1, value2, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdIsNull() {
+            addCriterion("process_ins_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdIsNotNull() {
+            addCriterion("process_ins_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdEqualTo(String value) {
+            addCriterion("process_ins_id =", value, "processInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdNotEqualTo(String value) {
+            addCriterion("process_ins_id <>", value, "processInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdGreaterThan(String value) {
+            addCriterion("process_ins_id >", value, "processInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdGreaterThanOrEqualTo(String value) {
+            addCriterion("process_ins_id >=", value, "processInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdLessThan(String value) {
+            addCriterion("process_ins_id <", value, "processInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdLessThanOrEqualTo(String value) {
+            addCriterion("process_ins_id <=", value, "processInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdLike(String value) {
+            addCriterion("process_ins_id like", value, "processInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdNotLike(String value) {
+            addCriterion("process_ins_id not like", value, "processInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdIn(List<String> values) {
+            addCriterion("process_ins_id in", values, "processInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdNotIn(List<String> values) {
+            addCriterion("process_ins_id not in", values, "processInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdBetween(String value1, String value2) {
+            addCriterion("process_ins_id between", value1, value2, "processInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdNotBetween(String value1, String value2) {
+            addCriterion("process_ins_id not between", value1, value2, "processInsId");
             return (Criteria) this;
         }
     }

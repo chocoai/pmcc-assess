@@ -6,6 +6,8 @@ import com.copower.pmcc.assess.dal.basis.dao.data.DataLandLevelDao;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataLandLevelDetailDao;
 import com.copower.pmcc.assess.dal.basis.entity.DataLandLevel;
 import com.copower.pmcc.assess.dal.basis.entity.DataLandLevelDetail;
+import com.copower.pmcc.assess.dto.output.data.DataLandLevelDetailVo;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
@@ -19,6 +21,8 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,6 +44,8 @@ public class DataLandLevelDetailService {
     private CommonService commonService;
     @Autowired
     private DataLandLevelDao dataLandLevelDao;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
 
     public void saveAndUpdateDataLandLevelDetail(DataLandLevelDetail dataLandLevelDetail) {
         if (dataLandLevelDetail.getId() == null || dataLandLevelDetail.getId() == 0) {
@@ -64,10 +70,15 @@ public class DataLandLevelDetailService {
         BootstrapTableVo vo = new BootstrapTableVo();
         DataLandLevelDetail oo = new DataLandLevelDetail();
         oo.setLandLevelId(landLevelId);
-        vo.setRows(dataLandLevelDetailSorted(getDataLandLevelDetailList(oo)));
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        List<DataLandLevelDetail> dataLandLevelDetailList = dataLandLevelDetailSorted(getDataLandLevelDetailList(oo));
+        List<DataLandLevelDetailVo> vos = Lists.newArrayList();
+        if (CollectionUtils.isNotEmpty(dataLandLevelDetailList)) {
+            dataLandLevelDetailList.forEach(obj -> vos.add(getDataLandLevelDetailVo(obj)));
+        }
         vo.setTotal(page.getTotal());
+        vo.setRows(vos);
         return vo;
     }
 
@@ -94,15 +105,27 @@ public class DataLandLevelDetailService {
         List<DataLandLevel> levelList = dataLandLevelDao.getDataLandLevelList(dataLandLevelWhere);
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        List<DataLandLevelDetail> dataLandLevelDetailList = Lists.newArrayList();
+        List<DataLandLevelDetailVo> vos = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(levelList)) {
-            DataLandLevelDetail oo = new DataLandLevelDetail();
-            oo.setLandLevelId(levelList.stream().findFirst().get().getId());
-            vo.setRows(dataLandLevelDetailSorted(getDataLandLevelDetailList(oo)));
-            vo.setTotal(page.getTotal());
-        } else {
-            vo.setRows(new ArrayList<DataLandLevelDetail>(0));
+            dataLandLevelDetailList = getByMasterIdInfo(levelList.stream().map(oo -> oo.getId()).collect(Collectors.toList())) ;
         }
+        if (CollectionUtils.isNotEmpty(dataLandLevelDetailList)) {
+            dataLandLevelDetailList = dataLandLevelDetailSorted(dataLandLevelDetailList);
+            dataLandLevelDetailList.forEach(obj -> vos.add(getDataLandLevelDetailVo(obj)));
+        }
+        vo.setTotal(page.getTotal());
+        vo.setRows(vos);
         return vo;
+    }
+
+    /**
+     * 注意这是pid 列表
+     * @param integerList
+     * @return
+     */
+    public List<DataLandLevelDetail> getByMasterIdInfo(List<Integer> integerList){
+        return dataLandLevelDetailDao.getByMasterIdInfo(integerList) ;
     }
 
     public List<DataLandLevelDetail> getDataLandLevelDetailList(DataLandLevelDetail oo) {
@@ -216,5 +239,24 @@ public class DataLandLevelDetailService {
             return dataList.get(0);
         }
         return null;
+    }
+
+    public DataLandLevelDetailVo getDataLandLevelDetailVo(DataLandLevelDetail oo) {
+        DataLandLevelDetailVo vo = new DataLandLevelDetailVo();
+        if (oo == null) {
+            return vo;
+        }
+        BeanUtils.copyProperties(oo, vo);
+        if (NumberUtils.isNumber(oo.getClassify())) {
+            vo.setClassifyName(baseDataDicService.getNameById(oo.getClassify()));
+        } else {
+            vo.setClassifyName(oo.getClassify());
+        }
+        if (NumberUtils.isNumber(oo.getType())) {
+            vo.setTypeName(baseDataDicService.getNameById(oo.getType()));
+        } else {
+            vo.setTypeName(oo.getType());
+        }
+        return vo;
     }
 }

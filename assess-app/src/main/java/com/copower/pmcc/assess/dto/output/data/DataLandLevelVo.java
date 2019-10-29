@@ -12,6 +12,7 @@ public class DataLandLevelVo extends DataLandLevel {
     private String cityName;
     private String districtName;
     private String fileViewName;
+    private String landRightTypeName;
 
     public String getProvinceName() {
         return provinceName;
@@ -43,5 +44,13 @@ public class DataLandLevelVo extends DataLandLevel {
 
     public void setFileViewName(String fileViewName) {
         this.fileViewName = fileViewName;
+    }
+
+    public String getLandRightTypeName() {
+        return landRightTypeName;
+    }
+
+    public void setLandRightTypeName(String landRightTypeName) {
+        this.landRightTypeName = landRightTypeName;
     }
 }
