@@ -1,15 +1,18 @@
 package com.copower.pmcc.assess.service.data;
 
+import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataLandLevelDao;
 import com.copower.pmcc.assess.dal.basis.entity.DataLandLevel;
 import com.copower.pmcc.assess.dto.output.data.DataLandLevelVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
+import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
 import com.copower.pmcc.bpm.api.dto.ProcessUserDto;
+import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.dto.model.ProcessInfo;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
@@ -19,6 +22,7 @@ import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
@@ -31,6 +35,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -56,6 +61,50 @@ public class DataLandLevelService {
     private ProcessControllerComponent processControllerComponent;
     @Autowired
     private BpmRpcBoxService bpmRpcBoxService;
+    @Autowired
+    private PublicService publicService;
+
+
+    public DataLandLevelVo getByProcessInsId(String processInsId){
+        List<DataLandLevel> dataLandLevelList = dataLandLevelDao.getByProcessInsIdList(processInsId) ;
+        if (org.apache.commons.collections.CollectionUtils.isNotEmpty(dataLandLevelList)){
+            return getDataLandLevelVo(dataLandLevelList.stream().findFirst().get(),null);
+        }else {
+            return new DataLandLevelVo();
+        }
+    }
+
+    /**
+     * 审批提交
+     * @param approvalModelDto
+     * @param blockName
+     * @param writeBackBlockFlag
+     * @throws Exception
+     */
+    @Transactional(rollbackFor = {Exception.class})
+    public void comeInLandLevelApprovalSubmit(ApprovalModelDto approvalModelDto, String blockName, Boolean writeBackBlockFlag)throws Exception{
+        DataLandLevelVo dataLandLevelVo = getByProcessInsId(approvalModelDto.getProcessInsId()) ;
+        if (dataLandLevelVo.getId() != null){
+            dataLandLevelVo.setStatus(ProjectStatusEnum.FINISH.getKey());
+            saveAndUpdateDataLandLevel(dataLandLevelVo) ;
+        }
+        processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
+    }
+
+
+    /**
+     * 返回修改
+     * @param approvalModelDto
+     * @param formData
+     * @throws Exception
+     */
+    @Transactional(rollbackFor = {Exception.class})
+    public void comeInLandLevelEditSubmit(ApprovalModelDto approvalModelDto , String formData)throws Exception{
+        DataLandLevel dataLandLevel = JSONObject.parseObject(formData,DataLandLevel.class) ;
+        saveAndUpdateDataLandLevel(dataLandLevel);
+        processControllerComponent.processSubmitLoopTaskNodeArg(publicService.getEditApprovalModel(approvalModelDto), false);
+
+    }
 
     /**
      * 发起流程
@@ -67,16 +116,16 @@ public class DataLandLevelService {
         ProcessUserDto processUserDto = null;
         ProcessInfo processInfo = new ProcessInfo();
         //流程描述
-        processInfo.setFolio("土地级别描述1111");
+        processInfo.setFolio(String.join("","土地级别描述申请 时间:", DateUtils.format(new Date(),DateUtils.DATETIME_PATTERN)));
         final String boxName = baseParameterService.getParameterValues(BaseParameterEnum.DATA_LAND_LEVEL_APPLY_KEY.getParameterKey());
         BoxReDto boxReDto = bpmRpcBoxService.getBoxReByBoxName(boxName);
         processInfo.setTableName(FormatUtils.entityNameConvertToTableName(DataLandLevel.class));
         processInfo.setBoxId(boxReDto.getId());
         processInfo.setProcessName(boxReDto.getProcessName());
         processInfo.setGroupName(boxReDto.getGroupName());
-//        processInfo.setProcessEventExecutor(BasicApplyEvent.class);
+//        processInfo.setProcessEventExecutor(DataLandLevelEvent.class);
         processInfo.setRemarks(ProjectStatusEnum.STARTAPPLY.getKey());
-//        processInfo.setProcessEventExecutorName(BasicApplyEvent.class.getSimpleName());
+//        processInfo.setProcessEventExecutorName(DataLandLevelEvent.class.getSimpleName());
         processInfo.setTableId(dataLandLevel.getId());
         processUserDto = processControllerComponent.processStart(processControllerComponent.getThisUser(), processInfo, processControllerComponent.getThisUser(), false);
         dataLandLevel.setProcessInsId(processUserDto.getProcessInsId());
@@ -98,6 +147,11 @@ public class DataLandLevelService {
         return dataLandLevelDao.getDataLandLevelById(id);
     }
 
+    /**
+     * 设置过滤条件的草稿会自动过滤
+     * @param query
+     * @return
+     */
     public List<DataLandLevel> getDataLandLevelList(DataLandLevel query) {
         return dataLandLevelDao.getDataLandLevelList(query);
     }
