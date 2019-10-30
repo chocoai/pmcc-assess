@@ -349,9 +349,9 @@ public class BasicApplyBatchController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "/saveDraft", name = "保存楼盘等")
-    public HttpResult saveDraft(String formData, Integer planDetailsId) {
+    public HttpResult saveDraft(String formData, Integer applyBatchId) {
         try {
-            basicApplyBatchService.saveDraft(formData, planDetailsId);
+            basicApplyBatchService.saveDraft(formData, applyBatchId);
             return HttpResult.newCorrectResult();
         } catch (BusinessException e) {
             log.error(e.getMessage(), e);
@@ -579,11 +579,12 @@ public class BasicApplyBatchController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "/initBasicApplyBatchInfo", method = {RequestMethod.POST}, name = "初始化")
-    public HttpResult initBasicApplyBatchInfo(Integer planDetailsId, Integer classify) {
+    public HttpResult initBasicApplyBatchInfo(Integer planDetailsId, Integer classify,Integer type) {
         try {
             BasicApplyBatch applyBatch = new BasicApplyBatch();
             applyBatch.setPlanDetailsId(planDetailsId);
             applyBatch.setClassify(classify);
+            applyBatch.setType(type);
             basicApplyBatchService.initBasicApplyBatchInfo(applyBatch);
             return HttpResult.newCorrectResult(applyBatch);
         } catch (Exception e) {

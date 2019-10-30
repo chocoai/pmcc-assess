@@ -289,7 +289,8 @@
             dataType: "json",
             data: {
                 planDetailsId: '${projectPlanDetails.id}',
-                classify: $("#basicBatchApplyFrm").find('[name=classify]').val()
+                classify: $("#basicBatchApplyFrm").find('[name=classify]').val(),
+                type: $("#basicBatchApplyFrm").find('[name=type]').val()
             },
             success: function (result) {
                 if (result.ret) {
