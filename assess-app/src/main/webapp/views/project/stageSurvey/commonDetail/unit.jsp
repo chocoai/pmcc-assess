@@ -10,6 +10,7 @@
     </div>
     <form class="form-horizontal" id="basicUnitFrm">
         <input type="hidden" name="id" value="${basicUnit.id}">
+        <input type="hidden" name="applyBatchId" value="${basicApplyBatch.id}">
         <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">单元编号</label>
@@ -18,7 +19,7 @@
                         <label class="form-control" name="unitNumber">${basicUnit.unitNumber}</label>
                         <span class="input-group-btn">
                             <input type="hidden" name="mapId" value="${basicUnit.mapId}">
-                             <div onclick="unitCommon.mapNewMarker(this,true);" class="btn btn-info">
+                             <div onclick="unitCommon.mapMarker(true);" class="btn btn-info">
                                  <i class="fa fa-map-marker"></i> 标注
                              </div>
                         </span>

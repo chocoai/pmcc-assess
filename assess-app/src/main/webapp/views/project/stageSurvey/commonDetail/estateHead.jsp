@@ -34,7 +34,7 @@
                 <label class="form-control" name="name">${basicEstate.name}</label>
                 <span class="input-group-btn">
                             <input type="hidden" name="mapId" value="${basicEstate.mapId}">
-                             <div onclick="estateCommon.mapNewMarker(this,true);" class="btn btn-info">
+                             <div onclick="estateCommon.mapMarker(true);" class="btn btn-info">
                                  <i class="fa fa-map-marker"></i> 标注
                              </div>
                         </span>

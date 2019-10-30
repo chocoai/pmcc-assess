@@ -325,7 +325,6 @@
     buildingCommon.mapMarker = function (readonly) {
         var select = {tableId:buildingCommon.buildingForm.find("[name='estateId']").val(),type:"estate"} ;
         examineCommon.getApplyBatchEstateTaggingsByTableId(select,function (data) {
-            console.log(data) ;
             if (data.length == 0){
                 Alert("请先标注楼盘");
                 return false;
@@ -393,37 +392,25 @@
 
     //添加标注
     buildingCommon.addMarker = function (lng, lat) {
-        $.ajax({
-            url: getContextPath() + '/basicEstateTagging/addBasicEstateTagging',
-            data: {
-                tableId: buildingCommon.getBuildingId(),
-                type: 'building',
-                lng: lng,
-                lat: lat,
-                name: buildingCommon.getBuildingNumber()
-            },
-            success: function (result) {
-                if (result.ret) {//标注成功后，刷新地图上的标注
-                    buildingCommon.loadMarkerList();
-                } else {
-                    Alert(result.errmsg);
-                }
-            }
+        examineCommon.addBasicEstateTagging({
+            tableId: buildingCommon.getBuildingId(),
+            type: 'building',
+            lng: lng,
+            lat: lat,
+            name: buildingCommon.getBuildingNumber()
+        },function () {
+            buildingCommon.loadMarkerList();//标注成功后，刷新地图上的标注
         })
     };
 
     //加载标注
     buildingCommon.loadMarkerList = function () {
-        $.ajax({
-            url: getContextPath() + '/basicEstateTagging/getApplyBatchEstateTaggingsByTableId',
-            data: {
-                tableId: buildingCommon.getBuildingId(),
-                type: 'building'
-            },
-            success: function (result) {
-                if (result.ret && buildingCommon.buildingMapiframe) {//标注成功后，刷新地图上的标注
-                    buildingCommon.buildingMapiframe.loadMarkerList(result.data);
-                }
+        examineCommon.getApplyBatchEstateTaggingsByTableId({
+            tableId: buildingCommon.getBuildingId(),
+            type: 'building'
+        },function (data) {
+            if (buildingCommon.buildingMapiframe){
+                buildingCommon.buildingMapiframe.loadMarkerList(data);//标注成功后，刷新地图上的标注
             }
         })
     };
@@ -453,39 +440,27 @@
 
     //添加标注（通过tableId）
     buildingCommon.addMarker2 = function (lng, lat) {
-        $.ajax({
-            url: getContextPath() + '/basicEstateTagging/addBasicEstateTaggingByTableId',
-            data: {
-                tableId: buildingCommon.tableId,
-                type: 'building',
-                lng: lng,
-                lat: lat,
-                name: buildingCommon.getBuildingNumber()
-            },
-            success: function (result) {
-                if (result.ret) {//标注成功后，刷新地图上的标注
-                    buildingCommon.loadMarkerList2(buildingCommon.tableId);
-                } else {
-                    Alert(result.errmsg);
-                }
-            }
-        })
+        examineCommon.addBasicEstateTagging({
+            tableId: buildingCommon.tableId,
+            type: 'building',
+            lng: lng,
+            lat: lat,
+            name: buildingCommon.getBuildingNumber()
+        },function () {
+            buildingCommon.loadMarkerList2(buildingCommon.tableId);//标注成功后，刷新地图上的标注
+        }) ;
     };
 
     //加载标注（通过tableId）
     buildingCommon.loadMarkerList2 = function (tableId) {
-        $.ajax({
-            url: getContextPath() + '/basicEstateTagging/getApplyBatchEstateTaggingsByTableId',
-            data: {
-                tableId: tableId,
-                type: 'building'
-            },
-            success: function (result) {
-                if (result.ret && buildingCommon.estateMapiframe) {//标注成功后，刷新地图上的标注
-                    buildingCommon.estateMapiframe.loadMarkerList(result.data);
-                }
+        examineCommon.getApplyBatchEstateTaggingsByTableId({
+            tableId: tableId,
+            type: 'building'
+        },function (data) {
+            if (buildingCommon.estateMapiframe){//标注成功后，刷新地图上的标注
+                buildingCommon.estateMapiframe.loadMarkerList(data);
             }
-        })
+        }) ;
     };
 
 

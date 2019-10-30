@@ -15,6 +15,7 @@
     <div style="margin-bottom: 10px; border-bottom:2px solid #E6E9ED;"></div>
     <form class="form-horizontal" id="basicBuildingFrm">
         <input type="hidden" name="id" value="${basicBuilding.id}">
+        <input type="hidden" name="estateId" value="${basicApplyBatch.estateId}">
         <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
@@ -25,7 +26,7 @@
                         <label class="form-control" name="buildingNumber">${basicBuilding.buildingNumber}</label>
                         <span class="input-group-btn">
                             <input type="hidden" name="mapId" value="${basicBuilding.mapId}">
-                             <div onclick="buildingCommon.mapNewMarker(this,true);" class="btn btn-info">
+                             <div onclick="buildingCommon.mapMarker(true);" class="btn btn-info">
                                  <i class="fa fa-map-marker"></i> 标注
                              </div>
                         </span>

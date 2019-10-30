@@ -165,6 +165,24 @@ examineCommon.getApplyBatchEstateTaggingsByTableId = function (data,callback) {
     })
 };
 
+
+examineCommon.addBasicEstateTagging = function (data,callback) {
+    $.ajax({
+        url: getContextPath() + '/basicEstateTagging/addBasicEstateTagging',
+        data: data,
+        method:"post" ,
+        success: function (result) {
+            if (result.ret) {//标注成功后，刷新地图上的标注
+                if (callback){
+                    callback(result.data) ;
+                }
+            } else {
+                Alert(result.errmsg);
+            }
+        }
+    })
+} ;
+
 examineCommon.getMarkerAreaInHeight = '80%';
 examineCommon.getMarkerAreaInWidth = '80%';
 
