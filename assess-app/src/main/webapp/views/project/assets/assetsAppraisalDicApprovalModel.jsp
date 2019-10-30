@@ -97,9 +97,7 @@
         <h3>自定义附件</h3>
         <div class="clearfix"></div>
     </div>
-
     <div class="x_content">
-
         <div id="assetsCustomizeDataOther_fieldId">
             <c:forEach items="${customizeDataField}" var="item">
                 <div class="form-group">
@@ -144,7 +142,7 @@
                     <script type="text/javascript">
                         $(function () {
                             var fileId = 'other_Enclosure${item.id}';
-                            commonAssets.showFile2(fileId, AssessDBKey.AssetsCustomizeDataField, "${item.id}", false,false, fileId);
+                            commonAssets.showFile3(fileId, AssessDBKey.AssetsCustomizeDataField, "${item.id}", false,false,'${activityCnName}'.indexOf("盖章") > -1, fileId);
                         });
                     </script>
                 </div>
@@ -152,7 +150,6 @@
         </div>
     </div>
 </div>
-
 <div class="x_panel">
     <div class="x_content">
         <div class="form-group">
@@ -169,7 +166,4 @@
         </div>
     </div>
 </div>
-
-
-
 </html>
