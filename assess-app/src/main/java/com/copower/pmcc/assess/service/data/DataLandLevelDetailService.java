@@ -8,6 +8,7 @@ import com.copower.pmcc.assess.dal.basis.entity.DataLandLevel;
 import com.copower.pmcc.assess.dal.basis.entity.DataLandLevelDetail;
 import com.copower.pmcc.assess.dto.output.data.DataLandLevelDetailVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
@@ -108,7 +109,7 @@ public class DataLandLevelDetailService {
         List<DataLandLevelDetail> dataLandLevelDetailList = Lists.newArrayList();
         List<DataLandLevelDetailVo> vos = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(levelList)) {
-            dataLandLevelDetailList = getByMasterIdInfo(levelList.stream().map(oo -> oo.getId()).collect(Collectors.toList())) ;
+            dataLandLevelDetailList = getByMasterIdInfo(levelList.stream().map(oo -> oo.getId()).collect(Collectors.toList()));
         }
         if (CollectionUtils.isNotEmpty(dataLandLevelDetailList)) {
             dataLandLevelDetailList = dataLandLevelDetailSorted(dataLandLevelDetailList);
@@ -120,12 +121,13 @@ public class DataLandLevelDetailService {
     }
 
     /**
-     * 注意这是pid 列表
+     * 注意这是 landLevelId 列表
+     *
      * @param integerList
      * @return
      */
-    public List<DataLandLevelDetail> getByMasterIdInfo(List<Integer> integerList){
-        return dataLandLevelDetailDao.getByMasterIdInfo(integerList) ;
+    public List<DataLandLevelDetail> getByMasterIdInfo(List<Integer> integerList) {
+        return dataLandLevelDetailDao.getByMasterIdInfo(integerList);
     }
 
     public List<DataLandLevelDetail> getDataLandLevelDetailList(DataLandLevelDetail oo) {
@@ -258,5 +260,37 @@ public class DataLandLevelDetailService {
             vo.setTypeName(oo.getType());
         }
         return vo;
+    }
+
+    /**
+     * 获取字典的数据层次
+     * @param id
+     * @return
+     */
+    public KeyValueDto getDataLandLevelDetailLevel(Integer id) {
+        KeyValueDto keyValueDto = new KeyValueDto();
+        DataLandLevelDetailVo dataLandLevelDetailVo = getDataLandLevelDetailVo(getDataLandLevelDetailById(id));
+        DataLandLevelDetailVo landLevelDetailVo = getDataLandLevelDetailVo(getDataLandLevelDetailById(dataLandLevelDetailVo.getPid()));
+        if (landLevelDetailVo != null && landLevelDetailVo.getId() != null) {
+            getReportFieldLevelRecursion(keyValueDto, landLevelDetailVo.getId());
+        }
+        keyValueDto.setKey(String.valueOf(dataLandLevelDetailVo.getId()));
+        keyValueDto.setValue(dataLandLevelDetailVo.getClassifyName());
+        return keyValueDto;
+    }
+
+    private void getReportFieldLevelRecursion(KeyValueDto keyValueDto, Integer id) {
+        DataLandLevelDetailVo dataLandLevelDetailVo = getDataLandLevelDetailVo(getDataLandLevelDetailById(id));
+        if (dataLandLevelDetailVo != null && dataLandLevelDetailVo.getId() != null) {
+            KeyValueDto kv = new KeyValueDto();
+            DataLandLevelDetailVo landLevelDetailVo = getDataLandLevelDetailVo(getDataLandLevelDetailById(dataLandLevelDetailVo.getPid()));
+            if (landLevelDetailVo != null && landLevelDetailVo.getId() != null) {
+                getReportFieldLevelRecursion(kv, landLevelDetailVo.getId());
+            }
+            kv.setKey(String.valueOf(dataLandLevelDetailVo.getId()));
+            kv.setValue(dataLandLevelDetailVo.getClassifyName());
+            keyValueDto.setKeyValueDto(kv);
+
+        }
     }
 }

@@ -146,6 +146,16 @@ public class DataLandLevelController {
         }
     }
 
+    @PostMapping(value = "/getDataLandLevelDetailLevel", name = "获取层级")
+    public HttpResult getReportFieldLevel(Integer id) {
+        try {
+            return HttpResult.newCorrectResult(200, dataLandLevelDetailService.getDataLandLevelDetailLevel(id));
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
+            return HttpResult.newErrorResult(500, e.getMessage());
+        }
+    }
+
 
     @RequestMapping(value = "/removeDataLandLevelDetail", method = {RequestMethod.POST}, name = "删除土地级别信息")
     public HttpResult removeDataLandLevelDetail(Integer id) {

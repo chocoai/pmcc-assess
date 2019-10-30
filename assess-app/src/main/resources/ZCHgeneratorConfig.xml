@@ -66,9 +66,9 @@
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         <!--</table>-->
 
-        <table tableName="tb_data_land_level" domainObjectName="DataLandLevel">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
+        <!--<table tableName="tb_data_land_level" domainObjectName="DataLandLevel">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
 
         <!--<table tableName="tb_basic_estate" domainObjectName="BasicEstate">-->
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
@@ -105,9 +105,9 @@
             <!--<columnOverride column="land_level_content" jdbcType="VARCHAR"></columnOverride>-->
         <!--</table>-->
 
-        <!--<table tableName="tb_data_land_level_detail" domainObjectName="DataLandLevelDetail">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
+        <table tableName="tb_data_land_level_detail" domainObjectName="DataLandLevelDetail">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
 
         <!--<table tableName="tb_data_allocation_correction_coefficient_volume_ratio" domainObjectName="DataAllocationCorrectionCoefficientVolumeRatio">-->
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->

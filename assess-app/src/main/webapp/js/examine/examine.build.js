@@ -107,7 +107,9 @@
             data: {id: id},
             success: function (result) {
                 if (result.ret) {
-                    buildingCommon.showBuildingView(result.data);
+                    if (result.data) {
+                        buildingCommon.showBuildingView(result.data);
+                    }
                     if (callback) {
                         callback(result.data);
                     }
@@ -321,23 +323,33 @@
 
     //楼栋标注
     buildingCommon.mapMarker = function (readonly) {
-        var contentUrl = getContextPath() + '/map/mapMarkerEstate?estateName=' + estateCommon.getEstateName();
-        if (readonly != true) {
-            contentUrl += '&click=buildingCommon.addMarker';
-        }
-        layer.open({
-            type: 2,
-            title: '楼盘标注',
-            shadeClose: true,
-            shade: true,
-            maxmin: true, //开启最大化最小化按钮
-            area: ['97%', '80%'],
-            content: contentUrl,
-            success: function (layero) {
-                buildingCommon.buildingMapiframe = window[layero.find('iframe')[0]['name']];
-                buildingCommon.loadMarkerList();
+        var select = {tableId:buildingCommon.buildingForm.find("[name='estateId']").val(),type:"estate"} ;
+        examineCommon.getApplyBatchEstateTaggingsByTableId(select,function (data) {
+            console.log(data) ;
+            if (data.length == 0){
+                Alert("请先标注楼盘");
+                return false;
             }
-        });
+            var item = data[0] ;
+            var params = {estateName:item.name,center:JSON.stringify({lng:item.lng , lat:item.lat})} ;
+            var contentUrl = getContextPath() + '/map/mapMarkerEstate?' + examineCommon.parseParam(params);
+            if (readonly != true) {
+                contentUrl += '&click=buildingCommon.addMarker';
+            }
+            layer.open({
+                type: 2,
+                title: '楼盘标注',
+                shadeClose: true,
+                shade: true,
+                maxmin: true, //开启最大化最小化按钮
+                area: [examineCommon.getMarkerAreaInWidth, examineCommon.getMarkerAreaInHeight],
+                content: contentUrl,
+                success: function (layero) {
+                    buildingCommon.buildingMapiframe = window[layero.find('iframe')[0]['name']];
+                    buildingCommon.loadMarkerList();
+                }
+            });
+        }) ;
     };
 
 
@@ -356,7 +368,7 @@
                     objArray.push(result[i]);
                 }
             }
-            if (!readonly){
+            if (!readonly) {
                 if (objArray.length == 0) {
                     Alert("请先标注楼盘");
                     return false;

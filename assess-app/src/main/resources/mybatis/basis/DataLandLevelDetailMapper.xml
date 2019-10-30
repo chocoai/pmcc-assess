@@ -12,12 +12,13 @@
     <result column="bis_delete" property="bisDelete" jdbcType="BIT" />
     <result column="land_acquisition_proportion" property="landAcquisitionProportion" jdbcType="VARCHAR" />
     <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="mu_price" property="muPrice" jdbcType="DECIMAL" />
+    <result column="volume_rate" property="volumeRate" jdbcType="DECIMAL" />
+    <result column="legal_age" property="legalAge" jdbcType="DECIMAL" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
-    <result column="mu_price" property="muPrice" jdbcType="DECIMAL" />
-    <result column="legal_age" property="legalAge" jdbcType="DECIMAL" />
-    <result column="volume_rate" property="volumeRate" jdbcType="DECIMAL" />
+    <result column="pid" property="pid" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -79,8 +80,8 @@
   </sql>
   <sql id="Base_Column_List" >
     id, land_level_id, classify, type, category, level_range, main_street, bis_delete, 
-    land_acquisition_proportion, price, creator, gmt_created, gmt_modified, mu_price, 
-    legal_age, volume_rate
+    land_acquisition_proportion, price, mu_price, volume_rate, legal_age, creator, gmt_created, 
+    gmt_modified, pid
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataLandLevelDetailExample" >
     select
@@ -119,15 +120,15 @@
     insert into tb_data_land_level_detail (land_level_id, classify, type, 
       category, level_range, main_street, 
       bis_delete, land_acquisition_proportion, price, 
+      mu_price, volume_rate, legal_age, 
       creator, gmt_created, gmt_modified, 
-      mu_price, legal_age, volume_rate
-      )
+      pid)
     values (#{landLevelId,jdbcType=INTEGER}, #{classify,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, 
       #{category,jdbcType=VARCHAR}, #{levelRange,jdbcType=VARCHAR}, #{mainStreet,jdbcType=VARCHAR}, 
       #{bisDelete,jdbcType=BIT}, #{landAcquisitionProportion,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, 
+      #{muPrice,jdbcType=DECIMAL}, #{volumeRate,jdbcType=DECIMAL}, #{legalAge,jdbcType=DECIMAL}, 
       #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
-      #{muPrice,jdbcType=DECIMAL}, #{legalAge,jdbcType=DECIMAL}, #{volumeRate,jdbcType=DECIMAL}
-      )
+      #{pid,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataLandLevelDetail" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -162,6 +163,15 @@
       <if test="price != null" >
         price,
       </if>
+      <if test="muPrice != null" >
+        mu_price,
+      </if>
+      <if test="volumeRate != null" >
+        volume_rate,
+      </if>
+      <if test="legalAge != null" >
+        legal_age,
+      </if>
       <if test="creator != null" >
         creator,
       </if>
@@ -171,14 +181,8 @@
       <if test="gmtModified != null" >
         gmt_modified,
       </if>
-      <if test="muPrice != null" >
-        mu_price,
-      </if>
-      <if test="legalAge != null" >
-        legal_age,
-      </if>
-      <if test="volumeRate != null" >
-        volume_rate,
+      <if test="pid != null" >
+        pid,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -209,6 +213,15 @@
       <if test="price != null" >
         #{price,jdbcType=DECIMAL},
       </if>
+      <if test="muPrice != null" >
+        #{muPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="volumeRate != null" >
+        #{volumeRate,jdbcType=DECIMAL},
+      </if>
+      <if test="legalAge != null" >
+        #{legalAge,jdbcType=DECIMAL},
+      </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
       </if>
@@ -218,14 +231,8 @@
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
       </if>
-      <if test="muPrice != null" >
-        #{muPrice,jdbcType=DECIMAL},
-      </if>
-      <if test="legalAge != null" >
-        #{legalAge,jdbcType=DECIMAL},
-      </if>
-      <if test="volumeRate != null" >
-        #{volumeRate,jdbcType=DECIMAL},
+      <if test="pid != null" >
+        #{pid,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -268,6 +275,15 @@
       <if test="record.price != null" >
         price = #{record.price,jdbcType=DECIMAL},
       </if>
+      <if test="record.muPrice != null" >
+        mu_price = #{record.muPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.volumeRate != null" >
+        volume_rate = #{record.volumeRate,jdbcType=DECIMAL},
+      </if>
+      <if test="record.legalAge != null" >
+        legal_age = #{record.legalAge,jdbcType=DECIMAL},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -277,14 +293,8 @@
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.muPrice != null" >
-        mu_price = #{record.muPrice,jdbcType=DECIMAL},
-      </if>
-      <if test="record.legalAge != null" >
-        legal_age = #{record.legalAge,jdbcType=DECIMAL},
-      </if>
-      <if test="record.volumeRate != null" >
-        volume_rate = #{record.volumeRate,jdbcType=DECIMAL},
+      <if test="record.pid != null" >
+        pid = #{record.pid,jdbcType=INTEGER},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -303,12 +313,13 @@
       bis_delete = #{record.bisDelete,jdbcType=BIT},
       land_acquisition_proportion = #{record.landAcquisitionProportion,jdbcType=VARCHAR},
       price = #{record.price,jdbcType=DECIMAL},
+      mu_price = #{record.muPrice,jdbcType=DECIMAL},
+      volume_rate = #{record.volumeRate,jdbcType=DECIMAL},
+      legal_age = #{record.legalAge,jdbcType=DECIMAL},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      mu_price = #{record.muPrice,jdbcType=DECIMAL},
-      legal_age = #{record.legalAge,jdbcType=DECIMAL},
-      volume_rate = #{record.volumeRate,jdbcType=DECIMAL}
+      pid = #{record.pid,jdbcType=INTEGER}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -343,6 +354,15 @@
       <if test="price != null" >
         price = #{price,jdbcType=DECIMAL},
       </if>
+      <if test="muPrice != null" >
+        mu_price = #{muPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="volumeRate != null" >
+        volume_rate = #{volumeRate,jdbcType=DECIMAL},
+      </if>
+      <if test="legalAge != null" >
+        legal_age = #{legalAge,jdbcType=DECIMAL},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -352,14 +372,8 @@
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
-      <if test="muPrice != null" >
-        mu_price = #{muPrice,jdbcType=DECIMAL},
-      </if>
-      <if test="legalAge != null" >
-        legal_age = #{legalAge,jdbcType=DECIMAL},
-      </if>
-      <if test="volumeRate != null" >
-        volume_rate = #{volumeRate,jdbcType=DECIMAL},
+      <if test="pid != null" >
+        pid = #{pid,jdbcType=INTEGER},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -375,12 +389,13 @@
       bis_delete = #{bisDelete,jdbcType=BIT},
       land_acquisition_proportion = #{landAcquisitionProportion,jdbcType=VARCHAR},
       price = #{price,jdbcType=DECIMAL},
+      mu_price = #{muPrice,jdbcType=DECIMAL},
+      volume_rate = #{volumeRate,jdbcType=DECIMAL},
+      legal_age = #{legalAge,jdbcType=DECIMAL},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      mu_price = #{muPrice,jdbcType=DECIMAL},
-      legal_age = #{legalAge,jdbcType=DECIMAL},
-      volume_rate = #{volumeRate,jdbcType=DECIMAL}
+      pid = #{pid,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
