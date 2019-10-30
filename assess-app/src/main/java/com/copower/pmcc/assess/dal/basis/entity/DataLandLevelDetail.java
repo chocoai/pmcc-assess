@@ -24,17 +24,19 @@ public class DataLandLevelDetail {
 
     private BigDecimal price;
 
+    private BigDecimal muPrice;
+
+    private BigDecimal volumeRate;
+
+    private BigDecimal legalAge;
+
     private String creator;
 
     private Date gmtCreated;
 
     private Date gmtModified;
 
-    private BigDecimal muPrice;
-
-    private BigDecimal legalAge;
-
-    private BigDecimal volumeRate;
+    private Integer pid;
 
     public Integer getId() {
         return id;
@@ -116,6 +118,30 @@ public class DataLandLevelDetail {
         this.price = price;
     }
 
+    public BigDecimal getMuPrice() {
+        return muPrice;
+    }
+
+    public void setMuPrice(BigDecimal muPrice) {
+        this.muPrice = muPrice;
+    }
+
+    public BigDecimal getVolumeRate() {
+        return volumeRate;
+    }
+
+    public void setVolumeRate(BigDecimal volumeRate) {
+        this.volumeRate = volumeRate;
+    }
+
+    public BigDecimal getLegalAge() {
+        return legalAge;
+    }
+
+    public void setLegalAge(BigDecimal legalAge) {
+        this.legalAge = legalAge;
+    }
+
     public String getCreator() {
         return creator;
     }
@@ -140,27 +166,11 @@ public class DataLandLevelDetail {
         this.gmtModified = gmtModified;
     }
 
-    public BigDecimal getMuPrice() {
-        return muPrice;
+    public Integer getPid() {
+        return pid;
     }
 
-    public void setMuPrice(BigDecimal muPrice) {
-        this.muPrice = muPrice;
-    }
-
-    public BigDecimal getLegalAge() {
-        return legalAge;
-    }
-
-    public void setLegalAge(BigDecimal legalAge) {
-        this.legalAge = legalAge;
-    }
-
-    public BigDecimal getVolumeRate() {
-        return volumeRate;
-    }
-
-    public void setVolumeRate(BigDecimal volumeRate) {
-        this.volumeRate = volumeRate;
+    public void setPid(Integer pid) {
+        this.pid = pid;
     }
 }

@@ -150,6 +150,21 @@ examineCommon.parseParam = function (param, key) {
     return paramStr.substr(1);
 } ;
 
+examineCommon.getApplyBatchEstateTaggingsByTableId = function (data,callback) {
+    $.ajax({
+        url: getContextPath() + '/basicEstateTagging/getApplyBatchEstateTaggingsByTableId',
+        data: data,
+        method: "post",
+        success: function (result) {
+            if (result.ret) {
+                if (callback) {
+                    callback(result.data);
+                }
+            }
+        }
+    })
+};
+
 examineCommon.getMarkerAreaInHeight = '80%';
 examineCommon.getMarkerAreaInWidth = '80%';
 

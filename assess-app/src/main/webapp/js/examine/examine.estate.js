@@ -50,15 +50,15 @@
     };
 
     estateCommon.getEstateName = function () {
-        var estatePartInMode = basicCommon.basicApplyForm.find('[name=estatePartInMode]').val();
+        var estateName = "";
+        var name = "";
         try {
-            estatePartInMode = basicCommon.basicApplyForm.find('[name=estatePartInMode]').val();
+            estateName = basicCommon.basicApplyForm.find('[name=estateName]').val();
         } catch (e) {
         }
-        var estateName = basicCommon.basicApplyForm.find('[name=estateName]').val();
-        var name = estateCommon.estateForm.find('[name=name]').val();
-        if (estatePartInMode) {
-            return name;
+        try {
+            name = estateCommon.estateForm.find('[name=name]').val();
+        } catch (e) {
         }
         if (estateName) {
             return estateName;
@@ -527,10 +527,10 @@
         data.id = $(_this).closest('.form-group').find("[name='mapId']").val();
         data.readonly = readonly;
         data.multiple = false;//不允许多个标记
-        data.type = "estate" ;//兼容以前数据
-        data.tableId = estateCommon.estateForm.find("input[name='id']").val() ;
-        data.callback = function (item,result) {
-            $(_this).closest('.form-group').find("[name='mapId']").val(item.id) ;
+        data.type = "estate";//兼容以前数据
+        data.tableId = estateCommon.estateForm.find("input[name='id']").val();
+        data.callback = function (item, result) {
+            $(_this).closest('.form-group').find("[name='mapId']").val(item.id);
         };
         toolMapHandleFun.loadMap(data);
     };
@@ -547,7 +547,7 @@
             shadeClose: true,
             shade: true,
             maxmin: true, //开启最大化最小化按钮
-            area: [basicCommon.getMarkerAreaInWidth, basicCommon.getMarkerAreaInHeight],
+            area: [examineCommon.getMarkerAreaInWidth, examineCommon.getMarkerAreaInHeight],
             content: contentUrl,
             success: function (layero) {
                 estateCommon.estateMapiframe = window[layero.find('iframe')[0]['name']];
@@ -565,7 +565,7 @@
             shadeClose: true,
             shade: true,
             maxmin: true, //开启最大化最小化按钮
-            area: [basicCommon.getMarkerAreaInWidth, basicCommon.getMarkerAreaInHeight],
+            area: [examineCommon.getMarkerAreaInWidth, examineCommon.getMarkerAreaInHeight],
             content: contentUrl,
             success: function (layero) {
                 estateCommon.estateMapiframe = window[layero.find('iframe')[0]['name']];

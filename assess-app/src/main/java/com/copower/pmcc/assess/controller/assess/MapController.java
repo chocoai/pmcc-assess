@@ -90,10 +90,11 @@ public class MapController {
     }
 
     @RequestMapping(value = "/mapMarkerEstate", name = "楼盘地图标注")
-    public ModelAndView mapMarkerEstate(String estateName, String click) {
+    public ModelAndView mapMarkerEstate(String estateName, String click,String center) {
         ModelAndView modelAndView = new ModelAndView("base/mapMarkerEstate");
         modelAndView.addObject("estateName", estateName);
         modelAndView.addObject("click", click);
+        modelAndView.addObject("center", center);
         return modelAndView;
     }
 

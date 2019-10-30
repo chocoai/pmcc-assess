@@ -50,10 +50,10 @@
     };
     var auto = new AMap.Autocomplete(autoOptions);
     var placeSearch = new AMap.PlaceSearch({});
-    searchByName('${estateName}');
+    searchByName('${estateName}','${center}');
 
     //根据名称查询
-    function searchByName(name) {
+    function searchByName(name,string) {
         if(name){
             placeSearch.search(name, function (status, result) {
                 if (result.info == 'OK') {
@@ -64,12 +64,19 @@
                 }
             })
         }
+        if (string){
+            try {
+                var center = JSON.stringify(string) ;
+                console.log(center) ;
+            } catch (e) {
+            }
+        }
     }
 
     //注册监听，当选中某条记录时会触发
     AMap.event.addListener(auto, "select", function (e) {
         placeSearch.setCity(e.poi.adcode);
-        searchByName(e.poi.name);
+        searchByName(e.poi.name,null);
     });
 
     //地图点击事件

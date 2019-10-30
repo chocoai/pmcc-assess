@@ -23,7 +23,7 @@
                                value="${basicBuilding.buildingNumber}">
                         <span class="input-group-btn">
                              <input type="hidden" name="mapId" value="${basicBuilding.mapId}">
-                             <div onclick="buildingCommon.mapNewMarker(this,false);" class="btn btn-info">
+                             <div onclick="buildingCommon.mapMarker(false);" class="btn btn-info">
                                  <i class="fa fa-map-marker"></i> 标注
                              </div>
                         </span>
@@ -564,6 +564,7 @@
 
 <script src='${pageContext.request.contextPath}/js/common.column.js'></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.common.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.estate.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.build.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/sonBuildView.js"></script>
 
