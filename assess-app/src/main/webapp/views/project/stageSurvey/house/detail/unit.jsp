@@ -18,8 +18,8 @@
                 </div>
             </div>
             <div class="x_panel">
-                <!-- 非工业交通仓储 或 在建工程-->
-                <c:if test="${basicApplyBatch.type == 0 || basicApplyBatch.type == 3}">
+                <!-- 非工业交通仓储 -->
+                <c:if test="${basicApplyBatch.type == 0 }">
                     <%@include file="/views/project/stageSurvey/commonDetail/unit.jsp" %>
                 </c:if>
 
@@ -31,9 +31,13 @@
 
 
 
-                <%@include file="/views/project/stageSurvey/commonDetail/unitDecorate.jsp" %>
-                <%@include file="/views/project/stageSurvey/commonDetail/unitHuxing.jsp" %>
-                <%@include file="/views/project/stageSurvey/commonDetail/unitElevator.jsp" %>
+            </div>
+            <div class="x_panel">
+                <div class="x_content">
+                    <%@include file="/views/project/stageSurvey/commonDetail/unitDecorate.jsp" %>
+                    <%@include file="/views/project/stageSurvey/commonDetail/unitHuxing.jsp" %>
+                    <%@include file="/views/project/stageSurvey/commonDetail/unitElevator.jsp" %>
+                </div>
             </div>
             <div class="x_panel">
                 <div class="x_content">
@@ -52,4 +56,11 @@
 <%@include file="/views/project/tool/toolMapHandleView.jsp" %>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.common.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.unit.js"></script>
+
+
+<script type="text/javascript">
+    $(function () {
+        unitCommon.initById('${basicUnit.id}');
+    })
+</script>
 </html>

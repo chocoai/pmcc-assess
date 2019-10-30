@@ -19,15 +19,12 @@
             </div>
             <div class="x_panel">
 
-                <!-- 非工业交通仓储 或 在建工程-->
-                <c:if test="${basicApplyBatch.type == 0 || basicApplyBatch.type == 3}">
+                <!-- 非工业交通仓储 -->
+                <c:if test="${basicApplyBatch.type == 0 }">
                     <%@include file="/views/project/stageSurvey/commonDetail/building.jsp" %>
                 </c:if>
 
-                <!-- 构筑物 -->
-                <c:if test="${basicApplyBatch.type == 2}">
-                    <%@include file="/views/project/stageSurvey/commonDetail/structuresProspect.jsp" %>
-                </c:if>
+
 
 
                 <!-- 工业交通仓储 -->
@@ -53,4 +50,10 @@
 <%@include file="/views/project/tool/toolMapHandleView.jsp" %>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.common.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.build.js"></script>
+
+<script type="text/javascript">
+    $(function () {
+        buildingCommon.initById('${basicBuilding.id}');
+    })
+</script>
 </html>

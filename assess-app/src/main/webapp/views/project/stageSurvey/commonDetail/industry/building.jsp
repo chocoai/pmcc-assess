@@ -1,4 +1,3 @@
-
 <%--
  楼栋基础信息
 --%>
@@ -6,10 +5,14 @@
 
 <%@include file="../building.jsp" %>
 
-<%@include file="./buildingSurface.jsp" %>
-<%@include file="./buildingMaintenance.jsp" %>
+
+<div class="x_content">
+    <%@include file="./buildingSurface.jsp" %>
+</div>
 
 
-
+<div class="x_content">
+    <%@include file="./buildingMaintenance.jsp" %>
+</div>
 
 
