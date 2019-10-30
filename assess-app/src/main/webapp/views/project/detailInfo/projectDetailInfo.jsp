@@ -63,7 +63,7 @@
                             </div>
                             <div class="btn-group">
                                 <button type="button" class="btn btn-xs btn-primary">
-                                    委托方盖章发文
+                                    委托方盖章模板
                                 </button>
                                 <button type="button" class="btn btn-xs btn-primary dropdown-toggle"
                                         data-toggle="dropdown">
