@@ -246,6 +246,7 @@ public class CaseUnitService {
         basicUnit.setGmtModified(null);
         basicUnit.setId(tableId);
         basicUnit.setApplyId(null);
+        basicUnit.setBuildingId(null);
         basicUnit.setBuildingId(oldBasicUnit.getBuildingId());
 
         basicUnitService.saveAndUpdateBasicUnit(basicUnit,false);

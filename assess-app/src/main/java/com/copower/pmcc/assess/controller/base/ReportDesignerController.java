@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.controller.base;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.service.BaseService;
+import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.ureport.ProjectDebtService;
 import com.copower.pmcc.erp.api.dto.ReportProviderFileDto;
@@ -33,6 +34,8 @@ public class ReportDesignerController {
     private ProjectDebtService projectDebtService;
     @Autowired
     private BaseService baseService;
+    @Autowired
+    private PublicService publicService;
 
 
     @GetMapping(value = "/index")
@@ -86,6 +89,7 @@ public class ReportDesignerController {
         List<BaseDataDic> loanTypeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_LOAN_TYPE);
         modelAndView.addObject("entrustmentList", entrustmentList);
         modelAndView.addObject("loanTypeList", loanTypeList);
+        modelAndView.addObject("companyId", publicService.getCurrentCompany().getCompanyId());
         return modelAndView;
     }
 
@@ -102,6 +106,7 @@ public class ReportDesignerController {
         List<BaseDataDic> loanTypeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_LOAN_TYPE);
         modelAndView.addObject("entrustmentList", entrustmentList);
         modelAndView.addObject("loanTypeList", loanTypeList);
+        modelAndView.addObject("companyId", publicService.getCurrentCompany().getCompanyId());
         return modelAndView;
     }
 

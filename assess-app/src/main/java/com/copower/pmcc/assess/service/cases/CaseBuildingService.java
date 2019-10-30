@@ -283,6 +283,7 @@ public class CaseBuildingService {
         basicBuilding.setGmtModified(null);
         basicBuilding.setId(tableId);
         basicBuilding.setApplyId(null);
+        basicBuilding.setEstateId(null);
         basicBuilding.setEstateId(oldBasicBuilding.getEstateId());
 
         basicBuildingService.saveAndUpdateBasicBuilding(basicBuilding,false);

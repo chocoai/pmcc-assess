@@ -638,11 +638,22 @@ public class BasicApplyTransferService {
         basicApplyBatch.setId(null);
         basicApplyBatch.setPlanDetailsId(targetPlanDetailsId);
         basicApplyBatch.setEstateId(basicEstateNew.getId());
+        basicApplyBatch.setEstateName(basicEstateNew.getName());
         basicApplyBatch.setCreator(commonService.thisUserAccount());
         basicApplyBatchService.addBasicApplyBatch(basicApplyBatch);
 
+        BasicApplyBatchDetail estateBatchDetail = new BasicApplyBatchDetail();
+        estateBatchDetail.setPid(0);
+        estateBatchDetail.setApplyBatchId(basicApplyBatch.getId());
+        estateBatchDetail.setTableName(FormatUtils.entityNameConvertToTableName(BasicEstate.class));
+        estateBatchDetail.setTableId(basicEstateNew.getId());
+        estateBatchDetail.setName(basicEstateNew.getName());
+        estateBatchDetail.setDisplayName(basicEstateNew.getName());
+        estateBatchDetail.setBisStandard(false);
+        basicApplyBatchDetailService.saveBasicApplyBatchDetail(estateBatchDetail);
+
         BasicApplyBatchDetail buildingBatchDetail = new BasicApplyBatchDetail();
-        buildingBatchDetail.setPid(0);
+        buildingBatchDetail.setPid(estateBatchDetail.getId());
         buildingBatchDetail.setApplyBatchId(basicApplyBatch.getId());
         buildingBatchDetail.setTableName(FormatUtils.entityNameConvertToTableName(BasicBuilding.class));
         buildingBatchDetail.setTableId(basicBuilding.getId());

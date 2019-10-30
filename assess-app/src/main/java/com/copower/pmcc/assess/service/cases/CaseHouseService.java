@@ -343,16 +343,18 @@ public class CaseHouseService {
         basicApplyBatchDetailDao.updateInfo(batchDetail);
         BasicHouse basicHouse = basicHouseService.getBasicHouseById(tableId);
         CaseHouse oldCaseHouse = this.getCaseHouseById(id);
-        BeanUtils.copyProperties(oldCaseHouse, basicHouse, "id");
-        basicHouseService.saveAndUpdateBasicHouse(basicHouse,false);
+        BeanUtils.copyProperties(oldCaseHouse, basicHouse, "id","unitId","creator","gmtCreated","gmtModified");
+        basicHouseService.saveAndUpdateBasicHouse(basicHouse, false);
 
         CaseHouseTrading queryTrading = new CaseHouseTrading();
         queryTrading.setHouseId(id);
         List<CaseHouseTradingVo> oldCaseHouseTradings = caseHouseTradingService.caseHouseTradingVoList(queryTrading);
         if (!ObjectUtils.isEmpty(oldCaseHouseTradings)) {
             BasicHouseTrading basicHouseTrading = basicHouseTradingService.getTradingByHouseId(basicHouse.getId());
-            BeanUtils.copyProperties(oldCaseHouseTradings.get(0), basicHouseTrading, "id");
-            basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicHouseTrading,false);
+            if (basicHouseTrading != null) {
+                BeanUtils.copyProperties(oldCaseHouseTradings.get(0), basicHouseTrading, "id","houseId","creator","gmtCreated","gmtModified");
+                basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicHouseTrading, false);
+            }
         }
 
         //删除原有的附件
@@ -433,7 +435,7 @@ public class CaseHouseService {
                     room.setCreator(commonService.thisUserAccount());
                     room.setGmtCreated(null);
                     room.setGmtModified(null);
-                    basicHouseRoomService.saveAndUpdateBasicHouseRoom(room,false);
+                    basicHouseRoomService.saveAndUpdateBasicHouseRoom(room, false);
                     CaseHouseRoomDecorate caseHouseRoomDecorate = new CaseHouseRoomDecorate();
                     caseHouseRoomDecorate.setRoomId(oo.getId());
                     List<CaseHouseRoomDecorate> caseHouseRoomDecorateList = caseHouseRoomDecorateService.getCaseHouseRoomDecorateList(caseHouseRoomDecorate);
@@ -446,7 +448,7 @@ public class CaseHouseService {
                             basicHouseRoomDecorate.setGmtCreated(null);
                             basicHouseRoomDecorate.setGmtModified(null);
                             basicHouseRoomDecorate.setId(null);
-                            basicHouseRoomDecorateService.saveAndUpdateBasicHouseRoomDecorate(basicHouseRoomDecorate,false);
+                            basicHouseRoomDecorateService.saveAndUpdateBasicHouseRoomDecorate(basicHouseRoomDecorate, false);
                         }
                     }
                 }
@@ -494,7 +496,7 @@ public class CaseHouseService {
                     basicHouseDamagedDegree.setCreator(commonService.thisUserAccount());
                     basicHouseDamagedDegree.setGmtCreated(null);
                     basicHouseDamagedDegree.setGmtModified(null);
-                    basicHouseDamagedDegreeService.saveAndUpdateDamagedDegree(basicHouseDamagedDegree,false);
+                    basicHouseDamagedDegreeService.saveAndUpdateDamagedDegree(basicHouseDamagedDegree, false);
                     List<CaseHouseDamagedDegreeDetail> damagedDegreeDetailList = caseHouseDamagedDegreeService.getDamagedDegreeDetails(caseHouseDamagedDegree.getId());
                     if (CollectionUtils.isNotEmpty(damagedDegreeDetailList)) {
                         for (CaseHouseDamagedDegreeDetail caseHouseDamagedDegreeDetail : damagedDegreeDetailList) {
@@ -506,7 +508,7 @@ public class CaseHouseService {
                             basicHouseDamagedDegreeDetail.setCreator(commonService.thisUserAccount());
                             basicHouseDamagedDegreeDetail.setGmtCreated(null);
                             basicHouseDamagedDegreeDetail.setGmtModified(null);
-                            basicHouseDamagedDegreeService.saveAndUpdateDamagedDegreeDetail(basicHouseDamagedDegreeDetail,false);
+                            basicHouseDamagedDegreeService.saveAndUpdateDamagedDegreeDetail(basicHouseDamagedDegreeDetail, false);
                         }
                     }
                 }

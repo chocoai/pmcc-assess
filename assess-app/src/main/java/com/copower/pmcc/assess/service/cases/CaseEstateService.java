@@ -203,7 +203,7 @@ public class CaseEstateService {
         applyBatch.setBaseType(BaseConstant.DATABASE_PMCC_ASSESS_CASE);
         basicApplyBatchDao.updateInfo(applyBatch);
 
-        BasicApplyBatchDetail batchDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail("tb_basic_house", tableId);
+        BasicApplyBatchDetail batchDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(FormatUtils.entityNameConvertToTableName(BasicEstate.class), tableId);
         batchDetail.setQuoteId(quoteId);
         batchDetail.setBaseType(BaseConstant.DATABASE_PMCC_ASSESS);
         basicApplyBatchDetailService.saveBasicApplyBatchDetail(batchDetail);
