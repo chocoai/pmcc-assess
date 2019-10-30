@@ -19,7 +19,7 @@
             </div>
             <div class="x_panel">
 
-                <c:if test="${basicApplyBatch.type == 0 || basicApplyBatch.type == 3}">
+                <c:if test="${basicApplyBatch.type == 0 }">
                     <%@include file="/views/project/stageSurvey/commonDetail/house.jsp" %>
                     <%@include file="/views/project/stageSurvey/commonDetail/houseTrading.jsp" %>
                 </c:if>
@@ -31,27 +31,36 @@
                     <%@include file="/views/project/stageSurvey/commonDetail/houseTrading.jsp" %>
                 </c:if>
 
-                <%@include file="/views/project/stageSurvey/commonDetail/houseFaceStreet.jsp" %>
 
 
-                <c:if test="${basicApplyBatch.type == 0 || basicApplyBatch.type == 3}">
-                    <%@include file="/views/project/stageSurvey/commonDetail/houseWater.jsp" %>
-                    <%@include file="/views/project/stageSurvey/commonDetail/houseWaterDrain.jsp" %>
-                    <%@include file="/views/project/stageSurvey/commonDetail/houseNewWind.jsp" %>
-                    <%@include file="/views/project/stageSurvey/commonDetail/houseAirConditioner.jsp" %>
-                    <%@include file="/views/project/stageSurvey/commonDetail/houseHeating.jsp" %>
-                    <%@include file="/views/project/stageSurvey/commonDetail/houseIntelligent.jsp" %>
-                </c:if>
 
-                <%@include file="/views/project/stageSurvey/commonDetail/houseRoom.jsp" %>
 
-                <c:if test="${basicApplyBatch.type == 1}">
-                    <%@include file="/views/project/stageSurvey/commonDetail/industry/houseCorollaryEquipment.jsp" %>
-                </c:if>
-
-                <%@include file="/views/project/stageSurvey/commonDetail/houseDamagedDegree.jsp" %>
 
             </div>
+            <div class="x_panel">
+                <div class="x_content">
+                    <%@include file="/views/project/stageSurvey/commonDetail/houseFaceStreet.jsp" %>
+
+                    <c:if test="${basicApplyBatch.type == 0 }">
+                        <%@include file="/views/project/stageSurvey/commonDetail/houseWater.jsp" %>
+                        <%@include file="/views/project/stageSurvey/commonDetail/houseWaterDrain.jsp" %>
+                        <%@include file="/views/project/stageSurvey/commonDetail/houseNewWind.jsp" %>
+                        <%@include file="/views/project/stageSurvey/commonDetail/houseAirConditioner.jsp" %>
+                        <%@include file="/views/project/stageSurvey/commonDetail/houseHeating.jsp" %>
+                        <%@include file="/views/project/stageSurvey/commonDetail/houseIntelligent.jsp" %>
+                    </c:if>
+
+                    <%@include file="/views/project/stageSurvey/commonDetail/houseRoom.jsp" %>
+
+                    <c:if test="${basicApplyBatch.type == 1}">
+                        <%@include file="/views/project/stageSurvey/commonDetail/industry/houseCorollaryEquipment.jsp" %>
+                    </c:if>
+
+                    <%@include file="/views/project/stageSurvey/commonDetail/houseDamagedDegree.jsp" %>
+
+                </div>
+            </div>
+
             <div class="x_panel">
                 <div class="x_content">
                     <div style="text-align: center;">
@@ -70,4 +79,10 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.common.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.house.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.house.detail.js"></script>
+
+<script>
+    $(function () {
+        houseCommon.initById('${basicHouse.id}');
+    })
+</script>
 </html>

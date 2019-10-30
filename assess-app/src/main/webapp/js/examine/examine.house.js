@@ -376,7 +376,10 @@
             onUploadComplete: function () {
                 houseCommon.fileShow(fieldsName);
                 if (houseCommon.houseFileControlIdArray[1] == fieldsName) {
-                    toolMapHandleFun.removeToolMapHandle({type:"house",tableId:houseCommon.getHouseId()},function () {
+                    toolMapHandleFun.removeToolMapHandle({
+                        type: "house",
+                        tableId: houseCommon.getHouseId()
+                    }, function () {
 
                     });
                 }
@@ -417,7 +420,10 @@
             deleteFlag: deleteFlag == undefined ? true : deleteFlag,
             deleteSuccess: function (attachemntId) {
                 if (houseCommon.houseFileControlIdArray[1] == fieldsName) {
-                    toolMapHandleFun.removeToolMapHandle({type:"house",tableId:houseCommon.getHouseId()},function () {
+                    toolMapHandleFun.removeToolMapHandle({
+                        type: "house",
+                        tableId: houseCommon.getHouseId()
+                    }, function () {
 
                     });
                 }
@@ -645,29 +651,110 @@
     };
 
 
-
-    /**
-     * 户型地图朝向
-     */
     houseCommon.orientationFun = function (readonly) {
         houseCommon.getUnitId(function (unitInfo) {
-            toolMapHandleFun.getToolMapHandleListByExample({tableId:unitInfo.tableId,type:"unit"},function (unitMarker) {
+            var select = {tableId: unitInfo.tableId, type: "unit"};
+            examineCommon.getApplyBatchEstateTaggingsByTableId(select, function (unitMarkerArray) {
+                if (unitMarkerArray.length == 0) {
+                    Alert("请先标注单元");
+                    return false;
+                }
+                var unitMarker = unitMarkerArray[0];
                 if (!unitMarker) {
                     toastr.info("还未标注单元位置信息");
                     return;
                 }
-                toolMapHandleFun.getToolMapHandleListByExample({tableId: houseCommon.getHouseId(), type: "house"},function (result) {
+                var attachmentId = houseCommon.getMarkersysAttachmentId();
+                if (!attachmentId) {
+                    toastr.info("未找到相关户型图片");
+                    return;
+                }
+                examineCommon.getApplyBatchEstateTaggingsByTableId({
+                    tableId: houseCommon.getHouseId(), type: "house"
+                }, function (result) {
+                    var data = {
+                        attachmentId: attachmentId,
+                        lng: unitMarker.lng,
+                        lat: unitMarker.lat,
+                        deg: 0,
+                        readonly: readonly
+                    };
+                    if (result.length > 0) {
+                        if (result[0].deg) {
+                            data.deg = result[0].deg;
+                        }
+                        if (result[0].attachmentId) {
+                            data.attachmentId = result[0].attachmentId;
+                        }
+                    }
+                    var contentUrl = getContextPath() + '/map/houseTagging?' + examineCommon.parseParam(data);
+                    layer.open({
+                        type: 2,
+                        title: '房屋标注',
+                        shade: true,
+                        maxmin: true, //开启最大化最小化按钮
+                        area: [examineCommon.getMarkerAreaInWidth, examineCommon.getMarkerAreaInHeight],
+                        content: contentUrl,
+                        success: function (layero) {
+                            houseCommon.houseMapiframe = window[layero.find('iframe')[0]['name']];
+                        },
+                        cancel: function () {
+                            if (!readonly) {
+                                //到iframe中获取数据
+                                var resultData = {
+                                    tableId: houseCommon.getHouseId(),
+                                    type: "house",
+                                    lng: houseCommon.houseMapiframe.config.position.lng,
+                                    lat: houseCommon.houseMapiframe.config.position.lat,
+                                    deg: houseCommon.houseMapiframe.config.deg,
+                                    attachmentId: houseCommon.houseMapiframe.config.attachmentId,
+                                    name: houseCommon.houseForm.find('[name=houseNumber]').val()
+                                };
+                                examineCommon.addBasicEstateTagging(resultData, function () {
+                                    toastr.info("标注成功信息!");
+                                });
+                            }
+                        }
+                    });
+                });
+            });
+        });
+    };
+
+    /**
+     * 户型地图朝向
+     */
+    houseCommon.orientationFun2 = function (readonly) {
+        houseCommon.getUnitId(function (unitInfo) {
+            toolMapHandleFun.getToolMapHandleListByExample({
+                tableId: unitInfo.tableId,
+                type: "unit"
+            }, function (unitMarker) {
+                if (!unitMarker) {
+                    toastr.info("还未标注单元位置信息");
+                    return;
+                }
+                toolMapHandleFun.getToolMapHandleListByExample({
+                    tableId: houseCommon.getHouseId(),
+                    type: "house"
+                }, function (result) {
                     var attachmentId = houseCommon.getMarkersysAttachmentId();
                     if (!attachmentId) {
                         toastr.info("未找到相关户型图片");
                         return;
                     }
-                    var data = {attachmentId:attachmentId,lng:unitMarker[0].lng,lat:unitMarker[0].lat,deg:0,readonly:readonly} ;
-                    if (result.length != 0){
+                    var data = {
+                        attachmentId: attachmentId,
+                        lng: unitMarker[0].lng,
+                        lat: unitMarker[0].lat,
+                        deg: 0,
+                        readonly: readonly
+                    };
+                    if (result.length != 0) {
                         data.deg = result[0].deg;
                         data.attachmentId = result[0].attachmentId;
                     }
-                    var contentUrl = getContextPath() + '/map/houseTagging?'+examineCommon.parseParam(data);
+                    var contentUrl = getContextPath() + '/map/houseTagging?' + examineCommon.parseParam(data);
                     layer.open({
                         type: 2,
                         title: '房屋标注',
@@ -688,17 +775,20 @@
                                     lat: houseCommon.houseMapiframe.config.position.lat,
                                     deg: houseCommon.houseMapiframe.config.deg,
                                     attachmentId: houseCommon.houseMapiframe.config.attachmentId
-                                } ;
-                                toolMapHandleFun.removeToolMapHandle({type:saveData.type,tableId:saveData.tableId},function () {
-                                    toolMapHandleFun.saveData(saveData,function () {
+                                };
+                                toolMapHandleFun.removeToolMapHandle({
+                                    type: saveData.type,
+                                    tableId: saveData.tableId
+                                }, function () {
+                                    toolMapHandleFun.saveData(saveData, function () {
                                         toastr.info("成功！");
                                     });
                                 });
                             }
                         }
                     });
-                }) ;
-            }) ;
+                });
+            });
         });
     };
 

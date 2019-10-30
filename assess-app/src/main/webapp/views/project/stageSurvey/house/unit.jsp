@@ -16,7 +16,7 @@
                                name="unitNumber" class="form-control" value="${basicUnit.unitNumber}" id="txt_Unit_search">
                         <span class="input-group-btn">
                             <input type="hidden" name="mapId" value="${basicUnit.mapId}">
-                             <div onclick="unitCommon.mapNewMarker(this,false);" class="btn btn-info">
+                             <div onclick="unitCommon.mapMarker(false);" class="btn btn-info">
                                  <i class="fa fa-map-marker"></i> 标注
                              </div>
                         </span>

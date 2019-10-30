@@ -574,22 +574,14 @@
                 if (!readonly) {
                     //到iframe中获取数据
                     if (estateCommon.estateMapiframe.pathArrayJson) {
-                        $.ajax({
-                            url: getContextPath() + '/basicEstateTagging/addBasicEstateTagging',
-                            data: {
-                                applyId: basicCommon.getApplyId(),
-                                type: 'estate',
-                                pathArray: estateCommon.estateMapiframe.pathArrayJson,
-                                name: estateCommon.getEstateName()
-                            },
-                            success: function (result) {
-                                if (result.ret) {
-                                    toastr.success('标记成功');
-                                } else {
-                                    Alert(result.errmsg);
-                                }
-                            }
-                        })
+                        examineCommon.addBasicEstateTagging({
+                            applyId: basicCommon.getApplyId(),
+                            type: 'estate',
+                            pathArray: estateCommon.estateMapiframe.pathArrayJson,
+                            name: estateCommon.getEstateName()
+                        },function () {
+                            toastr.success('标记成功');
+                        }) ;
                     }
                 }
             }
@@ -598,38 +590,26 @@
 
     //添加标注
     estateCommon.addMarker = function (lng, lat, pathArray) {
-        $.ajax({
-            url: getContextPath() + '/basicEstateTagging/addBasicEstateTagging',
-            data: {
-                tableId: estateCommon.getEstateId(),
-                type: 'estate',
-                lng: lng,
-                lat: lat,
-                pathArray: pathArray,
-                name: estateCommon.getEstateName()
-            },
-            success: function (result) {
-                if (result.ret) {//标注成功后，刷新地图上的标注
-                    estateCommon.loadMarkerList();
-                } else {
-                    Alert(result.errmsg);
-                }
-            }
+        examineCommon.addBasicEstateTagging({
+            tableId: estateCommon.getEstateId(),
+            type: 'estate',
+            lng: lng,
+            lat: lat,
+            pathArray: pathArray,
+            name: estateCommon.getEstateName()
+        },function () {
+            estateCommon.loadMarkerList();//标注成功后，刷新地图上的标注
         })
     };
 
     //加载标注
     estateCommon.loadMarkerList = function () {
-        $.ajax({
-            url: getContextPath() + '/basicEstateTagging/getApplyBatchEstateTaggingsByTableId',
-            data: {
-                tableId: estateCommon.getEstateId(),
-                type: 'estate'
-            },
-            success: function (result) {
-                if (result.ret && estateCommon.estateMapiframe) {//标注成功后，刷新地图上的标注
-                    estateCommon.estateMapiframe.loadMarkerList(result.data);
-                }
+        examineCommon.getApplyBatchEstateTaggingsByTableId({
+            tableId: estateCommon.getEstateId(),
+            type: 'estate'
+        },function (data) {
+            if (estateCommon.estateMapiframe){
+                estateCommon.estateMapiframe.loadMarkerList(data);//标注成功后，刷新地图上的标注
             }
         })
     };
@@ -658,37 +638,25 @@
 
     //添加标注（通过tableId）
     estateCommon.addMarker2 = function (lng, lat) {
-        $.ajax({
-            url: getContextPath() + '/basicEstateTagging/addBasicEstateTaggingByTableId',
-            data: {
-                tableId: estateCommon.tableId,
-                type: 'estate',
-                lng: lng,
-                lat: lat,
-                name: estateCommon.estateForm.find('[name=name]').val()
-            },
-            success: function (result) {
-                if (result.ret) {//标注成功后，刷新地图上的标注
-                    estateCommon.loadMarkerList2(estateCommon.tableId);
-                } else {
-                    Alert(result.errmsg);
-                }
-            }
-        })
+        examineCommon.addBasicEstateTagging({
+            tableId: estateCommon.tableId,
+            type: 'estate',
+            lng: lng,
+            lat: lat,
+            name: estateCommon.estateForm.find('[name=name]').val()
+        },function () {
+            estateCommon.loadMarkerList2(estateCommon.tableId);//标注成功后，刷新地图上的标注
+        });
     };
 
     //加载标注（通过tableId）
     estateCommon.loadMarkerList2 = function (tableId) {
-        $.ajax({
-            url: getContextPath() + '/basicEstateTagging/getApplyBatchEstateTaggingsByTableId',
-            data: {
-                tableId: tableId,
-                type: 'estate'
-            },
-            success: function (result) {
-                if (result.ret && estateCommon.estateMapiframe) {//标注成功后，刷新地图上的标注
-                    estateCommon.estateMapiframe.loadMarkerList(result.data);
-                }
+        examineCommon.getApplyBatchEstateTaggingsByTableId({
+            tableId: tableId,
+            type: 'estate'
+        },function (data) {
+            if (estateCommon.estateMapiframe){
+                estateCommon.estateMapiframe.loadMarkerList(data);//标注成功后，刷新地图上的标注
             }
         })
     };

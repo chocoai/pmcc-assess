@@ -189,7 +189,7 @@
             shadeClose: true,
             shade: true,
             maxmin: true, //开启最大化最小化按钮
-            area: [basicCommon.getMarkerAreaInWidth, basicCommon.getMarkerAreaInHeight],
+            area: [examineCommon.getMarkerAreaInWidth, examineCommon.getMarkerAreaInHeight],
             content: contentUrl,
             success: function (layero) {
                 unitCommon.estateMapiframe = window[layero.find('iframe')[0]['name']];
@@ -200,39 +200,28 @@
 
     //添加标注（通过tableId）
     unitCommon.addMarker2 = function (lng, lat) {
-        $.ajax({
-            url: getContextPath() + '/basicEstateTagging/addBasicEstateTaggingByTableId',
-            data: {
-                tableId: unitCommon.tableId,
-                type: 'unit',
-                lng: lng,
-                lat: lat,
-                name: unitCommon.getUnitNumber()
-            },
-            success: function (result) {
-                if (result.ret) {//标注成功后，刷新地图上的标注
-                    unitCommon.loadMarkerList2(unitCommon.tableId);
-                } else {
-                    Alert(result.errmsg);
-                }
-            }
-        })
+        examineCommon.addBasicEstateTagging({
+            tableId: unitCommon.tableId,
+            type: 'unit',
+            lng: lng,
+            lat: lat,
+            name: unitCommon.getUnitNumber()
+        },function () {
+            unitCommon.loadMarkerList2(unitCommon.tableId);
+        }) ;
     };
 
     //加载标注（通过tableId）
     unitCommon.loadMarkerList2 = function (tableId) {
-        $.ajax({
-            url: getContextPath() + '/basicEstateTagging/getApplyBatchEstateTaggingsByTableId',
-            data: {
-                tableId: tableId,
-                type: 'unit'
-            },
-            success: function (result) {
-                if (result.ret && unitCommon.estateMapiframe) {//标注成功后，刷新地图上的标注
-                    unitCommon.estateMapiframe.loadMarkerList(result.data);
-                }
+        examineCommon.getApplyBatchEstateTaggingsByTableId({
+            tableId: tableId,
+            type: 'unit'
+        },function (data) {
+            if (unitCommon.estateMapiframe){
+                //标注成功后，刷新地图上的标注
+                unitCommon.estateMapiframe.loadMarkerList(data);
             }
-        })
+        });
     };
 
     unitCommon.mapNewMarker = function (_this, readonly) {
@@ -318,46 +307,60 @@
         })
     };
 
-    //楼栋标注
+    //单元标注
     unitCommon.mapMarker = function (readonly) {
-        var contentUrl = getContextPath() + '/map/mapMarkerEstate?estateName=' + estateCommon.getEstateName();
-        if (readonly != true) {
-            contentUrl += '&click=unitCommon.addMarker';
-        }
-        layer.open({
-            type: 2,
-            title: '单元标注',
-            shadeClose: true,
-            shade: true,
-            maxmin: true, //开启最大化最小化按钮
-            area: [basicCommon.getMarkerAreaInWidth, basicCommon.getMarkerAreaInHeight],
-            content: contentUrl,
-            success: function (layero) {
-                unitCommon.unitMapiframe = window[layero.find('iframe')[0]['name']];
-                unitCommon.loadMarkerList();
+        examineCommon.getBasicApplyBatchDetailList({
+            tableId: unitCommon.getUnitId(),
+            applyBatchId: unitCommon.unitForm.find("input[name='applyBatchId']").val()
+        }, function (itemA) {
+            if (itemA.length == 0) {
+                return false;
             }
+            examineCommon.getBasicApplyBatchDetailList({id: itemA[0].pid}, function (itemB) {
+                if (itemB.length == 0) {
+                    return false;
+                }
+                var select = {tableId:itemB.tableId,type:"building"} ;
+                examineCommon.getApplyBatchEstateTaggingsByTableId(select,function (data) {
+                    if (data.length == 0){
+                        Alert("请先标注楼栋");
+                        return false;
+                    }
+                    var item = data[0] ;
+                    var params = {estateName:item.name,center:JSON.stringify({lng:item.lng , lat:item.lat})} ;
+                    var contentUrl = getContextPath() + '/map/mapMarkerEstate?' + examineCommon.parseParam(params);
+                    if (readonly != true) {
+                        contentUrl += '&click=unitCommon.addMarker';
+                    }
+                    layer.open({
+                        type: 2,
+                        title: '单元标注',
+                        shadeClose: true,
+                        shade: true,
+                        maxmin: true, //开启最大化最小化按钮
+                        area: [examineCommon.getMarkerAreaInWidth, examineCommon.getMarkerAreaInHeight],
+                        content: contentUrl,
+                        success: function (layero) {
+                            unitCommon.unitMapiframe = window[layero.find('iframe')[0]['name']];
+                            unitCommon.loadMarkerList();
+                        }
+                    });
+                }) ;
+            });
         });
     };
 
     //添加标注
     unitCommon.addMarker = function (lng, lat) {
-        $.ajax({
-            url: getContextPath() + '/basicEstateTagging/addBasicEstateTagging',
-            data: {
-                tableId: unitCommon.getUnitId(),
-                type: 'unit',
-                lng: lng,
-                lat: lat,
-                name: unitCommon.getUnitNumber()
-            },
-            success: function (result) {
-                if (result.ret) {//标注成功后，刷新地图上的标注
-                    unitCommon.loadMarkerList();
-                } else {
-                    Alert(result.errmsg);
-                }
-            }
-        })
+        examineCommon.addBasicEstateTagging({
+            tableId: unitCommon.getUnitId(),
+            type: 'unit',
+            lng: lng,
+            lat: lat,
+            name: unitCommon.getUnitNumber()
+        },function () {
+            unitCommon.loadMarkerList();
+        }) ;
     };
 
     //加载标注
