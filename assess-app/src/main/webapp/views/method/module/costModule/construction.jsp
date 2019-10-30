@@ -7,7 +7,8 @@
         <input type="hidden" name="type" value="${mdCostVo.type}">
         <input type="hidden" name="mcId" value="${mdCostVo.mdCostConstruction.mcId}">
         <input type="hidden" name="planDetailsId" value="${projectPlanDetails.id}">
-        <input type="hidden" name="economicId" value="${mdCostVo.mdCostConstruction.economicId}" onblur="cost.checkParams(this);">
+        <input type="hidden" name="economicId" value="${mdCostVo.mdCostConstruction.economicId}"
+               onblur="cost.checkParams(this);">
         <div class="x_title collapse-link">
             <ul class="nav navbar-right panel_toolbox">
                 <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
@@ -544,7 +545,7 @@
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group residueRatio">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
                         成新率
@@ -576,7 +577,7 @@
                     <div class="col-sm-3">
                         <input type="text"
                                placeholder="说明" class="form-control " name="residueRatioRemark"
-                              value="${mdCostVo.mdCostConstruction.residueRatioRemark}">
+                               value="${mdCostVo.mdCostConstruction.residueRatioRemark}">
                     </div>
                 </div>
             </div>
@@ -641,7 +642,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td> 在建工程单位价 (万元)</td>
+                            <td> 在建工程单位价(元)</td>
                             <td><label
                                     class="constructionAssessmentPriceCorrecting">${mdCostVo.mdCostConstruction.constructionAssessmentPriceCorrecting}</label>
                             </td>

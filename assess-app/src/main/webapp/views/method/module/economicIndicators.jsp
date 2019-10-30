@@ -313,7 +313,7 @@
                    name="unitPrice" data-rule-number="true" style="width: 100px;">
             <input type="hidden" name="mcId" value="{mcId}">
             <c:if test="${!empty projectPlanDetails.judgeObjectId}">
-                <input type="button" class="btn btn-primary" value="市场比较法"
+                <input type="button" class="btn btn-xs btn-primary" value="市场比较法"
                        onclick="economicIndicators.callCompareMethod(this);">
             </c:if>
         </td>
@@ -439,7 +439,7 @@
                     }
                 }
             })
-        }else {
+        } else {
             economicIndicators.initForm({});
         }
         if (defaluts.attribute) {
@@ -656,6 +656,7 @@
     };
 
     economicIndicators.callCompareMethod = function (this_) {
+        var mcId = $(this_).closest('td').find('[name=mcId]').val();
         var frame = layer.open({
             type: 2,
             title: '比较法',
@@ -663,7 +664,7 @@
             shade: true,
             maxmin: true, //开启最大化最小化按钮
             area: ['893px', '600px'],
-            content: '${pageContext.request.contextPath}/marketCompare/index?isLand=true&mcId=' + '' + '&judgeObjectId=${projectPlanDetails.judgeObjectId}',
+            content: '${pageContext.request.contextPath}/marketCompare/index?isLand=false&mcId=' + mcId + '&judgeObjectId=${projectPlanDetails.judgeObjectId}',
             cancel: function (index, layero) {
                 var iframe = window[layero.find('iframe')[0]['name']];
                 if (iframe && iframe.marketCompare && iframe.marketCompare.mcId) {
@@ -675,9 +676,9 @@
             yes: function (index, layero) {
                 var iframe = window[layero.find('iframe')[0]['name']];
                 iframe.saveResult(function (mcId, price) {
-                    $(this_).closest("td").find("[name='unitPrice']").val(price) ;
-                    $(this_).closest("td").find("[name='mcId']").val(mcId) ;
-                    economicIndicators.autoSummary() ;
+                    $(this_).closest("td").find("[name='unitPrice']").val(price);
+                    $(this_).closest("td").find("[name='mcId']").val(mcId);
+                    economicIndicators.autoSummary();
                     layer.closeAll('iframe');
                 });
             },

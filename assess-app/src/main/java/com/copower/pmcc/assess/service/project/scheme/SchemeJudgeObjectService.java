@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.service.project.scheme;
 
 import com.copower.pmcc.assess.common.enums.ComputeDataTypeEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
+import com.copower.pmcc.assess.common.enums.ResponsibileModelEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.constant.BaseConstant;
@@ -19,11 +20,12 @@ import com.copower.pmcc.assess.service.basic.BasicHouseService;
 import com.copower.pmcc.assess.service.data.DataBestUseDescriptionService;
 import com.copower.pmcc.assess.service.data.DataSetUseFieldService;
 import com.copower.pmcc.assess.service.project.*;
+import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.generate.GenerateReportInfoService;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
+import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
-import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.CommonService;
@@ -108,6 +110,8 @@ public class SchemeJudgeObjectService {
     private SchemeSurePriceService schemeSurePriceService;
     @Autowired
     private GenerateReportInfoService generateReportInfoService;
+    @Autowired
+    private ProjectWorkStageService projectWorkStageService;
 
     public boolean addSchemeJudgeObject(SchemeJudgeObject schemeJudgeObject) {
         return schemeJudgeObjectDao.addSchemeJudgeObject(schemeJudgeObject);
@@ -581,7 +585,7 @@ public class SchemeJudgeObjectService {
      * @param schemeProgrammeDtos
      */
     @Transactional
-    public void submitProgramme(Integer projectId, Integer planId, List<SchemeProgrammeDto> schemeProgrammeDtos) throws BusinessException {
+    public void submitProgramme(Integer projectId, Integer planId, List<SchemeProgrammeDto> schemeProgrammeDtos) throws BusinessException, BpmException {
         //1.验证数据的完整性与准确性，查看评估方法是否都已设置
         //2.清除该计划下的所有任务，保存方案数据
         //3.生成计划任务
@@ -595,6 +599,8 @@ public class SchemeJudgeObjectService {
         if (CollectionUtils.isNotEmpty(areaGroupList)) {
             ProjectPlan projectPlan = projectPlanService.getProjectplanById(planId);
             ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
+            ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlan.getWorkStageId());
+
             ProjectPhase phaseSurePrice = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.SURE_PRICE, projectInfo.getProjectCategoryId());
             ProjectPhase phaseLiquidationAnalysis = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.LIQUIDATION_ANALYSIS, projectInfo.getProjectCategoryId());
             ProjectPhase phaseReimbursement = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.REIMBURSEMENT, projectInfo.getProjectCategoryId());
@@ -621,24 +627,24 @@ public class SchemeJudgeObjectService {
                             for (SchemeJudgeFunction judgeFunction : judgeFunctions) {
                                 ProjectPhase projectPhase = phaseMap.get(judgeFunction.getMethodType());
                                 if (projectPhase != null) {
-                                    i = savePlanDetails(projectPlan, i, null, schemeJudgeObject, phaseName.toString(), projectPhase,projectManager);
+                                    i = savePlanDetails(projectInfo, projectWorkStage, projectPlan, i, null, schemeJudgeObject, phaseName.toString(), projectPhase, projectManager);
                                     i++;
                                 }
                             }
                         }
-                        savePlanDetails(projectPlan, i, null, schemeJudgeObject, phaseName.toString(), phaseSurePrice,projectManager);//确定单价
+                        savePlanDetails(projectInfo, projectWorkStage, projectPlan, i, null, schemeJudgeObject, phaseName.toString(), phaseSurePrice, projectManager);//确定单价
                     }
                 }
                 if (CollectionUtils.isNotEmpty(judgeProjectPhases)) {
                     for (ProjectPhase projectPhase : judgeProjectPhases) {
-                        savePlanDetails(projectPlan, i, schemeAreaGroup, null, schemeAreaGroup.getAreaName(), projectPhase,projectManager);
+                        savePlanDetails(projectInfo, projectWorkStage, projectPlan, i, schemeAreaGroup, null, schemeAreaGroup.getAreaName(), projectPhase, projectManager);
                     }
                 }
             }
         }
     }
 
-    private int savePlanDetails(ProjectPlan projectPlan, int i, SchemeAreaGroup schemeAreaGroup, SchemeJudgeObject schemeJudgeObject, String planRemarks, ProjectPhase projectPhase,String projectManager) {
+    private int savePlanDetails(ProjectInfo projectInfo,ProjectWorkStage projectWorkStage, ProjectPlan projectPlan, int i, SchemeAreaGroup schemeAreaGroup, SchemeJudgeObject schemeJudgeObject, String planRemarks, ProjectPhase projectPhase, String projectManager) throws BpmException {
         ProjectPlanDetails details = new ProjectPlanDetails();
         details.setProjectWorkStageId(projectPlan.getWorkStageId());
         details.setPlanId(projectPlan.getId());
@@ -649,7 +655,7 @@ public class SchemeJudgeObjectService {
             details.setAreaId(schemeAreaGroup.getId());
         if (schemeJudgeObject != null)
             details.setJudgeObjectId(schemeJudgeObject.getId());
-        details.setStatus(ProcessStatusEnum.WAIT.getValue());
+        details.setStatus(ProcessStatusEnum.RUN.getValue());
         details.setExecuteUserAccount(projectManager);
         details.setPlanStartDate(new Date());
         details.setPlanEndDate(new Date());
@@ -658,6 +664,8 @@ public class SchemeJudgeObjectService {
         details.setBisLastLayer(true);
         details.setSorting(i++);
         projectPlanDetailsDao.addProjectPlanDetails(details);
+        //发起任务
+        projectPlanService.saveProjectPlanDetailsResponsibility(details, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.TASK);
         return i;
     }
 

@@ -231,6 +231,7 @@
             var landGetCostTotal = cost.constructionFrm.find("input[name='landGetCostTotal']").val() ;
             cost.constructionFrm.find("input[name='landGetCostTotal']").val(0).attr({'obj-value':landGetCostTotal}) ;
             cost.constructionFrm.find(".landGetCostTotal").parent().parent().hide() ;
+            cost.constructionFrm.find(".residueRatio").show();
         }
         if (value == cost.two){
             target.show() ;
@@ -251,6 +252,7 @@
             var landGetCostTotal2 = cost.constructionFrm.find("input[name='landGetCostTotal']").attr('obj-value') ;
             cost.constructionFrm.find("input[name='landGetCostTotal']").val(landGetCostTotal2) ;
             cost.constructionFrm.find(".landGetCostTotal").parent().parent().show() ;
+            cost.constructionFrm.find(".residueRatio").hide();
         }
         if (callback) {
             callback(value);

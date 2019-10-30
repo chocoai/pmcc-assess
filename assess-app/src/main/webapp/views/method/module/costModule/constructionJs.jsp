@@ -27,7 +27,7 @@
             shade: true,
             maxmin: true, //开启最大化最小化按钮
             area: ['893px', '600px'],
-            content: '${pageContext.request.contextPath}/marketCompare/index?isLand=true&mcId=' + mcId + '&judgeObjectId=${projectPlanDetails.judgeObjectId}',
+            content: '${pageContext.request.contextPath}/marketCompare/index?isLand=false&mcId=' + mcId + '&judgeObjectId=${projectPlanDetails.judgeObjectId}',
             cancel: function (index, layero) {
                 var iframe = window[layero.find('iframe')[0]['name']];
                 if (iframe && iframe.marketCompare && iframe.marketCompare.mcId) {
@@ -315,7 +315,7 @@
         }
         if (economicId){
             economicIndicators.init({economicId:economicId,targetCallback:function (target) {
-                target.find("tbody").find("input[name='unitPrice']").attr({disabled:'disabled'});
+                //target.find("tbody").find("input[name='unitPrice']").attr({disabled:'disabled'});
             }});
         }else {
             economicIndicators.init({
