@@ -7,14 +7,13 @@ import com.copower.pmcc.assess.dal.basis.entity.DataLandLevelDetail;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.data.DataLandLevelDetailService;
 import com.copower.pmcc.assess.service.data.DataLandLevelService;
+import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -38,6 +37,55 @@ public class DataLandLevelController {
     public ModelAndView index() {
         String view = "/data/dataLandLevelView";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
+        return modelAndView;
+    }
+
+    @GetMapping(value = "/submitDataLandLevel", name = "发起流程")
+    public HttpResult submit(String formData) {
+        try {
+            DataLandLevel dataLandLevel = JSONObject.parseObject(formData, DataLandLevel.class);
+            dataLandLevelService.submit(dataLandLevel);
+            return HttpResult.newCorrectResult(200, dataLandLevel);
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
+            return HttpResult.newErrorResult("异常");
+        }
+    }
+
+    @GetMapping(value = "/comeInLandLevelApprovalSubmit", name = "审批提交")
+    public HttpResult comeInLandLevelApprovalSubmit(ApprovalModelDto approvalModelDto, String blockName, Boolean writeBackBlockFlag) {
+        try {
+            dataLandLevelService.comeInLandLevelApprovalSubmit(approvalModelDto, blockName, writeBackBlockFlag);
+            return HttpResult.newCorrectResult(200);
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
+            return HttpResult.newErrorResult("异常");
+        }
+    }
+
+    @PostMapping(value = "/comeInLandLevelEditSubmit", name = "编辑提交 (修改提交)")
+    public HttpResult comeInLandLevelEditSubmit(ApprovalModelDto approvalModelDto, String formData) {
+        try {
+            dataLandLevelService.comeInLandLevelEditSubmit(approvalModelDto, formData);
+            return HttpResult.newCorrectResult(200);
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
+            return HttpResult.newErrorResult("异常");
+        }
+    }
+
+    @GetMapping(value = "/comeInLandLevelApproval", name = "审批页面")
+    public ModelAndView comeInLandLevelApproval(String processInsId, String taskId, Integer boxId, String agentUserAccount) {
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/data/landModelDir/comeInLandLevelApproval", processInsId, boxId, taskId, agentUserAccount);
+        modelAndView.addObject(StringUtils.uncapitalize(DataLandLevel.class.getSimpleName()), dataLandLevelService.getByProcessInsId(processInsId));
+        return modelAndView;
+    }
+
+
+    @GetMapping(value = "/comeInLandLevelEdit", name = "流程修改页面")
+    public ModelAndView comeInLandLevelEdit(String processInsId, String taskId, Integer boxId, String agentUserAccount) {
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/data/landModelDir/comeInLandLevelEdit", processInsId, boxId, taskId, agentUserAccount);
+        modelAndView.addObject(StringUtils.uncapitalize(DataLandLevel.class.getSimpleName()), dataLandLevelService.getByProcessInsId(processInsId));
         return modelAndView;
     }
 
@@ -98,17 +146,6 @@ public class DataLandLevelController {
         }
     }
 
-    @GetMapping(value = "/submitDataLandLevel")
-    public HttpResult submit(String formData){
-        try {
-            DataLandLevel dataLandLevel = JSONObject.parseObject(formData,DataLandLevel.class) ;
-            dataLandLevelService.submit(dataLandLevel);
-            return HttpResult.newCorrectResult(200,dataLandLevel);
-        } catch (Exception e) {
-            baseService.writeExceptionInfo(e);
-            return HttpResult.newErrorResult("异常");
-        }
-    }
 
     @RequestMapping(value = "/removeDataLandLevelDetail", method = {RequestMethod.POST}, name = "删除土地级别信息")
     public HttpResult removeDataLandLevelDetail(Integer id) {

@@ -123,6 +123,9 @@
 
 
         landLevel.fileUpload = function (target, tableName, id, deleteFlag, editFlag, fieldsName) {
+            if (!id){
+                id = 0;
+            }
             FileUtils.uploadFiles({
                 target: target,
                 disabledTarget: "btn_submit",
@@ -298,13 +301,13 @@
             var data = formSerializeArray(frm);
             data.landDefinition = ue.getContent();
             $.ajax({
-                url: "${pageContext.request.contextPath}/dataLandLevel/saveAndUpdateDataLandLevel",
-                type: "post",
+                url: "${pageContext.request.contextPath}/dataLandLevel/submitDataLandLevel",
+                type: "get",
                 dataType: "json",
                 data: {formData: JSON.stringify(data)},
                 success: function (result) {
                     if (result.ret) {
-                        toastr.success('保存成功');
+                        toastr.success('实例添加成功,审批通过之后即可使用');
                         target.modal('hide');
                         landLevel.config.table.bootstrapTable('refresh');
                     }
