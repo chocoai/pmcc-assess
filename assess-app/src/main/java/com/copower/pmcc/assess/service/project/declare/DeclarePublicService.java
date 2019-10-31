@@ -190,7 +190,7 @@ public class DeclarePublicService {
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(6)))) {
             oo.setRegistrationTime(DateUtils.parse(PoiUtils.getCellValue(row.getCell(6))));
         }
-        //房屋坐落
+        //坐落
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(7)))) {
             oo.setBeLocated(PoiUtils.getCellValue(row.getCell(7)));
             Map<String, String> locatedMap = beLocatedSplicing(oo.getBeLocated());
@@ -215,7 +215,7 @@ public class DeclarePublicService {
                 }
             }
         } else {
-            builder.append(String.format("\n第%s行异常：房屋坐落必须填写", i));
+            builder.append(String.format("\n第%s行异常：坐落必须填写", i));
             return false;
         }
         BaseDataDic typeDic = null;
@@ -531,7 +531,7 @@ public class DeclarePublicService {
             declareRealtyLandCert.setRegistrationDate(DateUtils.parse(PoiUtils.getCellValue(row.getCell(6))));
         }
 
-        //房屋坐落
+        //坐落
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(7)))) {
             declareRealtyLandCert.setBeLocated(PoiUtils.getCellValue(row.getCell(7)));
             Map<String, String> locatedMap = beLocatedSplicing(declareRealtyLandCert.getBeLocated());
@@ -556,7 +556,7 @@ public class DeclarePublicService {
                 }
             }
         } else {
-            builder.append(String.format("\n第%s行异常：房屋坐落必须填写", i));
+            builder.append(String.format("\n第%s行异常：坐落必须填写", i));
             return false;
         }
 
@@ -747,7 +747,7 @@ public class DeclarePublicService {
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(8)))) {
             declareRealtyHouseCert.setGroundNum(PoiUtils.getCellValue(row.getCell(8)));
         }
-        //房屋坐落
+        //坐落
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(9)))) {
             declareRealtyHouseCert.setBeLocated(PoiUtils.getCellValue(row.getCell(9)));
             Map<String, String> locatedMap = beLocatedSplicing(declareRealtyHouseCert.getBeLocated());
@@ -772,7 +772,7 @@ public class DeclarePublicService {
                 }
             }
         } else {
-            builder.append(String.format("\n第%s行异常：房屋坐落必须填写", i));
+            builder.append(String.format("\n第%s行异常：坐落必须填写", i));
             return false;
         }
         BaseDataDic typeDic = null;

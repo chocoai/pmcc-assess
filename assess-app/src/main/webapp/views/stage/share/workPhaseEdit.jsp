@@ -14,9 +14,9 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">
+                <h3 class="modal-title">
                     工作事项编辑
-                </h4>
+                </h3>
             </div>
 
             <form id="modify_project_phase_form" class="form-horizontal">
@@ -105,6 +105,30 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label" for="phaseSort">
+                                            自定义附件模板
+                                        </label>
+                                        <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
+                                            <select name="assetsSettingId" class="form-control">
+                                                <c:forEach items="${dataAssetsAppraisalDicList}" var="item">
+                                                    <option value="${item.id}">${item.name}</option>
+                                                </c:forEach>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
+                                            允许挂起
+                                        </label>
+                                        <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" id="bisWait" name="bisWait" value="true">
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
                                         <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label" for="phaseTime">
                                             默认使用流程
                                         </label>
@@ -126,48 +150,6 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
-                                            允许挂起
-                                        </label>
-                                        <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
-                                            <label class="checkbox-inline">
-                                                <input type="checkbox" name="bisWait"
-                                                        value="true">
-                                            </label>
-                                        </div>
-                                    </div>
-
-                                    <div class="x-valid">
-                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
-                                            不允许挂起
-                                        </label>
-                                        <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
-                                            <label class="checkbox-inline">
-                                                <input type="checkbox" name="bisWait"
-                                                       value="false">
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label" for="phaseSort">
-                                            自定义附件模板
-                                        </label>
-                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
-                                            <select name="assetsSettingId" class="form-control">
-                                                <c:forEach items="${dataAssetsAppraisalDicList}" var="item">
-                                                    <option value="${item.id}">${item.name}</option>
-                                                </c:forEach>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label" for="workTemplate">
@@ -309,6 +291,7 @@
                         if (row.bisAssessment) {
                             $('#bisAssessment').prop("checked", true);
                         }
+                        $('#bisWait').prop("checked", row.bisWait);
                         $('#bisUseBox').prop("checked", row.bisUseBox);
                         $('#bisCanReturn').prop("checked", row.bisCanReturn);
                         //初始化文件组件
@@ -466,6 +449,7 @@
             Alert("没有需要保存的数据");
             return;
         }
+        data.bisWait = $('#bisWait').prop('checked');
         data.bisUseBox = $('#bisUseBox').prop('checked');
         data.bisCanReturn = $('#bisCanReturn').prop('checked');
         Loading.progressShow();

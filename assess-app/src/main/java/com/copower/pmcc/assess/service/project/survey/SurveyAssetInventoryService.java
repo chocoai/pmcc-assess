@@ -83,7 +83,7 @@ public class SurveyAssetInventoryService extends BaseService {
             List<SurveyAssetInventoryContent> assetInventoryContentList = surveyAssetCommonDataDto.getAssetInventoryContentList();
             if (CollectionUtils.isNotEmpty(assetInventoryContentList)) {
                 for (SurveyAssetInventoryContent surveyAssetInventoryContent : assetInventoryContentList) {
-                    surveyAssetInventoryContentService.save(surveyAssetInventoryContent);
+                    surveyAssetInventoryContentService.saveAssetInventoryContent(surveyAssetInventoryContent);
                 }
             }
         }

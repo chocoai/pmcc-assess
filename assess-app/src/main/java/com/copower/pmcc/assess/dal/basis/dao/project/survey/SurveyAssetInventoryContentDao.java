@@ -32,7 +32,7 @@ public class SurveyAssetInventoryContentDao {
         return i > 0;
     }
 
-    public boolean save(SurveyAssetInventoryContent surveyAssetInventoryContent) {
+    public boolean add(SurveyAssetInventoryContent surveyAssetInventoryContent) {
         int i = surveyAssetInventoryContentMapper.insertSelective(surveyAssetInventoryContent);
         return i > 0;
     }

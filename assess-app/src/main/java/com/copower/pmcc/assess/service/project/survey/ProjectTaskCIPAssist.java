@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.service.project.survey;
 
-import com.copower.pmcc.assess.common.enums.report.AssessProjectTypeEnum;
+import com.copower.pmcc.assess.common.enums.AssessProjectTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;

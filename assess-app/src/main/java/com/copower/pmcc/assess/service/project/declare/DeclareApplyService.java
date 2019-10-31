@@ -60,8 +60,8 @@ public class DeclareApplyService {
      */
     @Transactional(rollbackFor = Exception.class)
     public void writeToDeclareRecord(DeclareApply declareApply){
-        declareBuildEngineeringService.eventWriteDeclareApply(declareApply);
-        declareBuildEquipmentInstallService.eventWriteDeclareApply(declareApply);
+//        declareBuildEngineeringService.eventWriteDeclareApply(declareApply);
+//        declareBuildEquipmentInstallService.eventWriteDeclareApply(declareApply);
         declareRealtyHouseCertService.eventWriteDeclareApply(declareApply);//房产证
         declareRealtyLandCertService.eventWriteDeclareApply(declareApply);//土地证
         declareRealtyRealEstateCertService.eventWriteDeclareApply(declareApply);//不动产证

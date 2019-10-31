@@ -226,7 +226,7 @@
                 }
             }
         },
-        //房屋坐落
+        //坐落
         beLocatedSplicing: function (that) {
             var text = "";
             text = $(that).val();
@@ -331,7 +331,7 @@
 
             }
         },
-        //房屋坐落 拼接
+        //坐落 拼接
         landBeLocatedSplicing: function (that) {
             var text = "";
             text = $(that).val();
@@ -1423,15 +1423,7 @@
                 </div>
             </div>
         </div>
-        <div class="form-group">
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">不动产单元号</label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text"
-                           placeholder="不动产单元号" name="realEstateUnitNumber" class="form-control">
-                </div>
-            </div>
-        </div>
+
         <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">权利人<span
@@ -1462,7 +1454,15 @@
                 </div>
             </div>
         </div>
-
+        <div class="form-group">
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">不动产单元号</label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <input type="text"
+                           placeholder="不动产单元号" name="realEstateUnitNumber" class="form-control">
+                </div>
+            </div>
+        </div>
         <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%"
             color="#6f5499" size="10"/>
 
@@ -1523,10 +1523,10 @@
         </div>
         <div class="form-group">
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">房屋坐落</label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">坐落</label>
                 <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
                     <input type="text"
-                           placeholder="房屋坐落" name="beLocated" class="form-control">
+                           placeholder="坐落" name="beLocated" class="form-control">
                 </div>
             </div>
         </div>
@@ -1560,11 +1560,9 @@
         </div>
         <div class="form-group">
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">房屋性质<span
-                        class="symbol required"></span></label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">房屋性质</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <select required="required" name="nature"
-                            class="form-control search-select select2 nature">
+                    <select name="nature" class="form-control search-select select2 nature">
                     </select>
                 </div>
             </div>
@@ -1694,10 +1692,10 @@
                 </div>
             </div>
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">共用宗地面积</label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">共用宗地面积<span class="symbol required"></span></label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <input type="text"
-                           placeholder="共用宗地面积(数字)" name="useRightArea" class="form-control"
+                           placeholder="共用宗地面积(数字)" name="useRightArea" class="form-control" required
                            data-rule-maxlength="100" data-rule-number='true'>
                 </div>
             </div>
@@ -1851,10 +1849,10 @@
             color="#6f5499" size="10"/>
         <div class="form-group">
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">房屋坐落</label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">坐落</label>
                 <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
                     <input type="text" readonly="readonly"
-                           placeholder="房屋坐落" name="beLocated" class="form-control">
+                           placeholder="坐落" name="beLocated" class="form-control">
                 </div>
             </div>
         </div>
@@ -2318,9 +2316,9 @@
         </div>
         <div class="form-group">
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">房屋坐落</label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">坐落</label>
                 <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
-                    <input type="text" placeholder="房屋坐落" name="beLocated" class="form-control">
+                    <input type="text" placeholder="坐落" name="beLocated" class="form-control">
                 </div>
             </div>
         </div>
@@ -2648,10 +2646,10 @@
         </div>
         <div class="form-group">
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">房屋坐落<span
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">坐落<span
                         class="symbol required"></span></label>
                 <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
-                    <input type="text" placeholder="房屋坐落" name="beLocated" class="form-control">
+                    <input type="text" placeholder="坐落" name="beLocated" class="form-control">
                 </div>
             </div>
         </div>
@@ -2892,11 +2890,11 @@
 
         <div class="form-group">
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">房屋坐落<span
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">坐落<span
                         class="symbol required"></span></label>
                 <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
                     <input type="text"
-                           placeholder="房屋坐落" name="beLocated" class="form-control">
+                           placeholder="坐落" name="beLocated" class="form-control">
                 </div>
             </div>
         </div>
