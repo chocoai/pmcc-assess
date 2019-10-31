@@ -672,7 +672,7 @@
                 }
             },
             btnAlign: 'c',
-            btn: ['确定使用这个单价!', '关闭'],
+            btn: ['确定', '关闭'],
             yes: function (index, layero) {
                 var iframe = window[layero.find('iframe')[0]['name']];
                 iframe.saveResult(function (mcId, price) {
