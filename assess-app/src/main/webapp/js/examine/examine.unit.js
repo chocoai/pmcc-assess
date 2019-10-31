@@ -320,7 +320,7 @@
                 if (itemB.length == 0) {
                     return false;
                 }
-                var select = {tableId:itemB.tableId,type:"building"} ;
+                var select = {tableId:itemB[0].tableId,type:"building"} ;
                 examineCommon.getApplyBatchEstateTaggingsByTableId(select,function (data) {
                     if (data.length == 0){
                         Alert("请先标注楼栋");

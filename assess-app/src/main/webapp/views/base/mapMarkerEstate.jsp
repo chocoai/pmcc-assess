@@ -67,14 +67,9 @@
         if (string){
             try {
                 var center = JSON.parse(string) ;
-                map.setCenter([center.lng,center.lat]); //设置地图中心点
+                map.setCenter([center.key,center.value]); //设置地图中心点
             } catch (e) {
-                try {
-                    var centerA = "${center}" ;
-                    map.setCenter([centerA.lng,centerA.lat]); //设置地图中心点
-                } catch (e) {
-                    console.log(e);
-                }
+                console.log(e) ;
             }
         }
     }
