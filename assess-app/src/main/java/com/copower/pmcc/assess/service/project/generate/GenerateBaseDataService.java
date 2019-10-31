@@ -14,7 +14,7 @@ import com.copower.pmcc.assess.common.enums.basic.ExamineMatchingLeisurePlaceTyp
 import com.copower.pmcc.assess.common.enums.basic.ExamineMatchingTrafficTypeEnum;
 import com.copower.pmcc.assess.common.enums.method.MethodIncomeOperationModeEnum;
 import com.copower.pmcc.assess.common.enums.report.BaseReportFieldEnum;
-import com.copower.pmcc.assess.common.enums.report.AssessProjectTypeEnum;
+import com.copower.pmcc.assess.common.enums.AssessProjectTypeEnum;
 import com.copower.pmcc.assess.constant.*;
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInventoryDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
@@ -1587,7 +1587,7 @@ public class GenerateBaseDataService {
                     bigDecimalSet.add(bigDecimal);
                 });
                 if (bigDecimalSet.size() == 1) {
-                    map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), bigDecimalSet.stream().findFirst().get().toString());
+                    map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), bigDecimalSet.stream().findFirst().get().toString()+"米");
                 }
                 if (bigDecimalSet.size() != 1) {
                     List<String> stringList = Lists.newArrayList();

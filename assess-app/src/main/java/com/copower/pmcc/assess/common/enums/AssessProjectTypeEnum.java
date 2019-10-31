@@ -1,8 +1,8 @@
-package com.copower.pmcc.assess.common.enums.report;
+package com.copower.pmcc.assess.common.enums;
 
 /**
  * Created by zch on 2019/8/12.
- * 评估类型(增加封面)
+ * 评估类型
  */
 public enum AssessProjectTypeEnum {
     ASSESS_PROJECT_TYPE_HOUSE("房产评估", 0, "house"),

@@ -184,7 +184,7 @@ declareCommon.getLandColumn = function () {
         }
     });
     cols.push({field: 'landCertName', title: '土地权证号'});
-    cols.push({field: 'beLocated', title: '房屋坐落'});
+    cols.push({field: 'beLocated', title: '坐落'});
     cols.push({field: 'landNumber', title: '地号'});
     cols.push({field: 'graphNumber', title: '图号'});
     cols.push({field: 'useRightArea', title: '使用权面积'});
@@ -208,7 +208,7 @@ declareCommon.getHouseColumn = function () {
     //     }
     // });
     cols.push({field: 'certName', title: '房屋权证号'});
-    cols.push({field: 'beLocated', title: '房屋坐落'});
+    cols.push({field: 'beLocated', title: '坐落'});
     cols.push({field: 'ownership', title: '房屋所有权人'});
     cols.push({field: 'floorArea', title: '建筑面积'});
     cols.push({field: 'planningUseName', title: '规划用途'});
@@ -225,7 +225,7 @@ declareCommon.getRealEstateColumn = function () {
     });
     cols.push({field: 'evidenceArea', title: '证载面积'});
     cols.push({field: 'certName', title: '不动产权证号'});
-    cols.push({field: 'beLocated', title: '房屋坐落'});
+    cols.push({field: 'beLocated', title: '坐落'});
     // cols.push({
     //     field: 'bisRecord', title: '是否参与查勘任务', formatter: function (value, row, index) {
     //         if (row.bisRecord){

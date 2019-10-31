@@ -258,7 +258,7 @@
             color="#6f5499" size="10"/>
         <div class="form-group">
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">房屋坐落</label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">坐落</label>
                 <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
                     <label class="form-control" name="beLocated"></label>
                 </div>
@@ -528,7 +528,7 @@
 
         <div class="form-group">
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">房屋坐落</label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">坐落</label>
                 <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
                     <label class="form-control" name="beLocated"></label>
                 </div>
@@ -768,7 +768,7 @@
 
         <div class="form-group">
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">房屋坐落</label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">坐落</label>
                 <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
                     <label class="form-control" name="beLocated"></label>
                 </div>

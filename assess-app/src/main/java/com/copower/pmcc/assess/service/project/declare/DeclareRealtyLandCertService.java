@@ -1,8 +1,8 @@
 package com.copower.pmcc.assess.service.project.declare;
 
+import com.copower.pmcc.assess.common.enums.DeclareCertificateTypeEnum;
 import com.copower.pmcc.assess.common.enums.DeclareTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.constant.AssessProjectClassifyConstant;
 import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareRealtyHouseCertDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareRealtyLandCertDao;
@@ -40,7 +40,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -299,12 +298,12 @@ public class DeclareRealtyLandCertService {
             return id;
         } else {
             declareRealtyLandCertDao.updateDeclareRealtyLandCert(declareRealtyLandCert);
-            updateDeclareRealtyLandCertAndUpdateDeclareRecordOrJudgeObject(declareRealtyLandCert) ;
+            updateDeclareRealtyLandCertAndUpdateDeclareRecordOrJudgeObject(declareRealtyLandCert);
             return declareRealtyLandCert.getId();
         }
     }
 
-    private void updateDeclareRealtyLandCertAndUpdateDeclareRecordOrJudgeObject(DeclareRealtyLandCert declareRealtyLandCert){
+    private void updateDeclareRealtyLandCertAndUpdateDeclareRecordOrJudgeObject(DeclareRealtyLandCert declareRealtyLandCert) {
         if (declareRealtyLandCert == null) {
             return;
         }
@@ -314,8 +313,8 @@ public class DeclareRealtyLandCertService {
         if (declareRealtyLandCert.getId() == 0) {
             return;
         }
-        DeclareRealtyLandCert oo = getDeclareRealtyLandCertById(declareRealtyLandCert.getId()) ;
-        if (oo == null){
+        DeclareRealtyLandCert oo = getDeclareRealtyLandCertById(declareRealtyLandCert.getId());
+        if (oo == null) {
             return;
         }
         declareRealtyLandCert.setBisRecord(oo.getBisRecord());
@@ -386,8 +385,8 @@ public class DeclareRealtyLandCertService {
     }
 
 
-    public boolean deleteDeclareRealtyLandCertById(Integer id){
-        return declareRealtyLandCertDao.deleteDeclareRealtyLandCertById(id) ;
+    public boolean deleteDeclareRealtyLandCertById(Integer id) {
+        return declareRealtyLandCertDao.deleteDeclareRealtyLandCertById(id);
     }
 
     public DeclareRealtyLandCertVo getDeclareRealtyLandCertVo(DeclareRealtyLandCert declareRealtyLandCert) {
@@ -403,7 +402,7 @@ public class DeclareRealtyLandCertService {
         vo.setLandRightNatureName(baseDataDicService.getNameById(declareRealtyLandCert.getLandRightNature()));
         vo.setPurposeName(baseDataDicService.getNameById(declareRealtyLandCert.getCertUse()));
         vo.setPublicSituationName(baseDataDicService.getNameById(declareRealtyLandCert.getPublicSituation()));
-        if(declareRealtyLandCert.getCertUseCategory()!=null){
+        if (declareRealtyLandCert.getCertUseCategory() != null) {
             vo.setCertUseCategoryName(baseDataDicService.getNameById(declareRealtyLandCert.getCertUseCategory()));
         }
         if (StringUtils.isNotBlank(declareRealtyLandCert.getProvince())) {
@@ -456,62 +455,41 @@ public class DeclareRealtyLandCertService {
 
     /**
      * 写入申报数据
+     *
      * @param declareApply
      */
     public void eventWriteDeclareApply(DeclareApply declareApply) {
         DeclareRecord declareRecord = null;
-        if (declareApply == null) {
-            return;
-        }
-        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(declareApply.getProjectId());
-        List<BaseProjectClassify> baseProjectClassifyList = Lists.newArrayList();
-        Arrays.stream(new String[]{AssessProjectClassifyConstant.SINGLE_HOUSE_LAND_CERTIFICATE_TYPE_SIMPLE, AssessProjectClassifyConstant.SINGLE_HOUSE_LAND_CERTIFICATE_TYPE}).forEach(s -> {
-            BaseProjectClassify baseProjectClassify = baseProjectClassifyService.getCacheProjectClassifyByFieldName(s);
-            if (baseProjectClassify != null) {
-                baseProjectClassifyList.add(baseProjectClassify);
-            }
-        });
-        boolean typeFlag = false;
-        if (CollectionUtils.isNotEmpty(baseProjectClassifyList)) {
-            typeFlag = baseProjectClassifyList.stream().anyMatch(baseProjectClassify -> Objects.equal(baseProjectClassify.getId(), projectInfo.getProjectCategoryId()));
-        }
+        if (declareApply == null) return;
         DeclareRealtyLandCert query = new DeclareRealtyLandCert();
         query.setPlanDetailsId(declareApply.getPlanDetailsId());
         query.setEnable(DeclareTypeEnum.MasterData.getKey());
         query.setBisRecord(false);
         List<DeclareRealtyLandCert> lists = declareRealtyLandCertDao.getDeclareRealtyLandCertList(query);
-        if (CollectionUtils.isEmpty(lists)){
-            return;
-        }
+        if (CollectionUtils.isEmpty(lists)) return;
         for (DeclareRealtyLandCert oo : lists) {
             declareRecord = new DeclareRecord();
-            setDeclareRealtyLandCertForDeclareRecordProperties(oo,declareRecord,declareApply.getProjectId()) ;
+            setDeclareRealtyLandCertForDeclareRecordProperties(oo, declareRecord, declareApply.getProjectId());
             declareRecord.setInventoryContentKey(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT);
             declareRecord.setCreator(declareApply.getCreator());
             declareRecord.setBisPartIn(true);
-            if (typeFlag) {
-                if (oo.getPid() != null && oo.getPid().intValue() != 0) {
-                    declareRecord.setType(baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.PROJECT_DECLARE_LAND_INCLUDE_HOUSE_TRANSACTION).getId().toString());
-                } else {
-                    declareRecord.setType(baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.PROJECT_DECLARE_LAND_BASE_TRANSACTION).getId().toString());
-                }
-            }
+            declareRecord.setType(DeclareCertificateTypeEnum.LAND.getKey());
             try {
-                int declareId = declareRecordService.saveAndUpdateDeclareRecord(declareRecord) ;
+                int declareId = declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
                 DeclareRecordExtend declareRecordExtend = new DeclareRecordExtend();
                 declareRecordExtend.setCreator(commonService.thisUserAccount());
                 declareRecordExtend.setRegistrationAuthority(oo.getRegistrationAuthority());
                 declareRecordExtend.setDeclareId(declareId);
-                declareRecordExtendService.addDeclareRecord(declareRecordExtend) ;
+                declareRecordExtendService.addDeclareRecord(declareRecordExtend);
                 oo.setBisRecord(true);
                 declareRealtyLandCertDao.updateDeclareRealtyLandCert(oo);
             } catch (Exception e1) {
-                baseService.writeExceptionInfo(e1,"申报");
+                baseService.writeExceptionInfo(e1, "土地证写入申报记录表");
             }
         }
     }
 
-    private void setDeclareRealtyLandCertForDeclareRecordProperties(DeclareRealtyLandCert oo,DeclareRecord declareRecord,Integer projectId){
+    private void setDeclareRealtyLandCertForDeclareRecordProperties(DeclareRealtyLandCert oo, DeclareRecord declareRecord, Integer projectId) {
         BeanUtils.copyProperties(oo, declareRecord);
         declareRecord.setId(null);
         declareRecord.setName(oo.getLandCertName());
@@ -553,8 +531,8 @@ public class DeclareRealtyLandCertService {
         centerQuery.setPlanDetailsId(oo.getPlanDetailsId());
         centerQuery.setType(DeclareRealtyHouseCert.class.getSimpleName());
         List<DeclareBuildEngineeringAndEquipmentCenter> centerList = declareBuildEngineeringAndEquipmentCenterService.declareBuildEngineeringAndEquipmentCenterList(centerQuery);
-        if (CollectionUtils.isNotEmpty(centerList)){
-            if (centerList.stream().anyMatch(obj -> obj.getHouseId() != null)){
+        if (CollectionUtils.isNotEmpty(centerList)) {
+            if (centerList.stream().anyMatch(obj -> obj.getHouseId() != null)) {
                 realtyHouseCert = declareRealtyHouseCertDao.getDeclareRealtyHouseCertById(centerList.stream().filter(obj -> obj.getHouseId() != null).findFirst().get().getHouseId());
             }
         }

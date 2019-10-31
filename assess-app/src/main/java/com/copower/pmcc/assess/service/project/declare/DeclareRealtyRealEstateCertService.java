@@ -1,26 +1,25 @@
 package com.copower.pmcc.assess.service.project.declare;
 
+import com.copower.pmcc.assess.common.enums.AssessProjectTypeEnum;
+import com.copower.pmcc.assess.common.enums.DeclareCertificateTypeEnum;
 import com.copower.pmcc.assess.common.enums.DeclareTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.constant.AssessProjectClassifyConstant;
 import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareRealtyRealEstateCertDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.declare.DeclareRealtyRealEstateCertVo;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.ErpAreaService;
+import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
-import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
-import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
-import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -45,7 +44,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.FileInputStream;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -71,7 +69,7 @@ public class DeclareRealtyRealEstateCertService {
     @Autowired
     private DeclarePublicService declarePoiHelp;
     @Autowired
-    private BaseProjectClassifyService baseProjectClassifyService;
+    private PublicService publicService;
     @Autowired
     private ProjectInfoService projectInfoService;
     @Autowired
@@ -173,8 +171,8 @@ public class DeclareRealtyRealEstateCertService {
         if (declareRealtyRealEstateCert.getId() == 0) {
             return;
         }
-        DeclareRealtyRealEstateCert oo = getDeclareRealtyRealEstateCertById(declareRealtyRealEstateCert.getId()) ;
-        if (oo == null){
+        DeclareRealtyRealEstateCert oo = getDeclareRealtyRealEstateCertById(declareRealtyRealEstateCert.getId());
+        if (oo == null) {
             return;
         }
         declareRealtyRealEstateCert.setBisRecord(oo.getBisRecord());
@@ -325,35 +323,25 @@ public class DeclareRealtyRealEstateCertService {
         if (declareApply == null) {
             return;
         }
-        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(declareApply.getProjectId());
-        List<BaseProjectClassify> baseProjectClassifyList = Lists.newArrayList();
-        Arrays.stream(new String[]{AssessProjectClassifyConstant.SINGLE_HOUSE_LAND_CERTIFICATE_TYPE_SIMPLE, AssessProjectClassifyConstant.SINGLE_HOUSE_LAND_CERTIFICATE_TYPE}).forEach(s -> {
-            BaseProjectClassify baseProjectClassify = baseProjectClassifyService.getCacheProjectClassifyByFieldName(s);
-            if (baseProjectClassify != null) {
-                baseProjectClassifyList.add(baseProjectClassify);
-            }
-        });
-        boolean typeFlag = false;
-        if (CollectionUtils.isNotEmpty(baseProjectClassifyList)) {
-            typeFlag = baseProjectClassifyList.stream().anyMatch(baseProjectClassify -> Objects.equal(baseProjectClassify.getId(), projectInfo.getProjectCategoryId()));
-        }
         DeclareRealtyRealEstateCert query = new DeclareRealtyRealEstateCert();
         query.setPlanDetailsId(declareApply.getPlanDetailsId());
         query.setEnable(DeclareTypeEnum.MasterData.getKey());
         query.setBisRecord(false);
         List<DeclareRealtyRealEstateCert> lists = declareRealtyRealEstateCertDao.getDeclareRealtyRealEstateCertList(query);
-        if (CollectionUtils.isEmpty(lists)) {
-            return;
-        }
+        if (CollectionUtils.isEmpty(lists)) return;
+        AssessProjectTypeEnum projectTypeEnum = projectInfoService.getAssessProjectType(projectInfoService.getProjectInfoById(declareApply.getProjectId()).getProjectCategoryId());
         for (DeclareRealtyRealEstateCert declareRealtyRealEstateCert : lists) {
             declareRecord = new DeclareRecord();
             setDeclareRealtyRealEstateCertForDeclareRecordProperties(declareRealtyRealEstateCert, declareRecord, declareApply.getProjectId());
             declareRecord.setInventoryContentKey(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT);
             declareRecord.setCreator(declareApply.getCreator());
             declareRecord.setBisPartIn(true);
-            if (typeFlag) {
-                declareRecord.setType(baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.PROJECT_DECLARE_LAND_BASE_TRANSACTION).getId().toString());
-            }
+            declareRecord.setType(DeclareCertificateTypeEnum.REAL_ESTATE.getKey());
+            //项目为房产则取房产的证载面积  项目为土地则去土地的宗地面积
+            if (AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_HOUSE.equals(projectTypeEnum))
+                declareRecord.setFloorArea(declareRealtyRealEstateCert.getEvidenceArea());
+            if (AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_LAND.equals(projectTypeEnum))
+                declareRecord.setFloorArea(declareRealtyRealEstateCert.getUseRightArea());
             try {
                 int declareId = declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
                 DeclareRecordExtend declareRecordExtend = new DeclareRecordExtend();
@@ -364,7 +352,7 @@ public class DeclareRealtyRealEstateCertService {
                 declareRealtyRealEstateCert.setBisRecord(true);
                 declareRealtyRealEstateCertDao.updateDeclareRealtyRealEstateCert(declareRealtyRealEstateCert);
             } catch (Exception e1) {
-                baseService.writeExceptionInfo(e1,"申报");
+                baseService.writeExceptionInfo(e1, "申报");
             }
         }
     }
@@ -387,7 +375,6 @@ public class DeclareRealtyRealEstateCertService {
         declareRecord.setFloor(declareRealtyRealEstateCert.getFloor());
         declareRecord.setRoomNumber(declareRealtyRealEstateCert.getRoomNumber());
         declareRecord.setCertUse(baseDataDicService.getNameById(declareRealtyRealEstateCert.getHouseCertUseCategory()));
-        declareRecord.setFloorArea(declareRealtyRealEstateCert.getEvidenceArea());
         declareRecord.setHousingStructure(declareRealtyRealEstateCert.getHousingStructure());
         declareRecord.setNature(baseDataDicService.getNameById(declareRealtyRealEstateCert.getNature()));
         declareRecord.setLandCertUse(baseDataDicService.getNameById(declareRealtyRealEstateCert.getLandCertUseCategory()));
