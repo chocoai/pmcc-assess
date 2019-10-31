@@ -181,7 +181,13 @@
             achievementTable: $("#achievementTable"),
             achievementBox: $("#achievementBox"),
             achievementBoxDetail: $("#achievementBoxDetail"),
-            achievementFrm: $("#achievementFrm")
+            achievementFrm: $("#achievementFrm"),
+
+
+            dataAllocationCorrectionCoefficientVolumeRatioDetailTableBox: $("#dataAllocationCorrectionCoefficientVolumeRatioDetailTableBox"),
+            dataAllocationCorrectionCoefficientVolumeRatioDetailTable: $("#dataAllocationCorrectionCoefficientVolumeRatioDetailTable"),
+            dataAllocationCorrectionCoefficientVolumeRatioDetailBox: $("#dataAllocationCorrectionCoefficientVolumeRatioDetailBox"),
+            dataAllocationCorrectionCoefficientVolumeRatioDetailFrm: $("#dataAllocationCorrectionCoefficientVolumeRatioDetailFrm")
         };
 
         landLevel.loadLandLevelList = function () {
@@ -348,7 +354,8 @@
                     str += '<a class="btn btn-xs btn-success" href="javascript:landLevel.setSubDataDic(' + row.id + ');" ><i class="fa fa-edit">查看子项</i></a>';
                     str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="landLevel.editLandLevelDetail(' + index + ')"><i class="fa fa-edit fa-white"></i></a>';
                     str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="landLevel.deleteLandLevelDetail(' + row.id + ')"><i class="fa fa-minus fa-white"></i></a>';
-                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="查看关联子项" onclick="landLevel.showDataLandDetailAchievementDetail(' + row.id + ')"><i class="fa fa-th-list fa-white"></i></a>';
+                    str += '<a class="btn btn-xs btn-success" href="javascript:landLevel.showDataLandDetailAchievementDetail(' + row.id + ');" ><i class="fa fa-th-list fa-white">查看关联子项 土地因素</i></a>';
+                    str += '<a class="btn btn-xs btn-success" href="javascript:landLevel.showDataAllocationCorrectionCoefficientVolumeRatioDetail(' + row.id + ');" ><i class="fa fa-th-list fa-white">查看关联子项 容积率修正系数</i></a>';
                     str += '</div>';
                     return str;
                 }
@@ -671,6 +678,95 @@
                     }
                 }
             })
+        };
+
+        landLevel.showDataAllocationCorrectionCoefficientVolumeRatioDetail = function (id) {
+            landLevel.config.dataAllocationCorrectionCoefficientVolumeRatioDetailTableBox.find("input[name='allocationVolumeRatioId']").val(id);
+            landLevel.config.dataAllocationCorrectionCoefficientVolumeRatioDetailTableBox.modal("show");
+            landLevel.showDataHousePriceIndexDetailList(id);
+        };
+
+        landLevel.showDataAllocationCorrectionCoefficientVolumeRatioDetailBox = function () {
+            landLevel.config.dataAllocationCorrectionCoefficientVolumeRatioDetailFrm.clearAll();
+            var allocationVolumeRatioId = landLevel.config.dataAllocationCorrectionCoefficientVolumeRatioDetailTableBox.find("input[name='allocationVolumeRatioId']").val();
+            landLevel.config.dataAllocationCorrectionCoefficientVolumeRatioDetailFrm.find('input[name=allocationVolumeRatioId]').val(allocationVolumeRatioId);
+        };
+
+        landLevel.deleteDataAllocationCorrectionCoefficientVolumeRatioDetail = function (index) {
+            var row = landLevel.config.dataAllocationCorrectionCoefficientVolumeRatioDetailTable.bootstrapTable('getData')[index];
+            Alert('确认要删除么？', 2, null, function () {
+                Loading.progressShow();
+                $.ajax({
+                    url: '${pageContext.request.contextPath}/dataAllocationCorrectionCoefficientVolumeRatioDetail/delete/' + row.id,
+                    type: "post",
+                    data: {_method: "DELETE"},
+                    success: function (result) {
+                        Loading.progressHide();
+                        if (result.ret) {
+                            toastr.success('删除成功');
+                            landLevel.showDataHousePriceIndexDetailList(row.allocationVolumeRatioId);
+                        } else {
+                            Alert(result.errmsg);
+                        }
+                    }
+                })
+            })
+        };
+
+        landLevel.editDataAllocationCorrectionCoefficientVolumeRatioDetail = function (index) {
+            var row = landLevel.config.dataAllocationCorrectionCoefficientVolumeRatioDetailTable.bootstrapTable('getData')[index];
+            var frm = landLevel.config.dataAllocationCorrectionCoefficientVolumeRatioDetailFrm;
+            frm.clearAll();
+            frm.initForm(row);
+            landLevel.config.dataAllocationCorrectionCoefficientVolumeRatioDetailBox.modal("show");
+        };
+
+        landLevel.saveDataAllocationCorrectionCoefficientVolumeRatioDetail = function () {
+            var frm = landLevel.config.dataAllocationCorrectionCoefficientVolumeRatioDetailFrm;
+            var data = formSerializeArray(frm);
+            if (!frm.valid()) {
+                return false;
+            }
+            $.ajax({
+                url: '${pageContext.request.contextPath}/dataAllocationCorrectionCoefficientVolumeRatioDetail' +"/save",
+                data: data,
+                type: "post",
+                success: function (result) {
+                    if (result.ret) {
+                        toastr.success('成功');
+                        landLevel.showDataHousePriceIndexDetailList(data.allocationVolumeRatioId);
+                        landLevel.config.dataAllocationCorrectionCoefficientVolumeRatioDetailBox.modal("hide");
+                    } else {
+                        Alert(result.errmsg);
+                    }
+                }
+            })
+        };
+
+        landLevel.showDataHousePriceIndexDetailList = function (allocationVolumeRatioId) {
+            var cols = [];
+            cols.push({field: 'plotRatio', title: '容积率'});
+            cols.push({field: 'correctionFactor', title: '修正系数'});
+            cols.push({
+                field: 'id', title: '操作', formatter: function (value, row, index) {
+                    var str = '<div class="btn-margin">';
+                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="landLevel.editDataAllocationCorrectionCoefficientVolumeRatioDetail(' + index + ')"><i class="fa fa-edit fa-white"></i></a>';
+                    str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="landLevel.deleteDataAllocationCorrectionCoefficientVolumeRatioDetail(' + index + ')"><i class="fa fa-minus fa-white"></i></a>';
+                    str += '</div>';
+                    return str;
+                }
+            });
+            landLevel.config.dataAllocationCorrectionCoefficientVolumeRatioDetailTable.bootstrapTable('destroy');
+            TableInit(landLevel.config.dataAllocationCorrectionCoefficientVolumeRatioDetailTable, "${pageContext.request.contextPath}/dataAllocationCorrectionCoefficientVolumeRatioDetail/getBootstrapTableVo", cols, {
+                allocationVolumeRatioId: allocationVolumeRatioId
+            }, {
+                showColumns: false,
+                showRefresh: false,
+                search: false,
+                onLoadSuccess: function () {
+                    $('.tooltips').tooltip();
+                }
+            });
         };
 
         landLevel.loadLandLevelList();

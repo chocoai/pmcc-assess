@@ -302,3 +302,84 @@
         </div>
     </div>
 </div>
+
+
+<div id="dataAllocationCorrectionCoefficientVolumeRatioDetailTableBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">容积率修正系数配置 详情</h3>
+                <input type="hidden" name="allocationVolumeRatioId">
+            </div>
+            <div class="modal-body">
+                <div type="button" class="btn btn-success"
+                     onclick="landLevel.showDataAllocationCorrectionCoefficientVolumeRatioDetailBox()"
+                     data-toggle="modal" href="#dataAllocationCorrectionCoefficientVolumeRatioDetailBox"> 新增
+                </div>
+                <table class="table table-bordered" id="dataAllocationCorrectionCoefficientVolumeRatioDetailTable">
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="dataAllocationCorrectionCoefficientVolumeRatioDetailBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">容积率修正系数配置 详情</h3>
+            </div>
+            <form id="dataAllocationCorrectionCoefficientVolumeRatioDetailFrm" class="form-horizontal">
+                <input type="hidden" name="id">
+                <input type="hidden" name="allocationVolumeRatioId">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            容积率<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <input type="text" required data-rule-number='true'
+                                                   class="form-control"
+                                                   name="plotRatio" placeholder="容积率">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            修正系数<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <input type="text" required data-rule-number='true'
+                                                   class="form-control"
+                                                   name="correctionFactor" placeholder="修正系数">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-default">
+                        取消
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="landLevel.saveDataAllocationCorrectionCoefficientVolumeRatioDetail()">
+                        保存
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
