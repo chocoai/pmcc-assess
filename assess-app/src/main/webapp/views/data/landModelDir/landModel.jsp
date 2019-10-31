@@ -43,7 +43,8 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">土地级别内容</h3>
+                <%--<h3 class="modal-title">土地级别内容</h3>--%>
+                <h3 class="modal-title" name="titleContent">子项数据</h3>
             </div>
             <div class="modal-body">
                 <div type="button" class="btn btn-success"
@@ -71,6 +72,7 @@
             <form class="form-horizontal">
                 <input type="hidden" name="id">
                 <input type="hidden" name="landLevelId">
+                <input type="hidden" name="pid">
                 <div class="modal-body">
                     <div class="row">
                         <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">

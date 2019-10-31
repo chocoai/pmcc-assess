@@ -126,8 +126,8 @@ public class DataLandLevelController {
     }
 
     @RequestMapping(value = "/getDataLandLevelDetailList", method = {RequestMethod.GET}, name = "获取土地级别信息列表")
-    public BootstrapTableVo getDataLandLevelDetailList(Integer landLevelId) {
-        return dataLandLevelDetailService.getDataLandLevelDetailList(landLevelId);
+    public BootstrapTableVo getDataLandLevelDetailList(Integer landLevelId,Integer pid) {
+        return dataLandLevelDetailService.getDataLandLevelDetailList(landLevelId,pid);
     }
 
     @RequestMapping(value = "/getDataLandLevelDetailListByArea", method = {RequestMethod.GET}, name = "获取土地级别信息列表")
@@ -150,6 +150,16 @@ public class DataLandLevelController {
     public HttpResult getReportFieldLevel(Integer id) {
         try {
             return HttpResult.newCorrectResult(200, dataLandLevelDetailService.getDataLandLevelDetailLevel(id));
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
+            return HttpResult.newErrorResult(500, e.getMessage());
+        }
+    }
+
+    @GetMapping(value = "/getDataLandLevelDetailById", name = "获取 土地级别信息")
+    public HttpResult getDataLandLevelDetailById(Integer id) {
+        try {
+            return HttpResult.newCorrectResult(200, dataLandLevelDetailService.getDataLandLevelDetailById(id));
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult(500, e.getMessage());

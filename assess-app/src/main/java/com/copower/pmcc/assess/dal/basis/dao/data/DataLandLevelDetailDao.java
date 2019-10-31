@@ -76,7 +76,6 @@ public class DataLandLevelDetailDao {
 
     private DataLandLevelDetailExample getExample(DataLandLevelDetail oo){
         DataLandLevelDetailExample example = new DataLandLevelDetailExample();
-        MybatisUtils.convertObj2Example(oo, example);
         DataLandLevelDetailExample.Criteria criteria = example.createCriteria();
         criteria.andIdIsNotNull();
         if (StringUtils.isNotBlank(oo.getClassify())) {
@@ -96,6 +95,9 @@ public class DataLandLevelDetailDao {
         }
         if (StringUtils.isNotEmpty(oo.getCreator())){
             criteria.andCreatorEqualTo(oo.getCreator());
+        }
+        if (oo.getPid() != null){
+            criteria.andPidEqualTo(oo.getPid());
         }
         return example;
     }

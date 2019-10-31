@@ -329,7 +329,7 @@
         };
 
         //加载土地级别信息
-        landLevel.loadLandLevelDetailList = function () {
+        landLevel.loadLandLevelDetailList = function (pid) {
             var cols = [];
             cols.push({
                 field: 'classifyName', title: '大类', formatter: function (value, row, index) {
@@ -345,9 +345,10 @@
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
+                    str += '<a class="btn btn-xs btn-success" href="javascript:landLevel.setSubDataDic(' + row.id + ');" ><i class="fa fa-edit">查看子项</i></a>';
                     str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="landLevel.editLandLevelDetail(' + index + ')"><i class="fa fa-edit fa-white"></i></a>';
                     str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="landLevel.deleteLandLevelDetail(' + row.id + ')"><i class="fa fa-minus fa-white"></i></a>';
-                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="查看" onclick="landLevel.showDataLandDetailAchievementDetail(' + row.id + ')"><i class="fa fa-th-list fa-white"></i></a>';
+                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="查看关联子项" onclick="landLevel.showDataLandDetailAchievementDetail(' + row.id + ')"><i class="fa fa-th-list fa-white"></i></a>';
                     str += '</div>';
                     return str;
                 }
@@ -355,6 +356,9 @@
             var box = landLevel.config.land_level_detail_modal;
             var frm = box.find("form");
             var query = {landLevelId: frm.find('[name=landLevelId]').val()};
+            if (pid){
+                query.pid = pid;
+            }
             var method = {
                 showColumns: false,
                 showRefresh: false,
@@ -396,16 +400,42 @@
         landLevel.initLandLevelDetailForm = function (data) {
             var box = landLevel.config.land_level_detail_modal;
             var frm = box.find("form");
-            frm.clearAll(['landLevelId']);
+            var item = formSerializeArray(frm) ;
+            frm.clearAll();
+            data.landLevelId = item.landLevelId ;
+            data.pid = item.pid ;
             frm.initForm(data);
 
             AssessCommon.loadDataDicByKey(AssessDicKey.DATA_LAND_LEVEL_CLASSIFY, data.landRightType, function (html, data) {
-                frm.find("select[name='classify']").empty().html(html).trigger('change');
+                var ele = frm.find("select[name='classify']") ;
+                ele.empty().html(html).trigger('change');
+                if (item.pid){
+                    landLevel.getDataLandLevelDetailById(item.pid,function (result) {
+                        ele.val(result.classify).trigger("change") ;
+                    });
+                }
             });
 
             AssessCommon.loadDataDicByKey(AssessDicKey.DATA_LAND_LEVEL_ROMAN, data.landRightType, function (html, data) {
                 frm.find("select[name='type']").empty().html(html).trigger('change');
             });
+        };
+
+        landLevel.getDataLandLevelDetailById = function (id ,callback) {
+            $.ajax({
+                url: '${pageContext.request.contextPath}/dataLandLevel/getDataLandLevelDetailById',
+                data: {id:id},
+                method:"get",
+                success: function (result) {
+                    if (result.ret) {
+                        if (callback){
+                            callback(result.data) ;
+                        }
+                    } else {
+                        Alert(result.errmsg);
+                    }
+                }
+            })
         };
 
         //保存土地级别
@@ -415,15 +445,21 @@
             if (!frm.valid()) {
                 return false;
             }
+            var data = formSerializeArray(frm) ;
             Loading.progressShow();
             $.ajax({
                 url: '${pageContext.request.contextPath}/dataLandLevel/saveAndUpdateDataLandLevelDetail',
-                data: formSerializeArray(frm),
+                data: data,
+                method:"post" ,
                 success: function (result) {
                     Loading.progressHide();
                     if (result.ret) {
                         toastr.success('保存成功');
-                        landLevel.loadLandLevelDetailList();
+                        if (data.pid){
+                            landLevel.loadLandLevelDetailList(data.pid);
+                        }else {
+                            landLevel.loadLandLevelDetailList();
+                        }
                         box.modal('hide');
                     } else {
                         Alert(result.errmsg);
@@ -450,6 +486,48 @@
                     }
                 })
             })
+        };
+
+        landLevel.setSubDataDic = function (pid) {
+            var box = landLevel.config.land_level_detail_modal;
+            var frm = box.find("form");
+            frm.find("[name='pid']").val(pid) ;
+            landLevel.loadLandLevelDetailList(pid);
+            this.getLevelHtml(pid, landLevel.config.land_level_detail_list_modal.find("h3[name='titleContent']"));
+        };
+
+        var strLevelHtml = "";
+        landLevel.getLevelHtml = function (id, target) {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/dataLandLevel/getDataLandLevelDetailLevel",
+                type: "post",
+                dataType: "json",
+                data: {id: id},
+                success: function (result) {
+                    if (result.ret) {
+                        strLevelHtml = "";
+                        if (result.data) {
+                            if (result.data.keyValueDto) {
+                                landLevel.getDataDicLevelRecursion(result.data.keyValueDto);
+                            }
+                            strLevelHtml += '<a href="javascript:landLevel.setSubDataDic(' + result.data.key + ')">' + result.data.value + '</a>' + ">";
+                            target.html(strLevelHtml.replace(/>$/, ""));
+                        }
+                    } else {
+                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        };
+
+        landLevel.getDataDicLevelRecursion = function (keyValueDto) {
+            if (keyValueDto) {
+                landLevel.getDataDicLevelRecursion(keyValueDto.keyValueDto);
+                strLevelHtml += '<a href="javascript:landLevel.setSubDataDic(' + keyValueDto.key + ')">' + keyValueDto.value + '</a>' + ">";
+            }
         };
 
         landLevel.showDataLandDetailAchievementDetail = function (id) {

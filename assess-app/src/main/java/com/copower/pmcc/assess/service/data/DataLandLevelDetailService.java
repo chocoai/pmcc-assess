@@ -67,10 +67,11 @@ public class DataLandLevelDetailService {
      * @param landLevelId
      * @return
      */
-    public BootstrapTableVo getDataLandLevelDetailList(Integer landLevelId) {
+    public BootstrapTableVo getDataLandLevelDetailList(Integer landLevelId,Integer pid) {
         BootstrapTableVo vo = new BootstrapTableVo();
         DataLandLevelDetail oo = new DataLandLevelDetail();
         oo.setLandLevelId(landLevelId);
+        oo.setPid(pid);
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<DataLandLevelDetail> dataLandLevelDetailList = dataLandLevelDetailSorted(getDataLandLevelDetailList(oo));
@@ -166,11 +167,22 @@ public class DataLandLevelDetailService {
                             i++;
                         }
                         if (i == 2) {
-                            String value1 = StringUtils.trim(StringUtils.remove(o1.getType(), remove));
-                            String value2 = StringUtils.trim(StringUtils.remove(o2.getType(), remove));
-                            int a = RomanNumeral.intValue(value1);
-                            int b = RomanNumeral.intValue(value2);
-                            return Integer.compare(a, b);
+                            if (StringUtils.contains(o1.getType(),remove) && StringUtils.contains(o2.getType(),remove)){
+                                String value1 = StringUtils.trim(StringUtils.remove(o1.getType(), remove));
+                                String value2 = StringUtils.trim(StringUtils.remove(o2.getType(), remove));
+                                try {
+                                    return Integer.compare(RomanNumeral.intValue(value1), RomanNumeral.intValue(value2));
+                                } catch (Exception e) {
+                                }
+                            }
+                        }
+                        if (NumberUtils.isNumber(o1.getType()) && NumberUtils.isNumber(o2.getType())){
+                            String value1 = baseDataDicService.getNameById(o1.getType()) ;
+                            String value2 = baseDataDicService.getNameById(o2.getType()) ;
+                            try {
+                                return Integer.compare(RomanNumeral.intValue(value1), RomanNumeral.intValue(value2));
+                            } catch (Exception e) {
+                            }
                         }
                         return 0;
                     }).collect(Collectors.toList());
