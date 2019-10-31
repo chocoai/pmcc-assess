@@ -457,6 +457,9 @@
                     target.find("input[name='residueRatioId']").val(id);
                     target.find("input[name='residueRatio']").val(parseFloat(resultValue) / 100).trigger('blur');
                     target.find("input[name='residueRatioShow']").val(resultValue);
+                    cost.calculationNumeric(formSerializeArray($(_this).closest("form")),function (data) {
+                        cost.initForm(data) ;
+                    });
                 }
             });
         } catch (e) {

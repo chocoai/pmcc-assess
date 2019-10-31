@@ -16,7 +16,6 @@
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
             <!-- 引入成本法 详情模块 -->
-
             <!-- 引入成本法模块 -->
             <div class="x_panel">
                 <div class="x_title collapse-link">
@@ -48,13 +47,10 @@
                         </div>
                     </form>
                 </div>
-
                 <%@include file="/views/method/module/developmentCommon.jsp" %>
                 <script src="${pageContext.request.contextPath}/js/method/developmentCommon.js"></script>
                 <%@include file="/views/project/tool/residueRatio.jsp" %>
                 <%@include file="/views/method/module/economicIndicators.jsp" %>
-
-
                 <div class="x_content">
                     <form class="form-horizontal" id="constructionFrm">
                         <%@include file="/views/method/module/costModule/constructionDetail.jsp" %>
@@ -87,8 +83,6 @@
                     </form>
                 </div>
             </div>
-
-
             <!--填写表单-->
             <%@include file="/views/share/form_approval.jsp" %>
             <%@include file="/views/share/form_log.jsp" %>
@@ -100,9 +94,7 @@
 <script src="${pageContext.request.contextPath}/assets/x-editable/js/bootstrap-editable.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/tree-grid/js/jquery.treegrid.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/ajaxfileupload.js"></script>
-
 <script type="application/javascript">
-
     $(function () {
         FileUtils.getFileShows({
             target: "report_file",
