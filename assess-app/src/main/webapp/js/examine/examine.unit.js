@@ -327,7 +327,7 @@
                         return false;
                     }
                     var item = data[0] ;
-                    var params = {estateName:item.name,center:JSON.stringify({lng:item.lng , lat:item.lat})} ;
+                    var params = {estateName:item.name,lng:item.lng , lat:item.lat} ;
                     var contentUrl = getContextPath() + '/map/mapMarkerEstate?' + examineCommon.parseParam(params);
                     if (readonly != true) {
                         contentUrl += '&click=unitCommon.addMarker';

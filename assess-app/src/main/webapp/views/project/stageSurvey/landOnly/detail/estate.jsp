@@ -434,3 +434,11 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.house.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.estate.detail.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.house.detail.js"></script>
+<script type="text/javascript">
+    $(function () {
+        houseCommon.initById('${basicHouse.id}');
+    })
+    $(function () {
+        estateCommon.initById('${basicEstate.id}');
+    })
+</script>

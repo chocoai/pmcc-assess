@@ -330,7 +330,7 @@
                 return false;
             }
             var item = data[0] ;
-            var params = {estateName:item.name,center:JSON.stringify({lng:item.lng , lat:item.lat})} ;
+            var params = {estateName:item.name,lng:item.lng , lat:item.lat} ;
             var contentUrl = getContextPath() + '/map/mapMarkerEstate?' + examineCommon.parseParam(params);
             if (readonly != true) {
                 contentUrl += '&click=buildingCommon.addMarker';
@@ -418,7 +418,6 @@
     //楼盘标注（通过tableId）
     buildingCommon.mapMarker2 = function (readonly, tableId) {
         buildingCommon.tableId = tableId;
-        console.log(tableId + "===");
         var contentUrl = getContextPath() + '/map/mapMarkerEstateByTableId?tableId=' + buildingCommon.tableId + '&tableName=' + buildingCommon.tableName;
         if (readonly != true) {
             contentUrl += '&click=buildingCommon.addMarker2';

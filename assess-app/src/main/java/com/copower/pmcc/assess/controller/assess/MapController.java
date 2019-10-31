@@ -18,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -90,11 +91,11 @@ public class MapController {
     }
 
     @RequestMapping(value = "/mapMarkerEstate", name = "楼盘地图标注")
-    public ModelAndView mapMarkerEstate(String estateName, String click,String center) {
+    public ModelAndView mapMarkerEstate(String estateName, String click, @RequestParam(name = "lng",defaultValue = "")String lng, @RequestParam(name = "lat",defaultValue = "")String lat) {
         ModelAndView modelAndView = new ModelAndView("base/mapMarkerEstate");
         modelAndView.addObject("estateName", estateName);
         modelAndView.addObject("click", click);
-        modelAndView.addObject("center", center);
+        modelAndView.addObject("center",String.join("","{lng:",lng,",","lat:",lat,"}") );
         return modelAndView;
     }
 

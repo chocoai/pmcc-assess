@@ -137,20 +137,27 @@ examineCommon.getBasicApplyBatchDetailList = function (obj, callback) {
     })
 };
 
-examineCommon.parseParam = function (param, key) {
-    var paramStr = "";
-    if (param instanceof String || param instanceof Number || param instanceof Boolean) {
-        paramStr += "&" + key + "=" + encodeURIComponent(param);
-    } else {
-        $.each(param, function (i) {
-            var k = key == null ? i : key + (param instanceof Array ? "[" + i + "]" : "." + i);
-            paramStr += '&' + examineCommon.parseParam(this, k);
-        });
+/**
+ * 注意只遍历一个层级
+ * @param param
+ * @returns {string}
+ */
+examineCommon.parseParam = function (param) {
+    var arr = [];
+    var keys = Object.keys(param);
+    for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];
+        var value = param[key];
+        if (!value){
+            // continue ;
+        }
+        var paramStr = key + "=" + value;
+        arr.push(paramStr)
     }
-    return paramStr.substr(1);
-} ;
+    return arr.join("&");
+};
 
-examineCommon.getApplyBatchEstateTaggingsByTableId = function (data,callback) {
+examineCommon.getApplyBatchEstateTaggingsByTableId = function (data, callback) {
     $.ajax({
         url: getContextPath() + '/basicEstateTagging/getApplyBatchEstateTaggingsByTableId',
         data: data,
@@ -166,22 +173,22 @@ examineCommon.getApplyBatchEstateTaggingsByTableId = function (data,callback) {
 };
 
 
-examineCommon.addBasicEstateTagging = function (data,callback) {
+examineCommon.addBasicEstateTagging = function (data, callback) {
     $.ajax({
         url: getContextPath() + '/basicEstateTagging/addBasicEstateTagging',
         data: data,
-        method:"post" ,
+        method: "post",
         success: function (result) {
             if (result.ret) {//标注成功后，刷新地图上的标注
-                if (callback){
-                    callback(result.data) ;
+                if (callback) {
+                    callback(result.data);
                 }
             } else {
                 Alert(result.errmsg);
             }
         }
     })
-} ;
+};
 
 examineCommon.getMarkerAreaInHeight = '80%';
 examineCommon.getMarkerAreaInWidth = '80%';

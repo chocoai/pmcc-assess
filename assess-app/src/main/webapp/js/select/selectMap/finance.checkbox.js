@@ -10,12 +10,11 @@
      */
     AssessMatchingFinance.prototype.select = function (that) {
         $.ajax({
-            url: getContextPath() + '/toolMapHandle/getToolMapHandleListByExample',
+            url: getContextPath() + '/basicEstateTagging/getApplyBatchEstateTaggingsByTableId',
             data: {
                 tableId: estateCommon.getEstateId(),
                 type: 'estate'
             },
-            method:"get",
             success: function (result) {
                 if (result.ret) {
                     if (result.data.length >= 1) {
