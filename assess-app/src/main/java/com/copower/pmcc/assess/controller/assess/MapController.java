@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.controller.assess;
 
+import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.enums.basic.EstateTaggingTypeEnum;
 import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatch;
 import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchDetail;
@@ -8,6 +9,7 @@ import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.basic.BasicApplyBatchDetailService;
 import com.copower.pmcc.assess.service.basic.BasicApplyBatchService;
 import com.copower.pmcc.assess.service.basic.BasicEstateTaggingService;
+import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.google.common.base.Objects;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -18,7 +20,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -91,11 +92,11 @@ public class MapController {
     }
 
     @RequestMapping(value = "/mapMarkerEstate", name = "楼盘地图标注")
-    public ModelAndView mapMarkerEstate(String estateName, String click, @RequestParam(name = "lng",defaultValue = "")String lng, @RequestParam(name = "lat",defaultValue = "")String lat) {
+    public ModelAndView mapMarkerEstate(String estateName, String click, String lng,String lat) {
         ModelAndView modelAndView = new ModelAndView("base/mapMarkerEstate");
         modelAndView.addObject("estateName", estateName);
         modelAndView.addObject("click", click);
-        modelAndView.addObject("center",String.join("","{lng:",lng,",","lat:",lat,"}") );
+        modelAndView.addObject("center", JSONObject.toJSONString(new KeyValueDto(lng,lat)) );
         return modelAndView;
     }
 
