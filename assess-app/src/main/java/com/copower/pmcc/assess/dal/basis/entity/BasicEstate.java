@@ -8,6 +8,8 @@ public class BasicEstate {
 
     private Integer applyId;
 
+    private Integer classify;
+
     private Integer type;
 
     private String province;
@@ -102,6 +104,14 @@ public class BasicEstate {
 
     public void setApplyId(Integer applyId) {
         this.applyId = applyId;
+    }
+
+    public Integer getClassify() {
+        return classify;
+    }
+
+    public void setClassify(Integer classify) {
+        this.classify = classify;
     }
 
     public Integer getType() {

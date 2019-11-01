@@ -18,6 +18,7 @@ public class ZtreeDto implements Serializable,Cloneable,Comparable<ZtreeDto> {
     private String type;
     private String tableName;
     private Integer tableId;
+    private Boolean bisModify;
 
     public Integer getId() {
         return id;
@@ -127,5 +128,13 @@ public class ZtreeDto implements Serializable,Cloneable,Comparable<ZtreeDto> {
 
     public void setTableId(Integer tableId) {
         this.tableId = tableId;
+    }
+
+    public Boolean getBisModify() {
+        return bisModify;
+    }
+
+    public void setBisModify(Boolean bisModify) {
+        this.bisModify = bisModify;
     }
 }

@@ -6,6 +6,8 @@ import java.util.Date;
 public class CaseEstate {
     private Integer id;
 
+    private Integer classify;
+
     private Integer type;
 
     private String province;
@@ -78,12 +80,22 @@ public class CaseEstate {
 
     private String blockDescription;
 
+    private Boolean newVersions;
+
     public Integer getId() {
         return id;
     }
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getClassify() {
+        return classify;
+    }
+
+    public void setClassify(Integer classify) {
+        this.classify = classify;
     }
 
     public Integer getType() {
@@ -372,5 +384,13 @@ public class CaseEstate {
 
     public void setBlockDescription(String blockDescription) {
         this.blockDescription = blockDescription == null ? null : blockDescription.trim();
+    }
+
+    public Boolean getNewVersions() {
+        return newVersions;
+    }
+
+    public void setNewVersions(Boolean newVersions) {
+        this.newVersions = newVersions;
     }
 }

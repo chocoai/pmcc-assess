@@ -19,57 +19,52 @@
                 </div>
                 <div class="x_content">
                     <form id="basicBatchApplyDetialFrm" class="form-horizontal">
+                        <!-- formClassify 大类 , formType 类型-->
+                        <input type="hidden" name="formClassify" value="${applyBatch.classify}">
+                        <input type="hidden" name="formType" value="${applyBatch.type}">
+                        <input type="hidden" name="planDetailsId" value="${applyBatch.planDetailsId}">
+                        <input type="hidden" name="applyBatchId" value="${applyBatch.id}">
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    省
-                                </label>
-                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                    <label class="form-control">${applyBatch.provinceName}</label>
-                                </div>
-                            </div>
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    市
-                                </label>
-                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                    <label class="form-control">${applyBatch.cityName}</label>
-                                </div>
-                            </div>
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    楼盘名称
+                                    大类
                                 </label>
                                 <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                                    <label class="form-control">${applyBatch.estateName}</label>
+                                    <c:if test="${not empty formClassifyList}">
+                                        <c:forEach var="item" items="${formClassifyList}">
+                                            <c:if test="${applyBatch.classify == item.id}">
+                                                <label class="form-control">${item.name}</label>
+                                            </c:if>
+                                        </c:forEach>
+                                    </c:if>
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <span class="col-xs-2  col-sm-2  col-md-2  col-lg-2 col-xs-offset-1 col-sm-offset-1 col-md-offset-1 col-lg-offset-1 checkbox-inline">
-                                <input type="radio" id="applyFormType0" name="type" value="0">
-                                <label for="applyFormType0">非工业交通仓储</label>
-                            </span>
-
-                            <span class=" col-xs-2  col-sm-2  col-md-2  col-lg-2   checkbox-inline">
-                                <input type="radio" id="applyFormType1" name="type" value="1">
-                                <label for="applyFormType1">工业交通仓储</label>
-                            </span>
-                            <span class=" col-xs-2  col-sm-2  col-md-2  col-lg-2   checkbox-inline">
-                                <input type="radio" id="applyFormType2" name="type" value="2">
-                                <label for="applyFormType2">构筑物</label>
-                            </span>
-
-                        </div>
-                        <div class="form-group">
-                            <div class="col-md-3">
-                                <ul id="ztree" class="ztree"></ul>
-                            </div>
-                            <div class="col-md-9">
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                    类型
+                                </label>
+                                <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
+                                    <c:if test="${not empty examineFormTypeList}">
+                                        <c:forEach var="item" items="${examineFormTypeList}">
+                                            <c:if test="${applyBatch.type == item.key}">
+                                                <label class="form-control">${item.value}</label>
+                                            </c:if>
+                                        </c:forEach>
+                                    </c:if>
+                                </div>
                             </div>
                         </div>
 
                     </form>
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <div class="col-xs-3  col-sm-3  col-md-3  col-xs-3 col-lg-offset-1 col-sm-offset-1 col-xs-offset-1 col-md-offset-1">
+                                <ul id="ztree" class="ztree"></ul>
+                            </div>
+                            <div class="col-xs-8  col-sm-8  col-md-8  col-lg-8">
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -84,16 +79,18 @@
 </html>
 <script type="text/javascript">
     $(function () {
-        $("#basicBatchApplyDetialFrm").find("input[type='radio'][name='type'][value='${applyBatch.type}']").trigger('click');
-        $("#basicBatchApplyDetialFrm").find("input[type='radio']").on('click', function () {
-            return false;
-        });
-        ztreeInit("${applyBatch.estateName}");
-    })
+        if (${!empty applyBatch.estateId}) {
+            ztreeInit(${applyBatch.estateId});
+
+        }
+        if (${!empty applyBatch.caseEstateId}) {
+            caseEstateZtreeInit('${applyBatch.id}');
+        }
+    });
     var setting = {
         data: {
-            key:{
-                name:"displayName"
+            key: {
+                name: "displayName"
             },
             simpleData: {
                 enable: true,
@@ -101,16 +98,6 @@
                 pIdKey: "pid",
                 rootPId: 0
             }
-        },
-        async: {
-            enable: true,
-            url: "${pageContext.request.contextPath}/basicApplyBatch/getTree",
-            otherParam: {
-                estateId: function () {
-                    return ${applyBatch.estateId};
-                }
-            },
-            autoParam: ["id=pid"]
         },
         // 回调函数
         callback: {
@@ -120,25 +107,62 @@
         }
     };
 
-    //初始化
-    function ztreeInit(estateName) {
-        zTreeObj = $.fn.zTree.init($("#ztree"), setting, [{"id": 0, "pid": 0, "displayName": estateName, "isParent": true}]);
-        //展开第一级，选中根节点
-        var rootNode = zTreeObj.getNodes()[0];
-        zTreeObj.selectNode(rootNode);
-
-        zTreeObj.expandNode(rootNode, true, false, true);
+    //初始化tree
+    function ztreeInit(estateId) {
+        $.ajax({
+            url: '${pageContext.request.contextPath}/basicApplyBatch/getBatchApplyTree',
+            data: {estateId: estateId},
+            type: 'get',
+            dataType: "json",
+            success: function (result) {
+                zTreeObj = $.fn.zTree.init($("#ztree"), setting, result);
+                //展开第一级，选中根节点
+                var rootNode = zTreeObj.getNodes()[0];
+                zTreeObj.selectNode(rootNode);
+                zTreeObj.expandAll(true);
+            }
+        })
     }
 
     //信息详情页面
     function informationDetail() {
         var node = zTreeObj.getSelectedNodes()[0];
-        var estateId = 0;
-        if (node.id == 0) {
-            estateId = ${applyBatch.estateId};
+        if (node.bisModify == false) {
+            var href = "${pageContext.request.contextPath}/";
+            switch (node.type) {
+                case "estate": {
+                    href += "caseEstate/detailView";
+                    break;
+                }
+                case "building": {
+                    href += "caseBuilding/detailView";
+                    break;
+                }
+                case "unit": {
+                    href += "caseUnit/detailView";
+                    break;
+                }
+                case "house": {
+                    href += "caseHouse/detailView";
+                    break;
+                }
+            }
+            href += "?id=" + node.id;
+            window.open(href, "");
+        } else {
+            var classify = ${applyBatch.classify};
+            var formType = ${applyBatch.type};
+            var url = '${pageContext.request.contextPath}/basicApplyBatch/informationDetail?';
+            url += 'applyBatchId=' +  ${applyBatch.id};
+            url += '&formClassify=' + classify;
+            url += '&formType=' + formType;
+            url += '&tableId=' + node.tableId;
+            url += '&tbType=' + node.type;
+            url += '&tableName=' + node.tableName;
+            url += '&planDetailsId=${projectPlanDetails.id}';
+            openWin(url, function () {
+            })
         }
-        var type = ${applyBatch.type};
-        window.open('${pageContext.request.contextPath}/basicApplyBatch/informationDetail?type=' + type + "&id=" + node.id + "&buildingType=" + node.level + "&estateId=" + estateId);
     }
 
 
@@ -171,5 +195,21 @@
         })
     }
 
+    //有案例数据初始化tree
+    function caseEstateZtreeInit(applyBatchId) {
+        $.ajax({
+            url: '${pageContext.request.contextPath}/basicApplyBatch/getCaseApprovalZtreeDto',
+            data: {applyBatchId: applyBatchId},
+            type: 'get',
+            dataType: "json",
+            success: function (result) {
+                zTreeObj = $.fn.zTree.init($("#ztree"), setting, result);
+                //展开第一级，选中根节点
+                var rootNode = zTreeObj.getNodes()[0];
+                zTreeObj.selectNode(rootNode);
+                zTreeObj.expandAll(true);
+            }
+        })
+    }
 </script>
 

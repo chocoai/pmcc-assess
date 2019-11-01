@@ -166,6 +166,66 @@ public class CaseEstateExample {
             return (Criteria) this;
         }
 
+        public Criteria andClassifyIsNull() {
+            addCriterion("classify is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassifyIsNotNull() {
+            addCriterion("classify is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassifyEqualTo(Integer value) {
+            addCriterion("classify =", value, "classify");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassifyNotEqualTo(Integer value) {
+            addCriterion("classify <>", value, "classify");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassifyGreaterThan(Integer value) {
+            addCriterion("classify >", value, "classify");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassifyGreaterThanOrEqualTo(Integer value) {
+            addCriterion("classify >=", value, "classify");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassifyLessThan(Integer value) {
+            addCriterion("classify <", value, "classify");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassifyLessThanOrEqualTo(Integer value) {
+            addCriterion("classify <=", value, "classify");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassifyIn(List<Integer> values) {
+            addCriterion("classify in", values, "classify");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassifyNotIn(List<Integer> values) {
+            addCriterion("classify not in", values, "classify");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassifyBetween(Integer value1, Integer value2) {
+            addCriterion("classify between", value1, value2, "classify");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassifyNotBetween(Integer value1, Integer value2) {
+            addCriterion("classify not between", value1, value2, "classify");
+            return (Criteria) this;
+        }
+
         public Criteria andTypeIsNull() {
             addCriterion("type is null");
             return (Criteria) this;
@@ -2513,6 +2573,66 @@ public class CaseEstateExample {
 
         public Criteria andBlockDescriptionNotBetween(String value1, String value2) {
             addCriterion("block_description not between", value1, value2, "blockDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewVersionsIsNull() {
+            addCriterion("new_versions is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewVersionsIsNotNull() {
+            addCriterion("new_versions is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewVersionsEqualTo(Boolean value) {
+            addCriterion("new_versions =", value, "newVersions");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewVersionsNotEqualTo(Boolean value) {
+            addCriterion("new_versions <>", value, "newVersions");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewVersionsGreaterThan(Boolean value) {
+            addCriterion("new_versions >", value, "newVersions");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewVersionsGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("new_versions >=", value, "newVersions");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewVersionsLessThan(Boolean value) {
+            addCriterion("new_versions <", value, "newVersions");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewVersionsLessThanOrEqualTo(Boolean value) {
+            addCriterion("new_versions <=", value, "newVersions");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewVersionsIn(List<Boolean> values) {
+            addCriterion("new_versions in", values, "newVersions");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewVersionsNotIn(List<Boolean> values) {
+            addCriterion("new_versions not in", values, "newVersions");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewVersionsBetween(Boolean value1, Boolean value2) {
+            addCriterion("new_versions between", value1, value2, "newVersions");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewVersionsNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("new_versions not between", value1, value2, "newVersions");
             return (Criteria) this;
         }
     }

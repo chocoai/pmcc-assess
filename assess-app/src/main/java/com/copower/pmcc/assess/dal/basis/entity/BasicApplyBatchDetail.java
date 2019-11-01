@@ -17,6 +17,12 @@ public class BasicApplyBatchDetail {
 
     private String displayName;
 
+    private String creator;
+
+    private Date gmtCreated;
+
+    private Date gmtModified;
+
     private Boolean bisStandard;
 
     private Integer quoteId;
@@ -36,6 +42,18 @@ public class BasicApplyBatchDetail {
     private Date gmtCreated;
 
     private Date gmtModified;
+
+    private Integer caseTablePid;
+
+    private Boolean bisEnable;
+
+    private String creator;
+
+    private Date gmtCreated;
+
+    private Date gmtModified;
+
+    private Integer upgradeTableId;
 
     public Integer getId() {
         return id;
@@ -93,62 +111,6 @@ public class BasicApplyBatchDetail {
         this.displayName = displayName == null ? null : displayName.trim();
     }
 
-    public Boolean getBisStandard() {
-        return bisStandard;
-    }
-
-    public void setBisStandard(Boolean bisStandard) {
-        this.bisStandard = bisStandard;
-    }
-
-    public Integer getQuoteId() {
-        return quoteId;
-    }
-
-    public void setQuoteId(Integer quoteId) {
-        this.quoteId = quoteId;
-    }
-
-    public String getBaseType() {
-        return baseType;
-    }
-
-    public void setBaseType(String baseType) {
-        this.baseType = baseType == null ? null : baseType.trim();
-    }
-
-    public Integer getCaseTablePid() {
-        return caseTablePid;
-    }
-
-    public void setCaseTablePid(Integer caseTablePid) {
-        this.caseTablePid = caseTablePid;
-    }
-
-    public Boolean getBisEnable() {
-        return bisEnable;
-    }
-
-    public void setBisEnable(Boolean bisEnable) {
-        this.bisEnable = bisEnable;
-    }
-
-    public Integer getUpgradeTableId() {
-        return upgradeTableId;
-    }
-
-    public void setUpgradeTableId(Integer upgradeTableId) {
-        this.upgradeTableId = upgradeTableId;
-    }
-
-    public Boolean getBisDelete() {
-        return bisDelete;
-    }
-
-    public void setBisDelete(Boolean bisDelete) {
-        this.bisDelete = bisDelete;
-    }
-
     public String getCreator() {
         return creator;
     }
@@ -171,5 +133,29 @@ public class BasicApplyBatchDetail {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public Boolean getBisStandard() {
+        return bisStandard;
+    }
+
+    public void setBisStandard(Boolean bisStandard) {
+        this.bisStandard = bisStandard;
+    }
+
+    public Integer getQuoteId() {
+        return quoteId;
+    }
+
+    public void setQuoteId(Integer quoteId) {
+        this.quoteId = quoteId;
+    }
+
+    public String getBaseType() {
+        return baseType;
+    }
+
+    public void setBaseType(String baseType) {
+        this.baseType = baseType == null ? null : baseType.trim();
     }
 }

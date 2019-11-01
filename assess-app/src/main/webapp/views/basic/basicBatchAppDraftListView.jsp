@@ -41,7 +41,7 @@
                                     查询
                                 </div>
                                 <div class="btn btn-success"
-                                     onclick="dataObjFun.addApplyIndex()">
+                                     onclick="dataObjFun.openModal()">
                                     新增
                                 </div>
                             </div>
@@ -59,6 +59,67 @@
     <!-- end: MAIN CONTAINER -->
 </div>
 </body>
+<div id="divBoxFather" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">楼盘信息</h3>
+            </div>
+            <form id="frmFather" class="form-horizontal">
+                <input type="hidden" id="id" name="id">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">省
+                                            <span class="symbol required"></span></label>
+                                        <div class="col-sm-3">
+                                            <select id="province" name="province"
+                                                    class="form-control search-select select2" required="required">
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">市<span
+                                                class="symbol required"></span></label>
+                                        <div class="col-sm-3">
+                                            <select id="city" name="city" class="form-control search-select select2"
+                                                    required="required">
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            楼盘名称<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control" name="estateName"
+                                                   placeholder="楼盘名称" required="required">
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-default">
+                        取消
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="dataObjFun.verification()">
+                        确认
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="text/javascript">
@@ -75,6 +136,9 @@
             },
             table: function () {
                 return "tb_FatherList";
+            },
+            box: function () {
+                return "divBoxFather";
             }
         }
     };
@@ -99,9 +163,45 @@
         window.open(href, "");
     };
 
+    dataObjFun.openModal = function () {
+        $("#" + dataObjFun.config.father.frm()).clearAll();
+        AssessCommon.initAreaInfo({
+            provinceTarget: $("#province"),
+            cityTarget: $("#city"),
+        });
+        $("#" + dataObjFun.config.father.box()).modal("show");
+    };
+
+    dataObjFun.verification = function () {
+        if (!$("#" + dataObjFun.config.father.frm()).valid()) {
+            return false;
+        }
+        var data = formParams(dataObjFun.config.father.frm());
+        $.ajax({
+            url: "${pageContext.request.contextPath}/basicApplyBatch/verification",
+            type: "post",
+            dataType: "json",
+            data: data,
+            success: function (result) {
+                if (result.ret) {
+                    $('#' + dataObjFun.config.father.box()).modal('hide');
+                    dataObjFun.applyIndex(result.data);
+                }
+                else {
+                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
+    };
+
+
     //jin申请
-    dataObjFun.addApplyIndex = function (id) {
-        var href = "${pageContext.request.contextPath}/basicApplyBatch/basicBatchApplyIndex";
+    dataObjFun.applyIndex = function (caseEstateId) {
+        var id = caseEstateId ? caseEstateId : 0;
+        var href = "${pageContext.request.contextPath}/basicApplyBatch/basicBatchApplyIndex?caseEstateId=" + id;
         window.open(href, "");
     };
 

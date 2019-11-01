@@ -41,6 +41,21 @@ public class BasicApplyBatchDao {
     }
 
     /**
+     * 获取未提交数据列表
+     *
+     * @param caseEstateId
+     * @return
+     */
+    public List<BasicApplyBatch> getInfoListNotCommit(Integer caseEstateId) {
+        BasicApplyBatchExample example = new BasicApplyBatchExample();
+        BasicApplyBatchExample.Criteria criteria = example.createCriteria();
+        criteria.andStatusIsNull();
+        criteria.andDraftFlagEqualTo(false);
+        criteria.andCaseEstateIdEqualTo(caseEstateId);
+        return basicApplyBatchMapper.selectByExample(example);
+    }
+
+    /**
      * 获取数据信息
      *
      * @param id

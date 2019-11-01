@@ -54,6 +54,7 @@
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
     <result column="property_social_prestige" property="propertySocialPrestige" jdbcType="INTEGER" />
     <result column="property_company_nature" property="propertyCompanyNature" jdbcType="INTEGER" />
+    <result column="new_versions" property="newVersions" jdbcType="BIT" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -123,7 +124,7 @@
     between_distance_description, builder_name, max_floor, appearance_style, first_floor, 
     construction_quality, v_structura, v_specifications, v_structural_construction, v_basic_practice, 
     v_structural_practice, remark, creator, gmt_created, gmt_modified, property_social_prestige, 
-    property_company_nature
+    property_company_nature, new_versions
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseBuildingExample" >
     select
@@ -176,8 +177,8 @@
       v_specifications, v_structural_construction, 
       v_basic_practice, v_structural_practice, remark, 
       creator, gmt_created, gmt_modified, 
-      property_social_prestige, property_company_nature
-      )
+      property_social_prestige, property_company_nature, 
+      new_versions)
     values (#{estateId,jdbcType=INTEGER}, #{residenceUseYear,jdbcType=INTEGER}, #{industryUseYear,jdbcType=INTEGER}, 
       #{type,jdbcType=INTEGER}, #{buildingNumber,jdbcType=VARCHAR}, #{buildingName,jdbcType=VARCHAR}, 
       #{floorCount,jdbcType=INTEGER}, #{location,jdbcType=VARCHAR}, #{builder,jdbcType=VARCHAR}, 
@@ -195,8 +196,8 @@
       #{vSpecifications,jdbcType=VARCHAR}, #{vStructuralConstruction,jdbcType=VARCHAR}, 
       #{vBasicPractice,jdbcType=VARCHAR}, #{vStructuralPractice,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
       #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
-      #{propertySocialPrestige,jdbcType=INTEGER}, #{propertyCompanyNature,jdbcType=INTEGER}
-      )
+      #{propertySocialPrestige,jdbcType=INTEGER}, #{propertyCompanyNature,jdbcType=INTEGER}, 
+      #{newVersions,jdbcType=BIT})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseBuilding" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -357,6 +358,9 @@
       <if test="propertyCompanyNature != null" >
         property_company_nature,
       </if>
+      <if test="newVersions != null" >
+        new_versions,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="estateId != null" >
@@ -511,6 +515,9 @@
       </if>
       <if test="propertyCompanyNature != null" >
         #{propertyCompanyNature,jdbcType=INTEGER},
+      </if>
+      <if test="newVersions != null" >
+        #{newVersions,jdbcType=BIT},
       </if>
     </trim>
   </insert>
@@ -679,6 +686,9 @@
       <if test="record.propertyCompanyNature != null" >
         property_company_nature = #{record.propertyCompanyNature,jdbcType=INTEGER},
       </if>
+      <if test="record.newVersions != null" >
+        new_versions = #{record.newVersions,jdbcType=BIT},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -737,7 +747,8 @@
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       property_social_prestige = #{record.propertySocialPrestige,jdbcType=INTEGER},
-      property_company_nature = #{record.propertyCompanyNature,jdbcType=INTEGER}
+      property_company_nature = #{record.propertyCompanyNature,jdbcType=INTEGER},
+      new_versions = #{record.newVersions,jdbcType=BIT}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -898,6 +909,9 @@
       <if test="propertyCompanyNature != null" >
         property_company_nature = #{propertyCompanyNature,jdbcType=INTEGER},
       </if>
+      <if test="newVersions != null" >
+        new_versions = #{newVersions,jdbcType=BIT},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -953,7 +967,8 @@
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       property_social_prestige = #{propertySocialPrestige,jdbcType=INTEGER},
-      property_company_nature = #{propertyCompanyNature,jdbcType=INTEGER}
+      property_company_nature = #{propertyCompanyNature,jdbcType=INTEGER},
+      new_versions = #{newVersions,jdbcType=BIT}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

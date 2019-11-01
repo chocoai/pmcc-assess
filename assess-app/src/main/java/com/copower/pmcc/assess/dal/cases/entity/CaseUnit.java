@@ -23,6 +23,8 @@ public class CaseUnit {
 
     private String huxingExplain;
 
+    private Boolean newVersions;
+
     public Integer getId() {
         return id;
     }
@@ -101,5 +103,13 @@ public class CaseUnit {
 
     public void setHuxingExplain(String huxingExplain) {
         this.huxingExplain = huxingExplain == null ? null : huxingExplain.trim();
+    }
+
+    public Boolean getNewVersions() {
+        return newVersions;
+    }
+
+    public void setNewVersions(Boolean newVersions) {
+        this.newVersions = newVersions;
     }
 }
