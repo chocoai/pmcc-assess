@@ -17,23 +17,15 @@ public class BasicApplyBatchDetail {
 
     private String displayName;
 
-    private String creator;
+    private Integer caseTablePid;
 
-    private Date gmtCreated;
-
-    private Date gmtModified;
+    private Integer upgradeTableId;
 
     private Boolean bisStandard;
 
     private Integer quoteId;
 
     private String baseType;
-
-    private Integer caseTablePid;
-
-    private Boolean bisEnable;
-
-    private Integer upgradeTableId;
 
     private Boolean bisDelete;
 
@@ -43,17 +35,6 @@ public class BasicApplyBatchDetail {
 
     private Date gmtModified;
 
-    private Integer caseTablePid;
-
-    private Boolean bisEnable;
-
-    private String creator;
-
-    private Date gmtCreated;
-
-    private Date gmtModified;
-
-    private Integer upgradeTableId;
 
     public Integer getId() {
         return id;
@@ -157,5 +138,29 @@ public class BasicApplyBatchDetail {
 
     public void setBaseType(String baseType) {
         this.baseType = baseType == null ? null : baseType.trim();
+    }
+
+    public Integer getCaseTablePid() {
+        return caseTablePid;
+    }
+
+    public void setCaseTablePid(Integer caseTablePid) {
+        this.caseTablePid = caseTablePid;
+    }
+
+    public Integer getUpgradeTableId() {
+        return upgradeTableId;
+    }
+
+    public void setUpgradeTableId(Integer upgradeTableId) {
+        this.upgradeTableId = upgradeTableId;
+    }
+
+    public Boolean getBisDelete() {
+        return bisDelete;
+    }
+
+    public void setBisDelete(Boolean bisDelete) {
+        this.bisDelete = bisDelete;
     }
 }

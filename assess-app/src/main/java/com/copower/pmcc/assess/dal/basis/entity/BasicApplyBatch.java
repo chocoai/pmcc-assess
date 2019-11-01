@@ -41,8 +41,6 @@ public class BasicApplyBatch {
 
     private Date gmtModified;
 
-    private Integer caseEstateId;
-
     public Integer getId() {
         return id;
     }
@@ -193,13 +191,5 @@ public class BasicApplyBatch {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public Integer getCaseEstateId() {
-        return caseEstateId;
-    }
-
-    public void setCaseEstateId(Integer caseEstateId) {
-        this.caseEstateId = caseEstateId;
     }
 }
