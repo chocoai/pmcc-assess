@@ -23,6 +23,13 @@ public class DataLandLevelDao {
     @Autowired
     private DataLandLevelMapper dataLandLevelMapper;
 
+    public List<DataLandLevel> getByIds(List<Integer> integerList){
+        DataLandLevelExample example = new DataLandLevelExample();
+        DataLandLevelExample.Criteria criteria = example.createCriteria();
+        criteria.andIdIn(integerList);
+        return dataLandLevelMapper.selectByExample(example) ;
+    }
+
     public Integer addDataLandLevel(DataLandLevel dataLandLevel) {
         dataLandLevelMapper.insertSelective(dataLandLevel);
         return dataLandLevel.getId();
@@ -98,7 +105,12 @@ public class DataLandLevelDao {
             criteria.andCreatorEqualTo(dataLandLevel.getCreator());
         }
 
-        criteria.andStatusNotEqualTo(ProjectStatusEnum.DRAFT.getKey());
+        if (StringUtils.isNotBlank(dataLandLevel.getStatus())) {
+            criteria.andStatusEqualTo(dataLandLevel.getStatus());
+        } else {
+            criteria.andStatusNotEqualTo(ProjectStatusEnum.DRAFT.getKey());
+        }
+
         example.setOrderByClause("release_date desc");
         return dataLandLevelMapper.selectByExample(example);
     }
