@@ -17,15 +17,17 @@ public class BasicApplyBatchDetail {
 
     private String displayName;
 
-    private Integer caseTablePid;
-
-    private Integer upgradeTableId;
-
     private Boolean bisStandard;
 
     private Integer quoteId;
 
     private String baseType;
+
+    private Integer caseTablePid;
+
+    private Boolean bisEnable;
+
+    private Integer upgradeTableId;
 
     private Boolean bisDelete;
 
@@ -34,7 +36,6 @@ public class BasicApplyBatchDetail {
     private Date gmtCreated;
 
     private Date gmtModified;
-
 
     public Integer getId() {
         return id;
@@ -92,30 +93,6 @@ public class BasicApplyBatchDetail {
         this.displayName = displayName == null ? null : displayName.trim();
     }
 
-    public String getCreator() {
-        return creator;
-    }
-
-    public void setCreator(String creator) {
-        this.creator = creator == null ? null : creator.trim();
-    }
-
-    public Date getGmtCreated() {
-        return gmtCreated;
-    }
-
-    public void setGmtCreated(Date gmtCreated) {
-        this.gmtCreated = gmtCreated;
-    }
-
-    public Date getGmtModified() {
-        return gmtModified;
-    }
-
-    public void setGmtModified(Date gmtModified) {
-        this.gmtModified = gmtModified;
-    }
-
     public Boolean getBisStandard() {
         return bisStandard;
     }
@@ -148,6 +125,14 @@ public class BasicApplyBatchDetail {
         this.caseTablePid = caseTablePid;
     }
 
+    public Boolean getBisEnable() {
+        return bisEnable;
+    }
+
+    public void setBisEnable(Boolean bisEnable) {
+        this.bisEnable = bisEnable;
+    }
+
     public Integer getUpgradeTableId() {
         return upgradeTableId;
     }
@@ -162,5 +147,29 @@ public class BasicApplyBatchDetail {
 
     public void setBisDelete(Boolean bisDelete) {
         this.bisDelete = bisDelete;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator == null ? null : creator.trim();
+    }
+
+    public Date getGmtCreated() {
+        return gmtCreated;
+    }
+
+    public void setGmtCreated(Date gmtCreated) {
+        this.gmtCreated = gmtCreated;
+    }
+
+    public Date getGmtModified() {
+        return gmtModified;
+    }
+
+    public void setGmtModified(Date gmtModified) {
+        this.gmtModified = gmtModified;
     }
 }
