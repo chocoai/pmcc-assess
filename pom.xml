@@ -492,7 +492,7 @@
             <dependency>
                 <groupId>net.bull.javamelody</groupId>
                 <artifactId>javamelody-core</artifactId>
-                <version>1.70.0</version>
+                <version>1.74.0</version>
             </dependency>
 
             <!-- https://mvnrepository.com/artifact/javax.websocket/javax.websocket-api -->
