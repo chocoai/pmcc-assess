@@ -29,7 +29,7 @@
             }
         });
         $("#select_land_level_list").bootstrapTable('destroy');
-        TableInit("select_land_level_list", getContextPath() + "/dataLandLevel/getDataLandLevelDetailListByArea", cols, {
+        TableInit("select_land_level_list", getContextPath() + "/dataLandLevel/getDataLandLevelDetailTableVo", cols, {
             province: province,
             city: city,
             district: district
