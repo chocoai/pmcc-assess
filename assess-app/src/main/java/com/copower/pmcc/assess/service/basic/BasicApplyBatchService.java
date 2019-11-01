@@ -272,6 +272,7 @@ public class BasicApplyBatchService {
     }
 
     public void deleteBatchByPlanDetailsId(Integer planDetailsId) throws Exception {
+        if (planDetailsId == null) return;
         BasicApplyBatch applyBatch = getBasicApplyBatchByPlanDetailsId(planDetailsId);
         List<BasicApply> basicApplyList = basicApplyService.getBasicApplyListByPlanDetailsId(planDetailsId);
         if (CollectionUtils.isNotEmpty(basicApplyList)) {

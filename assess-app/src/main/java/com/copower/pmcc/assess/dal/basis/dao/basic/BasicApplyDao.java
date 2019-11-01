@@ -34,7 +34,7 @@ public class BasicApplyDao {
      * @param estateName
      * @return
      */
-    public List<BasicApply> getBasicApplyListByName(String estateName,String userAccount, Boolean draftFlag) {
+    public List<BasicApply> getBasicApplyListByName(String estateName, String userAccount, Boolean draftFlag) {
         BasicApplyExample example = new BasicApplyExample();
         BasicApplyExample.Criteria criteria = example.createCriteria();
         if (StringUtils.isNotBlank(estateName)) {
@@ -43,14 +43,15 @@ public class BasicApplyDao {
         if (StringUtils.isNotBlank(userAccount)) {
             criteria.andCreatorEqualTo(userAccount);
         }
-        criteria.andPlanDetailsIdIsNull().andDraftFlagEqualTo(draftFlag);
+        criteria.andDraftFlagEqualTo(draftFlag).andBisDeleteEqualTo(false);
         example.setOrderByClause("id desc");
         return basicApplyMapper.selectByExample(example);
     }
 
     public List<BasicApply> getBasicApplyList(BasicApply basicApply) {
         BasicApplyExample example = new BasicApplyExample();
-        MybatisUtils.convertObj2Example(basicApply, example);
+        BasicApplyExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
+        MybatisUtils.convertObj2Criteria(basicApply,criteria);
         example.setOrderByClause("id desc");
         return basicApplyMapper.selectByExample(example);
     }
@@ -65,10 +66,6 @@ public class BasicApplyDao {
         return basicApplyMapper.insertSelective(basicApply) > 0;
     }
 
-    public Integer saveBasicApply(BasicApply basicApply) {
-        basicApplyMapper.insertSelective(basicApply);
-        return basicApply.getId();
-    }
 
     /**
      * 编辑
@@ -87,7 +84,10 @@ public class BasicApplyDao {
      * @return
      */
     public boolean deleteBasicApply(Integer id) {
-        return basicApplyMapper.deleteByPrimaryKey(id) > 0;
+        BasicApply basicApply = getBasicApplyById(id);
+        if (basicApply == null) return false;
+        basicApply.setBisDelete(true);
+        return basicApplyMapper.updateByPrimaryKeySelective(basicApply) > 0;
     }
 
     /**
@@ -104,7 +104,7 @@ public class BasicApplyDao {
         return basicApplyMapper.countByExample(example);
     }
 
-    public List<BasicApply> getBasicEstateIdNull(){
+    public List<BasicApply> getBasicEstateIdNull() {
         BasicApplyExample example = new BasicApplyExample();
         example.createCriteria().andBasicEstateIdIsNull();
         return basicApplyMapper.selectByExample(example);
