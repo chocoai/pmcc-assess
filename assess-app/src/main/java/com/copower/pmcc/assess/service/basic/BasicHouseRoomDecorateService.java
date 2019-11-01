@@ -65,7 +65,7 @@ public class BasicHouseRoomDecorateService {
     public Integer saveAndUpdateBasicHouseRoomDecorate(BasicHouseRoomDecorate basicHouseRoomDecorate, boolean updateNull) throws Exception {
         if (basicHouseRoomDecorate.getId() == null || basicHouseRoomDecorate.getId().intValue() == 0) {
             basicHouseRoomDecorate.setCreator(commonService.thisUserAccount());
-            Integer id = basicHouseRoomDecorateDao.saveBasicHouseRoomDecorate(basicHouseRoomDecorate);
+            Integer id = basicHouseRoomDecorateDao.addBasicHouseRoomDecorate(basicHouseRoomDecorate);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicHouseRoomDecorate.class), id);
             return id;
         } else {

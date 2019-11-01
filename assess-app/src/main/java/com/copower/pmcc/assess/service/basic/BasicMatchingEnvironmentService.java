@@ -65,7 +65,7 @@ public class BasicMatchingEnvironmentService {
     public Integer saveAndUpdateBasicMatchingEnvironment(BasicMatchingEnvironment basicMatchingEnvironment, boolean updateNull) throws Exception {
         if (basicMatchingEnvironment.getId() == null || basicMatchingEnvironment.getId().intValue() == 0) {
             basicMatchingEnvironment.setCreator(commonService.thisUserAccount());
-            Integer id = basicMatchingEnvironmentDao.saveBasicMatchingEnvironment(basicMatchingEnvironment);
+            Integer id = basicMatchingEnvironmentDao.addBasicMatchingEnvironment(basicMatchingEnvironment);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicMatchingEnvironment.class), id);
             return id;
         } else {
@@ -102,10 +102,6 @@ public class BasicMatchingEnvironmentService {
      */
     public List<BasicMatchingEnvironment> basicMatchingEnvironmentList(BasicMatchingEnvironment basicMatchingEnvironment) throws Exception {
         return basicMatchingEnvironmentDao.basicMatchingEnvironmentList(basicMatchingEnvironment);
-    }
-
-    public void removeBasicMatchingEnvironment(BasicMatchingEnvironment basicMatchingEnvironment) throws Exception {
-        basicMatchingEnvironmentDao.removeBasicMatchingEnvironment(basicMatchingEnvironment);
     }
 
     public BootstrapTableVo getBootstrapTableVo(BasicMatchingEnvironment basicMatchingEnvironment) throws Exception {

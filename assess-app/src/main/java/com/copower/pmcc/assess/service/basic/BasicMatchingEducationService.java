@@ -65,7 +65,7 @@ public class BasicMatchingEducationService {
     public Integer saveAndUpdateBasicMatchingEducation(BasicMatchingEducation basicMatchingEducation, boolean updateNull) throws Exception {
         if (basicMatchingEducation.getId() == null || basicMatchingEducation.getId().intValue() == 0) {
             basicMatchingEducation.setCreator(commonService.thisUserAccount());
-            Integer id = basicMatchingEducationDao.saveBasicMatchingEducation(basicMatchingEducation);
+            Integer id = basicMatchingEducationDao.addBasicMatchingEducation(basicMatchingEducation);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicMatchingEducation.class), id);
             return id;
         } else {
@@ -104,10 +104,6 @@ public class BasicMatchingEducationService {
         return basicMatchingEducationDao.basicMatchingEducationList(basicMatchingEducation);
     }
 
-    public void removeBasicMatchingEducation(BasicMatchingEducation basicMatchingEducation) throws Exception {
-        basicMatchingEducationDao.removeBasicMatchingEducation(basicMatchingEducation);
-    }
-
     public BootstrapTableVo getBootstrapTableVo(BasicMatchingEducation basicMatchingEducation) throws Exception {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
@@ -141,12 +137,7 @@ public class BasicMatchingEducationService {
 
     public void removeIds(String str) {
         if (StringUtils.isNotBlank(str)) {
-            List<Integer> ids = new ArrayList<>(10);
-            for (String id : str.split(",")) {
-                if (NumberUtils.isNumber(id)) {
-                    ids.add(Integer.parseInt(id));
-                }
-            }
+            List<Integer> ids = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(str));
             basicMatchingEducationDao.removeIds(ids);
         }
     }

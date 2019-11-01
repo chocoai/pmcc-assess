@@ -15,6 +15,8 @@ public class BasicMatchingMedical {
 
     private Integer distance;
 
+    private Boolean bisDelete;
+
     private String creator;
 
     private Date gmtCreated;
@@ -67,6 +69,14 @@ public class BasicMatchingMedical {
 
     public void setDistance(Integer distance) {
         this.distance = distance;
+    }
+
+    public Boolean getBisDelete() {
+        return bisDelete;
+    }
+
+    public void setBisDelete(Boolean bisDelete) {
+        this.bisDelete = bisDelete;
     }
 
     public String getCreator() {

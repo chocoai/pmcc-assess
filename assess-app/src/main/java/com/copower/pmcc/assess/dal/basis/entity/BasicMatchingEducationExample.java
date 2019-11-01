@@ -545,6 +545,66 @@ public class BasicMatchingEducationExample {
             return (Criteria) this;
         }
 
+        public Criteria andBisDeleteIsNull() {
+            addCriterion("bis_delete is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteIsNotNull() {
+            addCriterion("bis_delete is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteEqualTo(Boolean value) {
+            addCriterion("bis_delete =", value, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteNotEqualTo(Boolean value) {
+            addCriterion("bis_delete <>", value, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteGreaterThan(Boolean value) {
+            addCriterion("bis_delete >", value, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_delete >=", value, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteLessThan(Boolean value) {
+            addCriterion("bis_delete <", value, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_delete <=", value, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteIn(List<Boolean> values) {
+            addCriterion("bis_delete in", values, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteNotIn(List<Boolean> values) {
+            addCriterion("bis_delete not in", values, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_delete between", value1, value2, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_delete not between", value1, value2, "bisDelete");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatorIsNull() {
             addCriterion("creator is null");
             return (Criteria) this;

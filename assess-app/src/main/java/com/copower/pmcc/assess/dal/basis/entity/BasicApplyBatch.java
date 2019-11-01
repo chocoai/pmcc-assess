@@ -27,9 +27,13 @@ public class BasicApplyBatch {
 
     private Boolean showTab;
 
+    private Integer caseEstateId;
+
     private String status;
 
     private Boolean draftFlag;
+
+    private Boolean bisDelete;
 
     private String creator;
 
@@ -133,6 +137,14 @@ public class BasicApplyBatch {
         this.showTab = showTab;
     }
 
+    public Integer getCaseEstateId() {
+        return caseEstateId;
+    }
+
+    public void setCaseEstateId(Integer caseEstateId) {
+        this.caseEstateId = caseEstateId;
+    }
+
     public String getStatus() {
         return status;
     }
@@ -147,6 +159,14 @@ public class BasicApplyBatch {
 
     public void setDraftFlag(Boolean draftFlag) {
         this.draftFlag = draftFlag;
+    }
+
+    public Boolean getBisDelete() {
+        return bisDelete;
+    }
+
+    public void setBisDelete(Boolean bisDelete) {
+        this.bisDelete = bisDelete;
     }
 
     public String getCreator() {

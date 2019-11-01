@@ -21,32 +21,37 @@ public class BasicBuildingOutfitDao {
     @Autowired
     private BasicBuildingOutfitMapper basicBuildingOutfitMapper;
 
-    public BasicBuildingOutfit getBasicBuildingOutfitById(Integer id) throws SQLException {
+    public BasicBuildingOutfit getBasicBuildingOutfitById(Integer id) {
         return basicBuildingOutfitMapper.selectByPrimaryKey(id);
     }
 
-    public Integer saveBasicBuildingOutfit(BasicBuildingOutfit basicBuildingOutfit) throws SQLException {
+    public Integer saveBasicBuildingOutfit(BasicBuildingOutfit basicBuildingOutfit) {
         basicBuildingOutfitMapper.insertSelective(basicBuildingOutfit);
         return basicBuildingOutfit.getId();
     }
 
-    public boolean updateBasicBuildingOutfit(BasicBuildingOutfit basicBuildingOutfit, boolean updateNull) throws SQLException {
+    public boolean updateBasicBuildingOutfit(BasicBuildingOutfit basicBuildingOutfit, boolean updateNull) {
         return updateNull ? basicBuildingOutfitMapper.updateByPrimaryKey(basicBuildingOutfit) == 1 : basicBuildingOutfitMapper.updateByPrimaryKeySelective(basicBuildingOutfit) == 1;
     }
 
-    public void removeBasicBuildingOutfit(BasicBuildingOutfit basicBuildingOutfit) throws SQLException {
+    public void removeBasicBuildingOutfit(BasicBuildingOutfit basicBuildingOutfit) {
         BasicBuildingOutfitExample example = new BasicBuildingOutfitExample();
-        MybatisUtils.convertObj2Example(basicBuildingOutfit, example);
+        BasicBuildingOutfitExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
+        MybatisUtils.convertObj2Criteria(basicBuildingOutfit, criteria);
         basicBuildingOutfitMapper.deleteByExample(example);
     }
 
-    public boolean deleteBasicBuildingOutfit(Integer id) throws SQLException {
-        return basicBuildingOutfitMapper.deleteByPrimaryKey(id) == 1;
+    public boolean deleteBasicBuildingOutfit(Integer id) {
+        BasicBuildingOutfit basicBuildingOutfit = getBasicBuildingOutfitById(id);
+        if (basicBuildingOutfit == null) return false;
+        basicBuildingOutfit.setBisDelete(true);
+        return basicBuildingOutfitMapper.updateByPrimaryKeySelective(basicBuildingOutfit) == 1;
     }
 
     public List<BasicBuildingOutfit> basicBuildingOutfitList(BasicBuildingOutfit basicBuildingOutfit) {
         BasicBuildingOutfitExample example = new BasicBuildingOutfitExample();
-        MybatisUtils.convertObj2Example(basicBuildingOutfit, example);
+        BasicBuildingOutfitExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
+        MybatisUtils.convertObj2Criteria(basicBuildingOutfit, criteria);
         return basicBuildingOutfitMapper.selectByExample(example);
     }
 }

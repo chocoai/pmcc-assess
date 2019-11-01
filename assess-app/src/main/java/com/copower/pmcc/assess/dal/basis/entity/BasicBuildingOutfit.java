@@ -17,13 +17,15 @@ public class BasicBuildingOutfit {
 
     private Integer materialGrade;
 
+    private String buildNumber;
+
+    private Boolean bisDelete;
+
     private String creator;
 
     private Date gmtCreated;
 
     private Date gmtModified;
-
-    private String buildNumber;
 
     public Integer getId() {
         return id;
@@ -81,6 +83,22 @@ public class BasicBuildingOutfit {
         this.materialGrade = materialGrade;
     }
 
+    public String getBuildNumber() {
+        return buildNumber;
+    }
+
+    public void setBuildNumber(String buildNumber) {
+        this.buildNumber = buildNumber == null ? null : buildNumber.trim();
+    }
+
+    public Boolean getBisDelete() {
+        return bisDelete;
+    }
+
+    public void setBisDelete(Boolean bisDelete) {
+        this.bisDelete = bisDelete;
+    }
+
     public String getCreator() {
         return creator;
     }
@@ -103,13 +121,5 @@ public class BasicBuildingOutfit {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public String getBuildNumber() {
-        return buildNumber;
-    }
-
-    public void setBuildNumber(String buildNumber) {
-        this.buildNumber = buildNumber == null ? null : buildNumber.trim();
     }
 }

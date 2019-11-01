@@ -39,10 +39,11 @@
     <result column="supply_gas" property="supplyGas" jdbcType="INTEGER" />
     <result column="infrastructure_completeness" property="infrastructureCompleteness" jdbcType="INTEGER" />
     <result column="location_describe" property="locationDescribe" jdbcType="VARCHAR" />
+    <result column="map_id" property="mapId" jdbcType="INTEGER" />
+    <result column="bis_delete" property="bisDelete" jdbcType="BIT" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
-    <result column="map_id" property="mapId" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -108,8 +109,8 @@
     floor_area, cover_an_area, volumetric_rate, greening_rate, open_time, building_number, 
     position, description, average_price, price_range, supply_heating, supply_power, 
     supply_communication, supply_road, supply_water, drain_water, infrastructure, supply_gas, 
-    infrastructure_completeness, location_describe, creator, gmt_created, gmt_modified, 
-    map_id
+    infrastructure_completeness, location_describe, map_id, bis_delete, creator, gmt_created, 
+    gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicEstateExample" >
     select
@@ -157,8 +158,9 @@
       supply_power, supply_communication, supply_road, 
       supply_water, drain_water, infrastructure, 
       supply_gas, infrastructure_completeness, 
-      location_describe, creator, gmt_created, 
-      gmt_modified, map_id)
+      location_describe, map_id, bis_delete, 
+      creator, gmt_created, gmt_modified
+      )
     values (#{applyId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, 
       #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, #{blockId,jdbcType=INTEGER}, 
       #{blockName,jdbcType=VARCHAR}, #{blockDescription,jdbcType=VARCHAR}, #{developer,jdbcType=VARCHAR}, 
@@ -171,8 +173,9 @@
       #{supplyPower,jdbcType=INTEGER}, #{supplyCommunication,jdbcType=INTEGER}, #{supplyRoad,jdbcType=INTEGER}, 
       #{supplyWater,jdbcType=INTEGER}, #{drainWater,jdbcType=INTEGER}, #{infrastructure,jdbcType=VARCHAR}, 
       #{supplyGas,jdbcType=INTEGER}, #{infrastructureCompleteness,jdbcType=INTEGER}, 
-      #{locationDescribe,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP}, #{mapId,jdbcType=INTEGER})
+      #{locationDescribe,jdbcType=VARCHAR}, #{mapId,jdbcType=INTEGER}, #{bisDelete,jdbcType=BIT}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicEstate" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -288,6 +291,12 @@
       <if test="locationDescribe != null" >
         location_describe,
       </if>
+      <if test="mapId != null" >
+        map_id,
+      </if>
+      <if test="bisDelete != null" >
+        bis_delete,
+      </if>
       <if test="creator != null" >
         creator,
       </if>
@@ -296,9 +305,6 @@
       </if>
       <if test="gmtModified != null" >
         gmt_modified,
-      </if>
-      <if test="mapId != null" >
-        map_id,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -410,6 +416,12 @@
       <if test="locationDescribe != null" >
         #{locationDescribe,jdbcType=VARCHAR},
       </if>
+      <if test="mapId != null" >
+        #{mapId,jdbcType=INTEGER},
+      </if>
+      <if test="bisDelete != null" >
+        #{bisDelete,jdbcType=BIT},
+      </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
       </if>
@@ -418,9 +430,6 @@
       </if>
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="mapId != null" >
-        #{mapId,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -544,6 +553,12 @@
       <if test="record.locationDescribe != null" >
         location_describe = #{record.locationDescribe,jdbcType=VARCHAR},
       </if>
+      <if test="record.mapId != null" >
+        map_id = #{record.mapId,jdbcType=INTEGER},
+      </if>
+      <if test="record.bisDelete != null" >
+        bis_delete = #{record.bisDelete,jdbcType=BIT},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -552,9 +567,6 @@
       </if>
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.mapId != null" >
-        map_id = #{record.mapId,jdbcType=INTEGER},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -600,10 +612,11 @@
       supply_gas = #{record.supplyGas,jdbcType=INTEGER},
       infrastructure_completeness = #{record.infrastructureCompleteness,jdbcType=INTEGER},
       location_describe = #{record.locationDescribe,jdbcType=VARCHAR},
+      map_id = #{record.mapId,jdbcType=INTEGER},
+      bis_delete = #{record.bisDelete,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      map_id = #{record.mapId,jdbcType=INTEGER}
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -719,6 +732,12 @@
       <if test="locationDescribe != null" >
         location_describe = #{locationDescribe,jdbcType=VARCHAR},
       </if>
+      <if test="mapId != null" >
+        map_id = #{mapId,jdbcType=INTEGER},
+      </if>
+      <if test="bisDelete != null" >
+        bis_delete = #{bisDelete,jdbcType=BIT},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -727,9 +746,6 @@
       </if>
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="mapId != null" >
-        map_id = #{mapId,jdbcType=INTEGER},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -772,10 +788,11 @@
       supply_gas = #{supplyGas,jdbcType=INTEGER},
       infrastructure_completeness = #{infrastructureCompleteness,jdbcType=INTEGER},
       location_describe = #{locationDescribe,jdbcType=VARCHAR},
+      map_id = #{mapId,jdbcType=INTEGER},
+      bis_delete = #{bisDelete,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      map_id = #{mapId,jdbcType=INTEGER}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

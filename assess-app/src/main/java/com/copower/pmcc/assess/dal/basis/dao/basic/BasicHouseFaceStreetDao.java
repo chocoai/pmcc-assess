@@ -21,32 +21,30 @@ public class BasicHouseFaceStreetDao {
     @Autowired
     private BasicHouseFaceStreetMapper basicHouseFaceStreetMapper;
 
-    public BasicHouseFaceStreet getBasicHouseFaceStreetById(Integer id) throws SQLException {
+    public BasicHouseFaceStreet getBasicHouseFaceStreetById(Integer id) {
         return basicHouseFaceStreetMapper.selectByPrimaryKey(id);
     }
 
-    public Integer saveBasicHouseFaceStreet(BasicHouseFaceStreet basicHouseFaceStreet) throws SQLException {
+    public Integer saveBasicHouseFaceStreet(BasicHouseFaceStreet basicHouseFaceStreet) {
         basicHouseFaceStreetMapper.insertSelective(basicHouseFaceStreet);
         return basicHouseFaceStreet.getId();
     }
 
-    public boolean updateBasicHouseFaceStreet(BasicHouseFaceStreet basicHouseFaceStreet, boolean updateNull) throws SQLException {
+    public boolean updateBasicHouseFaceStreet(BasicHouseFaceStreet basicHouseFaceStreet, boolean updateNull) {
         return updateNull ? basicHouseFaceStreetMapper.updateByPrimaryKey(basicHouseFaceStreet) == 1 : basicHouseFaceStreetMapper.updateByPrimaryKeySelective(basicHouseFaceStreet) == 1;
     }
 
-    public boolean deleteBasicHouseFaceStreet(BasicHouseFaceStreet basicHouseFaceStreet) throws SQLException {
-        BasicHouseFaceStreetExample example = new BasicHouseFaceStreetExample();
-        MybatisUtils.convertObj2Example(basicHouseFaceStreet, example);
-        return basicHouseFaceStreetMapper.deleteByExample(example) > 0;
-    }
-
-    public boolean deleteBasicHouseFaceStreet(Integer id) throws SQLException {
-        return basicHouseFaceStreetMapper.deleteByPrimaryKey(id) == 1;
+    public boolean deleteBasicHouseFaceStreet(Integer id) {
+        BasicHouseFaceStreet basicHouseFaceStreet = getBasicHouseFaceStreetById(id);
+        if (basicHouseFaceStreet == null) return false;
+        basicHouseFaceStreet.setBisDelete(true);
+        return basicHouseFaceStreetMapper.updateByPrimaryKeySelective(basicHouseFaceStreet) == 1;
     }
 
     public List<BasicHouseFaceStreet> basicHouseFaceStreetList(BasicHouseFaceStreet basicHouseFaceStreet) {
         BasicHouseFaceStreetExample example = new BasicHouseFaceStreetExample();
-        MybatisUtils.convertObj2Example(basicHouseFaceStreet, example);
+        BasicHouseFaceStreetExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
+        MybatisUtils.convertObj2Criteria(basicHouseFaceStreet, criteria);
         return basicHouseFaceStreetMapper.selectByExample(example);
     }
 
@@ -58,7 +56,7 @@ public class BasicHouseFaceStreetDao {
      */
     public int countByHouseId(Integer houseId) {
         BasicHouseFaceStreetExample example = new BasicHouseFaceStreetExample();
-        example.createCriteria().andHouseIdEqualTo(houseId);
+        example.createCriteria().andBisDeleteEqualTo(false).andHouseIdEqualTo(houseId);
         return basicHouseFaceStreetMapper.countByExample(example);
     }
 }

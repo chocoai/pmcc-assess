@@ -9,6 +9,7 @@
     <result column="entity_condition" property="entityCondition" jdbcType="VARCHAR" />
     <result column="entity_condition_content" property="entityConditionContent" jdbcType="VARCHAR" />
     <result column="score" property="score" jdbcType="DECIMAL" />
+    <result column="bis_delete" property="bisDelete" jdbcType="BIT" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -73,7 +74,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, house_id, damaged_degree_id, type, entity_condition, entity_condition_content, 
-    score, creator, gmt_created, gmt_modified
+    score, bis_delete, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseDamagedDegreeDetailExample" >
     select
@@ -111,12 +112,12 @@
     </selectKey>
     insert into tb_basic_house_damaged_degree_detail (house_id, damaged_degree_id, type, 
       entity_condition, entity_condition_content, 
-      score, creator, gmt_created, 
-      gmt_modified)
+      score, bis_delete, creator, 
+      gmt_created, gmt_modified)
     values (#{houseId,jdbcType=INTEGER}, #{damagedDegreeId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, 
       #{entityCondition,jdbcType=VARCHAR}, #{entityConditionContent,jdbcType=VARCHAR}, 
-      #{score,jdbcType=DECIMAL}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{score,jdbcType=DECIMAL}, #{bisDelete,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseDamagedDegreeDetail" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -141,6 +142,9 @@
       </if>
       <if test="score != null" >
         score,
+      </if>
+      <if test="bisDelete != null" >
+        bis_delete,
       </if>
       <if test="creator != null" >
         creator,
@@ -170,6 +174,9 @@
       </if>
       <if test="score != null" >
         #{score,jdbcType=DECIMAL},
+      </if>
+      <if test="bisDelete != null" >
+        #{bisDelete,jdbcType=BIT},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -212,6 +219,9 @@
       <if test="record.score != null" >
         score = #{record.score,jdbcType=DECIMAL},
       </if>
+      <if test="record.bisDelete != null" >
+        bis_delete = #{record.bisDelete,jdbcType=BIT},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -235,6 +245,7 @@
       entity_condition = #{record.entityCondition,jdbcType=VARCHAR},
       entity_condition_content = #{record.entityConditionContent,jdbcType=VARCHAR},
       score = #{record.score,jdbcType=DECIMAL},
+      bis_delete = #{record.bisDelete,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -263,6 +274,9 @@
       <if test="score != null" >
         score = #{score,jdbcType=DECIMAL},
       </if>
+      <if test="bisDelete != null" >
+        bis_delete = #{bisDelete,jdbcType=BIT},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -283,6 +297,7 @@
       entity_condition = #{entityCondition,jdbcType=VARCHAR},
       entity_condition_content = #{entityConditionContent,jdbcType=VARCHAR},
       score = #{score,jdbcType=DECIMAL},
+      bis_delete = #{bisDelete,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

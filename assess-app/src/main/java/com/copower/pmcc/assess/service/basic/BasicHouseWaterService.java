@@ -64,7 +64,7 @@ public class BasicHouseWaterService {
     public Integer saveAndUpdateBasicHouseWater(BasicHouseWater basicHouseWater, boolean updateNull) throws Exception {
         if (basicHouseWater.getId() == null || basicHouseWater.getId().intValue() == 0) {
             basicHouseWater.setCreator(commonService.thisUserAccount());
-            Integer id = basicHouseWaterDao.saveBasicHouseWater(basicHouseWater);
+            Integer id = basicHouseWaterDao.addBasicHouseWater(basicHouseWater);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicHouseWater.class), id);
             return id;
         } else {
@@ -90,10 +90,6 @@ public class BasicHouseWaterService {
      */
     public boolean deleteBasicHouseWater(Integer id) throws Exception {
         return basicHouseWaterDao.deleteBasicHouseWater(id);
-    }
-
-    public boolean deleteBasicHouseWater(BasicHouseWater basicHouseWater) throws Exception {
-        return basicHouseWaterDao.deleteBasicHouseWater(basicHouseWater);
     }
 
     /**

@@ -16,21 +16,15 @@ public interface BasicHouseIntelligentMapper {
 
     int insertSelective(BasicHouseIntelligent record);
 
-    List<BasicHouseIntelligent> selectByExampleWithBLOBs(BasicHouseIntelligentExample example);
-
     List<BasicHouseIntelligent> selectByExample(BasicHouseIntelligentExample example);
 
     BasicHouseIntelligent selectByPrimaryKey(Integer id);
 
     int updateByExampleSelective(@Param("record") BasicHouseIntelligent record, @Param("example") BasicHouseIntelligentExample example);
 
-    int updateByExampleWithBLOBs(@Param("record") BasicHouseIntelligent record, @Param("example") BasicHouseIntelligentExample example);
-
     int updateByExample(@Param("record") BasicHouseIntelligent record, @Param("example") BasicHouseIntelligentExample example);
 
     int updateByPrimaryKeySelective(BasicHouseIntelligent record);
-
-    int updateByPrimaryKeyWithBLOBs(BasicHouseIntelligent record);
 
     int updateByPrimaryKey(BasicHouseIntelligent record);
 }

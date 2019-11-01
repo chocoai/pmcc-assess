@@ -66,13 +66,15 @@ public class BasicHouseTrading {
 
     private Integer priceType;
 
+    private Integer priceConnotation;
+
+    private Boolean bisDelete;
+
     private String creator;
 
     private Date gmtCreated;
 
     private Date gmtModified;
-
-    private Integer priceConnotation;
 
     public Integer getId() {
         return id;
@@ -322,6 +324,22 @@ public class BasicHouseTrading {
         this.priceType = priceType;
     }
 
+    public Integer getPriceConnotation() {
+        return priceConnotation;
+    }
+
+    public void setPriceConnotation(Integer priceConnotation) {
+        this.priceConnotation = priceConnotation;
+    }
+
+    public Boolean getBisDelete() {
+        return bisDelete;
+    }
+
+    public void setBisDelete(Boolean bisDelete) {
+        this.bisDelete = bisDelete;
+    }
+
     public String getCreator() {
         return creator;
     }
@@ -344,13 +362,5 @@ public class BasicHouseTrading {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public Integer getPriceConnotation() {
-        return priceConnotation;
-    }
-
-    public void setPriceConnotation(Integer priceConnotation) {
-        this.priceConnotation = priceConnotation;
     }
 }

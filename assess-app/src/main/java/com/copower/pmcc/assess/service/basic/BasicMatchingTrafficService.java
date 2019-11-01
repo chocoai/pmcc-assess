@@ -65,7 +65,7 @@ public class BasicMatchingTrafficService {
     public Integer saveAndUpdateBasicMatchingTraffic(BasicMatchingTraffic basicMatchingTraffic, boolean updateNull) throws Exception {
         if (basicMatchingTraffic.getId() == null || basicMatchingTraffic.getId().intValue() == 0) {
             basicMatchingTraffic.setCreator(commonService.thisUserAccount());
-            Integer id = basicMatchingTrafficDao.saveBasicMatchingTraffic(basicMatchingTraffic);
+            Integer id = basicMatchingTrafficDao.addBasicMatchingTraffic(basicMatchingTraffic);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicMatchingTraffic.class), id);
             return  id ;
         } else {
@@ -102,10 +102,6 @@ public class BasicMatchingTrafficService {
      */
     public List<BasicMatchingTraffic> basicMatchingTrafficList(BasicMatchingTraffic basicMatchingTraffic) throws Exception {
         return basicMatchingTrafficDao.basicMatchingTrafficList(basicMatchingTraffic);
-    }
-
-    public void removeBasicMatchingTraffic(BasicMatchingTraffic basicMatchingTraffic)throws Exception{
-        basicMatchingTrafficDao.removeBasicMatchingTraffic(basicMatchingTraffic);
     }
 
     public BootstrapTableVo getBootstrapTableVo(BasicMatchingTraffic basicMatchingTraffic) throws Exception {

@@ -22,32 +22,36 @@ public class BasicEstateLandStateDao {
     @Autowired
     private BasicEstateLandStateMapper basicEstateLandStateMapper;
 
-    public BasicEstateLandState getBasicEstateLandStateById(Integer id) throws SQLException {
+    public BasicEstateLandState getBasicEstateLandStateById(Integer id) {
         return basicEstateLandStateMapper.selectByPrimaryKey(id);
     }
 
-    public Integer addBasicEstateLandState(BasicEstateLandState basicEstateLandState) throws SQLException {
+    public Integer addBasicEstateLandState(BasicEstateLandState basicEstateLandState) {
         basicEstateLandStateMapper.insertSelective(basicEstateLandState);
         return basicEstateLandState.getId();
     }
 
-    public boolean updateBasicEstateLandState(BasicEstateLandState basicEstateLandState, boolean updateNull) throws SQLException {
+    public boolean updateBasicEstateLandState(BasicEstateLandState basicEstateLandState, boolean updateNull) {
         return updateNull ? basicEstateLandStateMapper.updateByPrimaryKey(basicEstateLandState) == 1 : basicEstateLandStateMapper.updateByPrimaryKeySelective(basicEstateLandState) == 1;
     }
 
-    public boolean deleteBasicEstateLandState(Integer id) throws SQLException {
-        return basicEstateLandStateMapper.deleteByPrimaryKey(id) == 1;
+    public boolean deleteBasicEstateLandState(Integer id) {
+        BasicEstateLandState basicEstateLandState = getBasicEstateLandStateById(id);
+        if (basicEstateLandState == null) return false;
+        basicEstateLandState.setBisDelete(true);
+        return basicEstateLandStateMapper.updateByPrimaryKeySelective(basicEstateLandState) == 1;
     }
 
-    public List<BasicEstateLandState> basicEstateLandStateList(BasicEstateLandState basicEstateLandState) throws SQLException {
+    public List<BasicEstateLandState> basicEstateLandStateList(BasicEstateLandState basicEstateLandState) {
         BasicEstateLandStateExample example = new BasicEstateLandStateExample();
-        MybatisUtils.convertObj2Example(basicEstateLandState, example);
+        BasicEstateLandStateExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
+        MybatisUtils.convertObj2Criteria(basicEstateLandState, criteria);
         return basicEstateLandStateMapper.selectByExample(example);
     }
 
-    public BasicEstateLandState getLandStateByEstateId(Integer estateId) throws SQLException {
+    public BasicEstateLandState getLandStateByEstateId(Integer estateId) {
         BasicEstateLandStateExample example = new BasicEstateLandStateExample();
-        example.createCriteria().andEstateIdEqualTo(estateId);
+        example.createCriteria().andBisDeleteEqualTo(false).andEstateIdEqualTo(estateId);
         List<BasicEstateLandState> landStates = basicEstateLandStateMapper.selectByExample(example);
         if (CollectionUtils.isEmpty(landStates)) return null;
         return landStates.get(0);

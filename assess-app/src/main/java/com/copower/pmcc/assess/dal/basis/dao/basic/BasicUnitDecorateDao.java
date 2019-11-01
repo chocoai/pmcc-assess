@@ -20,32 +20,30 @@ public class BasicUnitDecorateDao {
     @Autowired
     private BasicUnitDecorateMapper basicUnitDecorateMapper;
 
-    public BasicUnitDecorate getBasicUnitDecorateById(Integer id) throws SQLException {
+    public BasicUnitDecorate getBasicUnitDecorateById(Integer id) {
         return basicUnitDecorateMapper.selectByPrimaryKey(id);
     }
 
-    public Integer saveBasicUnitDecorate(BasicUnitDecorate basicUnitDecorate) throws SQLException {
+    public Integer addBasicUnitDecorate(BasicUnitDecorate basicUnitDecorate) {
         basicUnitDecorateMapper.insertSelective(basicUnitDecorate);
         return basicUnitDecorate.getId();
     }
 
-    public boolean updateBasicUnitDecorate(BasicUnitDecorate basicUnitDecorate, boolean updateNull) throws SQLException {
+    public boolean updateBasicUnitDecorate(BasicUnitDecorate basicUnitDecorate, boolean updateNull) {
         return updateNull ? basicUnitDecorateMapper.updateByPrimaryKey(basicUnitDecorate) == 1 : basicUnitDecorateMapper.updateByPrimaryKeySelective(basicUnitDecorate) == 1;
     }
 
-    public void removeBasicUnitDecorate(BasicUnitDecorate basicUnitDecorate) throws SQLException {
-        BasicUnitDecorateExample example = new BasicUnitDecorateExample();
-        MybatisUtils.convertObj2Example(basicUnitDecorate, example);
-        basicUnitDecorateMapper.deleteByExample(example);
+    public boolean deleteBasicUnitDecorate(Integer id) {
+        BasicUnitDecorate basicUnitDecorate = getBasicUnitDecorateById(id);
+        if (basicUnitDecorate == null) return false;
+        basicUnitDecorate.setBisDelete(true);
+        return basicUnitDecorateMapper.updateByPrimaryKeySelective(basicUnitDecorate) == 1;
     }
 
-    public boolean deleteBasicUnitDecorate(Integer id) throws SQLException {
-        return basicUnitDecorateMapper.deleteByPrimaryKey(id) == 1;
-    }
-
-    public List<BasicUnitDecorate> basicUnitDecorateList(BasicUnitDecorate basicUnitDecorate) throws SQLException {
+    public List<BasicUnitDecorate> basicUnitDecorateList(BasicUnitDecorate basicUnitDecorate) {
         BasicUnitDecorateExample example = new BasicUnitDecorateExample();
-        MybatisUtils.convertObj2Example(basicUnitDecorate, example);
+        BasicUnitDecorateExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
+        MybatisUtils.convertObj2Criteria(basicUnitDecorate, criteria);
         return basicUnitDecorateMapper.selectByExample(example);
     }
 }

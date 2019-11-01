@@ -103,10 +103,6 @@ public class BasicEstateParkingService {
         return basicEstateParkingDao.basicEstateParkingList(basicEstateParking);
     }
 
-    public void removeBasicEstateParking(BasicEstateParking basicEstateParking) throws Exception {
-        basicEstateParkingDao.removeBasicEstateParking(basicEstateParking);
-    }
-
     public BootstrapTableVo getBootstrapTableVo(BasicEstateParking basicEstateParking) throws Exception {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();

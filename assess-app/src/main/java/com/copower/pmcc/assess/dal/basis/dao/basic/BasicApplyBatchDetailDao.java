@@ -37,7 +37,8 @@ public class BasicApplyBatchDetailDao {
      */
     public BasicApplyBatchDetail getBasicApplyBatchDetail(BasicApplyBatchDetail basicApplyBatchDetail) {
         BasicApplyBatchDetailExample example = new BasicApplyBatchDetailExample();
-        MybatisUtils.convertObj2Example(basicApplyBatchDetail, example);
+        BasicApplyBatchDetailExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
+        MybatisUtils.convertObj2Criteria(basicApplyBatchDetail, criteria);
         List<BasicApplyBatchDetail> basicApplyBatchDetails = basicApplyBatchDetailMapper.selectByExample(example);
         if (CollectionUtils.isNotEmpty(basicApplyBatchDetails)) return basicApplyBatchDetails.get(0);
         return null;
@@ -46,12 +47,13 @@ public class BasicApplyBatchDetailDao {
     /**
      * 获取数据列表
      *
-     * @param examineInfo
+     * @param basicApplyBatchDetail
      * @return
      */
-    public List<BasicApplyBatchDetail> getInfoList(BasicApplyBatchDetail examineInfo) {
+    public List<BasicApplyBatchDetail> getInfoList(BasicApplyBatchDetail basicApplyBatchDetail) {
         BasicApplyBatchDetailExample example = new BasicApplyBatchDetailExample();
-        MybatisUtils.convertObj2Example(examineInfo, example);
+        BasicApplyBatchDetailExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
+        MybatisUtils.convertObj2Criteria(basicApplyBatchDetail, criteria);
         return basicApplyBatchDetailMapper.selectByExample(example);
     }
 
@@ -82,7 +84,10 @@ public class BasicApplyBatchDetailDao {
      * @return
      */
     public boolean deleteInfo(Integer id) {
-        return basicApplyBatchDetailMapper.deleteByPrimaryKey(id) > 0;
+        BasicApplyBatchDetail basicApplyBatchDetail = getInfoById(id);
+        if (basicApplyBatchDetail == null) return false;
+        basicApplyBatchDetail.setBisDelete(true);
+        return basicApplyBatchDetailMapper.updateByPrimaryKeySelective(basicApplyBatchDetail) > 0;
     }
 
 

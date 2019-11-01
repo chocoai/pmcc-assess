@@ -35,7 +35,7 @@ public class BasicApplyBatchDao {
         if (StringUtils.isNotBlank(userAccount)) {
             criteria.andCreatorEqualTo(userAccount);
         }
-        criteria.andDraftFlagEqualTo(draftFlag);
+        criteria.andDraftFlagEqualTo(draftFlag).andBisDeleteEqualTo(false);
         example.setOrderByClause("id desc");
         return basicApplyBatchMapper.selectByExample(example);
     }
@@ -58,7 +58,8 @@ public class BasicApplyBatchDao {
      */
     public BasicApplyBatch getBasicApplyBatch(BasicApplyBatch basicApplyBatch) {
         BasicApplyBatchExample example = new BasicApplyBatchExample();
-        MybatisUtils.convertObj2Example(basicApplyBatch, example);
+        BasicApplyBatchExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
+        MybatisUtils.convertObj2Criteria(basicApplyBatch, criteria);
         List<BasicApplyBatch> basicApplyBatchs = basicApplyBatchMapper.selectByExample(example);
         if (CollectionUtils.isNotEmpty(basicApplyBatchs)) return basicApplyBatchs.get(0);
         return null;
@@ -67,12 +68,13 @@ public class BasicApplyBatchDao {
     /**
      * 获取数据列表
      *
-     * @param examineInfo
+     * @param basicApplyBatch
      * @return
      */
-    public List<BasicApplyBatch> getInfoList(BasicApplyBatch examineInfo) {
+    public List<BasicApplyBatch> getInfoList(BasicApplyBatch basicApplyBatch) {
         BasicApplyBatchExample example = new BasicApplyBatchExample();
-        MybatisUtils.convertObj2Example(examineInfo, example);
+        BasicApplyBatchExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
+        MybatisUtils.convertObj2Criteria(basicApplyBatch, criteria);
         return basicApplyBatchMapper.selectByExample(example);
     }
 
@@ -103,7 +105,10 @@ public class BasicApplyBatchDao {
      * @return
      */
     public boolean deleteInfo(Integer id) {
-        return basicApplyBatchMapper.deleteByPrimaryKey(id) > 0;
+        BasicApplyBatch basicApplyBatch = getBasicApplyBatchById(id);
+        if(basicApplyBatch==null) return false;
+        basicApplyBatch.setBisDelete(true);
+        return basicApplyBatchMapper.updateByPrimaryKeySelective(basicApplyBatch) > 0;
     }
 
 

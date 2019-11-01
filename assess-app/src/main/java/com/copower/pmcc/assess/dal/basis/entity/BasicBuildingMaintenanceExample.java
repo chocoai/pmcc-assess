@@ -345,6 +345,76 @@ public class BasicBuildingMaintenanceExample {
             return (Criteria) this;
         }
 
+        public Criteria andBuildNumberIsNull() {
+            addCriterion("build_number is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildNumberIsNotNull() {
+            addCriterion("build_number is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildNumberEqualTo(String value) {
+            addCriterion("build_number =", value, "buildNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildNumberNotEqualTo(String value) {
+            addCriterion("build_number <>", value, "buildNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildNumberGreaterThan(String value) {
+            addCriterion("build_number >", value, "buildNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildNumberGreaterThanOrEqualTo(String value) {
+            addCriterion("build_number >=", value, "buildNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildNumberLessThan(String value) {
+            addCriterion("build_number <", value, "buildNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildNumberLessThanOrEqualTo(String value) {
+            addCriterion("build_number <=", value, "buildNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildNumberLike(String value) {
+            addCriterion("build_number like", value, "buildNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildNumberNotLike(String value) {
+            addCriterion("build_number not like", value, "buildNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildNumberIn(List<String> values) {
+            addCriterion("build_number in", values, "buildNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildNumberNotIn(List<String> values) {
+            addCriterion("build_number not in", values, "buildNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildNumberBetween(String value1, String value2) {
+            addCriterion("build_number between", value1, value2, "buildNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildNumberNotBetween(String value1, String value2) {
+            addCriterion("build_number not between", value1, value2, "buildNumber");
+            return (Criteria) this;
+        }
+
         public Criteria andMaterialQualityIsNull() {
             addCriterion("material_quality is null");
             return (Criteria) this;
@@ -402,6 +472,66 @@ public class BasicBuildingMaintenanceExample {
 
         public Criteria andMaterialQualityNotBetween(Integer value1, Integer value2) {
             addCriterion("material_quality not between", value1, value2, "materialQuality");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteIsNull() {
+            addCriterion("bis_delete is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteIsNotNull() {
+            addCriterion("bis_delete is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteEqualTo(Boolean value) {
+            addCriterion("bis_delete =", value, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteNotEqualTo(Boolean value) {
+            addCriterion("bis_delete <>", value, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteGreaterThan(Boolean value) {
+            addCriterion("bis_delete >", value, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_delete >=", value, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteLessThan(Boolean value) {
+            addCriterion("bis_delete <", value, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_delete <=", value, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteIn(List<Boolean> values) {
+            addCriterion("bis_delete in", values, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteNotIn(List<Boolean> values) {
+            addCriterion("bis_delete not in", values, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_delete between", value1, value2, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_delete not between", value1, value2, "bisDelete");
             return (Criteria) this;
         }
 
@@ -592,76 +722,6 @@ public class BasicBuildingMaintenanceExample {
 
         public Criteria andGmtModifiedNotBetween(Date value1, Date value2) {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuildNumberIsNull() {
-            addCriterion("build_number is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuildNumberIsNotNull() {
-            addCriterion("build_number is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuildNumberEqualTo(String value) {
-            addCriterion("build_number =", value, "buildNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuildNumberNotEqualTo(String value) {
-            addCriterion("build_number <>", value, "buildNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuildNumberGreaterThan(String value) {
-            addCriterion("build_number >", value, "buildNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuildNumberGreaterThanOrEqualTo(String value) {
-            addCriterion("build_number >=", value, "buildNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuildNumberLessThan(String value) {
-            addCriterion("build_number <", value, "buildNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuildNumberLessThanOrEqualTo(String value) {
-            addCriterion("build_number <=", value, "buildNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuildNumberLike(String value) {
-            addCriterion("build_number like", value, "buildNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuildNumberNotLike(String value) {
-            addCriterion("build_number not like", value, "buildNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuildNumberIn(List<String> values) {
-            addCriterion("build_number in", values, "buildNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuildNumberNotIn(List<String> values) {
-            addCriterion("build_number not in", values, "buildNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuildNumberBetween(String value1, String value2) {
-            addCriterion("build_number between", value1, value2, "buildNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuildNumberNotBetween(String value1, String value2) {
-            addCriterion("build_number not between", value1, value2, "buildNumber");
             return (Criteria) this;
         }
     }

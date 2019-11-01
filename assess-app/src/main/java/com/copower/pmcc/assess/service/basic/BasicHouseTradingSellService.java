@@ -34,7 +34,7 @@ public class BasicHouseTradingSellService {
     public Integer saveAndUpdateBasicHouseTradingSell(BasicHouseTradingSell basicHouseTradingSell, boolean updateNull) throws Exception {
         if (basicHouseTradingSell.getId() == null || basicHouseTradingSell.getId().intValue() == 0) {
             basicHouseTradingSell.setCreator(commonService.thisUserAccount());
-            return basicHouseTradingSellDao.saveBasicHouseTradingSell(basicHouseTradingSell);
+            return basicHouseTradingSellDao.addBasicHouseTradingSell(basicHouseTradingSell);
         } else {
             if (updateNull) {
                 BasicHouseTradingSell houseTradingSell = basicHouseTradingSellDao.getBasicHouseTradingSellById(basicHouseTradingSell.getId());
@@ -54,10 +54,6 @@ public class BasicHouseTradingSellService {
 
     public boolean deleteBasicHouseTradingSell(Integer id) throws Exception {
         return basicHouseTradingSellDao.deleteBasicHouseTradingSell(id);
-    }
-
-    public boolean deleteBasicHouseTradingSell(BasicHouseTradingSell basicHouseTradingSell) throws Exception {
-        return basicHouseTradingSellDao.deleteBasicHouseTradingSell(basicHouseTradingSell);
     }
 
     public BootstrapTableVo getBootstrapTableVo(BasicHouseTradingSell basicHouseTradingSell, String type) throws Exception {

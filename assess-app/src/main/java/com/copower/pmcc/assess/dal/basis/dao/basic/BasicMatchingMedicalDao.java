@@ -21,40 +21,40 @@ public class BasicMatchingMedicalDao {
     @Autowired
     private BasicMatchingMedicalMapper basicMatchingMedicalMapper;
 
-    public BasicMatchingMedical getBasicMatchingMedicalById(Integer id) throws SQLException {
+    public BasicMatchingMedical getBasicMatchingMedicalById(Integer id) {
         return basicMatchingMedicalMapper.selectByPrimaryKey(id);
     }
 
-    public Integer saveBasicMatchingMedical(BasicMatchingMedical basicMatchingMedical) throws SQLException {
+    public Integer saveBasicMatchingMedical(BasicMatchingMedical basicMatchingMedical) {
         basicMatchingMedicalMapper.insertSelective(basicMatchingMedical);
         return basicMatchingMedical.getId();
     }
 
-    public boolean updateBasicMatchingMedical(BasicMatchingMedical basicMatchingMedical, boolean updateNull) throws SQLException {
+    public boolean updateBasicMatchingMedical(BasicMatchingMedical basicMatchingMedical, boolean updateNull) {
         return updateNull ? basicMatchingMedicalMapper.updateByPrimaryKey(basicMatchingMedical) == 1 : basicMatchingMedicalMapper.updateByPrimaryKeySelective(basicMatchingMedical) == 1;
     }
 
-    public void removeBasicMatchingMedical(BasicMatchingMedical basicMatchingMedical) throws SQLException {
-        BasicMatchingMedicalExample example = new BasicMatchingMedicalExample();
-        MybatisUtils.convertObj2Example(basicMatchingMedical, example);
-        basicMatchingMedicalMapper.deleteByExample(example);
-    }
-
-    public boolean deleteBasicMatchingMedical(Integer id) throws SQLException {
-        return basicMatchingMedicalMapper.deleteByPrimaryKey(id) == 1;
+    public boolean deleteBasicMatchingMedical(Integer id) {
+        BasicMatchingMedical basicMatchingMedical = getBasicMatchingMedicalById(id);
+        if (basicMatchingMedical == null) return false;
+        return basicMatchingMedicalMapper.updateByPrimaryKeySelective(basicMatchingMedical) == 1;
     }
 
     public List<BasicMatchingMedical> basicMatchingMedicalList(BasicMatchingMedical basicMatchingMedical) {
         BasicMatchingMedicalExample example = new BasicMatchingMedicalExample();
-        MybatisUtils.convertObj2Example(basicMatchingMedical, example);
+        BasicMatchingMedicalExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
+        MybatisUtils.convertObj2Criteria(basicMatchingMedical, criteria);
         example.setOrderByClause("id");
         return basicMatchingMedicalMapper.selectByExample(example);
     }
 
     public void removeIds(List<Integer> ids) {
         BasicMatchingMedicalExample example = new BasicMatchingMedicalExample();
-        example.createCriteria().andIdIn(ids);
-        basicMatchingMedicalMapper.deleteByExample(example);
+        example.createCriteria().andBisDeleteEqualTo(false).andIdIn(ids);
+
+        BasicMatchingMedical item = new BasicMatchingMedical();
+        item.setBisDelete(true);
+        basicMatchingMedicalMapper.updateByExampleSelective(item, example);
     }
 
 }

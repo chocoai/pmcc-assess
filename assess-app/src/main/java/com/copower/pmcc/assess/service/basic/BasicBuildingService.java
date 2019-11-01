@@ -300,7 +300,7 @@ public class BasicBuildingService {
         basicEstateTaggingDao.removeBasicEstateTagging(where);
         clearInvalidChildData(basicBuilding.getId());//清理从表数据
         StringBuilder sqlBulder = new StringBuilder();
-        sqlBulder.append(String.format("delete from %s where id=%s;", FormatUtils.entityNameConvertToTableName(BasicBuilding.class), basicBuilding.getId()));
+        sqlBulder.append(String.format("update %s set bis_delete=1 where id=%s;", FormatUtils.entityNameConvertToTableName(BasicBuilding.class), basicBuilding.getId()));
         ddlMySqlAssist.customTableDdl(sqlBulder.toString());
 
         //清理附件
@@ -325,7 +325,7 @@ public class BasicBuildingService {
     @Transactional(rollbackFor = Exception.class)
     public void clearInvalidChildData(Integer buildingId) throws Exception {
         StringBuilder sqlBulder = new StringBuilder();
-        String baseSql = "delete from %s where building_id=%s;";
+        String baseSql = "update %s set bis_delete=1 where building_id=%s;";
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicBuildingFunction.class), buildingId));
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicBuildingMaintenance.class), buildingId));
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicBuildingOutfit.class), buildingId));

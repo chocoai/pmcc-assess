@@ -33,19 +33,16 @@ public class BasicHouseDamagedDegreeDao {
     }
 
     public boolean deleteBasicHouseDamagedDegree(Integer id) {
-        return basicHouseDamagedDegreeMapper.deleteByPrimaryKey(id) == 1;
+        BasicHouseDamagedDegree houseDamagedDegree = getBasicHouseDamagedDegreeById(id);
+        if (houseDamagedDegree == null) return false;
+        houseDamagedDegree.setBisDelete(true);
+        return basicHouseDamagedDegreeMapper.updateByPrimaryKeySelective(houseDamagedDegree) == 1;
     }
-
-    public Boolean deleteBasicHouseDamagedDegree(BasicHouseDamagedDegree basicHouseDamagedDegree) {
-        BasicHouseDamagedDegreeExample example = new BasicHouseDamagedDegreeExample();
-        MybatisUtils.convertObj2Example(basicHouseDamagedDegree, example);
-        return basicHouseDamagedDegreeMapper.deleteByExample(example) > 0;
-    }
-
 
     public List<BasicHouseDamagedDegree> getDamagedDegreeList(BasicHouseDamagedDegree basicHouseDamagedDegree) {
         BasicHouseDamagedDegreeExample example = new BasicHouseDamagedDegreeExample();
-        MybatisUtils.convertObj2Example(basicHouseDamagedDegree, example);
+        BasicHouseDamagedDegreeExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
+        MybatisUtils.convertObj2Criteria(basicHouseDamagedDegree, criteria);
         return basicHouseDamagedDegreeMapper.selectByExample(example);
     }
 
@@ -58,7 +55,7 @@ public class BasicHouseDamagedDegreeDao {
      */
     public int countByHouseId(Integer houseId, Integer type) {
         BasicHouseDamagedDegreeExample example = new BasicHouseDamagedDegreeExample();
-        BasicHouseDamagedDegreeExample.Criteria criteria = example.createCriteria();
+        BasicHouseDamagedDegreeExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
         criteria.andHouseIdEqualTo(houseId);
         criteria.andTypeEqualTo(type);
         criteria.andEntityConditionContentNotEqualTo("");
@@ -68,7 +65,7 @@ public class BasicHouseDamagedDegreeDao {
 
     public List<BasicHouseDamagedDegree> getValueDamagedDegreeList(Integer houseId, Integer type) {
         BasicHouseDamagedDegreeExample example = new BasicHouseDamagedDegreeExample();
-        BasicHouseDamagedDegreeExample.Criteria criteria = example.createCriteria();
+        BasicHouseDamagedDegreeExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
         criteria.andHouseIdEqualTo(houseId);
         criteria.andTypeEqualTo(type);
         return basicHouseDamagedDegreeMapper.selectByExample(example);

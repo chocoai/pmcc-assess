@@ -30,7 +30,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,27 +68,23 @@ public class BasicUnitHuxingService {
     }
 
     public String getHouseCategoryNameById(Integer id) {
-        try {
-            BasicUnitHuxing huxing = basicUnitHuxingDao.getBasicUnitHuxingById(id);
-            if (huxing == null || StringUtils.isBlank(huxing.getHouseCategory())) return null;
-            StringBuilder stringBuilder = new StringBuilder();
-            JSONObject jsonObject = JSONObject.parseObject(huxing.getHouseCategory());
-            if (StringUtils.isNotBlank(jsonObject.getString("house")))
-                stringBuilder.append(String.format("%s室", jsonObject.getString("house")));
-            if (StringUtils.isNotBlank(jsonObject.getString("saloon")))
-                stringBuilder.append(String.format("%s厅", jsonObject.getString("saloon")));
-            if (StringUtils.isNotBlank(jsonObject.getString("kitchen")))
-                stringBuilder.append(String.format("%s厨", jsonObject.getString("kitchen")));
-            if (StringUtils.isNotBlank(jsonObject.getString("toilet")))
-                stringBuilder.append(String.format("%s卫", jsonObject.getString("toilet")));
-            if (StringUtils.isNotBlank(jsonObject.getString("garden")))
-                stringBuilder.append(String.format("%s花园", jsonObject.getString("garden")));
-            if (StringUtils.isNotBlank(jsonObject.getString("balcony")))
-                stringBuilder.append(String.format("%s阳台", jsonObject.getString("balcony")));
-            return stringBuilder.toString();
-        } catch (SQLException e) {
-            return null;
-        }
+        BasicUnitHuxing huxing = basicUnitHuxingDao.getBasicUnitHuxingById(id);
+        if (huxing == null || StringUtils.isBlank(huxing.getHouseCategory())) return null;
+        StringBuilder stringBuilder = new StringBuilder();
+        JSONObject jsonObject = JSONObject.parseObject(huxing.getHouseCategory());
+        if (StringUtils.isNotBlank(jsonObject.getString("house")))
+            stringBuilder.append(String.format("%s室", jsonObject.getString("house")));
+        if (StringUtils.isNotBlank(jsonObject.getString("saloon")))
+            stringBuilder.append(String.format("%s厅", jsonObject.getString("saloon")));
+        if (StringUtils.isNotBlank(jsonObject.getString("kitchen")))
+            stringBuilder.append(String.format("%s厨", jsonObject.getString("kitchen")));
+        if (StringUtils.isNotBlank(jsonObject.getString("toilet")))
+            stringBuilder.append(String.format("%s卫", jsonObject.getString("toilet")));
+        if (StringUtils.isNotBlank(jsonObject.getString("garden")))
+            stringBuilder.append(String.format("%s花园", jsonObject.getString("garden")));
+        if (StringUtils.isNotBlank(jsonObject.getString("balcony")))
+            stringBuilder.append(String.format("%s阳台", jsonObject.getString("balcony")));
+        return stringBuilder.toString();
     }
 
     /**
@@ -102,7 +97,7 @@ public class BasicUnitHuxingService {
     public Integer saveAndUpdateBasicUnitHuxing(BasicUnitHuxing basicUnitHuxing, boolean updateNull) throws Exception {
         if (basicUnitHuxing.getId() == null || basicUnitHuxing.getId().intValue() == 0) {
             basicUnitHuxing.setCreator(commonService.thisUserAccount());
-            Integer id = basicUnitHuxingDao.saveBasicUnitHuxing(basicUnitHuxing);
+            Integer id = basicUnitHuxingDao.addBasicUnitHuxing(basicUnitHuxing);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicUnitHuxing.class), id);
             return id;
         } else {
@@ -139,10 +134,6 @@ public class BasicUnitHuxingService {
      */
     public List<BasicUnitHuxing> basicUnitHuxingList(BasicUnitHuxing basicUnitHuxing)  {
         return basicUnitHuxingDao.basicUnitHuxingList(basicUnitHuxing);
-    }
-
-    public void removeBasicUnitHuxing(BasicUnitHuxing basicUnitHuxing) throws Exception {
-        basicUnitHuxingDao.removeBasicUnitHuxing(basicUnitHuxing);
     }
 
     public BootstrapTableVo getBootstrapTableVo(BasicUnitHuxing basicUnitHuxing) throws Exception {

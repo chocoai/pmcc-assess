@@ -23,7 +23,7 @@ public class BasicHouseDamagedDegreeDetailDao {
         return basicHouseDamagedDegreeDetailMapper.selectByPrimaryKey(id);
     }
 
-    public Integer saveBasicHouseDamagedDegreeDetail(BasicHouseDamagedDegreeDetail basicHouseDamagedDegreeDetail) {
+    public Integer addBasicHouseDamagedDegreeDetail(BasicHouseDamagedDegreeDetail basicHouseDamagedDegreeDetail) {
         basicHouseDamagedDegreeDetailMapper.insertSelective(basicHouseDamagedDegreeDetail);
         return basicHouseDamagedDegreeDetail.getId();
     }
@@ -33,19 +33,17 @@ public class BasicHouseDamagedDegreeDetailDao {
     }
 
     public boolean deleteBasicHouseDamagedDegreeDetail(Integer id) {
-        return basicHouseDamagedDegreeDetailMapper.deleteByPrimaryKey(id) == 1;
-    }
-
-    public Boolean deleteBasicHouseDamagedDegreeDetail(BasicHouseDamagedDegreeDetail basicHouseDamagedDegreeDetail) {
-        BasicHouseDamagedDegreeDetailExample example = new BasicHouseDamagedDegreeDetailExample();
-        MybatisUtils.convertObj2Example(basicHouseDamagedDegreeDetail, example);
-        return basicHouseDamagedDegreeDetailMapper.deleteByExample(example) > 0;
+        BasicHouseDamagedDegreeDetail damagedDegreeDetail = getBasicHouseDamagedDegreeDetailById(id);
+        if(damagedDegreeDetail==null) return false;
+        damagedDegreeDetail.setBisDelete(true);
+        return basicHouseDamagedDegreeDetailMapper.updateByPrimaryKeySelective(damagedDegreeDetail) == 1;
     }
 
 
     public List<BasicHouseDamagedDegreeDetail> getDamagedDegreeDetailList(BasicHouseDamagedDegreeDetail basicHouseDamagedDegreeDetail) {
         BasicHouseDamagedDegreeDetailExample example = new BasicHouseDamagedDegreeDetailExample();
-        MybatisUtils.convertObj2Example(basicHouseDamagedDegreeDetail, example);
+        BasicHouseDamagedDegreeDetailExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
+        MybatisUtils.convertObj2Criteria(basicHouseDamagedDegreeDetail, criteria);
         return basicHouseDamagedDegreeDetailMapper.selectByExample(example);
     }
 }

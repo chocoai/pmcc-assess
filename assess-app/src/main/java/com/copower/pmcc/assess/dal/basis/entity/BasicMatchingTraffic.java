@@ -35,6 +35,8 @@ public class BasicMatchingTraffic {
 
     private Integer visitorsFlowrate;
 
+    private Boolean bisDelete;
+
     private String creator;
 
     private Date gmtCreated;
@@ -167,6 +169,14 @@ public class BasicMatchingTraffic {
 
     public void setVisitorsFlowrate(Integer visitorsFlowrate) {
         this.visitorsFlowrate = visitorsFlowrate;
+    }
+
+    public Boolean getBisDelete() {
+        return bisDelete;
+    }
+
+    public void setBisDelete(Boolean bisDelete) {
+        this.bisDelete = bisDelete;
     }
 
     public String getCreator() {

@@ -21,26 +21,30 @@ public class BasicHouseTradingDao {
     @Autowired
     private BasicHouseTradingMapper basicHouseTradingMapper;
 
-    public BasicHouseTrading getBasicHouseTradingById(Integer id) throws SQLException {
+    public BasicHouseTrading getBasicHouseTradingById(Integer id)  {
         return basicHouseTradingMapper.selectByPrimaryKey(id);
     }
 
-    public Integer saveBasicHouseTrading(BasicHouseTrading basicHouseTrading) throws SQLException {
+    public Integer addBasicHouseTrading(BasicHouseTrading basicHouseTrading)  {
         basicHouseTradingMapper.insertSelective(basicHouseTrading);
         return basicHouseTrading.getId();
     }
 
-    public boolean updateBasicHouseTrading(BasicHouseTrading basicHouseTrading, boolean updateNull) throws SQLException {
+    public boolean updateBasicHouseTrading(BasicHouseTrading basicHouseTrading, boolean updateNull)  {
         return updateNull ? basicHouseTradingMapper.updateByPrimaryKey(basicHouseTrading) == 1 : basicHouseTradingMapper.updateByPrimaryKeySelective(basicHouseTrading) == 1;
     }
 
-    public boolean deleteBasicHouseTrading(Integer id) throws SQLException {
-        return basicHouseTradingMapper.deleteByPrimaryKey(id) == 1;
+    public boolean deleteBasicHouseTrading(Integer id)  {
+        BasicHouseTrading basicHouseTrading = getBasicHouseTradingById(id);
+        if(basicHouseTrading==null) return false;
+        basicHouseTrading.setBisDelete(true);
+        return basicHouseTradingMapper.updateByPrimaryKeySelective(basicHouseTrading) == 1;
     }
 
-    public List<BasicHouseTrading> basicHouseTradingList(BasicHouseTrading basicHouseTrading) throws SQLException {
+    public List<BasicHouseTrading> basicHouseTradingList(BasicHouseTrading basicHouseTrading)  {
         BasicHouseTradingExample example = new BasicHouseTradingExample();
-        MybatisUtils.convertObj2Example(basicHouseTrading, example);
+        BasicHouseTradingExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
+        MybatisUtils.convertObj2Criteria(basicHouseTrading, criteria);
         return basicHouseTradingMapper.selectByExample(example);
     }
 }

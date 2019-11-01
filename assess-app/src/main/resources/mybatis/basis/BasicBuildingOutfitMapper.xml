@@ -9,10 +9,11 @@
     <result column="material_price" property="materialPrice" jdbcType="INTEGER" />
     <result column="construction_technology" property="constructionTechnology" jdbcType="INTEGER" />
     <result column="material_grade" property="materialGrade" jdbcType="INTEGER" />
+    <result column="build_number" property="buildNumber" jdbcType="VARCHAR" />
+    <result column="bis_delete" property="bisDelete" jdbcType="BIT" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
-    <result column="build_number" property="buildNumber" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -74,7 +75,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, building_id, decoration_part, decorating_material, material_price, construction_technology, 
-    material_grade, creator, gmt_created, gmt_modified, build_number
+    material_grade, build_number, bis_delete, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicBuildingOutfitExample" >
     select
@@ -112,12 +113,14 @@
     </selectKey>
     insert into tb_basic_building_outfit (building_id, decoration_part, decorating_material, 
       material_price, construction_technology, 
-      material_grade, creator, gmt_created, 
-      gmt_modified, build_number)
+      material_grade, build_number, bis_delete, 
+      creator, gmt_created, gmt_modified
+      )
     values (#{buildingId,jdbcType=INTEGER}, #{decorationPart,jdbcType=VARCHAR}, #{decoratingMaterial,jdbcType=INTEGER}, 
       #{materialPrice,jdbcType=INTEGER}, #{constructionTechnology,jdbcType=INTEGER}, 
-      #{materialGrade,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP}, #{buildNumber,jdbcType=VARCHAR})
+      #{materialGrade,jdbcType=INTEGER}, #{buildNumber,jdbcType=VARCHAR}, #{bisDelete,jdbcType=BIT}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicBuildingOutfit" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -143,6 +146,12 @@
       <if test="materialGrade != null" >
         material_grade,
       </if>
+      <if test="buildNumber != null" >
+        build_number,
+      </if>
+      <if test="bisDelete != null" >
+        bis_delete,
+      </if>
       <if test="creator != null" >
         creator,
       </if>
@@ -151,9 +160,6 @@
       </if>
       <if test="gmtModified != null" >
         gmt_modified,
-      </if>
-      <if test="buildNumber != null" >
-        build_number,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -175,6 +181,12 @@
       <if test="materialGrade != null" >
         #{materialGrade,jdbcType=INTEGER},
       </if>
+      <if test="buildNumber != null" >
+        #{buildNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="bisDelete != null" >
+        #{bisDelete,jdbcType=BIT},
+      </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
       </if>
@@ -183,9 +195,6 @@
       </if>
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="buildNumber != null" >
-        #{buildNumber,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -219,6 +228,12 @@
       <if test="record.materialGrade != null" >
         material_grade = #{record.materialGrade,jdbcType=INTEGER},
       </if>
+      <if test="record.buildNumber != null" >
+        build_number = #{record.buildNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bisDelete != null" >
+        bis_delete = #{record.bisDelete,jdbcType=BIT},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -227,9 +242,6 @@
       </if>
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.buildNumber != null" >
-        build_number = #{record.buildNumber,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -245,10 +257,11 @@
       material_price = #{record.materialPrice,jdbcType=INTEGER},
       construction_technology = #{record.constructionTechnology,jdbcType=INTEGER},
       material_grade = #{record.materialGrade,jdbcType=INTEGER},
+      build_number = #{record.buildNumber,jdbcType=VARCHAR},
+      bis_delete = #{record.bisDelete,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      build_number = #{record.buildNumber,jdbcType=VARCHAR}
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -274,6 +287,12 @@
       <if test="materialGrade != null" >
         material_grade = #{materialGrade,jdbcType=INTEGER},
       </if>
+      <if test="buildNumber != null" >
+        build_number = #{buildNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="bisDelete != null" >
+        bis_delete = #{bisDelete,jdbcType=BIT},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -282,9 +301,6 @@
       </if>
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="buildNumber != null" >
-        build_number = #{buildNumber,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -297,10 +313,11 @@
       material_price = #{materialPrice,jdbcType=INTEGER},
       construction_technology = #{constructionTechnology,jdbcType=INTEGER},
       material_grade = #{materialGrade,jdbcType=INTEGER},
+      build_number = #{buildNumber,jdbcType=VARCHAR},
+      bis_delete = #{bisDelete,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      build_number = #{buildNumber,jdbcType=VARCHAR}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

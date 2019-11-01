@@ -34,6 +34,8 @@ public class BasicHouseRoom {
 
     private BigDecimal clearHeight;
 
+    private Boolean bisDelete;
+
     private String creator;
 
     private Date gmtCreated;
@@ -158,6 +160,14 @@ public class BasicHouseRoom {
 
     public void setClearHeight(BigDecimal clearHeight) {
         this.clearHeight = clearHeight;
+    }
+
+    public Boolean getBisDelete() {
+        return bisDelete;
+    }
+
+    public void setBisDelete(Boolean bisDelete) {
+        this.bisDelete = bisDelete;
     }
 
     public String getCreator() {

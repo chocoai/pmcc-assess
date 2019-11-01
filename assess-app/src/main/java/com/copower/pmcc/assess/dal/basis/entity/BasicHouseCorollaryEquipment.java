@@ -21,6 +21,8 @@ public class BasicHouseCorollaryEquipment {
 
     private Integer maintenanceStatus;
 
+    private Boolean bisDelete;
+
     private String creator;
 
     private Date gmtCreated;
@@ -97,6 +99,14 @@ public class BasicHouseCorollaryEquipment {
 
     public void setMaintenanceStatus(Integer maintenanceStatus) {
         this.maintenanceStatus = maintenanceStatus;
+    }
+
+    public Boolean getBisDelete() {
+        return bisDelete;
+    }
+
+    public void setBisDelete(Boolean bisDelete) {
+        this.bisDelete = bisDelete;
     }
 
     public String getCreator() {

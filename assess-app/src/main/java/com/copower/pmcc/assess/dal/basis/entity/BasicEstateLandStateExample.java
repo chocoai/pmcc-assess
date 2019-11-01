@@ -536,6 +536,76 @@ public class BasicEstateLandStateExample {
             return (Criteria) this;
         }
 
+        public Criteria andLandLevelContentIsNull() {
+            addCriterion("land_level_content is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelContentIsNotNull() {
+            addCriterion("land_level_content is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelContentEqualTo(String value) {
+            addCriterion("land_level_content =", value, "landLevelContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelContentNotEqualTo(String value) {
+            addCriterion("land_level_content <>", value, "landLevelContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelContentGreaterThan(String value) {
+            addCriterion("land_level_content >", value, "landLevelContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelContentGreaterThanOrEqualTo(String value) {
+            addCriterion("land_level_content >=", value, "landLevelContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelContentLessThan(String value) {
+            addCriterion("land_level_content <", value, "landLevelContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelContentLessThanOrEqualTo(String value) {
+            addCriterion("land_level_content <=", value, "landLevelContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelContentLike(String value) {
+            addCriterion("land_level_content like", value, "landLevelContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelContentNotLike(String value) {
+            addCriterion("land_level_content not like", value, "landLevelContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelContentIn(List<String> values) {
+            addCriterion("land_level_content in", values, "landLevelContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelContentNotIn(List<String> values) {
+            addCriterion("land_level_content not in", values, "landLevelContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelContentBetween(String value1, String value2) {
+            addCriterion("land_level_content between", value1, value2, "landLevelContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelContentNotBetween(String value1, String value2) {
+            addCriterion("land_level_content not between", value1, value2, "landLevelContent");
+            return (Criteria) this;
+        }
+
         public Criteria andLandLevelIsNull() {
             addCriterion("land_level is null");
             return (Criteria) this;
@@ -2473,6 +2543,66 @@ public class BasicEstateLandStateExample {
 
         public Criteria andDevelopmentTimeNotBetween(Date value1, Date value2) {
             addCriterion("development_time not between", value1, value2, "developmentTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteIsNull() {
+            addCriterion("bis_delete is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteIsNotNull() {
+            addCriterion("bis_delete is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteEqualTo(Boolean value) {
+            addCriterion("bis_delete =", value, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteNotEqualTo(Boolean value) {
+            addCriterion("bis_delete <>", value, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteGreaterThan(Boolean value) {
+            addCriterion("bis_delete >", value, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_delete >=", value, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteLessThan(Boolean value) {
+            addCriterion("bis_delete <", value, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_delete <=", value, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteIn(List<Boolean> values) {
+            addCriterion("bis_delete in", values, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteNotIn(List<Boolean> values) {
+            addCriterion("bis_delete not in", values, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_delete between", value1, value2, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_delete not between", value1, value2, "bisDelete");
             return (Criteria) this;
         }
 

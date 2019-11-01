@@ -11,6 +11,7 @@
     <result column="equipment" property="equipment" jdbcType="VARCHAR" />
     <result column="supply_mode" property="supplyMode" jdbcType="INTEGER" />
     <result column="equipment_price" property="equipmentPrice" jdbcType="INTEGER" />
+    <result column="bis_delete" property="bisDelete" jdbcType="BIT" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -75,7 +76,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, house_id, type, grade, category, supply_weast, equipment, supply_mode, equipment_price, 
-    creator, gmt_created, gmt_modified
+    bis_delete, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseEquipmentExample" >
     select
@@ -113,12 +114,14 @@
     </selectKey>
     insert into tb_basic_house_equipment (house_id, type, grade, 
       category, supply_weast, equipment, 
-      supply_mode, equipment_price, creator, 
-      gmt_created, gmt_modified)
+      supply_mode, equipment_price, bis_delete, 
+      creator, gmt_created, gmt_modified
+      )
     values (#{houseId,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{grade,jdbcType=INTEGER}, 
       #{category,jdbcType=INTEGER}, #{supplyWeast,jdbcType=VARCHAR}, #{equipment,jdbcType=VARCHAR}, 
-      #{supplyMode,jdbcType=INTEGER}, #{equipmentPrice,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+      #{supplyMode,jdbcType=INTEGER}, #{equipmentPrice,jdbcType=INTEGER}, #{bisDelete,jdbcType=BIT}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseEquipment" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -149,6 +152,9 @@
       </if>
       <if test="equipmentPrice != null" >
         equipment_price,
+      </if>
+      <if test="bisDelete != null" >
+        bis_delete,
       </if>
       <if test="creator != null" >
         creator,
@@ -184,6 +190,9 @@
       </if>
       <if test="equipmentPrice != null" >
         #{equipmentPrice,jdbcType=INTEGER},
+      </if>
+      <if test="bisDelete != null" >
+        #{bisDelete,jdbcType=BIT},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -232,6 +241,9 @@
       <if test="record.equipmentPrice != null" >
         equipment_price = #{record.equipmentPrice,jdbcType=INTEGER},
       </if>
+      <if test="record.bisDelete != null" >
+        bis_delete = #{record.bisDelete,jdbcType=BIT},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -257,6 +269,7 @@
       equipment = #{record.equipment,jdbcType=VARCHAR},
       supply_mode = #{record.supplyMode,jdbcType=INTEGER},
       equipment_price = #{record.equipmentPrice,jdbcType=INTEGER},
+      bis_delete = #{record.bisDelete,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -291,6 +304,9 @@
       <if test="equipmentPrice != null" >
         equipment_price = #{equipmentPrice,jdbcType=INTEGER},
       </if>
+      <if test="bisDelete != null" >
+        bis_delete = #{bisDelete,jdbcType=BIT},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -313,6 +329,7 @@
       equipment = #{equipment,jdbcType=VARCHAR},
       supply_mode = #{supplyMode,jdbcType=INTEGER},
       equipment_price = #{equipmentPrice,jdbcType=INTEGER},
+      bis_delete = #{bisDelete,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

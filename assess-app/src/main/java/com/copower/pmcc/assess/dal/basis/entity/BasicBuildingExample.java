@@ -2976,6 +2976,186 @@ public class BasicBuildingExample {
             return (Criteria) this;
         }
 
+        public Criteria andPropertySocialPrestigeIsNull() {
+            addCriterion("property_social_prestige is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertySocialPrestigeIsNotNull() {
+            addCriterion("property_social_prestige is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertySocialPrestigeEqualTo(Integer value) {
+            addCriterion("property_social_prestige =", value, "propertySocialPrestige");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertySocialPrestigeNotEqualTo(Integer value) {
+            addCriterion("property_social_prestige <>", value, "propertySocialPrestige");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertySocialPrestigeGreaterThan(Integer value) {
+            addCriterion("property_social_prestige >", value, "propertySocialPrestige");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertySocialPrestigeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("property_social_prestige >=", value, "propertySocialPrestige");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertySocialPrestigeLessThan(Integer value) {
+            addCriterion("property_social_prestige <", value, "propertySocialPrestige");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertySocialPrestigeLessThanOrEqualTo(Integer value) {
+            addCriterion("property_social_prestige <=", value, "propertySocialPrestige");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertySocialPrestigeIn(List<Integer> values) {
+            addCriterion("property_social_prestige in", values, "propertySocialPrestige");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertySocialPrestigeNotIn(List<Integer> values) {
+            addCriterion("property_social_prestige not in", values, "propertySocialPrestige");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertySocialPrestigeBetween(Integer value1, Integer value2) {
+            addCriterion("property_social_prestige between", value1, value2, "propertySocialPrestige");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertySocialPrestigeNotBetween(Integer value1, Integer value2) {
+            addCriterion("property_social_prestige not between", value1, value2, "propertySocialPrestige");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyCompanyNatureIsNull() {
+            addCriterion("property_company_nature is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyCompanyNatureIsNotNull() {
+            addCriterion("property_company_nature is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyCompanyNatureEqualTo(Integer value) {
+            addCriterion("property_company_nature =", value, "propertyCompanyNature");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyCompanyNatureNotEqualTo(Integer value) {
+            addCriterion("property_company_nature <>", value, "propertyCompanyNature");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyCompanyNatureGreaterThan(Integer value) {
+            addCriterion("property_company_nature >", value, "propertyCompanyNature");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyCompanyNatureGreaterThanOrEqualTo(Integer value) {
+            addCriterion("property_company_nature >=", value, "propertyCompanyNature");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyCompanyNatureLessThan(Integer value) {
+            addCriterion("property_company_nature <", value, "propertyCompanyNature");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyCompanyNatureLessThanOrEqualTo(Integer value) {
+            addCriterion("property_company_nature <=", value, "propertyCompanyNature");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyCompanyNatureIn(List<Integer> values) {
+            addCriterion("property_company_nature in", values, "propertyCompanyNature");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyCompanyNatureNotIn(List<Integer> values) {
+            addCriterion("property_company_nature not in", values, "propertyCompanyNature");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyCompanyNatureBetween(Integer value1, Integer value2) {
+            addCriterion("property_company_nature between", value1, value2, "propertyCompanyNature");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyCompanyNatureNotBetween(Integer value1, Integer value2) {
+            addCriterion("property_company_nature not between", value1, value2, "propertyCompanyNature");
+            return (Criteria) this;
+        }
+
+        public Criteria andMapIdIsNull() {
+            addCriterion("map_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMapIdIsNotNull() {
+            addCriterion("map_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMapIdEqualTo(Integer value) {
+            addCriterion("map_id =", value, "mapId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMapIdNotEqualTo(Integer value) {
+            addCriterion("map_id <>", value, "mapId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMapIdGreaterThan(Integer value) {
+            addCriterion("map_id >", value, "mapId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMapIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("map_id >=", value, "mapId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMapIdLessThan(Integer value) {
+            addCriterion("map_id <", value, "mapId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMapIdLessThanOrEqualTo(Integer value) {
+            addCriterion("map_id <=", value, "mapId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMapIdIn(List<Integer> values) {
+            addCriterion("map_id in", values, "mapId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMapIdNotIn(List<Integer> values) {
+            addCriterion("map_id not in", values, "mapId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMapIdBetween(Integer value1, Integer value2) {
+            addCriterion("map_id between", value1, value2, "mapId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMapIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("map_id not between", value1, value2, "mapId");
+            return (Criteria) this;
+        }
+
         public Criteria andRemarkIsNull() {
             addCriterion("remark is null");
             return (Criteria) this;
@@ -3043,6 +3223,66 @@ public class BasicBuildingExample {
 
         public Criteria andRemarkNotBetween(String value1, String value2) {
             addCriterion("remark not between", value1, value2, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteIsNull() {
+            addCriterion("bis_delete is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteIsNotNull() {
+            addCriterion("bis_delete is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteEqualTo(Boolean value) {
+            addCriterion("bis_delete =", value, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteNotEqualTo(Boolean value) {
+            addCriterion("bis_delete <>", value, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteGreaterThan(Boolean value) {
+            addCriterion("bis_delete >", value, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_delete >=", value, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteLessThan(Boolean value) {
+            addCriterion("bis_delete <", value, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_delete <=", value, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteIn(List<Boolean> values) {
+            addCriterion("bis_delete in", values, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteNotIn(List<Boolean> values) {
+            addCriterion("bis_delete not in", values, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_delete between", value1, value2, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_delete not between", value1, value2, "bisDelete");
             return (Criteria) this;
         }
 
@@ -3233,186 +3473,6 @@ public class BasicBuildingExample {
 
         public Criteria andGmtModifiedNotBetween(Date value1, Date value2) {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
-            return (Criteria) this;
-        }
-
-        public Criteria andPropertySocialPrestigeIsNull() {
-            addCriterion("property_social_prestige is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andPropertySocialPrestigeIsNotNull() {
-            addCriterion("property_social_prestige is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andPropertySocialPrestigeEqualTo(Integer value) {
-            addCriterion("property_social_prestige =", value, "propertySocialPrestige");
-            return (Criteria) this;
-        }
-
-        public Criteria andPropertySocialPrestigeNotEqualTo(Integer value) {
-            addCriterion("property_social_prestige <>", value, "propertySocialPrestige");
-            return (Criteria) this;
-        }
-
-        public Criteria andPropertySocialPrestigeGreaterThan(Integer value) {
-            addCriterion("property_social_prestige >", value, "propertySocialPrestige");
-            return (Criteria) this;
-        }
-
-        public Criteria andPropertySocialPrestigeGreaterThanOrEqualTo(Integer value) {
-            addCriterion("property_social_prestige >=", value, "propertySocialPrestige");
-            return (Criteria) this;
-        }
-
-        public Criteria andPropertySocialPrestigeLessThan(Integer value) {
-            addCriterion("property_social_prestige <", value, "propertySocialPrestige");
-            return (Criteria) this;
-        }
-
-        public Criteria andPropertySocialPrestigeLessThanOrEqualTo(Integer value) {
-            addCriterion("property_social_prestige <=", value, "propertySocialPrestige");
-            return (Criteria) this;
-        }
-
-        public Criteria andPropertySocialPrestigeIn(List<Integer> values) {
-            addCriterion("property_social_prestige in", values, "propertySocialPrestige");
-            return (Criteria) this;
-        }
-
-        public Criteria andPropertySocialPrestigeNotIn(List<Integer> values) {
-            addCriterion("property_social_prestige not in", values, "propertySocialPrestige");
-            return (Criteria) this;
-        }
-
-        public Criteria andPropertySocialPrestigeBetween(Integer value1, Integer value2) {
-            addCriterion("property_social_prestige between", value1, value2, "propertySocialPrestige");
-            return (Criteria) this;
-        }
-
-        public Criteria andPropertySocialPrestigeNotBetween(Integer value1, Integer value2) {
-            addCriterion("property_social_prestige not between", value1, value2, "propertySocialPrestige");
-            return (Criteria) this;
-        }
-
-        public Criteria andPropertyCompanyNatureIsNull() {
-            addCriterion("property_company_nature is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andPropertyCompanyNatureIsNotNull() {
-            addCriterion("property_company_nature is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andPropertyCompanyNatureEqualTo(Integer value) {
-            addCriterion("property_company_nature =", value, "propertyCompanyNature");
-            return (Criteria) this;
-        }
-
-        public Criteria andPropertyCompanyNatureNotEqualTo(Integer value) {
-            addCriterion("property_company_nature <>", value, "propertyCompanyNature");
-            return (Criteria) this;
-        }
-
-        public Criteria andPropertyCompanyNatureGreaterThan(Integer value) {
-            addCriterion("property_company_nature >", value, "propertyCompanyNature");
-            return (Criteria) this;
-        }
-
-        public Criteria andPropertyCompanyNatureGreaterThanOrEqualTo(Integer value) {
-            addCriterion("property_company_nature >=", value, "propertyCompanyNature");
-            return (Criteria) this;
-        }
-
-        public Criteria andPropertyCompanyNatureLessThan(Integer value) {
-            addCriterion("property_company_nature <", value, "propertyCompanyNature");
-            return (Criteria) this;
-        }
-
-        public Criteria andPropertyCompanyNatureLessThanOrEqualTo(Integer value) {
-            addCriterion("property_company_nature <=", value, "propertyCompanyNature");
-            return (Criteria) this;
-        }
-
-        public Criteria andPropertyCompanyNatureIn(List<Integer> values) {
-            addCriterion("property_company_nature in", values, "propertyCompanyNature");
-            return (Criteria) this;
-        }
-
-        public Criteria andPropertyCompanyNatureNotIn(List<Integer> values) {
-            addCriterion("property_company_nature not in", values, "propertyCompanyNature");
-            return (Criteria) this;
-        }
-
-        public Criteria andPropertyCompanyNatureBetween(Integer value1, Integer value2) {
-            addCriterion("property_company_nature between", value1, value2, "propertyCompanyNature");
-            return (Criteria) this;
-        }
-
-        public Criteria andPropertyCompanyNatureNotBetween(Integer value1, Integer value2) {
-            addCriterion("property_company_nature not between", value1, value2, "propertyCompanyNature");
-            return (Criteria) this;
-        }
-
-        public Criteria andMapIdIsNull() {
-            addCriterion("map_id is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andMapIdIsNotNull() {
-            addCriterion("map_id is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andMapIdEqualTo(Integer value) {
-            addCriterion("map_id =", value, "mapId");
-            return (Criteria) this;
-        }
-
-        public Criteria andMapIdNotEqualTo(Integer value) {
-            addCriterion("map_id <>", value, "mapId");
-            return (Criteria) this;
-        }
-
-        public Criteria andMapIdGreaterThan(Integer value) {
-            addCriterion("map_id >", value, "mapId");
-            return (Criteria) this;
-        }
-
-        public Criteria andMapIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("map_id >=", value, "mapId");
-            return (Criteria) this;
-        }
-
-        public Criteria andMapIdLessThan(Integer value) {
-            addCriterion("map_id <", value, "mapId");
-            return (Criteria) this;
-        }
-
-        public Criteria andMapIdLessThanOrEqualTo(Integer value) {
-            addCriterion("map_id <=", value, "mapId");
-            return (Criteria) this;
-        }
-
-        public Criteria andMapIdIn(List<Integer> values) {
-            addCriterion("map_id in", values, "mapId");
-            return (Criteria) this;
-        }
-
-        public Criteria andMapIdNotIn(List<Integer> values) {
-            addCriterion("map_id not in", values, "mapId");
-            return (Criteria) this;
-        }
-
-        public Criteria andMapIdBetween(Integer value1, Integer value2) {
-            addCriterion("map_id between", value1, value2, "mapId");
-            return (Criteria) this;
-        }
-
-        public Criteria andMapIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("map_id not between", value1, value2, "mapId");
             return (Criteria) this;
         }
     }

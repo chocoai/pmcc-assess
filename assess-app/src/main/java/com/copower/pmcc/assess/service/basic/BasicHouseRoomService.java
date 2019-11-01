@@ -72,7 +72,7 @@ public class BasicHouseRoomService {
     public Integer saveAndUpdateBasicHouseRoom(BasicHouseRoom basicHouseRoom, boolean updateNull) throws Exception {
         if (basicHouseRoom.getId() == null || basicHouseRoom.getId().intValue() == 0) {
             basicHouseRoom.setCreator(commonService.thisUserAccount());
-            Integer id = basicHouseRoomDao.saveBasicHouseRoom(basicHouseRoom);
+            Integer id = basicHouseRoomDao.addBasicHouseRoom(basicHouseRoom);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicHouseRoom.class), id);
             basicHouseRoom.setId(id);
             return id;

@@ -23,6 +23,8 @@ public class BasicHouseWater {
 
     private Integer fireWaterSupply;
 
+    private Boolean bisDelete;
+
     private String creator;
 
     private Date gmtCreated;
@@ -107,6 +109,14 @@ public class BasicHouseWater {
 
     public void setFireWaterSupply(Integer fireWaterSupply) {
         this.fireWaterSupply = fireWaterSupply;
+    }
+
+    public Boolean getBisDelete() {
+        return bisDelete;
+    }
+
+    public void setBisDelete(Boolean bisDelete) {
+        this.bisDelete = bisDelete;
     }
 
     public String getCreator() {

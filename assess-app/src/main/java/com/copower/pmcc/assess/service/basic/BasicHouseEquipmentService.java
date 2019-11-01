@@ -93,10 +93,6 @@ public class BasicHouseEquipmentService {
         return basicHouseEquipmentDao.deleteBasicHouseEquipment(id);
     }
 
-    public boolean deleteBasicHouseEquipment(BasicHouseEquipment basicHouseEquipment) throws Exception {
-        return basicHouseEquipmentDao.deleteBasicHouseEquipment(basicHouseEquipment);
-    }
-
     /**
      * 获取数据列表
      *

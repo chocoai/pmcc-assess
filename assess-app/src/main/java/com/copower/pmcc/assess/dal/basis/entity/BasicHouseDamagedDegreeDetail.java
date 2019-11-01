@@ -18,6 +18,8 @@ public class BasicHouseDamagedDegreeDetail {
 
     private BigDecimal score;
 
+    private Boolean bisDelete;
+
     private String creator;
 
     private Date gmtCreated;
@@ -78,6 +80,14 @@ public class BasicHouseDamagedDegreeDetail {
 
     public void setScore(BigDecimal score) {
         this.score = score;
+    }
+
+    public Boolean getBisDelete() {
+        return bisDelete;
+    }
+
+    public void setBisDelete(Boolean bisDelete) {
+        this.bisDelete = bisDelete;
     }
 
     public String getCreator() {

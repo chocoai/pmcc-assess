@@ -11,6 +11,7 @@
     <result column="quasi_load_number" property="quasiLoadNumber" jdbcType="INTEGER" />
     <result column="quasi_load_weight" property="quasiLoadWeight" jdbcType="VARCHAR" />
     <result column="running_speed" property="runningSpeed" jdbcType="VARCHAR" />
+    <result column="bis_delete" property="bisDelete" jdbcType="BIT" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -75,7 +76,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, unit_id, maintenance, type, brand, number, quasi_load_number, quasi_load_weight, 
-    running_speed, creator, gmt_created, gmt_modified
+    running_speed, bis_delete, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicUnitElevatorExample" >
     select
@@ -113,12 +114,14 @@
     </selectKey>
     insert into tb_basic_unit_elevator (unit_id, maintenance, type, 
       brand, number, quasi_load_number, 
-      quasi_load_weight, running_speed, creator, 
-      gmt_created, gmt_modified)
+      quasi_load_weight, running_speed, bis_delete, 
+      creator, gmt_created, gmt_modified
+      )
     values (#{unitId,jdbcType=INTEGER}, #{maintenance,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, 
       #{brand,jdbcType=VARCHAR}, #{number,jdbcType=INTEGER}, #{quasiLoadNumber,jdbcType=INTEGER}, 
-      #{quasiLoadWeight,jdbcType=VARCHAR}, #{runningSpeed,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+      #{quasiLoadWeight,jdbcType=VARCHAR}, #{runningSpeed,jdbcType=VARCHAR}, #{bisDelete,jdbcType=BIT}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicUnitElevator" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -149,6 +152,9 @@
       </if>
       <if test="runningSpeed != null" >
         running_speed,
+      </if>
+      <if test="bisDelete != null" >
+        bis_delete,
       </if>
       <if test="creator != null" >
         creator,
@@ -184,6 +190,9 @@
       </if>
       <if test="runningSpeed != null" >
         #{runningSpeed,jdbcType=VARCHAR},
+      </if>
+      <if test="bisDelete != null" >
+        #{bisDelete,jdbcType=BIT},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -232,6 +241,9 @@
       <if test="record.runningSpeed != null" >
         running_speed = #{record.runningSpeed,jdbcType=VARCHAR},
       </if>
+      <if test="record.bisDelete != null" >
+        bis_delete = #{record.bisDelete,jdbcType=BIT},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -257,6 +269,7 @@
       quasi_load_number = #{record.quasiLoadNumber,jdbcType=INTEGER},
       quasi_load_weight = #{record.quasiLoadWeight,jdbcType=VARCHAR},
       running_speed = #{record.runningSpeed,jdbcType=VARCHAR},
+      bis_delete = #{record.bisDelete,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -291,6 +304,9 @@
       <if test="runningSpeed != null" >
         running_speed = #{runningSpeed,jdbcType=VARCHAR},
       </if>
+      <if test="bisDelete != null" >
+        bis_delete = #{bisDelete,jdbcType=BIT},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -313,6 +329,7 @@
       quasi_load_number = #{quasiLoadNumber,jdbcType=INTEGER},
       quasi_load_weight = #{quasiLoadWeight,jdbcType=VARCHAR},
       running_speed = #{runningSpeed,jdbcType=VARCHAR},
+      bis_delete = #{bisDelete,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

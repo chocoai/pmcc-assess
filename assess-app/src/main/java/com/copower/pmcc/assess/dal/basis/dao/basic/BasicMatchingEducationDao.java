@@ -21,40 +21,41 @@ public class BasicMatchingEducationDao {
     @Autowired
     private BasicMatchingEducationMapper basicMatchingEducationMapper;
 
-    public BasicMatchingEducation getBasicMatchingEducationById(Integer id) throws SQLException {
+    public BasicMatchingEducation getBasicMatchingEducationById(Integer id) {
         return basicMatchingEducationMapper.selectByPrimaryKey(id);
     }
 
-    public Integer saveBasicMatchingEducation(BasicMatchingEducation basicMatchingEducation) throws SQLException {
+    public Integer addBasicMatchingEducation(BasicMatchingEducation basicMatchingEducation) {
         basicMatchingEducationMapper.insertSelective(basicMatchingEducation);
         return basicMatchingEducation.getId();
     }
 
-    public boolean updateBasicMatchingEducation(BasicMatchingEducation basicMatchingEducation, boolean updateNull) throws SQLException {
+    public boolean updateBasicMatchingEducation(BasicMatchingEducation basicMatchingEducation, boolean updateNull) {
         return updateNull ? basicMatchingEducationMapper.updateByPrimaryKey(basicMatchingEducation) == 1 : basicMatchingEducationMapper.updateByPrimaryKeySelective(basicMatchingEducation) == 1;
     }
 
-    public void removeBasicMatchingEducation(BasicMatchingEducation basicMatchingEducation) throws SQLException {
-        BasicMatchingEducationExample example = new BasicMatchingEducationExample();
-        MybatisUtils.convertObj2Example(basicMatchingEducation, example);
-        basicMatchingEducationMapper.deleteByExample(example);
-    }
-
-    public boolean deleteBasicMatchingEducation(Integer id) throws SQLException {
-        return basicMatchingEducationMapper.deleteByPrimaryKey(id) == 1;
+    public boolean deleteBasicMatchingEducation(Integer id) {
+        BasicMatchingEducation basicMatchingEducation = getBasicMatchingEducationById(id);
+        if (basicMatchingEducation == null) return false;
+        basicMatchingEducation.setBisDelete(true);
+        return basicMatchingEducationMapper.updateByPrimaryKeySelective(basicMatchingEducation) == 1;
     }
 
     public List<BasicMatchingEducation> basicMatchingEducationList(BasicMatchingEducation basicMatchingEducation) {
         BasicMatchingEducationExample example = new BasicMatchingEducationExample();
-        MybatisUtils.convertObj2Example(basicMatchingEducation, example);
+        BasicMatchingEducationExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
+        MybatisUtils.convertObj2Criteria(basicMatchingEducation, criteria);
         return basicMatchingEducationMapper.selectByExample(example);
     }
 
     public void removeIds(List<Integer> ids) {
         BasicMatchingEducationExample example = new BasicMatchingEducationExample();
         BasicMatchingEducationExample.Criteria criteria = example.createCriteria();
-        criteria.andIdIn(ids);
-        basicMatchingEducationMapper.deleteByExample(example);
+        criteria.andBisDeleteEqualTo(false).andIdIn(ids);
+
+        BasicMatchingEducation item=new BasicMatchingEducation();
+        item.setBisDelete(true);
+        basicMatchingEducationMapper.updateByExampleSelective(item,example);
     }
 
 }

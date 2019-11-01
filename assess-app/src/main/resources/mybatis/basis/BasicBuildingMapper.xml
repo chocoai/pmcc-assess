@@ -47,13 +47,14 @@
     <result column="v_structural_construction" property="vStructuralConstruction" jdbcType="VARCHAR" />
     <result column="v_basic_practice" property="vBasicPractice" jdbcType="VARCHAR" />
     <result column="v_structural_practice" property="vStructuralPractice" jdbcType="VARCHAR" />
-    <result column="remark" property="remark" jdbcType="VARCHAR" />
-    <result column="creator" property="creator" jdbcType="VARCHAR" />
-    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
-    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
     <result column="property_social_prestige" property="propertySocialPrestige" jdbcType="INTEGER" />
     <result column="property_company_nature" property="propertyCompanyNature" jdbcType="INTEGER" />
     <result column="map_id" property="mapId" jdbcType="INTEGER" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="bis_delete" property="bisDelete" jdbcType="BIT" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
+    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -122,8 +123,8 @@
     building_structure_category, first_floor, max_floor, in_jacket_area, use_area, construction_quality, 
     appearance_style, appearance_new_and_old, between_distance, between_distance_description, 
     v_structura, v_specifications, v_structural_construction, v_basic_practice, v_structural_practice, 
-    remark, creator, gmt_created, gmt_modified, property_social_prestige, property_company_nature, 
-    map_id
+    property_social_prestige, property_company_nature, map_id, remark, bis_delete, creator, 
+    gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicBuildingExample" >
     select
@@ -173,10 +174,10 @@
       use_area, construction_quality, appearance_style, 
       appearance_new_and_old, between_distance, between_distance_description, 
       v_structura, v_specifications, v_structural_construction, 
-      v_basic_practice, v_structural_practice, remark, 
-      creator, gmt_created, gmt_modified, 
-      property_social_prestige, property_company_nature, 
-      map_id)
+      v_basic_practice, v_structural_practice, property_social_prestige, 
+      property_company_nature, map_id, remark, 
+      bis_delete, creator, gmt_created, 
+      gmt_modified)
     values (#{applyId,jdbcType=INTEGER}, #{estateId,jdbcType=INTEGER}, #{residenceUseYear,jdbcType=INTEGER}, 
       #{industryUseYear,jdbcType=INTEGER}, #{buildingNumber,jdbcType=VARCHAR}, #{buildingName,jdbcType=VARCHAR}, 
       #{floorCount,jdbcType=VARCHAR}, #{location,jdbcType=VARCHAR}, #{builder,jdbcType=INTEGER}, 
@@ -191,10 +192,10 @@
       #{useArea,jdbcType=VARCHAR}, #{constructionQuality,jdbcType=INTEGER}, #{appearanceStyle,jdbcType=INTEGER}, 
       #{appearanceNewAndOld,jdbcType=INTEGER}, #{betweenDistance,jdbcType=INTEGER}, #{betweenDistanceDescription,jdbcType=VARCHAR}, 
       #{vStructura,jdbcType=VARCHAR}, #{vSpecifications,jdbcType=VARCHAR}, #{vStructuralConstruction,jdbcType=VARCHAR}, 
-      #{vBasicPractice,jdbcType=VARCHAR}, #{vStructuralPractice,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
-      #{propertySocialPrestige,jdbcType=INTEGER}, #{propertyCompanyNature,jdbcType=INTEGER}, 
-      #{mapId,jdbcType=INTEGER})
+      #{vBasicPractice,jdbcType=VARCHAR}, #{vStructuralPractice,jdbcType=VARCHAR}, #{propertySocialPrestige,jdbcType=INTEGER}, 
+      #{propertyCompanyNature,jdbcType=INTEGER}, #{mapId,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, 
+      #{bisDelete,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicBuilding" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -334,8 +335,20 @@
       <if test="vStructuralPractice != null" >
         v_structural_practice,
       </if>
+      <if test="propertySocialPrestige != null" >
+        property_social_prestige,
+      </if>
+      <if test="propertyCompanyNature != null" >
+        property_company_nature,
+      </if>
+      <if test="mapId != null" >
+        map_id,
+      </if>
       <if test="remark != null" >
         remark,
+      </if>
+      <if test="bisDelete != null" >
+        bis_delete,
       </if>
       <if test="creator != null" >
         creator,
@@ -345,15 +358,6 @@
       </if>
       <if test="gmtModified != null" >
         gmt_modified,
-      </if>
-      <if test="propertySocialPrestige != null" >
-        property_social_prestige,
-      </if>
-      <if test="propertyCompanyNature != null" >
-        property_company_nature,
-      </if>
-      <if test="mapId != null" >
-        map_id,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -489,8 +493,20 @@
       <if test="vStructuralPractice != null" >
         #{vStructuralPractice,jdbcType=VARCHAR},
       </if>
+      <if test="propertySocialPrestige != null" >
+        #{propertySocialPrestige,jdbcType=INTEGER},
+      </if>
+      <if test="propertyCompanyNature != null" >
+        #{propertyCompanyNature,jdbcType=INTEGER},
+      </if>
+      <if test="mapId != null" >
+        #{mapId,jdbcType=INTEGER},
+      </if>
       <if test="remark != null" >
         #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="bisDelete != null" >
+        #{bisDelete,jdbcType=BIT},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -500,15 +516,6 @@
       </if>
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="propertySocialPrestige != null" >
-        #{propertySocialPrestige,jdbcType=INTEGER},
-      </if>
-      <if test="propertyCompanyNature != null" >
-        #{propertyCompanyNature,jdbcType=INTEGER},
-      </if>
-      <if test="mapId != null" >
-        #{mapId,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -656,8 +663,20 @@
       <if test="record.vStructuralPractice != null" >
         v_structural_practice = #{record.vStructuralPractice,jdbcType=VARCHAR},
       </if>
+      <if test="record.propertySocialPrestige != null" >
+        property_social_prestige = #{record.propertySocialPrestige,jdbcType=INTEGER},
+      </if>
+      <if test="record.propertyCompanyNature != null" >
+        property_company_nature = #{record.propertyCompanyNature,jdbcType=INTEGER},
+      </if>
+      <if test="record.mapId != null" >
+        map_id = #{record.mapId,jdbcType=INTEGER},
+      </if>
       <if test="record.remark != null" >
         remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bisDelete != null" >
+        bis_delete = #{record.bisDelete,jdbcType=BIT},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -667,15 +686,6 @@
       </if>
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.propertySocialPrestige != null" >
-        property_social_prestige = #{record.propertySocialPrestige,jdbcType=INTEGER},
-      </if>
-      <if test="record.propertyCompanyNature != null" >
-        property_company_nature = #{record.propertyCompanyNature,jdbcType=INTEGER},
-      </if>
-      <if test="record.mapId != null" >
-        map_id = #{record.mapId,jdbcType=INTEGER},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -729,13 +739,14 @@
       v_structural_construction = #{record.vStructuralConstruction,jdbcType=VARCHAR},
       v_basic_practice = #{record.vBasicPractice,jdbcType=VARCHAR},
       v_structural_practice = #{record.vStructuralPractice,jdbcType=VARCHAR},
-      remark = #{record.remark,jdbcType=VARCHAR},
-      creator = #{record.creator,jdbcType=VARCHAR},
-      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       property_social_prestige = #{record.propertySocialPrestige,jdbcType=INTEGER},
       property_company_nature = #{record.propertyCompanyNature,jdbcType=INTEGER},
-      map_id = #{record.mapId,jdbcType=INTEGER}
+      map_id = #{record.mapId,jdbcType=INTEGER},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      bis_delete = #{record.bisDelete,jdbcType=BIT},
+      creator = #{record.creator,jdbcType=VARCHAR},
+      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -875,8 +886,20 @@
       <if test="vStructuralPractice != null" >
         v_structural_practice = #{vStructuralPractice,jdbcType=VARCHAR},
       </if>
+      <if test="propertySocialPrestige != null" >
+        property_social_prestige = #{propertySocialPrestige,jdbcType=INTEGER},
+      </if>
+      <if test="propertyCompanyNature != null" >
+        property_company_nature = #{propertyCompanyNature,jdbcType=INTEGER},
+      </if>
+      <if test="mapId != null" >
+        map_id = #{mapId,jdbcType=INTEGER},
+      </if>
       <if test="remark != null" >
         remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="bisDelete != null" >
+        bis_delete = #{bisDelete,jdbcType=BIT},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -886,15 +909,6 @@
       </if>
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="propertySocialPrestige != null" >
-        property_social_prestige = #{propertySocialPrestige,jdbcType=INTEGER},
-      </if>
-      <if test="propertyCompanyNature != null" >
-        property_company_nature = #{propertyCompanyNature,jdbcType=INTEGER},
-      </if>
-      <if test="mapId != null" >
-        map_id = #{mapId,jdbcType=INTEGER},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -945,13 +959,14 @@
       v_structural_construction = #{vStructuralConstruction,jdbcType=VARCHAR},
       v_basic_practice = #{vBasicPractice,jdbcType=VARCHAR},
       v_structural_practice = #{vStructuralPractice,jdbcType=VARCHAR},
-      remark = #{remark,jdbcType=VARCHAR},
-      creator = #{creator,jdbcType=VARCHAR},
-      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       property_social_prestige = #{propertySocialPrestige,jdbcType=INTEGER},
       property_company_nature = #{propertyCompanyNature,jdbcType=INTEGER},
-      map_id = #{mapId,jdbcType=INTEGER}
+      map_id = #{mapId,jdbcType=INTEGER},
+      remark = #{remark,jdbcType=VARCHAR},
+      bis_delete = #{bisDelete,jdbcType=BIT},
+      creator = #{creator,jdbcType=VARCHAR},
+      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

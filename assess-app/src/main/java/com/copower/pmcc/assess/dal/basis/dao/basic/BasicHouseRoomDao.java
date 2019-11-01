@@ -20,27 +20,31 @@ public class BasicHouseRoomDao {
     @Autowired
     private BasicHouseRoomMapper basicHouseRoomMapper;
 
-    public BasicHouseRoom getBasicHouseRoomById(Integer id) throws SQLException {
+    public BasicHouseRoom getBasicHouseRoomById(Integer id)  {
         return basicHouseRoomMapper.selectByPrimaryKey(id);
     }
 
-    public Integer saveBasicHouseRoom(BasicHouseRoom basicHouseRoom) throws SQLException {
+    public Integer addBasicHouseRoom(BasicHouseRoom basicHouseRoom)  {
         basicHouseRoomMapper.insertSelective(basicHouseRoom);
         return basicHouseRoom.getId();
     }
 
-    public boolean updateBasicHouseRoom(BasicHouseRoom basicHouseRoom, boolean updateNull) throws SQLException {
+    public boolean updateBasicHouseRoom(BasicHouseRoom basicHouseRoom, boolean updateNull)  {
         return updateNull ? basicHouseRoomMapper.updateByPrimaryKey(basicHouseRoom) == 1 : basicHouseRoomMapper.updateByPrimaryKeySelective(basicHouseRoom) == 1;
     }
 
-    public boolean deleteBasicHouseRoom(Integer id) throws SQLException {
-        return basicHouseRoomMapper.deleteByPrimaryKey(id) == 1;
+    public boolean deleteBasicHouseRoom(Integer id)  {
+        BasicHouseRoom basicHouseRoom = getBasicHouseRoomById(id);
+        if(basicHouseRoom==null)return false;
+        basicHouseRoom.setBisDelete(true);
+        return basicHouseRoomMapper.updateByPrimaryKeySelective(basicHouseRoom) == 1;
     }
 
 
     public List<BasicHouseRoom> basicHouseRoomList(BasicHouseRoom basicHouseRoom) {
         BasicHouseRoomExample example = new BasicHouseRoomExample();
-        MybatisUtils.convertObj2Example(basicHouseRoom, example);
+        BasicHouseRoomExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
+        MybatisUtils.convertObj2Criteria(basicHouseRoom, criteria);
         return basicHouseRoomMapper.selectByExample(example);
     }
 
@@ -52,7 +56,7 @@ public class BasicHouseRoomDao {
      */
     public int countByHouseId(Integer houseId) {
         BasicHouseRoomExample example = new BasicHouseRoomExample();
-        example.createCriteria().andHouseIdEqualTo(houseId);
+        example.createCriteria().andBisDeleteEqualTo(false).andHouseIdEqualTo(houseId);
         return basicHouseRoomMapper.countByExample(example);
     }
 }

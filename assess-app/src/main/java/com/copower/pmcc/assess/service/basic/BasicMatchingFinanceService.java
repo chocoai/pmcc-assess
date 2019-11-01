@@ -66,7 +66,7 @@ public class BasicMatchingFinanceService {
     public Integer saveAndUpdateBasicMatchingFinance(BasicMatchingFinance basicMatchingFinance, boolean updateNull) throws Exception {
         if (basicMatchingFinance.getId() == null || basicMatchingFinance.getId().intValue() == 0) {
             basicMatchingFinance.setCreator(commonService.thisUserAccount());
-            Integer id = basicMatchingFinanceDao.saveBasicMatchingFinance(basicMatchingFinance);
+            Integer id = basicMatchingFinanceDao.addBasicMatchingFinance(basicMatchingFinance);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicMatchingFinance.class), id);
             return id;
         } else {
@@ -103,10 +103,6 @@ public class BasicMatchingFinanceService {
      */
     public List<BasicMatchingFinance> basicMatchingFinanceList(BasicMatchingFinance basicMatchingFinance) throws Exception {
         return basicMatchingFinanceDao.basicMatchingFinanceList(basicMatchingFinance);
-    }
-
-    public void removeBasicMatchingFinance(BasicMatchingFinance basicMatchingFinance) throws Exception {
-        basicMatchingFinanceDao.removeBasicMatchingFinance(basicMatchingFinance);
     }
 
     public BootstrapTableVo getBootstrapTableVo(BasicMatchingFinance basicMatchingFinance) throws Exception {

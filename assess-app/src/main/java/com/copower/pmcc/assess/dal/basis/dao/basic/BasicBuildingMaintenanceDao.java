@@ -20,32 +20,37 @@ public class BasicBuildingMaintenanceDao {
     @Autowired
     private BasicBuildingMaintenanceMapper basicBuildingMaintenanceMapper;
 
-    public BasicBuildingMaintenance getBasicBuildingMaintenanceById(Integer id)throws SQLException {
+    public BasicBuildingMaintenance getBasicBuildingMaintenanceById(Integer id) {
         return basicBuildingMaintenanceMapper.selectByPrimaryKey(id);
     }
 
-    public Integer saveBasicBuildingMaintenance(BasicBuildingMaintenance basicBuildingMaintenance)throws SQLException{
+    public Integer saveBasicBuildingMaintenance(BasicBuildingMaintenance basicBuildingMaintenance) {
         basicBuildingMaintenanceMapper.insertSelective(basicBuildingMaintenance);
         return basicBuildingMaintenance.getId();
     }
 
-    public boolean updateBasicBuildingMaintenance(BasicBuildingMaintenance basicBuildingMaintenance, boolean updateNull)throws SQLException{
-        return updateNull?basicBuildingMaintenanceMapper.updateByPrimaryKey(basicBuildingMaintenance)==1:basicBuildingMaintenanceMapper.updateByPrimaryKeySelective(basicBuildingMaintenance)==1;
+    public boolean updateBasicBuildingMaintenance(BasicBuildingMaintenance basicBuildingMaintenance, boolean updateNull) {
+        return updateNull ? basicBuildingMaintenanceMapper.updateByPrimaryKey(basicBuildingMaintenance) == 1 : basicBuildingMaintenanceMapper.updateByPrimaryKeySelective(basicBuildingMaintenance) == 1;
     }
 
-    public void removeBasicBuildingMaintenance(BasicBuildingMaintenance basicBuildingMaintenance)throws SQLException{
+    public void removeBasicBuildingMaintenance(BasicBuildingMaintenance basicBuildingMaintenance) {
         BasicBuildingMaintenanceExample example = new BasicBuildingMaintenanceExample();
-        MybatisUtils.convertObj2Example(basicBuildingMaintenance, example);
+        BasicBuildingMaintenanceExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
+        MybatisUtils.convertObj2Criteria(basicBuildingMaintenance, criteria);
         basicBuildingMaintenanceMapper.deleteByExample(example);
     }
 
-    public boolean deleteBasicBuildingMaintenance(Integer id)throws SQLException{
-        return  basicBuildingMaintenanceMapper.deleteByPrimaryKey(id)==1;
+    public boolean deleteBasicBuildingMaintenance(Integer id) {
+        BasicBuildingMaintenance basicBuildingMaintenance = getBasicBuildingMaintenanceById(id);
+        if (basicBuildingMaintenance == null) return false;
+        basicBuildingMaintenance.setBisDelete(true);
+        return basicBuildingMaintenanceMapper.updateByPrimaryKeySelective(basicBuildingMaintenance) == 1;
     }
 
-    public List<BasicBuildingMaintenance> basicBuildingMaintenanceList(BasicBuildingMaintenance basicBuildingMaintenance)throws SQLException{
+    public List<BasicBuildingMaintenance> basicBuildingMaintenanceList(BasicBuildingMaintenance basicBuildingMaintenance) {
         BasicBuildingMaintenanceExample example = new BasicBuildingMaintenanceExample();
-        MybatisUtils.convertObj2Example(basicBuildingMaintenance, example);
+        BasicBuildingMaintenanceExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
+        MybatisUtils.convertObj2Criteria(basicBuildingMaintenance, criteria);
         return basicBuildingMaintenanceMapper.selectByExample(example);
     }
 }

@@ -21,33 +21,31 @@ public class BasicHouseIntelligentDao {
     @Autowired
     private BasicHouseIntelligentMapper basicHouseIntelligentMapper;
 
-    public BasicHouseIntelligent getBasicHouseIntelligentById(Integer id) throws SQLException {
+    public BasicHouseIntelligent getBasicHouseIntelligentById(Integer id) {
         return basicHouseIntelligentMapper.selectByPrimaryKey(id);
     }
 
-    public Integer saveBasicHouseIntelligent(BasicHouseIntelligent basicHouseIntelligent) throws SQLException {
+    public Integer addBasicHouseIntelligent(BasicHouseIntelligent basicHouseIntelligent) {
         basicHouseIntelligentMapper.insertSelective(basicHouseIntelligent);
         return basicHouseIntelligent.getId();
     }
 
-    public boolean updateBasicHouseIntelligent(BasicHouseIntelligent basicHouseIntelligent, boolean updateNull) throws SQLException {
+    public boolean updateBasicHouseIntelligent(BasicHouseIntelligent basicHouseIntelligent, boolean updateNull) {
         return updateNull ? basicHouseIntelligentMapper.updateByPrimaryKey(basicHouseIntelligent) == 1 : basicHouseIntelligentMapper.updateByPrimaryKeySelective(basicHouseIntelligent) == 1;
     }
 
-    public boolean deleteBasicHouseIntelligent(BasicHouseIntelligent basicHouseIntelligent) throws SQLException {
-        BasicHouseIntelligentExample example = new BasicHouseIntelligentExample();
-        MybatisUtils.convertObj2Example(basicHouseIntelligent, example);
-        return basicHouseIntelligentMapper.deleteByExample(example) > 0;
-    }
-
-    public boolean deleteBasicHouseIntelligent(Integer id) throws SQLException {
-        return basicHouseIntelligentMapper.deleteByPrimaryKey(id) == 1;
+    public boolean deleteBasicHouseIntelligent(Integer id) {
+        BasicHouseIntelligent basicHouseIntelligent = getBasicHouseIntelligentById(id);
+        if (basicHouseIntelligent == null) return false;
+        basicHouseIntelligent.setBisDelete(true);
+        return basicHouseIntelligentMapper.updateByPrimaryKeySelective(basicHouseIntelligent) == 1;
     }
 
     public List<BasicHouseIntelligent> basicHouseIntelligentList(BasicHouseIntelligent basicHouseIntelligent) {
         BasicHouseIntelligentExample example = new BasicHouseIntelligentExample();
-        MybatisUtils.convertObj2Example(basicHouseIntelligent, example);
-        return basicHouseIntelligentMapper.selectByExampleWithBLOBs(example);
+        BasicHouseIntelligentExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
+        MybatisUtils.convertObj2Criteria(basicHouseIntelligent, criteria);
+        return basicHouseIntelligentMapper.selectByExample(example);
     }
 
     /**
@@ -58,7 +56,7 @@ public class BasicHouseIntelligentDao {
      */
     public int countByHouseId(Integer houseId) {
         BasicHouseIntelligentExample example = new BasicHouseIntelligentExample();
-        example.createCriteria().andHouseIdEqualTo(houseId);
+        example.createCriteria().andBisDeleteEqualTo(false).andHouseIdEqualTo(houseId);
         return basicHouseIntelligentMapper.countByExample(example);
     }
 }

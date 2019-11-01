@@ -13,6 +13,8 @@ public class BasicHouseTradingLease {
 
     private String rentGrowthRate;
 
+    private Boolean bisDelete;
+
     private String creator;
 
     private Date gmtCreated;
@@ -57,6 +59,14 @@ public class BasicHouseTradingLease {
 
     public void setRentGrowthRate(String rentGrowthRate) {
         this.rentGrowthRate = rentGrowthRate == null ? null : rentGrowthRate.trim();
+    }
+
+    public Boolean getBisDelete() {
+        return bisDelete;
+    }
+
+    public void setBisDelete(Boolean bisDelete) {
+        this.bisDelete = bisDelete;
     }
 
     public String getCreator() {

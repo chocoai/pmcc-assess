@@ -116,14 +116,6 @@ public class BasicHouseCorollaryEquipmentService {
         return basicHouseCorollaryEquipmentDao.basicHouseCorollaryEquipmentList(where);
     }
 
-    public void removeBasicHouseCorollaryEquipment(BasicHouseCorollaryEquipment basicHouseCorollaryEquipment) throws Exception {
-        List<SysAttachmentDto> sysAttachmentDtos = baseAttachmentService.getByField_tableId(basicHouseCorollaryEquipment.getId(), null, FormatUtils.entityNameConvertToTableName(BasicHouseCorollaryEquipment.class));
-        if (!ObjectUtils.isEmpty(sysAttachmentDtos)) {
-            sysAttachmentDtos.forEach(oo -> baseAttachmentService.deleteAttachment(oo.getId()));
-        }
-        basicHouseCorollaryEquipmentDao.removeBasicHouseCorollaryEquipment(basicHouseCorollaryEquipment);
-    }
-
     public BootstrapTableVo getBootstrapTableVo(BasicHouseCorollaryEquipment basicHouseCorollaryEquipment) throws Exception {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();

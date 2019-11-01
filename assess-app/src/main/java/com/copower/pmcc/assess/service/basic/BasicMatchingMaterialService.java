@@ -64,7 +64,7 @@ public class BasicMatchingMaterialService {
     public Integer saveAndUpdateBasicMatchingMaterial(BasicMatchingMaterial basicMatchingMaterial, boolean updateNull) throws Exception {
         if (basicMatchingMaterial.getId() == null || basicMatchingMaterial.getId().intValue() == 0) {
             basicMatchingMaterial.setCreator(commonService.thisUserAccount());
-            Integer id = basicMatchingMaterialDao.saveBasicMatchingMaterial(basicMatchingMaterial);
+            Integer id = basicMatchingMaterialDao.addBasicMatchingMaterial(basicMatchingMaterial);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicMatchingMaterial.class), id);
             return id;
         } else {
@@ -101,10 +101,6 @@ public class BasicMatchingMaterialService {
      */
     public List<BasicMatchingMaterial> basicMatchingMaterialList(BasicMatchingMaterial basicMatchingMaterial) throws Exception {
         return basicMatchingMaterialDao.basicMatchingMaterialList(basicMatchingMaterial);
-    }
-
-    public void removeBasicMatchingMaterial(BasicMatchingMaterial basicMatchingMaterial) throws Exception {
-        basicMatchingMaterialDao.removeBasicMatchingMaterial(basicMatchingMaterial);
     }
 
     public BootstrapTableVo getBootstrapTableVo(BasicMatchingMaterial basicMatchingMaterial) throws Exception {

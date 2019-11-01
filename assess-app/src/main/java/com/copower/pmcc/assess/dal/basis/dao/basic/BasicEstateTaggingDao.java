@@ -25,41 +25,44 @@ public class BasicEstateTaggingDao {
         return basicEstateTaggingMapper.selectByPrimaryKey(id);
     }
 
-    public Integer addBasicEstateTagging(BasicEstateTagging basicEstateTagging)  {
+    public Integer addBasicEstateTagging(BasicEstateTagging basicEstateTagging) {
         basicEstateTaggingMapper.insertSelective(basicEstateTagging);
         return basicEstateTagging.getId();
     }
 
-    public boolean updateBasicEstateTagging(BasicEstateTagging basicEstateTagging, boolean updateNull)  {
+    public boolean updateBasicEstateTagging(BasicEstateTagging basicEstateTagging, boolean updateNull) {
         return updateNull ? basicEstateTaggingMapper.updateByPrimaryKey(basicEstateTagging) == 1 : basicEstateTaggingMapper.updateByPrimaryKeySelective(basicEstateTagging) == 1;
     }
 
-    public void removeBasicEstateTagging(BasicEstateTagging basicEstateTagging)  {
+    public void removeBasicEstateTagging(BasicEstateTagging basicEstateTagging) {
         BasicEstateTaggingExample example = new BasicEstateTaggingExample();
-        MybatisUtils.convertObj2Example(basicEstateTagging, example);
-        basicEstateTaggingMapper.deleteByExample(example);
+        BasicEstateTaggingExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
+        MybatisUtils.convertObj2Criteria(basicEstateTagging, criteria);
+
+        BasicEstateTagging tagging = new BasicEstateTagging();
+        tagging.setBisDelete(true);
+        basicEstateTaggingMapper.updateByExampleSelective(tagging, example);
     }
 
     public boolean deleteBasicEstateTagging(Integer id) {
-        return basicEstateTaggingMapper.deleteByPrimaryKey(id) == 1;
+        BasicEstateTagging estateTagging = getBasicEstateTaggingById(id);
+        if (estateTagging == null) return false;
+        estateTagging.setBisDelete(true);
+        return basicEstateTaggingMapper.updateByPrimaryKeySelective(estateTagging) == 1;
     }
 
     public List<BasicEstateTagging> getBasicEstateTaggingList(BasicEstateTagging basicEstateTagging) {
         BasicEstateTaggingExample example = new BasicEstateTaggingExample();
-        MybatisUtils.convertObj2Example(basicEstateTagging, example);
+        BasicEstateTaggingExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
+        MybatisUtils.convertObj2Criteria(basicEstateTagging, criteria);
         return basicEstateTaggingMapper.selectByExample(example);
     }
 
     public Integer getEstateTaggingCount(BasicEstateTagging basicEstateTagging) {
         BasicEstateTaggingExample example = new BasicEstateTaggingExample();
-        MybatisUtils.convertObj2Example(basicEstateTagging, example);
+        BasicEstateTaggingExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
+        MybatisUtils.convertObj2Criteria(basicEstateTagging, criteria);
         return basicEstateTaggingMapper.countByExample(example);
     }
 
-    //获取标注不为null数据
-    public List<BasicEstateTagging> getApplyIdIsNotNullList() {
-        BasicEstateTaggingExample example = new BasicEstateTaggingExample();
-        example.createCriteria().andApplyIdIsNotNull();
-        return basicEstateTaggingMapper.selectByExample(example);
-    }
 }

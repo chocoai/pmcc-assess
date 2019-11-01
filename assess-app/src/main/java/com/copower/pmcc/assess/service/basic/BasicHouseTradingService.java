@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,7 +57,7 @@ public class BasicHouseTradingService {
     public Integer saveAndUpdateBasicHouseTrading(BasicHouseTrading basicHouseTrading, boolean updateNull)throws Exception{
         if (basicHouseTrading.getId()== null || basicHouseTrading.getId().intValue()==0){
             basicHouseTrading.setCreator(commonService.thisUserAccount());
-            return basicHouseTradingDao.saveBasicHouseTrading(basicHouseTrading);
+            return basicHouseTradingDao.addBasicHouseTrading(basicHouseTrading);
         }else {
             if(updateNull){
                 BasicHouseTrading houseTrading = basicHouseTradingDao.getBasicHouseTradingById(basicHouseTrading.getId());
@@ -94,15 +93,11 @@ public class BasicHouseTradingService {
     }
 
     public BasicHouseTrading getTradingByHouseId(Integer houseId){
-        try {
-            BasicHouseTrading basicHouseTrading=new BasicHouseTrading();
-            basicHouseTrading.setHouseId(houseId);
-            List<BasicHouseTrading> tradings = basicHouseTradingDao.basicHouseTradingList(basicHouseTrading);
-            if(CollectionUtils.isEmpty(tradings)) return null;
-            return tradings.get(0);
-        } catch (SQLException e) {
-            return null;
-        }
+        BasicHouseTrading basicHouseTrading=new BasicHouseTrading();
+        basicHouseTrading.setHouseId(houseId);
+        List<BasicHouseTrading> tradings = basicHouseTradingDao.basicHouseTradingList(basicHouseTrading);
+        if(CollectionUtils.isEmpty(tradings)) return null;
+        return tradings.get(0);
     }
 
     public BootstrapTableVo getBootstrapTableVo(BasicHouseTrading basicHouseTrading)throws Exception{

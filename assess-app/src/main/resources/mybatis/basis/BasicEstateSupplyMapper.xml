@@ -10,6 +10,7 @@
     <result column="grade" property="grade" jdbcType="INTEGER" />
     <result column="line_grade" property="lineGrade" jdbcType="INTEGER" />
     <result column="power" property="power" jdbcType="VARCHAR" />
+    <result column="bis_delete" property="bisDelete" jdbcType="BIT" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -73,8 +74,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, estate_id, type, name, reputation, grade, line_grade, power, creator, gmt_created, 
-    gmt_modified
+    id, estate_id, type, name, reputation, grade, line_grade, power, bis_delete, creator, 
+    gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicEstateSupplyExample" >
     select
@@ -112,12 +113,12 @@
     </selectKey>
     insert into tb_basic_estate_supply (estate_id, type, name, 
       reputation, grade, line_grade, 
-      power, creator, gmt_created, 
-      gmt_modified)
+      power, bis_delete, creator, 
+      gmt_created, gmt_modified)
     values (#{estateId,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
       #{reputation,jdbcType=INTEGER}, #{grade,jdbcType=INTEGER}, #{lineGrade,jdbcType=INTEGER}, 
-      #{power,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{power,jdbcType=VARCHAR}, #{bisDelete,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicEstateSupply" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -145,6 +146,9 @@
       </if>
       <if test="power != null" >
         power,
+      </if>
+      <if test="bisDelete != null" >
+        bis_delete,
       </if>
       <if test="creator != null" >
         creator,
@@ -177,6 +181,9 @@
       </if>
       <if test="power != null" >
         #{power,jdbcType=VARCHAR},
+      </if>
+      <if test="bisDelete != null" >
+        #{bisDelete,jdbcType=BIT},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -222,6 +229,9 @@
       <if test="record.power != null" >
         power = #{record.power,jdbcType=VARCHAR},
       </if>
+      <if test="record.bisDelete != null" >
+        bis_delete = #{record.bisDelete,jdbcType=BIT},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -246,6 +256,7 @@
       grade = #{record.grade,jdbcType=INTEGER},
       line_grade = #{record.lineGrade,jdbcType=INTEGER},
       power = #{record.power,jdbcType=VARCHAR},
+      bis_delete = #{record.bisDelete,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -277,6 +288,9 @@
       <if test="power != null" >
         power = #{power,jdbcType=VARCHAR},
       </if>
+      <if test="bisDelete != null" >
+        bis_delete = #{bisDelete,jdbcType=BIT},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -298,6 +312,7 @@
       grade = #{grade,jdbcType=INTEGER},
       line_grade = #{lineGrade,jdbcType=INTEGER},
       power = #{power,jdbcType=VARCHAR},
+      bis_delete = #{bisDelete,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

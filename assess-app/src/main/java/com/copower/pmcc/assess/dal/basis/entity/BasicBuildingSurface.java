@@ -11,13 +11,15 @@ public class BasicBuildingSurface {
 
     private String description;
 
+    private String buildNumber;
+
+    private Boolean bisDelete;
+
     private String creator;
 
     private Date gmtCreated;
 
     private Date gmtModified;
-
-    private String buildNumber;
 
     public Integer getId() {
         return id;
@@ -51,6 +53,22 @@ public class BasicBuildingSurface {
         this.description = description == null ? null : description.trim();
     }
 
+    public String getBuildNumber() {
+        return buildNumber;
+    }
+
+    public void setBuildNumber(String buildNumber) {
+        this.buildNumber = buildNumber == null ? null : buildNumber.trim();
+    }
+
+    public Boolean getBisDelete() {
+        return bisDelete;
+    }
+
+    public void setBisDelete(Boolean bisDelete) {
+        this.bisDelete = bisDelete;
+    }
+
     public String getCreator() {
         return creator;
     }
@@ -73,13 +91,5 @@ public class BasicBuildingSurface {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public String getBuildNumber() {
-        return buildNumber;
-    }
-
-    public void setBuildNumber(String buildNumber) {
-        this.buildNumber = buildNumber == null ? null : buildNumber.trim();
     }
 }

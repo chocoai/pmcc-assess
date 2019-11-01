@@ -10,6 +10,7 @@
     <result column="service_time" property="serviceTime" jdbcType="VARCHAR" />
     <result column="grade_evaluation" property="gradeEvaluation" jdbcType="INTEGER" />
     <result column="charges_notes" property="chargesNotes" jdbcType="VARCHAR" />
+    <result column="bis_delete" property="bisDelete" jdbcType="BIT" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -74,7 +75,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, master_id, building_id, service_type, service_content, service_time, grade_evaluation, 
-    charges_notes, creator, gmt_created, gmt_modified
+    charges_notes, bis_delete, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicBuildingPropertyServiceItemExample" >
     select
@@ -112,12 +113,12 @@
     </selectKey>
     insert into tb_basic_building_property_service_item (master_id, building_id, service_type, 
       service_content, service_time, grade_evaluation, 
-      charges_notes, creator, gmt_created, 
-      gmt_modified)
+      charges_notes, bis_delete, creator, 
+      gmt_created, gmt_modified)
     values (#{masterId,jdbcType=INTEGER}, #{buildingId,jdbcType=INTEGER}, #{serviceType,jdbcType=INTEGER}, 
       #{serviceContent,jdbcType=INTEGER}, #{serviceTime,jdbcType=VARCHAR}, #{gradeEvaluation,jdbcType=INTEGER}, 
-      #{chargesNotes,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{chargesNotes,jdbcType=VARCHAR}, #{bisDelete,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicBuildingPropertyServiceItem" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -145,6 +146,9 @@
       </if>
       <if test="chargesNotes != null" >
         charges_notes,
+      </if>
+      <if test="bisDelete != null" >
+        bis_delete,
       </if>
       <if test="creator != null" >
         creator,
@@ -177,6 +181,9 @@
       </if>
       <if test="chargesNotes != null" >
         #{chargesNotes,jdbcType=VARCHAR},
+      </if>
+      <if test="bisDelete != null" >
+        #{bisDelete,jdbcType=BIT},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -222,6 +229,9 @@
       <if test="record.chargesNotes != null" >
         charges_notes = #{record.chargesNotes,jdbcType=VARCHAR},
       </if>
+      <if test="record.bisDelete != null" >
+        bis_delete = #{record.bisDelete,jdbcType=BIT},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -246,6 +256,7 @@
       service_time = #{record.serviceTime,jdbcType=VARCHAR},
       grade_evaluation = #{record.gradeEvaluation,jdbcType=INTEGER},
       charges_notes = #{record.chargesNotes,jdbcType=VARCHAR},
+      bis_delete = #{record.bisDelete,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -277,6 +288,9 @@
       <if test="chargesNotes != null" >
         charges_notes = #{chargesNotes,jdbcType=VARCHAR},
       </if>
+      <if test="bisDelete != null" >
+        bis_delete = #{bisDelete,jdbcType=BIT},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -298,6 +312,7 @@
       service_time = #{serviceTime,jdbcType=VARCHAR},
       grade_evaluation = #{gradeEvaluation,jdbcType=INTEGER},
       charges_notes = #{chargesNotes,jdbcType=VARCHAR},
+      bis_delete = #{bisDelete,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

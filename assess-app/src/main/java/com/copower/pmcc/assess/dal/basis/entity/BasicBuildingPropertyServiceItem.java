@@ -19,6 +19,8 @@ public class BasicBuildingPropertyServiceItem {
 
     private String chargesNotes;
 
+    private Boolean bisDelete;
+
     private String creator;
 
     private Date gmtCreated;
@@ -87,6 +89,14 @@ public class BasicBuildingPropertyServiceItem {
 
     public void setChargesNotes(String chargesNotes) {
         this.chargesNotes = chargesNotes == null ? null : chargesNotes.trim();
+    }
+
+    public Boolean getBisDelete() {
+        return bisDelete;
+    }
+
+    public void setBisDelete(Boolean bisDelete) {
+        this.bisDelete = bisDelete;
     }
 
     public String getCreator() {

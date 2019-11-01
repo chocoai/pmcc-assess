@@ -13,15 +13,17 @@ public class BasicUnit {
 
     private String elevatorHouseholdRatio;
 
+    private String huxingExplain;
+
+    private Integer mapId;
+
+    private Boolean bisDelete;
+
     private String creator;
 
     private Date gmtCreated;
 
     private Date gmtModified;
-
-    private String huxingExplain;
-
-    private Integer mapId;
 
     public Integer getId() {
         return id;
@@ -63,6 +65,30 @@ public class BasicUnit {
         this.elevatorHouseholdRatio = elevatorHouseholdRatio == null ? null : elevatorHouseholdRatio.trim();
     }
 
+    public String getHuxingExplain() {
+        return huxingExplain;
+    }
+
+    public void setHuxingExplain(String huxingExplain) {
+        this.huxingExplain = huxingExplain == null ? null : huxingExplain.trim();
+    }
+
+    public Integer getMapId() {
+        return mapId;
+    }
+
+    public void setMapId(Integer mapId) {
+        this.mapId = mapId;
+    }
+
+    public Boolean getBisDelete() {
+        return bisDelete;
+    }
+
+    public void setBisDelete(Boolean bisDelete) {
+        this.bisDelete = bisDelete;
+    }
+
     public String getCreator() {
         return creator;
     }
@@ -85,21 +111,5 @@ public class BasicUnit {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public String getHuxingExplain() {
-        return huxingExplain;
-    }
-
-    public void setHuxingExplain(String huxingExplain) {
-        this.huxingExplain = huxingExplain == null ? null : huxingExplain.trim();
-    }
-
-    public Integer getMapId() {
-        return mapId;
-    }
-
-    public void setMapId(Integer mapId) {
-        this.mapId = mapId;
     }
 }

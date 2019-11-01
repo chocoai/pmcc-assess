@@ -104,10 +104,6 @@ public class BasicMatchingMedicalService {
         return basicMatchingMedicalDao.basicMatchingMedicalList(basicMatchingMedical);
     }
 
-    public void removeBasicMatchingMedical(BasicMatchingMedical basicMatchingMedical) throws Exception {
-        basicMatchingMedicalDao.removeBasicMatchingMedical(basicMatchingMedical);
-    }
-
     public BootstrapTableVo getBootstrapTableVo(BasicMatchingMedical basicMatchingMedical) throws Exception {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();

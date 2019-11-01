@@ -21,32 +21,30 @@ public class BasicHouseEquipmentDao {
     @Autowired
     private BasicHouseEquipmentMapper basicHouseEquipmentMapper;
 
-    public BasicHouseEquipment getBasicHouseEquipmentById(Integer id) throws SQLException {
+    public BasicHouseEquipment getBasicHouseEquipmentById(Integer id) {
         return basicHouseEquipmentMapper.selectByPrimaryKey(id);
     }
 
-    public Integer saveBasicHouseEquipment(BasicHouseEquipment basicHouseEquipment) throws SQLException {
+    public Integer saveBasicHouseEquipment(BasicHouseEquipment basicHouseEquipment) {
         basicHouseEquipmentMapper.insertSelective(basicHouseEquipment);
         return basicHouseEquipment.getId();
     }
 
-    public boolean updateBasicHouseEquipment(BasicHouseEquipment basicHouseEquipment, boolean updateNull) throws SQLException {
+    public boolean updateBasicHouseEquipment(BasicHouseEquipment basicHouseEquipment, boolean updateNull) {
         return updateNull ? basicHouseEquipmentMapper.updateByPrimaryKey(basicHouseEquipment) == 1 : basicHouseEquipmentMapper.updateByPrimaryKeySelective(basicHouseEquipment) == 1;
     }
 
-    public boolean deleteBasicHouseEquipment(BasicHouseEquipment basicHouseEquipment) throws SQLException {
-        BasicHouseEquipmentExample example = new BasicHouseEquipmentExample();
-        MybatisUtils.convertObj2Example(basicHouseEquipment, example);
-        return basicHouseEquipmentMapper.deleteByExample(example) > 0;
-    }
-
-    public boolean deleteBasicHouseEquipment(Integer id) throws SQLException {
-        return basicHouseEquipmentMapper.deleteByPrimaryKey(id) == 1;
+    public boolean deleteBasicHouseEquipment(Integer id) {
+        BasicHouseEquipment houseEquipment = getBasicHouseEquipmentById(id);
+        if (houseEquipment == null) return false;
+        houseEquipment.setBisDelete(true);
+        return basicHouseEquipmentMapper.updateByPrimaryKeySelective(houseEquipment) == 1;
     }
 
     public List<BasicHouseEquipment> basicHouseEquipmentList(BasicHouseEquipment basicHouseEquipment) {
         BasicHouseEquipmentExample example = new BasicHouseEquipmentExample();
-        MybatisUtils.convertObj2Example(basicHouseEquipment, example);
+        BasicHouseEquipmentExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
+        MybatisUtils.convertObj2Criteria(basicHouseEquipment, criteria);
         return basicHouseEquipmentMapper.selectByExample(example);
     }
 
@@ -58,7 +56,7 @@ public class BasicHouseEquipmentDao {
      */
     public int countByHouseId(Integer houseId, String type) {
         BasicHouseEquipmentExample example = new BasicHouseEquipmentExample();
-        example.createCriteria().andHouseIdEqualTo(houseId).andTypeEqualTo(type);
+        example.createCriteria().andBisDeleteEqualTo(false).andHouseIdEqualTo(houseId).andTypeEqualTo(type);
         return basicHouseEquipmentMapper.countByExample(example);
     }
 

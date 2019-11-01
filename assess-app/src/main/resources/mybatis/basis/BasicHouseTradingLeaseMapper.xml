@@ -7,6 +7,7 @@
     <result column="rent_payment_time_start" property="rentPaymentTimeStart" jdbcType="TIMESTAMP" />
     <result column="rent_payment_time_end" property="rentPaymentTimeEnd" jdbcType="TIMESTAMP" />
     <result column="rent_growth_rate" property="rentGrowthRate" jdbcType="VARCHAR" />
+    <result column="bis_delete" property="bisDelete" jdbcType="BIT" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -70,8 +71,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, house_id, rent_payment_time_start, rent_payment_time_end, rent_growth_rate, creator, 
-    gmt_created, gmt_modified
+    id, house_id, rent_payment_time_start, rent_payment_time_end, rent_growth_rate, bis_delete, 
+    creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseTradingLeaseExample" >
     select
@@ -108,11 +109,13 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_basic_house_trading_lease (house_id, rent_payment_time_start, 
-      rent_payment_time_end, rent_growth_rate, creator, 
-      gmt_created, gmt_modified)
+      rent_payment_time_end, rent_growth_rate, bis_delete, 
+      creator, gmt_created, gmt_modified
+      )
     values (#{houseId,jdbcType=INTEGER}, #{rentPaymentTimeStart,jdbcType=TIMESTAMP}, 
-      #{rentPaymentTimeEnd,jdbcType=TIMESTAMP}, #{rentGrowthRate,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+      #{rentPaymentTimeEnd,jdbcType=TIMESTAMP}, #{rentGrowthRate,jdbcType=VARCHAR}, #{bisDelete,jdbcType=BIT}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseTradingLease" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -131,6 +134,9 @@
       </if>
       <if test="rentGrowthRate != null" >
         rent_growth_rate,
+      </if>
+      <if test="bisDelete != null" >
+        bis_delete,
       </if>
       <if test="creator != null" >
         creator,
@@ -154,6 +160,9 @@
       </if>
       <if test="rentGrowthRate != null" >
         #{rentGrowthRate,jdbcType=VARCHAR},
+      </if>
+      <if test="bisDelete != null" >
+        #{bisDelete,jdbcType=BIT},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -190,6 +199,9 @@
       <if test="record.rentGrowthRate != null" >
         rent_growth_rate = #{record.rentGrowthRate,jdbcType=VARCHAR},
       </if>
+      <if test="record.bisDelete != null" >
+        bis_delete = #{record.bisDelete,jdbcType=BIT},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -211,6 +223,7 @@
       rent_payment_time_start = #{record.rentPaymentTimeStart,jdbcType=TIMESTAMP},
       rent_payment_time_end = #{record.rentPaymentTimeEnd,jdbcType=TIMESTAMP},
       rent_growth_rate = #{record.rentGrowthRate,jdbcType=VARCHAR},
+      bis_delete = #{record.bisDelete,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -233,6 +246,9 @@
       <if test="rentGrowthRate != null" >
         rent_growth_rate = #{rentGrowthRate,jdbcType=VARCHAR},
       </if>
+      <if test="bisDelete != null" >
+        bis_delete = #{bisDelete,jdbcType=BIT},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -251,6 +267,7 @@
       rent_payment_time_start = #{rentPaymentTimeStart,jdbcType=TIMESTAMP},
       rent_payment_time_end = #{rentPaymentTimeEnd,jdbcType=TIMESTAMP},
       rent_growth_rate = #{rentGrowthRate,jdbcType=VARCHAR},
+      bis_delete = #{bisDelete,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

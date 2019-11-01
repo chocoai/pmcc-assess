@@ -19,6 +19,8 @@ public class BasicEstateSupply {
 
     private String power;
 
+    private Boolean bisDelete;
+
     private String creator;
 
     private Date gmtCreated;
@@ -87,6 +89,14 @@ public class BasicEstateSupply {
 
     public void setPower(String power) {
         this.power = power == null ? null : power.trim();
+    }
+
+    public Boolean getBisDelete() {
+        return bisDelete;
+    }
+
+    public void setBisDelete(Boolean bisDelete) {
+        this.bisDelete = bisDelete;
     }
 
     public String getCreator() {

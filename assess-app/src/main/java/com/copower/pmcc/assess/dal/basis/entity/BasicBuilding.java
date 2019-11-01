@@ -94,19 +94,21 @@ public class BasicBuilding {
 
     private String vStructuralPractice;
 
+    private Integer propertySocialPrestige;
+
+    private Integer propertyCompanyNature;
+
+    private Integer mapId;
+
     private String remark;
+
+    private Boolean bisDelete;
 
     private String creator;
 
     private Date gmtCreated;
 
     private Date gmtModified;
-
-    private Integer propertySocialPrestige;
-
-    private Integer propertyCompanyNature;
-
-    private Integer mapId;
 
     public Integer getId() {
         return id;
@@ -468,12 +470,44 @@ public class BasicBuilding {
         this.vStructuralPractice = vStructuralPractice == null ? null : vStructuralPractice.trim();
     }
 
+    public Integer getPropertySocialPrestige() {
+        return propertySocialPrestige;
+    }
+
+    public void setPropertySocialPrestige(Integer propertySocialPrestige) {
+        this.propertySocialPrestige = propertySocialPrestige;
+    }
+
+    public Integer getPropertyCompanyNature() {
+        return propertyCompanyNature;
+    }
+
+    public void setPropertyCompanyNature(Integer propertyCompanyNature) {
+        this.propertyCompanyNature = propertyCompanyNature;
+    }
+
+    public Integer getMapId() {
+        return mapId;
+    }
+
+    public void setMapId(Integer mapId) {
+        this.mapId = mapId;
+    }
+
     public String getRemark() {
         return remark;
     }
 
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
+    }
+
+    public Boolean getBisDelete() {
+        return bisDelete;
+    }
+
+    public void setBisDelete(Boolean bisDelete) {
+        this.bisDelete = bisDelete;
     }
 
     public String getCreator() {
@@ -498,29 +532,5 @@ public class BasicBuilding {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public Integer getPropertySocialPrestige() {
-        return propertySocialPrestige;
-    }
-
-    public void setPropertySocialPrestige(Integer propertySocialPrestige) {
-        this.propertySocialPrestige = propertySocialPrestige;
-    }
-
-    public Integer getPropertyCompanyNature() {
-        return propertyCompanyNature;
-    }
-
-    public void setPropertyCompanyNature(Integer propertyCompanyNature) {
-        this.propertyCompanyNature = propertyCompanyNature;
-    }
-
-    public Integer getMapId() {
-        return mapId;
-    }
-
-    public void setMapId(Integer mapId) {
-        this.mapId = mapId;
     }
 }

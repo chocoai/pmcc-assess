@@ -8,6 +8,7 @@
     <result column="organization_level" property="organizationLevel" jdbcType="INTEGER" />
     <result column="bed_number" property="bedNumber" jdbcType="INTEGER" />
     <result column="distance" property="distance" jdbcType="INTEGER" />
+    <result column="bis_delete" property="bisDelete" jdbcType="BIT" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -71,8 +72,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, estate_id, organization_name, organization_level, bed_number, distance, creator, 
-    gmt_created, gmt_modified
+    id, estate_id, organization_name, organization_level, bed_number, distance, bis_delete, 
+    creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicMatchingMedicalExample" >
     select
@@ -109,11 +110,13 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_basic_matching_medical (estate_id, organization_name, organization_level, 
-      bed_number, distance, creator, 
-      gmt_created, gmt_modified)
+      bed_number, distance, bis_delete, 
+      creator, gmt_created, gmt_modified
+      )
     values (#{estateId,jdbcType=INTEGER}, #{organizationName,jdbcType=VARCHAR}, #{organizationLevel,jdbcType=INTEGER}, 
-      #{bedNumber,jdbcType=INTEGER}, #{distance,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+      #{bedNumber,jdbcType=INTEGER}, #{distance,jdbcType=INTEGER}, #{bisDelete,jdbcType=BIT}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicMatchingMedical" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -135,6 +138,9 @@
       </if>
       <if test="distance != null" >
         distance,
+      </if>
+      <if test="bisDelete != null" >
+        bis_delete,
       </if>
       <if test="creator != null" >
         creator,
@@ -161,6 +167,9 @@
       </if>
       <if test="distance != null" >
         #{distance,jdbcType=INTEGER},
+      </if>
+      <if test="bisDelete != null" >
+        #{bisDelete,jdbcType=BIT},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -200,6 +209,9 @@
       <if test="record.distance != null" >
         distance = #{record.distance,jdbcType=INTEGER},
       </if>
+      <if test="record.bisDelete != null" >
+        bis_delete = #{record.bisDelete,jdbcType=BIT},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -222,6 +234,7 @@
       organization_level = #{record.organizationLevel,jdbcType=INTEGER},
       bed_number = #{record.bedNumber,jdbcType=INTEGER},
       distance = #{record.distance,jdbcType=INTEGER},
+      bis_delete = #{record.bisDelete,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -247,6 +260,9 @@
       <if test="distance != null" >
         distance = #{distance,jdbcType=INTEGER},
       </if>
+      <if test="bisDelete != null" >
+        bis_delete = #{bisDelete,jdbcType=BIT},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -266,6 +282,7 @@
       organization_level = #{organizationLevel,jdbcType=INTEGER},
       bed_number = #{bedNumber,jdbcType=INTEGER},
       distance = #{distance,jdbcType=INTEGER},
+      bis_delete = #{bisDelete,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

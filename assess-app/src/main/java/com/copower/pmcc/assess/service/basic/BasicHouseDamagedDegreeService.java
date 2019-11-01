@@ -126,16 +126,6 @@ public class BasicHouseDamagedDegreeService {
         return vos;
     }
 
-    /**
-     * 删除数据
-     *
-     * @param basicHouseDamagedDegree
-     * @return
-     */
-    public Boolean deleteDamagedDegree(BasicHouseDamagedDegree basicHouseDamagedDegree) {
-        return basicHouseDamagedDegreeDao.deleteBasicHouseDamagedDegree(basicHouseDamagedDegree);
-    }
-
     public BasicHouseDamagedDegreeVo getBasicHouseDamagedDegreeVo(BasicHouseDamagedDegree basicHouseDamagedDegree) {
         DataDamagedDegree degree = dataDamagedDegreeService.getDamagedDegreeById(basicHouseDamagedDegree.getType());
         BasicHouseDamagedDegreeVo basicHouseDamagedDegreeVo = new BasicHouseDamagedDegreeVo();
@@ -181,7 +171,7 @@ public class BasicHouseDamagedDegreeService {
     public void saveAndUpdateDamagedDegreeDetail(BasicHouseDamagedDegreeDetail basicHouseDamagedDegreeDetail, boolean updateNull) throws Exception {
         if (basicHouseDamagedDegreeDetail.getId() == null || basicHouseDamagedDegreeDetail.getId().intValue() == 0) {
             basicHouseDamagedDegreeDetail.setCreator(commonService.thisUserAccount());
-            basicHouseDamagedDegreeDetailDao.saveBasicHouseDamagedDegreeDetail(basicHouseDamagedDegreeDetail);
+            basicHouseDamagedDegreeDetailDao.addBasicHouseDamagedDegreeDetail(basicHouseDamagedDegreeDetail);
         } else {
             if (updateNull) {
                 BasicHouseDamagedDegreeDetail damagedDegreeDetail = basicHouseDamagedDegreeDetailDao.getBasicHouseDamagedDegreeDetailById(basicHouseDamagedDegreeDetail.getId());
@@ -192,16 +182,6 @@ public class BasicHouseDamagedDegreeService {
             }
             basicHouseDamagedDegreeDetailDao.updateBasicHouseDamagedDegreeDetail(basicHouseDamagedDegreeDetail, updateNull);
         }
-    }
-
-    /**
-     * 删除数据
-     *
-     * @param basicHouseDamagedDegreeDetail
-     * @return
-     */
-    public Boolean deleteDamagedDegreeDetail(BasicHouseDamagedDegreeDetail basicHouseDamagedDegreeDetail) {
-        return basicHouseDamagedDegreeDetailDao.deleteBasicHouseDamagedDegreeDetail(basicHouseDamagedDegreeDetail);
     }
 
     public Boolean deleteDamagedDegreeDetail(Integer id) {

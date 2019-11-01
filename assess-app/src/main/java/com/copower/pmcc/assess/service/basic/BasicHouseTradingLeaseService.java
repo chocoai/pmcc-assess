@@ -35,7 +35,7 @@ public class BasicHouseTradingLeaseService {
     public Integer saveAndUpdateBasicHouseTradingLease(BasicHouseTradingLease basicHouseTradingLease, boolean updateNull)throws Exception{
         if (basicHouseTradingLease.getId()==null || basicHouseTradingLease.getId().intValue()==0){
             basicHouseTradingLease.setCreator(commonService.thisUserAccount());
-            return basicHouseTradingLeaseDao.saveBasicHouseTradingLease(basicHouseTradingLease);
+            return basicHouseTradingLeaseDao.addBasicHouseTradingLease(basicHouseTradingLease);
         }else {
             if(updateNull){
                 BasicHouseTradingLease houseTradingLease = basicHouseTradingLeaseDao.getBasicHouseTradingLeaseById(basicHouseTradingLease.getId());
@@ -53,9 +53,6 @@ public class BasicHouseTradingLeaseService {
         return basicHouseTradingLeaseDao.deleteBasicHouseTradingLease(id);
     }
 
-    public boolean deleteBasicHouseTradingLease(BasicHouseTradingLease basicHouseTradingLease)throws Exception{
-        return basicHouseTradingLeaseDao.deleteBasicHouseTradingLease(basicHouseTradingLease);
-    }
 
     public BasicHouseTradingLease getByBasicHouseTradingLeaseId(Integer id)throws Exception{
         return basicHouseTradingLeaseDao.getBasicHouseTradingLeaseById(id);

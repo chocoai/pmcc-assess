@@ -19,6 +19,8 @@ public class BasicMatchingFinance {
 
     private String distance;
 
+    private Boolean bisDelete;
+
     private String creator;
 
     private Date gmtCreated;
@@ -87,6 +89,14 @@ public class BasicMatchingFinance {
 
     public void setDistance(String distance) {
         this.distance = distance == null ? null : distance.trim();
+    }
+
+    public Boolean getBisDelete() {
+        return bisDelete;
+    }
+
+    public void setBisDelete(Boolean bisDelete) {
+        this.bisDelete = bisDelete;
     }
 
     public String getCreator() {

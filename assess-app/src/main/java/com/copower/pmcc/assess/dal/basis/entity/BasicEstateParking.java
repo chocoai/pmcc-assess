@@ -17,6 +17,8 @@ public class BasicEstateParking {
 
     private Integer location;
 
+    private Boolean bisDelete;
+
     private String creator;
 
     private Date gmtCreated;
@@ -77,6 +79,14 @@ public class BasicEstateParking {
 
     public void setLocation(Integer location) {
         this.location = location;
+    }
+
+    public Boolean getBisDelete() {
+        return bisDelete;
+    }
+
+    public void setBisDelete(Boolean bisDelete) {
+        this.bisDelete = bisDelete;
     }
 
     public String getCreator() {

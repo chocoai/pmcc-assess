@@ -24,7 +24,7 @@ public class BasicHouseRoomDecorateDao {
         return basicHouseRoomDecorateMapper.selectByPrimaryKey(id);
     }
 
-    public Integer saveBasicHouseRoomDecorate(BasicHouseRoomDecorate basicHouseRoomDecorate) {
+    public Integer addBasicHouseRoomDecorate(BasicHouseRoomDecorate basicHouseRoomDecorate) {
         basicHouseRoomDecorateMapper.insertSelective(basicHouseRoomDecorate);
         return basicHouseRoomDecorate.getId();
     }
@@ -34,13 +34,17 @@ public class BasicHouseRoomDecorateDao {
     }
 
     public boolean deleteBasicHouseRoomDecorate(Integer id) {
-        return basicHouseRoomDecorateMapper.deleteByPrimaryKey(id) == 1;
+        BasicHouseRoomDecorate houseRoomDecorate = getBasicHouseRoomDecorateById(id);
+        if(houseRoomDecorate==null) return false;
+        houseRoomDecorate.setBisDelete(true);
+        return basicHouseRoomDecorateMapper.updateByPrimaryKeySelective(houseRoomDecorate) == 1;
     }
 
 
     public List<BasicHouseRoomDecorate> basicHouseRoomDecorateList(BasicHouseRoomDecorate basicHouseRoomDecorate)  {
         BasicHouseRoomDecorateExample example = new BasicHouseRoomDecorateExample();
-        MybatisUtils.convertObj2Example(basicHouseRoomDecorate, example);
+        BasicHouseRoomDecorateExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
+        MybatisUtils.convertObj2Criteria(basicHouseRoomDecorate, criteria);
         return basicHouseRoomDecorateMapper.selectByExample(example);
     }
 }

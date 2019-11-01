@@ -21,32 +21,30 @@ public class BasicMatchingFinanceDao {
     @Autowired
     private BasicMatchingFinanceMapper basicMatchingFinanceMapper;
 
-    public BasicMatchingFinance getBasicMatchingFinanceById(Integer id) throws SQLException {
+    public BasicMatchingFinance getBasicMatchingFinanceById(Integer id) {
         return basicMatchingFinanceMapper.selectByPrimaryKey(id);
     }
 
-    public Integer saveBasicMatchingFinance(BasicMatchingFinance basicMatchingFinance) throws SQLException {
+    public Integer addBasicMatchingFinance(BasicMatchingFinance basicMatchingFinance) {
         basicMatchingFinanceMapper.insertSelective(basicMatchingFinance);
         return basicMatchingFinance.getId();
     }
 
-    public boolean updateBasicMatchingFinance(BasicMatchingFinance basicMatchingFinance, boolean updateNull) throws SQLException {
+    public boolean updateBasicMatchingFinance(BasicMatchingFinance basicMatchingFinance, boolean updateNull) {
         return updateNull ? basicMatchingFinanceMapper.updateByPrimaryKey(basicMatchingFinance) == 1 : basicMatchingFinanceMapper.updateByPrimaryKeySelective(basicMatchingFinance) == 1;
     }
 
-    public void removeBasicMatchingFinance(BasicMatchingFinance basicMatchingFinance) throws SQLException {
-        BasicMatchingFinanceExample example = new BasicMatchingFinanceExample();
-        MybatisUtils.convertObj2Example(basicMatchingFinance, example);
-        basicMatchingFinanceMapper.deleteByExample(example);
-    }
-
-    public boolean deleteBasicMatchingFinance(Integer id) throws SQLException {
-        return basicMatchingFinanceMapper.deleteByPrimaryKey(id) == 1;
+    public boolean deleteBasicMatchingFinance(Integer id) {
+        BasicMatchingFinance basicMatchingFinance = getBasicMatchingFinanceById(id);
+        if (basicMatchingFinance == null) return false;
+        basicMatchingFinance.setBisDelete(true);
+        return basicMatchingFinanceMapper.updateByPrimaryKeySelective(basicMatchingFinance) == 1;
     }
 
     public List<BasicMatchingFinance> basicMatchingFinanceList(BasicMatchingFinance basicMatchingFinance) {
         BasicMatchingFinanceExample example = new BasicMatchingFinanceExample();
-        MybatisUtils.convertObj2Example(basicMatchingFinance, example);
+        BasicMatchingFinanceExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
+        MybatisUtils.convertObj2Criteria(basicMatchingFinance, criteria);
         example.setOrderByClause("id");
         return basicMatchingFinanceMapper.selectByExample(example);
     }
@@ -54,8 +52,11 @@ public class BasicMatchingFinanceDao {
     public void removeIds(List<Integer> ids) {
         BasicMatchingFinanceExample example = new BasicMatchingFinanceExample();
         BasicMatchingFinanceExample.Criteria criteria = example.createCriteria();
-        criteria.andIdIn(ids);
-        basicMatchingFinanceMapper.deleteByExample(example);
+        criteria.andBisDeleteEqualTo(false).andIdIn(ids);
+
+        BasicMatchingFinance item = new BasicMatchingFinance();
+        item.setBisDelete(true);
+        basicMatchingFinanceMapper.updateByExampleSelective(item, example);
     }
 
 }

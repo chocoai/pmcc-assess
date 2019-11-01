@@ -67,7 +67,7 @@ public class BasicHouseIntelligentService {
     public Integer saveAndUpdateBasicHouseIntelligent(BasicHouseIntelligent basicHouseIntelligent, boolean updateNull) throws Exception {
         if (basicHouseIntelligent.getId() == null || basicHouseIntelligent.getId().intValue() == 0) {
             basicHouseIntelligent.setCreator(commonService.thisUserAccount());
-            Integer id = basicHouseIntelligentDao.saveBasicHouseIntelligent(basicHouseIntelligent);
+            Integer id = basicHouseIntelligentDao.addBasicHouseIntelligent(basicHouseIntelligent);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicHouseIntelligent.class), id);
             return id;
         } else {
@@ -104,10 +104,6 @@ public class BasicHouseIntelligentService {
      */
     public List<BasicHouseIntelligent> basicHouseIntelligentList(BasicHouseIntelligent basicHouseIntelligent) throws Exception {
         return basicHouseIntelligentDao.basicHouseIntelligentList(basicHouseIntelligent);
-    }
-
-    public boolean deleteBasicHouseIntelligent(BasicHouseIntelligent basicHouseIntelligent) throws Exception {
-        return basicHouseIntelligentDao.deleteBasicHouseIntelligent(basicHouseIntelligent);
     }
 
     public BootstrapTableVo getBootstrapTableVo(BasicHouseIntelligent basicHouseIntelligent) throws Exception {

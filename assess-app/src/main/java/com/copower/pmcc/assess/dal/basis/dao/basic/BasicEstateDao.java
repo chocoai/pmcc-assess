@@ -36,13 +36,17 @@ public class BasicEstateDao {
     }
 
     public boolean deleteBasicEstate(Integer id) {
-        return basicEstateMapper.deleteByPrimaryKey(id) == 1;
+        BasicEstate basicEstate = getBasicEstateById(id);
+        if (basicEstate == null) return false;
+        basicEstate.setBisDelete(true);
+        return basicEstateMapper.updateByPrimaryKeySelective(basicEstate) == 1;
     }
 
 
     public List<BasicEstate> basicEstateList(BasicEstate basicEstate) {
         BasicEstateExample example = new BasicEstateExample();
-        MybatisUtils.convertObj2Example(basicEstate, example);
+        BasicEstateExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
+        MybatisUtils.convertObj2Criteria(basicEstate, criteria);
         return basicEstateMapper.selectByExample(example);
     }
 }

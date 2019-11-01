@@ -475,6 +475,76 @@ public class BasicHouseIntelligentExample {
             return (Criteria) this;
         }
 
+        public Criteria andIntelligentSystemIsNull() {
+            addCriterion("intelligent_system is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIntelligentSystemIsNotNull() {
+            addCriterion("intelligent_system is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIntelligentSystemEqualTo(String value) {
+            addCriterion("intelligent_system =", value, "intelligentSystem");
+            return (Criteria) this;
+        }
+
+        public Criteria andIntelligentSystemNotEqualTo(String value) {
+            addCriterion("intelligent_system <>", value, "intelligentSystem");
+            return (Criteria) this;
+        }
+
+        public Criteria andIntelligentSystemGreaterThan(String value) {
+            addCriterion("intelligent_system >", value, "intelligentSystem");
+            return (Criteria) this;
+        }
+
+        public Criteria andIntelligentSystemGreaterThanOrEqualTo(String value) {
+            addCriterion("intelligent_system >=", value, "intelligentSystem");
+            return (Criteria) this;
+        }
+
+        public Criteria andIntelligentSystemLessThan(String value) {
+            addCriterion("intelligent_system <", value, "intelligentSystem");
+            return (Criteria) this;
+        }
+
+        public Criteria andIntelligentSystemLessThanOrEqualTo(String value) {
+            addCriterion("intelligent_system <=", value, "intelligentSystem");
+            return (Criteria) this;
+        }
+
+        public Criteria andIntelligentSystemLike(String value) {
+            addCriterion("intelligent_system like", value, "intelligentSystem");
+            return (Criteria) this;
+        }
+
+        public Criteria andIntelligentSystemNotLike(String value) {
+            addCriterion("intelligent_system not like", value, "intelligentSystem");
+            return (Criteria) this;
+        }
+
+        public Criteria andIntelligentSystemIn(List<String> values) {
+            addCriterion("intelligent_system in", values, "intelligentSystem");
+            return (Criteria) this;
+        }
+
+        public Criteria andIntelligentSystemNotIn(List<String> values) {
+            addCriterion("intelligent_system not in", values, "intelligentSystem");
+            return (Criteria) this;
+        }
+
+        public Criteria andIntelligentSystemBetween(String value1, String value2) {
+            addCriterion("intelligent_system between", value1, value2, "intelligentSystem");
+            return (Criteria) this;
+        }
+
+        public Criteria andIntelligentSystemNotBetween(String value1, String value2) {
+            addCriterion("intelligent_system not between", value1, value2, "intelligentSystem");
+            return (Criteria) this;
+        }
+
         public Criteria andRemarkIsNull() {
             addCriterion("remark is null");
             return (Criteria) this;
@@ -542,6 +612,66 @@ public class BasicHouseIntelligentExample {
 
         public Criteria andRemarkNotBetween(String value1, String value2) {
             addCriterion("remark not between", value1, value2, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteIsNull() {
+            addCriterion("bis_delete is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteIsNotNull() {
+            addCriterion("bis_delete is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteEqualTo(Boolean value) {
+            addCriterion("bis_delete =", value, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteNotEqualTo(Boolean value) {
+            addCriterion("bis_delete <>", value, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteGreaterThan(Boolean value) {
+            addCriterion("bis_delete >", value, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_delete >=", value, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteLessThan(Boolean value) {
+            addCriterion("bis_delete <", value, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_delete <=", value, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteIn(List<Boolean> values) {
+            addCriterion("bis_delete in", values, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteNotIn(List<Boolean> values) {
+            addCriterion("bis_delete not in", values, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_delete between", value1, value2, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_delete not between", value1, value2, "bisDelete");
             return (Criteria) this;
         }
 

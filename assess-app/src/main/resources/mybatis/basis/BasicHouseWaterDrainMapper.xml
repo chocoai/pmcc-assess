@@ -9,6 +9,7 @@
     <result column="organization" property="organization" jdbcType="INTEGER" />
     <result column="processing_mode" property="processingMode" jdbcType="INTEGER" />
     <result column="evaluate" property="evaluate" jdbcType="VARCHAR" />
+    <result column="bis_delete" property="bisDelete" jdbcType="BIT" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -72,8 +73,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, house_id, drain_system, type, organization, processing_mode, evaluate, creator, 
-    gmt_created, gmt_modified
+    id, house_id, drain_system, type, organization, processing_mode, evaluate, bis_delete, 
+    creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseWaterDrainExample" >
     select
@@ -111,12 +112,12 @@
     </selectKey>
     insert into tb_basic_house_water_drain (house_id, drain_system, type, 
       organization, processing_mode, evaluate, 
-      creator, gmt_created, gmt_modified
-      )
+      bis_delete, creator, gmt_created, 
+      gmt_modified)
     values (#{houseId,jdbcType=INTEGER}, #{drainSystem,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, 
       #{organization,jdbcType=INTEGER}, #{processingMode,jdbcType=INTEGER}, #{evaluate,jdbcType=VARCHAR}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+      #{bisDelete,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseWaterDrain" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -141,6 +142,9 @@
       </if>
       <if test="evaluate != null" >
         evaluate,
+      </if>
+      <if test="bisDelete != null" >
+        bis_delete,
       </if>
       <if test="creator != null" >
         creator,
@@ -170,6 +174,9 @@
       </if>
       <if test="evaluate != null" >
         #{evaluate,jdbcType=VARCHAR},
+      </if>
+      <if test="bisDelete != null" >
+        #{bisDelete,jdbcType=BIT},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -212,6 +219,9 @@
       <if test="record.evaluate != null" >
         evaluate = #{record.evaluate,jdbcType=VARCHAR},
       </if>
+      <if test="record.bisDelete != null" >
+        bis_delete = #{record.bisDelete,jdbcType=BIT},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -235,6 +245,7 @@
       organization = #{record.organization,jdbcType=INTEGER},
       processing_mode = #{record.processingMode,jdbcType=INTEGER},
       evaluate = #{record.evaluate,jdbcType=VARCHAR},
+      bis_delete = #{record.bisDelete,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -263,6 +274,9 @@
       <if test="evaluate != null" >
         evaluate = #{evaluate,jdbcType=VARCHAR},
       </if>
+      <if test="bisDelete != null" >
+        bis_delete = #{bisDelete,jdbcType=BIT},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -283,6 +297,7 @@
       organization = #{organization,jdbcType=INTEGER},
       processing_mode = #{processingMode,jdbcType=INTEGER},
       evaluate = #{evaluate,jdbcType=VARCHAR},
+      bis_delete = #{bisDelete,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

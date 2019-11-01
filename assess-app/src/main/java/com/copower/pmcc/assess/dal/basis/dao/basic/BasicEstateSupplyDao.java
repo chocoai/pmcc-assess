@@ -36,17 +36,22 @@ public class BasicEstateSupplyDao {
 
     public void removeBasicEstateSupply(BasicEstateSupply basicEstateSupply)  {
         BasicEstateSupplyExample example = new BasicEstateSupplyExample();
-        MybatisUtils.convertObj2Example(basicEstateSupply, example);
+        BasicEstateSupplyExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
+        MybatisUtils.convertObj2Criteria(basicEstateSupply, criteria);
         basicEstateSupplyMapper.deleteByExample(example);
     }
 
     public boolean deleteBasicEstateSupply(Integer id)  {
-        return basicEstateSupplyMapper.deleteByPrimaryKey(id) == 1;
+        BasicEstateSupply basicEstateSupply = getBasicEstateSupplyById(id);
+        if(basicEstateSupply==null) return false;
+        basicEstateSupply.setBisDelete(true);
+        return basicEstateSupplyMapper.updateByPrimaryKeySelective(basicEstateSupply) == 1;
     }
 
     public List<BasicEstateSupply> basicEstateSupplyList(BasicEstateSupply basicEstateSupply) {
         BasicEstateSupplyExample example = new BasicEstateSupplyExample();
-        MybatisUtils.convertObj2Example(basicEstateSupply, example);
+        BasicEstateSupplyExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
+        MybatisUtils.convertObj2Criteria(basicEstateSupply, criteria);
         return basicEstateSupplyMapper.selectByExample(example);
     }
 

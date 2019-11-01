@@ -21,32 +21,30 @@ public class BasicHouseWaterDao {
     @Autowired
     private BasicHouseWaterMapper basicHouseWaterMapper;
 
-    public BasicHouseWater getBasicHouseWaterById(Integer id) throws SQLException {
+    public BasicHouseWater getBasicHouseWaterById(Integer id) {
         return basicHouseWaterMapper.selectByPrimaryKey(id);
     }
 
-    public Integer saveBasicHouseWater(BasicHouseWater basicHouseWater) throws SQLException {
+    public Integer addBasicHouseWater(BasicHouseWater basicHouseWater) {
         basicHouseWaterMapper.insertSelective(basicHouseWater);
         return basicHouseWater.getId();
     }
 
-    public boolean updateBasicHouseWater(BasicHouseWater basicHouseWater, boolean updateNull) throws SQLException {
+    public boolean updateBasicHouseWater(BasicHouseWater basicHouseWater, boolean updateNull) {
         return updateNull ? basicHouseWaterMapper.updateByPrimaryKey(basicHouseWater) == 1 : basicHouseWaterMapper.updateByPrimaryKeySelective(basicHouseWater) == 1;
     }
 
-    public boolean deleteBasicHouseWater(BasicHouseWater basicHouseWater) throws SQLException {
-        BasicHouseWaterExample example = new BasicHouseWaterExample();
-        MybatisUtils.convertObj2Example(basicHouseWater, example);
-        return basicHouseWaterMapper.deleteByExample(example) > 0;
-    }
-
-    public boolean deleteBasicHouseWater(Integer id) throws SQLException {
-        return basicHouseWaterMapper.deleteByPrimaryKey(id) == 1;
+    public boolean deleteBasicHouseWater(Integer id) {
+        BasicHouseWater basicHouseWater = getBasicHouseWaterById(id);
+        if (basicHouseWater == null) return false;
+        basicHouseWater.setBisDelete(true);
+        return basicHouseWaterMapper.updateByPrimaryKeySelective(basicHouseWater) == 1;
     }
 
     public List<BasicHouseWater> basicHouseWaterList(BasicHouseWater basicHouseWater) {
         BasicHouseWaterExample example = new BasicHouseWaterExample();
-        MybatisUtils.convertObj2Example(basicHouseWater, example);
+        BasicHouseWaterExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
+        MybatisUtils.convertObj2Criteria(basicHouseWater, criteria);
         return basicHouseWaterMapper.selectByExample(example);
     }
 
@@ -58,7 +56,7 @@ public class BasicHouseWaterDao {
      */
     public int countByHouseId(Integer houseId) {
         BasicHouseWaterExample example = new BasicHouseWaterExample();
-        example.createCriteria().andHouseIdEqualTo(houseId);
+        example.createCriteria().andBisDeleteEqualTo(false).andHouseIdEqualTo(houseId);
         return basicHouseWaterMapper.countByExample(example);
     }
 }

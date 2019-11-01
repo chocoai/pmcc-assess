@@ -18,6 +18,7 @@
     <result column="position" property="position" jdbcType="INTEGER" />
     <result column="traffic_flow" property="trafficFlow" jdbcType="INTEGER" />
     <result column="visitors_flowrate" property="visitorsFlowrate" jdbcType="INTEGER" />
+    <result column="bis_delete" property="bisDelete" jdbcType="BIT" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -82,8 +83,8 @@
   </sql>
   <sql id="Base_Column_List" >
     id, nature, estate_id, type, name, distance, line_name, the_line, limit_speed, limit_time, 
-    limit_speial, flag, cost_standard, position, traffic_flow, visitors_flowrate, creator, 
-    gmt_created, gmt_modified
+    limit_speial, flag, cost_standard, position, traffic_flow, visitors_flowrate, bis_delete, 
+    creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicMatchingTrafficExample" >
     select
@@ -124,15 +125,15 @@
       the_line, limit_speed, limit_time, 
       limit_speial, flag, cost_standard, 
       position, traffic_flow, visitors_flowrate, 
-      creator, gmt_created, gmt_modified
-      )
+      bis_delete, creator, gmt_created, 
+      gmt_modified)
     values (#{nature,jdbcType=INTEGER}, #{estateId,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, 
       #{name,jdbcType=VARCHAR}, #{distance,jdbcType=INTEGER}, #{lineName,jdbcType=VARCHAR}, 
       #{theLine,jdbcType=VARCHAR}, #{limitSpeed,jdbcType=VARCHAR}, #{limitTime,jdbcType=VARCHAR}, 
       #{limitSpeial,jdbcType=INTEGER}, #{flag,jdbcType=BIT}, #{costStandard,jdbcType=VARCHAR}, 
       #{position,jdbcType=INTEGER}, #{trafficFlow,jdbcType=INTEGER}, #{visitorsFlowrate,jdbcType=INTEGER}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+      #{bisDelete,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicMatchingTraffic" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -184,6 +185,9 @@
       </if>
       <if test="visitorsFlowrate != null" >
         visitors_flowrate,
+      </if>
+      <if test="bisDelete != null" >
+        bis_delete,
       </if>
       <if test="creator != null" >
         creator,
@@ -240,6 +244,9 @@
       </if>
       <if test="visitorsFlowrate != null" >
         #{visitorsFlowrate,jdbcType=INTEGER},
+      </if>
+      <if test="bisDelete != null" >
+        #{bisDelete,jdbcType=BIT},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -309,6 +316,9 @@
       <if test="record.visitorsFlowrate != null" >
         visitors_flowrate = #{record.visitorsFlowrate,jdbcType=INTEGER},
       </if>
+      <if test="record.bisDelete != null" >
+        bis_delete = #{record.bisDelete,jdbcType=BIT},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -341,6 +351,7 @@
       position = #{record.position,jdbcType=INTEGER},
       traffic_flow = #{record.trafficFlow,jdbcType=INTEGER},
       visitors_flowrate = #{record.visitorsFlowrate,jdbcType=INTEGER},
+      bis_delete = #{record.bisDelete,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -396,6 +407,9 @@
       <if test="visitorsFlowrate != null" >
         visitors_flowrate = #{visitorsFlowrate,jdbcType=INTEGER},
       </if>
+      <if test="bisDelete != null" >
+        bis_delete = #{bisDelete,jdbcType=BIT},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -425,6 +439,7 @@
       position = #{position,jdbcType=INTEGER},
       traffic_flow = #{trafficFlow,jdbcType=INTEGER},
       visitors_flowrate = #{visitorsFlowrate,jdbcType=INTEGER},
+      bis_delete = #{bisDelete,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

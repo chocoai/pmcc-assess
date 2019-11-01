@@ -17,6 +17,8 @@ public class BasicHouseWaterDrain {
 
     private String evaluate;
 
+    private Boolean bisDelete;
+
     private String creator;
 
     private Date gmtCreated;
@@ -77,6 +79,14 @@ public class BasicHouseWaterDrain {
 
     public void setEvaluate(String evaluate) {
         this.evaluate = evaluate == null ? null : evaluate.trim();
+    }
+
+    public Boolean getBisDelete() {
+        return bisDelete;
+    }
+
+    public void setBisDelete(Boolean bisDelete) {
+        this.bisDelete = bisDelete;
     }
 
     public String getCreator() {

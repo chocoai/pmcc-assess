@@ -63,7 +63,7 @@ public class BasicUnitDecorateService {
     public Integer saveAndUpdateBasicUnitDecorate(BasicUnitDecorate basicUnitDecorate, boolean updateNull) throws Exception {
         if (basicUnitDecorate.getId() == null || basicUnitDecorate.getId().intValue() == 0) {
             basicUnitDecorate.setCreator(commonService.thisUserAccount());
-            Integer id = basicUnitDecorateDao.saveBasicUnitDecorate(basicUnitDecorate);
+            Integer id = basicUnitDecorateDao.addBasicUnitDecorate(basicUnitDecorate);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicUnitDecorate.class), id);
             return id;
         } else {
@@ -107,10 +107,6 @@ public class BasicUnitDecorateService {
         BasicUnitDecorate where = new BasicUnitDecorate();
         where.setUnitId(unitId);
         return LangUtils.transform(basicUnitDecorateDao.basicUnitDecorateList(where), o -> getBasicUnitDecorateVo(o));
-    }
-
-    public void removeBasicUnitDecorate(BasicUnitDecorate basicUnitDecorate) throws Exception {
-        basicUnitDecorateDao.removeBasicUnitDecorate(basicUnitDecorate);
     }
 
     public BootstrapTableVo getBootstrapTableVo(BasicUnitDecorate basicUnitDecorate) throws Exception {

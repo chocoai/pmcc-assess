@@ -255,7 +255,7 @@ public class BasicEstateService {
         where.setType("estate");
         basicEstateTaggingDao.removeBasicEstateTagging(where);
         StringBuilder sqlBulder = new StringBuilder();
-        String baseSql = "delete from %s where estate_id=%s;";
+        String baseSql = "update %s set bis_delete=1 where estate_id=%s;";
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicEstateNetwork.class), estate.getId()));
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicEstateParking.class), estate.getId()));
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicEstateSupply.class), estate.getId()));
@@ -268,7 +268,7 @@ public class BasicEstateService {
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicMatchingTraffic.class), estate.getId()));
 
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicEstateLandState.class), estate.getId()));
-        sqlBulder.append(String.format("delete from %s where id=%s;", FormatUtils.entityNameConvertToTableName(BasicEstate.class), estate.getId()));
+        sqlBulder.append(String.format("update %s set bis_delete=1 where id=%s;", FormatUtils.entityNameConvertToTableName(BasicEstate.class), estate.getId()));
         ddlMySqlAssist.customTableDdl(sqlBulder.toString());
     }
 
@@ -276,7 +276,7 @@ public class BasicEstateService {
     @Transactional(rollbackFor = Exception.class)
     public void clearInvalidChildData(Integer tableId) throws Exception {
         StringBuilder sqlBulder = new StringBuilder();
-        String baseSql = "delete from %s where estate_id=%s;";
+        String baseSql = "update %s set bis_delete=1 where estate_id=%s;";
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicEstateNetwork.class), tableId));
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicEstateParking.class), tableId));
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicEstateSupply.class), tableId));

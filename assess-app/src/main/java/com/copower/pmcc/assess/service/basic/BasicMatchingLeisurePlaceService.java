@@ -65,7 +65,7 @@ public class BasicMatchingLeisurePlaceService {
     public Integer saveAndUpdateBasicMatchingLeisurePlace(BasicMatchingLeisurePlace basicMatchingLeisurePlace, boolean updateNull) throws Exception {
         if (basicMatchingLeisurePlace.getId() == null || basicMatchingLeisurePlace.getId().intValue() == 0) {
             basicMatchingLeisurePlace.setCreator(commonService.thisUserAccount());
-            Integer id = basicMatchingLeisurePlaceDao.saveBasicMatchingLeisurePlace(basicMatchingLeisurePlace);
+            Integer id = basicMatchingLeisurePlaceDao.addBasicMatchingLeisurePlace(basicMatchingLeisurePlace);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicMatchingLeisurePlace.class), id);
             return id;
         } else {
@@ -102,10 +102,6 @@ public class BasicMatchingLeisurePlaceService {
      */
     public List<BasicMatchingLeisurePlace> basicMatchingLeisurePlaceList(BasicMatchingLeisurePlace basicMatchingLeisurePlace) throws Exception {
         return basicMatchingLeisurePlaceDao.basicMatchingLeisurePlaceList(basicMatchingLeisurePlace);
-    }
-
-    public void removeBasicMatchingLeisurePlace(BasicMatchingLeisurePlace basicMatchingLeisurePlace) throws Exception {
-        basicMatchingLeisurePlaceDao.removeBasicMatchingLeisurePlace(basicMatchingLeisurePlace);
     }
 
     public BootstrapTableVo getBootstrapTableVo(BasicMatchingLeisurePlace basicMatchingLeisurePlace) throws Exception {

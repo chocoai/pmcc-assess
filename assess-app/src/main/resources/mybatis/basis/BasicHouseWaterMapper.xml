@@ -12,6 +12,7 @@
     <result column="pretreated_water" property="pretreatedWater" jdbcType="INTEGER" />
     <result column="purification_equipment_price" property="purificationEquipmentPrice" jdbcType="INTEGER" />
     <result column="fire_water_supply" property="fireWaterSupply" jdbcType="INTEGER" />
+    <result column="bis_delete" property="bisDelete" jdbcType="BIT" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -76,8 +77,8 @@
   </sql>
   <sql id="Base_Column_List" >
     id, house_id, supply_mode, piping_layout, pipe_material, grade, booster_equipment, 
-    pretreated_water, purification_equipment_price, fire_water_supply, creator, gmt_created, 
-    gmt_modified
+    pretreated_water, purification_equipment_price, fire_water_supply, bis_delete, creator, 
+    gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseWaterExample" >
     select
@@ -116,13 +117,13 @@
     insert into tb_basic_house_water (house_id, supply_mode, piping_layout, 
       pipe_material, grade, booster_equipment, 
       pretreated_water, purification_equipment_price, 
-      fire_water_supply, creator, gmt_created, 
-      gmt_modified)
+      fire_water_supply, bis_delete, creator, 
+      gmt_created, gmt_modified)
     values (#{houseId,jdbcType=INTEGER}, #{supplyMode,jdbcType=INTEGER}, #{pipingLayout,jdbcType=INTEGER}, 
       #{pipeMaterial,jdbcType=INTEGER}, #{grade,jdbcType=INTEGER}, #{boosterEquipment,jdbcType=INTEGER}, 
       #{pretreatedWater,jdbcType=INTEGER}, #{purificationEquipmentPrice,jdbcType=INTEGER}, 
-      #{fireWaterSupply,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{fireWaterSupply,jdbcType=INTEGER}, #{bisDelete,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseWater" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -156,6 +157,9 @@
       </if>
       <if test="fireWaterSupply != null" >
         fire_water_supply,
+      </if>
+      <if test="bisDelete != null" >
+        bis_delete,
       </if>
       <if test="creator != null" >
         creator,
@@ -194,6 +198,9 @@
       </if>
       <if test="fireWaterSupply != null" >
         #{fireWaterSupply,jdbcType=INTEGER},
+      </if>
+      <if test="bisDelete != null" >
+        #{bisDelete,jdbcType=BIT},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -245,6 +252,9 @@
       <if test="record.fireWaterSupply != null" >
         fire_water_supply = #{record.fireWaterSupply,jdbcType=INTEGER},
       </if>
+      <if test="record.bisDelete != null" >
+        bis_delete = #{record.bisDelete,jdbcType=BIT},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -271,6 +281,7 @@
       pretreated_water = #{record.pretreatedWater,jdbcType=INTEGER},
       purification_equipment_price = #{record.purificationEquipmentPrice,jdbcType=INTEGER},
       fire_water_supply = #{record.fireWaterSupply,jdbcType=INTEGER},
+      bis_delete = #{record.bisDelete,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -308,6 +319,9 @@
       <if test="fireWaterSupply != null" >
         fire_water_supply = #{fireWaterSupply,jdbcType=INTEGER},
       </if>
+      <if test="bisDelete != null" >
+        bis_delete = #{bisDelete,jdbcType=BIT},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -331,6 +345,7 @@
       pretreated_water = #{pretreatedWater,jdbcType=INTEGER},
       purification_equipment_price = #{purificationEquipmentPrice,jdbcType=INTEGER},
       fire_water_supply = #{fireWaterSupply,jdbcType=INTEGER},
+      bis_delete = #{bisDelete,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

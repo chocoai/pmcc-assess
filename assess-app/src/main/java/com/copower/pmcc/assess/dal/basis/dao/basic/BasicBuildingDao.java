@@ -35,12 +35,16 @@ public class BasicBuildingDao {
     }
 
     public boolean deleteBasicBuilding(Integer id) {
-        return basicBuildingMapper.deleteByPrimaryKey(id) == 1;
+        BasicBuilding basicBuilding = getBasicBuildingById(id);
+        if (basicBuilding == null) return false;
+        basicBuilding.setBisDelete(true);
+        return basicBuildingMapper.updateByPrimaryKeySelective(basicBuilding) == 1;
     }
 
     public List<BasicBuilding> getBasicBuildingList(BasicBuilding basicBuilding) {
         BasicBuildingExample example = new BasicBuildingExample();
-        MybatisUtils.convertObj2Example(basicBuilding, example);
+        BasicBuildingExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
+        MybatisUtils.convertObj2Criteria(basicBuilding, criteria);
         return basicBuildingMapper.selectByExample(example);
     }
 

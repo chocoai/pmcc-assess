@@ -8,13 +8,12 @@
     <result column="laying_method" property="layingMethod" jdbcType="INTEGER" />
     <result column="lamps_lanterns" property="lampsLanterns" jdbcType="VARCHAR" />
     <result column="grade" property="grade" jdbcType="INTEGER" />
+    <result column="intelligent_system" property="intelligentSystem" jdbcType="VARCHAR" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="bis_delete" property="bisDelete" jdbcType="BIT" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
-  </resultMap>
-  <resultMap id="ResultMapWithBLOBs" type="com.copower.pmcc.assess.dal.basis.entity.BasicHouseIntelligent" extends="BaseResultMap" >
-    <result column="intelligent_system" property="intelligentSystem" jdbcType="LONGVARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -75,28 +74,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, house_id, switch_circuit, laying_method, lamps_lanterns, grade, remark, creator, 
-    gmt_created, gmt_modified
+    id, house_id, switch_circuit, laying_method, lamps_lanterns, grade, intelligent_system, 
+    remark, bis_delete, creator, gmt_created, gmt_modified
   </sql>
-  <sql id="Blob_Column_List" >
-    intelligent_system
-  </sql>
-  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseIntelligentExample" >
-    select
-    <if test="distinct" >
-      distinct
-    </if>
-    <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
-    from tb_basic_house_intelligent
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null" >
-      order by ${orderByClause}
-    </if>
-  </select>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseIntelligentExample" >
     select
     <if test="distinct" >
@@ -111,11 +91,9 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
     from tb_basic_house_intelligent
     where id = #{id,jdbcType=INTEGER}
   </select>
@@ -134,13 +112,13 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_basic_house_intelligent (house_id, switch_circuit, laying_method, 
-      lamps_lanterns, grade, remark, 
-      creator, gmt_created, gmt_modified, 
-      intelligent_system)
+      lamps_lanterns, grade, intelligent_system, 
+      remark, bis_delete, creator, 
+      gmt_created, gmt_modified)
     values (#{houseId,jdbcType=INTEGER}, #{switchCircuit,jdbcType=INTEGER}, #{layingMethod,jdbcType=INTEGER}, 
-      #{lampsLanterns,jdbcType=VARCHAR}, #{grade,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
-      #{intelligentSystem,jdbcType=LONGVARCHAR})
+      #{lampsLanterns,jdbcType=VARCHAR}, #{grade,jdbcType=INTEGER}, #{intelligentSystem,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR}, #{bisDelete,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseIntelligent" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -163,8 +141,14 @@
       <if test="grade != null" >
         grade,
       </if>
+      <if test="intelligentSystem != null" >
+        intelligent_system,
+      </if>
       <if test="remark != null" >
         remark,
+      </if>
+      <if test="bisDelete != null" >
+        bis_delete,
       </if>
       <if test="creator != null" >
         creator,
@@ -174,9 +158,6 @@
       </if>
       <if test="gmtModified != null" >
         gmt_modified,
-      </if>
-      <if test="intelligentSystem != null" >
-        intelligent_system,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -195,8 +176,14 @@
       <if test="grade != null" >
         #{grade,jdbcType=INTEGER},
       </if>
+      <if test="intelligentSystem != null" >
+        #{intelligentSystem,jdbcType=VARCHAR},
+      </if>
       <if test="remark != null" >
         #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="bisDelete != null" >
+        #{bisDelete,jdbcType=BIT},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -206,9 +193,6 @@
       </if>
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="intelligentSystem != null" >
-        #{intelligentSystem,jdbcType=LONGVARCHAR},
       </if>
     </trim>
   </insert>
@@ -239,8 +223,14 @@
       <if test="record.grade != null" >
         grade = #{record.grade,jdbcType=INTEGER},
       </if>
+      <if test="record.intelligentSystem != null" >
+        intelligent_system = #{record.intelligentSystem,jdbcType=VARCHAR},
+      </if>
       <if test="record.remark != null" >
         remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bisDelete != null" >
+        bis_delete = #{record.bisDelete,jdbcType=BIT},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -251,27 +241,7 @@
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.intelligentSystem != null" >
-        intelligent_system = #{record.intelligentSystem,jdbcType=LONGVARCHAR},
-      </if>
     </set>
-    <if test="_parameter != null" >
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByExampleWithBLOBs" parameterType="map" >
-    update tb_basic_house_intelligent
-    set id = #{record.id,jdbcType=INTEGER},
-      house_id = #{record.houseId,jdbcType=INTEGER},
-      switch_circuit = #{record.switchCircuit,jdbcType=INTEGER},
-      laying_method = #{record.layingMethod,jdbcType=INTEGER},
-      lamps_lanterns = #{record.lampsLanterns,jdbcType=VARCHAR},
-      grade = #{record.grade,jdbcType=INTEGER},
-      remark = #{record.remark,jdbcType=VARCHAR},
-      creator = #{record.creator,jdbcType=VARCHAR},
-      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      intelligent_system = #{record.intelligentSystem,jdbcType=LONGVARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -284,7 +254,9 @@
       laying_method = #{record.layingMethod,jdbcType=INTEGER},
       lamps_lanterns = #{record.lampsLanterns,jdbcType=VARCHAR},
       grade = #{record.grade,jdbcType=INTEGER},
+      intelligent_system = #{record.intelligentSystem,jdbcType=VARCHAR},
       remark = #{record.remark,jdbcType=VARCHAR},
+      bis_delete = #{record.bisDelete,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -310,8 +282,14 @@
       <if test="grade != null" >
         grade = #{grade,jdbcType=INTEGER},
       </if>
+      <if test="intelligentSystem != null" >
+        intelligent_system = #{intelligentSystem,jdbcType=VARCHAR},
+      </if>
       <if test="remark != null" >
         remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="bisDelete != null" >
+        bis_delete = #{bisDelete,jdbcType=BIT},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -322,24 +300,7 @@
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
-      <if test="intelligentSystem != null" >
-        intelligent_system = #{intelligentSystem,jdbcType=LONGVARCHAR},
-      </if>
     </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseIntelligent" >
-    update tb_basic_house_intelligent
-    set house_id = #{houseId,jdbcType=INTEGER},
-      switch_circuit = #{switchCircuit,jdbcType=INTEGER},
-      laying_method = #{layingMethod,jdbcType=INTEGER},
-      lamps_lanterns = #{lampsLanterns,jdbcType=VARCHAR},
-      grade = #{grade,jdbcType=INTEGER},
-      remark = #{remark,jdbcType=VARCHAR},
-      creator = #{creator,jdbcType=VARCHAR},
-      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      intelligent_system = #{intelligentSystem,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseIntelligent" >
@@ -349,7 +310,9 @@
       laying_method = #{layingMethod,jdbcType=INTEGER},
       lamps_lanterns = #{lampsLanterns,jdbcType=VARCHAR},
       grade = #{grade,jdbcType=INTEGER},
+      intelligent_system = #{intelligentSystem,jdbcType=VARCHAR},
       remark = #{remark,jdbcType=VARCHAR},
+      bis_delete = #{bisDelete,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

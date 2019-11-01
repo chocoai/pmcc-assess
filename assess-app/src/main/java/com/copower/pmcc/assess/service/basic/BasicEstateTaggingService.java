@@ -227,15 +227,4 @@ public class BasicEstateTaggingService {
         return vo;
     }
 
-//    public List<BasicEstateTagging> getBasicEstateTaggingList(BasicEstateTagging basicEstateTagging) throws Exception {
-//        return basicEstateTaggingDao.getBasicEstateTaggingList(basicEstateTagging);
-//    }
-
-    /**
-     * 获取ApplyId不为null数据列表
-     *
-     */
-    public List<BasicEstateTagging> getApplyIdIsNotNullList() {
-        return basicEstateTaggingDao.getApplyIdIsNotNullList();
-    }
 }

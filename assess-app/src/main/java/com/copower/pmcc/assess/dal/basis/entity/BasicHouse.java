@@ -58,19 +58,21 @@ public class BasicHouse {
 
     private String useConditionDescription;
 
+    private Integer decorateSituation;
+
+    private Integer priceConnotation;
+
+    private String decorateSituationDescription;
+
+    private Integer mapId;
+
+    private Boolean bisDelete;
+
     private String creator;
 
     private Date gmtCreated;
 
     private Date gmtModified;
-
-    private Integer priceConnotation;
-
-    private Integer decorateSituation;
-
-    private String decorateSituationDescription;
-
-    private Integer mapId;
 
     public Integer getId() {
         return id;
@@ -288,6 +290,46 @@ public class BasicHouse {
         this.useConditionDescription = useConditionDescription == null ? null : useConditionDescription.trim();
     }
 
+    public Integer getDecorateSituation() {
+        return decorateSituation;
+    }
+
+    public void setDecorateSituation(Integer decorateSituation) {
+        this.decorateSituation = decorateSituation;
+    }
+
+    public Integer getPriceConnotation() {
+        return priceConnotation;
+    }
+
+    public void setPriceConnotation(Integer priceConnotation) {
+        this.priceConnotation = priceConnotation;
+    }
+
+    public String getDecorateSituationDescription() {
+        return decorateSituationDescription;
+    }
+
+    public void setDecorateSituationDescription(String decorateSituationDescription) {
+        this.decorateSituationDescription = decorateSituationDescription == null ? null : decorateSituationDescription.trim();
+    }
+
+    public Integer getMapId() {
+        return mapId;
+    }
+
+    public void setMapId(Integer mapId) {
+        this.mapId = mapId;
+    }
+
+    public Boolean getBisDelete() {
+        return bisDelete;
+    }
+
+    public void setBisDelete(Boolean bisDelete) {
+        this.bisDelete = bisDelete;
+    }
+
     public String getCreator() {
         return creator;
     }
@@ -310,37 +352,5 @@ public class BasicHouse {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public Integer getPriceConnotation() {
-        return priceConnotation;
-    }
-
-    public void setPriceConnotation(Integer priceConnotation) {
-        this.priceConnotation = priceConnotation;
-    }
-
-    public Integer getDecorateSituation() {
-        return decorateSituation;
-    }
-
-    public void setDecorateSituation(Integer decorateSituation) {
-        this.decorateSituation = decorateSituation;
-    }
-
-    public String getDecorateSituationDescription() {
-        return decorateSituationDescription;
-    }
-
-    public void setDecorateSituationDescription(String decorateSituationDescription) {
-        this.decorateSituationDescription = decorateSituationDescription == null ? null : decorateSituationDescription.trim();
-    }
-
-    public Integer getMapId() {
-        return mapId;
-    }
-
-    public void setMapId(Integer mapId) {
-        this.mapId = mapId;
     }
 }

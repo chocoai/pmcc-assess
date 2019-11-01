@@ -182,7 +182,7 @@ public class BasicUnitService {
         basicEstateTaggingDao.removeBasicEstateTagging(where);
         clearInvalidChildData(unit.getId());
         StringBuilder sqlBulder = new StringBuilder();
-        sqlBulder.append(String.format("delete from %s where id=%s;", FormatUtils.entityNameConvertToTableName(BasicUnit.class), unit.getId()));
+        sqlBulder.append(String.format("update %s set bis_delete=1 where id=%s;", FormatUtils.entityNameConvertToTableName(BasicUnit.class), unit.getId()));
         ddlMySqlAssist.customTableDdl(sqlBulder.toString());
     }
 
@@ -194,7 +194,7 @@ public class BasicUnitService {
     @Transactional(rollbackFor = Exception.class)
     public void clearInvalidChildData(Integer unitId) throws Exception {
         StringBuilder sqlBulder = new StringBuilder();
-        String baseSql = "delete from %s where unit_id=%s;";
+        String baseSql = "update %s set bis_delete=1 where unit_id=%s;";
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicUnitHuxing.class), unitId));
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicUnitElevator.class), unitId));
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicUnitDecorate.class), unitId));

@@ -20,32 +20,29 @@ public class BasicEstateParkingDao {
     @Autowired
     private BasicEstateParkingMapper basicEstateParkingMapper;
 
-    public BasicEstateParking getBasicEstateParkingById(Integer id)  {
+    public BasicEstateParking getBasicEstateParkingById(Integer id) {
         return basicEstateParkingMapper.selectByPrimaryKey(id);
     }
 
-    public Integer saveBasicEstateParking(BasicEstateParking basicEstateParking)  {
+    public Integer saveBasicEstateParking(BasicEstateParking basicEstateParking) {
         basicEstateParkingMapper.insertSelective(basicEstateParking);
         return basicEstateParking.getId();
     }
 
-    public boolean updateBasicEstateParking(BasicEstateParking basicEstateParking, boolean updateNull)  {
+    public boolean updateBasicEstateParking(BasicEstateParking basicEstateParking, boolean updateNull) {
         return updateNull ? basicEstateParkingMapper.updateByPrimaryKey(basicEstateParking) == 1 : basicEstateParkingMapper.updateByPrimaryKeySelective(basicEstateParking) == 1;
     }
 
-    public void removeBasicEstateParking(BasicEstateParking basicEstateParking)  {
-        BasicEstateParkingExample example = new BasicEstateParkingExample();
-        MybatisUtils.convertObj2Example(basicEstateParking, example);
-        basicEstateParkingMapper.deleteByExample(example);
+    public boolean deleteBasicEstateParking(Integer id) {
+        BasicEstateParking basicEstateParking = getBasicEstateParkingById(id);
+        if (basicEstateParking == null) return false;
+        return basicEstateParkingMapper.updateByPrimaryKeySelective(basicEstateParking) == 1;
     }
 
-    public boolean deleteBasicEstateParking(Integer id)  {
-        return basicEstateParkingMapper.deleteByPrimaryKey(id) == 1;
-    }
-
-    public List<BasicEstateParking> basicEstateParkingList(BasicEstateParking basicEstateParking)  {
+    public List<BasicEstateParking> basicEstateParkingList(BasicEstateParking basicEstateParking) {
         BasicEstateParkingExample example = new BasicEstateParkingExample();
-        MybatisUtils.convertObj2Example(basicEstateParking, example);
+        BasicEstateParkingExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
+        MybatisUtils.convertObj2Example(basicEstateParking, criteria);
         return basicEstateParkingMapper.selectByExample(example);
     }
 }

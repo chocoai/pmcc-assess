@@ -11,15 +11,17 @@ public class BasicBuildingMaintenance {
 
     private Integer category;
 
+    private String buildNumber;
+
     private Integer materialQuality;
+
+    private Boolean bisDelete;
 
     private String creator;
 
     private Date gmtCreated;
 
     private Date gmtModified;
-
-    private String buildNumber;
 
     public Integer getId() {
         return id;
@@ -53,12 +55,28 @@ public class BasicBuildingMaintenance {
         this.category = category;
     }
 
+    public String getBuildNumber() {
+        return buildNumber;
+    }
+
+    public void setBuildNumber(String buildNumber) {
+        this.buildNumber = buildNumber == null ? null : buildNumber.trim();
+    }
+
     public Integer getMaterialQuality() {
         return materialQuality;
     }
 
     public void setMaterialQuality(Integer materialQuality) {
         this.materialQuality = materialQuality;
+    }
+
+    public Boolean getBisDelete() {
+        return bisDelete;
+    }
+
+    public void setBisDelete(Boolean bisDelete) {
+        this.bisDelete = bisDelete;
     }
 
     public String getCreator() {
@@ -83,13 +101,5 @@ public class BasicBuildingMaintenance {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public String getBuildNumber() {
-        return buildNumber;
-    }
-
-    public void setBuildNumber(String buildNumber) {
-        this.buildNumber = buildNumber == null ? null : buildNumber.trim();
     }
 }

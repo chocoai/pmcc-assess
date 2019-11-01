@@ -20,32 +20,30 @@ public class BasicUnitElevatorDao {
     @Autowired
     private BasicUnitElevatorMapper basicUnitElevatorMapper;
 
-    public BasicUnitElevator getBasicUnitElevatorById(Integer id) throws SQLException {
+    public BasicUnitElevator getBasicUnitElevatorById(Integer id)  {
         return basicUnitElevatorMapper.selectByPrimaryKey(id);
     }
 
-    public Integer saveBasicUnitElevator(BasicUnitElevator basicUnitElevator) throws SQLException {
+    public Integer addBasicUnitElevator(BasicUnitElevator basicUnitElevator)  {
         basicUnitElevatorMapper.insertSelective(basicUnitElevator);
         return basicUnitElevator.getId();
     }
 
-    public boolean updateBasicUnitElevator(BasicUnitElevator basicUnitElevator, boolean updateNull) throws SQLException {
+    public boolean updateBasicUnitElevator(BasicUnitElevator basicUnitElevator, boolean updateNull)  {
         return updateNull ? basicUnitElevatorMapper.updateByPrimaryKey(basicUnitElevator) == 1 : basicUnitElevatorMapper.updateByPrimaryKeySelective(basicUnitElevator) == 1;
     }
 
-    public void removeBasicUnitElevator(BasicUnitElevator basicUnitElevator) throws SQLException {
-        BasicUnitElevatorExample example = new BasicUnitElevatorExample();
-        MybatisUtils.convertObj2Example(basicUnitElevator, example);
-        basicUnitElevatorMapper.deleteByExample(example);
-    }
-
-    public boolean deleteBasicUnitElevator(Integer id) throws SQLException {
-        return basicUnitElevatorMapper.deleteByPrimaryKey(id) == 1;
+    public boolean deleteBasicUnitElevator(Integer id)  {
+        BasicUnitElevator basicUnitElevator = getBasicUnitElevatorById(id);
+        if(basicUnitElevator==null) return false;
+        basicUnitElevator.setBisDelete(true);
+        return basicUnitElevatorMapper.updateByPrimaryKeySelective(basicUnitElevator) == 1;
     }
 
     public List<BasicUnitElevator> basicUnitElevatorList(BasicUnitElevator basicUnitElevator) {
         BasicUnitElevatorExample example = new BasicUnitElevatorExample();
-        MybatisUtils.convertObj2Example(basicUnitElevator, example);
+        BasicUnitElevatorExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
+        MybatisUtils.convertObj2Criteria(basicUnitElevator, criteria);
         return basicUnitElevatorMapper.selectByExample(example);
     }
 }

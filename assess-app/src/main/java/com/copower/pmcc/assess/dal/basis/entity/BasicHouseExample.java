@@ -1846,6 +1846,316 @@ public class BasicHouseExample {
             return (Criteria) this;
         }
 
+        public Criteria andDecorateSituationIsNull() {
+            addCriterion("decorate_situation is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDecorateSituationIsNotNull() {
+            addCriterion("decorate_situation is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDecorateSituationEqualTo(Integer value) {
+            addCriterion("decorate_situation =", value, "decorateSituation");
+            return (Criteria) this;
+        }
+
+        public Criteria andDecorateSituationNotEqualTo(Integer value) {
+            addCriterion("decorate_situation <>", value, "decorateSituation");
+            return (Criteria) this;
+        }
+
+        public Criteria andDecorateSituationGreaterThan(Integer value) {
+            addCriterion("decorate_situation >", value, "decorateSituation");
+            return (Criteria) this;
+        }
+
+        public Criteria andDecorateSituationGreaterThanOrEqualTo(Integer value) {
+            addCriterion("decorate_situation >=", value, "decorateSituation");
+            return (Criteria) this;
+        }
+
+        public Criteria andDecorateSituationLessThan(Integer value) {
+            addCriterion("decorate_situation <", value, "decorateSituation");
+            return (Criteria) this;
+        }
+
+        public Criteria andDecorateSituationLessThanOrEqualTo(Integer value) {
+            addCriterion("decorate_situation <=", value, "decorateSituation");
+            return (Criteria) this;
+        }
+
+        public Criteria andDecorateSituationIn(List<Integer> values) {
+            addCriterion("decorate_situation in", values, "decorateSituation");
+            return (Criteria) this;
+        }
+
+        public Criteria andDecorateSituationNotIn(List<Integer> values) {
+            addCriterion("decorate_situation not in", values, "decorateSituation");
+            return (Criteria) this;
+        }
+
+        public Criteria andDecorateSituationBetween(Integer value1, Integer value2) {
+            addCriterion("decorate_situation between", value1, value2, "decorateSituation");
+            return (Criteria) this;
+        }
+
+        public Criteria andDecorateSituationNotBetween(Integer value1, Integer value2) {
+            addCriterion("decorate_situation not between", value1, value2, "decorateSituation");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceConnotationIsNull() {
+            addCriterion("price_connotation is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceConnotationIsNotNull() {
+            addCriterion("price_connotation is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceConnotationEqualTo(Integer value) {
+            addCriterion("price_connotation =", value, "priceConnotation");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceConnotationNotEqualTo(Integer value) {
+            addCriterion("price_connotation <>", value, "priceConnotation");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceConnotationGreaterThan(Integer value) {
+            addCriterion("price_connotation >", value, "priceConnotation");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceConnotationGreaterThanOrEqualTo(Integer value) {
+            addCriterion("price_connotation >=", value, "priceConnotation");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceConnotationLessThan(Integer value) {
+            addCriterion("price_connotation <", value, "priceConnotation");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceConnotationLessThanOrEqualTo(Integer value) {
+            addCriterion("price_connotation <=", value, "priceConnotation");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceConnotationIn(List<Integer> values) {
+            addCriterion("price_connotation in", values, "priceConnotation");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceConnotationNotIn(List<Integer> values) {
+            addCriterion("price_connotation not in", values, "priceConnotation");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceConnotationBetween(Integer value1, Integer value2) {
+            addCriterion("price_connotation between", value1, value2, "priceConnotation");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceConnotationNotBetween(Integer value1, Integer value2) {
+            addCriterion("price_connotation not between", value1, value2, "priceConnotation");
+            return (Criteria) this;
+        }
+
+        public Criteria andDecorateSituationDescriptionIsNull() {
+            addCriterion("decorate_situation_description is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDecorateSituationDescriptionIsNotNull() {
+            addCriterion("decorate_situation_description is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDecorateSituationDescriptionEqualTo(String value) {
+            addCriterion("decorate_situation_description =", value, "decorateSituationDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andDecorateSituationDescriptionNotEqualTo(String value) {
+            addCriterion("decorate_situation_description <>", value, "decorateSituationDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andDecorateSituationDescriptionGreaterThan(String value) {
+            addCriterion("decorate_situation_description >", value, "decorateSituationDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andDecorateSituationDescriptionGreaterThanOrEqualTo(String value) {
+            addCriterion("decorate_situation_description >=", value, "decorateSituationDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andDecorateSituationDescriptionLessThan(String value) {
+            addCriterion("decorate_situation_description <", value, "decorateSituationDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andDecorateSituationDescriptionLessThanOrEqualTo(String value) {
+            addCriterion("decorate_situation_description <=", value, "decorateSituationDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andDecorateSituationDescriptionLike(String value) {
+            addCriterion("decorate_situation_description like", value, "decorateSituationDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andDecorateSituationDescriptionNotLike(String value) {
+            addCriterion("decorate_situation_description not like", value, "decorateSituationDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andDecorateSituationDescriptionIn(List<String> values) {
+            addCriterion("decorate_situation_description in", values, "decorateSituationDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andDecorateSituationDescriptionNotIn(List<String> values) {
+            addCriterion("decorate_situation_description not in", values, "decorateSituationDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andDecorateSituationDescriptionBetween(String value1, String value2) {
+            addCriterion("decorate_situation_description between", value1, value2, "decorateSituationDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andDecorateSituationDescriptionNotBetween(String value1, String value2) {
+            addCriterion("decorate_situation_description not between", value1, value2, "decorateSituationDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andMapIdIsNull() {
+            addCriterion("map_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMapIdIsNotNull() {
+            addCriterion("map_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMapIdEqualTo(Integer value) {
+            addCriterion("map_id =", value, "mapId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMapIdNotEqualTo(Integer value) {
+            addCriterion("map_id <>", value, "mapId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMapIdGreaterThan(Integer value) {
+            addCriterion("map_id >", value, "mapId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMapIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("map_id >=", value, "mapId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMapIdLessThan(Integer value) {
+            addCriterion("map_id <", value, "mapId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMapIdLessThanOrEqualTo(Integer value) {
+            addCriterion("map_id <=", value, "mapId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMapIdIn(List<Integer> values) {
+            addCriterion("map_id in", values, "mapId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMapIdNotIn(List<Integer> values) {
+            addCriterion("map_id not in", values, "mapId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMapIdBetween(Integer value1, Integer value2) {
+            addCriterion("map_id between", value1, value2, "mapId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMapIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("map_id not between", value1, value2, "mapId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteIsNull() {
+            addCriterion("bis_delete is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteIsNotNull() {
+            addCriterion("bis_delete is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteEqualTo(Boolean value) {
+            addCriterion("bis_delete =", value, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteNotEqualTo(Boolean value) {
+            addCriterion("bis_delete <>", value, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteGreaterThan(Boolean value) {
+            addCriterion("bis_delete >", value, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_delete >=", value, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteLessThan(Boolean value) {
+            addCriterion("bis_delete <", value, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_delete <=", value, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteIn(List<Boolean> values) {
+            addCriterion("bis_delete in", values, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteNotIn(List<Boolean> values) {
+            addCriterion("bis_delete not in", values, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_delete between", value1, value2, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_delete not between", value1, value2, "bisDelete");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatorIsNull() {
             addCriterion("creator is null");
             return (Criteria) this;
@@ -2033,256 +2343,6 @@ public class BasicHouseExample {
 
         public Criteria andGmtModifiedNotBetween(Date value1, Date value2) {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
-            return (Criteria) this;
-        }
-
-        public Criteria andPriceConnotationIsNull() {
-            addCriterion("price_connotation is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andPriceConnotationIsNotNull() {
-            addCriterion("price_connotation is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andPriceConnotationEqualTo(Integer value) {
-            addCriterion("price_connotation =", value, "priceConnotation");
-            return (Criteria) this;
-        }
-
-        public Criteria andPriceConnotationNotEqualTo(Integer value) {
-            addCriterion("price_connotation <>", value, "priceConnotation");
-            return (Criteria) this;
-        }
-
-        public Criteria andPriceConnotationGreaterThan(Integer value) {
-            addCriterion("price_connotation >", value, "priceConnotation");
-            return (Criteria) this;
-        }
-
-        public Criteria andPriceConnotationGreaterThanOrEqualTo(Integer value) {
-            addCriterion("price_connotation >=", value, "priceConnotation");
-            return (Criteria) this;
-        }
-
-        public Criteria andPriceConnotationLessThan(Integer value) {
-            addCriterion("price_connotation <", value, "priceConnotation");
-            return (Criteria) this;
-        }
-
-        public Criteria andPriceConnotationLessThanOrEqualTo(Integer value) {
-            addCriterion("price_connotation <=", value, "priceConnotation");
-            return (Criteria) this;
-        }
-
-        public Criteria andPriceConnotationIn(List<Integer> values) {
-            addCriterion("price_connotation in", values, "priceConnotation");
-            return (Criteria) this;
-        }
-
-        public Criteria andPriceConnotationNotIn(List<Integer> values) {
-            addCriterion("price_connotation not in", values, "priceConnotation");
-            return (Criteria) this;
-        }
-
-        public Criteria andPriceConnotationBetween(Integer value1, Integer value2) {
-            addCriterion("price_connotation between", value1, value2, "priceConnotation");
-            return (Criteria) this;
-        }
-
-        public Criteria andPriceConnotationNotBetween(Integer value1, Integer value2) {
-            addCriterion("price_connotation not between", value1, value2, "priceConnotation");
-            return (Criteria) this;
-        }
-
-        public Criteria andDecorateSituationIsNull() {
-            addCriterion("decorate_situation is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andDecorateSituationIsNotNull() {
-            addCriterion("decorate_situation is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andDecorateSituationEqualTo(Integer value) {
-            addCriterion("decorate_situation =", value, "decorateSituation");
-            return (Criteria) this;
-        }
-
-        public Criteria andDecorateSituationNotEqualTo(Integer value) {
-            addCriterion("decorate_situation <>", value, "decorateSituation");
-            return (Criteria) this;
-        }
-
-        public Criteria andDecorateSituationGreaterThan(Integer value) {
-            addCriterion("decorate_situation >", value, "decorateSituation");
-            return (Criteria) this;
-        }
-
-        public Criteria andDecorateSituationGreaterThanOrEqualTo(Integer value) {
-            addCriterion("decorate_situation >=", value, "decorateSituation");
-            return (Criteria) this;
-        }
-
-        public Criteria andDecorateSituationLessThan(Integer value) {
-            addCriterion("decorate_situation <", value, "decorateSituation");
-            return (Criteria) this;
-        }
-
-        public Criteria andDecorateSituationLessThanOrEqualTo(Integer value) {
-            addCriterion("decorate_situation <=", value, "decorateSituation");
-            return (Criteria) this;
-        }
-
-        public Criteria andDecorateSituationIn(List<Integer> values) {
-            addCriterion("decorate_situation in", values, "decorateSituation");
-            return (Criteria) this;
-        }
-
-        public Criteria andDecorateSituationNotIn(List<Integer> values) {
-            addCriterion("decorate_situation not in", values, "decorateSituation");
-            return (Criteria) this;
-        }
-
-        public Criteria andDecorateSituationBetween(Integer value1, Integer value2) {
-            addCriterion("decorate_situation between", value1, value2, "decorateSituation");
-            return (Criteria) this;
-        }
-
-        public Criteria andDecorateSituationNotBetween(Integer value1, Integer value2) {
-            addCriterion("decorate_situation not between", value1, value2, "decorateSituation");
-            return (Criteria) this;
-        }
-
-        public Criteria andDecorateSituationDescriptionIsNull() {
-            addCriterion("decorate_situation_description is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andDecorateSituationDescriptionIsNotNull() {
-            addCriterion("decorate_situation_description is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andDecorateSituationDescriptionEqualTo(String value) {
-            addCriterion("decorate_situation_description =", value, "decorateSituationDescription");
-            return (Criteria) this;
-        }
-
-        public Criteria andDecorateSituationDescriptionNotEqualTo(String value) {
-            addCriterion("decorate_situation_description <>", value, "decorateSituationDescription");
-            return (Criteria) this;
-        }
-
-        public Criteria andDecorateSituationDescriptionGreaterThan(String value) {
-            addCriterion("decorate_situation_description >", value, "decorateSituationDescription");
-            return (Criteria) this;
-        }
-
-        public Criteria andDecorateSituationDescriptionGreaterThanOrEqualTo(String value) {
-            addCriterion("decorate_situation_description >=", value, "decorateSituationDescription");
-            return (Criteria) this;
-        }
-
-        public Criteria andDecorateSituationDescriptionLessThan(String value) {
-            addCriterion("decorate_situation_description <", value, "decorateSituationDescription");
-            return (Criteria) this;
-        }
-
-        public Criteria andDecorateSituationDescriptionLessThanOrEqualTo(String value) {
-            addCriterion("decorate_situation_description <=", value, "decorateSituationDescription");
-            return (Criteria) this;
-        }
-
-        public Criteria andDecorateSituationDescriptionLike(String value) {
-            addCriterion("decorate_situation_description like", value, "decorateSituationDescription");
-            return (Criteria) this;
-        }
-
-        public Criteria andDecorateSituationDescriptionNotLike(String value) {
-            addCriterion("decorate_situation_description not like", value, "decorateSituationDescription");
-            return (Criteria) this;
-        }
-
-        public Criteria andDecorateSituationDescriptionIn(List<String> values) {
-            addCriterion("decorate_situation_description in", values, "decorateSituationDescription");
-            return (Criteria) this;
-        }
-
-        public Criteria andDecorateSituationDescriptionNotIn(List<String> values) {
-            addCriterion("decorate_situation_description not in", values, "decorateSituationDescription");
-            return (Criteria) this;
-        }
-
-        public Criteria andDecorateSituationDescriptionBetween(String value1, String value2) {
-            addCriterion("decorate_situation_description between", value1, value2, "decorateSituationDescription");
-            return (Criteria) this;
-        }
-
-        public Criteria andDecorateSituationDescriptionNotBetween(String value1, String value2) {
-            addCriterion("decorate_situation_description not between", value1, value2, "decorateSituationDescription");
-            return (Criteria) this;
-        }
-
-        public Criteria andMapIdIsNull() {
-            addCriterion("map_id is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andMapIdIsNotNull() {
-            addCriterion("map_id is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andMapIdEqualTo(Integer value) {
-            addCriterion("map_id =", value, "mapId");
-            return (Criteria) this;
-        }
-
-        public Criteria andMapIdNotEqualTo(Integer value) {
-            addCriterion("map_id <>", value, "mapId");
-            return (Criteria) this;
-        }
-
-        public Criteria andMapIdGreaterThan(Integer value) {
-            addCriterion("map_id >", value, "mapId");
-            return (Criteria) this;
-        }
-
-        public Criteria andMapIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("map_id >=", value, "mapId");
-            return (Criteria) this;
-        }
-
-        public Criteria andMapIdLessThan(Integer value) {
-            addCriterion("map_id <", value, "mapId");
-            return (Criteria) this;
-        }
-
-        public Criteria andMapIdLessThanOrEqualTo(Integer value) {
-            addCriterion("map_id <=", value, "mapId");
-            return (Criteria) this;
-        }
-
-        public Criteria andMapIdIn(List<Integer> values) {
-            addCriterion("map_id in", values, "mapId");
-            return (Criteria) this;
-        }
-
-        public Criteria andMapIdNotIn(List<Integer> values) {
-            addCriterion("map_id not in", values, "mapId");
-            return (Criteria) this;
-        }
-
-        public Criteria andMapIdBetween(Integer value1, Integer value2) {
-            addCriterion("map_id between", value1, value2, "mapId");
-            return (Criteria) this;
-        }
-
-        public Criteria andMapIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("map_id not between", value1, value2, "mapId");
             return (Criteria) this;
         }
     }

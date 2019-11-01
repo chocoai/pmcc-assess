@@ -21,32 +21,37 @@ public class BasicBuildingSurfaceDao {
     @Autowired
     private BasicBuildingSurfaceMapper basicBuildingSurfaceMapper;
 
-    public BasicBuildingSurface getBasicBuildingSurfaceById(Integer id) throws SQLException {
+    public BasicBuildingSurface getBasicBuildingSurfaceById(Integer id) {
         return basicBuildingSurfaceMapper.selectByPrimaryKey(id);
     }
 
-    public Integer saveBasicBuildingSurface(BasicBuildingSurface basicBuildingSurface) throws SQLException {
+    public Integer saveBasicBuildingSurface(BasicBuildingSurface basicBuildingSurface) {
         basicBuildingSurfaceMapper.insertSelective(basicBuildingSurface);
         return basicBuildingSurface.getId();
     }
 
-    public boolean updateBasicBuildingSurface(BasicBuildingSurface basicBuildingSurface, boolean updateNull) throws SQLException {
+    public boolean updateBasicBuildingSurface(BasicBuildingSurface basicBuildingSurface, boolean updateNull) {
         return updateNull ? basicBuildingSurfaceMapper.updateByPrimaryKey(basicBuildingSurface) == 1 : basicBuildingSurfaceMapper.updateByPrimaryKeySelective(basicBuildingSurface) == 1;
     }
 
-    public void removeBasicBuildingSurface(BasicBuildingSurface basicBuildingSurface) throws SQLException {
+    public void removeBasicBuildingSurface(BasicBuildingSurface basicBuildingSurface) {
         BasicBuildingSurfaceExample example = new BasicBuildingSurfaceExample();
-        MybatisUtils.convertObj2Example(basicBuildingSurface, example);
+        BasicBuildingSurfaceExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
+        MybatisUtils.convertObj2Criteria(basicBuildingSurface, criteria);
         basicBuildingSurfaceMapper.deleteByExample(example);
     }
 
-    public boolean deleteBasicBuildingSurface(Integer id) throws SQLException {
-        return basicBuildingSurfaceMapper.deleteByPrimaryKey(id) == 1;
+    public boolean deleteBasicBuildingSurface(Integer id) {
+        BasicBuildingSurface basicBuildingSurface = getBasicBuildingSurfaceById(id);
+        if (basicBuildingSurface == null) return false;
+        basicBuildingSurface.setBisDelete(true);
+        return basicBuildingSurfaceMapper.updateByPrimaryKeySelective(basicBuildingSurface) == 1;
     }
 
-    public List<BasicBuildingSurface> basicBuildingSurfaceList(BasicBuildingSurface basicBuildingSurface) throws SQLException {
+    public List<BasicBuildingSurface> basicBuildingSurfaceList(BasicBuildingSurface basicBuildingSurface) {
         BasicBuildingSurfaceExample example = new BasicBuildingSurfaceExample();
-        MybatisUtils.convertObj2Example(basicBuildingSurface, example);
+        BasicBuildingSurfaceExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
+        MybatisUtils.convertObj2Criteria(basicBuildingSurface, criteria);
         return basicBuildingSurfaceMapper.selectByExample(example);
     }
 

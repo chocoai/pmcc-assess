@@ -34,19 +34,17 @@ public class BasicHouseCorollaryEquipmentDao {
         return updateNull ? basicHouseCorollaryEquipmentMapper.updateByPrimaryKey(basicHouseCorollaryEquipment) == 1 : basicHouseCorollaryEquipmentMapper.updateByPrimaryKeySelective(basicHouseCorollaryEquipment) == 1;
     }
 
-    public void removeBasicHouseCorollaryEquipment(BasicHouseCorollaryEquipment basicHouseCorollaryEquipment) {
-        BasicHouseCorollaryEquipmentExample example = new BasicHouseCorollaryEquipmentExample();
-        MybatisUtils.convertObj2Example(basicHouseCorollaryEquipment, example);
-        basicHouseCorollaryEquipmentMapper.deleteByExample(example);
-    }
-
     public boolean deleteBasicHouseCorollaryEquipment(Integer id) {
-        return basicHouseCorollaryEquipmentMapper.deleteByPrimaryKey(id) == 1;
+        BasicHouseCorollaryEquipment basicHouseCorollaryEquipment = getBasicHouseCorollaryEquipmentById(id);
+        if (basicHouseCorollaryEquipment == null) return false;
+        basicHouseCorollaryEquipment.setBisDelete(true);
+        return basicHouseCorollaryEquipmentMapper.updateByPrimaryKeySelective(basicHouseCorollaryEquipment) == 1;
     }
 
     public List<BasicHouseCorollaryEquipment> basicHouseCorollaryEquipmentList(BasicHouseCorollaryEquipment basicHouseCorollaryEquipment) {
         BasicHouseCorollaryEquipmentExample example = new BasicHouseCorollaryEquipmentExample();
-        MybatisUtils.convertObj2Example(basicHouseCorollaryEquipment, example);
+        BasicHouseCorollaryEquipmentExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
+        MybatisUtils.convertObj2Criteria(basicHouseCorollaryEquipment, criteria);
         return basicHouseCorollaryEquipmentMapper.selectByExample(example);
     }
 

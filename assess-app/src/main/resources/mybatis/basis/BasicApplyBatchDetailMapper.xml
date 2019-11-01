@@ -9,12 +9,16 @@
     <result column="table_id" property="tableId" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="display_name" property="displayName" jdbcType="VARCHAR" />
-    <result column="creator" property="creator" jdbcType="VARCHAR" />
-    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
-    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
     <result column="bis_standard" property="bisStandard" jdbcType="BIT" />
     <result column="quote_id" property="quoteId" jdbcType="INTEGER" />
     <result column="base_type" property="baseType" jdbcType="VARCHAR" />
+    <result column="case_table_pid" property="caseTablePid" jdbcType="INTEGER" />
+    <result column="bis_enable" property="bisEnable" jdbcType="BIT" />
+    <result column="upgrade_table_id" property="upgradeTableId" jdbcType="INTEGER" />
+    <result column="bis_delete" property="bisDelete" jdbcType="BIT" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
+    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -75,8 +79,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, pid, apply_batch_id, table_name, table_id, name, display_name, creator, gmt_created, 
-    gmt_modified, bis_standard, quote_id, base_type
+    id, pid, apply_batch_id, table_name, table_id, name, display_name, bis_standard, 
+    quote_id, base_type, case_table_pid, bis_enable, upgrade_table_id, bis_delete, creator, 
+    gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchDetailExample" >
     select
@@ -114,14 +119,16 @@
     </selectKey>
     insert into tb_basic_apply_batch_detail (pid, apply_batch_id, table_name, 
       table_id, name, display_name, 
-      creator, gmt_created, gmt_modified, 
-      bis_standard, quote_id, base_type
-      )
+      bis_standard, quote_id, base_type, 
+      case_table_pid, bis_enable, upgrade_table_id, 
+      bis_delete, creator, gmt_created, 
+      gmt_modified)
     values (#{pid,jdbcType=INTEGER}, #{applyBatchId,jdbcType=INTEGER}, #{tableName,jdbcType=VARCHAR}, 
       #{tableId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{displayName,jdbcType=VARCHAR}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
-      #{bisStandard,jdbcType=BIT}, #{quoteId,jdbcType=INTEGER}, #{baseType,jdbcType=VARCHAR}
-      )
+      #{bisStandard,jdbcType=BIT}, #{quoteId,jdbcType=INTEGER}, #{baseType,jdbcType=VARCHAR}, 
+      #{caseTablePid,jdbcType=INTEGER}, #{bisEnable,jdbcType=BIT}, #{upgradeTableId,jdbcType=INTEGER}, 
+      #{bisDelete,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchDetail" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -147,15 +154,6 @@
       <if test="displayName != null" >
         display_name,
       </if>
-      <if test="creator != null" >
-        creator,
-      </if>
-      <if test="gmtCreated != null" >
-        gmt_created,
-      </if>
-      <if test="gmtModified != null" >
-        gmt_modified,
-      </if>
       <if test="bisStandard != null" >
         bis_standard,
       </if>
@@ -164,6 +162,27 @@
       </if>
       <if test="baseType != null" >
         base_type,
+      </if>
+      <if test="caseTablePid != null" >
+        case_table_pid,
+      </if>
+      <if test="bisEnable != null" >
+        bis_enable,
+      </if>
+      <if test="upgradeTableId != null" >
+        upgrade_table_id,
+      </if>
+      <if test="bisDelete != null" >
+        bis_delete,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created,
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -185,15 +204,6 @@
       <if test="displayName != null" >
         #{displayName,jdbcType=VARCHAR},
       </if>
-      <if test="creator != null" >
-        #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="gmtCreated != null" >
-        #{gmtCreated,jdbcType=TIMESTAMP},
-      </if>
-      <if test="gmtModified != null" >
-        #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
       <if test="bisStandard != null" >
         #{bisStandard,jdbcType=BIT},
       </if>
@@ -202,6 +212,27 @@
       </if>
       <if test="baseType != null" >
         #{baseType,jdbcType=VARCHAR},
+      </if>
+      <if test="caseTablePid != null" >
+        #{caseTablePid,jdbcType=INTEGER},
+      </if>
+      <if test="bisEnable != null" >
+        #{bisEnable,jdbcType=BIT},
+      </if>
+      <if test="upgradeTableId != null" >
+        #{upgradeTableId,jdbcType=INTEGER},
+      </if>
+      <if test="bisDelete != null" >
+        #{bisDelete,jdbcType=BIT},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null" >
+        #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        #{gmtModified,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -235,15 +266,6 @@
       <if test="record.displayName != null" >
         display_name = #{record.displayName,jdbcType=VARCHAR},
       </if>
-      <if test="record.creator != null" >
-        creator = #{record.creator,jdbcType=VARCHAR},
-      </if>
-      <if test="record.gmtCreated != null" >
-        gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.gmtModified != null" >
-        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      </if>
       <if test="record.bisStandard != null" >
         bis_standard = #{record.bisStandard,jdbcType=BIT},
       </if>
@@ -252,6 +274,27 @@
       </if>
       <if test="record.baseType != null" >
         base_type = #{record.baseType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.caseTablePid != null" >
+        case_table_pid = #{record.caseTablePid,jdbcType=INTEGER},
+      </if>
+      <if test="record.bisEnable != null" >
+        bis_enable = #{record.bisEnable,jdbcType=BIT},
+      </if>
+      <if test="record.upgradeTableId != null" >
+        upgrade_table_id = #{record.upgradeTableId,jdbcType=INTEGER},
+      </if>
+      <if test="record.bisDelete != null" >
+        bis_delete = #{record.bisDelete,jdbcType=BIT},
+      </if>
+      <if test="record.creator != null" >
+        creator = #{record.creator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gmtCreated != null" >
+        gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gmtModified != null" >
+        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -267,12 +310,16 @@
       table_id = #{record.tableId,jdbcType=INTEGER},
       name = #{record.name,jdbcType=VARCHAR},
       display_name = #{record.displayName,jdbcType=VARCHAR},
-      creator = #{record.creator,jdbcType=VARCHAR},
-      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       bis_standard = #{record.bisStandard,jdbcType=BIT},
       quote_id = #{record.quoteId,jdbcType=INTEGER},
-      base_type = #{record.baseType,jdbcType=VARCHAR}
+      base_type = #{record.baseType,jdbcType=VARCHAR},
+      case_table_pid = #{record.caseTablePid,jdbcType=INTEGER},
+      bis_enable = #{record.bisEnable,jdbcType=BIT},
+      upgrade_table_id = #{record.upgradeTableId,jdbcType=INTEGER},
+      bis_delete = #{record.bisDelete,jdbcType=BIT},
+      creator = #{record.creator,jdbcType=VARCHAR},
+      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -298,15 +345,6 @@
       <if test="displayName != null" >
         display_name = #{displayName,jdbcType=VARCHAR},
       </if>
-      <if test="creator != null" >
-        creator = #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="gmtCreated != null" >
-        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      </if>
-      <if test="gmtModified != null" >
-        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
       <if test="bisStandard != null" >
         bis_standard = #{bisStandard,jdbcType=BIT},
       </if>
@@ -315,6 +353,27 @@
       </if>
       <if test="baseType != null" >
         base_type = #{baseType,jdbcType=VARCHAR},
+      </if>
+      <if test="caseTablePid != null" >
+        case_table_pid = #{caseTablePid,jdbcType=INTEGER},
+      </if>
+      <if test="bisEnable != null" >
+        bis_enable = #{bisEnable,jdbcType=BIT},
+      </if>
+      <if test="upgradeTableId != null" >
+        upgrade_table_id = #{upgradeTableId,jdbcType=INTEGER},
+      </if>
+      <if test="bisDelete != null" >
+        bis_delete = #{bisDelete,jdbcType=BIT},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -327,12 +386,16 @@
       table_id = #{tableId,jdbcType=INTEGER},
       name = #{name,jdbcType=VARCHAR},
       display_name = #{displayName,jdbcType=VARCHAR},
-      creator = #{creator,jdbcType=VARCHAR},
-      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       bis_standard = #{bisStandard,jdbcType=BIT},
       quote_id = #{quoteId,jdbcType=INTEGER},
-      base_type = #{baseType,jdbcType=VARCHAR}
+      base_type = #{baseType,jdbcType=VARCHAR},
+      case_table_pid = #{caseTablePid,jdbcType=INTEGER},
+      bis_enable = #{bisEnable,jdbcType=BIT},
+      upgrade_table_id = #{upgradeTableId,jdbcType=INTEGER},
+      bis_delete = #{bisDelete,jdbcType=BIT},
+      creator = #{creator,jdbcType=VARCHAR},
+      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

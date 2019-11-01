@@ -29,7 +29,9 @@ public class BasicBuildingPropertyServiceItemDao {
     public void removeIds(List<Integer> integerList) {
         BasicBuildingPropertyServiceItemExample example = new BasicBuildingPropertyServiceItemExample();
         example.createCriteria().andIdIn(integerList);
-        mapper.deleteByExample(example);
+        BasicBuildingPropertyServiceItem item = new BasicBuildingPropertyServiceItem();
+        item.setBisDelete(true);
+        mapper.updateByExampleSelective(item, example);
     }
 
     public BasicBuildingPropertyServiceItem getBasicBuildingPropertyServiceItemById(Integer id) {
@@ -37,19 +39,27 @@ public class BasicBuildingPropertyServiceItemDao {
     }
 
     public boolean deleteBasicBuildingPropertyServiceItemById(Integer id) {
-        return mapper.deleteByPrimaryKey(id) == 1;
+        BasicBuildingPropertyServiceItem basicBuildingPropertyServiceItem = getBasicBuildingPropertyServiceItemById(id);
+        if (basicBuildingPropertyServiceItem == null) return false;
+        basicBuildingPropertyServiceItem.setBisDelete(true);
+        return mapper.updateByPrimaryKeySelective(basicBuildingPropertyServiceItem) == 1;
     }
 
     @Deprecated
     public void removeBasicBuildingPropertyServiceItem(BasicBuildingPropertyServiceItem oo) {
         BasicBuildingPropertyServiceItemExample example = new BasicBuildingPropertyServiceItemExample();
-        MybatisUtils.convertObj2Example(oo, example);
-        mapper.deleteByExample(example);
+        BasicBuildingPropertyServiceItemExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(true);
+        MybatisUtils.convertObj2Criteria(oo, criteria);
+
+        BasicBuildingPropertyServiceItem item = new BasicBuildingPropertyServiceItem();
+        item.setBisDelete(true);
+        mapper.updateByExampleSelective(item, example);
     }
 
     public List<BasicBuildingPropertyServiceItem> getBasicBuildingPropertyServiceItemListByExample(BasicBuildingPropertyServiceItem oo) {
         BasicBuildingPropertyServiceItemExample example = new BasicBuildingPropertyServiceItemExample();
-        MybatisUtils.convertObj2Example(oo, example);
+        BasicBuildingPropertyServiceItemExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
+        MybatisUtils.convertObj2Criteria(oo, criteria);
         return mapper.selectByExample(example);
     }
 }

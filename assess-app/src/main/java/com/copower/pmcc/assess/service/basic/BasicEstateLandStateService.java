@@ -22,7 +22,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -70,7 +69,7 @@ public class BasicEstateLandStateService {
             basicEstateLandState.setCreator(commonService.thisUserAccount());
             return basicEstateLandStateDao.addBasicEstateLandState(basicEstateLandState);
         } else {
-            if(updateNull){
+            if (updateNull) {
                 BasicEstateLandState landState = basicEstateLandStateDao.getBasicEstateLandStateById(basicEstateLandState.getId());
                 if (landState != null) {
                     basicEstateLandState.setCreator(landState.getCreator());
@@ -105,14 +104,10 @@ public class BasicEstateLandStateService {
     }
 
     public BasicEstateLandState getLandStateByEstateId(Integer estateId) {
-        try {
-            BasicEstateLandState basicEstateLandState = new BasicEstateLandState();
-            basicEstateLandState.setEstateId(estateId);
-            List<BasicEstateLandState> estateLandStates = basicEstateLandStateDao.basicEstateLandStateList(basicEstateLandState);
-            if (!CollectionUtils.isEmpty(estateLandStates)) return estateLandStates.get(0);
-        } catch (SQLException e) {
-            return null;
-        }
+        BasicEstateLandState basicEstateLandState = new BasicEstateLandState();
+        basicEstateLandState.setEstateId(estateId);
+        List<BasicEstateLandState> estateLandStates = basicEstateLandStateDao.basicEstateLandStateList(basicEstateLandState);
+        if (!CollectionUtils.isEmpty(estateLandStates)) return estateLandStates.get(0);
         return null;
     }
 

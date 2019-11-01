@@ -20,33 +20,31 @@ public class BasicHouseTradingSellDao {
     @Autowired
     private BasicHouseTradingSellMapper basicHouseTradingSellMapper;
 
-    public BasicHouseTradingSell getBasicHouseTradingSellById(Integer id) throws SQLException {
+    public BasicHouseTradingSell getBasicHouseTradingSellById(Integer id)  {
         return basicHouseTradingSellMapper.selectByPrimaryKey(id);
     }
 
-    public Integer saveBasicHouseTradingSell(BasicHouseTradingSell basicHouseTradingSell) throws SQLException {
+    public Integer addBasicHouseTradingSell(BasicHouseTradingSell basicHouseTradingSell)  {
         basicHouseTradingSellMapper.insertSelective(basicHouseTradingSell);
         return basicHouseTradingSell.getId();
     }
 
-    public boolean updateBasicHouseTradingSell(BasicHouseTradingSell basicHouseTradingSell, boolean updateNull) throws SQLException {
+    public boolean updateBasicHouseTradingSell(BasicHouseTradingSell basicHouseTradingSell, boolean updateNull)  {
         return updateNull?basicHouseTradingSellMapper.updateByPrimaryKey(basicHouseTradingSell) == 1:basicHouseTradingSellMapper.updateByPrimaryKeySelective(basicHouseTradingSell) == 1;
     }
 
-    public boolean deleteBasicHouseTradingSell(Integer id) throws SQLException {
-        return basicHouseTradingSellMapper.deleteByPrimaryKey(id) == 1;
-    }
-
-    public boolean deleteBasicHouseTradingSell(BasicHouseTradingSell basicHouseTradingSell) throws SQLException {
-        BasicHouseTradingSellExample example = new BasicHouseTradingSellExample();
-        MybatisUtils.convertObj2Example(basicHouseTradingSell, example);
-        return basicHouseTradingSellMapper.deleteByExample(example) > 0;
+    public boolean deleteBasicHouseTradingSell(Integer id)  {
+        BasicHouseTradingSell basicHouseTradingSell = getBasicHouseTradingSellById(id);
+        if(basicHouseTradingSell==null) return false;
+        basicHouseTradingSell.setBisDelete(true);
+        return basicHouseTradingSellMapper.updateByPrimaryKeySelective(basicHouseTradingSell) == 1;
     }
 
 
-    public List<BasicHouseTradingSell> basicHouseTradingSellList(BasicHouseTradingSell basicHouseTradingSell) throws SQLException {
+    public List<BasicHouseTradingSell> basicHouseTradingSellList(BasicHouseTradingSell basicHouseTradingSell)  {
         BasicHouseTradingSellExample example = new BasicHouseTradingSellExample();
-        MybatisUtils.convertObj2Example(basicHouseTradingSell, example);
+        BasicHouseTradingSellExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
+        MybatisUtils.convertObj2Criteria(basicHouseTradingSell, criteria);
         return basicHouseTradingSellMapper.selectByExample(example);
     }
 }

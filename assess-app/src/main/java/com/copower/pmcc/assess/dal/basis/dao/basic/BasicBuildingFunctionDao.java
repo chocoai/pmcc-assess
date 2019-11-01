@@ -20,32 +20,36 @@ public class BasicBuildingFunctionDao {
     @Autowired
     private BasicBuildingFunctionMapper basicBuildingFunctionMapper;
 
-    public BasicBuildingFunction getBasicBuildingFunctionById(Integer id) throws SQLException {
+    public BasicBuildingFunction getBasicBuildingFunctionById(Integer id) {
         return basicBuildingFunctionMapper.selectByPrimaryKey(id);
     }
 
-    public Integer saveBasicBuildingFunction(BasicBuildingFunction basicBuildingFunction) throws SQLException {
+    public Integer saveBasicBuildingFunction(BasicBuildingFunction basicBuildingFunction) {
         basicBuildingFunctionMapper.insertSelective(basicBuildingFunction);
         return basicBuildingFunction.getId();
     }
 
-    public boolean updateBasicBuildingFunction(BasicBuildingFunction basicBuildingFunction, boolean updateNull) throws SQLException {
+    public boolean updateBasicBuildingFunction(BasicBuildingFunction basicBuildingFunction, boolean updateNull) {
         return updateNull ? basicBuildingFunctionMapper.updateByPrimaryKey(basicBuildingFunction) == 1 : basicBuildingFunctionMapper.updateByPrimaryKeySelective(basicBuildingFunction) == 1;
     }
 
-    public void removeBasicBuildingFunction(BasicBuildingFunction basicBuildingFunction) throws SQLException {
+    public void removeBasicBuildingFunction(BasicBuildingFunction basicBuildingFunction) {
         BasicBuildingFunctionExample example = new BasicBuildingFunctionExample();
-        MybatisUtils.convertObj2Example(basicBuildingFunction, example);
+        BasicBuildingFunctionExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
+        MybatisUtils.convertObj2Criteria(basicBuildingFunction, criteria);
         basicBuildingFunctionMapper.deleteByExample(example);
     }
 
-    public boolean deleteBasicBuildingFunction(Integer id) throws SQLException {
-        return basicBuildingFunctionMapper.deleteByPrimaryKey(id) == 1;
+    public boolean deleteBasicBuildingFunction(Integer id) {
+        BasicBuildingFunction buildingFunction = getBasicBuildingFunctionById(id);
+        if (buildingFunction == null) return false;
+        return basicBuildingFunctionMapper.updateByPrimaryKeySelective(buildingFunction) == 1;
     }
 
     public List<BasicBuildingFunction> basicBuildingFunctionList(BasicBuildingFunction basicBuildingFunction) {
         BasicBuildingFunctionExample example = new BasicBuildingFunctionExample();
-        MybatisUtils.convertObj2Example(basicBuildingFunction, example);
+        BasicBuildingFunctionExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
+        MybatisUtils.convertObj2Criteria(basicBuildingFunction, criteria);
         return basicBuildingFunctionMapper.selectByExample(example);
     }
 }

@@ -15,6 +15,7 @@
     <result column="deep" property="deep" jdbcType="DECIMAL" />
     <result column="house_category" property="houseCategory" jdbcType="VARCHAR" />
     <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="bis_delete" property="bisDelete" jdbcType="BIT" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -79,7 +80,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, unit_id, type, name, area, orientation, span_length, span_width, span_number, 
-    bay, deep, house_category, description, creator, gmt_created, gmt_modified
+    bay, deep, house_category, description, bis_delete, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicUnitHuxingExample" >
     select
@@ -119,14 +120,14 @@
       area, orientation, span_length, 
       span_width, span_number, bay, 
       deep, house_category, description, 
-      creator, gmt_created, gmt_modified
-      )
+      bis_delete, creator, gmt_created, 
+      gmt_modified)
     values (#{unitId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
       #{area,jdbcType=DECIMAL}, #{orientation,jdbcType=VARCHAR}, #{spanLength,jdbcType=DECIMAL}, 
       #{spanWidth,jdbcType=INTEGER}, #{spanNumber,jdbcType=DECIMAL}, #{bay,jdbcType=DECIMAL}, 
       #{deep,jdbcType=DECIMAL}, #{houseCategory,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+      #{bisDelete,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicUnitHuxing" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -169,6 +170,9 @@
       </if>
       <if test="description != null" >
         description,
+      </if>
+      <if test="bisDelete != null" >
+        bis_delete,
       </if>
       <if test="creator != null" >
         creator,
@@ -216,6 +220,9 @@
       </if>
       <if test="description != null" >
         #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="bisDelete != null" >
+        #{bisDelete,jdbcType=BIT},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -276,6 +283,9 @@
       <if test="record.description != null" >
         description = #{record.description,jdbcType=VARCHAR},
       </if>
+      <if test="record.bisDelete != null" >
+        bis_delete = #{record.bisDelete,jdbcType=BIT},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -305,6 +315,7 @@
       deep = #{record.deep,jdbcType=DECIMAL},
       house_category = #{record.houseCategory,jdbcType=VARCHAR},
       description = #{record.description,jdbcType=VARCHAR},
+      bis_delete = #{record.bisDelete,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -351,6 +362,9 @@
       <if test="description != null" >
         description = #{description,jdbcType=VARCHAR},
       </if>
+      <if test="bisDelete != null" >
+        bis_delete = #{bisDelete,jdbcType=BIT},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -377,6 +391,7 @@
       deep = #{deep,jdbcType=DECIMAL},
       house_category = #{houseCategory,jdbcType=VARCHAR},
       description = #{description,jdbcType=VARCHAR},
+      bis_delete = #{bisDelete,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

@@ -35,13 +35,16 @@ public class BasicUnitDao {
     }
 
     public boolean deleteBasicUnit(Integer id) {
-        return basicUnitMapper.deleteByPrimaryKey(id) == 1;
+        BasicUnit basicUnit = getBasicUnitById(id);
+        if (basicUnit == null) return false;
+        basicUnit.setBisDelete(true);
+        return basicUnitMapper.updateByPrimaryKeySelective(basicUnit) == 1;
     }
 
     public List<BasicUnit> basicUnitList(BasicUnit basicUnit) {
         BasicUnitExample example = new BasicUnitExample();
         BasicUnitExample.Criteria criteria = example.createCriteria();
-        criteria.andIdIsNotNull();
+        criteria.andBisDeleteEqualTo(false);
         if (basicUnit.getApplyId() != null) {
             criteria.andApplyIdEqualTo(basicUnit.getApplyId());
         }
@@ -61,7 +64,4 @@ public class BasicUnitDao {
         return basicUnitMapper.selectByExample(example);
     }
 
-    public List<BasicUnit> autoComplete(BasicUnit basicUnit) {
-        return this.basicUnitList(basicUnit);
-    }
 }

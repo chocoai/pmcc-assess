@@ -102,10 +102,6 @@ public class BasicEstateNetworkService {
         return basicEstateNetworkDao.basicEstateNetworkList(basicEstateNetwork);
     }
 
-    public void removeBasicEstateNetwork(BasicEstateNetwork basicEstateNetwork) throws Exception {
-        basicEstateNetworkDao.removeBasicEstateNetwork(basicEstateNetwork);
-    }
-
     public BootstrapTableVo getBootstrapTableVo(BasicEstateNetwork basicEstateNetwork) throws Exception {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();

@@ -103,10 +103,6 @@ public class BasicHouseFaceStreetService {
         return basicHouseFaceStreetDao.basicHouseFaceStreetList(basicHouseFaceStreet);
     }
 
-    public boolean deleteBasicHouseFaceStreet(BasicHouseFaceStreet basicHouseFaceStreet) throws Exception {
-        return basicHouseFaceStreetDao.deleteBasicHouseFaceStreet(basicHouseFaceStreet);
-    }
-
     public BootstrapTableVo getBootstrapTableVo(BasicHouseFaceStreet basicHouseFaceStreet) throws Exception {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
