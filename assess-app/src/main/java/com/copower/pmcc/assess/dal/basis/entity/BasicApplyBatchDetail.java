@@ -17,17 +17,23 @@ public class BasicApplyBatchDetail {
 
     private String displayName;
 
+    private Boolean bisStandard;
+
+    private Integer quoteId;
+
+    private String baseType;
+
+    private Integer caseTablePid;
+
+    private Boolean bisEnable;
+
     private String creator;
 
     private Date gmtCreated;
 
     private Date gmtModified;
 
-    private Boolean bisStandard;
-
-    private Integer quoteId;
-
-    private String baseType;
+    private Integer upgradeTableId;
 
     public Integer getId() {
         return id;
@@ -85,6 +91,46 @@ public class BasicApplyBatchDetail {
         this.displayName = displayName == null ? null : displayName.trim();
     }
 
+    public Boolean getBisStandard() {
+        return bisStandard;
+    }
+
+    public void setBisStandard(Boolean bisStandard) {
+        this.bisStandard = bisStandard;
+    }
+
+    public Integer getQuoteId() {
+        return quoteId;
+    }
+
+    public void setQuoteId(Integer quoteId) {
+        this.quoteId = quoteId;
+    }
+
+    public String getBaseType() {
+        return baseType;
+    }
+
+    public void setBaseType(String baseType) {
+        this.baseType = baseType == null ? null : baseType.trim();
+    }
+
+    public Integer getCaseTablePid() {
+        return caseTablePid;
+    }
+
+    public void setCaseTablePid(Integer caseTablePid) {
+        this.caseTablePid = caseTablePid;
+    }
+
+    public Boolean getBisEnable() {
+        return bisEnable;
+    }
+
+    public void setBisEnable(Boolean bisEnable) {
+        this.bisEnable = bisEnable;
+    }
+
     public String getCreator() {
         return creator;
     }
@@ -109,27 +155,11 @@ public class BasicApplyBatchDetail {
         this.gmtModified = gmtModified;
     }
 
-    public Boolean getBisStandard() {
-        return bisStandard;
+    public Integer getUpgradeTableId() {
+        return upgradeTableId;
     }
 
-    public void setBisStandard(Boolean bisStandard) {
-        this.bisStandard = bisStandard;
-    }
-
-    public Integer getQuoteId() {
-        return quoteId;
-    }
-
-    public void setQuoteId(Integer quoteId) {
-        this.quoteId = quoteId;
-    }
-
-    public String getBaseType() {
-        return baseType;
-    }
-
-    public void setBaseType(String baseType) {
-        this.baseType = baseType == null ? null : baseType.trim();
+    public void setUpgradeTableId(Integer upgradeTableId) {
+        this.upgradeTableId = upgradeTableId;
     }
 }

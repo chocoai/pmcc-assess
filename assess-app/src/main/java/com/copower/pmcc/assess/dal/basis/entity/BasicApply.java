@@ -55,6 +55,8 @@ public class BasicApply {
 
     private Integer copyId;
 
+    private Boolean bisDelete;
+
     private String creator;
 
     private Date gmtCreated;
@@ -267,6 +269,14 @@ public class BasicApply {
 
     public void setCopyId(Integer copyId) {
         this.copyId = copyId;
+    }
+
+    public Boolean getBisDelete() {
+        return bisDelete;
+    }
+
+    public void setBisDelete(Boolean bisDelete) {
+        this.bisDelete = bisDelete;
     }
 
     public String getCreator() {

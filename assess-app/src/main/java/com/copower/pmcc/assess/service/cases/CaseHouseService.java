@@ -338,9 +338,11 @@ public class CaseHouseService {
         basicHouseService.clearInvalidChildData(tableId);
         //更新批量申请表信息
         BasicApplyBatchDetail batchDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(FormatUtils.entityNameConvertToTableName(BasicHouse.class), tableId);
-        batchDetail.setQuoteId(id);
-        batchDetail.setBaseType(BaseConstant.DATABASE_PMCC_ASSESS_CASE);
-        basicApplyBatchDetailDao.updateInfo(batchDetail);
+        if(batchDetail!=null) {
+            batchDetail.setQuoteId(id);
+            batchDetail.setBaseType(BaseConstant.DATABASE_PMCC_ASSESS_CASE);
+            basicApplyBatchDetailDao.updateInfo(batchDetail);
+        }
         BasicHouse basicHouse = basicHouseService.getBasicHouseById(tableId);
         CaseHouse oldCaseHouse = this.getCaseHouseById(id);
         BeanUtils.copyProperties(oldCaseHouse, basicHouse, "id","unitId","creator","gmtCreated","gmtModified");

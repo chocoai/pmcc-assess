@@ -3,6 +3,7 @@
 <mapper namespace="com.copower.pmcc.assess.dal.cases.mapper.CaseEstateMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.cases.entity.CaseEstate" >
     <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="classify" property="classify" jdbcType="INTEGER" />
     <result column="type" property="type" jdbcType="INTEGER" />
     <result column="province" property="province" jdbcType="VARCHAR" />
     <result column="city" property="city" jdbcType="VARCHAR" />
@@ -39,6 +40,7 @@
     <result column="supply_communication" property="supplyCommunication" jdbcType="INTEGER" />
     <result column="supply_road" property="supplyRoad" jdbcType="INTEGER" />
     <result column="block_description" property="blockDescription" jdbcType="VARCHAR" />
+    <result column="new_versions" property="newVersions" jdbcType="BIT" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -99,12 +101,12 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, type, province, city, district, block_id, block_name, developer, developer_name, 
+    id, classify, type, province, city, district, block_id, block_name, developer, developer_name, 
     name, street_number, street, number, land_level, attach_number, floor_area, cover_an_area, 
     volumetric_rate, greening_rate, building_number, position, description, average_price, 
     price_range, supply_power, supply_water, drain_water, supply_gas, supply_heating, 
     version, creator, gmt_created, gmt_modified, location_describe, supply_communication, 
-    supply_road, block_description
+    supply_road, block_description, new_versions
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseEstateExample" >
     select
@@ -140,31 +142,33 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_case_estate (type, province, city, 
-      district, block_id, block_name, 
-      developer, developer_name, name, 
-      street_number, street, number, 
-      land_level, attach_number, floor_area, 
-      cover_an_area, volumetric_rate, greening_rate, 
-      building_number, position, description, 
-      average_price, price_range, supply_power, 
-      supply_water, drain_water, supply_gas, 
-      supply_heating, version, creator, 
-      gmt_created, gmt_modified, location_describe, 
-      supply_communication, supply_road, block_description
+    insert into tb_case_estate (classify, type, province, 
+      city, district, block_id, 
+      block_name, developer, developer_name, 
+      name, street_number, street, 
+      number, land_level, attach_number, 
+      floor_area, cover_an_area, volumetric_rate, 
+      greening_rate, building_number, position, 
+      description, average_price, price_range, 
+      supply_power, supply_water, drain_water, 
+      supply_gas, supply_heating, version, 
+      creator, gmt_created, gmt_modified, 
+      location_describe, supply_communication, 
+      supply_road, block_description, new_versions
       )
-    values (#{type,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, 
-      #{district,jdbcType=VARCHAR}, #{blockId,jdbcType=INTEGER}, #{blockName,jdbcType=VARCHAR}, 
-      #{developer,jdbcType=VARCHAR}, #{developerName,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
-      #{streetNumber,jdbcType=VARCHAR}, #{street,jdbcType=VARCHAR}, #{number,jdbcType=VARCHAR}, 
-      #{landLevel,jdbcType=INTEGER}, #{attachNumber,jdbcType=VARCHAR}, #{floorArea,jdbcType=DECIMAL}, 
-      #{coverAnArea,jdbcType=DECIMAL}, #{volumetricRate,jdbcType=VARCHAR}, #{greeningRate,jdbcType=VARCHAR}, 
-      #{buildingNumber,jdbcType=INTEGER}, #{position,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}, 
-      #{averagePrice,jdbcType=VARCHAR}, #{priceRange,jdbcType=VARCHAR}, #{supplyPower,jdbcType=INTEGER}, 
-      #{supplyWater,jdbcType=INTEGER}, #{drainWater,jdbcType=INTEGER}, #{supplyGas,jdbcType=INTEGER}, 
-      #{supplyHeating,jdbcType=INTEGER}, #{version,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{locationDescribe,jdbcType=VARCHAR}, 
-      #{supplyCommunication,jdbcType=INTEGER}, #{supplyRoad,jdbcType=INTEGER}, #{blockDescription,jdbcType=VARCHAR}
+    values (#{classify,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, 
+      #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, #{blockId,jdbcType=INTEGER}, 
+      #{blockName,jdbcType=VARCHAR}, #{developer,jdbcType=VARCHAR}, #{developerName,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{streetNumber,jdbcType=VARCHAR}, #{street,jdbcType=VARCHAR}, 
+      #{number,jdbcType=VARCHAR}, #{landLevel,jdbcType=INTEGER}, #{attachNumber,jdbcType=VARCHAR}, 
+      #{floorArea,jdbcType=DECIMAL}, #{coverAnArea,jdbcType=DECIMAL}, #{volumetricRate,jdbcType=VARCHAR}, 
+      #{greeningRate,jdbcType=VARCHAR}, #{buildingNumber,jdbcType=INTEGER}, #{position,jdbcType=INTEGER}, 
+      #{description,jdbcType=VARCHAR}, #{averagePrice,jdbcType=VARCHAR}, #{priceRange,jdbcType=VARCHAR}, 
+      #{supplyPower,jdbcType=INTEGER}, #{supplyWater,jdbcType=INTEGER}, #{drainWater,jdbcType=INTEGER}, 
+      #{supplyGas,jdbcType=INTEGER}, #{supplyHeating,jdbcType=INTEGER}, #{version,jdbcType=INTEGER}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
+      #{locationDescribe,jdbcType=VARCHAR}, #{supplyCommunication,jdbcType=INTEGER}, 
+      #{supplyRoad,jdbcType=INTEGER}, #{blockDescription,jdbcType=VARCHAR}, #{newVersions,jdbcType=BIT}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseEstate" >
@@ -173,6 +177,9 @@
     </selectKey>
     insert into tb_case_estate
     <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="classify != null" >
+        classify,
+      </if>
       <if test="type != null" >
         type,
       </if>
@@ -281,8 +288,14 @@
       <if test="blockDescription != null" >
         block_description,
       </if>
+      <if test="newVersions != null" >
+        new_versions,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="classify != null" >
+        #{classify,jdbcType=INTEGER},
+      </if>
       <if test="type != null" >
         #{type,jdbcType=INTEGER},
       </if>
@@ -391,6 +404,9 @@
       <if test="blockDescription != null" >
         #{blockDescription,jdbcType=VARCHAR},
       </if>
+      <if test="newVersions != null" >
+        #{newVersions,jdbcType=BIT},
+      </if>
     </trim>
   </insert>
   <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseEstateExample" resultType="java.lang.Integer" >
@@ -404,6 +420,9 @@
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.classify != null" >
+        classify = #{record.classify,jdbcType=INTEGER},
       </if>
       <if test="record.type != null" >
         type = #{record.type,jdbcType=INTEGER},
@@ -513,6 +532,9 @@
       <if test="record.blockDescription != null" >
         block_description = #{record.blockDescription,jdbcType=VARCHAR},
       </if>
+      <if test="record.newVersions != null" >
+        new_versions = #{record.newVersions,jdbcType=BIT},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -521,6 +543,7 @@
   <update id="updateByExample" parameterType="map" >
     update tb_case_estate
     set id = #{record.id,jdbcType=INTEGER},
+      classify = #{record.classify,jdbcType=INTEGER},
       type = #{record.type,jdbcType=INTEGER},
       province = #{record.province,jdbcType=VARCHAR},
       city = #{record.city,jdbcType=VARCHAR},
@@ -556,7 +579,8 @@
       location_describe = #{record.locationDescribe,jdbcType=VARCHAR},
       supply_communication = #{record.supplyCommunication,jdbcType=INTEGER},
       supply_road = #{record.supplyRoad,jdbcType=INTEGER},
-      block_description = #{record.blockDescription,jdbcType=VARCHAR}
+      block_description = #{record.blockDescription,jdbcType=VARCHAR},
+      new_versions = #{record.newVersions,jdbcType=BIT}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -564,6 +588,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseEstate" >
     update tb_case_estate
     <set >
+      <if test="classify != null" >
+        classify = #{classify,jdbcType=INTEGER},
+      </if>
       <if test="type != null" >
         type = #{type,jdbcType=INTEGER},
       </if>
@@ -672,12 +699,16 @@
       <if test="blockDescription != null" >
         block_description = #{blockDescription,jdbcType=VARCHAR},
       </if>
+      <if test="newVersions != null" >
+        new_versions = #{newVersions,jdbcType=BIT},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseEstate" >
     update tb_case_estate
-    set type = #{type,jdbcType=INTEGER},
+    set classify = #{classify,jdbcType=INTEGER},
+      type = #{type,jdbcType=INTEGER},
       province = #{province,jdbcType=VARCHAR},
       city = #{city,jdbcType=VARCHAR},
       district = #{district,jdbcType=VARCHAR},
@@ -712,7 +743,8 @@
       location_describe = #{locationDescribe,jdbcType=VARCHAR},
       supply_communication = #{supplyCommunication,jdbcType=INTEGER},
       supply_road = #{supplyRoad,jdbcType=INTEGER},
-      block_description = #{blockDescription,jdbcType=VARCHAR}
+      block_description = #{blockDescription,jdbcType=VARCHAR},
+      new_versions = #{newVersions,jdbcType=BIT}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

@@ -439,12 +439,14 @@
                 if (result.ret) {
                     toastr.success('保存成功');
                     var node = zTreeObj.getSelectedNodes()[0];
-                    zTreeObj.addNodes(node, {
+                    var childNode = zTreeObj.addNodes(node, {
                         id: result.data.id,
                         pid: result.data.pid,
-                        number: result.data.tableId,
+                        tableId: result.data.tableId,
+                        type: result.data.tableName.replace('tb_basic_', ''),
                         displayName: result.data.displayName
                     });
+                    console.log(childNode);
                     $('#detail_modal').modal('hide');
                 } else {
                     Alert("保存数据失败，失败原因:" + result.errmsg);
@@ -547,7 +549,6 @@
                     toastr.success('保存成功');
                     var node = zTreeObj.getSelectedNodes()[0];
                     node.id = result.data.id;
-                    node.number = result.data.tableId;
                     node.name = result.data.name;
                     node.displayName = result.data.displayName;
                     node.pid = result.data.pid;
@@ -600,7 +601,7 @@
         var classify = $("#basicBatchApplyFrm").find('[name=classify]').val();
         var formType = $("#basicBatchApplyFrm").find('[name=type]').val();
         var url = '${pageContext.request.contextPath}/basicApplyBatch/fillInfo?';
-        url += 'applyBatchId=' +  $("#basicBatchApplyFrm").find('[name=id]').val();
+        url += 'applyBatchId=' + $("#basicBatchApplyFrm").find('[name=id]').val();
         url += '&formClassify=' + classify;
         url += '&formType=' + formType;
         url += '&tbId=' + node.tableId;
@@ -619,7 +620,7 @@
         //显示出粘贴按钮
         var node = zTreeObj.getSelectedNodes()[0];
         if (node.level == 0) {
-            Alert("不能复制楼盘，重新选择")
+            Alert("不能复制楼盘，重新选择");
             return false;
         }
         batchTreeTool.beCopyObject = {};

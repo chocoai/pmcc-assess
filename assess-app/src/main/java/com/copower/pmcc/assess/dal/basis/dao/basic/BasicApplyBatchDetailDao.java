@@ -55,6 +55,36 @@ public class BasicApplyBatchDetailDao {
         return basicApplyBatchDetailMapper.selectByExample(example);
     }
 
+
+
+    /**
+     * 案例数据新增的主节点
+     *
+     * @param applyBatchId
+     * @return
+     */
+    public List<BasicApplyBatchDetail> getCaseAddNodeDetail(Integer applyBatchId) {
+        BasicApplyBatchDetailExample example = new BasicApplyBatchDetailExample();
+        BasicApplyBatchDetailExample.Criteria criteria = example.createCriteria();
+        criteria.andCaseTablePidIsNotNull();
+        criteria.andApplyBatchIdEqualTo(applyBatchId);
+        return basicApplyBatchDetailMapper.selectByExample(example);
+    }
+
+    /**
+     * 案例升级数据
+     *
+     * @param applyBatchId
+     * @return
+     */
+    public List<BasicApplyBatchDetail> getUpgradeAddDetail(Integer applyBatchId) {
+        BasicApplyBatchDetailExample example = new BasicApplyBatchDetailExample();
+        BasicApplyBatchDetailExample.Criteria criteria = example.createCriteria();
+        criteria.andUpgradeTableIdIsNotNull();
+        criteria.andApplyBatchIdEqualTo(applyBatchId);
+        return basicApplyBatchDetailMapper.selectByExample(example);
+    }
+
     /**
      * 新增
      *

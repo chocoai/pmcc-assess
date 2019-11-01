@@ -28,6 +28,7 @@
     <result column="house_part_in_mode" property="housePartInMode" jdbcType="VARCHAR" />
     <result column="write_back_block_flag" property="writeBackBlockFlag" jdbcType="BIT" />
     <result column="copy_id" property="copyId" jdbcType="INTEGER" />
+    <result column="bis_delete" property="bisDelete" jdbcType="BIT" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -95,7 +96,7 @@
     basic_building_id, basic_unit_id, basic_house_id, plan_details_id, process_ins_id, 
     province, city, type, estate_name, building_number, unit_number, house_number, status, 
     draft_flag, estate_part_in_mode, building_part_in_mode, unit_part_in_mode, house_part_in_mode, 
-    write_back_block_flag, copy_id, creator, gmt_created, gmt_modified
+    write_back_block_flag, copy_id, bis_delete, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicApplyExample" >
     select
@@ -139,8 +140,8 @@
       unit_number, house_number, status, 
       draft_flag, estate_part_in_mode, building_part_in_mode, 
       unit_part_in_mode, house_part_in_mode, write_back_block_flag, 
-      copy_id, creator, gmt_created, 
-      gmt_modified)
+      copy_id, bis_delete, creator, 
+      gmt_created, gmt_modified)
     values (#{caseEstateId,jdbcType=INTEGER}, #{caseBuildingId,jdbcType=INTEGER}, #{caseUnitId,jdbcType=INTEGER}, 
       #{caseHouseId,jdbcType=INTEGER}, #{basicEstateId,jdbcType=INTEGER}, #{basicBuildingId,jdbcType=INTEGER}, 
       #{basicUnitId,jdbcType=INTEGER}, #{basicHouseId,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, 
@@ -149,8 +150,8 @@
       #{unitNumber,jdbcType=VARCHAR}, #{houseNumber,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
       #{draftFlag,jdbcType=BIT}, #{estatePartInMode,jdbcType=VARCHAR}, #{buildingPartInMode,jdbcType=VARCHAR}, 
       #{unitPartInMode,jdbcType=VARCHAR}, #{housePartInMode,jdbcType=VARCHAR}, #{writeBackBlockFlag,jdbcType=BIT}, 
-      #{copyId,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{copyId,jdbcType=INTEGER}, #{bisDelete,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicApply" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -232,6 +233,9 @@
       </if>
       <if test="copyId != null" >
         copy_id,
+      </if>
+      <if test="bisDelete != null" >
+        bis_delete,
       </if>
       <if test="creator != null" >
         creator,
@@ -318,6 +322,9 @@
       </if>
       <if test="copyId != null" >
         #{copyId,jdbcType=INTEGER},
+      </if>
+      <if test="bisDelete != null" >
+        #{bisDelete,jdbcType=BIT},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -417,6 +424,9 @@
       <if test="record.copyId != null" >
         copy_id = #{record.copyId,jdbcType=INTEGER},
       </if>
+      <if test="record.bisDelete != null" >
+        bis_delete = #{record.bisDelete,jdbcType=BIT},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -459,6 +469,7 @@
       house_part_in_mode = #{record.housePartInMode,jdbcType=VARCHAR},
       write_back_block_flag = #{record.writeBackBlockFlag,jdbcType=BIT},
       copy_id = #{record.copyId,jdbcType=INTEGER},
+      bis_delete = #{record.bisDelete,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -544,6 +555,9 @@
       <if test="copyId != null" >
         copy_id = #{copyId,jdbcType=INTEGER},
       </if>
+      <if test="bisDelete != null" >
+        bis_delete = #{bisDelete,jdbcType=BIT},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -583,6 +597,7 @@
       house_part_in_mode = #{housePartInMode,jdbcType=VARCHAR},
       write_back_block_flag = #{writeBackBlockFlag,jdbcType=BIT},
       copy_id = #{copyId,jdbcType=INTEGER},
+      bis_delete = #{bisDelete,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

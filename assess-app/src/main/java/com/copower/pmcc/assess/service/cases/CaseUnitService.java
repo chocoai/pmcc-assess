@@ -233,10 +233,11 @@ public class CaseUnitService {
         basicUnitService.clearInvalidChildData(tableId);
         //更新批量申请表信息
         BasicApplyBatchDetail batchDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(FormatUtils.entityNameConvertToTableName(BasicUnit.class), tableId);
-        batchDetail.setQuoteId(id);
-        batchDetail.setBaseType(BaseConstant.DATABASE_PMCC_ASSESS_CASE);
-        basicApplyBatchDetailDao.updateInfo(batchDetail);
-
+        if(batchDetail!=null) {
+            batchDetail.setQuoteId(id);
+            batchDetail.setBaseType(BaseConstant.DATABASE_PMCC_ASSESS_CASE);
+            basicApplyBatchDetailDao.updateInfo(batchDetail);
+        }
         CaseUnit oldCaseUnit = this.getCaseUnitById(id);
         BasicUnit oldBasicUnit = basicUnitService.getBasicUnitById(tableId);
         BasicUnit basicUnit = new BasicUnit();

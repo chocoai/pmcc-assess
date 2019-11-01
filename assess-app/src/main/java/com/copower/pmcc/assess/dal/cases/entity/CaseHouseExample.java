@@ -2025,6 +2025,66 @@ public class CaseHouseExample {
             addCriterion("land_location not between", value1, value2, "landLocation");
             return (Criteria) this;
         }
+
+        public Criteria andNewVersionsIsNull() {
+            addCriterion("new_versions is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewVersionsIsNotNull() {
+            addCriterion("new_versions is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewVersionsEqualTo(Boolean value) {
+            addCriterion("new_versions =", value, "newVersions");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewVersionsNotEqualTo(Boolean value) {
+            addCriterion("new_versions <>", value, "newVersions");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewVersionsGreaterThan(Boolean value) {
+            addCriterion("new_versions >", value, "newVersions");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewVersionsGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("new_versions >=", value, "newVersions");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewVersionsLessThan(Boolean value) {
+            addCriterion("new_versions <", value, "newVersions");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewVersionsLessThanOrEqualTo(Boolean value) {
+            addCriterion("new_versions <=", value, "newVersions");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewVersionsIn(List<Boolean> values) {
+            addCriterion("new_versions in", values, "newVersions");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewVersionsNotIn(List<Boolean> values) {
+            addCriterion("new_versions not in", values, "newVersions");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewVersionsBetween(Boolean value1, Boolean value2) {
+            addCriterion("new_versions between", value1, value2, "newVersions");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewVersionsNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("new_versions not between", value1, value2, "newVersions");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {
