@@ -111,7 +111,11 @@ public class BasicApplyBatchDetailService {
                     basicApplyBatchDetail.setDisplayName(String.format("%s栋", basicApplyBatchDetail.getName()));
                     BasicBuilding building = new BasicBuilding();
                     building.setBuildingNumber(basicApplyBatchDetail.getName());
-                    building.setEstateId(this.getParentTableId(basicApplyBatchDetail));
+                    if (basicApplyBatchDetail.getCaseTablePid() != null) {
+                        building.setEstateId(0);
+                    } else {
+                        building.setEstateId(this.getParentTableId(basicApplyBatchDetail));
+                    }
                     building.setBuildingName(basicApplyBatchDetail.getDisplayName());
                     basicBuildingDao.addBasicBuilding(building);
                     basicApplyBatchDetail.setTableId(building.getId());
@@ -120,14 +124,22 @@ public class BasicApplyBatchDetailService {
                     basicApplyBatchDetail.setDisplayName(String.format("%s单元", basicApplyBatchDetail.getName()));
                     BasicUnit unit = new BasicUnit();
                     unit.setUnitNumber(basicApplyBatchDetail.getName());
-                    unit.setBuildingId(this.getParentTableId(basicApplyBatchDetail));
+                    if (basicApplyBatchDetail.getCaseTablePid() != null) {
+                        unit.setBuildingId(0);
+                    } else {
+                        unit.setBuildingId(this.getParentTableId(basicApplyBatchDetail));
+                    }
                     basicUnitService.saveAndUpdateBasicUnit(unit, false);
                     basicApplyBatchDetail.setTableId(unit.getId());
                     break;
                 case "tb_basic_house":
                     BasicHouse house = new BasicHouse();
                     house.setHouseNumber(basicApplyBatchDetail.getName());
-                    house.setUnitId(this.getParentTableId(basicApplyBatchDetail));
+                    if (basicApplyBatchDetail.getCaseTablePid() != null) {
+                        house.setUnitId(0);
+                    } else {
+                        house.setUnitId(this.getParentTableId(basicApplyBatchDetail));
+                    }
                     basicHouseService.saveAndUpdateBasicHouse(house, false);
                     basicApplyBatchDetail.setTableId(house.getId());
                     BasicHouseTrading houseTrading = new BasicHouseTrading();
@@ -139,7 +151,9 @@ public class BasicApplyBatchDetailService {
             basicApplyBatchDetailDao.addInfo(basicApplyBatchDetail);
         }
         //若房屋设置为标准，则存入basicApply
-        this.standardIntoBasicApply(basicApplyBatchDetail, planDetailsId);
+        if (basicApplyBatchDetail.getBisStandard()) {
+            this.standardIntoBasicApply(basicApplyBatchDetail, planDetailsId);
+        }
         return basicApplyBatchDetail;
     }
 
@@ -315,6 +329,7 @@ public class BasicApplyBatchDetailService {
 
     public List<BasicApplyBatchDetail> getUnitBatchDetailsByBatchId(Integer id, BasicBuilding basicBuilding) {
         BasicApplyBatchDetail parent = getBasicApplyBatchDetail("tb_basic_building", basicBuilding.getId());
+        if (parent == null) return null;
         BasicApplyBatchDetail basicApplyBatchDetail = new BasicApplyBatchDetail();
         basicApplyBatchDetail.setTableName("tb_basic_unit");
         basicApplyBatchDetail.setApplyBatchId(id);

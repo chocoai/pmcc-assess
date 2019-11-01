@@ -8,6 +8,8 @@ public class BasicEstate {
 
     private Integer applyId;
 
+    private Integer classify;
+
     private Integer type;
 
     private String province;
@@ -78,13 +80,15 @@ public class BasicEstate {
 
     private String locationDescribe;
 
+    private Integer mapId;
+
+    private Boolean bisDelete;
+
     private String creator;
 
     private Date gmtCreated;
 
     private Date gmtModified;
-
-    private Integer mapId;
 
     public Integer getId() {
         return id;
@@ -100,6 +104,14 @@ public class BasicEstate {
 
     public void setApplyId(Integer applyId) {
         this.applyId = applyId;
+    }
+
+    public Integer getClassify() {
+        return classify;
+    }
+
+    public void setClassify(Integer classify) {
+        this.classify = classify;
     }
 
     public Integer getType() {
@@ -382,6 +394,22 @@ public class BasicEstate {
         this.locationDescribe = locationDescribe == null ? null : locationDescribe.trim();
     }
 
+    public Integer getMapId() {
+        return mapId;
+    }
+
+    public void setMapId(Integer mapId) {
+        this.mapId = mapId;
+    }
+
+    public Boolean getBisDelete() {
+        return bisDelete;
+    }
+
+    public void setBisDelete(Boolean bisDelete) {
+        this.bisDelete = bisDelete;
+    }
+
     public String getCreator() {
         return creator;
     }
@@ -404,13 +432,5 @@ public class BasicEstate {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public Integer getMapId() {
-        return mapId;
-    }
-
-    public void setMapId(Integer mapId) {
-        this.mapId = mapId;
     }
 }

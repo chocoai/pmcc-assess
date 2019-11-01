@@ -555,6 +555,316 @@ public class BasicApplyBatchDetailExample {
             return (Criteria) this;
         }
 
+        public Criteria andBisStandardIsNull() {
+            addCriterion("bis_standard is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisStandardIsNotNull() {
+            addCriterion("bis_standard is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisStandardEqualTo(Boolean value) {
+            addCriterion("bis_standard =", value, "bisStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisStandardNotEqualTo(Boolean value) {
+            addCriterion("bis_standard <>", value, "bisStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisStandardGreaterThan(Boolean value) {
+            addCriterion("bis_standard >", value, "bisStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisStandardGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_standard >=", value, "bisStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisStandardLessThan(Boolean value) {
+            addCriterion("bis_standard <", value, "bisStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisStandardLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_standard <=", value, "bisStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisStandardIn(List<Boolean> values) {
+            addCriterion("bis_standard in", values, "bisStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisStandardNotIn(List<Boolean> values) {
+            addCriterion("bis_standard not in", values, "bisStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisStandardBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_standard between", value1, value2, "bisStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisStandardNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_standard not between", value1, value2, "bisStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuoteIdIsNull() {
+            addCriterion("quote_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuoteIdIsNotNull() {
+            addCriterion("quote_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuoteIdEqualTo(Integer value) {
+            addCriterion("quote_id =", value, "quoteId");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuoteIdNotEqualTo(Integer value) {
+            addCriterion("quote_id <>", value, "quoteId");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuoteIdGreaterThan(Integer value) {
+            addCriterion("quote_id >", value, "quoteId");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuoteIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("quote_id >=", value, "quoteId");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuoteIdLessThan(Integer value) {
+            addCriterion("quote_id <", value, "quoteId");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuoteIdLessThanOrEqualTo(Integer value) {
+            addCriterion("quote_id <=", value, "quoteId");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuoteIdIn(List<Integer> values) {
+            addCriterion("quote_id in", values, "quoteId");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuoteIdNotIn(List<Integer> values) {
+            addCriterion("quote_id not in", values, "quoteId");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuoteIdBetween(Integer value1, Integer value2) {
+            addCriterion("quote_id between", value1, value2, "quoteId");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuoteIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("quote_id not between", value1, value2, "quoteId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBaseTypeIsNull() {
+            addCriterion("base_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBaseTypeIsNotNull() {
+            addCriterion("base_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBaseTypeEqualTo(String value) {
+            addCriterion("base_type =", value, "baseType");
+            return (Criteria) this;
+        }
+
+        public Criteria andBaseTypeNotEqualTo(String value) {
+            addCriterion("base_type <>", value, "baseType");
+            return (Criteria) this;
+        }
+
+        public Criteria andBaseTypeGreaterThan(String value) {
+            addCriterion("base_type >", value, "baseType");
+            return (Criteria) this;
+        }
+
+        public Criteria andBaseTypeGreaterThanOrEqualTo(String value) {
+            addCriterion("base_type >=", value, "baseType");
+            return (Criteria) this;
+        }
+
+        public Criteria andBaseTypeLessThan(String value) {
+            addCriterion("base_type <", value, "baseType");
+            return (Criteria) this;
+        }
+
+        public Criteria andBaseTypeLessThanOrEqualTo(String value) {
+            addCriterion("base_type <=", value, "baseType");
+            return (Criteria) this;
+        }
+
+        public Criteria andBaseTypeLike(String value) {
+            addCriterion("base_type like", value, "baseType");
+            return (Criteria) this;
+        }
+
+        public Criteria andBaseTypeNotLike(String value) {
+            addCriterion("base_type not like", value, "baseType");
+            return (Criteria) this;
+        }
+
+        public Criteria andBaseTypeIn(List<String> values) {
+            addCriterion("base_type in", values, "baseType");
+            return (Criteria) this;
+        }
+
+        public Criteria andBaseTypeNotIn(List<String> values) {
+            addCriterion("base_type not in", values, "baseType");
+            return (Criteria) this;
+        }
+
+        public Criteria andBaseTypeBetween(String value1, String value2) {
+            addCriterion("base_type between", value1, value2, "baseType");
+            return (Criteria) this;
+        }
+
+        public Criteria andBaseTypeNotBetween(String value1, String value2) {
+            addCriterion("base_type not between", value1, value2, "baseType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseTablePidIsNull() {
+            addCriterion("case_table_pid is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseTablePidIsNotNull() {
+            addCriterion("case_table_pid is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseTablePidEqualTo(Integer value) {
+            addCriterion("case_table_pid =", value, "caseTablePid");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseTablePidNotEqualTo(Integer value) {
+            addCriterion("case_table_pid <>", value, "caseTablePid");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseTablePidGreaterThan(Integer value) {
+            addCriterion("case_table_pid >", value, "caseTablePid");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseTablePidGreaterThanOrEqualTo(Integer value) {
+            addCriterion("case_table_pid >=", value, "caseTablePid");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseTablePidLessThan(Integer value) {
+            addCriterion("case_table_pid <", value, "caseTablePid");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseTablePidLessThanOrEqualTo(Integer value) {
+            addCriterion("case_table_pid <=", value, "caseTablePid");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseTablePidIn(List<Integer> values) {
+            addCriterion("case_table_pid in", values, "caseTablePid");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseTablePidNotIn(List<Integer> values) {
+            addCriterion("case_table_pid not in", values, "caseTablePid");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseTablePidBetween(Integer value1, Integer value2) {
+            addCriterion("case_table_pid between", value1, value2, "caseTablePid");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseTablePidNotBetween(Integer value1, Integer value2) {
+            addCriterion("case_table_pid not between", value1, value2, "caseTablePid");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableIsNull() {
+            addCriterion("bis_enable is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableIsNotNull() {
+            addCriterion("bis_enable is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableEqualTo(Boolean value) {
+            addCriterion("bis_enable =", value, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableNotEqualTo(Boolean value) {
+            addCriterion("bis_enable <>", value, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableGreaterThan(Boolean value) {
+            addCriterion("bis_enable >", value, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_enable >=", value, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableLessThan(Boolean value) {
+            addCriterion("bis_enable <", value, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_enable <=", value, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableIn(List<Boolean> values) {
+            addCriterion("bis_enable in", values, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableNotIn(List<Boolean> values) {
+            addCriterion("bis_enable not in", values, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_enable between", value1, value2, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_enable not between", value1, value2, "bisEnable");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatorIsNull() {
             addCriterion("creator is null");
             return (Criteria) this;
@@ -745,193 +1055,63 @@ public class BasicApplyBatchDetailExample {
             return (Criteria) this;
         }
 
-        public Criteria andBisStandardIsNull() {
-            addCriterion("bis_standard is null");
+        public Criteria andUpgradeTableIdIsNull() {
+            addCriterion("upgrade_table_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andBisStandardIsNotNull() {
-            addCriterion("bis_standard is not null");
+        public Criteria andUpgradeTableIdIsNotNull() {
+            addCriterion("upgrade_table_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andBisStandardEqualTo(Boolean value) {
-            addCriterion("bis_standard =", value, "bisStandard");
+        public Criteria andUpgradeTableIdEqualTo(Integer value) {
+            addCriterion("upgrade_table_id =", value, "upgradeTableId");
             return (Criteria) this;
         }
 
-        public Criteria andBisStandardNotEqualTo(Boolean value) {
-            addCriterion("bis_standard <>", value, "bisStandard");
+        public Criteria andUpgradeTableIdNotEqualTo(Integer value) {
+            addCriterion("upgrade_table_id <>", value, "upgradeTableId");
             return (Criteria) this;
         }
 
-        public Criteria andBisStandardGreaterThan(Boolean value) {
-            addCriterion("bis_standard >", value, "bisStandard");
+        public Criteria andUpgradeTableIdGreaterThan(Integer value) {
+            addCriterion("upgrade_table_id >", value, "upgradeTableId");
             return (Criteria) this;
         }
 
-        public Criteria andBisStandardGreaterThanOrEqualTo(Boolean value) {
-            addCriterion("bis_standard >=", value, "bisStandard");
+        public Criteria andUpgradeTableIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("upgrade_table_id >=", value, "upgradeTableId");
             return (Criteria) this;
         }
 
-        public Criteria andBisStandardLessThan(Boolean value) {
-            addCriterion("bis_standard <", value, "bisStandard");
+        public Criteria andUpgradeTableIdLessThan(Integer value) {
+            addCriterion("upgrade_table_id <", value, "upgradeTableId");
             return (Criteria) this;
         }
 
-        public Criteria andBisStandardLessThanOrEqualTo(Boolean value) {
-            addCriterion("bis_standard <=", value, "bisStandard");
+        public Criteria andUpgradeTableIdLessThanOrEqualTo(Integer value) {
+            addCriterion("upgrade_table_id <=", value, "upgradeTableId");
             return (Criteria) this;
         }
 
-        public Criteria andBisStandardIn(List<Boolean> values) {
-            addCriterion("bis_standard in", values, "bisStandard");
+        public Criteria andUpgradeTableIdIn(List<Integer> values) {
+            addCriterion("upgrade_table_id in", values, "upgradeTableId");
             return (Criteria) this;
         }
 
-        public Criteria andBisStandardNotIn(List<Boolean> values) {
-            addCriterion("bis_standard not in", values, "bisStandard");
+        public Criteria andUpgradeTableIdNotIn(List<Integer> values) {
+            addCriterion("upgrade_table_id not in", values, "upgradeTableId");
             return (Criteria) this;
         }
 
-        public Criteria andBisStandardBetween(Boolean value1, Boolean value2) {
-            addCriterion("bis_standard between", value1, value2, "bisStandard");
+        public Criteria andUpgradeTableIdBetween(Integer value1, Integer value2) {
+            addCriterion("upgrade_table_id between", value1, value2, "upgradeTableId");
             return (Criteria) this;
         }
 
-        public Criteria andBisStandardNotBetween(Boolean value1, Boolean value2) {
-            addCriterion("bis_standard not between", value1, value2, "bisStandard");
-            return (Criteria) this;
-        }
-
-        public Criteria andQuoteIdIsNull() {
-            addCriterion("quote_id is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andQuoteIdIsNotNull() {
-            addCriterion("quote_id is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andQuoteIdEqualTo(Integer value) {
-            addCriterion("quote_id =", value, "quoteId");
-            return (Criteria) this;
-        }
-
-        public Criteria andQuoteIdNotEqualTo(Integer value) {
-            addCriterion("quote_id <>", value, "quoteId");
-            return (Criteria) this;
-        }
-
-        public Criteria andQuoteIdGreaterThan(Integer value) {
-            addCriterion("quote_id >", value, "quoteId");
-            return (Criteria) this;
-        }
-
-        public Criteria andQuoteIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("quote_id >=", value, "quoteId");
-            return (Criteria) this;
-        }
-
-        public Criteria andQuoteIdLessThan(Integer value) {
-            addCriterion("quote_id <", value, "quoteId");
-            return (Criteria) this;
-        }
-
-        public Criteria andQuoteIdLessThanOrEqualTo(Integer value) {
-            addCriterion("quote_id <=", value, "quoteId");
-            return (Criteria) this;
-        }
-
-        public Criteria andQuoteIdIn(List<Integer> values) {
-            addCriterion("quote_id in", values, "quoteId");
-            return (Criteria) this;
-        }
-
-        public Criteria andQuoteIdNotIn(List<Integer> values) {
-            addCriterion("quote_id not in", values, "quoteId");
-            return (Criteria) this;
-        }
-
-        public Criteria andQuoteIdBetween(Integer value1, Integer value2) {
-            addCriterion("quote_id between", value1, value2, "quoteId");
-            return (Criteria) this;
-        }
-
-        public Criteria andQuoteIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("quote_id not between", value1, value2, "quoteId");
-            return (Criteria) this;
-        }
-
-        public Criteria andBaseTypeIsNull() {
-            addCriterion("base_type is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBaseTypeIsNotNull() {
-            addCriterion("base_type is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBaseTypeEqualTo(String value) {
-            addCriterion("base_type =", value, "baseType");
-            return (Criteria) this;
-        }
-
-        public Criteria andBaseTypeNotEqualTo(String value) {
-            addCriterion("base_type <>", value, "baseType");
-            return (Criteria) this;
-        }
-
-        public Criteria andBaseTypeGreaterThan(String value) {
-            addCriterion("base_type >", value, "baseType");
-            return (Criteria) this;
-        }
-
-        public Criteria andBaseTypeGreaterThanOrEqualTo(String value) {
-            addCriterion("base_type >=", value, "baseType");
-            return (Criteria) this;
-        }
-
-        public Criteria andBaseTypeLessThan(String value) {
-            addCriterion("base_type <", value, "baseType");
-            return (Criteria) this;
-        }
-
-        public Criteria andBaseTypeLessThanOrEqualTo(String value) {
-            addCriterion("base_type <=", value, "baseType");
-            return (Criteria) this;
-        }
-
-        public Criteria andBaseTypeLike(String value) {
-            addCriterion("base_type like", value, "baseType");
-            return (Criteria) this;
-        }
-
-        public Criteria andBaseTypeNotLike(String value) {
-            addCriterion("base_type not like", value, "baseType");
-            return (Criteria) this;
-        }
-
-        public Criteria andBaseTypeIn(List<String> values) {
-            addCriterion("base_type in", values, "baseType");
-            return (Criteria) this;
-        }
-
-        public Criteria andBaseTypeNotIn(List<String> values) {
-            addCriterion("base_type not in", values, "baseType");
-            return (Criteria) this;
-        }
-
-        public Criteria andBaseTypeBetween(String value1, String value2) {
-            addCriterion("base_type between", value1, value2, "baseType");
-            return (Criteria) this;
-        }
-
-        public Criteria andBaseTypeNotBetween(String value1, String value2) {
-            addCriterion("base_type not between", value1, value2, "baseType");
+        public Criteria andUpgradeTableIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("upgrade_table_id not between", value1, value2, "upgradeTableId");
             return (Criteria) this;
         }
     }

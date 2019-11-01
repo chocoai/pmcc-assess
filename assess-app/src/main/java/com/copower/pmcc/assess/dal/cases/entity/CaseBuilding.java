@@ -108,6 +108,8 @@ public class CaseBuilding {
 
     private Integer propertyCompanyNature;
 
+    private Boolean newVersions;
+
     public Integer getId() {
         return id;
     }
@@ -522,5 +524,13 @@ public class CaseBuilding {
 
     public void setPropertyCompanyNature(Integer propertyCompanyNature) {
         this.propertyCompanyNature = propertyCompanyNature;
+    }
+
+    public Boolean getNewVersions() {
+        return newVersions;
+    }
+
+    public void setNewVersions(Boolean newVersions) {
+        this.newVersions = newVersions;
     }
 }

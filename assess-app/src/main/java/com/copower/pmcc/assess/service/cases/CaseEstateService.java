@@ -199,14 +199,18 @@ public class CaseEstateService {
         }
         //更新批量申请表信息
         BasicApplyBatch applyBatch = basicApplyBatchService.getBasicApplyBatchByEstateId(tableId);
-        applyBatch.setQuoteId(quoteId);
-        applyBatch.setBaseType(BaseConstant.DATABASE_PMCC_ASSESS_CASE);
-        basicApplyBatchDao.updateInfo(applyBatch);
+        if(applyBatch!=null) {
+            applyBatch.setQuoteId(quoteId);
+            applyBatch.setBaseType(BaseConstant.DATABASE_PMCC_ASSESS_CASE);
+            basicApplyBatchDao.updateInfo(applyBatch);
+        }
 
         BasicApplyBatchDetail batchDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(FormatUtils.entityNameConvertToTableName(BasicEstate.class), tableId);
-        batchDetail.setQuoteId(quoteId);
-        batchDetail.setBaseType(BaseConstant.DATABASE_PMCC_ASSESS);
-        basicApplyBatchDetailService.saveBasicApplyBatchDetail(batchDetail);
+        if(batchDetail!=null) {
+            batchDetail.setQuoteId(quoteId);
+            batchDetail.setBaseType(BaseConstant.DATABASE_PMCC_ASSESS);
+            basicApplyBatchDetailService.saveBasicApplyBatchDetail(batchDetail);
+        }
         //案列数据复制到basic
         CaseEstate oldCaseEstateById = this.getCaseEstateById(quoteId);
         if (oldCaseEstateById == null) {

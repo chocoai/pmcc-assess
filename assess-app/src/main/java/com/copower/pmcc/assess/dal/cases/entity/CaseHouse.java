@@ -64,6 +64,8 @@ public class CaseHouse {
 
     private String landLocation;
 
+    private Boolean newVersions;
+
     public Integer getId() {
         return id;
     }
@@ -302,5 +304,13 @@ public class CaseHouse {
 
     public void setLandLocation(String landLocation) {
         this.landLocation = landLocation == null ? null : landLocation.trim();
+    }
+
+    public Boolean getNewVersions() {
+        return newVersions;
+    }
+
+    public void setNewVersions(Boolean newVersions) {
+        this.newVersions = newVersions;
     }
 }
