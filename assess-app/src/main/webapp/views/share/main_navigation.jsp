@@ -10,7 +10,7 @@
 
 </div>
 
-<script src='/assets/js/comm/erp-navigation.js'></script>
+<script src='/assets/js/comm/erp-navigation.js?v=${assessVersion}'></script>
 <script type="text/javascript">
     $("#pmcc_navigation").html(PMCC_MAIN.navigation(${baseViewDtoJson}));
 </script>

@@ -643,12 +643,12 @@
     <%@include file="/views/project/stageSurvey/common/houseDamagedDegree.jsp" %>
 </div>
 <%@include file="/views/project/tool/toolMapHandleView.jsp" %>
-<script src='${pageContext.request.contextPath}/js/common.column.js'></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.common.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.house.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/sonHouseView.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/select/huxing.select.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/autocomplete/roomType.js"></script>
+<script src='${pageContext.request.contextPath}/js/common.column.js?v=${assessVersion}'></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.common.js?v=${assessVersion}"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.house.js?v=${assessVersion}"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/sonHouseView.js?v=${assessVersion}"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/select/huxing.select.js?v=${assessVersion}"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/autocomplete/roomType.js?v=${assessVersion}"></script>
 <script type="text/javascript">
     $(function () {
         houseCommon.initById('${basicHouse.id}');

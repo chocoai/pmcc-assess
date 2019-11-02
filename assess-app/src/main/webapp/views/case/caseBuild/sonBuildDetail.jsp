@@ -82,7 +82,7 @@
 </c:if>
 
 
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/case/case.common.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/case/case.common.js?v=${assessVersion}"></script>
 <script type="application/javascript">
     var buildingModel;
     (function () {

@@ -69,9 +69,9 @@
 </div>
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.common.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.unit.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/sonUnitView.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.common.js?v=${assessVersion}"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.unit.js?v=${assessVersion}"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/sonUnitView.js?v=${assessVersion}"></script>
 <script type="text/javascript">
     $(function () {
         unitCommon.initById('${basicUnit.id}');

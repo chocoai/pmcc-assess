@@ -244,7 +244,7 @@
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
 </html>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/ajaxfileupload.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/ajaxfileupload.js?v=${assessVersion}"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/map.position.js?v=1.0"></script>
 <input type="file" id="ajaxFileUpload" name="file" style="display: none;">
 <script type="text/javascript">

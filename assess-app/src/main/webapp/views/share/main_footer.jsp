@@ -21,8 +21,8 @@
 <div id="pmcc-footer">
 
 </div>
-<script src='/assets/js/comm/pmcc.js'></script>
-<script src='/assets/js/comm/erp-footer.js'></script>
+<script src='/assets/js/comm/pmcc.js?v=${assessVersion}'></script>
+<script src='/assets/js/comm/erp-footer.js?v=${assessVersion}'></script>
 <script type="application/javascript">
     var mainObj = {
         systemMessageWs: '<%=systemMessageWs%>',

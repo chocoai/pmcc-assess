@@ -220,10 +220,10 @@
 
     });
 </script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/declare/declare.common.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/declare/landPure/landPure.cert.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/ajaxfileupload.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/map.position.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/declare/declare.common.js?v=${assessVersion}"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/declare/landPure/landPure.cert.js?v=${assessVersion}"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/ajaxfileupload.js?v=${assessVersion}"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/map.position.js?v=${assessVersion}"></script>
 <script type="text/javascript">
 
 </script>

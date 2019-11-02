@@ -134,8 +134,8 @@
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
 <link href="${pageContext.request.contextPath}/assets/x-editable/css/bootstrap-editable.css" rel="stylesheet"/>
-<script src="${pageContext.request.contextPath}/assets/x-editable/js/bootstrap-editable.min.js"></script>
-<script src="/assets/plugins/bootstrap-paginator/src/bootstrap-paginator.js"></script>
+<script src="${pageContext.request.contextPath}/assets/x-editable/js/bootstrap-editable.min.js?v=${assessVersion}"></script>
+<script src="/assets/plugins/bootstrap-paginator/src/bootstrap-paginator.js?v=${assessVersion}"></script>
 <script type="application/javascript">
     var element = $('#bp-element');
     $(function () {

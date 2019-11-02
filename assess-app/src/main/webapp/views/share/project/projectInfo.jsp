@@ -537,7 +537,7 @@
         </table>
     </div>
 </div>
-<script src="/pmcc-contract/js/cms_contract_utils.js"></script>
+<script src="/pmcc-contract/js/cms_contract_utils.js?v=${assessVersion}"></script>
 
 <script>
 

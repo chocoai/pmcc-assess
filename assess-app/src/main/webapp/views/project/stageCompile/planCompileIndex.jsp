@@ -360,5 +360,5 @@
 
 </html>
 <%@include file="/views/share/main_footer.jsp" %>
-<script src="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/jquery.easyui.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/project-plan.js"></script>
+<script src="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/jquery.easyui.min.js?v=${assessVersion}"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/project-plan.js?v=${assessVersion}"></script>

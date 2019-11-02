@@ -13,7 +13,7 @@
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
             <script type="text/javascript"
-                    src="${pageContext.request.contextPath}/js/declare/declare.common.js"></script>
+                    src="${pageContext.request.contextPath}/js/declare/declare.common.js?v=${assessVersion}"></script>
             <!-- 申报各种类型的html视图 -->
             <%@include file="/views/project/stageDeclare/declareApprovalModel.jsp" %>
             <!-- 房产证 -->
@@ -372,7 +372,7 @@
         });
     });
 </script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/assets/tree-grid/js/jquery.treegrid.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/assets/tree-grid/js/jquery.treegrid.js?v=${assessVersion}"></script>
 <script type="application/javascript">
     //提交审批
     function saveform() {

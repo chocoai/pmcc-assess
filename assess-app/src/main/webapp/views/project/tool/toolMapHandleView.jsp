@@ -2,8 +2,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en" class="no-js">
 
-<script src="${pageContext.request.contextPath}/assets/html2canvas/html2canvas.js"></script>
-<script src="${pageContext.request.contextPath}/js/tool/toolMapHandle.js"></script>
+<script src="${pageContext.request.contextPath}/assets/html2canvas/html2canvas.js?v=${assessVersion}"></script>
+<script src="${pageContext.request.contextPath}/js/tool/toolMapHandle.js?v=${assessVersion}"></script>
 
 <div id="modelToolMapHandleMarkerView" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-sm">

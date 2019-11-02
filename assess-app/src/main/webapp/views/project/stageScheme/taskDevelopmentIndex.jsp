@@ -3,7 +3,7 @@
 <html lang="en" class="no-js">
 <head>
     <%@include file="/views/share/main_css.jsp" %>
-    <script src="${pageContext.request.contextPath}/assets/math/6.0.2/math.js"></script>
+    <script src="${pageContext.request.contextPath}/assets/math/6.0.2/math.js?v=${assessVersion}"></script>
     <link href="${pageContext.request.contextPath}/assets/x-editable/css/bootstrap-editable.css" rel="stylesheet">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/tree-grid/css/jquery.treegrid.css">
 </head>
@@ -65,9 +65,9 @@
 </div>
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
-<script src="${pageContext.request.contextPath}/assets/x-editable/js/bootstrap-editable.min.js"></script>
-<script src="${pageContext.request.contextPath}/assets/x-editable/js/bootstrap-table-editable.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/assets/tree-grid/js/jquery.treegrid.js"></script>
+<script src="${pageContext.request.contextPath}/assets/x-editable/js/bootstrap-editable.min.js?v=${assessVersion}"></script>
+<script src="${pageContext.request.contextPath}/assets/x-editable/js/bootstrap-table-editable.js?v=${assessVersion}"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/assets/tree-grid/js/jquery.treegrid.js?v=${assessVersion}"></script>
 <script type="application/javascript">
     $(function () {
         FileUtils.uploadFiles({

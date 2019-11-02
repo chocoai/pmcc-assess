@@ -44,10 +44,10 @@
 </div>
 <%@include file="/views/project/tool/toolMapHandleView.jsp" %>
 
-<script src='${pageContext.request.contextPath}/js/common.column.js'></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.common.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.unit.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/sonUnitView.js"></script>
+<script src='${pageContext.request.contextPath}/js/common.column.js?v=${assessVersion}'></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.common.js?v=${assessVersion}"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.unit.js?v=${assessVersion}"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/sonUnitView.js?v=${assessVersion}"></script>
 <script type="text/javascript">
     $(function () {
         unitCommon.initById('${basicUnit.id}');

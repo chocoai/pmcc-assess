@@ -59,10 +59,10 @@
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="text/javascript"
-        src="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/easyloader.js"></script>
+        src="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/easyloader.js?v=${assessVersion}"></script>
 <script type="text/javascript"
-        src="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/jquery.easyui.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/map.position.js"></script>
+        src="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/jquery.easyui.min.js?v=${assessVersion}"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/map.position.js?v=${assessVersion}"></script>
 <script type="text/javascript">
     var map = null;
     var imgMarker = null;

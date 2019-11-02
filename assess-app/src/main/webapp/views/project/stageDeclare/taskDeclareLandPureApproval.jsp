@@ -14,7 +14,7 @@
             <!-- 申报各种类型的html视图 -->
             <%@include file="/views/project/stageDeclare/declareApprovalModel.jsp" %>
             <script type="text/javascript"
-                    src="${pageContext.request.contextPath}/js/declare/declare.common.js"></script>
+                    src="${pageContext.request.contextPath}/js/declare/declare.common.js?v=${assessVersion}"></script>
             <!-- 土地证 -->
             <div class="x_panel" id="viewDeclareRealtyLandCert">
                 <div class="x_content">

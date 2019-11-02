@@ -430,10 +430,10 @@
     <%@include file="/views/project/stageSurvey/commonDetail/houseFaceStreet.jsp" %>
 </div>
 
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.estate.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.house.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.estate.detail.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.house.detail.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.estate.js?v=${assessVersion}"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.house.js?v=${assessVersion}"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.estate.detail.js?v=${assessVersion}"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.house.detail.js?v=${assessVersion}"></script>
 <script type="text/javascript">
     $(function () {
         houseCommon.initById('${basicHouse.id}');

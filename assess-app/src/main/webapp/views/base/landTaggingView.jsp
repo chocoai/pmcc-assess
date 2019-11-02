@@ -40,9 +40,9 @@
 <!-- 请不要改成v1.4版本 ,假如要改的话必须把下面的的参数 调整 -->
 <script type="text/javascript"
         src="https://webapi.amap.com/maps?v=1.3&key=ac9fb0371e0405ef74cb1ca003fd0eef&plugin=AMap.Autocomplete,AMap.PlaceSearch,AMap.MouseTool"></script>
-<script type="text/javascript" src="https://cache.amap.com/lbs/static/addToolbar.js"></script>
-<script src="${pageContext.request.contextPath}/assembly/js/other/demoutils.js"></script>
-<script src="${pageContext.request.contextPath}/excludes/assets/js/comm/bootbox.js"></script>
+<script type="text/javascript" src="https://cache.amap.com/lbs/static/addToolbar.js?v=${assessVersion}"></script>
+<script src="${pageContext.request.contextPath}/assembly/js/other/demoutils.js?v=${assessVersion}"></script>
+<script src="${pageContext.request.contextPath}/excludes/assets/js/comm/bootbox.js?v=${assessVersion}"></script>
 <script type="text/javascript">
 
     //必要的变量

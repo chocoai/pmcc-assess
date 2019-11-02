@@ -484,7 +484,7 @@
         </td>
     </tr>
 </script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.estate.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.estate.js?v=${assessVersion}"></script>
 <script type="application/javascript">
     function saveform() {
         saveApprovalform("");

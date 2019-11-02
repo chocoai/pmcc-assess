@@ -138,7 +138,7 @@
 
 <%@include file="/views/share/main_footer.jsp" %>
 <input type="file" id="ajaxFileUpload" name="file" style="display: none;">
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/ajaxfileupload.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/ajaxfileupload.js?v=${assessVersion}"></script>
 <script type="text/javascript" defer="defer">
 
     var landLevel = {};

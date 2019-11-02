@@ -36,10 +36,10 @@
         </tr>
     </table>
 </div>
-<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script src="http://code.jquery.com/jquery-2.1.1.min.js?v=${assessVersion}"></script>
 <script type="text/javascript"
         src="https://webapi.amap.com/maps?v=1.4.10&key=ac9fb0371e0405ef74cb1ca003fd0eef&plugin=AMap.Autocomplete,AMap.PlaceSearch,AMap.MouseTool"></script>
-<script type="text/javascript" src="https://cache.amap.com/lbs/static/addToolbar.js"></script>
+<script type="text/javascript" src="https://cache.amap.com/lbs/static/addToolbar.js?v=${assessVersion}"></script>
 
 <script type="text/javascript">
     //初始化地图对象，加载地图

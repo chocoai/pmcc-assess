@@ -180,7 +180,7 @@
         <a href="#" style="cursor: pointer;" onclick="contractObj.details('{uuid}')">{name}</a>
     </div>
 </script>
-<script src="/pmcc-contract/js/cms_contract_utils.js"></script>
+<script src="/pmcc-contract/js/cms_contract_utils.js?v=${assessVersion}"></script>
 <script type="text/javascript">
 
     var contractObj = {};

@@ -4,7 +4,7 @@
 <head>
     <%@include file="/views/share/main_css.jsp" %>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/tree-grid/css/jquery.treegrid.css">
-    <script type="text/javascript" src="${pageContext.request.contextPath}/assets/tree-grid/js/jquery.treegrid.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/assets/tree-grid/js/jquery.treegrid.js?v=${assessVersion}"></script>
     <link rel="stylesheet"
           href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/tree.css">
     <link rel="stylesheet"
@@ -147,49 +147,49 @@
 </body>
 
 <%@include file="/views/share/main_footer.jsp" %>
-<script type="text/javascript" src="${pageContext.request.contextPath}/assets/jquery-ui/jquery-ui.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/assets/jquery-ui/jquery-ui.min.js?v=${assessVersion}"></script>
 <!-- 控件js -->
-<script src="${pageContext.request.contextPath}/js/autocomplete/developer.js"></script>
-<script src="${pageContext.request.contextPath}/js/autocomplete/builder.js"></script>
-<script src="${pageContext.request.contextPath}/js/autocomplete/property.js"></script>
-<script src="${pageContext.request.contextPath}/js/autocomplete/new.wind.brand.js"></script>
-<script src="${pageContext.request.contextPath}/js/autocomplete/heating.brand.js"></script>
-<script src='${pageContext.request.contextPath}/js/autocomplete/estate.case.js'></script>
-<script src='${pageContext.request.contextPath}/js/autocomplete/building.case.js'></script>
-<script src='${pageContext.request.contextPath}/js/autocomplete/unit.case.js'></script>
-<script src='${pageContext.request.contextPath}/js/autocomplete/house.case.js'></script>
-<script src='${pageContext.request.contextPath}/js/autocomplete/roomType.js'></script>
+<script src="${pageContext.request.contextPath}/js/autocomplete/developer.js?v=${assessVersion}"></script>
+<script src="${pageContext.request.contextPath}/js/autocomplete/builder.js?v=${assessVersion}"></script>
+<script src="${pageContext.request.contextPath}/js/autocomplete/property.js?v=${assessVersion}"></script>
+<script src="${pageContext.request.contextPath}/js/autocomplete/new.wind.brand.js?v=${assessVersion}"></script>
+<script src="${pageContext.request.contextPath}/js/autocomplete/heating.brand.js?v=${assessVersion}"></script>
+<script src='${pageContext.request.contextPath}/js/autocomplete/estate.case.js?v=${assessVersion}'></script>
+<script src='${pageContext.request.contextPath}/js/autocomplete/building.case.js?v=${assessVersion}'></script>
+<script src='${pageContext.request.contextPath}/js/autocomplete/unit.case.js?v=${assessVersion}'></script>
+<script src='${pageContext.request.contextPath}/js/autocomplete/house.case.js?v=${assessVersion}'></script>
+<script src='${pageContext.request.contextPath}/js/autocomplete/roomType.js?v=${assessVersion}'></script>
 
-<script src="${pageContext.request.contextPath}/js/select/land.level.select.js"></script>
-<script src="${pageContext.request.contextPath}/js/select/block.select.js"></script>
-<script src="${pageContext.request.contextPath}/js/select/huxing.select.js"></script>
+<script src="${pageContext.request.contextPath}/js/select/land.level.select.js?v=${assessVersion}"></script>
+<script src="${pageContext.request.contextPath}/js/select/block.select.js?v=${assessVersion}"></script>
+<script src="${pageContext.request.contextPath}/js/select/huxing.select.js?v=${assessVersion}"></script>
 
 <!-- 表单js -->
-<script src="${pageContext.request.contextPath}/js/examine/examine.common.js"></script>
-<script src="${pageContext.request.contextPath}/js/examine/examine.estate.js"></script>
-<script src="${pageContext.request.contextPath}/js/examine/examine.build.js"></script>
-<script src="${pageContext.request.contextPath}/js/examine/examine.unit.js"></script>
-<script src="${pageContext.request.contextPath}/js/examine/examine.house.js"></script>
+<script src="${pageContext.request.contextPath}/js/examine/examine.common.js?v=${assessVersion}"></script>
+<script src="${pageContext.request.contextPath}/js/examine/examine.estate.js?v=${assessVersion}"></script>
+<script src="${pageContext.request.contextPath}/js/examine/examine.build.js?v=${assessVersion}"></script>
+<script src="${pageContext.request.contextPath}/js/examine/examine.unit.js?v=${assessVersion}"></script>
+<script src="${pageContext.request.contextPath}/js/examine/examine.house.js?v=${assessVersion}"></script>
 
 <!-- 从表 -->
-<script src='${pageContext.request.contextPath}/js/common.column.js'></script>
-<script src="${pageContext.request.contextPath}/js/basic/estate/sonEstateView.js"></script>
-<script src="${pageContext.request.contextPath}/js/basic/building/sonBuildView.js"></script>
-<script src="${pageContext.request.contextPath}/js/basic/unit/sonUnitView.js"></script>
-<script src="${pageContext.request.contextPath}/js/basic/house/sonHouseView.js"></script>
+<script src='${pageContext.request.contextPath}/js/common.column.js?v=${assessVersion}'></script>
+<script src="${pageContext.request.contextPath}/js/basic/estate/sonEstateView.js?v=${assessVersion}"></script>
+<script src="${pageContext.request.contextPath}/js/basic/building/sonBuildView.js?v=${assessVersion}"></script>
+<script src="${pageContext.request.contextPath}/js/basic/unit/sonUnitView.js?v=${assessVersion}"></script>
+<script src="${pageContext.request.contextPath}/js/basic/house/sonHouseView.js?v=${assessVersion}"></script>
 
 <!-- 高德抓取周边数据 -->
-<script src="${pageContext.request.contextPath}/js/select/selectMap/transit.checkbox.js"></script>
-<script src="${pageContext.request.contextPath}/js/select/selectMap/metro.checkbox.js"></script>
-<script src="${pageContext.request.contextPath}/js/select/selectMap/finance.checkbox.js"></script>
-<script src="${pageContext.request.contextPath}/js/select/selectMap/education.checkbox.js"></script>
-<script src="${pageContext.request.contextPath}/js/select/selectMap/recreation.checkbox.js"></script>
-<script src="${pageContext.request.contextPath}/js/select/selectMap/restaurant.checkbox.js"></script>
-<script src="${pageContext.request.contextPath}/js/select/selectMap/market.checkbox.js"></script>
-<script src="${pageContext.request.contextPath}/js/select/selectMap/medical.checkbox.js"></script>
-<script src="${pageContext.request.contextPath}/js/select/selectMap/trafficHub.checkbox.js"></script>
-<script src="${pageContext.request.contextPath}/js/select/selectMap/distance.get.fun.js"></script>
-<script src="${pageContext.request.contextPath}/js/map.placeSearch.js"></script>
+<script src="${pageContext.request.contextPath}/js/select/selectMap/transit.checkbox.js?v=${assessVersion}"></script>
+<script src="${pageContext.request.contextPath}/js/select/selectMap/metro.checkbox.js?v=${assessVersion}"></script>
+<script src="${pageContext.request.contextPath}/js/select/selectMap/finance.checkbox.js?v=${assessVersion}"></script>
+<script src="${pageContext.request.contextPath}/js/select/selectMap/education.checkbox.js?v=${assessVersion}"></script>
+<script src="${pageContext.request.contextPath}/js/select/selectMap/recreation.checkbox.js?v=${assessVersion}"></script>
+<script src="${pageContext.request.contextPath}/js/select/selectMap/restaurant.checkbox.js?v=${assessVersion}"></script>
+<script src="${pageContext.request.contextPath}/js/select/selectMap/market.checkbox.js?v=${assessVersion}"></script>
+<script src="${pageContext.request.contextPath}/js/select/selectMap/medical.checkbox.js?v=${assessVersion}"></script>
+<script src="${pageContext.request.contextPath}/js/select/selectMap/trafficHub.checkbox.js?v=${assessVersion}"></script>
+<script src="${pageContext.request.contextPath}/js/select/selectMap/distance.get.fun.js?v=${assessVersion}"></script>
+<script src="${pageContext.request.contextPath}/js/map.placeSearch.js?v=${assessVersion}"></script>
 
 
 <script type="text/javascript">

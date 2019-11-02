@@ -409,7 +409,7 @@
     <%@include file="buildingFunction.jsp" %>
 </div>
 
-<script src="${pageContext.request.contextPath}/js/method/developmentCommon.js"></script>
+<script src="${pageContext.request.contextPath}/js/method/developmentCommon.js?v=${assessVersion}"></script>
 <%@include file="/views/method/module/developmentCommon.jsp" %>
 
 

@@ -10,7 +10,7 @@
 
 </div>
 
-<script src='/assets/js/comm/erp-head.js'></script>
+<script src='/assets/js/comm/erp-head.js?v=${assessVersion}'></script>
 <script type="text/javascript">
     var viewJson = '${baseViewDtoJson}';
     var sysRemindUnReadCount = '${sysRemindUnReadCount}';

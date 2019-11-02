@@ -518,9 +518,9 @@
     </c:if>
     <%@include file="/views/project/stageSurvey/common/houseFaceStreet.jsp" %>
 </div>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.estate.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.house.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/sonEstateView.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/sonHouseView.js"></script>
-<script src="${pageContext.request.contextPath}/js/select/land.level.select.js"></script>
-<script src="${pageContext.request.contextPath}/js/select/block.select.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.estate.js?v=${assessVersion}"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.house.js?v=${assessVersion}"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/sonEstateView.js?v=${assessVersion}"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/sonHouseView.js?v=${assessVersion}"></script>
+<script src="${pageContext.request.contextPath}/js/select/land.level.select.js?v=${assessVersion}"></script>
+<script src="${pageContext.request.contextPath}/js/select/block.select.js?v=${assessVersion}"></script>

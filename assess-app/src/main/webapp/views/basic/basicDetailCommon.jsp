@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="x_panel" id="basicApplyId">
-    <script src="${pageContext.request.contextPath}/js/basic/industry.js"></script>
+    <script src="${pageContext.request.contextPath}/js/basic/industry.js?v=${assessVersion}"></script>
     <div class="x_title">
         <ul class="nav navbar-right panel_toolbox">
             <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
@@ -76,12 +76,12 @@
         </div>
     </div>
 </div>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/basic/basic.common.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/basic/basic.common.js?v=${assessVersion}"></script>
 
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.estate.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.build.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.unit.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.house.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.estate.js?v=${assessVersion}"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.build.js?v=${assessVersion}"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.unit.js?v=${assessVersion}"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.house.js?v=${assessVersion}"></script>
 <script type="text/javascript">
     $(function () {
         //选项卡处理

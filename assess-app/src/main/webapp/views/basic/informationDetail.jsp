@@ -4,7 +4,7 @@
 <head>
     <%@include file="/views/share/main_css.jsp" %>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/tree-grid/css/jquery.treegrid.css">
-    <script type="text/javascript" src="${pageContext.request.contextPath}/assets/tree-grid/js/jquery.treegrid.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/assets/tree-grid/js/jquery.treegrid.js?v=${assessVersion}"></script>
 </head>
 <body class="nav-md footer_fixed">
 <div class="container body">
@@ -91,13 +91,13 @@
 </div>
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
-<script src="${pageContext.request.contextPath}/js/basic/industry.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/basic/basic.common.js"></script>
+<script src="${pageContext.request.contextPath}/js/basic/industry.js?v=${assessVersion}"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/basic/basic.common.js?v=${assessVersion}"></script>
 
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.estate.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.build.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.unit.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.house.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.estate.js?v=${assessVersion}"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.build.js?v=${assessVersion}"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.unit.js?v=${assessVersion}"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.house.js?v=${assessVersion}"></script>
 </html>
 <script type="text/javascript">
     $(function () {

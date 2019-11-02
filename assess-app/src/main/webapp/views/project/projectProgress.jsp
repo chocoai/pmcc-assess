@@ -39,7 +39,7 @@
 
 
 <%@include file="/views/share/main_footer.jsp" %>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/bid/projectProgress.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/bid/projectProgress.js?v=${assessVersion}"></script>
 <script type="application/javascript">
     $(function () {
         loadProjectProgress();

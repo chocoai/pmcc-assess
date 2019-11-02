@@ -45,8 +45,8 @@
     <%@include file="/views/project/stageSurvey/common/unitDecorate.jsp" %>
     <%@include file="/views/project/stageSurvey/common/unitElevator.jsp" %>
 </div>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.unit.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/sonUnitView.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.unit.js?v=${assessVersion}"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/sonUnitView.js?v=${assessVersion}"></script>
 <script type="text/javascript">
     $(function () {
         unitCommon.initById('${basicUnit.id}');

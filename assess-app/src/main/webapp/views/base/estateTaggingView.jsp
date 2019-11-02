@@ -32,7 +32,7 @@
 </div>
 <script type="text/javascript"
         src="https://webapi.amap.com/maps?v=1.4.10&key=ac9fb0371e0405ef74cb1ca003fd0eef&plugin=AMap.Autocomplete,AMap.PlaceSearch"></script>
-<script type="text/javascript" src="https://cache.amap.com/lbs/static/addToolbar.js"></script>
+<script type="text/javascript" src="https://cache.amap.com/lbs/static/addToolbar.js?v=${assessVersion}"></script>
 <script type="text/javascript">
     //初始化地图对象，加载地图
     var map = new AMap.Map("container", {resizeEnable: true, zoom: 19});

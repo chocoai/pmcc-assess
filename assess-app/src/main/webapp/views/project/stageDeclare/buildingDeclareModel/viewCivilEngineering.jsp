@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <script type="text/javascript"
-        src="${pageContext.request.contextPath}/js/declare/building/civil.engineering.js"></script>
+        src="${pageContext.request.contextPath}/js/declare/building/civil.engineering.js?v=${assessVersion}"></script>
 <div class="x_panel">
     <div class="x_title collapse-link">
         <h3>在建工程（土建）</h3>

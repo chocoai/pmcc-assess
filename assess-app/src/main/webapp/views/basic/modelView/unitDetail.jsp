@@ -19,4 +19,4 @@
 <%@include file="/views/project/stageSurvey/commonDetail/unitHuxing.jsp" %>
 <%@include file="/views/project/stageSurvey/commonDetail/unitElevator.jsp" %>
 
-<script src="${pageContext.request.contextPath}/js/basic/unit/sonUnitView.js"></script>
+<script src="${pageContext.request.contextPath}/js/basic/unit/sonUnitView.js?v=${assessVersion}"></script>

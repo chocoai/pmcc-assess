@@ -524,10 +524,10 @@
         <%@include file="/views/project/stageSurvey/common/matchingMaterial.jsp" %>
     </c:if>
 </div>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.estate.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/sonEstateView.js"></script>
-<script src="${pageContext.request.contextPath}/js/select/land.level.select.js"></script>
-<script src="${pageContext.request.contextPath}/js/select/block.select.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.estate.js?v=${assessVersion}"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/sonEstateView.js?v=${assessVersion}"></script>
+<script src="${pageContext.request.contextPath}/js/select/land.level.select.js?v=${assessVersion}"></script>
+<script src="${pageContext.request.contextPath}/js/select/block.select.js?v=${assessVersion}"></script>
 <script type="text/javascript">
     $(function () {
         estateCommon.initById('${basicEstate.id}');

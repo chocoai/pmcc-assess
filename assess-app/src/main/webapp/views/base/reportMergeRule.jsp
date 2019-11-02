@@ -165,7 +165,7 @@
         </div>
     </div>
 </div>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/report-template-select.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/report-template-select.js?v=${assessVersion}"></script>
 <script type="application/javascript">
     $(function () {
         loadMergeRuleList();

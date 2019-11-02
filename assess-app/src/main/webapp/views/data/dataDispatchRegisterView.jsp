@@ -60,7 +60,7 @@
 <input type="file" id="ajaxFileUploadHouseLand" name="file" style="display: none;"
        onchange="dataObjFun.inputFileLand();">
 <%@include file="/views/share/main_footer.jsp" %>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/ajaxfileupload.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/ajaxfileupload.js?v=${assessVersion}"></script>
 <script type="text/javascript">
     $(function () {
         dataObjFun.loadDataList();

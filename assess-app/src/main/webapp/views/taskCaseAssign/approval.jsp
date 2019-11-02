@@ -102,9 +102,9 @@
 
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
-<script src="${pageContext.request.contextPath}/js/autocomplete/lpmc.js"></script>
+<script src="${pageContext.request.contextPath}/js/autocomplete/lpmc.js?v=${assessVersion}"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/jquery-ui/jquery-ui.css">
-<script src='${pageContext.request.contextPath}/assets/jquery-ui/jquery-ui.js'></script>
+<script src='${pageContext.request.contextPath}/assets/jquery-ui/jquery-ui.js?v=${assessVersion}'></script>
 <script type="application/javascript">
     $(function () {
         if ("${master}") {

@@ -79,7 +79,7 @@
 <input type="file" id="equipmentInstallationUpload" name="file" style="display: none;"
        onchange="equipmentInstallation.inputFile();">
 
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/declare/building/equipment.installation.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/declare/building/equipment.installation.js?v=${assessVersion}"></script>
 
 <!-- 建设工程规划许可证 -->
 <div id="declareBuildingPermitBoxE" class="modal fade bs-example-modal-lg" data-backdrop="static"

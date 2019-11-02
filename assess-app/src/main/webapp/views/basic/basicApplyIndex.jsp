@@ -228,7 +228,7 @@
     <!-- end: MAIN CONTAINER -->
 </div>
 </body>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/map.position.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/map.position.js?v=${assessVersion}"></script>
 <%@include file="/views/share/main_footer.jsp" %>
 <jsp:include page="/views/basic/modelView/basicApplyQuoteData.jsp"></jsp:include>
 </html>

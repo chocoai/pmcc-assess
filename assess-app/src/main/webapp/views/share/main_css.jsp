@@ -21,15 +21,15 @@
 <meta content="" name="author"/>
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common.css">
-<script src="/assets/js/jquery/2.0.3/jquery.min.js"></script>
+<script src="/assets/js/jquery/2.0.3/jquery.min.js?v=${assessVersion}"></script>
 <script src='${pageContext.request.contextPath}/js/assess.key.js?v=${assessVersion}'></script>
-<script src='${pageContext.request.contextPath}/js/assess.upload.key.js'></script>
-<script src='${pageContext.request.contextPath}/js/assess.default.js'></script>
-<script src='${pageContext.request.contextPath}/js/common.js'></script>
-<script src='${pageContext.request.contextPath}/js/common.column.js'></script>
-<script src='${pageContext.request.contextPath}/js/ajaxhook.min.js'></script>
-<script src="${pageContext.request.contextPath}/assets/layer/layer.js"></script>
-<script src="/assets/js/comm/pmcc-css.js"></script>
+<script src='${pageContext.request.contextPath}/js/assess.upload.key.js?v=${assessVersion}'></script>
+<script src='${pageContext.request.contextPath}/js/assess.default.js?v=${assessVersion}'></script>
+<script src='${pageContext.request.contextPath}/js/common.js?v=${assessVersion}'></script>
+<script src='${pageContext.request.contextPath}/js/common.column.js?v=${assessVersion}'></script>
+<script src='${pageContext.request.contextPath}/js/ajaxhook.min.js?v=${assessVersion}'></script>
+<script src="${pageContext.request.contextPath}/assets/layer/layer.js?v=${assessVersion}"></script>
+<script src="/assets/js/comm/pmcc-css.js?v=${assessVersion}"></script>
 <script type="text/javascript">
     jQuery.ajaxSetup({
         cache: false,
