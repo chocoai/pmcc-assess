@@ -20,9 +20,61 @@
                         <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
+                        <form class="form-horizontal">
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                    省
+                                </label>
+                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                    <select id="queryProvince" class="form-control search-select select2">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                    市
+                                </label>
+                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                    <select id="queryCity" class="form-control search-select select2">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                    区
+                                </label>
+                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                    <select id="queryDistrict" class="form-control search-select select2">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">名称</label>
+                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                    <input type="text" class="form-control" id="queryName"/>
+                                </div>
+                            </div>
+                        </div>
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">坐落</label>
+                                    <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                        <input type="text" class="form-control" id="querySeat"/>
+                                    </div>
+                                </div>
+                            <div class="x-valid">
+                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                    <label class="btn btn-primary" onclick="reloadDeclareList();">
+                                        查询
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
                         <table class="table table-bordered" id="declareTable">
                             <!-- cerare document add ajax data-->
                         </table>
+                        </form>
                     </div>
 
 
@@ -388,6 +440,15 @@
 </script>
 <script type="application/javascript">
     $(function () {
+        AssessCommon.initAreaInfo({
+            provinceTarget: $("#queryProvince"),
+            cityTarget: $("#queryCity"),
+            districtTarget: $("#queryDistrict"),
+            provinceValue: '',
+            cityValue: '',
+            districtValue: ''
+        });
+
         reloadDeclareList();
         uploadFiles(AssessDBKey.ProjectInfo, "${projectInfo.id}", AssessUploadKey.PROJECT_PROXY);
         loadUploadFiles(AssessDBKey.ProjectInfo, "${projectInfo.id}", AssessUploadKey.PROJECT_PROXY);
@@ -1046,10 +1107,23 @@
     //权证列表
     function reloadDeclareList() {
         var cols = [];
+        cols.push({
+            field: 'area', title: '区域', formatter: function (value, row, index) {
+                return AssessCommon.getAreaFullName(row.provinceName, row.cityName, row.districtName);
+            }
+        });
         cols.push({field: 'name', title: '名称'});
-        $("#indexDetailTable").bootstrapTable('destroy');
+        cols.push({field: 'seat', title: '坐落'});
+        cols.push({field: 'certUse', title: '证载用途'});
+        $("#declareTable").bootstrapTable('destroy');
         TableInit("declareTable", "${pageContext.request.contextPath}/declareRecord/getDeclareRecordList", cols, {
-            projectId: ${projectId}
+            projectId: ${projectId},
+            province: $("#queryProvince").val(),
+            city: $("#queryCity").val(),
+            district: $("#queryDistrict").val(),
+            name: $("#queryName").val(),
+            seat: $("#querySeat").val(),
+
         }, {
             showColumns: false,
             showRefresh: false,
