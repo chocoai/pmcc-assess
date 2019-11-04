@@ -6,7 +6,6 @@ import com.copower.pmcc.assess.dal.basis.mapper.DeclareRecordMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -30,7 +29,7 @@ public class DeclareRecordDao {
         return mapper.selectByExample(example);
     }
 
-    public List<DeclareRecord> getDeclareRecordListByDataTableId(String dataTableName,Integer dataTableId,Integer projectId){
+    public List<DeclareRecord> getDeclareRecordListByDataTableId(String dataTableName, Integer dataTableId, Integer projectId) {
         DeclareRecordExample example = new DeclareRecordExample();
         example.createCriteria().andProjectIdEqualTo(projectId).andDataTableIdEqualTo(dataTableId).andDataTableNameEqualTo(dataTableName);
         example.setOrderByClause("id");
@@ -51,7 +50,7 @@ public class DeclareRecordDao {
         return mapper.selectByExample(example);
     }
 
-    public List<DeclareRecord> getDeclareRecordList(Integer projectId, String name, String seat, Boolean bisPartIn) {
+    public List<DeclareRecord> getDeclareRecordList(Integer projectId, String name, String seat, Boolean bisPartIn, String province, String city, String district) {
         DeclareRecordExample example = new DeclareRecordExample();
         DeclareRecordExample.Criteria criteria = example.createCriteria();
         criteria.andProjectIdEqualTo(projectId);
@@ -63,6 +62,15 @@ public class DeclareRecordDao {
         }
         if (bisPartIn != null) {
             criteria.andBisPartInEqualTo(bisPartIn);
+        }
+        if (StringUtils.isNotBlank(province)) {
+            criteria.andProvinceEqualTo(province);
+        }
+        if (StringUtils.isNotBlank(city)) {
+            criteria.andCityEqualTo(city);
+        }
+        if (StringUtils.isNotBlank(district)) {
+            criteria.andDistrictEqualTo(district);
         }
         return mapper.selectByExample(example);
     }
