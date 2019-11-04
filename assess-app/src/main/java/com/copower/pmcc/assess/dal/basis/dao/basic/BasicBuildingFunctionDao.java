@@ -30,6 +30,7 @@ public class BasicBuildingFunctionDao {
     }
 
     public boolean updateBasicBuildingFunction(BasicBuildingFunction basicBuildingFunction, boolean updateNull) {
+        basicBuildingFunction.setBisDelete(false);
         return updateNull ? basicBuildingFunctionMapper.updateByPrimaryKey(basicBuildingFunction) == 1 : basicBuildingFunctionMapper.updateByPrimaryKeySelective(basicBuildingFunction) == 1;
     }
 

@@ -30,6 +30,7 @@ public class BasicUnitElevatorDao {
     }
 
     public boolean updateBasicUnitElevator(BasicUnitElevator basicUnitElevator, boolean updateNull)  {
+        basicUnitElevator.setBisDelete(false);
         return updateNull ? basicUnitElevatorMapper.updateByPrimaryKey(basicUnitElevator) == 1 : basicUnitElevatorMapper.updateByPrimaryKeySelective(basicUnitElevator) == 1;
     }
 

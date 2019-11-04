@@ -30,6 +30,7 @@ public class BasicHouseRoomDecorateDao {
     }
 
     public boolean updateBasicHouseRoomDecorate(BasicHouseRoomDecorate basicHouseRoomDecorate, boolean updateNull)  {
+        basicHouseRoomDecorate.setBisDelete(false);
         return updateNull?basicHouseRoomDecorateMapper.updateByPrimaryKey(basicHouseRoomDecorate) == 1:basicHouseRoomDecorateMapper.updateByPrimaryKeySelective(basicHouseRoomDecorate) == 1;
     }
 

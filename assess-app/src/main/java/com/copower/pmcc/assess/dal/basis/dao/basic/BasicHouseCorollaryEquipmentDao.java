@@ -31,6 +31,7 @@ public class BasicHouseCorollaryEquipmentDao {
     }
 
     public boolean updateBasicHouseCorollaryEquipment(BasicHouseCorollaryEquipment basicHouseCorollaryEquipment, boolean updateNull) {
+        basicHouseCorollaryEquipment.setBisDelete(false);
         return updateNull ? basicHouseCorollaryEquipmentMapper.updateByPrimaryKey(basicHouseCorollaryEquipment) == 1 : basicHouseCorollaryEquipmentMapper.updateByPrimaryKeySelective(basicHouseCorollaryEquipment) == 1;
     }
 

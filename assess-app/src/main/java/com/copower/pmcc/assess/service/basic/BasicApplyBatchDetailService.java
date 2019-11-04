@@ -249,6 +249,7 @@ public class BasicApplyBatchDetailService {
             case "tb_basic_house":
                 //删除原来房屋数据
                 basicHouseService.deleteBasicHouse(basicApplyBatchDetail.getTableId());
+                basicHouseTradingService.deleteBasicHouseTradingByHouseId(basicApplyBatchDetail.getTableId());
                 basicHouseService.clearInvalidChildData(basicApplyBatchDetail.getTableId());
                 BasicApply basicApply = new BasicApply();
                 basicApply.setBasicHouseId(basicApplyBatchDetail.getTableId());

@@ -1878,14 +1878,13 @@ public class BasicApplyBatchService {
         basicHouseService.clearInvalidChildData(targetHouse.getId());
         //房屋交易信息
         BasicHouseTrading tradingOld = basicHouseTradingService.getTradingByHouseId(sourceHouse.getId());
-        BasicHouseTrading basicHouseTrading = new BasicHouseTrading();
+        BasicHouseTrading basicHouseTrading = basicHouseTradingService.getTradingByHouseId(targetHouse.getId());
         if (tradingOld != null) {
-            BeanUtils.copyProperties(tradingOld, basicHouseTrading);
-            basicHouseTrading.setApplyId(null);
-            basicHouseTrading.setId(null);
-            basicHouseTrading.setGmtCreated(null);
-            basicHouseTrading.setGmtModified(null);
-            basicHouseTrading.setHouseId(targetHouse.getId());
+            if (basicHouseTrading == null) {
+                basicHouseTrading = new BasicHouseTrading();
+                basicHouseTrading.setHouseId(targetHouse.getId());
+            }
+            BeanUtils.copyProperties(tradingOld, basicHouseTrading, "id", "houseId", "creator", "gmtCreated", "gmtModified");
             basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicHouseTrading, false);
         }
 
@@ -1902,6 +1901,15 @@ public class BasicApplyBatchService {
             queryBasicHouseCorollaryEquipment.setHouseId(sourceHouse.getId());
             queryHouseDamagedDegree.setHouseId(sourceHouse.getId());
         }
+        //清理附件
+        SysAttachmentDto deleteExample = new SysAttachmentDto();
+        deleteExample.setTableId(targetHouse.getId());
+        deleteExample.setTableName(FormatUtils.entityNameConvertToTableName(BasicHouse.class));
+        baseAttachmentService.deleteAttachmentByDto(deleteExample);
+        deleteExample = new SysAttachmentDto();
+        deleteExample.setTableId(basicHouseTrading.getId());
+        deleteExample.setTableName(FormatUtils.entityNameConvertToTableName(BasicHouseTrading.class));
+        baseAttachmentService.deleteAttachmentByDto(deleteExample);
 
         SysAttachmentDto example = new SysAttachmentDto();
         example.setTableId(sourceHouse.getId());
