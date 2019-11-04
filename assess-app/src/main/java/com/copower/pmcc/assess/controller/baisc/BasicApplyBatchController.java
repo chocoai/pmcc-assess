@@ -285,6 +285,7 @@ public class BasicApplyBatchController extends BaseController {
         if (applyBatchId != null) {
             BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchById(applyBatchId);
             modelAndView.addObject(StringUtils.uncapitalize(BasicApplyBatch.class.getSimpleName()), basicApplyBatch);
+            modelAndView.addObject("showTab", basicApplyBatch.getShowTab());
         }
         return modelAndView;
     }

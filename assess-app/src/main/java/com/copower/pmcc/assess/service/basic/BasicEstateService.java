@@ -98,6 +98,8 @@ public class BasicEstateService {
     private BasicEstateTaggingDao basicEstateTaggingDao;
     @Autowired
     private CaseEstateTaggingService caseEstateTaggingService;
+    @Autowired
+    private BasicApplyBatchService basicApplyBatchService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -675,7 +677,12 @@ public class BasicEstateService {
         }
         this.clearInvalidChildData(tableId);
         //更新批量申请表信息
-        BasicApplyBatchDetail batchDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail("tb_basic_house", tableId);
+        BasicApplyBatch applyBatch = basicApplyBatchService.getBasicApplyBatchByEstateId(tableId);
+        applyBatch.setQuoteId(quoteId);
+        applyBatch.setBaseType(BaseConstant.DATABASE_PMCC_ASSESS);
+        basicApplyBatchDao.updateInfo(applyBatch);
+
+        BasicApplyBatchDetail batchDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail("tb_basic_estate", tableId);
         batchDetail.setQuoteId(quoteId);
         batchDetail.setBaseType(BaseConstant.DATABASE_PMCC_ASSESS);
         basicApplyBatchDetailService.saveBasicApplyBatchDetail(batchDetail);

@@ -112,6 +112,30 @@
     </div>
 </div>
 <script type="application/javascript">
+
+    //填充对应的数据
+    function autocompleteData (data) {
+        if ("estate" == "${tbType}") {
+            var basicEstate = data.basicEstate;
+            var basicEstateLandState = data.basicEstateLandState;
+            estateCommon.initForm({estate: basicEstate, land: basicEstateLandState});
+        }
+
+        if ("building" == "${tbType}") {
+            buildingCommon.showBuildingView(data);
+        }
+
+        if ("unit" == "${tbType}") {
+            unitCommon.showUnitView(data);
+        }
+
+        if ("house" == "${tbType}") {
+            houseCommon.showHouseView(data);
+        }
+    }
+
+</script>
+<script type="application/javascript">
     // 查找项目及楼盘
     var projectData = function () {
 
@@ -255,7 +279,7 @@
                 success: function (result) {
                     if (result.ret) {
                         if (result.data != null) {
-                            fillInformation.autocompleteData(result.data);
+                            autocompleteData(result.data);
                             $('#' + projectData.prototype.config().houseBox).modal("hide");
                             $('#' + projectData.prototype.config().itemBox).modal("hide");
                             $('#' + projectData.prototype.config().box).modal("hide");
@@ -325,7 +349,7 @@
                 success: function (result) {
                     if (result.ret) {
                         if (result.data != null) {
-                            fillInformation.autocompleteData(result.data);
+                            autocompleteData(result.data);
                             $('#' + projectBuild.prototype.config().box).modal("hide");
                         }
                     } else {
@@ -392,7 +416,7 @@
                 success: function (result) {
                     if (result.ret) {
                         if (result.data != null) {
-                            fillInformation.autocompleteData(result.data);
+                            autocompleteData(result.data);
                             $('#' + projectUnit.prototype.config().box).modal("hide");
                         }
                     } else {
@@ -459,7 +483,7 @@
                 success: function (result) {
                     if (result.ret) {
                         if (result.data != null) {
-                            fillInformation.autocompleteData(result.data);
+                            autocompleteData(result.data);
                             $('#' + projectHouse.prototype.config().box).modal("hide");
                         }
                     } else {
