@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.controller.data;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.dal.basis.entity.DataLandLevel;
 import com.copower.pmcc.assess.dal.basis.entity.DataLandLevelDetail;
 import com.copower.pmcc.assess.dto.input.ZtreeDto;
@@ -65,15 +66,25 @@ public class DataLandLevelController {
     public ModelAndView index() {
         String view = "/data/dataLandLevelView";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
-        modelAndView.addObject(StringUtils.uncapitalize(SysUserDto.class.getSimpleName()), processControllerComponent.getThisUserInfo());
+        setParams(modelAndView, false);
         return modelAndView;
     }
 
     @RequestMapping(value = "/comeInLandLevelIndex", name = "转到申请页面 ", method = {RequestMethod.GET})
-    public ModelAndView comeInLandLevelIndex() {
+    public ModelAndView comeInLandLevelIndex(String id) {
         String view = "/data/landModelDir/comeInLandLevelIndex";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
-        modelAndView.addObject(StringUtils.uncapitalize(SysUserDto.class.getSimpleName()), processControllerComponent.getThisUserInfo());
+        if (StringUtils.isNotBlank(id)) {
+            List<DataLandLevel> dataLandLevelList = dataLandLevelService.getByIds(id);
+            if (CollectionUtils.isNotEmpty(dataLandLevelList)){
+                dataLandLevelList.forEach(dataLandLevel -> {
+                    dataLandLevel.setStatus(ProjectStatusEnum.DRAFT.getKey());
+                    dataLandLevelService.saveAndUpdateDataLandLevel(dataLandLevel);
+                });
+            }
+        }
+        setParams(modelAndView, true);
+
         return modelAndView;
     }
 
@@ -100,9 +111,9 @@ public class DataLandLevelController {
     }
 
     @PostMapping(value = "/comeInLandLevelEditSubmit", name = "编辑提交 (修改提交)")
-    public HttpResult comeInLandLevelEditSubmit(ApprovalModelDto approvalModelDto, String formData) {
+    public HttpResult comeInLandLevelEditSubmit(ApprovalModelDto approvalModelDto, String ids) {
         try {
-            dataLandLevelService.comeInLandLevelEditSubmit(approvalModelDto, formData);
+            dataLandLevelService.comeInLandLevelEditSubmit(approvalModelDto, ids);
             return HttpResult.newCorrectResult(200);
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
@@ -113,7 +124,7 @@ public class DataLandLevelController {
     @GetMapping(value = "/comeInLandLevelApproval", name = "审批页面")
     public ModelAndView comeInLandLevelApproval(String processInsId, String taskId, Integer boxId, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/data/landModelDir/comeInLandLevelApproval", processInsId, boxId, taskId, agentUserAccount);
-        modelAndView.addObject(StringUtils.uncapitalize(DataLandLevel.class.getSimpleName()), dataLandLevelService.getByProcessInsId(processInsId));
+        setParams(modelAndView, false);
         return modelAndView;
     }
 
@@ -121,7 +132,7 @@ public class DataLandLevelController {
     @GetMapping(value = "/comeInLandLevelEdit", name = "流程修改页面")
     public ModelAndView comeInLandLevelEdit(String processInsId, String taskId, Integer boxId, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/data/landModelDir/comeInLandLevelEdit", processInsId, boxId, taskId, agentUserAccount);
-        modelAndView.addObject(StringUtils.uncapitalize(DataLandLevel.class.getSimpleName()), dataLandLevelService.getByProcessInsId(processInsId));
+        setParams(modelAndView, true);
         return modelAndView;
     }
 
@@ -194,7 +205,6 @@ public class DataLandLevelController {
     }
 
 
-
     @RequestMapping(value = "/saveAndUpdateDataLandLevelDetail", method = {RequestMethod.POST}, name = "保存土地级别信息")
     public HttpResult saveAndUpdateDataLandLevelDetail(DataLandLevelDetail dataLandLevelDetail) {
         try {
@@ -240,14 +250,14 @@ public class DataLandLevelController {
                 return HttpResult.newErrorResult("上传的文件不能为空");
             }
             List<DataLandLevelDetail> dataLandLevelDetailList = Lists.newArrayList();
-            String resultString = dataLandLevelDetailService.importLandLevelDetail(dataLandLevelDetail,dataLandLevelDetailList, multipartFile);
+            String resultString = dataLandLevelDetailService.importLandLevelDetail(dataLandLevelDetail, dataLandLevelDetailList, multipartFile);
             List<ZtreeDto> ztreeDtoList = new ArrayList<ZtreeDto>(dataLandLevelDetailList.size());
             if (CollectionUtils.isNotEmpty(dataLandLevelDetailList)) {
                 dataLandLevelDetailList.forEach(landLevelDetail -> ztreeDtoList.add(getZtreeDto(dataLandLevelDetailService.getDataLandLevelDetailVo(landLevelDetail))));
             }
-            Map<String,Object> map = new HashMap<>(2) ;
-            map.put("info",resultString);
-            map.put("item",ztreeDtoList);
+            Map<String, Object> map = new HashMap<>(2);
+            map.put("info", resultString);
+            map.put("item", ztreeDtoList);
             return HttpResult.newCorrectResult(200, map);
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
@@ -269,6 +279,11 @@ public class DataLandLevelController {
             ztreeDto.setName(vo.getTypeName());
         }
         return ztreeDto;
+    }
+
+    private void setParams(ModelAndView modelAndView, boolean readOnly) {
+        modelAndView.addObject(StringUtils.uncapitalize(SysUserDto.class.getSimpleName()), processControllerComponent.getThisUserInfo());
+        modelAndView.addObject("readOnly", readOnly);
     }
 
 

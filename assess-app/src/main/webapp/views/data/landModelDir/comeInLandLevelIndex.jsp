@@ -3,8 +3,6 @@
 <html lang="en" class="no-js">
 <head>
     <%@include file="/views/share/main_css.jsp" %>
-
-
 </head>
 <body class="nav-md footer_fixed">
 <div class="container body">
@@ -27,6 +25,7 @@
                     <div class="row">
                         <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
                             <form id="frmQuery" class="form-horizontal">
+                                <input type="hidden" name="readOnly" value="${readOnly}">
                                 <div class="form-group">
 
                                     <div class="x-valid">
@@ -39,12 +38,10 @@
                                                     </button>
                                                 </div>
                                                 <div class="btn-group" role="group">
-
                                                     <button type="button" class="btn btn-default dropdown-toggle"
                                                             data-toggle="dropdown" aria-haspopup="true"
                                                             aria-expanded="false">excel工具
                                                         <span class="caret"></span>
-                                                        <%--<i class="fa fa-file-excel-o"></i>--%>
                                                     </button>
                                                     <ul class="dropdown-menu">
                                                         <li>
@@ -57,7 +54,6 @@
                                                                 </span>
                                                             </button>
                                                         </li>
-
                                                         <li>
                                                             <button class="btn-default btn" type="button"
                                                                     onclick="$('#ajaxFileUploadDataLand').val('').trigger('click')">
@@ -73,7 +69,6 @@
                                             </div>
                                         </div>
                                     </div>
-
 
                                     <div class="x-valid">
                                         <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
@@ -110,7 +105,7 @@
                                                 </span>
                                                 <span class="input-group-btn">
                                                     <button type="button" class="btn btn-success"
-                                                            onclick="landLevel.loadLandLevelList('${sysUserDto.userAccount}','draft')">
+                                                            onclick="landLevel.loadLandLevelList({status:'draft'})">
                                                         查询 <i class="fa fa-search" aria-hidden="true"></i>
                                                     </button>
                                                 </span>
@@ -169,19 +164,18 @@
 <%@include file="/views/data/landModelDir/landModel.jsp" %>
 
 <input type="file" id="ajaxFileUpload" name="file" style="display: none;">
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/ajaxfileupload.js?v=${assessVersion}"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/ajaxfileupload.js?v=${assessVersion}"></script>
 
-<script type="text/javascript" src="${pageContext.request.contextPath}/views/data/landModelDir/landLevel.js?v=${assessVersion}"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/views/data/landModelDir/landLevel.js?v=${assessVersion}"></script>
 
 <script type="text/javascript">
 
 
     $(document).ready(function () {
 
-
-        landLevel.loadLandLevelList('${sysUserDto.userAccount}','draft');
-
-        $('.dropdown-toggle').dropdown();
+        landLevel.loadLandLevelList({status:'draft'});
 
         (function (frm, data) {
             AssessCommon.initAreaInfo({
@@ -205,24 +199,24 @@
 
     function submit() {
         var result = landLevel.config.table.bootstrapTable('getData');
-        if (result.length == 0){
+        if (result.length == 0) {
             toastr.success('至少添加一条数据');
-            return false ;
+            return false;
         }
-        var data = [] ;
-        $.each(result,function (i,item) {
-            data.push(item.id) ;
+        var data = [];
+        $.each(result, function (i, item) {
+            data.push(item.id);
         });
         $.ajax({
             url: "${pageContext.request.contextPath}/dataLandLevel/submitDataLandLevel",
             type: "post",
             dataType: "json",
-            data: {id:data.join(",")},
+            data: {id: data.join(",")},
             success: function (result) {
                 if (result.ret) {
                     //保存完后其他动作
                     Alert("提交数据成功!", 1, null, function () {
-                        window.close();
+                        window.open('javascript:window.open("", "_self", "");window.close();', '_self');
                     });
                 }
                 else {
@@ -234,6 +228,7 @@
             }
         })
     }
+
 
 </script>
 </body>

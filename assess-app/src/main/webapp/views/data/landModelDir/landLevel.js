@@ -197,8 +197,17 @@ landLevel.editData = function (id) {
 //--------------------------------------------土地 base end-----------------------------------//
 
 //---------------------------土地级别start---------------------------------------//
-landLevel.loadLandLevelList = function (creator, status) {
+landLevel.loadLandLevelList = function (select) {
+    if (select == undefined || select == null ){
+        select = {} ;
+    }
     var cols = [];
+    if (select.checkbox){
+        cols.push({
+            field: 'ckeckbox',
+            checkbox: true
+        });
+    }
     cols.push({
         field: 'provinceName', title: '省', formatter: function (value, row, index) {
             return AssessCommon.getAreaFullName(row.provinceName, row.cityName, row.districtName);
@@ -223,22 +232,33 @@ landLevel.loadLandLevelList = function (creator, status) {
     cols.push({field: 'fileViewName', title: '附件'});
     cols.push({field: 'landRightTypeName', title: '权利类型'});
     cols.push({field: 'townShipName', title: '乡镇名称'});
-    cols.push({
-        field: 'id', title: '操作', formatter: function (value, row, index) {
-            var str = '<div class="btn-margin">';
-            str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="landLevel.editData(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
-            str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="landLevel.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
+    var elShow = landLevel.getElShow();
+    if (elShow){
+        cols.push({
+            field: 'id', title: '操作', formatter: function (value, row, index) {
+                var str = '<div class="btn-margin">';
+                str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="landLevel.editData(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
+                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="landLevel.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
 
-            str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="土地级别详细情况" onclick="landLevel.treeLandLevelDetailListModal(' + row.id + ')"><i class="fa  fa-tree fa-white"></i></a>';
-            str += '</div>';
-            return str;
-        }
-    });
+                str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="土地级别详细情况" onclick="landLevel.treeLandLevelDetailListModal(' + row.id + ')"><i class="fa  fa-tree fa-white"></i></a>';
+                str += '</div>';
+                return str;
+            }
+        });
+    }else {
+        cols.push({
+            field: 'id', title: '操作', formatter: function (value, row, index) {
+                var str = '<div class="btn-margin">';
+                str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="土地级别详细情况" onclick="landLevel.treeLandLevelDetailListModal(' + row.id + ')"><i class="fa  fa-tree fa-white"></i></a>';
+                str += '</div>';
+                return str;
+            }
+        });
+    }
     landLevel.config.table.bootstrapTable('destroy');
     var query = formSerializeArray(landLevel.config.frmQuery);
     //只获取有值的对象属性
     var tempObj = Object.keys(query);
-    var select = {creator: creator};
     for (var i = 0; i < tempObj.length; i++) {
         var key = tempObj[i];
         var value = query[key];
@@ -246,9 +266,6 @@ landLevel.loadLandLevelList = function (creator, status) {
         if (value) {
             select[key] = value;//动态添加属性
         }
-    }
-    if (status) {
-        select.status = status;
     }
     var method = {
         showColumns: true,
@@ -460,6 +477,8 @@ function addHoverDom(treeId, treeNode) {
     var element = $("#" + treeNode.tId + "_span"); //获取节点信息
     if (treeNode.editNameFlag || $("#addBtn_" + treeNode.tId).length > 0) return;
     var html = "";
+    var elShow = landLevel.getElShow();
+
     html += "<span class=' button add' id='addBtn_" + treeNode.tId + "' title='添加数据'>" + "</span>";//定义添加按钮
     html += "<span class=' button edit' id='editBtn_" + treeNode.tId + "' title='编辑数据'>" + "</span>";//定义编辑按钮
     html += "<span class=' button remove' id='deleteBtn_" + treeNode.tId + "' title='删除数据'>" + "</span>";//定义删除按钮
@@ -476,6 +495,12 @@ function addHoverDom(treeId, treeNode) {
     var deleteBtn = $("#deleteBtn_" + treeNode.tId);
     var factorBtn = $("#factorBtn_" + treeNode.tId);
     var coefficientBtn = $("#coefficientBtn_" + treeNode.tId);
+    if (!elShow){
+        var array = [addBtn,editBtn,deleteBtn] ;
+        $.each(array,function (i,item) {
+            item.hide() ;
+        })
+    }
     //绑定添加事件，并定义添加操作
     if (addBtn) addBtn.bind("click", function (e) {
         landLevel.addLandLevelDetail({pid: treeNode.id, tId: treeNode.tId});
@@ -637,15 +662,18 @@ landLevel.showDataHousePriceIndexDetailList = function (allocationVolumeRatioId)
     var cols = [];
     cols.push({field: 'plotRatio', title: '容积率'});
     cols.push({field: 'correctionFactor', title: '修正系数'});
-    cols.push({
-        field: 'id', title: '操作', formatter: function (value, row, index) {
-            var str = '<div class="btn-margin">';
-            str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="landLevel.editDataAllocationCorrectionCoefficientVolumeRatioDetail(' + index + ')"><i class="fa fa-edit fa-white"></i></a>';
-            str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="landLevel.deleteDataAllocationCorrectionCoefficientVolumeRatioDetail(' + index + ')"><i class="fa fa-minus fa-white"></i></a>';
-            str += '</div>';
-            return str;
-        }
-    });
+    var elShow = landLevel.getElShow();
+    if (elShow){
+        cols.push({
+            field: 'id', title: '操作', formatter: function (value, row, index) {
+                var str = '<div class="btn-margin">';
+                str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="landLevel.editDataAllocationCorrectionCoefficientVolumeRatioDetail(' + index + ')"><i class="fa fa-edit fa-white"></i></a>';
+                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="landLevel.deleteDataAllocationCorrectionCoefficientVolumeRatioDetail(' + index + ')"><i class="fa fa-minus fa-white"></i></a>';
+                str += '</div>';
+                return str;
+            }
+        });
+    }
     landLevel.config.dataAllocationCorrectionCoefficientVolumeRatioDetailTable.bootstrapTable('destroy');
     TableInit(landLevel.config.dataAllocationCorrectionCoefficientVolumeRatioDetailTable, getContextPath() + "/dataAllocationCorrectionCoefficientVolumeRatioDetail/getBootstrapTableVo", cols, {
         allocationVolumeRatioId: allocationVolumeRatioId
@@ -760,15 +788,18 @@ landLevel.showLandDetailAchievementList = function (levelDetailId) {
     cols.push({field: 'gradeName', title: '等级'});
     cols.push({field: 'reamark', title: '说明'});
     cols.push({field: 'achievement', title: '分值'});
-    cols.push({
-        field: 'id', title: '操作', formatter: function (value, row, index) {
-            var str = '<div class="btn-margin">';
-            str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="landLevel.editDataLandDetailAchievement(' + index + ')"><i class="fa fa-edit fa-white"></i></a>';
-            str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="landLevel.deleteDataLandDetailAchievement(' + index + ')"><i class="fa fa-minus fa-white"></i></a>';
-            str += '</div>';
-            return str;
-        }
-    });
+    var elShow = landLevel.getElShow();
+    if (elShow){
+        cols.push({
+            field: 'id', title: '操作', formatter: function (value, row, index) {
+                var str = '<div class="btn-margin">';
+                str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="landLevel.editDataLandDetailAchievement(' + index + ')"><i class="fa fa-edit fa-white"></i></a>';
+                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="landLevel.deleteDataLandDetailAchievement(' + index + ')"><i class="fa fa-minus fa-white"></i></a>';
+                str += '</div>';
+                return str;
+            }
+        });
+    }
     landLevel.config.achievementTable.bootstrapTable('destroy');
     TableInit(landLevel.config.achievementTable, getContextPath() + "/dataLandDetailAchievement/getBootstrapTableVo", cols, {
         levelDetailId: levelDetailId
@@ -804,6 +835,20 @@ landLevel.saveDataLandDetailAchievement = function () {
     })
 };
 //------ 土地因素 method end--------//
+
+
+landLevel.getElShow = function () {
+    var elShow = true;
+    try {
+        var formData = formParams("frmQuery");
+        if (formData.readOnly == 'false'){
+            elShow = false ;
+        }
+    } catch (e) {
+        console.log(e) ;
+    }
+    return elShow ;
+};
 
 
 

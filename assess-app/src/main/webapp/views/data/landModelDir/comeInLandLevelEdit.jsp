@@ -14,20 +14,125 @@
             <div class="x_panel">
                 <div class="x_title">
                     <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                        </li>
+                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
                     </ul>
-                    <h3>
-                        土地级别
-                    </h3>
+                    <h2>
+                        <small>土地级别数据</small>
+                    </h2>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-                    <form class="form-horizontal" id="landLeveFrm">
-                        <%@include file="landLevelBase.jsp" %>
-                    </form>
+                    <div class="row">
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                            <form id="frmQuery" class="form-horizontal">
+                                <input type="hidden" name="readOnly" value="${readOnly}">
+                                <div class="form-group">
+
+                                    <div class="x-valid">
+                                        <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                            <div class="btn-group btn-group-justified" role="group">
+                                                <div class="btn-group" role="group">
+                                                    <button type="button" class="btn btn-primary"
+                                                            onclick="landLevel.initDataForm({})"
+                                                            data-toggle="modal" href="#divBoxFather"> 新增
+                                                    </button>
+                                                </div>
+                                                <div class="btn-group" role="group">
+                                                    <button type="button" class="btn btn-default dropdown-toggle"
+                                                            data-toggle="dropdown" aria-haspopup="true"
+                                                            aria-expanded="false">excel工具
+                                                        <span class="caret"></span>
+                                                    </button>
+                                                    <ul class="dropdown-menu">
+                                                        <li>
+                                                            <button type="button" class="btn-default btn"
+                                                                    onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftpLandLevelAreaBaseTemplate);">
+                                                                土地区域excel模板下载
+                                                                <span class="fa-stack fa-lg">
+                                                              <i class="fa fa-square-o fa-stack-2x"></i>
+                                                              <i class="fa fa fa-cloud-download fa-stack-1x"></i>
+                                                                </span>
+                                                            </button>
+                                                        </li>
+                                                        <li>
+                                                            <button class="btn-default btn" type="button"
+                                                                    onclick="$('#ajaxFileUploadDataLand').val('').trigger('click')">
+                                                                土地区域excel模板导入
+                                                                <span class="fa-stack fa-lg">
+                                                              <i class="fa fa-square-o fa-stack-2x"></i>
+                                                              <i class="fa fa fa fa-cloud-upload fa-stack-1x"></i>
+                                                                </span>
+                                                            </button>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="x-valid">
+                                        <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                            <div class="input-group">
+
+                                                <select name="province"
+                                                        class="form-control search-select select2">
+                                                </select>
+
+                                                <select name="city" class="form-control search-select select2">
+                                                </select>
+
+                                                <select name="district"
+                                                        class="form-control search-select select2">
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="x-valid">
+                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">权利类型</label>
+                                        <div class=" col-xs-1  col-sm-1  col-md-1  col-lg-1 ">
+                                            <select name="landRightType" class="form-control search-select select2">
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="x-valid">
+                                        <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                            <div class="input-group">
+                                                <span class="input-group-btn">
+                                                <input placeholder="乡镇名称" class="form-control" name="townShipName"
+                                                       type="text">
+                                                </span>
+                                                <span class="input-group-btn">
+                                                    <button type="button" class="btn btn-success"
+                                                            onclick="landLevel.loadLandLevelList({processInsId:'${processInsId}'})">
+                                                        查询 <i class="fa fa-search" aria-hidden="true"></i>
+                                                    </button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                            <table class="table table-bordered" id="tb_FatherList">
+                                <!-- cerare document add ajax data-->
+                            </table>
+                        </div>
+
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                            <input type="file" id="ajaxFileUploadDataLand" name="file" style="display: none;"
+                                   onchange="landLevel.importDataLand();">
+
+                            <input type="file" id="ajaxFileUploadLandLevelDetail" name="file" style="display: none;"
+                                   onchange="landLevel.importLandLevelDetail(false);">
+                        </div>
+                    </div>
                 </div>
             </div>
+
 
             <div class="x_panel">
                 <div class="x_content">
@@ -55,124 +160,58 @@
 </div>
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
+<%@include file="/views/data/landModelDir/landModel.jsp" %>
+
+<input type="file" id="ajaxFileUpload" name="file" style="display: none;">
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/ajaxfileupload.js?v=${assessVersion}"></script>
+
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/views/data/landModelDir/landLevel.js?v=${assessVersion}"></script>
 <script type="text/javascript">
 
 
-
-    var landLevel = {};
-
-    landLevel.showFile = function (target, tableName, id, deleteFlag, editFlag, signatureFlag, fieldsName) {
-        FileUtils.getFileShows({
-            target: target,
-            formData: {
-                tableName: tableName,
-                tableId: id,
-                fieldsName: fieldsName
-                // projectId: id
-            },
-            signatureFlag: signatureFlag,
-            deleteFlag: deleteFlag,
-            editFlag: editFlag
-        })
-    };
-
-
-    landLevel.fileUpload = function (target, tableName, id, deleteFlag, editFlag, fieldsName) {
-        if (!id){
-            id = 0;
-        }
-        FileUtils.uploadFiles({
-            target: target,
-            disabledTarget: "btn_submit",
-            formData: {
-                tableName: tableName,
-                tableId: id,
-                fieldsName: fieldsName
-                // projectId: id
-            },
-            deleteFlag: deleteFlag,
-            editFlag: editFlag
-        });
-        // FileUtils.uploadFiles({
-        //     target: target,
-        //     disabledTarget: "btn_submit",
-        //     onUpload: function (file) {
-        //         var formData = {
-        //             fieldsName: target,
-        //             tableName: tableName,
-        //             tableId: id
-        //         };
-        //         return formData;
-        //     }, onUploadComplete: function (result, file) {
-        //
-        //     },
-        //     deleteFlag: true
-        // });
-    };
-
-    var ue = UE.getEditor('landDefinition', {
-        toolbars: [
-            ['source', 'autotypeset', 'bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc']
-        ],
-        zIndex: 11009,
-        initialFrameHeight: 120,
-        elementPathEnabled: false,//是否启用元素路径，默认是true显示
-        wordCount: false, //是否开启字数统计
-        autoHeightEnabled: false,
-        autoFloatEnabled: true
-    });
-
-
-    landLevel.initDataForm = function (data) {
-        var frm = $("#landLeveFrm") ;
-        frm.clearAll();
-        frm.initForm(data);
-        if (data.landDefinition) {
-            setTimeout(function () {
-                ue.setContent(data.landDefinition, false);
-            }, 500);
-        }
-        var files = ['uploadFile'];
-        $.each(files, function (i, item) {
-            landLevel.showFile(item, AssessDBKey.DataLandLevel, data.id, true, true, item);
-            landLevel.fileUpload(item, AssessDBKey.DataLandLevel, data.id, true, item);
-        });
-        AssessCommon.initAreaInfo({
-            provinceTarget: frm.find("select[name='province']"),
-            cityTarget: frm.find("select[name='city']"),
-            districtTarget: frm.find("select[name='district']"),
-            provinceValue: data.province,
-            cityValue: data.city,
-            districtValue: data.district
-        });
-        AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareLandCertificateType, data.landRightType, function (html, data) {
-            frm.find("select[name='landRightType']").empty().html(html).trigger('change');
-        });
-    };
-
-
     $(document).ready(function () {
-        var jsonData = ${el:toJsonString(dataLandLevel)};
-        landLevel.initDataForm(jsonData) ;
+
+        landLevel.loadLandLevelList({processInsId:'${processInsId}'});
+
+        (function (frm, data) {
+            AssessCommon.initAreaInfo({
+                provinceTarget: frm.find("select[name='province']"),
+                cityTarget: frm.find("select[name='city']"),
+                districtTarget: frm.find("select[name='district']"),
+                provinceValue: data.province,
+                cityValue: data.city,
+                districtValue: data.district
+            });
+            AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareLandCertificateType, data.landRightType, function (html, data) {
+                frm.find("select[name='landRightType']").empty().html(html).trigger('change');
+            });
+        }(landLevel.config.frmQuery, {}));
     });
+
+
 
 </script>
 <script type="application/javascript">
     function saveform() {
-        var frm = $("#landLeveFrm") ;
-        if (!frm.valid()) {
+        var result = landLevel.config.table.bootstrapTable('getData');
+        if (result.length == 0) {
+            toastr.success('至少添加一条数据');
             return false;
         }
-        var data = {};
-        data.formData = JSON.stringify(formSerializeArray(frm));
+        var data = [];
+        $.each(result, function (i, item) {
+            data.push(item.id);
+        });
         var approvalData = formParams('frm_approval');
-        data = $.extend({}, approvalData, data);
+        approvalData = $.extend({}, approvalData, {ids:data.join(",")});
         Loading.progressShow();
         $.ajax({
             url: "${pageContext.request.contextPath}/dataLandLevel/comeInLandLevelEditSubmit",
             type: "post",
             dataType: "json",
-            data: data,
+            data: approvalData,
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {

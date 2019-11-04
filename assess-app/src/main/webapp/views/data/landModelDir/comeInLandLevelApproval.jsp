@@ -9,139 +9,89 @@
     <div class="main_container">
         <div class="right_col" role="main" style="margin-left: 0">
             <%@include file="/views/share/form_head.jsp" %>
-            <div class="x_panel">
 
+            <div class="x_panel">
                 <div class="x_title">
                     <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                        </li>
+                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
                     </ul>
-                    <h3>
-                        土地级别
-                    </h3>
+                    <h2>
+                        <small>土地级别数据</small>
+                    </h2>
                     <div class="clearfix"></div>
                 </div>
-
                 <div class="x_content">
-                    <form class="form-horizontal" id="landLeveFrm">
+                    <div class="row">
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                            <form id="frmQuery" class="form-horizontal">
+                                <input type="hidden" name="readOnly" value="${readOnly}">
+                                <div class="form-group">
 
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">省
-                                    <span class="symbol required"></span></label>
-                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <label class="form-control">
-                                        ${dataLandLevel.provinceName}
-                                    </label>
+                                    <div class="x-valid">
+                                        <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                            <select name="province"
+                                                    class="form-control search-select select2">
+                                            </select>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="x-valid">
+                                        <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                            <select name="city" class="form-control search-select select2">
+                                            </select>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="x-valid">
+                                        <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                            <select name="district"
+                                                    class="form-control search-select select2">
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="x-valid">
+                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">权利类型</label>
+                                        <div class=" col-xs-1  col-sm-1  col-md-1  col-lg-1 ">
+                                            <select name="landRightType" class="form-control search-select select2">
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="x-valid">
+                                        <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                            <div class="input-group">
+                                                <span class="input-group-btn">
+                                                <input placeholder="乡镇名称" class="form-control" name="townShipName"
+                                                       type="text">
+                                                </span>
+                                                <span class="input-group-btn">
+                                                    <button type="button" class="btn btn-success"
+                                                            onclick="landLevel.loadLandLevelList('${sysUserDto.userAccount}','draft')">
+                                                        查询 <i class="fa fa-search" aria-hidden="true"></i>
+                                                    </button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">市<span
-                                        class="symbol required"></span></label>
-                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <label class="form-control">
-                                        ${dataLandLevel.cityName}
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">县</label>
-                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <label class="form-control">
-                                        ${dataLandLevel.districtName}
-                                    </label>
-                                </div>
-                            </div>
+                            </form>
                         </div>
 
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">乡镇名称</label>
-                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <label class="form-control">
-                                        ${dataLandLevel.townShipName}
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">权利类型</label>
-                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <label class="form-control">
-                                        ${dataLandLevel.landRightTypeName}
-                                    </label>
-                                </div>
-                            </div>
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                            <table class="table table-bordered" id="tb_FatherList">
+                                <!-- cerare document add ajax data-->
+                            </table>
                         </div>
 
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">估价期日</label>
-                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <label class="form-control">
-                                        <fmt:formatDate value="${dataLandLevel.valuationDate}" pattern="yyyy年MM月dd日"/>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">发布日期</label>
-                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <label class="form-control">
-                                        <fmt:formatDate value="${dataLandLevel.releaseDate}" pattern="yyyy年MM月dd日"/>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">执行时间</label>
-                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <label class="form-control">
-                                        <fmt:formatDate value="${dataLandLevel.executionTime}" pattern="yyyy年MM月dd日"/>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
 
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">标题</label>
-                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <label class="form-control">
-                                        ${dataLandLevel.title}
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">文号</label>
-                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <label class="form-control">
-                                        ${dataLandLevel.wordSymbol}
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    基准地价定义
-                                </label>
-                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <label class="form-control">
-                                        ${dataLandLevel.landDefinition}
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">附件</label>
-                                <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
-                                    <div id="_uploadFile"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </form>
+                    </div>
                 </div>
-
             </div>
+
+
             <%@include file="/views/share/form_approval.jsp" %>
             <%@include file="/views/share/form_log.jsp" %>
         </div>
@@ -149,71 +99,31 @@
 </div>
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
+<%@include file="/views/data/landModelDir/landModelApproval.jsp" %>
+
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/views/data/landModelDir/landLevel.js?v=${assessVersion}"></script>
 <script type="text/javascript">
-    var landLevel = {};
 
-    landLevel.showFile = function (target, tableName, id, deleteFlag, editFlag, signatureFlag, fieldsName) {
-        FileUtils.getFileShows({
-            target: target,
-            formData: {
-                tableName: tableName,
-                tableId: id,
-                fieldsName: fieldsName
-                // projectId: id
-            },
-            signatureFlag: signatureFlag,
-            deleteFlag: deleteFlag,
-            editFlag: editFlag
-        })
-    };
-
-
-    landLevel.fileUpload = function (target, tableName, id, deleteFlag, editFlag, fieldsName) {
-        FileUtils.uploadFiles({
-            target: target,
-            disabledTarget: "btn_submit",
-            formData: {
-                tableName: tableName,
-                tableId: id,
-                fieldsName: fieldsName
-                // projectId: id
-            },
-            deleteFlag: deleteFlag,
-            editFlag: editFlag
-        });
-        // FileUtils.uploadFiles({
-        //     target: target,
-        //     disabledTarget: "btn_submit",
-        //     onUpload: function (file) {
-        //         var formData = {
-        //             fieldsName: target,
-        //             tableName: tableName,
-        //             tableId: id
-        //         };
-        //         return formData;
-        //     }, onUploadComplete: function (result, file) {
-        //
-        //     },
-        //     deleteFlag: true
-        // });
-    };
-
-
-    landLevel.initDataForm = function (data) {
-        var frm = $("#landLeveFrm");
-        frm.clearAll();
-        frm.initForm(data);
-
-        var files = ['uploadFile'];
-        $.each(files, function (i, item) {
-            landLevel.showFile(item, AssessDBKey.DataLandLevel, data.id, true, true, item);
-            landLevel.fileUpload(item, AssessDBKey.DataLandLevel, data.id, true, item);
-        });
-
-    };
 
     $(document).ready(function () {
-        landLevel.initDataForm({id: "${dataLandLevel.id}"});
+
+        landLevel.loadLandLevelList({processInsId:'${processInsId}'});
+
+        (function (frm, data) {
+            AssessCommon.initAreaInfo({
+                provinceTarget: frm.find("select[name='province']"),
+                cityTarget: frm.find("select[name='city']"),
+                districtTarget: frm.find("select[name='district']"),
+                provinceValue: data.province,
+                cityValue: data.city,
+                districtValue: data.district
+            });
+            AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareLandCertificateType, data.landRightType, function (html, data) {
+                frm.find("select[name='landRightType']").empty().html(html).trigger('change');
+            });
+        }(landLevel.config.frmQuery, {}));
+
     });
 
 </script>

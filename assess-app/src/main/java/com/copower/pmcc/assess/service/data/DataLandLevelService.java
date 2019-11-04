@@ -31,6 +31,7 @@ import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -239,13 +240,13 @@ public class DataLandLevelService {
     }
 
 
-    public DataLandLevelVo getByProcessInsId(String processInsId) {
+    public List<DataLandLevelVo> getByProcessInsId(String processInsId) {
+        List<DataLandLevelVo> dataLandLevelVoList = Lists.newArrayList();
         List<DataLandLevel> dataLandLevelList = dataLandLevelDao.getByProcessInsIdList(processInsId);
         if (org.apache.commons.collections.CollectionUtils.isNotEmpty(dataLandLevelList)) {
-            return getDataLandLevelVo(dataLandLevelList.stream().findFirst().get(), null);
-        } else {
-            return new DataLandLevelVo();
+            dataLandLevelList.forEach(dataLandLevel -> dataLandLevelVoList.add(getDataLandLevelVo(dataLandLevel, null)));
         }
+        return dataLandLevelVoList;
     }
 
     /**
@@ -258,12 +259,17 @@ public class DataLandLevelService {
      */
     @Transactional(rollbackFor = {Exception.class})
     public void comeInLandLevelApprovalSubmit(ApprovalModelDto approvalModelDto, String blockName, Boolean writeBackBlockFlag) throws Exception {
-        DataLandLevelVo dataLandLevelVo = getByProcessInsId(approvalModelDto.getProcessInsId());
-        if (dataLandLevelVo.getId() != null) {
-            dataLandLevelVo.setStatus(ProjectStatusEnum.FINISH.getKey());
-            saveAndUpdateDataLandLevel(dataLandLevelVo);
-        }
         processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
+        List<DataLandLevelVo> dataLandLevelVoList = getByProcessInsId(approvalModelDto.getProcessInsId());
+        if (org.apache.commons.collections.CollectionUtils.isNotEmpty(dataLandLevelVoList)) {
+            for (DataLandLevel dataLandLevel : dataLandLevelVoList) {
+                if (StringUtils.isNotEmpty(approvalModelDto.getProcessInsId())) {
+                    dataLandLevel.setProcessInsId(approvalModelDto.getProcessInsId());
+                }
+                dataLandLevel.setStatus(ProjectStatusEnum.FINISH.getKey());
+                saveAndUpdateDataLandLevel(dataLandLevel);
+            }
+        }
     }
 
 
@@ -271,14 +277,22 @@ public class DataLandLevelService {
      * 返回修改
      *
      * @param approvalModelDto
-     * @param formData
+     * @param ids
      * @throws Exception
      */
     @Transactional(rollbackFor = {Exception.class})
-    public void comeInLandLevelEditSubmit(ApprovalModelDto approvalModelDto, String formData) throws Exception {
-        DataLandLevel dataLandLevel = JSONObject.parseObject(formData, DataLandLevel.class);
-        saveAndUpdateDataLandLevel(dataLandLevel);
+    public void comeInLandLevelEditSubmit(ApprovalModelDto approvalModelDto, String ids) throws Exception {
         processControllerComponent.processSubmitLoopTaskNodeArg(publicService.getEditApprovalModel(approvalModelDto), false);
+        List<DataLandLevelVo> dataLandLevelVoList = getByProcessInsId(approvalModelDto.getProcessInsId());
+        if (org.apache.commons.collections.CollectionUtils.isNotEmpty(dataLandLevelVoList)) {
+            for (DataLandLevel dataLandLevel : dataLandLevelVoList) {
+                if (StringUtils.isNotEmpty(approvalModelDto.getProcessInsId())) {
+                    dataLandLevel.setProcessInsId(approvalModelDto.getProcessInsId());
+                }
+                dataLandLevel.setStatus(ProjectStatusEnum.FINISH.getKey());
+                saveAndUpdateDataLandLevel(dataLandLevel);
+            }
+        }
 
     }
 
@@ -289,7 +303,7 @@ public class DataLandLevelService {
      */
     @Transactional(rollbackFor = {Exception.class})
     public void submit(String ids) throws Exception {
-        List<DataLandLevel> dataLandLevelList = dataLandLevelDao.getByIds(FormatUtils.transformString2Integer(ids));
+        List<DataLandLevel> dataLandLevelList = getByIds(ids);
         ProcessUserDto processUserDto = null;
         ProcessInfo processInfo = new ProcessInfo();
         //流程描述
@@ -304,7 +318,7 @@ public class DataLandLevelService {
         processInfo.setTableId(0);
         processUserDto = processControllerComponent.processStart(processControllerComponent.getThisUser(), processInfo, processControllerComponent.getThisUser(), false);
         if (org.apache.commons.collections.CollectionUtils.isNotEmpty(dataLandLevelList)) {
-            for (DataLandLevel dataLandLevel:dataLandLevelList){
+            for (DataLandLevel dataLandLevel : dataLandLevelList) {
                 dataLandLevel.setProcessInsId(processUserDto.getProcessInsId());
                 dataLandLevel.setStatus(ProjectStatusEnum.DRAFT.getKey());
                 saveAndUpdateDataLandLevel(dataLandLevel);
@@ -320,6 +334,10 @@ public class DataLandLevelService {
         } else {
             dataLandLevelDao.updateDataLandLevel(dataLandLevel);
         }
+    }
+
+    public List<DataLandLevel> getByIds(String ids){
+        return dataLandLevelDao.getByIds(FormatUtils.transformString2Integer(ids));
     }
 
     public DataLandLevel getDataLandLevelById(Integer id) {
