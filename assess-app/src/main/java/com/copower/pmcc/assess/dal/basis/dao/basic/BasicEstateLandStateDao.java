@@ -32,6 +32,7 @@ public class BasicEstateLandStateDao {
     }
 
     public boolean updateBasicEstateLandState(BasicEstateLandState basicEstateLandState, boolean updateNull) {
+        basicEstateLandState.setBisDelete(false);
         return updateNull ? basicEstateLandStateMapper.updateByPrimaryKey(basicEstateLandState) == 1 : basicEstateLandStateMapper.updateByPrimaryKeySelective(basicEstateLandState) == 1;
     }
 

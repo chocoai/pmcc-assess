@@ -30,6 +30,7 @@ public class BasicEstateParkingDao {
     }
 
     public boolean updateBasicEstateParking(BasicEstateParking basicEstateParking, boolean updateNull) {
+        basicEstateParking.setBisDelete(false);
         return updateNull ? basicEstateParkingMapper.updateByPrimaryKey(basicEstateParking) == 1 : basicEstateParkingMapper.updateByPrimaryKeySelective(basicEstateParking) == 1;
     }
 
@@ -42,7 +43,7 @@ public class BasicEstateParkingDao {
     public List<BasicEstateParking> basicEstateParkingList(BasicEstateParking basicEstateParking) {
         BasicEstateParkingExample example = new BasicEstateParkingExample();
         BasicEstateParkingExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
-        MybatisUtils.convertObj2Example(basicEstateParking, criteria);
+        MybatisUtils.convertObj2Criteria(basicEstateParking, criteria);
         return basicEstateParkingMapper.selectByExample(example);
     }
 }

@@ -31,6 +31,7 @@ public class BasicHouseWaterDao {
     }
 
     public boolean updateBasicHouseWater(BasicHouseWater basicHouseWater, boolean updateNull) {
+        basicHouseWater.setBisDelete(false);
         return updateNull ? basicHouseWaterMapper.updateByPrimaryKey(basicHouseWater) == 1 : basicHouseWaterMapper.updateByPrimaryKeySelective(basicHouseWater) == 1;
     }
 

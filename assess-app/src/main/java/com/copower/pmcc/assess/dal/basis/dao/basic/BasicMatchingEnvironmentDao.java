@@ -31,6 +31,7 @@ public class BasicMatchingEnvironmentDao {
     }
 
     public boolean updateBasicMatchingEnvironment(BasicMatchingEnvironment basicMatchingEnvironment, boolean updateNull)  {
+        basicMatchingEnvironment.setBisDelete(false);
         return updateNull ? basicMatchingEnvironmentMapper.updateByPrimaryKey(basicMatchingEnvironment) == 1 : basicMatchingEnvironmentMapper.updateByPrimaryKeySelective(basicMatchingEnvironment) == 1;
     }
 

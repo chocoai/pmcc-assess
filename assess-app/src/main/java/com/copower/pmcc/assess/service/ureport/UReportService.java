@@ -179,7 +179,7 @@ public class UReportService {
         if (StringUtil.isNotEmpty(queryServiceExplain)) {
             sql.append(String.format(" AND A.service_come_from_explain LIKE '%s%s%s'", "%", queryServiceExplain, "%"));
         }
-
+        sql.append(" order by G.number,H.number,E.number,F.number");
         List<UProjectFinanceVo> list = Lists.newArrayList();
         Page<PageInfo> page = PageHelper.startPage(pageIndex, fixRows);
         List<Map> mapList = ddlMySqlAssist.customTableSelect(sql.toString());

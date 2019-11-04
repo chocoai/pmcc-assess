@@ -23,6 +23,7 @@ public class BasicBuildingPropertyServiceItemDao {
     }
 
     public boolean updateBasicBuildingPropertyServiceItem(BasicBuildingPropertyServiceItem oo, boolean updateNull) {
+        oo.setBisDelete(false);
         return updateNull ? mapper.updateByPrimaryKey(oo) == 1 : mapper.updateByPrimaryKeySelective(oo) == 1;
     }
 

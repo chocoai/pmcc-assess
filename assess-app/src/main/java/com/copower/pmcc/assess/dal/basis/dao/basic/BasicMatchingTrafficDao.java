@@ -32,6 +32,7 @@ public class BasicMatchingTrafficDao {
     }
 
     public boolean updateBasicMatchingTraffic(BasicMatchingTraffic basicMatchingTraffic, boolean updateNull) {
+        basicMatchingTraffic.setBisDelete(false);
         return updateNull ? basicMatchingTrafficMapper.updateByPrimaryKey(basicMatchingTraffic) == 1 : basicMatchingTrafficMapper.updateByPrimaryKeySelective(basicMatchingTraffic) == 1;
     }
 
