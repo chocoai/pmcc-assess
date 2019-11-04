@@ -1,20 +1,21 @@
 package com.copower.pmcc.assess.service.data;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDao;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataBlockDao;
-import com.copower.pmcc.assess.dal.basis.dao.data.ToolResidueRatioDao;
-import com.copower.pmcc.assess.dal.basis.entity.DataBlock;
-import com.copower.pmcc.assess.dal.basis.entity.DataDamagedDegree;
-import com.copower.pmcc.assess.dal.basis.entity.ToolResidueRatio;
-import com.copower.pmcc.assess.dto.output.basic.BasicHouseDamagedDegreeVo;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.data.DataBlockVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
-import com.copower.pmcc.assess.service.basic.BasicHouseDamagedDegreeService;
+import com.copower.pmcc.assess.service.basic.BasicApplyBatchDetailService;
+import com.copower.pmcc.assess.service.basic.BasicApplyBatchService;
+import com.copower.pmcc.assess.service.project.ProjectInfoService;
+import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
+import com.copower.pmcc.assess.service.project.ProjectPlanService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
+import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -28,10 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
-import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @Auther: zch
@@ -47,11 +45,17 @@ public class DataBlockService {
     @Autowired
     private ErpAreaService erpAreaService;
     @Autowired
-    private BasicHouseDamagedDegreeService basicHouseDamagedDegreeService;
+    private ProjectInfoService projectInfoService;
     @Autowired
-    private DataDamagedDegreeService dataDamagedDegreeService;
+    private BasicApplyBatchDao basicApplyBatchDao;
     @Autowired
-    private ToolResidueRatioDao toolResidueRatioDao;
+    private BasicApplyBatchService basicApplyBatchService;
+    @Autowired
+    private BasicApplyBatchDetailService basicApplyBatchDetailService;
+    @Autowired
+    private ProjectPlanService projectPlanService;
+    @Autowired
+    private ProjectPlanDetailsService projectPlanDetailsService;
 
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -169,4 +173,67 @@ public class DataBlockService {
         return blockList.size() > 0;
     }
 
+    public void updateOldData() throws BusinessException {
+        //处理老数据
+        //1.为每个项目，生成报告的阶段添加一个事项 （生成报告） 主要为了查看以前生成的报告
+        //2.将applyBatchDetail中添加 楼盘的主信息，并将楼栋的pid设置为新添加的楼盘主信息
+        List<ProjectInfo> projectInfoList = projectInfoService.getProjectInfoList(new ProjectInfo());
+        if (CollectionUtils.isNotEmpty(projectInfoList)) {
+            for (ProjectInfo projectInfo : projectInfoList) {
+                List<ProjectPlan> projectPlanList = projectPlanService.getProjectPlanList(projectInfo.getPublicProjectId());
+                if (CollectionUtils.isNotEmpty(projectPlanList)) {
+                    ProjectPlan projectPlan = projectPlanList.get(projectPlanList.size() - 1);
+                    ProjectPlanDetails projectPlanDetails = new ProjectPlanDetails();
+                    projectPlanDetails.setPid(0);
+                    projectPlanDetails.setProjectPhaseName("出具报告");
+                    projectPlanDetails.setProjectId(projectInfo.getId());
+                    projectPlanDetails.setPlanId(projectPlan.getId());
+                    projectPlanDetails.setProjectWorkStageId(15);
+                    projectPlanDetails.setProjectPhaseId(153);
+                    projectPlanDetails.setExecuteUserAccount(projectPlan.getCreator());
+                    projectPlanDetails.setBisEnable(true);
+                    projectPlanDetails.setSorting(0);
+                    projectPlanDetails.setFirstPid(0);
+                    projectPlanDetails.setBisStart(true);
+                    projectPlanDetails.setProcessInsId("0");
+                    projectPlanDetails.setStatus("finish");
+                    projectPlanDetails.setBisNew(true);
+                    projectPlanDetails.setBisLastLayer(true);
+                    projectPlanDetails.setBisRestart(false);
+                    projectPlanDetails.setCreator(projectPlan.getCreator());
+                    projectPlanDetailsService.saveProjectPlanDetails(projectPlanDetails);
+                }
+            }
+        }
+
+        List<BasicApplyBatch> infoList = basicApplyBatchDao.getInfoList(new BasicApplyBatch());
+        if (CollectionUtils.isNotEmpty(infoList)) {
+            for (BasicApplyBatch applyBatch : infoList) {
+                BasicApplyBatchDetail basicApplyBatchDetail = new BasicApplyBatchDetail();
+                basicApplyBatchDetail.setPid(0);
+                basicApplyBatchDetail.setApplyBatchId(applyBatch.getId());
+                basicApplyBatchDetail.setTableName(FormatUtils.entityNameConvertToTableName(BasicEstate.class));
+                basicApplyBatchDetail.setTableId(applyBatch.getEstateId());
+                basicApplyBatchDetail.setName(applyBatch.getEstateName());
+                basicApplyBatchDetail.setDisplayName(applyBatch.getEstateName());
+                basicApplyBatchDetail.setBisStandard(false);
+                basicApplyBatchDetail.setQuoteId(applyBatch.getQuoteId());
+                basicApplyBatchDetail.setBaseType(applyBatch.getBaseType());
+                basicApplyBatchDetail.setBisDelete(false);
+                basicApplyBatchDetail.setCreator(applyBatch.getCreator());
+                basicApplyBatchDetailService.saveBasicApplyBatchDetail(basicApplyBatchDetail);
+
+                BasicApplyBatchDetail where = new BasicApplyBatchDetail();
+                where.setApplyBatchId(applyBatch.getId());
+                where.setPid(0);
+                List<BasicApplyBatchDetail> batchDetailList = basicApplyBatchDetailService.getBasicApplyBatchDetailList(where);
+                if(CollectionUtils.isNotEmpty(batchDetailList)){
+                    for (BasicApplyBatchDetail applyBatchDetail : batchDetailList) {
+                        applyBatchDetail.setPid(basicApplyBatchDetail.getId());
+                        basicApplyBatchDetailService.saveBasicApplyBatchDetail(applyBatchDetail);
+                    }
+                }
+            }
+        }
+    }
 }
