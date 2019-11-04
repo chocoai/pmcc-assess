@@ -13,10 +13,18 @@
                 <div class="title_left">
                     <h2>
                         信息填写
-                        <small>
-                            <input type="button" class="btn btn-xs btn-primary" value="引用案例"
-                                   onclick="showCaseQuoteModal();">
-                        </small>
+                        <c:if test="${showTab eq false}">
+                            <small>
+                                <input type="button" class="btn btn-xs btn-primary" value="引用项目"
+                                       onclick="showProjectQuoteModal();">
+                            </small>
+                        </c:if>
+                        <c:if test="${showTab eq true}">
+                            <small>
+                                <input type="button" class="btn btn-xs btn-primary" value="引用案例"
+                                       onclick="showCaseQuoteModal();">
+                            </small>
+                        </c:if>
                     </h2>
                 </div>
             </div>
@@ -52,8 +60,10 @@
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
 <%@include file="/views/project/stageSurvey/common/applyInfoQuote.jsp" %>
-<script type="text/javascript" src="${pageContext.request.contextPath}/assets/jquery-ui/jquery-ui.min.js?v=${assessVersion}"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.common.js?v=${assessVersion}"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/assets/jquery-ui/jquery-ui.min.js?v=${assessVersion}"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/examine/examine.common.js?v=${assessVersion}"></script>
 </html>
 <script type="text/javascript">
     //保存数据信息
@@ -100,5 +110,27 @@
             caseFun.caseHouse.showModel(${quoteId});
         }
     }
+
+    //引用项目时打开对应的modal
+    function showProjectQuoteModal() {
+        //打开楼盘modal
+        if ("estate" == "${tbType}") {
+            projectData.prototype.showProjectDataModel();
+        }
+
+        //打开楼栋modal
+        if ("building" == "${tbType}") {
+            projectBuild.prototype.showModel(${quoteId});
+        }
+        //打开单元modal
+        if ("unit" == "${tbType}") {
+            projectUnit.prototype.showModel(${quoteId});
+        }
+        //打开房屋modal
+        if ("house" == "${tbType}") {
+            projectHouse.prototype.showModel(${quoteId});
+        }
+
+    };
 </script>
 
