@@ -673,9 +673,13 @@ public class GenerateMdDevelopmentService {
                 break;
             }
             case Development_total_area: {
-                MdEconomicIndicatorsApplyDto mdEconomicIndicatorsApplyDto = getMdEconomicIndicatorsApplyDto();
-                if (mdEconomicIndicatorsApplyDto != null && mdEconomicIndicatorsApplyDto.getEconomicIndicators() != null) {
-                    value = ArithmeticUtils.getBigDecimalString(mdEconomicIndicatorsApplyDto.getEconomicIndicators().getAssessUseLandArea());
+//                MdEconomicIndicatorsApplyDto mdEconomicIndicatorsApplyDto = getMdEconomicIndicatorsApplyDto();
+//                if (mdEconomicIndicatorsApplyDto != null && mdEconomicIndicatorsApplyDto.getEconomicIndicators() != null) {
+//                    value = ArithmeticUtils.getBigDecimalString(mdEconomicIndicatorsApplyDto.getEconomicIndicators().getAssessUseLandArea());
+//                }
+                value = mdDevelopmentService.getFieldObjectValue(BaseReportFieldEnum.Development_total_saleableArea, target);
+                if (StringUtils.isNotBlank(value)){
+                    value = ArithmeticUtils.round(value,2) ;
                 }
                 break;
             }

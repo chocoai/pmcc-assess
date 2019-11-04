@@ -73,28 +73,30 @@ public class MdDevelopmentService {
         }
         boolean firstInit = (target.getId() == null || target.getId() == 0);
         SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId());
-        DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
         List<Integer> integerList = Lists.newArrayList();
-        DeclareBuildEngineeringAndEquipmentCenter query = new DeclareBuildEngineeringAndEquipmentCenter();
-        if (Objects.equal(FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class), declareRecord.getDataTableName())) {
-            query.setHouseId(declareRecord.getDataTableId());
-            query.setType(DeclareRealtyHouseCert.class.getSimpleName());
-            List<DeclareBuildEngineeringAndEquipmentCenter> centerList = declareBuildEngineeringAndEquipmentCenterService.declareBuildEngineeringAndEquipmentCenterList(query);
-            if (CollectionUtils.isNotEmpty(centerList)) {
-                List<Integer> integerList2 = centerList.stream().filter(oo -> oo.getIndicatorId() != null).map(oo -> oo.getIndicatorId()).collect(Collectors.toList());
-                if (CollectionUtils.isNotEmpty(integerList2)) {
-                    integerList.addAll(integerList2);
+        if (schemeJudgeObject != null){
+            DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
+            DeclareBuildEngineeringAndEquipmentCenter query = new DeclareBuildEngineeringAndEquipmentCenter();
+            if (Objects.equal(FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class), declareRecord.getDataTableName())) {
+                query.setHouseId(declareRecord.getDataTableId());
+                query.setType(DeclareRealtyHouseCert.class.getSimpleName());
+                List<DeclareBuildEngineeringAndEquipmentCenter> centerList = declareBuildEngineeringAndEquipmentCenterService.declareBuildEngineeringAndEquipmentCenterList(query);
+                if (CollectionUtils.isNotEmpty(centerList)) {
+                    List<Integer> integerList2 = centerList.stream().filter(oo -> oo.getIndicatorId() != null).map(oo -> oo.getIndicatorId()).collect(Collectors.toList());
+                    if (CollectionUtils.isNotEmpty(integerList2)) {
+                        integerList.addAll(integerList2);
+                    }
                 }
             }
-        }
-        if (Objects.equal(FormatUtils.entityNameConvertToTableName(DeclareRealtyRealEstateCert.class), declareRecord.getDataTableName())) {
-            query.setRealEstateId(declareRecord.getDataTableId());
-            query.setType(DeclareRealtyRealEstateCert.class.getSimpleName());
-            List<DeclareBuildEngineeringAndEquipmentCenter> centerList = declareBuildEngineeringAndEquipmentCenterService.declareBuildEngineeringAndEquipmentCenterList(query);
-            if (CollectionUtils.isNotEmpty(centerList)) {
-                List<Integer> integerList2 = centerList.stream().filter(oo -> oo.getIndicatorId() != null).map(oo -> oo.getIndicatorId()).collect(Collectors.toList());
-                if (CollectionUtils.isNotEmpty(integerList2)) {
-                    integerList.addAll(integerList2);
+            if (Objects.equal(FormatUtils.entityNameConvertToTableName(DeclareRealtyRealEstateCert.class), declareRecord.getDataTableName())) {
+                query.setRealEstateId(declareRecord.getDataTableId());
+                query.setType(DeclareRealtyRealEstateCert.class.getSimpleName());
+                List<DeclareBuildEngineeringAndEquipmentCenter> centerList = declareBuildEngineeringAndEquipmentCenterService.declareBuildEngineeringAndEquipmentCenterList(query);
+                if (CollectionUtils.isNotEmpty(centerList)) {
+                    List<Integer> integerList2 = centerList.stream().filter(oo -> oo.getIndicatorId() != null).map(oo -> oo.getIndicatorId()).collect(Collectors.toList());
+                    if (CollectionUtils.isNotEmpty(integerList2)) {
+                        integerList.addAll(integerList2);
+                    }
                 }
             }
         }
