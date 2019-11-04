@@ -1587,7 +1587,7 @@ public class GenerateBaseDataService {
                     bigDecimalSet.add(bigDecimal);
                 });
                 if (bigDecimalSet.size() == 1) {
-                    map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), bigDecimalSet.stream().findFirst().get().toString()+"米");
+                    map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), bigDecimalSet.stream().findFirst().get().toString() + "米");
                 }
                 if (bigDecimalSet.size() != 1) {
                     List<String> stringList = Lists.newArrayList();
@@ -5317,15 +5317,16 @@ public class GenerateBaseDataService {
                         if (CollectionUtils.isEmpty(attachmentList)) continue;
                         builder.insertCell();
                         String imgPath = "";
-                        if (attachmentList.size() == 1) {
-                            imgPath = baseAttachmentService.downloadFtpFileToLocal(attachmentList.get(0).getId());
-                        } else if (attachmentList.size() > 1) {
-                            List<String> paths = Lists.newArrayList();
-                            for (SysAttachmentDto item : attachmentList) {
+                        List<String> paths = Lists.newArrayList();
+                        for (SysAttachmentDto item : attachmentList) {
+                            String itemImgPath = baseAttachmentService.downloadFtpFileToLocal(item.getId());
+                            if (StringUtils.isNotEmpty(itemImgPath)&&FileUtils.checkImgSuffix(itemImgPath)) {
                                 paths.add(baseAttachmentService.downloadFtpFileToLocal(item.getId()));
                             }
-                            imgPath = generateCommonMethod.getCombinationOfhead(paths);
                         }
+                        if(paths.size()==0) continue;
+                        imgPath = generateCommonMethod.getCombinationOfhead(paths);
+
                         int width = maxWidth / colCount;
                         int height = maxWidth / colCount;
                         if (schemeReportFileList.size() == 1) {
@@ -5353,6 +5354,16 @@ public class GenerateBaseDataService {
                     index = j / 2 * colCount + k;
                     if (index < schemeReportFileList.size()) {
                         SchemeReportFileItem schemeReportFileItem = schemeReportFileList.get(index);
+                        List<SysAttachmentDto> attachmentList = schemeReportFileService.getAttachmentListBySchemeReportFile(schemeReportFileItem);
+                        if (CollectionUtils.isEmpty(attachmentList)) continue;
+                        List<String> paths = Lists.newArrayList();
+                        for (SysAttachmentDto item : attachmentList) {
+                            String itemImgPath = baseAttachmentService.downloadFtpFileToLocal(item.getId());
+                            if (StringUtils.isNotEmpty(itemImgPath)&&FileUtils.checkImgSuffix(itemImgPath)) {
+                                paths.add(baseAttachmentService.downloadFtpFileToLocal(item.getId()));
+                            }
+                        }
+                        if(paths.size()==0) continue;
                         builder.insertCell();
                         builder.getFont().setName("宋体");
                         builder.getFont().setSize(10.5);
@@ -5896,7 +5907,7 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        AsposeUtils.saveWord(localPath,document);
+        AsposeUtils.saveWord(localPath, document);
         if (!stringMap.isEmpty()) {
             AsposeUtils.replaceTextToFile(localPath, stringMap);
         }
@@ -5905,6 +5916,7 @@ public class GenerateBaseDataService {
 
     /**
      * 建行个贷区位分析
+     *
      * @return
      * @throws Exception
      */
@@ -5916,18 +5928,18 @@ public class GenerateBaseDataService {
         documentBuilder.getFont().setName(AsposeUtils.ImitationSong);
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-          for (SchemeJudgeObject schemeJudgeObject:schemeJudgeObjectList){
-              BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
-              GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
-              BasicEstateVo basicEstate = generateBaseExamineService.getEstate();
-              //描述内容
-              if (StringUtils.isNotBlank(basicEstate.getLocationDescribe())) {
-                  String value = String.join("",generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject),basicEstate.getLocationDescribe()) ;
-                  AsposeUtils.insertHtml(documentBuilder, AsposeUtils.getWarpCssHtml(value, Lists.newArrayList(new KeyValueDto("text-indent", "2em"), new KeyValueDto(AsposeUtils.FontFamily, AsposeUtils.ImitationSong), new KeyValueDto(AsposeUtils.FontSize, "12pt"))));
-              }
-          }
+            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+                BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
+                GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
+                BasicEstateVo basicEstate = generateBaseExamineService.getEstate();
+                //描述内容
+                if (StringUtils.isNotBlank(basicEstate.getLocationDescribe())) {
+                    String value = String.join("", generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject), basicEstate.getLocationDescribe());
+                    AsposeUtils.insertHtml(documentBuilder, AsposeUtils.getWarpCssHtml(value, Lists.newArrayList(new KeyValueDto("text-indent", "2em"), new KeyValueDto(AsposeUtils.FontFamily, AsposeUtils.ImitationSong), new KeyValueDto(AsposeUtils.FontSize, "12pt"))));
+                }
+            }
         }
-        AsposeUtils.saveWord(localPath,document);
+        AsposeUtils.saveWord(localPath, document);
         return localPath;
     }
 

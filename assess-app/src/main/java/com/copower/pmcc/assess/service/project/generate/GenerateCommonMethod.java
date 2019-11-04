@@ -1190,6 +1190,7 @@ public class GenerateCommonMethod {
 
     //拼接2-4张图片
     public String getCombinationOfhead(List<String> paths) throws IOException {
+        if(paths.size()==1) return paths.get(0);
         List<BufferedImage> bufferedImages = new ArrayList<BufferedImage>();
         // 压缩图片所有的图片生成尺寸 250x250
         for (int i = 0; i < paths.size(); i++) {
