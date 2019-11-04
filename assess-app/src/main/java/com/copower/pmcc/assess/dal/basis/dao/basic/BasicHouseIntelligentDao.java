@@ -31,6 +31,7 @@ public class BasicHouseIntelligentDao {
     }
 
     public boolean updateBasicHouseIntelligent(BasicHouseIntelligent basicHouseIntelligent, boolean updateNull) {
+        basicHouseIntelligent.setBisDelete(false);
         return updateNull ? basicHouseIntelligentMapper.updateByPrimaryKey(basicHouseIntelligent) == 1 : basicHouseIntelligentMapper.updateByPrimaryKeySelective(basicHouseIntelligent) == 1;
     }
 

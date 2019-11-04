@@ -31,6 +31,7 @@ public class BasicUnitDao {
     }
 
     public boolean updateBasicUnit(BasicUnit basicUnit, boolean updateNull) {
+        basicUnit.setBisDelete(false);
         return updateNull ? basicUnitMapper.updateByPrimaryKey(basicUnit) == 1 : basicUnitMapper.updateByPrimaryKeySelective(basicUnit) == 1;
     }
 

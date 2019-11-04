@@ -30,6 +30,7 @@ public class BasicHouseTradingLeaseDao {
     }
 
     public boolean updateBasicHouseTradingLease(BasicHouseTradingLease basicHouseTradingLease, boolean updateNull)  {
+        basicHouseTradingLease.setBisDelete(false);
         return updateNull ? basicHouseTradingLeaseMapper.updateByPrimaryKey(basicHouseTradingLease) == 1 : basicHouseTradingLeaseMapper.updateByPrimaryKeySelective(basicHouseTradingLease) == 1;
     }
 

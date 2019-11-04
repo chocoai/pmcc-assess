@@ -30,6 +30,7 @@ public class BasicEstateNetworkDao {
     }
 
     public boolean updateBasicEstateNetwork(BasicEstateNetwork basicEstateNetwork, boolean updateNull) {
+        basicEstateNetwork.setBisDelete(false);
         return updateNull ? basicEstateNetworkMapper.updateByPrimaryKey(basicEstateNetwork) == 1 : basicEstateNetworkMapper.updateByPrimaryKeySelective(basicEstateNetwork) == 1;
     }
 

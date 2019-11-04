@@ -29,6 +29,7 @@ public class BasicHouseDamagedDegreeDao {
     }
 
     public boolean updateBasicHouseDamagedDegree(BasicHouseDamagedDegree basicHouseDamagedDegree, boolean updateNull) {
+        basicHouseDamagedDegree.setBisDelete(false);
         return updateNull ? basicHouseDamagedDegreeMapper.updateByPrimaryKey(basicHouseDamagedDegree) == 1 : basicHouseDamagedDegreeMapper.updateByPrimaryKeySelective(basicHouseDamagedDegree) == 1;
     }
 

@@ -31,6 +31,7 @@ public class BasicMatchingLeisurePlaceDao {
     }
 
     public boolean updateBasicMatchingLeisurePlace(BasicMatchingLeisurePlace basicMatchingLeisurePlace, boolean updateNull) {
+        basicMatchingLeisurePlace.setBisDelete(false);
         return updateNull ? basicMatchingLeisurePlaceMapper.updateByPrimaryKey(basicMatchingLeisurePlace) == 1 : basicMatchingLeisurePlaceMapper.updateByPrimaryKeySelective(basicMatchingLeisurePlace) == 1;
     }
 

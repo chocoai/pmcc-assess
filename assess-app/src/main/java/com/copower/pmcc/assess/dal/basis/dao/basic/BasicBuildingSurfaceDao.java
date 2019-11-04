@@ -31,6 +31,7 @@ public class BasicBuildingSurfaceDao {
     }
 
     public boolean updateBasicBuildingSurface(BasicBuildingSurface basicBuildingSurface, boolean updateNull) {
+        basicBuildingSurface.setBisDelete(false);
         return updateNull ? basicBuildingSurfaceMapper.updateByPrimaryKey(basicBuildingSurface) == 1 : basicBuildingSurfaceMapper.updateByPrimaryKeySelective(basicBuildingSurface) == 1;
     }
 
