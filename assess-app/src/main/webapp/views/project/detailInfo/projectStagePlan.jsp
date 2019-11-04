@@ -540,8 +540,11 @@
 
     projectStagePlan.setPhaseNameDefault = function (_this) {
         var form = $(_this).closest("form");
-        var name = $(_this).find("option:selected").text();
-        form.find("[name='projectPhaseName']").val(name);
+        var val = $(_this).find("option:selected").val();
+        if (!form.find("[name='projectPhaseName']").val() && val) {
+            var name = $(_this).find("option:selected").text();
+            form.find("[name='projectPhaseName']").val(name);
+        }
     };
 
     /**

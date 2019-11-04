@@ -40,33 +40,35 @@ public class BasicHouseTradingService {
 
     /**
      * 获取数据
+     *
      * @param id
      * @return
      * @throws Exception
      */
-    public BasicHouseTrading getBasicHouseTradingById(Integer id)throws Exception{
+    public BasicHouseTrading getBasicHouseTradingById(Integer id) throws Exception {
         return basicHouseTradingDao.getBasicHouseTradingById(id);
     }
 
     /**
      * 新增或者修改
+     *
      * @param basicHouseTrading
      * @return
      * @throws Exception
      */
-    public Integer saveAndUpdateBasicHouseTrading(BasicHouseTrading basicHouseTrading, boolean updateNull)throws Exception{
-        if (basicHouseTrading.getId()== null || basicHouseTrading.getId().intValue()==0){
+    public Integer saveAndUpdateBasicHouseTrading(BasicHouseTrading basicHouseTrading, boolean updateNull) throws Exception {
+        if (basicHouseTrading.getId() == null || basicHouseTrading.getId().intValue() == 0) {
             basicHouseTrading.setCreator(commonService.thisUserAccount());
             return basicHouseTradingDao.addBasicHouseTrading(basicHouseTrading);
-        }else {
-            if(updateNull){
+        } else {
+            if (updateNull) {
                 BasicHouseTrading houseTrading = basicHouseTradingDao.getBasicHouseTradingById(basicHouseTrading.getId());
-                if(houseTrading!=null){
+                if (houseTrading != null) {
                     basicHouseTrading.setCreator(houseTrading.getCreator());
                     basicHouseTrading.setGmtCreated(houseTrading.getGmtCreated());
                 }
             }
-            basicHouseTradingDao.updateBasicHouseTrading(basicHouseTrading,updateNull);
+            basicHouseTradingDao.updateBasicHouseTrading(basicHouseTrading, updateNull);
             return basicHouseTrading.getId();
         }
     }
@@ -74,49 +76,60 @@ public class BasicHouseTradingService {
 
     /**
      * 删除数据
+     *
      * @param id
      * @return
      * @throws Exception
      */
-    public boolean deleteBasicHouseTrading(Integer id)throws Exception{
+    public boolean deleteBasicHouseTrading(Integer id) throws Exception {
         return basicHouseTradingDao.deleteBasicHouseTrading(id);
+    }
+
+    public boolean deleteBasicHouseTradingByHouseId(Integer houseId) throws Exception {
+        BasicHouseTrading basicHouseTrading = new BasicHouseTrading();
+        basicHouseTrading.setHouseId(houseId);
+        List<BasicHouseTrading> tradings = basicHouseTradingDao.basicHouseTradingList(basicHouseTrading);
+        if (CollectionUtils.isEmpty(tradings)) return true;
+        tradings.forEach(o -> basicHouseTradingDao.deleteBasicHouseTrading(o.getId()));
+        return true;
     }
 
     /**
      * 获取数据列表
+     *
      * @param basicHouseTrading
      * @return
      * @throws Exception
      */
-    public List<BasicHouseTrading> basicHouseTradingList(BasicHouseTrading basicHouseTrading)throws Exception{
+    public List<BasicHouseTrading> basicHouseTradingList(BasicHouseTrading basicHouseTrading) throws Exception {
         return basicHouseTradingDao.basicHouseTradingList(basicHouseTrading);
     }
 
-    public BasicHouseTrading getTradingByHouseId(Integer houseId){
-        BasicHouseTrading basicHouseTrading=new BasicHouseTrading();
+    public BasicHouseTrading getTradingByHouseId(Integer houseId) {
+        BasicHouseTrading basicHouseTrading = new BasicHouseTrading();
         basicHouseTrading.setHouseId(houseId);
         List<BasicHouseTrading> tradings = basicHouseTradingDao.basicHouseTradingList(basicHouseTrading);
-        if(CollectionUtils.isEmpty(tradings)) return null;
+        if (CollectionUtils.isEmpty(tradings)) return null;
         return tradings.get(0);
     }
 
-    public BootstrapTableVo getBootstrapTableVo(BasicHouseTrading basicHouseTrading)throws Exception{
+    public BootstrapTableVo getBootstrapTableVo(BasicHouseTrading basicHouseTrading) throws Exception {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<BasicHouseTrading> basicHouseTradingList = basicHouseTradingDao.basicHouseTradingList(basicHouseTrading);
         vo.setTotal(page.getTotal());
-        vo.setRows(ObjectUtils.isEmpty(basicHouseTradingList)?new ArrayList<BasicHouseTrading>(10):basicHouseTradingList);
+        vo.setRows(ObjectUtils.isEmpty(basicHouseTradingList) ? new ArrayList<BasicHouseTrading>(10) : basicHouseTradingList);
         return vo;
     }
 
-    public BasicHouseTradingVo getBasicHouseTradingVo(BasicHouseTrading basicHouseTrading){
-        if (basicHouseTrading == null){
+    public BasicHouseTradingVo getBasicHouseTradingVo(BasicHouseTrading basicHouseTrading) {
+        if (basicHouseTrading == null) {
             return null;
         }
         BasicHouseTradingVo vo = new BasicHouseTradingVo();
-        BeanUtils.copyProperties(basicHouseTrading,vo);
-        if (basicHouseTrading.getTradingTime() != null){
+        BeanUtils.copyProperties(basicHouseTrading, vo);
+        if (basicHouseTrading.getTradingTime() != null) {
             vo.setTradingTimeName(DateUtils.format(basicHouseTrading.getTradingTime()));
         }
         vo.setTradingTypeName(baseDataDicService.getNameById(basicHouseTrading.getTradingType()));
