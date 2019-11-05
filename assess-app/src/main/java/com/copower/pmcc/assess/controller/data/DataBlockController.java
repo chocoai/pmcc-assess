@@ -174,4 +174,16 @@ public class DataBlockController extends BaseController {
             return HttpResult.newErrorResult("抓取两年前老数据异常");
         }
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/updateOldData", method = {RequestMethod.GET}, name = "抓取两年前老数据")
+    public HttpResult updateOldData() {
+        try {
+            dataBlockService.updateOldData();
+            return HttpResult.newCorrectResult();
+        } catch (Exception e) {
+            log.error(String.format("exception: %s", e.getMessage()), e);
+            return HttpResult.newErrorResult("抓取两年前老数据异常");
+        }
+    }
 }
