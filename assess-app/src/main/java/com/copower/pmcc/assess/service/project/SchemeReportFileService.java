@@ -184,15 +184,19 @@ public class SchemeReportFileService extends BaseService {
             BasicApplyBatch applyBatch = basicApplyBatchService.getBasicApplyBatchByEstateId(basicEstateId);
             //获取楼栋
             List<BasicBuilding> buildingListByBatchId = basicApplyBatchDetailService.getBuildingListByBatchId(applyBatch.getId());
-            for (BasicBuilding build : buildingListByBatchId) {
-                //获取单元
-                List<BasicUnit> unitListByBatchId = basicApplyBatchDetailService.getBasicUnitListByBatchId(applyBatch.getId(), build);
-                for (BasicUnit unit : unitListByBatchId) {
-                    List<BasicEstateTaggingVo> taggingList = basicEstateTaggingService.getApplyBatchEstateTaggingsByTableId(unit.getId(), EstateTaggingTypeEnum.UNIT.getKey());
-                    if (CollectionUtils.isNotEmpty(taggingList)) {
-                        //生成位置图
-                        BasicEstateTagging tagging = taggingList.get(0);
-                        publicService.downLoadLocationImage(tagging.getLng(), tagging.getLat(), sysAttachmentDto);
+            if (CollectionUtils.isNotEmpty(buildingListByBatchId)) {
+                for (BasicBuilding build : buildingListByBatchId) {
+                    //获取单元
+                    List<BasicUnit> unitListByBatchId = basicApplyBatchDetailService.getBasicUnitListByBatchId(applyBatch.getId(), build);
+                    if (CollectionUtils.isNotEmpty(unitListByBatchId)) {
+                        for (BasicUnit unit : unitListByBatchId) {
+                            List<BasicEstateTaggingVo> taggingList = basicEstateTaggingService.getApplyBatchEstateTaggingsByTableId(unit.getId(), EstateTaggingTypeEnum.UNIT.getKey());
+                            if (CollectionUtils.isNotEmpty(taggingList)) {
+                                //生成位置图
+                                BasicEstateTagging tagging = taggingList.get(0);
+                                publicService.downLoadLocationImage(tagging.getLng(), tagging.getLat(), sysAttachmentDto);
+                            }
+                        }
                     }
                 }
             }
