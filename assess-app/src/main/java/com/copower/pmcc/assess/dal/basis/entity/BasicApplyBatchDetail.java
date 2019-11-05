@@ -25,13 +25,11 @@ public class BasicApplyBatchDetail {
 
     private Integer caseTablePid;
 
-    private Boolean bisEnable;
-
     private Integer upgradeTableId;
 
-    private Boolean bisDelete;
-
     private String creator;
+
+    private Boolean bisDelete;
 
     private Date gmtCreated;
 
@@ -125,14 +123,6 @@ public class BasicApplyBatchDetail {
         this.caseTablePid = caseTablePid;
     }
 
-    public Boolean getBisEnable() {
-        return bisEnable;
-    }
-
-    public void setBisEnable(Boolean bisEnable) {
-        this.bisEnable = bisEnable;
-    }
-
     public Integer getUpgradeTableId() {
         return upgradeTableId;
     }
@@ -141,20 +131,20 @@ public class BasicApplyBatchDetail {
         this.upgradeTableId = upgradeTableId;
     }
 
-    public Boolean getBisDelete() {
-        return bisDelete;
-    }
-
-    public void setBisDelete(Boolean bisDelete) {
-        this.bisDelete = bisDelete;
-    }
-
     public String getCreator() {
         return creator;
     }
 
     public void setCreator(String creator) {
         this.creator = creator == null ? null : creator.trim();
+    }
+
+    public Boolean getBisDelete() {
+        return bisDelete;
+    }
+
+    public void setBisDelete(Boolean bisDelete) {
+        this.bisDelete = bisDelete;
     }
 
     public Date getGmtCreated() {

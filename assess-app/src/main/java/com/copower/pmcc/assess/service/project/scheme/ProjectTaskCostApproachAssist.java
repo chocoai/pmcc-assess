@@ -63,20 +63,19 @@ public class ProjectTaskCostApproachAssist implements ProjectTaskInterface {
             mdCostApproach = new MdCostApproach();
             mdCostApproach.setPlanDetailsId(projectPlanDetails.getId());
             mdCostApproachService.saveMdCostApproach(mdCostApproach);
-            if (mdCostApproach != null) {
-                SchemeInfo schemeInfo = new SchemeInfo();
-                schemeInfo.setProjectId(projectPlanDetails.getProjectId());
-                schemeInfo.setPlanDetailsId(projectPlanDetails.getId());
-                schemeInfo.setJudgeObjectId(projectPlanDetails.getJudgeObjectId());
-                schemeInfo.setMethodType(baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_COST_APPROACH).getId());
-                schemeInfo.setMethodDataId(mdCostApproach.getId());
-                try {
-                    schemeInfoService.saveSchemeInfo(schemeInfo);
-                } catch (BusinessException e) {
-                    logger.error(e.getMessage(), e);
-                }
+            SchemeInfo schemeInfo = new SchemeInfo();
+            schemeInfo.setProjectId(projectPlanDetails.getProjectId());
+            schemeInfo.setPlanDetailsId(projectPlanDetails.getId());
+            schemeInfo.setJudgeObjectId(projectPlanDetails.getJudgeObjectId());
+            schemeInfo.setMethodType(baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_COST_APPROACH).getId());
+            schemeInfo.setMethodDataId(mdCostApproach.getId());
+            try {
+                schemeInfoService.saveSchemeInfo(schemeInfo);
+            } catch (BusinessException e) {
+                logger.error(e.getMessage(), e);
             }
         }
+
         modelAndView.addObject("master", mdCostApproach);
         modelAndView.addObject("apply", "apply");
         initTaxeItem(mdCostApproach);
