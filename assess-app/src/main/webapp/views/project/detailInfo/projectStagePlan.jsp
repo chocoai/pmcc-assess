@@ -105,7 +105,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
-                                            工作内容 <span class="symbol required"></span>
+                                            工作事项 <span class="symbol required"></span>
                                         </label>
                                         <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
                                             <select required="required" name="projectPhaseId"
@@ -122,17 +122,20 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
-                                            任务细名 <span class="symbol required"></span>
+                                            任务名称 <span class="symbol required"></span>
                                         </label>
-                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
+                                        <div class=" col-xs-8  col-sm-8  col-md-8  col-lg-8 ">
                                             <input type="hidden" name="id"/>
-                                            <input type="text" placeholder="任务细名" required="required" maxlength="50"
+                                            <input type="text" placeholder="任务名称" required="required" maxlength="100"
                                                    name="projectPhaseName"
                                                    class="form-control">
                                         </div>
+                                        <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                            <input type="button" class="btn btn-xs btn-success" value="＋"
+                                                   onclick="projectStagePlan.addPhaseName(this);">
+                                        </div>
                                     </div>
                                 </div>
-
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
@@ -247,6 +250,25 @@
         </div>
     </div>
 </div>
+<script type="text/html" id="phaseNameHtml">
+    <div class="form-group append-phase-name">
+        <div class="x-valid">
+            <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
+                任务名称 <span class="symbol required"></span>
+            </label>
+            <div class=" col-xs-8  col-sm-8  col-md-8  col-lg-8 ">
+                <input type="hidden" name="id"/>
+                <input type="text" placeholder="任务名称" required="required" maxlength="100"
+                       name="projectPhaseName"
+                       class="form-control">
+            </div>
+            <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                <input type="button" class="btn btn-xs btn-warning" value="－"
+                       onclick="$(this).closest('.form-group').remove();">
+            </div>
+        </div>
+    </div>
+</script>
 <script type="text/javascript">
     //进入下阶段
     function projectDetailsEnterNextStage() {
@@ -469,7 +491,7 @@
     projectStagePlan.createTask = function () {
         var box = $("#div_plan");
         var form = box.find("form");
-        form.clearAll();
+        form.clearAll().find('.append-phase-name').remove();
         box.modal("show");
     };
 
@@ -519,7 +541,7 @@
         var form = box.find("form");
         var item = projectStagePlan.stageTable.bootstrapTable('getRowByUniqueId', id);
         form.clearAll();
-        form.initForm(item);
+        form.initForm(item).find('.append-phase-name').remove();
         box.modal("show");
     };
 
@@ -687,6 +709,17 @@
                 }
             }
         })
+    }
+
+    //添加事项名称
+    projectStagePlan.addPhaseName = function (_this) {
+        var html = $('#phaseNameHtml').html();
+        var phaseNameEles = $(_this).closest('form').find('.append-phase-name');
+        if (phaseNameEles.length > 0) {
+            phaseNameEles.last().after(html);
+        } else {
+            $(_this).closest('.form-group').after(html);
+        }
     }
 
     $(function () {

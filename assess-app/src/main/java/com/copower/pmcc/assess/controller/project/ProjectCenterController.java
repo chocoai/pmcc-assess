@@ -71,6 +71,13 @@ public class ProjectCenterController {
         return modelAndView;
     }
 
+    @RequestMapping(value = "/financialReferenceProject", name = "财务引用评估项目项目(评估项目不要引用这个，因为里面的信息较少)")
+    public ModelAndView financialReferenceProject() {
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/report/financialReferenceProject");
+        modelAndView.addObject("companyId", publicService.getCurrentCompany().getCompanyId());
+        return modelAndView;
+    }
+
     @RequestMapping(value = "/myProject", name = "我的立项")
     public ModelAndView myProject() {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/myProject");

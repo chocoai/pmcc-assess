@@ -65,18 +65,16 @@ public class ProjectTaskBaseLandPriceAssist implements ProjectTaskInterface {
             mdBaseLandPrice = new MdBaseLandPrice();
             mdBaseLandPrice.setPlanDetailsId(projectPlanDetails.getId());
             mdBaseLandPriceService.saveMdBaseLandPrice(mdBaseLandPrice);
-            if (mdBaseLandPrice != null) {
-                SchemeInfo schemeInfo = new SchemeInfo();
-                schemeInfo.setProjectId(projectPlanDetails.getProjectId());
-                schemeInfo.setPlanDetailsId(projectPlanDetails.getId());
-                schemeInfo.setJudgeObjectId(projectPlanDetails.getJudgeObjectId());
-                schemeInfo.setMethodType(baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_BASE_LAND_PRICE).getId());
-                schemeInfo.setMethodDataId(mdBaseLandPrice.getId());
-                try {
-                    schemeInfoService.saveSchemeInfo(schemeInfo);
-                } catch (BusinessException e) {
-                    logger.error(e.getMessage(), e);
-                }
+            SchemeInfo schemeInfo = new SchemeInfo();
+            schemeInfo.setProjectId(projectPlanDetails.getProjectId());
+            schemeInfo.setPlanDetailsId(projectPlanDetails.getId());
+            schemeInfo.setJudgeObjectId(projectPlanDetails.getJudgeObjectId());
+            schemeInfo.setMethodType(baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_BASE_LAND_PRICE).getId());
+            schemeInfo.setMethodDataId(mdBaseLandPrice.getId());
+            try {
+                schemeInfoService.saveSchemeInfo(schemeInfo);
+            } catch (BusinessException e) {
+                logger.error(e.getMessage(), e);
             }
         }
         modelAndView.addObject("master", mdBaseLandPrice);

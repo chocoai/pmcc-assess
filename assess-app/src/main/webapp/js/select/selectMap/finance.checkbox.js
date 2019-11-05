@@ -54,48 +54,44 @@
             $("#select_matchingfinance_modal").remove();
         }
         try {
-            if (options.type == '信托') {
-                Alert("高德地图案例中金融机构类型无信托");
-            } else {
-                assessSearchMap.localUseTypeSearch(options.type, options.distance, options, function (data) {
-                    var html = '<div id="select_matchingfinance_modal" class="modal fade bs-example-modal-lg" data-backdrop="static" ';
-                    html += 'role="dialog" data-keyboard="false" tabindex="1" >';
-                    html += '<div class="modal-dialog  modal-lg">';
-                    html += '<div class="modal-content">';
-                    html += '<div class="modal-header">';
+            assessSearchMap.otherSearch(options.type, options.distance, options, function (data) {
+                var html = '<div id="select_matchingfinance_modal" class="modal fade bs-example-modal-lg" data-backdrop="static" ';
+                html += 'role="dialog" data-keyboard="false" tabindex="1" >';
+                html += '<div class="modal-dialog  modal-lg">';
+                html += '<div class="modal-content">';
+                html += '<div class="modal-header">';
 
-                    html += '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span';
-                    html += 'aria-hidden="true">&times;</span></button>';
-                    html += '<h3 class="modal-title">金融机构选择 &nbsp;&nbsp;&nbsp;&nbsp;';
-                    html += "<span class='label label-primary'>" + '全选或全不选' + "</span>";
-                    html += "<input type='checkbox' onclick='assessMatchingFinance.checkedFun(this,true)'>";
-                    html += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '反选' + "</span>";
-                    html += "<input type='checkbox' onclick='assessMatchingFinance.checkedFun(this,false)'>";
-                    html += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='badge'>记录max20</span>";
-                    html += "&nbsp;&nbsp;&nbsp;&nbsp;<input type='button' class='btn btn-success' value='保存选项' onclick='assessMatchingFinance.save(this)'>";
-                    html += "</h3>";
-                    html += '</div>';
+                html += '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span';
+                html += 'aria-hidden="true">&times;</span></button>';
+                html += '<h3 class="modal-title">金融机构选择 &nbsp;&nbsp;&nbsp;&nbsp;';
+                html += "<span class='label label-primary'>" + '全选或全不选' + "</span>";
+                html += "<input type='checkbox' onclick='assessMatchingFinance.checkedFun(this,true)'>";
+                html += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '反选' + "</span>";
+                html += "<input type='checkbox' onclick='assessMatchingFinance.checkedFun(this,false)'>";
+                html += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='badge'>记录max20</span>";
+                html += "&nbsp;&nbsp;&nbsp;&nbsp;<input type='button' class='btn btn-success' value='保存选项' onclick='assessMatchingFinance.save(this)'>";
+                html += "</h3>";
+                html += '</div>';
 
-                    html += "<form class='form-horizontal'>";
-                    html += '<div class="modal-body">';
+                html += "<form class='form-horizontal'>";
+                html += '<div class="modal-body">';
 
-                    html += "<div class='row'>";
-                    html += "<div class='col-xs-12 col-sm-12 col-md-12 col-lg-12'>";
-                    html += "<div class='panel-body'>";
-                    html += AssessMatchingFinance.prototype.write(data);
-                    html += '</div>';
-                    html += '</div>';
-                    html += '</div>';
+                html += "<div class='row'>";
+                html += "<div class='col-xs-12 col-sm-12 col-md-12 col-lg-12'>";
+                html += "<div class='panel-body'>";
+                html += AssessMatchingFinance.prototype.write(data);
+                html += '</div>';
+                html += '</div>';
+                html += '</div>';
 
-                    html += '</div>';
-                    html += "</form>";
-                    html += '</div>';
-                    html += '</div>';
+                html += '</div>';
+                html += "</form>";
+                html += '</div>';
+                html += '</div>';
 
-                    $(document.body).append(html);
-                    $('#select_matchingfinance_modal').modal('show');
-                });
-            }
+                $(document.body).append(html);
+                $('#select_matchingfinance_modal').modal('show');
+            });
         } catch (e) {
             console.log(e);
         }
