@@ -15,9 +15,12 @@ import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -118,7 +121,16 @@ public class ProjectPlanDetailsController {
     public HttpResult saveProjectStagePlan(String formData) {
         try {
             ProjectPlanDetails projectPlanDetails = JSONObject.parseObject(formData, ProjectPlanDetails.class);
-            projectPlanDetailsService.saveProjectStagePlan(projectPlanDetails);
+            String phaseName = projectPlanDetails.getProjectPhaseName();
+            if (StringUtils.isNotBlank(phaseName)) {
+                List<String> list = FormatUtils.transformString2List(phaseName);
+                list.forEach(o -> {
+                    ProjectPlanDetails item = new ProjectPlanDetails();
+                    BeanUtils.copyProperties(projectPlanDetails,item);
+                    item.setProjectPhaseName(o);
+                    projectPlanDetailsService.saveProjectStagePlan(item);
+                });
+            }
             return HttpResult.newCorrectResult(projectPlanDetails);
         } catch (Exception e) {
             logger.error("任务分派 添加任务", e);
