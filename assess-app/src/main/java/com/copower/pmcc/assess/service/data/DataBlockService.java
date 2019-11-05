@@ -180,7 +180,7 @@ public class DataBlockService {
         List<ProjectInfo> projectInfoList = projectInfoService.getProjectInfoList(new ProjectInfo());
         if (CollectionUtils.isNotEmpty(projectInfoList)) {
             for (ProjectInfo projectInfo : projectInfoList) {
-                List<ProjectPlan> projectPlanList = projectPlanService.getProjectPlanList(projectInfo.getPublicProjectId());
+                List<ProjectPlan> projectPlanList = projectPlanService.getProjectPlanList(projectInfo.getId());
                 if (CollectionUtils.isNotEmpty(projectPlanList)) {
                     ProjectPlan projectPlan = projectPlanList.get(projectPlanList.size() - 1);
                     ProjectPlanDetails projectPlanDetails = new ProjectPlanDetails();
@@ -206,34 +206,34 @@ public class DataBlockService {
             }
         }
 
-        List<BasicApplyBatch> infoList = basicApplyBatchDao.getInfoList(new BasicApplyBatch());
-        if (CollectionUtils.isNotEmpty(infoList)) {
-            for (BasicApplyBatch applyBatch : infoList) {
-                BasicApplyBatchDetail basicApplyBatchDetail = new BasicApplyBatchDetail();
-                basicApplyBatchDetail.setPid(0);
-                basicApplyBatchDetail.setApplyBatchId(applyBatch.getId());
-                basicApplyBatchDetail.setTableName(FormatUtils.entityNameConvertToTableName(BasicEstate.class));
-                basicApplyBatchDetail.setTableId(applyBatch.getEstateId());
-                basicApplyBatchDetail.setName(applyBatch.getEstateName());
-                basicApplyBatchDetail.setDisplayName(applyBatch.getEstateName());
-                basicApplyBatchDetail.setBisStandard(false);
-                basicApplyBatchDetail.setQuoteId(applyBatch.getQuoteId());
-                basicApplyBatchDetail.setBaseType(applyBatch.getBaseType());
-                basicApplyBatchDetail.setBisDelete(false);
-                basicApplyBatchDetail.setCreator(applyBatch.getCreator());
-                basicApplyBatchDetailService.saveBasicApplyBatchDetail(basicApplyBatchDetail);
-
-                BasicApplyBatchDetail where = new BasicApplyBatchDetail();
-                where.setApplyBatchId(applyBatch.getId());
-                where.setPid(0);
-                List<BasicApplyBatchDetail> batchDetailList = basicApplyBatchDetailService.getBasicApplyBatchDetailList(where);
-                if(CollectionUtils.isNotEmpty(batchDetailList)){
-                    for (BasicApplyBatchDetail applyBatchDetail : batchDetailList) {
-                        applyBatchDetail.setPid(basicApplyBatchDetail.getId());
-                        basicApplyBatchDetailService.saveBasicApplyBatchDetail(applyBatchDetail);
-                    }
-                }
-            }
-        }
+//        List<BasicApplyBatch> infoList = basicApplyBatchDao.getInfoList(new BasicApplyBatch());
+//        if (CollectionUtils.isNotEmpty(infoList)) {
+//            for (BasicApplyBatch applyBatch : infoList) {
+//                BasicApplyBatchDetail basicApplyBatchDetail = new BasicApplyBatchDetail();
+//                basicApplyBatchDetail.setPid(0);
+//                basicApplyBatchDetail.setApplyBatchId(applyBatch.getId());
+//                basicApplyBatchDetail.setTableName(FormatUtils.entityNameConvertToTableName(BasicEstate.class));
+//                basicApplyBatchDetail.setTableId(applyBatch.getEstateId());
+//                basicApplyBatchDetail.setName(applyBatch.getEstateName());
+//                basicApplyBatchDetail.setDisplayName(applyBatch.getEstateName());
+//                basicApplyBatchDetail.setBisStandard(false);
+//                basicApplyBatchDetail.setQuoteId(applyBatch.getQuoteId());
+//                basicApplyBatchDetail.setBaseType(applyBatch.getBaseType());
+//                basicApplyBatchDetail.setBisDelete(false);
+//                basicApplyBatchDetail.setCreator(applyBatch.getCreator());
+//                basicApplyBatchDetailService.saveBasicApplyBatchDetail(basicApplyBatchDetail);
+//
+//                BasicApplyBatchDetail where = new BasicApplyBatchDetail();
+//                where.setApplyBatchId(applyBatch.getId());
+//                where.setPid(0);
+//                List<BasicApplyBatchDetail> batchDetailList = basicApplyBatchDetailService.getBasicApplyBatchDetailList(where);
+//                if(CollectionUtils.isNotEmpty(batchDetailList)){
+//                    for (BasicApplyBatchDetail applyBatchDetail : batchDetailList) {
+//                        applyBatchDetail.setPid(basicApplyBatchDetail.getId());
+//                        basicApplyBatchDetailService.saveBasicApplyBatchDetail(applyBatchDetail);
+//                    }
+//                }
+//            }
+//        }
     }
 }
