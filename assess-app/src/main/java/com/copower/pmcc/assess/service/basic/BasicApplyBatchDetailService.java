@@ -302,7 +302,10 @@ public class BasicApplyBatchDetailService {
         List<BasicBuilding> basicBuildings = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(infoList))
             for (BasicApplyBatchDetail item : infoList) {
-                basicBuildings.add(basicBuildingDao.getBasicBuildingById(item.getTableId()));
+                BasicBuilding basicBuilding = basicBuildingDao.getBasicBuildingById(item.getTableId());
+                if (basicBuilding != null) {
+                    basicBuildings.add(basicBuildingDao.getBasicBuildingById(item.getTableId()));
+                }
             }
         ;
         return basicBuildings;
