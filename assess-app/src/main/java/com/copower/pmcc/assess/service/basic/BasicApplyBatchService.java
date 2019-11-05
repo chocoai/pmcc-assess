@@ -836,9 +836,11 @@ public class BasicApplyBatchService {
             basicApplyBatchDao.addInfo(basicApplyBatch);
         }
         BasicEstate basicEstate = basicEstateService.getBasicEstateById(basicApplyBatch.getEstateId());
-        basicEstate.setClassify(basicApplyBatch.getClassify());
-        basicEstate.setType(basicApplyBatch.getType());
-        basicEstateService.saveAndUpdateBasicEstate(basicEstate, false);
+        if(basicEstate!=null) {
+            basicEstate.setClassify(basicApplyBatch.getClassify());
+            basicEstate.setType(basicApplyBatch.getType());
+            basicEstateService.saveAndUpdateBasicEstate(basicEstate, false);
+        }
     }
 
     /**
