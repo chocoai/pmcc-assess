@@ -3,13 +3,13 @@
 
 
 <!-- 非工业交通仓储 或 在建工程-->
-<c:if test="${basicApply.type == 0 || basicApply.type == 3}">
+<c:if test="${basicApplyBatch.type == 0 || basicApplyBatch.type == 3}">
     <%@include file="/views/project/stageSurvey/commonDetail/unit.jsp" %>
 </c:if>
 
 
 <!-- 工业交通仓储 -->
-<c:if test="${basicApply.type == 1}">
+<c:if test="${basicApplyBatch.type == 1}">
     <%@include file="/views/project/stageSurvey/commonDetail/industry/unit.jsp" %>
 </c:if>
 
