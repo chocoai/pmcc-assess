@@ -618,12 +618,16 @@
             } catch (e) {
                 console.log("解析异常!");
             }
+            var attribute = {readonly:"readonly",'class':'form-control'} ;
             var options = {
                 target: target.find(".panel-body"),
                 obj: data,
-                attribute: {readonly: "readonly", 'class': 'form-control'},
+                attribute: attribute,
                 price: item.price,
-                reckon: 'c'
+                reckon: 'c' ,
+                callback:function (tr) {
+                    $(tr).find("input").attr(attribute);
+                }
             };
             developmentCommon.architecturalB.init(options);
         });

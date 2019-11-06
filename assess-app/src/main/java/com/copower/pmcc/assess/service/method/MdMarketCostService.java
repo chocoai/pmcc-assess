@@ -285,6 +285,15 @@ public class MdMarketCostService {
      * @return
      */
     public synchronized String getFieldObjectValue(BaseReportFieldEnum key, MdCostConstruction target) {
+        if (target.getLandPurchasePrice() == null){
+            target.setLandPurchasePrice(ArithmeticUtils.createBigDecimal(0));
+        }
+        if (target.getLandGetRelevant() == null){
+            target.setLandGetRelevant(ArithmeticUtils.createBigDecimal(0));
+        }
+        if (target.getAdditionalCostLandAcquisition() == null){
+            target.setAdditionalCostLandAcquisition(ArithmeticUtils.createBigDecimal(0));
+        }
         switch (key) {
             case MarketCost_developYearNumberTax: {
                 return ArithmeticUtils.getBigDecimalString(target.getDevelopYearNumberTax());
