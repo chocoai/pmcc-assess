@@ -524,8 +524,10 @@
             $('#plan_task_list' + defaults.planId).treegrid({
                 url: "${pageContext.request.contextPath}/projectInfo/getPlanDetailListByPlanId",
                 queryParams: {
-                    projectId: defaults.projectId,
-                    planId: defaults.planId
+                    formData: JSON.stringify({
+                        projectId: defaults.projectId,
+                        planId: defaults.planId
+                    })
                 },
                 idField: 'id',
                 treeField: 'projectPhaseName',
@@ -1194,7 +1196,7 @@
         },
 
         //进入项目下个阶段
-        enterNextStage:function () {
+        enterNextStage: function () {
             $.ajax({
                 url: '${pageContext.request.contextPath}/projectInfo/enterNextStage',
                 data: {

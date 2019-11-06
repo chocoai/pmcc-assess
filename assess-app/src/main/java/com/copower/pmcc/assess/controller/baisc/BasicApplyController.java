@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.controller.BaseController;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.BasicApply;
+import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatch;
 import com.copower.pmcc.assess.dal.basis.entity.BasicUnit;
 import com.copower.pmcc.assess.dto.output.basic.*;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -56,6 +57,8 @@ public class BasicApplyController extends BaseController {
     private BasicApplyTransferService basicApplyTransferService;
     @Autowired
     private ProjectInfoService projectInfoService;
+    @Autowired
+    private BasicApplyBatchService basicApplyBatchService;
 
     @RequestMapping(value = "/basicApplyIndex", name = "案例基础数据 初始", method = RequestMethod.GET)
     public ModelAndView basicApplyIndex(Integer basicApplyTypeId) {
@@ -196,6 +199,8 @@ public class BasicApplyController extends BaseController {
         if (basicApply != null) {
             modelAndView.addObject("basicApply", basicApplyService.getBasicApplyVo(basicApply));
         }
+        BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchByEstateId(basicEstateVo.getId());
+        modelAndView.addObject("basicApplyBatch", basicApplyBatch);
         modelAndView.addObject("basicEstate", basicEstateVo);
         modelAndView.addObject("basicEstateLandState", basicEstateLandStateVo);
         modelAndView.addObject("basicBuilding", basicBuilding);
