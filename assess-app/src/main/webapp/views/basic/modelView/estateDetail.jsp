@@ -2,23 +2,21 @@
 
 
 
-
-
 <!-- 非工业交通仓储 或 在建工程-->
-<c:if test="${basicApplyBatch.type == 0 || basicApplyBatch.type == 3}">
+<c:if test="${basicApply.type == 0 || basicApply.type == 3}">
     <%@include file="/views/project/stageSurvey/commonDetail/estate.jsp" %>
     <%@include file="/views/project/stageSurvey/commonDetail/estateLandState.jsp" %>
 </c:if>
 
 <!-- 构筑物 -->
-<c:if test="${basicApplyBatch.type == 2}">
+<c:if test="${basicApply.type == 2}">
     <%@include file="/views/project/stageSurvey/commonDetail/estate.jsp" %>
     <%@include file="/views/project/stageSurvey/commonDetail/estateLandState.jsp" %>
 </c:if>
 
 
 <!-- 工业交通仓储 -->
-<c:if test="${basicApplyBatch.type == 1}">
+<c:if test="${basicApply.type == 1}">
     <%@include file="/views/project/stageSurvey/commonDetail/industry/estate.jsp" %>
     <%@include file="/views/project/stageSurvey/commonDetail/estateLandState.jsp" %>
 </c:if>
@@ -30,7 +28,7 @@
 <%@include file="/views/project/stageSurvey/commonDetail/matchingFinance.jsp" %>
 
 <!-- 非工业交通仓储 或 在建工程-->
-<c:if test="${basicApplyBatch.type == 0 || basicApplyBatch.type == 3}">
+<c:if test="${basicApply.type == 0 || basicApply.type == 3}">
     <%@include file="/views/project/stageSurvey/commonDetail/matchingEducation.jsp" %>
     <%@include file="/views/project/stageSurvey/commonDetail/matchingRecreation.jsp" %>
     <%@include file="/views/project/stageSurvey/commonDetail/matchingRestaurant.jsp" %>
@@ -47,7 +45,7 @@
 
 
 <!-- 非工业交通仓储 或 在建工程-->
-<c:if test="${basicApplyBatch.type == 0 || basicApplyBatch.type == 3}">
+<c:if test="${basicApply.type == 0 || basicApply.type == 3}">
     <%@include file="/views/project/stageSurvey/commonDetail/industry/estateSupplyWater.jsp" %>
     <%@include file="/views/project/stageSurvey/commonDetail/industry/estateSupplyDrainWater.jsp" %>
     <%@include file="/views/project/stageSurvey/commonDetail/industry/estateSupplyPower.jsp" %>
@@ -56,7 +54,7 @@
 </c:if>
 
 <!-- 工业交通仓储 -->
-<c:if test="${basicApplyBatch.type == 1}">
+<c:if test="${basicApply.type == 1}">
     <%@include file="/views/project/stageSurvey/commonDetail/industry/matchingMaterial.jsp" %>
 </c:if>
 
