@@ -1,7 +1,9 @@
 package com.copower.pmcc.assess.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.copower.pmcc.ad.api.dto.AdPersonalQualificationDto;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPhase;
+import com.copower.pmcc.assess.service.AdRpcQualificationsAppService;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
@@ -12,7 +14,9 @@ import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProcessInsManagerService;
 import com.copower.pmcc.erp.api.dto.SysAreaDto;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
+import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
@@ -28,6 +32,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -50,6 +55,29 @@ public class PublicController {
     private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
     @Autowired
     private BaseService baseService;
+    @Autowired
+    private AdRpcQualificationsAppService adRpcQualificationsAppService;
+    @Autowired
+    private ErpRpcUserService erpRpcUserService;
+
+    @GetMapping(value = "/getAdPersonalIdentityDto",name = "获取资质")
+    public HttpResult getAdPersonalIdentityDto(String userAccount, String qualificationType){
+        List<AdPersonalQualificationDto> adPersonalQualificationDtoList = new ArrayList<>();
+        try {
+            adPersonalQualificationDtoList = adRpcQualificationsAppService.getAdPersonalQualificationDto(userAccount,qualificationType);
+            if (CollectionUtils.isNotEmpty(adPersonalQualificationDtoList)){
+                adPersonalQualificationDtoList.forEach(adPersonalQualificationDto -> {
+                    SysUserDto sysUserDto  = erpRpcUserService.getSysUser(adPersonalQualificationDto.getUserAccount()) ;
+                    if (sysUserDto != null && StringUtils.isNotBlank(sysUserDto.getUserName())){
+                        adPersonalQualificationDto.setName(sysUserDto.getUserName());
+                    }
+                });
+            }
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e,"获取资质异常");
+        }
+        return HttpResult.newCorrectResult(adPersonalQualificationDtoList);
+    }
 
 
     @RequestMapping(value = "/importAjaxFile", name = "导入文件", method = RequestMethod.POST)

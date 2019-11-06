@@ -244,10 +244,35 @@
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
 </html>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/ajaxfileupload.js?v=${assessVersion}"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/ajaxfileupload.js?v=${assessVersion}"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/map.position.js?v=1.0"></script>
 <input type="file" id="ajaxFileUpload" name="file" style="display: none;">
 <script type="text/javascript">
+
+    /**
+     * 获取资质
+     * @param data
+     * @param callback
+     */
+    function getAdPersonalIdentityDto(data, callback) {
+        $.ajax({
+            url: "${pageContext.request.contextPath}/public/getAdPersonalIdentityDto",
+            data: data,
+            type: "get",
+            dataType: "json",
+            success: function (result) {
+                if (result.ret && result.data) {
+                    callback(result.data);
+                } else {
+                    Alert("异常");
+                }
+            },
+            error: function (result) {
+                alert("调用服务端方法失败，失败原因:" + result);
+            }
+        });
+    }
 
     //上传报告 临时添加zch
     function upFileLoadReport(that, fileId, id, areaGroupId) {
@@ -324,45 +349,32 @@
     function onChange(item) {
         var v = $(item).find("option:selected");
         var frm = $(item).closest("form");
-        dataQualificationShow(v.val(), null, frm);
+        getAdPersonalIdentityDto({qualificationType: v.val()}, function (data) {
+            dataQualificationShow(data, null, frm);
+        });
     }
 
     /**
      * 资质显示
-     * @param type
+     * @param data
      * @param realEstateAppraiser
      * @param frm
      */
-    function dataQualificationShow(type, realEstateAppraiser, frm) {
-        $.ajax({
-            url: "${pageContext.request.contextPath}/dataQualification/findDataQualificationList",
-            data: {type: type},
-            type: "get",
-            dataType: "json",
-            success: function (result) {
-                if (result.ret && result.data) {
-                    var retHtml = '';
-                    $.each(result.data, function (i, item) {
-                        retHtml += '<option key="' + item.qualificationTypeName + '" title="' + item.userAccountName + '" value="' + item.id + '"';
-                        if (realEstateAppraiser) {
-                            var tempArr = realEstateAppraiser.split(",");
-                            $.each(tempArr, function (i, n) {
-                                if (item.id == n) {
-                                    retHtml += 'selected="selected"';
-                                }
-                            });
-                        }
-                        retHtml += '>' + item.userAccountName + '</option>';
-                    });
-                    if (type) {
-                        $(frm).find("select[name='realEstateAppraiser']").empty().html(retHtml).trigger('change');
+    function dataQualificationShow(data, realEstateAppraiser, frm) {
+        var retHtml = '';
+        $.each(data, function (i, item) {
+            retHtml += '<option key="' + item.name + '" title="' + item.name + '" value="' + item.userAccount + '"';
+            if (realEstateAppraiser) {
+                var tempArr = realEstateAppraiser.split(",");
+                $.each(tempArr, function (i, n) {
+                    if (item.userAccount == n) {
+                        retHtml += 'selected="selected"';
                     }
-                }
-            },
-            error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
+                });
             }
+            retHtml += '>' + item.name + '</option>';
         });
+        $(frm).find("select[name='realEstateAppraiser']").empty().html(retHtml).trigger('change');
     }
 
 
@@ -375,7 +387,9 @@
                 });
             });
             frm.initForm(info);
-            dataQualificationShow(info.qualificationType, info.realEstateAppraiser, frm);
+            getAdPersonalIdentityDto({qualificationType: info.qualificationType}, function (data) {
+                dataQualificationShow(data, info.realEstateAppraiser, frm);
+            });
         }
     }
 
@@ -427,6 +441,7 @@
             return false;
         }
         if (data.realEstateAppraiser) {
+
         } else {
             toastr.success('估价师必须选择');
             return false;

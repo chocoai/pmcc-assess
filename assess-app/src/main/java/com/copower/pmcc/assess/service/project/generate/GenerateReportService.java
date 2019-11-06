@@ -389,7 +389,7 @@ public class GenerateReportService {
         }
         //协助工作人员
         if (Objects.equal(BaseReportFieldEnum.AssistanceStaff.getName(), name)) {
-            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getAssistanceStaff(generateReportInfo.getRealEstateAppraiser()));
+            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getAssistanceStaff(generateReportInfo));
         }
         //评估假设
         if (Objects.equal(BaseReportFieldEnum.EVALUATION_HYPOTHESIS.getName(), name)) {
@@ -547,7 +547,7 @@ public class GenerateReportService {
         }
         //注册房地产估价师注册证书复印件
         if (Objects.equal(BaseReportFieldEnum.RegisteredRealEstateValuerValuationInstitution.getName(), name)) {
-            generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getRegisteredRealEstateValuerValuationInstitution(generateReportInfo.getRealEstateAppraiser()));
+            generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getRegisteredRealEstateValuerValuationInstitution(generateReportInfo));
         }
         //房地产总价
         if (Objects.equal(BaseReportFieldEnum.TotalRealEstatePrice.getName(), name)) {
