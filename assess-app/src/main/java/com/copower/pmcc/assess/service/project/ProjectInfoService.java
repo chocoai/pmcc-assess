@@ -377,7 +377,7 @@ public class ProjectInfoService {
     }
 
     /**
-     * 立项审批
+     * 立项审批 (审批通过之后采用监听器发起阶段事项)
      *
      * @param approvalModelDto
      * @throws BusinessException
@@ -385,11 +385,11 @@ public class ProjectInfoService {
      */
     @Transactional(rollbackFor = Exception.class)
     public void projectApproval(ApprovalModelDto approvalModelDto) throws BusinessException, BpmException {
-        ProjectInfo projectInfo = projectInfoDao.getProjectInfoById(approvalModelDto.getProjectId());
-        List<ProjectWorkStage> projectWorkStages = projectWorkStageService.queryWorkStageByClassIdAndTypeId(projectInfo.getProjectTypeId(), true);
-        ProjectWorkStage projectWorkStage = projectWorkStages.get(0);//取得第一个阶段，即为项目审批立项阶段的审批
-        approvalModelDto.setWorkStageId(projectWorkStage.getId());
-        approvalModelDto.setWorkStage(projectWorkStage.getWorkStageName());
+//        ProjectInfo projectInfo = projectInfoDao.getProjectInfoById(approvalModelDto.getProjectId());
+//        List<ProjectWorkStage> projectWorkStages = projectWorkStageService.queryWorkStageByClassIdAndTypeId(projectInfo.getProjectTypeId(), true);
+//        ProjectWorkStage projectWorkStage = projectWorkStages.get(0);//取得第一个阶段，即为项目审批立项阶段的审批
+//        approvalModelDto.setWorkStageId(projectWorkStage.getId());
+//        approvalModelDto.setWorkStage(projectWorkStage.getWorkStageName());
         processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
     }
 
