@@ -35,11 +35,11 @@ public class ProjectAssignEvent extends BaseProcessEvent {
             projectInfo1.setAssignStatus(processExecution.getProcessStatus().getValue());
             projectInfo1.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
             projectInfoService.updateProjectInfo(projectInfo1);
-            try {
-                projectInfoService.initProjectInfo(projectInfo1);
-            } catch (BusinessException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                projectInfoService.initProjectInfo(projectInfo1,true);
+//            } catch (BusinessException e) {
+//                e.printStackTrace();
+//            }
         }
     }
 }

@@ -81,9 +81,16 @@
                                 草稿<i style="margin-left: 10px" class="fa fa-save"></i>
                             </button>
 
-                            <button id="commit_btn" class="btn btn-success" onclick="projectApply();">
+                            <button id="commit_btn" class="btn btn-success" onclick="projectApply(false);">
                                 提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
                             </button>
+
+                            <c:if test="${processInsId == '0' || processInsId == null || processInsId == 0}">
+                                <button id="approval_btn" class="btn btn-primary" onclick="projectApply(true);">
+                                    流程审批<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
+                                </button>
+                            </c:if>
+
                         </div>
                     </div>
                 </div>
@@ -155,14 +162,14 @@
     }
 
     //项目提交立项
-    function projectApply() {
+    function projectApply(mustUseBox) {
         if (!objProject.valid()) {
             return false;
         }
         var data = {};
         data.formData = JSON.stringify(objProject.getFormData());
+        data.mustUseBox = mustUseBox;//注意这是是否发起流程标志,假如为false直接进入下一个阶段,如果为true那么会发起流程
         var url = "${pageContext.request.contextPath}/projectInfo/projectApplySubmit";
-
         if ("${empty processInsId?"0":processInsId}" != "0") {
             url = "${pageContext.request.contextPath}/projectInfo/projectEditSubmit";
             var approvalData = formParams("frm_approval");
@@ -190,4 +197,6 @@
             }
         });
     }
+
+
 </script>

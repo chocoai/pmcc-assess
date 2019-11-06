@@ -1,9 +1,7 @@
 package com.copower.pmcc.assess.service.project.generate;
 
 import com.copower.pmcc.ad.api.enums.AdPersonalEnum;
-import com.copower.pmcc.assess.dal.basis.dao.data.DataQualificationDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.generate.GenerateReportInfoDao;
-import com.copower.pmcc.assess.dal.basis.entity.DataQualification;
 import com.copower.pmcc.assess.dal.basis.entity.GenerateReportInfo;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeAreaGroup;
 import com.copower.pmcc.assess.dto.output.project.generate.GenerateReportInfoVo;
@@ -34,8 +32,6 @@ public class GenerateReportInfoService {
     private SchemeAreaGroupService schemeAreaGroupService;
     @Autowired
     private GenerateReportInfoDao generateReportInfoDao;
-    @Autowired
-    private DataQualificationDao dataQualificationDao;
     @Autowired
     private PublicService publicService;
     @Autowired
@@ -132,10 +128,9 @@ public class GenerateReportInfoService {
         }
         //取估价师名称
         if (StringUtils.isNotBlank(generateReportGeneration.getRealEstateAppraiser())) {
-            List<Integer> list = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(generateReportGeneration.getRealEstateAppraiser()));
-            List<DataQualification> dataQualifications = dataQualificationDao.getDataQualifications(list);
-            if (!CollectionUtils.isEmpty(dataQualifications)) {
-                String userName = publicService.getUserNameByAccountList(LangUtils.transform(dataQualifications, o -> o.getUserAccount()));
+            List<String> stringList = FormatUtils.transformString2List(generateReportGeneration.getRealEstateAppraiser()) ;
+            if (!CollectionUtils.isEmpty(stringList)) {
+                String userName = publicService.getUserNameByAccountList(stringList);
                 vo.setRealEstateAppraiserName(userName);
             }
         }

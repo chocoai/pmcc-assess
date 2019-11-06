@@ -48,7 +48,9 @@ import com.copower.pmcc.assess.service.project.survey.*;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.ProjectDocumentDto;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
+import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.provider.ErpRpcToolsService;
+import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
@@ -92,24 +94,19 @@ public class GenerateBaseDataService {
     private ProjectPhaseService projectPhaseService;
     private SurveyAssetInventoryRightService surveyAssetInventoryRightService;
     private DeclareRecordService declareRecordService;
-    private SurveyAssetInventoryDao surveyAssetInventoryDao;
     private SchemeSurePriceService schemeSurePriceService;
     private SchemeReimbursementService schemeReimbursementService;
     private com.copower.pmcc.assess.service.AdRpcQualificationsAppService adRpcQualificationsService;
     private PublicService publicService;
     private CompileReportService compileReportService;
     private SchemeReportFileService schemeReportFileService;
-    private DataQualificationService dataQualificationService;
     private DeclareRealtyRealEstateCertService declareRealtyRealEstateCertService;
     private DeclareRealtyHouseCertService declareRealtyHouseCertService;
     private DeclareRealtyLandCertService declareRealtyLandCertService;
     private SchemeInfoService schemeInfoService;
-    private EvaluationMethodService evaluationMethodService;
     private SchemeLiquidationAnalysisService schemeLiquidationAnalysisService;
     private MdIncomeService mdIncomeService;
     private MdMarketCompareService mdMarketCompareService;
-    private DataHisRightInfoPublicityService dataHisRightInfoPublicityService;
-    private SurveyAssetInventoryContentService surveyAssetInventoryContentService;
     private DataMethodFormulaService dataMethodFormulaService;
     private GenerateCommonMethod generateCommonMethod;
     private EvaluationThinkingService evaluationThinkingService;
@@ -137,6 +134,7 @@ public class GenerateBaseDataService {
     private DeclareBuildEngineeringAndEquipmentCenterService declareBuildEngineeringAndEquipmentCenterService;
     private BasicUnitHuxingService basicUnitHuxingService;
     private BaseService baseService;
+    private ErpRpcUserService erpRpcUserService;
 
     /**
      * 构造器必须传入的参数
@@ -2334,6 +2332,7 @@ public class GenerateBaseDataService {
     public String getRegisteredRealEstateValuerAndNumber(GenerateReportInfo generateReportInfo) throws Exception {
         String localPath = getLocalPath();
         Document document = new Document();
+        AsposeUtils.saveWord(localPath, document);
         DocumentBuilder documentBuilder = new DocumentBuilder(document);
         documentBuilder.getFont().setSize(14);
         documentBuilder.getFont().setName(AsposeUtils.ImitationSongGB2312FontName);
@@ -2341,7 +2340,6 @@ public class GenerateBaseDataService {
         documentBuilder.getCellFormat().getBorders().getRight().setLineWidth(2);
         documentBuilder.getCellFormat().getBorders().getTop().setLineWidth(2.0);
         documentBuilder.getCellFormat().getBorders().getBottom().setLineWidth(2.0);
-
         documentBuilder.getCellFormat().setVerticalMerge(CellVerticalAlignment.CENTER);
         documentBuilder.getCellFormat().setVerticalAlignment(CellVerticalAlignment.CENTER);
         documentBuilder.getCellFormat().setHorizontalMerge(CellVerticalAlignment.CENTER);
@@ -2350,54 +2348,60 @@ public class GenerateBaseDataService {
         //设置具体宽度
         documentBuilder.getCellFormat().setWidth(20);
         documentBuilder.getCellFormat().setLeftPadding(-300);
-        Table table = documentBuilder.startTable();
+        if (StringUtils.isEmpty(generateReportInfo.getRealEstateAppraiser())) {
+            return localPath;
+        }
+        documentBuilder.startTable();
+        List<String> stringList = FormatUtils.transformString2List(generateReportInfo.getRealEstateAppraiser());
+        if (CollectionUtils.isEmpty(stringList)) {
+            return localPath;
+        }
+        stringList = stringList.stream().distinct().collect(Collectors.toList());
         LinkedList<String> linkedList = Lists.newLinkedList();
-        List<Integer> integerList = FormatUtils.transformString2Integer(generateReportInfo.getRealEstateAppraiser());
-        if (CollectionUtils.isNotEmpty(integerList)) {
-            for (Integer id : integerList) {
-                DataQualificationVo dataQualificationVo = dataQualificationService.getByDataQualificationId(id);
-                if (dataQualificationVo == null) {
-                    continue;
-                }
-                String userAccountName = " ";
-                if (StringUtils.isNotBlank(dataQualificationVo.getUserAccountName())) {
-                    userAccountName = dataQualificationVo.getUserAccountName();
-                }
-                List<String> stringList = FormatUtils.transformString2List(dataQualificationVo.getUserAccount());
-                if (CollectionUtils.isEmpty(stringList)) {
-                    continue;
-                }
-                for (String account : stringList) {
-                    List<AdPersonalQualificationDto> adPersonalQualificationDtoList = adRpcQualificationsService.getAdPersonalQualificationDto(account, generateReportInfo.getQualificationType());
-                    if (CollectionUtils.isEmpty(adPersonalQualificationDtoList)) {
-                        continue;
-                    }
-                    for (AdPersonalQualificationDto qualificationDto : adPersonalQualificationDtoList) {
-                        if (StringUtils.isNotBlank(qualificationDto.getCertificateNo())) {
-                            linkedList.add(String.format("%s%s", StringUtils.repeat(" ", 5), userAccountName));
-                            linkedList.add(String.format("注册证号:%s", qualificationDto.getCertificateNo()));
-                            AsposeUtils.writeWordTitle(documentBuilder, linkedList);
-                            linkedList.clear();
-                        }
+        for (String account : stringList) {
+            List<AdPersonalQualificationDto> adPersonalQualificationDtoList = adRpcQualificationsService.getAdPersonalQualificationDto(account, generateReportInfo.getQualificationType());
+            if (CollectionUtils.isEmpty(adPersonalQualificationDtoList)) {
+                continue;
+            }
+            Map<String, String> stringMap = Maps.newHashMap();
+            adPersonalQualificationDtoList.forEach(adPersonalQualificationDto -> {
+                SysUserDto sysUserDto = erpRpcUserService.getSysUser(account);
+                if (sysUserDto != null) {
+                    if (StringUtils.isNotBlank(adPersonalQualificationDto.getCertificateNo())) {
+                        stringMap.put(adPersonalQualificationDto.getCertificateNo(), sysUserDto.getUserName());
                     }
                 }
+            });
+            if (stringMap.isEmpty()) {
+                continue;
+            }
+            for (Map.Entry<String, String> stringEntry : stringMap.entrySet()) {
+                linkedList.add(String.format("%s%s", StringUtils.repeat(" ", 5), stringEntry.getValue()));
+                linkedList.add(String.format("注册证号:%s", stringEntry.getKey()));
+                AsposeUtils.writeWordTitle(documentBuilder, linkedList);
+                linkedList.clear();
             }
         }
         documentBuilder.endTable();
-        document.save(localPath);
+        AsposeUtils.saveWord(localPath, document);
         return localPath;
     }
 
     public String getRegisteredRealEstateValuer(GenerateReportInfo generateReportInfo) {
         StringBuilder stringBuilder = new StringBuilder(8);
-        List<Integer> integerList = FormatUtils.transformString2Integer(generateReportInfo.getRealEstateAppraiser());
-        if (CollectionUtils.isNotEmpty(integerList)) {
-            for (Integer id : integerList) {
-                DataQualificationVo dataQualificationVo = dataQualificationService.getByDataQualificationId(id);
-                if (dataQualificationVo != null) {
-                    stringBuilder.append(dataQualificationVo.getUserAccountName());
-                }
+        if (StringUtils.isEmpty(generateReportInfo.getRealEstateAppraiser())) {
+            return stringBuilder.toString();
 
+        }
+        List<String> stringList = FormatUtils.transformString2List(generateReportInfo.getRealEstateAppraiser());
+        if (CollectionUtils.isEmpty(stringList)) {
+            return stringBuilder.toString();
+        }
+        stringList = stringList.stream().distinct().collect(Collectors.toList());
+        for (String account : stringList) {
+            SysUserDto sysUserDto = erpRpcUserService.getSysUser(account);
+            if (sysUserDto != null) {
+                stringBuilder.append(sysUserDto.getUserName());
             }
         }
         return stringBuilder.toString();
@@ -2625,8 +2629,7 @@ public class GenerateBaseDataService {
      *
      * @return
      */
-    public String getAssistanceStaff(String str) {
-        String[] ids = str.split(",");
+    public String getAssistanceStaff(GenerateReportInfo generateReportInfo) {
         List<ProjectPhaseVo> projectPhaseVos = projectPhaseService.queryProjectPhaseByCategory(projectInfo.getProjectTypeId(),
                 projectInfo.getProjectCategoryId(), null).stream().filter(projectPhaseVo -> {
             if (Objects.equal(AssessPhaseKeyConstant.SCENE_EXPLORE, projectPhaseVo.getPhaseKey())) {
@@ -2639,41 +2642,38 @@ public class GenerateBaseDataService {
         }).collect(Collectors.toList());
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         Set<String> stringSet = Sets.newHashSet();
-        for (String id : ids) {
-            if (CollectionUtils.isNotEmpty(projectPhaseVos)) {
-                projectPhaseVos.stream().forEach(projectPhaseScene -> {
-                    DataQualificationVo dataQualificationVo = dataQualificationService.getByDataQualificationId(Integer.parseInt(id));
-                    if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-                        SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectList.get(0);
-                        ProjectPlanDetails query = new ProjectPlanDetails();
-                        query.setProjectId(projectId);
-                        query.setProjectPhaseId(projectPhaseScene.getId());
-                        query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
-                        List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
-                        if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
-                            projectPlanDetailsList.stream().forEach(projectPlanDetails -> {
-                                if (StringUtils.isNotBlank(projectPlanDetails.getExecuteUserAccount())) {
-                                    if (dataQualificationVo != null) {
-                                        if (StringUtils.isNotBlank(dataQualificationVo.getUserAccount())) {
-                                            for (String account : dataQualificationVo.getUserAccount().split(",")) {
-                                                if (Objects.equal(account, projectPlanDetails.getExecuteUserAccount())) {
-
-                                                } else {
-                                                    stringSet.add(publicService.getUserNameByAccount(projectPlanDetails.getExecuteUserAccount()));
-                                                    break;
-                                                }
-                                            }
-                                        }
+        final List<String> stringList = new ArrayList<>();
+        if (StringUtils.isNotBlank(generateReportInfo.getRealEstateAppraiser())) {
+            stringList.addAll(FormatUtils.transformString2List(generateReportInfo.getRealEstateAppraiser()));
+            List<String>  stringList2 = stringList.stream().distinct().collect(Collectors.toList());
+            stringList.clear();
+            stringList.addAll(stringList2) ;
+        }
+        if (CollectionUtils.isNotEmpty(projectPhaseVos)) {
+            projectPhaseVos.stream().forEach(projectPhaseScene -> {
+                if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+                    SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectList.get(0);
+                    ProjectPlanDetails query = new ProjectPlanDetails();
+                    query.setProjectId(projectId);
+                    query.setProjectPhaseId(projectPhaseScene.getId());
+                    query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
+                    List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
+                    if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
+                        projectPlanDetailsList.stream().forEach(projectPlanDetails -> {
+                            String account = projectPlanDetails.getExecuteUserAccount() ;
+                            if (StringUtils.isNotBlank(account)) {
+                                if (!stringList.isEmpty()){
+                                    if (!stringList.contains(account)){
+                                        stringSet.add(publicService.getUserNameByAccount(account));
                                     }
                                 }
-                            });
-                        }
+                            }
+                        });
                     }
-                });
-            }
+                }
+            });
         }
-        String s = generateCommonMethod.toSetStringSplitSpace(stringSet);
-        return s;
+        return StringUtils.join(stringSet,"");
     }
 
     /**
@@ -5320,11 +5320,11 @@ public class GenerateBaseDataService {
                         List<String> paths = Lists.newArrayList();
                         for (SysAttachmentDto item : attachmentList) {
                             String itemImgPath = baseAttachmentService.downloadFtpFileToLocal(item.getId());
-                            if (StringUtils.isNotEmpty(itemImgPath)&&FileUtils.checkImgSuffix(itemImgPath)) {
+                            if (StringUtils.isNotEmpty(itemImgPath) && FileUtils.checkImgSuffix(itemImgPath)) {
                                 paths.add(baseAttachmentService.downloadFtpFileToLocal(item.getId()));
                             }
                         }
-                        if(paths.size()==0) continue;
+                        if (paths.size() == 0) continue;
                         imgPath = generateCommonMethod.getCombinationOfhead(paths);
 
                         int width = maxWidth / colCount;
@@ -5359,11 +5359,11 @@ public class GenerateBaseDataService {
                         List<String> paths = Lists.newArrayList();
                         for (SysAttachmentDto item : attachmentList) {
                             String itemImgPath = baseAttachmentService.downloadFtpFileToLocal(item.getId());
-                            if (StringUtils.isNotEmpty(itemImgPath)&&FileUtils.checkImgSuffix(itemImgPath)) {
+                            if (StringUtils.isNotEmpty(itemImgPath) && FileUtils.checkImgSuffix(itemImgPath)) {
                                 paths.add(baseAttachmentService.downloadFtpFileToLocal(item.getId()));
                             }
                         }
-                        if(paths.size()==0) continue;
+                        if (paths.size() == 0) continue;
                         builder.insertCell();
                         builder.getFont().setName("宋体");
                         builder.getFont().setSize(10.5);
@@ -5526,40 +5526,39 @@ public class GenerateBaseDataService {
     /**
      * 注册房地产估价师注册证书复印件
      *
-     * @param str
+     * @param generateReportInfo
      * @return
      * @throws Exception
      */
-    public String getRegisteredRealEstateValuerValuationInstitution(String str) throws Exception {
+    public String getRegisteredRealEstateValuerValuationInstitution(GenerateReportInfo generateReportInfo) throws Exception {
         String localPath = getLocalPath();
         Document document = new Document();
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
-        List<String> images = Lists.newArrayList();
-        String[] strings = str.split(",");
-        for (String id : strings) {
-            DataQualificationVo dataQualificationVo = dataQualificationService.getByDataQualificationId(Integer.parseInt(id));
-            if (dataQualificationVo != null) {
-                if (StringUtils.isBlank(dataQualificationVo.getUserAccount())) continue;
-                for (String account : dataQualificationVo.getUserAccount().split(",")) {
-                    List<AdPersonalQualificationDto> adPersonalQualificationDtoList = adRpcQualificationsService.getAdPersonalQualificationDto(account, AdPersonalEnum.PERSONAL_QUALIFICATION_ASSESS_ZCFDCGJS.getValue());
-                    if (CollectionUtils.isEmpty(adPersonalQualificationDtoList)) continue;
-                    adPersonalQualificationDtoList.forEach(adCompanyQualificationDto -> {
-                        if (StringUtils.isBlank(adCompanyQualificationDto.getStandardImageJson())) return;
-                        List<SysAttachmentDto> attachmentDtoList = JSON.parseArray(adCompanyQualificationDto.getStandardImageJson(), SysAttachmentDto.class);
-                        if (CollectionUtils.isNotEmpty(attachmentDtoList)) {
-                            try {
-                                builder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
-                                builder.insertHtml(generateCommonMethod.getWarpCssHtml(String.format("%s%s", publicService.getUserNameByAccount(adCompanyQualificationDto.getUserAccount()), "注册证书复印件")), true);
-                                this.imgComposingByAttachmentDtoList(attachmentDtoList, builder);
-                            } catch (Exception e1) {
-                                baseService.writeExceptionInfo(e1, "注册房地产估价师注册证书复印件");
-                            }
-                        }
-                    });
+        List<String> stringList = null;
+        if (StringUtils.isNotBlank(generateReportInfo.getRealEstateAppraiser())) {
+            stringList = FormatUtils.transformString2List(generateReportInfo.getRealEstateAppraiser());
+        }
+        if (CollectionUtils.isNotEmpty(stringList)) {
+            stringList = stringList.stream().distinct().collect(Collectors.toList());
+            for (String account : stringList) {
+                List<AdPersonalQualificationDto> adPersonalQualificationDtoList = adRpcQualificationsService.getAdPersonalQualificationDto(account, generateReportInfo.getQualificationType());
+                if (CollectionUtils.isEmpty(adPersonalQualificationDtoList)) {
+                    continue;
+                }
+                for (AdPersonalQualificationDto adCompanyQualificationDto : adPersonalQualificationDtoList) {
+                    if (StringUtils.isBlank(adCompanyQualificationDto.getStandardImageJson())) {
+                        continue;
+                    }
+                    List<SysAttachmentDto> attachmentDtoList = JSON.parseArray(adCompanyQualificationDto.getStandardImageJson(), SysAttachmentDto.class);
+                    if (CollectionUtils.isNotEmpty(attachmentDtoList)) {
+                        builder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
+                        builder.insertHtml(generateCommonMethod.getWarpCssHtml(String.format("%s%s", publicService.getUserNameByAccount(adCompanyQualificationDto.getUserAccount()), "注册证书复印件")), true);
+                        this.imgComposingByAttachmentDtoList(attachmentDtoList, builder);
+                    }
                 }
             }
         }
-        document.save(localPath);
+        AsposeUtils.saveWord(localPath, document);
         return localPath;
     }
 
@@ -6219,21 +6218,16 @@ public class GenerateBaseDataService {
         this.projectPhaseService = SpringContextUtils.getBean(ProjectPhaseService.class);
         this.surveyAssetInventoryRightService = SpringContextUtils.getBean(SurveyAssetInventoryRightService.class);
         this.declareRecordService = SpringContextUtils.getBean(DeclareRecordService.class);
-        this.surveyAssetInventoryDao = SpringContextUtils.getBean(SurveyAssetInventoryDao.class);
         this.schemeSurePriceService = SpringContextUtils.getBean(SchemeSurePriceService.class);
         this.schemeReimbursementService = SpringContextUtils.getBean(SchemeReimbursementService.class);
         this.publicService = SpringContextUtils.getBean(PublicService.class);
         this.adRpcQualificationsService = SpringContextUtils.getBean(com.copower.pmcc.assess.service.AdRpcQualificationsAppService.class);
         this.compileReportService = SpringContextUtils.getBean(CompileReportService.class);
         this.schemeReportFileService = SpringContextUtils.getBean(SchemeReportFileService.class);
-        this.dataQualificationService = SpringContextUtils.getBean(DataQualificationService.class);
         this.schemeInfoService = SpringContextUtils.getBean(SchemeInfoService.class);
-        this.evaluationMethodService = SpringContextUtils.getBean(EvaluationMethodService.class);
         this.schemeLiquidationAnalysisService = SpringContextUtils.getBean(SchemeLiquidationAnalysisService.class);
         this.mdIncomeService = SpringContextUtils.getBean(MdIncomeService.class);
         this.mdMarketCompareService = SpringContextUtils.getBean(MdMarketCompareService.class);
-        this.dataHisRightInfoPublicityService = SpringContextUtils.getBean(DataHisRightInfoPublicityService.class);
-        this.surveyAssetInventoryContentService = SpringContextUtils.getBean(SurveyAssetInventoryContentService.class);
         this.dataMethodFormulaService = SpringContextUtils.getBean(DataMethodFormulaService.class);
         this.evaluationThinkingService = SpringContextUtils.getBean(EvaluationThinkingService.class);
         this.evaluationBasisService = SpringContextUtils.getBean(EvaluationBasisService.class);
@@ -6263,6 +6257,7 @@ public class GenerateBaseDataService {
         this.dataSetUseFieldService = SpringContextUtils.getBean(DataSetUseFieldService.class);
         this.basicUnitHuxingService = SpringContextUtils.getBean(BasicUnitHuxingService.class);
         this.baseService = SpringContextUtils.getBean(BaseService.class);
+        this.erpRpcUserService = SpringContextUtils.getBean(ErpRpcUserService.class);
         //必须在bean之后
         SchemeAreaGroup areaGroup = schemeAreaGroupService.get(areaId);
         if (areaGroup == null) {
