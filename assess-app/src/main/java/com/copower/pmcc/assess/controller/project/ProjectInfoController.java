@@ -38,6 +38,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -176,20 +177,21 @@ public class ProjectInfoController {
 
     @ResponseBody
     @RequestMapping(value = "/projectApplySubmit", name = "项目立项", method = RequestMethod.POST)
-    public HttpResult projectApplySubmit(String formData, Boolean bisNextUser) {
+    public HttpResult projectApplySubmit(String formData, Boolean bisNextUser, @RequestParam(defaultValue = "false") boolean mustUseBox) {
         try {
-            projectInfoService.projectApply(projectInfoService.format(formData), true);
+            projectInfoService.projectApply(projectInfoService.format(formData), true, mustUseBox);
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());
         }
         return HttpResult.newCorrectResult();
     }
 
+
     @ResponseBody
     @RequestMapping(value = "/projectApplyDraft", name = "项目草稿", method = RequestMethod.POST)
-    public HttpResult projectApplyDraft(String formData, Boolean bisNextUser) {
+    public HttpResult projectApplyDraft(String formData, Boolean bisNextUser, @RequestParam(defaultValue = "false") boolean mustUseBox) {
         try {
-            projectInfoService.projectApply(projectInfoService.format(formData), false);
+            projectInfoService.projectApply(projectInfoService.format(formData), false, mustUseBox);
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());
         }

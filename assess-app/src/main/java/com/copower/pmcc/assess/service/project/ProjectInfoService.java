@@ -137,6 +137,8 @@ public class ProjectInfoService {
     private BaseAttachmentService baseAttachmentService;
     @Autowired
     private ProjectPlanDetailsService projectPlanDetailsService;
+    @Autowired
+    private BaseParameterService baseParameterService;
 
 
     /**
@@ -145,17 +147,17 @@ public class ProjectInfoService {
      * @param projectDto
      * @param init       是否立项
      */
-    public boolean projectApply(InitiateProjectDto projectDto, boolean init) throws BusinessException {
+    public boolean projectApply(InitiateProjectDto projectDto, boolean init, boolean mustUseBox) throws BusinessException {
         ProjectMember projectMember = new ProjectMember();
         projectMember.setUserAccountManager(projectDto.getProjectInfo().getUserAccountManager());
         projectMember.setUserAccountMember(projectDto.getProjectInfo().getUserAccountMember());
         projectMember.setBisEnable(true);
-        return projectApplyChange(projectDto.getConsignor(), projectDto.getUnitinformation(), projectDto.getPossessor(), projectMember, projectDto.getProjectInfo(), init);
+        return projectApplyChange(projectDto.getConsignor(), projectDto.getUnitinformation(), projectDto.getPossessor(), projectMember, projectDto.getProjectInfo(), init, mustUseBox);
     }
 
     @Transactional(rollbackFor = {Exception.class})
     public boolean projectApplyChange(InitiateConsignor consignor, InitiateUnitInformation unitInformation, InitiatePossessor possessor, ProjectMember projectMember,
-                                      ProjectInfoDto projectInfoDto, boolean init) {
+                                      ProjectInfoDto projectInfoDto, boolean init, boolean mustUseBox) {
         boolean flag = true;
         try {
             ProjectInfo projectInfo = change(projectInfoDto);
@@ -189,7 +191,7 @@ public class ProjectInfoService {
             //发起项目
             if (init) {
                 //初始化项目信息
-                initProjectInfo(projectInfo);
+                initProjectInfo(projectInfo, mustUseBox);
                 publicService.writeToErpProject(projectInfo);
                 unitInformationService.roundWrite(unitInformation);
             }
@@ -289,11 +291,12 @@ public class ProjectInfoService {
 
     /**
      * 初始化项目信息
-     *
      * @param projectInfo
+     * @param mustUseBox 当为true的时候发起审批流程,当为false直接进入下一个阶段
+     * @throws Exception
      */
     @Transactional(rollbackFor = Exception.class)
-    public void initProjectInfo(ProjectInfo projectInfo) throws Exception {
+    public void initProjectInfo(ProjectInfo projectInfo, boolean mustUseBox) throws Exception {
         Integer projectTypeId = projectInfo.getProjectTypeId();//项目类别id
         Integer projectCategoryId = projectInfo.getProjectCategoryId();//项目范围id
         List<ProjectWorkStage> projectWorkStages = projectWorkStageService.queryWorkStageByClassIdAndTypeId(projectTypeId, true);
@@ -318,15 +321,17 @@ public class ProjectInfoService {
             i++;//系统对不同项目进行分别排序，你处理某些阶段不需要执行的问题
         }
 
-        ProjectWorkStage projectWorkStage = projectWorkStages.get(0);//取得第一个阶段，即为项目审批立项阶段的审批
-        if (StringUtils.isNotBlank(projectWorkStage.getReviewBoxName()))//注意是取复核模型，因为第一个阶段没有工作成果提交，所以取复核较为合理
-        {
+        //发起流程,注意以前是取得阶段中的复核模型,现在改为参数直接获取复核模型
+        if (mustUseBox) {
+            ProjectWorkStage projectWorkStage = projectWorkStages.get(0);//取得第一个阶段，即为项目审批立项阶段的审批
             ProcessUserDto processUserDto = startProjectProcess(projectInfo, projectWorkStage);
             //发起流程后更新项目的项目id
             projectInfo.setProcessInsId(processUserDto.getProcessInsId());
             projectInfo.setStatus(ProcessStatusEnum.RUN.getValue());
             projectInfoDao.updateProjectInfo(projectInfo);
-        } else {//直接进入下一阶段
+        }
+        //直接进入下一阶段
+        if (!mustUseBox) {
             projectInfo.setProjectStatus(ProjectStatusEnum.NORMAL.getKey());//更新项目状态
             updateProjectInfo(projectInfo);
             List<ProjectPlan> projectPlans = projectPlanService.getProjectplanByProjectId(projectInfo.getId(), "");
@@ -346,8 +351,9 @@ public class ProjectInfoService {
         ProcessUserDto processUserDto = null;
         //发起相应的流程
         String folio = "【立项审批】" + projectInfo.getProjectName();
-        Integer boxIdByBoxName = bpmRpcBoxService.getBoxIdByBoxName(projectWorkStage.getReviewBoxName());
-        BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(boxIdByBoxName);
+        //取得复核模型
+        final String boxName = baseParameterService.getParameterValues(BaseParameterEnum.PROJECT__FORM__TASK__PROCESS__KEY.getParameterKey());
+        BoxReDto boxReDto = bpmRpcBoxService.getBoxReByBoxName(boxName);
         ProcessInfo processInfo = new ProcessInfo();
         processInfo.setStartUser(projectInfo.getCreator());
         processInfo.setProjectId(projectInfo.getId());
@@ -361,7 +367,6 @@ public class ProjectInfoService {
         processInfo.setProcessEventExecutorName(ProjectInfoEvent.class.getSimpleName());
         processInfo.setWorkStageId(projectWorkStage.getId());
         processInfo.setAppKey(applicationConstant.getAppKey());
-
         try {
             processUserDto = processControllerComponent.processStart(projectInfo.getCreator(), processInfo, projectInfo.getCreator(), false);
         } catch (BpmException e) {
@@ -779,17 +784,18 @@ public class ProjectInfoService {
 
     /**
      * 获取当前项目的项目类型
+     *
      * @param projectCategoryId
      * @return
      */
-    public AssessProjectTypeEnum getAssessProjectType(Integer projectCategoryId){
+    public AssessProjectTypeEnum getAssessProjectType(Integer projectCategoryId) {
         BaseProjectClassify baseProjectClassify = baseProjectClassifyService.getCacheProjectClassifyById(projectCategoryId);
-        if(baseProjectClassify!=null){
-            if(AssessProjectClassifyConstant.SINGLE_HOUSE_PROPERTY_CERTIFICATE_TYPE_SIMPLE.equals(baseProjectClassify.getFieldName()))
+        if (baseProjectClassify != null) {
+            if (AssessProjectClassifyConstant.SINGLE_HOUSE_PROPERTY_CERTIFICATE_TYPE_SIMPLE.equals(baseProjectClassify.getFieldName()))
                 return AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_HOUSE;
-            if(AssessProjectClassifyConstant.SINGLE_HOUSE_LAND_CERTIFICATE_TYPE_SIMPLE.equals(baseProjectClassify.getFieldName()))
+            if (AssessProjectClassifyConstant.SINGLE_HOUSE_LAND_CERTIFICATE_TYPE_SIMPLE.equals(baseProjectClassify.getFieldName()))
                 return AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_LAND;
-            if(AssessProjectClassifyConstant.COMPREHENSIVE_ASSETS_TYPE.equals(baseProjectClassify.getFieldName()))
+            if (AssessProjectClassifyConstant.COMPREHENSIVE_ASSETS_TYPE.equals(baseProjectClassify.getFieldName()))
                 return AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_ASSETS;
         }
         return null;
