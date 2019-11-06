@@ -46,7 +46,7 @@ public enum BaseReportFieldMdIncomeEnum implements Serializable {
     IncomesalesTaxRatio("收益法增值税率"),
     IncomesalesTaxRatioCorrect("收益法增值修正税率"),
     IncomePropertyTaxCorrect("收益法房产税修正税率"),
-    IncomeCityLocalEducationTaxCorrect("城市地方教育修正"),
+    IncomeCityLocalEducationTaxCorrect("收益法城市地方教育修正"),
     LandUseTax("收益法土地使用税"),
     IncomeAdditionalCapture("收益法有效收缴率"),
 

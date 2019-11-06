@@ -25,6 +25,7 @@ import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
+import com.copower.pmcc.bpm.api.provider.BpmRpcToolsService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
@@ -113,6 +114,8 @@ public class ProjectPlanDetailsService {
     private SchemeJudgeObjectService schemeJudgeObjectService;
     @Autowired
     private PublicService publicService;
+    @Autowired
+    private BpmRpcToolsService bpmRpcToolsService;
 
     public ProjectPlanDetails getProjectPlanDetailsById(Integer id) {
         return projectPlanDetailsDao.getProjectPlanDetailsById(id);
@@ -404,7 +407,11 @@ public class ProjectPlanDetailsService {
                                         approvalUrl = boxReDto.getProcessEditUrl();
                                     }
                                     approvalUrl = String.format("/%s%s?boxId=%s&processInsId=%s&taskId=%s", boxReDto.getGroupName(), approvalUrl, boxReDto.getId(), processInsId, taskId);
-                                    if (activitiTaskNodeDto.getUsers().contains(commonService.thisUserAccount())) {
+                                    //找出代理人
+                                    List<String> assignorList = bpmRpcToolsService.getAssignorListByAgent(commonService.thisUserAccount());
+                                    List<String> userList = Lists.newArrayList(commonService.thisUserAccount());
+                                    userList.addAll(assignorList);
+                                    if (CollectionUtils.isNotEmpty(CollectionUtils.intersection(activitiTaskNodeDto.getUsers(), userList))) {
                                         projectPlanDetailsVo.setExcuteUrl(approvalUrl);
                                     }
                                     projectPlanDetailsVo.setApproverUserName(publicService.getUserNameByAccountList(activitiTaskNodeDto.getUsers()));

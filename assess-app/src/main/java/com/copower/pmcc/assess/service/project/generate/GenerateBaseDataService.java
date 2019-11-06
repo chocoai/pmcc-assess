@@ -4426,7 +4426,7 @@ public class GenerateBaseDataService {
                 }
             }
             {
-                String s = generateLandEntityService.getInfrastructureCompleteness(landStateVo);
+                String s = baseDataDicService.getNameById(basicEstate.getInfrastructureCompleteness());
                 if (StringUtils.isNotBlank(s.trim())) {
                     stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%d、基础设施完备度:%s", ++index, generateCommonMethod.trim(s))));
                 }

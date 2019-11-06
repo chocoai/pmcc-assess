@@ -344,12 +344,12 @@
             });
             cols.push({
                 field: 'planStartDate', title: '开始日期', formatter: function (value, row, index) {
-                    return formatDate(value, false)
+                    return formatDate(value, false);
                 }
             });
             cols.push({
                 field: 'planEndDate', title: '结束日期', formatter: function (value, row, index) {
-                    return formatDate(value, false)
+                    return formatDate(value, false);
                 }
             });
             cols.push({
@@ -451,7 +451,7 @@
         //打开任务页面的回调
         taskOpenWin: function (url) {
             openWin(url, function () {
-                projectStagePlan.loadProjectTaskList();
+                projectStagePlan.stageTable.bootstrapTable('refresh');
             })
         },
 
