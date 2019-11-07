@@ -92,7 +92,7 @@ public class ProjectTaskGenerateAssist implements ProjectTaskInterface {
 
     @Override
     public ModelAndView returnEditView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageGenerate/taskGenerateApproval", processInsId, boxId, taskId, agentUserAccount);
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageGenerate/taskGenerateIndex", processInsId, boxId, taskId, agentUserAccount);
         setModelParam(projectPlanService.getProjectplanById(projectPlanDetails.getPlanId()), modelAndView);
         return modelAndView;
     }
