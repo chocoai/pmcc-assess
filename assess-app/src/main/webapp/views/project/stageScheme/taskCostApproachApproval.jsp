@@ -749,10 +749,10 @@
                 });
                 var landLevelBodyHtml = $("#landLevelTabContentBody").html();
                 if (landLevelBodyHtml) {
-                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landFactorTotalScore}/g, AssessCommon.pointToPercent(item.achievement));
                     landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelCategoryName}/g, item.category);
                     landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelTypeName}/g, item.typeName);
                     landLevelBodyHtml = landLevelBodyHtml.replace(/{gradeName}/g, item.gradeName);
+                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landFactorTotalScore}/g, AssessCommon.pointToPercent(item.achievement));
                     var text = "";
                     $.each(obj, function (i, n) {
                         text += "等级:" + n.gradeName + "，说明:" + n.reamark + "； \r";
@@ -762,23 +762,6 @@
                 }
             });
 
-            if (indexM == 0) {
-                target.find("tr").first().find("td").first().attr("rowspan", dataA.length);
-                target.find("tr").each(function (i, n) {
-                    if (i != 0) {
-                        $(n).find("td").first().remove();
-                    }
-                });
-            }
-            if (indexM == 1) {
-                var length = data[0].length;
-                target.find("tr").eq(length).find("td").first().attr("rowspan", dataA.length);
-                target.find("tr").each(function (i, n) {
-                    if (i > length) {
-                        $(n).find("td").first().remove();
-                    }
-                });
-            }
         });
     };
 </script>

@@ -668,23 +668,6 @@
                 }
             });
 
-            if (indexM == 0) {
-                target.find("tr").first().find("td").first().attr("rowspan", dataA.length);
-                target.find("tr").each(function (i, n) {
-                    if (i != 0) {
-                        $(n).find("td").first().remove();
-                    }
-                });
-            }
-            if (indexM == 1) {
-                var length = data[0].length;
-                target.find("tr").eq(length).find("td").first().attr("rowspan", dataA.length);
-                target.find("tr").each(function (i, n) {
-                    if (i > length) {
-                        $(n).find("td").first().remove();
-                    }
-                });
-            }
         });
     };
 
@@ -726,23 +709,6 @@
                 }
             });
 
-            if (indexM == 0) {
-                target.find("tr").first().find("td").first().attr("rowspan", dataA.length);
-                target.find("tr").each(function (i, n) {
-                    if (i != 0) {
-                        $(n).find("td").first().remove();
-                    }
-                });
-            }
-            if (indexM == 1) {
-                var length = data[0].length;
-                target.find("tr").eq(length).find("td").first().attr("rowspan", dataA.length);
-                target.find("tr").each(function (i, n) {
-                    if (i > length) {
-                        $(n).find("td").first().remove();
-                    }
-                });
-            }
         });
     };
 
