@@ -733,7 +733,11 @@ public class ProjectPlanDetailsService {
     public void batchUpdateExecuteUser(List<Integer> planDetailsIds, String newExecuteUser) throws BusinessException {
         if (CollectionUtils.isEmpty(planDetailsIds) || StringUtils.isBlank(newExecuteUser)) return;
         for (Integer planDetailsId : planDetailsIds) {
-            updateExecuteUser(planDetailsId, newExecuteUser);
+            try {
+                updateExecuteUser(planDetailsId, newExecuteUser);
+            } catch (Exception ex) {
+                logger.error(ex.getMessage(), ex);
+            }
         }
     }
 
