@@ -218,15 +218,18 @@ public class GenerateMdDevelopmentService {
         if (CollectionUtils.isNotEmpty(itemList)) {
             LinkedList<String> stringLinkedList = Lists.newLinkedList();
             builder.startTable();
-            stringLinkedList.addAll(Arrays.asList("名称", "规划建筑面积 (㎡)", "可出售面积 (㎡)", "个数", "评估面积 (㎡)", "单位售价(元/㎡)", "备注"));
+            stringLinkedList.addAll(Arrays.asList("名称", "规划建筑面积 (㎡)", "可出售面积 (㎡)",  "评估面积 (㎡)/个数", "单位售价(元/㎡)", "备注"));
             AsposeUtils.writeWordTitle(builder, stringLinkedList);
             stringLinkedList.clear();
             for (MdEconomicIndicatorsItem indicatorsItem : itemList) {
                 stringLinkedList.add(StringUtils.isNotBlank(indicatorsItem.getName()) ? indicatorsItem.getName() : "");
                 stringLinkedList.add(ArithmeticUtils.getBigDecimalString(indicatorsItem.getPlannedBuildingArea()));
                 stringLinkedList.add(ArithmeticUtils.getBigDecimalString(indicatorsItem.getSaleableArea()));
-                stringLinkedList.add(indicatorsItem.getNumber() == null ? "" : indicatorsItem.getNumber().toString());
-                stringLinkedList.add(ArithmeticUtils.getBigDecimalString(indicatorsItem.getAssessArea()));
+                String value =indicatorsItem.getNumber() == null ? "" : indicatorsItem.getNumber().toString() ;
+                if (indicatorsItem.getAssessArea() != null){
+                    value += String.join("","/",ArithmeticUtils.getBigDecimalString(indicatorsItem.getAssessArea())) ;
+                }
+                stringLinkedList.add(value);
                 stringLinkedList.add(ArithmeticUtils.getBigDecimalString(indicatorsItem.getUnitPrice()));
                 stringLinkedList.add(StringUtils.isNotBlank(indicatorsItem.getRemark()) ? indicatorsItem.getRemark() : "");
                 AsposeUtils.writeWordTitle(builder, stringLinkedList);
