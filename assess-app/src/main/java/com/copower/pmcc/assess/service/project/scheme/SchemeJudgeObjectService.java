@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.service.project.scheme;
 
 
+import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
 import com.copower.pmcc.assess.common.enums.ComputeDataTypeEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.common.enums.ResponsibileModelEnum;
@@ -13,25 +14,34 @@ import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeSurePriceFacto
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeProgrammeDto;
 import com.copower.pmcc.assess.dto.output.project.scheme.SchemeJudgeObjectVo;
+import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.base.BaseParameterService;
 import com.copower.pmcc.assess.service.basic.BasicApplyService;
 import com.copower.pmcc.assess.service.basic.BasicHouseService;
 import com.copower.pmcc.assess.service.data.DataBestUseDescriptionService;
 import com.copower.pmcc.assess.service.data.DataSetUseFieldService;
+import com.copower.pmcc.assess.service.event.project.ProgrammeProcessEvent;
 import com.copower.pmcc.assess.service.project.*;
 import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.generate.GenerateReportInfoService;
+import com.copower.pmcc.bpm.api.dto.ProcessUserDto;
+import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
+import com.copower.pmcc.bpm.api.dto.model.ProcessInfo;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.bpm.api.exception.BpmException;
+import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
@@ -112,6 +122,14 @@ public class SchemeJudgeObjectService {
     private GenerateReportInfoService generateReportInfoService;
     @Autowired
     private ProjectWorkStageService projectWorkStageService;
+    @Autowired
+    private BaseService baseService;
+    @Autowired
+    private BaseParameterService baseParameterService;
+    @Autowired
+    private BpmRpcBoxService bpmRpcBoxService;
+    @Autowired
+    private ProcessControllerComponent processControllerComponent;
 
     public boolean addSchemeJudgeObject(SchemeJudgeObject schemeJudgeObject) {
         return schemeJudgeObjectDao.addSchemeJudgeObject(schemeJudgeObject);
@@ -582,25 +600,76 @@ public class SchemeJudgeObjectService {
     /**
      * 提交方案
      *
+     * @param projectId
+     * @param planId
      * @param schemeProgrammeDtos
+     * @param mustUseBox 当为true发起复核审批流程,当为false直接发起该阶段下的所有任务
+     * @throws BusinessException
+     * @throws BpmException
      */
     @Transactional
-    public void submitProgramme(Integer projectId, Integer planId, List<SchemeProgrammeDto> schemeProgrammeDtos) throws BusinessException, BpmException {
+    public void submitProgramme(Integer projectId, Integer planId, List<SchemeProgrammeDto> schemeProgrammeDtos, boolean mustUseBox) throws BusinessException, BpmException {
         //1.验证数据的完整性与准确性，查看评估方法是否都已设置
         //2.清除该计划下的所有任务，保存方案数据
         //3.生成计划任务
         int count = schemeJudgeObjectDao.getNotSetFunctionCount(projectId);
-        if (count > 0)
+        if (count > 0) {
             throw new BusinessException("还有委估对象未设置评估方法请检查");
-        saveProgrammeAll(schemeProgrammeDtos);
-        rollBackToProgramme(projectId, planId);
-        String projectManager = projectMemberService.getProjectManager(projectId);
-        List<SchemeAreaGroup> areaGroupList = schemeAreaGroupService.getAreaGroupList(projectId);
-        if (CollectionUtils.isNotEmpty(areaGroupList)) {
-            ProjectPlan projectPlan = projectPlanService.getProjectplanById(planId);
-            ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
-            ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlan.getWorkStageId());
+        }
+        this.saveProgrammeAll(schemeProgrammeDtos);
+        ProjectPlan projectPlan = projectPlanService.getProjectplanById(planId);
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
+        ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlan.getWorkStageId());
+        if (mustUseBox) {
+            //发起流程
+            //这里根据参数获取复核模型来发起一个复核流程
+            ProcessUserDto processUserDto = null;
+            //发起相应的流程
+            String folio = String.join("","【方案审批】",projectPlan.getPlanName(), DateUtils.format(new Date(),DateUtils.DATETIME_MILL_SECOND));
+            //取得复核模型
+            final String boxName = baseParameterService.getParameterValues(BaseParameterEnum.PROJECT__FORM__PROGRAMME__PROCESS__KEY.getParameterKey());
+            BoxReDto boxReDto = bpmRpcBoxService.getBoxReByBoxName(boxName);
+            ProcessInfo processInfo = new ProcessInfo();
+            processInfo.setStartUser(processControllerComponent.getThisUser());
+            processInfo.setProjectId(projectInfo.getId());
+            processInfo.setProcessName(boxReDto.getProcessName());
+            processInfo.setGroupName(boxReDto.getGroupName());
+            processInfo.setFolio(folio);//流程描述
+//            processInfo.setTableName(FormatUtils.entityNameConvertToTableName(ProjectPlan.class));
+            processInfo.setTableId(0);
+            processInfo.setBoxId(boxReDto.getId());
+            processInfo.setWorkStage(projectWorkStage.getWorkStageName());
+            processInfo.setProcessEventExecutorName(ProgrammeProcessEvent.class.getSimpleName());//作用是当监听器审批通过后重新执行发起该阶段下的任务
+            processInfo.setWorkStageId(projectWorkStage.getId());
+            processInfo.setAppKey(applicationConstant.getAppKey());
+            try {
+                processUserDto = processControllerComponent.processStart(processControllerComponent.getThisUser(), processInfo, processControllerComponent.getThisUser(), false);
+            } catch (BpmException e) {
+                baseService.writeExceptionInfo(e, String.format("%s 失败!", folio));
+                throw new BusinessException(e.getMessage());
+            }
+            projectPlan.setProcessInsId(processUserDto.getProcessInsId());
+            projectPlanService.updateProjectPlan(projectPlan) ;
+        }
+        //原方法  这里会直接发起阶段任务我的理解 这里我只是把这个方法拆成2个而已，以前生成这个阶段下的任务的方法无任何修改,请以后的修改人注意
+        if (!mustUseBox) {
+            this.submitProgrammeHandle(projectInfo, projectPlan, projectWorkStage);
+        }
+    }
 
+    /**
+     * 发起该阶段下的任务
+     * @param projectInfo
+     * @param projectPlan
+     * @param projectWorkStage
+     * @throws BusinessException
+     * @throws BpmException
+     */
+    public void submitProgrammeHandle(ProjectInfo projectInfo, ProjectPlan projectPlan, ProjectWorkStage projectWorkStage) throws BusinessException, BpmException {
+        rollBackToProgramme(projectInfo.getId(), projectPlan.getId());
+        String projectManager = projectMemberService.getProjectManager(projectInfo.getId());
+        List<SchemeAreaGroup> areaGroupList = schemeAreaGroupService.getAreaGroupList(projectInfo.getId());
+        if (CollectionUtils.isNotEmpty(areaGroupList)) {
             ProjectPhase phaseSurePrice = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.SURE_PRICE, projectInfo.getProjectCategoryId());
             ProjectPhase phaseLiquidationAnalysis = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.LIQUIDATION_ANALYSIS, projectInfo.getProjectCategoryId());
             ProjectPhase phaseReimbursement = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.REIMBURSEMENT, projectInfo.getProjectCategoryId());
@@ -644,7 +713,7 @@ public class SchemeJudgeObjectService {
         }
     }
 
-    private int savePlanDetails(ProjectInfo projectInfo,ProjectWorkStage projectWorkStage, ProjectPlan projectPlan, int i, SchemeAreaGroup schemeAreaGroup, SchemeJudgeObject schemeJudgeObject, String planRemarks, ProjectPhase projectPhase, String projectManager) throws BpmException {
+    private int savePlanDetails(ProjectInfo projectInfo, ProjectWorkStage projectWorkStage, ProjectPlan projectPlan, int i, SchemeAreaGroup schemeAreaGroup, SchemeJudgeObject schemeJudgeObject, String planRemarks, ProjectPhase projectPhase, String projectManager) throws BpmException {
         ProjectPlanDetails details = new ProjectPlanDetails();
         details.setProjectWorkStageId(projectPlan.getWorkStageId());
         details.setPlanId(projectPlan.getId());
