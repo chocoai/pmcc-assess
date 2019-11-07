@@ -172,8 +172,8 @@
                         <thead>
                         <tr>
                             <th>规划项目名称</th>
-                            <th>规划建筑面积/个数</th>
-                            <th>可出售面积/个数</th>
+                            <th>规划建筑面积</th>
+                            <th>可出售面积</th>
                             <th>评估面积/个数</th>
                             <%--<th>个数</th>--%>
                             <th>单位售价(元/㎡)</th>
@@ -299,7 +299,7 @@
                    onblur="economicIndicators.autoSummary()"
                    name="saleableArea" data-rule-number="true" style="width: 100px;">
         </td>
-        <td><input type="text" value="{assessArea}" placeholder="评估面积"
+        <td><input type="text" value="{assessArea}" placeholder="评估面积/个数"
                    onblur="economicIndicators.autoSummary()"
                    name="assessArea" data-rule-number="true" style="width: 100px;">
         </td>
