@@ -7,6 +7,7 @@ import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.basic.BasicEstateLandStateService;
 import com.copower.pmcc.assess.service.basic.BasicEstateService;
+import com.copower.pmcc.assess.service.data.DataLandLevelDetailService;
 import com.copower.pmcc.assess.service.method.MdCostApproachService;
 import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
@@ -54,6 +55,8 @@ public class ProjectTaskCostApproachAssist implements ProjectTaskInterface {
     private MdCostApproachTaxesDao costApproachTaxesDao;
     @Autowired
     private CommonService commonService;
+    @Autowired
+    private DataLandLevelDetailService dataLandLevelDetailService;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
@@ -90,6 +93,7 @@ public class ProjectTaskCostApproachAssist implements ProjectTaskInterface {
         modelAndView.addObject("master", data);
         List<MdCostApproachTaxes> list = mdCostApproachService.getMdCostApproachTaxesListByMasterId(data.getId());
         modelAndView.addObject("taxesVos", list);
+        setViewParam(data, projectPlanDetails, modelAndView);
         return modelAndView;
     }
 
@@ -163,6 +167,11 @@ public class ProjectTaskCostApproachAssist implements ProjectTaskInterface {
 
         BasicEstateLandState landStateByEstateId = basicEstateLandStateService.getLandStateByEstateId(basicEstate.getId());
         modelAndView.addObject("landFactorTotalScore", landStateByEstateId.getLandFactorTotalScore());
+        modelAndView.addObject("landLevelContent", landStateByEstateId.getLandLevelContent());
+        modelAndView.addObject("levelDetailId", landStateByEstateId.getLandLevel());
+        DataLandLevelDetail levelDetail = dataLandLevelDetailService.getDataLandLevelDetailById(landStateByEstateId.getLandLevel());
+        modelAndView.addObject("landLevelId", levelDetail.getLandLevelId());
+
     }
 
     public void initTaxeItem(MdCostApproach mdCostApproach) {

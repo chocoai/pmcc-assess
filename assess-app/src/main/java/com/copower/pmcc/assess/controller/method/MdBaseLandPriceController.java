@@ -1,7 +1,6 @@
 package com.copower.pmcc.assess.controller.method;
 
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.dal.basis.dao.data.DataAllocationCorrectionCoefficientVolumeRatioDao;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataHousePriceIndexDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -33,8 +32,6 @@ public class MdBaseLandPriceController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private SchemeJudgeObjectService schemeJudgeObjectService;
-    @Autowired
-    private DataAllocationCorrectionCoefficientVolumeRatioDao dataAllocationCorrectionCoefficientVolumeRatioDao;
     @Autowired
     private DeclareRecordService declareRecordService;
     @Autowired
@@ -72,28 +69,6 @@ public class MdBaseLandPriceController {
         }
     }
 
-
-    @ResponseBody
-    @RequestMapping(value = "/getVolumetricRateId", name = "获取容积率修正表id", method = RequestMethod.GET)
-    public HttpResult getVolumetricRateId(Integer judgeObjectId) {
-        try {
-            Integer masterId = null;
-            SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
-            DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
-
-            List<DataAllocationCorrectionCoefficientVolumeRatio> coefficientVolumeRatioList = null;
-            coefficientVolumeRatioList = dataAllocationCorrectionCoefficientVolumeRatioDao.getDataAllocationCorrectionCoefficientVolumeRatioList(declareRecord.getProvince(), declareRecord.getCity(), declareRecord.getDistrict());
-            if (CollectionUtils.isEmpty(coefficientVolumeRatioList)) {
-                coefficientVolumeRatioList = dataAllocationCorrectionCoefficientVolumeRatioDao.getDataAllocationCorrectionCoefficientVolumeRatioList(declareRecord.getProvince(), declareRecord.getCity(), null);
-            }
-            if (CollectionUtils.isNotEmpty(coefficientVolumeRatioList)) {
-                masterId = coefficientVolumeRatioList.get(0).getId();
-            }
-            return HttpResult.newCorrectResult(masterId);
-        } catch (Exception e) {
-            return HttpResult.newErrorResult("获取失败");
-        }
-    }
 
     @ResponseBody
     @RequestMapping(value = "/getLevelDetailId", name = "获取土地级别id", method = RequestMethod.GET)

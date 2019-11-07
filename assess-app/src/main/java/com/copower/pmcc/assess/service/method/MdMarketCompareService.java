@@ -2,9 +2,9 @@ package com.copower.pmcc.assess.service.method;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.copower.pmcc.assess.common.enums.basic.BasicApplyTypeEnum;
-import com.copower.pmcc.assess.common.enums.ExamineTypeEnum;
 import com.copower.pmcc.assess.common.enums.AssessProjectTypeEnum;
+import com.copower.pmcc.assess.common.enums.ExamineTypeEnum;
+import com.copower.pmcc.assess.common.enums.basic.BasicApplyTypeEnum;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdMarketCompareDao;
@@ -126,7 +126,7 @@ public class MdMarketCompareService {
     public List<DataSetUseField> getShowSetUseFieldList(AssessProjectTypeEnum projectTypeEnum) {
         List<DataSetUseField> setUseFields = null;
         List<DataSetUseField> fieldList = Lists.newArrayList();
-        switch (projectTypeEnum){
+        switch (projectTypeEnum) {
             case ASSESS_PROJECT_TYPE_HOUSE:
                 setUseFields = dataSetUseFieldService.getShowSetUseFieldList(BaseConstant.ASSESS_DATA_SET_USE_FIELD_HOUSE);
                 break;
@@ -225,7 +225,7 @@ public class MdMarketCompareService {
     private void setCoefficient(SchemeAreaGroup areaGroup, SchemeJudgeObject schemeJudgeObject, MdMarketCompareItem mdMarketCompareItem, BasicApply basicApply, Boolean isCase) {
         BasicEstate examineEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
         BasicEstateLandState landState = basicEstateLandStateService.getLandStateByEstateId(examineEstate.getId());
-        BigDecimal volumetricRate = volumeRatioService.getAmendByVolumetricRate(areaGroup.getProvince(), areaGroup.getCity(), areaGroup.getDistrict(), landState.getPlotRatio());
+        BigDecimal volumetricRate = volumeRatioService.getAmendByVolumetricRate(landState.getLandLevel(), landState.getPlotRatio());
         MdMarketCompare marketCompare = getMdMarketCompare(mdMarketCompareItem.getMcId());
         //年期修正系数
         BasicHouse basicHouse = basicHouseService.getHouseByApplyId(basicApply.getId());
@@ -367,7 +367,7 @@ public class MdMarketCompareService {
                     BasicHouse basicHouse = basicHouseService.getHouseByApplyId(basicApply.getId());
                     if (basicHouse != null) {
                         basicHouse.setAreaDesc(mdCompareCaseVo.getAreaDesc());
-                        basicHouseService.saveAndUpdateBasicHouse(basicHouse,false);
+                        basicHouseService.saveAndUpdateBasicHouse(basicHouse, false);
                     }
                 }
                 i++;
