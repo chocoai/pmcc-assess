@@ -21,6 +21,8 @@ public enum BaseParameterEnum {
 
     PROJECT__FORM__TASK__PROCESS__KEY("project.form.task.process.key", "项目立项审批流程key", "box"),
 
+    PROJECT__FORM__PROGRAMME__PROCESS__KEY("project.from.programme.process.key", "方案审批流程key", "box"),
+
     PROJECT_APPLY_ASSIGN_PROCESS_KEY("project.apply.assign.process.key", "任务再分派流程key", "box"),
     PROJECT_INFORMATION_CHANGE_PROCESS_KEY("project.information.change.process.key", "项目信息变更流程key", "box"),
     PROJECT_STOP_CHANGE_PROCESS_KEY("project.stop.change.process.key", "项目终止变更流程key", "box"),

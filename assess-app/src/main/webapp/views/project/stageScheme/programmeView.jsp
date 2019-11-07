@@ -148,12 +148,18 @@
             <%--</table>--%>
             <%--</div>--%>
             <%--</div>--%>
+
+            <%@include file="/views/share/form_approval.jsp" %>
+            <%@include file="/views/share/form_log.jsp" %>
+
             <div class="x_panel">
                 <div class="x_content">
                     <div class="col-sm-4 col-sm-offset-5">
-                        <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
-                            关闭
-                        </button>
+                        <c:if test="${empty processInsId}">
+                            <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
+                                关闭
+                            </button>
+                        </c:if>
                     </div>
                 </div>
             </div>
@@ -557,6 +563,39 @@
 <script src="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/jquery.easyui.min.js?v=${assessVersion}"></script>
 <script src="${pageContext.request.contextPath}/assets/layer/layer.js?v=${assessVersion}"></script>
 <script type="text/javascript">
+
+    //  提交审批
+    function saveform() {
+        var data = formApproval.getFormData();
+        $.extend(data, {planId:'${planId}',projectId: '${projectInfo.id}'  });
+        if (!$("#frm_approval").valid()) {
+            return false;
+        }
+        Loading.progressShow();
+        $.ajax({
+            url: "${pageContext.request.contextPath}/schemeProgramme/submitProgrammeApproval",
+            type: "post",
+            dataType: "json",
+            data: data,
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    Alert("提交数据成功!", 1, null, function () {
+                        window.close();
+                    });
+                }
+                else {
+                    Alert(result.errmsg);
+                }
+            },
+            error: function (result) {
+                Loading.progressHide();
+                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+            }
+        })
+    }
+
+
     $(function () {
         $(".area_panel .x_title").each(function () {
             $(this).trigger('click');
