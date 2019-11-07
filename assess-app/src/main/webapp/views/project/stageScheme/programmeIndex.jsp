@@ -267,19 +267,28 @@
                     </div>
                 </div>
             </c:forEach>
+
+            <%@include file="/views/share/form_approval.jsp" %>
+            <%@include file="/views/share/form_log.jsp" %>
+
             <div class="x_panel">
                 <div class="x_content">
-                    <div class="col-sm-4 col-sm-offset-5">
-                        <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
-                            取消
-                        </button>
-                        <button class="btn btn-warning" onclick="programme.saveProgrammeAll();">
-                            保存<i style="margin-left: 10px" class="fa fa-save"></i>
-                        </button>
-                        <button id="commit_btn" class="btn btn-success" onclick="programme.submitProgramme();">
-                            提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
-                        </button>
-                    </div>
+                    <c:if test="${empty processInsId}">
+                        <div class="col-sm-4 col-sm-offset-5">
+                            <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
+                                取消
+                            </button>
+                            <button class="btn btn-warning" onclick="programme.saveProgrammeAll();">
+                                保存<i style="margin-left: 10px" class="fa fa-save"></i>
+                            </button>
+                            <button id="commit_btn" class="btn btn-success" onclick="programme.submitProgramme(false);">
+                                提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
+                            </button>
+                            <button class="btn btn-primary" onclick="programme.submitProgramme(true);">
+                                流程审批方式提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
+                            </button>
+                        </div>
+                    </c:if>
                 </div>
             </div>
         </div>
@@ -323,19 +332,19 @@
                                         </c:forEach>
                                     </td>
                                     <%--<td id="otherMethodTd">--%>
-                                        <%--<c:forEach var="item" items="${otherMethodList}">--%>
-                                            <%--<div class="btn-group" style="margin: 10px;">--%>
-                                                <%--<button class="btn btn-sm btn-dark"--%>
-                                                        <%--type="button">${item.name}</button>--%>
-                                                <%--<button onclick="programmeMethod.selectUseOther(this);"--%>
-                                                        <%--data-use-flag="false" data-method-type="${item.id}"--%>
-                                                        <%--data-method-name="${item.name}"--%>
-                                                        <%--class="btn btn-sm btn-default btn-select-use"--%>
-                                                        <%--type="button" title="选用"><i--%>
-                                                        <%--class="fa fa-check"></i>--%>
-                                                <%--</button>--%>
-                                            <%--</div>--%>
-                                        <%--</c:forEach>--%>
+                                    <%--<c:forEach var="item" items="${otherMethodList}">--%>
+                                    <%--<div class="btn-group" style="margin: 10px;">--%>
+                                    <%--<button class="btn btn-sm btn-dark"--%>
+                                    <%--type="button">${item.name}</button>--%>
+                                    <%--<button onclick="programmeMethod.selectUseOther(this);"--%>
+                                    <%--data-use-flag="false" data-method-type="${item.id}"--%>
+                                    <%--data-method-name="${item.name}"--%>
+                                    <%--class="btn btn-sm btn-default btn-select-use"--%>
+                                    <%--type="button" title="选用"><i--%>
+                                    <%--class="fa fa-check"></i>--%>
+                                    <%--</button>--%>
+                                    <%--</div>--%>
+                                    <%--</c:forEach>--%>
                                     <%--</td>--%>
                                 </tr>
                                 </tbody>
@@ -1143,7 +1152,7 @@
     };
 
     //提交方案
-    programme.submitProgramme = function () {
+    programme.submitProgramme = function (mustUseBox) {
         //前端验证
         var isPass = true;
         $("form[id^=frmJudgeObject]").each(function () {
@@ -1168,7 +1177,8 @@
             data: {
                 projectId: '${projectInfo.id}',
                 planId: '${planId}',
-                formData: JSON.stringify(data)
+                formData: JSON.stringify(data),
+                mustUseBox: mustUseBox
             },
             type: "post",
             dataType: "json",
@@ -1187,6 +1197,37 @@
             }
         });
     };
+
+    //  提交 编辑数据(流程状态下)
+    function saveform() {
+        if (!$("#frm_approval").valid()) {
+            return false;
+        }
+        //进行保存操作
+        programme.saveProgrammeAll(function () {
+            var item = formApproval.getFormData();
+            $.extend(item, {planId: '${planId}', projectId: '${projectInfo.id}'});
+            $.ajax({
+                url: "${pageContext.request.contextPath}/schemeProgramme/submitProgrammeEdit",
+                type: "post",
+                dataType: "json",
+                data: item,
+                success: function (result) {
+                    if (result.ret) {
+                        Alert("提交数据成功!", 1, null, function () {
+                            window.close();
+                        });
+                    }
+                    else {
+                        Alert(result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+                }
+            })
+        });
+    }
 
     //加载合并对象的明细
     programme.loadJudgeDetailList = function (pid) {
