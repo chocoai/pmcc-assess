@@ -65,35 +65,36 @@ public class FinancialReferenceProjectService {
         queryList.add("tb_project_info.gmt_created");
         queryList.add("tb_project_info.preaudit_number_date");
         queryList.add("tb_project_info.result_number_date");
-
         queryList.add("tb_project_member.user_account_manager");
-
-        queryList.add("tb_project_number_record.number_value");
-
+        queryList.add(String.join(" ",
+                " (select  group_concat(tb_project_number_record.number_value order by tb_project_number_record.number_value desc separator '；') as number_value from "
+                , "tb_project_number_record WHERE tb_project_info.id=tb_project_number_record.project_id  GROUP BY tb_project_info.id) as number_value"
+        ));
         queryList.add("tb_initiate_consignor.cs_entrustment_unit");
         queryList.add("tb_initiate_consignor.cs_name");
-
         sql.append(String.join(",", queryList)).append(" ");
-
-
-        sql.append("FROM").append(" ");
-        //join 操作
-        sql.append("( ( tb_project_info INNER JOIN tb_project_number_record ON tb_project_info.id = tb_project_number_record.project_id ) INNER JOIN").append(" ");
-        sql.append("tb_project_member ON tb_project_info.id = tb_project_member.project_id )").append(" ");
-        sql.append("INNER JOIN tb_initiate_consignor ON tb_project_info.id = tb_initiate_consignor.project_id").append(" ");
+        sql.append("FROM").append(" tb_project_info").append(" ");
+        //join 操作 改用右连接
+        sql.append("right JOIN ").append("tb_project_member ON tb_project_info.id = tb_project_member.project_id").append(" ");
+        sql.append("right JOIN ").append("tb_initiate_consignor ON tb_project_info.id = tb_initiate_consignor.project_id ").append(" ");
+        sql.append("right JOIN ").append("tb_project_number_record ON tb_project_info.id = tb_project_number_record.project_id ").append(" ");
+//        sql.append("( ( tb_project_info INNER JOIN tb_project_number_record ON tb_project_info.id = tb_project_number_record.project_id ) INNER JOIN").append(" ");
+//        sql.append("tb_project_member ON tb_project_info.id = tb_project_member.project_id )").append(" ");
+//        sql.append("INNER JOIN tb_initiate_consignor ON tb_project_info.id = tb_initiate_consignor.project_id").append(" ");
         //where 操作
         sql.append(" WHERE 1=1").append(" ");
 
         if (StringUtils.isNotBlank(queryName)) {
-            sql.append("AND").append(" ").append("tb_project_info.project_name").append(" ").append("=").append(" '").append(queryName).append("' ");
+            sql.append("AND").append(" ").append("tb_project_info.project_name").append(" ").append("like").append(" '%").append(queryName).append("%' ");
         }
         if (StringUtils.isNotBlank(queryNumberRecord)) {
-            sql.append("AND").append(" ").append("tb_project_number_record.number_value").append(" ").append("=").append(" '").append(queryNumberRecord).append("' ");
+            sql.append("AND").append(" ").append("tb_project_number_record.number_value").append(" ").append("like").append(" '%").append(queryNumberRecord).append("%' ");
         }
         if (StringUtils.isNotBlank(queryManager)) {
-            sql.append("AND").append(" ").append("tb_project_member.user_account_manager").append(" ").append("=").append(" '").append(queryManager).append("' ");
+            sql.append("AND").append(" ").append("tb_project_member.user_account_manager").append(" ").append("like").append(" '%").append(queryManager).append("%' ");
         }
-        sql.append("");
+        sql.append(" ").append("GROUP BY tb_project_info.id").append(" ");
+        sql.append("ORDER BY tb_project_info.id").append(" ");
         Integer pageIndex = objectToInteger(maps.get("_pageIndex"));
         Integer fixRows = objectToInteger(maps.get("_fixRows"));
         Page<PageInfo> page = PageHelper.startPage(pageIndex, fixRows);
@@ -108,7 +109,6 @@ public class FinancialReferenceProjectService {
         String cs_name = "cs_name";
         for (Map map : mapList) {
             FinancialReferenceProjectVo vo = getFinancialReferenceProjectVo();
-
             try {
                 if (map.get(project_name) != null) {
                     vo.setProjectName((String) map.get(project_name));
@@ -116,11 +116,14 @@ public class FinancialReferenceProjectService {
                 if (map.get(gmt_created) != null) {
                     vo.setGmtCreated(getDateValue(map.get(gmt_created)));
                 }
-                if (map.get(result_number_date) != null) {
-                    vo.setResultNumberDate(getDateValue(map.get(result_number_date)));
-                }
                 if (map.get(preaudit_number_date) != null) {
                     vo.setPreauditNumberDate(getDateValue(map.get(preaudit_number_date)));
+                }
+                if (map.get(result_number_date) != null) {
+                    vo.setResultNumberDate(getDateValue(map.get(result_number_date)));
+                    if (StringUtils.isEmpty(vo.getResultNumberDate())){
+                        vo.setResultNumberDate(vo.getPreauditNumberDate());
+                    }
                 }
                 if (map.get(number_value) != null) {
                     vo.setNumberValue((String) map.get(number_value));
@@ -134,11 +137,14 @@ public class FinancialReferenceProjectService {
                         }
                     }
                 }
-                if (map.get(cs_entrustment_unit) != null) {
-                    vo.setCsEntrustmentUnit((String) map.get(cs_entrustment_unit));
-                }
                 if (map.get(cs_name) != null) {
                     vo.setCsName((String) map.get(cs_name));
+                }
+                if (map.get(cs_entrustment_unit) != null) {
+                    vo.setCsEntrustmentUnit((String) map.get(cs_entrustment_unit));
+                    if (StringUtils.isEmpty(vo.getCsEntrustmentUnit())) {
+                        vo.setCsEntrustmentUnit(vo.getCsName());
+                    }
                 }
             } catch (Exception e) {
                 baseService.writeExceptionInfo(e);
