@@ -131,6 +131,8 @@ developmentCommon.architecturalB = {
         developmentCommon.architecturalB.treeGirdParse(target);
         var table = target.find("table");
         var tbody = table.find("tbody");
+        var caption = table.find("caption");
+        caption.find("[data-view-name="+defaultObj.reckon+"]").show() ;
         //第一级
         AssessCommon.loadDataDicByKey(AssessDicKey.build_security_engineering_project_market_cost, '', function (html, dataTree) {
             $.each(dataTree, function (index, data) {
@@ -143,6 +145,7 @@ developmentCommon.architecturalB = {
                         break;
                     case 'b':
                         parentHtml = $("#architecturalBModelParent").html();
+                        target.find("table").find("thead").find("th[name='result']").text('续建工程费计算值') ;
                         break;
                     case 'c':
                         parentHtml = $("#architecturalBModelParent").html();

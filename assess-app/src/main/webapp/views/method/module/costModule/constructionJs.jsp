@@ -165,11 +165,13 @@
             target.find("input[name='masterId']").val('');
             var options = {target:target.find(".panel-body"),obj:data,attribute:null,price:price,reckon:'c',callback:function (tr) {
                 if (type == cost.one) {
+                    var table = $(tr).closest("table") ;
                     $(tr).find("input[name='valuationDateDegreeCompletion']").val('100%').attr({
                         readonly: 'readonly',
                         class: 'form-control',
                         'data-value': '1'
                     });
+                    table.find("caption").find("[data-view-name="+'valuationDateDegreeCompletion'+"]").hide() ;
                 }
             }};
             developmentCommon.architecturalB.init(options) ;

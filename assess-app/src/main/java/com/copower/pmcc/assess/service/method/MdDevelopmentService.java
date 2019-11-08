@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.service.method;
 
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.ArithmeticUtils;
+import com.copower.pmcc.assess.common.enums.method.MdDevelopmentTypeEnum;
 import com.copower.pmcc.assess.common.enums.report.BaseReportFieldEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdDevelopmentDao;
@@ -381,6 +382,9 @@ public class MdDevelopmentService {
                 String f33 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_salesFeeTotal, target);
                 String f32 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_managementExpenseTotal, target);
                 String d3 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_projectConstructionPeriod, target);
+                if (Objects.equal(target.getType(), MdDevelopmentTypeEnum.developmentEngineering.getKey())){
+                    d3 = target.getRemainingDevelopmentYear().toString();
+                }
                 BigDecimal f31 = target.getLandGetRelevant();
                 List<String> stringList = Arrays.asList(d21,d23,d24,d25,d27,f32,f33) ;
                 if (!ArithmeticUtils.checkNotNull(stringList)) {

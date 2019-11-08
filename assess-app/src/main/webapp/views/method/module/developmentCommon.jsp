@@ -29,6 +29,27 @@
 </script>
 <script type="text/html" id="architecturalB" data-title="树干">
     <table class="table tree">
+
+        <caption>
+
+            <div data-view-name="b" style="display: none;">
+                <label class="label-info label">计算方式 ==></label>
+                <code>单价 ✖ 面积 ✖ (1-估价时点完工程度)</code>
+            </div>
+
+            <div data-view-name="a" style="display: none;">
+                <label class="label-info label">计算方式 ==></label>
+                <code>单价 ✖ 面积</code>
+            </div>
+
+            <div data-view-name="c" style="display: none;">
+                <label class="label-info label">计算方式 ==></label>
+                <code>单价 ✖ 面积  <code data-view-name="valuationDateDegreeCompletion"> ✖ 估价时点完工程度</code>
+                </code>
+            </div>
+
+        </caption>
+
         <thead>
         <tr>
             <th name="name">工程名称</th>
@@ -62,7 +83,9 @@
 <script type="text/html" id="architecturalAModelChildren" data-title="简单树 子级">
     <tr class="treegrid-{index}-{childIndex} treegrid-parent-{index}" data-key="{key}" data-role="child">
         <td>{name}</td>
-        <td style="width: 20%;"><input type="text" onblur="developmentCommon.architecturalB.totalResult(this,'{reckon}')" placeholder="单价(数字)" name="price"></td>
+        <td style="width: 20%;"><input type="text"
+                                       onblur="developmentCommon.architecturalB.totalResult(this,'{reckon}')"
+                                       placeholder="单价(数字)" name="price"></td>
         <td style="width: 10%;">
             <input type="text" onblur="developmentCommon.architecturalB.totalResult(this,'{reckon}')" placeholder="面积"
                    name="area">
@@ -141,7 +164,7 @@
     </button>
 </script>
 
-<!--  建筑安装工程费 -->
+<!-- 建筑安装工程费 -->
 <div id="boxLandEngineering_Install" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
