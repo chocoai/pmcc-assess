@@ -206,7 +206,7 @@ public class GenerateReportService {
         //count 计数器,防止  枚举虽然定义了，但是没有写对应的方法，因此递归设置最多的次数
         int count = 0;
         //最大递归次数 , 最好是不要过大 (ps max-count 就是递归次数)
-        final int max = 4;
+        final int max = 2;
         generateReplaceWord(dir, generateBaseDataService, generateReportInfo, reportType, count, max);
         return dir;
     }
