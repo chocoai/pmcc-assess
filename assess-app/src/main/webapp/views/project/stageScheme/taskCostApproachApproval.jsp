@@ -60,7 +60,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">宗地外设定</label>
-                                        <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3" >
+                                        <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3">
                                             <label class="form-control">${master.parcelSettingOuterName}</label>
                                         </div>
                                     </div>
@@ -87,10 +87,6 @@
                             </div>
                             <div class="x_content">
                                 <form class="form-horizontal" id="approachTaxesForm">
-                                    <button type="button" class="btn btn-success"
-                                            onclick="taxes.prototype.showModel()"
-                                            data-toggle="modal" href="#divBox"> 新增
-                                    </button>
                                     <table class="table" id="tb_taxesList">
                                         <thead>
                                         <tr>
@@ -131,30 +127,20 @@
                                 <form class="form-horizontal" id="areaAndSeveralAmendForm">
                                     <div class="form-group">
                                         <div class="x-valid">
-                                            <label class="col-sm-1 control-label">
-                                                宗地个别因素修正
-                                            </label>
+                                            <label class="col-sm-1 control-label">宗地个别因素修正</label>
                                             <div class="col-sm-3">
-                                                <label class="form-control">${master.plotRatioElementAmend}</label>
+                                                <div class="input-group">
+                                                    <input type="text" readonly="readonly" class="form-control"
+                                                           id="plotRatioElementAmend">
+                                                    <span class="input-group-btn">
+                            <button type="button" class="btn btn-default docs-tooltip"
+                                    onclick="getLandLevelTabContent();"
+                                    data-toggle="tooltip" data-original-title="土地因素">
+                        <i class="fa fa-magic"></i>
+                        </button>
+                </span>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                                            <table class="table table-striped table-bordered" style="display: none">
-                                                <thead>
-                                                <tr>
-                                                    <th width="10%">土地级别类别</th>
-                                                    <th width="10%">土地级别类型</th>
-                                                    <th width="10%">土地级别等级</th>
-                                                    <th width="20%">说明</th>
-                                                    <th width="10%">分值</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody id="landLevelTabContent">
-
-                                                </tbody>
-                                            </table>
                                         </div>
                                     </div>
                                 </form>
@@ -280,22 +266,22 @@
                                         </div>
                                     </div>
                                     <%--<div class="form-group">--%>
-                                        <%--<div class="x-valid">--%>
-                                            <%--<label class="col-sm-1 control-label">--%>
-                                                <%--宗地个别因素修正--%>
-                                            <%--</label>--%>
-                                            <%--<div class="col-sm-3">--%>
-                                                <%--<label class="form-control">${master.plotRatioElementAmend}</label>--%>
-                                            <%--</div>--%>
-                                        <%--</div>--%>
-                                        <%--<div class="x-valid">--%>
-                                            <%--<label class="col-sm-1 control-label">--%>
-                                                <%--说明--%>
-                                            <%--</label>--%>
-                                            <%--<div class="col-sm-3">--%>
-                                                <%--<label class="form-control">${master.plotRatioElementAmendRemark}</label>--%>
-                                            <%--</div>--%>
-                                        <%--</div>--%>
+                                    <%--<div class="x-valid">--%>
+                                    <%--<label class="col-sm-1 control-label">--%>
+                                    <%--宗地个别因素修正--%>
+                                    <%--</label>--%>
+                                    <%--<div class="col-sm-3">--%>
+                                    <%--<label class="form-control">${master.plotRatioElementAmend}</label>--%>
+                                    <%--</div>--%>
+                                    <%--</div>--%>
+                                    <%--<div class="x-valid">--%>
+                                    <%--<label class="col-sm-1 control-label">--%>
+                                    <%--说明--%>
+                                    <%--</label>--%>
+                                    <%--<div class="col-sm-3">--%>
+                                    <%--<label class="form-control">${master.plotRatioElementAmendRemark}</label>--%>
+                                    <%--</div>--%>
+                                    <%--</div>--%>
                                     <%--</div>--%>
                                     <div class="form-group">
                                         <div class="x-valid">
@@ -484,7 +470,77 @@
         </td>
     </tr>
 </script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.estate.js?v=${assessVersion}"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/examine/examine.estate.js?v=${assessVersion}"></script>
+<script type="text/html" id="landLevelTabContentBody">
+    <tr class="group">
+        <td class="table-cell">
+            {landLevelTypeName}
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td>
+            {landLevelCategoryName}
+        </td>
+        <td>
+            {gradeName}
+        </td>
+        <td>
+            <label name="reamark" class="form-control">{reamark}</label>
+        </td>
+        <td>
+            <label name="landFactorTotalScore" class="form-control">{landFactorTotalScore}</label>
+        </td>
+    </tr>
+</script>
+<div id="detailAchievementModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true" data-height="500">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">土地因素</h3>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="landLevelContentFrm">
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <div id="_select_land_level_file"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                <tr>
+                                    <th width="10%">土地级别类别</th>
+                                    <th width="10%">土地级别类型</th>
+                                    <th width="10%">土地级别等级</th>
+                                    <th width="20%">说明</th>
+                                    <th width="10%">分值</th>
+                                </tr>
+                                </thead>
+                                <tbody id="landLevelTabContent">
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">
+                    关闭
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type="application/javascript">
     function saveform() {
         saveApprovalform("");
@@ -493,8 +549,8 @@
     $(function () {
         getLandAcquisitionBhou("${master.id}");
         getPloughArearatio();
-        //因素条件说明及修正系数
-        landLevelLoadHtml()
+
+        $("#plotRatioElementAmend").val(AssessCommon.pointToPercent('${master.plotRatioElementAmend}'));
     });
 
     //耕地比例
@@ -663,15 +719,24 @@
     }
 
     //因素条件说明及修正系数
-    function landLevelLoadHtml() {
+    function getLandLevelTabContent() {
+        FileUtils.getFileShows({
+            target: "select_land_level_file",
+            formData: {
+                tableName: AssessDBKey.DataLandLevel,
+                tableId: '${landLevelId}'
+            },
+            deleteFlag: false
+        })
+
         var jsonContent = JSON.parse('${master.landLevelContent}');
         var data = estateCommon.landLevelFilter(jsonContent);
         if (jQuery.isEmptyObject(data)) {
             return false;
         }
+        $("#detailAchievementModal").modal();
         var target = $("#landLevelTabContent");
         target.empty();
-        target.parent().show();
 
         //由于js来筛选 有大量json 解析或者字符串化 影响代码阅读度，因此改为了后台直接处理,第一次的时候有2此筛选分类这样确实代码可读性差
         data.forEach(function (dataA, indexM) {
@@ -684,10 +749,10 @@
                 });
                 var landLevelBodyHtml = $("#landLevelTabContentBody").html();
                 if (landLevelBodyHtml) {
-                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landFactorTotalScore}/g, item.achievement);
                     landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelCategoryName}/g, item.category);
                     landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelTypeName}/g, item.typeName);
                     landLevelBodyHtml = landLevelBodyHtml.replace(/{gradeName}/g, item.gradeName);
+                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landFactorTotalScore}/g, AssessCommon.pointToPercent(item.achievement));
                     var text = "";
                     $.each(obj, function (i, n) {
                         text += "等级:" + n.gradeName + "，说明:" + n.reamark + "； \r";
@@ -697,23 +762,6 @@
                 }
             });
 
-            if (indexM == 0) {
-                target.find("tr").first().find("td").first().attr("rowspan", dataA.length);
-                target.find("tr").each(function (i, n) {
-                    if (i != 0) {
-                        $(n).find("td").first().remove();
-                    }
-                });
-            }
-            if (indexM == 1) {
-                var length = data[0].length;
-                target.find("tr").eq(length).find("td").first().attr("rowspan", dataA.length);
-                target.find("tr").each(function (i, n) {
-                    if (i > length) {
-                        $(n).find("td").first().remove();
-                    }
-                });
-            }
         });
     };
 </script>
@@ -818,14 +866,15 @@
                 html += '</td>';
                 html += '<td>' + price + '</td>';
                 break;
-            }default:
-            html += '<td>';
-            html += '/';
-            html += '</td>';
-            html += '<td>';
-            html += '/';
-            html += '</td>';
-            html += '<td>' + price + '</td>';
+            }
+            default:
+                html += '<td>';
+                html += '/';
+                html += '</td>';
+                html += '<td>';
+                html += '/';
+                html += '</td>';
+                html += '<td>' + price + '</td>';
 
         }
 
@@ -840,64 +889,63 @@
 
     function cleanHTMLData(this_) {
         var id = $(this_).closest("tr").find("input[name='id']").val();
-        taxes.prototype.removeData(id,this_);
+        taxes.prototype.removeData(id, this_);
 
     }
 
-    function getThisPrice(that){
+    function getThisPrice(that) {
         var id = $(that).closest("tr").find("input[name='id']").val();
         var masterId = $("#master").find("input[name='id']").val();
         var typeKey = $(that).closest("tr").find("input[name='typeKey']").val();
         var standardFirst = $(that).closest("tr").find("input[name='standardFirst']").val();
         var standardSecond = $(that).closest("tr").find("input[name='standardSecond']").val();
         var price = $(that).parent().closest("tr").find("input[name='price']").val();
-        console.log(id+"=="+standardFirst+"+==+"+standardSecond+"+==+"+price);
         var data = {};
-        data.id=id;
-        data.masterId=masterId;
-        data.typeKey=typeKey;
-        data.standardFirst=percentToPoint(standardFirst);
-        data.standardSecond=percentToPoint(standardSecond);
-        data.price=price;
+        data.id = id;
+        data.masterId = masterId;
+        data.typeKey = typeKey;
+        data.standardFirst = percentToPoint(standardFirst);
+        data.standardSecond = percentToPoint(standardSecond);
+        data.price = price;
         var farmlandArea = $("#farmlandArea").val();
-            if (!farmlandArea) {
-                alert("请填写农用地总面积");
-                return false;
-            }
-            var ploughArea = $("#ploughArea").val();
-            if (!ploughArea) {
-                alert("请填耕地面积");
-                return false;
-            }
-            var populationNumber = $("#populationNumber").val();
-            if (!populationNumber) {
-                alert("请填人口数");
-                return false;
-            }
-            if (!$("#" + taxes.prototype.config().frm).valid()) {
-                return false;
-            }
+        if (!farmlandArea) {
+            alert("请填写农用地总面积");
+            return false;
+        }
+        var ploughArea = $("#ploughArea").val();
+        if (!ploughArea) {
+            alert("请填耕地面积");
+            return false;
+        }
+        var populationNumber = $("#populationNumber").val();
+        if (!populationNumber) {
+            alert("请填人口数");
+            return false;
+        }
+        if (!$("#" + taxes.prototype.config().frm).valid()) {
+            return false;
+        }
 
-            $.ajax({
-                url: "${pageContext.request.contextPath}/costApproach/getThisPrice",
-                type: "post",
-                dataType: "json",
-                data: {
-                    formData: JSON.stringify(data),
-                    farmlandArea, farmlandArea,
-                    ploughArea: ploughArea,
-                    populationNumber: populationNumber
-                },
-                success: function (result) {
-                    if (result.ret) {
-                        $(that).closest("tr").find("input[name='price']").val(result.data.price);
-                        getLandAcquisitionBhou(masterId);
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+        $.ajax({
+            url: "${pageContext.request.contextPath}/costApproach/getThisPrice",
+            type: "post",
+            dataType: "json",
+            data: {
+                formData: JSON.stringify(data),
+                farmlandArea, farmlandArea,
+                ploughArea: ploughArea,
+                populationNumber: populationNumber
+            },
+            success: function (result) {
+                if (result.ret) {
+                    $(that).closest("tr").find("input[name='price']").val(result.data.price);
+                    getLandAcquisitionBhou(masterId);
                 }
-            })
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
     }
 
     //v取几位小数
@@ -909,12 +957,12 @@
     //百分数转小数
     function percentToPoint(value) {
         if (value) {
-            if(value.indexOf("%") >= 0 ) {
-            var value = value.replace("%", "");
+            if (value.indexOf("%") >= 0) {
+                var value = value.replace("%", "");
                 if (AssessCommon.isNumber(value)) {
                     return (parseFloat(value) / 100).toFixed(4);
                 }
-            }else{
+            } else {
                 return value;
             }
         }

@@ -207,20 +207,20 @@ industry.industryThree = {
     }
 };
 
-industry.changeEvent = function () {
-    basicCommon.basicApplyForm.find("input[type='radio']").change(function () {
-        var item = $(this).val();
-        if (item == industry.config.notIndustry.key) {
-            industry.industryOne.init();
-        }
-        if (item == industry.config.industry.key) {
-            industry.industryTwo.init();
-        }
-        if (item == industry.config.structuresProspect.key) {
-            industry.industryThree.init();
-        }
-    });
-};
+// industry.changeEvent = function () {
+//     basicCommon.basicApplyForm.find("input[type='radio']").change(function () {
+//         var item = $(this).val();
+//         if (item == industry.config.notIndustry.key) {
+//             industry.industryOne.init();
+//         }
+//         if (item == industry.config.industry.key) {
+//             industry.industryTwo.init();
+//         }
+//         if (item == industry.config.structuresProspect.key) {
+//             industry.industryThree.init();
+//         }
+//     });
+// };
 
 /**
  * 默认选择
@@ -250,6 +250,6 @@ industry.keyApp = function (key) {
 };
 
 $(function () {
-    industry.changeEvent();
+    //industry.changeEvent();
     industry.firstEvent();
 });

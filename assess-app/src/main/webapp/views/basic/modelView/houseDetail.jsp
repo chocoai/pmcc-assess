@@ -1,37 +1,38 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<c:if test="${basicApplyBatch.type == 0 || basicApplyBatch.type == 3}">
-    <%@include file="/views/project/stageSurvey/commonDetail/house.jsp" %>
-    <%@include file="/views/project/stageSurvey/commonDetail/houseTrading.jsp" %>
+<c:if test="${basicApply.type == 0 || basicApply.type == 3}">
+    <%@include file="/views/project/stageSurvey/examine/residence/detail/house.jsp" %>
+    <%@include file="/views/project/stageSurvey/examine/residence/detail/houseTrading.jsp" %>
 </c:if>
 
 
 <!-- 工业交通仓储 -->
-<c:if test="${basicApplyBatch.type == 1}">
-    <%@include file="/views/project/stageSurvey/commonDetail/industry/house.jsp" %>
-    <%@include file="/views/project/stageSurvey/commonDetail/houseTrading.jsp" %>
+<c:if test="${basicApply.type == 1}">
+    <%@include file="/views/project/stageSurvey/examine/industry/detail/house.jsp" %>
+    <%@include file="/views/project/stageSurvey/examine/residence/detail/houseTrading.jsp" %>
 </c:if>
 
-<%@include file="/views/project/stageSurvey/commonDetail/houseFaceStreet.jsp" %>
+<%@include file="/views/project/stageSurvey/examine/residence/detail/houseFaceStreet.jsp" %>
 
 
-<c:if test="${basicApplyBatch.type == 0 || basicApplyBatch.type == 3}">
-    <%@include file="/views/project/stageSurvey/commonDetail/houseWater.jsp" %>
-    <%@include file="/views/project/stageSurvey/commonDetail/houseWaterDrain.jsp" %>
-    <%@include file="/views/project/stageSurvey/commonDetail/houseNewWind.jsp" %>
-    <%@include file="/views/project/stageSurvey/commonDetail/houseAirConditioner.jsp" %>
-    <%@include file="/views/project/stageSurvey/commonDetail/houseHeating.jsp" %>
-    <%@include file="/views/project/stageSurvey/commonDetail/houseIntelligent.jsp" %>
+<c:if test="${basicApply.type == 0 || basicApply.type == 3}">
+    <%@include file="/views/project/stageSurvey/examine/residence/detail/houseWater.jsp" %>
+    <%@include file="/views/project/stageSurvey/examine/residence/detail/houseWaterDrain.jsp" %>
+    <%@include file="/views/project/stageSurvey/examine/residence/detail/houseNewWind.jsp" %>
+    <%@include file="/views/project/stageSurvey/examine/residence/detail/houseAirConditioner.jsp" %>
+    <%@include file="/views/project/stageSurvey/examine/residence/detail/houseHeating.jsp" %>
+    <%@include file="/views/project/stageSurvey/examine/residence/detail/houseIntelligent.jsp" %>
 </c:if>
 
-<%@include file="/views/project/stageSurvey/commonDetail/houseRoom.jsp" %>
+<%@include file="/views/project/stageSurvey/examine/residence/detail/houseRoom.jsp" %>
 
-<c:if test="${basicApplyBatch.type == 1}">
-    <%@include file="/views/project/stageSurvey/commonDetail/industry/houseCorollaryEquipment.jsp" %>
+<c:if test="${basicApply.type == 1}">
+    <%@include file="/views/project/stageSurvey/examine/industry/detail/houseCorollaryEquipment.jsp" %>
 </c:if>
 
-<%@include file="/views/project/stageSurvey/commonDetail/houseDamagedDegree.jsp" %>
+<%@include file="/views/project/stageSurvey/examine/residence/detail/houseDamagedDegree.jsp" %>
+
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.common.js?v=${assessVersion}"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.house.js?v=${assessVersion}"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.house.detail.js?v=${assessVersion}"></script>

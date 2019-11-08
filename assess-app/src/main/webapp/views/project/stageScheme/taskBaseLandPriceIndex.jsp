@@ -65,35 +65,22 @@
                         </div>
                         <div class="x_content">
                             <form class="form-horizontal" id="areaAndSeveralAmendForm">
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
-                                            区域及个别修正系数
-                                        </label>
-                                        <div class="col-sm-3">
-                                            <input type="text" placeholder="区域及个别修正系数" class="form-control"
-                                                   id="areaAndSeveralAmend" name="areaAndSeveralAmend" required readonly
-                                                   data-rule-number="true">
+                                <div class="x-valid">
+                                    <input type="hidden" name="landLevelContent" id="landLevelContent"
+                                           value='${master.landLevelContent}'>
+                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">区域及个别修正系数</label>
+                                    <div class="col-sm-3">
+                                        <div class="input-group">
+                                            <input type="text" readonly="readonly" class="form-control x-percent"
+                                                   name="areaAndSeveralAmend" id="areaAndSeveralAmend">
+                                            <span class="input-group-btn">
+                            <button type="button" class="btn btn-default docs-tooltip"
+                                    onclick="getLandLevelTabContent();"
+                                    data-toggle="tooltip" data-original-title="土地因素">
+                        <i class="fa fa-magic"></i>
+                        </button>
+                </span>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                                        <table class="table table-striped table-bordered" style="display: none">
-                                            <thead>
-                                            <tr>
-                                                <th width="10%">土地级别类别</th>
-                                                <th width="10%">土地级别类型</th>
-                                                <th width="10%">土地级别等级</th>
-                                                <th width="20%">说明</th>
-                                                <th width="10%">分值</th>
-                                                <th width="5%"></th>
-                                            </tr>
-                                            </thead>
-                                            <tbody id="landLevelTabContent">
-
-                                            </tbody>
-                                        </table>
                                     </div>
                                 </div>
                             </form>
@@ -337,8 +324,61 @@
 </div>
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
-<script type="text/javascript" src="${pageContext.request.contextPath}/assets/tree-grid/js/jquery.treegrid.js?v=${assessVersion}"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.estate.js?v=${assessVersion}"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/assets/tree-grid/js/jquery.treegrid.js?v=${assessVersion}"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/examine/examine.estate.js?v=${assessVersion}"></script>
+<div id="detailAchievementModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true" data-height="500">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">土地因素</h3>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="landLevelContentFrm">
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <div id="_select_land_level_file"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                <tr>
+                                    <th width="10%">土地级别类别</th>
+                                    <th width="10%">土地级别类型</th>
+                                    <th width="10%">土地级别等级</th>
+                                    <th width="20%">说明</th>
+                                    <th width="10%">分值</th>
+                                    <th width="5%"></th>
+                                </tr>
+                                </thead>
+                                <tbody id="landLevelTabContent">
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="getAreaAndSeveralAmend()">
+                    保存
+                </button>
+                <button type="button" data-dismiss="modal" class="btn btn-default">
+                    关闭
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 <script type="text/html" id="landLevelTabContentBody">
     <tr class="group">
         <td class="table-cell">
@@ -360,8 +400,8 @@
         <td>
             <input type="hidden" class="form-control" name="dataLandLevelAchievement"
                    value="{dataLandLevelAchievement}">
-            <input type="text" class="form-control" name="landFactorTotalScore" value="{landFactorTotalScore}"
-                   onblur="getAreaAndSeveralAmend(this)">
+            <input type="text" class="form-control  x-percent" name="landFactorTotalScore"
+                   value="{landFactorTotalScore}">
             <input type="hidden" name="landLevelContent" value='{landLevelContent}'>
         </td>
         <td>
@@ -385,31 +425,9 @@
         formData.parcelTotalPrice = $("#parcelTotalPrice").text();
         formData.floorPremium = $("#floorPremium").text();
         formData.correctionDifference = $("#correctionDifference").text();
-        formData.areaAndSeveralAmend = $("#areaAndSeveralAmend").val();
+        formData.areaAndSeveralAmend = AssessCommon.percentToPoint($("#areaAndSeveralAmend").val());
+        formData.landLevelContent = $("#landLevelContent").val();
 
-        var landLevelContent = [];
-        $("#areaAndSeveralAmendForm").find("input[name='landLevelContent']").each(function (i, n) {
-            var group = $(n).closest(".group");
-            var dataLandLevelAchievement = group.find("input[name='dataLandLevelAchievement']").val();
-            var landFactorTotalScore = group.find("input[name='landFactorTotalScore']").val();
-            var obj = JSON.parse($(n).val());
-            var dataObject = [];
-            obj.forEach(function (value, index) {
-                if (value.id == dataLandLevelAchievement) {
-                    value.modelStr = "update";
-                    value.achievement = landFactorTotalScore;
-                } else {
-                    delete value.modelStr;
-                }
-                dataObject.push(value);
-            });
-            landLevelContent.push(dataObject);
-        });
-        if (landLevelContent.length >= 1) {
-            formData.landLevelContent = JSON.stringify(landLevelContent);
-        } else {
-            formData.landLevelContent = "";
-        }
 
         if ("${processInsId}" != "0") {
             submitEditToServer(JSON.stringify(formData));
@@ -423,13 +441,17 @@
         //土地指数表
         getLandIndexId();
         //容积率修正系数表
-        getVolumetricRateId();
+        showVolumetricRateDetailList(${landLevelDetailId});
         //因素条件说明及修正系数
-        getLevelDetailId()
-        if ('${master.areaAndSeveralAmend}') {
-            $("#areaAndSeveralAmend").val('${master.areaAndSeveralAmend}');
+        //getLevelDetailId()
+        if ('${apply}' == 'apply') {
+            $("#areaAndSeveralAmend").val(AssessCommon.pointToPercent('${landFactorTotalScore}'));
+            $("#landLevelContent").val('${landLevelContent}');
+            $("#standardPremium").val(getSomePlaces(parseFloat('${standardPremium}'), 2));
+            $("#legalAge").val(getSomePlaces(parseFloat('${legalAge}'), 2));
+            $("#volumetricRate").val(getSomePlaces(parseFloat('${volumetricRate}'), 2));
         } else {
-            $("#areaAndSeveralAmend").val('${landFactorTotalScore}');
+            $("#areaAndSeveralAmend").val(AssessCommon.pointToPercent('${master.areaAndSeveralAmend}'));
         }
 
         getPeriodAmend();
@@ -461,7 +483,7 @@
         //容积率修正E10
         var volumeFractionAmend = parseFloat($("#volumeFractionAmend").text());
         //区域及个别修正系数E11
-        var areaAndSeveralAmend = parseFloat($("#areaAndSeveralAmend").val()) ? parseFloat($("#areaAndSeveralAmend").val()) : 0;
+        var areaAndSeveralAmend = parseFloat(AssessCommon.percentToPoint($("#areaAndSeveralAmend").val())) ? parseFloat(AssessCommon.percentToPoint($("#areaAndSeveralAmend").val())) : 0;
         //开发程度修正E12
         var developCorrect = parseFloat($("#developCorrect").val()) ? parseFloat($("#developCorrect").val()) : 0;
         //委估宗地面积E15
@@ -570,33 +592,13 @@
     };
 
     //容积率修正系数表
-    function getVolumetricRateId() {
-        $.ajax({
-            url: "${pageContext.request.contextPath}/baseLandPrice/getVolumetricRateId",
-            type: "get",
-            dataType: "json",
-            data: {judgeObjectId: '${projectPlanDetails.judgeObjectId}'},
-            success: function (result) {
-                if (result.ret) {
-                    if (result.data) {
-                        showVolumetricRateDetailList(result.data);
-                    }
-                }
-            },
-            error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
-            }
-        })
-
-    }
-
-    function showVolumetricRateDetailList(volumeRatioId) {
+    function showVolumetricRateDetailList(landLevelDetailId) {
         var cols = [];
         cols.push({field: 'plotRatio', title: '容积率'});
         cols.push({field: 'correctionFactor', title: '修正系数'});
         $("#volumetricRateDetailTable").bootstrapTable('destroy');
         TableInit("volumetricRateDetailTable", "${pageContext.request.contextPath}/dataAllocationCorrectionCoefficientVolumeRatioDetail/getBootstrapTableVo", cols, {
-            allocationVolumeRatioId: volumeRatioId
+            allocationVolumeRatioId: landLevelDetailId
         }, {
             showColumns: false,
             showRefresh: false,
@@ -609,50 +611,39 @@
 
 
     //因素条件说明及修正系数
-    function getLevelDetailId() {
-        $.ajax({
-            url: "${pageContext.request.contextPath}/baseLandPrice/getLevelDetailId",
-            type: "get",
-            dataType: "json",
-            data: {judgeObjectId: '${projectPlanDetails.judgeObjectId}'},
-            success: function (result) {
-                if (result.ret) {
-                    if (result.data) {
-                        if ('${apply}' == 'apply') {
-                            //因素条件说明及修正系数
-                            getLandLevelTabContent(result.data);
-                        } else {
-                            //因素条件说明及修正系数
-                            landLevelLoadHtml2('${master.landLevelContent}');
-                        }
-                    }
-                }
+    function getLandLevelTabContent() {
+        FileUtils.getFileShows({
+            target: "select_land_level_file",
+            formData: {
+                tableName: AssessDBKey.DataLandLevel,
+                tableId: '${landLevelId}'
             },
-            error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
-            }
+            deleteFlag: false
         })
 
+        var landLevelContent = $("#landLevelContent").val();
+        if (landLevelContent) {
+            landLevelLoadHtml2(landLevelContent)
+        } else {
+            $.ajax({
+                url: getContextPath() + "/dataLandDetailAchievement/landLevelFilter",
+                type: "get",
+                data: {levelDetailId: '${levelDetailId}'},
+                success: function (result) {
+                    landLevelLoadHtml(result.data);
+                }
+            })
+        }
     }
 
-    function getLandLevelTabContent(levelDetailId) {
-        $.ajax({
-            url: getContextPath() + "/dataLandDetailAchievement/landLevelFilter",
-            type: "get",
-            data: {levelDetailId: levelDetailId},
-            success: function (result) {
-                landLevelLoadHtml(result.data);
-            }
-        })
-    }
 
     function landLevelLoadHtml(data) {
         if (jQuery.isEmptyObject(data)) {
             return false;
         }
+        $("#detailAchievementModal").modal();
         var target = $("#landLevelTabContent");
         target.empty();
-        target.parent().show();
 
         //由于js来筛选 有大量json 解析或者字符串化 影响代码阅读度，因此改为了后台直接处理,第一次的时候有2此筛选分类这样确实代码可读性差
         data.forEach(function (dataA, indexM) {
@@ -661,7 +652,7 @@
                 var landLevelBodyHtml = $("#landLevelTabContentBody").html();
                 if (landLevelBodyHtml) {
                     landLevelBodyHtml = landLevelBodyHtml.replace(/{dataLandLevelAchievement}/g, item.id);
-                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landFactorTotalScore}/g, item.achievement);
+                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landFactorTotalScore}/g, AssessCommon.pointToPercent(item.achievement));
                     landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelCategoryName}/g, item.category);
                     landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelTypeName}/g, item.typeName);
                     var text = "";
@@ -677,23 +668,6 @@
                 }
             });
 
-            if (indexM == 0) {
-                target.find("tr").first().find("td").first().attr("rowspan", dataA.length);
-                target.find("tr").each(function (i, n) {
-                    if (i != 0) {
-                        $(n).find("td").first().remove();
-                    }
-                });
-            }
-            if (indexM == 1) {
-                var length = data[0].length;
-                target.find("tr").eq(length).find("td").first().attr("rowspan", dataA.length);
-                target.find("tr").each(function (i, n) {
-                    if (i > length) {
-                        $(n).find("td").first().remove();
-                    }
-                });
-            }
         });
     };
 
@@ -703,9 +677,9 @@
         if (jQuery.isEmptyObject(data)) {
             return false;
         }
+        $("#detailAchievementModal").modal();
         var target = $("#landLevelTabContent");
         target.empty();
-        target.parent().show();
 
         //由于js来筛选 有大量json 解析或者字符串化 影响代码阅读度，因此改为了后台直接处理,第一次的时候有2此筛选分类这样确实代码可读性差
         data.forEach(function (dataA, indexM) {
@@ -719,7 +693,7 @@
                 var landLevelBodyHtml = $("#landLevelTabContentBody").html();
                 if (landLevelBodyHtml) {
                     landLevelBodyHtml = landLevelBodyHtml.replace(/{dataLandLevelAchievement}/g, item.id);
-                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landFactorTotalScore}/g, item.achievement);
+                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landFactorTotalScore}/g, AssessCommon.pointToPercent(item.achievement));
                     landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelCategoryName}/g, item.category);
                     landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelTypeName}/g, item.typeName);
                     var text = "";
@@ -735,35 +709,43 @@
                 }
             });
 
-            if (indexM == 0) {
-                target.find("tr").first().find("td").first().attr("rowspan", dataA.length);
-                target.find("tr").each(function (i, n) {
-                    if (i != 0) {
-                        $(n).find("td").first().remove();
-                    }
-                });
-            }
-            if (indexM == 1) {
-                var length = data[0].length;
-                target.find("tr").eq(length).find("td").first().attr("rowspan", dataA.length);
-                target.find("tr").each(function (i, n) {
-                    if (i > length) {
-                        $(n).find("td").first().remove();
-                    }
-                });
-            }
         });
     };
 
 
     //计算区域及个别修正系数
     function getAreaAndSeveralAmend(that) {
-        var tbody = $(that).closest('tbody');
-        var landFactorTotalScore = 0;
-        tbody.find('input[name^=landFactorTotalScore]').each(function () {
-            landFactorTotalScore += Number($(this).val());
-        })
-        $("#areaAndSeveralAmend").val(getSomePlaces(landFactorTotalScore, 2));
+        var landLevelContent = [];
+        var landFactorTotalScoreResult = 0;
+
+        $("#landLevelContentFrm").find("input[name='landLevelContent']").each(function (i, n) {
+            var group = $(n).closest(".group");
+            var dataLandLevelAchievement = group.find("input[name='dataLandLevelAchievement']").val();
+            var landFactorTotalScore = AssessCommon.percentToPoint(group.find("input[name='landFactorTotalScore']").val());
+            landFactorTotalScoreResult += Number(landFactorTotalScore);
+            var obj = JSON.parse($(n).val());
+            var dataObject = [];
+            obj.forEach(function (value, index) {
+                if (value.id == dataLandLevelAchievement) {
+                    value.modelStr = "update";
+                    value.achievement = landFactorTotalScore;
+                } else {
+                    delete value.modelStr;
+                }
+                dataObject.push(value);
+            });
+            landLevelContent.push(dataObject);
+        });
+        if (landLevelContent.length >= 1) {
+            $("#landLevelContent").val(JSON.stringify(landLevelContent));
+            $("#areaAndSeveralAmend").val(AssessCommon.pointToPercent(landFactorTotalScoreResult));
+        } else {
+            $("#landLevelContent").val('');
+            $("#areaAndSeveralAmend").val('');
+        }
+        $("#detailAchievementModal").modal('hide');
+
+
         //获取委估宗地单价（元/㎡）
         getParcelPrice();
         getPeriodAmend();

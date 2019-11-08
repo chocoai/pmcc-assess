@@ -4,8 +4,10 @@ import com.copower.pmcc.assess.common.ArithmeticUtils;
 import com.copower.pmcc.assess.common.PoiUtils;
 import com.copower.pmcc.assess.common.RomanNumeral;
 import com.copower.pmcc.assess.constant.AssessCacheConstant;
+import com.copower.pmcc.assess.dal.basis.dao.data.DataAllocationCorrectionCoefficientVolumeRatioDetailDao;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataLandLevelDetailDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
+import com.copower.pmcc.assess.dal.basis.entity.DataAllocationCorrectionCoefficientVolumeRatioDetail;
 import com.copower.pmcc.assess.dal.basis.entity.DataLandLevelDetail;
 import com.copower.pmcc.assess.dto.output.data.DataLandLevelDetailVo;
 import com.copower.pmcc.assess.service.BaseService;
@@ -15,6 +17,7 @@ import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.constant.CacheConstant;
@@ -36,6 +39,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileInputStream;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,6 +62,8 @@ public class DataLandLevelDetailService {
     private BaseAttachmentService baseAttachmentService;
     @Autowired
     private BaseService baseService;
+    @Autowired
+    private DataAllocationCorrectionCoefficientVolumeRatioDetailDao dataAllocationCorrectionCoefficientVolumeRatioDetailDao;
 
     private boolean importLandLevelDetail(DataLandLevelDetail oo, StringBuilder builder, Row row, int i) throws Exception {
         List<BaseDataDic> classTypes = baseDataDicService.getCacheDataDicList("data.land.level.classify");
@@ -396,4 +402,15 @@ public class DataLandLevelDetailService {
         return vo;
     }
 
+
+    //获取最上级明细
+    public DataLandLevelDetail getPidByDataLandLevelDetail(Integer dataLandLevelDetailId){
+        DataLandLevelDetail dataLandLevelDetail = getDataLandLevelDetailById(dataLandLevelDetailId);
+        if(dataLandLevelDetail.getPid()==null||dataLandLevelDetail.getPid()==0) {
+            return dataLandLevelDetail;
+        }else {
+            getPidByDataLandLevelDetail(dataLandLevelDetail.getPid());
+        }
+        return null;
+    }
 }

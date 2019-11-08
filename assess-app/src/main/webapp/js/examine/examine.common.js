@@ -9,31 +9,33 @@ examineCommon.getFormData = function () {
     }
     if (window.estateCommon && estateCommon.estateLandStateForm.length > 0) {
         var data = formSerializeArray(estateCommon.estateLandStateForm);
-        var landLevelContent = [];
-        if (data.landFactorTotalScore) {
-            var landFactorTotalScore = 0;
-            data.landFactorTotalScore.split(",").forEach(function (value, index) {
-                landFactorTotalScore += Number(value);
-            });
-            data.landFactorTotalScore = landFactorTotalScore;
-        }
-        estateCommon.estateLandStateForm.find("input[name='landLevelContent']").each(function (i, n) {
-            var group = $(n).closest(".group");
-            var dataLandLevelAchievement = group.find("input[name='dataLandLevelAchievement']").val();
-            var obj = JSON.parse($(n).val());
-            var dataObject = [];
-            obj.forEach(function (value, index) {
-                if (value.id == dataLandLevelAchievement) {
-                    value.modelStr = "update";
-                }
-                dataObject.push(value);
-            });
-            landLevelContent.push(dataObject);
-        });
-        if (landLevelContent.length >= 1) {
-            data.landLevelContent = JSON.stringify(landLevelContent);
-        }
-        item.basicEstateLandState = data;
+        data.landLevelContent = estateCommon.estateLandStateForm.find("input[name=landLevelContentResult]").val();
+        data.landFactorTotalScore = estateCommon.estateLandStateForm.find("input[name=landFactorTotalScoreResult]").val();
+        // var landLevelContent = [];
+        // if (data.landFactorTotalScore) {
+        //     var landFactorTotalScore = 0;
+        //     data.landFactorTotalScore.split(",").forEach(function (value, index) {
+        //         landFactorTotalScore += Number(value);
+        //     });
+        //     data.landFactorTotalScore = landFactorTotalScore;
+        // }
+        // estateCommon.estateLandStateForm.find("input[name='landLevelContent']").each(function (i, n) {
+        //     var group = $(n).closest(".group");
+        //     var dataLandLevelAchievement = group.find("input[name='dataLandLevelAchievement']").val();
+        //     var obj = JSON.parse($(n).val());
+        //     var dataObject = [];
+        //     obj.forEach(function (value, index) {
+        //         if (value.id == dataLandLevelAchievement) {
+        //             value.modelStr = "update";
+        //         }
+        //         dataObject.push(value);
+        //     });
+        //     landLevelContent.push(dataObject);
+        // });
+        // if (landLevelContent.length >= 1) {
+        //     data.landLevelContent = JSON.stringify(landLevelContent);
+        // }
+         item.basicEstateLandState = data;
     }
     if (window.buildingCommon && buildingCommon.buildingForm.length > 0) {
         item.basicBuilding = formSerializeArray(buildingCommon.buildingForm);
@@ -83,14 +85,12 @@ examineCommon.landLevelSelect = function (this_) {
         success: function (data) {
             formGroup.find("input[name='landLevel']").val(data.id);
             formGroup.find("input[name='landLevelName']").val(data.name);
-            // $.ajax({
-            //     url: getContextPath() + "/dataLandDetailAchievement/landLevelFilter",
-            //     type: "get",
-            //     data: {levelDetailId: data.id},
-            //     success: function (result) {
-            //         estateCommon.landLevelLoadHtml(result.data);
-            //     }
-            // })
+
+            var html='';
+            html += '<button type="button" class="btn btn-default docs-tooltip" onclick="examineCommon.openLevelDetailModal('+data.id+');" data-toggle="tooltip" data-original-title="清除">';
+            html += '<i class="fa fa-trash-o"></i>';
+            html += '</button>';
+            formGroup.find("#btnCheckItem").empty().append(html);
         }
     })
 };

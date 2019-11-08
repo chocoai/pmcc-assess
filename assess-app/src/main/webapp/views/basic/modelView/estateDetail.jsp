@@ -1,63 +1,62 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 
 
 <!-- 非工业交通仓储 或 在建工程-->
-<c:if test="${basicApplyBatch.type == 0 || basicApplyBatch.type == 3}">
-    <%@include file="/views/project/stageSurvey/commonDetail/estate.jsp" %>
-    <%@include file="/views/project/stageSurvey/commonDetail/estateLandState.jsp" %>
+<c:if test="${basicApply.type == 0 || basicApply.type == 3}">
+    <%@include file="/views/project/stageSurvey/examine/residence/detail/estate.jsp" %>
+    <%@include file="/views/project/stageSurvey/examine/residence/detail/estateLandState.jsp" %>
 </c:if>
 
 <!-- 构筑物 -->
-<c:if test="${basicApplyBatch.type == 2}">
-    <%@include file="/views/project/stageSurvey/commonDetail/estate.jsp" %>
-    <%@include file="/views/project/stageSurvey/commonDetail/estateLandState.jsp" %>
+<c:if test="${basicApply.type == 2}">
+    <%@include file="/views/project/stageSurvey/examine/residence/detail/estate.jsp" %>
+    <%@include file="/views/project/stageSurvey/examine/residence/detail/estateLandState.jsp" %>
 </c:if>
 
 
 <!-- 工业交通仓储 -->
-<c:if test="${basicApplyBatch.type == 1}">
-    <%@include file="/views/project/stageSurvey/commonDetail/industry/estate.jsp" %>
-    <%@include file="/views/project/stageSurvey/commonDetail/estateLandState.jsp" %>
+<c:if test="${basicApply.type == 1}">
+    <%@include file="/views/project/stageSurvey/examine/industry/detail/estate.jsp" %>
+    <%@include file="/views/project/stageSurvey/examine/residence/detail/estateLandState.jsp" %>
 </c:if>
 
 <!-- 从表 -->
-<%@include file="/views/project/stageSurvey/commonDetail/estateNetwork.jsp" %>
-<%@include file="/views/project/stageSurvey/commonDetail/estateParking.jsp" %>
-<%@include file="/views/project/stageSurvey/commonDetail/matchingEnvironment.jsp" %>
-<%@include file="/views/project/stageSurvey/commonDetail/matchingFinance.jsp" %>
+<%@include file="/views/project/stageSurvey/examine/residence/detail/estateNetwork.jsp" %>
+<%@include file="/views/project/stageSurvey/examine/residence/detail/estateParking.jsp" %>
+<%@include file="/views/project/stageSurvey/examine/residence/detail/matchingEnvironment.jsp" %>
+<%@include file="/views/project/stageSurvey/examine/residence/detail/matchingFinance.jsp" %>
 
 <!-- 非工业交通仓储 或 在建工程-->
-<c:if test="${basicApplyBatch.type == 0 || basicApplyBatch.type == 3}">
-    <%@include file="/views/project/stageSurvey/commonDetail/matchingEducation.jsp" %>
-    <%@include file="/views/project/stageSurvey/commonDetail/matchingRecreation.jsp" %>
-    <%@include file="/views/project/stageSurvey/commonDetail/matchingRestaurant.jsp" %>
-    <%@include file="/views/project/stageSurvey/commonDetail/matchingMarket.jsp" %>
-    <%@include file="/views/project/stageSurvey/commonDetail/matchingMedical.jsp" %>
+<c:if test="${basicApply.type == 0 || basicApply.type == 3}">
+    <%@include file="/views/project/stageSurvey/examine/residence/detail/matchingEducation.jsp" %>
+    <%@include file="/views/project/stageSurvey/examine/residence/detail/matchingRecreation.jsp" %>
+    <%@include file="/views/project/stageSurvey/examine/residence/detail/matchingRestaurant.jsp" %>
+    <%@include file="/views/project/stageSurvey/examine/residence/detail/matchingMarket.jsp" %>
+    <%@include file="/views/project/stageSurvey/examine/residence/detail/matchingMedical.jsp" %>
 </c:if>
 
 
-<%@include file="/views/project/stageSurvey/commonDetail/matchingTransit.jsp" %>
-<%@include file="/views/project/stageSurvey/commonDetail/matchingTrafficHub.jsp" %>
-<%@include file="/views/project/stageSurvey/commonDetail/matchingMetro.jsp" %>
-<%@include file="/views/project/stageSurvey/commonDetail/matchingMainRoad.jsp" %>
-<%@include file="/views/project/stageSurvey/commonDetail/matchingMainConversion.jsp" %>
+<%@include file="/views/project/stageSurvey/examine/residence/detail/matchingTransit.jsp" %>
+<%@include file="/views/project/stageSurvey/examine/residence/detail/matchingTrafficHub.jsp" %>
+<%@include file="/views/project/stageSurvey/examine/residence/detail/matchingMetro.jsp" %>
+<%@include file="/views/project/stageSurvey/examine/residence/detail/matchingMainRoad.jsp" %>
+<%@include file="/views/project/stageSurvey/examine/residence/detail/matchingMainConversion.jsp" %>
 
 
 <!-- 非工业交通仓储 或 在建工程-->
-<c:if test="${basicApplyBatch.type == 0 || basicApplyBatch.type == 3}">
-    <%@include file="/views/project/stageSurvey/commonDetail/industry/estateSupplyWater.jsp" %>
-    <%@include file="/views/project/stageSurvey/commonDetail/industry/estateSupplyDrainWater.jsp" %>
-    <%@include file="/views/project/stageSurvey/commonDetail/industry/estateSupplyPower.jsp" %>
-    <%@include file="/views/project/stageSurvey/commonDetail/industry/estateSupplyHeating.jsp" %>
-    <%@include file="/views/project/stageSurvey/commonDetail/industry/estateSupplyGas.jsp" %>
+<c:if test="${basicApply.type == 0 || basicApply.type == 3}">
+    <%@include file="/views/project/stageSurvey/examine/industry/detail/estateSupplyWater.jsp" %>
+    <%@include file="/views/project/stageSurvey/examine/industry/detail/estateSupplyDrainWater.jsp" %>
+    <%@include file="/views/project/stageSurvey/examine/industry/detail/estateSupplyPower.jsp" %>
+    <%@include file="/views/project/stageSurvey/examine/industry/detail/estateSupplyHeating.jsp" %>
+    <%@include file="/views/project/stageSurvey/examine/industry/detail/estateSupplyGas.jsp" %>
 </c:if>
 
 <!-- 工业交通仓储 -->
-<c:if test="${basicApplyBatch.type == 1}">
-    <%@include file="/views/project/stageSurvey/commonDetail/industry/matchingMaterial.jsp" %>
+<c:if test="${basicApply.type == 1}">
+    <%@include file="/views/project/stageSurvey/examine/industry/detail/matchingMaterial.jsp" %>
 </c:if>
 
 

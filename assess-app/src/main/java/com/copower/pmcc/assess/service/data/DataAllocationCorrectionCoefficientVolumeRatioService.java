@@ -99,36 +99,24 @@ public class DataAllocationCorrectionCoefficientVolumeRatioService {
     /**
      * 根据容积率获取容积率修正系数
      *
-     * @param province
-     * @param city
-     * @param district
+     * @param landLevelDetailId 土地明细id
      * @param volumetricRate 容积率
      * @return
      */
-    public BigDecimal getAmendByVolumetricRate(String province, String city, String district, String volumetricRate) {
+    public BigDecimal getAmendByVolumetricRate(Integer landLevelDetailId, String volumetricRate) {
         if (StringUtils.isBlank(volumetricRate)) return null;
-        //根据容积率找到配置中对应的容积率修正
-        List<DataAllocationCorrectionCoefficientVolumeRatio> coefficientVolumeRatioList;
-        coefficientVolumeRatioList = dataLandDetailAchievementDao.getDataAllocationCorrectionCoefficientVolumeRatioList(province, city, district);
-        if (CollectionUtils.isEmpty(coefficientVolumeRatioList)) {
-            coefficientVolumeRatioList = dataLandDetailAchievementDao.getDataAllocationCorrectionCoefficientVolumeRatioList(province, city, null);
-        }
-        if (CollectionUtils.isNotEmpty(coefficientVolumeRatioList)) {
-            Integer masterId = coefficientVolumeRatioList.get(0).getId();
-            DataAllocationCorrectionCoefficientVolumeRatioDetail coefficientVolumeRatioDetail = new DataAllocationCorrectionCoefficientVolumeRatioDetail();
-            coefficientVolumeRatioDetail.setAllocationVolumeRatioId(masterId);
-            List<DataAllocationCorrectionCoefficientVolumeRatioDetail> detailList = dataAllocationCorrectionCoefficientVolumeRatioDetailDao.getDataAllocationCorrectionCoefficientVolumeRatioDetailList(coefficientVolumeRatioDetail);
-            for (DataAllocationCorrectionCoefficientVolumeRatioDetail detailItem : detailList) {
-                //直接匹配
-                if(detailItem.getPlotRatio()==null) continue;
-                if (detailItem.getPlotRatio().compareTo(new BigDecimal(volumetricRate)) == 0) {
-                    return detailItem.getCorrectionFactor();
-                }
+        DataAllocationCorrectionCoefficientVolumeRatioDetail coefficientVolumeRatioDetail = new DataAllocationCorrectionCoefficientVolumeRatioDetail();
+        coefficientVolumeRatioDetail.setAllocationVolumeRatioId(landLevelDetailId);
+        List<DataAllocationCorrectionCoefficientVolumeRatioDetail> detailList = dataAllocationCorrectionCoefficientVolumeRatioDetailDao.getDataAllocationCorrectionCoefficientVolumeRatioDetailList(coefficientVolumeRatioDetail);
+        for (DataAllocationCorrectionCoefficientVolumeRatioDetail detailItem : detailList) {
+            //直接匹配
+            if(detailItem.getPlotRatio()==null) continue;
+            if (detailItem.getPlotRatio().compareTo(new BigDecimal(volumetricRate)) == 0) {
+                return detailItem.getCorrectionFactor();
             }
-            //不能直接匹配
-            return getAmend(detailList, volumetricRate);
         }
-        return null;
+        //不能直接匹配
+        return getAmend(detailList, volumetricRate);
     }
 
     public BigDecimal getAmend(List<DataAllocationCorrectionCoefficientVolumeRatioDetail> detailList, String volumetricRate) {

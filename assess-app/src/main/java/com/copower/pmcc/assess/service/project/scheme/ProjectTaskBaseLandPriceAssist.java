@@ -7,6 +7,7 @@ import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.basic.BasicEstateLandStateService;
 import com.copower.pmcc.assess.service.basic.BasicEstateService;
 import com.copower.pmcc.assess.service.data.DataAllocationCorrectionCoefficientVolumeRatioService;
+import com.copower.pmcc.assess.service.data.DataLandLevelDetailService;
 import com.copower.pmcc.assess.service.method.MdBaseLandPriceService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
@@ -55,6 +56,8 @@ public class ProjectTaskBaseLandPriceAssist implements ProjectTaskInterface {
     private SchemeAreaGroupService schemeAreaGroupService;
     @Autowired
     private DataAllocationCorrectionCoefficientVolumeRatioService dataAllocationCorrectionCoefficientVolumeRatioService;
+    @Autowired
+    private DataLandLevelDetailService dataLandLevelDetailService;
 
 
     @Override
@@ -91,6 +94,7 @@ public class ProjectTaskBaseLandPriceAssist implements ProjectTaskInterface {
         Integer judgeObjectId = projectPlanDetails.getJudgeObjectId();
         SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
         modelAndView.addObject("number", schemeJudgeObject.getNumber());
+        setViewParam(projectPlanDetails, modelAndView);
         return modelAndView;
     }
 
@@ -152,7 +156,10 @@ public class ProjectTaskBaseLandPriceAssist implements ProjectTaskInterface {
 
         BasicEstateLandState landStateByEstateId = basicEstateLandStateService.getLandStateByEstateId(basicEstate.getId());
         modelAndView.addObject("landFactorTotalScore", landStateByEstateId.getLandFactorTotalScore());
-
+        modelAndView.addObject("landLevelContent", landStateByEstateId.getLandLevelContent());
+        modelAndView.addObject("levelDetailId", landStateByEstateId.getLandLevel());
+        DataLandLevelDetail levelDetail = dataLandLevelDetailService.getDataLandLevelDetailById(landStateByEstateId.getLandLevel());
+        modelAndView.addObject("landLevelId", levelDetail.getLandLevelId());
         //期日修正系数
         BigDecimal dateAmend = mdBaseLandPriceService.getBaseLandPriceDateAmend(schemeJudgeObject.getId());
         modelAndView.addObject("dateAmend", dateAmend);
@@ -160,13 +167,23 @@ public class ProjectTaskBaseLandPriceAssist implements ProjectTaskInterface {
         //容积率
         String plotRatio = landStateByEstateId.getPlotRatio();
         modelAndView.addObject("volumetricRate", plotRatio);
-        //根据容积率找到配置中对应的容积率修正
-        BigDecimal amendValue = dataAllocationCorrectionCoefficientVolumeRatioService.getAmendByVolumetricRate(declareRecord.getProvince(), declareRecord.getCity(), declareRecord.getDistrict(), plotRatio);
-        String volumeFractionAmend = "无";
-        if (amendValue != null) {
-            volumeFractionAmend = String.format("%.4f", amendValue);
+
+
+        //基准地价、法定年限、容积率修正根据对应的土地级别明细表取值,只能在最上级取值
+        Integer landLevelDetailId = landStateByEstateId.getLandLevel();
+        modelAndView.addObject("landLevelDetailId", landLevelDetailId);
+        DataLandLevelDetail data  = dataLandLevelDetailService.getPidByDataLandLevelDetail(landLevelDetailId);
+        if(data!=null) {
+            modelAndView.addObject("standardPremium", data.getPrice());
+            modelAndView.addObject("legalAge", data.getLegalAge());
+            BigDecimal amendValue = dataAllocationCorrectionCoefficientVolumeRatioService.getAmendByVolumetricRate(data.getId(), plotRatio);
+            String volumeFractionAmend = "无";
+            if (amendValue != null) {
+                volumeFractionAmend = String.format("%.2f", amendValue);
+            }
+            modelAndView.addObject("volumeFractionAmend", volumeFractionAmend);
         }
-        modelAndView.addObject("volumeFractionAmend", volumeFractionAmend);
+
     }
 
 }

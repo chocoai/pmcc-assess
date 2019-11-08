@@ -86,6 +86,8 @@ public class MdCostApproachService {
 
 
     public void saveMdCostApproach(MdCostApproach mdCostApproach) {
+        mdCostApproach.setLandLevelContent(StringUtils.isNotEmpty(mdCostApproach.getLandLevelContent())?mdCostApproach.getLandLevelContent():null);
+
         //不含代征地每平税费 = 土地取得费及相关税费 - 代征地每平税费
         BigDecimal landAcquisitionBhou = getLandAcquisitionBhou(mdCostApproach.getId());
         MdCostApproachTaxes landAcquisition = getMdCostApproachTaxesListByMasterId(mdCostApproach.getId(), AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_LAND_ACQUISITION);

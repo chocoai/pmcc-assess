@@ -772,7 +772,7 @@ public class PublicBasicService {
 
                     basicEstate.setApplyId(basicApply.getId());
                     basicEstate.setType(basicApply.getType());
-                    basicEstateService.saveAndUpdateBasicEstate(basicEstate,true);
+                    basicEstateService.saveAndUpdateBasicEstate(basicEstate,false);
                     basicApply.setBasicEstateId(basicEstate.getId());
                     if (basicEstate.getId() != null) {
                         BasicEstateLandState basicEstateLandState = null;
@@ -781,7 +781,7 @@ public class PublicBasicService {
                             if (basicEstateLandState != null) {
                                 basicEstateLandState.setEstateId(basicEstate.getId());
                                 basicEstateLandState.setApplyId(basicApply.getId());
-                                basicEstateLandStateService.saveAndUpdateBasicEstateLandState(basicEstateLandState,true);
+                                basicEstateLandStateService.saveAndUpdateBasicEstateLandState(basicEstateLandState,false);
                             }
                         }
                     }
@@ -858,7 +858,7 @@ public class PublicBasicService {
                             break;
                     }
                     basicHouse.setApplyId(basicApply.getId());
-                    Integer house = basicHouseService.saveAndUpdateBasicHouse(basicHouse,true);
+                    Integer house = basicHouseService.saveAndUpdateBasicHouse(basicHouse,false);
                     basicApply.setBasicHouseId(house);
                     //交易信息
                     jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_TRADING.getVar());
@@ -866,14 +866,14 @@ public class PublicBasicService {
                     if (basicTrading != null) {
                         basicTrading.setHouseId(house);
                         basicTrading.setApplyId(basicApply.getId());
-                        basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicTrading,true);
+                        basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicTrading,false);
                     }
                     //完损度
                     jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_DAMAGED_DEGREE.getVar());
                     List<BasicHouseDamagedDegree> damagedDegreeList = JSONObject.parseArray(jsonContent, BasicHouseDamagedDegree.class);
                     if (!CollectionUtils.isEmpty(damagedDegreeList)) {
                         for (BasicHouseDamagedDegree degree : damagedDegreeList) {
-                            basicHouseDamagedDegreeService.saveAndUpdateDamagedDegree(degree,true);
+                            basicHouseDamagedDegreeService.saveAndUpdateDamagedDegree(degree,false);
                         }
                         //写入成新率
                         String newDegree = residueRatioService.getObservationalRatio(basicHouse.getId());
