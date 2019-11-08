@@ -25,6 +25,8 @@ public class BasicUnit {
 
     private Date gmtModified;
 
+    private Integer relevanceId;
+
     public Integer getId() {
         return id;
     }
@@ -111,5 +113,13 @@ public class BasicUnit {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public Integer getRelevanceId() {
+        return relevanceId;
+    }
+
+    public void setRelevanceId(Integer relevanceId) {
+        this.relevanceId = relevanceId;
     }
 }

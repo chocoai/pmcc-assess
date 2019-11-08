@@ -277,6 +277,7 @@ public class BasicApplyBatchController extends BaseController {
         modelAndView.addObject("basicHouseTrading", basicHouseTrading);
         modelAndView.addObject("planDetailsId", planDetailsId);
         modelAndView.addObject("tbType", tbType);
+        modelAndView.addObject("formClassify", formClassify);
         modelAndView.addObject("tbId", tbId);
         modelAndView.addObject("quoteId", quoteId);
         modelAndView.addObject("formType", BasicApplyTypeEnum.getEnumById(formType).getKey());

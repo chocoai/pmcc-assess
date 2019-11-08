@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.dal.basis.dao.basic;
 import com.copower.pmcc.assess.dal.basis.entity.BasicUnit;
 import com.copower.pmcc.assess.dal.basis.entity.BasicUnitExample;
 import com.copower.pmcc.assess.dal.basis.mapper.BasicUnitMapper;
+import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -46,22 +47,7 @@ public class BasicUnitDao {
         BasicUnitExample example = new BasicUnitExample();
         BasicUnitExample.Criteria criteria = example.createCriteria();
         criteria.andBisDeleteEqualTo(false);
-        if (basicUnit.getApplyId() != null) {
-            criteria.andApplyIdEqualTo(basicUnit.getApplyId());
-        }
-        if (StringUtils.isNotBlank(basicUnit.getUnitNumber())) {
-            criteria.andUnitNumberLike(new StringBuilder("%").append(basicUnit.getUnitNumber()).append("%").toString());
-        }
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(basicUnit.getElevatorHouseholdRatio())) {
-            criteria.andElevatorHouseholdRatioEqualTo(basicUnit.getElevatorHouseholdRatio());
-        }
-        if (basicUnit.getBuildingId() != null) {
-            criteria.andBuildingIdEqualTo(basicUnit.getBuildingId());
-        }
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(basicUnit.getCreator())) {
-            criteria.andCreatorEqualTo(basicUnit.getCreator());
-        }
-        example.setOrderByClause("id desc");
+        MybatisUtils.convertObj2Criteria(basicUnit, criteria);
         return basicUnitMapper.selectByExample(example);
     }
 

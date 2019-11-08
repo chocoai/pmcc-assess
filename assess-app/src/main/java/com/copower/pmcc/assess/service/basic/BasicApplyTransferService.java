@@ -93,7 +93,7 @@ public class BasicApplyTransferService {
      * @return
      * @throws Exception
      */
-    private BasicEstate copyBasicEstate(Integer appId, BasicEstate basicEstateOld, BasicEstateLandState basicEstateLandStateOld) throws Exception {
+    public BasicEstate copyBasicEstate(Integer appId, BasicEstate basicEstateOld, BasicEstateLandState basicEstateLandStateOld) throws Exception {
         BasicEstate basicEstateNew = new BasicEstate();
         if (basicEstateOld != null) {
             BeanUtils.copyProperties(basicEstateOld, basicEstateNew);
@@ -219,7 +219,7 @@ public class BasicApplyTransferService {
      * @return
      * @throws Exception
      */
-    private BasicBuilding copyBasicBuilding(Integer appId, BasicBuilding buildingOld, Integer estateId) throws Exception {
+    public BasicBuilding copyBasicBuilding(Integer appId, BasicBuilding buildingOld, Integer estateId) throws Exception {
         BasicBuilding basicBuildingNew = new BasicBuilding();
         if (buildingOld != null) {
             BeanUtils.copyProperties(buildingOld, basicBuildingNew);
@@ -275,7 +275,7 @@ public class BasicApplyTransferService {
      * @return
      * @throws Exception
      */
-    private BasicUnit copyBasicUnit(Integer appId, BasicUnit unitOld, Integer basicBuildingId) throws Exception {
+    public BasicUnit copyBasicUnit(Integer appId, BasicUnit unitOld, Integer basicBuildingId) throws Exception {
         BasicUnit basicUnitNew = new BasicUnit();
         if (unitOld != null) {
             BeanUtils.copyProperties(unitOld, basicUnitNew);
