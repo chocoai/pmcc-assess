@@ -13,6 +13,7 @@ import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -71,6 +72,7 @@ public class MdBaseLandPriceService {
 
 
     public void saveMdBaseLandPrice(MdBaseLandPrice mdBaseLandPrice) {
+        mdBaseLandPrice.setLandLevelContent(StringUtils.isNotEmpty(mdBaseLandPrice.getLandLevelContent())?mdBaseLandPrice.getLandLevelContent():null);
         if (mdBaseLandPrice.getId() != null && mdBaseLandPrice.getId().intValue() > 0) {
             mdBaseLandPriceDao.editMdBaseLandPrice(mdBaseLandPrice);
         } else {
