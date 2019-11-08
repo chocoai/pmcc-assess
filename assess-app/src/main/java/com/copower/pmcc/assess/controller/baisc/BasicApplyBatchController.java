@@ -441,6 +441,20 @@ public class BasicApplyBatchController extends BaseController {
         return modelAndView;
     }
 
+    @RequestMapping(value = "/detail", name = "详情页面", method = RequestMethod.GET)
+    public ModelAndView basicApplyBatchDetail(String processInsId, Integer boxId) {
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/basic/basicBatchApplyDetail", processInsId, boxId, "-1", null);
+        modelAndView.addObject("formClassifyList", basicApplyBatchService.getFormClassifyList());
+        modelAndView.addObject("examineFormTypeList", surveyCommonService.getExamineFormTypeList());
+        try {
+            BasicApplyBatch applyBatch = basicApplyBatchService.getBasicApplyBatchByProcessInsId(processInsId);
+            modelAndView.addObject("applyBatch", applyBatch);
+        } catch (Exception e1) {
+            log.error(e1.getMessage(), e1);
+        }
+        return modelAndView;
+    }
+
     @ResponseBody
     @RequestMapping(value = "/basicApprovalSubmit", name = "审批页面 提交")
     public HttpResult basicApprovalSubmit(ApprovalModelDto approvalModelDto) {
