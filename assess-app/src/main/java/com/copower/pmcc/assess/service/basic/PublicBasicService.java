@@ -936,30 +936,30 @@ public class PublicBasicService {
      * @throws BusinessException
      */
     private void taggingValid(BasicApply basicApply) throws BusinessException {
-//        if (StringUtils.isNotBlank(basicApply.getEstatePartInMode())) {
-//            BasicEstate estate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
-//            if (!basicEstateTaggingService.hasBasicEstateTagging(estate.getId(), EstateTaggingTypeEnum.ESTATE)) {
-//                throw new BusinessException("楼盘位置信息还未标注");
-//            }
-//        }
-//        if (StringUtils.isNotBlank(basicApply.getBuildingPartInMode()) && basicApply.getType() != 2) {
-//            BasicBuildingVo building = basicBuildingService.getBasicBuildingByApplyId(basicApply.getId());
-//            if (!basicEstateTaggingService.hasBasicEstateTagging(building.getId(), EstateTaggingTypeEnum.BUILDING)) {
-//                throw new BusinessException("楼栋位置信息还未标注");
-//            }
-//        }
-//        if (StringUtils.isNotBlank(basicApply.getUnitPartInMode())) {
-//            BasicUnit unit = basicUnitService.getBasicUnitByApplyId(basicApply.getId());
-//            if (!basicEstateTaggingService.hasBasicEstateTagging(unit.getId(), EstateTaggingTypeEnum.UNIT)) {
-//                throw new BusinessException("单元位置信息还未标注");
-//            }
-//        }
-//        if (StringUtils.isNotBlank(basicApply.getHousePartInMode())) {
-//            BasicHouse house = basicHouseService.getHouseByApplyId(basicApply.getId());
-//            if (!basicEstateTaggingService.hasBasicEstateTagging(house.getId(), EstateTaggingTypeEnum.HOUSE)) {
-//                throw new BusinessException("房屋户型图朝向还未设置");
-//            }
-//        }
+        if (StringUtils.isNotBlank(basicApply.getEstatePartInMode())) {
+            BasicEstate estate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
+            if (!basicEstateTaggingService.hasBasicEstateTagging(estate.getId(), EstateTaggingTypeEnum.ESTATE)) {
+                throw new BusinessException("楼盘位置信息还未标注");
+            }
+        }
+        if (StringUtils.isNotBlank(basicApply.getBuildingPartInMode()) && basicApply.getType() != 2) {
+            BasicBuildingVo building = basicBuildingService.getBasicBuildingByApplyId(basicApply.getId());
+            if (!basicEstateTaggingService.hasBasicEstateTagging(building.getId(), EstateTaggingTypeEnum.BUILDING)) {
+                throw new BusinessException("楼栋位置信息还未标注");
+            }
+        }
+        if (StringUtils.isNotBlank(basicApply.getUnitPartInMode())) {
+            BasicUnit unit = basicUnitService.getBasicUnitByApplyId(basicApply.getId());
+            if (!basicEstateTaggingService.hasBasicEstateTagging(unit.getId(), EstateTaggingTypeEnum.UNIT)) {
+                throw new BusinessException("单元位置信息还未标注");
+            }
+        }
+        if (StringUtils.isNotBlank(basicApply.getHousePartInMode())) {
+            BasicHouse house = basicHouseService.getHouseByApplyId(basicApply.getId());
+            if (!basicEstateTaggingService.hasBasicEstateTagging(house.getId(), EstateTaggingTypeEnum.HOUSE)) {
+                throw new BusinessException("房屋户型图朝向还未设置");
+            }
+        }
     }
 
     public BasicEstateVo getBasicEstateByAppId(BasicApply basicApply) {
