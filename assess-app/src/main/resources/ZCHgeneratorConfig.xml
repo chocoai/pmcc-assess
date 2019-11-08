@@ -105,7 +105,7 @@
             <!--<columnOverride column="land_level_content" jdbcType="VARCHAR"></columnOverride>-->
         <!--</table>-->
 
-        <table tableName="tb_data_land_level_detail" domainObjectName="DataLandLevelDetail">
+        <table tableName="tb_md_architectural_obj" domainObjectName="MdArchitecturalObj">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 

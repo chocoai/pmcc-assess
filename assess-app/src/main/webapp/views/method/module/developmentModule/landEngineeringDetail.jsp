@@ -723,7 +723,7 @@
     };
 
     landEngineering.loadMdCalculatingMethodEngineeringCostTable = function () {
-        var obj = {planDetailsId:'${projectPlanDetails.id}',type:landEngineering.type} ;
+        var obj = {projectId: '${projectPlanDetails.projectId}',judgeObjectId: '${projectPlanDetails.judgeObjectId}',type:landEngineering.type} ;
         var cols = [];
         cols.push({
             field: 'id', title: '建筑安装工程费明细', formatter: function (value, row, index) {

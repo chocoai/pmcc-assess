@@ -423,6 +423,23 @@ developmentCommon.saveMdCalculatingMethodEngineeringCost = function (data, callb
     });
 };
 
+developmentCommon.deleteMdCalculatingMethodEngineeringCostHandle = function (rows , callback) {
+    var idArray = [];
+    var arBranch = [];
+    $.each(rows, function (i, item) {
+        idArray.push(item.id);
+        if (item.architecturalObjId){
+            arBranch.push(item.architecturalObjId) ;
+        }
+    });
+    this.deleteMdCalculatingMethodEngineeringCostById(idArray.join(","), function () {
+        developmentCommon.deleteMdArchitecturalObjById(arBranch.join(","),null) ;
+        if (callback) {
+            callback();
+        }
+    });
+};
+
 developmentCommon.deleteMdCalculatingMethodEngineeringCostById = function (id, callback) {
     $.ajax({
         type: "post",

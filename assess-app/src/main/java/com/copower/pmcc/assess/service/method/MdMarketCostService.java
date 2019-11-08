@@ -182,7 +182,7 @@ public class MdMarketCostService {
         mdCostConstruction.setJsonContent(formData);
         saveMdCostConstructionAndUpdate(mdCostConstruction);
 
-        mdCalculatingMethodEngineeringCostService.clearOver(projectPlanDetails.getId(),mdCost.getType());
+        mdCalculatingMethodEngineeringCostService.clearOver(projectPlanDetails.getProjectId(),projectPlanDetails.getJudgeObjectId(),mdCost.getType());
 
 
     }

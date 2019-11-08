@@ -646,7 +646,7 @@ public class MdDevelopmentService {
         MdDevelopment mdDevelopment = JSONObject.parseObject(formData, MdDevelopment.class);
         mdDevelopment.setContent(formData);
         this.saveAndUpdateMdDevelopment(mdDevelopment);
-        mdCalculatingMethodEngineeringCostService.clearOver(projectPlanDetails.getId(),mdDevelopment.getType());
+        mdCalculatingMethodEngineeringCostService.clearOver(projectPlanDetails.getProjectId(),projectPlanDetails.getJudgeObjectId(),mdDevelopment.getType());
 
 
     }

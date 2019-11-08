@@ -35,6 +35,13 @@ public class MdArchitecturalObjDao {
         return mapper.deleteByPrimaryKey(id) == 1;
     }
 
+    public void deleteMdArchitecturalObjByIds(List<Integer> ids){
+        MdArchitecturalObjExample example = new MdArchitecturalObjExample();
+        MdArchitecturalObjExample.Criteria criteria = example.createCriteria();
+        criteria.andIdIn(ids) ;
+        mapper.deleteByExample(example) ;
+    }
+
     public void removeMdArchitecturalObj(String type,Integer pid,String databaseName,Integer planDetailsId){
         MdArchitecturalObjExample example = new MdArchitecturalObjExample();
         MdArchitecturalObjExample.Criteria criteria = example.createCriteria();

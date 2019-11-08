@@ -12,6 +12,7 @@ import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dto.output.MergeCellModel;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.erp.common.CommonService;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
@@ -53,25 +54,13 @@ public class MdArchitecturalObjService {
         }
     }
 
-    public void clear(Integer planDetailsId) {
-        MdArchitecturalObj oo = new MdArchitecturalObj();
-        oo.setCreator(commonService.thisUserAccount());
-        oo.setPrice(new BigDecimal(0));
-        oo.setPlanDetailsId(planDetailsId);
-        List<MdArchitecturalObj> list = getMdArchitecturalObjListByExample(oo);
-        if (CollectionUtils.isNotEmpty(list)) {
-            for (MdArchitecturalObj architecturalObj : list) {
-                deleteMdArchitecturalObjById(architecturalObj.getId());
-            }
-        }
-    }
 
     public MdArchitecturalObj getMdArchitecturalObjById(Integer id) {
         return mdArchitecturalObjDao.getMdArchitecturalObjById(id);
     }
 
-    public boolean deleteMdArchitecturalObjById(Integer id) {
-        return mdArchitecturalObjDao.deleteMdArchitecturalObjById(id);
+    public void deleteMdArchitecturalObjById(String id) {
+         mdArchitecturalObjDao.deleteMdArchitecturalObjByIds(FormatUtils.transformString2Integer(id));
     }
 
     public void removeMdArchitecturalObj(String type, Integer pid, String databaseName, Integer planDetailsId) {

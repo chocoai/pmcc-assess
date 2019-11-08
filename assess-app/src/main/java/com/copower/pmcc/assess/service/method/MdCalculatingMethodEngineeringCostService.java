@@ -47,12 +47,12 @@ public class MdCalculatingMethodEngineeringCostService {
     @Autowired
     private SurveyCommonService surveyCommonService;
 
-    public void setMdCalculatingMethodEngineeringCost(Integer planDetailsId, String databaseName, String type) {
+    public void setMdCalculatingMethodEngineeringCost(Integer planDetailsId, String type) {
         ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
         SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId());
         BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
         BigDecimal area = schemeJudgeObject.getFloorArea() != null ? schemeJudgeObject.getFloorArea() : schemeJudgeObject.getEvaluationArea();
-        setMdCalculatingMethodEngineeringCost2(projectPlanDetails, basicApply, area, databaseName, type);
+        setMdCalculatingMethodEngineeringCost2(projectPlanDetails, basicApply, area, type);
     }
 
     /**
@@ -61,9 +61,8 @@ public class MdCalculatingMethodEngineeringCostService {
      * @param projectPlanDetails
      * @param basicApply
      * @param area
-     * @param databaseName
      */
-    private void setMdCalculatingMethodEngineeringCost2(ProjectPlanDetails projectPlanDetails, BasicApply basicApply, BigDecimal area, String databaseName, String type) {
+    private void setMdCalculatingMethodEngineeringCost2(ProjectPlanDetails projectPlanDetails, BasicApply basicApply, BigDecimal area,  String type) {
         if (basicApply == null) {
             return;
         }
@@ -89,9 +88,10 @@ public class MdCalculatingMethodEngineeringCostService {
                 mdCalculatingMethodEngineeringCost.setCreator(commonService.thisUserAccount());
                 mdCalculatingMethodEngineeringCost.setArea(area);
                 mdCalculatingMethodEngineeringCost.setArchitecturalObjId(0);
-                mdCalculatingMethodEngineeringCost.setPlanDetailsId(projectPlanDetails.getId());
-                mdCalculatingMethodEngineeringCost.setProjectId(projectPlanDetails.getProjectId());
+                mdCalculatingMethodEngineeringCost.setPlanDetailsId(0);
                 mdCalculatingMethodEngineeringCost.setPrice(new BigDecimal(0));
+                mdCalculatingMethodEngineeringCost.setProjectId(projectPlanDetails.getProjectId());
+                mdCalculatingMethodEngineeringCost.setJudgeObjectId(projectPlanDetails.getJudgeObjectId());
                 if (StringUtils.isNotBlank(type)) {
                     mdCalculatingMethodEngineeringCost.setType(type);
                 }
@@ -100,12 +100,11 @@ public class MdCalculatingMethodEngineeringCostService {
 
                 MdArchitecturalObj obj = mdArchitecturalObjService.getMdArchitecturalObjById(oo.getId());
                 oo.setId(null);
-                oo.setPlanDetailsId(projectPlanDetails.getId());
-                oo.setPid(mdCalculatingMethodEngineeringCost.getId());
-                oo.setJsonContent(obj.getJsonContent());
+                oo.setPlanDetailsId(0);
+                oo.setPid(0);
                 oo.setPrice(new BigDecimal(0));
+                oo.setJsonContent(obj.getJsonContent());
                 oo.setCreator(commonService.thisUserAccount());
-                oo.setDatabaseName(databaseName);
                 mdArchitecturalObjService.saveMdArchitecturalObj(oo);
 
                 mdCalculatingMethodEngineeringCost.setArchitecturalObjId(oo.getId());
@@ -129,7 +128,7 @@ public class MdCalculatingMethodEngineeringCostService {
 
     public void clear(ProjectPlanDetails projectPlanDetails, String type) {
         MdCalculatingMethodEngineeringCost engineeringCost = new MdCalculatingMethodEngineeringCost();
-        engineeringCost.setPlanDetailsId(projectPlanDetails.getId());
+        engineeringCost.setJudgeObjectId(projectPlanDetails.getJudgeObjectId());
         engineeringCost.setProjectId(projectPlanDetails.getProjectId());
         engineeringCost.setPrice(new BigDecimal(0));
         if (StringUtils.isNotBlank(type)) {
@@ -139,7 +138,7 @@ public class MdCalculatingMethodEngineeringCostService {
         if (CollectionUtils.isNotEmpty(list)) {
             for (MdCalculatingMethodEngineeringCost obj : list) {
                 if (obj.getArchitecturalObjId() != null) {
-                    mdArchitecturalObjService.deleteMdArchitecturalObjById(obj.getArchitecturalObjId());
+                    mdArchitecturalObjService.deleteMdArchitecturalObjById(obj.getArchitecturalObjId().toString());
                 }
                 deleteMdCalculatingMethodEngineeringCostById(obj.getId());
             }
@@ -148,12 +147,13 @@ public class MdCalculatingMethodEngineeringCostService {
 
     /**
      * 结束的时候清除工程费(清除不属于此type下的数据)
-     * @param planDetailsId
+     * @param projectId
      * @param type
      */
-    public void clearOver(Integer planDetailsId, String type) {
+    public void clearOver(Integer projectId, Integer judgeObjectId,String type) {
         MdCalculatingMethodEngineeringCost engineeringCost = new MdCalculatingMethodEngineeringCost();
-        engineeringCost.setPlanDetailsId(planDetailsId);
+        engineeringCost.setProjectId(projectId);
+        engineeringCost.setJudgeObjectId(judgeObjectId);
         List<MdCalculatingMethodEngineeringCost> list = getMdCalculatingMethodEngineeringCostListByExample(engineeringCost);
         if (CollectionUtils.isNotEmpty(list)) {
             for (MdCalculatingMethodEngineeringCost obj : list) {
@@ -164,7 +164,7 @@ public class MdCalculatingMethodEngineeringCostService {
                 if (obj.getArchitecturalObjId() == null) {
                     continue;
                 }
-                mdArchitecturalObjService.deleteMdArchitecturalObjById(obj.getArchitecturalObjId());
+                mdArchitecturalObjService.deleteMdArchitecturalObjById(obj.getArchitecturalObjId().toString());
             }
         }
     }

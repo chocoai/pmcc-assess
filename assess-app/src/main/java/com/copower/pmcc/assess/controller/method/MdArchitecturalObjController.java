@@ -47,9 +47,10 @@ public class MdArchitecturalObjController {
     }
 
     @PostMapping(value = "/deleteMdArchitecturalObjById")
-    public HttpResult deleteMdArchitecturalObjById(Integer id){
+    public HttpResult deleteMdArchitecturalObjById(String id){
         try {
-            return HttpResult.newCorrectResult(200, mdArchitecturalObjService.deleteMdArchitecturalObjById(id));
+            mdArchitecturalObjService.deleteMdArchitecturalObjById(id) ;
+            return HttpResult.newCorrectResult(200, "success");
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult(500, e);

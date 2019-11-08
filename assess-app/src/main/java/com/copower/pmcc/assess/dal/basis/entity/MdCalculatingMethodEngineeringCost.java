@@ -30,6 +30,8 @@ public class MdCalculatingMethodEngineeringCost {
 
     private Date gmtModified;
 
+    private Integer judgeObjectId;
+
     public Integer getId() {
         return id;
     }
@@ -132,5 +134,13 @@ public class MdCalculatingMethodEngineeringCost {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public Integer getJudgeObjectId() {
+        return judgeObjectId;
+    }
+
+    public void setJudgeObjectId(Integer judgeObjectId) {
+        this.judgeObjectId = judgeObjectId;
     }
 }
