@@ -804,6 +804,66 @@ public class BasicUnitExample {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
             return (Criteria) this;
         }
+
+        public Criteria andRelevanceIdIsNull() {
+            addCriterion("relevance_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelevanceIdIsNotNull() {
+            addCriterion("relevance_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelevanceIdEqualTo(Integer value) {
+            addCriterion("relevance_id =", value, "relevanceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelevanceIdNotEqualTo(Integer value) {
+            addCriterion("relevance_id <>", value, "relevanceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelevanceIdGreaterThan(Integer value) {
+            addCriterion("relevance_id >", value, "relevanceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelevanceIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("relevance_id >=", value, "relevanceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelevanceIdLessThan(Integer value) {
+            addCriterion("relevance_id <", value, "relevanceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelevanceIdLessThanOrEqualTo(Integer value) {
+            addCriterion("relevance_id <=", value, "relevanceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelevanceIdIn(List<Integer> values) {
+            addCriterion("relevance_id in", values, "relevanceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelevanceIdNotIn(List<Integer> values) {
+            addCriterion("relevance_id not in", values, "relevanceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelevanceIdBetween(Integer value1, Integer value2) {
+            addCriterion("relevance_id between", value1, value2, "relevanceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelevanceIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("relevance_id not between", value1, value2, "relevanceId");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

@@ -155,9 +155,11 @@ public class BasicApplyBatchService {
     @Autowired
     private BaseDataDicService baseDataDicService;
     @Autowired
-    private DeclareRecordService declareRecordService;
+    private BasicApplyTransferService basicApplyTransferService;
     @Autowired
     private BasicUnitHuxingService basicUnitHuxingService;
+    @Autowired
+    private BasicEstateDao basicEstateDao;
 
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -859,6 +861,13 @@ public class BasicApplyBatchService {
         jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_ESTATE.getVar());
         if (StringUtils.isNotBlank(jsonContent)) {
             basicEstate = JSONObject.parseObject(jsonContent, BasicEstate.class);
+            //原来数据做记录,将老数据复制一条
+            BasicEstate oldBasicEstate = basicEstateService.getBasicEstateById(basicEstate.getId());
+            BasicEstateLandState oldLandState = basicEstateLandStateService.getLandStateByEstateId(basicEstate.getId());
+            BasicEstate version = basicApplyTransferService.copyBasicEstate(null, oldBasicEstate, oldLandState);
+            version.setRelevanceId(oldBasicEstate.getId());
+            basicEstateService.saveAndUpdateBasicEstate(version,true);
+
             if (basicEstate != null) {
                 basicEstateService.saveAndUpdateBasicEstate(basicEstate, true);
                 BasicApplyBatch basicApplyBatch = getBasicApplyBatchByEstateId(basicEstate.getId());
@@ -871,6 +880,7 @@ public class BasicApplyBatchService {
                     String string = jsonObject.getString(BasicApplyFormNameEnum.BASIC_ESTATELAND_STATE.getVar());
                     basicEstateLandState = JSONObject.parseObject(string, BasicEstateLandState.class);
                     if (basicEstateLandState != null) {
+                        basicEstateLandState.setLandLevelContent(StringUtils.isNotEmpty(basicEstateLandState.getLandLevelContent())?basicEstateLandState.getLandLevelContent():null);
                         basicEstateLandState.setEstateId(basicEstate.getId());
                         basicEstateLandStateService.saveAndUpdateBasicEstateLandState(basicEstateLandState, true);
                     }
@@ -895,6 +905,12 @@ public class BasicApplyBatchService {
         jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_BUILDING.getVar());
         if (StringUtils.isNotBlank(jsonContent)) {
             basicBuilding = JSONObject.parseObject(jsonContent, BasicBuilding.class);
+            //原来数据做记录,将老数据复制一条
+            BasicBuilding oldBasicBuilding = basicBuildingService.getBasicBuildingById(basicBuilding.getId());
+            BasicBuilding version = basicApplyTransferService.copyBasicBuilding(null, oldBasicBuilding, null);
+            version.setRelevanceId(oldBasicBuilding.getId());
+            basicBuildingService.saveAndUpdateBasicBuilding(version,true);
+
             if (basicBuilding != null) {
                 basicBuildingService.saveAndUpdateBasicBuilding(basicBuilding, true);
                 BasicApplyBatchDetail buildingDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(FormatUtils.entityNameConvertToTableName(BasicBuilding.class), basicBuilding.getId());
@@ -911,6 +927,12 @@ public class BasicApplyBatchService {
         jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_UNIT.getVar());
         if (StringUtils.isNotEmpty(jsonContent)) {
             basicUnit = JSONObject.parseObject(jsonContent, BasicUnit.class);
+            //原来数据做记录,将老数据复制一条
+            BasicUnit oldBasicUnit = basicUnitService.getBasicUnitById(basicUnit.getId());
+            BasicUnit version = basicApplyTransferService.copyBasicUnit(null, oldBasicUnit, null);
+            version.setRelevanceId(oldBasicUnit.getId());
+            basicUnitService.saveAndUpdateBasicUnit(version,true);
+
             if (basicUnit != null) {
                 basicUnitService.saveAndUpdateBasicUnit(basicUnit, true);
                 BasicApplyBatchDetail unitDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(FormatUtils.entityNameConvertToTableName(BasicUnit.class), basicUnit.getId());
@@ -927,6 +949,13 @@ public class BasicApplyBatchService {
         jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_HOUSE.getVar());
         if (StringUtils.isNotEmpty(jsonContent)) {
             basicHouse = JSONObject.parseObject(jsonContent, BasicHouse.class);
+            //原来数据做记录,将老数据复制一条
+            BasicHouse oldBasicHouse = basicHouseDao.getBasicHouseById(basicHouse.getId());
+            BasicHouseTrading oldTradingByHouseId = basicHouseTradingService.getTradingByHouseId(oldBasicHouse.getId());
+            BasicHouse version = basicApplyTransferService.copyBasicHouse(null, oldBasicHouse, oldTradingByHouseId,null);
+            version.setRelevanceId(oldBasicHouse.getId());
+            basicHouseService.saveAndUpdateBasicHouse(version,true);
+
             if (basicHouse != null) {
                 Integer house = basicHouseService.saveAndUpdateBasicHouse(basicHouse, true);
                 BasicApplyBatchDetail houseDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(FormatUtils.entityNameConvertToTableName(BasicHouse.class), basicHouse.getId());

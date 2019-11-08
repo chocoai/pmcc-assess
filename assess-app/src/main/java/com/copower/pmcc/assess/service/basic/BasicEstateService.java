@@ -28,6 +28,7 @@ import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -169,8 +170,9 @@ public class BasicEstateService {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<BasicEstate> basicEstateList = basicEstateDao.basicEstateList(basicEstate);
+        List<BasicEstateVo> transform = LangUtils.transform(basicEstateList, o -> getBasicEstateVo(o));
         vo.setTotal(page.getTotal());
-        vo.setRows(ObjectUtils.isEmpty(basicEstateList) ? new ArrayList<BasicEstate>(10) : basicEstateList);
+        vo.setRows(ObjectUtils.isEmpty(transform) ? new ArrayList<BasicEstateVo>(10) : transform);
         return vo;
     }
 
