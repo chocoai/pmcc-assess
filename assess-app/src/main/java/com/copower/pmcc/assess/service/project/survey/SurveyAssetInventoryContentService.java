@@ -102,6 +102,8 @@ public class SurveyAssetInventoryContentService {
      * @return
      */
     public List<SurveyAssetInventoryContent> initAssetInventoryContent(ProjectPlanDetails projectPlanDetails, DeclareRecord declareRecord) {
+        List<SurveyAssetInventoryContent> inventoryContents = getContentListByPlanDetailsId(projectPlanDetails.getId());
+        if(CollectionUtils.isNotEmpty(inventoryContents)) return inventoryContents;
         List<SurveyAssetInventoryContent> inventoryContentList = Lists.newArrayList();
         if (declareRecord == null) return inventoryContentList;
         List<BaseDataDic> baseDataDicList = baseDataDicService.getCacheDataDicList(declareRecord.getInventoryContentKey());
