@@ -38,6 +38,7 @@ import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.Serializable;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -47,7 +48,7 @@ import java.util.regex.Pattern;
  * Created by zch on 2019/7/9.
  * 假设开发法
  */
-public class GenerateMdDevelopmentService {
+public class GenerateMdDevelopmentService implements Serializable{
     private final String errorStr = "无";
 
     private MdDevelopmentVo mdDevelopmentVo;
@@ -139,12 +140,12 @@ public class GenerateMdDevelopmentService {
         if (!map.isEmpty()) {
             for (Map.Entry<BaseReportFieldEnum, String> enumStringEntry : map.entrySet()) {
                 try {
-                    setFieldObjectValue(enumStringEntry.getKey(), textMap, fileMap, bookmarkMap, getMdDevelopmentVo());
-                    setMdDevelopmentCommonValue(enumStringEntry.getKey(), textMap, fileMap, bookmarkMap, getMdDevelopmentVo(), schemeJudgeObject, schemeAreaGroup, projectPlanDetails);
                     //经济指标 单独处理
                     if (Objects.equal(BaseReportFieldEnum.Development_EconomicIndicators.getName(), enumStringEntry.getKey().getName())) {
                         setDevelopment_EconomicIndicatorsValue(textMap, fileMap, bookmarkMap);
                     }
+                    setFieldObjectValue(enumStringEntry.getKey(), textMap, fileMap, bookmarkMap, mdDevelopmentVo);
+                    setMdDevelopmentCommonValue(enumStringEntry.getKey(), textMap, fileMap, bookmarkMap, mdDevelopmentVo, schemeJudgeObject, schemeAreaGroup, projectPlanDetails);
                 } catch (Exception e) {
                     baseService.writeExceptionInfo(e);
                     throw e;
@@ -498,7 +499,7 @@ public class GenerateMdDevelopmentService {
 
 
     private synchronized void setFieldObjectValue(BaseReportFieldEnum key, final ConcurrentHashMap<String, String> textMap, final ConcurrentHashMap<String, String> fileMap, final ConcurrentHashMap<String, String> bookmarkMap, MdDevelopmentVo target) {
-        String value = mdDevelopmentService.getFieldObjectValue(key, target);
+        String value = mdDevelopmentService.getFieldObjectValueReport(key, target);
         switch (key) {
             case Development_projectConstructionPeriod: {
                 value = ArithmeticUtils.getBigDecimalString(target.getProjectConstructionPeriod());
@@ -738,9 +739,6 @@ public class GenerateMdDevelopmentService {
             }
         }
         if (StringUtils.isEmpty(value)) {
-            return;
-        }
-        if (com.google.common.base.Objects.equal("0", value)) {
             return;
         }
         generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), value);

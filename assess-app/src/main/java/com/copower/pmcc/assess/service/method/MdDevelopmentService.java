@@ -131,6 +131,14 @@ public class MdDevelopmentService {
         }
     }
 
+    public synchronized String getFieldObjectValueReport(BaseReportFieldEnum key, MdDevelopment target) {
+        try {
+            return getFieldObjectValueHandle(key, target);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     public void calculationNumeric(MdDevelopment target) {
         getFieldObjectValueHandle(BaseReportFieldEnum.Development_Price, target);
         if (target.getId() != null && target.getId() != 0) {
@@ -613,7 +621,7 @@ public class MdDevelopmentService {
                 return ArithmeticUtils.getBigDecimalString(result);
             }
             default:
-                return "0";
+                return "";
         }
     }
 

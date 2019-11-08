@@ -448,6 +448,9 @@ public class DeclareRealtyHouseCertService {
         declareRecord.setBuildingNumber(oo.getBuildingNumber());
         declareRecord.setUnit(oo.getUnit());
         declareRecord.setRegistrationDate(oo.getRegistrationDate());
+        if (declareRecord.getRegistrationDate() == null){
+            declareRecord.setRegistrationDate(oo.getRegistrationTime());
+        }
         declareRecord.setFloor(oo.getFloor());
         declareRecord.setRoomNumber(oo.getRoomNumber());
         declareRecord.setCertUse(baseDataDicService.getNameById(oo.getCertUseCategory()));

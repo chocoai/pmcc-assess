@@ -367,6 +367,9 @@ public class DeclareRealtyRealEstateCertService {
         declareRecord.setOwnership(declareRealtyRealEstateCert.getOwnership());
         declareRecord.setPublicSituation(baseDataDicService.getNameById(declareRealtyRealEstateCert.getPublicSituation()));
         declareRecord.setRegistrationDate(declareRealtyRealEstateCert.getRegistrationDate());
+        if (declareRecord.getRegistrationDate() == null) {
+            declareRecord.setRegistrationDate(declareRealtyRealEstateCert.getRegistrationTime());
+        }
         declareRecord.setSeat(declareRealtyRealEstateCert.getBeLocated());
         declareRecord.setStreetNumber(declareRealtyRealEstateCert.getStreetNumber());
         declareRecord.setAttachedNumber(declareRealtyRealEstateCert.getAttachedNumber());
