@@ -88,7 +88,9 @@ public class DeclareRealtyRealEstateCert {
 
     private BigDecimal acquisitionPrice;
 
-    private Integer landCertUse;
+    private String landCertUse;
+
+    private String landCertUseCategory;
 
     private Date terminationDate;
 
@@ -121,8 +123,6 @@ public class DeclareRealtyRealEstateCert {
     private Date gmtModified;
 
     private BigDecimal landApportionArea;
-
-    private Integer landCertUseCategory;
 
     private Integer houseCertUseCategory;
 
@@ -462,12 +462,20 @@ public class DeclareRealtyRealEstateCert {
         this.acquisitionPrice = acquisitionPrice;
     }
 
-    public Integer getLandCertUse() {
+    public String getLandCertUse() {
         return landCertUse;
     }
 
-    public void setLandCertUse(Integer landCertUse) {
-        this.landCertUse = landCertUse;
+    public void setLandCertUse(String landCertUse) {
+        this.landCertUse = landCertUse == null ? null : landCertUse.trim();
+    }
+
+    public String getLandCertUseCategory() {
+        return landCertUseCategory;
+    }
+
+    public void setLandCertUseCategory(String landCertUseCategory) {
+        this.landCertUseCategory = landCertUseCategory == null ? null : landCertUseCategory.trim();
     }
 
     public Date getTerminationDate() {
@@ -596,14 +604,6 @@ public class DeclareRealtyRealEstateCert {
 
     public void setLandApportionArea(BigDecimal landApportionArea) {
         this.landApportionArea = landApportionArea;
-    }
-
-    public Integer getLandCertUseCategory() {
-        return landCertUseCategory;
-    }
-
-    public void setLandCertUseCategory(Integer landCertUseCategory) {
-        this.landCertUseCategory = landCertUseCategory;
     }
 
     public Integer getHouseCertUseCategory() {

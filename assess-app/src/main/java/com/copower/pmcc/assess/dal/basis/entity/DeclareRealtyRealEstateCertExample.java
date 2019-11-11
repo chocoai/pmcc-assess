@@ -2876,53 +2876,133 @@ public class DeclareRealtyRealEstateCertExample {
             return (Criteria) this;
         }
 
-        public Criteria andLandCertUseEqualTo(Integer value) {
+        public Criteria andLandCertUseEqualTo(String value) {
             addCriterion("land_cert_use =", value, "landCertUse");
             return (Criteria) this;
         }
 
-        public Criteria andLandCertUseNotEqualTo(Integer value) {
+        public Criteria andLandCertUseNotEqualTo(String value) {
             addCriterion("land_cert_use <>", value, "landCertUse");
             return (Criteria) this;
         }
 
-        public Criteria andLandCertUseGreaterThan(Integer value) {
+        public Criteria andLandCertUseGreaterThan(String value) {
             addCriterion("land_cert_use >", value, "landCertUse");
             return (Criteria) this;
         }
 
-        public Criteria andLandCertUseGreaterThanOrEqualTo(Integer value) {
+        public Criteria andLandCertUseGreaterThanOrEqualTo(String value) {
             addCriterion("land_cert_use >=", value, "landCertUse");
             return (Criteria) this;
         }
 
-        public Criteria andLandCertUseLessThan(Integer value) {
+        public Criteria andLandCertUseLessThan(String value) {
             addCriterion("land_cert_use <", value, "landCertUse");
             return (Criteria) this;
         }
 
-        public Criteria andLandCertUseLessThanOrEqualTo(Integer value) {
+        public Criteria andLandCertUseLessThanOrEqualTo(String value) {
             addCriterion("land_cert_use <=", value, "landCertUse");
             return (Criteria) this;
         }
 
-        public Criteria andLandCertUseIn(List<Integer> values) {
+        public Criteria andLandCertUseLike(String value) {
+            addCriterion("land_cert_use like", value, "landCertUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertUseNotLike(String value) {
+            addCriterion("land_cert_use not like", value, "landCertUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertUseIn(List<String> values) {
             addCriterion("land_cert_use in", values, "landCertUse");
             return (Criteria) this;
         }
 
-        public Criteria andLandCertUseNotIn(List<Integer> values) {
+        public Criteria andLandCertUseNotIn(List<String> values) {
             addCriterion("land_cert_use not in", values, "landCertUse");
             return (Criteria) this;
         }
 
-        public Criteria andLandCertUseBetween(Integer value1, Integer value2) {
+        public Criteria andLandCertUseBetween(String value1, String value2) {
             addCriterion("land_cert_use between", value1, value2, "landCertUse");
             return (Criteria) this;
         }
 
-        public Criteria andLandCertUseNotBetween(Integer value1, Integer value2) {
+        public Criteria andLandCertUseNotBetween(String value1, String value2) {
             addCriterion("land_cert_use not between", value1, value2, "landCertUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertUseCategoryIsNull() {
+            addCriterion("land_cert_use_category is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertUseCategoryIsNotNull() {
+            addCriterion("land_cert_use_category is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertUseCategoryEqualTo(String value) {
+            addCriterion("land_cert_use_category =", value, "landCertUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertUseCategoryNotEqualTo(String value) {
+            addCriterion("land_cert_use_category <>", value, "landCertUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertUseCategoryGreaterThan(String value) {
+            addCriterion("land_cert_use_category >", value, "landCertUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertUseCategoryGreaterThanOrEqualTo(String value) {
+            addCriterion("land_cert_use_category >=", value, "landCertUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertUseCategoryLessThan(String value) {
+            addCriterion("land_cert_use_category <", value, "landCertUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertUseCategoryLessThanOrEqualTo(String value) {
+            addCriterion("land_cert_use_category <=", value, "landCertUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertUseCategoryLike(String value) {
+            addCriterion("land_cert_use_category like", value, "landCertUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertUseCategoryNotLike(String value) {
+            addCriterion("land_cert_use_category not like", value, "landCertUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertUseCategoryIn(List<String> values) {
+            addCriterion("land_cert_use_category in", values, "landCertUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertUseCategoryNotIn(List<String> values) {
+            addCriterion("land_cert_use_category not in", values, "landCertUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertUseCategoryBetween(String value1, String value2) {
+            addCriterion("land_cert_use_category between", value1, value2, "landCertUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertUseCategoryNotBetween(String value1, String value2) {
+            addCriterion("land_cert_use_category not between", value1, value2, "landCertUseCategory");
             return (Criteria) this;
         }
 
@@ -3953,66 +4033,6 @@ public class DeclareRealtyRealEstateCertExample {
 
         public Criteria andLandApportionAreaNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("land_apportion_area not between", value1, value2, "landApportionArea");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandCertUseCategoryIsNull() {
-            addCriterion("land_cert_use_category is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandCertUseCategoryIsNotNull() {
-            addCriterion("land_cert_use_category is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandCertUseCategoryEqualTo(Integer value) {
-            addCriterion("land_cert_use_category =", value, "landCertUseCategory");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandCertUseCategoryNotEqualTo(Integer value) {
-            addCriterion("land_cert_use_category <>", value, "landCertUseCategory");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandCertUseCategoryGreaterThan(Integer value) {
-            addCriterion("land_cert_use_category >", value, "landCertUseCategory");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandCertUseCategoryGreaterThanOrEqualTo(Integer value) {
-            addCriterion("land_cert_use_category >=", value, "landCertUseCategory");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandCertUseCategoryLessThan(Integer value) {
-            addCriterion("land_cert_use_category <", value, "landCertUseCategory");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandCertUseCategoryLessThanOrEqualTo(Integer value) {
-            addCriterion("land_cert_use_category <=", value, "landCertUseCategory");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandCertUseCategoryIn(List<Integer> values) {
-            addCriterion("land_cert_use_category in", values, "landCertUseCategory");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandCertUseCategoryNotIn(List<Integer> values) {
-            addCriterion("land_cert_use_category not in", values, "landCertUseCategory");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandCertUseCategoryBetween(Integer value1, Integer value2) {
-            addCriterion("land_cert_use_category between", value1, value2, "landCertUseCategory");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandCertUseCategoryNotBetween(Integer value1, Integer value2) {
-            addCriterion("land_cert_use_category not between", value1, value2, "landCertUseCategory");
             return (Criteria) this;
         }
 
