@@ -246,4 +246,23 @@ public class BaseDataDicController {
         }
         return HttpResult.newCorrectResult();
     }
+
+
+    /**
+     * 从现有集合中根据名称找出对应数据
+     *
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/getDataDicByName")
+    public HttpResult getDataDicByName(String fieldName,String name) {
+        try {
+            List<BaseDataDic> sysDataDics = baseDataDicService.getCacheDataDicList(fieldName);
+            BaseDataDic dataDic = baseDataDicService.getDataDicByName(sysDataDics, name);
+            return HttpResult.newCorrectResult(dataDic);
+        } catch (Exception e) {
+            LOGGER.error("获取数据字典异常", e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
 }

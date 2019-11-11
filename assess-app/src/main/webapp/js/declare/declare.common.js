@@ -691,15 +691,17 @@ declareCommon.initLand = function (item, form, fileArr, callback) {
     AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareUseRightType, item.landRightNature, function (html, data) {
         frm.find("select[name='landRightNature']").empty().html(html).trigger('change');
     });
-    AssessCommon.loadDataDicByKey(AssessDicKey.estate_total_land_use, item.certUse, function (html, data) {
-        frm.find("select[name='certUse']").empty().html(html).trigger('change');
-    });
+    declareCommon.loadCertUseHtml(AssessDicKey.estate_total_land_use, item.certUse, function (html, data) {
+        frm.find("#certUseList").empty().html(html).trigger('change');
+        frm.find("#certUseList2").empty().html(html).trigger('change');
+    },true);
     AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareCommonSituation, item.publicSituation, function (html, data) {
         frm.find("select[name='publicSituation']").empty().html(html).trigger('change');
     });
-    frm.find("select.certUse").off('change').on('change', function () {
-        AssessCommon.loadDataDicByPid($(this).val(), item.certUseCategory, function (html, data) {
-            frm.find("select.certUseCategory").empty().html(html).trigger('change');
+    frm.find("input[name='certUse']").off('change').on('change', function () {
+        declareCommon.certUseOnchenge(AssessDicKey.estate_total_land_use,$(this).val(),item.certUseCategory, function (html, data) {
+            frm.find("#certUseCategoryList").empty().html(html).trigger('change');
+            frm.find("#certUseCategoryList2").empty().html(html).trigger('change');
         });
     });
     //绑定变更事件
@@ -755,6 +757,95 @@ declareCommon.initLand = function (item, form, fileArr, callback) {
     });
 };
 
+//获取CertUse字典信息
+declareCommon.loadCertUseHtml = function (key, value, callback, async) {
+    if (key) {
+        $.ajax({
+            url: getContextPath() + "/baseDataDic/getDataDicListByFieldName",
+            type: "get",
+            dataType: "json",
+            async: async,
+            data: {
+                fieldName: key
+            },
+            success: function (result) {
+                if (result.ret) {
+                    var retHtml = '<option value="" selected>-请选择-</option>';
+                    $.each(result.data, function (i, item) {
+                        retHtml += '<option value="' + item.name + '"'
+                        if (item.name == value) {
+                            retHtml += 'selected="selected"'
+                        }
+                        retHtml += '>' + item.name + '</option>'
+                    });
+                    if (callback) {
+                        callback(retHtml, result.data);
+                    }
+
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        });
+    }
+};
+//判断certUse的值是否属于字典
+declareCommon.certUseOnchenge = function (fieldName, name,value, callback) {
+    $.ajax({
+            url: getContextPath() + "/baseDataDic/getDataDicByName",
+            type: "get",
+            dataType: "json",
+            data: {
+                fieldName: fieldName,
+                name: name
+            },
+            success: function (result) {
+                if (result.ret) {
+                    if(result.data){
+                    declareCommon.loadCertUseCategoryHtml(result.data.id,value,callback);
+                    }
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        });
+
+};
+
+declareCommon.loadCertUseCategoryHtml = function (pid, value, callback) {
+    if (pid) {
+        $.ajax({
+            url: getContextPath() + "/baseDataDic/getCacheDataDicListByPid",
+            type: "get",
+            dataType: "json",
+            data: {
+                pid: pid
+            },
+            success: function (result) {
+                if (result.ret) {
+                    var retHtml = '<option value="" selected>-请选择-</option>';
+                    $.each(result.data, function (i, item) {
+                        retHtml += '<option value="' + item.name + '"'
+                        if (item.name == value) {
+                            retHtml += 'selected="selected"'
+                        }
+                        retHtml += '>' + item.name + '</option>'
+                    });
+                    if (callback) {
+                        callback(retHtml, result.data);
+                    }
+
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        });
+    }
+};
+
 //不动产初始化并且赋值
 declareCommon.initDeclareRealty = function (item, form, fileArr, callback) {
     var frm = $(form.selector);
@@ -769,9 +860,10 @@ declareCommon.initDeclareRealty = function (item, form, fileArr, callback) {
         districtValue: item.district
     });
     frm.validate();
-    AssessCommon.loadDataDicByKey(AssessDicKey.estate_total_land_use, item.landCertUse, function (html, data) {
-        frm.find("select[name='landCertUse']").empty().html(html).trigger('change');
-    });
+    declareCommon.loadCertUseHtml(AssessDicKey.estate_total_land_use, item.landCertUse, function (html, data) {
+        frm.find("#landCertUseList").empty().html(html).trigger('change');
+        frm.find("#landCertUseList2").empty().html(html).trigger('change');
+    },true);
     AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareLandCertificateType, item.landRightType, function (html, data) {
         frm.find("select[name='landRightType']").empty().html(html).trigger('change');
     });
@@ -792,9 +884,9 @@ declareCommon.initDeclareRealty = function (item, form, fileArr, callback) {
             frm.find("select.landCertUseCategory").empty().html(html).trigger('change');
         });
     });
-    frm.find("select.houseCertUse").off('change').on('change', function () {
-        AssessCommon.loadDataDicByPid($(this).val(), item.houseCertUseCategory, function (html, data) {
-            frm.find("select.houseCertUseCategory").empty().html(html).trigger('change');
+    frm.find("input[name='landCertUse']").off('change').on('change', function () {
+        declareCommon.certUseOnchenge(AssessDicKey.estate_total_land_use,$(this).val(),item.landCertUseCategory, function (html, data) {
+            frm.find("#landCertUseCategoryList").empty().html(html).trigger('change');
         });
     });
     //绑定变更事件

@@ -48,7 +48,9 @@ public class DeclareRealtyLandCert {
 
     private String landNumber;
 
-    private Integer certUse;
+    private String certUse;
+
+    private String certUseCategory;
 
     private String housingStructure;
 
@@ -89,8 +91,6 @@ public class DeclareRealtyLandCert {
     private Date gmtCreated;
 
     private Date gmtModified;
-
-    private Integer certUseCategory;
 
     public Integer getId() {
         return id;
@@ -268,12 +268,20 @@ public class DeclareRealtyLandCert {
         this.landNumber = landNumber == null ? null : landNumber.trim();
     }
 
-    public Integer getCertUse() {
+    public String getCertUse() {
         return certUse;
     }
 
-    public void setCertUse(Integer certUse) {
-        this.certUse = certUse;
+    public void setCertUse(String certUse) {
+        this.certUse = certUse == null ? null : certUse.trim();
+    }
+
+    public String getCertUseCategory() {
+        return certUseCategory;
+    }
+
+    public void setCertUseCategory(String certUseCategory) {
+        this.certUseCategory = certUseCategory == null ? null : certUseCategory.trim();
     }
 
     public String getHousingStructure() {
@@ -434,13 +442,5 @@ public class DeclareRealtyLandCert {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public Integer getCertUseCategory() {
-        return certUseCategory;
-    }
-
-    public void setCertUseCategory(Integer certUseCategory) {
-        this.certUseCategory = certUseCategory;
     }
 }

@@ -310,33 +310,15 @@ public class DeclarePublicService {
             oo.setOtherNote(PoiUtils.getCellValue(row.getCell(18)));
         }
 
-        //验证基础字典中数据
-        String purpose = PoiUtils.getCellValue(row.getCell(19));
-        if (StringUtils.isNotBlank(purpose)) {
-            typeDic = baseDataDicService.getDataDicByName(purposes, purpose);
-            if (typeDic == null) {
-                builder.append(String.format("\n第%s行异常：类型与系统配置的名称不一致(土地用途)", i));
-                return false;
-            } else {
-                //土地用途类型
-                oo.setLandCertUse(typeDic.getId());
-                //土地用途类别
-                String certUseCategoryName = PoiUtils.getCellValue(row.getCell(20));
-                List<BaseDataDic> certUseCategorys = baseDataDicService.getCacheDataDicListByPid(typeDic.getId());
-                if (StringUtils.isNotBlank(certUseCategoryName)) {
-                    typeDic = baseDataDicService.getDataDicByName(certUseCategorys, certUseCategoryName);
-                    if (typeDic == null) {
-                        builder.append(String.format("\n第%s行异常：类型与系统配置的名称不一致(土地用途类别)", i));
-                        return false;
-                    } else {
-                        oo.setLandCertUseCategory(typeDic.getId());
-                    }
-                }
-            }
-        } else {
-            builder.append(String.format("\n第%s行异常：土地用途必须填写", i));
-            return false;
+        //土地用途类型
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(19)))) {
+            oo.setLandCertUse(PoiUtils.getCellValue(row.getCell(19)));
         }
+        //土地用途类别
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(20)))) {
+            oo.setLandCertUseCategory(PoiUtils.getCellValue(row.getCell(20)));
+        }
+
 
         //验证基础字典中数据
         String useRightType = PoiUtils.getCellValue(row.getCell(21));
@@ -570,30 +552,12 @@ public class DeclarePublicService {
         }
         BaseDataDic typeDic = null;
         //土地用途
-        String purpose = PoiUtils.getCellValue(row.getCell(10));
-        if (StringUtils.isNotBlank(purpose)) {
-            typeDic = baseDataDicService.getDataDicByName(purposes, purpose);
-            if (typeDic == null) {
-                builder.append(String.format("\n第%s行异常：土地用途与系统配置的名称不一致", i));
-                return false;
-            } else {
-                declareRealtyLandCert.setCertUse(typeDic.getId());
-                //土地用途类别
-                String certUseCategoryName = PoiUtils.getCellValue(row.getCell(11));
-                List<BaseDataDic> certUseCategorys = baseDataDicService.getCacheDataDicListByPid(typeDic.getId());
-                if (StringUtils.isNotBlank(certUseCategoryName)) {
-                    typeDic = baseDataDicService.getDataDicByName(certUseCategorys, certUseCategoryName);
-                    if (typeDic == null) {
-                        builder.append(String.format("\n第%s行异常：类型与系统配置的名称不一致(土地用途类别)", i));
-                        return false;
-                    } else {
-                        declareRealtyLandCert.setCertUseCategory(typeDic.getId());
-                    }
-                }
-            }
-        } else {
-            builder.append(String.format("\n第%s行异常：土地用途必须填写", i));
-            return false;
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(10)))) {
+            declareRealtyLandCert.setCertUse(PoiUtils.getCellValue(row.getCell(10)));
+        }
+        //土地用途类别
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(11)))) {
+            declareRealtyLandCert.setCertUseCategory(PoiUtils.getCellValue(row.getCell(11)));
         }
 
         //权利性质

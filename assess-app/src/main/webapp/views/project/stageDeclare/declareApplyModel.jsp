@@ -1649,24 +1649,44 @@
 
         <div class="form-group">
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                    土地用途<span
-                        class="symbol required"></span>
+                <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                    土地用途类型<span class="symbol required"></span>
                 </label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <select required="required" name="landCertUse"
-                            class="form-control search-select select2 landCertUse">
-                    </select>
+                <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                    <div class="input-group">
+                        <input type="text"  name="landCertUse" class="form-control" list="landCertUseList">
+                        <datalist id="landCertUseList">
+
+                        </datalist>
+                        <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default docs-tooltip"
+                                                        onclick="$(this).closest('.input-group').find('input').val('');"
+                                                        data-toggle="tooltip" data-original-title="清除">
+                                                <i class="fa fa-trash-o"></i>
+                                                </button>
+                                            </span>
+                    </div>
                 </div>
             </div>
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                     土地用途类别<span class="symbol required"></span>
                 </label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <select required="required" name="landCertUseCategory"
-                            class="form-control search-select select2 landCertUseCategory">
-                    </select>
+                <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                    <div class="input-group">
+                        <input type="text" name="landCertUseCategory" list="landCertUseCategoryList"
+                               class="form-control">
+                        <datalist id="landCertUseCategoryList">
+
+                        </datalist>
+                        <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default docs-tooltip"
+                                                        onclick="$(this).closest('.input-group').find('input').val('');"
+                                                        data-toggle="tooltip" data-original-title="清除">
+                                                <i class="fa fa-trash-o"></i>
+                                                </button>
+                                            </span>
+                    </div>
                 </div>
             </div>
             <div class="x-valid">
@@ -1916,14 +1936,23 @@
             color="#6f5499" size="10"/>
         <div class="form-group">
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                    土地用途<span
-                        class="symbol required"></span>
+                <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                    土地用途类型<span class="symbol required"></span>
                 </label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <select required="required" name="landCertUse"
-                            class="form-control search-select select2 landCertUse">
-                    </select>
+                <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                    <div class="input-group">
+                        <input type="text"  name="landCertUse" class="form-control" list="landCertUseList2">
+                        <datalist id="landCertUseList2">
+
+                        </datalist>
+                        <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default docs-tooltip"
+                                                        onclick="$(this).closest('.input-group').find('input').val('');"
+                                                        data-toggle="tooltip" data-original-title="清除">
+                                                <i class="fa fa-trash-o"></i>
+                                                </button>
+                                            </span>
+                    </div>
                 </div>
             </div>
             <div class="x-valid">
@@ -2672,23 +2701,44 @@
         </div>
         <div class="form-group">
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                     土地用途类型<span class="symbol required"></span>
                 </label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <select required="required" name="certUse"
-                            class="form-control search-select select2 certUse">
-                    </select>
+                <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                    <div class="input-group">
+                        <input type="text" id="certUse" name="certUse" class="form-control" list="certUseList">
+                        <datalist id="certUseList">
+
+                        </datalist>
+                        <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default docs-tooltip"
+                                                        onclick="$(this).closest('.input-group').find('input').val('');"
+                                                        data-toggle="tooltip" data-original-title="清除">
+                                                <i class="fa fa-trash-o"></i>
+                                                </button>
+                                            </span>
+                    </div>
                 </div>
             </div>
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                     土地用途类别<span class="symbol required"></span>
                 </label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <select required="required" name="certUseCategory"
-                            class="form-control search-select select2 certUseCategory">
-                    </select>
+                <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                    <div class="input-group">
+                        <input type="text" id="certUseCategory" name="certUseCategory" list="certUseCategoryList"
+                               class="form-control">
+                        <datalist id="certUseCategoryList">
+
+                        </datalist>
+                        <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default docs-tooltip"
+                                                        onclick="$(this).closest('.input-group').find('input').val('');"
+                                                        data-toggle="tooltip" data-original-title="清除">
+                                                <i class="fa fa-trash-o"></i>
+                                                </button>
+                                            </span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -3001,23 +3051,44 @@
         </div>
         <div class="form-group">
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                     土地用途类型<span class="symbol required"></span>
                 </label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <select required="required" name="certUse"
-                            class="form-control search-select select2 certUse">
-                    </select>
+                <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                    <div class="input-group">
+                        <input type="text"  name="certUse" class="form-control" list="certUseList2">
+                        <datalist id="certUseList2">
+
+                        </datalist>
+                        <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default docs-tooltip"
+                                                        onclick="$(this).closest('.input-group').find('input').val('');"
+                                                        data-toggle="tooltip" data-original-title="清除">
+                                                <i class="fa fa-trash-o"></i>
+                                                </button>
+                                            </span>
+                    </div>
                 </div>
             </div>
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                     土地用途类别<span class="symbol required"></span>
                 </label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <select required="required" name="certUseCategory"
-                            class="form-control search-select select2 certUseCategory">
-                    </select>
+                <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                    <div class="input-group">
+                        <input type="text" name="certUseCategory" list="certUseCategoryList2"
+                               class="form-control">
+                        <datalist id="certUseCategoryList2">
+
+                        </datalist>
+                        <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default docs-tooltip"
+                                                        onclick="$(this).closest('.input-group').find('input').val('');"
+                                                        data-toggle="tooltip" data-original-title="清除">
+                                                <i class="fa fa-trash-o"></i>
+                                                </button>
+                                            </span>
+                    </div>
                 </div>
             </div>
         </div>
