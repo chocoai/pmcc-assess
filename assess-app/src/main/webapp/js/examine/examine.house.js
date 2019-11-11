@@ -501,6 +501,11 @@
             } else {
                 $(this).closest('.form-group').children().eq(2).hide();
             }
+            if (key == AssessDicKey.examineHousePaymentMethodDisposable||key == AssessDicKey.examineHousePaymentMethodLeaseDisposable) {
+                houseCommon.houseTradingForm.find('.tradingCondition').hide();
+            } else {
+                houseCommon.houseTradingForm.find('.tradingCondition').show();
+            }
         });
 
         //信息来源类型
