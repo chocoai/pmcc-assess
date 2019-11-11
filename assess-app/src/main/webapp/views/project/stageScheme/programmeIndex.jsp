@@ -282,10 +282,10 @@
                                 保存<i style="margin-left: 10px" class="fa fa-save"></i>
                             </button>
                             <button id="commit_btn" class="btn btn-success" onclick="programme.submitProgramme(false);">
-                                提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
+                                直接提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
                             </button>
                             <button class="btn btn-primary" onclick="programme.submitProgramme(true);">
-                                流程审批方式提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
+                                提交审批<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
                             </button>
                         </div>
                     </c:if>

@@ -76,21 +76,17 @@
                             <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
                                 取消
                             </button>
-
                             <button id="draft_btn" class="btn btn-warning" onclick="projectApplyDraft();">
-                                草稿<i style="margin-left: 10px" class="fa fa-save"></i>
+                                保存草稿<i style="margin-left: 10px" class="fa fa-save"></i>
                             </button>
-
                             <button id="commit_btn" class="btn btn-success" onclick="projectApply(false);">
-                                提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
+                                直接提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
                             </button>
-
                             <c:if test="${processInsId == '0' || processInsId == null || processInsId == 0}">
                                 <button id="approval_btn" class="btn btn-primary" onclick="projectApply(true);">
-                                    流程审批<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
+                                    提交审批<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
                                 </button>
                             </c:if>
-
                         </div>
                     </div>
                 </div>
