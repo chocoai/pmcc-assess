@@ -55,6 +55,15 @@ public class SchemeInfoDao {
         return schemeInfoMapper.selectByExample(example);
     }
 
+    public List<SchemeInfo> getSchemeInfoByProjectId(Integer methodType,Integer methodDataId,Integer projectId){
+        SchemeInfoExample example = new SchemeInfoExample();
+        SchemeInfoExample.Criteria criterion = example.createCriteria();
+        criterion.andProjectIdEqualTo(projectId) ;
+        criterion.andMethodDataIdNotEqualTo(methodDataId);
+        criterion.andMethodTypeEqualTo(methodType) ;
+        return schemeInfoMapper.selectByExample(example);
+    }
+
     /**
      * 新增
      *

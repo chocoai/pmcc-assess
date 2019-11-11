@@ -1,4 +1,3 @@
-
 /**
  * Created by zch on 2019-8-29.
  */
@@ -33,13 +32,13 @@ developmentCommon.architecturalB = {
     getData: function (type, databaseName, pid, planDetailsId, callback) {
         developmentCommon.getMdArchitecturalObjList(type, databaseName, pid, planDetailsId, callback);
     },
-    reckon:undefined,
+    reckon: undefined,
     //树中的运算
     totalResult: function (that, reckon) {
         var tr = $(that).closest("tr");
         var value = $(that).val();
-        if (!developmentCommon.isNotBlank(value)){
-            return "" ;
+        if (!developmentCommon.isNotBlank(value)) {
+            return "";
         }
         var resultValue = "";
         if (!$.isNumeric(value)) {
@@ -132,7 +131,7 @@ developmentCommon.architecturalB = {
         var table = target.find("table");
         var tbody = table.find("tbody");
         var caption = table.find("caption");
-        caption.find("[data-view-name="+defaultObj.reckon+"]").show() ;
+        caption.find("[data-view-name=" + defaultObj.reckon + "]").show();
         //第一级
         AssessCommon.loadDataDicByKey(AssessDicKey.build_security_engineering_project_market_cost, '', function (html, dataTree) {
             $.each(dataTree, function (index, data) {
@@ -145,7 +144,7 @@ developmentCommon.architecturalB = {
                         break;
                     case 'b':
                         parentHtml = $("#architecturalBModelParent").html();
-                        target.find("table").find("thead").find("th[name='result']").text('续建工程费计算值') ;
+                        target.find("table").find("thead").find("th[name='result']").text('续建工程费计算值');
                         break;
                     case 'c':
                         parentHtml = $("#architecturalBModelParent").html();
@@ -274,7 +273,7 @@ developmentCommon.architecturalB = {
                 price: price,
                 area: area,
                 remark: remark,
-                reckon:developmentCommon.architecturalB.reckon,
+                reckon: developmentCommon.architecturalB.reckon,
                 valuationDateDegreeCompletion: valuationDateDegreeCompletion
             });
         });
@@ -423,17 +422,17 @@ developmentCommon.saveMdCalculatingMethodEngineeringCost = function (data, callb
     });
 };
 
-developmentCommon.deleteMdCalculatingMethodEngineeringCostHandle = function (rows , callback) {
+developmentCommon.deleteMdCalculatingMethodEngineeringCostHandle = function (rows, callback) {
     var idArray = [];
     var arBranch = [];
     $.each(rows, function (i, item) {
         idArray.push(item.id);
-        if (item.architecturalObjId){
-            arBranch.push(item.architecturalObjId) ;
+        if (item.architecturalObjId) {
+            arBranch.push(item.architecturalObjId);
         }
     });
     this.deleteMdCalculatingMethodEngineeringCostById(idArray.join(","), function () {
-        developmentCommon.deleteMdArchitecturalObjById(arBranch.join(","),null) ;
+        developmentCommon.deleteMdArchitecturalObjById(arBranch.join(","), null);
         if (callback) {
             callback();
         }
@@ -578,6 +577,54 @@ developmentCommon.loadMdCalculatingMethodEngineeringCostTable = function (table,
         }
         // toolbar.empty();
     }
+};
+
+developmentCommon.loadSchemeInfoTableList = function (quarm, callbackName) {
+    var table = $("#boxSchemeInfoList");
+    var cols = [];
+    cols.push({
+        field: 'id', title: '测算方法', width: "20%", formatter: function (value, row, index) {
+            var str = '';
+            str += row.judgeObjectName + "-";
+            str += row.methodName;
+            return str;
+        }
+    });
+    cols.push({
+        field: 'gmtModified', title: '最后修改日期',width: "20%", formatter: function (value, row, index) {
+            return formatDate(value);
+        }
+    });
+
+    cols.push({
+        field: 'gmtCreated', title: '测算方法创建日期',width: "20%", formatter: function (value, row, index) {
+            return formatDate(value);
+        }
+    });
+    cols.push({
+        field: 'id', title: '引用', width: "20%", formatter: function (value, row, index) {
+            var str = '<div class="btn-margin">';
+            str += '<a class="btn btn-xs btn-success" href="javascript:{method}(' + row.methodDataId +","+"'boxSchemeInfoModel'"+  ');" >引用 <i class="fa fa-check-circle"></i></a>';
+            str += '</div>';
+            str = str.replace(/{method}/g, callbackName);
+            return str;
+        }
+    });
+    var method = {
+        showColumns: true,
+        showRefresh: true,
+        search: false,
+        onLoadSuccess: function () {//加载成功时执行
+            // table.bootstrapTable('filterBy', {
+            //     methodDataId: [itemId]
+            // })
+        },
+        onLoadError: function () {
+
+        }
+    };
+    table.bootstrapTable('destroy');
+    TableInit(table, getContextPath() + "/schemeInfo/getBootstrapTableVo", cols, quarm, method);
 };
 
 developmentCommon.infrastructureChildren = {

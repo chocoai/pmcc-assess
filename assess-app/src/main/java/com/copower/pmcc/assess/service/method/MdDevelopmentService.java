@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.service.method;
 
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.ArithmeticUtils;
+import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.common.enums.method.MdDevelopmentTypeEnum;
 import com.copower.pmcc.assess.common.enums.report.BaseReportFieldEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
@@ -9,6 +10,7 @@ import com.copower.pmcc.assess.dal.basis.dao.method.MdDevelopmentDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.scheme.MdDevelopmentVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.declare.DeclareBuildEngineeringAndEquipmentCenterService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeInfoService;
@@ -29,7 +31,9 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -44,8 +48,6 @@ public class MdDevelopmentService {
     @Autowired
     private MdDevelopmentDao mdDevelopmentDao;
     @Autowired
-    private MdArchitecturalObjService mdArchitecturalObjService;
-    @Autowired
     private TaskExecutor taskExecutor;
     @Autowired
     private SchemeJudgeObjectService schemeJudgeObjectService;
@@ -59,6 +61,45 @@ public class MdDevelopmentService {
     private SchemeInfoService schemeInfoService;
     @Autowired
     private MdCalculatingMethodEngineeringCostService mdCalculatingMethodEngineeringCostService;
+    @Autowired
+    private ProjectPlanDetailsService projectPlanDetailsService;
+    @Autowired
+    private MdArchitecturalObjService mdArchitecturalObjService;
+    @Autowired
+    private MdDevelopmentInfrastructureChildrenService mdDevelopmentInfrastructureChildrenService;
+
+    public void copyDevelopmentById(Integer copyId, Integer masterId, StringBuilder stringBuilder) throws Exception {
+        MdDevelopment copy = getMdDevelopmentById(copyId);
+        MdDevelopment target = getMdDevelopmentById(masterId);
+        if (copy == null) {
+            stringBuilder.append("目标数据不存在");
+            throw new Exception("目标数据不存在");
+        }
+        if (target == null) {
+            stringBuilder.append("拷贝异常");
+            throw new Exception("拷贝异常");
+        }
+        Integer copyPlanDetailsId = copy.getPlanDetailsId();
+        Integer targetPlanDetailsId = target.getPlanDetailsId();
+        ProjectPlanDetails copyPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(copyPlanDetailsId);
+        ProjectPlanDetails targetPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(targetPlanDetailsId);
+
+        //工程费 copy
+        mdCalculatingMethodEngineeringCostService.copyMdCalculatingMethodEngineeringCost(targetPlanDetails, copyPlanDetails);
+
+        //基础设施配套费 copy
+        mdDevelopmentInfrastructureChildrenService.copyData(targetPlanDetails,copyPlanDetails,copyId,masterId);
+
+        copy.setId(null);
+        copy.setCenterId(null);
+        copy.setPlanDetailsId(null);
+        copy.setEconomicId(null);
+        copy.setRewardRateId(null);
+        BeanCopyHelp.copyPropertiesIgnoreNull(copy, target);
+        saveAndUpdateMdDevelopment(target);
+        stringBuilder.append("拷贝成功!") ;
+    }
+
 
     /**
      * 初始化数据
@@ -72,37 +113,44 @@ public class MdDevelopmentService {
         if (target == null) {
             return;
         }
+        Map<Integer, Integer> mapEconomicId = new HashMap<>(2);
+        List<DeclareBuildEngineeringAndEquipmentCenter> centerList = Lists.newArrayList();
         boolean firstInit = (target.getId() == null || target.getId() == 0);
         SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId());
-        List<Integer> integerList = Lists.newArrayList();
-        if (schemeJudgeObject != null){
+        if (schemeJudgeObject != null) {
             DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
             DeclareBuildEngineeringAndEquipmentCenter query = new DeclareBuildEngineeringAndEquipmentCenter();
             if (Objects.equal(FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class), declareRecord.getDataTableName())) {
                 query.setHouseId(declareRecord.getDataTableId());
                 query.setType(DeclareRealtyHouseCert.class.getSimpleName());
-                List<DeclareBuildEngineeringAndEquipmentCenter> centerList = declareBuildEngineeringAndEquipmentCenterService.declareBuildEngineeringAndEquipmentCenterList(query);
-                if (CollectionUtils.isNotEmpty(centerList)) {
-                    List<Integer> integerList2 = centerList.stream().filter(oo -> oo.getIndicatorId() != null).map(oo -> oo.getIndicatorId()).collect(Collectors.toList());
-                    if (CollectionUtils.isNotEmpty(integerList2)) {
-                        integerList.addAll(integerList2);
-                    }
+                List<DeclareBuildEngineeringAndEquipmentCenter> centerList2 = declareBuildEngineeringAndEquipmentCenterService.declareBuildEngineeringAndEquipmentCenterList(query);
+                if (CollectionUtils.isNotEmpty(centerList2)) {
+                    centerList.addAll(centerList2);
                 }
             }
             if (Objects.equal(FormatUtils.entityNameConvertToTableName(DeclareRealtyRealEstateCert.class), declareRecord.getDataTableName())) {
                 query.setRealEstateId(declareRecord.getDataTableId());
                 query.setType(DeclareRealtyRealEstateCert.class.getSimpleName());
-                List<DeclareBuildEngineeringAndEquipmentCenter> centerList = declareBuildEngineeringAndEquipmentCenterService.declareBuildEngineeringAndEquipmentCenterList(query);
-                if (CollectionUtils.isNotEmpty(centerList)) {
-                    List<Integer> integerList2 = centerList.stream().filter(oo -> oo.getIndicatorId() != null).map(oo -> oo.getIndicatorId()).collect(Collectors.toList());
-                    if (CollectionUtils.isNotEmpty(integerList2)) {
-                        integerList.addAll(integerList2);
-                    }
+                List<DeclareBuildEngineeringAndEquipmentCenter> centerList2 = declareBuildEngineeringAndEquipmentCenterService.declareBuildEngineeringAndEquipmentCenterList(query);
+                if (CollectionUtils.isNotEmpty(centerList2)) {
+                    centerList.addAll(centerList2);
                 }
             }
         }
-        if (CollectionUtils.isNotEmpty(integerList)) {
-            target.setEconomicId(integerList.stream().findFirst().get());
+        if (CollectionUtils.isNotEmpty(centerList)) {
+            for (DeclareBuildEngineeringAndEquipmentCenter center : centerList) {
+                target.setCenterId(center.getId());
+                if (center.getIndicatorId() == null) {
+                    continue;
+                }
+                mapEconomicId.put(center.getIndicatorId(), center.getId());
+            }
+        }
+        if (!mapEconomicId.isEmpty()) {
+            mapEconomicId.forEach((integer, integer2) -> {
+                target.setEconomicId(integer);
+                target.setCenterId(integer2);
+            });
         }
         saveAndUpdateMdDevelopment(target);
         if (firstInit) {
@@ -144,7 +192,7 @@ public class MdDevelopmentService {
         getFieldObjectValueHandle(BaseReportFieldEnum.Development_Price, target);
         if (target.getId() != null && target.getId() != 0) {
             mdDevelopmentDao.updateMdDevelopment(target);
-            if (target != null){
+            if (target != null) {
 
             }
             taskExecutor.execute(new Runnable() {
@@ -329,7 +377,7 @@ public class MdDevelopmentService {
                 if (!ArithmeticUtils.checkNotNull(Arrays.asList(d26, d27))) {
                     return "";
                 }
-                if (!ArithmeticUtils.checkNotNull(target.getLandGetRelevant())){
+                if (!ArithmeticUtils.checkNotNull(target.getLandGetRelevant())) {
                     target.setLandGetRelevant(ArithmeticUtils.createBigDecimal(0));
                 }
                 if (!ArithmeticUtils.checkNotNullList(Arrays.asList(target.getManagementExpense()))) {
@@ -382,11 +430,11 @@ public class MdDevelopmentService {
                 String f33 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_salesFeeTotal, target);
                 String f32 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_managementExpenseTotal, target);
                 String d3 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_projectConstructionPeriod, target);
-                if (Objects.equal(target.getType(), MdDevelopmentTypeEnum.developmentEngineering.getKey())){
+                if (Objects.equal(target.getType(), MdDevelopmentTypeEnum.developmentEngineering.getKey())) {
                     d3 = target.getRemainingDevelopmentYear().toString();
                 }
                 BigDecimal f31 = target.getLandGetRelevant();
-                List<String> stringList = Arrays.asList(d21,d23,d24,d25,d27,f32,f33) ;
+                List<String> stringList = Arrays.asList(d21, d23, d24, d25, d27, f32, f33);
                 if (!ArithmeticUtils.checkNotNull(stringList)) {
                     return "";
                 }
@@ -443,7 +491,7 @@ public class MdDevelopmentService {
                 if (!ArithmeticUtils.checkNotNull(g35)) {
                     return "";
                 }
-                String[] strings = new String[] {d26,d27,f32,f33,f31.toString()} ;
+                String[] strings = new String[]{d26, d27, f32, f33, f31.toString()};
                 if (!ArithmeticUtils.checkNotNull(strings)) {
                     return "";
                 }
@@ -493,10 +541,10 @@ public class MdDevelopmentService {
                 String d32 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_managementExpenseCorrectRate, target);
                 String d34 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_interestInvestmentCorrectRate, target);
                 String d35 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_investmentProfitCorrectRate, target);
-                if (!ArithmeticUtils.checkNotNull(new BigDecimal[]{d29,d30})) {
+                if (!ArithmeticUtils.checkNotNull(new BigDecimal[]{d29, d30})) {
                     return "";
                 }
-                if (!ArithmeticUtils.checkNotNull(new String[]{d32,d34,d35})) {
+                if (!ArithmeticUtils.checkNotNull(new String[]{d32, d34, d35})) {
                     return "";
                 }
                 BigDecimal bigDecimal = ArithmeticUtils.add(new BigDecimal[]{
@@ -518,10 +566,10 @@ public class MdDevelopmentService {
                 String f36 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_projectDevelopmentIncomeValue, target);
                 String f34 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_interestInvestment, target);
                 String f35 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_investmentProfit, target);
-                if (!ArithmeticUtils.checkNotNull(new String[]{d26,d27,f32,f33,f36,f34,f35})) {
+                if (!ArithmeticUtils.checkNotNull(new String[]{d26, d27, f32, f33, f36, f34, f35})) {
                     return "";
                 }
-                if (!ArithmeticUtils.checkNotNull(new BigDecimal[]{e16,f31})) {
+                if (!ArithmeticUtils.checkNotNull(new BigDecimal[]{e16, f31})) {
                     return "";
                 }
                 BigDecimal bigDecimal = ArithmeticUtils.add(new BigDecimal[]{
@@ -541,7 +589,7 @@ public class MdDevelopmentService {
                 //=F40/(1+H40)
                 String f40 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_LandPriceCorrectValue, target);
                 String h40 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_LandPriceCorrectRate, target);
-                if (!ArithmeticUtils.checkNotNull(new String[]{f40,h40})) {
+                if (!ArithmeticUtils.checkNotNull(new String[]{f40, h40})) {
                     return "";
                 }
                 BigDecimal bigDecimal = ArithmeticUtils.add(String.valueOf(1), h40);
@@ -552,7 +600,7 @@ public class MdDevelopmentService {
                 //=E40/F18*10000
                 String e40 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_LandPriceValue, target);
                 String f18 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_total_saleableArea, target);
-                if (!ArithmeticUtils.checkNotNull(new String[]{e40,f18})) {
+                if (!ArithmeticUtils.checkNotNull(new String[]{e40, f18})) {
                     target.setAssessPrice(ArithmeticUtils.createBigDecimal(0));
                     return "";
                 }
@@ -566,25 +614,25 @@ public class MdDevelopmentService {
                 BigDecimal e43 = target.getRemunerationRate();
                 BigDecimal g43 = target.getRemainingYears();
                 BigDecimal f43 = target.getStatutoryLife();
-                if (!ArithmeticUtils.checkNotNull(e43)){
-                    e43 = ArithmeticUtils.createBigDecimal(0) ;
+                if (!ArithmeticUtils.checkNotNull(e43)) {
+                    e43 = ArithmeticUtils.createBigDecimal(0);
                 }
-                if (!ArithmeticUtils.checkNotNull(f43)){
-                    f43 = ArithmeticUtils.createBigDecimal(0) ;
+                if (!ArithmeticUtils.checkNotNull(f43)) {
+                    f43 = ArithmeticUtils.createBigDecimal(0);
                 }
-                if (!ArithmeticUtils.checkNotNull(g43)){
-                    g43 = ArithmeticUtils.createBigDecimal(0) ;
+                if (!ArithmeticUtils.checkNotNull(g43)) {
+                    g43 = ArithmeticUtils.createBigDecimal(0);
                 }
                 double a = 1 - 1 / Math.pow(1 + e43.doubleValue(), g43.doubleValue());
                 double b = 1 - 1 / Math.pow(1 + e43.doubleValue(), f43.doubleValue());//特殊处理一下
                 //当b= 0的时候
-                if (b == 0 && a != 0){
+                if (b == 0 && a != 0) {
                     double c = a;
                     a = b;
                     b = c;
                 }
-                if (b == 0 && a == 0){
-                    return "0" ;
+                if (b == 0 && a == 0) {
+                    return "0";
                 }
                 BigDecimal bigDecimal = ArithmeticUtils.div(ArithmeticUtils.createBigDecimal(a), ArithmeticUtils.createBigDecimal(b));
                 return ArithmeticUtils.round(bigDecimal.toString(), 4);
@@ -599,25 +647,25 @@ public class MdDevelopmentService {
                 //必要得  这个一定不能为null ,核心数据
                 if (!ArithmeticUtils.checkNotNull(d41)) {
                     target.setPrice(ArithmeticUtils.createBigDecimal(0));
-                    return target.getPrice().toBigInteger().toString() ;
+                    return target.getPrice().toBigInteger().toString();
                 }
 
-                BigDecimal result = ArithmeticUtils.createBigDecimal(d41) ;
+                BigDecimal result = ArithmeticUtils.createBigDecimal(d41);
 
-                if (ArithmeticUtils.checkNotNull(d43) && !Objects.equal("0",d43)){
-                    result = ArithmeticUtils.multiply(result,ArithmeticUtils.createBigDecimal(d43)) ;
+                if (ArithmeticUtils.checkNotNull(d43) && !Objects.equal("0", d43)) {
+                    result = ArithmeticUtils.multiply(result, ArithmeticUtils.createBigDecimal(d43));
                 }
 
-                if (ArithmeticUtils.checkNotNull(d44) && d44.doubleValue() != 0){
-                    result = ArithmeticUtils.multiply(result,d44) ;
+                if (ArithmeticUtils.checkNotNull(d44) && d44.doubleValue() != 0) {
+                    result = ArithmeticUtils.multiply(result, d44);
                 }
 
-                if (ArithmeticUtils.checkNotNull(d45) && d45.doubleValue() != 0){
-                    result = ArithmeticUtils.multiply(result,d45) ;
+                if (ArithmeticUtils.checkNotNull(d45) && d45.doubleValue() != 0) {
+                    result = ArithmeticUtils.multiply(result, d45);
                 }
 
-                if (ArithmeticUtils.checkNotNull(d46)  && d46.doubleValue() != 0){
-                    result = ArithmeticUtils.add(result,d46) ;
+                if (ArithmeticUtils.checkNotNull(d46) && d46.doubleValue() != 0) {
+                    result = ArithmeticUtils.add(result, d46);
                 }
 
                 result = ArithmeticUtils.round(result, 2, BigDecimal.ROUND_HALF_UP);
@@ -646,7 +694,7 @@ public class MdDevelopmentService {
         MdDevelopment mdDevelopment = JSONObject.parseObject(formData, MdDevelopment.class);
         mdDevelopment.setContent(formData);
         this.saveAndUpdateMdDevelopment(mdDevelopment);
-        mdCalculatingMethodEngineeringCostService.clearOver(projectPlanDetails.getProjectId(),projectPlanDetails.getJudgeObjectId(),mdDevelopment.getType());
+        mdCalculatingMethodEngineeringCostService.clearOver(projectPlanDetails.getProjectId(), projectPlanDetails.getJudgeObjectId(), mdDevelopment.getType());
 
 
     }

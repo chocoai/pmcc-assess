@@ -303,6 +303,7 @@
         var economicId = '${mdCostVo.mdCostConstruction.economicId}' ;
         if (!economicId){
             economicId = construction.target.find("input[name='economicId']").val() ;
+
         }
         if (economicId){
             economicIndicators.init({economicId:economicId,targetCallback:function (target) {
@@ -312,6 +313,10 @@
             economicIndicators.init({
                 planDetailsId: '${projectPlanDetails.id}',
                 saveCallback: function (economicId) {//经济指标id更新到中间表
+                    var centerId = '${mdCostVo.mdCostConstruction.centerId}' ;
+                    if (centerId){
+                        declareCommon.declareBuildCenterSaveAndUpdate({indicatorId: economicId, id: centerId});
+                    }
                     construction.target.find("input[name='economicId']").val(economicId).trigger('blur');
                 },
                 targetCallback:function () {

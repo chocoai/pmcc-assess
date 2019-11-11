@@ -2,11 +2,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!-- 假设开发法 -->
 <div class="x_panel">
-    <div class="x_title collapse-link">
+    <div class="x_title">
         <ul class="nav navbar-right panel_toolbox">
             <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
         </ul>
-        <h3>假设开发法</h3>
+        <h3>假设开发法
+            <button class="btn btn-primary" data-toggle="modal" href="#boxSchemeInfoModel"
+                    onclick="developmentCommon.loadSchemeInfoTableList({projectId:'${projectPlanDetails.projectId}',methodDataId:'${mdDevelopment.id}',methodType:'${methodTypeObj.id}'},'landEngineering.selectFun');">
+                引用</button> </h3>
         <div class="clearfix"></div>
     </div>
 
@@ -31,6 +34,7 @@
 
 </div>
 <script src="${pageContext.request.contextPath}/js/method/developmentCommon.js?v=${assessVersion}"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/declare/declare.common.js?v=${assessVersion}"></script>
 <%@include file="/views/method/module/developmentModule/landEngineeringJs.jsp" %>
 <%@include file="/views/method/module/developmentCommon.jsp" %>
 <%@include file="/views/project/tool/rewardRate.jsp" %>

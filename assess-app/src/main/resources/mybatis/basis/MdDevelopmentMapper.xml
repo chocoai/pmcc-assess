@@ -15,7 +15,6 @@
     <result column="interest_investment" property="interestInvestment" jdbcType="DECIMAL" />
     <result column="investment_profit" property="investmentProfit" jdbcType="DECIMAL" />
     <result column="assess_price" property="assessPrice" jdbcType="DECIMAL" />
-    <result column="content" property="content" jdbcType="VARCHAR" />
     <result column="project_construction_period" property="projectConstructionPeriod" jdbcType="DECIMAL" />
     <result column="developed_year" property="developedYear" jdbcType="DECIMAL" />
     <result column="remaining_development_year" property="remainingDevelopmentYear" jdbcType="DECIMAL" />
@@ -67,6 +66,8 @@
     <result column="other_amendments_explain" property="otherAmendmentsExplain" jdbcType="VARCHAR" />
     <result column="development_degree_revision" property="developmentDegreeRevision" jdbcType="DECIMAL" />
     <result column="development_degree_revision_explain" property="developmentDegreeRevisionExplain" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="center_id" property="centerId" jdbcType="INTEGER" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -132,7 +133,7 @@
   <sql id="Base_Column_List" >
     id, parcel_setting_outer, parcel_setting_inner, name, area, price, type, economic_id, 
     plan_details_id, construction_cost_subtotal, interest_investment, investment_profit, 
-    assess_price, content, project_construction_period, developed_year, remaining_development_year, 
+    assess_price, project_construction_period, developed_year, remaining_development_year, 
     reward_rate_id, total_saleable_area_price, saleable_area, planned_building_area, 
     unsaleable_building_area, reconnaissance_design, construction_installation_engineering_fee_ids, 
     construction_installation_engineering_fee, infrastructure_cost, infrastructure_matching_cost, 
@@ -146,7 +147,7 @@
     land_value_added_tax_explain, project_development_income_tax, project_development_income_tax_explain, 
     remuneration_rate, statutory_life, remaining_years, amendment_status_rights, amendment_status_rights_explain, 
     other_amendments, other_amendments_explain, development_degree_revision, development_degree_revision_explain, 
-    creator, gmt_created, gmt_modified
+    content, center_id, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdDevelopmentExample" >
     select
@@ -186,14 +187,14 @@
       name, area, price, 
       type, economic_id, plan_details_id, 
       construction_cost_subtotal, interest_investment, 
-      investment_profit, assess_price, content, 
-      project_construction_period, developed_year, 
-      remaining_development_year, reward_rate_id, 
-      total_saleable_area_price, saleable_area, planned_building_area, 
-      unsaleable_building_area, reconnaissance_design, 
-      construction_installation_engineering_fee_ids, construction_installation_engineering_fee, 
-      infrastructure_cost, infrastructure_matching_cost, 
-      dev_during, other_engineering_cost, unforeseen_expenses, 
+      investment_profit, assess_price, project_construction_period, 
+      developed_year, remaining_development_year, 
+      reward_rate_id, total_saleable_area_price, saleable_area, 
+      planned_building_area, unsaleable_building_area, 
+      reconnaissance_design, construction_installation_engineering_fee_ids, 
+      construction_installation_engineering_fee, infrastructure_cost, 
+      infrastructure_matching_cost, dev_during, 
+      other_engineering_cost, unforeseen_expenses, 
       reconnaissance_design_explain, infrastructure_cost_explain, 
       infrastructure_matching_cost_explain, dev_during_explain, 
       other_engineering_cost_explain, unforeseen_expenses_explain, 
@@ -210,20 +211,20 @@
       amendment_status_rights, amendment_status_rights_explain, 
       other_amendments, other_amendments_explain, 
       development_degree_revision, development_degree_revision_explain, 
-      creator, gmt_created, gmt_modified
-      )
+      content, center_id, creator, 
+      gmt_created, gmt_modified)
     values (#{parcelSettingOuter,jdbcType=VARCHAR}, #{parcelSettingInner,jdbcType=VARCHAR}, 
       #{name,jdbcType=VARCHAR}, #{area,jdbcType=DECIMAL}, #{price,jdbcType=DECIMAL}, 
       #{type,jdbcType=VARCHAR}, #{economicId,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, 
       #{constructionCostSubtotal,jdbcType=DECIMAL}, #{interestInvestment,jdbcType=DECIMAL}, 
-      #{investmentProfit,jdbcType=DECIMAL}, #{assessPrice,jdbcType=DECIMAL}, #{content,jdbcType=VARCHAR}, 
-      #{projectConstructionPeriod,jdbcType=DECIMAL}, #{developedYear,jdbcType=DECIMAL}, 
-      #{remainingDevelopmentYear,jdbcType=DECIMAL}, #{rewardRateId,jdbcType=INTEGER}, 
-      #{totalSaleableAreaPrice,jdbcType=DECIMAL}, #{saleableArea,jdbcType=DECIMAL}, #{plannedBuildingArea,jdbcType=DECIMAL}, 
-      #{unsaleableBuildingArea,jdbcType=DECIMAL}, #{reconnaissanceDesign,jdbcType=DECIMAL}, 
-      #{constructionInstallationEngineeringFeeIds,jdbcType=VARCHAR}, #{constructionInstallationEngineeringFee,jdbcType=DECIMAL}, 
-      #{infrastructureCost,jdbcType=DECIMAL}, #{infrastructureMatchingCost,jdbcType=DECIMAL}, 
-      #{devDuring,jdbcType=DECIMAL}, #{otherEngineeringCost,jdbcType=DECIMAL}, #{unforeseenExpenses,jdbcType=DECIMAL}, 
+      #{investmentProfit,jdbcType=DECIMAL}, #{assessPrice,jdbcType=DECIMAL}, #{projectConstructionPeriod,jdbcType=DECIMAL}, 
+      #{developedYear,jdbcType=DECIMAL}, #{remainingDevelopmentYear,jdbcType=DECIMAL}, 
+      #{rewardRateId,jdbcType=INTEGER}, #{totalSaleableAreaPrice,jdbcType=DECIMAL}, #{saleableArea,jdbcType=DECIMAL}, 
+      #{plannedBuildingArea,jdbcType=DECIMAL}, #{unsaleableBuildingArea,jdbcType=DECIMAL}, 
+      #{reconnaissanceDesign,jdbcType=DECIMAL}, #{constructionInstallationEngineeringFeeIds,jdbcType=VARCHAR}, 
+      #{constructionInstallationEngineeringFee,jdbcType=DECIMAL}, #{infrastructureCost,jdbcType=DECIMAL}, 
+      #{infrastructureMatchingCost,jdbcType=DECIMAL}, #{devDuring,jdbcType=DECIMAL}, 
+      #{otherEngineeringCost,jdbcType=DECIMAL}, #{unforeseenExpenses,jdbcType=DECIMAL}, 
       #{reconnaissanceDesignExplain,jdbcType=VARCHAR}, #{infrastructureCostExplain,jdbcType=VARCHAR}, 
       #{infrastructureMatchingCostExplain,jdbcType=VARCHAR}, #{devDuringExplain,jdbcType=VARCHAR}, 
       #{otherEngineeringCostExplain,jdbcType=VARCHAR}, #{unforeseenExpensesExplain,jdbcType=VARCHAR}, 
@@ -240,8 +241,8 @@
       #{amendmentStatusRights,jdbcType=DECIMAL}, #{amendmentStatusRightsExplain,jdbcType=VARCHAR}, 
       #{otherAmendments,jdbcType=DECIMAL}, #{otherAmendmentsExplain,jdbcType=VARCHAR}, 
       #{developmentDegreeRevision,jdbcType=DECIMAL}, #{developmentDegreeRevisionExplain,jdbcType=VARCHAR}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+      #{content,jdbcType=VARCHAR}, #{centerId,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdDevelopment" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -284,9 +285,6 @@
       </if>
       <if test="assessPrice != null" >
         assess_price,
-      </if>
-      <if test="content != null" >
-        content,
       </if>
       <if test="projectConstructionPeriod != null" >
         project_construction_period,
@@ -441,6 +439,12 @@
       <if test="developmentDegreeRevisionExplain != null" >
         development_degree_revision_explain,
       </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="centerId != null" >
+        center_id,
+      </if>
       <if test="creator != null" >
         creator,
       </if>
@@ -487,9 +491,6 @@
       </if>
       <if test="assessPrice != null" >
         #{assessPrice,jdbcType=DECIMAL},
-      </if>
-      <if test="content != null" >
-        #{content,jdbcType=VARCHAR},
       </if>
       <if test="projectConstructionPeriod != null" >
         #{projectConstructionPeriod,jdbcType=DECIMAL},
@@ -644,6 +645,12 @@
       <if test="developmentDegreeRevisionExplain != null" >
         #{developmentDegreeRevisionExplain,jdbcType=VARCHAR},
       </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="centerId != null" >
+        #{centerId,jdbcType=INTEGER},
+      </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
       </if>
@@ -702,9 +709,6 @@
       </if>
       <if test="record.assessPrice != null" >
         assess_price = #{record.assessPrice,jdbcType=DECIMAL},
-      </if>
-      <if test="record.content != null" >
-        content = #{record.content,jdbcType=VARCHAR},
       </if>
       <if test="record.projectConstructionPeriod != null" >
         project_construction_period = #{record.projectConstructionPeriod,jdbcType=DECIMAL},
@@ -859,6 +863,12 @@
       <if test="record.developmentDegreeRevisionExplain != null" >
         development_degree_revision_explain = #{record.developmentDegreeRevisionExplain,jdbcType=VARCHAR},
       </if>
+      <if test="record.content != null" >
+        content = #{record.content,jdbcType=VARCHAR},
+      </if>
+      <if test="record.centerId != null" >
+        center_id = #{record.centerId,jdbcType=INTEGER},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -888,7 +898,6 @@
       interest_investment = #{record.interestInvestment,jdbcType=DECIMAL},
       investment_profit = #{record.investmentProfit,jdbcType=DECIMAL},
       assess_price = #{record.assessPrice,jdbcType=DECIMAL},
-      content = #{record.content,jdbcType=VARCHAR},
       project_construction_period = #{record.projectConstructionPeriod,jdbcType=DECIMAL},
       developed_year = #{record.developedYear,jdbcType=DECIMAL},
       remaining_development_year = #{record.remainingDevelopmentYear,jdbcType=DECIMAL},
@@ -940,6 +949,8 @@
       other_amendments_explain = #{record.otherAmendmentsExplain,jdbcType=VARCHAR},
       development_degree_revision = #{record.developmentDegreeRevision,jdbcType=DECIMAL},
       development_degree_revision_explain = #{record.developmentDegreeRevisionExplain,jdbcType=VARCHAR},
+      content = #{record.content,jdbcType=VARCHAR},
+      center_id = #{record.centerId,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -985,9 +996,6 @@
       </if>
       <if test="assessPrice != null" >
         assess_price = #{assessPrice,jdbcType=DECIMAL},
-      </if>
-      <if test="content != null" >
-        content = #{content,jdbcType=VARCHAR},
       </if>
       <if test="projectConstructionPeriod != null" >
         project_construction_period = #{projectConstructionPeriod,jdbcType=DECIMAL},
@@ -1142,6 +1150,12 @@
       <if test="developmentDegreeRevisionExplain != null" >
         development_degree_revision_explain = #{developmentDegreeRevisionExplain,jdbcType=VARCHAR},
       </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="centerId != null" >
+        center_id = #{centerId,jdbcType=INTEGER},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -1168,7 +1182,6 @@
       interest_investment = #{interestInvestment,jdbcType=DECIMAL},
       investment_profit = #{investmentProfit,jdbcType=DECIMAL},
       assess_price = #{assessPrice,jdbcType=DECIMAL},
-      content = #{content,jdbcType=VARCHAR},
       project_construction_period = #{projectConstructionPeriod,jdbcType=DECIMAL},
       developed_year = #{developedYear,jdbcType=DECIMAL},
       remaining_development_year = #{remainingDevelopmentYear,jdbcType=DECIMAL},
@@ -1220,6 +1233,8 @@
       other_amendments_explain = #{otherAmendmentsExplain,jdbcType=VARCHAR},
       development_degree_revision = #{developmentDegreeRevision,jdbcType=DECIMAL},
       development_degree_revision_explain = #{developmentDegreeRevisionExplain,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      center_id = #{centerId,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

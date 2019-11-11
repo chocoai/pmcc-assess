@@ -2,11 +2,22 @@ package com.copower.pmcc.assess.service.project.scheme;
 
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeInfoDao;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeInfo;
+import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
+import com.copower.pmcc.assess.dto.output.method.SchemeInfoVo;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -24,6 +35,10 @@ public class SchemeInfoService {
     private CommonService commonService;
     @Autowired
     private SchemeInfoDao schemeInfoDao;
+    @Autowired
+    private SchemeJudgeObjectService schemeJudgeObjectService;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
 
     /**
      * 保存信息
@@ -56,8 +71,8 @@ public class SchemeInfoService {
         return schemeInfoDao.getInfoList(examle);
     }
 
-    public List<SchemeInfo> getInfoList(SchemeInfo oo){
-        return schemeInfoDao.getInfoList(oo) ;
+    public List<SchemeInfo> getInfoList(SchemeInfo oo) {
+        return schemeInfoDao.getInfoList(oo);
     }
 
     public void deleteSchemeInfoByProjectId(Integer projectId) {
@@ -72,5 +87,36 @@ public class SchemeInfoService {
         examle.setPlanDetailsId(planDetailsId);
         SchemeInfo schemeInfo = schemeInfoDao.getSchemeInfo(examle);
         return schemeInfo;
+    }
+
+    public BootstrapTableVo getBootstrapTableVo(Integer methodType,Integer methodDataId,Integer projectId){
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        List<SchemeInfo> schemeInfoList = schemeInfoDao.getSchemeInfoByProjectId(methodType, methodDataId, projectId);
+        List<SchemeInfoVo> voList = Lists.newArrayList();
+        if (org.apache.commons.collections.CollectionUtils.isNotEmpty(schemeInfoList)){
+            schemeInfoList.forEach(oo -> voList.add(getSchemeInfoVo(oo)));
+        }
+        vo.setTotal(page.getTotal());
+        vo.setRows(voList);
+        return vo;
+    }
+
+    public SchemeInfoVo getSchemeInfoVo(SchemeInfo schemeInfo) {
+        if (schemeInfo == null) {
+            return null;
+        }
+        SchemeInfoVo vo = new SchemeInfoVo();
+        BeanUtils.copyProperties(schemeInfo, vo);
+        if (schemeInfo.getJudgeObjectId() != null) {
+            SchemeJudgeObject schemeJudgeObject =schemeJudgeObjectService.getSchemeJudgeObject(schemeInfo.getJudgeObjectId());
+            if (schemeJudgeObject != null){
+                vo.setJudgeObjectName(schemeJudgeObject.getName());
+                vo.setCertName(schemeJudgeObject.getCertName());
+            }
+        }
+        vo.setMethodName(baseDataDicService.getNameById(schemeInfo.getMethodType()));
+        return vo;
     }
 }

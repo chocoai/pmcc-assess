@@ -30,8 +30,6 @@ public class MdDevelopment {
 
     private BigDecimal assessPrice;
 
-    private String content;
-
     private BigDecimal projectConstructionPeriod;
 
     private BigDecimal developedYear;
@@ -133,6 +131,10 @@ public class MdDevelopment {
     private BigDecimal developmentDegreeRevision;
 
     private String developmentDegreeRevisionExplain;
+
+    private String content;
+
+    private Integer centerId;
 
     private String creator;
 
@@ -242,14 +244,6 @@ public class MdDevelopment {
 
     public void setAssessPrice(BigDecimal assessPrice) {
         this.assessPrice = assessPrice;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content == null ? null : content.trim();
     }
 
     public BigDecimal getProjectConstructionPeriod() {
@@ -658,6 +652,22 @@ public class MdDevelopment {
 
     public void setDevelopmentDegreeRevisionExplain(String developmentDegreeRevisionExplain) {
         this.developmentDegreeRevisionExplain = developmentDegreeRevisionExplain == null ? null : developmentDegreeRevisionExplain.trim();
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content == null ? null : content.trim();
+    }
+
+    public Integer getCenterId() {
+        return centerId;
+    }
+
+    public void setCenterId(Integer centerId) {
+        this.centerId = centerId;
     }
 
     public String getCreator() {

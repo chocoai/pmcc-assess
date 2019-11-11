@@ -1,7 +1,9 @@
 package com.copower.pmcc.assess.service.method;
 
+import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdDevelopmentInfrastructureChildrenDao;
 import com.copower.pmcc.assess.dal.basis.entity.MdDevelopmentInfrastructureChildren;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
@@ -26,6 +28,34 @@ public class MdDevelopmentInfrastructureChildrenService {
 
     @Autowired
     private MdDevelopmentInfrastructureChildrenDao mdDevelopmentInfrastructureChildrenDao;
+
+    /**
+     * 基础设施配套费
+     * @param targetPlanDetails
+     * @param copyPlanDetails
+     * @param copyId
+     * @param targetId
+     */
+    public void  copyData(ProjectPlanDetails targetPlanDetails, ProjectPlanDetails copyPlanDetails,Integer copyId,Integer targetId){
+        MdDevelopmentInfrastructureChildren copySelect = new MdDevelopmentInfrastructureChildren();
+        copySelect.setPid(copyId);
+        copySelect.setPlanDetailsId(copyPlanDetails.getId());
+        List<MdDevelopmentInfrastructureChildren> copyList = getMdDevelopmentInfrastructureChildrenListByExample(copySelect) ;
+        if (CollectionUtils.isEmpty(copyList)){
+            return;
+        }
+        for (MdDevelopmentInfrastructureChildren children:copyList){
+            MdDevelopmentInfrastructureChildren target = new MdDevelopmentInfrastructureChildren();
+            children.setId(null);
+            children.setPid(null);
+            children.setPlanDetailsId(null);
+            children.setCreator(null);
+            BeanCopyHelp.copyPropertiesIgnoreNull(children, target);
+            target.setPid(targetId);
+            target.setPlanDetailsId(targetPlanDetails.getId());
+            saveMdDevelopmentInfrastructureChildren(target) ;
+        }
+    }
 
     public boolean saveMdDevelopmentInfrastructureChildren(MdDevelopmentInfrastructureChildren mdDevelopmentInfrastructureChildren){
         if (mdDevelopmentInfrastructureChildren == null){

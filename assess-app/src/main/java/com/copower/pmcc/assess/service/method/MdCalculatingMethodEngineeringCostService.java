@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.method;
 
+import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdCalculatingMethodEngineeringCostDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.service.BaseService;
@@ -46,6 +47,45 @@ public class MdCalculatingMethodEngineeringCostService {
     private ProjectPlanDetailsService projectPlanDetailsService;
     @Autowired
     private SurveyCommonService surveyCommonService;
+
+    /**
+     * 工程费
+     * @param targetPlanDetails
+     * @param copyPlanDetails
+     */
+    public void copyMdCalculatingMethodEngineeringCost(ProjectPlanDetails targetPlanDetails, ProjectPlanDetails copyPlanDetails) {
+        MdCalculatingMethodEngineeringCost copyEngineeringCostQuery = new MdCalculatingMethodEngineeringCost();
+        copyEngineeringCostQuery.setProjectId(copyPlanDetails.getProjectId());
+        copyEngineeringCostQuery.setJudgeObjectId(copyPlanDetails.getJudgeObjectId());
+        List<MdCalculatingMethodEngineeringCost> copyEngineeringCostList =getMdCalculatingMethodEngineeringCostListByExample(copyEngineeringCostQuery);
+        if (CollectionUtils.isEmpty(copyEngineeringCostList)) {
+            return;
+        }
+        for (MdCalculatingMethodEngineeringCost calculatingMethodEngineeringCost : copyEngineeringCostList) {
+            calculatingMethodEngineeringCost.setProjectId(null);
+            calculatingMethodEngineeringCost.setJudgeObjectId(null);
+            calculatingMethodEngineeringCost.setId(null);
+            calculatingMethodEngineeringCost.setCreator(null);
+
+            MdCalculatingMethodEngineeringCost target = new MdCalculatingMethodEngineeringCost();
+            target.setJudgeObjectId(targetPlanDetails.getJudgeObjectId());
+            target.setProjectId(targetPlanDetails.getProjectId());
+
+            BeanCopyHelp.copyPropertiesIgnoreNull(calculatingMethodEngineeringCost, target);
+            MdArchitecturalObj mdArchitecturalObj = mdArchitecturalObjService.getMdArchitecturalObjById(calculatingMethodEngineeringCost.getArchitecturalObjId());
+            if (mdArchitecturalObj != null) {
+                MdArchitecturalObj mdArchitecturalTarget = new MdArchitecturalObj();
+                mdArchitecturalObj.setCreator(null);
+                mdArchitecturalObj.setPlanDetailsId(null);
+                mdArchitecturalObj.setId(null);
+                BeanCopyHelp.copyPropertiesIgnoreNull(mdArchitecturalObj, mdArchitecturalTarget);
+                mdArchitecturalObjService.saveMdArchitecturalObj(mdArchitecturalTarget);
+                target.setArchitecturalObjId(mdArchitecturalTarget.getId());
+            }
+            saveMdCalculatingMethodEngineeringCost(target);
+        }
+    }
+
 
     public void setMdCalculatingMethodEngineeringCost(Integer planDetailsId, String type) {
         ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);

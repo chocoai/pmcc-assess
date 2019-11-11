@@ -16,6 +16,7 @@
 
 </div>
 <script src="${pageContext.request.contextPath}/js/method/developmentCommon.js?v=${assessVersion}"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/declare/declare.common.js?v=${assessVersion}"></script>
 <%@include file="/views/method/module/developmentCommon.jsp" %>
 <%@include file="/views/project/tool/rewardRateDetail.jsp" %>
 

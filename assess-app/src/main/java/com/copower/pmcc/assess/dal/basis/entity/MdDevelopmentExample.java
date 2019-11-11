@@ -926,76 +926,6 @@ public class MdDevelopmentExample {
             return (Criteria) this;
         }
 
-        public Criteria andContentIsNull() {
-            addCriterion("content is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentIsNotNull() {
-            addCriterion("content is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentEqualTo(String value) {
-            addCriterion("content =", value, "content");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentNotEqualTo(String value) {
-            addCriterion("content <>", value, "content");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentGreaterThan(String value) {
-            addCriterion("content >", value, "content");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentGreaterThanOrEqualTo(String value) {
-            addCriterion("content >=", value, "content");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentLessThan(String value) {
-            addCriterion("content <", value, "content");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentLessThanOrEqualTo(String value) {
-            addCriterion("content <=", value, "content");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentLike(String value) {
-            addCriterion("content like", value, "content");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentNotLike(String value) {
-            addCriterion("content not like", value, "content");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentIn(List<String> values) {
-            addCriterion("content in", values, "content");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentNotIn(List<String> values) {
-            addCriterion("content not in", values, "content");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentBetween(String value1, String value2) {
-            addCriterion("content between", value1, value2, "content");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentNotBetween(String value1, String value2) {
-            addCriterion("content not between", value1, value2, "content");
-            return (Criteria) this;
-        }
-
         public Criteria andProjectConstructionPeriodIsNull() {
             addCriterion("project_construction_period is null");
             return (Criteria) this;
@@ -4253,6 +4183,136 @@ public class MdDevelopmentExample {
 
         public Criteria andDevelopmentDegreeRevisionExplainNotBetween(String value1, String value2) {
             addCriterion("development_degree_revision_explain not between", value1, value2, "developmentDegreeRevisionExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andContentIsNull() {
+            addCriterion("content is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andContentIsNotNull() {
+            addCriterion("content is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andContentEqualTo(String value) {
+            addCriterion("content =", value, "content");
+            return (Criteria) this;
+        }
+
+        public Criteria andContentNotEqualTo(String value) {
+            addCriterion("content <>", value, "content");
+            return (Criteria) this;
+        }
+
+        public Criteria andContentGreaterThan(String value) {
+            addCriterion("content >", value, "content");
+            return (Criteria) this;
+        }
+
+        public Criteria andContentGreaterThanOrEqualTo(String value) {
+            addCriterion("content >=", value, "content");
+            return (Criteria) this;
+        }
+
+        public Criteria andContentLessThan(String value) {
+            addCriterion("content <", value, "content");
+            return (Criteria) this;
+        }
+
+        public Criteria andContentLessThanOrEqualTo(String value) {
+            addCriterion("content <=", value, "content");
+            return (Criteria) this;
+        }
+
+        public Criteria andContentLike(String value) {
+            addCriterion("content like", value, "content");
+            return (Criteria) this;
+        }
+
+        public Criteria andContentNotLike(String value) {
+            addCriterion("content not like", value, "content");
+            return (Criteria) this;
+        }
+
+        public Criteria andContentIn(List<String> values) {
+            addCriterion("content in", values, "content");
+            return (Criteria) this;
+        }
+
+        public Criteria andContentNotIn(List<String> values) {
+            addCriterion("content not in", values, "content");
+            return (Criteria) this;
+        }
+
+        public Criteria andContentBetween(String value1, String value2) {
+            addCriterion("content between", value1, value2, "content");
+            return (Criteria) this;
+        }
+
+        public Criteria andContentNotBetween(String value1, String value2) {
+            addCriterion("content not between", value1, value2, "content");
+            return (Criteria) this;
+        }
+
+        public Criteria andCenterIdIsNull() {
+            addCriterion("center_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCenterIdIsNotNull() {
+            addCriterion("center_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCenterIdEqualTo(Integer value) {
+            addCriterion("center_id =", value, "centerId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCenterIdNotEqualTo(Integer value) {
+            addCriterion("center_id <>", value, "centerId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCenterIdGreaterThan(Integer value) {
+            addCriterion("center_id >", value, "centerId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCenterIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("center_id >=", value, "centerId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCenterIdLessThan(Integer value) {
+            addCriterion("center_id <", value, "centerId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCenterIdLessThanOrEqualTo(Integer value) {
+            addCriterion("center_id <=", value, "centerId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCenterIdIn(List<Integer> values) {
+            addCriterion("center_id in", values, "centerId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCenterIdNotIn(List<Integer> values) {
+            addCriterion("center_id not in", values, "centerId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCenterIdBetween(Integer value1, Integer value2) {
+            addCriterion("center_id between", value1, value2, "centerId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCenterIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("center_id not between", value1, value2, "centerId");
             return (Criteria) this;
         }
 
