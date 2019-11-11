@@ -17,11 +17,16 @@ import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxRuDto;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
+import com.copower.pmcc.bpm.api.provider.BpmRpcToolsService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.SpringContextUtils;
+import com.google.common.collect.Lists;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,6 +35,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -58,6 +64,11 @@ public class ProjectTaskController extends BaseController {
     private PublicService publicService;
     @Autowired
     private BpmRpcBoxService bpmRpcBoxService;
+    @Autowired
+    private CommonService commonService;
+    @Autowired
+    private BpmRpcToolsService bpmRpcToolsService;
+
 
     @RequestMapping(value = "/projectTaskIndex", name = "提交工作成果公共页面")
     public ModelAndView projectTaskIndex(Integer responsibilityId) {
@@ -107,7 +118,7 @@ public class ProjectTaskController extends BaseController {
         try {
             projectTaskService.submitTask(projectTaskDto);
         } catch (Exception e) {
-            log.error(e.getMessage(),e);
+            log.error(e.getMessage(), e);
             return HttpResult.newErrorResult("提交工作成果数据异常");
         }
         return HttpResult.newCorrectResult();
@@ -123,6 +134,17 @@ public class ProjectTaskController extends BaseController {
             viewUrl = projectPhase.getPhaseForm();
         }
         ProjectTaskInterface bean = (ProjectTaskInterface) SpringContextUtils.getBean(viewUrl);
+        //取代理人
+        if (StringUtils.isNotBlank(agentUserAccount)) {
+            List<String> assignorList = bpmRpcToolsService.getAssignorListByAgent(commonService.thisUserAccount());
+            List<String> strings = FormatUtils.transformString2List(agentUserAccount);
+            if (CollectionUtils.isNotEmpty(assignorList) && CollectionUtils.isNotEmpty(strings)) {
+                Collection intersection = CollectionUtils.intersection(assignorList, strings);
+                if (CollectionUtils.isNotEmpty(intersection))
+                    agentUserAccount = String.valueOf(Lists.newArrayList(intersection).get(0));
+            }
+        }
+
         ModelAndView modelAndView = bean.approvalView(processInsId, taskId, boxId, projectPlanDetails, agentUserAccount);
         modelAndView.addObject("projectPlanDetails", projectPlanDetails);
         List<SysAttachmentDto> projectPhaseProcessTemplate = baseAttachmentService.getProjectPhaseProcessTemplate(projectPhase.getId());
@@ -201,7 +223,7 @@ public class ProjectTaskController extends BaseController {
         String viewUrl = "projectTaskAssist";
         ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
         int boxId = 0;
-        if(StringUtils.isNotBlank(projectPlanDetails.getProcessInsId())&&!projectPlanDetails.getProcessInsId().equals("0")){
+        if (StringUtils.isNotBlank(projectPlanDetails.getProcessInsId()) && !projectPlanDetails.getProcessInsId().equals("0")) {
             BoxRuDto boxRuDto = bpmRpcBoxService.getBoxRuByProcessInstId(projectPlanDetails.getProcessInsId());
             boxId = boxRuDto.getBoxId();
         }

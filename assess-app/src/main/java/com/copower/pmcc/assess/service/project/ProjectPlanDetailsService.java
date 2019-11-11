@@ -59,6 +59,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -411,7 +412,10 @@ public class ProjectPlanDetailsService {
                                     List<String> assignorList = bpmRpcToolsService.getAssignorListByAgent(commonService.thisUserAccount());
                                     List<String> userList = Lists.newArrayList(commonService.thisUserAccount());
                                     userList.addAll(assignorList);
-                                    if (CollectionUtils.isNotEmpty(CollectionUtils.intersection(activitiTaskNodeDto.getUsers(), userList))) {
+                                    Collection intersection = CollectionUtils.intersection(activitiTaskNodeDto.getUsers(), userList);
+                                    if (CollectionUtils.isNotEmpty(intersection)) {
+                                        String agentUserAccount = String.valueOf(Lists.newArrayList(intersection).get(0));
+                                        approvalUrl = approvalUrl + String.format("&agentUserAccount=%s", agentUserAccount);
                                         projectPlanDetailsVo.setExcuteUrl(approvalUrl);
                                     }
                                     projectPlanDetailsVo.setApproverUserName(publicService.getUserNameByAccountList(activitiTaskNodeDto.getUsers()));
