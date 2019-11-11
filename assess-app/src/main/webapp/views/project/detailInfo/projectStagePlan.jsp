@@ -9,8 +9,8 @@
                     <small>
                         <a target="_blank" class="btn btn-xs btn-primary"
                            href="${pageContext.request.contextPath}/projectReportFile/index?projectId=${projectInfo.id}">估价委托书及相关证明</a>
-                        <input type="button" class="btn btn-xs btn-primary" onclick="projectDetailsEnterNextStage();"
-                               value="进入下阶段">
+                        <%--<input type="button" class="btn btn-xs btn-primary" onclick="projectDetailsEnterNextStage();"--%>
+                               <%--value="进入下阶段">--%>
                         <span id="workStageCustomBtn">
                         </span>
                     </small>

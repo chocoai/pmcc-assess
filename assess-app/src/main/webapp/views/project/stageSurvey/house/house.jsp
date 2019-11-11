@@ -304,6 +304,34 @@
                 </div>
             </div>
         </div>
+        <div class="form-group">
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">交易类型<span
+                        class="symbol required"></span></label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <select class="form-control tradingType" name="tradingType"
+                            required="required">
+                    </select>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">付款方式<span
+                        class="symbol required"></span></label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <select class="form-control paymentMethod" name="paymentMethod" required>
+                    </select>
+                </div>
+            </div>
+            <div class="x-valid" style="display: none;">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">分期支付利率</label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <input type="text" placeholder="分期支付利率"
+                           name="installmentInterestRate" class="form-control"
+                           value="${basicHouseTrading.installmentInterestRate}">
+                </div>
+            </div>
+        </div>
+        <div class="form-group tradingCondition">
         <div class="x_title">融资条件</div>
         <div class="form-group">
             <div class="x-valid">
@@ -332,33 +360,8 @@
         <div class="x_title">
             <div class="clearfix"></div>
         </div>
-        <div class="form-group">
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">交易类型<span
-                        class="symbol required"></span></label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <select class="form-control tradingType" name="tradingType"
-                            required="required">
-                    </select>
-                </div>
             </div>
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">付款方式<span
-                        class="symbol required"></span></label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <select class="form-control paymentMethod" name="paymentMethod" required>
-                    </select>
-                </div>
-            </div>
-            <div class="x-valid" style="display: none;">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">分期支付利率</label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text" placeholder="分期支付利率"
-                           name="installmentInterestRate" class="form-control"
-                           value="${basicHouseTrading.installmentInterestRate}">
-                </div>
-            </div>
-        </div>
+
         <div class="form-group ExamineHouseTradingSell" style="display: none">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">买方额外支付的税</label>

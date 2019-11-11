@@ -1596,53 +1596,133 @@ public class DeclareRealtyLandCertExample {
             return (Criteria) this;
         }
 
-        public Criteria andCertUseEqualTo(Integer value) {
+        public Criteria andCertUseEqualTo(String value) {
             addCriterion("cert_use =", value, "certUse");
             return (Criteria) this;
         }
 
-        public Criteria andCertUseNotEqualTo(Integer value) {
+        public Criteria andCertUseNotEqualTo(String value) {
             addCriterion("cert_use <>", value, "certUse");
             return (Criteria) this;
         }
 
-        public Criteria andCertUseGreaterThan(Integer value) {
+        public Criteria andCertUseGreaterThan(String value) {
             addCriterion("cert_use >", value, "certUse");
             return (Criteria) this;
         }
 
-        public Criteria andCertUseGreaterThanOrEqualTo(Integer value) {
+        public Criteria andCertUseGreaterThanOrEqualTo(String value) {
             addCriterion("cert_use >=", value, "certUse");
             return (Criteria) this;
         }
 
-        public Criteria andCertUseLessThan(Integer value) {
+        public Criteria andCertUseLessThan(String value) {
             addCriterion("cert_use <", value, "certUse");
             return (Criteria) this;
         }
 
-        public Criteria andCertUseLessThanOrEqualTo(Integer value) {
+        public Criteria andCertUseLessThanOrEqualTo(String value) {
             addCriterion("cert_use <=", value, "certUse");
             return (Criteria) this;
         }
 
-        public Criteria andCertUseIn(List<Integer> values) {
+        public Criteria andCertUseLike(String value) {
+            addCriterion("cert_use like", value, "certUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertUseNotLike(String value) {
+            addCriterion("cert_use not like", value, "certUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertUseIn(List<String> values) {
             addCriterion("cert_use in", values, "certUse");
             return (Criteria) this;
         }
 
-        public Criteria andCertUseNotIn(List<Integer> values) {
+        public Criteria andCertUseNotIn(List<String> values) {
             addCriterion("cert_use not in", values, "certUse");
             return (Criteria) this;
         }
 
-        public Criteria andCertUseBetween(Integer value1, Integer value2) {
+        public Criteria andCertUseBetween(String value1, String value2) {
             addCriterion("cert_use between", value1, value2, "certUse");
             return (Criteria) this;
         }
 
-        public Criteria andCertUseNotBetween(Integer value1, Integer value2) {
+        public Criteria andCertUseNotBetween(String value1, String value2) {
             addCriterion("cert_use not between", value1, value2, "certUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertUseCategoryIsNull() {
+            addCriterion("cert_use_category is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertUseCategoryIsNotNull() {
+            addCriterion("cert_use_category is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertUseCategoryEqualTo(String value) {
+            addCriterion("cert_use_category =", value, "certUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertUseCategoryNotEqualTo(String value) {
+            addCriterion("cert_use_category <>", value, "certUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertUseCategoryGreaterThan(String value) {
+            addCriterion("cert_use_category >", value, "certUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertUseCategoryGreaterThanOrEqualTo(String value) {
+            addCriterion("cert_use_category >=", value, "certUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertUseCategoryLessThan(String value) {
+            addCriterion("cert_use_category <", value, "certUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertUseCategoryLessThanOrEqualTo(String value) {
+            addCriterion("cert_use_category <=", value, "certUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertUseCategoryLike(String value) {
+            addCriterion("cert_use_category like", value, "certUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertUseCategoryNotLike(String value) {
+            addCriterion("cert_use_category not like", value, "certUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertUseCategoryIn(List<String> values) {
+            addCriterion("cert_use_category in", values, "certUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertUseCategoryNotIn(List<String> values) {
+            addCriterion("cert_use_category not in", values, "certUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertUseCategoryBetween(String value1, String value2) {
+            addCriterion("cert_use_category between", value1, value2, "certUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertUseCategoryNotBetween(String value1, String value2) {
+            addCriterion("cert_use_category not between", value1, value2, "certUseCategory");
             return (Criteria) this;
         }
 
@@ -2933,66 +3013,6 @@ public class DeclareRealtyLandCertExample {
 
         public Criteria andGmtModifiedNotBetween(Date value1, Date value2) {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
-            return (Criteria) this;
-        }
-
-        public Criteria andCertUseCategoryIsNull() {
-            addCriterion("cert_use_category is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCertUseCategoryIsNotNull() {
-            addCriterion("cert_use_category is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCertUseCategoryEqualTo(Integer value) {
-            addCriterion("cert_use_category =", value, "certUseCategory");
-            return (Criteria) this;
-        }
-
-        public Criteria andCertUseCategoryNotEqualTo(Integer value) {
-            addCriterion("cert_use_category <>", value, "certUseCategory");
-            return (Criteria) this;
-        }
-
-        public Criteria andCertUseCategoryGreaterThan(Integer value) {
-            addCriterion("cert_use_category >", value, "certUseCategory");
-            return (Criteria) this;
-        }
-
-        public Criteria andCertUseCategoryGreaterThanOrEqualTo(Integer value) {
-            addCriterion("cert_use_category >=", value, "certUseCategory");
-            return (Criteria) this;
-        }
-
-        public Criteria andCertUseCategoryLessThan(Integer value) {
-            addCriterion("cert_use_category <", value, "certUseCategory");
-            return (Criteria) this;
-        }
-
-        public Criteria andCertUseCategoryLessThanOrEqualTo(Integer value) {
-            addCriterion("cert_use_category <=", value, "certUseCategory");
-            return (Criteria) this;
-        }
-
-        public Criteria andCertUseCategoryIn(List<Integer> values) {
-            addCriterion("cert_use_category in", values, "certUseCategory");
-            return (Criteria) this;
-        }
-
-        public Criteria andCertUseCategoryNotIn(List<Integer> values) {
-            addCriterion("cert_use_category not in", values, "certUseCategory");
-            return (Criteria) this;
-        }
-
-        public Criteria andCertUseCategoryBetween(Integer value1, Integer value2) {
-            addCriterion("cert_use_category between", value1, value2, "certUseCategory");
-            return (Criteria) this;
-        }
-
-        public Criteria andCertUseCategoryNotBetween(Integer value1, Integer value2) {
-            addCriterion("cert_use_category not between", value1, value2, "certUseCategory");
             return (Criteria) this;
         }
     }

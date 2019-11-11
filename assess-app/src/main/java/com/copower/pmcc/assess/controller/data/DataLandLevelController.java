@@ -1,16 +1,19 @@
 package com.copower.pmcc.assess.controller.data;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
+import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.dal.basis.entity.DataLandLevel;
 import com.copower.pmcc.assess.dal.basis.entity.DataLandLevelDetail;
 import com.copower.pmcc.assess.dto.input.ZtreeDto;
 import com.copower.pmcc.assess.dto.output.data.DataLandLevelDetailVo;
 import com.copower.pmcc.assess.service.BaseService;
+import com.copower.pmcc.assess.service.base.BaseParameterService;
 import com.copower.pmcc.assess.service.data.DataLandLevelDetailService;
 import com.copower.pmcc.assess.service.data.DataLandLevelService;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
+import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
+import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -43,6 +46,10 @@ public class DataLandLevelController {
     private DataLandLevelService dataLandLevelService;
     @Autowired
     private DataLandLevelDetailService dataLandLevelDetailService;
+    @Autowired
+    private BpmRpcBoxService bpmRpcBoxService;
+    @Autowired
+    private BaseParameterService baseParameterService;
 
     @RequestMapping(value = "/importData", name = "导入 基础维护(土地级别区域)", method = RequestMethod.POST)
     public HttpResult importData(HttpServletRequest request, DataLandLevel dataLandLevel) {
@@ -73,7 +80,9 @@ public class DataLandLevelController {
     @RequestMapping(value = "/comeInLandLevelIndex", name = "转到申请页面 ", method = {RequestMethod.GET})
     public ModelAndView comeInLandLevelIndex(String id) {
         String view = "/data/landModelDir/comeInLandLevelIndex";
-        ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
+        final String boxName = baseParameterService.getParameterValues(BaseParameterEnum.DATA_LAND_LEVEL_APPLY_KEY.getParameterKey());
+        BoxReDto boxReDto = bpmRpcBoxService.getBoxReByBoxName(boxName);
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView(view,boxReDto.getId());
         if (StringUtils.isNotBlank(id)) {
             List<DataLandLevel> dataLandLevelList = dataLandLevelService.getByIds(id);
             if (CollectionUtils.isNotEmpty(dataLandLevelList)){

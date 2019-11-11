@@ -75,9 +75,9 @@ public class FinancialReferenceProjectService {
         sql.append(String.join(",", queryList)).append(" ");
         sql.append("FROM").append(" tb_project_info").append(" ");
         //join 操作 改用右连接
-        sql.append("right JOIN ").append("tb_project_member ON tb_project_info.id = tb_project_member.project_id").append(" ");
-        sql.append("right JOIN ").append("tb_initiate_consignor ON tb_project_info.id = tb_initiate_consignor.project_id ").append(" ");
-        sql.append("right JOIN ").append("tb_project_number_record ON tb_project_info.id = tb_project_number_record.project_id ").append(" ");
+        sql.append("left JOIN ").append("tb_project_member ON tb_project_info.id = tb_project_member.project_id").append(" ");
+        sql.append("left JOIN ").append("tb_initiate_consignor ON tb_project_info.id = tb_initiate_consignor.project_id ").append(" ");
+        sql.append("left JOIN ").append("tb_project_number_record ON tb_project_info.id = tb_project_number_record.project_id ").append(" ");
 //        sql.append("( ( tb_project_info INNER JOIN tb_project_number_record ON tb_project_info.id = tb_project_number_record.project_id ) INNER JOIN").append(" ");
 //        sql.append("tb_project_member ON tb_project_info.id = tb_project_member.project_id )").append(" ");
 //        sql.append("INNER JOIN tb_initiate_consignor ON tb_project_info.id = tb_initiate_consignor.project_id").append(" ");

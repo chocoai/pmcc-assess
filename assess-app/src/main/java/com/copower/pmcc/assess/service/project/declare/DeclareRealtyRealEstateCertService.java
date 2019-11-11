@@ -255,9 +255,6 @@ public class DeclareRealtyRealEstateCertService {
         if (declareRealtyRealEstateCert.getHouseCertUseCategory() != null) {
             vo.setHouseCertUseCategoryName(baseDataDicService.getNameById(declareRealtyRealEstateCert.getHouseCertUseCategory()));
         }
-        if (declareRealtyRealEstateCert.getLandCertUseCategory() != null) {
-            vo.setLandCertUseCategoryName(baseDataDicService.getNameById(declareRealtyRealEstateCert.getLandCertUseCategory()));
-        }
         if (StringUtils.isNotBlank(declareRealtyRealEstateCert.getProvince())) {
             if (NumberUtils.isNumber(declareRealtyRealEstateCert.getProvince())) {
                 //省
@@ -296,7 +293,18 @@ public class DeclareRealtyRealEstateCertService {
             vo.setFileViewName(builder.toString());
         }
         vo.setPlanningUseName(baseDataDicService.getNameById(declareRealtyRealEstateCert.getHouseCertUse()));
-        vo.setPurposeName(baseDataDicService.getNameById(declareRealtyRealEstateCert.getLandCertUse()));
+        String certUseCategoryName = baseDataDicService.getNameById(declareRealtyRealEstateCert.getLandCertUseCategory());
+        if(StringUtils.isNotEmpty(certUseCategoryName)) {
+            vo.setLandCertUseCategoryName(certUseCategoryName);
+        }else{
+            vo.setLandCertUseCategoryName(declareRealtyRealEstateCert.getLandCertUseCategory());
+        }
+        String purposeName = baseDataDicService.getNameById(declareRealtyRealEstateCert.getLandCertUse());
+        if(StringUtils.isNotEmpty(purposeName)) {
+            vo.setPurposeName(purposeName);
+        }else{
+            vo.setPurposeName(declareRealtyRealEstateCert.getLandCertUse());
+        }
         vo.setTypeName(baseDataDicService.getNameById(declareRealtyRealEstateCert.getLandRightType()));
         vo.setPublicSituationName(baseDataDicService.getNameById(declareRealtyRealEstateCert.getPublicSituation()));
         vo.setUseRightTypeName(baseDataDicService.getNameById(declareRealtyRealEstateCert.getLandRightNature()));

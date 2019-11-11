@@ -213,7 +213,7 @@ public class DeclareDemoRecovery {
                             //
                             if (StringUtils.isNotEmpty(declareRecord.getLandCertUse())) {
                                 if (Objects.equal(baseDataDic.getName(), declareRecord.getLandCertUse())) {
-                                    oo.setCertUse(baseDataDic.getId());
+                                    oo.setCertUse(baseDataDic.getName());
                                 }
                             }
                             //

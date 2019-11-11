@@ -400,10 +400,18 @@ public class DeclareRealtyLandCertService {
         }
         vo.setLandRightTypeName(baseDataDicService.getNameById(declareRealtyLandCert.getLandRightType()));
         vo.setLandRightNatureName(baseDataDicService.getNameById(declareRealtyLandCert.getLandRightNature()));
-        vo.setPurposeName(baseDataDicService.getNameById(declareRealtyLandCert.getCertUse()));
+        String purposeName = baseDataDicService.getNameById(declareRealtyLandCert.getCertUse());
+        if(StringUtils.isNotEmpty(purposeName)) {
+            vo.setPurposeName(purposeName);
+        }else{
+            vo.setPurposeName(declareRealtyLandCert.getCertUse());
+        }
         vo.setPublicSituationName(baseDataDicService.getNameById(declareRealtyLandCert.getPublicSituation()));
-        if (declareRealtyLandCert.getCertUseCategory() != null) {
-            vo.setCertUseCategoryName(baseDataDicService.getNameById(declareRealtyLandCert.getCertUseCategory()));
+        String certUseCategoryName = baseDataDicService.getNameById(declareRealtyLandCert.getCertUseCategory());
+        if(StringUtils.isNotEmpty(certUseCategoryName)) {
+            vo.setCertUseCategoryName(certUseCategoryName);
+        }else{
+            vo.setCertUseCategoryName(declareRealtyLandCert.getCertUseCategory());
         }
         if (StringUtils.isNotBlank(declareRealtyLandCert.getProvince())) {
             if (NumberUtils.isNumber(declareRealtyLandCert.getProvince())) {
