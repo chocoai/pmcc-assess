@@ -54,10 +54,79 @@
                     <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
                         <div class="row">
                             <div class="panel-body panel">
-                                <div class=" col-xs-8  col-sm-8  col-md-8  col-lg-8 ">
+                                <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                     <ul id="treeLandLevelDetail" class="ztree"></ul>
                                 </div>
-                                <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
+                                <div class=" col-xs-8  col-sm-8  col-md-8  col-lg-8 ">
+                                    <div class="row">
+                                        <form>
+                                            <div class="form-group">
+                                                <div class="x-valid">
+                                                    <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">平方价</label>
+                                                    <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
+                                                        <label class=" form-control"></label>
+                                                    </div>
+                                                </div>
+                                                <div class="x-valid">
+                                                    <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">每亩单价</label>
+                                                    <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
+                                                        <label class=" form-control"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="x-valid">
+                                                    <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">标准容积率</label>
+                                                    <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
+                                                        <label class=" form-control"></label>
+                                                    </div>
+                                                </div>
+                                                <div class="x-valid">
+                                                    <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">法定使用年限</label>
+                                                    <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
+                                                        <label class=" form-control"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="x-valid">
+                                                    <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">标准容积率</label>
+                                                    <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
+                                                        <label class=" form-control"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="col-md-12" id="btnGroup">
+                                        <a class="btn btn-xs btn-success" >
+                                            新增
+                                        </a>
+                                        <a class="btn btn-xs btn-primary">
+                                            编辑
+                                        </a>
+                                        <a class="btn btn-xs btn-warning" >
+                                            删除
+                                        </a>
+                                        <a class="btn btn-xs btn-primary">
+                                            全部展开
+                                        </a>
+                                        <a class="btn btn-xs btn-primary">
+                                            全部收起
+                                        </a>
+                                        <a class="btn btn-xs btn-primary ">
+                                            土地因素
+                                        </a>
+                                        <a class="btn btn-xs btn-primary ">
+                                            容积率系数
+                                        </a>
+                                        <a class="btn btn-xs btn-primary ">
+                                            导入模板下载
+                                        </a>
+                                        <a class="btn btn-xs btn-primary ">
+                                            导入模板上传
+                                        </a>
+                                    </div>
                                     <div class="row">
                                         <div class=" col-xs-6  col-sm-6  col-md-6  col-lg-6  pull-left">
                                             <button type="button" class="btn btn-default"
@@ -119,10 +188,8 @@
                 <input type="hidden" name="id">
                 <input type="hidden" name="landLevelId">
                 <input type="hidden" name="pid">
-
                 <!-- 用作树 append -->
                 <input type="hidden" name="tId">
-
                 <div class="modal-body">
                     <div class="row">
                         <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
@@ -131,45 +198,31 @@
                                     <div class="x-valid">
                                         <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">大类
                                             <span class="symbol required"></span></label>
-                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
+                                        <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                             <select name="classify" required="required"
                                                     class="form-control search-select select2">
                                             </select>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
                                     <div class="x-valid">
-                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">类型<span
-                                                class="symbol required"></span></label>
-                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
-                                            <select name="type" required="required"
-                                                    class="form-control search-select select2">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">类型</label>
+                                        <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
+                                            <select name="type" class="form-control search-select select2">
                                             </select>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <%--<div class="x-valid">--%>
-                                    <%--<label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">类别</label>--%>
-                                    <%--<div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">--%>
-                                    <%--<input type="text" class="form-control" name="category" placeholder="类别">--%>
-                                    <%--</div>--%>
-                                    <%--</div>--%>
-                                </div>
-                                <div class="form-group">
                                     <div class="x-valid">
                                         <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">平方价</label>
-                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
+                                        <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                             <input type="text" data-rule-number='true' class="form-control" name="price"
                                                    placeholder="平方价">
                                         </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
                                     <div class="x-valid">
                                         <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">每亩单价</label>
-                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
+                                        <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                             <input type="text" data-rule-number='true' class="form-control"
                                                    name="muPrice"
                                                    placeholder="每亩单价">
@@ -178,18 +231,16 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">容积率</label>
-                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">标准容积率</label>
+                                        <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                             <input type="text" data-rule-number='true' class="form-control"
                                                    name="volumeRate"
-                                                   placeholder="容积率">
+                                                   placeholder="标准容积率">
                                         </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
                                     <div class="x-valid">
                                         <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">法定使用年限</label>
-                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
+                                        <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                             <input type="text" data-rule-number='true' class="form-control"
                                                    name="legalAge"
                                                    placeholder="法定使用年限">
@@ -199,7 +250,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">征地比例</label>
-                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
+                                        <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                             <input type="text" class="form-control" name="landAcquisitionProportion"
                                                    placeholder="征地比例">
                                         </div>
