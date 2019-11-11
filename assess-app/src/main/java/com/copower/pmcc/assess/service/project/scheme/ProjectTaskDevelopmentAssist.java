@@ -110,7 +110,8 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
      */
     private void setViewParam(ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) {
         SchemeInfo select = new SchemeInfo();
-        select.setMethodType(baseDataDicService.getCacheDataDicByFieldName(AssessReportFieldConstant.DEVELOPMENT).getId());
+        BaseDataDic DEVELOPMENT = baseDataDicService.getCacheDataDicByFieldName(AssessReportFieldConstant.DEVELOPMENT) ;
+        select.setMethodType(DEVELOPMENT.getId());
         select.setProjectId(projectPlanDetails.getProjectId());
         select.setPlanDetailsId(projectPlanDetails.getId());
         List<SchemeInfo> schemeInfoList = schemeInfoService.getInfoList(select);
@@ -130,6 +131,7 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
         modelAndView.addObject(StringUtils.uncapitalize(MdDevelopment.class.getSimpleName()),mdDevelopmentService.getMdDevelopmentVo(mdDevelopment));
         //projectPlanDetails
         modelAndView.addObject(StringUtils.uncapitalize(ProjectPlanDetails.class.getSimpleName()), projectPlanDetails);
+        modelAndView.addObject("methodTypeObj", DEVELOPMENT);
     }
 
     private void setViewBaseParam(ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) {

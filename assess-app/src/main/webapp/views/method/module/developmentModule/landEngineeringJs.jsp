@@ -16,6 +16,25 @@
     };
     landEngineering.masterId = developmentCommon.isNotBlank('${mdDevelopment.id}')?'${mdDevelopment.id}':'0' ;
 
+    landEngineering.selectFun = function (copyId,box) {
+        var target = $("#"+box) ;
+        $.ajax({
+            url: "${pageContext.request.contextPath}/mdDevelopment/copyDevelopmentById",
+            type: "post",
+            dataType: "json",
+            data: {copyId:copyId,masterId:'${mdDevelopment.id}'},
+            success: function (result) {
+                if (result.ret) {
+                    target.modal("hide");
+                } else {
+                    Alert("失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        });
+    };
 
     landEngineering.calculationF22 = function (_this) {
         var item = $(_this).find('option:selected') ;
@@ -360,6 +379,10 @@
             economicIndicators.init({
                 planDetailsId: '${projectPlanDetails.id}',
                 saveCallback: function (economicId) {//经济指标id更新到中间表
+                    var centerId = '${mdDevelopment.centerId}' ;
+                    if (centerId){
+                        declareCommon.declareBuildCenterSaveAndUpdate({indicatorId: economicId, id: centerId});
+                    }
                     landEngineering.target.find("input[name='economicId']").val(economicId).trigger('blur');
                 },
                 targetCallback:function () {

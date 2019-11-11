@@ -44,7 +44,7 @@
 
             <div data-view-name="c" style="display: none;">
                 <label class="label-info label">计算方式 ==></label>
-                <code>单价 ✖ 面积  <code data-view-name="valuationDateDegreeCompletion"> ✖ 估价时点完工程度</code>
+                <code>单价 ✖ 面积 <code data-view-name="valuationDateDegreeCompletion"> ✖ 估价时点完工程度</code>
                 </code>
             </div>
 
@@ -193,6 +193,44 @@
                 <button type="button" class="btn btn-primary"
                         onclick="'{method}'">
                     保存
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="boxSchemeInfoModel" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">测算方法数据引用</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                        <div class="panel-body">
+                            <div class="form-horizontal">
+
+                                <div class="form-group">
+                                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                                        <table class="table table-bordered" id="boxSchemeInfoList">
+
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">
+                    关闭
                 </button>
             </div>
         </div>

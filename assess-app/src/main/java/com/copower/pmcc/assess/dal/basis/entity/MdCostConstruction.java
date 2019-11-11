@@ -24,8 +24,6 @@ public class MdCostConstruction {
 
     private String landGetCostTotal;
 
-    private String jsonContent;
-
     private BigDecimal developLandAreaTax;
 
     private BigDecimal developBuildAreaTax;
@@ -103,6 +101,10 @@ public class MdCostConstruction {
     private BigDecimal residueRatio;
 
     private Integer pid;
+
+    private Integer centerId;
+
+    private String jsonContent;
 
     private String creator;
 
@@ -188,14 +190,6 @@ public class MdCostConstruction {
 
     public void setLandGetCostTotal(String landGetCostTotal) {
         this.landGetCostTotal = landGetCostTotal == null ? null : landGetCostTotal.trim();
-    }
-
-    public String getJsonContent() {
-        return jsonContent;
-    }
-
-    public void setJsonContent(String jsonContent) {
-        this.jsonContent = jsonContent == null ? null : jsonContent.trim();
     }
 
     public BigDecimal getDevelopLandAreaTax() {
@@ -508,6 +502,22 @@ public class MdCostConstruction {
 
     public void setPid(Integer pid) {
         this.pid = pid;
+    }
+
+    public Integer getCenterId() {
+        return centerId;
+    }
+
+    public void setCenterId(Integer centerId) {
+        this.centerId = centerId;
+    }
+
+    public String getJsonContent() {
+        return jsonContent;
+    }
+
+    public void setJsonContent(String jsonContent) {
+        this.jsonContent = jsonContent == null ? null : jsonContent.trim();
     }
 
     public String getCreator() {

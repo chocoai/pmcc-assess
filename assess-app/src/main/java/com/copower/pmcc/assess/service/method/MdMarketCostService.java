@@ -30,7 +30,9 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -85,38 +87,45 @@ public class MdMarketCostService {
         if (mdCost == null) {
             return;
         }
+        List<DeclareBuildEngineeringAndEquipmentCenter> centerList = Lists.newArrayList();
         boolean firstInit = (mdCost.getId() == null || mdCost.getId() == 0);
         saveAndUpdateMdCost(mdCost);
         MdCostConstruction mdCostConstruction = new MdCostConstruction();
         mdCostConstruction.setPid(mdCost.getId());
         SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId());
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
-        List<Integer> integerList = Lists.newArrayList();
+        Map<Integer, Integer> mapEconomicId = new HashMap<>(2);
         DeclareBuildEngineeringAndEquipmentCenter query = new DeclareBuildEngineeringAndEquipmentCenter();
         if (Objects.equal(FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class), declareRecord.getDataTableName())) {
             query.setHouseId(declareRecord.getDataTableId());
             query.setType(DeclareRealtyHouseCert.class.getSimpleName());
-            List<DeclareBuildEngineeringAndEquipmentCenter> centerList = declareBuildEngineeringAndEquipmentCenterService.declareBuildEngineeringAndEquipmentCenterList(query);
-            if (CollectionUtils.isNotEmpty(centerList)) {
-                List<Integer> integerList2 = centerList.stream().filter(oo -> oo.getIndicatorId() != null).map(oo -> oo.getIndicatorId()).collect(Collectors.toList());
-                if (CollectionUtils.isNotEmpty(integerList2)) {
-                    integerList.addAll(integerList2);
-                }
+            List<DeclareBuildEngineeringAndEquipmentCenter> centerList2 = declareBuildEngineeringAndEquipmentCenterService.declareBuildEngineeringAndEquipmentCenterList(query);
+            if (CollectionUtils.isNotEmpty(centerList2)) {
+                centerList.addAll(centerList2) ;
             }
         }
         if (Objects.equal(FormatUtils.entityNameConvertToTableName(DeclareRealtyRealEstateCert.class), declareRecord.getDataTableName())) {
             query.setRealEstateId(declareRecord.getDataTableId());
             query.setType(DeclareRealtyRealEstateCert.class.getSimpleName());
-            List<DeclareBuildEngineeringAndEquipmentCenter> centerList = declareBuildEngineeringAndEquipmentCenterService.declareBuildEngineeringAndEquipmentCenterList(query);
-            if (CollectionUtils.isNotEmpty(centerList)) {
-                List<Integer> integerList2 = centerList.stream().filter(oo -> oo.getIndicatorId() != null).map(oo -> oo.getIndicatorId()).collect(Collectors.toList());
-                if (CollectionUtils.isNotEmpty(integerList2)) {
-                    integerList.addAll(integerList2);
-                }
+            List<DeclareBuildEngineeringAndEquipmentCenter> centerList2 = declareBuildEngineeringAndEquipmentCenterService.declareBuildEngineeringAndEquipmentCenterList(query);
+            if (CollectionUtils.isNotEmpty(centerList2)) {
+                centerList.addAll(centerList2) ;
             }
         }
-        if (CollectionUtils.isNotEmpty(integerList)) {
-            mdCostConstruction.setEconomicId(integerList.stream().findFirst().get());
+        if (CollectionUtils.isNotEmpty(centerList)) {
+            for (DeclareBuildEngineeringAndEquipmentCenter center : centerList) {
+                mdCostConstruction.setCenterId(center.getId());
+                if (center.getIndicatorId() == null) {
+                    continue;
+                }
+                mapEconomicId.put(center.getIndicatorId(), center.getId());
+            }
+        }
+        if (!mapEconomicId.isEmpty()) {
+            mapEconomicId.forEach((integer, integer2) -> {
+                mdCostConstruction.setEconomicId(integer);
+                mdCostConstruction.setCenterId(integer2);
+            });
         }
         MdCostVo mdCostVo = getMdCostVo(mdCost);
         mdCostConstruction.setId(mdCostVo.getMdCostConstruction().getId());

@@ -48,10 +48,10 @@
             <!--<columnOverride column="content" jdbcType="VARCHAR"></columnOverride>-->
         <!--</table>-->
 
-        <!--<table tableName="tb_md_cost_construction" domainObjectName="MdCostConstruction">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-            <!--<columnOverride column="json_content" jdbcType="VARCHAR"></columnOverride>-->
-        <!--</table>-->
+        <table tableName="tb_md_cost_construction" domainObjectName="MdCostConstruction">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+            <columnOverride column="json_content" jdbcType="VARCHAR"></columnOverride>
+        </table>
 
         <!--<table tableName="tb_md_economic_indicators" domainObjectName="MdEconomicIndicators">-->
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
@@ -92,9 +92,10 @@
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         <!--</table>-->
 
-        <!--<table tableName="tb_md_development_infrastructure_children" domainObjectName="MdDevelopmentInfrastructureChildren">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
+        <table tableName="tb_md_development" domainObjectName="MdDevelopment">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+            <columnOverride column="content" jdbcType="VARCHAR"></columnOverride>
+        </table>
 
         <!--<table tableName="tb_declare_record" domainObjectName="DeclareRecord">-->
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
@@ -105,9 +106,9 @@
             <!--<columnOverride column="land_level_content" jdbcType="VARCHAR"></columnOverride>-->
         <!--</table>-->
 
-        <table tableName="tb_md_architectural_obj" domainObjectName="MdArchitecturalObj">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
+        <!--<table tableName="tb_md_architectural_obj" domainObjectName="MdArchitecturalObj">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
 
         <!--<table tableName="tb_data_allocation_correction_coefficient_volume_ratio" domainObjectName="DataAllocationCorrectionCoefficientVolumeRatio">-->
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->

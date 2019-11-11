@@ -6,7 +6,6 @@ import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.method.MdCalculatingMethodEngineeringCostService;
 import com.copower.pmcc.assess.service.method.MdDevelopmentService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
-import com.copower.pmcc.erp.common.utils.FormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,8 +29,8 @@ public class MdDevelopmentController {
     @PostMapping(value = "/calculationNumeric", name = "假设开发法后台自动计算")
     public HttpResult calculationNumeric(String fomData) {
         try {
-            MdDevelopment target = JSONObject.parseObject(fomData,MdDevelopment.class) ;
-            mdDevelopmentService.calculationNumeric(target) ;
+            MdDevelopment target = JSONObject.parseObject(fomData, MdDevelopment.class);
+            mdDevelopmentService.calculationNumeric(target);
             return HttpResult.newCorrectResult(200, target);
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
@@ -41,8 +40,20 @@ public class MdDevelopmentController {
         }
     }
 
+    @PostMapping(value = "/copyDevelopmentById", name = "拷贝数据")
+    public HttpResult copyDevelopmentById(Integer copyId,Integer masterId) {
+        StringBuilder stringBuilder = new StringBuilder(8);
+        try {
+            mdDevelopmentService.copyDevelopmentById(copyId, masterId,stringBuilder);
+            return HttpResult.newCorrectResult(stringBuilder.toString());
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e,"拷贝数据 error");
+            return HttpResult.newErrorResult(stringBuilder.toString());
+        }
+    }
+
     @PostMapping(value = "/setMdCalculatingMethodEngineeringCost", name = "设置工程费")
-    public HttpResult setMdCalculatingMethodEngineeringCost(Integer planDetailsId,String  type){
+    public HttpResult setMdCalculatingMethodEngineeringCost(Integer planDetailsId, String type) {
         try {
             mdCalculatingMethodEngineeringCostService.setMdCalculatingMethodEngineeringCost(planDetailsId, type);
             return HttpResult.newCorrectResult("success");

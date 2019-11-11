@@ -49,6 +49,7 @@
                 </div>
                 <%@include file="/views/method/module/developmentCommon.jsp" %>
                 <script src="${pageContext.request.contextPath}/js/method/developmentCommon.js?v=${assessVersion}"></script>
+                <script type="text/javascript" src="${pageContext.request.contextPath}/js/declare/declare.common.js?v=${assessVersion}"></script>
                 <%@include file="/views/project/tool/residueRatio.jsp" %>
                 <%@include file="/views/method/module/economicIndicators.jsp" %>
                 <div class="x_content">
