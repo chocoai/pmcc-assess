@@ -17,6 +17,27 @@
         return construction.target.find("input[name='type']").val();
     };
 
+    construction.selectFun = function (copyId,box) {
+        var target = $("#"+box) ;
+        $.ajax({
+            url: "${pageContext.request.contextPath}/mdCostConstruction/copyConstructionById",
+            type: "post",
+            dataType: "json",
+            data: {copyId:copyId,masterId:'${mdCostVo.mdCostConstruction.pid}'},
+            success: function (result) {
+                if (result.ret) {
+                    window.location.reload(true); //强制从服务器重新加载当前页面
+                    target.modal("hide");
+                } else {
+                    Alert("失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        });
+    };
+
     /**调用比较法**/
     construction.callCompareMethod = function (this_) {
         var mcId = construction.target.find('[name=mcId]').val();

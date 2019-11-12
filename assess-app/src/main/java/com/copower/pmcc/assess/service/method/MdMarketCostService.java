@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.service.method;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.ArithmeticUtils;
+import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.common.enums.report.BaseReportFieldEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdCostConstructionDao;
@@ -11,7 +12,9 @@ import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.method.MdEconomicIndicatorsApplyDto;
 import com.copower.pmcc.assess.dto.output.method.MdCostConstructionVo;
 import com.copower.pmcc.assess.dto.output.method.MdCostVo;
+import com.copower.pmcc.assess.service.assist.ResidueRatioService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.declare.DeclareBuildEngineeringAndEquipmentCenterService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeInfoService;
@@ -27,13 +30,13 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * @Auther: zch
@@ -64,6 +67,62 @@ public class MdMarketCostService {
     private MdEconomicIndicatorsService mdEconomicIndicatorsService;
     @Autowired
     private MdCalculatingMethodEngineeringCostService mdCalculatingMethodEngineeringCostService;
+    @Autowired
+    private ProjectPlanDetailsService projectPlanDetailsService;
+    @Autowired
+    private MdDevelopmentInfrastructureChildrenService mdDevelopmentInfrastructureChildrenService;
+    @Autowired
+    private ResidueRatioService residueRatioService;
+
+    @Transactional(rollbackFor = {Exception.class})
+    public void copyConstructionById(Integer copyId, Integer masterId, StringBuilder stringBuilder)throws Exception{
+        MdCost copy1 = getByMdCostId(copyId) ;
+        MdCost target1 = getByMdCostId(masterId) ;
+
+        if (copy1 == null) {
+            stringBuilder.append("目标数据不存在");
+            throw new Exception("目标数据不存在");
+        }
+        if (target1 == null) {
+            stringBuilder.append("拷贝异常");
+            throw new Exception("拷贝异常");
+        }
+
+        Integer copyPlanDetailsId = copy1.getPlanDetailsId();
+        Integer targetPlanDetailsId = target1.getPlanDetailsId();
+        ProjectPlanDetails copyPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(copyPlanDetailsId);
+        ProjectPlanDetails targetPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(targetPlanDetailsId);
+
+        MdCostVo copy = getMdCostVo(copy1) ;
+        MdCostVo target = getMdCostVo(target1) ;
+
+        //工程费 copy
+        mdCalculatingMethodEngineeringCostService.copyMdCalculatingMethodEngineeringCost(targetPlanDetails, copyPlanDetails);
+
+        MdEconomicIndicators economicIndicators = new MdEconomicIndicators();
+        //经济指标 copy
+        mdEconomicIndicatorsService.copyDataEconomicIndicators(copy.getMdCostConstruction().getEconomicId(), economicIndicators);
+        ToolResidueRatio toolResidueRatio = new ToolResidueRatio() ;
+        residueRatioService.copyDataToolResidueRatio(copy.getMdCostConstruction().getResidueRatioId(),toolResidueRatio);
+
+        Integer copyBranchId = copy.getMdCostConstruction().getId();
+        copy.getMdCostConstruction().setId(null);
+        copy.getMdCostConstruction().setPid(null);
+        copy.getMdCostConstruction().setCenterId(null);
+        copy.getMdCostConstruction().setEconomicId(null);
+        BeanCopyHelp.copyPropertiesIgnoreNull(copy.getMdCostConstruction(), target.getMdCostConstruction());
+        target.getMdCostConstruction().setEconomicId(economicIndicators.getId());
+        target.getMdCostConstruction().setResidueRatioId(toolResidueRatio.getId());
+        saveMdCostConstruction(target.getMdCostConstruction()) ;
+
+        //基础设施配套费 copy
+        mdDevelopmentInfrastructureChildrenService.copyData(targetPlanDetails, copyPlanDetails, copyBranchId, target.getMdCostConstruction().getId());
+        copy1.setId(null);
+        copy1.setPlanDetailsId(null);
+        copy1.setCreator(null);
+        BeanCopyHelp.copyPropertiesIgnoreNull(copy1, target1);
+        saveAndUpdateMdCost(target1) ;
+    }
 
 
     public MdCost initExplore(SchemeJudgeObject schemeJudgeObject) {
@@ -87,11 +146,13 @@ public class MdMarketCostService {
         if (mdCost == null) {
             return;
         }
-        List<DeclareBuildEngineeringAndEquipmentCenter> centerList = Lists.newArrayList();
+        mdCost.setPlanDetailsId(projectPlanDetails.getId());
         boolean firstInit = (mdCost.getId() == null || mdCost.getId() == 0);
         saveAndUpdateMdCost(mdCost);
-        MdCostConstruction mdCostConstruction = new MdCostConstruction();
-        mdCostConstruction.setPid(mdCost.getId());
+        MdCostVo mdCostVo = getMdCostVo(mdCost);
+        mdCostVo.getMdCostConstruction().setPid(mdCostVo.getId());
+
+        List<DeclareBuildEngineeringAndEquipmentCenter> centerList = Lists.newArrayList();
         SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId());
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
         Map<Integer, Integer> mapEconomicId = new HashMap<>(2);
@@ -114,7 +175,7 @@ public class MdMarketCostService {
         }
         if (CollectionUtils.isNotEmpty(centerList)) {
             for (DeclareBuildEngineeringAndEquipmentCenter center : centerList) {
-                mdCostConstruction.setCenterId(center.getId());
+                mdCostVo.getMdCostConstruction().setCenterId(center.getId());
                 if (center.getIndicatorId() == null) {
                     continue;
                 }
@@ -122,41 +183,49 @@ public class MdMarketCostService {
             }
         }
         if (!mapEconomicId.isEmpty()) {
-            mapEconomicId.forEach((integer, integer2) -> {
-                mdCostConstruction.setEconomicId(integer);
-                mdCostConstruction.setCenterId(integer2);
-            });
+            boolean tempFlag = false;
+            if (mdCostVo.getMdCostConstruction().getEconomicId() != null) {
+                MdEconomicIndicatorsApplyDto mdEconomicIndicatorsApplyDto = mdEconomicIndicatorsService.getEconomicIndicatorsInfo(mdCostVo.getMdCostConstruction().getEconomicId());
+                tempFlag = mdEconomicIndicatorsApplyDto.getEconomicIndicators() != null && mdEconomicIndicatorsApplyDto.getEconomicIndicators().getId() != null;
+            }
+            if (!tempFlag){
+                mapEconomicId.forEach((integer, integer2) -> {
+                    mdCostVo.getMdCostConstruction().setEconomicId(integer);
+                    mdCostVo.getMdCostConstruction().setCenterId(integer2);
+                });
+            }
         }
-        MdCostVo mdCostVo = getMdCostVo(mdCost);
-        mdCostConstruction.setId(mdCostVo.getMdCostConstruction().getId());
-        saveMdCostConstruction(mdCostConstruction);
+        saveMdCostConstruction(mdCostVo.getMdCostConstruction());
 
         if (firstInit) {
-            SchemeInfo schemeInfo = new SchemeInfo();
-            schemeInfo.setProjectId(projectPlanDetails.getProjectId());
-            schemeInfo.setPlanDetailsId(projectPlanDetails.getId());
-            schemeInfo.setJudgeObjectId(projectPlanDetails.getJudgeObjectId());
-            schemeInfo.setMethodType(baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_COST).getId());
-            schemeInfo.setProcessInsId(StringUtils.isNotEmpty(processInsId) ? processInsId : "0");
-            schemeInfo.setMethodDataId(mdCost.getId());
-            schemeInfoService.saveSchemeInfo(schemeInfo);
-
-            MdEconomicIndicatorsApplyDto mdEconomicIndicators = mdEconomicIndicatorsService.getEconomicIndicatorsInfo(mdCostConstruction.getEconomicId());
-            if (mdEconomicIndicators == null) {
-                return;
-            }
-            if (mdEconomicIndicators.getEconomicIndicators() == null) {
-                return;
-            }
-            if (mdEconomicIndicators.getEconomicIndicators().getAssessUseLandArea() != null) {
-                mdCostConstruction.setDevelopLandAreaTax(mdEconomicIndicators.getEconomicIndicators().getAssessUseLandArea());
-            }
-            if (mdEconomicIndicators.getEconomicIndicators().getAssessTotalBuildArea() != null) {
-                mdCostConstruction.setDevelopBuildAreaTax(mdEconomicIndicators.getEconomicIndicators().getAssessTotalBuildArea());
-            }
-            saveMdCostConstruction(mdCostConstruction);
+            initDataBind(mdCostVo,projectPlanDetails,processInsId) ;
         }
 
+    }
+    private void initDataBind(MdCostVo mdCostVo,ProjectPlanDetails projectPlanDetails,String processInsId)throws BusinessException{
+        SchemeInfo schemeInfo = new SchemeInfo();
+        schemeInfo.setProjectId(projectPlanDetails.getProjectId());
+        schemeInfo.setPlanDetailsId(projectPlanDetails.getId());
+        schemeInfo.setJudgeObjectId(projectPlanDetails.getJudgeObjectId());
+        schemeInfo.setMethodType(baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_COST).getId());
+        schemeInfo.setProcessInsId(StringUtils.isNotEmpty(processInsId) ? processInsId : "0");
+        schemeInfo.setMethodDataId(mdCostVo.getId());
+        schemeInfoService.saveSchemeInfo(schemeInfo);
+
+        MdEconomicIndicatorsApplyDto mdEconomicIndicators = mdEconomicIndicatorsService.getEconomicIndicatorsInfo(mdCostVo.getMdCostConstruction().getEconomicId());
+        if (mdEconomicIndicators == null) {
+            return;
+        }
+        if (mdEconomicIndicators.getEconomicIndicators() == null) {
+            return;
+        }
+        if (mdEconomicIndicators.getEconomicIndicators().getAssessUseLandArea() != null) {
+            mdCostVo.getMdCostConstruction().setDevelopLandAreaTax(mdEconomicIndicators.getEconomicIndicators().getAssessUseLandArea());
+        }
+        if (mdEconomicIndicators.getEconomicIndicators().getAssessTotalBuildArea() != null) {
+            mdCostVo.getMdCostConstruction().setDevelopBuildAreaTax(mdEconomicIndicators.getEconomicIndicators().getAssessTotalBuildArea());
+        }
+        saveMdCostConstruction(mdCostVo.getMdCostConstruction());
     }
 
     public void saveAndUpdateMdCost(MdCost mdCost) {
@@ -274,14 +343,10 @@ public class MdMarketCostService {
     }
 
     public String calculationNumeric(MdCostConstruction target) {
+        mdCostConstructionDao.updateEstateNetwork(target);
         String value = getFieldObjectValue(BaseReportFieldEnum.MarketCost_constructionAssessmentPriceCorrecting, target);
         if (target.getId() != null && target.getId() != 0) {
-            taskExecutor.execute(new Runnable() {
-                @Override
-                public void run() {
-                    mdCostConstructionDao.updateEstateNetwork(target);
-                }
-            });
+            mdCostConstructionDao.updateEstateNetwork(target);
         }
         return value;
     }

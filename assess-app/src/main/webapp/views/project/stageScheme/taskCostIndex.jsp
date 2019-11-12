@@ -17,11 +17,14 @@
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
             <!-- 引入成本法模块 -->
             <div class="x_panel">
-                <div class="x_title collapse-link">
+                <div class="x_title">
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                     </ul>
-                    <h3>成本法</h3>
+                    <h3>成本法 <button class="btn btn-primary" data-toggle="modal" href="#boxSchemeInfoModel"
+                                    onclick="developmentCommon.loadSchemeInfoTableList({projectId:'${projectPlanDetails.projectId}',methodDataId:'${mdCostVo.id}',methodType:'${methodTypeObj.id}'},'construction.selectFun');">
+                        引用</button>
+                    </h3>
                     <div class="clearfix"></div>
                 </div>
 

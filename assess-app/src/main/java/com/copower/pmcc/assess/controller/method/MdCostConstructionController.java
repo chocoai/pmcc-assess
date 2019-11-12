@@ -51,6 +51,18 @@ public class MdCostConstructionController {
         }
     }
 
+    @PostMapping(value = "/copyConstructionById", name = "拷贝数据")
+    public HttpResult copyConstructionById(Integer copyId,Integer masterId){
+        StringBuilder stringBuilder = new StringBuilder(8);
+        try {
+            mdMarketCostService.copyConstructionById(copyId, masterId,stringBuilder);
+            return HttpResult.newCorrectResult(stringBuilder.toString());
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e,"拷贝数据 error");
+            return HttpResult.newErrorResult(stringBuilder.toString());
+        }
+    }
+
 
 
 }

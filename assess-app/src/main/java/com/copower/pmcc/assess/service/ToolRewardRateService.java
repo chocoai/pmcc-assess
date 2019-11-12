@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.service;
 
 import com.alibaba.fastjson.JSON;
+import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.dal.basis.dao.data.ToolRewardRateDao;
 import com.copower.pmcc.assess.dal.basis.entity.ToolRewardRate;
 import com.copower.pmcc.erp.common.CommonService;
@@ -20,8 +21,20 @@ public class ToolRewardRateService {
     @Autowired
     private ToolRewardRateDao toolRewardRateDao;
 
-
-    private final Logger logger = LoggerFactory.getLogger(getClass());
+    public void  copyData(Integer copyId,ToolRewardRate target){
+        if (copyId == null){
+            return;
+        }
+        ToolRewardRate toolRewardRate= getToolRewardRateById(copyId) ;
+        if (toolRewardRate == null){
+            return;
+        }
+        toolRewardRate.setId(null);
+        toolRewardRate.setCreator(null);
+        BeanCopyHelp.copyPropertiesIgnoreNull(toolRewardRate, target);
+        target.setCreator(commonService.thisUserAccount());
+        toolRewardRateDao.addObject(target) ;
+    }
 
     public ToolRewardRate saveToolRewardRate(String formData) throws Exception {
         ToolRewardRate toolRewardRate = JSON.parseObject(formData, ToolRewardRate.class);
@@ -34,7 +47,7 @@ public class ToolRewardRateService {
         return toolRewardRate;
     }
 
-    public ToolRewardRate getToolRewardRateById(Integer id) throws Exception {
+    public ToolRewardRate getToolRewardRateById(Integer id)  {
         ToolRewardRate toolRewardRate = toolRewardRateDao.getSingleObject(id);
         return toolRewardRate;
     }

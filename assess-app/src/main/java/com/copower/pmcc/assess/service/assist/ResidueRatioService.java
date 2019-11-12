@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.service.assist;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.common.enums.data.DataDamagedDegreeEnum;
 import com.copower.pmcc.assess.dal.basis.dao.data.ToolResidueRatioDao;
 import com.copower.pmcc.assess.dal.basis.dao.data.ToolResidueRatioObserveDao;
@@ -49,7 +50,16 @@ public class ResidueRatioService {
     private ToolResidueRatioObserveDao toolResidueRatioObserveDao;
 
 
-    private final Logger logger = LoggerFactory.getLogger(getClass());
+   public void copyDataToolResidueRatio(Integer copyId,ToolResidueRatio target){
+       if (copyId == null){
+           return;
+       }
+       ToolResidueRatio toolResidueRatio = getToolResidueRatio(copyId) ;
+       toolResidueRatio.setId(null);
+       BeanCopyHelp.copyPropertiesIgnoreNull(toolResidueRatio, target);
+       target.setCreator(commonService.thisUserAccount());
+       toolResidueRatioDao.addToolResidueRatio(target) ;
+   }
 
     public ToolResidueRatio saveResidueRatio(String formData) throws Exception {
         ToolResidueRatio toolResidueRatio = JSON.parseObject(formData, ToolResidueRatio.class);

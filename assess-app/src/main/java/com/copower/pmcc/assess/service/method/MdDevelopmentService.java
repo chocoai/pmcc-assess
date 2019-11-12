@@ -8,7 +8,9 @@ import com.copower.pmcc.assess.common.enums.report.BaseReportFieldEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdDevelopmentDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dto.input.method.MdEconomicIndicatorsApplyDto;
 import com.copower.pmcc.assess.dto.output.project.scheme.MdDevelopmentVo;
+import com.copower.pmcc.assess.service.ToolRewardRateService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.declare.DeclareBuildEngineeringAndEquipmentCenterService;
@@ -28,6 +30,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -67,7 +70,12 @@ public class MdDevelopmentService {
     private MdArchitecturalObjService mdArchitecturalObjService;
     @Autowired
     private MdDevelopmentInfrastructureChildrenService mdDevelopmentInfrastructureChildrenService;
+    @Autowired
+    private ToolRewardRateService toolRewardRateService;
+    @Autowired
+    private MdEconomicIndicatorsService mdEconomicIndicatorsService;
 
+    @Transactional(rollbackFor = {Exception.class})
     public void copyDevelopmentById(Integer copyId, Integer masterId, StringBuilder stringBuilder) throws Exception {
         MdDevelopment copy = getMdDevelopmentById(copyId);
         MdDevelopment target = getMdDevelopmentById(masterId);
@@ -88,16 +96,25 @@ public class MdDevelopmentService {
         mdCalculatingMethodEngineeringCostService.copyMdCalculatingMethodEngineeringCost(targetPlanDetails, copyPlanDetails);
 
         //基础设施配套费 copy
-        mdDevelopmentInfrastructureChildrenService.copyData(targetPlanDetails,copyPlanDetails,copyId,masterId);
+        mdDevelopmentInfrastructureChildrenService.copyData(targetPlanDetails, copyPlanDetails, copyId, masterId);
 
+        ToolRewardRate toolRewardRate = new ToolRewardRate();
+        //土地还原率 copy
+        toolRewardRateService.copyData(copy.getRewardRateId(), toolRewardRate);
+
+        MdEconomicIndicators economicIndicators = new MdEconomicIndicators();
+        //经济指标 copy
+        mdEconomicIndicatorsService.copyDataEconomicIndicators(copy.getEconomicId(), economicIndicators);
         copy.setId(null);
         copy.setCenterId(null);
         copy.setPlanDetailsId(null);
         copy.setEconomicId(null);
         copy.setRewardRateId(null);
         BeanCopyHelp.copyPropertiesIgnoreNull(copy, target);
+        target.setRewardRateId(toolRewardRate.getId());
+        target.setEconomicId(economicIndicators.getId());
         saveAndUpdateMdDevelopment(target);
-        stringBuilder.append("拷贝成功!") ;
+        stringBuilder.append("拷贝成功!");
     }
 
 
@@ -147,10 +164,17 @@ public class MdDevelopmentService {
             }
         }
         if (!mapEconomicId.isEmpty()) {
-            mapEconomicId.forEach((integer, integer2) -> {
-                target.setEconomicId(integer);
-                target.setCenterId(integer2);
-            });
+            boolean tempFlag = false;
+            if (target.getEconomicId() != null) {
+                MdEconomicIndicatorsApplyDto mdEconomicIndicatorsApplyDto = mdEconomicIndicatorsService.getEconomicIndicatorsInfo(target.getEconomicId());
+                tempFlag = mdEconomicIndicatorsApplyDto.getEconomicIndicators() != null && mdEconomicIndicatorsApplyDto.getEconomicIndicators().getId() != null;
+            }
+            if (!tempFlag){
+                mapEconomicId.forEach((integer, integer2) -> {
+                    target.setEconomicId(integer);
+                    target.setCenterId(integer2);
+                });
+            }
         }
         saveAndUpdateMdDevelopment(target);
         if (firstInit) {
@@ -189,19 +213,12 @@ public class MdDevelopmentService {
     }
 
     public void calculationNumeric(MdDevelopment target) {
-        getFieldObjectValueHandle(BaseReportFieldEnum.Development_Price, target);
-        if (target.getId() != null && target.getId() != 0) {
-            mdDevelopmentDao.updateMdDevelopment(target);
-            if (target != null) {
-
-            }
-            taskExecutor.execute(new Runnable() {
-                @Override
-                public void run() {
-                    mdDevelopmentDao.updateMdDevelopment(target);
-                }
-            });
+        if (target == null){
+            return;
         }
+        saveAndUpdateMdDevelopment(target) ;
+        getFieldObjectValueHandle(BaseReportFieldEnum.Development_Price, target);
+        saveAndUpdateMdDevelopment(target) ;
     }
 
 

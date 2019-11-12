@@ -37,6 +37,13 @@ public class MdDevelopmentInfrastructureChildrenService {
      * @param targetId
      */
     public void  copyData(ProjectPlanDetails targetPlanDetails, ProjectPlanDetails copyPlanDetails,Integer copyId,Integer targetId){
+        if (targetPlanDetails == null || copyPlanDetails == null){
+            return;
+        }
+        if (copyId == null || targetId == null){
+            return;
+        }
+        clear(targetId) ;
         MdDevelopmentInfrastructureChildren copySelect = new MdDevelopmentInfrastructureChildren();
         copySelect.setPid(copyId);
         copySelect.setPlanDetailsId(copyPlanDetails.getId());
@@ -70,9 +77,9 @@ public class MdDevelopmentInfrastructureChildrenService {
     }
 
 
-    public void clear(){
+    public void clear(Integer pid){
         MdDevelopmentInfrastructureChildren oo = new MdDevelopmentInfrastructureChildren();
-        oo.setPid(0);
+        oo.setPid(pid == null?0:pid);
         oo.setCreator(commonService.thisUserAccount());
         List<MdDevelopmentInfrastructureChildren> childrenList = getMdDevelopmentInfrastructureChildrenListByExample(oo);
         if (CollectionUtils.isNotEmpty(childrenList)){

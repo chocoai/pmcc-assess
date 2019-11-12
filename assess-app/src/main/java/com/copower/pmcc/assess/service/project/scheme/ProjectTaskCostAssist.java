@@ -133,7 +133,8 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
     private void setViewParam(ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) {
         MdCost mdCost = new MdCost();
         SchemeInfo select = new SchemeInfo();
-        select.setMethodType(baseDataDicService.getCacheDataDicByFieldName(AssessReportFieldConstant.COST).getId());
+        BaseDataDic COST = baseDataDicService.getCacheDataDicByFieldName(AssessReportFieldConstant.COST) ;
+        select.setMethodType(COST.getId());
         select.setPlanDetailsId(projectPlanDetails.getId());
         List<SchemeInfo> schemeInfoList = schemeInfoService.getInfoList(select);
         if (CollectionUtils.isNotEmpty(schemeInfoList)) {
@@ -149,6 +150,7 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
         }
         MdCostVo mdCostVo = mdMarketCostService.getMdCostVo(mdCost);
         modelAndView.addObject(StringUtils.uncapitalize(MdCostVo.class.getSimpleName()), mdCostVo);
+        modelAndView.addObject("methodTypeObj", COST);
     }
 
     private void setViewBaseParam(ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) {

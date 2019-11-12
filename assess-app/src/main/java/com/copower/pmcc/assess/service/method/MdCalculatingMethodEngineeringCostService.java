@@ -50,14 +50,20 @@ public class MdCalculatingMethodEngineeringCostService {
 
     /**
      * 工程费
+     *
      * @param targetPlanDetails
      * @param copyPlanDetails
      */
     public void copyMdCalculatingMethodEngineeringCost(ProjectPlanDetails targetPlanDetails, ProjectPlanDetails copyPlanDetails) {
+        if (targetPlanDetails == null || copyPlanDetails == null) {
+            return;
+        }
+
+        this.clearOver(targetPlanDetails.getProjectId(),targetPlanDetails.getJudgeObjectId(),null);
         MdCalculatingMethodEngineeringCost copyEngineeringCostQuery = new MdCalculatingMethodEngineeringCost();
         copyEngineeringCostQuery.setProjectId(copyPlanDetails.getProjectId());
         copyEngineeringCostQuery.setJudgeObjectId(copyPlanDetails.getJudgeObjectId());
-        List<MdCalculatingMethodEngineeringCost> copyEngineeringCostList =getMdCalculatingMethodEngineeringCostListByExample(copyEngineeringCostQuery);
+        List<MdCalculatingMethodEngineeringCost> copyEngineeringCostList = getMdCalculatingMethodEngineeringCostListByExample(copyEngineeringCostQuery);
         if (CollectionUtils.isEmpty(copyEngineeringCostList)) {
             return;
         }
@@ -72,7 +78,10 @@ public class MdCalculatingMethodEngineeringCostService {
             target.setProjectId(targetPlanDetails.getProjectId());
 
             BeanCopyHelp.copyPropertiesIgnoreNull(calculatingMethodEngineeringCost, target);
-            MdArchitecturalObj mdArchitecturalObj = mdArchitecturalObjService.getMdArchitecturalObjById(calculatingMethodEngineeringCost.getArchitecturalObjId());
+            MdArchitecturalObj mdArchitecturalObj = null;
+            if (calculatingMethodEngineeringCost.getArchitecturalObjId() != null) {
+                mdArchitecturalObj = mdArchitecturalObjService.getMdArchitecturalObjById(calculatingMethodEngineeringCost.getArchitecturalObjId());
+            }
             if (mdArchitecturalObj != null) {
                 MdArchitecturalObj mdArchitecturalTarget = new MdArchitecturalObj();
                 mdArchitecturalObj.setCreator(null);
@@ -102,7 +111,7 @@ public class MdCalculatingMethodEngineeringCostService {
      * @param basicApply
      * @param area
      */
-    private void setMdCalculatingMethodEngineeringCost2(ProjectPlanDetails projectPlanDetails, BasicApply basicApply, BigDecimal area,  String type) {
+    private void setMdCalculatingMethodEngineeringCost2(ProjectPlanDetails projectPlanDetails, BasicApply basicApply, BigDecimal area, String type) {
         if (basicApply == null) {
             return;
         }
@@ -187,10 +196,11 @@ public class MdCalculatingMethodEngineeringCostService {
 
     /**
      * 结束的时候清除工程费(清除不属于此type下的数据)
+     *
      * @param projectId
      * @param type
      */
-    public void clearOver(Integer projectId, Integer judgeObjectId,String type) {
+    public void clearOver(Integer projectId, Integer judgeObjectId, String type) {
         MdCalculatingMethodEngineeringCost engineeringCost = new MdCalculatingMethodEngineeringCost();
         engineeringCost.setProjectId(projectId);
         engineeringCost.setJudgeObjectId(judgeObjectId);

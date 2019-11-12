@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.method;
 
+import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdEconomicIndicatorsDao;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdEconomicIndicatorsItemDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
@@ -67,6 +68,38 @@ public class MdEconomicIndicatorsService {
             }
         }
         return mdEconomicIndicators;
+    }
+
+    public void copyDataEconomicIndicators(Integer copyId,MdEconomicIndicators target){
+        if (copyId == null){
+            return;
+        }
+        MdEconomicIndicatorsApplyDto applyDto = getEconomicIndicatorsInfo(copyId) ;
+        if (applyDto == null){
+            return;
+        }
+        if (applyDto.getEconomicIndicators() == null){
+            return;
+        }
+        applyDto.getEconomicIndicators().setId(null);
+        applyDto.getEconomicIndicators().setPlanDetailsId(null);
+        BeanCopyHelp.copyPropertiesIgnoreNull(applyDto.getEconomicIndicators(), target);
+        saveEconomicIndicators(target) ;
+        if (CollectionUtils.isEmpty(applyDto.getEconomicIndicatorsItemList())){
+            return;
+        }
+        for (MdEconomicIndicatorsItem indicatorsItem:applyDto.getEconomicIndicatorsItemList()){
+            MdEconomicIndicatorsItem indicatorsItem2 = new MdEconomicIndicatorsItem();
+            indicatorsItem.setPlanDetailsId(null);
+            indicatorsItem.setMcId(null);
+            indicatorsItem.setEconomicId(null);
+            indicatorsItem.setPid(null);
+            indicatorsItem.setId(null);
+            BeanCopyHelp.copyPropertiesIgnoreNull(indicatorsItem, indicatorsItem2);
+            indicatorsItem2.setEconomicId(target.getId());
+            indicatorsItem2.setCreator(commonService.thisUserAccount());
+            mdEconomicIndicatorsItemDao.addEconomicIndicatorsItem(indicatorsItem2);
+        }
     }
 
     public MdEconomicIndicatorsApplyDto getEconomicIndicatorsInfo(Integer economicId){

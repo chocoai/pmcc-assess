@@ -25,6 +25,7 @@
             data: {copyId:copyId,masterId:'${mdDevelopment.id}'},
             success: function (result) {
                 if (result.ret) {
+                    window.location.reload(true); //强制从服务器重新加载当前页面
                     target.modal("hide");
                 } else {
                     Alert("失败，失败原因:" + result.errmsg);
