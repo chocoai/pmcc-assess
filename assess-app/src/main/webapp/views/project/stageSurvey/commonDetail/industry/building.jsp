@@ -6,13 +6,5 @@
 <%@include file="../building.jsp" %>
 
 
-<div class="x_content">
-    <%@include file="./buildingSurface.jsp" %>
-</div>
-
-
-<div class="x_content">
-    <%@include file="./buildingMaintenance.jsp" %>
-</div>
 
 

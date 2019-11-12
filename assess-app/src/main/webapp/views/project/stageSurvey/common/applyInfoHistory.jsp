@@ -182,7 +182,7 @@
          * 描述:加载数据列表
          * @date:2018-09-13
          **/
-        loadDataList: function (tableName,relevanceId,classify,tbType) {
+        loadDataList: function (tableName,relevanceId,classify,tbType,applyBatchId) {
             var cols = [];
             cols.push({field: 'name', title: '名称'});
             cols.push({
@@ -197,7 +197,7 @@
                 field: 'id', title: '查询', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
-                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="详情" onclick="historyInfo.caseEstate.findData(' + row.id + ','+classify+',\''+tbType+'\',\''+tableName+'\')"><i class="fa fa-search fa-white"></i></a>';
+                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="详情" onclick="historyInfo.caseEstate.findData(' + row.id + ','+classify+',\''+tbType+'\',\''+tableName+'\',\''+applyBatchId+'\')"><i class="fa fa-search fa-white"></i></a>';
                     str += '</div>';
                     return str;
                 }
@@ -221,33 +221,37 @@
          * 描述:详情数据
          * @date:2018-09-13
          **/
-        findData: function (id,classify,tbType,tableName) {
+        findData: function (id,classify,tbType,tableName,applyBatchId) {
             var url = '${pageContext.request.contextPath}/basicApplyBatch/informationDetail?';
             url += '&formClassify=' + classify;
             url += '&tableId=' + id;
             url += '&tbType=' + tbType;
             url += '&tableName=' + tableName;
+            url += '&applyBatchId=' + applyBatchId;
+            url += '&isHistory=true';
             openWin(url, function () {
             })
         },
-        showModel: function (relevanceId,classify,tbType) {
-            historyInfo.caseEstate.loadDataList("tb_basic_estate",relevanceId,classify,tbType);
+        showModel: function (relevanceId,classify,tbType,applyBatchId) {
+            historyInfo.caseEstate.loadDataList("tb_basic_estate",relevanceId,classify,tbType,applyBatchId);
             $('#' + historyInfo.config.father.caseEstate.box()).modal("show");
         }
     };
 
 
     historyInfo.caseBuild = {
-        findData: function (id,classify,tbType,tableName) {
+        findData: function (id,classify,tbType,tableName,applyBatchId) {
             var url = '${pageContext.request.contextPath}/basicApplyBatch/informationDetail?';
             url += '&formClassify=' + classify;
             url += '&tableId=' + id;
             url += '&tbType=' + tbType;
             url += '&tableName=' + tableName;
+            url += '&applyBatchId=' + applyBatchId;
+            url += '&isHistory=true';
             openWin(url, function () {
             })
         },
-        loadDataList: function (tableName,relevanceId,classify,tbType) {
+        loadDataList: function (tableName,relevanceId,classify,tbType,applyBatchId) {
             var cols = [];
             cols.push({field: 'buildingNumber', title: '楼栋编号'});
             cols.push({field: 'buildingName', title: '楼栋名称'});
@@ -255,7 +259,7 @@
                 field: 'id', title: '查询', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
-                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="查看" onclick="historyInfo.caseBuild.findData(' + row.id + ','+classify+',\''+tbType+'\',\''+tableName+'\')"><i class="fa fa-search fa-white"></i></a>';
+                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="查看" onclick="historyInfo.caseBuild.findData(' + row.id + ','+classify+',\''+tbType+'\',\''+tableName+'\',\''+applyBatchId+'\')"><i class="fa fa-search fa-white"></i></a>';
                     str += '</div>';
                     return str;
                 }
@@ -273,23 +277,25 @@
                 }
             });
         },
-        showModel: function (relevanceId,classify,tbType) {
-            historyInfo.caseBuild.loadDataList("tb_basic_building",relevanceId,classify,tbType);
+        showModel: function (relevanceId,classify,tbType,applyBatchId) {
+            historyInfo.caseBuild.loadDataList("tb_basic_building",relevanceId,classify,tbType,applyBatchId);
             $('#' + historyInfo.config.father.caseBuild.box()).modal("show");
         }
     };
 
     historyInfo.caseUnit = {
-        findData: function (id,classify,tbType,tableName) {
+        findData: function (id,classify,tbType,tableName,applyBatchId) {
             var url = '${pageContext.request.contextPath}/basicApplyBatch/informationDetail?';
             url += '&formClassify=' + classify;
             url += '&tableId=' + id;
             url += '&tbType=' + tbType;
             url += '&tableName=' + tableName;
+            url += '&applyBatchId=' + applyBatchId;
+            url += '&isHistory=true';
             openWin(url, function () {
             })
         },
-        loadDataList: function (tableName,relevanceId,classify,tbType) {
+        loadDataList: function (tableName,relevanceId,classify,tbType,applyBatchId) {
             var cols = [];
             cols.push({field: 'unitNumber', title: '单元编号'});
             cols.push({field: 'elevatorHouseholdRatio', title: '梯户比'});
@@ -297,7 +303,7 @@
                 field: 'id', title: '查询', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
-                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="查看" onclick="historyInfo.caseUnit.findData(' + row.id + ','+classify+',\''+tbType+'\',\''+tableName+'\')"><i class="fa fa-search fa-white"></i></a>';
+                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="查看" onclick="historyInfo.caseUnit.findData(' + row.id + ','+classify+',\''+tbType+'\',\''+tableName+'\',\''+applyBatchId+'\')"><i class="fa fa-search fa-white"></i></a>';
                     str += '</div>';
                     return str;
                 }
@@ -315,23 +321,25 @@
                 }
             });
         },
-        showModel: function (relevanceId,classify,tbType)  {
-            historyInfo.caseUnit.loadDataList("tb_basic_unit",relevanceId,classify,tbType) ;
+        showModel: function (relevanceId,classify,tbType,applyBatchId)  {
+            historyInfo.caseUnit.loadDataList("tb_basic_unit",relevanceId,classify,tbType,applyBatchId) ;
             $('#' + historyInfo.config.father.caseUnit.box()).modal("show");
         }
     };
 
     historyInfo.caseHouse = {
-        findData: function (id,classify,tbType,tableName) {
+        findData: function (id,classify,tbType,tableName,applyBatchId) {
             var url = '${pageContext.request.contextPath}/basicApplyBatch/informationDetail?';
             url += '&formClassify=' + classify;
             url += '&tableId=' + id;
             url += '&tbType=' + tbType;
             url += '&tableName=' + tableName;
+            url += '&applyBatchId=' + applyBatchId;
+            url += '&isHistory=true';
             openWin(url, function () {
             })
         },
-        loadDataList: function (tableName,relevanceId,classify,tbType)  {
+        loadDataList: function (tableName,relevanceId,classify,tbType,applyBatchId)  {
             var cols = [];
             cols.push({field: 'houseNumber', title: '房号'});
             cols.push({field: 'floor', title: '所在楼层'});
@@ -339,7 +347,7 @@
                 field: 'id', title: '查询', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
-                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="查看" onclick="historyInfo.caseHouse.findData(' + row.id + ','+classify+',\''+tbType+'\',\''+tableName+'\')"><i class="fa fa-search fa-white"></i></a>';
+                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="查看" onclick="historyInfo.caseHouse.findData(' + row.id + ','+classify+',\''+tbType+'\',\''+tableName+'\',\''+applyBatchId+'\')"><i class="fa fa-search fa-white"></i></a>';
                     str += '</div>';
                     return str;
                 }
@@ -357,8 +365,8 @@
                 }
             });
         },
-        showModel: function (relevanceId,classify,tbType) {
-            historyInfo.caseHouse.loadDataList("tb_basic_house",relevanceId,classify,tbType);
+        showModel: function (relevanceId,classify,tbType,applyBatchId) {
+            historyInfo.caseHouse.loadDataList("tb_basic_house",relevanceId,classify,tbType,applyBatchId);
             $('#' + historyInfo.config.father.caseHouse.box()).modal("show");
         }
     };

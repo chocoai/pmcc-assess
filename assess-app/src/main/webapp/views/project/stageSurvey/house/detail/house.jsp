@@ -32,35 +32,33 @@
                 </c:if>
 
 
-
-
-
-
             </div>
-            <div class="x_panel">
-                <div class="x_content">
-                    <%@include file="/views/project/stageSurvey/commonDetail/houseFaceStreet.jsp" %>
+            <c:if test="${empty isHistory}">
+                <div class="x_panel">
+                    <div class="x_content">
+                        <%@include file="/views/project/stageSurvey/commonDetail/houseFaceStreet.jsp" %>
 
-                    <c:if test="${basicApplyBatch.type == 0 }">
-                        <%@include file="/views/project/stageSurvey/commonDetail/houseWater.jsp" %>
-                        <%@include file="/views/project/stageSurvey/commonDetail/houseWaterDrain.jsp" %>
-                        <%@include file="/views/project/stageSurvey/commonDetail/houseNewWind.jsp" %>
-                        <%@include file="/views/project/stageSurvey/commonDetail/houseAirConditioner.jsp" %>
-                        <%@include file="/views/project/stageSurvey/commonDetail/houseHeating.jsp" %>
-                        <%@include file="/views/project/stageSurvey/commonDetail/houseIntelligent.jsp" %>
-                    </c:if>
+                        <c:if test="${basicApplyBatch.type == 0 }">
+                            <%@include file="/views/project/stageSurvey/commonDetail/houseWater.jsp" %>
+                            <%@include file="/views/project/stageSurvey/commonDetail/houseWaterDrain.jsp" %>
+                            <%@include file="/views/project/stageSurvey/commonDetail/houseNewWind.jsp" %>
+                            <%@include file="/views/project/stageSurvey/commonDetail/houseAirConditioner.jsp" %>
+                            <%@include file="/views/project/stageSurvey/commonDetail/houseHeating.jsp" %>
+                            <%@include file="/views/project/stageSurvey/commonDetail/houseIntelligent.jsp" %>
+                        </c:if>
 
-                    <%@include file="/views/project/stageSurvey/commonDetail/houseRoom.jsp" %>
+                        <%@include file="/views/project/stageSurvey/commonDetail/houseRoom.jsp" %>
 
-                    <c:if test="${basicApplyBatch.type == 1}">
-                        <%@include file="/views/project/stageSurvey/commonDetail/industry/houseCorollaryEquipment.jsp" %>
-                    </c:if>
+                        <c:if test="${basicApplyBatch.type == 1}">
+                            <%@include
+                                    file="/views/project/stageSurvey/commonDetail/industry/houseCorollaryEquipment.jsp" %>
+                        </c:if>
 
-                    <%@include file="/views/project/stageSurvey/commonDetail/houseDamagedDegree.jsp" %>
+                        <%@include file="/views/project/stageSurvey/commonDetail/houseDamagedDegree.jsp" %>
 
+                    </div>
                 </div>
-            </div>
-
+            </c:if>
             <div class="x_panel">
                 <div class="x_content">
                     <div style="text-align: center;">
@@ -76,9 +74,12 @@
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
 <%@include file="/views/project/tool/toolMapHandleView.jsp" %>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.common.js?v=${assessVersion}"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.house.js?v=${assessVersion}"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.house.detail.js?v=${assessVersion}"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/examine/examine.common.js?v=${assessVersion}"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/examine/examine.house.js?v=${assessVersion}"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/examine/examine.house.detail.js?v=${assessVersion}"></script>
 
 <script>
     $(function () {

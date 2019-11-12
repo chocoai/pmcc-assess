@@ -407,6 +407,7 @@
         <%@include file="/views/project/stageSurvey/commonDetail/houseTradingBody.jsp" %>
     </form>
 </div>
+<c:if test="${empty isHistory}">
 <div class="x_content">
     <%@include file="/views/project/stageSurvey/commonDetail/estateNetwork.jsp" %>
     <%@include file="/views/project/stageSurvey/commonDetail/estateParking.jsp" %>
@@ -429,7 +430,7 @@
     </c:if>
     <%@include file="/views/project/stageSurvey/commonDetail/houseFaceStreet.jsp" %>
 </div>
-
+</c:if>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.estate.js?v=${assessVersion}"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.house.js?v=${assessVersion}"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.estate.detail.js?v=${assessVersion}"></script>

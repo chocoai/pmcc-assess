@@ -262,7 +262,8 @@
                         </div>
                         <div class="form-group">
                             <div class="x-valid">
-                                <input type="hidden" name="landLevelContent" value='${basicEstateLandState.landLevelContent}'>
+                                <input type="hidden" name="landLevelContent"
+                                       value='${basicEstateLandState.landLevelContent}'>
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地级别</label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                     <div class="input-group">
@@ -379,83 +380,83 @@
                             </div>
                         </div>
                         <%--<div class="form-group">--%>
-                            <%--<div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">--%>
-                                <%--<table class="table table-striped table-bordered" style="display: none">--%>
-                                    <%--<thead>--%>
-                                    <%--<tr>--%>
-                                        <%--<th width="10%">土地级别类别</th>--%>
-                                        <%--<th width="10%">土地级别类型</th>--%>
-                                        <%--<th width="10%">土地级别等级</th>--%>
-                                        <%--<th width="20%">说明</th>--%>
-                                        <%--<th width="10%">分值</th>--%>
-                                        <%--<th width="5%"></th>--%>
-                                    <%--</tr>--%>
-                                    <%--</thead>--%>
-                                    <%--<tbody id="landLevelTabContent">--%>
+                        <%--<div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">--%>
+                        <%--<table class="table table-striped table-bordered" style="display: none">--%>
+                        <%--<thead>--%>
+                        <%--<tr>--%>
+                        <%--<th width="10%">土地级别类别</th>--%>
+                        <%--<th width="10%">土地级别类型</th>--%>
+                        <%--<th width="10%">土地级别等级</th>--%>
+                        <%--<th width="20%">说明</th>--%>
+                        <%--<th width="10%">分值</th>--%>
+                        <%--<th width="5%"></th>--%>
+                        <%--</tr>--%>
+                        <%--</thead>--%>
+                        <%--<tbody id="landLevelTabContent">--%>
 
-                                    <%--</tbody>--%>
-                                <%--</table>--%>
-                            <%--</div>--%>
+                        <%--</tbody>--%>
+                        <%--</table>--%>
+                        <%--</div>--%>
                         <%--</div>--%>
                         <%--<script type="text/html" id="landLevelTabContentBody">--%>
-                            <%--<tr class="group">--%>
-                                <%--<td class="table-cell">--%>
-                                    <%--{landLevelTypeName}--%>
-                                    <%--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--%>
-                                    <%--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--%>
-                                <%--</td>--%>
-                                <%--<td>--%>
-                                    <%--{landLevelCategoryName}--%>
-                                <%--</td>--%>
-                                <%--<td>--%>
-                                    <%--<select class="form-control" name="landLevelGrade"--%>
-                                            <%--onchange="estateCommon.landLevelHandle(this);">--%>
-                                        <%--{landLevelGradeHTML}--%>
-                                    <%--</select>--%>
-                                <%--</td>--%>
-                                <%--<td>--%>
-                                    <%--<label name="reamark" class="form-control">{reamark}</label>--%>
-                                <%--</td>--%>
-                                <%--<td>--%>
-                                    <%--<input type="hidden" class="form-control" name="dataLandLevelAchievement"--%>
-                                           <%--value="{dataLandLevelAchievement}">--%>
-                                    <%--<input type="text" class="form-control" name="landFactorTotalScore"--%>
-                                           <%--value="{landFactorTotalScore}">--%>
-                                    <%--<input type="hidden" name="landLevelContent" value='{landLevelContent}'>--%>
-                                <%--</td>--%>
-                                <%--<td>--%>
-                                    <%--<input class="btn btn-warning" type="button" value="X"--%>
-                                           <%--onclick="estateCommon.landLevelEmpty(this)">--%>
-                                <%--</td>--%>
-                            <%--</tr>--%>
+                        <%--<tr class="group">--%>
+                        <%--<td class="table-cell">--%>
+                        <%--{landLevelTypeName}--%>
+                        <%--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--%>
+                        <%--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--%>
+                        <%--</td>--%>
+                        <%--<td>--%>
+                        <%--{landLevelCategoryName}--%>
+                        <%--</td>--%>
+                        <%--<td>--%>
+                        <%--<select class="form-control" name="landLevelGrade"--%>
+                        <%--onchange="estateCommon.landLevelHandle(this);">--%>
+                        <%--{landLevelGradeHTML}--%>
+                        <%--</select>--%>
+                        <%--</td>--%>
+                        <%--<td>--%>
+                        <%--<label name="reamark" class="form-control">{reamark}</label>--%>
+                        <%--</td>--%>
+                        <%--<td>--%>
+                        <%--<input type="hidden" class="form-control" name="dataLandLevelAchievement"--%>
+                        <%--value="{dataLandLevelAchievement}">--%>
+                        <%--<input type="text" class="form-control" name="landFactorTotalScore"--%>
+                        <%--value="{landFactorTotalScore}">--%>
+                        <%--<input type="hidden" name="landLevelContent" value='{landLevelContent}'>--%>
+                        <%--</td>--%>
+                        <%--<td>--%>
+                        <%--<input class="btn btn-warning" type="button" value="X"--%>
+                        <%--onclick="estateCommon.landLevelEmpty(this)">--%>
+                        <%--</td>--%>
+                        <%--</tr>--%>
                         <%--</script>--%>
                     </form>
                 </div>
+                <c:if test="${empty isHistory}">
+                    <div class="x_content">
+                        <%@include file="/views/project/stageSurvey/commonDetail/estateNetwork.jsp" %>
+                        <%@include file="/views/project/stageSurvey/commonDetail/estateParking.jsp" %>
+                        <%@include file="/views/project/stageSurvey/commonDetail/matchingEnvironment.jsp" %>
+                        <%@include file="/views/project/stageSurvey/commonDetail/matchingFinance.jsp" %>
+                        <c:if test="${basicApplyBatch.type == 0}">
+                            <%@include file="/views/project/stageSurvey/commonDetail/matchingEducation.jsp" %>
+                            <%@include file="/views/project/stageSurvey/commonDetail/matchingRecreation.jsp" %>
+                            <%@include file="/views/project/stageSurvey/commonDetail/matchingRestaurant.jsp" %>
+                            <%@include file="/views/project/stageSurvey/commonDetail/matchingMarket.jsp" %>
+                            <%@include file="/views/project/stageSurvey/commonDetail/matchingMedical.jsp" %>
+                        </c:if>
+                        <%@include file="/views/project/stageSurvey/commonDetail/matchingTransit.jsp" %>
+                        <%@include file="/views/project/stageSurvey/commonDetail/matchingTrafficHub.jsp" %>
+                        <%@include file="/views/project/stageSurvey/commonDetail/matchingMetro.jsp" %>
+                        <%@include file="/views/project/stageSurvey/commonDetail/matchingMainRoad.jsp" %>
+                        <%@include file="/views/project/stageSurvey/commonDetail/matchingMainConversion.jsp" %>
 
-                <div class="x_content">
-                    <%@include file="/views/project/stageSurvey/commonDetail/estateNetwork.jsp" %>
-                    <%@include file="/views/project/stageSurvey/commonDetail/estateParking.jsp" %>
-                    <%@include file="/views/project/stageSurvey/commonDetail/matchingEnvironment.jsp" %>
-                    <%@include file="/views/project/stageSurvey/commonDetail/matchingFinance.jsp" %>
-                    <c:if test="${basicApplyBatch.type == 0}">
-                        <%@include file="/views/project/stageSurvey/commonDetail/matchingEducation.jsp" %>
-                        <%@include file="/views/project/stageSurvey/commonDetail/matchingRecreation.jsp" %>
-                        <%@include file="/views/project/stageSurvey/commonDetail/matchingRestaurant.jsp" %>
-                        <%@include file="/views/project/stageSurvey/commonDetail/matchingMarket.jsp" %>
-                        <%@include file="/views/project/stageSurvey/commonDetail/matchingMedical.jsp" %>
-                    </c:if>
-                    <%@include file="/views/project/stageSurvey/commonDetail/matchingTransit.jsp" %>
-                    <%@include file="/views/project/stageSurvey/commonDetail/matchingTrafficHub.jsp" %>
-                    <%@include file="/views/project/stageSurvey/commonDetail/matchingMetro.jsp" %>
-                    <%@include file="/views/project/stageSurvey/commonDetail/matchingMainRoad.jsp" %>
-                    <%@include file="/views/project/stageSurvey/commonDetail/matchingMainConversion.jsp" %>
+                        <c:if test="${basicApplyBatch.type == 1}">
+                            <%@include file="/views/project/stageSurvey/commonDetail/industry/matchingMaterial.jsp" %>
+                        </c:if>
+                    </div>
 
-                    <c:if test="${basicApplyBatch.type == 1}">
-                        <%@include file="/views/project/stageSurvey/commonDetail/industry/matchingMaterial.jsp" %>
-                    </c:if>
-                </div>
-
-
+                </c:if>
             </div>
             <div class="x_panel">
                 <div class="x_content">
@@ -471,7 +472,8 @@
 </div>
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
-<div id="detailAchievementModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+<div id="detailAchievementModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
      aria-hidden="true" data-height="500">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -532,9 +534,12 @@
         </td>
     </tr>
 </script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.common.js?v=${assessVersion}"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.estate.js?v=${assessVersion}"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.estate.detail.js?v=${assessVersion}"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/examine/examine.common.js?v=${assessVersion}"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/examine/examine.estate.js?v=${assessVersion}"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/examine/examine.estate.detail.js?v=${assessVersion}"></script>
 </html>
 <script type="text/javascript">
     $(function () {

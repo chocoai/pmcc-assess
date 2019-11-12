@@ -41,7 +41,8 @@
                                     楼栋名称<span class="symbol required"></span>
                                 </label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <label class="form-control" name="buildingName">${basicBuilding.buildingName}</label>
+                                    <label class="form-control"
+                                           name="buildingName">${basicBuilding.buildingName}</label>
                                 </div>
                             </div>
                             <div class="x-valid">
@@ -59,7 +60,8 @@
                                     物业类型
                                 </label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <label class="form-control" name="propertyTypeName">${basicBuilding.propertyTypeName}</label>
+                                    <label class="form-control"
+                                           name="propertyTypeName">${basicBuilding.propertyTypeName}</label>
                                 </div>
                             </div>
                             <div class="x-valid">
@@ -67,7 +69,8 @@
                                     物业类别
                                 </label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <label class="form-control" name="propertyCategoryName">${basicBuilding.propertyCategoryName}</label>
+                                    <label class="form-control"
+                                           name="propertyCategoryName">${basicBuilding.propertyCategoryName}</label>
                                 </div>
                             </div>
                             <div class="x-valid">
@@ -93,7 +96,8 @@
                                     套内面积
                                 </label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <label class="form-control" name="inJacketArea">${basicBuilding.inJacketArea}</label>
+                                    <label class="form-control"
+                                           name="inJacketArea">${basicBuilding.inJacketArea}</label>
                                 </div>
                             </div>
                             <div class="x-valid">
@@ -120,10 +124,12 @@
                                 </label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                     <c:if test="${!empty basicBuilding.residenceUseYearName}">
-                                        <label class="form-control" name="residenceUseYearName">${basicBuilding.residenceUseYearName}</label>
+                                        <label class="form-control"
+                                               name="residenceUseYearName">${basicBuilding.residenceUseYearName}</label>
                                     </c:if>
                                     <c:if test="${!empty basicBuilding.industryUseYearName}">
-                                        <label class="form-control" name="industryUseYearName">${basicBuilding.industryUseYearName}</label>
+                                        <label class="form-control"
+                                               name="industryUseYearName">${basicBuilding.industryUseYearName}</label>
                                     </c:if>
                                 </div>
                             </div>
@@ -167,7 +173,8 @@
                                     建筑结构类型
                                 </label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <label class="form-control" name="buildingStructureTypeName">${basicBuilding.buildingStructureTypeName}</label>
+                                    <label class="form-control"
+                                           name="buildingStructureTypeName">${basicBuilding.buildingStructureTypeName}</label>
                                 </div>
                             </div>
                             <div class="x-valid">
@@ -175,7 +182,8 @@
                                     建筑结构类别
                                 </label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <label class="form-control" name="buildingStructureCategoryName">${basicBuilding.buildingStructureCategoryName}</label>
+                                    <label class="form-control"
+                                           name="buildingStructureCategoryName">${basicBuilding.buildingStructureCategoryName}</label>
                                 </div>
                             </div>
                         </div>
@@ -185,7 +193,8 @@
                                     外观风格
                                 </label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <label class="form-control" name="appearanceStyleName">${basicBuilding.appearanceStyleName}</label>
+                                    <label class="form-control"
+                                           name="appearanceStyleName">${basicBuilding.appearanceStyleName}</label>
                                 </div>
                             </div>
                             <div class="x-valid">
@@ -193,7 +202,8 @@
                                     外观新旧
                                 </label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <label class="form-control" name="appearanceNewAndOldName">${basicBuilding.appearanceNewAndOldName}</label>
+                                    <label class="form-control"
+                                           name="appearanceNewAndOldName">${basicBuilding.appearanceNewAndOldName}</label>
                                 </div>
                             </div>
                         </div>
@@ -209,7 +219,8 @@
                                     竣工时间获取方式<span class="symbol required"></span>
                                 </label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <label class="form-control" name="completedTimeTypeName">${basicBuilding.completedTimeTypeName}</label>
+                                    <label class="form-control"
+                                           name="completedTimeTypeName">${basicBuilding.completedTimeTypeName}</label>
                                 </div>
                             </div>
                             <div class="x-valid">
@@ -252,16 +263,16 @@
                         </div>
                     </form>
                 </div>
-
-                <div class="x_content">
-                    <%@include file="/views/project/stageSurvey/common/buildingFunction.jsp" %>
-                    <%@include file="/views/project/stageSurvey/common/buildingOutfit.jsp" %>
-                    <c:if test="${basicApplyBatch.type == 1}">
-                        <%@include file="/views/project/stageSurvey/common/buildingMaintenance.jsp" %>
-                        <%@include file="/views/project/stageSurvey/common/buildingSurface.jsp" %>
-                    </c:if>
-                </div>
-
+                <c:if test="${empty isHistory}">
+                    <div class="x_content">
+                        <%@include file="/views/project/stageSurvey/common/buildingFunction.jsp" %>
+                        <%@include file="/views/project/stageSurvey/common/buildingOutfit.jsp" %>
+                        <c:if test="${basicApplyBatch.type == 1}">
+                            <%@include file="/views/project/stageSurvey/common/buildingMaintenance.jsp" %>
+                            <%@include file="/views/project/stageSurvey/common/buildingSurface.jsp" %>
+                        </c:if>
+                    </div>
+                </c:if>
 
             </div>
             <div class="x_panel">
@@ -278,8 +289,10 @@
 </div>
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.common.js?v=${assessVersion}"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.build.js?v=${assessVersion}"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/examine/examine.common.js?v=${assessVersion}"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/examine/examine.build.js?v=${assessVersion}"></script>
 </html>
 <script type="text/javascript">
     $(function () {

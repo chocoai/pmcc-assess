@@ -13,6 +13,16 @@
                 <div class="title_left">
                     <h2>
                         信息填写
+                        <c:if test="${not empty planDetailsId}">
+                            <small>
+                                <input type="button" class="btn btn-xs btn-primary" value="历史记录"
+                                       onclick="showHistoryModal();">
+                            </small>
+                            <small>
+                                <input type="button" class="btn btn-xs btn-primary" value="引用案例"
+                                       onclick="showCaseQuoteModal();">
+                            </small>
+                        </c:if>
                     </h2>
                 </div>
             </div>
@@ -36,6 +46,7 @@
 </div>
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
+<%@include file="/views/project/stageSurvey/common/applyInfoHistory.jsp" %>
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/jquery-ui/jquery-ui.min.js?v=${assessVersion}"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.common.js?v=${assessVersion}"></script>
 
@@ -71,4 +82,12 @@
             }
         });
     }
+
+    //打开历史数据modal
+    function showHistoryModal() {
+        //打开楼盘modal
+        historyInfo.caseEstate.showModel('${tbId}','${formClassify}','${tbType}','${basicApplyBatch.id}');
+
+
+    };
 </script>
