@@ -55,6 +55,12 @@ public class DocumentSendController {
         return getModelAndView(templateId, projectId,boxName);
     }
 
+    @RequestMapping(value = "/applySignBillIndex/{templateId}&{projectId}", name = "报告签收单")
+    public ModelAndView applySignBillIndex(@PathVariable("templateId") Integer templateId,@PathVariable("projectId") Integer projectId) {
+        String boxName = baseParameterService.getParameterValues(BaseParameterEnum.PROJECT_DETAILS_DOCUMENT_SIGN_BILL_PROCESS_KEY.getParameterKey());
+        return getModelAndView(templateId, projectId,boxName);
+    }
+
     private ModelAndView getModelAndView(Integer templateId, Integer projectId,String boxName) {
         DocumentTemplate documentTemplate = documentTemplateService.getDocumentTemplate(templateId);
 
