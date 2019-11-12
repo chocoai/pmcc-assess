@@ -27,9 +27,11 @@
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">单元编号<span class="symbol required"></span></label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                     <div class="input-group">
-                                        <label class="form-control" name="unitNumber">${basicUnit.unitNumber}</label>
+                                        <input class="form-control" name="unitNumber" readonly value="${basicUnit.unitNumber}">
+                                        <span class="input-group-btn">
                                         <div onclick="unitCommon.mapMarker2(false,${tableId});" class="btn btn-info"><i
                                                 class="fa fa-map-marker"></i> 标注</div>
+                                        </span>
                                     </div>
                                 </div>
                             </div>
@@ -49,6 +51,7 @@
 
                 <div class="x_content">
                     <%@include file="/views/project/stageSurvey/commonDetail/unitHuxing.jsp" %>
+                    <%@include file="/views/project/stageSurvey/commonDetail/unitHuxingPriceDetail.jsp" %>
                     <%@include file="/views/project/stageSurvey/commonDetail/unitDecorate.jsp" %>
                     <%@include file="/views/project/stageSurvey/commonDetail/unitElevator.jsp" %>
                 </div>

@@ -41,6 +41,7 @@
     <%@include file="/views/project/stageSurvey/common/unitHuxing.jsp" %>
     <%@include file="/views/project/stageSurvey/common/unitDecorate.jsp" %>
     <%@include file="/views/project/stageSurvey/common/unitElevator.jsp" %>
+    <%@include file="/views/project/stageSurvey/common/unitHuxingPrice.jsp" %>
 </div>
 <%@include file="/views/project/tool/toolMapHandleView.jsp" %>
 

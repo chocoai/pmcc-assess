@@ -162,6 +162,7 @@ var unitHuxing;
                     var str = '<div class="btn-margin">';
                     str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="unitHuxing.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
                     str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="unitHuxing.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
+                    str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="单价调查" onclick="unitHuxingPrice.prototype.showTableModel(' + row.id + ',\'tb_List\')"><i class="fa fa-arrow-right fa-white"></i></a>';
                     str += '</div>';
                     return str;
                 }
@@ -404,6 +405,141 @@ var unitHuxing;
         unitHuxing.prototype.loadDataDicList();
     })
 })();
+
+var unitHuxingPrice;
+(function () {
+    unitHuxingPrice = function () {
+    };
+    unitHuxingPrice.prototype = {
+        config: function () {
+            var data = {};
+            data.table = "UnitHuxingPriceList";
+            data.box = "divBoxUnitHuxingPrice";
+            data.frm = "frmUnitHuxingPrice";
+            data.tableBox = "divBoxUnitHuxingPriceTable";
+            data.tableFrm = "frmUnitHuxingPriceTable";
+            return data;
+        },
+        loadDataDicList: function (unitHuxingId) {
+            var cols = [];
+            cols.push({field: 'houseNumber', title: '房号'});
+            cols.push({field: 'price', title: '价格'});
+            cols.push({field: 'remark', title: '备注'});
+            cols.push({
+                field: 'id', title: '操作', formatter: function (value, row, index) {
+                    var str = '<div class="btn-margin">';
+                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="unitHuxingPrice.prototype.getAndInit(' + row.id + ',\''+unitHuxingId+'\',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
+                    str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="unitHuxingPrice.prototype.removeData(' + row.id + ',\''+unitHuxingId+'\',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
+                    str += '</div>';
+                    return str;
+                }
+            });
+            $("#" + unitHuxingPrice.prototype.config().table).bootstrapTable('destroy');
+            TableInit(unitHuxingPrice.prototype.config().table, getContextPath() + "/basicUnitHuxingPrice/getUnitHuxingPriceList", cols, {
+                unitHuxingId: unitHuxingId
+            }, {
+                showColumns: false,
+                showRefresh: false,
+                search: false,
+                onLoadSuccess: function () {
+                    $('.tooltips').tooltip();
+                }
+            });
+        },
+        removeData: function (id,unitHuxingId) {
+            $.ajax({
+                url: getContextPath() + "/basicUnitHuxingPrice/deleteBasicUnitHuxingPrice",
+                type: "post",
+                dataType: "json",
+                data: {id: id},
+                success: function (result) {
+                    if (result.ret) {
+                        toastr.success('删除成功');
+                        unitHuxingPrice.prototype.loadDataDicList(unitHuxingId);
+                    }
+                    else {
+                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        },
+        showTableModel: function (unitHuxingId) {
+            unitHuxingPrice.prototype.loadDataDicList(unitHuxingId);
+            $("#" + unitHuxingPrice.prototype.config().tableFrm).find("input[name='unitHuxingId']").val(unitHuxingId);
+            $('#' + unitHuxingPrice.prototype.config().tableBox).modal("show");
+        },
+        showModel: function () {
+            $("#" + unitHuxingPrice.prototype.config().frm).clearAll();
+            var unitHuxingId = $("#" + unitHuxingPrice.prototype.config().tableFrm).find("input[name='unitHuxingId']").val();
+            $("#" + unitHuxingPrice.prototype.config().frm).find("input[name='huxingId']").val(unitHuxingId);
+            $('#' + unitHuxingPrice.prototype.config().box).modal("show");
+        },
+        saveData: function () {
+            if (!$("#" + unitHuxingPrice.prototype.config().frm).valid()) {
+                return false;
+            }
+            var unitHuxingId = $("#" + unitHuxingPrice.prototype.config().frm).find("input[name='huxingId']").val()
+            var data = formParams(unitHuxingPrice.prototype.config().frm,true);
+            $.ajax({
+                url: getContextPath() + "/basicUnitHuxingPrice/saveAndUpdateBasicUnitHuxingPrice",
+                type: "post",
+                dataType: "json",
+                data: data,
+                success: function (result) {
+                    if (result.ret) {
+                        toastr.success('保存成功');
+                        $('#' + unitHuxingPrice.prototype.config().box).modal('hide');
+                        unitHuxingPrice.prototype.loadDataDicList(unitHuxingId);
+                    }
+                    else {
+                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        },
+        isNotNull: function (item) {
+            if (item) {
+                return true;
+            }
+            return false;
+        },
+        getAndInit: function (id,unitHuxingId) {
+            $.ajax({
+                url: getContextPath() + "/basicUnitHuxingPrice/getBasicUnitHuxingPriceById",
+                type: "post",
+                dataType: "json",
+                data: {id: id},
+                success: function (result) {
+                    if (result.ret) {
+                        var data = result.data;
+                        if (unitHuxingPrice.prototype.isNotNull(data)) {
+                            unitHuxingPrice.prototype.init(data,unitHuxingId);
+                        } else {
+                            unitHuxingPrice.prototype.init({});
+                        }
+                        $('#' + unitHuxingPrice.prototype.config().box).modal("show");
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        },
+        init: function (item,unitHuxingId) {
+            $("#" + unitHuxingPrice.prototype.config().frm).clearAll();
+            $("#" + unitHuxingPrice.prototype.config().frm).find("input[name='huxingId']").val(unitHuxingId);
+            $("#" + unitHuxingPrice.prototype.config().frm).initForm(item);
+        }
+    }
+
+})();
+
 
 var unitElevator;
 (function () {

@@ -37,6 +37,7 @@
                     <%@include file="/views/project/stageSurvey/commonDetail/unitDecorate.jsp" %>
                     <%@include file="/views/project/stageSurvey/commonDetail/unitHuxing.jsp" %>
                     <%@include file="/views/project/stageSurvey/commonDetail/unitElevator.jsp" %>
+                    <%@include file="/views/project/stageSurvey/commonDetail/unitHuxingPriceDetail.jsp" %>
                 </div>
             </div>
             <div class="x_panel">

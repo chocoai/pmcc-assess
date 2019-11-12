@@ -37,6 +37,14 @@
             },
             loadDataDicList: function () {
                 var cols = commonColumn.unitHuxingColumn();
+                cols.push({
+                    field: 'id', title: '操作', formatter: function (value, row, index) {
+                        var str = '<div class="btn-margin">';
+                        str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="单价调查" onclick="unitHuxingPriceDetail.prototype.showTableModel(' + row.id + ',\'tb_List\')"><i class="fa fa-arrow-right fa-white"></i></a>';
+                        str += '</div>';
+                        return str;
+                    }
+                });
                 $("#" + unitHuxingDetail.prototype.config().table).bootstrapTable('destroy');
                 TableInit(unitHuxingDetail.prototype.config().table, "${pageContext.request.contextPath}/basicUnitHuxing/getBootstrapTableVo", cols, {
                     unitId: ${empty basicUnit.id?0:basicUnit.id},
