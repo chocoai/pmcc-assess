@@ -42,6 +42,7 @@
 </div>
 <div class="x_content">
     <%@include file="/views/project/stageSurvey/common/unitHuxing.jsp" %>
+    <%@include file="/views/project/stageSurvey/common/unitHuxingPrice.jsp" %>
     <%@include file="/views/project/stageSurvey/common/unitDecorate.jsp" %>
     <%@include file="/views/project/stageSurvey/common/unitElevator.jsp" %>
 </div>

@@ -16,7 +16,7 @@
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">单元编号</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <div class="input-group">
-                        <label class="form-control" name="unitNumber">${basicUnit.unitNumber}</label>
+                        <input class="form-control" name="unitNumber" readonly value="${basicUnit.unitNumber}">
                         <span class="input-group-btn">
                             <input type="hidden" name="mapId" value="${basicUnit.mapId}">
                              <div onclick="unitCommon.mapMarker(true);" class="btn btn-info">
