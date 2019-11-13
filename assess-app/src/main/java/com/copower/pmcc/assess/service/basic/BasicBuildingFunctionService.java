@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.service.basic;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicBuildingFunctionDao;
 import com.copower.pmcc.assess.dal.basis.entity.BasicBuildingFunction;
 import com.copower.pmcc.assess.dto.output.basic.BasicBuildingFunctionVo;
+import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -39,6 +40,8 @@ public class BasicBuildingFunctionService {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private CommonService commonService;
+    @Autowired
+    private PublicService publicService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
@@ -135,6 +138,7 @@ public class BasicBuildingFunctionService {
         if (basicBuildingFunction.getDecorationPart() != null) {
             vo.setDecorationPartName(baseDataDicService.getNameById(basicBuildingFunction.getDecorationPart()));
         }
+        vo.setCreatorName(publicService.getUserNameByAccount(basicBuildingFunction.getCreator()));
         return vo;
     }
 }

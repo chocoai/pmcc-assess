@@ -13,6 +13,7 @@ public class BasicHouseEquipmentVo extends BasicHouseEquipment {
     private String fileName;
     private String supplyModeName;
     private String gradeName;
+    private String creatorName;
 
     public String getCategoryName() {
         return categoryName;
@@ -52,5 +53,13 @@ public class BasicHouseEquipmentVo extends BasicHouseEquipment {
 
     public void setGradeName(String gradeName) {
         this.gradeName = gradeName;
+    }
+
+    public String getCreatorName() {
+        return creatorName;
+    }
+
+    public void setCreatorName(String creatorName) {
+        this.creatorName = creatorName;
     }
 }

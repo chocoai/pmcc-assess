@@ -14,6 +14,7 @@ public class BasicHouseCorollaryEquipmentVo extends BasicHouseCorollaryEquipment
     private String maintenanceStatusName;
     private String categoryName;
     private String priceName;
+    private String creatorName;
 
     public String getTypeName() {
         return typeName;
@@ -61,5 +62,13 @@ public class BasicHouseCorollaryEquipmentVo extends BasicHouseCorollaryEquipment
 
     public void setMaintenanceStatusName(String maintenanceStatusName) {
         this.maintenanceStatusName = maintenanceStatusName;
+    }
+
+    public String getCreatorName() {
+        return creatorName;
+    }
+
+    public void setCreatorName(String creatorName) {
+        this.creatorName = creatorName;
     }
 }

@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.service.basic;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicMatchingMedicalDao;
 import com.copower.pmcc.assess.dal.basis.entity.BasicMatchingMedical;
 import com.copower.pmcc.assess.dto.output.basic.BasicMatchingMedicalVo;
+import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -42,6 +43,8 @@ public class BasicMatchingMedicalService {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private CommonService commonService;
+    @Autowired
+    private PublicService publicService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
@@ -132,6 +135,7 @@ public class BasicMatchingMedicalService {
         vo.setOrganizationLevelName(baseDataDicService.getNameById(basicMatchingMedical.getOrganizationLevel()));
         vo.setBedNumberName(baseDataDicService.getNameById(basicMatchingMedical.getBedNumber()));
         vo.setDistanceName(baseDataDicService.getNameById(basicMatchingMedical.getDistance()));
+        vo.setCreatorName(publicService.getUserNameByAccount(basicMatchingMedical.getCreator()));
         return vo;
     }
 

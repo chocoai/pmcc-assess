@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.service.basic;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateParkingDao;
 import com.copower.pmcc.assess.dal.basis.entity.BasicEstateParking;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateParkingVo;
+import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
@@ -41,6 +42,8 @@ public class BasicEstateParkingService {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private CommonService commonService;
+    @Autowired
+    private PublicService publicService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
@@ -137,6 +140,7 @@ public class BasicEstateParkingService {
             }
             vo.setFileViewName(builder.toString());
         }
+        vo.setCreatorName(publicService.getUserNameByAccount(basicEstateParking.getCreator()));
         return vo;
     }
 

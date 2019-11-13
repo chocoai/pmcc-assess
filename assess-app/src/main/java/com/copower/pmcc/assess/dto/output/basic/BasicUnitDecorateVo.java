@@ -13,6 +13,7 @@ public class BasicUnitDecorateVo extends BasicUnitDecorate {
     private String materialGradeName;
     private String materialPriceName;
     private String constructionTechnologyName;
+    private String creatorName;
 
     public String getDecorationPartName() {
         return decorationPartName;
@@ -52,5 +53,13 @@ public class BasicUnitDecorateVo extends BasicUnitDecorate {
 
     public void setConstructionTechnologyName(String constructionTechnologyName) {
         this.constructionTechnologyName = constructionTechnologyName;
+    }
+
+    public String getCreatorName() {
+        return creatorName;
+    }
+
+    public void setCreatorName(String creatorName) {
+        this.creatorName = creatorName;
     }
 }

@@ -15,6 +15,7 @@ public class BasicMatchingTrafficVo extends BasicMatchingTraffic {
     private String positionName;
     private String trafficFlowName;
     private String visitorsFlowrateName;
+    private String creatorName;
 
     public String getDistanceName() {
         return distanceName;
@@ -71,5 +72,13 @@ public class BasicMatchingTrafficVo extends BasicMatchingTraffic {
 
     public void setFlagName(String flagName) {
         this.flagName = flagName;
+    }
+
+    public String getCreatorName() {
+        return creatorName;
+    }
+
+    public void setCreatorName(String creatorName) {
+        this.creatorName = creatorName;
     }
 }

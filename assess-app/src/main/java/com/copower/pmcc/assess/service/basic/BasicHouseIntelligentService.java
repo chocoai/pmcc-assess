@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.service.basic;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicHouseIntelligentDao;
 import com.copower.pmcc.assess.dal.basis.entity.BasicHouseIntelligent;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseIntelligentVo;
+import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.cases.CaseHouseIntelligentService;
@@ -44,6 +45,8 @@ public class BasicHouseIntelligentService {
     private CaseHouseIntelligentService caseHouseIntelligentService;
     @Autowired
     private CommonService commonService;
+    @Autowired
+    private PublicService publicService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
@@ -135,6 +138,7 @@ public class BasicHouseIntelligentService {
         vo.setLampsLanternsName(caseHouseIntelligentService.getLampsLanternsName(basicHouseIntelligent.getLampsLanterns()));
         vo.setGradeName(baseDataDicService.getNameById(basicHouseIntelligent.getGrade()));
         vo.setIntelligentSystemName(caseHouseIntelligentService.getIntelligentSystemName(basicHouseIntelligent.getIntelligentSystem()));
+        vo.setCreatorName(publicService.getUserNameByAccount(basicHouseIntelligent.getCreator()));
         return vo;
     }
 

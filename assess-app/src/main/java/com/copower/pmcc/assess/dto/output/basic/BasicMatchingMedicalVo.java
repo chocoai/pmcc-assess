@@ -11,6 +11,7 @@ public class BasicMatchingMedicalVo extends BasicMatchingMedical {
     private String distanceName;
     private String organizationLevelName;
     private String bedNumberName;
+    private String creatorName;
 
     public String getDistanceName() {
         return distanceName;
@@ -34,5 +35,13 @@ public class BasicMatchingMedicalVo extends BasicMatchingMedical {
 
     public void setBedNumberName(String bedNumberName) {
         this.bedNumberName = bedNumberName;
+    }
+
+    public String getCreatorName() {
+        return creatorName;
+    }
+
+    public void setCreatorName(String creatorName) {
+        this.creatorName = creatorName;
     }
 }
