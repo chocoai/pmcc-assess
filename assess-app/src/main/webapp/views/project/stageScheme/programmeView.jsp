@@ -110,6 +110,8 @@
                                     </div>
                                 </div>
                             </div>
+
+
                             <table class="table">
                                 <thead>
                                 <tr>
@@ -135,23 +137,8 @@
                     </div>
                 </div>
             </c:forEach>
-            <%--<div class="x_panel">--%>
-            <%--<div class="x_title collapse-link">--%>
-            <%--<ul class="nav navbar-right panel_toolbox">--%>
-            <%--<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>--%>
-            <%--</ul>--%>
-            <%--<h3>他项权利</h3>--%>
-            <%--<div class="clearfix"></div>--%>
-            <%--</div>--%>
-            <%--<div class="x_content collapse">--%>
-            <%--<table class="table table-bordered" id="tb_inventory_right_list">--%>
-            <%--</table>--%>
-            <%--</div>--%>
-            <%--</div>--%>
-
             <%@include file="/views/share/form_approval.jsp" %>
             <%@include file="/views/share/form_log.jsp" %>
-
             <div class="x_panel">
                 <div class="x_content">
                     <div class="col-sm-4 col-sm-offset-5">
@@ -281,150 +268,6 @@
                                 </form>
                             </div>
                         </c:forEach>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">
-                    取消
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-<!--查看他项权利信息-->
-<div id="viewInventoryRightModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
-     role="dialog"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">他项权利信息</h3>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="panel-body">
-                            <div class="form-group">
-                                <div class="x-valid">
-                                    <label class="col-sm-2 control-label">类型</label>
-                                    <div class="col-sm-4">
-                                        <label class="form-control" data-name="typeName"></label>
-                                    </div>
-                                </div>
-                                <div class="x-valid">
-                                    <label class="col-sm-2 control-label">类别</label>
-                                    <div class="col-sm-4">
-                                        <label class="form-control" data-name="categoryName"></label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="x-valid">
-                                    <label class="col-sm-2 control-label">他权证编号</label>
-                                    <div class="col-sm-4">
-                                        <label class="form-control" data-name="number"></label>
-                                    </div>
-                                </div>
-                                <div class="x-valid">
-                                    <label class="col-sm-2 control-label">登记日期</label>
-                                    <div class="col-sm-4">
-                                        <label class="form-control" data-name="registerDate"></label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="x-valid">
-                                    <label class="col-sm-2 control-label">
-                                        义务人
-                                    </label>
-                                    <div class="col-sm-4">
-                                        <label class="form-control" data-name="obligor"></label>
-                                    </div>
-                                </div>
-                                <div class="x-valid">
-                                    <label class="col-sm-2 control-label">
-                                        权利人
-                                    </label>
-                                    <div class="col-sm-4">
-                                        <label class="form-control" data-name="obligee"></label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="x-valid">
-                                    <label class="col-sm-2 control-label">
-                                        登记金额
-                                    </label>
-                                    <div class="col-sm-4">
-                                        <label class="form-control" data-name="registerAmount"></label>
-                                    </div>
-                                </div>
-                                <div class="x-valid">
-                                    <label class="col-sm-2 control-label">
-                                        行权金额
-                                    </label>
-                                    <div class="col-sm-4">
-                                        <label class="form-control" data-name="actualAmount"></label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="x-valid">
-                                    <label class="col-sm-2 control-label">
-                                        登记面积
-                                    </label>
-                                    <div class="col-sm-4">
-                                        <label class="form-control" data-name="registerArea"></label>
-                                    </div>
-                                </div>
-                                <div class="x-valid">
-                                    <label class="col-sm-2 control-label">
-                                        他权级次
-                                    </label>
-                                    <div class="col-sm-4">
-                                        <label class="form-control" data-name="rightRank"></label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="x-valid">
-                                    <label class="col-sm-2 control-label">开始日期</label>
-                                    <div class="col-sm-4">
-                                        <label class="form-control" data-name="beginDate"></label>
-                                    </div>
-                                </div>
-                                <div class="x-valid">
-                                    <label class="col-sm-2 control-label">结束日期</label>
-                                    <div class="col-sm-4">
-                                        <label class="form-control" data-name="endDate"></label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="x-valid">
-                                    <label class="col-sm-2 control-label">
-                                        备注
-                                    </label>
-                                    <div class="col-sm-10">
-                                        <label class="form-control" data-name="remark"></label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="x-valid">
-                                    <label class="col-sm-2 control-label">
-                                        附件
-                                    </label>
-                                    <div class="col-sm-10">
-                                        <div id="_inventoryRightFile"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>

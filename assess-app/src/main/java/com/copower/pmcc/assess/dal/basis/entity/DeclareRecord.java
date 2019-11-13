@@ -8,6 +8,8 @@ public class DeclareRecord {
 
     private Integer projectId;
 
+    private Integer number;
+
     private String dataTableName;
 
     private Integer dataTableId;
@@ -104,6 +106,14 @@ public class DeclareRecord {
 
     public void setProjectId(Integer projectId) {
         this.projectId = projectId;
+    }
+
+    public Integer getNumber() {
+        return number;
+    }
+
+    public void setNumber(Integer number) {
+        this.number = number;
     }
 
     public String getDataTableName() {

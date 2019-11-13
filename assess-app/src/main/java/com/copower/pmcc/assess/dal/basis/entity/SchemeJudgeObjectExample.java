@@ -2146,6 +2146,146 @@ public class SchemeJudgeObjectExample {
             return (Criteria) this;
         }
 
+        public Criteria andMergeExplainIsNull() {
+            addCriterion("merge_explain is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMergeExplainIsNotNull() {
+            addCriterion("merge_explain is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMergeExplainEqualTo(String value) {
+            addCriterion("merge_explain =", value, "mergeExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andMergeExplainNotEqualTo(String value) {
+            addCriterion("merge_explain <>", value, "mergeExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andMergeExplainGreaterThan(String value) {
+            addCriterion("merge_explain >", value, "mergeExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andMergeExplainGreaterThanOrEqualTo(String value) {
+            addCriterion("merge_explain >=", value, "mergeExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andMergeExplainLessThan(String value) {
+            addCriterion("merge_explain <", value, "mergeExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andMergeExplainLessThanOrEqualTo(String value) {
+            addCriterion("merge_explain <=", value, "mergeExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andMergeExplainLike(String value) {
+            addCriterion("merge_explain like", value, "mergeExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andMergeExplainNotLike(String value) {
+            addCriterion("merge_explain not like", value, "mergeExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andMergeExplainIn(List<String> values) {
+            addCriterion("merge_explain in", values, "mergeExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andMergeExplainNotIn(List<String> values) {
+            addCriterion("merge_explain not in", values, "mergeExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andMergeExplainBetween(String value1, String value2) {
+            addCriterion("merge_explain between", value1, value2, "mergeExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andMergeExplainNotBetween(String value1, String value2) {
+            addCriterion("merge_explain not between", value1, value2, "mergeExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andSplitExplainIsNull() {
+            addCriterion("split_explain is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSplitExplainIsNotNull() {
+            addCriterion("split_explain is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSplitExplainEqualTo(String value) {
+            addCriterion("split_explain =", value, "splitExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andSplitExplainNotEqualTo(String value) {
+            addCriterion("split_explain <>", value, "splitExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andSplitExplainGreaterThan(String value) {
+            addCriterion("split_explain >", value, "splitExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andSplitExplainGreaterThanOrEqualTo(String value) {
+            addCriterion("split_explain >=", value, "splitExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andSplitExplainLessThan(String value) {
+            addCriterion("split_explain <", value, "splitExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andSplitExplainLessThanOrEqualTo(String value) {
+            addCriterion("split_explain <=", value, "splitExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andSplitExplainLike(String value) {
+            addCriterion("split_explain like", value, "splitExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andSplitExplainNotLike(String value) {
+            addCriterion("split_explain not like", value, "splitExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andSplitExplainIn(List<String> values) {
+            addCriterion("split_explain in", values, "splitExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andSplitExplainNotIn(List<String> values) {
+            addCriterion("split_explain not in", values, "splitExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andSplitExplainBetween(String value1, String value2) {
+            addCriterion("split_explain between", value1, value2, "splitExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andSplitExplainNotBetween(String value1, String value2) {
+            addCriterion("split_explain not between", value1, value2, "splitExplain");
+            return (Criteria) this;
+        }
+
         public Criteria andBisSplitIsNull() {
             addCriterion("bis_split is null");
             return (Criteria) this;

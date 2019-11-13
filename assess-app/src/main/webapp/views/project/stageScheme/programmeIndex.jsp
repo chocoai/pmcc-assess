@@ -198,8 +198,6 @@
                                     </label>
                                     <div class="col-sm-2">
                                         <select class="form-control" name="propertyScope" required></select>
-                                            <%--<input type="text" class="form-control" name="propertyScope"--%>
-                                            <%--placeholder="财产范围" value="${item.propertyScope}" required>--%>
                                     </div>
                                 </div>
                                 <div class="x-valid">
@@ -221,40 +219,16 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="x_title"></div>
                             <div class="form-group">
                                 <button type="button" class="btn btn-primary"
                                         onclick="programme.batchMerge(this);">
                                     批量合并
                                 </button>
                             </div>
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <th style="width: 5%">编号</th>
-                                        <%--<th style="width: 10%">权证号</th>--%>
-                                    <th style="width: 5%">所有权人</th>
-                                    <th style="width: 15%">坐落</th>
-                                    <th style="width: 6%">终止日期</th>
-                                    <th style="width: 6%">剩余年限</th>
-                                    <th style="width: 6%">证载用途</th>
-                                    <th style="width: 6%">实际用途</th>
-                                    <c:if test="${projectInfo.projectCategoryName eq '房产'}">
-                                        <th style="width: 6%">设定用途</th>
-                                        <th style="width: 10%">最佳利用方式</th>
-                                    </c:if>
-                                    <c:if test="${projectInfo.projectCategoryName eq '土地'}">
-                                        <th style="width: 6%">设定容积率</th>
-                                        <th style="width: 6%">规划容积率</th>
-                                        <th style="width: 6%">实际容积率</th>
-                                    </c:if>
-                                    <th style="width: 5%">证载面积</th>
-                                    <th style="width: 5%">评估面积</th>
-                                    <th style="width: 10%">操作</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
+                            <div class="judge-object-content">
+
+                            </div>
                         </form>
                         <script type="text/javascript">
                             $(function () {
@@ -267,10 +241,6 @@
                     </div>
                 </div>
             </c:forEach>
-
-            <%@include file="/views/share/form_approval.jsp" %>
-            <%@include file="/views/share/form_log.jsp" %>
-
             <div class="x_panel">
                 <div class="x_content">
                     <c:if test="${empty processInsId}">
@@ -291,6 +261,7 @@
                     </c:if>
                 </div>
             </div>
+            <%@include file="/views/share/form_log.jsp" %>
         </div>
     </div>
 </div>
@@ -331,21 +302,6 @@
                                             </div>
                                         </c:forEach>
                                     </td>
-                                    <%--<td id="otherMethodTd">--%>
-                                    <%--<c:forEach var="item" items="${otherMethodList}">--%>
-                                    <%--<div class="btn-group" style="margin: 10px;">--%>
-                                    <%--<button class="btn btn-sm btn-dark"--%>
-                                    <%--type="button">${item.name}</button>--%>
-                                    <%--<button onclick="programmeMethod.selectUseOther(this);"--%>
-                                    <%--data-use-flag="false" data-method-type="${item.id}"--%>
-                                    <%--data-method-name="${item.name}"--%>
-                                    <%--class="btn btn-sm btn-default btn-select-use"--%>
-                                    <%--type="button" title="选用"><i--%>
-                                    <%--class="fa fa-check"></i>--%>
-                                    <%--</button>--%>
-                                    <%--</div>--%>
-                                    <%--</c:forEach>--%>
-                                    <%--</td>--%>
                                 </tr>
                                 </tbody>
                             </table>
@@ -385,140 +341,6 @@
                 </button>
                 <button type="button" class="btn btn-primary" onclick=" programmeMethod.saveJudgeFunction();">
                     保存
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-<!--查看他项权利信息-->
-<div id="viewInventoryRightModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
-     role="dialog"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">他项权利信息</h3>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="panel-body">
-                            <div class="form-group">
-                                <div class="x-valid">
-                                    <label class="col-sm-2 control-label">类型</label>
-                                    <div class="col-sm-4">
-                                        <label class="form-control" data-name="typeName"></label>
-                                    </div>
-                                </div>
-                                <div class="x-valid">
-                                    <label class="col-sm-2 control-label">类别</label>
-                                    <div class="col-sm-4">
-                                        <label class="form-control" data-name="categoryName"></label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="x-valid">
-                                    <label class="col-sm-2 control-label">他权证编号</label>
-                                    <div class="col-sm-4">
-                                        <label class="form-control" data-name="number"></label>
-                                    </div>
-                                </div>
-                                <div class="x-valid">
-                                    <label class="col-sm-2 control-label">登记日期</label>
-                                    <div class="col-sm-4">
-                                        <label class="form-control" data-name="registerDate"></label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="x-valid">
-                                    <label class="col-sm-2 control-label">
-                                        义务人
-                                    </label>
-                                    <div class="col-sm-4">
-                                        <label class="form-control" data-name="obligor"></label>
-                                    </div>
-                                </div>
-                                <div class="x-valid">
-                                    <label class="col-sm-2 control-label">
-                                        权利人
-                                    </label>
-                                    <div class="col-sm-4">
-                                        <label class="form-control" data-name="obligee"></label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="x-valid">
-                                    <label class="col-sm-2 control-label">
-                                        登记金额
-                                    </label>
-                                    <div class="col-sm-4">
-                                        <label class="form-control" data-name="registerAmount"></label>
-                                    </div>
-                                </div>
-                                <div class="x-valid">
-                                    <label class="col-sm-2 control-label">
-                                        行权金额
-                                    </label>
-                                    <div class="col-sm-4">
-                                        <label class="form-control" data-name="actualAmount"></label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="x-valid">
-                                    <label class="col-sm-2 control-label">
-                                        登记面积
-                                    </label>
-                                    <div class="col-sm-4">
-                                        <label class="form-control" data-name="registerArea"></label>
-                                    </div>
-                                </div>
-                                <div class="x-valid">
-                                    <label class="col-sm-2 control-label">
-                                        他权级次
-                                    </label>
-                                    <div class="col-sm-4">
-                                        <label class="form-control" data-name="rightRank"></label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="x-valid">
-                                    <label class="col-sm-2 control-label">开始日期</label>
-                                    <div class="col-sm-4">
-                                        <label class="form-control" data-name="beginDate"></label>
-                                    </div>
-                                </div>
-                                <div class="x-valid">
-                                    <label class="col-sm-2 control-label">结束日期</label>
-                                    <div class="col-sm-4">
-                                        <label class="form-control" data-name="endDate"></label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="x-valid">
-                                    <label class="col-sm-2 control-label">
-                                        备注
-                                    </label>
-                                    <div class="col-sm-10">
-                                        <label class="form-control" data-name="remark"></label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">
-                    取消
                 </button>
             </div>
         </div>
@@ -564,17 +386,6 @@
         </div>
     </div>
 </div>
-<!--动态字段-->
-<script type="text/html" id="dynamicFieldHtml">
-    <label class="col-sm-2 control-label">
-        {name}
-    </label>
-    <div class="x-valid">
-        <div class="col-sm-4">
-            <input type="text" class="form-control" data-name="{name}" onkeyup="{functionName}(this);">
-        </div>
-    </div>
-</script>
 <!--评估对象-->
 <script type="text/html" id="judgeObjectHtml">
     <tr>
@@ -665,6 +476,158 @@
         </td>
     </tr>
 </script>
+
+<script type="text/html" id="judgeObjectHtml2">
+    <div class="x_panel">
+        <div class="x_title">
+            <h3>{mergeNumber}
+                <small>
+                    <a href="javascript://" onclick="programme.splitJudge(this);"
+                       class="btn btn-xs btn-success judge-split tooltips">拆分</a>
+                    <a href="javascript://" onclick="programme.delSplitJudge(this);"
+                       class="btn btn-xs btn-warning judge-remove tooltips">移除</a>
+                    <a href="javascript://" onclick="programme.mergeJudge(this);"
+                       class="btn btn-xs btn-warning judge-merge tooltips">合并</a>
+                    <a href="javascript://" onclick="programme.mergeJudgeCancel(this);"
+                       class="btn btn-xs btn-warning judge-merge-cancel tooltips">取消合并</a>
+                    <a href="javascript://" title="评估方法" onclick="programmeMethod.setMethod(this);"
+                       class="btn btn-xs btn-success judge-method tooltips">方法</a>
+                </small>
+            </h3>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+            <input type="hidden" data-name="id" value="{id}">
+            <input type="hidden" data-name="bisSplit" value="{bisSplit}">
+            <input type="hidden" data-name="bisMerge" value="{bisMerge}">
+            <input type="hidden" data-name="number" value="{number}">
+            <input type="hidden" data-name="splitNumber" value="{splitNumber}">
+            <input type="hidden" data-name="declareId" value="{declareId}">
+            <input type="hidden" data-name="rentalPossessionDesc" value="{rentalPossessionDesc}">
+            <input type="hidden" data-name="mergeNumber" value="{mergeNumber}">
+            <div class="form-group">
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">
+                        所有权人
+                    </label>
+                    <div class="col-sm-2">
+                        <label class="form-control" data-name="ownership">{ownership}
+                            <a href="javascript://" onclick="programme.viewJudgeInfo(this);"
+                               class="btn btn-xs btn-success tooltips"><i class="fa fa-white fa-search"></i></a>
+                        </label>
+                    </div>
+                </div>
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">
+                        坐落
+                    </label>
+                    <div class="col-sm-2">
+                        <label class="form-control" data-name="seat"><span>{seat}</span></label>
+                    </div>
+                </div>
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">
+                        终止日期
+                    </label>
+                    <div class="col-sm-2">
+                        <label class="form-control" data-name="landUseEndDate"><span>{landUseEndDate}</span></label>
+                    </div>
+                </div>
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">
+                        剩余年限
+                    </label>
+                    <div class="col-sm-2">
+                        <label class="form-control"
+                               data-name="landRemainingYear"><span>{landRemainingYear}</span></label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">
+                        证载用途
+                    </label>
+                    <div class="col-sm-2">
+                        <label class="form-control" data-name="certUse">{certUse}</label>
+                    </div>
+                </div>
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">
+                        实际用途
+                    </label>
+                    <div class="col-sm-2">
+                        <label class="form-control" data-name="practicalUse">{practicalUse}</label>
+                    </div>
+                </div>
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">
+                        设定用途
+                    </label>
+                    <div class="col-sm-2">
+                        <select class="form-control" required data-name="setUse" name="setUse{id}">
+                            <option value="">--请选择--</option>
+                            <c:forEach items="${setUseList}" var="setUse">
+                                <option value="${setUse.id}">${setUse.name}</option>
+                            </c:forEach>
+                        </select>
+                    </div>
+                </div>
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">
+                        最佳利用方式
+                    </label>
+                    <div class="col-sm-2">
+                        <select class="form-control" required data-name="bestUse" name="bestUse{id}">
+                            <c:forEach items="${bestUseList}" var="bestUse">
+                                <option value="${bestUse.id}">${bestUse.name}</option>
+                            </c:forEach>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">
+                        证载面积
+                    </label>
+                    <div class="col-sm-2">
+                        <label class="form-control">{floorArea}</label>
+                    </div>
+                </div>
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">
+                        评估面积
+                    </label>
+                    <div class="col-sm-2">
+                        <input class="form-control" type="text" required data-rule-number="true"
+                               data-rule-range="[1,{floorArea}]"
+                               name="evaluationArea{id}" data-name="evaluationArea"
+                               placeholder="评估面积" value="{evaluationArea}">
+                    </div>
+                </div>
+                <div class="x-valid" data-name="mergeExplainContainer{id}" style="display: none;">
+                    <label class="col-sm-1 control-label">
+                        合并对象说明
+                    </label>
+                    <div class="col-sm-2">
+                        <input class="form-control" type="text" required name="mergeExplain{id}"
+                               data-name="mergeExplain" placeholder="合并对象说明" value="{mergeExplain}">
+                    </div>
+                </div>
+                <div class="x-valid" data-name="splitExplainContainer{id}" style="display: none;">
+                    <label class="col-sm-1 control-label">
+                        拆分对象说明
+                    </label>
+                    <div class="col-sm-2">
+                        <input class="form-control" type="text" required name="splitExplain{id}"
+                               data-name="splitExplain" placeholder="拆分对象说明" value="{splitExplain}">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
 </body>
 </html>
 <%@include file="/views/share/main_footer.jsp" %>
@@ -675,7 +638,6 @@
             $(this).trigger('click');
         })
         programme.loadDeclareRecordList();
-        programme.loadInventoryRightList();
 
         //阻止合并按钮的冒泡
         $(".btn-area-merge").click(function (e) {
@@ -725,7 +687,7 @@
 
     //加载区域下的委估对象列表
     programme.loadJudgeObjectList = function (_this) {
-        var tbody = $(_this).closest(".area_panel").find(".table").find("tbody");
+        var tbody = $(_this).closest(".area_panel").find(".judge-object-content");
         tbody.empty();
         var areaGroupId = $(_this).closest('.area_panel').find('[name=areaGroupId]').val();
         $.ajax({
@@ -738,7 +700,7 @@
             success: function (result) {
                 if (result.ret) {
                     $.each(result.data, function (i, item) {
-                        var html = $("#judgeObjectHtml").html();
+                        var html = $("#judgeObjectHtml2").html();
                         html = html.replace(/{id}/g, item.id == undefined ? "" : item.id);
                         html = html.replace(/{bisSplit}/g, item.bisSplit == undefined ? false : item.bisSplit);
                         html = html.replace(/{bisMerge}/g, item.bisMerge == undefined ? false : item.bisMerge);
@@ -763,20 +725,26 @@
                         html = html.replace(/{setPlotRatio}/g, item.setPlotRatio == undefined ? "" : item.setPlotRatio);
                         html = html.replace(/{planPlotRatio}/g, item.planPlotRatio == undefined ? "" : item.planPlotRatio);
                         html = html.replace(/{actualPlotRatio}/g, item.actualPlotRatio == undefined ? "" : item.actualPlotRatio);
+
+                        html = html.replace(/{mergeExplain}/g, item.mergeExplain == undefined ? "" : item.mergeExplain);
+                        html = html.replace(/{splitExplain}/g, item.splitExplain == undefined ? "" : item.splitExplain);
                         tbody.append(html);
                         //设值
-                        var lastTr = tbody.find("tr:last");
+                        var lastTr = tbody.find(".x_panel:last");
                         lastTr.find('[data-name="setUse"]').val(item.setUse);
                         if (item.bestUse) {
                             lastTr.find('[data-name="bestUse"]').val(item.bestUse);
                         }
-                        lastTr.find('td:last').find(item.bisSplit ? '.judge-split' : '.judge-remove').remove();
-                        lastTr.find('td:last').find(item.bisMerge ? '.judge-merge' : '.judge-merge-cancel').remove();
-                        if (item.splitNumber) {
-                            //lastTr.find('td:last').find('.judge-merge').remove();
+                        if (item.bisMerge) {
+                            lastTr.find('[data-name=mergeExplainContainer' + item.id + ']').show();
                         }
+                        if (!item.bisSplit && item.splitNumber) {
+                            lastTr.find('[data-name=splitExplainContainer' + item.id + ']').show();
+                        }
+                        lastTr.find('.x_title').find(item.bisSplit ? '.judge-split' : '.judge-remove').remove();
+                        lastTr.find('.x_title').find(item.bisMerge ? '.judge-merge' : '.judge-merge-cancel').remove();
                         if (item.bisSetFunction) {
-                            lastTr.find('td:last').find('.judge-method').removeClass('btn-success').addClass('btn-primary');
+                            lastTr.find('.x_title').find('.judge-method').removeClass('btn-success').addClass('btn-primary');
                         }
                     })
                 }
@@ -898,7 +866,7 @@
             data: {
                 projectId: '${projectInfo.id}',
                 areaGroupId: $(_this).closest('.area_panel').find('[name=areaGroupId]').val(),
-                id: $(_this).closest('tr').find('[data-name="id"]').val()
+                id: $(_this).closest('.x_panel').find('[data-name="id"]').val()
             },
             type: "post",
             dataType: "json",
@@ -926,7 +894,7 @@
             data: {
                 projectId: '${projectInfo.id}',
                 areaGroupId: $(_this).closest('.area_panel').find('[name=areaGroupId]').val(),
-                id: $(_this).closest('tr').find('[data-name="id"]').val()
+                id: $(_this).closest('.x_panel').find('[data-name="id"]').val()
             },
             type: "post",
             dataType: "json",
@@ -948,15 +916,15 @@
     programme.mergeJudge = function (_this) {
         //先验证该行数据是否填写正确及完整
         var $form = $(_this).closest('form');
-        var $tr = $(_this).closest('tr');
-        var passFlag = $form.validate().element($tr.find('[data-name=setUse]'));
+        var $panel = $(_this).closest('.x_panel');
+        var passFlag = $form.validate().element($panel.find('[data-name=setUse]'));
         if (!passFlag) return false;
-        passFlag = $form.validate().element($tr.find('[data-name=evaluationArea]'));
+        passFlag = $form.validate().element($panel.find('[data-name=evaluationArea]'));
         if (!passFlag) return false;
 
         programme.saveProgrammeArea($(_this).closest('.area_panel'));
-        var mergeNumber = $(_this).closest('tr').find('[data-name="mergeNumber"]').text();
-        var judgeId = $(_this).closest('tr').find('[data-name="id"]').val();
+        var mergeNumber = $panel.find('[data-name="mergeNumber"]').val();
+        var judgeId = $panel.find('[data-name="id"]').val();
         var html = programme.config.judgeItemHtml;
         if (programme.config.judgePopIndex <= 0) {
             programme.config.judgePopIndex = layer.open({
@@ -1007,7 +975,6 @@
             toastr.warning('参与合并的估价对象中未设置标准房地产');
             return false;
         }
-        Loading.progressShow();
         $.ajax({
             url: '${pageContext.request.contextPath}/schemeProgramme/mergeJudge',
             data: {
@@ -1017,7 +984,6 @@
             type: "post",
             dataType: "json",
             success: function (result) {
-                Loading.progressHide();
                 if (result.ret) {
                     toastr.success('委估对象合并成功');
                     layer.close(programme.config.judgePopIndex);
@@ -1040,7 +1006,7 @@
         $.ajax({
             url: '${pageContext.request.contextPath}/schemeProgramme/mergeJudgeCancel',
             data: {
-                id: $(_this).closest('tr').find('[data-name="id"]').val()
+                id: $(_this).closest('.x_panel').find('[data-name="id"]').val()
             },
             type: "post",
             dataType: "json",
@@ -1075,17 +1041,19 @@
         data.scopeNotInclude = $(areaPanel).find('[name="scopeNotInclude"]').val();
         data.schemeJudgeObjects = [];
 
-        var trs = $(areaPanel).find(".table").find("tbody").find('tr');
-        if (trs && trs.length > 0) {
-            $.each(trs, function (i, tr) {
+        var panels = $(areaPanel).find(".x_panel");
+        if (panels && panels.length > 0) {
+            $.each(panels, function (i, panel) {
                 var schemeJudgeObject = {};
-                schemeJudgeObject.id = $(tr).find('[data-name="id"]').val();
-                schemeJudgeObject.setUse = $(tr).find('[data-name="setUse"]').val();
-                schemeJudgeObject.bestUse = $(tr).find('[data-name="bestUse"]').val();
-                schemeJudgeObject.setPlotRatio = $(tr).find('[data-name="setPlotRatio"]').val();
-                schemeJudgeObject.planPlotRatio = $(tr).find('[data-name="planPlotRatio"]').val();
-                schemeJudgeObject.actualPlotRatio = $(tr).find('[data-name="actualPlotRatio"]').val();
-                schemeJudgeObject.evaluationArea = $(tr).find('[data-name="evaluationArea"]').val();
+                schemeJudgeObject.id = $(panel).find('[data-name="id"]').val();
+                schemeJudgeObject.setUse = $(panel).find('[data-name="setUse"]').val();
+                schemeJudgeObject.bestUse = $(panel).find('[data-name="bestUse"]').val();
+                schemeJudgeObject.setPlotRatio = $(panel).find('[data-name="setPlotRatio"]').val();
+                schemeJudgeObject.planPlotRatio = $(panel).find('[data-name="planPlotRatio"]').val();
+                schemeJudgeObject.actualPlotRatio = $(panel).find('[data-name="actualPlotRatio"]').val();
+                schemeJudgeObject.evaluationArea = $(panel).find('[data-name="evaluationArea"]').val();
+                schemeJudgeObject.mergeExplain = $(panel).find('[data-name="mergeExplain"]').val();
+                schemeJudgeObject.splitExplain = $(panel).find('[data-name="splitExplain"]').val();
                 data.schemeJudgeObjects.push(schemeJudgeObject);
             })
         }
@@ -1288,7 +1256,7 @@
 
     //查看委估对象相关信息
     programme.viewJudgeInfo = function (_this) {
-        var tr = $(_this).closest('tr');
+        var tr = $(_this).closest('.x_panel');
         var bisMerge = tr.find('[data-name=bisMerge]').val();
         if (bisMerge == 'true') {
             var pid = tr.find('[data-name=id]').val();
@@ -1451,162 +1419,6 @@
         })
     };
 
-
-    //加载他项权利
-    programme.loadInventoryRightList = function () {
-        var cols = [];
-        cols.push({field: 'certName', title: '权证号'});
-        cols.push({field: 'typeName', title: '类型'});
-        cols.push({field: 'categoryName', title: '类别'});
-        cols.push({field: 'number', title: '他权证编号'});
-        cols.push({field: 'obligor', title: '义务人'});
-        cols.push({field: 'obligee', title: '权利人'});
-        cols.push({field: 'registerArea', title: '登记面积'});
-        cols.push({field: 'rightRank', title: '他权级次'});
-        cols.push({
-            field: 'id', title: '操作', formatter: function (value, row, index) {
-                var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-success tooltips" data-placement="top"  onclick="programme.editInventoryRight(' + index + ');" ><i class="fa fa-edit fa-white"></i></a>';
-                str += '</div>';
-                return str;
-            }
-        });
-        $("#tb_inventory_right_list").bootstrapTable('destroy');
-        TableInit("tb_inventory_right_list", "${pageContext.request.contextPath}/surveyAssetInventoryRight/getListByProjectId", cols, {
-            projectId: '${projectInfo.id}'
-        }, {
-            showColumns: false,
-            showRefresh: true,
-            search: true,
-            onLoadSuccess: function () {
-                $(".tooltips").tooltip();   //提示
-            }
-        });
-    };
-
-    //保存他权
-    programme.saveInventoryRight = function () {
-        var data = formParams("frm_inventory_right");
-        if ($("#frm_inventory_right").valid()) {
-            Loading.progressShow();
-            $.ajax({
-                url: "${pageContext.request.contextPath}/surveyAssetInventoryRight/save",
-                type: "post",
-                dataType: "json",
-                data: {formData: JSON.stringify(data)},
-                success: function (result) {
-                    Loading.progressHide();
-                    if (result.ret) {
-                        toastr.success('保存成功');
-                        programme.loadInventoryRightList();
-                        $('#modal_inventory_right').modal('hide');
-                    }
-                    else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            })
-        }
-    }
-
-    //编辑他权信息
-    programme.editInventoryRight = function (index) {
-        var row = $("#tb_inventory_right_list").bootstrapTable('getData')[index];
-        $("#frm_inventory_right").clearAll().initForm(row);
-        $("#registerDate").val(formatDate(row.registerDate, false));
-        $("#beginDate").val(formatDate(row.beginDate, false));
-        $("#endDate").val(formatDate(row.endDate, false));
-        AssessCommon.loadDataDicByPid(row.type, row.category, function (html) {
-            $("#category").html(html);
-        })
-
-        programme.loadInventoryRightFile(row.id);
-        $('#modal_inventory_right').modal();
-    }
-
-    //加载他权附件
-    programme.loadInventoryRightFile = function (tableId) {
-        FileUtils.getFileShows({
-            target: "inventoryRightFile",
-            formData: {
-                tableName: AssessDBKey.SurveyAssetInventoryRight,
-                tableId: tableId
-            },
-            deleteFlag: true
-        });
-    }
-
-    //编辑其它信息
-    programme.editOtherInfo = function (_this) {
-        Loading.progressShow();
-        $.ajax({
-            url: '${pageContext.request.contextPath}/schemeProgramme/getJugdeObjectById',
-            type: 'get',
-            data: {
-                judgeObjectId: $(_this).closest('tr').find("[data-name=id]").val()
-            },
-            success: function (result) {
-                Loading.progressHide();
-                if (result.ret) {
-                    $("#frm_other_info").clearAll().initForm(result.data);
-                    $("#modal_other_info").modal();
-                } else {
-                    toastr.error(result.errmsg);
-                }
-            }
-        })
-    }
-
-    //保存其它信息
-    programme.saveOtherInfo = function () {
-        Loading.progressShow();
-        $.ajax({
-            url: '${pageContext.request.contextPath}/schemeProgramme/updateSchemeJudgeObject',
-            data: formParams("frm_other_info"),
-            success: function (result) {
-                Loading.progressHide();
-                if (result.ret) {
-                    toastr.success('保存成功');
-                    $("#modal_other_info").modal('hide');
-                } else {
-                    toastr.error(result.errmsg);
-                }
-            }
-        })
-    }
-
-    //调整描述内容
-    programme.updateRentalPossessionDesc = function (_this) {
-        var tr = $(_this).closest('tr');
-        layer.prompt({
-            title: '出租占用情况描述',
-            formType: 2,
-            zIndex: 999, //重点1
-            value: tr.find('[data-name=rentalPossessionDesc]').val(),
-            area: ['800px', '350px']
-        }, function (val, index) {
-            $.ajax({
-                url: '${pageContext.request.contextPath}/schemeProgramme/updateRentalPossessionDesc',
-                data: {
-                    id: tr.find('[data-name="id"]').val(),
-                    rentalPossessionDesc: val
-                },
-                success: function (result) {
-                    if (result.ret) {
-                        toastr.success('保存成功');
-                        tr.find('[data-name=rentalPossessionDesc]').val(val);
-                        layer.close(index);
-                    } else {
-                        toastr.error(result.errmsg);
-                    }
-                }
-            })
-        });
-    }
-
     programme.batchMerge = function (_this) {
         $(_this).closest('form').find('.judge-merge').each(function () {
             $(this).trigger('click');
@@ -1619,7 +1431,7 @@
 
     programmeMethod.setMethod = function (_this) {
         programmeMethod.clean();
-        var judgeObjectId = $(_this).closest("tr").find('[data-name="id"]').val();
+        var judgeObjectId = $(_this).closest(".x_panel").find('[data-name="id"]').val();
         $.ajax({
             url: '${pageContext.request.contextPath}/schemeProgramme/getJudgeFunction',
             data: {
@@ -1785,7 +1597,7 @@
     programmeMethod.clean = function () {
         $("#frm_method_info").find('[name=judgeObjectId]').val('');
         $("#frm_method_info").find('.btn-select-use').attr('data-use-flag', false).addClass('btn-default').removeClass('btn-success');
-        $('#applicableTbody,#notApplicableTd').empty();
+        $('#applicableTbody,#notApplicableTbody').empty();
         $('#notApplicableReason').val('');
     }
 </script>

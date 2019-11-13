@@ -30,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -144,43 +145,46 @@ public class SchemeAreaGroupService {
     public void generatorAreaGroup(Integer projectId) {
         //1.清除原相关数据 2.重新生成所有数据
         //1.清除估价对象，清除区域,清除区域相关的工作事项
-        List<SchemeAreaGroup> areaGroupHistoryList = getAreaGroupList(projectId);
-        if (CollectionUtils.isNotEmpty(areaGroupHistoryList)) {
-            ProjectPlanDetails where = null;
-            List<ProjectPlanDetails> projectDetails = null;
-            for (SchemeAreaGroup schemeAreaGroup : areaGroupHistoryList) {
+
+        //1.先分析出区域，与上次生成的区域做比较，如果区域没有发生变化则不处理区域下挂的任务，如果有新增或删除则需处理
+        List<DeclareRecord> declareRecords = declareRecordDao.getPartInDeclareRecordsByProjectId(projectId);
+        List<SchemeAreaGroup> newAreaGroups = groupDeclareRecord(declareRecords);
+        if (CollectionUtils.isEmpty(newAreaGroups)) return;
+        List<SchemeAreaGroup> historyAreaGroups = getAreaGroupList(projectId);
+        List<SchemeAreaGroup> sameAreaGroups = Lists.newArrayList();//新旧一致的区域
+        Iterator historyAreaGroupIterator = historyAreaGroups.iterator();
+        while (historyAreaGroupIterator.hasNext()) {
+            SchemeAreaGroup historyAreaGroup = (SchemeAreaGroup) historyAreaGroupIterator.next();
+            Iterator newAreaGroupIterator = newAreaGroups.iterator();
+            while (newAreaGroupIterator.hasNext()) {
+                SchemeAreaGroup newAreaGroup = (SchemeAreaGroup) newAreaGroupIterator.next();
+                boolean isSameProvince = StringUtils.equals(StringUtils.defaultString(historyAreaGroup.getProvince()), StringUtils.defaultString(newAreaGroup.getProvince()));
+                boolean isSameCity = StringUtils.equals(StringUtils.defaultString(historyAreaGroup.getCity()), StringUtils.defaultString(newAreaGroup.getCity()));
+                boolean isSameDistrict = StringUtils.equals(StringUtils.defaultString(historyAreaGroup.getDistrict()), StringUtils.defaultString(newAreaGroup.getDistrict()));
+                if (isSameProvince && isSameCity && isSameDistrict) {
+                    sameAreaGroups.add(historyAreaGroup);
+                    historyAreaGroupIterator.remove();
+                    newAreaGroupIterator.remove();
+                }
+            }
+        }
+        if (CollectionUtils.isNotEmpty(historyAreaGroups)) {//清除无效的区域
+            for (SchemeAreaGroup schemeAreaGroup : historyAreaGroups) {
                 List<SchemeJudgeObject> judgeObjects = schemeJudgeObjectService.getJudgeObjectListByAreaGroupId(schemeAreaGroup.getId());
                 if (CollectionUtils.isNotEmpty(judgeObjects)) {//清除估价对象下的任务
-                    for (SchemeJudgeObject judgeObject : judgeObjects) {
-                        where = new ProjectPlanDetails();
-                        where.setProjectId(projectId);
-                        where.setJudgeObjectId(judgeObject.getId());
-                        projectDetails = projectPlanDetailsService.getProjectDetails(where);
-                        if (CollectionUtils.isNotEmpty(projectDetails)) {
-                            projectDetails.forEach(o -> projectPlanDetailsService.deleteProjectPlanDetails(o));
-                        }
-                    }
+                    judgeObjects.forEach(o -> clearJudgeObjectTask(o));
                     schemeJudgeObjectDao.deleteJudgeObjectByAreaId(schemeAreaGroup.getId());
                 }
-
                 //清除区域下工作任务
-                where = new ProjectPlanDetails();
-                where.setProjectId(projectId);
-                where.setAreaId(schemeAreaGroup.getId());
-                projectDetails = projectPlanDetailsService.getProjectDetails(where);
-                if (CollectionUtils.isNotEmpty(projectDetails)) {
-                    projectDetails.forEach(o -> projectPlanDetailsService.deleteProjectPlanDetails(o));
-                }
+                clearAreaGroupTask(schemeAreaGroup);
                 schemeAreaGroupDao.remove(schemeAreaGroup.getId());
             }
         }
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
 
-        List<DeclareRecord> declareRecords = declareRecordDao.getDeclareRecordListByProjectId(projectId);
-        List<SchemeAreaGroup> areaGroups = groupDeclareRecord(declareRecords);
-        if (CollectionUtils.isNotEmpty(areaGroups)) {
-            ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
-            List<DeclareRecord> removeList = Lists.newArrayList();
-            for (SchemeAreaGroup areaGroup : areaGroups) {
+        //添加或清除估价对象 先找出上次已经生成的估价对象 再找出本次会参与生成的权证 最后确定其新增或删除
+        if (CollectionUtils.isNotEmpty(newAreaGroups)) {//为新产生的区域添加数据
+            for (SchemeAreaGroup areaGroup : newAreaGroups) {
                 String areaFullName = erpAreaService.getAreaFullName(areaGroup.getProvince(), areaGroup.getCity(), areaGroup.getDistrict());
                 areaGroup.setAreaName(areaFullName);
                 areaGroup.setProjectId(projectId);
@@ -197,44 +201,146 @@ public class SchemeAreaGroupService {
                 this.add(areaGroup);
                 int i = 1;
                 //初始化估价对象
-                for (DeclareRecord declareRecord : declareRecords) {
+                List<DeclareRecord> declareRecordList = getAreaGroupDeclareRecords(declareRecords, areaGroup.getProvince(), areaGroup.getCity(), areaGroup.getDistrict(), true);
+                Iterator declareRecordIterator = declareRecordList.iterator();
+                while (declareRecordIterator.hasNext()) {
+                    DeclareRecord declareRecord = (DeclareRecord) declareRecordIterator.next();
                     boolean isSameProvince = StringUtils.equals(StringUtils.defaultString(declareRecord.getProvince()), StringUtils.defaultString(areaGroup.getProvince()));
                     boolean isSameCity = StringUtils.equals(StringUtils.defaultString(declareRecord.getCity()), StringUtils.defaultString(areaGroup.getCity()));
-                    boolean isSameDistrict = StringUtils.equals(StringUtils.defaultString(declareRecord.getDistrict()) ,StringUtils.defaultString(areaGroup.getDistrict()) );
+                    boolean isSameDistrict = StringUtils.equals(StringUtils.defaultString(declareRecord.getDistrict()), StringUtils.defaultString(areaGroup.getDistrict()));
                     if (isSameProvince && isSameCity && isSameDistrict) {
-                        SchemeJudgeObject schemeJudgeObject = new SchemeJudgeObject();
-                        schemeJudgeObject.setProjectId(projectId);
-                        schemeJudgeObject.setDeclareRecordId(declareRecord.getId());
-                        schemeJudgeObject.setNumber(String.valueOf(i));
-                        schemeJudgeObject.setCreator(commonService.thisUserAccount());
-                        schemeJudgeObject.setAreaGroupId(areaGroup.getId());
-                        schemeJudgeObject.setOriginalAreaGroupId(areaGroup.getId());
-                        schemeJudgeObject.setFloorArea(declareRecord.getFloorArea());
-                        schemeJudgeObject.setName(String.format("%s%s", i, BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME));
-                        schemeJudgeObject.setCertName(declareRecord.getName());
-                        schemeJudgeObject.setOwnership(declareRecord.getOwnership());
-                        schemeJudgeObject.setSeat(declareRecord.getSeat());
-                        schemeJudgeObject.setCertUse(declareRecord.getCertUse());
-                        schemeJudgeObject.setPracticalUse(declareRecord.getPracticalUse());
-                        if (declareRecord.getLandUseEndDate() != null) {
-                            schemeJudgeObject.setLandUseEndDate(declareRecord.getLandUseEndDate());
-                            //计算出土地剩余年限
-                            schemeJudgeObject.setLandRemainingYear(mdIncomeService.getLandSurplusYear(declareRecord.getLandUseEndDate(), areaGroup.getValueTimePoint()));
-                        }
-                        schemeJudgeObject.setEvaluationArea(declareRecord.getPracticalArea());
-                        schemeJudgeObject.setPid(0);
-                        schemeJudgeObject.setBisSplit(false);
-                        schemeJudgeObject.setSorting(i);
-                        schemeJudgeObject.setCreator(commonService.thisUserAccount());
-                        schemeJudgeObjectService.addSchemeJudgeObject(schemeJudgeObject);
-                        //反写申报数据的区域id
-                        declareRecord.setAreaGroupId(areaGroup.getId());
-                        declareRecordDao.updateDeclareRecord(declareRecord);
-                        removeList.add(declareRecord);//已被添加到区域的数据下次循环移除掉
+                        declareRecordToJudgeObject(declareRecord, areaGroup, i);
+                        declareRecordIterator.remove();
                         i++;
                     }
                 }
             }
+        }
+        if (CollectionUtils.isNotEmpty(sameAreaGroups)) {//新旧同区域下，处理估价对象的新增与移除
+            for (SchemeAreaGroup sameAreaGroup : sameAreaGroups) {
+                List<SchemeJudgeObject> judgeObjectDeclareList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(sameAreaGroup.getId());
+                List<DeclareRecord> declareRecordList = getAreaGroupDeclareRecords(declareRecords, sameAreaGroup.getProvince(), sameAreaGroup.getCity(), sameAreaGroup.getDistrict(), true);
+                Iterator declareRecordIterator = declareRecordList.iterator();
+                while (declareRecordIterator.hasNext()) {
+                    DeclareRecord declareRecord = (DeclareRecord) declareRecordIterator.next();
+                    Iterator judgeObjectIterator = judgeObjectDeclareList.iterator();
+                    while (judgeObjectIterator.hasNext()) {
+                        SchemeJudgeObject judgeObject = (SchemeJudgeObject) judgeObjectIterator.next();
+                        if (declareRecord.getId().equals(judgeObject.getDeclareRecordId())) {
+                            declareRecordIterator.remove();
+                            judgeObjectIterator.remove();
+                        }
+                    }
+                }
+                if (CollectionUtils.isNotEmpty(declareRecordList)) {//为权证添加估价对象
+                    declareRecordList.forEach(o -> declareRecordToJudgeObject(o, sameAreaGroup, schemeJudgeObjectDao.getAreaGroupMaxNumber(projectId, sameAreaGroup.getId()) + 1));
+                }
+                if (CollectionUtils.isNotEmpty(judgeObjectDeclareList)) {//需被移除的估价对象
+                    judgeObjectDeclareList.forEach(o -> clearJudgeObjectTask(o));
+                    //需要重新排号
+                }
+            }
+        }
+    }
+
+    /**
+     * 申报权证写入到估价对象中
+     *
+     * @param declareRecord
+     * @param areaGroup
+     * @param i
+     * @return
+     */
+    private SchemeJudgeObject declareRecordToJudgeObject(DeclareRecord declareRecord, SchemeAreaGroup areaGroup, Integer i) {
+        SchemeJudgeObject schemeJudgeObject = new SchemeJudgeObject();
+        schemeJudgeObject.setProjectId(declareRecord.getProjectId());
+        schemeJudgeObject.setDeclareRecordId(declareRecord.getId());
+        schemeJudgeObject.setNumber(String.valueOf(i));
+        schemeJudgeObject.setCreator(commonService.thisUserAccount());
+        schemeJudgeObject.setAreaGroupId(areaGroup.getId());
+        schemeJudgeObject.setOriginalAreaGroupId(areaGroup.getId());
+        schemeJudgeObject.setFloorArea(declareRecord.getFloorArea());
+        schemeJudgeObject.setName(String.format("%s%s", i, BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME));
+        schemeJudgeObject.setCertName(declareRecord.getName());
+        schemeJudgeObject.setOwnership(declareRecord.getOwnership());
+        schemeJudgeObject.setSeat(declareRecord.getSeat());
+        schemeJudgeObject.setCertUse(declareRecord.getCertUse());
+        schemeJudgeObject.setPracticalUse(declareRecord.getPracticalUse());
+        if (declareRecord.getLandUseEndDate() != null) {
+            schemeJudgeObject.setLandUseEndDate(declareRecord.getLandUseEndDate());
+            //计算出土地剩余年限
+            schemeJudgeObject.setLandRemainingYear(mdIncomeService.getLandSurplusYear(declareRecord.getLandUseEndDate(), areaGroup.getValueTimePoint()));
+        }
+        schemeJudgeObject.setEvaluationArea(declareRecord.getPracticalArea());
+        schemeJudgeObject.setPid(0);
+        schemeJudgeObject.setBisSplit(false);
+        schemeJudgeObject.setSorting(i);
+        schemeJudgeObject.setCreator(commonService.thisUserAccount());
+        schemeJudgeObjectService.addSchemeJudgeObject(schemeJudgeObject);
+        //反写申报数据的区域id
+        declareRecord.setAreaGroupId(areaGroup.getId());
+        declareRecordDao.updateDeclareRecord(declareRecord);
+        return schemeJudgeObject;
+    }
+
+    /**
+     * 筛选出省市区下对应的权证
+     *
+     * @param declareRecords
+     * @param province
+     * @param city
+     * @param dictrict
+     * @return
+     */
+    private List<DeclareRecord> getAreaGroupDeclareRecords(List<DeclareRecord> declareRecords, String province, String city, String dictrict, Boolean isRemove) {
+        List<DeclareRecord> list = Lists.newArrayList();
+        if (CollectionUtils.isEmpty(declareRecords)) return list;
+        Iterator declareRecordIterator = declareRecords.iterator();
+        while (declareRecordIterator.hasNext()) {
+            DeclareRecord declareRecord = (DeclareRecord) declareRecordIterator.next();
+            boolean isSameProvince = StringUtils.equals(StringUtils.defaultString(declareRecord.getProvince()), StringUtils.defaultString(province));
+            boolean isSameCity = StringUtils.equals(StringUtils.defaultString(declareRecord.getCity()), StringUtils.defaultString(city));
+            boolean isSameDistrict = StringUtils.equals(StringUtils.defaultString(declareRecord.getDistrict()), StringUtils.defaultString(dictrict));
+            if (isSameProvince && isSameCity && isSameDistrict) {
+                list.add(declareRecord);
+                if (isRemove)
+                    declareRecordIterator.remove();
+            }
+        }
+        return list;
+    }
+
+    /**
+     * 清除区域相关任务
+     *
+     * @param areaGroup
+     */
+    private void clearAreaGroupTask(SchemeAreaGroup areaGroup) {
+        ProjectPlanDetails where = new ProjectPlanDetails();
+        where.setProjectId(areaGroup.getProjectId());
+        where.setAreaId(areaGroup.getId());
+        List<ProjectPlanDetails> projectDetails = projectPlanDetailsService.getProjectDetails(where);
+        if (CollectionUtils.isNotEmpty(projectDetails)) {
+            projectDetails.forEach(o -> projectPlanDetailsService.deleteProjectPlanDetails(o));
+        } else {
+            schemeAreaGroupDao.remove(areaGroup.getId());
+        }
+    }
+
+    /**
+     * 清除估价对象相关任务
+     *
+     * @param judgeObject
+     */
+    private void clearJudgeObjectTask(SchemeJudgeObject judgeObject) {
+        ProjectPlanDetails where = new ProjectPlanDetails();
+        where.setProjectId(judgeObject.getProjectId());
+        where.setJudgeObjectId(judgeObject.getId());
+        List<ProjectPlanDetails> projectDetails = projectPlanDetailsService.getProjectDetails(where);
+        if (CollectionUtils.isNotEmpty(projectDetails)) {
+            projectDetails.forEach(o -> projectPlanDetailsService.deleteProjectPlanDetails(o));
+        } else {
+            schemeJudgeObjectDao.removeSchemeJudgeObject(judgeObject.getId());
         }
     }
 

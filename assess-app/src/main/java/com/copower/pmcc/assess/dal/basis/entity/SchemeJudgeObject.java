@@ -68,6 +68,10 @@ public class SchemeJudgeObject {
 
     private String notApplicableReason;
 
+    private String mergeExplain;
+
+    private String splitExplain;
+
     private Boolean bisSplit;
 
     private Boolean bisMerge;
@@ -338,6 +342,22 @@ public class SchemeJudgeObject {
 
     public void setNotApplicableReason(String notApplicableReason) {
         this.notApplicableReason = notApplicableReason == null ? null : notApplicableReason.trim();
+    }
+
+    public String getMergeExplain() {
+        return mergeExplain;
+    }
+
+    public void setMergeExplain(String mergeExplain) {
+        this.mergeExplain = mergeExplain == null ? null : mergeExplain.trim();
+    }
+
+    public String getSplitExplain() {
+        return splitExplain;
+    }
+
+    public void setSplitExplain(String splitExplain) {
+        this.splitExplain = splitExplain == null ? null : splitExplain.trim();
     }
 
     public Boolean getBisSplit() {

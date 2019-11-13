@@ -345,6 +345,7 @@ public class DeclareRealtyRealEstateCertService {
             declareRecord.setCreator(declareApply.getCreator());
             declareRecord.setBisPartIn(true);
             declareRecord.setType(DeclareCertificateTypeEnum.REAL_ESTATE.getKey());
+            declareRecord.setNumber(declareRecordService.getMaxNumber(declareApply.getProjectId()));
             //项目为房产则取房产的证载面积  项目为土地则去土地的宗地面积
             if (AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_HOUSE.equals(projectTypeEnum))
                 declareRecord.setFloorArea(declareRealtyRealEstateCert.getEvidenceArea());
