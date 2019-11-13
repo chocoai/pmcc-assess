@@ -478,6 +478,7 @@
                 var rootNode = zTreeObj.getNodes()[0];
                 zTreeObj.selectNode(rootNode);
                 zTreeObj.expandAll(true);
+                zTreeObj.setting.callback.onClick(null, zTreeObj.setting.treeId, rootNode);//调用事件
             }
         })
     }
@@ -498,6 +499,8 @@
                 var rootNode = zTreeObj.getNodes()[0];
                 zTreeObj.selectNode(rootNode);
                 zTreeObj.expandAll(true);
+                zTreeObj.setting.callback.onClick(null, zTreeObj.setting.treeId, rootNode);//调用事件
+
             }
         })
     }
