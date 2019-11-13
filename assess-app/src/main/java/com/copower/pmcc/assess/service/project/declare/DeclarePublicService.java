@@ -218,40 +218,15 @@ public class DeclarePublicService {
             builder.append(String.format("\n第%s行异常：坐落必须填写", i));
             return false;
         }
-        BaseDataDic typeDic = null;
-        //验证基础字典中数据
-        String planningUse = PoiUtils.getCellValue(row.getCell(8));
-        if (StringUtils.isNotBlank(planningUse)) {
-            typeDic = baseDataDicService.getDataDicByName(planningUses, planningUse);
-            if (typeDic == null) {
-                builder.append(String.format("\n第%s行异常：类型与系统配置的名称不一致(房屋用途)", i));
-                return false;
-            } else {
-                //房屋用途类型
-                oo.setHouseCertUse(typeDic.getId());
-                //房屋用途类别
-                String certUseCategoryName = PoiUtils.getCellValue(row.getCell(9));
-                List<BaseDataDic> certUseCategorys = baseDataDicService.getCacheDataDicListByPid(typeDic.getId());
-                if (StringUtils.isNotBlank(certUseCategoryName)) {
-                    typeDic = baseDataDicService.getDataDicByName(certUseCategorys, certUseCategoryName);
-                    if (typeDic == null) {
-                        builder.append(String.format("\n第%s行异常：类型与系统配置的名称不一致(房屋用途类别)", i));
-                        return false;
-                    } else {
-                        oo.setHouseCertUseCategory(typeDic.getId());
-                    }
-                }
-            }
-        } else {
-            builder.append(String.format("\n第%s行异常：房屋用途必须填写", i));
-            return false;
+        //房屋用途类型
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(8)))) {
+            oo.setHouseCertUse(PoiUtils.getCellValue(row.getCell(8)));
         }
-
-
         //房屋结构
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(10)))) {
             oo.setHousingStructure(PoiUtils.getCellValue(row.getCell(10)));
         }
+        BaseDataDic typeDic = null;
         //验证基础字典中数据
         String nature = PoiUtils.getCellValue(row.getCell(11));
         if (StringUtils.isNotBlank(nature)) {
@@ -739,36 +714,15 @@ public class DeclarePublicService {
             builder.append(String.format("\n第%s行异常：坐落必须填写", i));
             return false;
         }
-        BaseDataDic typeDic = null;
-        //验证基础字典中数据
-        String planningUse = PoiUtils.getCellValue(row.getCell(10));
-        if (StringUtils.isNotBlank(planningUse)) {
-            typeDic = baseDataDicService.getDataDicByName(planningUses, planningUse);
-            if (typeDic == null) {
-                builder.append(String.format("\n第%s行异常：类型与系统配置的名称不一致(房屋用途类型)", i));
-                return false;
-            } else {
-                //房屋用途类型
-                declareRealtyHouseCert.setCertUse(typeDic.getId());
-                //房屋用途类别
-                String certUseCategoryName = PoiUtils.getCellValue(row.getCell(11));
-                List<BaseDataDic> certUseCategorys = baseDataDicService.getCacheDataDicListByPid(typeDic.getId());
-                if (StringUtils.isNotBlank(certUseCategoryName)) {
-                    typeDic = baseDataDicService.getDataDicByName(certUseCategorys, certUseCategoryName);
-                    if (typeDic == null) {
-                        builder.append(String.format("\n第%s行异常：类型与系统配置的名称不一致(房屋用途类别)", i));
-                        return false;
-                    } else {
-                        declareRealtyHouseCert.setCertUseCategory(typeDic.getId());
-                    }
-                }
-            }
+        //房屋结构
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(10)))) {
+            declareRealtyHouseCert.setCertUse(PoiUtils.getCellValue(row.getCell(10)));
         }
-
         //房屋结构
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(12)))) {
             declareRealtyHouseCert.setHousingStructure(PoiUtils.getCellValue(row.getCell(12)));
         }
+        BaseDataDic typeDic = null;
         //验证基础字典中数据
         String nature = PoiUtils.getCellValue(row.getCell(13));
         if (StringUtils.isNotBlank(nature)) {

@@ -104,7 +104,7 @@ public class DeclareDemoRecovery {
                             }
                             if (StringUtils.isNotEmpty(declareRecord.getCertUse())) {
                                 if (Objects.equal(baseDataDic.getName(), declareRecord.getCertUse())) {
-                                    oo.setHouseCertUse(baseDataDic.getId());
+                                    oo.setHouseCertUse(baseDataDic.getName());
                                 }
                             }
                             if (StringUtils.isNotEmpty(declareRecord.getNature())) {

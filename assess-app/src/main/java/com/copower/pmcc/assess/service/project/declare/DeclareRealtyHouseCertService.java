@@ -347,9 +347,9 @@ public class DeclareRealtyHouseCertService {
         DeclareRealtyHouseCertVo vo = new DeclareRealtyHouseCertVo();
         BeanUtils.copyProperties(declareRealtyHouseCert, vo);
         vo.setPlanningUseName(baseDataDicService.getNameById(declareRealtyHouseCert.getCertUse()));
-        if (declareRealtyHouseCert.getCertUseCategory() != null) {
-            vo.setCertUseCategoryName(baseDataDicService.getNameById(declareRealtyHouseCert.getCertUseCategory()));
-        }
+//        if (declareRealtyHouseCert.getCertUseCategory() != null) {
+//            vo.setCertUseCategoryName(baseDataDicService.getNameById(declareRealtyHouseCert.getCertUseCategory()));
+//        }
         vo.setTypeName(baseDataDicService.getNameById(declareRealtyHouseCert.getType()));
         vo.setNatureName(baseDataDicService.getNameById(declareRealtyHouseCert.getNature()));
         vo.setPublicSituationName(baseDataDicService.getNameById(declareRealtyHouseCert.getPublicSituation()));

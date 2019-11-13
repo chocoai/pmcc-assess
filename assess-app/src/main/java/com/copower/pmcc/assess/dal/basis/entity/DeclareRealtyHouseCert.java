@@ -46,7 +46,7 @@ public class DeclareRealtyHouseCert {
 
     private String floorCount;
 
-    private Integer certUse;
+    private String certUse;
 
     private String housingStructure;
 
@@ -264,12 +264,12 @@ public class DeclareRealtyHouseCert {
         this.floorCount = floorCount == null ? null : floorCount.trim();
     }
 
-    public Integer getCertUse() {
+    public String getCertUse() {
         return certUse;
     }
 
-    public void setCertUse(Integer certUse) {
-        this.certUse = certUse;
+    public void setCertUse(String certUse) {
+        this.certUse = certUse == null ? null : certUse.trim();
     }
 
     public String getHousingStructure() {
