@@ -49,25 +49,78 @@
                     <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
                         <div class="row">
                             <div class="panel-body panel">
-                                <div class=" col-xs-8  col-sm-8  col-md-8  col-lg-8 ">
+
+                                <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                     <ul id="treeLandLevelDetail" class="ztree"></ul>
                                 </div>
+
+                                <div class=" col-xs-8  col-sm-8  col-md-8  col-lg-8 ">
+                                    <div class="row">
+                                        <form>
+                                            <div class="form-group">
+                                                <div class="x-valid">
+                                                    <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">平方价</label>
+                                                    <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
+                                                        <label class=" form-control" name="price"></label>
+                                                    </div>
+                                                </div>
+                                                <div class="x-valid">
+                                                    <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">每亩单价</label>
+                                                    <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
+                                                        <label class=" form-control" name="muPrice"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="x-valid">
+                                                    <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">标准容积率</label>
+                                                    <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
+                                                        <label class=" form-control" name="volumeRate"></label>
+                                                    </div>
+                                                </div>
+                                                <div class="x-valid">
+                                                    <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">法定使用年限</label>
+                                                    <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
+                                                        <label class=" form-control" name="legalAge"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="x-valid">
+                                                    <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">征地比例</label>
+                                                    <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
+                                                        <label class=" form-control" name="landAcquisitionProportion"></label>
+                                                    </div>
+                                                </div>
+                                                <div class="x-valid">
+                                                    <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">主要街道</label>
+                                                    <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
+                                                        <label class=" form-control" name="mainStreet"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+
                                 <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                     <div class="row">
-                                        <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4  pull-left">
-                                            <button type="button" class="btn btn-default"
-                                                    onclick="landLevel.treeExpandAll(true);">展开
-                                            </button>
-                                        </div>
-                                        <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4  pull-left">
-                                            <button type="button" class="btn btn-default"
-                                                    onclick="landLevel.treeExpandAll(false);">收缩
-                                            </button>
-                                        </div>
-                                        <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4  pull-left">
-                                            <button type="button" class="btn btn-default"
-                                                    onclick="landLevel.treeRefresh();">刷新
-                                            </button>
+                                        <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                                            <a class="btn btn-xs btn-primary" onclick="landLevel.treeExpandAll(true);">
+                                                全部展开
+                                            </a>
+                                            <a class="btn btn-xs btn-primary" onclick="landLevel.treeExpandAll(false);">
+                                                全部收起
+                                            </a>
+                                            <a class="btn btn-xs btn-primary " onclick="landLevel.treeRefresh();">
+                                                刷新
+                                            </a>
+                                            <a class="btn btn-xs btn-primary " onclick="landLevel.showDataAllocationCorrectionCoefficientVolumeRatioDetail();">
+                                                容积率系数
+                                            </a>
+                                            <a class="btn btn-xs btn-primary " onclick="landLevel.showDataLandDetailAchievementDetail();">
+                                                土地因素
+                                            </a>
                                         </div>
                                     </div>
                                 </div>

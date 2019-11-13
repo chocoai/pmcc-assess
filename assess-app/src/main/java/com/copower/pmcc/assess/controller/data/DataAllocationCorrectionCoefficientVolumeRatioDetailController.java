@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.dal.basis.entity.DataAllocationCorrectionCoefficientVolumeRatioDetail;
 import com.copower.pmcc.assess.dto.output.data.DataAllocationCorrectionCoefficientVolumeRatioDetailVo;
+import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.data.DataAllocationCorrectionCoefficientVolumeRatioDetailService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
@@ -11,6 +12,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Iterator;
 
 /**
  * @author: zch
@@ -21,9 +27,10 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class DataAllocationCorrectionCoefficientVolumeRatioDetailController {
 
-    private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private DataAllocationCorrectionCoefficientVolumeRatioDetailService volumeRatioDetailService;
+    @Autowired
+    private BaseService baseService;
 
     @RequestMapping(value = "/getBootstrapTableVo", method = {RequestMethod.GET}, name = "房价指数 列表")
     public BootstrapTableVo getBootstrapTableVo(DataAllocationCorrectionCoefficientVolumeRatioDetail oo) {
@@ -37,8 +44,8 @@ public class DataAllocationCorrectionCoefficientVolumeRatioDetailController {
         try {
             coefficientVolumeRatioDetailVo = volumeRatioDetailService.getDataAllocationCorrectionCoefficientVolumeRatioDetailVo(volumeRatioDetailService.getDataAllocationCorrectionCoefficientVolumeRatioDetailById(id));
         } catch (Exception e) {
-            logger.error(e.getMessage());
-            return HttpResult.newErrorResult(e.getMessage());
+            baseService.writeExceptionInfo(e);
+            return HttpResult.newErrorResult(500, e.getMessage());
         }
         return HttpResult.newCorrectResult(coefficientVolumeRatioDetailVo);
     }
@@ -49,8 +56,8 @@ public class DataAllocationCorrectionCoefficientVolumeRatioDetailController {
         try {
             volumeRatioDetailService.saveDataAllocationCorrectionCoefficientVolumeRatioDetail(coefficientVolumeRatioDetail);
         } catch (Exception e) {
-            logger.error(e.getMessage());
-            return HttpResult.newErrorResult(e.getMessage());
+            baseService.writeExceptionInfo(e);
+            return HttpResult.newErrorResult(500, e.getMessage());
         }
         return HttpResult.newCorrectResult();
     }
@@ -64,10 +71,27 @@ public class DataAllocationCorrectionCoefficientVolumeRatioDetailController {
                 volumeRatioDetailService.deleteDataAllocationCorrectionCoefficientVolumeRatioDetail(id);
             }
         } catch (Exception e) {
-            logger.error(e.getMessage());
-            return HttpResult.newErrorResult(e.getMessage());
+            baseService.writeExceptionInfo(e);
+            return HttpResult.newErrorResult(500, e.getMessage());
         }
         return HttpResult.newCorrectResult();
+    }
+
+    @RequestMapping(value = "/importDataAllocationCorrectionCoefficientVolumeRatio", name = "导入 (excel)", method = RequestMethod.POST)
+    public HttpResult importDataAllocationCorrectionCoefficientVolumeRatio(DataAllocationCorrectionCoefficientVolumeRatioDetail oo,HttpServletRequest request){
+        try {
+            MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+            Iterator<String> fileNames = multipartRequest.getFileNames();
+            MultipartFile multipartFile = multipartRequest.getFile(fileNames.next());
+            if (multipartFile.isEmpty()) {
+                return HttpResult.newErrorResult("上传的文件不能为空");
+            }
+            String resultString = volumeRatioDetailService.importDataAllocationCorrectionCoefficientVolumeRatio(multipartFile,oo) ;
+            return HttpResult.newCorrectResult(200,resultString);
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
+            return HttpResult.newErrorResult(500, e.getMessage());
+        }
     }
 
     /**

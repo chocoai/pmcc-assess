@@ -4,10 +4,8 @@ import com.copower.pmcc.assess.common.ArithmeticUtils;
 import com.copower.pmcc.assess.common.PoiUtils;
 import com.copower.pmcc.assess.common.RomanNumeral;
 import com.copower.pmcc.assess.constant.AssessCacheConstant;
-import com.copower.pmcc.assess.dal.basis.dao.data.DataAllocationCorrectionCoefficientVolumeRatioDetailDao;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataLandLevelDetailDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.basis.entity.DataAllocationCorrectionCoefficientVolumeRatioDetail;
 import com.copower.pmcc.assess.dal.basis.entity.DataLandLevelDetail;
 import com.copower.pmcc.assess.dto.output.data.DataLandLevelDetailVo;
 import com.copower.pmcc.assess.service.BaseService;
@@ -17,8 +15,7 @@ import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
-import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
-import com.copower.pmcc.erp.common.utils.DateUtils;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.constant.CacheConstant;
 import com.github.pagehelper.Page;
@@ -35,14 +32,14 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileInputStream;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 /**
@@ -63,9 +60,40 @@ public class DataLandLevelDetailService {
     @Autowired
     private BaseService baseService;
     @Autowired
-    private DataAllocationCorrectionCoefficientVolumeRatioDetailDao dataAllocationCorrectionCoefficientVolumeRatioDetailDao;
+    private JdbcTemplate jdbcTemplate;
 
-    private boolean importLandLevelDetail(DataLandLevelDetail oo, StringBuilder builder, Row row, int i) throws Exception {
+
+    /**
+     * 查询是否存在某种类型的元素
+     *
+     * @param landLevelId
+     * @param classify
+     * @param type
+     * @return
+     * @throws Exception
+     */
+    private int queryForInt(Integer landLevelId, String classify, String type, Integer pid) throws Exception {
+        if (landLevelId == null) {
+            throw new Exception("landLevelId 此参数不能为null !");
+        }
+        StringBuilder sql = new StringBuilder(8);
+        sql.append(" select count(*) from ").append(FormatUtils.entityNameConvertToTableName(DataLandLevelDetail.class)).append(" where 1=1 ");
+        sql.append(" and ").append(" land_level_id = ").append(landLevelId).append(" ");
+        sql.append(" and ").append(" bis_delete = ").append(false).append(" ");
+        if (StringUtils.isNotBlank(classify)) {
+            sql.append(" and ").append(" classify = ").append(classify).append(" ");
+        }
+        if (StringUtils.isNotBlank(type)) {
+            sql.append(" and ").append(" type = ").append(type).append(" ");
+        }
+        if (pid != null && pid != 0) {
+            sql.append(" and ").append(" pid = ").append(pid).append(" ");
+        }
+        return this.jdbcTemplate.queryForObject(sql.toString(), Integer.class);
+    }
+
+
+    private boolean importLandLevelDetail(DataLandLevelDetail target, StringBuilder builder, Row row, int i) throws Exception {
         List<BaseDataDic> classTypes = baseDataDicService.getCacheDataDicList("data.land.level.classify");
         List<BaseDataDic> types = baseDataDicService.getCacheDataDicList("data.land.level.roman");
         for (int j = 0; j < 18; j++) {
@@ -77,7 +105,7 @@ public class DataLandLevelDetailService {
                         if (typeDic == null) {
                             builder.append(String.format("\n第%s行异常：类型与系统配置的名称不一致(共有情况)", i));
                         } else {
-                            oo.setClassify(typeDic.getId().toString());
+                            target.setClassify(typeDic.getId().toString());
                         }
                     } else {
                         builder.append(String.format("\n第%s行异常：类型没有填写正确", i));
@@ -91,7 +119,7 @@ public class DataLandLevelDetailService {
                         if (typeDic == null) {
                             builder.append(String.format("\n第%s行异常：类型与系统配置的名称不一致(共有情况)", i));
                         } else {
-                            oo.setType(typeDic.getId().toString());
+                            target.setType(typeDic.getId().toString());
                         }
                     } else {
                         builder.append(String.format("\n第%s行异常：类型没有填写正确", i));
@@ -101,49 +129,49 @@ public class DataLandLevelDetailService {
                 case 2: {
                     String value = PoiUtils.getCellValue(row.getCell(j));
                     if (org.apache.commons.lang3.StringUtils.isNotBlank(value)) {
-                        oo.setPrice(ArithmeticUtils.createBigDecimal(value));
+                        target.setPrice(ArithmeticUtils.createBigDecimal(value));
                     }
                     break;
                 }
                 case 3: {
                     String value = PoiUtils.getCellValue(row.getCell(j));
                     if (org.apache.commons.lang3.StringUtils.isNotBlank(value)) {
-                        oo.setMuPrice(ArithmeticUtils.createBigDecimal(value));
+                        target.setMuPrice(ArithmeticUtils.createBigDecimal(value));
                     }
                     break;
                 }
                 case 4: {
                     String value = PoiUtils.getCellValue(row.getCell(j));
                     if (org.apache.commons.lang3.StringUtils.isNotBlank(value)) {
-                        oo.setVolumeRate(ArithmeticUtils.createBigDecimal(value));
+                        target.setVolumeRate(ArithmeticUtils.createBigDecimal(value));
                     }
                     break;
                 }
                 case 5: {
                     String value = PoiUtils.getCellValue(row.getCell(j));
                     if (org.apache.commons.lang3.StringUtils.isNotBlank(value)) {
-                        oo.setLegalAge(ArithmeticUtils.createBigDecimal(value));
+                        target.setLegalAge(ArithmeticUtils.createBigDecimal(value));
                     }
                     break;
                 }
                 case 6: {
                     String value = PoiUtils.getCellValue(row.getCell(j));
                     if (org.apache.commons.lang3.StringUtils.isNotBlank(value)) {
-                        oo.setLandAcquisitionProportion(value);
+                        target.setLandAcquisitionProportion(value);
                     }
                     break;
                 }
                 case 7: {
                     String value = PoiUtils.getCellValue(row.getCell(j));
                     if (org.apache.commons.lang3.StringUtils.isNotBlank(value)) {
-                        oo.setLevelRange(value);
+                        target.setLevelRange(value);
                     }
                     break;
                 }
                 case 8: {
                     String value = PoiUtils.getCellValue(row.getCell(j));
                     if (org.apache.commons.lang3.StringUtils.isNotBlank(value)) {
-                        oo.setMainStreet(value);
+                        target.setMainStreet(value);
                     }
                     break;
                 }
@@ -154,7 +182,7 @@ public class DataLandLevelDetailService {
         return true;
     }
 
-    public String importLandLevelDetail(DataLandLevelDetail input,List<DataLandLevelDetail> dataLandLevelDetailList ,MultipartFile multipartFile) throws Exception {
+    public String importLandLevelDetail(DataLandLevelDetail input, MultipartFile multipartFile) throws Exception {
         StringBuilder builder = new StringBuilder(10);
         Workbook workbook = null;
         Row row = null;
@@ -189,7 +217,6 @@ public class DataLandLevelDetailService {
         for (int i = startRowNumber; i < rowLength + startRowNumber; i++) {
             DataLandLevelDetail target = null;
             //标识符
-            boolean flag = true;
             try {
                 row = sheet.getRow(i);
                 if (row == null) {
@@ -203,20 +230,118 @@ public class DataLandLevelDetailService {
                 if (!this.importLandLevelDetail(target, builder, row, i)) {
                     continue;
                 }
-            } catch (Exception e) {
-                flag = false;
-                builder.append(String.format("\n第%s行异常：%s", i + 1, e.getMessage()));
-            }
-            if (flag) {
                 saveAndUpdateDataLandLevelDetail(target);
-                dataLandLevelDetailList.add(target) ;
                 successCount++;
+            } catch (Exception e) {
+                builder.append(String.format("\n第%s行异常：%s", i + 1, e.getMessage()));
             }
         }
         return String.format("数据总条数%s，成功%s，失败%s。%s", rowLength, successCount, rowLength - successCount, builder.toString());
     }
 
-    public void saveAndUpdateDataLandLevelDetail(DataLandLevelDetail dataLandLevelDetail) {
+    public synchronized void saveAndUpdateDataLandLevelDetail(DataLandLevelDetail targetObj) throws Exception {
+        if (targetObj == null) {
+            return;
+        }
+        if (targetObj.getLandLevelId() == null) {
+            throw new Exception("未挂钩上土地区域数据!");
+        }
+        final AtomicInteger atomicInteger = new AtomicInteger(0);
+        StringBuilder stringBuilder = new StringBuilder(8);
+        DataLandLevelDetail parent = null;
+        DataLandLevelDetail child = null;
+        final int zero = 0;
+        int classNumber;
+        int typeNumber;
+        boolean isPidNull = true;
+        boolean isClassifyNull = false;
+        boolean isTypeNull = false;
+        if (targetObj.getPid() == null || targetObj.getPid() == 0) {
+            isPidNull = false;
+        }
+        isClassifyNull = StringUtils.isNotEmpty(targetObj.getClassify());
+        isTypeNull = StringUtils.isNotEmpty(targetObj.getType());
+
+        if (targetObj.getId() != null) {
+            saveAndUpdateBaseDataLandLevelDetail(targetObj);
+        }
+
+        if (targetObj.getId() == null) {
+
+            //直接从页面添加的情况
+            classLabel:
+            if (isClassifyNull) {
+                classNumber = queryForInt(targetObj.getLandLevelId(), targetObj.getClassify(), null, 0);
+                if (classNumber > zero) {
+                    stringBuilder.append("已经存在这个类型的数据了! \r");
+                    //在跳出之前判断一下 是否能添加子类
+                    if (isTypeNull) {
+                        typeNumber = queryForInt(targetObj.getLandLevelId(), null, targetObj.getType(), targetObj.getPid());
+                        if (typeNumber == zero) {
+                            //说明可以添加这个子类,找出pid然后设置isPidNull为true
+                            DataLandLevelDetail select = new DataLandLevelDetail();
+                            select.setLandLevelId(targetObj.getLandLevelId());
+                            select.setClassify(targetObj.getClassify());
+                            select.setBisDelete(false);
+                            List<DataLandLevelDetail> dataLandLevelDetailList = getDataLandLevelDetailList(select);
+                            if (CollectionUtils.isNotEmpty(dataLandLevelDetailList)) {
+                                if (dataLandLevelDetailList.size() == 1) {
+                                    isPidNull = true;
+                                    targetObj.setPid(dataLandLevelDetailList.get(0).getId());
+                                }
+                            }
+                        }
+                    }
+                    break classLabel;//跳出这里继续执行
+                }
+                parent = new DataLandLevelDetail();
+                BeanUtils.copyProperties(targetObj, parent);
+                parent.setPid(0);
+                parent.setPrice(null);
+                parent.setType(null);
+                parent.setMainStreet(null);
+                parent.setMuPrice(null);
+                parent.setLevelRange(null);
+                parent.setLandAcquisitionProportion(null);
+                saveAndUpdateBaseDataLandLevelDetail(parent);
+                atomicInteger.incrementAndGet();
+                targetObj.setPid(parent.getId());
+                isPidNull = targetObj.getPid() != null;
+                parent = null;
+            }
+
+            typeLabel:
+            if (isPidNull) {
+                if (isTypeNull) {
+                    parent = getDataLandLevelDetailById(targetObj.getPid());
+                    if (parent == null) {
+                        break typeLabel;
+                    }
+                    typeNumber = queryForInt(parent.getLandLevelId(), null, targetObj.getType(), targetObj.getPid());
+                    if (typeNumber > zero) {
+                        stringBuilder.append("已经存在这个类别的数据了! \r");
+                        break typeLabel;
+                    }
+                    child = new DataLandLevelDetail();
+                    BeanUtils.copyProperties(targetObj, child);
+                    child.setLegalAge(null);
+                    child.setClassify(null);
+                    child.setVolumeRate(null);
+                    saveAndUpdateBaseDataLandLevelDetail(child);
+                    atomicInteger.incrementAndGet();
+                    child = null;
+                }
+            }
+
+
+        }
+        if (atomicInteger.get() == 0) {
+            throw new Exception(stringBuilder.toString());
+        }
+    }
+
+
+    public void saveAndUpdateBaseDataLandLevelDetail(DataLandLevelDetail dataLandLevelDetail) {
         if (dataLandLevelDetail.getId() == null || dataLandLevelDetail.getId() == 0) {
             dataLandLevelDetail.setCreator(commonService.thisUserAccount());
             dataLandLevelDetailDao.addDataLandLevelDetail(dataLandLevelDetail);
@@ -224,6 +349,7 @@ public class DataLandLevelDetailService {
             dataLandLevelDetailDao.updateDataLandLevelDetail(dataLandLevelDetail);
         }
     }
+
 
     public DataLandLevelDetail getDataLandLevelDetailById(Integer id) {
         return dataLandLevelDetailDao.getDataLandLevelDetailById(id);
@@ -352,11 +478,20 @@ public class DataLandLevelDetailService {
      *
      * @param id
      */
-    public void removeDataLandLevelDetail(Integer id) {
+    public void removeDataLandLevelDetail(Integer id) throws Exception {
+        final int zero = 0;
         DataLandLevelDetail levelDetail = dataLandLevelDetailDao.getDataLandLevelDetailById(id);
         if (levelDetail != null) {
-            levelDetail.setBisDelete(true);
-            dataLandLevelDetailDao.updateDataLandLevelDetail(levelDetail);
+            int typeNumber = zero;
+            if (levelDetail.getPid() == zero) {//说明是父级,需要判断一下
+                typeNumber = queryForInt(levelDetail.getLandLevelId(), null, null, levelDetail.getId());
+            }
+            if (typeNumber == zero) {
+                levelDetail.setBisDelete(true);
+                dataLandLevelDetailDao.updateDataLandLevelDetail(levelDetail);
+            } else {
+                throw new Exception("存在子层级,假如要删除请删除子级在删除");
+            }
         }
     }
 
@@ -404,11 +539,11 @@ public class DataLandLevelDetailService {
 
 
     //获取最上级明细
-    public DataLandLevelDetail getPidByDataLandLevelDetail(Integer dataLandLevelDetailId){
+    public DataLandLevelDetail getPidByDataLandLevelDetail(Integer dataLandLevelDetailId) {
         DataLandLevelDetail dataLandLevelDetail = getDataLandLevelDetailById(dataLandLevelDetailId);
-        if(dataLandLevelDetail.getPid()==null||dataLandLevelDetail.getPid()==0) {
+        if (dataLandLevelDetail.getPid() == null || dataLandLevelDetail.getPid() == 0) {
             return dataLandLevelDetail;
-        }else {
+        } else {
             getPidByDataLandLevelDetail(dataLandLevelDetail.getPid());
         }
         return null;

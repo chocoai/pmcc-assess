@@ -218,10 +218,10 @@ public class DataLandLevelController {
     public HttpResult saveAndUpdateDataLandLevelDetail(DataLandLevelDetail dataLandLevelDetail) {
         try {
             dataLandLevelDetailService.saveAndUpdateDataLandLevelDetail(dataLandLevelDetail);
-            return HttpResult.newCorrectResult(getZtreeDto(dataLandLevelDetailService.getDataLandLevelDetailVo(dataLandLevelDetail)));
+            return HttpResult.newCorrectResult("success");
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
-            return HttpResult.newErrorResult("保存异常");
+            return HttpResult.newErrorResult(500,String.join("","",e.getMessage()));
         }
     }
 
@@ -244,7 +244,7 @@ public class DataLandLevelController {
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
-            return HttpResult.newErrorResult("删除异常");
+            return HttpResult.newErrorResult(e.getMessage());
         }
     }
 
@@ -258,16 +258,8 @@ public class DataLandLevelController {
             if (multipartFile.isEmpty()) {
                 return HttpResult.newErrorResult("上传的文件不能为空");
             }
-            List<DataLandLevelDetail> dataLandLevelDetailList = Lists.newArrayList();
-            String resultString = dataLandLevelDetailService.importLandLevelDetail(dataLandLevelDetail, dataLandLevelDetailList, multipartFile);
-            List<ZtreeDto> ztreeDtoList = new ArrayList<ZtreeDto>(dataLandLevelDetailList.size());
-            if (CollectionUtils.isNotEmpty(dataLandLevelDetailList)) {
-                dataLandLevelDetailList.forEach(landLevelDetail -> ztreeDtoList.add(getZtreeDto(dataLandLevelDetailService.getDataLandLevelDetailVo(landLevelDetail))));
-            }
-            Map<String, Object> map = new HashMap<>(2);
-            map.put("info", resultString);
-            map.put("item", ztreeDtoList);
-            return HttpResult.newCorrectResult(200, map);
+            String resultString = dataLandLevelDetailService.importLandLevelDetail(dataLandLevelDetail,  multipartFile);
+            return HttpResult.newCorrectResult(200, resultString);
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult(500, e.getMessage());

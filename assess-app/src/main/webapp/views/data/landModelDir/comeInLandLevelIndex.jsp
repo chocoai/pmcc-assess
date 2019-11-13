@@ -126,6 +126,12 @@
 
                             <input type="file" id="ajaxFileUploadLandLevelDetail" name="file" style="display: none;"
                                    onchange="landLevel.importLandLevelDetail(false);">
+
+                            <input type="file" id="ajaxFileUploadLandLevelDetailAchievement" name="file" style="display: none;"
+                                   onchange="landLevel.importDataLandDetailAchievement(false);">
+
+                            <input type="file" id="ajaxFileUploadLandLevelDetailCoefficientVolumeRatio" name="file" style="display: none;"
+                                   onchange="landLevel.importDataAllocationCorrectionCoefficientVolumeRatio(false);">
                         </div>
                     </div>
                 </div>

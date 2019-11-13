@@ -2,9 +2,14 @@ package com.copower.pmcc.assess.service.data;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.copower.pmcc.assess.common.ArithmeticUtils;
+import com.copower.pmcc.assess.common.PoiUtils;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataLandDetailAchievementDao;
+import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.DataLandDetailAchievement;
 import com.copower.pmcc.assess.dto.output.data.DataLandDetailAchievementVo;
+import com.copower.pmcc.assess.service.BaseService;
+import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -21,16 +26,23 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileInputStream;
 import java.util.*;
 import java.util.stream.Collectors;
 
 /**
  * @author: zch
  * @date: 2019/5/5 10:18
- * @description:土地级别详情从表
+ * @description:基准地价 土地因素
  */
 @Service
 public class DataLandDetailAchievementService {
@@ -40,6 +52,138 @@ public class DataLandDetailAchievementService {
     private CommonService commonService;
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private BaseService baseService;
+    @Autowired
+    private BaseAttachmentService baseAttachmentService;
+
+    private boolean importDataLandDetailAchievement(DataLandDetailAchievement target, StringBuilder builder, Row row, int i) throws Exception {
+        final int rowLength = 5;
+        List<BaseDataDic> types = baseDataDicService.getCacheDataDicList("programme.market.costApproach.factor");
+        List<BaseDataDic> grades = baseDataDicService.getCacheDataDicList("programme.market.costApproach.grade");
+        for (int j = 0; j < rowLength; j++) {
+            switch (j) {
+                case 0: {
+                    String value = PoiUtils.getCellValue(row.getCell(j));
+                    if (org.apache.commons.lang.StringUtils.isNotBlank(value)) {
+                        BaseDataDic typeDic = baseDataDicService.getDataDicByName(types, value);
+                        if (typeDic == null) {
+                            builder.append(String.format("\n第%s行异常：类型与系统配置的名称不一致", i));
+                        } else {
+                            target.setType(typeDic.getId());
+                        }
+                    } else {
+                        builder.append(String.format("\n第%s行异常：类型没有填写正确", i));
+                    }
+                    break;
+                }
+                case 1: {
+                    String value = PoiUtils.getCellValue(row.getCell(j));
+                    if (org.apache.commons.lang.StringUtils.isNotBlank(value)) {
+                        if (target.getType() != null) {
+                            BaseDataDic typeDic = baseDataDicService.getDataDicByName(baseDataDicService.getCacheDataDicListByPid(target.getType()), value);
+                            if (typeDic == null) {
+                                builder.append(String.format("\n第%s行异常：类型与系统配置的名称不一致", i));
+                            } else {
+                                target.setCategory(typeDic.getId().toString());
+                            }
+                        }
+                    } else {
+                        builder.append(String.format("\n第%s行异常：类型没有填写正确", i));
+                    }
+                    break;
+                }
+                case 2: {
+                    String value = PoiUtils.getCellValue(row.getCell(j));
+                    if (org.apache.commons.lang.StringUtils.isNotBlank(value)) {
+                        if (target.getType() != null) {
+                            BaseDataDic typeDic = baseDataDicService.getDataDicByName(grades, value);
+                            if (typeDic == null) {
+                                builder.append(String.format("\n第%s行异常：类型与系统配置的名称不一致", i));
+                            } else {
+                                target.setGrade(typeDic.getId());
+                            }
+                        }
+                    } else {
+                        builder.append(String.format("\n第%s行异常：类型没有填写正确", i));
+                    }
+                    break;
+                }
+                case 3: {
+                    String value = PoiUtils.getCellValue(row.getCell(j));
+                    if (org.apache.commons.lang3.StringUtils.isNotBlank(value)) {
+                        target.setAchievement(ArithmeticUtils.createBigDecimal(value));
+                    }
+                    break;
+                }
+                case 4: {
+                    String value = PoiUtils.getCellValue(row.getCell(j));
+                    if (org.apache.commons.lang3.StringUtils.isNotBlank(value)) {
+                        target.setReamark(value);
+                    }
+                    break;
+                }
+                default:
+                    break;
+            }
+        }
+        return true;
+    }
+
+    public String importDataLandDetailAchievement(MultipartFile multipartFile, DataLandDetailAchievement input) throws Exception {
+        StringBuilder builder = new StringBuilder(10);
+        Workbook workbook = null;
+        Row row = null;
+        //1.保存文件
+        String filePath = baseAttachmentService.saveUploadFile(multipartFile);
+        //2.读取文件
+        try {
+            FileInputStream inputStream = new FileInputStream(filePath);
+            workbook = WorkbookFactory.create(inputStream);
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e, "基准地价 土地因素");
+        }
+        //只取第一个sheet
+        Sheet sheet = workbook.getSheetAt(0);
+        //工作表的第一行
+        row = sheet.getRow(0);
+        //读取数据的起始行
+        int startRowNumber = 1;
+        //导入成功数据条数
+        int successCount = 0;
+        //总列数
+        int colLength = row.getPhysicalNumberOfCells() != 0 ? row.getPhysicalNumberOfCells() : row.getLastCellNum();
+        //总行数
+        int rowLength = sheet.getPhysicalNumberOfRows() != 0 ? sheet.getPhysicalNumberOfRows() : sheet.getLastRowNum();
+        rowLength = rowLength - startRowNumber;
+        if (rowLength == 0) {
+            builder.append("没有数据!");
+            return builder.toString();
+        }
+        for (int i = startRowNumber; i < rowLength + startRowNumber; i++) {
+            DataLandDetailAchievement target = null;
+            //标识符
+            try {
+                row = sheet.getRow(i);
+                if (row == null) {
+                    builder.append(String.format("\n第%s行异常：%s", i, "没有数据"));
+                    continue;
+                }
+                target = new DataLandDetailAchievement();
+                BeanUtils.copyProperties(input, target);
+                target.setId(null);
+                //excel 处理
+                if (!this.importDataLandDetailAchievement(target, builder, row, i)) {
+                    continue;
+                }
+                saveDataLandDetailAchievement(target);
+                successCount++;
+            } catch (Exception e) {
+                builder.append(String.format("\n第%s行异常：%s", i + 1, e.getMessage()));
+            }
+        }
+        return String.format("数据总条数%s，成功%s，失败%s。%s", rowLength, successCount, rowLength - successCount, builder.toString());
+    }
 
     public boolean saveDataLandDetailAchievement(DataLandDetailAchievement oo) {
         if (oo.getId() == null || oo.getId() == 0) {

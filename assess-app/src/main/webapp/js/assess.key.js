@@ -314,5 +314,7 @@ AssessFTKey.ftDeclareBuildEquipmentInstall = "ft.declare.build.equipmentInstall"
 AssessFTKey.ftOperationManualCaseBase = "ft.operation.manual.case.base";//案例库操作手册
 AssessFTKey.ftProjectDispatchRegister = "ft.project.dispatch.register";//项目发文登记表模板
 
-AssessFTKey.ftpLandLevelAreaBaseTemplate = "ftp.land.level.area.base.template";//土地级别区域
-AssessFTKey.ftpLandLevelDetailBaseTemplate = "ftp.land.level.detail.base.template";//土地级别区域 详情
+AssessFTKey.ftpLandLevelAreaBaseTemplate = "ftp.land.level.area.base.template";//	基准地价 区域
+AssessFTKey.ftpLandLevelDetailBaseTemplate = "ftp.land.level.detail.base.template";//基准地价 级别 详情
+AssessFTKey.ftpLandLevelDetailBaseAchievementTemplate = "ftp.land.level.detail.base.achievement.template";//	基准地价 土地因素
+AssessFTKey.ftpLandLevelDetailBaseCoefficientTemplate = "ftp.land.level.detail.base.coefficient.template";//	基准地价 容积率

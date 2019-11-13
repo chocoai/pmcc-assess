@@ -198,11 +198,11 @@ landLevel.editData = function (id) {
 
 //---------------------------土地级别start---------------------------------------//
 landLevel.loadLandLevelList = function (select) {
-    if (select == undefined || select == null ){
-        select = {} ;
+    if (select == undefined || select == null) {
+        select = {};
     }
     var cols = [];
-    if (select.checkbox){
+    if (select.checkbox) {
         cols.push({
             field: 'ckeckbox',
             checkbox: true
@@ -233,7 +233,7 @@ landLevel.loadLandLevelList = function (select) {
     cols.push({field: 'landRightTypeName', title: '权利类型'});
     cols.push({field: 'townShipName', title: '乡镇名称'});
     var elShow = landLevel.getElShow();
-    if (elShow){
+    if (elShow) {
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
@@ -245,7 +245,7 @@ landLevel.loadLandLevelList = function (select) {
                 return str;
             }
         });
-    }else {
+    } else {
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
@@ -280,45 +280,118 @@ landLevel.loadLandLevelList = function (select) {
 
 
 landLevel.treeLandLevelDetailListModal = function (id) {
+    var box = landLevel.config.land_level_detail_tree_modal;
     this.loadTree(id);
-    this.initLandLevelDetailForm({landLevelId: id, pid: 0});
-    landLevel.config.land_level_detail_tree_modal.modal();
+    this.initLandLevelDetailForm({landLevelId: id, pid: 0}, "none");
+    box.modal();
+    var form = box.find("form").first();
+    if (form.size() != 0) {
+        form.initForm({
+            price: '',
+            muPrice: '',
+            volumeRate: '',
+            legalAge: '',
+            landAcquisitionProportion: '',
+            mainStreet: ''
+        });
+    }
 };
 
 //土地级别赋值
-landLevel.initLandLevelDetailForm = function (data) {
+landLevel.initLandLevelDetailForm = function (data, key) {
     var box = landLevel.config.land_level_detail_modal;
     var frm = box.find("form");
+    this.initLandLevelDetailBaseForm(frm, data, key);
+};
+
+landLevel.initLandLevelDetailBaseForm = function (frm, data, key) {
     var item = formSerializeArray(frm);
     frm.clearAll();
     if (!data.landLevelId) {
         data.landLevelId = item.landLevelId;
     }
-    if (!data.pid) {
-        data.pid = item.pid;
-    }
     frm.initForm(data);
-
-    AssessCommon.loadDataDicByKey(AssessDicKey.DATA_LAND_LEVEL_CLASSIFY, data.landRightType, function (html, data) {
-        var ele = frm.find("select[name='classify']");
-        ele.empty().html(html).trigger('change');
-        if (item.pid) {
-            landLevel.getDataLandLevelDetailById(item.pid, function (result) {
-                ele.val(result.classify).trigger("change");
-            });
+    var parents = [
+        frm.find("[name='classify']").parent().parent(),
+        frm.find("[name='volumeRate']").parent().parent(),
+        frm.find("[name='legalAge']").parent().parent()
+    ];
+    var children = [
+        frm.find("[name='mainStreet']").parent().parent(),
+        frm.find("[name='levelRange']").parent().parent(),
+        frm.find("[name='landAcquisitionProportion']").parent().parent(),
+        frm.find("[name='muPrice']").parent().parent(),
+        frm.find("[name='price']").parent().parent(),
+        frm.find("[name='type']").parent().parent()
+    ];
+    if (key) {
+        switch (key) {
+            case 'parent': {
+                $.each(parents, function (i, ele) {
+                    ele.show();
+                });
+                $.each(children, function (i, ele) {
+                    ele.hide();
+                });
+                break;
+            }
+            case 'child': {
+                $.each(parents, function (i, ele) {
+                    ele.hide();
+                });
+                $.each(children, function (i, ele) {
+                    ele.show();
+                });
+                break;
+            }
+            case 'none': {
+                $.each(parents, function (i, ele) {
+                    ele.show();
+                });
+                $.each(children, function (i, ele) {
+                    ele.show();
+                });
+                break;
+            }
+            default:
+                break;
         }
+    }
+    AssessCommon.loadDataDicByKey(AssessDicKey.DATA_LAND_LEVEL_CLASSIFY, data.classify, function (html, data) {
+        frm.find("select[name='classify']").empty().html(html).trigger('change');
     });
-
-    AssessCommon.loadDataDicByKey(AssessDicKey.DATA_LAND_LEVEL_ROMAN, data.landRightType, function (html, data) {
+    AssessCommon.loadDataDicByKey(AssessDicKey.DATA_LAND_LEVEL_ROMAN, data.type, function (html, data) {
         frm.find("select[name='type']").empty().html(html).trigger('change');
     });
 };
 
 //新增土地级别
-landLevel.addLandLevelDetail = function (data) {
+landLevel.addLandLevelDetail = function () {
     var box = landLevel.config.land_level_detail_modal;
-    landLevel.initLandLevelDetailForm(data);
-    box.modal();
+    var zTree = $.fn.zTree.getZTreeObj(landLevel.config.tree.prop("id"));
+    var nodes = zTree.getSelectedNodes();
+    var data = {};
+    var key = "none";
+    if (nodes.length == 1) {
+        var treeNode = nodes[0];
+        switch (treeNode.pid) {
+            case 0: {
+                key = "child";
+                data.pid = treeNode.id;
+                break
+            }
+            default: {
+                key = undefined;
+                toastr.success('不能在此层级添加子级!');
+                break;
+            }
+        }
+
+    }
+    if (key) {
+        landLevel.initLandLevelDetailForm(data, key);
+        box.modal();
+    }
 };
 
 
@@ -377,20 +450,22 @@ landLevel.saveLandLevelDetail = function () {
             Loading.progressHide();
             if (result.ret) {
                 toastr.success('保存成功');
-                var item = result.data;
-                var zTree = $.fn.zTree.getZTreeObj(landLevel.config.tree.prop("id"));
-                var parentNode = null;
-                if (data.tId) {
-                    parentNode = zTree.getNodeByTId(data.tId);
-                }
-                if (data.id) {
-                    //修改 ==>第一种方式是修改完数据然后直接刷新树,第二种是修改完成后拿到node然后在拿到父级接着删除这个节点然后利用最新节点添加节点,最后最好一种是直接更新节点
-                    parentNode.name = item.name;
-                    zTree.updateNode(parentNode);
-                } else {
-                    //新增
-                    zTree.addNodes(parentNode, item);//当parentNode id为null一般是添加到第一级(参考zTree api 那上面是这样说的)
-                }
+                // var item = result.data;
+                // var zTree = $.fn.zTree.getZTreeObj(landLevel.config.tree.prop("id"));
+                // var parentNode = null;
+                // if (data.tId) {
+                //     parentNode = zTree.getNodeByTId(data.tId);
+                // }
+                // if (data.id) {
+                //     //修改 ==>第一种方式是修改完数据然后直接刷新树,第二种是修改完成后拿到node然后在拿到父级接着删除这个节点然后利用最新节点添加节点,最后最好一种是直接更新节点
+                //     parentNode.name = item.name;
+                //     zTree.updateNode(parentNode);
+                // } else {
+                //     //新增
+                //     zTree.addNodes(parentNode, item);//当parentNode id为null一般是添加到第一级(参考zTree api 那上面是这样说的)
+                // }
+                landLevel.loadTree(data.landLevelId);
+                // Alert(result.data) ;
                 box.modal('hide');
             } else {
                 Alert(result.errmsg);
@@ -404,47 +479,22 @@ landLevel.importLandLevelDetail = function (flag) {
     var frm = box.find("form");
     var landLevelDetail = formSerializeArray(frm);
     var target = $('#ajaxFileUploadLandLevelDetail');
-    var zTree = $.fn.zTree.getZTreeObj(landLevel.config.tree.prop("id"));
     if (flag) {
-        var nodes = zTree.getSelectedNodes();
-        if (nodes.length > 1) {
-            toastr.success('只能选择一个作为层级');
-            return flag;
-        }
-        if (nodes.length == 1) {
-            var node = nodes[0];
-            target.attr({tId: node.tId});
-        }
         target.val('').trigger('click');
         return flag;
-    }
-
-    var tId = target.attr("tId");
-    var pid = 0;
-    var parentNode = null;
-    if (tId) {
-        parentNode = zTree.getNodeByTId(tId);
-        pid = parentNode.id;
     }
     $.ajaxFileUpload({
         type: "POST",
         url: getContextPath() + "/dataLandLevel/importLandLevelDetail",
-        data: {landLevelId:landLevelDetail.landLevelId,pid:pid},//要传到后台的参数，没有可以不写
+        data: {landLevelId: landLevelDetail.landLevelId},//要传到后台的参数，没有可以不写
         secureuri: false,//是否启用安全提交，默认为false
         fileElementId: target.prop("id"),//文件选择框的id属性
         dataType: 'json',//服务器返回的格式
         async: false,
         success: function (result) {
             if (result.ret) {
-                var dataValue = result.data;
-                var item = dataValue.item;
-                var info = dataValue.info;
-                if (item.length != 0) {
-                    $.each(item, function (i, data) {
-                        zTree.addNodes(parentNode, data);//当parentNode id为null一般是添加到第一级(参考zTree api 那上面是这样说的)
-                    });
-                }
-                Alert(info);
+                landLevel.loadTree(landLevelDetail.landLevelId);
+                Alert(result.data);
             }
         },
         error: function (result, status, e) {
@@ -464,8 +514,63 @@ function removeHoverDom(treeId, treeNode) {
     $("#addBtn_" + treeNode.tId).unbind().remove();
     $("#editBtn_" + treeNode.tId).unbind().remove();
     $("#deleteBtn_" + treeNode.tId).unbind().remove();
-    $("#factorBtn_" + treeNode.tId).unbind().remove();
-    $("#coefficientBtn_" + treeNode.tId).unbind().remove();
+    // $("#factorBtn_" + treeNode.tId).unbind().remove();
+    // $("#coefficientBtn_" + treeNode.tId).unbind().remove();
+}
+
+function zTreeOnClick(event, treeId, treeNode) {
+    var box = landLevel.config.land_level_detail_tree_modal;
+    var form = box.find("form").first();
+    landLevel.getDataLandLevelDetailById(treeNode.id, function (data) {
+        landLevel.initLandLevelDetailBaseForm(form, data);
+    });
+}
+
+function zTreeOnRemove() {
+    var zTree = $.fn.zTree.getZTreeObj(landLevel.config.tree.prop("id"));
+    var nodes = zTree.getSelectedNodes();
+    if (nodes.length > 1) {
+        toastr.success('只能选择一个作为层级');
+        return false;
+    }
+    if (nodes.length == 1) {
+        var node = nodes[0];
+        landLevel.deleteLandLevelDetail(node.id, function () {
+            zTree.removeNode(node);
+        });
+    } else {
+        toastr.success('选择删除层级');
+    }
+}
+
+
+function zTreeOnEdit() {
+    var box = landLevel.config.land_level_detail_modal;
+    var zTree = $.fn.zTree.getZTreeObj(landLevel.config.tree.prop("id"));
+    var nodes = zTree.getSelectedNodes();
+    if (nodes.length > 1) {
+        toastr.success('只能选择一个作为层级');
+        return false;
+    }
+    if (nodes.length == 1) {
+        var treeNode = nodes[0];
+        landLevel.getDataLandLevelDetailById(treeNode.id, function (data) {
+            data.tId = treeNode.tId;
+            switch (treeNode.pid) {
+                case 0: {
+                    landLevel.initLandLevelDetailForm(data, "parent");
+                    break
+                }
+                default: {
+                    landLevel.initLandLevelDetailForm(data, "child");
+                    break;
+                }
+            }
+            box.modal();
+        });
+    } else {
+        toastr.success('选择编辑层级');
+    }
 }
 
 /**
@@ -484,8 +589,8 @@ function addHoverDom(treeId, treeNode) {
     html += "<span class=' button remove' id='deleteBtn_" + treeNode.tId + "' title='删除数据'>" + "</span>";//定义删除按钮
 
 
-    html += "<span style='margin-left:5px;' class='  ' id='factorBtn_" + treeNode.tId + "' title='所关联土地因素数据'>" + "土地因素数据" + "<i class=''></i>" + "</span>";//所关联土地因素数据
-    html += "<span style='margin-left:5px;' class='  ' id='coefficientBtn_" + treeNode.tId + "' title='所关联土地容积率数据'>" + "土地容积率数据" + "<i class=''></i>" + "</span>";//所关联土地容积率数据
+    // html += "<span style='margin-left:5px;' class='  ' id='factorBtn_" + treeNode.tId + "' title='所关联土地因素数据'>" + "土地因素数据" + "<i class=''></i>" + "</span>";//所关联土地因素数据
+    // html += "<span style='margin-left:5px;' class='  ' id='coefficientBtn_" + treeNode.tId + "' title='所关联土地容积率数据'>" + "土地容积率数据" + "<i class=''></i>" + "</span>";//所关联土地容积率数据
 
 
     element.after(html); //加载添加按钮
@@ -493,23 +598,44 @@ function addHoverDom(treeId, treeNode) {
     var addBtn = $("#addBtn_" + treeNode.tId);
     var editBtn = $("#editBtn_" + treeNode.tId);
     var deleteBtn = $("#deleteBtn_" + treeNode.tId);
-    var factorBtn = $("#factorBtn_" + treeNode.tId);
-    var coefficientBtn = $("#coefficientBtn_" + treeNode.tId);
-    if (!elShow){
-        var array = [addBtn,editBtn,deleteBtn] ;
-        $.each(array,function (i,item) {
-            item.hide() ;
+    // var factorBtn = $("#factorBtn_" + treeNode.tId);
+    // var coefficientBtn = $("#coefficientBtn_" + treeNode.tId);
+    if (!elShow) {
+        var array = [addBtn, editBtn, deleteBtn];
+        $.each(array, function (i, item) {
+            item.hide();
         })
     }
+    var box = landLevel.config.land_level_detail_modal;
     //绑定添加事件，并定义添加操作
     if (addBtn) addBtn.bind("click", function (e) {
-        landLevel.addLandLevelDetail({pid: treeNode.id, tId: treeNode.tId});
+        switch (treeNode.pid) {
+            case 0: {
+                landLevel.initLandLevelDetailForm({pid: treeNode.id, tId: treeNode.tId}, "child");
+                box.modal();
+                break
+            }
+            default: {
+                toastr.success('不能在此层级添加子级!');
+                break;
+            }
+        }
     });
     //编辑
     if (editBtn) editBtn.bind("click", function (e) {
         landLevel.getDataLandLevelDetailById(treeNode.id, function (data) {
             data.tId = treeNode.tId;
-            landLevel.addLandLevelDetail(data);
+            switch (treeNode.pid) {
+                case 0: {
+                    landLevel.initLandLevelDetailForm(data, "parent");
+                    break
+                }
+                default: {
+                    landLevel.initLandLevelDetailForm(data, "child");
+                    break;
+                }
+            }
+            box.modal();
         });
     });
     //删除
@@ -519,12 +645,13 @@ function addHoverDom(treeId, treeNode) {
             zTree.removeNode(treeNode);
         });
     });
-    if (factorBtn) factorBtn.bind("click", function (e) {
-        landLevel.showDataLandDetailAchievementDetail(treeNode.id);
-    });
-    if (coefficientBtn) coefficientBtn.bind("click", function (e) {
-        landLevel.showDataAllocationCorrectionCoefficientVolumeRatioDetail(treeNode.id);
-    });
+    // if (factorBtn) factorBtn.bind("click", function (e) {
+    //     landLevel.showDataLandDetailAchievementDetail(treeNode.id);
+    // });
+
+    // if (coefficientBtn) coefficientBtn.bind("click", function (e) {
+    //     landLevel.showDataAllocationCorrectionCoefficientVolumeRatioDetail(treeNode.id);
+    // });
 }
 
 
@@ -543,6 +670,9 @@ landLevel.loadTree = function (landLevelId) {
         },
         check: {
             enable: false
+        },
+        callback: {
+            onClick: zTreeOnClick
         },
         data: {
             key: {
@@ -563,7 +693,9 @@ landLevel.loadTree = function (landLevelId) {
         data: {landLevelId: landLevelId},
         success: function (result) {
             if (result.ret) {
+                $.fn.zTree.destroy();
                 zTreeObj = $.fn.zTree.init(landLevel.config.tree, setting, result.data);
+                zTreeObj.expandAll(true);
             } else {
                 Alert("获取数据失败，失败原因:" + result.errmsg);
             }
@@ -595,10 +727,22 @@ landLevel.treeRefresh = function () {
 
 //------容积率 method start--------//
 
-landLevel.showDataAllocationCorrectionCoefficientVolumeRatioDetail = function (id) {
-    landLevel.config.dataAllocationCorrectionCoefficientVolumeRatioDetailTableBox.find("input[name='allocationVolumeRatioId']").val(id);
-    landLevel.config.dataAllocationCorrectionCoefficientVolumeRatioDetailTableBox.modal("show");
-    landLevel.showDataHousePriceIndexDetailList(id);
+landLevel.showDataAllocationCorrectionCoefficientVolumeRatioDetail = function () {
+    var box = landLevel.config.land_level_detail_modal;
+    var zTree = $.fn.zTree.getZTreeObj(landLevel.config.tree.prop("id"));
+    var nodes = zTree.getSelectedNodes();
+    if (nodes.length > 1) {
+        toastr.success('只能选择一个作为层级');
+        return false;
+    }
+    if (nodes.length == 1) {
+        var treeNode = nodes[0];
+        landLevel.config.dataAllocationCorrectionCoefficientVolumeRatioDetailTableBox.find("input[name='allocationVolumeRatioId']").val(treeNode.id);
+        landLevel.config.dataAllocationCorrectionCoefficientVolumeRatioDetailTableBox.modal("show");
+        landLevel.showDataHousePriceIndexDetailList(treeNode.id);
+    } else {
+        toastr.success('选择层级');
+    }
 };
 
 landLevel.showDataAllocationCorrectionCoefficientVolumeRatioDetailBox = function () {
@@ -626,6 +770,38 @@ landLevel.deleteDataAllocationCorrectionCoefficientVolumeRatioDetail = function 
             }
         })
     })
+};
+
+landLevel.importDataAllocationCorrectionCoefficientVolumeRatio = function (flag) {
+    var target = $('#ajaxFileUploadLandLevelDetailCoefficientVolumeRatio');
+    var allocationVolumeRatioId = "";
+    if (flag) {
+        allocationVolumeRatioId = landLevel.config.dataAllocationCorrectionCoefficientVolumeRatioDetailTableBox.find("input[name='allocationVolumeRatioId']").val();
+        target.val('').trigger('click');
+        target.attr({allocationVolumeRatioId: allocationVolumeRatioId});
+        return flag;
+    }
+    allocationVolumeRatioId = target.attr("allocationVolumeRatioId") ;
+    $.ajaxFileUpload({
+        type: "POST",
+        url: getContextPath() + "/dataAllocationCorrectionCoefficientVolumeRatioDetail/importDataAllocationCorrectionCoefficientVolumeRatio",
+        data: {allocationVolumeRatioId: allocationVolumeRatioId},//要传到后台的参数，没有可以不写
+        secureuri: false,//是否启用安全提交，默认为false
+        fileElementId: target.prop("id"),//文件选择框的id属性
+        dataType: 'json',//服务器返回的格式
+        async: false,
+        success: function (result) {
+            if (result.ret) {
+                landLevel.showDataHousePriceIndexDetailList(allocationVolumeRatioId);
+                Alert(result.data);
+            }
+        },
+        error: function (result, status, e) {
+            Loading.progressHide();
+            Alert("调用服务端方法失败，失败原因:" + result);
+        }
+    });
+
 };
 
 landLevel.editDataAllocationCorrectionCoefficientVolumeRatioDetail = function (index) {
@@ -663,7 +839,7 @@ landLevel.showDataHousePriceIndexDetailList = function (allocationVolumeRatioId)
     cols.push({field: 'plotRatio', title: '容积率'});
     cols.push({field: 'correctionFactor', title: '修正系数'});
     var elShow = landLevel.getElShow();
-    if (elShow){
+    if (elShow) {
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
@@ -690,10 +866,26 @@ landLevel.showDataHousePriceIndexDetailList = function (allocationVolumeRatioId)
 
 
 //------ 土地因素 method start--------//
-landLevel.showDataLandDetailAchievementDetail = function (id) {
-    landLevel.showLandDetailAchievementList(id);
-    landLevel.config.achievementBoxDetail.find("input[name='levelDetailId']").val(id);
-    landLevel.config.achievementBoxDetail.modal("show");
+landLevel.showDataLandDetailAchievementDetail = function () {
+    var box = landLevel.config.land_level_detail_modal;
+    var zTree = $.fn.zTree.getZTreeObj(landLevel.config.tree.prop("id"));
+    var nodes = zTree.getSelectedNodes();
+    if (nodes.length > 1) {
+        toastr.success('只能选择一个作为层级');
+        return false;
+    }
+    if (nodes.length == 1) {
+        var treeNode = nodes[0];
+        if (treeNode.pid > 0) {
+            landLevel.showLandDetailAchievementList(treeNode.id);
+            landLevel.config.achievementBoxDetail.find("input[name='levelDetailId']").val(treeNode.id);
+            landLevel.config.achievementBoxDetail.modal("show");
+        } else {
+            toastr.success('第一层级不关联土地因素!');
+        }
+    } else {
+        toastr.success('选择层级');
+    }
 };
 landLevel.showDataLandDetailAchievement = function () {
     var levelDetailId = landLevel.config.achievementBoxDetail.find("input[name='levelDetailId']").val();
@@ -717,41 +909,9 @@ landLevel.initFormLandDetailAchievement = function (row) {
     AssessCommon.loadDataDicByKey(AssessDicKey.programmeMarketCostapproachGrade, row.grade, function (html, data) {
         landLevel.config.achievementFrm.find("select[name='grade']").empty().html(html).trigger('change');
     });
-    landLevel.config.achievementFrm.find("select[name='grade']").off('change').on('change', function () {
-        var category = landLevel.config.achievementFrm.find("select[name='category']").val();
-        var grade = landLevel.config.achievementFrm.find("select[name='grade']").val();
-        if (category) {
-            AssessCommon.getDataDicInfo(category, function (data) {
-                var obj = JSON.parse(data.remark);
-                if (grade) {
-                    AssessCommon.getDataDicInfo(grade, function (item) {
-                        var value = null;
-                        if (item.name == '优') {
-                            value = obj.A;
-                        }
-                        if (item.name == '较优') {
-                            value = obj.B;
-                        }
-                        if (item.name == '一般') {
-                            value = obj.C;
-                        }
-                        if (item.name == '较劣') {
-                            value = obj.D;
-                        }
-                        if (item.name == '劣') {
-                            value = obj.E;
-                        }
-                        if (value) {
-                            landLevel.config.achievementFrm.find("input[name='achievement']").val(value);
-                        }
-                    });
-                }
-            });
-        }
-    });
 };
 
-//土地级别详情从表 删除
+//土地级别详情从表 土地因素 删除
 landLevel.deleteDataLandDetailAchievement = function (index) {
     var row = landLevel.config.achievementTable.bootstrapTable('getData')[index];
     Alert('确认要删除么？', 2, null, function () {
@@ -773,6 +933,37 @@ landLevel.deleteDataLandDetailAchievement = function (index) {
     })
 };
 
+landLevel.importDataLandDetailAchievement = function (flag) {
+    var target = $('#ajaxFileUploadLandLevelDetailAchievement');
+    var levelDetailId = "";
+    if (flag) {
+        levelDetailId = landLevel.config.achievementBoxDetail.find("input[name='levelDetailId']").val();
+        target.val('').trigger('click');
+        target.attr({levelDetailId: levelDetailId});
+        return flag;
+    }
+    levelDetailId = target.attr("levelDetailId") ;
+    $.ajaxFileUpload({
+        type: "POST",
+        url: getContextPath() + "/dataLandDetailAchievement/importDataLandDetailAchievement",
+        data: {levelDetailId: levelDetailId},//要传到后台的参数，没有可以不写
+        secureuri: false,//是否启用安全提交，默认为false
+        fileElementId: target.prop("id"),//文件选择框的id属性
+        dataType: 'json',//服务器返回的格式
+        async: false,
+        success: function (result) {
+            if (result.ret) {
+                landLevel.showLandDetailAchievementList(levelDetailId);
+                Alert(result.data);
+            }
+        },
+        error: function (result, status, e) {
+            Loading.progressHide();
+            Alert("调用服务端方法失败，失败原因:" + result);
+        }
+    });
+};
+
 landLevel.editDataLandDetailAchievement = function (index) {
     landLevel.config.achievementFrm.clearAll(['levelDetailId']);
     var row = landLevel.config.achievementTable.bootstrapTable('getData')[index];
@@ -780,7 +971,7 @@ landLevel.editDataLandDetailAchievement = function (index) {
     landLevel.config.achievementBox.modal("show");
 };
 
-//土地级别详情从表
+//土地级别详情从表 土地因素
 landLevel.showLandDetailAchievementList = function (levelDetailId) {
     var cols = [];
     cols.push({field: 'typeName', title: '类型'});
@@ -789,7 +980,7 @@ landLevel.showLandDetailAchievementList = function (levelDetailId) {
     cols.push({field: 'reamark', title: '说明'});
     cols.push({field: 'achievement', title: '分值'});
     var elShow = landLevel.getElShow();
-    if (elShow){
+    if (elShow) {
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
@@ -813,7 +1004,7 @@ landLevel.showLandDetailAchievementList = function (levelDetailId) {
     });
 };
 
-//土地级别详情从表 保存或者更新
+//土地级别详情从表 土地因素 保存或者更新
 landLevel.saveDataLandDetailAchievement = function () {
     var data = formSerializeArray(landLevel.config.achievementFrm);
     if (!landLevel.config.achievementFrm.valid()) {
@@ -841,13 +1032,13 @@ landLevel.getElShow = function () {
     var elShow = true;
     try {
         var formData = formParams("frmQuery");
-        if (formData.readOnly == 'false'){
-            elShow = false ;
+        if (formData.readOnly == 'false') {
+            elShow = false;
         }
     } catch (e) {
-        console.log(e) ;
+        console.log(e);
     }
-    return elShow ;
+    return elShow;
 };
 
 

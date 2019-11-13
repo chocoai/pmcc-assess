@@ -42,11 +42,8 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
                 <h3 class="modal-title">土地级别详情
-                    <button type="button" class="btn btn-success"
-                            onclick="landLevel.addLandLevelDetail({pid:0})" data-toggle="modal"> 新增
-                    </button>
                 </h3>
-                <label class="label label-warning">此按钮添加到第一级</label>
+                <%--<label class="label label-warning">此按钮添加到第一级</label>--%>
             </div>
             <div class="modal-body">
                 <div class="row">
@@ -64,13 +61,13 @@
                                                 <div class="x-valid">
                                                     <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">平方价</label>
                                                     <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
-                                                        <label class=" form-control"></label>
+                                                        <label class=" form-control" name="price"></label>
                                                     </div>
                                                 </div>
                                                 <div class="x-valid">
                                                     <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">每亩单价</label>
                                                     <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
-                                                        <label class=" form-control"></label>
+                                                        <label class=" form-control" name="muPrice"></label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -78,87 +75,71 @@
                                                 <div class="x-valid">
                                                     <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">标准容积率</label>
                                                     <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
-                                                        <label class=" form-control"></label>
+                                                        <label class=" form-control" name="volumeRate"></label>
                                                     </div>
                                                 </div>
                                                 <div class="x-valid">
                                                     <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">法定使用年限</label>
                                                     <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
-                                                        <label class=" form-control"></label>
+                                                        <label class=" form-control" name="legalAge"></label>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <div class="x-valid">
-                                                    <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">标准容积率</label>
+                                                    <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">征地比例</label>
                                                     <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
-                                                        <label class=" form-control"></label>
+                                                        <label class=" form-control" name="landAcquisitionProportion"></label>
+                                                    </div>
+                                                </div>
+                                                <div class="x-valid">
+                                                    <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">主要街道</label>
+                                                    <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
+                                                        <label class=" form-control" name="mainStreet" style="overflow: auto;"></label>
                                                     </div>
                                                 </div>
                                             </div>
                                         </form>
                                     </div>
-                                    <div class="col-md-12" id="btnGroup">
-                                        <a class="btn btn-xs btn-success" >
+                                    <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                                        <a class="btn btn-xs btn-success" onclick="landLevel.addLandLevelDetail()">
                                             新增
                                         </a>
-                                        <a class="btn btn-xs btn-primary">
+                                        <a class="btn btn-xs btn-primary" onclick="zTreeOnEdit()">
                                             编辑
                                         </a>
-                                        <a class="btn btn-xs btn-warning" >
+                                        <a class="btn btn-xs btn-warning" onclick="zTreeOnRemove();">
                                             删除
                                         </a>
-                                        <a class="btn btn-xs btn-primary">
+                                        <a class="btn btn-xs btn-primary" onclick="landLevel.treeExpandAll(true);">
                                             全部展开
                                         </a>
-                                        <a class="btn btn-xs btn-primary">
+                                        <a class="btn btn-xs btn-primary" onclick="landLevel.treeExpandAll(false);">
                                             全部收起
                                         </a>
-                                        <a class="btn btn-xs btn-primary ">
-                                            土地因素
+                                        <a class="btn btn-xs btn-primary " onclick="landLevel.treeRefresh();">
+                                            刷新
                                         </a>
-                                        <a class="btn btn-xs btn-primary ">
+                                        <a class="btn btn-xs btn-primary " onclick="landLevel.showDataAllocationCorrectionCoefficientVolumeRatioDetail();">
                                             容积率系数
                                         </a>
-                                        <a class="btn btn-xs btn-primary ">
-                                            导入模板下载
+                                        <a class="btn btn-xs btn-primary " onclick="landLevel.showDataLandDetailAchievementDetail();">
+                                            土地因素
                                         </a>
-                                        <a class="btn btn-xs btn-primary ">
-                                            导入模板上传
-                                        </a>
-                                    </div>
-                                    <div class="row">
-                                        <div class=" col-xs-6  col-sm-6  col-md-6  col-lg-6  pull-left">
-                                            <button type="button" class="btn btn-default"
-                                                    onclick="landLevel.treeExpandAll(true);">展开
-                                            </button>
-                                            <button type="button" class="btn btn-default"
-                                                    onclick="landLevel.treeExpandAll(false);">收缩
-                                            </button>
-                                            <button type="button" class="btn btn-default"
-                                                    onclick="landLevel.treeRefresh();">刷新
-                                            </button>
-                                        </div>
-
-                                        <div class=" col-xs-6  col-sm-6  col-md-6  col-lg-6  pull-right">
-
-                                            <button type="button" class="btn-default btn"
-                                                    onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftpLandLevelDetailBaseTemplate);">
-                                                土地级别excel模板
-                                                <span class="fa-stack fa-lg">
+                                        <a class="btn btn-xs btn-primary " onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftpLandLevelDetailBaseTemplate);">
+                                            土地级别excel模板
+                                            <span class="fa-stack fa-lg">
                                                               <i class="fa fa-square-o fa-stack-2x"></i>
                                                               <i class="fa fa fa-cloud-download fa-stack-1x"></i>
                                                                 </span>
-                                            </button>
-                                            <button class="btn-default btn" type="button"
-                                                    onclick="landLevel.importLandLevelDetail(true);">
-                                                土地级别excel模板
-                                                <span class="fa-stack fa-lg">
+                                        </a>
+                                        <a class="btn btn-xs btn-primary " onclick="landLevel.importLandLevelDetail(true);">
+                                            土地级别excel模板
+                                            <span class="fa-stack fa-lg">
                                                               <i class="fa fa-square-o fa-stack-2x"></i>
                                                               <i class="fa fa fa fa-cloud-upload fa-stack-1x"></i>
                                                                 </span>
-                                            </button>
-                                        </div>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -166,7 +147,7 @@
                     </div>
 
                     <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                        <label class="label label-warning">请在左边树上点击需要导入的节点然后再按此按钮导入excel数据,注意当不选择的时候导入的数据将是第一层级</label>
+                        <%--<label class="label label-warning">请在左边树上点击需要导入的节点然后再按此按钮导入excel数据,注意当不选择的时候导入的数据将是第一层级</label>--%>
                     </div>
                 </div>
             </div>
@@ -200,14 +181,14 @@
                                             <span class="symbol required"></span></label>
                                         <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                             <select name="classify" required="required"
-                                                    class="form-control search-select select2">
+                                                    class="form-control">
                                             </select>
                                         </div>
                                     </div>
                                     <div class="x-valid">
-                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">类型</label>
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">类型<span class="symbol required"></span></label>
                                         <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
-                                            <select name="type" class="form-control search-select select2">
+                                            <select name="type" class="form-control" required="required">
                                             </select>
                                         </div>
                                     </div>
@@ -314,6 +295,20 @@
                 <table class="table table-bordered" id="achievementTable">
                     <!-- cerare document add ajax data-->
                 </table>
+                <button class="btn btn-xs btn-primary " onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftpLandLevelDetailBaseAchievementTemplate);">
+                    土地级别因素模板
+                    <span class="fa-stack fa-lg">
+                                                              <i class="fa fa-square-o fa-stack-2x"></i>
+                                                              <i class="fa fa fa-cloud-download fa-stack-1x"></i>
+                                                                </span>
+                </button>
+                <button class="btn btn-xs btn-primary " onclick="landLevel.importDataLandDetailAchievement(true)">
+                    土地级别因素模板
+                    <span class="fa-stack fa-lg">
+                                                              <i class="fa fa-square-o fa-stack-2x"></i>
+                                                              <i class="fa fa fa fa-cloud-upload fa-stack-1x"></i>
+                                                                </span>
+                </button>
             </div>
         </div>
     </div>
@@ -427,6 +422,21 @@
                 </div>
                 <table class="table table-bordered" id="dataAllocationCorrectionCoefficientVolumeRatioDetailTable">
                 </table>
+
+                <button class="btn btn-xs btn-primary " onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftpLandLevelDetailBaseCoefficientTemplate);">
+                    容积率修正系数配置模板
+                    <span class="fa-stack fa-lg">
+                                                              <i class="fa fa-square-o fa-stack-2x"></i>
+                                                              <i class="fa fa fa-cloud-download fa-stack-1x"></i>
+                                                                </span>
+                </button>
+                <button class="btn btn-xs btn-primary " onclick="landLevel.importDataAllocationCorrectionCoefficientVolumeRatio(true);">
+                    容积率修正系数配置模板
+                    <span class="fa-stack fa-lg">
+                                                              <i class="fa fa-square-o fa-stack-2x"></i>
+                                                              <i class="fa fa fa fa-cloud-upload fa-stack-1x"></i>
+                                                                </span>
+                </button>
             </div>
         </div>
     </div>
