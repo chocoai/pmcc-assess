@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObjectExample;
 import com.copower.pmcc.assess.dal.basis.mapper.SchemeJudgeObjectMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -108,10 +109,19 @@ public class SchemeJudgeObjectDao {
         return mapper.countByExample(example);
     }
 
-    public List<SchemeJudgeObject> getListByDeclareIds(List<Integer> declareIds){
+    public List<SchemeJudgeObject> getListByDeclareIds(List<Integer> declareIds) {
         SchemeJudgeObjectExample example = new SchemeJudgeObjectExample();
         example.createCriteria().andBisMergeEqualTo(false).andBisSplitEqualTo(false).andDeclareRecordIdIn(declareIds);
         example.setOrderByClause("sorting,split_number");
         return mapper.selectByExample(example);
+    }
+
+    public int getAreaGroupMaxNumber(Integer projectId, Integer areaGroupId) {
+        SchemeJudgeObjectExample example = new SchemeJudgeObjectExample();
+        example.createCriteria().andProjectIdEqualTo(projectId).andAreaGroupIdEqualTo(areaGroupId).andBisMergeEqualTo(false).andBisSplitEqualTo(false);
+        example.setOrderByClause("number desc");
+        List<SchemeJudgeObject> judgeObjects = mapper.selectByExample(example);
+        if(CollectionUtils.isEmpty(judgeObjects)) return 0;
+        return Integer.valueOf(judgeObjects.get(0).getNumber());
     }
 }

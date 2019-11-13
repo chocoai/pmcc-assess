@@ -65,7 +65,13 @@
                             <div class="col-xs-3  col-sm-3  col-md-3  col-xs-3 col-lg-offset-1 col-sm-offset-1 col-xs-offset-1 col-md-offset-1">
                                 <ul id="ztree" class="ztree"></ul>
                             </div>
-                            <div class="col-xs-8  col-sm-8  col-md-8  col-lg-8">
+                            <div class="col-md-8" id="btnGroup">
+                                <a class="btn btn-xs btn-success" onclick="informationDetail()">
+                                    详情
+                                </a>
+                                <a class="btn btn-xs btn-primary" onclick="fillInformation();">
+                                    编辑
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -99,17 +105,6 @@
                 pIdKey: "pid",
                 rootPId: 0
             }
-        },
-        // 回调函数
-        callback: {
-            onClick: function (event, treeId, treeNode, clickFlag) {
-                var frm = $("#frmProjectCIP");
-                var data = formSerializeArray(frm);
-                data.tbType = treeNode.type;
-                data.tableId = treeNode.tableId;
-                data.tableName = treeNode.tableName;
-                informationDetail(data);
-            }
         }
     };
 
@@ -132,7 +127,24 @@
 
     //信息详情页面
     function informationDetail(data) {
+        var treeNode = zTreeObj.getSelectedNodes()[0];
+        var frm = $("#frmProjectCIP");
+        var data = formSerializeArray(frm);
+        data.tbType = treeNode.type;
+        data.tableId = treeNode.tableId;
+        data.tableName = treeNode.tableName;
+
         window.open('${pageContext.request.contextPath}/basicApplyBatch/informationDetail?'+ parseParam(data) );
+    }
+
+    //进入填写信息页面
+    function fillInformation () {
+        var node = zTreeObj.getSelectedNodes()[0];
+        var frm = $("#frmProjectCIP");
+        var data = formSerializeArray(frm);
+        data.tbType = node.type;
+        data.tbId = node.tableId;
+        window.open('${pageContext.request.contextPath}/basicApplyBatch/fillInfo?'+ parseParam(data) );
     }
 
     //js对象转成路径参数

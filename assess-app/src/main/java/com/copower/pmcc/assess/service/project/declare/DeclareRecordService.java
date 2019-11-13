@@ -243,4 +243,14 @@ public class DeclareRecordService {
         schemeJudgeObjectService.reStartDeclareApplyByDeclareRecordId(declareRecordIds, projectId);
     }
 
+    /**
+     * 获取项目可用的最大编号
+     *
+     * @param projectId
+     * @return
+     */
+    public int getMaxNumber(Integer projectId) {
+        return declareRecordDao.getCountByProjectId(projectId) + 1;
+    }
+
 }

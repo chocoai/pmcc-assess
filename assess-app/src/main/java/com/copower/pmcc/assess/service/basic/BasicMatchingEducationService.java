@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.service.basic;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicMatchingEducationDao;
 import com.copower.pmcc.assess.dal.basis.entity.BasicMatchingEducation;
 import com.copower.pmcc.assess.dto.output.basic.BasicMatchingEducationVo;
+import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -42,6 +43,8 @@ public class BasicMatchingEducationService {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private CommonService commonService;
+    @Autowired
+    private PublicService publicService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
@@ -132,6 +135,7 @@ public class BasicMatchingEducationService {
         vo.setSchoolNatureName(baseDataDicService.getNameById(basicMatchingEducation.getSchoolNature()));
         vo.setSchoolGradationName(baseDataDicService.getNameById(basicMatchingEducation.getSchoolGradation()));
         vo.setSchoolLevelName(baseDataDicService.getNameById(NumberUtils.isNumber(basicMatchingEducation.getSchoolLevel()) ? Integer.parseInt(basicMatchingEducation.getSchoolLevel()) : null));
+        vo.setCreatorName(publicService.getUserNameByAccount(basicMatchingEducation.getCreator()));
         return vo;
     }
 

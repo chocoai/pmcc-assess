@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.DeclareRecord" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="project_id" property="projectId" jdbcType="INTEGER" />
+    <result column="number" property="number" jdbcType="INTEGER" />
     <result column="data_table_name" property="dataTableName" jdbcType="VARCHAR" />
     <result column="data_table_id" property="dataTableId" jdbcType="INTEGER" />
     <result column="data_from_type" property="dataFromType" jdbcType="VARCHAR" />
@@ -105,13 +106,13 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, project_id, data_table_name, data_table_id, data_from_type, province, city, district, 
-    type, has_cert, name, ownership, seat, street_number, attached_number, building_number, 
-    unit, floor, room_number, cert_use, practical_use, land_cert_use, land_practical_use, 
-    public_situation, floor_area, practical_area, nature, land_right_type, land_right_nature, 
-    land_use_right_area, housing_structure, group_id, area_group_id, house_use_end_date, 
-    land_use_end_date, inventory_content_key, registration_date, price, bis_part_in, 
-    bis_generate, creator, gmt_created, gmt_modified
+    id, project_id, number, data_table_name, data_table_id, data_from_type, province, 
+    city, district, type, has_cert, name, ownership, seat, street_number, attached_number, 
+    building_number, unit, floor, room_number, cert_use, practical_use, land_cert_use, 
+    land_practical_use, public_situation, floor_area, practical_area, nature, land_right_type, 
+    land_right_nature, land_use_right_area, housing_structure, group_id, area_group_id, 
+    house_use_end_date, land_use_end_date, inventory_content_key, registration_date, 
+    price, bis_part_in, bis_generate, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareRecordExample" >
     select
@@ -147,33 +148,33 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_declare_record (project_id, data_table_name, data_table_id, 
-      data_from_type, province, city, 
-      district, type, has_cert, 
-      name, ownership, seat, 
-      street_number, attached_number, building_number, 
-      unit, floor, room_number, 
-      cert_use, practical_use, land_cert_use, 
-      land_practical_use, public_situation, floor_area, 
-      practical_area, nature, land_right_type, 
-      land_right_nature, land_use_right_area, housing_structure, 
-      group_id, area_group_id, house_use_end_date, 
-      land_use_end_date, inventory_content_key, 
+    insert into tb_declare_record (project_id, number, data_table_name, 
+      data_table_id, data_from_type, province, 
+      city, district, type, 
+      has_cert, name, ownership, 
+      seat, street_number, attached_number, 
+      building_number, unit, floor, 
+      room_number, cert_use, practical_use, 
+      land_cert_use, land_practical_use, public_situation, 
+      floor_area, practical_area, nature, 
+      land_right_type, land_right_nature, land_use_right_area, 
+      housing_structure, group_id, area_group_id, 
+      house_use_end_date, land_use_end_date, inventory_content_key, 
       registration_date, price, bis_part_in, 
       bis_generate, creator, gmt_created, 
       gmt_modified)
-    values (#{projectId,jdbcType=INTEGER}, #{dataTableName,jdbcType=VARCHAR}, #{dataTableId,jdbcType=INTEGER}, 
-      #{dataFromType,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, 
-      #{district,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{hasCert,jdbcType=BIT}, 
-      #{name,jdbcType=VARCHAR}, #{ownership,jdbcType=VARCHAR}, #{seat,jdbcType=VARCHAR}, 
-      #{streetNumber,jdbcType=VARCHAR}, #{attachedNumber,jdbcType=VARCHAR}, #{buildingNumber,jdbcType=VARCHAR}, 
-      #{unit,jdbcType=VARCHAR}, #{floor,jdbcType=VARCHAR}, #{roomNumber,jdbcType=VARCHAR}, 
-      #{certUse,jdbcType=VARCHAR}, #{practicalUse,jdbcType=VARCHAR}, #{landCertUse,jdbcType=VARCHAR}, 
-      #{landPracticalUse,jdbcType=VARCHAR}, #{publicSituation,jdbcType=VARCHAR}, #{floorArea,jdbcType=DECIMAL}, 
-      #{practicalArea,jdbcType=DECIMAL}, #{nature,jdbcType=VARCHAR}, #{landRightType,jdbcType=VARCHAR}, 
-      #{landRightNature,jdbcType=VARCHAR}, #{landUseRightArea,jdbcType=DECIMAL}, #{housingStructure,jdbcType=VARCHAR}, 
-      #{groupId,jdbcType=INTEGER}, #{areaGroupId,jdbcType=INTEGER}, #{houseUseEndDate,jdbcType=TIMESTAMP}, 
-      #{landUseEndDate,jdbcType=TIMESTAMP}, #{inventoryContentKey,jdbcType=VARCHAR}, 
+    values (#{projectId,jdbcType=INTEGER}, #{number,jdbcType=INTEGER}, #{dataTableName,jdbcType=VARCHAR}, 
+      #{dataTableId,jdbcType=INTEGER}, #{dataFromType,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, 
+      #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, 
+      #{hasCert,jdbcType=BIT}, #{name,jdbcType=VARCHAR}, #{ownership,jdbcType=VARCHAR}, 
+      #{seat,jdbcType=VARCHAR}, #{streetNumber,jdbcType=VARCHAR}, #{attachedNumber,jdbcType=VARCHAR}, 
+      #{buildingNumber,jdbcType=VARCHAR}, #{unit,jdbcType=VARCHAR}, #{floor,jdbcType=VARCHAR}, 
+      #{roomNumber,jdbcType=VARCHAR}, #{certUse,jdbcType=VARCHAR}, #{practicalUse,jdbcType=VARCHAR}, 
+      #{landCertUse,jdbcType=VARCHAR}, #{landPracticalUse,jdbcType=VARCHAR}, #{publicSituation,jdbcType=VARCHAR}, 
+      #{floorArea,jdbcType=DECIMAL}, #{practicalArea,jdbcType=DECIMAL}, #{nature,jdbcType=VARCHAR}, 
+      #{landRightType,jdbcType=VARCHAR}, #{landRightNature,jdbcType=VARCHAR}, #{landUseRightArea,jdbcType=DECIMAL}, 
+      #{housingStructure,jdbcType=VARCHAR}, #{groupId,jdbcType=INTEGER}, #{areaGroupId,jdbcType=INTEGER}, 
+      #{houseUseEndDate,jdbcType=TIMESTAMP}, #{landUseEndDate,jdbcType=TIMESTAMP}, #{inventoryContentKey,jdbcType=VARCHAR}, 
       #{registrationDate,jdbcType=TIMESTAMP}, #{price,jdbcType=DECIMAL}, #{bisPartIn,jdbcType=BIT}, 
       #{bisGenerate,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
       #{gmtModified,jdbcType=TIMESTAMP})
@@ -186,6 +187,9 @@
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="projectId != null" >
         project_id,
+      </if>
+      <if test="number != null" >
+        number,
       </if>
       <if test="dataTableName != null" >
         data_table_name,
@@ -314,6 +318,9 @@
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="projectId != null" >
         #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="number != null" >
+        #{number,jdbcType=INTEGER},
       </if>
       <if test="dataTableName != null" >
         #{dataTableName,jdbcType=VARCHAR},
@@ -455,6 +462,9 @@
       <if test="record.projectId != null" >
         project_id = #{record.projectId,jdbcType=INTEGER},
       </if>
+      <if test="record.number != null" >
+        number = #{record.number,jdbcType=INTEGER},
+      </if>
       <if test="record.dataTableName != null" >
         data_table_name = #{record.dataTableName,jdbcType=VARCHAR},
       </if>
@@ -587,6 +597,7 @@
     update tb_declare_record
     set id = #{record.id,jdbcType=INTEGER},
       project_id = #{record.projectId,jdbcType=INTEGER},
+      number = #{record.number,jdbcType=INTEGER},
       data_table_name = #{record.dataTableName,jdbcType=VARCHAR},
       data_table_id = #{record.dataTableId,jdbcType=INTEGER},
       data_from_type = #{record.dataFromType,jdbcType=VARCHAR},
@@ -637,6 +648,9 @@
     <set >
       <if test="projectId != null" >
         project_id = #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="number != null" >
+        number = #{number,jdbcType=INTEGER},
       </if>
       <if test="dataTableName != null" >
         data_table_name = #{dataTableName,jdbcType=VARCHAR},
@@ -767,6 +781,7 @@
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareRecord" >
     update tb_declare_record
     set project_id = #{projectId,jdbcType=INTEGER},
+      number = #{number,jdbcType=INTEGER},
       data_table_name = #{dataTableName,jdbcType=VARCHAR},
       data_table_id = #{dataTableId,jdbcType=INTEGER},
       data_from_type = #{dataFromType,jdbcType=VARCHAR},

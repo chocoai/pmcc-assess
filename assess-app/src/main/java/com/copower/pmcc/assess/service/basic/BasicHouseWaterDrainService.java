@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.service.basic;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicHouseWaterDrainDao;
 import com.copower.pmcc.assess.dal.basis.entity.BasicHouseWaterDrain;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseWaterDrainVo;
+import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -40,6 +41,8 @@ public class BasicHouseWaterDrainService {
     private BaseAttachmentService baseAttachmentService;
     @Autowired
     private CommonService commonService;
+    @Autowired
+    private PublicService publicService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
     
 
@@ -131,6 +134,7 @@ public class BasicHouseWaterDrainService {
         vo.setOrganizationName(baseDataDicService.getNameById(basicHouseWaterDrain.getOrganization()));
         vo.setDrainSystemName(baseDataDicService.getNameById(basicHouseWaterDrain.getDrainSystem()));
         vo.setProcessingModeName(baseDataDicService.getNameById(basicHouseWaterDrain.getProcessingMode()));
+        vo.setCreatorName(publicService.getUserNameByAccount(basicHouseWaterDrain.getCreator()));
         return vo;
     }
 

@@ -13,8 +13,8 @@
     <result column="new_huxing_name" property="newHuxingName" jdbcType="VARCHAR" />
     <result column="spatial_distribution" property="spatialDistribution" jdbcType="INTEGER" />
     <result column="spatial_distribution_desc" property="spatialDistributionDesc" jdbcType="VARCHAR" />
-    <result column="cert_use" property="certUse" jdbcType="INTEGER" />
-    <result column="practical_use" property="practicalUse" jdbcType="INTEGER" />
+    <result column="cert_use" property="certUse" jdbcType="VARCHAR" />
+    <result column="practical_use" property="practicalUse" jdbcType="VARCHAR" />
     <result column="orientation" property="orientation" jdbcType="INTEGER" />
     <result column="area" property="area" jdbcType="DECIMAL" />
     <result column="area_desc" property="areaDesc" jdbcType="VARCHAR" />
@@ -155,7 +155,7 @@
     values (#{applyId,jdbcType=INTEGER}, #{unitId,jdbcType=INTEGER}, #{houseNumber,jdbcType=VARCHAR}, 
       #{floor,jdbcType=VARCHAR}, #{floorDesc,jdbcType=VARCHAR}, #{huxingId,jdbcType=INTEGER}, 
       #{huxingName,jdbcType=VARCHAR}, #{newHuxingName,jdbcType=VARCHAR}, #{spatialDistribution,jdbcType=INTEGER}, 
-      #{spatialDistributionDesc,jdbcType=VARCHAR}, #{certUse,jdbcType=INTEGER}, #{practicalUse,jdbcType=INTEGER}, 
+      #{spatialDistributionDesc,jdbcType=VARCHAR}, #{certUse,jdbcType=VARCHAR}, #{practicalUse,jdbcType=VARCHAR}, 
       #{orientation,jdbcType=INTEGER}, #{area,jdbcType=DECIMAL}, #{areaDesc,jdbcType=VARCHAR}, 
       #{researchType,jdbcType=INTEGER}, #{rightInterestsRestriction,jdbcType=VARCHAR}, 
       #{useEnvironment,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}, #{caseDate,jdbcType=TIMESTAMP}, 
@@ -310,10 +310,10 @@
         #{spatialDistributionDesc,jdbcType=VARCHAR},
       </if>
       <if test="certUse != null" >
-        #{certUse,jdbcType=INTEGER},
+        #{certUse,jdbcType=VARCHAR},
       </if>
       <if test="practicalUse != null" >
-        #{practicalUse,jdbcType=INTEGER},
+        #{practicalUse,jdbcType=VARCHAR},
       </if>
       <if test="orientation != null" >
         #{orientation,jdbcType=INTEGER},
@@ -429,10 +429,10 @@
         spatial_distribution_desc = #{record.spatialDistributionDesc,jdbcType=VARCHAR},
       </if>
       <if test="record.certUse != null" >
-        cert_use = #{record.certUse,jdbcType=INTEGER},
+        cert_use = #{record.certUse,jdbcType=VARCHAR},
       </if>
       <if test="record.practicalUse != null" >
-        practical_use = #{record.practicalUse,jdbcType=INTEGER},
+        practical_use = #{record.practicalUse,jdbcType=VARCHAR},
       </if>
       <if test="record.orientation != null" >
         orientation = #{record.orientation,jdbcType=INTEGER},
@@ -521,8 +521,8 @@
       new_huxing_name = #{record.newHuxingName,jdbcType=VARCHAR},
       spatial_distribution = #{record.spatialDistribution,jdbcType=INTEGER},
       spatial_distribution_desc = #{record.spatialDistributionDesc,jdbcType=VARCHAR},
-      cert_use = #{record.certUse,jdbcType=INTEGER},
-      practical_use = #{record.practicalUse,jdbcType=INTEGER},
+      cert_use = #{record.certUse,jdbcType=VARCHAR},
+      practical_use = #{record.practicalUse,jdbcType=VARCHAR},
       orientation = #{record.orientation,jdbcType=INTEGER},
       area = #{record.area,jdbcType=DECIMAL},
       area_desc = #{record.areaDesc,jdbcType=VARCHAR},
@@ -584,10 +584,10 @@
         spatial_distribution_desc = #{spatialDistributionDesc,jdbcType=VARCHAR},
       </if>
       <if test="certUse != null" >
-        cert_use = #{certUse,jdbcType=INTEGER},
+        cert_use = #{certUse,jdbcType=VARCHAR},
       </if>
       <if test="practicalUse != null" >
-        practical_use = #{practicalUse,jdbcType=INTEGER},
+        practical_use = #{practicalUse,jdbcType=VARCHAR},
       </if>
       <if test="orientation != null" >
         orientation = #{orientation,jdbcType=INTEGER},
@@ -673,8 +673,8 @@
       new_huxing_name = #{newHuxingName,jdbcType=VARCHAR},
       spatial_distribution = #{spatialDistribution,jdbcType=INTEGER},
       spatial_distribution_desc = #{spatialDistributionDesc,jdbcType=VARCHAR},
-      cert_use = #{certUse,jdbcType=INTEGER},
-      practical_use = #{practicalUse,jdbcType=INTEGER},
+      cert_use = #{certUse,jdbcType=VARCHAR},
+      practical_use = #{practicalUse,jdbcType=VARCHAR},
       orientation = #{orientation,jdbcType=INTEGER},
       area = #{area,jdbcType=DECIMAL},
       area_desc = #{areaDesc,jdbcType=VARCHAR},

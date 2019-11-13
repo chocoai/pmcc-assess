@@ -24,6 +24,13 @@ public class DeclareRecordDao {
 
     public List<DeclareRecord> getDeclareRecordListByProjectId(Integer projectId) {
         DeclareRecordExample example = new DeclareRecordExample();
+        example.createCriteria().andProjectIdEqualTo(projectId);
+        example.setOrderByClause("id");
+        return mapper.selectByExample(example);
+    }
+
+    public List<DeclareRecord> getPartInDeclareRecordsByProjectId(Integer projectId) {
+        DeclareRecordExample example = new DeclareRecordExample();
         example.createCriteria().andProjectIdEqualTo(projectId).andBisPartInEqualTo(true);
         example.setOrderByClause("id");
         return mapper.selectByExample(example);
@@ -94,5 +101,12 @@ public class DeclareRecordDao {
 
     public DeclareRecord getDeclareRecordById(Integer id) {
         return mapper.selectByPrimaryKey(id);
+    }
+
+    public Integer getCountByProjectId(Integer projectId){
+        DeclareRecordExample example = new DeclareRecordExample();
+        DeclareRecordExample.Criteria criteria = example.createCriteria();
+        criteria.andProjectIdEqualTo(projectId);
+        return mapper.countByExample(example);
     }
 }

@@ -366,52 +366,62 @@ public class BasicEstateLandStateExample {
             return (Criteria) this;
         }
 
-        public Criteria andLandUseTypeEqualTo(Integer value) {
+        public Criteria andLandUseTypeEqualTo(String value) {
             addCriterion("land_use_type =", value, "landUseType");
             return (Criteria) this;
         }
 
-        public Criteria andLandUseTypeNotEqualTo(Integer value) {
+        public Criteria andLandUseTypeNotEqualTo(String value) {
             addCriterion("land_use_type <>", value, "landUseType");
             return (Criteria) this;
         }
 
-        public Criteria andLandUseTypeGreaterThan(Integer value) {
+        public Criteria andLandUseTypeGreaterThan(String value) {
             addCriterion("land_use_type >", value, "landUseType");
             return (Criteria) this;
         }
 
-        public Criteria andLandUseTypeGreaterThanOrEqualTo(Integer value) {
+        public Criteria andLandUseTypeGreaterThanOrEqualTo(String value) {
             addCriterion("land_use_type >=", value, "landUseType");
             return (Criteria) this;
         }
 
-        public Criteria andLandUseTypeLessThan(Integer value) {
+        public Criteria andLandUseTypeLessThan(String value) {
             addCriterion("land_use_type <", value, "landUseType");
             return (Criteria) this;
         }
 
-        public Criteria andLandUseTypeLessThanOrEqualTo(Integer value) {
+        public Criteria andLandUseTypeLessThanOrEqualTo(String value) {
             addCriterion("land_use_type <=", value, "landUseType");
             return (Criteria) this;
         }
 
-        public Criteria andLandUseTypeIn(List<Integer> values) {
+        public Criteria andLandUseTypeLike(String value) {
+            addCriterion("land_use_type like", value, "landUseType");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUseTypeNotLike(String value) {
+            addCriterion("land_use_type not like", value, "landUseType");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUseTypeIn(List<String> values) {
             addCriterion("land_use_type in", values, "landUseType");
             return (Criteria) this;
         }
 
-        public Criteria andLandUseTypeNotIn(List<Integer> values) {
+        public Criteria andLandUseTypeNotIn(List<String> values) {
             addCriterion("land_use_type not in", values, "landUseType");
             return (Criteria) this;
         }
 
-        public Criteria andLandUseTypeBetween(Integer value1, Integer value2) {
+        public Criteria andLandUseTypeBetween(String value1, String value2) {
             addCriterion("land_use_type between", value1, value2, "landUseType");
             return (Criteria) this;
         }
 
-        public Criteria andLandUseTypeNotBetween(Integer value1, Integer value2) {
+        public Criteria andLandUseTypeNotBetween(String value1, String value2) {
             addCriterion("land_use_type not between", value1, value2, "landUseType");
             return (Criteria) this;
         }
@@ -426,52 +436,62 @@ public class BasicEstateLandStateExample {
             return (Criteria) this;
         }
 
-        public Criteria andLandUseCategoryEqualTo(Integer value) {
+        public Criteria andLandUseCategoryEqualTo(String value) {
             addCriterion("land_use_category =", value, "landUseCategory");
             return (Criteria) this;
         }
 
-        public Criteria andLandUseCategoryNotEqualTo(Integer value) {
+        public Criteria andLandUseCategoryNotEqualTo(String value) {
             addCriterion("land_use_category <>", value, "landUseCategory");
             return (Criteria) this;
         }
 
-        public Criteria andLandUseCategoryGreaterThan(Integer value) {
+        public Criteria andLandUseCategoryGreaterThan(String value) {
             addCriterion("land_use_category >", value, "landUseCategory");
             return (Criteria) this;
         }
 
-        public Criteria andLandUseCategoryGreaterThanOrEqualTo(Integer value) {
+        public Criteria andLandUseCategoryGreaterThanOrEqualTo(String value) {
             addCriterion("land_use_category >=", value, "landUseCategory");
             return (Criteria) this;
         }
 
-        public Criteria andLandUseCategoryLessThan(Integer value) {
+        public Criteria andLandUseCategoryLessThan(String value) {
             addCriterion("land_use_category <", value, "landUseCategory");
             return (Criteria) this;
         }
 
-        public Criteria andLandUseCategoryLessThanOrEqualTo(Integer value) {
+        public Criteria andLandUseCategoryLessThanOrEqualTo(String value) {
             addCriterion("land_use_category <=", value, "landUseCategory");
             return (Criteria) this;
         }
 
-        public Criteria andLandUseCategoryIn(List<Integer> values) {
+        public Criteria andLandUseCategoryLike(String value) {
+            addCriterion("land_use_category like", value, "landUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUseCategoryNotLike(String value) {
+            addCriterion("land_use_category not like", value, "landUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUseCategoryIn(List<String> values) {
             addCriterion("land_use_category in", values, "landUseCategory");
             return (Criteria) this;
         }
 
-        public Criteria andLandUseCategoryNotIn(List<Integer> values) {
+        public Criteria andLandUseCategoryNotIn(List<String> values) {
             addCriterion("land_use_category not in", values, "landUseCategory");
             return (Criteria) this;
         }
 
-        public Criteria andLandUseCategoryBetween(Integer value1, Integer value2) {
+        public Criteria andLandUseCategoryBetween(String value1, String value2) {
             addCriterion("land_use_category between", value1, value2, "landUseCategory");
             return (Criteria) this;
         }
 
-        public Criteria andLandUseCategoryNotBetween(Integer value1, Integer value2) {
+        public Criteria andLandUseCategoryNotBetween(String value1, String value2) {
             addCriterion("land_use_category not between", value1, value2, "landUseCategory");
             return (Criteria) this;
         }

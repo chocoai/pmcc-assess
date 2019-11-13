@@ -78,6 +78,23 @@
                                     </c:forEach>
                                 </ul>
                             </div>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-xs btn-primary">
+                                    报告签收单
+                                </button>
+                                <button type="button" class="btn btn-xs btn-primary dropdown-toggle"
+                                        data-toggle="dropdown">
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <c:forEach var="item" items="${signBill}">
+                                        <li>
+                                            <a href="${pageContext.request.contextPath}/documentSend/applySignBillIndex/${item.id}&${projectInfo.id}"
+                                               target="_blank">${item.templateName}</a>
+                                        </li>
+                                    </c:forEach>
+                                </ul>
+                            </div>
                             <a class="btn btn-xs btn-primary" href="javascript://"
                                onclick="projectDetails.projectSubsequent()">后续事项</a>
                             <a class="btn btn-xs btn-primary" href="javascript://"

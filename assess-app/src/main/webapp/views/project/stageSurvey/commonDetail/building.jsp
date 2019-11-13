@@ -401,13 +401,7 @@
     </form>
 </div>
 
-<div class="x_content">
-    <%@include file="buildingOutfit.jsp" %>
-</div>
 
-<div class="x_content">
-    <%@include file="buildingFunction.jsp" %>
-</div>
 
 <script src="${pageContext.request.contextPath}/js/method/developmentCommon.js?v=${assessVersion}"></script>
 <%@include file="/views/method/module/developmentCommon.jsp" %>

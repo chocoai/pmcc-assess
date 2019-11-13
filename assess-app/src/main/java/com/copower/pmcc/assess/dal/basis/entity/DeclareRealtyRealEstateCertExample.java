@@ -1656,52 +1656,62 @@ public class DeclareRealtyRealEstateCertExample {
             return (Criteria) this;
         }
 
-        public Criteria andHouseCertUseEqualTo(Integer value) {
+        public Criteria andHouseCertUseEqualTo(String value) {
             addCriterion("house_cert_use =", value, "houseCertUse");
             return (Criteria) this;
         }
 
-        public Criteria andHouseCertUseNotEqualTo(Integer value) {
+        public Criteria andHouseCertUseNotEqualTo(String value) {
             addCriterion("house_cert_use <>", value, "houseCertUse");
             return (Criteria) this;
         }
 
-        public Criteria andHouseCertUseGreaterThan(Integer value) {
+        public Criteria andHouseCertUseGreaterThan(String value) {
             addCriterion("house_cert_use >", value, "houseCertUse");
             return (Criteria) this;
         }
 
-        public Criteria andHouseCertUseGreaterThanOrEqualTo(Integer value) {
+        public Criteria andHouseCertUseGreaterThanOrEqualTo(String value) {
             addCriterion("house_cert_use >=", value, "houseCertUse");
             return (Criteria) this;
         }
 
-        public Criteria andHouseCertUseLessThan(Integer value) {
+        public Criteria andHouseCertUseLessThan(String value) {
             addCriterion("house_cert_use <", value, "houseCertUse");
             return (Criteria) this;
         }
 
-        public Criteria andHouseCertUseLessThanOrEqualTo(Integer value) {
+        public Criteria andHouseCertUseLessThanOrEqualTo(String value) {
             addCriterion("house_cert_use <=", value, "houseCertUse");
             return (Criteria) this;
         }
 
-        public Criteria andHouseCertUseIn(List<Integer> values) {
+        public Criteria andHouseCertUseLike(String value) {
+            addCriterion("house_cert_use like", value, "houseCertUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseCertUseNotLike(String value) {
+            addCriterion("house_cert_use not like", value, "houseCertUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseCertUseIn(List<String> values) {
             addCriterion("house_cert_use in", values, "houseCertUse");
             return (Criteria) this;
         }
 
-        public Criteria andHouseCertUseNotIn(List<Integer> values) {
+        public Criteria andHouseCertUseNotIn(List<String> values) {
             addCriterion("house_cert_use not in", values, "houseCertUse");
             return (Criteria) this;
         }
 
-        public Criteria andHouseCertUseBetween(Integer value1, Integer value2) {
+        public Criteria andHouseCertUseBetween(String value1, String value2) {
             addCriterion("house_cert_use between", value1, value2, "houseCertUse");
             return (Criteria) this;
         }
 
-        public Criteria andHouseCertUseNotBetween(Integer value1, Integer value2) {
+        public Criteria andHouseCertUseNotBetween(String value1, String value2) {
             addCriterion("house_cert_use not between", value1, value2, "houseCertUse");
             return (Criteria) this;
         }

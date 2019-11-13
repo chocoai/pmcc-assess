@@ -12,6 +12,7 @@ public class BasicHouseWaterDrainVo extends BasicHouseWaterDrain {
     private String typeName;
     private String processingModeName;
     private String organizationName;
+    private String creatorName;
 
     public String getDrainSystemName() {
         return drainSystemName;
@@ -43,5 +44,13 @@ public class BasicHouseWaterDrainVo extends BasicHouseWaterDrain {
 
     public void setOrganizationName(String organizationName) {
         this.organizationName = organizationName;
+    }
+
+    public String getCreatorName() {
+        return creatorName;
+    }
+
+    public void setCreatorName(String creatorName) {
+        this.creatorName = creatorName;
     }
 }

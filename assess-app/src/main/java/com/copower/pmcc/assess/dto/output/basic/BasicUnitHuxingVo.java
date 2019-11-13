@@ -12,6 +12,7 @@ public class BasicUnitHuxingVo extends BasicUnitHuxing {
     private String houseLayoutName;
     private String orientationName;
     private String tableName;
+    private String creatorName;
 
     public String getFileViewName() {
         return fileViewName;
@@ -43,5 +44,13 @@ public class BasicUnitHuxingVo extends BasicUnitHuxing {
 
     public void setTableName(String tableName) {
         this.tableName = tableName;
+    }
+
+    public String getCreatorName() {
+        return creatorName;
+    }
+
+    public void setCreatorName(String creatorName) {
+        this.creatorName = creatorName;
     }
 }

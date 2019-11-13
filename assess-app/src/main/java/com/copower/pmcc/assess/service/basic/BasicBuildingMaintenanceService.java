@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.service.basic;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicBuildingMaintenanceDao;
 import com.copower.pmcc.assess.dal.basis.entity.BasicBuildingMaintenance;
 import com.copower.pmcc.assess.dto.output.basic.BasicBuildingMaintenanceVo;
+import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -40,6 +41,8 @@ public class BasicBuildingMaintenanceService {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private CommonService commonService;
+    @Autowired
+    private PublicService publicService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
@@ -127,6 +130,7 @@ public class BasicBuildingMaintenanceService {
         vo.setCategoryName(baseDataDicService.getNameById(basicBuildingMaintenance.getCategory()));
         vo.setTypeName(baseDataDicService.getNameById(basicBuildingMaintenance.getType()));
         vo.setMaterialQualityName(baseDataDicService.getNameById(basicBuildingMaintenance.getMaterialQuality()));
+        vo.setCreatorName(publicService.getUserNameByAccount(basicBuildingMaintenance.getCreator()));
         return vo;
     }
     

@@ -179,20 +179,12 @@
     })
     function loadParticipationList() {
         var cols = [];
-        cols.push({field: 'projectName', title: '项目名称'});
-
-        <%--cols.push({--%>
-            <%--field: 'projectName', title: '项目任务详细', width: 300, formatter: function (value, row, index) {--%>
-                <%--var str = "";--%>
-                <%--str += "<a target='_blank' href='${pageContext.request.contextPath}/projectPlanDetails/projectTraceMenu?projectId=" + row.id + "' style='margin-left: 5px;' data-placement='top' data-original-title='查看详情' class='tooltips' >" + value + "";--%>
-                <%--str += '<i class="fa fa-tasks" aria-hidden="true"></i>' ;--%>
-                <%--str += "</a>";--%>
-                <%--return str;--%>
-            <%--}--%>
-        <%--});--%>
-
+        var cols = [];
+        cols.push({field: 'projectName', title: '项目名称',width:'30%'});
+        cols.push({field: 'useUnitName', title: '使用报告单位',width:'10%'});
+        cols.push({field: 'departmentName', title: '评估部门',width:'5%'});
         cols.push({
-            field: 'serviceEnd', width: '20%', title: '项目成员', formatter: function (value, row, index) {
+            field: 'serviceEnd', title: '项目成员', width: '10%', formatter: function (value, row, index) {
                 var s = "";
                 if (row.userAccountManagerName) {
                     s += "<label style='padding: 5px;' class='label label-info'>" + row.userAccountManagerName.split("_")[0] + "</label>"
@@ -203,26 +195,16 @@
                 return s;
             }
         });
-        cols.push({field: 'departmentName', title: '评估部门'});
         cols.push({
-            field: 'projectClassName', title: '项目类型', formatter: function (value, row, index) {
-                var s = "";
-                if (row.projectClassName) {
-                    s += row.projectClassName;
-                }
-                if (row.projectClassName) {
-                    s += "/" + row.projectTypeName;
-                }
-                if (row.projectClassName) {
-                    s += "/" + row.projectCategoryName;
-                }
-                return s;
+            field: 'projectClassName', title: '项目类型',width:'5%', formatter: function (value, row, index) {
+                return row.projectCategoryName;
             }
         });
-        cols.push({field: 'projectStatus', title: '项目状态'});
-        cols.push({field: 'entrustPurposeName', title: '委托目的'});
+        cols.push({field: 'projectStatus', title: '项目状态',width:'5%'});
+        cols.push({field: 'entrustPurposeName', title: '委托目的',width:'5%'});
+        cols.push({field: 'loanTypeName', title: '贷款类型',width:'5%'});
         cols.push({
-            field: 'finishPre', width: '20%', title: '项目进度', formatter: function (value, row, index) {
+            field: 'finishPre', title: '项目进度',width:'10%', formatter: function (value, row, index) {
                 var s = "<div class='progress progress_sm' style='margin-bottom: 0px;'>";
                 if (value == "100") {
                     s += "<div class='progress-bar progress-bar-success' role='progressbar'  style='width: " + value + "%;'></div>";
@@ -236,7 +218,7 @@
             }
         });
         cols.push({
-            field: 'gmtCreated', title: '立项时间', formatter: function (value, row, index) {
+            field: 'gmtCreated', title: '立项时间',width:'10%', formatter: function (value, row, index) {
                 return formatDate(row.gmtCreated, true);
             }
         });

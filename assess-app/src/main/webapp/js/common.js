@@ -795,7 +795,94 @@ $(function () {
             getFileName:function (fileName) {
                 if(!fileName) return"";
                 return fileName.substring(0, fileName.lastIndexOf("."));
+            },
+            //获取DataList字典信息
+            loadDataListHtml:function (key, value, callback, async) {
+            if (key) {
+                $.ajax({
+                    url: getContextPath() + "/baseDataDic/getDataDicListByFieldName",
+                    type: "get",
+                    dataType: "json",
+                    async: async,
+                    data: {
+                        fieldName: key
+                    },
+                    success: function (result) {
+                        if (result.ret) {
+                            var retHtml = '<option value="" selected>-请选择-</option>';
+                            $.each(result.data, function (i, item) {
+                                retHtml += '<option value="' + item.name + '"'
+                                if (item.name == value) {
+                                    retHtml += 'selected="selected"'
+                                }
+                                retHtml += '>' + item.name + '</option>'
+                            });
+                            if (callback) {
+                                callback(retHtml, result.data);
+                            }
+
+                        }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
+                    }
+                });
             }
+        },
+            //通过fieldName与name获取子集
+            getSonDataList:function (fieldName, name,value, callback) {
+            $.ajax({
+                url: getContextPath() + "/baseDataDic/getDataDicByName",
+                type: "get",
+                dataType: "json",
+                data: {
+                    fieldName: fieldName,
+                    name: name
+                },
+                success: function (result) {
+                    if (result.ret) {
+                        if(result.data){
+                            AssessCommon.loadSonDataListHtml(result.data.id,value,callback);
+                        }
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            });
+
+        },
+            loadSonDataListHtml:function (pid, value, callback) {
+            if (pid) {
+                $.ajax({
+                    url: getContextPath() + "/baseDataDic/getCacheDataDicListByPid",
+                    type: "get",
+                    dataType: "json",
+                    data: {
+                        pid: pid
+                    },
+                    success: function (result) {
+                        if (result.ret) {
+                            var retHtml = '<option value="" selected>-请选择-</option>';
+                            $.each(result.data, function (i, item) {
+                                retHtml += '<option value="' + item.name + '"'
+                                if (item.name == value) {
+                                    retHtml += 'selected="selected"'
+                                }
+                                retHtml += '>' + item.name + '</option>'
+                            });
+                            if (callback) {
+                                callback(retHtml, result.data);
+                            }
+
+                        }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
+                    }
+                });
+            }
+        }
         }
     ;
 

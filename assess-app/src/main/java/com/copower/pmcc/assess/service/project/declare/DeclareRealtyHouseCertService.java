@@ -347,9 +347,9 @@ public class DeclareRealtyHouseCertService {
         DeclareRealtyHouseCertVo vo = new DeclareRealtyHouseCertVo();
         BeanUtils.copyProperties(declareRealtyHouseCert, vo);
         vo.setPlanningUseName(baseDataDicService.getNameById(declareRealtyHouseCert.getCertUse()));
-        if (declareRealtyHouseCert.getCertUseCategory() != null) {
-            vo.setCertUseCategoryName(baseDataDicService.getNameById(declareRealtyHouseCert.getCertUseCategory()));
-        }
+//        if (declareRealtyHouseCert.getCertUseCategory() != null) {
+//            vo.setCertUseCategoryName(baseDataDicService.getNameById(declareRealtyHouseCert.getCertUseCategory()));
+//        }
         vo.setTypeName(baseDataDicService.getNameById(declareRealtyHouseCert.getType()));
         vo.setNatureName(baseDataDicService.getNameById(declareRealtyHouseCert.getNature()));
         vo.setPublicSituationName(baseDataDicService.getNameById(declareRealtyHouseCert.getPublicSituation()));
@@ -416,6 +416,7 @@ public class DeclareRealtyHouseCertService {
             declareRecord = new DeclareRecord();
             setDeclareRealtyHouseCertForDeclareRecordProperties(declareRealtyHouseCert, declareRecord, declareApply.getProjectId());
             declareRecord.setType(DeclareCertificateTypeEnum.HOUSE.getKey());
+            declareRecord.setNumber(declareRecordService.getMaxNumber(declareApply.getProjectId()));
             try {
                 int declareId = declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
                 DeclareRecordExtend declareRecordExtend = new DeclareRecordExtend();

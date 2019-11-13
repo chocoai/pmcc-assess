@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.service.basic;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateSupplyDao;
 import com.copower.pmcc.assess.dal.basis.entity.BasicEstateSupply;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateSupplyVo;
+import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -40,6 +41,8 @@ public class BasicEstateSupplyService {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private CommonService commonService;
+    @Autowired
+    private PublicService publicService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
@@ -133,6 +136,7 @@ public class BasicEstateSupplyService {
         vo.setReputationName(baseDataDicService.getNameById(basicEstateSupply.getReputation()));
         vo.setLineGradeName(baseDataDicService.getNameById(basicEstateSupply.getLineGrade()));
         vo.setGradeName(baseDataDicService.getNameById(basicEstateSupply.getGrade()));
+        vo.setCreatorName(publicService.getUserNameByAccount(basicEstateSupply.getCreator()));
         return vo;
     }
     

@@ -30,16 +30,17 @@
                 </c:if>
 
 
-
             </div>
-            <div class="x_panel">
-                <div class="x_content">
-                    <%@include file="/views/project/stageSurvey/commonDetail/unitDecorate.jsp" %>
-                    <%@include file="/views/project/stageSurvey/commonDetail/unitHuxing.jsp" %>
-                    <%@include file="/views/project/stageSurvey/commonDetail/unitElevator.jsp" %>
-                    <%@include file="/views/project/stageSurvey/commonDetail/unitHuxingPriceDetail.jsp" %>
+            <c:if test="${empty isHistory}">
+                <div class="x_panel">
+                    <div class="x_content">
+                        <%@include file="/views/project/stageSurvey/commonDetail/unitDecorate.jsp" %>
+                        <%@include file="/views/project/stageSurvey/commonDetail/unitHuxing.jsp" %>
+                        <%@include file="/views/project/stageSurvey/commonDetail/unitElevator.jsp" %>
+                        <%@include file="/views/project/stageSurvey/commonDetail/unitHuxingPriceDetail.jsp" %>
+                    </div>
                 </div>
-            </div>
+            </c:if>
             <div class="x_panel">
                 <div class="x_content">
                     <div style="text-align: center;">
@@ -55,8 +56,10 @@
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
 <%@include file="/views/project/tool/toolMapHandleView.jsp" %>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.common.js?v=${assessVersion}"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.unit.js?v=${assessVersion}"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/examine/examine.common.js?v=${assessVersion}"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/examine/examine.unit.js?v=${assessVersion}"></script>
 
 
 <script type="text/javascript">

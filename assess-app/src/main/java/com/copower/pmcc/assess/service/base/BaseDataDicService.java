@@ -339,7 +339,7 @@ public class BaseDataDicService {
     }
 
     public String getNameById(String id) {
-        if (StringUtils.isBlank(id) || !StringUtils.isNumeric(id)) return "";
+        if (StringUtils.isBlank(id) || !StringUtils.isNumeric(id)) return id;
         return getNameById(Integer.valueOf(id));
     }
 

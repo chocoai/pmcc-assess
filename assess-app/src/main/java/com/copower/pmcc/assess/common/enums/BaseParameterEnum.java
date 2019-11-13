@@ -34,6 +34,7 @@ public enum BaseParameterEnum {
     PROJECT_DETAILS_DOCUMENT_SEND_PROCESS_KEY("project.details.document.send.process.key", "公司盖章发文审批流程", "box"),
     PROJECT_DETAILS_DOCUMENT_SEND_CLIENT_PROCESS_KEY("project.details.document.send.client.process.key", "委托方盖章发文审批流程", "box"),
     PROJECT_DETAILS_DOCUMENT_OPINION_PROCESS_KEY("project.details.document.opinion.process.key", "项目意见稿审批流程", "box"),
+    PROJECT_DETAILS_DOCUMENT_SIGN_BILL_PROCESS_KEY("project.details.document.sign.bill.process.key", "报告签收单审批流程", "box"),
 
 
     PROJECT_SUBSEQUENT_PROCESS_KEY("project.subsequent.process.key", "项目后续事项", "box"),

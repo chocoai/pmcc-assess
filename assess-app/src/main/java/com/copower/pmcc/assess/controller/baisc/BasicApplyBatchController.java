@@ -293,17 +293,22 @@ public class BasicApplyBatchController extends BaseController {
 
 
     @RequestMapping(value = "/informationDetail", name = "信息详情页面", method = RequestMethod.GET)
-    public ModelAndView informationDetail(Integer formClassify, Integer formType, Integer tableId, String tableName, String tbType, Integer planDetailsId, Integer applyBatchId) throws Exception {
+    public ModelAndView informationDetail(Integer formClassify, Integer formType, Integer tableId, String tableName, String tbType, Integer planDetailsId, Integer applyBatchId,boolean isHistory) throws Exception {
         final StringBuffer stringBuffer = new StringBuffer("/project/stageSurvey");
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(stringBuffer.toString());
         setViewParam(modelAndView, tableName, tbType, tableId, applyBatchId);
+        //查看历史记录标识
+        if(isHistory){
+            modelAndView.addObject("isHistory", isHistory);
+        }
         //根据表单大类 类型可确定使用哪个view，因为现在的查勘分为房屋和土地以及房屋带土地,其中这三者都有可能使用相同的表单,因此上面参数直接使用表单名称和表单id来获取参数，而这里会参照fillInfo()来设计表单view路径
         BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicById(formClassify);
         if (AssessDataDicKeyConstant.PROJECT_SURVEY_FORM_CLASSIFY_LAND_ONLY.equals(baseDataDic.getFieldName())) {
             stringBuffer.append("/landOnly/detail/index");
             BasicApply basicApply = basicApplyService.getBasicApplyByPlanDetailsId(planDetailsId);
             if (basicApply != null && basicApply.getBasicHouseId() != null) {
-                setViewParam(modelAndView, FormatUtils.entityNameConvertToTableName(BasicHouse.class), tbType, basicApply.getBasicHouseId(), applyBatchId);
+                setViewParam(modelAndView, FormatUtils.entityNameConvertToTableName(BasicHouse.class), EstateTaggingTypeEnum.HOUSE.getKey(), basicApply.getBasicHouseId(), applyBatchId);
+                setViewParam(modelAndView, FormatUtils.entityNameConvertToTableName(BasicEstate.class), EstateTaggingTypeEnum.ESTATE.getKey(), basicApply.getBasicEstateId(), applyBatchId);
             }
         }
         if (AssessDataDicKeyConstant.PROJECT_SURVEY_FORM_CLASSIFY_LAND.equals(baseDataDic.getFieldName())) {

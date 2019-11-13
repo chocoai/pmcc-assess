@@ -119,20 +119,20 @@
     function showHistoryModal() {
         //打开楼盘modal
         if ("estate" == "${tbType}") {
-            historyInfo.caseEstate.showModel('${tbId}','${formClassify}','${tbType}');
+            historyInfo.caseEstate.showModel('${tbId}','${formClassify}','${tbType}','${basicApplyBatch.id}');
         }
 
         //打开楼栋modal
         if ("building" == "${tbType}") {
-            historyInfo.caseBuild.showModel('${tbId}','${formClassify}','${tbType}');
+            historyInfo.caseBuild.showModel('${tbId}','${formClassify}','${tbType}','${basicApplyBatch.id}');
         }
         //打开单元modal
         if ("unit" == "${tbType}") {
-            historyInfo.caseUnit.showModel('${tbId}','${formClassify}','${tbType}');
+            historyInfo.caseUnit.showModel('${tbId}','${formClassify}','${tbType}','${basicApplyBatch.id}');
         }
         //打开房屋modal
         if ("house" == "${tbType}") {
-            historyInfo.caseHouse.showModel('${tbId}','${formClassify}','${tbType}');
+            historyInfo.caseHouse.showModel('${tbId}','${formClassify}','${tbType}','${basicApplyBatch.id}');
         }
 
     };

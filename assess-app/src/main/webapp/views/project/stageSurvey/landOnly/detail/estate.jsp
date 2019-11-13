@@ -190,13 +190,13 @@
         <div class="x-valid">
             <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地用途类型</label>
             <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                <label class="form-control">${basicEstateLandState.landUseTypeName}</label>
+                <label class="form-control">${basicEstateLandState.landUseType}</label>
             </div>
         </div>
         <div class="x-valid">
             <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地用途类别</label>
             <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                <label class="form-control">${basicEstateLandState.landUseCategoryName}</label>
+                <label class="form-control">${basicEstateLandState.landUseCategory}</label>
             </div>
         </div>
     </div>
@@ -407,6 +407,7 @@
         <%@include file="/views/project/stageSurvey/commonDetail/houseTradingBody.jsp" %>
     </form>
 </div>
+<c:if test="${empty isHistory}">
 <div class="x_content">
     <%@include file="/views/project/stageSurvey/commonDetail/estateNetwork.jsp" %>
     <%@include file="/views/project/stageSurvey/commonDetail/estateParking.jsp" %>
@@ -429,7 +430,7 @@
     </c:if>
     <%@include file="/views/project/stageSurvey/commonDetail/houseFaceStreet.jsp" %>
 </div>
-
+</c:if>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.estate.js?v=${assessVersion}"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.house.js?v=${assessVersion}"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.estate.detail.js?v=${assessVersion}"></script>

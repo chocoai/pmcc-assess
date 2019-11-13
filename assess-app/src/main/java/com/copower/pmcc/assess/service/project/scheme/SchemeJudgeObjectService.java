@@ -577,6 +577,10 @@ public class SchemeJudgeObjectService {
      */
     public void rollBackToProgramme(Integer projectId, Integer planId) {
         //将整个项目的阶段任务回滚到方案阶段
+        //根据情况来确定如何清理数据；
+        // 1.当整个委估对象没有发生变化，数量合并拆分都没有发生变化，则只处理委估对象中发生变化的方法
+        // 2.一旦委估对象都发生了变化,只是单纯添加了
+
         ProjectPlan projectPlan = projectPlanService.getProjectplanById(planId);
         List<ProjectPlan> planList = projectPlanService.getProjectplanByProjectId(projectId, null);
         for (ProjectPlan plan : planList) {
@@ -666,6 +670,17 @@ public class SchemeJudgeObjectService {
      * @throws BpmException
      */
     public void submitProgrammeHandle(ProjectInfo projectInfo, ProjectPlan projectPlan, ProjectWorkStage projectWorkStage) throws BusinessException, BpmException {
+        //循环所有新的委估对象，与上一次生成的数据做对比,首先找出未发生变化的委估对象，再处理新添加的委估对象，
+        //1.当该委估对象为新添加的对象，则为该委估对象添加相关方法任务
+        //2.当委估对象与上一次委估对象一致，方法未发生变更则不做处理，方法发生了变化则处理变化的内容
+        //3.
+
+        //1.首先找出没有发生变化的估价对象，及检查选择的方法是否发生变化，分隔出什么都变化的估价对象，方法变更的估价对象，拆分合并变化的估价对象
+        //2.将没有发变化的事项与任务保留，其余的全部删除
+        //3.对于只变化了方法，则只处理方法变更的事项，其他的委估对象事项都重新生成
+
+
+
         rollBackToProgramme(projectInfo.getId(), projectPlan.getId());
         String projectManager = projectMemberService.getProjectManager(projectInfo.getId());
         List<SchemeAreaGroup> areaGroupList = schemeAreaGroupService.getAreaGroupList(projectInfo.getId());

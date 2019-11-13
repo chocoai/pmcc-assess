@@ -13,6 +13,7 @@ public class BasicHouseRoomDecorateVo extends BasicHouseRoomDecorate {
     private String partName;
     private String materialPriceName;
     private String fileViewName;
+    private String creatorName;
 
     public String getFileViewName() {
         return fileViewName;
@@ -52,5 +53,13 @@ public class BasicHouseRoomDecorateVo extends BasicHouseRoomDecorate {
 
     public void setMaterialPriceName(String materialPriceName) {
         this.materialPriceName = materialPriceName;
+    }
+
+    public String getCreatorName() {
+        return creatorName;
+    }
+
+    public void setCreatorName(String creatorName) {
+        this.creatorName = creatorName;
     }
 }

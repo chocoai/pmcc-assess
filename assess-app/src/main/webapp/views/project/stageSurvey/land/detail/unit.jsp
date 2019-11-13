@@ -24,10 +24,12 @@
                         <input type="hidden" name="id" value="${basicUnit.id}">
                         <div class="form-group">
                             <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">单元编号<span class="symbol required"></span></label>
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">单元编号<span
+                                        class="symbol required"></span></label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                     <div class="input-group">
-                                        <input class="form-control" name="unitNumber" readonly value="${basicUnit.unitNumber}">
+                                        <input class="form-control" name="unitNumber" readonly
+                                               value="${basicUnit.unitNumber}">
                                         <span class="input-group-btn">
                                         <div onclick="unitCommon.mapMarker2(false,${tableId});" class="btn btn-info"><i
                                                 class="fa fa-map-marker"></i> 标注</div>
@@ -36,9 +38,11 @@
                                 </div>
                             </div>
                             <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">梯户比<span class="symbol required"></span></label>
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">梯户比<span
+                                        class="symbol required"></span></label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <label class="form-control" name="elevatorHouseholdRatio">${basicUnit.elevatorHouseholdRatio}</label>
+                                    <label class="form-control"
+                                           name="elevatorHouseholdRatio">${basicUnit.elevatorHouseholdRatio}</label>
                                 </div>
                             </div>
                             <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">户型说明</label>
@@ -48,14 +52,14 @@
                         </div>
                     </form>
                 </div>
-
-                <div class="x_content">
-                    <%@include file="/views/project/stageSurvey/commonDetail/unitHuxing.jsp" %>
-                    <%@include file="/views/project/stageSurvey/commonDetail/unitHuxingPriceDetail.jsp" %>
-                    <%@include file="/views/project/stageSurvey/commonDetail/unitDecorate.jsp" %>
-                    <%@include file="/views/project/stageSurvey/commonDetail/unitElevator.jsp" %>
-                </div>
-
+                <c:if test="${empty isHistory}">
+                    <div class="x_content">
+                        <%@include file="/views/project/stageSurvey/commonDetail/unitHuxing.jsp" %>
+                        <%@include file="/views/project/stageSurvey/commonDetail/unitHuxingPriceDetail.jsp" %>
+                        <%@include file="/views/project/stageSurvey/commonDetail/unitDecorate.jsp" %>
+                        <%@include file="/views/project/stageSurvey/commonDetail/unitElevator.jsp" %>
+                    </div>
+                </c:if>
 
             </div>
             <div class="x_panel">
@@ -72,9 +76,12 @@
 </div>
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.common.js?v=${assessVersion}"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.unit.js?v=${assessVersion}"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/sonUnitView.js?v=${assessVersion}"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/examine/examine.common.js?v=${assessVersion}"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/examine/examine.unit.js?v=${assessVersion}"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/examine/sonUnitView.js?v=${assessVersion}"></script>
 <script type="text/javascript">
     $(function () {
         unitCommon.initById('${basicUnit.id}');

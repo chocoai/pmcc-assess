@@ -34,6 +34,8 @@
     <result column="standard_judge_id" property="standardJudgeId" jdbcType="INTEGER" />
     <result column="standard_judge_explain" property="standardJudgeExplain" jdbcType="VARCHAR" />
     <result column="not_applicable_reason" property="notApplicableReason" jdbcType="VARCHAR" />
+    <result column="merge_explain" property="mergeExplain" jdbcType="VARCHAR" />
+    <result column="split_explain" property="splitExplain" jdbcType="VARCHAR" />
     <result column="bis_split" property="bisSplit" jdbcType="BIT" />
     <result column="bis_merge" property="bisMerge" jdbcType="BIT" />
     <result column="bis_enable" property="bisEnable" jdbcType="BIT" />
@@ -107,8 +109,8 @@
     land_cert_use, land_practical_use, land_use_end_date, land_legal_year, land_remaining_year, 
     set_use, best_use, floor_area, evaluation_area, price, original_price, set_plot_ratio, 
     plan_plot_ratio, actual_plot_ratio, standard_judge_id, standard_judge_explain, not_applicable_reason, 
-    bis_split, bis_merge, bis_enable, bis_set_function, sorting, creator, gmt_created, 
-    gmt_modified
+    merge_explain, split_explain, bis_split, bis_merge, bis_enable, bis_set_function, 
+    sorting, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObjectExample" >
     select
@@ -154,10 +156,10 @@
       floor_area, evaluation_area, price, 
       original_price, set_plot_ratio, plan_plot_ratio, 
       actual_plot_ratio, standard_judge_id, standard_judge_explain, 
-      not_applicable_reason, bis_split, bis_merge, 
-      bis_enable, bis_set_function, sorting, 
-      creator, gmt_created, gmt_modified
-      )
+      not_applicable_reason, merge_explain, split_explain, 
+      bis_split, bis_merge, bis_enable, 
+      bis_set_function, sorting, creator, 
+      gmt_created, gmt_modified)
     values (#{pid,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, #{areaGroupId,jdbcType=INTEGER}, 
       #{originalAreaGroupId,jdbcType=INTEGER}, #{declareRecordId,jdbcType=INTEGER}, #{number,jdbcType=VARCHAR}, 
       #{originalNumber,jdbcType=VARCHAR}, #{splitNumber,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
@@ -168,10 +170,10 @@
       #{floorArea,jdbcType=DECIMAL}, #{evaluationArea,jdbcType=DECIMAL}, #{price,jdbcType=DECIMAL}, 
       #{originalPrice,jdbcType=DECIMAL}, #{setPlotRatio,jdbcType=DECIMAL}, #{planPlotRatio,jdbcType=DECIMAL}, 
       #{actualPlotRatio,jdbcType=DECIMAL}, #{standardJudgeId,jdbcType=INTEGER}, #{standardJudgeExplain,jdbcType=VARCHAR}, 
-      #{notApplicableReason,jdbcType=VARCHAR}, #{bisSplit,jdbcType=BIT}, #{bisMerge,jdbcType=BIT}, 
-      #{bisEnable,jdbcType=BIT}, #{bisSetFunction,jdbcType=BIT}, #{sorting,jdbcType=INTEGER}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+      #{notApplicableReason,jdbcType=VARCHAR}, #{mergeExplain,jdbcType=VARCHAR}, #{splitExplain,jdbcType=VARCHAR}, 
+      #{bisSplit,jdbcType=BIT}, #{bisMerge,jdbcType=BIT}, #{bisEnable,jdbcType=BIT}, 
+      #{bisSetFunction,jdbcType=BIT}, #{sorting,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -271,6 +273,12 @@
       </if>
       <if test="notApplicableReason != null" >
         not_applicable_reason,
+      </if>
+      <if test="mergeExplain != null" >
+        merge_explain,
+      </if>
+      <if test="splitExplain != null" >
+        split_explain,
       </if>
       <if test="bisSplit != null" >
         bis_split,
@@ -390,6 +398,12 @@
       </if>
       <if test="notApplicableReason != null" >
         #{notApplicableReason,jdbcType=VARCHAR},
+      </if>
+      <if test="mergeExplain != null" >
+        #{mergeExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="splitExplain != null" >
+        #{splitExplain,jdbcType=VARCHAR},
       </if>
       <if test="bisSplit != null" >
         #{bisSplit,jdbcType=BIT},
@@ -522,6 +536,12 @@
       <if test="record.notApplicableReason != null" >
         not_applicable_reason = #{record.notApplicableReason,jdbcType=VARCHAR},
       </if>
+      <if test="record.mergeExplain != null" >
+        merge_explain = #{record.mergeExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="record.splitExplain != null" >
+        split_explain = #{record.splitExplain,jdbcType=VARCHAR},
+      </if>
       <if test="record.bisSplit != null" >
         bis_split = #{record.bisSplit,jdbcType=BIT},
       </if>
@@ -585,6 +605,8 @@
       standard_judge_id = #{record.standardJudgeId,jdbcType=INTEGER},
       standard_judge_explain = #{record.standardJudgeExplain,jdbcType=VARCHAR},
       not_applicable_reason = #{record.notApplicableReason,jdbcType=VARCHAR},
+      merge_explain = #{record.mergeExplain,jdbcType=VARCHAR},
+      split_explain = #{record.splitExplain,jdbcType=VARCHAR},
       bis_split = #{record.bisSplit,jdbcType=BIT},
       bis_merge = #{record.bisMerge,jdbcType=BIT},
       bis_enable = #{record.bisEnable,jdbcType=BIT},
@@ -693,6 +715,12 @@
       <if test="notApplicableReason != null" >
         not_applicable_reason = #{notApplicableReason,jdbcType=VARCHAR},
       </if>
+      <if test="mergeExplain != null" >
+        merge_explain = #{mergeExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="splitExplain != null" >
+        split_explain = #{splitExplain,jdbcType=VARCHAR},
+      </if>
       <if test="bisSplit != null" >
         bis_split = #{bisSplit,jdbcType=BIT},
       </if>
@@ -753,6 +781,8 @@
       standard_judge_id = #{standardJudgeId,jdbcType=INTEGER},
       standard_judge_explain = #{standardJudgeExplain,jdbcType=VARCHAR},
       not_applicable_reason = #{notApplicableReason,jdbcType=VARCHAR},
+      merge_explain = #{mergeExplain,jdbcType=VARCHAR},
+      split_explain = #{splitExplain,jdbcType=VARCHAR},
       bis_split = #{bisSplit,jdbcType=BIT},
       bis_merge = #{bisMerge,jdbcType=BIT},
       bis_enable = #{bisEnable,jdbcType=BIT},

@@ -22,14 +22,31 @@
                 <!-- 非工业交通仓储 -->
                 <c:if test="${basicApplyBatch.type == 0 }">
                     <%@include file="/views/project/stageSurvey/commonDetail/building.jsp" %>
+                    <c:if test="${empty isHistory}">
+                        <div class="x_content">
+                            <%@include file="/views/project/stageSurvey/commonDetail/buildingOutfit.jsp" %>
+                        </div>
+
+                        <div class="x_content">
+                            <%@include file="/views/project/stageSurvey/commonDetail/buildingFunction.jsp" %>
+                        </div>
+                    </c:if>
                 </c:if>
-
-
 
 
                 <!-- 工业交通仓储 -->
                 <c:if test="${basicApplyBatch.type == 1}">
                     <%@include file="/views/project/stageSurvey/commonDetail/industry/building.jsp" %>
+                    <c:if test="${not empty isHistory}">
+                        <div class="x_content">
+                            <%@include file="/views/project/stageSurvey/commonDetail/industry/buildingSurface.jsp" %>
+                        </div>
+
+                        <div class="x_content">
+                            <%@include
+                                    file="/views/project/stageSurvey/commonDetail/industry/buildingMaintenance.jsp" %>
+                        </div>
+                    </c:if>
                 </c:if>
 
             </div>
@@ -48,8 +65,10 @@
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
 <%@include file="/views/project/tool/toolMapHandleView.jsp" %>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.common.js?v=${assessVersion}"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.build.js?v=${assessVersion}"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/examine/examine.common.js?v=${assessVersion}"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/examine/examine.build.js?v=${assessVersion}"></script>
 
 <script type="text/javascript">
     $(function () {
