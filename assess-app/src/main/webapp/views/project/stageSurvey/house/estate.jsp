@@ -306,19 +306,44 @@
                 </div>
             </div>
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地用途类型</label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <select class="form-control landUseType" name="landUseType">
-                    </select>
+                <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                    土地用途类型<span class="symbol required"></span>
+                </label>
+                <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                    <div class="input-group">
+                        <input type="text"  name="landUseType" class="form-control" list="landUseTypeList" value="${basicEstateLandState.landUseType}">
+                        <datalist id="landUseTypeList">
+
+                        </datalist>
+                        <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default docs-tooltip"
+                                                        onclick="$(this).closest('.input-group').find('input').val('');"
+                                                        data-toggle="tooltip" data-original-title="清除">
+                                                <i class="fa fa-trash-o"></i>
+                                                </button>
+                                            </span>
+                    </div>
                 </div>
             </div>
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地用途类别</label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <select class="form-control landUseCategory"
-                            name="landUseCategory">
-                        <option>请先选择土地用途类型</option>
-                    </select>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                    土地用途类别<span class="symbol required"></span>
+                </label>
+                <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                    <div class="input-group">
+                        <input type="text" name="landUseCategory" list="landUseCategoryList" value="${basicEstateLandState.landUseCategory}"
+                               class="form-control">
+                        <datalist id="landUseCategoryList">
+
+                        </datalist>
+                        <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default docs-tooltip"
+                                                        onclick="$(this).closest('.input-group').find('input').val('');"
+                                                        data-toggle="tooltip" data-original-title="清除">
+                                                <i class="fa fa-trash-o"></i>
+                                                </button>
+                                            </span>
+                    </div>
                 </div>
             </div>
         </div>

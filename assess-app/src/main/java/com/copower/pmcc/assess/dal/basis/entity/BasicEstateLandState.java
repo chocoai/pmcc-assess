@@ -12,13 +12,11 @@ public class BasicEstateLandState {
 
     private String name;
 
-    private Integer landUseType;
+    private String landUseType;
 
-    private Integer landUseCategory;
+    private String landUseCategory;
 
     private BigDecimal landFactorTotalScore;
-
-    private String landLevelContent;
 
     private Integer landLevel;
 
@@ -86,6 +84,8 @@ public class BasicEstateLandState {
 
     private Date gmtModified;
 
+    private String landLevelContent;
+
     public Integer getId() {
         return id;
     }
@@ -118,20 +118,20 @@ public class BasicEstateLandState {
         this.name = name == null ? null : name.trim();
     }
 
-    public Integer getLandUseType() {
+    public String getLandUseType() {
         return landUseType;
     }
 
-    public void setLandUseType(Integer landUseType) {
-        this.landUseType = landUseType;
+    public void setLandUseType(String landUseType) {
+        this.landUseType = landUseType == null ? null : landUseType.trim();
     }
 
-    public Integer getLandUseCategory() {
+    public String getLandUseCategory() {
         return landUseCategory;
     }
 
-    public void setLandUseCategory(Integer landUseCategory) {
-        this.landUseCategory = landUseCategory;
+    public void setLandUseCategory(String landUseCategory) {
+        this.landUseCategory = landUseCategory == null ? null : landUseCategory.trim();
     }
 
     public BigDecimal getLandFactorTotalScore() {
@@ -140,14 +140,6 @@ public class BasicEstateLandState {
 
     public void setLandFactorTotalScore(BigDecimal landFactorTotalScore) {
         this.landFactorTotalScore = landFactorTotalScore;
-    }
-
-    public String getLandLevelContent() {
-        return landLevelContent;
-    }
-
-    public void setLandLevelContent(String landLevelContent) {
-        this.landLevelContent = landLevelContent == null ? null : landLevelContent.trim();
     }
 
     public Integer getLandLevel() {
@@ -412,5 +404,13 @@ public class BasicEstateLandState {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getLandLevelContent() {
+        return landLevelContent;
+    }
+
+    public void setLandLevelContent(String landLevelContent) {
+        this.landLevelContent = landLevelContent == null ? null : landLevelContent.trim();
     }
 }

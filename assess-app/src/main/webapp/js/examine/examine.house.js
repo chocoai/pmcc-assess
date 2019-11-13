@@ -269,12 +269,12 @@
         //基本信息
         houseCommon.houseForm.initForm(data.basicHouse, function () {
             //1.初始化下拉框；2.初始化上传控件；3.显示已上传的附件信息；
-            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseLoadUtility, data.basicHouse.certUse, function (html, data) {
-                houseCommon.houseForm.find("select.certUse").empty().html(html).trigger('change');
-            });
-            AssessCommon.loadDataDicByKey(AssessDicKey.examineHousePracticalUse, data.basicHouse.practicalUse, function (html, data) {
-                houseCommon.houseForm.find("select.practicalUse").empty().html(html).trigger('change');
-            });
+            AssessCommon.loadDataListHtml(AssessDicKey.examineHouseLoadUtility, data.basicHouse.certUse, function (html, data) {
+                houseCommon.houseForm.find("#certUseList").empty().html(html).trigger('change');
+            },true);
+            AssessCommon.loadDataListHtml(AssessDicKey.examineHousePracticalUse, data.basicHouse.practicalUse, function (html, data) {
+                houseCommon.houseForm.find("#practicalUseList").empty().html(html).trigger('change');
+            },true);
             AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseEnvironmentUse, data.basicHouse.useEnvironment, function (html, data) {
                 houseCommon.houseForm.find("select.useEnvironment").empty().html(html).trigger('change');
             });

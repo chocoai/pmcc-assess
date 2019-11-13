@@ -230,13 +230,13 @@
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地用途类型</label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <label class="form-control">${basicEstateLandState.landUseTypeName}</label>
+                                    <label class="form-control">${basicEstateLandState.landUseType}</label>
                                 </div>
                             </div>
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地用途类别</label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <label class="form-control">${basicEstateLandState.landUseCategoryName}</label>
+                                    <label class="form-control">${basicEstateLandState.landUseCategory}</label>
                                 </div>
                             </div>
                         </div>
