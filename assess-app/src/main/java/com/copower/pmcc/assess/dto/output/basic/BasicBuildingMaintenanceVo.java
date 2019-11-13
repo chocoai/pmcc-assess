@@ -11,6 +11,7 @@ public class BasicBuildingMaintenanceVo extends BasicBuildingMaintenance {
     private String categoryName;
     private String typeName;
     private String materialQualityName;
+    private String creatorName;
 
     public String getCategoryName() {
         return categoryName;
@@ -34,5 +35,13 @@ public class BasicBuildingMaintenanceVo extends BasicBuildingMaintenance {
 
     public void setTypeName(String typeName) {
         this.typeName = typeName;
+    }
+
+    public String getCreatorName() {
+        return creatorName;
+    }
+
+    public void setCreatorName(String creatorName) {
+        this.creatorName = creatorName;
     }
 }

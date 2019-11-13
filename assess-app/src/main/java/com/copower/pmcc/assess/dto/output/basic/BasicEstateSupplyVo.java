@@ -11,6 +11,7 @@ public class BasicEstateSupplyVo extends BasicEstateSupply {
     private String gradeName;
     private String lineGradeName;
     private String reputationName;
+    private String creatorName;
 
     public String getGradeName() {
         return gradeName;
@@ -34,5 +35,13 @@ public class BasicEstateSupplyVo extends BasicEstateSupply {
 
     public void setReputationName(String reputationName) {
         this.reputationName = reputationName;
+    }
+
+    public String getCreatorName() {
+        return creatorName;
+    }
+
+    public void setCreatorName(String creatorName) {
+        this.creatorName = creatorName;
     }
 }

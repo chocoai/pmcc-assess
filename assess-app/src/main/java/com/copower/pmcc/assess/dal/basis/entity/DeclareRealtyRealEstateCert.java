@@ -50,7 +50,7 @@ public class DeclareRealtyRealEstateCert {
 
     private Integer nature;
 
-    private Integer houseCertUse;
+    private String houseCertUse;
 
     private String housingStructure;
 
@@ -310,12 +310,12 @@ public class DeclareRealtyRealEstateCert {
         this.nature = nature;
     }
 
-    public Integer getHouseCertUse() {
+    public String getHouseCertUse() {
         return houseCertUse;
     }
 
-    public void setHouseCertUse(Integer houseCertUse) {
-        this.houseCertUse = houseCertUse;
+    public void setHouseCertUse(String houseCertUse) {
+        this.houseCertUse = houseCertUse == null ? null : houseCertUse.trim();
     }
 
     public String getHousingStructure() {

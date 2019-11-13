@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.service.basic;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicMatchingLeisurePlaceDao;
 import com.copower.pmcc.assess.dal.basis.entity.BasicMatchingLeisurePlace;
 import com.copower.pmcc.assess.dto.output.basic.BasicMatchingLeisurePlaceVo;
+import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -42,6 +43,8 @@ public class BasicMatchingLeisurePlaceService {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private CommonService commonService;
+    @Autowired
+    private PublicService publicService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
@@ -132,6 +135,7 @@ public class BasicMatchingLeisurePlaceService {
         vo.setCategoryName(baseDataDicService.getNameById(basicMatchingLeisurePlace.getCategory()));
         vo.setDistanceName(baseDataDicService.getNameById(basicMatchingLeisurePlace.getDistance()));
         vo.setGradeName(baseDataDicService.getNameById(basicMatchingLeisurePlace.getGrade()));
+        vo.setCreatorName(publicService.getUserNameByAccount(basicMatchingLeisurePlace.getCreator()));
         return vo;
     }
 

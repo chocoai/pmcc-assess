@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.service.basic;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicMatchingEnvironmentDao;
 import com.copower.pmcc.assess.dal.basis.entity.BasicMatchingEnvironment;
 import com.copower.pmcc.assess.dto.output.basic.BasicMatchingEnvironmentVo;
+import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -42,6 +43,8 @@ public class BasicMatchingEnvironmentService {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private CommonService commonService;
+    @Autowired
+    private PublicService publicService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
@@ -132,7 +135,7 @@ public class BasicMatchingEnvironmentService {
         vo.setCategoryName(baseDataDicService.getNameById(basicMatchingEnvironment.getCategory()));
         vo.setInfluenceDegreeName(baseDataDicService.getNameById(basicMatchingEnvironment.getInfluenceDegree()));
         vo.setHumanImpactName(baseDataDicService.getNameById(basicMatchingEnvironment.getHumanImpact()));
-
+        vo.setCreatorName(publicService.getUserNameByAccount(basicMatchingEnvironment.getCreator()));
         return vo;
     }
 

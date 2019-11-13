@@ -6,8 +6,8 @@
     <result column="apply_id" property="applyId" jdbcType="INTEGER" />
     <result column="estate_id" property="estateId" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="land_use_type" property="landUseType" jdbcType="INTEGER" />
-    <result column="land_use_category" property="landUseCategory" jdbcType="INTEGER" />
+    <result column="land_use_type" property="landUseType" jdbcType="VARCHAR" />
+    <result column="land_use_category" property="landUseCategory" jdbcType="VARCHAR" />
     <result column="land_factor_total_score" property="landFactorTotalScore" jdbcType="DECIMAL" />
     <result column="land_level_content" property="landLevelContent" jdbcType="VARCHAR" />
     <result column="land_level" property="landLevel" jdbcType="INTEGER" />
@@ -162,7 +162,7 @@
       bis_delete, creator, gmt_created, 
       gmt_modified)
     values (#{applyId,jdbcType=INTEGER}, #{estateId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
-      #{landUseType,jdbcType=INTEGER}, #{landUseCategory,jdbcType=INTEGER}, #{landFactorTotalScore,jdbcType=DECIMAL}, 
+      #{landUseType,jdbcType=VARCHAR}, #{landUseCategory,jdbcType=VARCHAR}, #{landFactorTotalScore,jdbcType=DECIMAL},
       #{landLevelContent,jdbcType=VARCHAR}, #{landLevel,jdbcType=INTEGER}, #{landArea,jdbcType=VARCHAR}, 
       #{eastTo,jdbcType=VARCHAR}, #{southTo,jdbcType=VARCHAR}, #{westTo,jdbcType=VARCHAR}, 
       #{northTo,jdbcType=VARCHAR}, #{shapeState,jdbcType=INTEGER}, #{shapeStateRemark,jdbcType=VARCHAR}, 
@@ -315,10 +315,10 @@
         #{name,jdbcType=VARCHAR},
       </if>
       <if test="landUseType != null" >
-        #{landUseType,jdbcType=INTEGER},
+        #{landUseType,jdbcType=VARCHAR},
       </if>
       <if test="landUseCategory != null" >
-        #{landUseCategory,jdbcType=INTEGER},
+        #{landUseCategory,jdbcType=VARCHAR},
       </if>
       <if test="landFactorTotalScore != null" >
         #{landFactorTotalScore,jdbcType=DECIMAL},
@@ -449,10 +449,10 @@
         name = #{record.name,jdbcType=VARCHAR},
       </if>
       <if test="record.landUseType != null" >
-        land_use_type = #{record.landUseType,jdbcType=INTEGER},
+        land_use_type = #{record.landUseType,jdbcType=VARCHAR},
       </if>
       <if test="record.landUseCategory != null" >
-        land_use_category = #{record.landUseCategory,jdbcType=INTEGER},
+        land_use_category = #{record.landUseCategory,jdbcType=VARCHAR},
       </if>
       <if test="record.landFactorTotalScore != null" >
         land_factor_total_score = #{record.landFactorTotalScore,jdbcType=DECIMAL},
@@ -570,8 +570,8 @@
       apply_id = #{record.applyId,jdbcType=INTEGER},
       estate_id = #{record.estateId,jdbcType=INTEGER},
       name = #{record.name,jdbcType=VARCHAR},
-      land_use_type = #{record.landUseType,jdbcType=INTEGER},
-      land_use_category = #{record.landUseCategory,jdbcType=INTEGER},
+      land_use_type = #{record.landUseType,jdbcType=VARCHAR},
+      land_use_category = #{record.landUseCategory,jdbcType=VARCHAR},
       land_factor_total_score = #{record.landFactorTotalScore,jdbcType=DECIMAL},
       land_level_content = #{record.landLevelContent,jdbcType=VARCHAR},
       land_level = #{record.landLevel,jdbcType=INTEGER},
@@ -624,10 +624,10 @@
         name = #{name,jdbcType=VARCHAR},
       </if>
       <if test="landUseType != null" >
-        land_use_type = #{landUseType,jdbcType=INTEGER},
+        land_use_type = #{landUseType,jdbcType=VARCHAR},
       </if>
       <if test="landUseCategory != null" >
-        land_use_category = #{landUseCategory,jdbcType=INTEGER},
+        land_use_category = #{landUseCategory,jdbcType=VARCHAR},
       </if>
       <if test="landFactorTotalScore != null" >
         land_factor_total_score = #{landFactorTotalScore,jdbcType=DECIMAL},
@@ -742,8 +742,8 @@
     set apply_id = #{applyId,jdbcType=INTEGER},
       estate_id = #{estateId,jdbcType=INTEGER},
       name = #{name,jdbcType=VARCHAR},
-      land_use_type = #{landUseType,jdbcType=INTEGER},
-      land_use_category = #{landUseCategory,jdbcType=INTEGER},
+      land_use_type = #{landUseType,jdbcType=VARCHAR},
+      land_use_category = #{landUseCategory,jdbcType=VARCHAR},
       land_factor_total_score = #{landFactorTotalScore,jdbcType=DECIMAL},
       land_level_content = #{landLevelContent,jdbcType=VARCHAR},
       land_level = #{landLevel,jdbcType=INTEGER},

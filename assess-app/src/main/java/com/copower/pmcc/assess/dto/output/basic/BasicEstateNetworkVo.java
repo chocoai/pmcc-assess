@@ -8,6 +8,7 @@ import com.copower.pmcc.assess.dal.basis.entity.BasicEstateNetwork;
 public class BasicEstateNetworkVo extends BasicEstateNetwork {
     private String supplierName;
     private String serviceContentName;
+    private String creatorName;
 
     public String getSupplierName() {
         return supplierName;
@@ -23,5 +24,13 @@ public class BasicEstateNetworkVo extends BasicEstateNetwork {
 
     public void setServiceContentName(String serviceContentName) {
         this.serviceContentName = serviceContentName;
+    }
+
+    public String getCreatorName() {
+        return creatorName;
+    }
+
+    public void setCreatorName(String creatorName) {
+        this.creatorName = creatorName;
     }
 }

@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.dal.basis.dao.basic.BasicMatchingMaterialDao;
 import com.copower.pmcc.assess.dal.basis.entity.BasicMatchingMaterial;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dto.output.basic.BasicMatchingMaterialVo;
+import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -41,6 +42,8 @@ public class BasicMatchingMaterialService {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private CommonService commonService;
+    @Autowired
+    private PublicService publicService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
@@ -125,6 +128,7 @@ public class BasicMatchingMaterialService {
         vo.setCategoryName(baseDataDicService.getNameById(basicMatchingMaterial.getCategory()));
         vo.setScaleName(baseDataDicService.getNameById(basicMatchingMaterial.getScale()));
         vo.setDistanceName(baseDataDicService.getNameById(basicMatchingMaterial.getDistance()));
+        vo.setCreatorName(publicService.getUserNameByAccount(basicMatchingMaterial.getCreator()));
         return vo;
     }
 

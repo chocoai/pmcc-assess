@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.service.basic;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicMatchingTrafficDao;
 import com.copower.pmcc.assess.dal.basis.entity.BasicMatchingTraffic;
 import com.copower.pmcc.assess.dto.output.basic.BasicMatchingTrafficVo;
+import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -42,6 +43,8 @@ public class BasicMatchingTrafficService {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private CommonService commonService;
+    @Autowired
+    private PublicService publicService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
@@ -134,6 +137,7 @@ public class BasicMatchingTrafficService {
         vo.setTrafficFlowName(baseDataDicService.getNameById(basicMatchingTraffic.getTrafficFlow()));
         vo.setPositionName(baseDataDicService.getNameById(basicMatchingTraffic.getPosition()));
         vo.setVisitorsFlowrateName(baseDataDicService.getNameById(basicMatchingTraffic.getVisitorsFlowrate()));
+        vo.setCreatorName(publicService.getUserNameByAccount(basicMatchingTraffic.getCreator()));
         if (basicMatchingTraffic.getFlag() != null){
             if (basicMatchingTraffic.getFlag()){
                 vo.setFlagName("是");

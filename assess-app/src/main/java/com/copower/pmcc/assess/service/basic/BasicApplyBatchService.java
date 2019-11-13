@@ -838,7 +838,7 @@ public class BasicApplyBatchService {
             basicApplyBatchDao.addInfo(basicApplyBatch);
         }
         BasicEstate basicEstate = basicEstateService.getBasicEstateById(basicApplyBatch.getEstateId());
-        if(basicEstate!=null) {
+        if (basicEstate != null) {
             basicEstate.setClassify(basicApplyBatch.getClassify());
             basicEstate.setType(basicApplyBatch.getType());
             basicEstateService.saveAndUpdateBasicEstate(basicEstate, false);
@@ -864,9 +864,9 @@ public class BasicApplyBatchService {
             //原来数据做记录,将老数据复制一条
             BasicEstate oldBasicEstate = basicEstateService.getBasicEstateById(basicEstate.getId());
             BasicEstateLandState oldLandState = basicEstateLandStateService.getLandStateByEstateId(basicEstate.getId());
-            BasicEstate version = basicApplyTransferService.copyBasicEstate(null, oldBasicEstate, oldLandState);
+            BasicEstate version = basicApplyTransferService.copyBasicEstate(null, oldBasicEstate, oldLandState, false);
             version.setRelevanceId(oldBasicEstate.getId());
-            basicEstateService.saveAndUpdateBasicEstate(version,true);
+            basicEstateService.saveAndUpdateBasicEstate(version, true);
 
             if (basicEstate != null) {
                 basicEstateService.saveAndUpdateBasicEstate(basicEstate, true);
@@ -880,7 +880,7 @@ public class BasicApplyBatchService {
                     String string = jsonObject.getString(BasicApplyFormNameEnum.BASIC_ESTATELAND_STATE.getVar());
                     basicEstateLandState = JSONObject.parseObject(string, BasicEstateLandState.class);
                     if (basicEstateLandState != null) {
-                        basicEstateLandState.setLandLevelContent(StringUtils.isNotEmpty(basicEstateLandState.getLandLevelContent())?basicEstateLandState.getLandLevelContent():null);
+                        basicEstateLandState.setLandLevelContent(StringUtils.isNotEmpty(basicEstateLandState.getLandLevelContent()) ? basicEstateLandState.getLandLevelContent() : null);
                         basicEstateLandState.setEstateId(basicEstate.getId());
                         basicEstateLandStateService.saveAndUpdateBasicEstateLandState(basicEstateLandState, true);
                     }
@@ -907,9 +907,9 @@ public class BasicApplyBatchService {
             basicBuilding = JSONObject.parseObject(jsonContent, BasicBuilding.class);
             //原来数据做记录,将老数据复制一条
             BasicBuilding oldBasicBuilding = basicBuildingService.getBasicBuildingById(basicBuilding.getId());
-            BasicBuilding version = basicApplyTransferService.copyBasicBuilding(null, oldBasicBuilding, null);
+            BasicBuilding version = basicApplyTransferService.copyBasicBuilding(null, oldBasicBuilding, null, false);
             version.setRelevanceId(oldBasicBuilding.getId());
-            basicBuildingService.saveAndUpdateBasicBuilding(version,true);
+            basicBuildingService.saveAndUpdateBasicBuilding(version, true);
 
             if (basicBuilding != null) {
                 basicBuildingService.saveAndUpdateBasicBuilding(basicBuilding, true);
@@ -929,9 +929,9 @@ public class BasicApplyBatchService {
             basicUnit = JSONObject.parseObject(jsonContent, BasicUnit.class);
             //原来数据做记录,将老数据复制一条
             BasicUnit oldBasicUnit = basicUnitService.getBasicUnitById(basicUnit.getId());
-            BasicUnit version = basicApplyTransferService.copyBasicUnit(null, oldBasicUnit, null);
+            BasicUnit version = basicApplyTransferService.copyBasicUnit(null, oldBasicUnit, null, false);
             version.setRelevanceId(oldBasicUnit.getId());
-            basicUnitService.saveAndUpdateBasicUnit(version,true);
+            basicUnitService.saveAndUpdateBasicUnit(version, true);
 
             if (basicUnit != null) {
                 basicUnitService.saveAndUpdateBasicUnit(basicUnit, true);
@@ -952,9 +952,9 @@ public class BasicApplyBatchService {
             //原来数据做记录,将老数据复制一条
             BasicHouse oldBasicHouse = basicHouseDao.getBasicHouseById(basicHouse.getId());
             BasicHouseTrading oldTradingByHouseId = basicHouseTradingService.getTradingByHouseId(oldBasicHouse.getId());
-            BasicHouse version = basicApplyTransferService.copyBasicHouse(null, oldBasicHouse, oldTradingByHouseId,null);
+            BasicHouse version = basicApplyTransferService.copyBasicHouse(null, oldBasicHouse, oldTradingByHouseId, null, false);
             version.setRelevanceId(oldBasicHouse.getId());
-            basicHouseService.saveAndUpdateBasicHouse(version,true);
+            basicHouseService.saveAndUpdateBasicHouse(version, true);
 
             if (basicHouse != null) {
                 Integer house = basicHouseService.saveAndUpdateBasicHouse(basicHouse, true);

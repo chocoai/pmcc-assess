@@ -13,6 +13,7 @@ public class BasicHouseIntelligentVo extends BasicHouseIntelligent {
     private String layingMethodName;
     private String gradeName;
     private String lampsLanternsName;
+    private String creatorName;
 
     private String intelligentSystemName;
 
@@ -54,5 +55,13 @@ public class BasicHouseIntelligentVo extends BasicHouseIntelligent {
 
     public void setIntelligentSystemName(String intelligentSystemName) {
         this.intelligentSystemName = intelligentSystemName;
+    }
+
+    public String getCreatorName() {
+        return creatorName;
+    }
+
+    public void setCreatorName(String creatorName) {
+        this.creatorName = creatorName;
     }
 }

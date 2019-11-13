@@ -7,6 +7,7 @@ import com.copower.pmcc.assess.dal.basis.entity.BasicUnitHuxing;
 import com.copower.pmcc.assess.dal.cases.entity.CaseUnitHuxing;
 import com.copower.pmcc.assess.dto.output.basic.BasicUnitHuxingVo;
 import com.copower.pmcc.assess.dto.output.cases.CaseUnitHuxingVo;
+import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.cases.CaseUnitHuxingService;
@@ -52,6 +53,8 @@ public class BasicUnitHuxingService {
     private CaseUnitHuxingService caseUnitHuxingService;
     @Autowired
     private BasicUnitService basicUnitService;
+    @Autowired
+    private PublicService publicService;
 
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -166,6 +169,7 @@ public class BasicUnitHuxingService {
             vo.setFileViewName(builder.toString());
         }
         vo.setOrientationName(baseDataDicService.getNameById(NumberUtils.isNumber(basicUnitHuxing.getOrientation()) ? Integer.parseInt(basicUnitHuxing.getOrientation()) : null));
+        vo.setCreatorName(publicService.getUserNameByAccount(basicUnitHuxing.getCreator()));
         return vo;
     }
 

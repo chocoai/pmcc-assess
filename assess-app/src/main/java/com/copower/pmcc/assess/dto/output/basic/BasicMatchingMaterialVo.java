@@ -13,6 +13,7 @@ public class BasicMatchingMaterialVo extends BasicMatchingMaterial {
     private String scaleName;
 
     private String distanceName;
+    private String creatorName;
 
     public String getCategoryName() {
         return categoryName;
@@ -36,5 +37,13 @@ public class BasicMatchingMaterialVo extends BasicMatchingMaterial {
 
     public void setDistanceName(String distanceName) {
         this.distanceName = distanceName;
+    }
+
+    public String getCreatorName() {
+        return creatorName;
+    }
+
+    public void setCreatorName(String creatorName) {
+        this.creatorName = creatorName;
     }
 }

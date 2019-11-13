@@ -15,6 +15,7 @@ public class BasicMatchingEnvironmentVo extends BasicMatchingEnvironment {
     private String humanImpactName;
 
     private String influenceDegreeName;
+    private String creatorName;
 
     public String getTypeName() {
         return typeName;
@@ -46,5 +47,13 @@ public class BasicMatchingEnvironmentVo extends BasicMatchingEnvironment {
 
     public void setHumanImpactName(String humanImpactName) {
         this.humanImpactName = humanImpactName;
+    }
+
+    public String getCreatorName() {
+        return creatorName;
+    }
+
+    public void setCreatorName(String creatorName) {
+        this.creatorName = creatorName;
     }
 }

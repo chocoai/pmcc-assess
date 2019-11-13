@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.service.basic;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicHouseFaceStreetDao;
 import com.copower.pmcc.assess.dal.basis.entity.BasicHouseFaceStreet;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseFaceStreetVo;
+import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -41,6 +42,8 @@ public class BasicHouseFaceStreetService {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private CommonService commonService;
+    @Autowired
+    private PublicService publicService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
@@ -125,6 +128,7 @@ public class BasicHouseFaceStreetService {
         vo.setTrafficFlowName(baseDataDicService.getNameById(basicHouseFaceStreet.getTrafficFlow()));
         vo.setStreetLevelName(baseDataDicService.getNameById(basicHouseFaceStreet.getStreetLevel()));
         vo.setPositionName(baseDataDicService.getNameById(basicHouseFaceStreet.getPosition()));
+        vo.setCreatorName(publicService.getUserNameByAccount(basicHouseFaceStreet.getCreator()));
         return vo;
     }
 

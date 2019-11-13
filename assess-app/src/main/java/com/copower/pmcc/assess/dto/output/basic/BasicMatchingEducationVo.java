@@ -12,6 +12,7 @@ public class BasicMatchingEducationVo extends BasicMatchingEducation {
     private String schoolGradationName;
     private String schoolLevelName;
     private String distanceName;
+    private String creatorName;
 
     public String getSchoolNatureName() {
         return schoolNatureName;
@@ -43,5 +44,13 @@ public class BasicMatchingEducationVo extends BasicMatchingEducation {
 
     public void setDistanceName(String distanceName) {
         this.distanceName = distanceName;
+    }
+
+    public String getCreatorName() {
+        return creatorName;
+    }
+
+    public void setCreatorName(String creatorName) {
+        this.creatorName = creatorName;
     }
 }

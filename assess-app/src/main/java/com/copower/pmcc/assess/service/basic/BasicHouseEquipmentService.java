@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.service.basic;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicHouseEquipmentDao;
 import com.copower.pmcc.assess.dal.basis.entity.BasicHouseEquipment;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseEquipmentVo;
+import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
@@ -42,6 +43,8 @@ public class BasicHouseEquipmentService {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private CommonService commonService;
+    @Autowired
+    private PublicService publicService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
@@ -141,6 +144,7 @@ public class BasicHouseEquipmentService {
             }
             vo.setFileName(builder.toString());
         }
+        vo.setCreatorName(publicService.getUserNameByAccount(basicHouseEquipment.getCreator()));
         return vo;
     }
 

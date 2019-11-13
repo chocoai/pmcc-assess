@@ -160,6 +160,10 @@ public class ProjectCenterController {
         List<DocumentTemplate> documentClientTemplateList = documentTemplateService.getDocumentTemplateList("", baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_TEMPLATE_TYPE_DISPATCH_CLIENT).getId());
         modelAndView.addObject("documentTemplateList", documentTemplateList);
         modelAndView.addObject("documentClientTemplateList", documentClientTemplateList);
+
+        //报告签收单
+        List<DocumentTemplate> signBill = documentTemplateService.getDocumentTemplateList("", baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_TEMPLATE_TYPE_REPORT_SIGNFOR).getId());
+        modelAndView.addObject("signBill", signBill);
         return modelAndView;
     }
 
