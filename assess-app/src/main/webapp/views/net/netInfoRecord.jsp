@@ -337,7 +337,7 @@
                 onLoadSuccess: function () {
                     $('.tooltips').tooltip();
                 }
-            });
+            },true);
         },
         openItem: function (index) {
             var row = $("#transaction_List").bootstrapTable('getData')[index];

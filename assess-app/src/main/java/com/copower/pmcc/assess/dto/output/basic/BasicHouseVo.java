@@ -18,6 +18,7 @@ public class BasicHouseVo extends BasicHouse {
     private String spatialDistributionName;
     private String useConditionName;
     private String decorateSituationName;
+    private String creatorName;
 
     public String getDecorateSituationName() {
         return decorateSituationName;
@@ -97,5 +98,13 @@ public class BasicHouseVo extends BasicHouse {
 
     public void setSpatialDistributionName(String spatialDistributionName) {
         this.spatialDistributionName = spatialDistributionName;
+    }
+
+    public String getCreatorName() {
+        return creatorName;
+    }
+
+    public void setCreatorName(String creatorName) {
+        this.creatorName = creatorName;
     }
 }

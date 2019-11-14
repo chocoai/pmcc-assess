@@ -193,6 +193,12 @@
             cols.push({field: 'blockName', title: '版块'});
             cols.push({field: 'averagePrice', title: '均价'});
             cols.push({field: 'coverAnArea', title: '占地面积'});
+            cols.push({field: 'creatorName', title: '创建人'});
+            cols.push({
+                field: 'gmtCreated', title: '创建日期', formatter: function (value, row, index) {
+                    return formatDate(value, false);
+                }
+            });
             cols.push({
                 field: 'id', title: '查询', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
@@ -255,6 +261,12 @@
             var cols = [];
             cols.push({field: 'buildingNumber', title: '楼栋编号'});
             cols.push({field: 'buildingName', title: '楼栋名称'});
+            cols.push({field: 'creatorName', title: '创建人'});
+            cols.push({
+                field: 'gmtCreated', title: '创建日期', formatter: function (value, row, index) {
+                    return formatDate(value, false);
+                }
+            });
             cols.push({
                 field: 'id', title: '查询', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
@@ -299,6 +311,12 @@
             var cols = [];
             cols.push({field: 'unitNumber', title: '单元编号'});
             cols.push({field: 'elevatorHouseholdRatio', title: '梯户比'});
+            cols.push({field: 'creatorName', title: '创建人'});
+            cols.push({
+                field: 'gmtCreated', title: '创建日期', formatter: function (value, row, index) {
+                    return formatDate(value, false);
+                }
+            });
             cols.push({
                 field: 'id', title: '查询', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
@@ -343,6 +361,12 @@
             var cols = [];
             cols.push({field: 'houseNumber', title: '房号'});
             cols.push({field: 'floor', title: '所在楼层'});
+            cols.push({field: 'creatorName', title: '创建人'});
+            cols.push({
+                field: 'gmtCreated', title: '创建日期', formatter: function (value, row, index) {
+                    return formatDate(value, false);
+                }
+            });
             cols.push({
                 field: 'id', title: '查询', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';

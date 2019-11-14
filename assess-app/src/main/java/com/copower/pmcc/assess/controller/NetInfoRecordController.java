@@ -4,10 +4,9 @@ import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeInfoDao;
 import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecord;
-import com.copower.pmcc.assess.dal.basis.entity.SchemeInfo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.NetInfoRecordService;
-import com.copower.pmcc.assess.service.project.generate.GenerateMdCostApproachService;
+import com.copower.pmcc.assess.service.basic.BasicApplyBatchService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
@@ -41,6 +40,8 @@ public class NetInfoRecordController {
     private NetInfoRecordService netInfoRecordService;
     @Autowired
     private SchemeInfoDao schemeInfoDao;
+    @Autowired
+    private BasicApplyBatchService basicApplyBatchService;
 
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public ModelAndView homeMain() {
@@ -65,11 +66,11 @@ public class NetInfoRecordController {
     @RequestMapping(value = "/getOldData", name = "获取前两年数据", method = RequestMethod.POST)
     public HttpResult getOldData() {
         try {
-            //netInfoRecordService.climbingData();
-            SchemeInfo info = schemeInfoDao.getInfoById(660);
-            GenerateMdCostApproachService generateMdCostApproachService = new GenerateMdCostApproachService(info, 422);
-            generateMdCostApproachService.generateCostApproachFile();
-
+            netInfoRecordService.climbingOldData();
+//            SchemeInfo info = schemeInfoDao.getInfoById(660);
+//            GenerateMdCostApproachService generateMdCostApproachService = new GenerateMdCostApproachService(info, 422);
+//            generateMdCostApproachService.generateCostApproachFile();
+            //basicApplyBatchService.copy(2438);
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());
         }

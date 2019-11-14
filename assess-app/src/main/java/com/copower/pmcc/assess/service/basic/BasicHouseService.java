@@ -26,6 +26,7 @@ import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -203,8 +204,9 @@ public class BasicHouseService {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<BasicHouse> basicHouseList = basicHouseDao.basicHouseList(basicHouse);
+        List<BasicHouseVo> transform = LangUtils.transform(basicHouseList, o -> getBasicHouseVo(o));
         vo.setTotal(page.getTotal());
-        vo.setRows(ObjectUtils.isEmpty(basicHouseList) ? new ArrayList<BasicHouse>(10) : basicHouseList);
+        vo.setRows(ObjectUtils.isEmpty(transform) ? new ArrayList<BasicHouseVo>(10) : transform);
         return vo;
     }
 
@@ -236,6 +238,7 @@ public class BasicHouseService {
             vo.setDecorateSituationName(baseDataDicService.getNameById(basicHouse.getDecorateSituation()));
         }
         vo.setSpatialDistributionName(baseDataDicService.getNameById(basicHouse.getSpatialDistribution()));
+        vo.setCreatorName(publicService.getUserNameByAccount(basicHouse.getCreator()));
         return vo;
     }
 

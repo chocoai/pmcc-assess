@@ -27,6 +27,7 @@ import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -194,8 +195,9 @@ public class BasicBuildingService {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<BasicBuilding> basicBuildingList = basicBuildingDao.getBasicBuildingList(basicBuilding);
+        List<BasicBuildingVo> transform = LangUtils.transform(basicBuildingList, o -> getBasicBuildingVo(o));
         vo.setTotal(page.getTotal());
-        vo.setRows(ObjectUtils.isEmpty(basicBuildingList) ? new ArrayList<BasicBuilding>(10) : basicBuildingList);
+        vo.setRows(ObjectUtils.isEmpty(transform) ? new ArrayList<BasicBuildingVo>(10) : transform);
         return vo;
     }
 
@@ -249,6 +251,7 @@ public class BasicBuildingService {
             vo.setPropertyCompanyNatureName(crmRpcBaseDataDicService.getBaseDataDic(basicBuilding.getPropertyCompanyNature()).getName());
         }
         vo.setPropertySocialPrestigeName(baseDataDicService.getNameById(basicBuilding.getPropertySocialPrestige()));
+        vo.setCreatorName(publicService.getUserNameByAccount(basicBuilding.getCreator()));
         return vo;
     }
 

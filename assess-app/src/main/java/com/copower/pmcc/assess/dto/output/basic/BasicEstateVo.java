@@ -28,6 +28,7 @@ public class BasicEstateVo extends BasicEstate {
 
     private String infrastructureName;
     private String infrastructureCompletenessName;
+    private String creatorName;
 
     public String getProvinceName() {
         return provinceName;
@@ -155,5 +156,13 @@ public class BasicEstateVo extends BasicEstate {
 
     public void setInfrastructureCompletenessName(String infrastructureCompletenessName) {
         this.infrastructureCompletenessName = infrastructureCompletenessName;
+    }
+
+    public String getCreatorName() {
+        return creatorName;
+    }
+
+    public void setCreatorName(String creatorName) {
+        this.creatorName = creatorName;
     }
 }
