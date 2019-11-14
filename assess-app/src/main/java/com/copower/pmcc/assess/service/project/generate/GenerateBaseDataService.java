@@ -5387,10 +5387,12 @@ public class GenerateBaseDataService {
             for (SchemeJudgeObject schemeJudgeObject : this.schemeJudgeObjectDeclareList) {
                 List<SysAttachmentDto> sysAttachmentDtoList = ownershipCertFileList.get(schemeJudgeObject.getDeclareRecordId());
                 List<String> paths = Lists.newArrayList();
-                for (SysAttachmentDto item : sysAttachmentDtoList) {
-                    String path = baseAttachmentService.downloadFtpFileToLocal(item.getId());
-                    if (FileUtils.checkImgSuffix(path)) {
-                        paths.add(path);
+                if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)){
+                    for (SysAttachmentDto item : sysAttachmentDtoList) {
+                        String path = baseAttachmentService.downloadFtpFileToLocal(item.getId());
+                        if (FileUtils.checkImgSuffix(path)) {
+                            paths.add(path);
+                        }
                     }
                 }
                 if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
