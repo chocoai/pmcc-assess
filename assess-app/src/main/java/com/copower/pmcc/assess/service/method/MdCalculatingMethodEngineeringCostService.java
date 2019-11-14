@@ -59,10 +59,11 @@ public class MdCalculatingMethodEngineeringCostService {
             return;
         }
 
-        this.clearOver(targetPlanDetails.getProjectId(),targetPlanDetails.getJudgeObjectId(),null);
+        this.clearOver(targetPlanDetails,null);
         MdCalculatingMethodEngineeringCost copyEngineeringCostQuery = new MdCalculatingMethodEngineeringCost();
         copyEngineeringCostQuery.setProjectId(copyPlanDetails.getProjectId());
         copyEngineeringCostQuery.setJudgeObjectId(copyPlanDetails.getJudgeObjectId());
+        copyEngineeringCostQuery.setPlanDetailsId(copyPlanDetails.getId());
         List<MdCalculatingMethodEngineeringCost> copyEngineeringCostList = getMdCalculatingMethodEngineeringCostListByExample(copyEngineeringCostQuery);
         if (CollectionUtils.isEmpty(copyEngineeringCostList)) {
             return;
@@ -70,12 +71,14 @@ public class MdCalculatingMethodEngineeringCostService {
         for (MdCalculatingMethodEngineeringCost calculatingMethodEngineeringCost : copyEngineeringCostList) {
             calculatingMethodEngineeringCost.setProjectId(null);
             calculatingMethodEngineeringCost.setJudgeObjectId(null);
+            calculatingMethodEngineeringCost.setPlanDetailsId(null);
             calculatingMethodEngineeringCost.setId(null);
             calculatingMethodEngineeringCost.setCreator(null);
 
             MdCalculatingMethodEngineeringCost target = new MdCalculatingMethodEngineeringCost();
             target.setJudgeObjectId(targetPlanDetails.getJudgeObjectId());
             target.setProjectId(targetPlanDetails.getProjectId());
+            target.setPlanDetailsId(targetPlanDetails.getId());
 
             BeanCopyHelp.copyPropertiesIgnoreNull(calculatingMethodEngineeringCost, target);
             MdArchitecturalObj mdArchitecturalObj = null;
@@ -141,6 +144,7 @@ public class MdCalculatingMethodEngineeringCostService {
                 mdCalculatingMethodEngineeringCost.setPrice(new BigDecimal(0));
                 mdCalculatingMethodEngineeringCost.setProjectId(projectPlanDetails.getProjectId());
                 mdCalculatingMethodEngineeringCost.setJudgeObjectId(projectPlanDetails.getJudgeObjectId());
+                mdCalculatingMethodEngineeringCost.setPlanDetailsId(projectPlanDetails.getId());
                 if (StringUtils.isNotBlank(type)) {
                     mdCalculatingMethodEngineeringCost.setType(type);
                 }
@@ -179,6 +183,7 @@ public class MdCalculatingMethodEngineeringCostService {
         MdCalculatingMethodEngineeringCost engineeringCost = new MdCalculatingMethodEngineeringCost();
         engineeringCost.setJudgeObjectId(projectPlanDetails.getJudgeObjectId());
         engineeringCost.setProjectId(projectPlanDetails.getProjectId());
+        engineeringCost.setPlanDetailsId(projectPlanDetails.getId());
         engineeringCost.setPrice(new BigDecimal(0));
         if (StringUtils.isNotBlank(type)) {
             engineeringCost.setType(type);
@@ -197,13 +202,14 @@ public class MdCalculatingMethodEngineeringCostService {
     /**
      * 结束的时候清除工程费(清除不属于此type下的数据)
      *
-     * @param projectId
+     * @param projectPlanDetails
      * @param type
      */
-    public void clearOver(Integer projectId, Integer judgeObjectId, String type) {
+    public void clearOver(ProjectPlanDetails projectPlanDetails , String type) {
         MdCalculatingMethodEngineeringCost engineeringCost = new MdCalculatingMethodEngineeringCost();
-        engineeringCost.setProjectId(projectId);
-        engineeringCost.setJudgeObjectId(judgeObjectId);
+        engineeringCost.setProjectId(projectPlanDetails.getProjectId());
+        engineeringCost.setJudgeObjectId(projectPlanDetails.getJudgeObjectId());
+        engineeringCost.setPlanDetailsId(projectPlanDetails.getId());
         List<MdCalculatingMethodEngineeringCost> list = getMdCalculatingMethodEngineeringCostListByExample(engineeringCost);
         if (CollectionUtils.isNotEmpty(list)) {
             for (MdCalculatingMethodEngineeringCost obj : list) {

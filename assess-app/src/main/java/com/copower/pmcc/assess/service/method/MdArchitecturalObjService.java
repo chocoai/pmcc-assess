@@ -84,6 +84,7 @@ public class MdArchitecturalObjService {
         MdCalculatingMethodEngineeringCost select = new MdCalculatingMethodEngineeringCost();
         select.setProjectId(projectId);
         select.setJudgeObjectId(projectPlanDetails.getJudgeObjectId());
+        select.setPlanDetailsId(projectPlanDetails.getId());
         List<MdCalculatingMethodEngineeringCost> mdCalculatingMethodEngineeringCostList = mdCalculatingMethodEngineeringCostService.getMdCalculatingMethodEngineeringCostListByExample(select);
         if (CollectionUtils.isEmpty(mdCalculatingMethodEngineeringCostList)) {
             return;

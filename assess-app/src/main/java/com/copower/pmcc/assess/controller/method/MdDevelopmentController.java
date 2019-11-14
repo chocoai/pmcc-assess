@@ -41,21 +41,25 @@ public class MdDevelopmentController {
     }
 
     @PostMapping(value = "/copyDevelopmentById", name = "拷贝数据")
-    public HttpResult copyDevelopmentById(Integer copyId,Integer masterId) {
+    public HttpResult copyDevelopmentById(Integer copyId, Integer masterId) {
         StringBuilder stringBuilder = new StringBuilder(8);
         try {
-            mdDevelopmentService.copyDevelopmentById(copyId, masterId,stringBuilder);
+            mdDevelopmentService.copyDevelopmentById(copyId, masterId, stringBuilder);
             return HttpResult.newCorrectResult(stringBuilder.toString());
         } catch (Exception e) {
-            baseService.writeExceptionInfo(e,"拷贝数据 error");
+            baseService.writeExceptionInfo(e, "拷贝数据 error");
             return HttpResult.newErrorResult(stringBuilder.toString());
         }
     }
 
     @PostMapping(value = "/setMdCalculatingMethodEngineeringCost", name = "设置工程费")
-    public HttpResult setMdCalculatingMethodEngineeringCost(Integer planDetailsId, String type) {
+    public HttpResult setMdCalculatingMethodEngineeringCost(Integer planDetailsId, String type, boolean flag) {
         try {
-            mdCalculatingMethodEngineeringCostService.setMdCalculatingMethodEngineeringCost(planDetailsId, type);
+            if (flag) {
+                mdCalculatingMethodEngineeringCostService.setMdCalculatingMethodEngineeringCost(planDetailsId, type);
+            }else {
+
+            }
             return HttpResult.newCorrectResult("success");
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);

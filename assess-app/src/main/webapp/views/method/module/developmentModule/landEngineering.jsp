@@ -817,8 +817,11 @@
                                     <button type="button" class="btn btn-primary" onclick="landEngineering.delMdCalculatingMethodEngineeringCost()">删除</button>
                                     <button type="button" class="btn btn-primary" onclick="landEngineering.showMdCalculatingMethodEngineeringCost();">添加</button>
                                 </span>
-        <span class="input-group-btn">
-                                    <button type="button" class="btn btn-primary" onclick="landEngineering.setMdCalculatingMethodEngineeringCost()">同步查勘建筑安装工程费</button>
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-primary" onclick="landEngineering.setMdCalculatingMethodEngineeringCost(false)">同步成本法建筑安装工程费</button>
+                                </span>
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-primary" onclick="landEngineering.setMdCalculatingMethodEngineeringCost(true)">同步查勘建筑安装工程费</button>
                                 </span>
     </div>
 </div>
