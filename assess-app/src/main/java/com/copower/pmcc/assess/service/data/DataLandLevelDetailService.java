@@ -11,16 +11,10 @@ import com.copower.pmcc.assess.dto.output.data.DataLandLevelDetailVo;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
-import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
-import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
-import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.constant.CacheConstant;
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
@@ -355,25 +349,7 @@ public class DataLandLevelDetailService {
         return dataLandLevelDetailDao.getDataLandLevelDetailById(id);
     }
 
-    /**
-     * 获取列表数据
-     *
-     * @param dataLandLevelDetail
-     * @return
-     */
-    public BootstrapTableVo getDataLandLevelDetailTableVo(DataLandLevelDetail dataLandLevelDetail) {
-        BootstrapTableVo vo = new BootstrapTableVo();
-        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
-        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<DataLandLevelDetail> dataLandLevelDetailList = dataLandLevelDetailSorted(getDataLandLevelDetailList(dataLandLevelDetail));
-        List<DataLandLevelDetailVo> vos = Lists.newArrayList();
-        if (CollectionUtils.isNotEmpty(dataLandLevelDetailList)) {
-            dataLandLevelDetailList.forEach(obj -> vos.add(getDataLandLevelDetailVo(obj)));
-        }
-        vo.setTotal(page.getTotal());
-        vo.setRows(vos);
-        return vo;
-    }
+
 
     /**
      * 注意这是 landLevelId 列表

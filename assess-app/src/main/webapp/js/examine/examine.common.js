@@ -79,18 +79,20 @@ examineCommon.developerSelect = function (this_) {
 examineCommon.landLevelSelect = function (this_) {
     var $form = $(this_).closest('form');
     var formGroup = $(this_).closest('.form-group');
-    assessLandLevel.select({
+    assessLandLevelTool.select({
         province: $form.find('[name=province]').val(),
         city: $form.find('[name=city]').val(),
         success: function (data) {
             formGroup.find("input[name='landLevel']").val(data.id);
             formGroup.find("input[name='landLevelName']").val(data.name);
-
-            var html='';
-            html += '<button type="button" class="btn btn-default docs-tooltip" onclick="examineCommon.openLevelDetailModal('+data.id+');" data-toggle="tooltip" data-original-title="清除">';
-            html += '<i class="fa fa-trash-o"></i>';
-            html += '</button>';
-            formGroup.find("#btnCheckItem").empty().append(html);
+            // $.ajax({
+            //     url: getContextPath() + "/dataLandDetailAchievement/landLevelFilter",
+            //     type: "get",
+            //     data: {levelDetailId: data.id},
+            //     success: function (result) {
+            //         estateCommon.landLevelLoadHtml(result.data);
+            //     }
+            // })
         }
     })
 };

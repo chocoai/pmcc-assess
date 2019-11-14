@@ -521,6 +521,7 @@
     </form>
 </div>
 <%@include file="/views/project/stageSurvey/common/houseTradingBodyBox.jsp" %>
+<%@include file="/views/project/tool/landLevelModalView.jsp" %>
 <div class="x_content">
     <%@include file="/views/project/stageSurvey/common/estateNetwork.jsp" %>
     <%@include file="/views/project/stageSurvey/common/estateParking.jsp" %>

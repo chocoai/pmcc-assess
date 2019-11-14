@@ -2,17 +2,21 @@
  * Created by zch on 2019-11-1.
  */
 
-var ue = UE.getEditor('landDefinition', {
-    toolbars: [
-        ['source', 'autotypeset', 'bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc']
-    ],
-    zIndex: 11009,
-    initialFrameHeight: 120,
-    elementPathEnabled: false,//是否启用元素路径，默认是true显示
-    wordCount: false, //是否开启字数统计
-    autoHeightEnabled: false,
-    autoFloatEnabled: true
-});
+var ue = undefined;
+
+if ($("#landDefinition").size() != 0){
+    ue = UE.getEditor('landDefinition', {
+        toolbars: [
+            ['source', 'autotypeset', 'bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc']
+        ],
+        zIndex: 11009,
+        initialFrameHeight: 120,
+        elementPathEnabled: false,//是否启用元素路径，默认是true显示
+        wordCount: false, //是否开启字数统计
+        autoHeightEnabled: false,
+        autoFloatEnabled: true
+    });
+}
 
 
 var landLevel = {};
@@ -209,7 +213,7 @@ landLevel.loadLandLevelList = function (select) {
         });
     }
     cols.push({
-        field: 'provinceName', title: '省', formatter: function (value, row, index) {
+        field: 'provinceName', title: '区域', formatter: function (value, row, index) {
             return AssessCommon.getAreaFullName(row.provinceName, row.cityName, row.districtName);
         }
     });

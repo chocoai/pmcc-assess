@@ -18,7 +18,6 @@ import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
-import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -179,11 +178,6 @@ public class DataLandLevelController {
             baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult("保存异常");
         }
-    }
-
-    @RequestMapping(value = "/getDataLandLevelDetailTableVo", method = {RequestMethod.GET}, name = "获取土地级别信息列表")
-    public BootstrapTableVo getDataLandLevelDetailTableVo(DataLandLevelDetail dataLandLevelDetail) {
-        return dataLandLevelDetailService.getDataLandLevelDetailTableVo(dataLandLevelDetail);
     }
 
 
