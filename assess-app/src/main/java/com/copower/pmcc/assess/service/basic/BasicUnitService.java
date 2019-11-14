@@ -9,6 +9,7 @@ import com.copower.pmcc.assess.dal.basis.dao.basic.BasicUnitDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dal.cases.entity.*;
 import com.copower.pmcc.assess.dto.input.SynchronousDataDto;
+import com.copower.pmcc.assess.dto.output.basic.BasicUnitVo;
 import com.copower.pmcc.assess.dto.output.cases.CaseUnitHuxingVo;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.assist.DdlMySqlAssist;
@@ -23,11 +24,14 @@ import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -148,8 +152,19 @@ public class BasicUnitService {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<BasicUnit> basicUnitList = basicUnitDao.basicUnitList(basicUnit);
+        List<BasicUnitVo> transform = LangUtils.transform(basicUnitList, o -> getBasicUnitVo(o));
         vo.setTotal(page.getTotal());
-        vo.setRows(ObjectUtils.isEmpty(basicUnitList) ? new ArrayList<BasicUnit>(10) : basicUnitList);
+        vo.setRows(ObjectUtils.isEmpty(transform) ? new ArrayList<BasicUnitVo>(10) : transform);
+        return vo;
+    }
+
+    public BasicUnitVo getBasicUnitVo(BasicUnit basicUnit) {
+        if (basicUnit == null) {
+            return null;
+        }
+        BasicUnitVo vo = new BasicUnitVo();
+        BeanUtils.copyProperties(basicUnit, vo);
+        vo.setCreatorName(publicService.getUserNameByAccount(basicUnit.getCreator()));
         return vo;
     }
 

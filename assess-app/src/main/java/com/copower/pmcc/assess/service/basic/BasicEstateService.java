@@ -227,6 +227,7 @@ public class BasicEstateService {
             }
         }
         vo.setInfrastructureCompletenessName(baseDataDicService.getNameById(basicEstate.getInfrastructureCompleteness()));
+        vo.setCreatorName(publicService.getUserNameByAccount(basicEstate.getCreator()));
         return vo;
     }
 

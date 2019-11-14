@@ -34,6 +34,16 @@ public class BasicBuildingVo extends BasicBuilding {
     private String appearanceNewAndOldName;
     private String propertySocialPrestigeName;
     private String propertyCompanyNatureName;
+    private String creatorName;
+
+    public String getCreatorName() {
+        return creatorName;
+    }
+
+    public void setCreatorName(String creatorName) {
+        this.creatorName = creatorName;
+    }
+
     public String getCompletedTimeTypeName() {
         return completedTimeTypeName;
     }
