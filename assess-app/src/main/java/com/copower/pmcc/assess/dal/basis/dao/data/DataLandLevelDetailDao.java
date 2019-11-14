@@ -99,6 +99,7 @@ public class DataLandLevelDetailDao {
         if (oo.getPid() != null){
             criteria.andPidEqualTo(oo.getPid());
         }
+        example.setOrderByClause("classify,type,gmt_created ASC");
         return example;
     }
 }

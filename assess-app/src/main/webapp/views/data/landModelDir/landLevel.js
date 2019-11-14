@@ -737,9 +737,13 @@ landLevel.showDataAllocationCorrectionCoefficientVolumeRatioDetail = function ()
     }
     if (nodes.length == 1) {
         var treeNode = nodes[0];
-        landLevel.config.dataAllocationCorrectionCoefficientVolumeRatioDetailTableBox.find("input[name='allocationVolumeRatioId']").val(treeNode.id);
-        landLevel.config.dataAllocationCorrectionCoefficientVolumeRatioDetailTableBox.modal("show");
-        landLevel.showDataHousePriceIndexDetailList(treeNode.id);
+        if (treeNode.pid == 0){
+            landLevel.config.dataAllocationCorrectionCoefficientVolumeRatioDetailTableBox.find("input[name='allocationVolumeRatioId']").val(treeNode.id);
+            landLevel.config.dataAllocationCorrectionCoefficientVolumeRatioDetailTableBox.modal("show");
+            landLevel.showDataHousePriceIndexDetailList(treeNode.id);
+        }else {
+            toastr.success('第一层级关联容积率系数配置');
+        }
     } else {
         toastr.success('选择层级');
     }
