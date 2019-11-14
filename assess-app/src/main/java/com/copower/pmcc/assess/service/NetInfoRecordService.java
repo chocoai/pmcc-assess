@@ -1692,9 +1692,7 @@ public class NetInfoRecordService {
 
     //抓取两年前数据
     public void climbingOldData() {
-        //公共资源交易平台-成都(土地矿权)
-        this.getNetInfoFromGGZYCD(732);
-        //公共资源交易平台-成都（资产资源）
-        this.getNetInfoFromGGZYCD2(732);
+        //来源淘宝网
+        this.getNetInfoFromTB(732);
     }
 }
