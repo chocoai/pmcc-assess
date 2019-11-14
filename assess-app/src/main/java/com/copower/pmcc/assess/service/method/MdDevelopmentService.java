@@ -241,10 +241,14 @@ public class MdDevelopmentService {
                 return ArithmeticUtils.getBigDecimalString(bigDecimal);
             }
             case Development_total_saleableArea: {//f18
-                if (!ArithmeticUtils.checkNotNull(new BigDecimal[]{target.getSaleableArea(), target.getUnsaleableBuildingArea()})) {
+                BigDecimal unsaleableBuildingArea = new BigDecimal(0) ;
+                if (!ArithmeticUtils.checkNotNull(new BigDecimal[]{target.getSaleableArea()})) {
                     return "";
                 }
-                BigDecimal bigDecimal = ArithmeticUtils.addModel(target.getSaleableArea(), target.getUnsaleableBuildingArea(), null, null);
+                if (target.getUnsaleableBuildingArea() != null){
+                    unsaleableBuildingArea = new BigDecimal(target.getUnsaleableBuildingArea().toString()) ;
+                }
+                BigDecimal bigDecimal = ArithmeticUtils.addModel(target.getSaleableArea(), unsaleableBuildingArea, null, null);
                 return ArithmeticUtils.getBigDecimalString(bigDecimal);
             }
             case Development_constructionInstallationEngineeringFee: {//d21 or e21
