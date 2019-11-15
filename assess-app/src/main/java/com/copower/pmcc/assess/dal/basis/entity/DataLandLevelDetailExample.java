@@ -236,62 +236,52 @@ public class DataLandLevelDetailExample {
             return (Criteria) this;
         }
 
-        public Criteria andClassifyEqualTo(String value) {
+        public Criteria andClassifyEqualTo(Integer value) {
             addCriterion("classify =", value, "classify");
             return (Criteria) this;
         }
 
-        public Criteria andClassifyNotEqualTo(String value) {
+        public Criteria andClassifyNotEqualTo(Integer value) {
             addCriterion("classify <>", value, "classify");
             return (Criteria) this;
         }
 
-        public Criteria andClassifyGreaterThan(String value) {
+        public Criteria andClassifyGreaterThan(Integer value) {
             addCriterion("classify >", value, "classify");
             return (Criteria) this;
         }
 
-        public Criteria andClassifyGreaterThanOrEqualTo(String value) {
+        public Criteria andClassifyGreaterThanOrEqualTo(Integer value) {
             addCriterion("classify >=", value, "classify");
             return (Criteria) this;
         }
 
-        public Criteria andClassifyLessThan(String value) {
+        public Criteria andClassifyLessThan(Integer value) {
             addCriterion("classify <", value, "classify");
             return (Criteria) this;
         }
 
-        public Criteria andClassifyLessThanOrEqualTo(String value) {
+        public Criteria andClassifyLessThanOrEqualTo(Integer value) {
             addCriterion("classify <=", value, "classify");
             return (Criteria) this;
         }
 
-        public Criteria andClassifyLike(String value) {
-            addCriterion("classify like", value, "classify");
-            return (Criteria) this;
-        }
-
-        public Criteria andClassifyNotLike(String value) {
-            addCriterion("classify not like", value, "classify");
-            return (Criteria) this;
-        }
-
-        public Criteria andClassifyIn(List<String> values) {
+        public Criteria andClassifyIn(List<Integer> values) {
             addCriterion("classify in", values, "classify");
             return (Criteria) this;
         }
 
-        public Criteria andClassifyNotIn(List<String> values) {
+        public Criteria andClassifyNotIn(List<Integer> values) {
             addCriterion("classify not in", values, "classify");
             return (Criteria) this;
         }
 
-        public Criteria andClassifyBetween(String value1, String value2) {
+        public Criteria andClassifyBetween(Integer value1, Integer value2) {
             addCriterion("classify between", value1, value2, "classify");
             return (Criteria) this;
         }
 
-        public Criteria andClassifyNotBetween(String value1, String value2) {
+        public Criteria andClassifyNotBetween(Integer value1, Integer value2) {
             addCriterion("classify not between", value1, value2, "classify");
             return (Criteria) this;
         }
@@ -306,62 +296,52 @@ public class DataLandLevelDetailExample {
             return (Criteria) this;
         }
 
-        public Criteria andTypeEqualTo(String value) {
+        public Criteria andTypeEqualTo(Integer value) {
             addCriterion("type =", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeNotEqualTo(String value) {
+        public Criteria andTypeNotEqualTo(Integer value) {
             addCriterion("type <>", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeGreaterThan(String value) {
+        public Criteria andTypeGreaterThan(Integer value) {
             addCriterion("type >", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeGreaterThanOrEqualTo(String value) {
+        public Criteria andTypeGreaterThanOrEqualTo(Integer value) {
             addCriterion("type >=", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeLessThan(String value) {
+        public Criteria andTypeLessThan(Integer value) {
             addCriterion("type <", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeLessThanOrEqualTo(String value) {
+        public Criteria andTypeLessThanOrEqualTo(Integer value) {
             addCriterion("type <=", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeLike(String value) {
-            addCriterion("type like", value, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeNotLike(String value) {
-            addCriterion("type not like", value, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeIn(List<String> values) {
+        public Criteria andTypeIn(List<Integer> values) {
             addCriterion("type in", values, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeNotIn(List<String> values) {
+        public Criteria andTypeNotIn(List<Integer> values) {
             addCriterion("type not in", values, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeBetween(String value1, String value2) {
+        public Criteria andTypeBetween(Integer value1, Integer value2) {
             addCriterion("type between", value1, value2, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeNotBetween(String value1, String value2) {
+        public Criteria andTypeNotBetween(Integer value1, Integer value2) {
             addCriterion("type not between", value1, value2, "type");
             return (Criteria) this;
         }

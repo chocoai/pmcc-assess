@@ -26,102 +26,69 @@
                         <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
                             <form id="frmQuery" class="form-horizontal">
                                 <input type="hidden" name="readOnly" value="${readOnly}">
+                                <input type="hidden" name="status" value="draft">
+                                <input type="hidden" name="processInsId" value="${processInsId}">
+                                <input type="hidden" name="creator"  value="${sysUserDto.userAccount}">
                                 <div class="form-group">
-
                                     <div class="x-valid">
+                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">省</label>
                                         <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                            <div class="btn-group btn-group-justified" role="group">
-                                                <div class="btn-group" role="group">
-                                                    <button type="button" class="btn btn-primary"
-                                                            onclick="landLevel.initDataForm({})"
-                                                            data-toggle="modal" href="#divBoxFather"> 新增
-                                                    </button>
-                                                </div>
-                                                <div class="btn-group" role="group">
-                                                    <button type="button" class="btn btn-default dropdown-toggle"
-                                                            data-toggle="dropdown" aria-haspopup="true"
-                                                            aria-expanded="false">excel工具
-                                                        <span class="caret"></span>
-                                                    </button>
-                                                    <ul class="dropdown-menu">
-                                                        <li>
-                                                            <button type="button" class="btn-default btn"
-                                                                    onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftpLandLevelAreaBaseTemplate);">
-                                                                土地区域excel模板下载
-                                                                <span class="fa-stack fa-lg">
-                                                              <i class="fa fa-square-o fa-stack-2x"></i>
-                                                              <i class="fa fa fa-cloud-download fa-stack-1x"></i>
-                                                                </span>
-                                                            </button>
-                                                        </li>
-                                                        <li>
-                                                            <button class="btn-default btn" type="button"
-                                                                    onclick="$('#ajaxFileUploadDataLand').val('').trigger('click')">
-                                                                土地区域excel模板导入
-                                                                <span class="fa-stack fa-lg">
-                                                              <i class="fa fa-square-o fa-stack-2x"></i>
-                                                              <i class="fa fa fa fa-cloud-upload fa-stack-1x"></i>
-                                                                </span>
-                                                            </button>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
+                                            <select name="province"
+                                                    class="form-control search-select select2">
+                                            </select>
                                         </div>
                                     </div>
-
                                     <div class="x-valid">
+                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">市</label>
                                         <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                            <div class="input-group">
-
-                                                <select name="province"
-                                                        class="form-control search-select select2">
-                                                </select>
-
-                                                <select name="city" class="form-control search-select select2">
-                                                </select>
-
-                                                <select name="district"
-                                                        class="form-control search-select select2">
-                                                </select>
-                                            </div>
+                                            <select name="city" class="form-control search-select select2">
+                                            </select>
                                         </div>
                                     </div>
-
+                                    <div class="x-valid">
+                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">区县</label>
+                                        <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                            <select name="district"
+                                                    class="form-control search-select select2">
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">乡镇街道</label>
+                                        <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                            <input placeholder="乡镇名称" class="form-control" name="townShipName"
+                                                   type="text">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <div class="x-valid">
                                         <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">权利类型</label>
-                                        <div class=" col-xs-1  col-sm-1  col-md-1  col-lg-1 ">
+                                        <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
                                             <select name="landRightType" class="form-control search-select select2">
                                             </select>
                                         </div>
                                     </div>
-
-                                    <div class="x-valid">
-                                        <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                            <div class="input-group">
-                                                <span class="input-group-btn">
-                                                <input placeholder="乡镇名称" class="form-control" name="townShipName"
-                                                       type="text">
-                                                </span>
-                                                <span class="input-group-btn">
-                                                    <button type="button" class="btn btn-success"
-                                                            onclick="landLevel.loadLandLevelList({processInsId:'${processInsId}'})">
-                                                        查询 <i class="fa fa-search" aria-hidden="true"></i>
-                                                    </button>
-                                                </span>
-                                            </div>
-                                        </div>
+                                    <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                        <button type="button" class="btn btn-primary"
+                                                onclick="findQuery();">
+                                            查询
+                                        </button>
+                                        <a class="btn btn-primary" onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftpLandLevelAreaBaseTemplate);">下载模板</a>
+                                        <a class="btn btn-primary" onclick="$('#ajaxFileUploadDataLand').val('').trigger('click');">上传</a>
+                                        <button type="button" class="btn btn-success"
+                                                onclick="landLevel.initDataForm({})"
+                                                data-toggle="modal" href="#divBoxFather"> 新增
+                                        </button>
                                     </div>
                                 </div>
                             </form>
                         </div>
-
                         <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
                             <table class="table table-bordered" id="tb_FatherList">
                                 <!-- cerare document add ajax data-->
                             </table>
                         </div>
-
                         <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
                             <input type="file" id="ajaxFileUploadDataLand" name="file" style="display: none;"
                                    onchange="landLevel.importDataLand();">
@@ -132,8 +99,6 @@
                     </div>
                 </div>
             </div>
-
-
             <div class="x_panel">
                 <div class="x_content">
                     <div style="text-align: center;">
@@ -163,18 +128,11 @@
 <%@include file="/views/data/landModelDir/landModel.jsp" %>
 
 <input type="file" id="ajaxFileUpload" name="file" style="display: none;">
-<script type="text/javascript"
-        src="${pageContext.request.contextPath}/js/ajaxfileupload.js?v=${assessVersion}"></script>
-
-<script type="text/javascript"
-        src="${pageContext.request.contextPath}/views/data/landModelDir/landLevel.js?v=${assessVersion}"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/ajaxfileupload.js?v=${assessVersion}"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/views/data/landModelDir/landLevel.js?v=${assessVersion}"></script>
 <script type="text/javascript">
-
-
     $(document).ready(function () {
-
         landLevel.loadLandLevelList({processInsId:'${processInsId}'});
-
         (function (frm, data) {
             AssessCommon.initAreaInfo({
                 provinceTarget: frm.find("select[name='province']"),

@@ -74,7 +74,7 @@ public class DataLandLevelDao {
         }
 
         if (StringUtils.isNotBlank(dataLandLevel.getTownShipName())) {
-            criteria.andTownShipNameEqualTo(dataLandLevel.getTownShipName());
+            criteria.andTownShipNameLike(String.format("%%%s%%", dataLandLevel.getTownShipName()));
         }
 
         if (dataLandLevel.getLandRightType() != null) {
@@ -111,10 +111,6 @@ public class DataLandLevelDao {
 
         if (StringUtils.isNotBlank(dataLandLevel.getStatus())) {
             criteria.andStatusEqualTo(dataLandLevel.getStatus());
-        } else {
-            if (StringUtils.isEmpty(dataLandLevel.getProcessInsId())) {
-                criteria.andStatusNotEqualTo(ProjectStatusEnum.DRAFT.getKey());
-            }
         }
 
         example.setOrderByClause("release_date desc");

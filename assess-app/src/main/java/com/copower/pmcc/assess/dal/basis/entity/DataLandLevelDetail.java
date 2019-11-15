@@ -8,9 +8,9 @@ public class DataLandLevelDetail {
 
     private Integer landLevelId;
 
-    private String classify;
+    private Integer classify;
 
-    private String type;
+    private Integer type;
 
     private String category;
 
@@ -54,20 +54,20 @@ public class DataLandLevelDetail {
         this.landLevelId = landLevelId;
     }
 
-    public String getClassify() {
+    public Integer getClassify() {
         return classify;
     }
 
-    public void setClassify(String classify) {
-        this.classify = classify == null ? null : classify.trim();
+    public void setClassify(Integer classify) {
+        this.classify = classify;
     }
 
-    public String getType() {
+    public Integer getType() {
         return type;
     }
 
-    public void setType(String type) {
-        this.type = type == null ? null : type.trim();
+    public void setType(Integer type) {
+        this.type = type;
     }
 
     public String getCategory() {

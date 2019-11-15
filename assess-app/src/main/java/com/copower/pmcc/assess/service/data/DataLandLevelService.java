@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.service.data;
 
-import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.PoiUtils;
 import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
@@ -14,6 +13,7 @@ import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
+import com.copower.pmcc.assess.service.event.data.DataLandLevelEvent;
 import com.copower.pmcc.bpm.api.dto.ProcessUserDto;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
@@ -23,6 +23,7 @@ import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
+import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.DateUtils;
@@ -32,6 +33,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -41,7 +43,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileInputStream;
@@ -253,23 +254,11 @@ public class DataLandLevelService {
      * 审批提交
      *
      * @param approvalModelDto
-     * @param blockName
-     * @param writeBackBlockFlag
      * @throws Exception
      */
     @Transactional(rollbackFor = {Exception.class})
-    public void comeInLandLevelApprovalSubmit(ApprovalModelDto approvalModelDto, String blockName, Boolean writeBackBlockFlag) throws Exception {
+    public void comeInLandLevelApprovalSubmit(ApprovalModelDto approvalModelDto) throws Exception {
         processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
-        List<DataLandLevelVo> dataLandLevelVoList = getByProcessInsId(approvalModelDto.getProcessInsId());
-        if (org.apache.commons.collections.CollectionUtils.isNotEmpty(dataLandLevelVoList)) {
-            for (DataLandLevel dataLandLevel : dataLandLevelVoList) {
-                if (StringUtils.isNotEmpty(approvalModelDto.getProcessInsId())) {
-                    dataLandLevel.setProcessInsId(approvalModelDto.getProcessInsId());
-                }
-                dataLandLevel.setStatus(ProjectStatusEnum.FINISH.getKey());
-                saveAndUpdateDataLandLevel(dataLandLevel);
-            }
-        }
     }
 
 
@@ -277,50 +266,42 @@ public class DataLandLevelService {
      * 返回修改
      *
      * @param approvalModelDto
-     * @param ids
      * @throws Exception
      */
     @Transactional(rollbackFor = {Exception.class})
-    public void comeInLandLevelEditSubmit(ApprovalModelDto approvalModelDto, String ids) throws Exception {
+    public void comeInLandLevelEditSubmit(ApprovalModelDto approvalModelDto) throws Exception {
         processControllerComponent.processSubmitLoopTaskNodeArg(publicService.getEditApprovalModel(approvalModelDto), false);
-        List<DataLandLevelVo> dataLandLevelVoList = getByProcessInsId(approvalModelDto.getProcessInsId());
-        if (org.apache.commons.collections.CollectionUtils.isNotEmpty(dataLandLevelVoList)) {
-            for (DataLandLevel dataLandLevel : dataLandLevelVoList) {
-                if (StringUtils.isNotEmpty(approvalModelDto.getProcessInsId())) {
-                    dataLandLevel.setProcessInsId(approvalModelDto.getProcessInsId());
-                }
-                dataLandLevel.setStatus(ProjectStatusEnum.FINISH.getKey());
-                saveAndUpdateDataLandLevel(dataLandLevel);
-            }
-        }
-
     }
 
     /**
      * 发起流程
      *
-     * @param ids
      */
     @Transactional(rollbackFor = {Exception.class})
-    public void submit(String ids) throws Exception {
-        List<DataLandLevel> dataLandLevelList = getByIds(ids);
+    public void submitProcess() throws Exception {
+        DataLandLevel where=new DataLandLevel();
+        where.setStatus(ProjectStatusEnum.DRAFT.getKey());
+        where.setCreator(commonService.thisUserAccount());
+        List<DataLandLevel> dataLandLevelList = getDataLandLevelList(where);
+        if(CollectionUtils.isEmpty(dataLandLevelList))
+            throw new BusinessException("请填写相关基准地价信息");
         ProcessUserDto processUserDto = null;
         ProcessInfo processInfo = new ProcessInfo();
-        //流程描述
-        processInfo.setFolio(String.join("", "土地级别描述申请 时间:", DateUtils.format(new Date(), DateUtils.DATETIME_PATTERN)));
+        String areaFullName = erpAreaService.getAreaFullName(dataLandLevelList.get(0).getProvince(), dataLandLevelList.get(0).getCity(), dataLandLevelList.get(0).getDistrict());
+        processInfo.setFolio(String.format("%s%s基准地价",areaFullName,dataLandLevelList.get(0).getTownShipName()));//流程描述
         final String boxName = baseParameterService.getParameterValues(BaseParameterEnum.DATA_LAND_LEVEL_APPLY_KEY.getParameterKey());
         BoxReDto boxReDto = bpmRpcBoxService.getBoxReByBoxName(boxName);
         processInfo.setTableName(FormatUtils.entityNameConvertToTableName(DataLandLevel.class));
         processInfo.setBoxId(boxReDto.getId());
         processInfo.setProcessName(boxReDto.getProcessName());
         processInfo.setGroupName(boxReDto.getGroupName());
-        processInfo.setRemarks(ProjectStatusEnum.STARTAPPLY.getKey());
-        processInfo.setTableId(0);
+        processInfo.setRemarks(ProjectStatusEnum.STARTAPPLY.getName());
+        processInfo.setProcessEventExecutor(DataLandLevelEvent.class);
         processUserDto = processControllerComponent.processStart(processControllerComponent.getThisUser(), processInfo, processControllerComponent.getThisUser(), false);
-        if (org.apache.commons.collections.CollectionUtils.isNotEmpty(dataLandLevelList)) {
+        if (CollectionUtils.isNotEmpty(dataLandLevelList)) {
             for (DataLandLevel dataLandLevel : dataLandLevelList) {
                 dataLandLevel.setProcessInsId(processUserDto.getProcessInsId());
-                dataLandLevel.setStatus(ProjectStatusEnum.DRAFT.getKey());
+                dataLandLevel.setStatus(ProjectStatusEnum.RUNING.getKey());
                 saveAndUpdateDataLandLevel(dataLandLevel);
             }
         }
@@ -329,6 +310,7 @@ public class DataLandLevelService {
     public void saveAndUpdateDataLandLevel(DataLandLevel dataLandLevel) {
         if (dataLandLevel.getId() == null) {
             dataLandLevel.setCreator(commonService.thisUserAccount());
+            dataLandLevel.setStatus(ProjectStatusEnum.DRAFT.getKey());
             dataLandLevelDao.addDataLandLevel(dataLandLevel);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(DataLandLevel.class), dataLandLevel.getId());
         } else {
@@ -336,7 +318,7 @@ public class DataLandLevelService {
         }
     }
 
-    public List<DataLandLevel> getByIds(String ids){
+    public List<DataLandLevel> getByIds(String ids) {
         return dataLandLevelDao.getByIds(FormatUtils.transformString2Integer(ids));
     }
 
@@ -351,7 +333,13 @@ public class DataLandLevelService {
      * @return
      */
     public List<DataLandLevel> getDataLandLevelList(DataLandLevel query) {
-        return dataLandLevelDao.getDataLandLevelList(query);
+        if (StringUtils.isNotEmpty(query.getProcessInsId())) {
+            DataLandLevel where = new DataLandLevel();
+            where.setProcessInsId(query.getProcessInsId());
+            return dataLandLevelDao.getDataLandLevelList(where);
+        } else {
+            return dataLandLevelDao.getDataLandLevelList(query);
+        }
     }
 
     public BootstrapTableVo getDataLandLevelListVos(DataLandLevel dataLandLevel) {
@@ -382,6 +370,7 @@ public class DataLandLevelService {
         if (StringUtils.isNotBlank(dataLandLevel.getDistrict())) {
             vo.setDistrictName(erpAreaService.getSysAreaName(dataLandLevel.getDistrict()));//县
         }
+
         if (!CollectionUtils.isEmpty(attachmentDtos)) {
             StringBuilder stringBuilder = new StringBuilder();
             for (SysAttachmentDto attachmentDto : attachmentDtos) {
@@ -391,6 +380,8 @@ public class DataLandLevelService {
             }
             vo.setFileViewName(stringBuilder.toString());
         }
+        vo.setStatusName(ProjectStatusEnum.getNameByKey(dataLandLevel.getStatus()));
+        vo.setCreatorName(publicService.getUserNameByAccount(dataLandLevel.getCreator()));
         vo.setLandRightTypeName(baseDataDicService.getNameById(dataLandLevel.getLandRightType()));
         return vo;
     }
