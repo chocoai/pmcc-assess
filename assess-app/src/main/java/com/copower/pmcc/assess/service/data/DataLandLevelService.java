@@ -275,20 +275,19 @@ public class DataLandLevelService {
 
     /**
      * 发起流程
-     *
      */
     @Transactional(rollbackFor = {Exception.class})
     public void submitProcess() throws Exception {
-        DataLandLevel where=new DataLandLevel();
+        DataLandLevel where = new DataLandLevel();
         where.setStatus(ProjectStatusEnum.DRAFT.getKey());
         where.setCreator(commonService.thisUserAccount());
         List<DataLandLevel> dataLandLevelList = getDataLandLevelList(where);
-        if(CollectionUtils.isEmpty(dataLandLevelList))
+        if (CollectionUtils.isEmpty(dataLandLevelList))
             throw new BusinessException("请填写相关基准地价信息");
         ProcessUserDto processUserDto = null;
         ProcessInfo processInfo = new ProcessInfo();
         String areaFullName = erpAreaService.getAreaFullName(dataLandLevelList.get(0).getProvince(), dataLandLevelList.get(0).getCity(), dataLandLevelList.get(0).getDistrict());
-        processInfo.setFolio(String.format("%s%s基准地价",areaFullName,dataLandLevelList.get(0).getTownShipName()));//流程描述
+        processInfo.setFolio(String.format("%s%s基准地价", areaFullName, dataLandLevelList.get(0).getTownShipName()));//流程描述
         final String boxName = baseParameterService.getParameterValues(BaseParameterEnum.DATA_LAND_LEVEL_APPLY_KEY.getParameterKey());
         BoxReDto boxReDto = bpmRpcBoxService.getBoxReByBoxName(boxName);
         processInfo.setTableName(FormatUtils.entityNameConvertToTableName(DataLandLevel.class));
@@ -347,7 +346,9 @@ public class DataLandLevelService {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<DataLandLevel> dataLandLevels = getDataLandLevelList(dataLandLevel);
-        List<SysAttachmentDto> attachmentDtos = baseAttachmentService.getAttachmentListByTableName(FormatUtils.entityNameConvertToTableName(DataLandLevel.class), LangUtils.transform(dataLandLevels, o -> o.getId()));
+        SysAttachmentDto where = new SysAttachmentDto();
+        where.setTableName(FormatUtils.entityNameConvertToTableName(DataLandLevel.class));
+        List<SysAttachmentDto> attachmentDtos = baseAttachmentService.getAttachmentList(LangUtils.transform(dataLandLevels, o -> o.getId()), where);
         List<DataLandLevelVo> vos = LangUtils.transform(dataLandLevels, o -> getDataLandLevelVo(o, attachmentDtos));
         vo.setTotal(page.getTotal());
         vo.setRows(vos);
