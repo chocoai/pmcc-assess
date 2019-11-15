@@ -13,7 +13,6 @@ import com.copower.pmcc.assess.common.enums.report.BaseReportFieldMdBaseLandPric
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessProjectClassifyConstant;
 import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
-import com.copower.pmcc.assess.dal.basis.dao.data.DataAllocationCorrectionCoefficientVolumeRatioDao;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataLandLevelDetailVolumeDao;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataHousePriceIndexDao;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataHousePriceIndexDetailDao;
@@ -88,7 +87,6 @@ public class GenerateMdBaseLandPriceService {
     private DataHousePriceIndexDao dataHousePriceIndexDao;
     private DataHousePriceIndexDetailDao dataHousePriceIndexDetailDao;
     private ToolRewardRateService toolRewardRateService;
-    private DataAllocationCorrectionCoefficientVolumeRatioDao dataLandLevelDetailAchievementDao;
     private DataLandLevelDetailVolumeDao dataLandLevelDetailVolumeDao;
     private DeclareRealtyHouseCertService declareRealtyHouseCertService;
     private DeclareRealtyLandCertService declareRealtyLandCertService;
@@ -758,10 +756,7 @@ public class GenerateMdBaseLandPriceService {
         String s = "K3=%s=%s。";
         //根据容积率找到配置中对应的容积率修正
         List<DataAllocationCorrectionCoefficientVolumeRatio> coefficientVolumeRatioList;
-        coefficientVolumeRatioList = dataLandLevelDetailAchievementDao.getDataAllocationCorrectionCoefficientVolumeRatioList(getSchemeAreaGroup().getProvince(), getSchemeAreaGroup().getCity(), getSchemeAreaGroup().getDistrict());
-        if (CollectionUtils.isEmpty(coefficientVolumeRatioList)) {
-            coefficientVolumeRatioList = dataLandLevelDetailAchievementDao.getDataAllocationCorrectionCoefficientVolumeRatioList(getSchemeAreaGroup().getProvince(), getSchemeAreaGroup().getCity(), null);
-        }
+        coefficientVolumeRatioList = null;
         if (CollectionUtils.isNotEmpty(coefficientVolumeRatioList)) {
             Integer masterId = coefficientVolumeRatioList.get(0).getId();
             DataLandLevelDetailVolume coefficientVolumeRatioDetail = new DataLandLevelDetailVolume();
@@ -1092,7 +1087,6 @@ public class GenerateMdBaseLandPriceService {
         this.dataHousePriceIndexDao = SpringContextUtils.getBean(DataHousePriceIndexDao.class);
         this.dataHousePriceIndexDetailDao = SpringContextUtils.getBean(DataHousePriceIndexDetailDao.class);
         this.toolRewardRateService = SpringContextUtils.getBean(ToolRewardRateService.class);
-        this.dataLandLevelDetailAchievementDao = SpringContextUtils.getBean(DataAllocationCorrectionCoefficientVolumeRatioDao.class);
         this.dataLandLevelDetailVolumeDao = SpringContextUtils.getBean(DataLandLevelDetailVolumeDao.class);
         this.declareRealtyHouseCertService = SpringContextUtils.getBean(DeclareRealtyHouseCertService.class);
         this.declareRealtyLandCertService = SpringContextUtils.getBean(DeclareRealtyLandCertService.class);

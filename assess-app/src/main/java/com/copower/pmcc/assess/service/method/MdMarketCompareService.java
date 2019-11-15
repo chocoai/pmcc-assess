@@ -19,7 +19,6 @@ import com.copower.pmcc.assess.dto.output.method.MdCompareInitParamVo;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.basic.*;
-import com.copower.pmcc.assess.service.data.DataAllocationCorrectionCoefficientVolumeRatioService;
 import com.copower.pmcc.assess.service.data.DataBuildingNewRateService;
 import com.copower.pmcc.assess.service.data.DataSetUseFieldService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
@@ -79,8 +78,6 @@ public class MdMarketCompareService {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private DataBuildingNewRateService dataBuildingNewRateService;
-    @Autowired
-    private DataAllocationCorrectionCoefficientVolumeRatioService volumeRatioService;
     @Autowired
     private BasicEstateLandStateService basicEstateLandStateService;
     @Autowired
@@ -225,7 +222,7 @@ public class MdMarketCompareService {
     private void setCoefficient(SchemeAreaGroup areaGroup, SchemeJudgeObject schemeJudgeObject, MdMarketCompareItem mdMarketCompareItem, BasicApply basicApply, Boolean isCase) {
         BasicEstate examineEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
         BasicEstateLandState landState = basicEstateLandStateService.getLandStateByEstateId(examineEstate.getId());
-        BigDecimal volumetricRate = volumeRatioService.getAmendByVolumetricRate(landState.getLandLevel(), landState.getPlotRatio());
+        BigDecimal volumetricRate = null;
         MdMarketCompare marketCompare = getMdMarketCompare(mdMarketCompareItem.getMcId());
         //年期修正系数
         BasicHouse basicHouse = basicHouseService.getHouseByApplyId(basicApply.getId());
