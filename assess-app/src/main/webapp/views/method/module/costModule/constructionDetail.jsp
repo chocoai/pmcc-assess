@@ -618,14 +618,14 @@
             } catch (e) {
                 console.log("解析异常!");
             }
-            var attribute = {readonly:"readonly",'class':'form-control'} ;
+            var attribute = {readonly: "readonly", 'class': 'form-control'};
             var options = {
                 target: target.find(".panel-body"),
                 obj: data,
                 attribute: attribute,
                 price: item.price,
-                reckon: 'c' ,
-                callback:function (tr) {
+                reckon: 'c',
+                callback: function (tr) {
                     $(tr).find("input").attr(attribute);
                 }
             };
@@ -640,7 +640,11 @@
 
 
     construction.loadMdCalculatingMethodEngineeringCostTable = function () {
-        var obj = {projectId: '${projectPlanDetails.projectId}',judgeObjectId: '${projectPlanDetails.judgeObjectId}'};
+        var obj = {
+            projectId: '${projectPlanDetails.projectId}',
+            judgeObjectId: '${projectPlanDetails.judgeObjectId}',
+            planDetailsId: '${projectPlanDetails.id}',
+        };
         var cols = [];
         cols.push({
             field: 'id', title: '建筑安装工程费明细', formatter: function (value, row, index) {

@@ -104,4 +104,21 @@ public class NetInfoRecordController {
             return HttpResult.newErrorResult("保存异常");
         }
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/assignTask", name = "分派任务", method = {RequestMethod.POST})
+    public HttpResult assignTask(String executor,String ids) {
+        try {
+            netInfoRecordService.assignTask(executor,ids);
+            return HttpResult.newCorrectResult("保存 success!");
+        } catch (Exception e) {
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getInfoRecordListByIds", name = "信息列表", method = RequestMethod.GET)
+    public BootstrapTableVo getInfoRecordListByIds(String ids) throws Exception {
+        return netInfoRecordService.getInfoRecordListByIds(ids);
+    }
 }

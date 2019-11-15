@@ -222,7 +222,11 @@
                                 </span>
                                 <span class="input-group-btn">
                                     <button type="button" class="btn btn-primary"
-                                            onclick="construction.setMdCalculatingMethodEngineeringCost()">同步查勘建筑安装工程费</button>
+                                            onclick="construction.setMdCalculatingMethodEngineeringCost(false)">同步假设开发法建筑安装工程费</button>
+                                </span>
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-primary"
+                                            onclick="construction.setMdCalculatingMethodEngineeringCost(true)">同步查勘建筑安装工程费</button>
                                 </span>
                             </div>
                         </div>

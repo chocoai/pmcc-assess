@@ -2,8 +2,11 @@ package com.copower.pmcc.assess.service;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.copower.pmcc.assess.common.enums.ResponsibileModelEnum;
+import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoAssignTaskDao;
 import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordContentDao;
 import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordDao;
+import com.copower.pmcc.assess.dal.basis.entity.NetInfoAssignTask;
 import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecord;
 import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordContent;
 import com.copower.pmcc.assess.dto.input.net.JDSFDto;
@@ -12,11 +15,17 @@ import com.copower.pmcc.assess.dto.input.net.TBSFDto;
 import com.copower.pmcc.assess.dto.input.net.ZGSFDto;
 import com.copower.pmcc.assess.dto.output.net.NetInfoRecordVo;
 import com.copower.pmcc.assess.service.project.generate.GenerateCommonMethod;
+import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
+import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.common.CommonService;
+import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.DateUtils;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
+import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -64,6 +73,14 @@ public class NetInfoRecordService {
     private ErpAreaService erpAreaService;
     @Autowired
     private GenerateCommonMethod generateCommonMethod;
+    @Autowired
+    private ApplicationConstant applicationConstant;
+    @Autowired
+    private CommonService commonService;
+    @Autowired
+    private BpmRpcProjectTaskService bpmRpcProjectTaskService;
+    @Autowired
+    private NetInfoAssignTaskDao netInfoAssignTaskDao;
 
     //抓取数据
     public void climbingData() {
@@ -1674,6 +1691,18 @@ public class NetInfoRecordService {
             String value = String.valueOf(DateUtils.diffDate(netInfoRecord.getEndTime(), netInfoRecord.getAssessBaseDate()));
             netInfoRecordVo.setLiquidCycle(String.format("%s%s", value, "天"));
         }
+        if (netInfoRecord.getStatus().equals(0)) {
+            netInfoRecordVo.setStatusName("-");
+        }
+        if (netInfoRecord.getStatus().equals(1)) {
+            netInfoRecordVo.setStatusName("审批中");
+        }
+        if (netInfoRecord.getStatus().equals(2)) {
+            netInfoRecordVo.setStatusName("完成");
+        }
+        if (netInfoRecord.getStatus().equals(3)) {
+            netInfoRecordVo.setStatusName("已分派");
+        }
         return netInfoRecordVo;
     }
 
@@ -1694,5 +1723,55 @@ public class NetInfoRecordService {
     public void climbingOldData() {
         //来源淘宝网
         this.getNetInfoFromTB(732);
+    }
+
+    //分派任务
+    public void assignTask(String executor, String ids) throws Exception{
+        List<Integer> integers = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(ids));
+        List<NetInfoRecord> infoRecords = LangUtils.transform(integers, o -> netInfoRecordDao.getInfoById(o));
+        if(CollectionUtils.isNotEmpty(infoRecords)){
+            for (NetInfoRecord netInfo: infoRecords) {
+                if(netInfo.getStatus().equals(1)||netInfo.getStatus().equals(3)){
+                    throw new BusinessException("不能存在已经分派的信息或审批中的信息");
+                }
+            }
+            //状态为已分派
+            for (NetInfoRecord netInfo: infoRecords) {
+                netInfo.setStatus(3);
+                netInfoRecordDao.updateInfo(netInfo);
+            }
+        }
+
+        NetInfoAssignTask netInfoAssignTask = new NetInfoAssignTask();
+        netInfoAssignTask.setExecutor(executor);
+        netInfoAssignTask.setNetInfoIds(ids);
+        netInfoAssignTask.setCreator(commonService.thisUserAccount());
+        netInfoAssignTaskDao.addNetInfoAssignTask(netInfoAssignTask);
+        //发起任务
+        ProjectResponsibilityDto projectTask = new ProjectResponsibilityDto();
+        projectTask.setProjectName("拍卖信息");
+        projectTask.setUserAccount(executor);
+        projectTask.setBisEnable(true);
+        projectTask.setAppKey(applicationConstant.getAppKey());
+        projectTask.setPlanDetailsName("补全拍卖信息");
+
+        projectTask.setUrl("/pmcc-assess/netInfoAssignTask/apply?id=" + netInfoAssignTask.getId());
+        projectTask.setProjectDetailsUrl("/pmcc-assess/netInfoAssignTask/apply?id=" + netInfoAssignTask.getId());
+        projectTask.setCreator(commonService.thisUserAccount());
+        bpmRpcProjectTaskService.saveProjectTask(projectTask);
+    }
+
+
+    public BootstrapTableVo getInfoRecordListByIds(String ids) {
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        List<Integer> integers = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(ids));
+        List<NetInfoRecord> transform = LangUtils.transform(integers, o -> netInfoRecordDao.getInfoById(o));
+
+        List<NetInfoRecordVo> vos = LangUtils.transform(transform, o -> getNetInfoRecordVo(o));
+        bootstrapTableVo.setTotal(page.getTotal());
+        bootstrapTableVo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<NetInfoRecord>() : vos);
+        return bootstrapTableVo;
     }
 }

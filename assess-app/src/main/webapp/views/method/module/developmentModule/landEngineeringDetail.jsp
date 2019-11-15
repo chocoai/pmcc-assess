@@ -94,10 +94,18 @@
                             </tr>
                             <tr>
                                 <td>收入类预期销售合计:</td>
-                                <td class="info">规划建筑面积 (㎡)<label name="plannedBuildingArea" class="label label-default">${mdDevelopment.plannedBuildingArea}</label></td>
-                                <td class="info">总可售面积售价 (万元)<label name="totalSaleableAreaPrice" class="label label-default">${mdDevelopment.totalSaleableAreaPrice}</label></td>
-                                <td class="info">可售面积 (㎡)<label name="saleableArea" class="label label-default">${mdDevelopment.saleableArea}</label></td>
-                                <td class="active">不可售建筑面积 (㎡)<label name="unsaleableBuildingArea" class="label label-default">${mdDevelopment.unsaleableBuildingArea}</label></td>
+                                <td class="info">规划建筑面积 (㎡)<label name="plannedBuildingArea"
+                                                                  class="label label-default">${mdDevelopment.plannedBuildingArea}</label>
+                                </td>
+                                <td class="info">总可售面积售价 (万元)<label name="totalSaleableAreaPrice"
+                                                                    class="label label-default">${mdDevelopment.totalSaleableAreaPrice}</label>
+                                </td>
+                                <td class="info">可售面积 (㎡)<label name="saleableArea"
+                                                                class="label label-default">${mdDevelopment.saleableArea}</label>
+                                </td>
+                                <td class="active">不可售建筑面积 (㎡)<label name="unsaleableBuildingArea"
+                                                                     class="label label-default">${mdDevelopment.unsaleableBuildingArea}</label>
+                                </td>
                             </tr>
                             </tfoot>
                         </table>
@@ -108,7 +116,7 @@
             <div class="form-group">
                 <div class="x-valid">
                     <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">宗地外设定</label>
-                    <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5" >
+                    <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5">
                         ${mdDevelopment.parcelSettingOuterName}
                     </div>
                 </div>
@@ -138,7 +146,9 @@
                         勘察设计和前期工程费率<span class="symbol required"></span>
                     </label>
                     <div class="col-sm-3">
-                        <label class="form-control"><fmt:formatNumber value="${mdDevelopment.reconnaissanceDesign}" type="percent" maxFractionDigits="4"/></label>                </div>
+                        <label class="form-control"><fmt:formatNumber value="${mdDevelopment.reconnaissanceDesign}"
+                                                                      type="percent" maxFractionDigits="4"/></label>
+                    </div>
                 </div>
 
                 <div class="x-valid">
@@ -166,7 +176,7 @@
                                 </span>
                             </div>
                         </div>
-                        <table class="table table-striped" id="landConstructionInstallationEngineeringFeeInfoTarget" >
+                        <table class="table table-striped" id="landConstructionInstallationEngineeringFeeInfoTarget">
 
                         </table>
                     </div>
@@ -239,7 +249,8 @@
                         其它工程费率<span class="symbol required"></span>
                     </label>
                     <div class="col-sm-3">
-                        <label class="form-control"><fmt:formatNumber value="${mdDevelopment.otherEngineeringCost}" type="percent" maxFractionDigits="4"/></label>
+                        <label class="form-control"><fmt:formatNumber value="${mdDevelopment.otherEngineeringCost}"
+                                                                      type="percent" maxFractionDigits="4"/></label>
                     </div>
                 </div>
 
@@ -259,7 +270,8 @@
                         不可预见费率<span class="symbol required"></span>
                     </label>
                     <div class="col-sm-3">
-                        <label class="form-control"><fmt:formatNumber value="${mdDevelopment.unforeseenExpenses}" type="percent" maxFractionDigits="4"/></label>
+                        <label class="form-control"><fmt:formatNumber value="${mdDevelopment.unforeseenExpenses}"
+                                                                      type="percent" maxFractionDigits="4"/></label>
                     </div>
                 </div>
 
@@ -301,7 +313,8 @@
                         契税率<span class="symbol required"></span>
                     </label>
                     <div class="col-sm-3">
-                        <label class="form-control"><fmt:formatNumber value="${mdDevelopment.deedTaxRate}" type="percent" maxFractionDigits="4"/></label>
+                        <label class="form-control"><fmt:formatNumber value="${mdDevelopment.deedTaxRate}"
+                                                                      type="percent" maxFractionDigits="4"/></label>
                     </div>
                 </div>
 
@@ -321,7 +334,8 @@
                         交易费率<span class="symbol required"></span>
                     </label>
                     <div class="col-sm-3">
-                        <label class="form-control"><fmt:formatNumber value="${mdDevelopment.transactionTaxRate}" type="percent" maxFractionDigits="4"/></label>
+                        <label class="form-control"><fmt:formatNumber value="${mdDevelopment.transactionTaxRate}"
+                                                                      type="percent" maxFractionDigits="4"/></label>
                     </div>
                 </div>
                 <div class="x-valid">
@@ -347,7 +361,8 @@
                         <span class="symbol required"></span>
                     </label>
                     <div class="col-sm-3">
-                        <label class="form-control"><fmt:formatNumber value="${mdDevelopment.managementExpense}" type="percent" maxFractionDigits="4"/></label>
+                        <label class="form-control"><fmt:formatNumber value="${mdDevelopment.managementExpense}"
+                                                                      type="percent" maxFractionDigits="4"/></label>
                     </div>
                 </div>
 
@@ -394,7 +409,8 @@
                         销售费用率<span class="symbol required"></span>
                     </label>
                     <div class="col-sm-3">
-                        <label class="form-control"><fmt:formatNumber value="${mdDevelopment.salesFee}" type="percent" maxFractionDigits="4"/></label>
+                        <label class="form-control"><fmt:formatNumber value="${mdDevelopment.salesFee}" type="percent"
+                                                                      maxFractionDigits="4"/></label>
                     </div>
                 </div>
 
@@ -421,7 +437,8 @@
                         <span class="symbol required"></span>
                     </label>
                     <div class="col-sm-3">
-                        <label class="form-control"><fmt:formatNumber value="${mdDevelopment.interestInvestmentTax}" type="percent" maxFractionDigits="4"/></label>
+                        <label class="form-control"><fmt:formatNumber value="${mdDevelopment.interestInvestmentTax}"
+                                                                      type="percent" maxFractionDigits="4"/></label>
                     </div>
                 </div>
 
@@ -449,7 +466,8 @@
                         <span class="symbol required"></span>
                     </label>
                     <div class="col-sm-3">
-                        <label class="form-control"><fmt:formatNumber value="${mdDevelopment.investmentProfitTax}" type="percent" maxFractionDigits="4"/></label>
+                        <label class="form-control"><fmt:formatNumber value="${mdDevelopment.investmentProfitTax}"
+                                                                      type="percent" maxFractionDigits="4"/></label>
                     </div>
                 </div>
 
@@ -469,7 +487,8 @@
                         销售环节增值税及附加<span class="symbol required"></span>
                     </label>
                     <div class="col-sm-3">
-                        <label class="form-control"><fmt:formatNumber value="${mdDevelopment.salesTaxAndAdditional}" type="percent" maxFractionDigits="4"/></label>
+                        <label class="form-control"><fmt:formatNumber value="${mdDevelopment.salesTaxAndAdditional}"
+                                                                      type="percent" maxFractionDigits="4"/></label>
 
                     </div>
                 </div>
@@ -490,7 +509,8 @@
                         土地增值税<span class="symbol required"></span>
                     </label>
                     <div class="col-sm-3">
-                        <label class="form-control"> <fmt:formatNumber value="${mdDevelopment.landValueAddedTax}" type="percent" maxFractionDigits="4"/></label>
+                        <label class="form-control"> <fmt:formatNumber value="${mdDevelopment.landValueAddedTax}"
+                                                                       type="percent" maxFractionDigits="4"/></label>
 
                     </div>
                 </div>
@@ -511,7 +531,9 @@
                         项目开发所得税<span class="symbol required"></span>
                     </label>
                     <div class="col-sm-3">
-                        <label class="form-control"><fmt:formatNumber value="${mdDevelopment.projectDevelopmentIncomeTax}" type="percent" maxFractionDigits="4"/></label>
+                        <label class="form-control"><fmt:formatNumber
+                                value="${mdDevelopment.projectDevelopmentIncomeTax}" type="percent"
+                                maxFractionDigits="4"/></label>
                     </div>
                 </div>
 
@@ -525,7 +547,6 @@
                 </div>
             </div>
         </div>
-
 
 
     </div>
@@ -549,7 +570,8 @@
                     <div class="col-sm-3">
 
                         <div class="input-group">
-                            <label class="form-control"><fmt:formatNumber value="${mdDevelopment.remunerationRate}" type="percent" maxFractionDigits="4"/></label>
+                            <label class="form-control"><fmt:formatNumber value="${mdDevelopment.remunerationRate}"
+                                                                          type="percent" maxFractionDigits="4"/></label>
                             <span class="input-group-btn">
                                         <input type="hidden" name="rewardRateId" value="${mdDevelopment.rewardRateId}">
                                   <input type="button" class="btn btn-primary" value="报酬率测算"
@@ -581,15 +603,14 @@
             </div>
 
 
-
-
             <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
                         权利状况修正
                     </label>
                     <div class="col-sm-3">
-                        <label class="form-control"> <fmt:formatNumber value="${mdDevelopment.amendmentStatusRights}" type="percent" maxFractionDigits="4"/></label>
+                        <label class="form-control"> <fmt:formatNumber value="${mdDevelopment.amendmentStatusRights}"
+                                                                       type="percent" maxFractionDigits="4"/></label>
                     </div>
                 </div>
 
@@ -609,7 +630,8 @@
                         其他修正
                     </label>
                     <div class="col-sm-3">
-                        <label class="form-control"> <fmt:formatNumber value="${mdDevelopment.otherAmendments}" type="percent" maxFractionDigits="4"/></label>
+                        <label class="form-control"> <fmt:formatNumber value="${mdDevelopment.otherAmendments}"
+                                                                       type="percent" maxFractionDigits="4"/></label>
                     </div>
                 </div>
 
@@ -646,7 +668,6 @@
 
         </div>
     </div>
-
 
 
     <div class="x_panel">
@@ -697,33 +718,45 @@
 
     var landEngineering = {};
     landEngineering.target = $("#developmentFrm");
-    landEngineering.type = '${mdDevelopment.type}' ;
+    landEngineering.type = '${mdDevelopment.type}';
 
     landEngineering.constructionInstallationEngineeringFeeEvent = function (id) {
         var target = $("#boxLandEngineering");
         target.modal("show");
-        target.find(".panel-body").empty() ;
-        developmentCommon.getMdArchitecturalObjById(id,function (item) {
-            var data = [] ;
+        target.find(".panel-body").empty();
+        developmentCommon.getMdArchitecturalObjById(id, function (item) {
+            var data = [];
             try {
-                data = JSON.parse(item.jsonContent) ;
+                data = JSON.parse(item.jsonContent);
             } catch (e) {
                 console.log("解析异常!");
             }
-            var reckon = "b" ;
-            var attribute = {readonly:"readonly",'class':'form-control'} ;
-            if (landEngineering.type == 1){
-                reckon = "a" ;
+            var reckon = "b";
+            var attribute = {readonly: "readonly", 'class': 'form-control'};
+            if (landEngineering.type == 1) {
+                reckon = "a";
             }
-            var options = {target:target.find(".panel-body"),obj:data,attribute:attribute,price:item.price,reckon:reckon,callback:function (tr) {
-                $(tr).find("input").attr(attribute);
-            }};
-            developmentCommon.architecturalB.init(options) ;
+            var options = {
+                target: target.find(".panel-body"),
+                obj: data,
+                attribute: attribute,
+                price: item.price,
+                reckon: reckon,
+                callback: function (tr) {
+                    $(tr).find("input").attr(attribute);
+                }
+            };
+            developmentCommon.architecturalB.init(options);
         });
     };
 
     landEngineering.loadMdCalculatingMethodEngineeringCostTable = function () {
-        var obj = {projectId: '${projectPlanDetails.projectId}',judgeObjectId: '${projectPlanDetails.judgeObjectId}',type:landEngineering.type} ;
+        var obj = {
+            projectId: '${projectPlanDetails.projectId}',
+            judgeObjectId: '${projectPlanDetails.judgeObjectId}',
+            planDetailsId: '${projectPlanDetails.id}' ,
+            type: landEngineering.type
+        };
         var cols = [];
         cols.push({
             field: 'id', title: '建筑安装工程费明细', formatter: function (value, row, index) {
@@ -733,20 +766,19 @@
                 return str;
             }
         });
-        developmentCommon.loadMdCalculatingMethodEngineeringCostTable($("#landConstructionInstallationEngineeringFeeInfoTarget"),obj,$("#toolbarMdCalculatingMethodEngineeringCostLand"),function () {
-        },cols) ;
+        developmentCommon.loadMdCalculatingMethodEngineeringCostTable($("#landConstructionInstallationEngineeringFeeInfoTarget"), obj, $("#toolbarMdCalculatingMethodEngineeringCostLand"), function () {
+        }, cols);
     };
 
     landEngineering.loadMdDevelopmentInfrastructureChildrenTable = function () {
-        var data = {pid:'${mdDevelopment.id}',planDetailsId:'${projectPlanDetails.id}'} ;
-        developmentCommon.infrastructureChildren.loadTable2(data,$("#landMdDevelopmentInfrastructureChildrenTable"),null) ;
+        var data = {pid: '${mdDevelopment.id}', planDetailsId: '${projectPlanDetails.id}'};
+        developmentCommon.infrastructureChildren.loadTable2(data, $("#landMdDevelopmentInfrastructureChildrenTable"), null);
     };
 
 
-
     $(function () {
-        landEngineering.loadMdDevelopmentInfrastructureChildrenTable() ;
-        landEngineering.loadMdCalculatingMethodEngineeringCostTable() ;
+        landEngineering.loadMdDevelopmentInfrastructureChildrenTable();
+        landEngineering.loadMdCalculatingMethodEngineeringCostTable();
     });
 
 </script>

@@ -42,6 +42,10 @@ public class MdArchitecturalObjService {
     @Autowired
     private BaseService baseService;
 
+    public List<MdArchitecturalObj> getMdArchitecturalObjByIdIn(List<Integer> integerList){
+        return mdArchitecturalObjDao.getMdArchitecturalObjByIdIn(integerList) ;
+    }
+
     public boolean saveMdArchitecturalObj(MdArchitecturalObj mdArchitecturalObj) {
         if (mdArchitecturalObj == null) {
             return false;
@@ -84,6 +88,7 @@ public class MdArchitecturalObjService {
         MdCalculatingMethodEngineeringCost select = new MdCalculatingMethodEngineeringCost();
         select.setProjectId(projectId);
         select.setJudgeObjectId(projectPlanDetails.getJudgeObjectId());
+        select.setPlanDetailsId(projectPlanDetails.getId());
         List<MdCalculatingMethodEngineeringCost> mdCalculatingMethodEngineeringCostList = mdCalculatingMethodEngineeringCostService.getMdCalculatingMethodEngineeringCostListByExample(select);
         if (CollectionUtils.isEmpty(mdCalculatingMethodEngineeringCostList)) {
             return;

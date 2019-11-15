@@ -111,16 +111,21 @@
                             </div>
                             <div class="col-sm-4">
                                 <button type="button" class="btn btn-primary"
-                                        onclick="dataBuilder.prototype.loadDataDicList()">
+                                        onclick="detailInfo.prototype.loadDataDicList()">
                                     查询
                                 </button>
                                 <button type="button" class="btn btn-primary"
-                                        onclick="dataBuilder.prototype.getOldData()">
+                                        onclick="detailInfo.prototype.getOldData()">
                                     测试
+                                </button>
+                                <button type="button" class="btn btn-primary"
+                                        onclick="detailInfo.prototype.assignTask()">
+                                    任务分派
                                 </button>
                             </div>
                         </div>
                     </form>
+                    <input type="hidden" id="selectIds">
                     <table class="table table-bordered" id="transaction_List">
                         <!-- cerare document add ajax data-->
                     </table>
@@ -139,7 +144,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">详情管理</h3>
+                <h3 class="modal-title">信息补全</h3>
             </div>
             <form id="frmFather" class="form-horizontal">
                 <input type="hidden" id="id" name="id">
@@ -179,22 +184,7 @@
                                             单位
                                         </label>
                                         <div class="col-sm-4">
-                                            <div class="input-group">
-                                                <input type="text" id="unitName" name="unitName" list="unitList"
-                                                       class="form-control">
-                                                <datalist id="unitList">
-                                                    <c:forEach var="item" items="${unitList}">
-                                                        <option value="${item}">${item}</option>
-                                                    </c:forEach>
-                                                </datalist>
-                                                <span class="input-group-btn">
-                                                <button type="button" class="btn btn-default docs-tooltip"
-                                                        onclick="$(this).closest('.input-group').find('input').val('');"
-                                                        data-toggle="tooltip" data-original-title="清除">
-                                                <i class="fa fa-trash-o"></i>
-                                                </button>
-                                            </span>
-                                            </div>
+                                            <label class="form-control" name="unitName"></label>
                                         </div>
                                     </div>
                                 </div>
@@ -204,8 +194,7 @@
                                             数量
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" data-rule-number="true" data-rule-maxlength="50"
-                                                   id="amount" name="amount" class="form-control" placeholder="数量(数字)">
+                                            <label class="form-control" name="amount"></label>
                                         </div>
                                     </div>
                                     <div class="x-valid">
@@ -213,9 +202,7 @@
                                             面积
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" data-rule-number="true" placeholder="面积(数字)"
-                                                   data-rule-maxlength="50"
-                                                   id="area" name="area" class="form-control">
+                                            <label class="form-control" name="area"></label>
                                         </div>
                                     </div>
                                 </div>
@@ -225,7 +212,7 @@
                                             评估基准日
                                         </label>
                                         <div class="col-sm-3">
-                                            <input placeholder="评估基准日" readonly
+                                            <input disabled
                                                    name="assessBaseDate" data-date-format="yyyy-mm-dd"
                                                    class="form-control date-picker dbdate">
                                         </div>
@@ -235,7 +222,7 @@
                                             协商日期
                                         </label>
                                         <div class="col-sm-3">
-                                            <input placeholder="协商日期" readonly
+                                            <input disabled
                                                    name="negotiatedDate" data-date-format="yyyy-mm-dd"
                                                    class="form-control date-picker dbdate">
                                         </div>
@@ -245,9 +232,7 @@
                                             协商总价
                                         </label>
                                         <div class="col-sm-3">
-                                            <input placeholder="协商总价"
-                                                   name="negotiatedTotalPrice"
-                                                   class="form-control">
+                                            <label class="form-control" name="negotiatedTotalPrice"></label>
                                         </div>
                                     </div>
                                 </div>
@@ -257,10 +242,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" data-dismiss="modal" class="btn btn-default">
-                        取消
-                    </button>
-                    <button type="button" class="btn btn-primary" onclick="dataBuilder.prototype.saveData()">
-                        保存
+                        关闭
                     </button>
                 </div>
             </form>
@@ -271,7 +253,7 @@
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="text/javascript">
     $(function () {
-        dataBuilder.prototype.loadDataDicList();
+        detailInfo.prototype.loadDataDicList();
         AssessCommon.initAreaInfo({
             useDefaultText: false,
             provinceTarget: $("#province"),
@@ -279,10 +261,10 @@
             districtTarget: $("#district")
         })
     });
-    var dataBuilder = function () {
+    var detailInfo = function () {
 
     };
-    dataBuilder.prototype = {
+    detailInfo.prototype = {
         config: function () {
             var data = {};
             data.table = "transaction_List";
@@ -292,7 +274,7 @@
         },
         loadDataDicList: function () {
             var cols = [];
-            cols.push({field: 'title', title: '标题', width: '15%'});
+            cols.push({field: 'title', title: '标题', width: '13%'});
             cols.push({field: 'province', title: '省', width: '5%'});
             cols.push({field: 'city', title: '市', width: '5%'});
             cols.push({field: 'sourceSiteName', title: '来源网站', width: '10%'});
@@ -308,20 +290,21 @@
                 }
             });
             cols.push({field: 'content', title: '内容', width: '25%'});
-            cols.push({field: 'liquidRatios', title: '变现率', width: '6%'});
-            cols.push({field: 'unitPrice', title: '单价', width: '6%'});
-            cols.push({field: 'liquidCycle', title: '变现周期', width: '6%'});
+            cols.push({field: 'liquidRatios', title: '变现率', width: '5%'});
+            cols.push({field: 'unitPrice', title: '单价', width: '5%'});
+            cols.push({field: 'liquidCycle', title: '变现周期', width: '5%'});
+            cols.push({field: 'statusName', title: '状态', width: '5%'});
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
-                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="详情及编辑" onclick="dataBuilder.prototype.getAndInit(' + row.id + ')"><i class="fa fa-edit fa-white"></i></a>';
-                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="查看网址" onclick="dataBuilder.prototype.openItem(' + index + ')"><i class="fa fa-eye fa-white"></i></a>';
+                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="详情" onclick="detailInfo.prototype.getAndInit(' + row.id + ')"><i class="fa fa-search fa-white"></i></a>';
+                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="查看网址" onclick="detailInfo.prototype.openItem(' + index + ')"><i class="fa fa-eye fa-white"></i></a>';
                     str += '</div>';
                     return str;
                 }
             });
-            $("#" + dataBuilder.prototype.config().table).bootstrapTable('destroy');
-            TableInit(dataBuilder.prototype.config().table, "${pageContext.request.contextPath}/netInfoRecordController/getInfoRecordList", cols, {
+            $("#" + detailInfo.prototype.config().table).bootstrapTable('destroy');
+            TableInit(detailInfo.prototype.config().table, "${pageContext.request.contextPath}/netInfoRecordController/getInfoRecordList", cols, {
                 queryTitle: $("#queryTitle").val(),
                 queryWebName: $("#queryWebName").val(),
                 province: $("#province").val(),
@@ -337,11 +320,10 @@
                 onLoadSuccess: function () {
                     $('.tooltips').tooltip();
                 }
-            },true);
+            }, true);
         },
         openItem: function (index) {
             var row = $("#transaction_List").bootstrapTable('getData')[index];
-            console.log(row);
             if (row.sourceSiteUrl) {
                 window.open(row.sourceSiteUrl, "");
             }
@@ -354,9 +336,9 @@
                 data: {id: id},
                 success: function (result) {
                     if (result.ret) {
-                        $("#" + dataBuilder.prototype.config().frm).clearAll();
-                        $("#" + dataBuilder.prototype.config().frm).initForm(result.data);
-                        $('#' + dataBuilder.prototype.config().box).modal("show");
+                        $("#" + detailInfo.prototype.config().frm).clearAll();
+                        $("#" + detailInfo.prototype.config().frm).initForm(result.data);
+                        $('#' + detailInfo.prototype.config().box).modal("show");
                     }
                 },
                 error: function (result) {
@@ -365,10 +347,10 @@
             })
         },
         saveData: function () {
-            if (!$("#" + dataBuilder.prototype.config().frm).valid()) {
+            if (!$("#" + detailInfo.prototype.config().frm).valid()) {
                 return false;
             }
-            var data = formParams(dataBuilder.prototype.config().frm);
+            var data = formParams(detailInfo.prototype.config().frm);
             $.ajax({
                 url: "${pageContext.request.contextPath}/netInfoRecordController/updateNetInfoRecord",
                 type: "post",
@@ -377,8 +359,8 @@
                 success: function (result) {
                     if (result.ret) {
                         toastr.success('保存成功');
-                        $('#' + dataBuilder.prototype.config().box).modal('hide');
-                        dataBuilder.prototype.loadDataDicList();
+                        $('#' + detailInfo.prototype.config().box).modal('hide');
+                        detailInfo.prototype.loadDataDicList();
                     }
                     else {
                         Alert("保存数据失败，失败原因:" + result.errmsg);
@@ -408,7 +390,64 @@
                     Alert("调用服务端方法失败，失败原因:" + result);
                 }
             })
+        },
+        assignTask: function () {
+            var rows = $('#transaction_List').bootstrapTable('getSelections');
+
+            if (rows && rows.length > 0) {
+                var idArray = [];
+                $.each(rows, function (i, item) {
+                    idArray.push(item.id);
+                })
+                var ids = idArray.join()
+                $("#selectIds").val(ids);
+                //选择人员
+                detailInfo.prototype.selectUser()
+            } else {
+                toastr.info('请选择要分派的数据');
+            }
+        },
+        selectUser: function () {
+            erpEmployee.select({
+                onSelected: function (data) {
+                    if (data.account) {
+                        //确认分派
+                        var ids = $("#selectIds").val();
+                        detailInfo.prototype.affirm(data.account, ids);
+                    }
+                    else {
+
+                    }
+                }
+            });
+        },
+        affirm: function (executor, ids) {
+            Loading.progressShow();
+            $.ajax({
+                url: "${pageContext.request.contextPath}/netInfoRecordController/assignTask",
+                type: "post",
+                data: {
+                    executor: executor,
+                    ids: ids
+                },
+                dataType: "json",
+                success: function (result) {
+                    Loading.progressHide();
+                    if (result.ret) {
+                        toastr.success('分派成功');
+                        detailInfo.prototype.loadDataDicList();
+                    }
+                    else {
+                        Alert("失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Loading.progressHide();
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
         }
+
     }
 
 
