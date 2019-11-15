@@ -162,8 +162,15 @@ public class ProjectCenterController {
         modelAndView.addObject("documentClientTemplateList", documentClientTemplateList);
 
         //报告签收单
-        List<DocumentTemplate> signBill = documentTemplateService.getDocumentTemplateList("", baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_TEMPLATE_TYPE_REPORT_SIGNFOR).getId());
-        modelAndView.addObject("signBill", signBill);
+        List<DocumentTemplate> signBill = null;
+        BaseDataDic signBillDataDic = null;
+        signBillDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_TEMPLATE_TYPE_REPORT_SIGNFOR);
+        if (signBillDataDic != null) {
+            signBill = documentTemplateService.getDocumentTemplateList("", signBillDataDic.getId());
+        }
+        if (CollectionUtils.isNotEmpty(signBill)) {
+            modelAndView.addObject("signBill", signBill);
+        }
         return modelAndView;
     }
 

@@ -204,7 +204,13 @@ public class EvaluationPrincipleService {
                     }
                     for (SchemeJudgeFunction judgeFunction : applicableJudgeFunctions) {
                         BaseDataDic dataDicById = baseDataDicService.getDataDicById(judgeFunction.getMethodType());
+                        if (dataDicById == null){
+                            continue;
+                        }
                         String fieldName = dataDicById.getFieldName();
+                        if (StringUtils.isEmpty(fieldName)){
+                            continue;
+                        }
                         switch (fieldName) {
                             case AssessReportFieldConstant.MARKET_COMPARE:
                                 compare.append(judgeObject.getNumber()).append(",");
@@ -217,11 +223,13 @@ public class EvaluationPrincipleService {
                                 break;
                             case AssessReportFieldConstant.INCOME:
                                 SchemeInfo schemeInfo = schemeInfoService.getSchemeInfo(judgeFunction.getJudgeObjectId(), judgeFunction.getMethodType());
-                                MdIncome incomeById = mdIncomeDao.getIncomeById(schemeInfo.getMethodDataId());
-                                if (incomeById != null && incomeById.getOperationMode() == 0) {
-                                    autotrophy.append(judgeObject.getNumber()).append(",");
-                                } else {
-                                    rent.append(judgeObject.getNumber()).append(",");
+                                if (schemeInfo !=null && schemeInfo.getMethodDataId() != null){
+                                    MdIncome incomeById = mdIncomeDao.getIncomeById(schemeInfo.getMethodDataId());
+                                    if (incomeById != null && incomeById.getOperationMode() == 0) {
+                                        autotrophy.append(judgeObject.getNumber()).append(",");
+                                    } else {
+                                        rent.append(judgeObject.getNumber()).append(",");
+                                    }
                                 }
                                 break;
                         }
