@@ -1,13 +1,12 @@
 package com.copower.pmcc.assess.controller.method;
 
 import com.alibaba.fastjson.JSONObject;
-import com.copower.pmcc.assess.dal.basis.entity.MdCost;
+import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
 import com.copower.pmcc.assess.dal.basis.entity.MdCostConstruction;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.method.MdCalculatingMethodEngineeringCostService;
 import com.copower.pmcc.assess.service.method.MdMarketCostService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
-import com.copower.pmcc.erp.common.utils.FormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,7 +45,7 @@ public class MdCostConstructionController {
             if (flag) {
                 mdCalculatingMethodEngineeringCostService.setMdCalculatingMethodEngineeringCost(planDetailsId, type);
             }else {
-
+                mdCalculatingMethodEngineeringCostService.setMethodTargetData(AssessReportFieldConstant.DEVELOPMENT,planDetailsId,type);
             }
             return HttpResult.newCorrectResult("success");
         } catch (Exception e) {

@@ -42,6 +42,10 @@ public class MdArchitecturalObjService {
     @Autowired
     private BaseService baseService;
 
+    public List<MdArchitecturalObj> getMdArchitecturalObjByIdIn(List<Integer> integerList){
+        return mdArchitecturalObjDao.getMdArchitecturalObjByIdIn(integerList) ;
+    }
+
     public boolean saveMdArchitecturalObj(MdArchitecturalObj mdArchitecturalObj) {
         if (mdArchitecturalObj == null) {
             return false;

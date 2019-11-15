@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.service.method;
 
 import com.copower.pmcc.assess.common.BeanCopyHelp;
+import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdCalculatingMethodEngineeringCostDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.service.BaseService;
@@ -19,11 +20,12 @@ import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by zch on 2019-8-28.
@@ -49,7 +51,7 @@ public class MdCalculatingMethodEngineeringCostService {
     private SurveyCommonService surveyCommonService;
 
     /**
-     * 工程费
+     * copy 工程费
      *
      * @param targetPlanDetails
      * @param copyPlanDetails
@@ -59,7 +61,7 @@ public class MdCalculatingMethodEngineeringCostService {
             return;
         }
 
-        this.clearOver(targetPlanDetails,null);
+        this.clearOver(targetPlanDetails, null);
         MdCalculatingMethodEngineeringCost copyEngineeringCostQuery = new MdCalculatingMethodEngineeringCost();
         copyEngineeringCostQuery.setProjectId(copyPlanDetails.getProjectId());
         copyEngineeringCostQuery.setJudgeObjectId(copyPlanDetails.getJudgeObjectId());
@@ -99,12 +101,76 @@ public class MdCalculatingMethodEngineeringCostService {
     }
 
 
+    /**
+     * 设置工程费
+     * @param planDetailsId
+     * @param type
+     */
     public void setMdCalculatingMethodEngineeringCost(Integer planDetailsId, String type) {
         ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
         SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId());
         BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
         BigDecimal area = schemeJudgeObject.getFloorArea() != null ? schemeJudgeObject.getFloorArea() : schemeJudgeObject.getEvaluationArea();
         setMdCalculatingMethodEngineeringCost2(projectPlanDetails, basicApply, area, type);
+    }
+
+    /**
+     * 成本法和假设开发法 数据同步子数据
+     * @param targetKey
+     * @param planDetailsId
+     * @param type
+     */
+    public void setMethodTargetData(String targetKey, Integer planDetailsId, String type) {
+        List<String> keys = Arrays.asList(AssessReportFieldConstant.DEVELOPMENT,AssessReportFieldConstant.COST) ;
+        if (!keys.contains(targetKey)){
+            return;
+        }
+        ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
+        MdCalculatingMethodEngineeringCost query = new MdCalculatingMethodEngineeringCost();
+        query.setJudgeObjectId(projectPlanDetails.getJudgeObjectId());
+        query.setProjectId(projectPlanDetails.getProjectId());
+        List<MdCalculatingMethodEngineeringCost> list = getMdCalculatingMethodEngineeringCostListByExample(query);
+        if (CollectionUtils.isEmpty(list)) {
+            return;
+        }
+        Iterator<MdCalculatingMethodEngineeringCost> iterator = list.iterator();
+        Map<Integer,MdCalculatingMethodEngineeringCost> engineeringCostMap = new HashMap<>() ;
+        while (iterator.hasNext()) {
+            MdCalculatingMethodEngineeringCost next = iterator.next();
+            if (Objects.equal(next.getPlanDetailsId(), planDetailsId)) {
+               continue;
+            }
+            if (next.getArchitecturalObjId() != null && next.getArchitecturalObjId() != 0) {
+                engineeringCostMap.put(next.getArchitecturalObjId(),next);
+            }
+        }
+        if (engineeringCostMap.isEmpty()) {
+            return;
+        }
+
+        Iterator<Map.Entry<Integer,MdCalculatingMethodEngineeringCost>> mdArchitecturalObjIterator = engineeringCostMap.entrySet().iterator();
+        while (mdArchitecturalObjIterator.hasNext()){
+            Map.Entry<Integer,MdCalculatingMethodEngineeringCost> engineeringCostEntry = mdArchitecturalObjIterator.next();
+            MdArchitecturalObj obj = mdArchitecturalObjService.getMdArchitecturalObjById(engineeringCostEntry.getKey()) ;
+            if (obj == null){
+                continue;
+            }
+            MdArchitecturalObj mdArchitecturalObj = new MdArchitecturalObj();
+            BeanUtils.copyProperties(obj,mdArchitecturalObj);
+            mdArchitecturalObj.setId(null);
+            mdArchitecturalObj.setPlanDetailsId(null);
+            mdArchitecturalObj.setType(null);
+            mdArchitecturalObjService.saveMdArchitecturalObj(mdArchitecturalObj) ;
+            MdCalculatingMethodEngineeringCost engineeringCost = new MdCalculatingMethodEngineeringCost();
+            BeanUtils.copyProperties(engineeringCostEntry.getValue(),engineeringCost);
+            engineeringCost.setProjectId(projectPlanDetails.getProjectId());
+            engineeringCost.setJudgeObjectId(projectPlanDetails.getJudgeObjectId());
+            engineeringCost.setPlanDetailsId(projectPlanDetails.getId());
+            engineeringCost.setId(null);
+            engineeringCost.setType(type);
+            engineeringCost.setArchitecturalObjId(mdArchitecturalObj.getId());
+            saveMdCalculatingMethodEngineeringCost(engineeringCost) ;
+        }
     }
 
     /**
@@ -205,7 +271,7 @@ public class MdCalculatingMethodEngineeringCostService {
      * @param projectPlanDetails
      * @param type
      */
-    public void clearOver(ProjectPlanDetails projectPlanDetails , String type) {
+    public void clearOver(ProjectPlanDetails projectPlanDetails, String type) {
         MdCalculatingMethodEngineeringCost engineeringCost = new MdCalculatingMethodEngineeringCost();
         engineeringCost.setProjectId(projectPlanDetails.getProjectId());
         engineeringCost.setJudgeObjectId(projectPlanDetails.getJudgeObjectId());

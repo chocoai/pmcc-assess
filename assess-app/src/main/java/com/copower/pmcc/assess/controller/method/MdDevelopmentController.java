@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.controller.method;
 
 import com.alibaba.fastjson.JSONObject;
+import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
 import com.copower.pmcc.assess.dal.basis.entity.MdDevelopment;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.method.MdCalculatingMethodEngineeringCostService;
@@ -58,7 +59,7 @@ public class MdDevelopmentController {
             if (flag) {
                 mdCalculatingMethodEngineeringCostService.setMdCalculatingMethodEngineeringCost(planDetailsId, type);
             }else {
-
+                mdCalculatingMethodEngineeringCostService.setMethodTargetData(AssessReportFieldConstant.COST,planDetailsId,type);
             }
             return HttpResult.newCorrectResult("success");
         } catch (Exception e) {
