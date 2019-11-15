@@ -7,7 +7,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">土地级别控件
+                <h3 class="modal-title">基准地价
                 </h3>
             </div>
             <div class="modal-body">
@@ -17,7 +17,7 @@
                             <div class="panel-body panel">
                                 <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
                                     <div class="row">
-                                        <form>
+                                        <form class="form-horizontal">
                                             <div class="x-valid">
                                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">省</label>
                                                 <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
@@ -45,7 +45,7 @@
                                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                                     <div class="input-group">
                                                     <span class="input-group-btn">
-                                                    <input placeholder="乡镇名称" class="form-control" name="townShipName"
+                                                    <input placeholder="乡镇/街道" class="form-control" name="townShipName"
                                                            type="text">
                                                     </span>
                                                         <span class="input-group-btn">
@@ -73,25 +73,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
-                                    <div class="row">
-                                        <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
-                                            <a class="btn btn-xs btn-primary"
-                                               onclick="assessLandLevelTool.treeExpandAll(true);">
-                                                全部展开
-                                            </a>
-                                            <a class="btn btn-xs btn-primary"
-                                               onclick="assessLandLevelTool.treeExpandAll(false);">
-                                                全部收起
-                                            </a>
-                                            <a class="btn btn-xs btn-primary "
-                                               onclick="assessLandLevelTool.treeRefresh();">
-                                                刷新
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-
                             </div>
                         </div>
                     </div>
@@ -100,7 +81,6 @@
         </div>
     </div>
 </div>
-
 <script>
     /**
      * Created by kings on 2018-4-18.
@@ -108,36 +88,32 @@
      */
     (function ($) {
         var AssessLandLevelTool = function () {
-
         };
-
         AssessLandLevelTool.prototype.success = undefined;
-
         AssessLandLevelTool.prototype.box = $('#tool_select_land_level_modal');
         AssessLandLevelTool.prototype.table = $('#tool_select_land_level_list');
         AssessLandLevelTool.prototype.tree = $('#tool_select_land_level_list_tree');
 
         //加载列表数据
         AssessLandLevelTool.prototype.loadLandLevelList = function (select) {
-            if (!select){
-                var frm = AssessLandLevelTool.prototype.box.find("form").first() ;
-                var data = formSerializeArray(frm) ;
-                select = data ;
+            if (!select) {
+                var frm = AssessLandLevelTool.prototype.box.find("form").first();
+                var data = formSerializeArray(frm);
+                data.status = "finish";
+                select = data;
             }
             var cols = [];
             cols.push({
                 field: 'provinceName', title: '区域', formatter: function (value, row, index) {
-                    return AssessCommon.getAreaFullName(row.provinceName, row.cityName, row.districtName);
+                    var areaFullName = AssessCommon.getAreaFullName(row.provinceName, row.cityName, row.districtName);
+                    if (row.townShipName) {
+                        areaFullName = areaFullName + row.townShipName;
+                    }
+                    return areaFullName;
                 }
             });
-            cols.push({field: 'title', title: '标题'});
             cols.push({
                 field: 'valuationDate', title: '估价期日', formatter: function (value, row, index) {
-                    return formatDate(value);
-                }
-            });
-            cols.push({
-                field: 'releaseDate', title: '发布日期', formatter: function (value, row, index) {
                     return formatDate(value);
                 }
             });
@@ -147,19 +123,17 @@
                 }
             });
             cols.push({field: 'fileViewName', title: '附件'});
-            cols.push({field: 'landRightTypeName', title: '权利类型'});
-            cols.push({field: 'townShipName', title: '乡镇名称'});
             cols.push({
                 field: 'opt', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
-                    str += '<a class="btn btn-xs btn-warning" href="javascript://" onclick="assessLandLevelTool.onLoadTree(' + index + ');"><i class="fa fa-tree fa-white"></i>选择子项树</a>';
+                    str += '<a class="btn btn-xs btn-warning" href="javascript://" onclick="assessLandLevelTool.onLoadTree(' + index + ');"><i class="fa fa-tree fa-white"></i>选择</a>';
                     str += '</div>';
                     return str;
                 }
             });
             var table = AssessLandLevelTool.prototype.table;
             table.bootstrapTable('destroy');
-            TableInit(table, getContextPath() + "/dataLandLevel/getDataLandLevelListVos", cols,select, {
+            TableInit(table, getContextPath() + "/dataLandLevel/getDataLandLevelListVos", cols, select, {
                 showColumns: false,
                 showRefresh: false,
                 uniqueId: "id",
@@ -183,7 +157,7 @@
         AssessLandLevelTool.prototype.select = function (options) {
             var that = this;
             var target = AssessLandLevelTool.prototype.box;
-            var data = {province:options.province,city:options.city,district:options.district} ;
+            var data = {province: options.province, city: options.city, district: options.district, status: 'finish'};
             assessLandLevelTool.loadLandLevelList(data);
 
             AssessCommon.initAreaInfo({

@@ -40,6 +40,8 @@ public enum BaseParameterEnum {
     PROJECT_SUBSEQUENT_PROCESS_KEY("project.subsequent.process.key", "项目后续事项", "box"),
     PROJECT_TAKE_NUMBER_PROCESS_KEY("project.take.number.process.key", "项目拿号", "box"),
 
+    NET_INFO_COMPLEMENT_PROCESS_KEY("net.info.complement.process.key", "拍卖信息补全", "box"),
+
     CASE_BASE_INFO_APPLY_KEY("case.base.info.apply.key", "案例信息申请key", "box"),
 
     DATA_LAND_LEVEL_APPLY_KEY("data.land.level.apply.key", "土地级别流程申请key", "box"),

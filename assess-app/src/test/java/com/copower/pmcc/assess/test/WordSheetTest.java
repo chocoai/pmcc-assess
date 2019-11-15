@@ -192,8 +192,8 @@ public class WordSheetTest {
     private void save(ExampleDDD exampleDDD) {
         if (exampleDDD != null) {
             DataLandLevelDetail dataLandLevelDetail = new DataLandLevelDetail();
-            dataLandLevelDetail.setType(exampleDDD.getNumber());
-            dataLandLevelDetail.setClassify(exampleDDD.getType());
+            dataLandLevelDetail.setType(exampleDDD.getNumber_());
+            dataLandLevelDetail.setClassify(exampleDDD.getNumber_());
             dataLandLevelDetail.setLandLevelId(332);
             dataLandLevelDetail.setPrice(new BigDecimal(exampleDDD.getPrice()));
             dataLandLevelDetailDao.addDataLandLevelDetail(dataLandLevelDetail);

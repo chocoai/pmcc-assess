@@ -13,6 +13,8 @@ public class DataLandLevelVo extends DataLandLevel {
     private String districtName;
     private String fileViewName;
     private String landRightTypeName;
+    private String statusName;
+    private String creatorName;
 
     public String getProvinceName() {
         return provinceName;
@@ -52,5 +54,21 @@ public class DataLandLevelVo extends DataLandLevel {
 
     public void setLandRightTypeName(String landRightTypeName) {
         this.landRightTypeName = landRightTypeName;
+    }
+
+    public String getStatusName() {
+        return statusName;
+    }
+
+    public void setStatusName(String statusName) {
+        this.statusName = statusName;
+    }
+
+    public String getCreatorName() {
+        return creatorName;
+    }
+
+    public void setCreatorName(String creatorName) {
+        this.creatorName = creatorName;
     }
 }

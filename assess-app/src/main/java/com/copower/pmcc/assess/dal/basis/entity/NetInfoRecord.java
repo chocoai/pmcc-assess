@@ -52,6 +52,8 @@ public class NetInfoRecord {
 
     private Date negotiatedDate;
 
+    private Integer status;
+
     public Integer getId() {
         return id;
     }
@@ -242,5 +244,13 @@ public class NetInfoRecord {
 
     public void setNegotiatedDate(Date negotiatedDate) {
         this.negotiatedDate = negotiatedDate;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }
