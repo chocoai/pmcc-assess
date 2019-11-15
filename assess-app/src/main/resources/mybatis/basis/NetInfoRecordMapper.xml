@@ -26,6 +26,7 @@
     <result column="area" property="area" jdbcType="DECIMAL" />
     <result column="negotiated_total_price" property="negotiatedTotalPrice" jdbcType="DECIMAL" />
     <result column="negotiated_date" property="negotiatedDate" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -89,7 +90,7 @@
     id, province, city, title, content, type, notice_date, begin_time, end_time, source_site_name, 
     source_site_url, creator, gmt_created, gmt_modified, current_price, consult_price, 
     init_price, liquid_ratios, unit_name, amount, assess_base_date, area, negotiated_total_price, 
-    negotiated_date
+    negotiated_date, status
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordExample" >
     select
@@ -132,7 +133,8 @@
       gmt_modified, current_price, consult_price, 
       init_price, liquid_ratios, unit_name, 
       amount, assess_base_date, area, 
-      negotiated_total_price, negotiated_date)
+      negotiated_total_price, negotiated_date, 
+      status)
     values (#{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, 
       #{content,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{noticeDate,jdbcType=VARCHAR}, 
       #{beginTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, #{sourceSiteName,jdbcType=VARCHAR}, 
@@ -140,7 +142,8 @@
       #{gmtModified,jdbcType=TIMESTAMP}, #{currentPrice,jdbcType=VARCHAR}, #{consultPrice,jdbcType=VARCHAR}, 
       #{initPrice,jdbcType=VARCHAR}, #{liquidRatios,jdbcType=VARCHAR}, #{unitName,jdbcType=VARCHAR}, 
       #{amount,jdbcType=INTEGER}, #{assessBaseDate,jdbcType=TIMESTAMP}, #{area,jdbcType=DECIMAL}, 
-      #{negotiatedTotalPrice,jdbcType=DECIMAL}, #{negotiatedDate,jdbcType=TIMESTAMP})
+      #{negotiatedTotalPrice,jdbcType=DECIMAL}, #{negotiatedDate,jdbcType=TIMESTAMP}, 
+      #{status,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.NetInfoRecord" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -217,6 +220,9 @@
       <if test="negotiatedDate != null" >
         negotiated_date,
       </if>
+      <if test="status != null" >
+        status,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="province != null" >
@@ -287,6 +293,9 @@
       </if>
       <if test="negotiatedDate != null" >
         #{negotiatedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -371,6 +380,9 @@
       <if test="record.negotiatedDate != null" >
         negotiated_date = #{record.negotiatedDate,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=INTEGER},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -401,7 +413,8 @@
       assess_base_date = #{record.assessBaseDate,jdbcType=TIMESTAMP},
       area = #{record.area,jdbcType=DECIMAL},
       negotiated_total_price = #{record.negotiatedTotalPrice,jdbcType=DECIMAL},
-      negotiated_date = #{record.negotiatedDate,jdbcType=TIMESTAMP}
+      negotiated_date = #{record.negotiatedDate,jdbcType=TIMESTAMP},
+      status = #{record.status,jdbcType=INTEGER}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -478,6 +491,9 @@
       <if test="negotiatedDate != null" >
         negotiated_date = #{negotiatedDate,jdbcType=TIMESTAMP},
       </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -505,7 +521,8 @@
       assess_base_date = #{assessBaseDate,jdbcType=TIMESTAMP},
       area = #{area,jdbcType=DECIMAL},
       negotiated_total_price = #{negotiatedTotalPrice,jdbcType=DECIMAL},
-      negotiated_date = #{negotiatedDate,jdbcType=TIMESTAMP}
+      negotiated_date = #{negotiatedDate,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
