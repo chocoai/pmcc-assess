@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.test;
 
-import com.copower.pmcc.assess.dto.output.data.DataLandDetailAchievementVo;
+import com.copower.pmcc.assess.dto.output.data.DataLandLevelDetailAchievementVo;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 
@@ -17,7 +17,7 @@ public class ExampleDDD  implements Serializable{
     private String type;
     private Integer price;
     private Integer number_;
-    private List<DataLandDetailAchievementVo> dataLandDetailAchievementVos = Lists.newArrayList();
+    private List<DataLandLevelDetailAchievementVo> dataLandDetailAchievementVos = Lists.newArrayList();
 
     public String getNumber() {
         return number;
@@ -55,11 +55,11 @@ public class ExampleDDD  implements Serializable{
         return this;
     }
 
-    public List<DataLandDetailAchievementVo> getDataLandDetailAchievementVos() {
+    public List<DataLandLevelDetailAchievementVo> getDataLandDetailAchievementVos() {
         return dataLandDetailAchievementVos;
     }
 
-    public void setDataLandDetailAchievementVos(List<DataLandDetailAchievementVo> dataLandDetailAchievementVos) {
+    public void setDataLandDetailAchievementVos(List<DataLandLevelDetailAchievementVo> dataLandDetailAchievementVos) {
         this.dataLandDetailAchievementVos = dataLandDetailAchievementVos;
     }
 

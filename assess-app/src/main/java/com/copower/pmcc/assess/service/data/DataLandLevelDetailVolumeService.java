@@ -2,9 +2,9 @@ package com.copower.pmcc.assess.service.data;
 
 import com.copower.pmcc.assess.common.ArithmeticUtils;
 import com.copower.pmcc.assess.common.PoiUtils;
-import com.copower.pmcc.assess.dal.basis.dao.data.DataAllocationCorrectionCoefficientVolumeRatioDetailDao;
-import com.copower.pmcc.assess.dal.basis.entity.DataAllocationCorrectionCoefficientVolumeRatioDetail;
-import com.copower.pmcc.assess.dto.output.data.DataAllocationCorrectionCoefficientVolumeRatioDetailVo;
+import com.copower.pmcc.assess.dal.basis.dao.data.DataLandLevelDetailVolumeDao;
+import com.copower.pmcc.assess.dal.basis.entity.DataLandLevelDetailVolume;
+import com.copower.pmcc.assess.dto.output.data.DataLandLevelDetailVolumeVo;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -34,10 +34,10 @@ import java.util.List;
  * @description:容积率修正系数配置 详情(从表)
  */
 @Service
-public class DataAllocationCorrectionCoefficientVolumeRatioDetailService {
+public class DataLandLevelDetailVolumeService {
 
     @Autowired
-    private DataAllocationCorrectionCoefficientVolumeRatioDetailDao dataLandDetailAchievementDao;
+    private DataLandLevelDetailVolumeDao dataLandDetailAchievementDao;
     @Autowired
     private CommonService commonService;
     @Autowired
@@ -45,7 +45,7 @@ public class DataAllocationCorrectionCoefficientVolumeRatioDetailService {
     @Autowired
     private BaseAttachmentService baseAttachmentService;
 
-    private boolean importDataAllocationCorrectionCoefficientVolumeRatio(DataAllocationCorrectionCoefficientVolumeRatioDetail target, StringBuilder builder, Row row, int i) throws Exception {
+    private boolean importDataAllocationCorrectionCoefficientVolumeRatio(DataLandLevelDetailVolume target, StringBuilder builder, Row row, int i) throws Exception {
         final int rowLength = 2;
         for (int j = 0; j < rowLength; j++) {
             switch (j) {
@@ -70,7 +70,7 @@ public class DataAllocationCorrectionCoefficientVolumeRatioDetailService {
         return true;
     }
 
-    public String importDataAllocationCorrectionCoefficientVolumeRatio(MultipartFile multipartFile, DataAllocationCorrectionCoefficientVolumeRatioDetail input) throws Exception {
+    public String importDataAllocationCorrectionCoefficientVolumeRatio(MultipartFile multipartFile, DataLandLevelDetailVolume input) throws Exception {
         StringBuilder builder = new StringBuilder(10);
         Workbook workbook = null;
         Row row = null;
@@ -102,7 +102,7 @@ public class DataAllocationCorrectionCoefficientVolumeRatioDetailService {
         }
 
         for (int i = startRowNumber; i < rowLength + startRowNumber; i++) {
-            DataAllocationCorrectionCoefficientVolumeRatioDetail target = null;
+            DataLandLevelDetailVolume target = null;
             //标识符
             try {
                 row = sheet.getRow(i);
@@ -110,14 +110,14 @@ public class DataAllocationCorrectionCoefficientVolumeRatioDetailService {
                     builder.append(String.format("\n第%s行异常：%s", i, "没有数据"));
                     continue;
                 }
-                target = new DataAllocationCorrectionCoefficientVolumeRatioDetail();
+                target = new DataLandLevelDetailVolume();
                 BeanUtils.copyProperties(input, target);
                 target.setId(null);
                 //excel 处理
                 if (!importDataAllocationCorrectionCoefficientVolumeRatio(target, builder, row, i)) {
                     continue;
                 }
-                saveDataAllocationCorrectionCoefficientVolumeRatioDetail(target);
+                saveDataLandLevelDetailVolume(target);
                 successCount++;
             } catch (Exception e) {
                 builder.append(String.format("\n第%s行异常：%s", i + 1, e.getMessage()));
@@ -127,46 +127,46 @@ public class DataAllocationCorrectionCoefficientVolumeRatioDetailService {
         return String.format("数据总条数%s，成功%s，失败%s。%s", rowLength, successCount, rowLength - successCount, builder.toString());
     }
 
-    public boolean saveDataAllocationCorrectionCoefficientVolumeRatioDetail(DataAllocationCorrectionCoefficientVolumeRatioDetail oo) {
+    public boolean saveDataLandLevelDetailVolume(DataLandLevelDetailVolume oo) {
         if (oo.getId() == null || oo.getId() == 0) {
             oo.setCreator(commonService.thisUserAccount());
-            return dataLandDetailAchievementDao.saveDataAllocationCorrectionCoefficientVolumeRatioDetail(oo);
+            return dataLandDetailAchievementDao.saveDataLandLevelDetailVolume(oo);
         } else {
-            return dataLandDetailAchievementDao.editDataAllocationCorrectionCoefficientVolumeRatioDetail(oo);
+            return dataLandDetailAchievementDao.editDataLandLevelDetailVolume(oo);
         }
     }
 
-    public boolean deleteDataAllocationCorrectionCoefficientVolumeRatioDetail(Integer id) {
-        return dataLandDetailAchievementDao.deleteDataAllocationCorrectionCoefficientVolumeRatioDetail(id);
+    public boolean deleteDataLandLevelDetailVolume(Integer id) {
+        return dataLandDetailAchievementDao.deleteDataLandLevelDetailVolume(id);
     }
 
-    public DataAllocationCorrectionCoefficientVolumeRatioDetail getDataAllocationCorrectionCoefficientVolumeRatioDetailById(Integer id) {
-        return dataLandDetailAchievementDao.getDataAllocationCorrectionCoefficientVolumeRatioDetailById(id);
+    public DataLandLevelDetailVolume getDataLandLevelDetailVolumeById(Integer id) {
+        return dataLandDetailAchievementDao.getDataLandLevelDetailVolumeById(id);
     }
 
-    public List<DataAllocationCorrectionCoefficientVolumeRatioDetail> getDataAllocationCorrectionCoefficientVolumeRatioDetailList(DataAllocationCorrectionCoefficientVolumeRatioDetail oo) {
-        return dataLandDetailAchievementDao.getDataAllocationCorrectionCoefficientVolumeRatioDetailList(oo);
+    public List<DataLandLevelDetailVolume> getDataLandLevelDetailVolumeList(DataLandLevelDetailVolume oo) {
+        return dataLandDetailAchievementDao.getDataLandLevelDetailVolumeList(oo);
     }
 
-    public BootstrapTableVo getBootstrapTableVo(DataAllocationCorrectionCoefficientVolumeRatioDetail oo) {
+    public BootstrapTableVo getBootstrapTableVo(DataLandLevelDetailVolume oo) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<DataAllocationCorrectionCoefficientVolumeRatioDetail> list = getDataAllocationCorrectionCoefficientVolumeRatioDetailList(oo);
-        List<DataAllocationCorrectionCoefficientVolumeRatioDetailVo> voList = new ArrayList<>();
+        List<DataLandLevelDetailVolume> list = getDataLandLevelDetailVolumeList(oo);
+        List<DataLandLevelDetailVolumeVo> voList = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(list)) {
-            list.stream().forEach(po -> voList.add(getDataAllocationCorrectionCoefficientVolumeRatioDetailVo(po)));
+            list.stream().forEach(po -> voList.add(getDataLandLevelDetailVolumeVo(po)));
         }
         vo.setTotal(page.getTotal());
         vo.setRows(voList);
         return vo;
     }
 
-    public DataAllocationCorrectionCoefficientVolumeRatioDetailVo getDataAllocationCorrectionCoefficientVolumeRatioDetailVo(DataAllocationCorrectionCoefficientVolumeRatioDetail oo) {
+    public DataLandLevelDetailVolumeVo getDataLandLevelDetailVolumeVo(DataLandLevelDetailVolume oo) {
         if (oo == null) {
             return null;
         }
-        DataAllocationCorrectionCoefficientVolumeRatioDetailVo vo = new DataAllocationCorrectionCoefficientVolumeRatioDetailVo();
+        DataLandLevelDetailVolumeVo vo = new DataLandLevelDetailVolumeVo();
         org.springframework.beans.BeanUtils.copyProperties(oo, vo);
         return vo;
     }

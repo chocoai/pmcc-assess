@@ -12,7 +12,7 @@ import java.io.Serializable;
  * @date: 2019/5/5 10:42
  * @description:
  */
-public class DataLandDetailAchievementVo extends DataLandDetailAchievement implements Serializable {
+public class DataLandLevelDetailAchievementVo extends DataLandDetailAchievement implements Serializable {
     private String typeName;
     private String categoryName;
     private String gradeName;
@@ -56,9 +56,9 @@ public class DataLandDetailAchievementVo extends DataLandDetailAchievement imple
     public boolean equals(Object o) {
         if (this == o) return true;
 
-        if (!(o instanceof DataLandDetailAchievementVo)) return false;
+        if (!(o instanceof DataLandLevelDetailAchievementVo)) return false;
 
-        DataLandDetailAchievementVo that = (DataLandDetailAchievementVo) o;
+        DataLandLevelDetailAchievementVo that = (DataLandLevelDetailAchievementVo) o;
 
         return new EqualsBuilder()
                 .append(typeName, that.typeName)

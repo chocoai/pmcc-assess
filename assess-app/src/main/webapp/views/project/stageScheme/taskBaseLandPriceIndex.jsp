@@ -597,7 +597,7 @@
         cols.push({field: 'plotRatio', title: '容积率'});
         cols.push({field: 'correctionFactor', title: '修正系数'});
         $("#volumetricRateDetailTable").bootstrapTable('destroy');
-        TableInit("volumetricRateDetailTable", "${pageContext.request.contextPath}/dataAllocationCorrectionCoefficientVolumeRatioDetail/getBootstrapTableVo", cols, {
+        TableInit("volumetricRateDetailTable", "${pageContext.request.contextPath}/dataLandLevelDetailVolume/getBootstrapTableVo", cols, {
             allocationVolumeRatioId: landLevelDetailId
         }, {
             showColumns: false,
@@ -626,7 +626,7 @@
             landLevelLoadHtml2(landLevelContent)
         } else {
             $.ajax({
-                url: getContextPath() + "/dataLandDetailAchievement/landLevelFilter",
+                url: getContextPath() + "/dataLandLevelDetailAchievement/landLevelFilter",
                 type: "get",
                 data: {levelDetailId: '${levelDetailId}'},
                 success: function (result) {

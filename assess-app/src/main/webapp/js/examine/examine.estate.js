@@ -897,7 +897,7 @@
             alert('请选择土地级别');
         }
         $.ajax({
-            url: getContextPath() + "/dataLandDetailAchievement/landLevelFilter",
+            url: getContextPath() + "/dataLandLevelDetailAchievement/landLevelFilter",
             type: "get",
             data: {levelDetailId: landLevelId},
             success: function (result) {

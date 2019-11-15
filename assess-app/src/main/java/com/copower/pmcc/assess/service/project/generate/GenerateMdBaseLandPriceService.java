@@ -14,13 +14,13 @@ import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessProjectClassifyConstant;
 import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataAllocationCorrectionCoefficientVolumeRatioDao;
-import com.copower.pmcc.assess.dal.basis.dao.data.DataAllocationCorrectionCoefficientVolumeRatioDetailDao;
+import com.copower.pmcc.assess.dal.basis.dao.data.DataLandLevelDetailVolumeDao;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataHousePriceIndexDao;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataHousePriceIndexDetailDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.generate.BookmarkAndRegexDto;
 import com.copower.pmcc.assess.dto.output.MergeCellModel;
-import com.copower.pmcc.assess.dto.output.data.DataLandDetailAchievementVo;
+import com.copower.pmcc.assess.dto.output.data.DataLandLevelDetailAchievementVo;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.ToolRewardRateService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
@@ -29,7 +29,7 @@ import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.base.BaseReportFieldService;
 import com.copower.pmcc.assess.service.basic.BasicEstateLandStateService;
 import com.copower.pmcc.assess.service.basic.BasicEstateService;
-import com.copower.pmcc.assess.service.data.DataLandDetailAchievementService;
+import com.copower.pmcc.assess.service.data.DataLandLevelDetailAchievementService;
 import com.copower.pmcc.assess.service.data.DataLandLevelDetailService;
 import com.copower.pmcc.assess.service.data.DataLandLevelService;
 import com.copower.pmcc.assess.service.method.MdBaseLandPriceService;
@@ -88,12 +88,12 @@ public class GenerateMdBaseLandPriceService {
     private DataHousePriceIndexDao dataHousePriceIndexDao;
     private DataHousePriceIndexDetailDao dataHousePriceIndexDetailDao;
     private ToolRewardRateService toolRewardRateService;
-    private DataAllocationCorrectionCoefficientVolumeRatioDao dataLandDetailAchievementDao;
-    private DataAllocationCorrectionCoefficientVolumeRatioDetailDao dataAllocationCorrectionCoefficientVolumeRatioDetailDao;
+    private DataAllocationCorrectionCoefficientVolumeRatioDao dataLandLevelDetailAchievementDao;
+    private DataLandLevelDetailVolumeDao dataLandLevelDetailVolumeDao;
     private DeclareRealtyHouseCertService declareRealtyHouseCertService;
     private DeclareRealtyLandCertService declareRealtyLandCertService;
     private DeclareRealtyRealEstateCertService declareRealtyRealEstateCertService;
-    private DataLandDetailAchievementService dataLandDetailAchievementService;
+    private DataLandLevelDetailAchievementService dataLandLevelDetailAchievementService;
     private BaseProjectClassifyService baseProjectClassifyService;
     private BaseService baseService;
 
@@ -425,19 +425,19 @@ public class GenerateMdBaseLandPriceService {
         //地价因素修正数据
         String landLevelContent = getMdBaseLandPrice().getLandLevelContent();
         JSONArray objects = JSON.parseArray(landLevelContent);
-        List<DataLandDetailAchievementVo> filterVoList = new ArrayList<>();
+        List<DataLandLevelDetailAchievementVo> filterVoList = new ArrayList<>();
         if (objects.size() > 0) {
             for (int i = 0; i < objects.size(); i++) {
-                List<DataLandDetailAchievementVo> vos = JSON.parseArray(JSON.toJSONString(objects.get(i)), DataLandDetailAchievementVo.class);
-                for (DataLandDetailAchievementVo item : vos) {
+                List<DataLandLevelDetailAchievementVo> vos = JSON.parseArray(JSON.toJSONString(objects.get(i)), DataLandLevelDetailAchievementVo.class);
+                for (DataLandLevelDetailAchievementVo item : vos) {
                     if ("update".equals(item.getModelStr())) {
                         filterVoList.add(item);
                     }
                 }
             }
         }
-        List<List<DataLandDetailAchievementVo>> listList = dataLandDetailAchievementService.landLevelFilter2(filterVoList);
-        Set<List<List<DataLandDetailAchievementVo>>> set = dataLandDetailAchievementService.landLevelFilter1(listList);
+        List<List<DataLandLevelDetailAchievementVo>> listList = dataLandLevelDetailAchievementService.landLevelFilter2(filterVoList);
+        Set<List<List<DataLandLevelDetailAchievementVo>>> set = dataLandLevelDetailAchievementService.landLevelFilter1(listList);
 
         //需要合并的单元格
         Set<MergeCellModel> mergeCellModelList = Sets.newHashSet();
@@ -446,7 +446,7 @@ public class GenerateMdBaseLandPriceService {
         LinkedList<String> linkedList = Lists.newLinkedList();
         if (CollectionUtils.isNotEmpty(set)) {
             Integer endRowIndex = 0;
-            for (List<List<DataLandDetailAchievementVo>> types : set) {
+            for (List<List<DataLandLevelDetailAchievementVo>> types : set) {
                 for (int i = 0; i < types.size(); i++) {
                     if (i == 0) {
                         mergeCellModelList.add(new MergeCellModel(endRowIndex + 1, 0, endRowIndex + types.size(), 0));
@@ -462,7 +462,7 @@ public class GenerateMdBaseLandPriceService {
                     } else {
                         linkedList.add(nullValue);
                     }
-                    for (DataLandDetailAchievementVo item : types.get(i)) {
+                    for (DataLandLevelDetailAchievementVo item : types.get(i)) {
                         if (StringUtils.isNotEmpty(item.getGradeName())) {
                             linkedList.add(item.getGradeName());
                         } else {
@@ -510,11 +510,11 @@ public class GenerateMdBaseLandPriceService {
         BasicEstate basicEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
         BasicEstateLandState landStateByEstateId = basicEstateLandStateService.getLandStateByEstateId(basicEstate.getId());
         //拿到土地因素数据
-        DataLandDetailAchievement dataLandDetailAchievement = new DataLandDetailAchievement();
-        dataLandDetailAchievement.setLevelDetailId(landStateByEstateId.getLandLevel());
-        List<DataLandDetailAchievement> dataLandDetailAchievementVoList = dataLandDetailAchievementService.getDataLandDetailAchievementList(dataLandDetailAchievement);
-        List<List<DataLandDetailAchievementVo>> listList = dataLandDetailAchievementService.landLevelFilter2(dataLandDetailAchievementVoList.stream().map(po -> dataLandDetailAchievementService.getDataLandDetailAchievementVo(po)).collect(Collectors.toList()));
-        Set<List<List<DataLandDetailAchievementVo>>> set = dataLandDetailAchievementService.landLevelFilter1(listList);
+        DataLandLevelDetailAchievement dataLandLevelDetailAchievement = new DataLandLevelDetailAchievement();
+        dataLandLevelDetailAchievement.setLevelDetailId(landStateByEstateId.getLandLevel());
+        List<DataLandLevelDetailAchievement> dataLandLevelDetailAchievementVoList = dataLandLevelDetailAchievementService.getDataLandLevelDetailAchievementList(dataLandLevelDetailAchievement);
+        List<List<DataLandLevelDetailAchievementVo>> listList = dataLandLevelDetailAchievementService.landLevelFilter2(dataLandLevelDetailAchievementVoList.stream().map(po -> dataLandLevelDetailAchievementService.getDataLandLevelDetailAchievementVo(po)).collect(Collectors.toList()));
+        Set<List<List<DataLandLevelDetailAchievementVo>>> set = dataLandLevelDetailAchievementService.landLevelFilter1(listList);
 
         //需要合并的单元格
         Set<MergeCellModel> mergeCellModelList = Sets.newHashSet();
@@ -523,7 +523,7 @@ public class GenerateMdBaseLandPriceService {
         LinkedList<String> linkedList = Lists.newLinkedList();
         if (CollectionUtils.isNotEmpty(set)) {
             Integer endRowIndex = 0;
-            for (List<List<DataLandDetailAchievementVo>> types : set) {
+            for (List<List<DataLandLevelDetailAchievementVo>> types : set) {
                 for (int i = 0; i < types.size(); i++) {
                     if (i == 0) {
                         mergeCellModelList.add(new MergeCellModel(endRowIndex + 1, 0, endRowIndex + types.size(), 0));
@@ -539,7 +539,7 @@ public class GenerateMdBaseLandPriceService {
                     } else {
                         linkedList.add(nullValue);
                     }
-                    for (DataLandDetailAchievementVo item : types.get(i)) {
+                    for (DataLandLevelDetailAchievementVo item : types.get(i)) {
                         if (index) {
                             if (item.getAchievement() != null) {
                                 linkedList.add(item.getAchievement().toString());
@@ -566,7 +566,7 @@ public class GenerateMdBaseLandPriceService {
         return localPath;
     }
 
-    public void writeAchievement(DocumentBuilder builder, DataLandDetailAchievement data, boolean isIndex) throws Exception {
+    public void writeAchievement(DocumentBuilder builder, DataLandLevelDetailAchievement data, boolean isIndex) throws Exception {
         if (data != null) {
             if (isIndex) {
                 builder.write(data.getAchievement().toString());
@@ -758,16 +758,16 @@ public class GenerateMdBaseLandPriceService {
         String s = "K3=%s=%s。";
         //根据容积率找到配置中对应的容积率修正
         List<DataAllocationCorrectionCoefficientVolumeRatio> coefficientVolumeRatioList;
-        coefficientVolumeRatioList = dataLandDetailAchievementDao.getDataAllocationCorrectionCoefficientVolumeRatioList(getSchemeAreaGroup().getProvince(), getSchemeAreaGroup().getCity(), getSchemeAreaGroup().getDistrict());
+        coefficientVolumeRatioList = dataLandLevelDetailAchievementDao.getDataAllocationCorrectionCoefficientVolumeRatioList(getSchemeAreaGroup().getProvince(), getSchemeAreaGroup().getCity(), getSchemeAreaGroup().getDistrict());
         if (CollectionUtils.isEmpty(coefficientVolumeRatioList)) {
-            coefficientVolumeRatioList = dataLandDetailAchievementDao.getDataAllocationCorrectionCoefficientVolumeRatioList(getSchemeAreaGroup().getProvince(), getSchemeAreaGroup().getCity(), null);
+            coefficientVolumeRatioList = dataLandLevelDetailAchievementDao.getDataAllocationCorrectionCoefficientVolumeRatioList(getSchemeAreaGroup().getProvince(), getSchemeAreaGroup().getCity(), null);
         }
         if (CollectionUtils.isNotEmpty(coefficientVolumeRatioList)) {
             Integer masterId = coefficientVolumeRatioList.get(0).getId();
-            DataAllocationCorrectionCoefficientVolumeRatioDetail coefficientVolumeRatioDetail = new DataAllocationCorrectionCoefficientVolumeRatioDetail();
-            coefficientVolumeRatioDetail.setAllocationVolumeRatioId(masterId);
-            List<DataAllocationCorrectionCoefficientVolumeRatioDetail> detailList = dataAllocationCorrectionCoefficientVolumeRatioDetailDao.getDataAllocationCorrectionCoefficientVolumeRatioDetailList(coefficientVolumeRatioDetail);
-            for (DataAllocationCorrectionCoefficientVolumeRatioDetail detailItem : detailList) {
+            DataLandLevelDetailVolume coefficientVolumeRatioDetail = new DataLandLevelDetailVolume();
+            coefficientVolumeRatioDetail.setLevelDetailId(masterId);
+            List<DataLandLevelDetailVolume> detailList = dataLandLevelDetailVolumeDao.getDataLandLevelDetailVolumeList(coefficientVolumeRatioDetail);
+            for (DataLandLevelDetailVolume detailItem : detailList) {
                 //直接匹配
                 if (detailItem.getPlotRatio().compareTo(getMdBaseLandPrice().getVolumetricRate()) == 0) {
                     return String.format(s, detailItem.getCorrectionFactor(), detailItem.getCorrectionFactor());
@@ -780,11 +780,11 @@ public class GenerateMdBaseLandPriceService {
 
     }
 
-    public String getAmend(List<DataAllocationCorrectionCoefficientVolumeRatioDetail> detailList, BigDecimal volumetricRate, String s) {
+    public String getAmend(List<DataLandLevelDetailVolume> detailList, BigDecimal volumetricRate, String s) {
         String course = "";
         if (detailList.size() >= 2) {
             //排序
-            Ordering<DataAllocationCorrectionCoefficientVolumeRatioDetail> ordering = Ordering.from((o1, o2) -> {
+            Ordering<DataLandLevelDetailVolume> ordering = Ordering.from((o1, o2) -> {
                 return (o1.getPlotRatio().compareTo(o2.getPlotRatio()));
             });
             detailList.sort(ordering);
@@ -796,17 +796,17 @@ public class GenerateMdBaseLandPriceService {
                 }
             }
             //最小值
-            DataAllocationCorrectionCoefficientVolumeRatioDetail minValue = detailList.get(0);
+            DataLandLevelDetailVolume minValue = detailList.get(0);
             //最大值
-            DataAllocationCorrectionCoefficientVolumeRatioDetail maxValue = detailList.get(detailList.size() - 1);
+            DataLandLevelDetailVolume maxValue = detailList.get(detailList.size() - 1);
             //小于最小值
             if (minValue.getPlotRatio().compareTo(volumetricRate) == 1) {
-                DataAllocationCorrectionCoefficientVolumeRatioDetail tempValue = detailList.get(1);
+                DataLandLevelDetailVolume tempValue = detailList.get(1);
                 course = minValue.getCorrectionFactor() + "-（" + tempValue.getCorrectionFactor() + "-" + minValue.getCorrectionFactor() + "）/（" + tempValue.getPlotRatio() + "-" + minValue.getPlotRatio() + "）×（" + minValue.getPlotRatio() + "-" + volumetricRate + "）";
             }
             //大于最大值
             if (volumetricRate.compareTo(maxValue.getPlotRatio()) == 1) {
-                DataAllocationCorrectionCoefficientVolumeRatioDetail tempValue = detailList.get(detailList.size() - 2);
+                DataLandLevelDetailVolume tempValue = detailList.get(detailList.size() - 2);
                 course = maxValue.getCorrectionFactor() + "+（" + maxValue.getCorrectionFactor() + "-" + tempValue.getCorrectionFactor() + "）/（" + maxValue.getPlotRatio() + "-" + tempValue.getPlotRatio() + "）×（" + volumetricRate + "-" + maxValue.getPlotRatio() + "）";
             }
         }
@@ -1053,10 +1053,10 @@ public class GenerateMdBaseLandPriceService {
 
 
     //对应土地级别从表拥个人区域的类别
-    public List<String> getCategoryFromLandDetail(List<DataLandDetailAchievement> list) {
+    public List<String> getCategoryFromLandLevelDetail(List<DataLandLevelDetailAchievement> list) {
         List<String> categorys = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(list)) {
-            for (DataLandDetailAchievement item : list) {
+            for (DataLandLevelDetailAchievement item : list) {
                 if (!categorys.contains(item.getCategory())) {
                     categorys.add(item.getCategory());
                 }
@@ -1092,12 +1092,12 @@ public class GenerateMdBaseLandPriceService {
         this.dataHousePriceIndexDao = SpringContextUtils.getBean(DataHousePriceIndexDao.class);
         this.dataHousePriceIndexDetailDao = SpringContextUtils.getBean(DataHousePriceIndexDetailDao.class);
         this.toolRewardRateService = SpringContextUtils.getBean(ToolRewardRateService.class);
-        this.dataLandDetailAchievementDao = SpringContextUtils.getBean(DataAllocationCorrectionCoefficientVolumeRatioDao.class);
-        this.dataAllocationCorrectionCoefficientVolumeRatioDetailDao = SpringContextUtils.getBean(DataAllocationCorrectionCoefficientVolumeRatioDetailDao.class);
+        this.dataLandLevelDetailAchievementDao = SpringContextUtils.getBean(DataAllocationCorrectionCoefficientVolumeRatioDao.class);
+        this.dataLandLevelDetailVolumeDao = SpringContextUtils.getBean(DataLandLevelDetailVolumeDao.class);
         this.declareRealtyHouseCertService = SpringContextUtils.getBean(DeclareRealtyHouseCertService.class);
         this.declareRealtyLandCertService = SpringContextUtils.getBean(DeclareRealtyLandCertService.class);
         this.declareRealtyRealEstateCertService = SpringContextUtils.getBean(DeclareRealtyRealEstateCertService.class);
-        this.dataLandDetailAchievementService = SpringContextUtils.getBean(DataLandDetailAchievementService.class);
+        this.dataLandLevelDetailAchievementService = SpringContextUtils.getBean(DataLandLevelDetailAchievementService.class);
         this.baseProjectClassifyService = SpringContextUtils.getBean(BaseProjectClassifyService.class);
         this.baseService = SpringContextUtils.getBean(BaseService.class);
     }

@@ -7,5 +7,5 @@ import com.copower.pmcc.assess.dal.basis.entity.DataAllocationCorrectionCoeffici
  * @date: 2019/5/6 14:35
  * @description:
  */
-public class DataAllocationCorrectionCoefficientVolumeRatioDetailVo extends DataAllocationCorrectionCoefficientVolumeRatioDetail {
+public class DataLandLevelDetailVolumeVo extends DataAllocationCorrectionCoefficientVolumeRatioDetail {
 }

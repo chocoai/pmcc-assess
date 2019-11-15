@@ -1086,7 +1086,7 @@
             landLevelLoadHtml2(landLevelContent)
         } else {
             $.ajax({
-                url: getContextPath() + "/dataLandDetailAchievement/landLevelFilter",
+                url: getContextPath() + "/dataLandLevelDetailAchievement/landLevelFilter",
                 type: "get",
                 data: {levelDetailId: '${levelDetailId}'},
                 success: function (result) {

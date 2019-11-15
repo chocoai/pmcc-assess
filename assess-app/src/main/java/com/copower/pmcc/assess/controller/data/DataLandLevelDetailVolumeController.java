@@ -1,15 +1,12 @@
 package com.copower.pmcc.assess.controller.data;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.copower.pmcc.assess.dal.basis.entity.DataAllocationCorrectionCoefficientVolumeRatioDetail;
-import com.copower.pmcc.assess.dto.output.data.DataAllocationCorrectionCoefficientVolumeRatioDetailVo;
+import com.copower.pmcc.assess.dal.basis.entity.DataLandLevelDetailVolume;
+import com.copower.pmcc.assess.dto.output.data.DataLandLevelDetailVolumeVo;
 import com.copower.pmcc.assess.service.BaseService;
-import com.copower.pmcc.assess.service.data.DataAllocationCorrectionCoefficientVolumeRatioDetailService;
+import com.copower.pmcc.assess.service.data.DataLandLevelDetailVolumeService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,26 +20,26 @@ import java.util.Iterator;
  * @date: 2019/5/6 14:42
  * @description:容积率修正系数配置 详情(从表)
  */
-@RequestMapping(value = "/dataAllocationCorrectionCoefficientVolumeRatioDetail")
+@RequestMapping(value = "/dataLandLevelDetailVolume")
 @RestController
-public class DataAllocationCorrectionCoefficientVolumeRatioDetailController {
+public class DataLandLevelDetailVolumeController {
 
     @Autowired
-    private DataAllocationCorrectionCoefficientVolumeRatioDetailService volumeRatioDetailService;
+    private DataLandLevelDetailVolumeService volumeRatioDetailService;
     @Autowired
     private BaseService baseService;
 
     @RequestMapping(value = "/getBootstrapTableVo", method = {RequestMethod.GET}, name = "房价指数 列表")
-    public BootstrapTableVo getBootstrapTableVo(DataAllocationCorrectionCoefficientVolumeRatioDetail oo) {
+    public BootstrapTableVo getBootstrapTableVo(DataLandLevelDetailVolume oo) {
         BootstrapTableVo vo = volumeRatioDetailService.getBootstrapTableVo(oo);
         return vo;
     }
 
     @GetMapping(value = "/get/{id}", name = "restful get")
     public HttpResult get(@PathVariable Integer id) {
-        DataAllocationCorrectionCoefficientVolumeRatioDetailVo coefficientVolumeRatioDetailVo = null;
+        DataLandLevelDetailVolumeVo coefficientVolumeRatioDetailVo = null;
         try {
-            coefficientVolumeRatioDetailVo = volumeRatioDetailService.getDataAllocationCorrectionCoefficientVolumeRatioDetailVo(volumeRatioDetailService.getDataAllocationCorrectionCoefficientVolumeRatioDetailById(id));
+            coefficientVolumeRatioDetailVo = volumeRatioDetailService.getDataLandLevelDetailVolumeVo(volumeRatioDetailService.getDataLandLevelDetailVolumeById(id));
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult(500, e.getMessage());
@@ -52,9 +49,9 @@ public class DataAllocationCorrectionCoefficientVolumeRatioDetailController {
 
 
     @PostMapping(value = "/save")
-    public HttpResult save(DataAllocationCorrectionCoefficientVolumeRatioDetail coefficientVolumeRatioDetail) {
+    public HttpResult save(DataLandLevelDetailVolume coefficientVolumeRatioDetail) {
         try {
-            volumeRatioDetailService.saveDataAllocationCorrectionCoefficientVolumeRatioDetail(coefficientVolumeRatioDetail);
+            volumeRatioDetailService.saveDataLandLevelDetailVolume(coefficientVolumeRatioDetail);
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult(500, e.getMessage());
@@ -66,9 +63,9 @@ public class DataAllocationCorrectionCoefficientVolumeRatioDetailController {
     public HttpResult delete(@PathVariable Integer id) {
         try {
             if (id != null && id != 0) {
-                DataAllocationCorrectionCoefficientVolumeRatioDetail coefficientVolumeRatioDetail = new DataAllocationCorrectionCoefficientVolumeRatioDetail();
+                DataLandLevelDetailVolume coefficientVolumeRatioDetail = new DataLandLevelDetailVolume();
                 coefficientVolumeRatioDetail.setId(id);
-                volumeRatioDetailService.deleteDataAllocationCorrectionCoefficientVolumeRatioDetail(id);
+                volumeRatioDetailService.deleteDataLandLevelDetailVolume(id);
             }
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
@@ -78,7 +75,7 @@ public class DataAllocationCorrectionCoefficientVolumeRatioDetailController {
     }
 
     @RequestMapping(value = "/importDataAllocationCorrectionCoefficientVolumeRatio", name = "导入 (excel)", method = RequestMethod.POST)
-    public HttpResult importDataAllocationCorrectionCoefficientVolumeRatio(DataAllocationCorrectionCoefficientVolumeRatioDetail oo,HttpServletRequest request){
+    public HttpResult importDataAllocationCorrectionCoefficientVolumeRatio(DataLandLevelDetailVolume oo,HttpServletRequest request){
         try {
             MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
             Iterator<String> fileNames = multipartRequest.getFileNames();
@@ -100,15 +97,15 @@ public class DataAllocationCorrectionCoefficientVolumeRatioDetailController {
      * @throws Exception
      */
     private void saveDetail(String formData) throws Exception {
-        DataAllocationCorrectionCoefficientVolumeRatioDetail volumeRatioDetail = null;
+        DataLandLevelDetailVolume volumeRatioDetail = null;
         try {
-            volumeRatioDetail = JSON.parseObject(formData, DataAllocationCorrectionCoefficientVolumeRatioDetail.class);
+            volumeRatioDetail = JSON.parseObject(formData, DataLandLevelDetailVolume.class);
         } catch (Exception e) {
             //解决bug unclosed string : 
             formData = String.format("%s%s",formData,"\"}");
-            volumeRatioDetail = JSON.parseObject(formData, DataAllocationCorrectionCoefficientVolumeRatioDetail.class);
+            volumeRatioDetail = JSON.parseObject(formData, DataLandLevelDetailVolume.class);
         }
-        volumeRatioDetailService.saveDataAllocationCorrectionCoefficientVolumeRatioDetail(volumeRatioDetail);
+        volumeRatioDetailService.saveDataLandLevelDetailVolume(volumeRatioDetail);
     }
 
 }

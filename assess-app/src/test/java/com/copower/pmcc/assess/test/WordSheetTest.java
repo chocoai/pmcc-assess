@@ -1,11 +1,11 @@
 package com.copower.pmcc.assess.test;
 
 import com.copower.pmcc.assess.common.PoiUtils;
-import com.copower.pmcc.assess.dal.basis.dao.data.DataLandDetailAchievementDao;
+import com.copower.pmcc.assess.dal.basis.dao.data.DataLandLevelDetailAchievementDao;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataLandLevelDetailDao;
-import com.copower.pmcc.assess.dal.basis.entity.DataLandDetailAchievement;
+import com.copower.pmcc.assess.dal.basis.entity.DataLandLevelDetailAchievement;
 import com.copower.pmcc.assess.dal.basis.entity.DataLandLevelDetail;
-import com.copower.pmcc.assess.dto.output.data.DataLandDetailAchievementVo;
+import com.copower.pmcc.assess.dto.output.data.DataLandLevelDetailAchievementVo;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
@@ -41,14 +41,14 @@ public class WordSheetTest {
     @Autowired
     private DataLandLevelDetailDao dataLandLevelDetailDao;
     @Autowired
-    private DataLandDetailAchievementDao dataLandDetailAchievementDao;
+    private DataLandLevelDetailAchievementDao dataLandLevelDetailAchievementDao;
 
     @Test
     public void clear(){
-        DataLandDetailAchievement query = new DataLandDetailAchievement();
-        List<DataLandDetailAchievement> landDetailAchievements = dataLandDetailAchievementDao.getDataLandDetailAchievementList(query);
+        DataLandLevelDetailAchievement query = new DataLandLevelDetailAchievement();
+        List<DataLandLevelDetailAchievement> LandLevelDetailAchievements = dataLandLevelDetailAchievementDao.getDataLandLevelDetailAchievementList(query);
 
-        System.out.println("======>"+landDetailAchievements.size());
+        System.out.println("======>"+LandLevelDetailAchievements.size());
     }
 
     private int id1989 = 1989;
@@ -165,7 +165,7 @@ public class WordSheetTest {
             rowB = sheet.getRow(k);
             rowA = targetSheet.getRow(k);
             for (int j = 0; j < gradeLists.size(); j++) {
-                DataLandDetailAchievementVo  land = new DataLandDetailAchievementVo();
+                DataLandLevelDetailAchievementVo land = new DataLandLevelDetailAchievementVo();
                 land.setCategoryName(PoiUtils.getCellValue(rowA.getCell(2)));
                 land.setCategory(PoiUtils.getCellValue(rowB.getCell(2)));
                 land.setGradeName(gradeLists2.get(j));
@@ -183,7 +183,7 @@ public class WordSheetTest {
                     land.setType(id1992);
                 }
                 if (exampleDDD != null) {
-                    exampleDDD.getDataLandDetailAchievementVos().add(land);
+                    //exampleDDD.getDataLandLevelDetailAchievementVos().add(land);
                 }
             }
         }
@@ -197,21 +197,21 @@ public class WordSheetTest {
             dataLandLevelDetail.setLandLevelId(332);
             dataLandLevelDetail.setPrice(new BigDecimal(exampleDDD.getPrice()));
             dataLandLevelDetailDao.addDataLandLevelDetail(dataLandLevelDetail);
-            exampleDDD.getDataLandDetailAchievementVos().stream().filter(po -> {
-                if (po.getAchievement() == null) {
-                    return false;
-                }
-                if (StringUtils.isEmpty(po.getReamark())) {
-                    return false;
-                }
-                if (StringUtils.isEmpty(po.getCategory())) {
-                    return false;
-                }
-                return true;
-            }).forEachOrdered(po -> {
-                po.setLevelDetailId(dataLandLevelDetail.getId());
-                dataLandDetailAchievementDao.saveDataLandDetailAchievement(po);
-            });
+//            exampleDDD.getDataLandLevelDetailAchievementVos().stream().filter(po -> {
+//                if (po.getAchievement() == null) {
+//                    return false;
+//                }
+//                if (StringUtils.isEmpty(po.getReamark())) {
+//                    return false;
+//                }
+//                if (StringUtils.isEmpty(po.getCategory())) {
+//                    return false;
+//                }
+//                return true;
+//            }).forEachOrdered(po -> {
+//                po.setLevelDetailId(dataLandLevelDetail.getId());
+//                dataLandLevelDetailAchievementDao.saveDataLandLevelDetailAchievement(po);
+//            });
         }
     }
 

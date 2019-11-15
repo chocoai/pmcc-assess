@@ -217,7 +217,7 @@
         Alert('确认要删除么？', 2, null, function () {
             Loading.progressShow();
             $.ajax({
-                url: '${pageContext.request.contextPath}/dataAllocationCorrectionCoefficientVolumeRatioDetail/delete/' + row.id,
+                url: '${pageContext.request.contextPath}/dataLandLevelDetailVolume/delete/' + row.id,
                 type: "post",
                 data: {_method: "DELETE"},
                 success: function (result) {
@@ -248,7 +248,7 @@
             return false;
         }
         $.ajax({
-            url: '${pageContext.request.contextPath}/dataAllocationCorrectionCoefficientVolumeRatioDetail' +"/save",
+            url: '${pageContext.request.contextPath}/dataLandLevelDetailVolume' +"/save",
             data: data,
             type: "post",
             success: function (result) {
@@ -277,7 +277,7 @@
             }
         });
         $(dataObjFun.config.dataAllocationCorrectionCoefficientVolumeRatioDetailTable).bootstrapTable('destroy');
-        TableInit($(dataObjFun.config.dataAllocationCorrectionCoefficientVolumeRatioDetailTable).prop("id"), "${pageContext.request.contextPath}/dataAllocationCorrectionCoefficientVolumeRatioDetail/getBootstrapTableVo", cols, {
+        TableInit($(dataObjFun.config.dataAllocationCorrectionCoefficientVolumeRatioDetailTable).prop("id"), "${pageContext.request.contextPath}/dataLandLevelDetailVolume/getBootstrapTableVo", cols, {
             province:$("#frmQuery").find("select[name='province']").val(),
             city:$("#frmQuery").find("select[name='city']").val(),
             district:$("#frmQuery").find("select[name='district']").val(),

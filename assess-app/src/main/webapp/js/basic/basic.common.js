@@ -32,7 +32,7 @@ basicCommon.landLevelSelect = function (this_) {
             formGroup.find("input[name='landLevel']").val(data.id);
             formGroup.find("input[name='landLevelName']").val(data.name);
             // $.ajax({
-            //     url: getContextPath() + "/dataLandDetailAchievement/landLevelFilter",
+            //     url: getContextPath() + "/dataLandLevelDetailAchievement/landLevelFilter",
             //     type: "get",
             //     data: {levelDetailId: data.id},
             //     success: function (result) {

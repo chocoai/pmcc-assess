@@ -773,7 +773,7 @@ landLevel.deleteDataAllocationCorrectionCoefficientVolumeRatioDetail = function 
     Alert('确认要删除么？', 2, null, function () {
         Loading.progressShow();
         $.ajax({
-            url: getContextPath() + '/dataAllocationCorrectionCoefficientVolumeRatioDetail/delete/' + row.id,
+            url: getContextPath() + '/dataLandLevelDetailVolume/delete/' + row.id,
             type: "post",
             data: {_method: "DELETE"},
             success: function (result) {
@@ -801,7 +801,7 @@ landLevel.importDataAllocationCorrectionCoefficientVolumeRatio = function (flag)
     allocationVolumeRatioId = target.attr("allocationVolumeRatioId");
     $.ajaxFileUpload({
         type: "POST",
-        url: getContextPath() + "/dataAllocationCorrectionCoefficientVolumeRatioDetail/importDataAllocationCorrectionCoefficientVolumeRatio",
+        url: getContextPath() + "/dataLandLevelDetailVolume/importDataAllocationCorrectionCoefficientVolumeRatio",
         data: {allocationVolumeRatioId: allocationVolumeRatioId},//要传到后台的参数，没有可以不写
         secureuri: false,//是否启用安全提交，默认为false
         fileElementId: target.prop("id"),//文件选择框的id属性
@@ -836,7 +836,7 @@ landLevel.saveDataAllocationCorrectionCoefficientVolumeRatioDetail = function ()
         return false;
     }
     $.ajax({
-        url: getContextPath() + '/dataAllocationCorrectionCoefficientVolumeRatioDetail' + "/save",
+        url: getContextPath() + '/dataLandLevelDetailVolume' + "/save",
         data: data,
         type: "post",
         success: function (result) {
@@ -868,7 +868,7 @@ landLevel.showDataHousePriceIndexDetailList = function (allocationVolumeRatioId)
         });
     }
     landLevel.config.dataAllocationCorrectionCoefficientVolumeRatioDetailTable.bootstrapTable('destroy');
-    TableInit(landLevel.config.dataAllocationCorrectionCoefficientVolumeRatioDetailTable, getContextPath() + "/dataAllocationCorrectionCoefficientVolumeRatioDetail/getBootstrapTableVo", cols, {
+    TableInit(landLevel.config.dataAllocationCorrectionCoefficientVolumeRatioDetailTable, getContextPath() + "/dataLandLevelDetailVolume/getBootstrapTableVo", cols, {
         allocationVolumeRatioId: allocationVolumeRatioId
     }, {
         showColumns: false,
@@ -930,7 +930,7 @@ landLevel.deleteDataLandDetailAchievement = function (index) {
     Alert('确认要删除么？', 2, null, function () {
         Loading.progressShow();
         $.ajax({
-            url: getContextPath() + '/dataLandDetailAchievement/delete/' + row.id,
+            url: getContextPath() + '/dataLandLevelDetailAchievement/delete/' + row.id,
             type: "post",
             data: {_method: "DELETE"},
             success: function (result) {
@@ -958,7 +958,7 @@ landLevel.importDataLandDetailAchievement = function (flag) {
     levelDetailId = target.attr("levelDetailId");
     $.ajaxFileUpload({
         type: "POST",
-        url: getContextPath() + "/dataLandDetailAchievement/importDataLandDetailAchievement",
+        url: getContextPath() + "/dataLandLevelDetailAchievement/importDataLandDetailAchievement",
         data: {levelDetailId: levelDetailId},//要传到后台的参数，没有可以不写
         secureuri: false,//是否启用安全提交，默认为false
         fileElementId: target.prop("id"),//文件选择框的id属性
@@ -1005,7 +1005,7 @@ landLevel.showLandDetailAchievementList = function (levelDetailId) {
         });
     }
     landLevel.config.achievementTable.bootstrapTable('destroy');
-    TableInit(landLevel.config.achievementTable, getContextPath() + "/dataLandDetailAchievement/getBootstrapTableVo", cols, {
+    TableInit(landLevel.config.achievementTable, getContextPath() + "/dataLandLevelDetailAchievement/getBootstrapTableVo", cols, {
         levelDetailId: levelDetailId
     }, {
         showColumns: false,
@@ -1024,7 +1024,7 @@ landLevel.saveDataLandDetailAchievement = function () {
         return false;
     }
     $.ajax({
-        url: getContextPath() + '/dataLandDetailAchievement/save',
+        url: getContextPath() + '/dataLandLevelDetailAchievement/save',
         data: {formData: JSON.stringify(data)},
         type: "post",
         success: function (result) {

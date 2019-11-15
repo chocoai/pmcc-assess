@@ -1,9 +1,9 @@
 package com.copower.pmcc.assess.service.data;
 
 import com.copower.pmcc.assess.dal.basis.dao.data.DataAllocationCorrectionCoefficientVolumeRatioDao;
-import com.copower.pmcc.assess.dal.basis.dao.data.DataAllocationCorrectionCoefficientVolumeRatioDetailDao;
+import com.copower.pmcc.assess.dal.basis.dao.data.DataLandLevelDetailVolumeDao;
 import com.copower.pmcc.assess.dal.basis.entity.DataAllocationCorrectionCoefficientVolumeRatio;
-import com.copower.pmcc.assess.dal.basis.entity.DataAllocationCorrectionCoefficientVolumeRatioDetail;
+import com.copower.pmcc.assess.dal.basis.entity.DataLandLevelDetailVolume;
 import com.copower.pmcc.assess.dto.output.data.DataAllocationCorrectionCoefficientVolumeRatioVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -34,7 +34,7 @@ public class DataAllocationCorrectionCoefficientVolumeRatioService {
     @Autowired
     private DataAllocationCorrectionCoefficientVolumeRatioDao dataLandDetailAchievementDao;
     @Autowired
-    private DataAllocationCorrectionCoefficientVolumeRatioDetailDao dataAllocationCorrectionCoefficientVolumeRatioDetailDao;
+    private DataLandLevelDetailVolumeDao dataLandLevelDetailVolumeDao;
     @Autowired
     private CommonService commonService;
     @Autowired
@@ -42,7 +42,7 @@ public class DataAllocationCorrectionCoefficientVolumeRatioService {
     @Autowired
     private BaseDataDicService baseDataDicService;
     @Autowired
-    private DataAllocationCorrectionCoefficientVolumeRatioDetailService detailService;
+    private DataLandLevelDetailVolumeService detailService;
 
     public boolean saveDataAllocationCorrectionCoefficientVolumeRatio(DataAllocationCorrectionCoefficientVolumeRatio oo) {
         if (oo.getId() == null || oo.getId() == 0) {
@@ -105,10 +105,10 @@ public class DataAllocationCorrectionCoefficientVolumeRatioService {
      */
     public BigDecimal getAmendByVolumetricRate(Integer landLevelDetailId, String volumetricRate) {
         if (StringUtils.isBlank(volumetricRate)) return null;
-        DataAllocationCorrectionCoefficientVolumeRatioDetail coefficientVolumeRatioDetail = new DataAllocationCorrectionCoefficientVolumeRatioDetail();
-        coefficientVolumeRatioDetail.setAllocationVolumeRatioId(landLevelDetailId);
-        List<DataAllocationCorrectionCoefficientVolumeRatioDetail> detailList = dataAllocationCorrectionCoefficientVolumeRatioDetailDao.getDataAllocationCorrectionCoefficientVolumeRatioDetailList(coefficientVolumeRatioDetail);
-        for (DataAllocationCorrectionCoefficientVolumeRatioDetail detailItem : detailList) {
+        DataLandLevelDetailVolume coefficientVolumeRatioDetail = new DataLandLevelDetailVolume();
+        coefficientVolumeRatioDetail.setLevelDetailId(landLevelDetailId);
+        List<DataLandLevelDetailVolume> detailList = dataLandLevelDetailVolumeDao.getDataLandLevelDetailVolumeList(coefficientVolumeRatioDetail);
+        for (DataLandLevelDetailVolume detailItem : detailList) {
             //直接匹配
             if(detailItem.getPlotRatio()==null) continue;
             if (detailItem.getPlotRatio().compareTo(new BigDecimal(volumetricRate)) == 0) {
@@ -119,10 +119,10 @@ public class DataAllocationCorrectionCoefficientVolumeRatioService {
         return getAmend(detailList, volumetricRate);
     }
 
-    public BigDecimal getAmend(List<DataAllocationCorrectionCoefficientVolumeRatioDetail> detailList, String volumetricRate) {
+    public BigDecimal getAmend(List<DataLandLevelDetailVolume> detailList, String volumetricRate) {
         if (detailList.size() >= 2) {
             //排序
-            Ordering<DataAllocationCorrectionCoefficientVolumeRatioDetail> ordering = Ordering.from((o1, o2) -> {
+            Ordering<DataLandLevelDetailVolume> ordering = Ordering.from((o1, o2) -> {
                 return (o1.getPlotRatio().compareTo(o2.getPlotRatio()));
             });
             detailList.sort(ordering);
@@ -136,19 +136,19 @@ public class DataAllocationCorrectionCoefficientVolumeRatioService {
                 }
             }
             //最小值
-            DataAllocationCorrectionCoefficientVolumeRatioDetail minValue = detailList.get(0);
+            DataLandLevelDetailVolume minValue = detailList.get(0);
             //最大值
-            DataAllocationCorrectionCoefficientVolumeRatioDetail maxValue = detailList.get(detailList.size() - 1);
+            DataLandLevelDetailVolume maxValue = detailList.get(detailList.size() - 1);
             //小于最小值
             if (minValue.getPlotRatio().compareTo(new BigDecimal(volumetricRate)) == 1) {
-                DataAllocationCorrectionCoefficientVolumeRatioDetail tempValue = detailList.get(1);
+                DataLandLevelDetailVolume tempValue = detailList.get(1);
                 BigDecimal cardinalNumber = tempValue.getCorrectionFactor().subtract(minValue.getCorrectionFactor()).divide(tempValue.getPlotRatio().subtract(minValue.getPlotRatio()), 2, BigDecimal.ROUND_HALF_UP);
                 BigDecimal amend = minValue.getCorrectionFactor().subtract(cardinalNumber.multiply(minValue.getPlotRatio().subtract(new BigDecimal(volumetricRate))));
                 return amend;
             }
             //大于最大值
             if (new BigDecimal(volumetricRate).compareTo(maxValue.getPlotRatio()) == 1) {
-                DataAllocationCorrectionCoefficientVolumeRatioDetail tempValue = detailList.get(detailList.size() - 2);
+                DataLandLevelDetailVolume tempValue = detailList.get(detailList.size() - 2);
                 BigDecimal cardinalNumber = maxValue.getCorrectionFactor().subtract(tempValue.getCorrectionFactor()).divide(maxValue.getPlotRatio().subtract(tempValue.getPlotRatio()), 2, BigDecimal.ROUND_HALF_UP);
                 BigDecimal amend = maxValue.getCorrectionFactor().add(cardinalNumber.multiply(new BigDecimal(volumetricRate).subtract(maxValue.getPlotRatio())));
                 return amend;

@@ -1,13 +1,10 @@
 package com.copower.pmcc.assess.service.data;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.copower.pmcc.assess.common.ArithmeticUtils;
 import com.copower.pmcc.assess.common.PoiUtils;
-import com.copower.pmcc.assess.dal.basis.dao.data.DataLandDetailAchievementDao;
+import com.copower.pmcc.assess.dal.basis.dao.data.DataLandLevelDetailAchievementDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.basis.entity.DataLandDetailAchievement;
-import com.copower.pmcc.assess.dto.output.data.DataLandDetailAchievementVo;
+import com.copower.pmcc.assess.dal.basis.entity.DataLandLevelDetailAchievement;
+import com.copower.pmcc.assess.dto.output.data.DataLandLevelDetailAchievementVo;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -18,7 +15,6 @@ import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -36,7 +32,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileInputStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -45,9 +44,9 @@ import java.util.stream.Collectors;
  * @description:基准地价 土地因素
  */
 @Service
-public class DataLandDetailAchievementService {
+public class DataLandLevelDetailAchievementService {
     @Autowired
-    private DataLandDetailAchievementDao dataLandDetailAchievementDao;
+    private DataLandLevelDetailAchievementDao dataLandLevelDetailAchievementDao;
     @Autowired
     private CommonService commonService;
     @Autowired
@@ -57,7 +56,7 @@ public class DataLandDetailAchievementService {
     @Autowired
     private BaseAttachmentService baseAttachmentService;
 
-    private boolean importDataLandDetailAchievement(DataLandDetailAchievement target, StringBuilder builder, Row row, int i) throws Exception {
+    private boolean importDataLandLevelDetailAchievement(DataLandLevelDetailAchievement target, StringBuilder builder, Row row, int i) throws Exception {
         final int rowLength = 5;
         List<BaseDataDic> types = baseDataDicService.getCacheDataDicList("programme.market.costApproach.factor");
         List<BaseDataDic> grades = baseDataDicService.getCacheDataDicList("programme.market.costApproach.grade");
@@ -112,7 +111,7 @@ public class DataLandDetailAchievementService {
                 case 3: {
                     String value = PoiUtils.getCellValue(row.getCell(j));
                     if (org.apache.commons.lang3.StringUtils.isNotBlank(value)) {
-                        target.setAchievement(ArithmeticUtils.createBigDecimal(value));
+                        target.setAchievement(value);
                     }
                     break;
                 }
@@ -130,7 +129,7 @@ public class DataLandDetailAchievementService {
         return true;
     }
 
-    public String importDataLandDetailAchievement(MultipartFile multipartFile, DataLandDetailAchievement input) throws Exception {
+    public String importDataLandLevelDetailAchievement(MultipartFile multipartFile, DataLandLevelDetailAchievement input) throws Exception {
         StringBuilder builder = new StringBuilder(10);
         Workbook workbook = null;
         Row row = null;
@@ -161,7 +160,7 @@ public class DataLandDetailAchievementService {
             return builder.toString();
         }
         for (int i = startRowNumber; i < rowLength + startRowNumber; i++) {
-            DataLandDetailAchievement target = null;
+            DataLandLevelDetailAchievement target = null;
             //标识符
             try {
                 row = sheet.getRow(i);
@@ -169,14 +168,14 @@ public class DataLandDetailAchievementService {
                     builder.append(String.format("\n第%s行异常：%s", i, "没有数据"));
                     continue;
                 }
-                target = new DataLandDetailAchievement();
+                target = new DataLandLevelDetailAchievement();
                 BeanUtils.copyProperties(input, target);
                 target.setId(null);
                 //excel 处理
-                if (!this.importDataLandDetailAchievement(target, builder, row, i)) {
+                if (!this.importDataLandLevelDetailAchievement(target, builder, row, i)) {
                     continue;
                 }
-                saveDataLandDetailAchievement(target);
+                saveDataLandLevelDetailAchievement(target);
                 successCount++;
             } catch (Exception e) {
                 builder.append(String.format("\n第%s行异常：%s", i + 1, e.getMessage()));
@@ -185,35 +184,35 @@ public class DataLandDetailAchievementService {
         return String.format("数据总条数%s，成功%s，失败%s。%s", rowLength, successCount, rowLength - successCount, builder.toString());
     }
 
-    public boolean saveDataLandDetailAchievement(DataLandDetailAchievement oo) {
+    public boolean saveDataLandLevelDetailAchievement(DataLandLevelDetailAchievement oo) {
         if (oo.getId() == null || oo.getId() == 0) {
             oo.setCreator(commonService.thisUserAccount());
-            return dataLandDetailAchievementDao.saveDataLandDetailAchievement(oo);
+            return dataLandLevelDetailAchievementDao.saveDataLandLevelDetailAchievement(oo);
         } else {
-            return dataLandDetailAchievementDao.editDataLandDetailAchievement(oo);
+            return dataLandLevelDetailAchievementDao.editDataLandLevelDetailAchievement(oo);
         }
     }
 
-    public boolean deleteDataLandDetailAchievement(Integer id) {
-        return dataLandDetailAchievementDao.deleteDataLandDetailAchievement(id);
+    public boolean deleteDataLandLevelDetailAchievement(Integer id) {
+        return dataLandLevelDetailAchievementDao.deleteDataLandLevelDetailAchievement(id);
     }
 
-    public DataLandDetailAchievement getDataLandDetailAchievementById(Integer id) {
-        return dataLandDetailAchievementDao.getDataLandDetailAchievementById(id);
+    public DataLandLevelDetailAchievement getDataLandLevelDetailAchievementById(Integer id) {
+        return dataLandLevelDetailAchievementDao.getDataLandLevelDetailAchievementById(id);
     }
 
-    public List<DataLandDetailAchievement> getDataLandDetailAchievementList(DataLandDetailAchievement oo) {
-        return dataLandDetailAchievementDao.getDataLandDetailAchievementList(oo);
+    public List<DataLandLevelDetailAchievement> getDataLandLevelDetailAchievementList(DataLandLevelDetailAchievement oo) {
+        return dataLandLevelDetailAchievementDao.getDataLandLevelDetailAchievementList(oo);
     }
 
-    public BootstrapTableVo getBootstrapTableVo(DataLandDetailAchievement oo) {
+    public BootstrapTableVo getBootstrapTableVo(DataLandLevelDetailAchievement oo) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<DataLandDetailAchievement> list = getDataLandDetailAchievementList(oo);
-        List<DataLandDetailAchievementVo> voList = new ArrayList<>();
+        List<DataLandLevelDetailAchievement> list = getDataLandLevelDetailAchievementList(oo);
+        List<DataLandLevelDetailAchievementVo> voList = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(list)) {
-            list.stream().forEach(po -> voList.add(getDataLandDetailAchievementVo(po)));
+            list.stream().forEach(po -> voList.add(getDataLandLevelDetailAchievementVo(po)));
         }
         vo.setTotal(page.getTotal());
         vo.setRows(voList);
@@ -226,18 +225,18 @@ public class DataLandDetailAchievementService {
      * @param oo
      * @return
      */
-    public Set<List<List<DataLandDetailAchievementVo>>> landLevelFilter(DataLandDetailAchievement oo) {
-        List<DataLandDetailAchievement> dataLandDetailAchievementVoList = getDataLandDetailAchievementList(oo);
-        List<List<DataLandDetailAchievementVo>> listList = landLevelFilter2(dataLandDetailAchievementVoList.stream().map(po -> getDataLandDetailAchievementVo(po)).collect(Collectors.toList()));
-        Set<List<List<DataLandDetailAchievementVo>>> set = landLevelFilter1(listList);
+    public Set<List<List<DataLandLevelDetailAchievementVo>>> landLevelFilter(DataLandLevelDetailAchievement oo) {
+        List<DataLandLevelDetailAchievement> dataLandLevelDetailAchievementVoList = getDataLandLevelDetailAchievementList(oo);
+        List<List<DataLandLevelDetailAchievementVo>> listList = landLevelFilter2(dataLandLevelDetailAchievementVoList.stream().map(po -> getDataLandLevelDetailAchievementVo(po)).collect(Collectors.toList()));
+        Set<List<List<DataLandLevelDetailAchievementVo>>> set = landLevelFilter1(listList);
         return set;
     }
 
-    public List<List<DataLandDetailAchievementVo>> landLevelFilter2(List<DataLandDetailAchievementVo> dataLandDetailAchievementVoList) {
-        Map<String, List<DataLandDetailAchievementVo>> map = Maps.newHashMap();
-        if (CollectionUtils.isNotEmpty(dataLandDetailAchievementVoList)) {
-            dataLandDetailAchievementVoList.forEach(oo -> {
-                List<DataLandDetailAchievementVo> voList = map.get(oo.getCategory());
+    public List<List<DataLandLevelDetailAchievementVo>> landLevelFilter2(List<DataLandLevelDetailAchievementVo> dataLandLevelDetailAchievementVoList) {
+        Map<String, List<DataLandLevelDetailAchievementVo>> map = Maps.newHashMap();
+        if (CollectionUtils.isNotEmpty(dataLandLevelDetailAchievementVoList)) {
+            dataLandLevelDetailAchievementVoList.forEach(oo -> {
+                List<DataLandLevelDetailAchievementVo> voList = map.get(oo.getCategory());
                 if (CollectionUtils.isEmpty(voList)) {
                     voList = Lists.newArrayList();
                 }
@@ -245,7 +244,7 @@ public class DataLandDetailAchievementService {
                 map.put(oo.getCategory(), voList);
             });
         }
-        List<List<DataLandDetailAchievementVo>> listList = Lists.newArrayList();
+        List<List<DataLandLevelDetailAchievementVo>> listList = Lists.newArrayList();
         if (!map.isEmpty()) {
             map.entrySet().stream().forEachOrdered(stringListEntry -> {
                 listList.add(stringListEntry.getValue());
@@ -254,14 +253,14 @@ public class DataLandDetailAchievementService {
         return listList;
     }
 
-    public Set<List<List<DataLandDetailAchievementVo>>> landLevelFilter1(List<List<DataLandDetailAchievementVo>> listList) {
-        Set<List<List<DataLandDetailAchievementVo>>> set = Sets.newHashSet();
-        Map<Integer, List<List<DataLandDetailAchievementVo>>> map = Maps.newHashMap();
+    public Set<List<List<DataLandLevelDetailAchievementVo>>> landLevelFilter1(List<List<DataLandLevelDetailAchievementVo>> listList) {
+        Set<List<List<DataLandLevelDetailAchievementVo>>> set = Sets.newHashSet();
+        Map<Integer, List<List<DataLandLevelDetailAchievementVo>>> map = Maps.newHashMap();
         if (CollectionUtils.isNotEmpty(listList)) {
             listList.forEach(po -> {
                 int random = RandomUtils.nextInt(0, po.size() - 1);
                 Integer key = po.get(random).getType();
-                List<List<DataLandDetailAchievementVo>> lists = map.get(key);
+                List<List<DataLandLevelDetailAchievementVo>> lists = map.get(key);
                 if (CollectionUtils.isEmpty(lists)) {
                     lists = Lists.newArrayList();
                 }
@@ -278,11 +277,11 @@ public class DataLandDetailAchievementService {
     }
 
 
-    public DataLandDetailAchievementVo getDataLandDetailAchievementVo(DataLandDetailAchievement oo) {
+    public DataLandLevelDetailAchievementVo getDataLandLevelDetailAchievementVo(DataLandLevelDetailAchievement oo) {
         if (oo == null) {
             return null;
         }
-        DataLandDetailAchievementVo vo = new DataLandDetailAchievementVo();
+        DataLandLevelDetailAchievementVo vo = new DataLandLevelDetailAchievementVo();
         org.springframework.beans.BeanUtils.copyProperties(oo, vo);
         vo.setTypeName(baseDataDicService.getNameById(oo.getType()));
         if (StringUtils.isNotEmpty(oo.getCategory())) {
@@ -296,10 +295,10 @@ public class DataLandDetailAchievementService {
         return vo;
     }
 
-    public DataLandDetailAchievement getDataLandDetailAchievement(Integer levelDetailId, String category, Integer grade, Integer type) {
-        List<DataLandDetailAchievement> dataLandDetailAchievement = dataLandDetailAchievementDao.getDataLandDetailAchievement(levelDetailId, category, grade, type);
-        if (CollectionUtils.isNotEmpty(dataLandDetailAchievement)) {
-            return dataLandDetailAchievement.get(0);
+    public DataLandLevelDetailAchievement getDataLandLevelDetailAchievement(Integer levelDetailId, String category, Integer grade, Integer type) {
+        List<DataLandLevelDetailAchievement> dataLandLevelDetailAchievement = dataLandLevelDetailAchievementDao.getDataLandLevelDetailAchievement(levelDetailId, category, grade, type);
+        if (CollectionUtils.isNotEmpty(dataLandLevelDetailAchievement)) {
+            return dataLandLevelDetailAchievement.get(0);
         }
         return null;
     }

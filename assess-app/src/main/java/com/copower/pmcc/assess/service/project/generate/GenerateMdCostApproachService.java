@@ -16,7 +16,7 @@ import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.generate.BookmarkAndRegexDto;
 import com.copower.pmcc.assess.dto.output.MergeCellModel;
-import com.copower.pmcc.assess.dto.output.data.DataLandDetailAchievementVo;
+import com.copower.pmcc.assess.dto.output.data.DataLandLevelDetailAchievementVo;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.ToolRewardRateService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
@@ -24,7 +24,7 @@ import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseReportFieldService;
 import com.copower.pmcc.assess.service.basic.BasicEstateLandStateService;
 import com.copower.pmcc.assess.service.basic.BasicEstateService;
-import com.copower.pmcc.assess.service.data.DataLandDetailAchievementService;
+import com.copower.pmcc.assess.service.data.DataLandLevelDetailAchievementService;
 import com.copower.pmcc.assess.service.data.DataSetUseFieldService;
 import com.copower.pmcc.assess.service.method.MdCostApproachService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
@@ -73,7 +73,7 @@ public class GenerateMdCostApproachService implements Serializable {
     private SurveyCommonService surveyCommonService;
     private GenerateCommonMethod generateCommonMethod;
     private BaseService baseService;
-    private DataLandDetailAchievementService dataLandDetailAchievementService;
+    private DataLandLevelDetailAchievementService dataLandLevelDetailAchievementService;
     private BasicEstateService basicEstateService;
     private BasicEstateLandStateService basicEstateLandStateService;
 
@@ -707,11 +707,11 @@ public class GenerateMdCostApproachService implements Serializable {
         BasicEstate basicEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
         BasicEstateLandState landStateByEstateId = basicEstateLandStateService.getLandStateByEstateId(basicEstate.getId());
         //拿到土地因素数据
-        DataLandDetailAchievement dataLandDetailAchievement = new DataLandDetailAchievement();
-        dataLandDetailAchievement.setLevelDetailId(landStateByEstateId.getLandLevel());
-        List<DataLandDetailAchievement> dataLandDetailAchievementVoList = dataLandDetailAchievementService.getDataLandDetailAchievementList(dataLandDetailAchievement);
-        List<List<DataLandDetailAchievementVo>> listList = dataLandDetailAchievementService.landLevelFilter2(dataLandDetailAchievementVoList.stream().map(po -> dataLandDetailAchievementService.getDataLandDetailAchievementVo(po)).collect(Collectors.toList()));
-        Set<List<List<DataLandDetailAchievementVo>>> set = dataLandDetailAchievementService.landLevelFilter1(listList);
+        DataLandLevelDetailAchievement dataLandLevelDetailAchievement = new DataLandLevelDetailAchievement();
+        dataLandLevelDetailAchievement.setLevelDetailId(landStateByEstateId.getLandLevel());
+        List<DataLandLevelDetailAchievement> dataLandLevelDetailAchievementVoList = dataLandLevelDetailAchievementService.getDataLandLevelDetailAchievementList(dataLandLevelDetailAchievement);
+        List<List<DataLandLevelDetailAchievementVo>> listList = dataLandLevelDetailAchievementService.landLevelFilter2(dataLandLevelDetailAchievementVoList.stream().map(po -> dataLandLevelDetailAchievementService.getDataLandLevelDetailAchievementVo(po)).collect(Collectors.toList()));
+        Set<List<List<DataLandLevelDetailAchievementVo>>> set = dataLandLevelDetailAchievementService.landLevelFilter1(listList);
 
         //需要合并的单元格
         Set<MergeCellModel> mergeCellModelList = Sets.newHashSet();
@@ -720,7 +720,7 @@ public class GenerateMdCostApproachService implements Serializable {
         LinkedList<String> linkedList = Lists.newLinkedList();
         if (CollectionUtils.isNotEmpty(set)) {
             Integer endRowIndex = 0;
-            for (List<List<DataLandDetailAchievementVo>> types : set) {
+            for (List<List<DataLandLevelDetailAchievementVo>> types : set) {
                 for (int i = 0; i < types.size(); i++) {
                     if (i == 0) {
                         mergeCellModelList.add(new MergeCellModel(endRowIndex + 1, 0, endRowIndex + types.size(), 0));
@@ -736,7 +736,7 @@ public class GenerateMdCostApproachService implements Serializable {
                     } else {
                         linkedList.add(nullValue);
                     }
-                    for (DataLandDetailAchievementVo item : types.get(i)) {
+                    for (DataLandLevelDetailAchievementVo item : types.get(i)) {
                         if (index) {
                             if (item.getAchievement() != null) {
                                 linkedList.add(item.getAchievement().toString());
@@ -781,19 +781,19 @@ public class GenerateMdCostApproachService implements Serializable {
         //地价因素修正数据
         String landLevelContent = mdCostApproach.getLandLevelContent();
         JSONArray objects = JSON.parseArray(landLevelContent);
-        List<DataLandDetailAchievementVo> filterVoList = new ArrayList<>();
+        List<DataLandLevelDetailAchievementVo> filterVoList = new ArrayList<>();
         if (objects.size() > 0) {
             for (int i = 0; i < objects.size(); i++) {
-                List<DataLandDetailAchievementVo> vos = JSON.parseArray(JSON.toJSONString(objects.get(i)), DataLandDetailAchievementVo.class);
-                for (DataLandDetailAchievementVo item : vos) {
+                List<DataLandLevelDetailAchievementVo> vos = JSON.parseArray(JSON.toJSONString(objects.get(i)), DataLandLevelDetailAchievementVo.class);
+                for (DataLandLevelDetailAchievementVo item : vos) {
                     if ("update".equals(item.getModelStr())) {
                         filterVoList.add(item);
                     }
                 }
             }
         }
-        List<List<DataLandDetailAchievementVo>> listList = dataLandDetailAchievementService.landLevelFilter2(filterVoList);
-        Set<List<List<DataLandDetailAchievementVo>>> set = dataLandDetailAchievementService.landLevelFilter1(listList);
+        List<List<DataLandLevelDetailAchievementVo>> listList = dataLandLevelDetailAchievementService.landLevelFilter2(filterVoList);
+        Set<List<List<DataLandLevelDetailAchievementVo>>> set = dataLandLevelDetailAchievementService.landLevelFilter1(listList);
 
         //需要合并的单元格
         Set<MergeCellModel> mergeCellModelList = Sets.newHashSet();
@@ -802,7 +802,7 @@ public class GenerateMdCostApproachService implements Serializable {
         LinkedList<String> linkedList = Lists.newLinkedList();
         if (CollectionUtils.isNotEmpty(set)) {
             Integer endRowIndex = 0;
-            for (List<List<DataLandDetailAchievementVo>> types : set) {
+            for (List<List<DataLandLevelDetailAchievementVo>> types : set) {
                 for (int i = 0; i < types.size(); i++) {
                     if (i == 0) {
                         mergeCellModelList.add(new MergeCellModel(endRowIndex + 1, 0, endRowIndex + types.size(), 0));
@@ -818,7 +818,7 @@ public class GenerateMdCostApproachService implements Serializable {
                     } else {
                         linkedList.add(nullValue);
                     }
-                    for (DataLandDetailAchievementVo item : types.get(i)) {
+                    for (DataLandLevelDetailAchievementVo item : types.get(i)) {
                         if (StringUtils.isNotEmpty(item.getGradeName())) {
                             linkedList.add(item.getGradeName());
                         } else {
@@ -899,7 +899,7 @@ public class GenerateMdCostApproachService implements Serializable {
         this.surveyCommonService = SpringContextUtils.getBean(SurveyCommonService.class);
         this.generateCommonMethod = SpringContextUtils.getBean(GenerateCommonMethod.class);
         this.baseService = SpringContextUtils.getBean(BaseService.class);
-        this.dataLandDetailAchievementService = SpringContextUtils.getBean(DataLandDetailAchievementService.class);
+        this.dataLandLevelDetailAchievementService = SpringContextUtils.getBean(DataLandLevelDetailAchievementService.class);
         this.mdCostApproachService = SpringContextUtils.getBean(MdCostApproachService.class);
         this.basicEstateService = SpringContextUtils.getBean(BasicEstateService.class);
         this.basicEstateLandStateService = SpringContextUtils.getBean(BasicEstateLandStateService.class);
