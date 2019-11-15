@@ -79,7 +79,6 @@ public class GenerateCommonMethod {
     public final String SchemeJudgeObjectName = "委估对象";
 
 
-
     //房地产总价
     public BigDecimal getTotalRealEstate(Integer areId) {
         List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areId);
@@ -297,7 +296,7 @@ public class GenerateCommonMethod {
     }
 
     public String getPercentileSystem(BigDecimal bigDecimal) {
-        return ArithmeticUtils.getPercentileSystem(bigDecimal,2,BigDecimal.ROUND_HALF_UP) ;
+        return ArithmeticUtils.getPercentileSystem(bigDecimal, 2, BigDecimal.ROUND_HALF_UP);
     }
 
     /**
@@ -324,7 +323,7 @@ public class GenerateCommonMethod {
         }
         BigDecimal setScale = new BigDecimal(0);
         if (d != null) {
-            setScale = ArithmeticUtils.divModel(bigDecimal, new BigDecimal(d),RoundingMode.HALF_UP);
+            setScale = ArithmeticUtils.divModel(bigDecimal, new BigDecimal(d), RoundingMode.HALF_UP);
         }
         if (d == null) {
             setScale = new BigDecimal(bigDecimal.toString());
@@ -341,7 +340,7 @@ public class GenerateCommonMethod {
      * @return
      */
     public String getBigDecimalToInteger(final BigDecimal bigDecimal, int number) {
-       return ArithmeticUtils.getBigDecimalToInteger(bigDecimal, number);
+        return ArithmeticUtils.getBigDecimalToInteger(bigDecimal, number);
     }
 
     /**
@@ -430,9 +429,13 @@ public class GenerateCommonMethod {
      * @return
      */
     public String convertNumber(List<Integer> numbers) {
+        final int max = 20;
         StringBuilder stringBuilder = new StringBuilder(8);
         if (CollectionUtils.isNotEmpty(numbers)) {
             numbers = numbers.stream().distinct().sorted().collect(Collectors.toList());
+            if (numbers.stream().reduce(Integer::max).get() > max) {
+                return StringUtils.join(numbers, ",");
+            }
             Integer[] ints = new Integer[numbers.size()];
             for (int i = 0; i < numbers.size(); i++) {
                 ints[i] = numbers.get(i);
@@ -478,10 +481,11 @@ public class GenerateCommonMethod {
 
     /**
      * 去掉html
+     *
      * @param htmlStr
      * @return
      */
-    public  String delHTMLTag(String htmlStr) {
+    public String delHTMLTag(String htmlStr) {
         String regEx_script = "<script[^>]*?>[\\s\\S]*?<\\/script>"; //定义script的正则表达式
         String regEx_style = "<style[^>]*?>[\\s\\S]*?<\\/style>"; //定义style的正则表达式
         String regEx_html = "<[^>]+>"; //定义HTML标签的正则表达式
@@ -1043,13 +1047,21 @@ public class GenerateCommonMethod {
      * @return
      */
     public Integer parseIntJudgeNumber(String number) {
-        if (StringUtils.isBlank(number)) return null;
-        if (number.contains(","))
+        final int ten = 10;
+        if (StringUtils.isBlank(number)) {
+            return null;
+        }
+        if (number.contains(",")) {
             number = number.split(",")[0];
-        if (number.contains("-"))
+        }
+        if (number.contains("-")) {
             number = number.split("-")[0];
-        Integer i = Integer.valueOf(number);
-        return i;
+        }
+        if (number.length() < ten) {
+            return Integer.valueOf(number) ;
+        }else {
+            return Integer.valueOf(number.substring(0,ten-1)) ;
+        }
     }
 
 
@@ -1083,19 +1095,79 @@ public class GenerateCommonMethod {
      * @param number
      * @return
      */
-    public String parseToCircleNumber(final Integer number) {
-        final String s = "①,②,③,④,⑤,⑥,⑦,⑧,⑨,⑩,⑪,⑫,⑬,⑭,⑮,⑯,⑰,⑱,⑲,⑳";
-        final String[] strs = s.split(",");
-        List<String> stringList = Lists.newArrayList();
-        Map<Integer, String> map = Maps.newHashMap();
-        for (int i = 0; i < strs.length; i++) {
-            map.put(i + 1, strs[i]);
-            stringList.add(String.valueOf(i + 1));
-        }
+    final public String parseToCircleNumber(final Integer number) {
         if (number == null) {
             return null;
         }
-        if (!stringList.contains(number.toString())) {
+        final int max = 20;
+        final Map<Integer, String> map = new HashMap<Integer, String>(max);
+        for (int i = 1; i <= max; i++) {
+            switch (i) {// ①,②,③,④,⑤,⑥,⑦,⑧,⑨,⑩,⑪,⑫,⑬,⑭,⑮,⑯,⑰,⑱,⑲,⑳  ①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳
+                case 1:
+                    map.put(i, "①");
+                    break;
+                case 2:
+                    map.put(i, "②");
+                    break;
+                case 3:
+                    map.put(i, "③");
+                    break;
+                case 4:
+                    map.put(i, "④");
+                    break;
+                case 5:
+                    map.put(i, "⑤");
+                    break;
+                case 6:
+                    map.put(i, "⑥");
+                    break;
+                case 7:
+                    map.put(i, "⑦");
+                    break;
+                case 8:
+                    map.put(i, "⑧");
+                    break;
+                case 9:
+                    map.put(i, "⑨");
+                    break;
+                case 10:
+                    map.put(i, "⑩");
+                    break;
+                case 11:
+                    map.put(i, "⑪");
+                    break;
+                case 12:
+                    map.put(i, "⑫");
+                    break;
+                case 13:
+                    map.put(i, "⑬");
+                    break;
+                case 14:
+                    map.put(i, "⑭");
+                    break;
+                case 15:
+                    map.put(i, "⑮");
+                    break;
+                case 16:
+                    map.put(i, "⑯");
+                    break;
+                case 17:
+                    map.put(i, "⑰");
+                    break;
+                case 18:
+                    map.put(i, "⑱");
+                    break;
+                case 19:
+                    map.put(i, "⑲");
+                    break;
+                case 20:
+                    map.put(i, "⑳");
+                    break;
+                default:
+                    break;
+            }
+        }
+        if (!map.containsKey(number)) {
             return number.toString();
         }
         return map.get(number);
@@ -1190,7 +1262,7 @@ public class GenerateCommonMethod {
 
     //拼接2-4张图片
     public String getCombinationOfhead(List<String> paths) throws IOException {
-        if(paths.size()==1) return paths.get(0);
+        if (paths.size() == 1) return paths.get(0);
         List<BufferedImage> bufferedImages = new ArrayList<BufferedImage>();
         // 压缩图片所有的图片生成尺寸 250x250
         for (int i = 0; i < paths.size(); i++) {

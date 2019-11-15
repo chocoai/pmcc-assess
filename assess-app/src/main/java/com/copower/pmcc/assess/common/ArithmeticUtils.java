@@ -25,6 +25,12 @@ import java.util.concurrent.atomic.AtomicInteger;
  * 用于高精确处理常用的数学运算
  */
 public class ArithmeticUtils implements Serializable {
+    /**
+     *   BigDecimal one = new BigDecimal(2000236);
+     BigDecimal two = new BigDecimal(52.00000);
+     BigDecimal result = one.divide(two);
+     抛出 java.lang.ArithmeticException: Non-terminating decimal expansion; no exact representable decimal result. 除法运算有时候也会报错
+     */
     /*
     * setScale(1,BigDecimal.ROUND_DOWN)直接删除多余的小数位，如2.35会变成2.3
     * setScale(1,BigDecimal.ROUND_UP)进位处理，2.35变成2.4
