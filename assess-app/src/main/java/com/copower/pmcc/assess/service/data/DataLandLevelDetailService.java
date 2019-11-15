@@ -2,7 +2,6 @@ package com.copower.pmcc.assess.service.data;
 
 import com.copower.pmcc.assess.common.ArithmeticUtils;
 import com.copower.pmcc.assess.common.PoiUtils;
-import com.copower.pmcc.assess.common.RomanNumeral;
 import com.copower.pmcc.assess.constant.AssessCacheConstant;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataLandLevelDetailDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
@@ -12,29 +11,22 @@ import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.erp.common.CommonService;
-import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.constant.CacheConstant;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileInputStream;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
 /**
  * @Auther: zch
@@ -53,39 +45,6 @@ public class DataLandLevelDetailService {
     private BaseAttachmentService baseAttachmentService;
     @Autowired
     private BaseService baseService;
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
-
-
-    /**
-     * 查询是否存在某种类型的元素
-     *
-     * @param landLevelId
-     * @param classify
-     * @param type
-     * @return
-     * @throws Exception
-     */
-    private int queryForInt(Integer landLevelId, String classify, String type, Integer pid) throws Exception {
-        if (landLevelId == null) {
-            throw new Exception("landLevelId 此参数不能为null !");
-        }
-        StringBuilder sql = new StringBuilder(8);
-        sql.append(" select count(*) from ").append(FormatUtils.entityNameConvertToTableName(DataLandLevelDetail.class)).append(" where 1=1 ");
-        sql.append(" and ").append(" land_level_id = ").append(landLevelId).append(" ");
-        sql.append(" and ").append(" bis_delete = ").append(false).append(" ");
-        if (StringUtils.isNotBlank(classify)) {
-            sql.append(" and ").append(" classify = ").append(classify).append(" ");
-        }
-        if (StringUtils.isNotBlank(type)) {
-            sql.append(" and ").append(" type = ").append(type).append(" ");
-        }
-        if (pid != null && pid != 0) {
-            sql.append(" and ").append(" pid = ").append(pid).append(" ");
-        }
-        return this.jdbcTemplate.queryForObject(sql.toString(), Integer.class);
-    }
-
 
     private boolean importLandLevelDetail(DataLandLevelDetail target, StringBuilder builder, Row row, int i) throws Exception {
         List<BaseDataDic> classTypes = baseDataDicService.getCacheDataDicList("data.land.level.classify");
@@ -99,7 +58,7 @@ public class DataLandLevelDetailService {
                         if (typeDic == null) {
                             builder.append(String.format("\n第%s行异常：类型与系统配置的名称不一致(共有情况)", i));
                         } else {
-                            target.setClassify(typeDic.getId().toString());
+                            target.setClassify(typeDic.getId());
                         }
                     } else {
                         builder.append(String.format("\n第%s行异常：类型没有填写正确", i));
@@ -113,7 +72,7 @@ public class DataLandLevelDetailService {
                         if (typeDic == null) {
                             builder.append(String.format("\n第%s行异常：类型与系统配置的名称不一致(共有情况)", i));
                         } else {
-                            target.setType(typeDic.getId().toString());
+                            target.setType(typeDic.getId());
                         }
                     } else {
                         builder.append(String.format("\n第%s行异常：类型没有填写正确", i));
@@ -233,110 +192,29 @@ public class DataLandLevelDetailService {
         return String.format("数据总条数%s，成功%s，失败%s。%s", rowLength, successCount, rowLength - successCount, builder.toString());
     }
 
-    public synchronized void saveAndUpdateDataLandLevelDetail(DataLandLevelDetail targetObj) throws Exception {
-        if (targetObj == null) {
-            return;
-        }
-        if (targetObj.getLandLevelId() == null) {
+    public void saveAndUpdateDataLandLevelDetail(DataLandLevelDetail dataLandLevelDetail) throws Exception {
+        if (dataLandLevelDetail == null) return;
+        if (dataLandLevelDetail.getLandLevelId() == null) {
             throw new Exception("未挂钩上土地区域数据!");
         }
-        final AtomicInteger atomicInteger = new AtomicInteger(0);
-        StringBuilder stringBuilder = new StringBuilder(8);
-        DataLandLevelDetail parent = null;
-        DataLandLevelDetail child = null;
-        final int zero = 0;
-        int classNumber;
-        int typeNumber;
-        boolean isPidNull = true;
-        boolean isClassifyNull = false;
-        boolean isTypeNull = false;
-        if (targetObj.getPid() == null || targetObj.getPid() == 0) {
-            isPidNull = false;
-        }
-        isClassifyNull = StringUtils.isNotEmpty(targetObj.getClassify());
-        isTypeNull = StringUtils.isNotEmpty(targetObj.getType());
-
-        if (targetObj.getId() != null) {
-            saveAndUpdateBaseDataLandLevelDetail(targetObj);
-        }
-
-        if (targetObj.getId() == null) {
-
-            //直接从页面添加的情况
-            classLabel:
-            if (isClassifyNull) {
-                classNumber = queryForInt(targetObj.getLandLevelId(), targetObj.getClassify(), null, 0);
-                if (classNumber > zero) {
-                    stringBuilder.append("已经存在这个类型的数据了! \r");
-                    //在跳出之前判断一下 是否能添加子类
-                    if (isTypeNull) {
-                        typeNumber = queryForInt(targetObj.getLandLevelId(), null, targetObj.getType(), targetObj.getPid());
-                        if (typeNumber == zero) {
-                            //说明可以添加这个子类,找出pid然后设置isPidNull为true
-                            DataLandLevelDetail select = new DataLandLevelDetail();
-                            select.setLandLevelId(targetObj.getLandLevelId());
-                            select.setClassify(targetObj.getClassify());
-                            select.setBisDelete(false);
-                            List<DataLandLevelDetail> dataLandLevelDetailList = getDataLandLevelDetailList(select);
-                            if (CollectionUtils.isNotEmpty(dataLandLevelDetailList)) {
-                                if (dataLandLevelDetailList.size() == 1) {
-                                    isPidNull = true;
-                                    targetObj.setPid(dataLandLevelDetailList.get(0).getId());
-                                }
-                            }
-                        }
-                    }
-                    break classLabel;//跳出这里继续执行
-                }
-                parent = new DataLandLevelDetail();
-                BeanUtils.copyProperties(targetObj, parent);
-                parent.setPid(0);
-                parent.setPrice(null);
-                parent.setType(null);
-                parent.setMainStreet(null);
-                parent.setMuPrice(null);
-                parent.setLevelRange(null);
-                parent.setLandAcquisitionProportion(null);
-                saveAndUpdateBaseDataLandLevelDetail(parent);
-                atomicInteger.incrementAndGet();
-                targetObj.setPid(parent.getId());
-                isPidNull = targetObj.getPid() != null;
-                parent = null;
+        if (dataLandLevelDetail.getType() != null) {//如果是子项，没有父级时先为其添加父级
+            int count = dataLandLevelDetailDao.getCountByLandLevelId(dataLandLevelDetail.getLandLevelId(), dataLandLevelDetail.getClassify(), 0);
+            DataLandLevelDetail parentLevelDetail = new DataLandLevelDetail();
+            if (count <= 0) {
+                BeanUtils.copyProperties(dataLandLevelDetail, parentLevelDetail);
+                parentLevelDetail.setPid(0);
+                parentLevelDetail.setType(null);
+                parentLevelDetail.setCreator(commonService.thisUserAccount());
+                dataLandLevelDetailDao.addDataLandLevelDetail(parentLevelDetail);
+                dataLandLevelDetail.setPid(parentLevelDetail.getId());
+            } else {
+                parentLevelDetail = dataLandLevelDetailDao.getDataLandLevelDetail(dataLandLevelDetail.getLandLevelId(), dataLandLevelDetail.getClassify(), 0);
             }
-
-            typeLabel:
-            if (isPidNull) {
-                if (isTypeNull) {
-                    parent = getDataLandLevelDetailById(targetObj.getPid());
-                    if (parent == null) {
-                        break typeLabel;
-                    }
-                    typeNumber = queryForInt(parent.getLandLevelId(), null, targetObj.getType(), targetObj.getPid());
-                    if (typeNumber > zero) {
-                        stringBuilder.append("已经存在这个类别的数据了! \r");
-                        break typeLabel;
-                    }
-                    child = new DataLandLevelDetail();
-                    BeanUtils.copyProperties(targetObj, child);
-                    child.setLegalAge(null);
-                    child.setClassify(null);
-                    child.setVolumeRate(null);
-                    saveAndUpdateBaseDataLandLevelDetail(child);
-                    atomicInteger.incrementAndGet();
-                    child = null;
-                }
-            }
-
-
+            dataLandLevelDetail.setPid(parentLevelDetail.getId());
+        } else {
+            dataLandLevelDetail.setPid(0);
         }
-        if (atomicInteger.get() == 0) {
-            throw new Exception(stringBuilder.toString());
-        }
-    }
-
-
-    public void saveAndUpdateBaseDataLandLevelDetail(DataLandLevelDetail dataLandLevelDetail) {
-        if (dataLandLevelDetail.getId() == null || dataLandLevelDetail.getId() == 0) {
+        if (dataLandLevelDetail.getId() == null || dataLandLevelDetail.getId() <= 0) {
             dataLandLevelDetail.setCreator(commonService.thisUserAccount());
             dataLandLevelDetailDao.addDataLandLevelDetail(dataLandLevelDetail);
         } else {
@@ -349,78 +227,8 @@ public class DataLandLevelDetailService {
         return dataLandLevelDetailDao.getDataLandLevelDetailById(id);
     }
 
-
-
-    /**
-     * 注意这是 landLevelId 列表
-     *
-     * @param integerList
-     * @return
-     */
-    public List<DataLandLevelDetail> getByMasterIdInfo(List<Integer> integerList) {
-        return dataLandLevelDetailDao.getByMasterIdInfo(integerList);
-    }
-
     public List<DataLandLevelDetail> getDataLandLevelDetailList(DataLandLevelDetail oo) {
-        return dataLandLevelDetailSorted(dataLandLevelDetailDao.getDataLandLevelDetailList(oo));
-    }
-
-    /**
-     * 分类并且排序
-     *
-     * @param dataLandLevelDetails
-     * @return
-     */
-    public List<DataLandLevelDetail> dataLandLevelDetailSorted(List<DataLandLevelDetail> dataLandLevelDetails) {
-        LinkedHashMap<String, List<DataLandLevelDetail>> listLinkedHashMap = Maps.newLinkedHashMap();
-        if (CollectionUtils.isNotEmpty(dataLandLevelDetails)) {
-            dataLandLevelDetails.forEach(oo -> {
-                List<DataLandLevelDetail> details = listLinkedHashMap.get(oo.getClassify());
-                if (CollectionUtils.isEmpty(details)) {
-                    details = Lists.newArrayList();
-                }
-                details.add(oo);
-                listLinkedHashMap.put(oo.getClassify(), details);
-            });
-        }
-        List<DataLandLevelDetail> dataLandLevelDetailList = Lists.newArrayList();
-        if (!listLinkedHashMap.isEmpty()) {
-            listLinkedHashMap.entrySet().stream().forEachOrdered(stringListEntry -> {
-                if (CollectionUtils.isNotEmpty(stringListEntry.getValue())) {
-                    List<DataLandLevelDetail> landLevelDetailList = stringListEntry.getValue().stream().sorted((o1, o2) -> {
-                        int i = 0;
-                        final String remove = "级";
-                        if (StringUtils.isNotEmpty(o1.getType())) {
-                            i++;
-                        }
-                        if (StringUtils.isNotEmpty(o2.getType())) {
-                            i++;
-                        }
-                        if (i == 2) {
-                            if (StringUtils.contains(o1.getType(), remove) && StringUtils.contains(o2.getType(), remove)) {
-                                String value1 = StringUtils.trim(StringUtils.remove(o1.getType(), remove));
-                                String value2 = StringUtils.trim(StringUtils.remove(o2.getType(), remove));
-                                try {
-                                    return Integer.compare(RomanNumeral.intValue(value1), RomanNumeral.intValue(value2));
-                                } catch (Exception e) {
-                                }
-                            }
-                        }
-                        if (NumberUtils.isNumber(o1.getType()) && NumberUtils.isNumber(o2.getType())) {
-                            String value1 = baseDataDicService.getNameById(o1.getType());
-                            String value2 = baseDataDicService.getNameById(o2.getType());
-                            try {
-                                return Integer.compare(RomanNumeral.intValue(value1), RomanNumeral.intValue(value2));
-                            } catch (Exception e) {
-                            }
-                        }
-                        return 0;
-                    }).collect(Collectors.toList());
-                    dataLandLevelDetailList.addAll(landLevelDetailList);
-                }
-            });
-        }
-        return dataLandLevelDetailList;
+        return dataLandLevelDetailDao.getDataLandLevelDetailList(oo);
     }
 
     /**
@@ -442,7 +250,7 @@ public class DataLandLevelDetailService {
         if (dataLandLevelDetail == null) return null;
         StringBuffer stringBuffer = new StringBuffer();
         stringBuffer.append(dataLandLevelDetail.getClassify());
-        if (StringUtils.isNotBlank(dataLandLevelDetail.getType()))
+        if (dataLandLevelDetail.getType() != null)
             stringBuffer.append("/").append(dataLandLevelDetail.getType());
         if (StringUtils.isNotBlank(dataLandLevelDetail.getCategory()))
             stringBuffer.append("/").append(dataLandLevelDetail.getCategory());
@@ -454,21 +262,13 @@ public class DataLandLevelDetailService {
      *
      * @param id
      */
+    @Transactional(rollbackFor = Exception.class)
     public void removeDataLandLevelDetail(Integer id) throws Exception {
-        final int zero = 0;
-        DataLandLevelDetail levelDetail = dataLandLevelDetailDao.getDataLandLevelDetailById(id);
-        if (levelDetail != null) {
-            int typeNumber = zero;
-            if (levelDetail.getPid() == zero) {//说明是父级,需要判断一下
-                typeNumber = queryForInt(levelDetail.getLandLevelId(), null, null, levelDetail.getId());
-            }
-            if (typeNumber == zero) {
-                levelDetail.setBisDelete(true);
-                dataLandLevelDetailDao.updateDataLandLevelDetail(levelDetail);
-            } else {
-                throw new Exception("存在子层级,假如要删除请删除子级在删除");
-            }
+        List<DataLandLevelDetail> dataLandLevelDetails = getDataLandLevelDetailListByPid(id);
+        if (CollectionUtils.isNotEmpty(dataLandLevelDetails)) {
+            dataLandLevelDetails.forEach(o -> dataLandLevelDetailDao.removeDataLandLevelDetailById(o.getId()));
         }
+        dataLandLevelDetailDao.removeDataLandLevelDetailById(id);
     }
 
     /**
@@ -476,18 +276,18 @@ public class DataLandLevelDetailService {
      * @return
      */
     public int getCountByLandLevelId(Integer landLevelId) {
-        return dataLandLevelDetailDao.getCountByLandLevelId(landLevelId);
+        return dataLandLevelDetailDao.getCountByLandLevelId(landLevelId, null, null);
     }
 
-    public List<DataLandLevelDetail> getDataLandLevelDetailListByPid(Integer landLevelId) {
+    public List<DataLandLevelDetail> getDataLandLevelDetailListByPid(Integer pid) {
         DataLandLevelDetail oo = new DataLandLevelDetail();
-        oo.setLandLevelId(landLevelId);
-        return dataLandLevelDetailSorted(getDataLandLevelDetailList(oo));
+        oo.setPid(pid);
+        return getDataLandLevelDetailList(oo);
     }
 
     //根据大类和级别获取数据
-    public DataLandLevelDetail getDataByClassifyAndType(String classify, String type, Integer landLevelId) {
-        List<DataLandLevelDetail> dataList = dataLandLevelDetailDao.getDataByClassifyAndType(classify, type, landLevelId);
+    public DataLandLevelDetail getDataByClassifyAndType(Integer landLevelId, Integer classify, Integer type) {
+        List<DataLandLevelDetail> dataList = dataLandLevelDetailDao.getDataByClassifyAndType(landLevelId, classify, type);
         if (CollectionUtils.isNotEmpty(dataList)) {
             return dataList.get(0);
         }
@@ -500,16 +300,8 @@ public class DataLandLevelDetailService {
             return vo;
         }
         BeanUtils.copyProperties(oo, vo);
-        if (NumberUtils.isNumber(oo.getClassify())) {
-            vo.setClassifyName(baseDataDicService.getNameById(oo.getClassify()));
-        } else {
-            vo.setClassifyName(oo.getClassify());
-        }
-        if (NumberUtils.isNumber(oo.getType())) {
-            vo.setTypeName(baseDataDicService.getNameById(oo.getType()));
-        } else {
-            vo.setTypeName(oo.getType());
-        }
+        vo.setClassifyName(baseDataDicService.getNameById(oo.getClassify()));
+        vo.setTypeName(baseDataDicService.getNameById(oo.getType()));
         return vo;
     }
 

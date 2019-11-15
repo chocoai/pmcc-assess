@@ -35,7 +35,7 @@ examineCommon.getFormData = function () {
         // if (landLevelContent.length >= 1) {
         //     data.landLevelContent = JSON.stringify(landLevelContent);
         // }
-         item.basicEstateLandState = data;
+        item.basicEstateLandState = data;
     }
     if (window.buildingCommon && buildingCommon.buildingForm.length > 0) {
         item.basicBuilding = formSerializeArray(buildingCommon.buildingForm);
@@ -77,22 +77,14 @@ examineCommon.developerSelect = function (this_) {
 
 //土地级别选择
 examineCommon.landLevelSelect = function (this_) {
-    var $form = $(this_).closest('form');
     var formGroup = $(this_).closest('.form-group');
     assessLandLevelTool.select({
-        province: $form.find('[name=province]').val(),
-        city: $form.find('[name=city]').val(),
+        province: estateCommon.estateForm.find('[name=province]').val(),
+        city: estateCommon.estateForm.find('[name=city]').val(),
+        district: estateCommon.estateForm.find('[name=district]').val(),
         success: function (data) {
             formGroup.find("input[name='landLevel']").val(data.id);
             formGroup.find("input[name='landLevelName']").val(data.name);
-            // $.ajax({
-            //     url: getContextPath() + "/dataLandDetailAchievement/landLevelFilter",
-            //     type: "get",
-            //     data: {levelDetailId: data.id},
-            //     success: function (result) {
-            //         estateCommon.landLevelLoadHtml(result.data);
-            //     }
-            // })
         }
     })
 };
@@ -150,7 +142,7 @@ examineCommon.parseParam = function (param) {
     for (var i = 0; i < keys.length; i++) {
         var key = keys[i];
         var value = param[key];
-        if (!value){
+        if (!value) {
             // continue ;
         }
         var paramStr = key + "=" + value;

@@ -26,62 +26,57 @@
                             <form id="frmQuery" class="form-horizontal">
                                 <input type="hidden" name="readOnly" value="${readOnly}">
                                 <div class="form-group">
-
                                     <div class="x-valid">
-                                        <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                            <a class="btn btn-primary" onclick="comeInLandLevelIndex();">申请土地数据 </a>
-                                            <label class="label-warning label">(假如要修改请勾选)</label>
-                                        </div>
-                                    </div>
-
-                                    <div class="x-valid">
+                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">省</label>
                                         <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
                                             <select name="province"
                                                     class="form-control search-select select2">
                                             </select>
                                         </div>
                                     </div>
-
-
                                     <div class="x-valid">
+                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">市</label>
                                         <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
                                             <select name="city" class="form-control search-select select2">
                                             </select>
                                         </div>
                                     </div>
-
-
                                     <div class="x-valid">
+                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">区县</label>
                                         <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
                                             <select name="district"
                                                     class="form-control search-select select2">
                                             </select>
                                         </div>
                                     </div>
-
+                                    <div class="x-valid">
+                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">乡镇街道</label>
+                                        <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                            <input placeholder="乡镇名称" class="form-control" name="townShipName"
+                                                   type="text">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <div class="x-valid">
                                         <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">权利类型</label>
-                                        <div class=" col-xs-1  col-sm-1  col-md-1  col-lg-1 ">
+                                        <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
                                             <select name="landRightType" class="form-control search-select select2">
                                             </select>
                                         </div>
                                     </div>
-
                                     <div class="x-valid">
+                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">创建人</label>
                                         <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                            <div class="input-group">
-                                                <span class="input-group-btn">
-                                                <input placeholder="乡镇名称" class="form-control" name="townShipName"
-                                                       type="text">
-                                                </span>
-                                                <span class="input-group-btn">
-                                                    <button type="button" class="btn btn-success"
-                                                            onclick="findQuery();">
-                                                        查询 <i class="fa fa-search" aria-hidden="true"></i>
-                                                    </button>
-                                                </span>
-                                            </div>
+                                            <input placeholder="创建人" class="form-control" name="creator" type="text">
                                         </div>
+                                    </div>
+                                    <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                        <button type="button" class="btn btn-primary"
+                                                onclick="findQuery();">
+                                            查询
+                                        </button>
+                                        <a class="btn btn-success" onclick="comeInLandLevelIndex();">新增</a>
                                     </div>
                                 </div>
                             </form>
@@ -101,18 +96,12 @@
     <!-- end: MAIN CONTAINER -->
 </div>
 </body>
-
 <%@include file="/views/share/main_footer.jsp" %>
-
 <%@include file="/views/data/landModelDir/landModelApproval.jsp" %>
-
-<script type="text/javascript"
-        src="${pageContext.request.contextPath}/views/data/landModelDir/landLevel.js?v=${assessVersion}"></script>
-
+<script type="text/javascript" src="${pageContext.request.contextPath}/views/data/landModelDir/landLevel.js?v=${assessVersion}"></script>
 <script type="text/javascript">
-
     function findQuery() {
-        landLevel.loadLandLevelList({status: 'finish', creator: null, processInsId: null, checkbox: true});
+        landLevel.loadLandLevelList({status: '', creator: null, processInsId: null, checkbox: true});
     }
 
     function comeInLandLevelIndex() {
@@ -140,9 +129,7 @@
     }
 
     $(document).ready(function () {
-
         findQuery();
-
         (function (frm, data) {
             AssessCommon.initAreaInfo({
                 provinceTarget: frm.find("select[name='province']"),
@@ -159,8 +146,4 @@
     });
 
 </script>
-
-
-
-
 </html>

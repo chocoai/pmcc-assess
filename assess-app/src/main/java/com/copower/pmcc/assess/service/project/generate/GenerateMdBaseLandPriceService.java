@@ -594,7 +594,7 @@ public class GenerateMdBaseLandPriceService {
         DataLandLevel dataLandLevel = dataLandLevelService.getDataLandLevelById(dataLandLevelDetail.getLandLevelId());
         //对应区域下所有的土地级别
         List<DataLandLevelDetail> dataLandLevelDetailList = dataLandLevelDetailService.getDataLandLevelDetailListByPid(dataLandLevel.getId());
-        Map<String, Integer> map = countProperty(dataLandLevelDetailList);
+        Map<Integer, Integer> map = countProperty(dataLandLevelDetailList);
         List<Map.Entry<String, Integer>> list = new ArrayList(map.entrySet());
         Collections.sort(list, (o1, o2) -> (o1.getValue() - o2.getValue()));
         //需要合并的单元格
@@ -611,14 +611,14 @@ public class GenerateMdBaseLandPriceService {
         builder.endRow();
         mergeCellModelList.add(new MergeCellModel(0, 0, 0, 1));
         int firstCellRow = 1;
-        for (String key : map.keySet()) {
+        for (Integer key : map.keySet()) {
             builder.insertCell();
-            builder.write(key);
+            builder.write(baseDataDicService.getNameById(key));
             builder.insertCell();
             builder.write("元/平方米");
             for (int i = 1; i < maxValue; i++) {
                 builder.insertCell();
-                DataLandLevelDetail data = dataLandLevelDetailService.getDataByClassifyAndType(key, intToRoman(i), dataLandLevel.getId());
+                DataLandLevelDetail data = dataLandLevelDetailService.getDataByClassifyAndType(dataLandLevel.getId(), key, i);
                 if (data != null) {
                     builder.write(data.getPrice().setScale(0, BigDecimal.ROUND_HALF_UP).toString());
                 } else {
@@ -633,7 +633,7 @@ public class GenerateMdBaseLandPriceService {
             builder.write("万元/亩");
             for (int i = 1; i < maxValue; i++) {
                 builder.insertCell();
-                DataLandLevelDetail data = dataLandLevelDetailService.getDataByClassifyAndType(key, intToRoman(i), dataLandLevel.getId());
+                DataLandLevelDetail data = dataLandLevelDetailService.getDataByClassifyAndType(dataLandLevel.getId(), key, i);
                 if (data != null) {
                     builder.write(data.getPrice().multiply(new BigDecimal("666.67")).divide(new BigDecimal("10000")).setScale(0, BigDecimal.ROUND_HALF_UP).toString());
                 } else {
@@ -947,14 +947,14 @@ public class GenerateMdBaseLandPriceService {
         String wordSymbol = dataLandLevel.getWordSymbol();
 
         List<DataLandLevelDetail> dataLandLevelDetailList = dataLandLevelDetailService.getDataLandLevelDetailListByPid(dataLandLevel.getId());
-        Map<String, Integer> map = countProperty(dataLandLevelDetailList);
+        Map<Integer, Integer> map = countProperty(dataLandLevelDetailList);
         //类型个数
         String size = toChinese(String.valueOf(map.size()));
         //类型级数
         StringBuilder typesGrade = new StringBuilder();
         //类型
         StringBuilder types = new StringBuilder();
-        for (String key : map.keySet()) {
+        for (Integer key : map.keySet()) {
             types.append(key).append("、");
             typesGrade.append(key).append("分为").append(toChinese(String.valueOf(map.get(key)))).append("级").append(",");
         }
@@ -968,8 +968,8 @@ public class GenerateMdBaseLandPriceService {
     /**
      * 统计类型
      */
-    public Map<String, Integer> countProperty(List<DataLandLevelDetail> dataLandLevelDetailList) {
-        Map<String, Integer> map = Maps.newHashMap();
+    public Map<Integer, Integer> countProperty(List<DataLandLevelDetail> dataLandLevelDetailList) {
+        Map<Integer, Integer> map = Maps.newHashMap();
         for (DataLandLevelDetail user : dataLandLevelDetailList) {
             if (map.containsKey(user.getClassify())) {
                 int i = map.get(user.getClassify());

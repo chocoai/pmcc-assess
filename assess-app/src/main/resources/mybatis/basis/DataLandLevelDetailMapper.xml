@@ -4,8 +4,8 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.DataLandLevelDetail" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="land_level_id" property="landLevelId" jdbcType="INTEGER" />
-    <result column="classify" property="classify" jdbcType="VARCHAR" />
-    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="classify" property="classify" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
     <result column="category" property="category" jdbcType="VARCHAR" />
     <result column="level_range" property="levelRange" jdbcType="VARCHAR" />
     <result column="main_street" property="mainStreet" jdbcType="VARCHAR" />
@@ -123,7 +123,7 @@
       mu_price, volume_rate, legal_age, 
       creator, gmt_created, gmt_modified, 
       pid)
-    values (#{landLevelId,jdbcType=INTEGER}, #{classify,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, 
+    values (#{landLevelId,jdbcType=INTEGER}, #{classify,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, 
       #{category,jdbcType=VARCHAR}, #{levelRange,jdbcType=VARCHAR}, #{mainStreet,jdbcType=VARCHAR}, 
       #{bisDelete,jdbcType=BIT}, #{landAcquisitionProportion,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, 
       #{muPrice,jdbcType=DECIMAL}, #{volumeRate,jdbcType=DECIMAL}, #{legalAge,jdbcType=DECIMAL}, 
@@ -190,10 +190,10 @@
         #{landLevelId,jdbcType=INTEGER},
       </if>
       <if test="classify != null" >
-        #{classify,jdbcType=VARCHAR},
+        #{classify,jdbcType=INTEGER},
       </if>
       <if test="type != null" >
-        #{type,jdbcType=VARCHAR},
+        #{type,jdbcType=INTEGER},
       </if>
       <if test="category != null" >
         #{category,jdbcType=VARCHAR},
@@ -252,10 +252,10 @@
         land_level_id = #{record.landLevelId,jdbcType=INTEGER},
       </if>
       <if test="record.classify != null" >
-        classify = #{record.classify,jdbcType=VARCHAR},
+        classify = #{record.classify,jdbcType=INTEGER},
       </if>
       <if test="record.type != null" >
-        type = #{record.type,jdbcType=VARCHAR},
+        type = #{record.type,jdbcType=INTEGER},
       </if>
       <if test="record.category != null" >
         category = #{record.category,jdbcType=VARCHAR},
@@ -305,8 +305,8 @@
     update tb_data_land_level_detail
     set id = #{record.id,jdbcType=INTEGER},
       land_level_id = #{record.landLevelId,jdbcType=INTEGER},
-      classify = #{record.classify,jdbcType=VARCHAR},
-      type = #{record.type,jdbcType=VARCHAR},
+      classify = #{record.classify,jdbcType=INTEGER},
+      type = #{record.type,jdbcType=INTEGER},
       category = #{record.category,jdbcType=VARCHAR},
       level_range = #{record.levelRange,jdbcType=VARCHAR},
       main_street = #{record.mainStreet,jdbcType=VARCHAR},
@@ -331,10 +331,10 @@
         land_level_id = #{landLevelId,jdbcType=INTEGER},
       </if>
       <if test="classify != null" >
-        classify = #{classify,jdbcType=VARCHAR},
+        classify = #{classify,jdbcType=INTEGER},
       </if>
       <if test="type != null" >
-        type = #{type,jdbcType=VARCHAR},
+        type = #{type,jdbcType=INTEGER},
       </if>
       <if test="category != null" >
         category = #{category,jdbcType=VARCHAR},
@@ -381,8 +381,8 @@
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataLandLevelDetail" >
     update tb_data_land_level_detail
     set land_level_id = #{landLevelId,jdbcType=INTEGER},
-      classify = #{classify,jdbcType=VARCHAR},
-      type = #{type,jdbcType=VARCHAR},
+      classify = #{classify,jdbcType=INTEGER},
+      type = #{type,jdbcType=INTEGER},
       category = #{category,jdbcType=VARCHAR},
       level_range = #{levelRange,jdbcType=VARCHAR},
       main_street = #{mainStreet,jdbcType=VARCHAR},

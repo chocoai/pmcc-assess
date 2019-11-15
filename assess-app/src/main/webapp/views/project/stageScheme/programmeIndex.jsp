@@ -1126,8 +1126,8 @@
         $("form[id^=frmJudgeObject]").each(function () {
             var that = $(this);
             var options = {
-                msg: "请检查【" + that.closest('.area_panel').find('h2').find('label').text() + "】填写的信息",
-                hiddenValid: true
+                msg: "请检查【" + that.closest('.area_panel').find('h3').find('label').text() + "】填写的信息",
+                hiddenValid: false
             };
             if (!$(this).valid(options)) {
                 isPass = false;

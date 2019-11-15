@@ -4,7 +4,7 @@
 
 var ue = undefined;
 
-if ($("#landDefinition").size() != 0){
+if ($("#landDefinition").size() != 0) {
     ue = UE.getEditor('landDefinition', {
         toolbars: [
             ['source', 'autotypeset', 'bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc']
@@ -20,7 +20,8 @@ if ($("#landDefinition").size() != 0){
 
 
 var landLevel = {};
-
+var currentLandLevelId = 0;
+var currentLandLevelDetailId = 0;
 
 landLevel.showFile = function (target, tableName, id, deleteFlag, editFlag, signatureFlag, fieldsName) {
     FileUtils.getFileShows({
@@ -206,18 +207,16 @@ landLevel.loadLandLevelList = function (select) {
         select = {};
     }
     var cols = [];
-    if (select.checkbox) {
-        cols.push({
-            field: 'ckeckbox',
-            checkbox: true
-        });
-    }
     cols.push({
         field: 'provinceName', title: '区域', formatter: function (value, row, index) {
-            return AssessCommon.getAreaFullName(row.provinceName, row.cityName, row.districtName);
+            var areaFullName = AssessCommon.getAreaFullName(row.provinceName, row.cityName, row.districtName);
+            if (row.townShipName) {
+                areaFullName = areaFullName + row.townShipName;
+            }
+            return areaFullName;
         }
     });
-    cols.push({field: 'title', title: '标题'});
+    cols.push({field: 'landRightTypeName', title: '权利类型'});
     cols.push({
         field: 'valuationDate', title: '估价期日', formatter: function (value, row, index) {
             return formatDate(value);
@@ -234,31 +233,41 @@ landLevel.loadLandLevelList = function (select) {
         }
     });
     cols.push({field: 'fileViewName', title: '附件'});
-    cols.push({field: 'landRightTypeName', title: '权利类型'});
-    cols.push({field: 'townShipName', title: '乡镇名称'});
+    cols.push({
+        field: 'status', title: '状态', formatter: function (value, row, index) {
+            var str = "";
+            switch (value) {
+                case "runing": {
+                    str = "<label class='label label-info'>" + "进行中" + "</label>";
+                    break;
+                }
+                case "finish": {
+                    str = "<label class='label label-success'>" + "已完成" + "</label>";
+                    break;
+                }
+                case "draft": {
+                    str = "<label class='label label-warning'>" + "草稿" + "</label>";
+                    break;
+                }
+            }
+            return str;
+        }
+    });
+    cols.push({field: 'creatorName', title: '创建人'});
     var elShow = landLevel.getElShow();
-    if (elShow) {
-        cols.push({
-            field: 'id', title: '操作', formatter: function (value, row, index) {
-                var str = '<div class="btn-margin">';
+    cols.push({
+        field: 'id', title: '操作', formatter: function (value, row, index) {
+            var str = '<div class="btn-margin">';
+            if (elShow) {
                 str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="landLevel.editData(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
                 str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="landLevel.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
+            }
+            str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="基准地价" onclick="landLevel.treeLandLevelDetailListModal(' + row.id + ')"><i class="fa  fa-tree fa-white"></i></a>';
+            str += '</div>';
+            return str;
+        }
+    });
 
-                str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="土地级别详细情况" onclick="landLevel.treeLandLevelDetailListModal(' + row.id + ')"><i class="fa  fa-tree fa-white"></i></a>';
-                str += '</div>';
-                return str;
-            }
-        });
-    } else {
-        cols.push({
-            field: 'id', title: '操作', formatter: function (value, row, index) {
-                var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="土地级别详细情况" onclick="landLevel.treeLandLevelDetailListModal(' + row.id + ')"><i class="fa  fa-tree fa-white"></i></a>';
-                str += '</div>';
-                return str;
-            }
-        });
-    }
     landLevel.config.table.bootstrapTable('destroy');
     var query = formSerializeArray(landLevel.config.frmQuery);
     //只获取有值的对象属性
@@ -272,8 +281,8 @@ landLevel.loadLandLevelList = function (select) {
         }
     }
     var method = {
-        showColumns: true,
-        showRefresh: true,
+        showColumns: false,
+        showRefresh: false,
         search: false,
         onLoadSuccess: function () {
             $('.tooltips').tooltip();
@@ -284,6 +293,7 @@ landLevel.loadLandLevelList = function (select) {
 
 
 landLevel.treeLandLevelDetailListModal = function (id) {
+    currentLandLevelId = id;
     var box = landLevel.config.land_level_detail_tree_modal;
     this.loadTree(id);
     this.initLandLevelDetailForm({landLevelId: id, pid: 0}, "none");
@@ -310,57 +320,56 @@ landLevel.initLandLevelDetailForm = function (data, key) {
 
 landLevel.initLandLevelDetailBaseForm = function (frm, data, key) {
     var item = formSerializeArray(frm);
-    frm.clearAll();
+    frm.clearAll().initForm(data);
     if (!data.landLevelId) {
         data.landLevelId = item.landLevelId;
     }
-    frm.initForm(data);
-    var parents = [
-        frm.find("[name='classify']").parent().parent(),
-        frm.find("[name='volumeRate']").parent().parent(),
-        frm.find("[name='legalAge']").parent().parent()
-    ];
-    var children = [
-        frm.find("[name='mainStreet']").parent().parent(),
-        frm.find("[name='levelRange']").parent().parent(),
-        frm.find("[name='landAcquisitionProportion']").parent().parent(),
-        frm.find("[name='muPrice']").parent().parent(),
-        frm.find("[name='price']").parent().parent(),
-        frm.find("[name='type']").parent().parent()
-    ];
-    if (key) {
-        switch (key) {
-            case 'parent': {
-                $.each(parents, function (i, ele) {
-                    ele.show();
-                });
-                $.each(children, function (i, ele) {
-                    ele.hide();
-                });
-                break;
-            }
-            case 'child': {
-                $.each(parents, function (i, ele) {
-                    ele.hide();
-                });
-                $.each(children, function (i, ele) {
-                    ele.show();
-                });
-                break;
-            }
-            case 'none': {
-                $.each(parents, function (i, ele) {
-                    ele.show();
-                });
-                $.each(children, function (i, ele) {
-                    ele.show();
-                });
-                break;
-            }
-            default:
-                break;
-        }
-    }
+    // var parents = [
+    //     frm.find("[name='classify']").parent().parent(),
+    //     frm.find("[name='volumeRate']").parent().parent(),
+    //     frm.find("[name='legalAge']").parent().parent()
+    // ];
+    // var children = [
+    //     frm.find("[name='mainStreet']").parent().parent(),
+    //     frm.find("[name='levelRange']").parent().parent(),
+    //     frm.find("[name='landAcquisitionProportion']").parent().parent(),
+    //     frm.find("[name='muPrice']").parent().parent(),
+    //     frm.find("[name='price']").parent().parent(),
+    //     frm.find("[name='type']").parent().parent()
+    // ];
+    // if (key) {
+    //     switch (key) {
+    //         case 'parent': {
+    //             $.each(parents, function (i, ele) {
+    //                 ele.show();
+    //             });
+    //             $.each(children, function (i, ele) {
+    //                 ele.hide();
+    //             });
+    //             break;
+    //         }
+    //         case 'child': {
+    //             $.each(parents, function (i, ele) {
+    //                 ele.hide();
+    //             });
+    //             $.each(children, function (i, ele) {
+    //                 ele.show();
+    //             });
+    //             break;
+    //         }
+    //         case 'none': {
+    //             $.each(parents, function (i, ele) {
+    //                 ele.show();
+    //             });
+    //             $.each(children, function (i, ele) {
+    //                 ele.show();
+    //             });
+    //             break;
+    //         }
+    //         default:
+    //             break;
+    //     }
+    //}
     AssessCommon.loadDataDicByKey(AssessDicKey.DATA_LAND_LEVEL_CLASSIFY, data.classify, function (html, data) {
         frm.find("select[name='classify']").empty().html(html).trigger('change');
     });
@@ -376,22 +385,22 @@ landLevel.addLandLevelDetail = function () {
     var nodes = zTree.getSelectedNodes();
     var data = {};
     var key = "none";
-    if (nodes.length == 1) {
-        var treeNode = nodes[0];
-        switch (treeNode.pid) {
-            case 0: {
-                key = "child";
-                data.pid = treeNode.id;
-                break
-            }
-            default: {
-                key = undefined;
-                toastr.success('不能在此层级添加子级!');
-                break;
-            }
-        }
-
-    }
+    // if (nodes.length == 1) {
+    //     var treeNode = nodes[0];
+    //     switch (treeNode.pid) {
+    //         case 0: {
+    //             key = "child";
+    //             data.pid = treeNode.id;
+    //             break
+    //         }
+    //         default: {
+    //             key = undefined;
+    //             toastr.success('不能在此层级添加子级!');
+    //             break;
+    //         }
+    //     }
+    //
+    // }
     if (key) {
         landLevel.initLandLevelDetailForm(data, key);
         box.modal();
@@ -445,6 +454,7 @@ landLevel.saveLandLevelDetail = function () {
         return false;
     }
     var data = formSerializeArray(frm);
+    data.landLevelId = currentLandLevelId;
     Loading.progressShow();
     $.ajax({
         url: getContextPath() + '/dataLandLevel/saveAndUpdateDataLandLevelDetail',
@@ -659,7 +669,7 @@ function addHoverDom(treeId, treeNode) {
 }
 
 
-landLevel.loadTree = function (landLevelId) {
+landLevel.loadTree = function () {
     var zTreeObj;
 
     // zTree 的参数配置，深入使用请参考 API 文档（setting 配置详解）
@@ -667,7 +677,6 @@ landLevel.loadTree = function (landLevelId) {
         //页面上的显示效果
         view: {
             selectedMulti: true,
-            addHoverDom: addHoverDom, //当鼠标移动到节点上时，显示用户自定义控件
             removeHoverDom: removeHoverDom,//离开节点时的操作
             expandSpeed: "slow",
             fontCss: {color: "red"}
@@ -694,7 +703,7 @@ landLevel.loadTree = function (landLevelId) {
         url: getContextPath() + "/dataLandLevel/getDataLandLevelDetailTree",
         type: "get",
         dataType: "json",
-        data: {landLevelId: landLevelId},
+        data: {landLevelId: currentLandLevelId},
         success: function (result) {
             if (result.ret) {
                 $.fn.zTree.destroy();
@@ -741,11 +750,11 @@ landLevel.showDataAllocationCorrectionCoefficientVolumeRatioDetail = function ()
     }
     if (nodes.length == 1) {
         var treeNode = nodes[0];
-        if (treeNode.pid == 0){
+        if (treeNode.pid == 0) {
             landLevel.config.dataAllocationCorrectionCoefficientVolumeRatioDetailTableBox.find("input[name='allocationVolumeRatioId']").val(treeNode.id);
             landLevel.config.dataAllocationCorrectionCoefficientVolumeRatioDetailTableBox.modal("show");
             landLevel.showDataHousePriceIndexDetailList(treeNode.id);
-        }else {
+        } else {
             toastr.success('第一层级关联容积率系数配置');
         }
     } else {
@@ -789,7 +798,7 @@ landLevel.importDataAllocationCorrectionCoefficientVolumeRatio = function (flag)
         target.attr({allocationVolumeRatioId: allocationVolumeRatioId});
         return flag;
     }
-    allocationVolumeRatioId = target.attr("allocationVolumeRatioId") ;
+    allocationVolumeRatioId = target.attr("allocationVolumeRatioId");
     $.ajaxFileUpload({
         type: "POST",
         url: getContextPath() + "/dataAllocationCorrectionCoefficientVolumeRatioDetail/importDataAllocationCorrectionCoefficientVolumeRatio",
@@ -884,13 +893,9 @@ landLevel.showDataLandDetailAchievementDetail = function () {
     }
     if (nodes.length == 1) {
         var treeNode = nodes[0];
-        if (treeNode.pid > 0) {
-            landLevel.showLandDetailAchievementList(treeNode.id);
-            landLevel.config.achievementBoxDetail.find("input[name='levelDetailId']").val(treeNode.id);
-            landLevel.config.achievementBoxDetail.modal("show");
-        } else {
-            toastr.success('第一层级不关联土地因素!');
-        }
+        landLevel.showLandDetailAchievementList(treeNode.id);
+        landLevel.config.achievementBoxDetail.find("input[name='levelDetailId']").val(treeNode.id);
+        landLevel.config.achievementBoxDetail.modal("show");
     } else {
         toastr.success('选择层级');
     }
@@ -950,7 +955,7 @@ landLevel.importDataLandDetailAchievement = function (flag) {
         target.attr({levelDetailId: levelDetailId});
         return flag;
     }
-    levelDetailId = target.attr("levelDetailId") ;
+    levelDetailId = target.attr("levelDetailId");
     $.ajaxFileUpload({
         type: "POST",
         url: getContextPath() + "/dataLandDetailAchievement/importDataLandDetailAchievement",
@@ -1040,7 +1045,7 @@ landLevel.getElShow = function () {
     var elShow = true;
     try {
         var formData = formParams("frmQuery");
-        if (formData.readOnly == 'false') {
+        if (formData.readOnly == 'true') {
             elShow = false;
         }
     } catch (e) {
