@@ -2232,9 +2232,10 @@
                 </div>
             </div>
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">类型</label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">类型<span
+                        class="symbol required"></span></label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <select class="form-control" name="type"
+                    <select class="form-control" name="type" required="required"
                             onchange="commonDeclareApplyModel.house.certNameSplicing(this)">
                         <option value="0">--请选择--</option>
                         <c:if test="${not empty certificateTypes}">
@@ -2324,9 +2325,10 @@
                 </div>
             </div>
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">栋号</label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">栋号<span
+                        class="symbol required"></span></label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text"
+                    <input type="text" required="required"
                            placeholder="栋号" name="buildingNumber" class="form-control"
                            onblur="commonDeclareApplyModel.house.beLocatedSplicing(this)">
                 </div>
@@ -2352,18 +2354,20 @@
                 </div>
             </div>
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">房号</label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">房号<span
+                        class="symbol required"></span></label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <input type="text" placeholder="房号" name="roomNumber" class="form-control"
-                           onblur="commonDeclareApplyModel.house.beLocatedSplicing(this)">
+                           onblur="commonDeclareApplyModel.house.beLocatedSplicing(this)" required="required">
                 </div>
             </div>
         </div>
         <div class="form-group">
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">坐落</label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">坐落<span
+                        class="symbol required"></span></label>
                 <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
-                    <input type="text" placeholder="坐落" name="beLocated" class="form-control">
+                    <input type="text" placeholder="坐落" name="beLocated" class="form-control" required="required">
                 </div>
             </div>
         </div>
@@ -2384,8 +2388,28 @@
                 </label>
                 <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                     <div class="input-group">
-                        <input type="text"  name="certUse" class="form-control" list="houseUseList">
+                        <input type="text"  name="certUse" class="form-control" list="houseUseList" required="required">
                         <datalist id="houseUseList">
+
+                        </datalist>
+                        <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default docs-tooltip"
+                                                        onclick="$(this).closest('.input-group').find('input').val('');"
+                                                        data-toggle="tooltip" data-original-title="清除">
+                                                <i class="fa fa-trash-o"></i>
+                                                </button>
+                                            </span>
+                    </div>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                    房屋用途类别
+                </label>
+                <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                    <div class="input-group">
+                        <input type="text"  name="certUseCategory" class="form-control" list="housecertUseCategoryList">
+                        <datalist id="housecertUseCategoryList">
 
                         </datalist>
                         <span class="input-group-btn">
@@ -2453,7 +2477,7 @@
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地取得方式</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <select required="required" name="landAcquisition"
+                    <select name="landAcquisition"
                             class="form-control search-select select2 landAcquisition">
                     </select>
                 </div>
@@ -2461,14 +2485,14 @@
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">登记机关</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text"
+                    <input type="text" required="required"
                            placeholder="登记机关" name="registrationAuthority" class="form-control">
                 </div>
             </div>
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">分摊面积</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text"
+                    <input type="text" required="required"
                            placeholder="分摊面积(数字)" name="apportionmentArea" class="form-control"
                            data-rule-maxlength="100"
                            data-rule-number='true'>
@@ -2585,10 +2609,10 @@
         <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                    编号<span class="symbol required"></span>
+                    编号
                 </label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text" required="required" name="number" class="form-control"
+                    <input type="text" name="number" class="form-control"
                            onblur="commonDeclareApplyModel.land.landCertNameSplicing(this)"
                            placeholder="编号">
                 </div>
@@ -2603,7 +2627,8 @@
                 </div>
             </div>
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">共有情况</label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">共有情况<span
+                        class="symbol required"></span></label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <select required="required" name="publicSituation"
                             class="form-control search-select select2 publicSituation">
@@ -2614,10 +2639,10 @@
         <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                    土地权证号
+                    土地权证号<span class="symbol required"></span>
                 </label>
                 <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
-                    <input type="text" name="landCertName" class="form-control" placeholder="土地权证号">
+                    <input type="text" name="landCertName" class="form-control" placeholder="土地权证号" required="required">
                 </div>
             </div>
         </div>
@@ -2656,9 +2681,10 @@
                 </div>
             </div>
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">栋号</label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label"><span
+                        class="symbol required"></span>栋号</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text"
+                    <input type="text" required="required"
                            placeholder="栋号" name="buildingNumber" class="form-control"
                            onblur="commonDeclareApplyModel.land.landBeLocatedSplicing(this)">
                 </div>
@@ -2697,7 +2723,7 @@
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">坐落<span
                         class="symbol required"></span></label>
                 <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
-                    <input type="text" placeholder="坐落" name="beLocated" class="form-control">
+                    <input type="text" placeholder="坐落" name="beLocated" class="form-control" required="required">
                 </div>
             </div>
         </div>
@@ -2725,7 +2751,7 @@
                 </label>
                 <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                     <div class="input-group">
-                        <input type="text" id="certUse" name="certUse" class="form-control" list="certUseList">
+                        <input type="text" id="certUse" name="certUse" class="form-control" list="certUseList" required>
                         <datalist id="certUseList">
 
                         </datalist>
@@ -2746,7 +2772,7 @@
                 <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                     <div class="input-group">
                         <input type="text" id="certUseCategory" name="certUseCategory" list="certUseCategoryList"
-                               class="form-control">
+                               class="form-control" required>
                         <datalist id="certUseCategoryList">
 
                         </datalist>
@@ -2781,41 +2807,41 @@
                     </select>
                 </div>
             </div>
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                    终止日期<span class="symbol required"></span>
-                </label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input placeholder="终止日期"
-                           name="terminationDate" data-date-format="yyyy-mm-dd"
-                           class="form-control date-picker dbdate roomTime" required="required">
-                </div>
-            </div>
+            <%--<div class="x-valid">--%>
+                <%--<label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">--%>
+                    <%--终止日期<span class="symbol required"></span>--%>
+                <%--</label>--%>
+                <%--<div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">--%>
+                    <%--<input placeholder="终止日期"--%>
+                           <%--name="terminationDate" data-date-format="yyyy-mm-dd"--%>
+                           <%--class="form-control date-picker dbdate roomTime" required="required">--%>
+                <%--</div>--%>
+            <%--</div>--%>
         </div>
 
         <div class="form-group">
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">使用权面积<span
-                        class="symbol required"></span></label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">使用权面积</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <input type="text"
                            placeholder="使用权面积(数字)" name="useRightArea" class="form-control"
-                           data-rule-maxlength="100" data-rule-number='true'
-                           required="required">
+                           data-rule-maxlength="100" data-rule-number='true'>
                 </div>
             </div>
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">分摊面积</label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">分摊面积<span
+                        class="symbol required"></span></label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text"
+                    <input type="text" required="required"
                            placeholder="分摊面积(数字)" name="apportionmentArea" class="form-control"
                            data-rule-maxlength="100" data-rule-number='true'>
                 </div>
             </div>
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">登记机关</label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">登记机关<span
+                        class="symbol required"></span></label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text" placeholder="登记机关" name="registrationAuthority" class="form-control">
+                    <input type="text" placeholder="登记机关" name="registrationAuthority" class="form-control" required="required">
                 </div>
             </div>
         </div>
