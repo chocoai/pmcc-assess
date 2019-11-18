@@ -381,8 +381,8 @@ landLevel.initLandLevelDetailBaseForm = function (frm, data, key) {
 //新增土地级别
 landLevel.addLandLevelDetail = function () {
     var box = landLevel.config.land_level_detail_modal;
-    var zTree = $.fn.zTree.getZTreeObj(landLevel.config.tree.prop("id"));
-    var nodes = zTree.getSelectedNodes();
+    // var zTree = $.fn.zTree.getZTreeObj(landLevel.config.tree.prop("id"));
+    // var nodes = zTree.getSelectedNodes();
     var data = {};
     var key = "none";
     // if (nodes.length == 1) {
@@ -988,7 +988,7 @@ landLevel.editDataLandDetailAchievement = function (index) {
 landLevel.showLandDetailAchievementList = function (levelDetailId) {
     var cols = [];
     cols.push({field: 'typeName', title: '类型'});
-    cols.push({field: 'categoryName', title: '类别'});
+    cols.push({field: 'category', title: '类别'});
     cols.push({field: 'gradeName', title: '等级'});
     cols.push({field: 'reamark', title: '说明'});
     cols.push({field: 'achievement', title: '分值'});

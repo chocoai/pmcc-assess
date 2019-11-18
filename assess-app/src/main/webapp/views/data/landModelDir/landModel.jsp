@@ -268,7 +268,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">土地级别因素列表</h3>
+                <h3 class="modal-title">土地级别因素</h3>
                 <input type="hidden" name="levelDetailId">
             </div>
             <div class="modal-body">
@@ -309,7 +309,7 @@
                                                 class="symbol required"></span></label>
                                         <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
                                             <select name="type" required
-                                                    class="form-control search-select select2 type">
+                                                    class="form-control  type">
                                             </select>
                                         </div>
                                     </div>

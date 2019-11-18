@@ -731,11 +731,6 @@ public class GenerateMdCostApproachService implements Serializable {
                     } else {
                         linkedList.add(nullValue);
                     }
-                    if (StringUtils.isNotEmpty(types.get(i).get(0).getCategoryName())) {
-                        linkedList.add(types.get(i).get(0).getCategoryName());
-                    } else {
-                        linkedList.add(nullValue);
-                    }
                     for (DataLandLevelDetailAchievementVo item : types.get(i)) {
                         if (index) {
                             if (item.getAchievement() != null) {
@@ -786,9 +781,7 @@ public class GenerateMdCostApproachService implements Serializable {
             for (int i = 0; i < objects.size(); i++) {
                 List<DataLandLevelDetailAchievementVo> vos = JSON.parseArray(JSON.toJSONString(objects.get(i)), DataLandLevelDetailAchievementVo.class);
                 for (DataLandLevelDetailAchievementVo item : vos) {
-                    if ("update".equals(item.getModelStr())) {
-                        filterVoList.add(item);
-                    }
+
                 }
             }
         }
@@ -813,17 +806,7 @@ public class GenerateMdCostApproachService implements Serializable {
                     } else {
                         linkedList.add(nullValue);
                     }
-                    if (StringUtils.isNotEmpty(types.get(i).get(0).getCategoryName())) {
-                        linkedList.add(types.get(i).get(0).getCategoryName());
-                    } else {
-                        linkedList.add(nullValue);
-                    }
                     for (DataLandLevelDetailAchievementVo item : types.get(i)) {
-                        if (StringUtils.isNotEmpty(item.getGradeName())) {
-                            linkedList.add(item.getGradeName());
-                        } else {
-                            linkedList.add(nullValue);
-                        }
                         if (StringUtils.isNotEmpty(item.getReamark())) {
                             linkedList.add(item.getReamark());
                         } else {

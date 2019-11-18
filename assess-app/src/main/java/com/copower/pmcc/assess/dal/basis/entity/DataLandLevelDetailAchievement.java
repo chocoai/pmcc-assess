@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.dal.basis.entity;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class DataLandLevelDetailAchievement {
@@ -7,13 +8,13 @@ public class DataLandLevelDetailAchievement {
 
     private Integer levelDetailId;
 
+    private Integer type;
+
     private String category;
 
     private Integer grade;
 
-    private Integer type;
-
-    private String achievement;
+    private BigDecimal achievement;
 
     private String reamark;
 
@@ -39,6 +40,14 @@ public class DataLandLevelDetailAchievement {
         this.levelDetailId = levelDetailId;
     }
 
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
     public String getCategory() {
         return category;
     }
@@ -55,20 +64,12 @@ public class DataLandLevelDetailAchievement {
         this.grade = grade;
     }
 
-    public Integer getType() {
-        return type;
-    }
-
-    public void setType(Integer type) {
-        this.type = type;
-    }
-
-    public String getAchievement() {
+    public BigDecimal getAchievement() {
         return achievement;
     }
 
-    public void setAchievement(String achievement) {
-        this.achievement = achievement == null ? null : achievement.trim();
+    public void setAchievement(BigDecimal achievement) {
+        this.achievement = achievement;
     }
 
     public String getReamark() {

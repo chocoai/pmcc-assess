@@ -44,11 +44,11 @@ public class WordSheetTest {
     private DataLandLevelDetailAchievementDao dataLandLevelDetailAchievementDao;
 
     @Test
-    public void clear(){
+    public void clear() {
         DataLandLevelDetailAchievement query = new DataLandLevelDetailAchievement();
         List<DataLandLevelDetailAchievement> LandLevelDetailAchievements = dataLandLevelDetailAchievementDao.getDataLandLevelDetailAchievementList(query);
 
-        System.out.println("======>"+LandLevelDetailAchievements.size());
+        System.out.println("======>" + LandLevelDetailAchievements.size());
     }
 
     private int id1989 = 1989;
@@ -126,28 +126,28 @@ public class WordSheetTest {
                     System.out.println("rowLength" + rowLength);
                     //工业用地
                     if (i == 0) {
-                        setValue( rowA, rowB, rowLength, exampleDDD, sheet, targetSheet);
+                        setValue(rowA, rowB, rowLength, exampleDDD, sheet, targetSheet);
                         if (true) {
                             save(exampleDDD);
                         }
                     }
                     //公共管理与公共服务用地
                     if (i == 1) {
-                        setValue( rowA, rowB, rowLength, exampleDDD, sheet, targetSheet);
+                        setValue(rowA, rowB, rowLength, exampleDDD, sheet, targetSheet);
                         if (true) {
                             save(exampleDDD);
                         }
                     }
                     //商服用地
                     if (i == 2) {
-                        setValue( rowA, rowB, rowLength, exampleDDD, sheet, targetSheet);
+                        setValue(rowA, rowB, rowLength, exampleDDD, sheet, targetSheet);
                         if (true) {
                             save(exampleDDD);
                         }
                     }
                     //住宅用地
                     if (i == 3) {
-                        setValue( rowA, rowB, rowLength, exampleDDD, sheet, targetSheet);
+                        setValue(rowA, rowB, rowLength, exampleDDD, sheet, targetSheet);
                         if (true) {
                             save(exampleDDD);
                         }
@@ -160,15 +160,13 @@ public class WordSheetTest {
         }
     }
 
-    private void setValue( Row rowA, Row rowB, int rowLength, ExampleDDD exampleDDD, Sheet sheet, Sheet targetSheet) {
+    private void setValue(Row rowA, Row rowB, int rowLength, ExampleDDD exampleDDD, Sheet sheet, Sheet targetSheet) {
         for (int k = 3; k < rowLength; k++) {
             rowB = sheet.getRow(k);
             rowA = targetSheet.getRow(k);
             for (int j = 0; j < gradeLists.size(); j++) {
                 DataLandLevelDetailAchievementVo land = new DataLandLevelDetailAchievementVo();
-                land.setCategoryName(PoiUtils.getCellValue(rowA.getCell(2)));
                 land.setCategory(PoiUtils.getCellValue(rowB.getCell(2)));
-                land.setGradeName(gradeLists2.get(j));
                 land.setGrade(Integer.parseInt(gradeLists.get(j)));
                 land.setReamark(PoiUtils.getCellValue(rowA.getCell(3 + j)));
                 String value = PoiUtils.getCellValue(rowB.getCell(3 + j));

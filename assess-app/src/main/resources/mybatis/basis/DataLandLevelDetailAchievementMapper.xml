@@ -4,10 +4,10 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.DataLandLevelDetailAchievement" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="level_detail_id" property="levelDetailId" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
     <result column="category" property="category" jdbcType="VARCHAR" />
     <result column="grade" property="grade" jdbcType="INTEGER" />
-    <result column="type" property="type" jdbcType="INTEGER" />
-    <result column="achievement" property="achievement" jdbcType="VARCHAR" />
+    <result column="achievement" property="achievement" jdbcType="DECIMAL" />
     <result column="reamark" property="reamark" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
@@ -72,7 +72,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, level_detail_id, category, grade, type, achievement, reamark, creator, gmt_created, 
+    id, level_detail_id, type, category, grade, achievement, reamark, creator, gmt_created, 
     gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataLandLevelDetailAchievementExample" >
@@ -109,12 +109,12 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_data_land_level_detail_achievement (level_detail_id, category, grade, 
-      type, achievement, reamark, 
+    insert into tb_data_land_level_detail_achievement (level_detail_id, type, category, 
+      grade, achievement, reamark, 
       creator, gmt_created, gmt_modified
       )
-    values (#{levelDetailId,jdbcType=INTEGER}, #{category,jdbcType=VARCHAR}, #{grade,jdbcType=INTEGER}, 
-      #{type,jdbcType=INTEGER}, #{achievement,jdbcType=VARCHAR}, #{reamark,jdbcType=VARCHAR}, 
+    values (#{levelDetailId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{category,jdbcType=VARCHAR}, 
+      #{grade,jdbcType=INTEGER}, #{achievement,jdbcType=DECIMAL}, #{reamark,jdbcType=VARCHAR}, 
       #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
       )
   </insert>
@@ -127,14 +127,14 @@
       <if test="levelDetailId != null" >
         level_detail_id,
       </if>
+      <if test="type != null" >
+        type,
+      </if>
       <if test="category != null" >
         category,
       </if>
       <if test="grade != null" >
         grade,
-      </if>
-      <if test="type != null" >
-        type,
       </if>
       <if test="achievement != null" >
         achievement,
@@ -156,17 +156,17 @@
       <if test="levelDetailId != null" >
         #{levelDetailId,jdbcType=INTEGER},
       </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
       <if test="category != null" >
         #{category,jdbcType=VARCHAR},
       </if>
       <if test="grade != null" >
         #{grade,jdbcType=INTEGER},
       </if>
-      <if test="type != null" >
-        #{type,jdbcType=INTEGER},
-      </if>
       <if test="achievement != null" >
-        #{achievement,jdbcType=VARCHAR},
+        #{achievement,jdbcType=DECIMAL},
       </if>
       <if test="reamark != null" >
         #{reamark,jdbcType=VARCHAR},
@@ -197,17 +197,17 @@
       <if test="record.levelDetailId != null" >
         level_detail_id = #{record.levelDetailId,jdbcType=INTEGER},
       </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=INTEGER},
+      </if>
       <if test="record.category != null" >
         category = #{record.category,jdbcType=VARCHAR},
       </if>
       <if test="record.grade != null" >
         grade = #{record.grade,jdbcType=INTEGER},
       </if>
-      <if test="record.type != null" >
-        type = #{record.type,jdbcType=INTEGER},
-      </if>
       <if test="record.achievement != null" >
-        achievement = #{record.achievement,jdbcType=VARCHAR},
+        achievement = #{record.achievement,jdbcType=DECIMAL},
       </if>
       <if test="record.reamark != null" >
         reamark = #{record.reamark,jdbcType=VARCHAR},
@@ -230,10 +230,10 @@
     update tb_data_land_level_detail_achievement
     set id = #{record.id,jdbcType=INTEGER},
       level_detail_id = #{record.levelDetailId,jdbcType=INTEGER},
+      type = #{record.type,jdbcType=INTEGER},
       category = #{record.category,jdbcType=VARCHAR},
       grade = #{record.grade,jdbcType=INTEGER},
-      type = #{record.type,jdbcType=INTEGER},
-      achievement = #{record.achievement,jdbcType=VARCHAR},
+      achievement = #{record.achievement,jdbcType=DECIMAL},
       reamark = #{record.reamark,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -248,17 +248,17 @@
       <if test="levelDetailId != null" >
         level_detail_id = #{levelDetailId,jdbcType=INTEGER},
       </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
       <if test="category != null" >
         category = #{category,jdbcType=VARCHAR},
       </if>
       <if test="grade != null" >
         grade = #{grade,jdbcType=INTEGER},
       </if>
-      <if test="type != null" >
-        type = #{type,jdbcType=INTEGER},
-      </if>
       <if test="achievement != null" >
-        achievement = #{achievement,jdbcType=VARCHAR},
+        achievement = #{achievement,jdbcType=DECIMAL},
       </if>
       <if test="reamark != null" >
         reamark = #{reamark,jdbcType=VARCHAR},
@@ -278,10 +278,10 @@
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataLandLevelDetailAchievement" >
     update tb_data_land_level_detail_achievement
     set level_detail_id = #{levelDetailId,jdbcType=INTEGER},
+      type = #{type,jdbcType=INTEGER},
       category = #{category,jdbcType=VARCHAR},
       grade = #{grade,jdbcType=INTEGER},
-      type = #{type,jdbcType=INTEGER},
-      achievement = #{achievement,jdbcType=VARCHAR},
+      achievement = #{achievement,jdbcType=DECIMAL},
       reamark = #{reamark,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},

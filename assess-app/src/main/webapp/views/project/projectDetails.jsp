@@ -106,12 +106,12 @@
                         <a target="_blank" class="btn btn-primary"
                            href="${pageContext.request.contextPath}/projectReportFile/index?projectId=${projectInfo.id}">估价委托书及相关证明</a>
                     </div>
-                    <div class="btn-group">
-                        <button type="button" onclick="projectDetails.enterNextStage();"
-                                class="btn btn-primary">
-                            进入下阶段
-                        </button>
-                    </div>
+                    <%--<div class="btn-group">--%>
+                        <%--<button type="button" onclick="projectDetails.enterNextStage();"--%>
+                                <%--class="btn btn-primary">--%>
+                            <%--进入下阶段--%>
+                        <%--</button>--%>
+                    <%--</div>--%>
                     <div class="btn-group">
                         <button type="button" onclick="projectDetails.loadPlanTabInfo(projectDetails.getActiveTab());"
                                 class="btn btn-primary">
