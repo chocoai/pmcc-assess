@@ -19,6 +19,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.poi.ss.usermodel.Row;
@@ -287,7 +288,13 @@ public class DataLandLevelDetailAchievementService {
         org.springframework.beans.BeanUtils.copyProperties(oo, vo);
         vo.setTypeName(baseDataDicService.getNameById(oo.getType()));
         vo.setGradeName(baseDataDicService.getNameById(oo.getGrade()));
-        vo.setAchievement(oo.getAchievement().multiply(new BigDecimal(100)));
+        if (StringUtils.isNotEmpty(oo.getCategory())) {
+            vo.setCategoryName(oo.getCategory());
+            if(NumberUtils.isNumber(oo.getCategory())){
+                vo.setCategoryName(baseDataDicService.getNameById(oo.getCategory()));
+            }
+        }
+        //vo.setAchievement(oo.getAchievement().multiply(new BigDecimal(100)));
         return vo;
     }
 

@@ -26,9 +26,21 @@
 
 <div class="form-group">
     <div class="x-valid">
+        <input type="hidden" name="landLevelContent"
+               value='${basicEstateLandState.landLevelContent}'>
         <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地级别</label>
         <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-            <label class="form-control" name="landLevelName">${basicEstateLandState.landLevelName}</label>
+            <div class="input-group">
+                <input type="text" readonly="readonly" class="form-control" name="landLevelName"
+                       value="${basicEstateLandState.landLevelName}">
+                <span class="input-group-btn">
+                            <button type="button" class="btn btn-default docs-tooltip"
+                                    onclick="estateCommon.landLevelLoadHtmlApproval();"
+                                    data-toggle="tooltip" data-original-title="土地因素">
+                        <i class="fa fa-magic"></i>
+                        </button>
+                </span>
+            </div>
         </div>
     </div>
     <div class="x-valid">
@@ -231,27 +243,50 @@
     </c:if>
 </div>
 
-<div class="form-group">
-    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-        <table class="table table-striped table-bordered" style="display: none">
-            <thead>
-            <tr>
-                <th width="20%">土地级别类别</th>
-                <th width="20%">土地级别类型</th>
-                <th width="15%">等级</th>
-                <th width="10%">分值</th>
-            </tr>
-            </thead>
-            <tbody id="landLevelTabContent">
+<div id="detailAchievementModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true" data-height="500">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">土地因素</h3>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="landLevelContentFrm">
+                    <div class="form-group">
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                <tr>
+                                    <th width="10%">土地级别类别</th>
+                                    <th width="10%">土地级别类型</th>
+                                    <th width="10%">土地级别等级</th>
+                                    <th width="20%">说明</th>
+                                    <th width="10%">分值</th>
+                                </tr>
+                                </thead>
+                                <tbody id="landLevelTabContent">
 
-            </tbody>
-        </table>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">
+                    关闭
+                </button>
+            </div>
+        </div>
     </div>
 </div>
 
 <script type="text/html" id="landLevelTabContentBody">
     <tr class="group">
-        <td  class="table-cell">
+        <td class="table-cell">
             {landLevelTypeName}
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -259,15 +294,14 @@
         <td>
             {landLevelCategoryName}
         </td>
-
-
-
         <td>
-            <label name="gradeName" class="form-control">{gradeName}</label>
+            {gradeName}
+        </td>
+        <td>
+            <label name="reamark" class="form-control">{reamark}</label>
         </td>
         <td>
             <label name="landFactorTotalScore" class="form-control">{landFactorTotalScore}</label>
         </td>
-
     </tr>
 </script>

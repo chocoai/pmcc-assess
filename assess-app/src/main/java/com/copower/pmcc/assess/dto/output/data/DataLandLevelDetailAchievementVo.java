@@ -12,6 +12,7 @@ import java.io.Serializable;
 public class DataLandLevelDetailAchievementVo extends DataLandLevelDetailAchievement implements Serializable {
     private String typeName;
     private String gradeName;
+    private String categoryName;
 
     public String getTypeName() {
         return typeName;
@@ -27,5 +28,13 @@ public class DataLandLevelDetailAchievementVo extends DataLandLevelDetailAchieve
 
     public void setGradeName(String gradeName) {
         this.gradeName = gradeName;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 }
