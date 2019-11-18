@@ -319,10 +319,20 @@
                                         <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">类别<span
                                                 class="symbol required"></span></label>
                                         <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
-                                            <select name="category" required
-                                                    class="form-control search-select select2 category">
-                                                <option>请先选择类型</option>
-                                            </select>
+                                            <div class="input-group">
+                                                <input type="text" name="category" list="categoryList"
+                                                       class="form-control">
+                                                <datalist id="categoryList">
+
+                                                </datalist>
+                                                <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default docs-tooltip"
+                                                        onclick="$(this).closest('.input-group').find('input').val('');"
+                                                        data-toggle="tooltip" data-original-title="清除">
+                                                <i class="fa fa-trash-o"></i>
+                                                </button>
+                                            </span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

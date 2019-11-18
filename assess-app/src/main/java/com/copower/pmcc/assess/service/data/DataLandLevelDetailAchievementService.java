@@ -32,6 +32,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileInputStream;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -78,17 +79,8 @@ public class DataLandLevelDetailAchievementService {
                 }
                 case 1: {
                     String value = PoiUtils.getCellValue(row.getCell(j));
-                    if (org.apache.commons.lang.StringUtils.isNotBlank(value)) {
-                        if (target.getType() != null) {
-                            BaseDataDic typeDic = baseDataDicService.getDataDicByName(baseDataDicService.getCacheDataDicListByPid(target.getType()), value);
-                            if (typeDic == null) {
-                                builder.append(String.format("\n第%s行异常：类型与系统配置的名称不一致", i));
-                            } else {
-                                target.setCategory(typeDic.getId().toString());
-                            }
-                        }
-                    } else {
-                        builder.append(String.format("\n第%s行异常：类型没有填写正确", i));
+                    if (org.apache.commons.lang3.StringUtils.isNotBlank(value)) {
+                        target.setCategory(value);
                     }
                     break;
                 }
@@ -110,8 +102,10 @@ public class DataLandLevelDetailAchievementService {
                 }
                 case 3: {
                     String value = PoiUtils.getCellValue(row.getCell(j));
-                    if (org.apache.commons.lang3.StringUtils.isNotBlank(value)) {
-                        target.setAchievement(value);
+                    if (org.apache.commons.lang3.StringUtils.isNotBlank(value) && NumberUtils.isNumber(value)) {
+                        target.setAchievement(new BigDecimal(value));
+                    } else {
+                        builder.append(String.format("\n第%s行异常：分值应填写数字", i));
                     }
                     break;
                 }

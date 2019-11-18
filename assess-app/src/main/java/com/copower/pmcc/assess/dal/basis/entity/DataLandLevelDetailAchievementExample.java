@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.dal.basis.entity;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -225,6 +226,66 @@ public class DataLandLevelDetailAchievementExample {
             return (Criteria) this;
         }
 
+        public Criteria andTypeIsNull() {
+            addCriterion("type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeIsNotNull() {
+            addCriterion("type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeEqualTo(Integer value) {
+            addCriterion("type =", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeNotEqualTo(Integer value) {
+            addCriterion("type <>", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeGreaterThan(Integer value) {
+            addCriterion("type >", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("type >=", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeLessThan(Integer value) {
+            addCriterion("type <", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeLessThanOrEqualTo(Integer value) {
+            addCriterion("type <=", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeIn(List<Integer> values) {
+            addCriterion("type in", values, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeNotIn(List<Integer> values) {
+            addCriterion("type not in", values, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeBetween(Integer value1, Integer value2) {
+            addCriterion("type between", value1, value2, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("type not between", value1, value2, "type");
+            return (Criteria) this;
+        }
+
         public Criteria andCategoryIsNull() {
             addCriterion("category is null");
             return (Criteria) this;
@@ -355,66 +416,6 @@ public class DataLandLevelDetailAchievementExample {
             return (Criteria) this;
         }
 
-        public Criteria andTypeIsNull() {
-            addCriterion("type is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeIsNotNull() {
-            addCriterion("type is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeEqualTo(Integer value) {
-            addCriterion("type =", value, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeNotEqualTo(Integer value) {
-            addCriterion("type <>", value, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeGreaterThan(Integer value) {
-            addCriterion("type >", value, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeGreaterThanOrEqualTo(Integer value) {
-            addCriterion("type >=", value, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeLessThan(Integer value) {
-            addCriterion("type <", value, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeLessThanOrEqualTo(Integer value) {
-            addCriterion("type <=", value, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeIn(List<Integer> values) {
-            addCriterion("type in", values, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeNotIn(List<Integer> values) {
-            addCriterion("type not in", values, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeBetween(Integer value1, Integer value2) {
-            addCriterion("type between", value1, value2, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeNotBetween(Integer value1, Integer value2) {
-            addCriterion("type not between", value1, value2, "type");
-            return (Criteria) this;
-        }
-
         public Criteria andAchievementIsNull() {
             addCriterion("achievement is null");
             return (Criteria) this;
@@ -425,62 +426,52 @@ public class DataLandLevelDetailAchievementExample {
             return (Criteria) this;
         }
 
-        public Criteria andAchievementEqualTo(String value) {
+        public Criteria andAchievementEqualTo(BigDecimal value) {
             addCriterion("achievement =", value, "achievement");
             return (Criteria) this;
         }
 
-        public Criteria andAchievementNotEqualTo(String value) {
+        public Criteria andAchievementNotEqualTo(BigDecimal value) {
             addCriterion("achievement <>", value, "achievement");
             return (Criteria) this;
         }
 
-        public Criteria andAchievementGreaterThan(String value) {
+        public Criteria andAchievementGreaterThan(BigDecimal value) {
             addCriterion("achievement >", value, "achievement");
             return (Criteria) this;
         }
 
-        public Criteria andAchievementGreaterThanOrEqualTo(String value) {
+        public Criteria andAchievementGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("achievement >=", value, "achievement");
             return (Criteria) this;
         }
 
-        public Criteria andAchievementLessThan(String value) {
+        public Criteria andAchievementLessThan(BigDecimal value) {
             addCriterion("achievement <", value, "achievement");
             return (Criteria) this;
         }
 
-        public Criteria andAchievementLessThanOrEqualTo(String value) {
+        public Criteria andAchievementLessThanOrEqualTo(BigDecimal value) {
             addCriterion("achievement <=", value, "achievement");
             return (Criteria) this;
         }
 
-        public Criteria andAchievementLike(String value) {
-            addCriterion("achievement like", value, "achievement");
-            return (Criteria) this;
-        }
-
-        public Criteria andAchievementNotLike(String value) {
-            addCriterion("achievement not like", value, "achievement");
-            return (Criteria) this;
-        }
-
-        public Criteria andAchievementIn(List<String> values) {
+        public Criteria andAchievementIn(List<BigDecimal> values) {
             addCriterion("achievement in", values, "achievement");
             return (Criteria) this;
         }
 
-        public Criteria andAchievementNotIn(List<String> values) {
+        public Criteria andAchievementNotIn(List<BigDecimal> values) {
             addCriterion("achievement not in", values, "achievement");
             return (Criteria) this;
         }
 
-        public Criteria andAchievementBetween(String value1, String value2) {
+        public Criteria andAchievementBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("achievement between", value1, value2, "achievement");
             return (Criteria) this;
         }
 
-        public Criteria andAchievementNotBetween(String value1, String value2) {
+        public Criteria andAchievementNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("achievement not between", value1, value2, "achievement");
             return (Criteria) this;
         }

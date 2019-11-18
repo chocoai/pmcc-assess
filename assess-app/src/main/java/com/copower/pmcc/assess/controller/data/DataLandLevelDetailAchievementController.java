@@ -34,8 +34,8 @@ public class DataLandLevelDetailAchievementController {
         return bootstrapTableVo;
     }
 
-    @DeleteMapping(value = "/delete/{id}",name = "restful delete")
-    public HttpResult delete(@PathVariable Integer id){
+    @DeleteMapping(value = "/delete/{id}", name = "restful delete")
+    public HttpResult delete(@PathVariable Integer id) {
         try {
             return HttpResult.newCorrectResult(LandLevelDetailAchievementService.deleteDataLandLevelDetailAchievement(id));
         } catch (Exception e) {
@@ -44,8 +44,8 @@ public class DataLandLevelDetailAchievementController {
         }
     }
 
-    @GetMapping(value = "/get/{id}",name = "restful get")
-    public HttpResult get(@PathVariable Integer id){
+    @GetMapping(value = "/get/{id}", name = "restful get")
+    public HttpResult get(@PathVariable Integer id) {
         try {
             return HttpResult.newCorrectResult(LandLevelDetailAchievementService.getDataLandLevelDetailAchievementById(id));
         } catch (Exception e) {
@@ -54,10 +54,10 @@ public class DataLandLevelDetailAchievementController {
         }
     }
 
-    @PostMapping(value = "/save",name = "restful post")
-    public HttpResult save( String formData){
+    @PostMapping(value = "/save", name = "restful post")
+    public HttpResult save(String formData) {
         try {
-            DataLandLevelDetailAchievement oo = JSON.parseObject(formData,DataLandLevelDetailAchievement.class);
+            DataLandLevelDetailAchievement oo = JSON.parseObject(formData, DataLandLevelDetailAchievement.class);
             return HttpResult.newCorrectResult(LandLevelDetailAchievementService.saveDataLandLevelDetailAchievement(oo));
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
@@ -65,10 +65,10 @@ public class DataLandLevelDetailAchievementController {
         }
     }
 
-    @GetMapping(value = "/list",name = "list get")
-    public HttpResult list(DataLandLevelDetailAchievement oo){
+    @GetMapping(value = "/list", name = "list get")
+    public HttpResult list(DataLandLevelDetailAchievement oo) {
         try {
-            return HttpResult.newCorrectResult(LandLevelDetailAchievementService.getDataLandLevelDetailAchievementList(oo).stream().map( po -> LandLevelDetailAchievementService.getDataLandLevelDetailAchievementVo(po)).collect(Collectors.toList()));
+            return HttpResult.newCorrectResult(LandLevelDetailAchievementService.getDataLandLevelDetailAchievementList(oo).stream().map(po -> LandLevelDetailAchievementService.getDataLandLevelDetailAchievementVo(po)).collect(Collectors.toList()));
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult(500, e);
@@ -76,8 +76,8 @@ public class DataLandLevelDetailAchievementController {
     }
 
 
-    @GetMapping(value = "/landLevelFilter",name = "过滤 list get")
-    public HttpResult landLevelFilter(DataLandLevelDetailAchievement oo){
+    @GetMapping(value = "/landLevelFilter", name = "过滤 list get")
+    public HttpResult landLevelFilter(DataLandLevelDetailAchievement oo) {
         try {
             return HttpResult.newCorrectResult(LandLevelDetailAchievementService.landLevelFilter(oo));
         } catch (Exception e) {
@@ -86,8 +86,8 @@ public class DataLandLevelDetailAchievementController {
         }
     }
 
-    @RequestMapping(value = "/importDataLandLevelDetailAchievement", name = "导入 (excel)", method = RequestMethod.POST)
-    public HttpResult importDataLandLevelDetailAchievement(DataLandLevelDetailAchievement oo,HttpServletRequest request){
+    @RequestMapping(value = "/importDataLandDetailAchievement", name = "导入 (excel)", method = RequestMethod.POST)
+    public HttpResult importDataLandLevelDetailAchievement(DataLandLevelDetailAchievement oo, HttpServletRequest request) {
         try {
             MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
             Iterator<String> fileNames = multipartRequest.getFileNames();
@@ -95,7 +95,7 @@ public class DataLandLevelDetailAchievementController {
             if (multipartFile.isEmpty()) {
                 return HttpResult.newErrorResult("上传的文件不能为空");
             }
-            String resultString = LandLevelDetailAchievementService.importDataLandLevelDetailAchievement(multipartFile,oo);
+            String resultString = LandLevelDetailAchievementService.importDataLandLevelDetailAchievement(multipartFile, oo);
             return HttpResult.newCorrectResult(200, resultString);
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
