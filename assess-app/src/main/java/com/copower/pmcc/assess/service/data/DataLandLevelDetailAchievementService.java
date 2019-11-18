@@ -20,7 +20,6 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.RandomUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -32,6 +31,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileInputStream;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -286,14 +286,8 @@ public class DataLandLevelDetailAchievementService {
         DataLandLevelDetailAchievementVo vo = new DataLandLevelDetailAchievementVo();
         org.springframework.beans.BeanUtils.copyProperties(oo, vo);
         vo.setTypeName(baseDataDicService.getNameById(oo.getType()));
-        if (StringUtils.isNotEmpty(oo.getCategory())) {
-            vo.setCategoryName(oo.getCategory());
-            if (NumberUtils.isNumber(oo.getCategory())) {
-                vo.setCategoryName(baseDataDicService.getNameById(oo.getCategory()));
-            }
-        }
         vo.setGradeName(baseDataDicService.getNameById(oo.getGrade()));
-//        vo.setJsonObj(JSON.toJSONString(vo));
+        vo.setAchievement(oo.getAchievement().multiply(new BigDecimal(100)));
         return vo;
     }
 
