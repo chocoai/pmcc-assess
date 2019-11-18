@@ -914,15 +914,14 @@ landLevel.initFormLandDetailAchievement = function (row) {
         landLevel.config.achievementFrm.find("select[name='type']").empty().html(html).trigger('change');
     });
     landLevel.config.achievementFrm.find("select[name='type']").off('change').on('change', function () {
-        AssessCommon.loadDataDicByPid($(this).val(), row.category, function (html, data) {
-            landLevel.config.achievementFrm.find("select[name='category']").empty().html(html).trigger('change');
-            landLevel.config.achievementFrm.find("select.category").empty().html(html).trigger('change');
+        AssessCommon.loadSonDataListHtml($(this).val(),row.category, function (html, data) {
+            landLevel.config.achievementFrm.find("#categoryList").empty().html(html).trigger('change');
         });
     });
     AssessCommon.loadDataDicByKey(AssessDicKey.programmeMarketCostapproachGrade, row.grade, function (html, data) {
         landLevel.config.achievementFrm.find("select[name='grade']").empty().html(html).trigger('change');
     });
-};
+    landLevel.config.achievementFrm.find('[name=achievement]').attr('data-value', row.achievement).val(AssessCommon.pointToPercent(row.achievement));};
 
 //土地级别详情从表 土地因素 删除
 landLevel.deleteDataLandDetailAchievement = function (index) {
@@ -991,7 +990,13 @@ landLevel.showLandDetailAchievementList = function (levelDetailId) {
     cols.push({field: 'category', title: '类别'});
     cols.push({field: 'gradeName', title: '等级'});
     cols.push({field: 'reamark', title: '说明'});
-    cols.push({field: 'achievement', title: '分值'});
+    cols.push({
+        field: 'achievement', title: '分值', formatter: function (value, row, index) {
+            if (value) {
+                return AssessCommon.pointToPercent(value);
+            }
+        }
+    });
     var elShow = landLevel.getElShow();
     if (elShow) {
         cols.push({

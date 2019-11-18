@@ -318,7 +318,9 @@ assessCommonHouse.showAddModelLand = function (id) {
         landRightNature: item.landAcquisition,
         registrationAuthority: item.registrationAuthority,
         apportionmentArea: item.apportionmentArea,
-        terminationDate: item.useEndDate
+        terminationDate: item.useEndDate,
+        ownership:item.ownership,
+        publicSituation:item.publicSituation
     };
     declareCommon.showHtmlMastInit($("#" + assessCommonHouse.config.son.declareRealtyLandCert.frm), function (area) {
         $('#' + assessCommonHouse.config.son.declareRealtyLandCert.box).modal("show");

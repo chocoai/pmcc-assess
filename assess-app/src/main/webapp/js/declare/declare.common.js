@@ -599,6 +599,11 @@ declareCommon.initHouse = function (item, form, fileArr, callback) {
     AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareUseRightType, item.landAcquisition, function (html, data) {
         frm.find("select[name='landAcquisition']").empty().html(html).trigger('change');
     });
+    frm.find("input[name='certUse']").off('change').on('change', function () {
+        AssessCommon.certUseOnchenge(AssessDicKey.examineHouseLoadUtility,$(this).val(),item.landCertUseCategory, function (html, data) {
+            frm.find("#housecertUseCategoryList").empty().html(html).trigger('change');
+        });
+    });
     //绑定变更事件
     frm.find("select.landAcquisition").off('change').on('change', function () {
         var landAcquisitionId = frm.find("select.landAcquisition").val();
