@@ -2645,9 +2645,9 @@ public class GenerateBaseDataService {
         final List<String> stringList = new ArrayList<>();
         if (StringUtils.isNotBlank(generateReportInfo.getRealEstateAppraiser())) {
             stringList.addAll(FormatUtils.transformString2List(generateReportInfo.getRealEstateAppraiser()));
-            List<String>  stringList2 = stringList.stream().distinct().collect(Collectors.toList());
+            List<String> stringList2 = stringList.stream().distinct().collect(Collectors.toList());
             stringList.clear();
-            stringList.addAll(stringList2) ;
+            stringList.addAll(stringList2);
         }
         if (CollectionUtils.isNotEmpty(projectPhaseVos)) {
             projectPhaseVos.stream().forEach(projectPhaseScene -> {
@@ -2660,10 +2660,10 @@ public class GenerateBaseDataService {
                     List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
                     if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
                         projectPlanDetailsList.stream().forEach(projectPlanDetails -> {
-                            String account = projectPlanDetails.getExecuteUserAccount() ;
+                            String account = projectPlanDetails.getExecuteUserAccount();
                             if (StringUtils.isNotBlank(account)) {
-                                if (!stringList.isEmpty()){
-                                    if (!stringList.contains(account)){
+                                if (!stringList.isEmpty()) {
+                                    if (!stringList.contains(account)) {
                                         stringSet.add(publicService.getUserNameByAccount(account));
                                     }
                                 }
@@ -2673,7 +2673,7 @@ public class GenerateBaseDataService {
                 }
             });
         }
-        return StringUtils.join(stringSet,"");
+        return StringUtils.join(stringSet, "");
     }
 
     /**
@@ -4598,7 +4598,7 @@ public class GenerateBaseDataService {
      * @return
      * @throws Exception
      */
-    private String getCCB_Pre_Evaluation_Data_FormWriteWord(SchemeJudgeObject schemeJudgeObject, List<SchemeJudgeObject> schemeJudgeObjectList, List<SchemeLiquidationAnalysisItem> liquidationAnalysisItemList, int size, int i) throws Exception {
+    private synchronized String getCCB_Pre_Evaluation_Data_FormWriteWord(SchemeJudgeObject schemeJudgeObject, List<SchemeJudgeObject> schemeJudgeObjectList, List<SchemeLiquidationAnalysisItem> liquidationAnalysisItemList, int size, int i) throws Exception {
         String localPath = getLocalPath();
         Map<SchemeJudgeObject, KeyValueDto> keyValueDtoMap = getAssessAssessTotalData();
         BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
@@ -4754,6 +4754,18 @@ public class GenerateBaseDataService {
                 } catch (Exception e) {
                 }
                 ccb_Pre_Evaluation_Data_FormWriteWord2(documentBuilder, stringLinkedList, "抵押净值2(元)", val);
+            }
+            //最新添加的三行
+            {
+                String val = "--";
+                ccb_Pre_Evaluation_Data_FormWriteWord2(documentBuilder, stringLinkedList, "商铺类型", val);
+            }
+            {
+                String val = "--";
+                ccb_Pre_Evaluation_Data_FormWriteWord2(documentBuilder, stringLinkedList, "商铺租金(/月)", val);
+            }
+            {
+                ccb_Pre_Evaluation_Data_FormWriteWord2(documentBuilder, stringLinkedList, "房屋用途", declareRecord.getCertUse());
             }
             documentBuilder.endTable();
             if (i != size - 1) {
@@ -5387,7 +5399,7 @@ public class GenerateBaseDataService {
             for (SchemeJudgeObject schemeJudgeObject : this.schemeJudgeObjectDeclareList) {
                 List<SysAttachmentDto> sysAttachmentDtoList = ownershipCertFileList.get(schemeJudgeObject.getDeclareRecordId());
                 List<String> paths = Lists.newArrayList();
-                if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)){
+                if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
                     for (SysAttachmentDto item : sysAttachmentDtoList) {
                         String path = baseAttachmentService.downloadFtpFileToLocal(item.getId());
                         if (FileUtils.checkImgSuffix(path)) {

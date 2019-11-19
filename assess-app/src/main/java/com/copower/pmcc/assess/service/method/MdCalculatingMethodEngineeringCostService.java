@@ -166,6 +166,7 @@ public class MdCalculatingMethodEngineeringCostService {
             engineeringCost.setProjectId(projectPlanDetails.getProjectId());
             engineeringCost.setJudgeObjectId(projectPlanDetails.getJudgeObjectId());
             engineeringCost.setPlanDetailsId(projectPlanDetails.getId());
+            engineeringCost.setPrice(null);
             engineeringCost.setId(null);
             engineeringCost.setType(type);
             engineeringCost.setArchitecturalObjId(mdArchitecturalObj.getId());
