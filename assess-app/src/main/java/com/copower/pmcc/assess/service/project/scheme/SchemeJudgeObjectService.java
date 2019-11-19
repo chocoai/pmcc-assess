@@ -807,7 +807,7 @@ public class SchemeJudgeObjectService {
         recordToHistory(projectInfo.getId());
     }
 
-    private void recordToHistory(Integer projectId) {
+    public void recordToHistory(Integer projectId) {
         //先清除上个版本历史数据
         schemeJudgeObjectHistoryDao.deleteSchemeJudgeObjectHistoryByProjectId(projectId);
         List<SchemeJudgeObject> judgeObjects = getJudgeObjectListByProjectId(projectId);
@@ -826,6 +826,21 @@ public class SchemeJudgeObjectService {
                 judgeObjectHistory.setCreator(commonService.thisUserAccount());
                 schemeJudgeObjectHistoryDao.addSchemeJudgeObjectHistory(judgeObjectHistory);
             });
+        }
+    }
+
+    public void updateJudgeFunction() {
+        SchemeJudgeObject schemeJudgeObject = new SchemeJudgeObject();
+        schemeJudgeObject.setBisEnable(true);
+        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getJudgeObjectList(schemeJudgeObject);
+        if (CollectionUtils.isNotEmpty(judgeObjectList)) {
+            for (SchemeJudgeObject judgeObject : judgeObjectList) {
+                List<SchemeJudgeFunction> judgeFunctions = schemeJudgeFunctionService.getApplicableJudgeFunctions(judgeObject.getId());
+                if (CollectionUtils.isNotEmpty(judgeFunctions)) {
+                    judgeObject.setJudgeFunction(FormatUtils.transformListString(LangUtils.transform(judgeFunctions, o -> String.valueOf(o.getMethodType()))));
+                    schemeJudgeObjectDao.updateSchemeJudgeObject(judgeObject);
+                }
+            }
         }
     }
 

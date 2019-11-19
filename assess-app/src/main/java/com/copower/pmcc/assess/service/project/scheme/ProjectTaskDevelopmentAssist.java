@@ -54,15 +54,18 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskDevelopmentIndex", "", 0, "0", "");
-        //初始化支撑数据
+        SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId());
+        modelAndView.addObject("judgeObject", schemeJudgeObject);
         setViewParam(projectPlanDetails, modelAndView);
-        setViewBaseParam(projectPlanDetails, modelAndView);
+        setViewBaseParam(schemeJudgeObject, modelAndView);
         return modelAndView;
     }
 
     @Override
     public ModelAndView approvalView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskDevelopmentApproval", processInsId, boxId, taskId, agentUserAccount);
+        SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId());
+        modelAndView.addObject("judgeObject", schemeJudgeObject);
         setViewParam(projectPlanDetails, modelAndView);
         return modelAndView;
     }
@@ -70,8 +73,10 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView returnEditView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskDevelopmentIndex", processInsId, boxId, taskId, agentUserAccount);
+        SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId());
+        modelAndView.addObject("judgeObject", schemeJudgeObject);
         setViewParam(projectPlanDetails, modelAndView);
-        setViewBaseParam(projectPlanDetails, modelAndView);
+        setViewBaseParam(schemeJudgeObject, modelAndView);
         return modelAndView;
     }
 
@@ -83,6 +88,8 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView detailsView(ProjectPlanDetails projectPlanDetails, Integer boxId) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskDevelopmentApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
+        SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId());
+        modelAndView.addObject("judgeObject", schemeJudgeObject);
         setViewParam(projectPlanDetails, modelAndView);
         return modelAndView;
     }
@@ -134,14 +141,7 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
         modelAndView.addObject("methodTypeObj", DEVELOPMENT);
     }
 
-    private void setViewBaseParam(ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) {
-        if (projectPlanDetails.getJudgeObjectId() == null) {
-            return;
-        }
-        SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId());
-        if (schemeJudgeObject == null) {
-            return;
-        }
+    private void setViewBaseParam(SchemeJudgeObject schemeJudgeObject, ModelAndView modelAndView) {
         if (schemeJudgeObject.getAreaGroupId() != null) {
             SchemeAreaGroup schemeAreaGroup = schemeAreaGroupService.get(schemeJudgeObject.getAreaGroupId());
             if (schemeAreaGroup != null) {

@@ -22,7 +22,10 @@
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                     </ul>
-                    <h3>成本法</h3>
+                    <h3>
+                        ${judgeObject.name}
+                        <small>(${judgeObject.evaluationArea}㎡)</small>
+                    </h3>
                     <div class="clearfix"></div>
                 </div>
 
@@ -49,7 +52,8 @@
                 </div>
                 <%@include file="/views/method/module/developmentCommon.jsp" %>
                 <script src="${pageContext.request.contextPath}/js/method/developmentCommon.js?v=${assessVersion}"></script>
-                <script type="text/javascript" src="${pageContext.request.contextPath}/js/declare/declare.common.js?v=${assessVersion}"></script>
+                <script type="text/javascript"
+                        src="${pageContext.request.contextPath}/js/declare/declare.common.js?v=${assessVersion}"></script>
                 <%@include file="/views/project/tool/residueRatio.jsp" %>
                 <%@include file="/views/method/module/economicIndicators.jsp" %>
                 <div class="x_content">
@@ -93,8 +97,10 @@
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
 <script src="${pageContext.request.contextPath}/assets/x-editable/js/bootstrap-editable.min.js?v=${assessVersion}"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/assets/tree-grid/js/jquery.treegrid.js?v=${assessVersion}"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/ajaxfileupload.js?v=${assessVersion}"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/assets/tree-grid/js/jquery.treegrid.js?v=${assessVersion}"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/ajaxfileupload.js?v=${assessVersion}"></script>
 <script type="application/javascript">
     $(function () {
         FileUtils.getFileShows({

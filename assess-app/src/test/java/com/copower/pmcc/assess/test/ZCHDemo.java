@@ -17,8 +17,10 @@ import com.google.common.collect.*;
 import jodd.util.URLDecoder;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.poi.ss.formula.functions.T;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -184,6 +186,117 @@ public class ZCHDemo {
     }
 
     @Test
+    public void groupTest() {
+
+        final int max = 27;
+        final int factor = 5;
+        List<Integer> integerList = new ArrayList<>(max);
+        for (int i = 0; i < max; i++) {
+            integerList.add(RandomUtils.nextInt(10, 1000));
+        }
+        List<List<Integer>> group = new ArrayList<>();
+        System.out.println(Arrays.asList(integerList));
+        List<Integer> integers = new ArrayList<Integer>(factor);
+        for (int i = 0; i < integerList.size(); i++) {
+            integers.add(integerList.get(i));
+            int mold = i % factor;
+            if (mold == 0 && i != 0) {
+                List<Integer> list = new ArrayList<>(integers.size());
+                if (CollectionUtils.isNotEmpty(integers)) {
+                    integers.forEach(integer -> list.add(integer));
+                }
+                group.add(list);
+                integers.clear();
+            }
+            if (mold != 0) {
+                int temp = i + factor;
+                if (temp > integerList.size()) {
+                    System.out.println("i:" + i + " result:" + integerList.get(i));
+                }
+            }
+        }
+        group = splistList(integerList,factor) ;
+        for (List<Integer> lists : group) {
+            System.out.println(Arrays.asList(lists));
+        }
+    }
+
+    /**
+     * 按指定大小对列表分组
+     *
+     * @param list
+     * @param splitSize
+     * @return
+     */
+    public List<List<Integer>> splistList(List<Integer> list, int splitSize) {
+        if (null == list) {
+            return null;
+        }
+        int listSize = list.size();
+        List<List<Integer>> newList = new ArrayList<List<Integer>>();
+        if (listSize < splitSize) {
+            newList.add(list);
+            return newList;
+        }
+        int addLength = splitSize;
+        int times = listSize / splitSize;
+        if (listSize % splitSize != 0) {
+            times += 1;
+        }
+        int start = 0;
+        int end = 0;
+        int last = times - 1;
+        for (int i = 0; i < times; i++) {
+            start = i * splitSize;
+            if (i < last) {
+                end = start + addLength;
+            } else {
+                end = listSize;
+            }
+            newList.add(list.subList(start, end));
+        }
+        return newList;
+    }
+
+    /**
+     * 按指定大小对数组分组
+     * @param array
+     * @param splitSize
+     * @return
+     */
+    public List<T[]> splistArray(T[] array, int splitSize) {
+        if (null == array) {
+            return null;
+        }
+        int listSize = array.length;
+        List<T[]> newList = new ArrayList<T[]>();
+        if (listSize < splitSize) {
+            newList.add(array);
+            return newList;
+        }
+        int addLength = splitSize;
+        int times = listSize / splitSize;
+        if (listSize % splitSize != 0) {
+            times += 1;
+        }
+        int start = 0;
+        int end = 0;
+        int last = times - 1;
+        for (int i = 0; i < times; i++) {
+            start = i * splitSize;
+            if (i < last) {
+                end = start + addLength;
+            } else {
+                end = listSize;
+            }
+            newList.add(Arrays.copyOfRange(array, start, end));
+        }
+        return newList;
+    }
+
+
+
+    @Test
     public void testAlgsTest() {
         MdCostConstructionVo vo = new MdCostConstructionVo();
         vo.setDevelopLandAreaTax(new BigDecimal(65975.9));
@@ -300,8 +413,8 @@ public class ZCHDemo {
 
     @Test
     public void testNumber() {
-        BigDecimal bigDecimal = ArithmeticUtils.createBigDecimal(15522.64364855483) ;
-        String value = ArithmeticUtils.getBigDecimalToInteger(bigDecimal,100) ;
+        BigDecimal bigDecimal = ArithmeticUtils.createBigDecimal(15522.64364855483);
+        String value = ArithmeticUtils.getBigDecimalToInteger(bigDecimal, 100);
         System.out.println(value);
 
         double d = Math.log10(2);

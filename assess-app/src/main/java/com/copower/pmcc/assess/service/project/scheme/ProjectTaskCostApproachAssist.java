@@ -153,7 +153,7 @@ public class ProjectTaskCostApproachAssist implements ProjectTaskInterface {
         modelAndView.addObject("taxesTypes", dataDicList);
         Integer judgeObjectId = projectPlanDetails.getJudgeObjectId();
         SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
-        modelAndView.addObject("number", schemeJudgeObject.getNumber());
+        modelAndView.addObject("judgeObject", schemeJudgeObject);
         BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
         BasicEstate basicEstate = null;
         try {
@@ -171,13 +171,11 @@ public class ProjectTaskCostApproachAssist implements ProjectTaskInterface {
         modelAndView.addObject("levelDetailId", landStateByEstateId.getLandLevel());
         DataLandLevelDetail levelDetail = dataLandLevelDetailService.getDataLandLevelDetailById(landStateByEstateId.getLandLevel());
         modelAndView.addObject("landLevelId", levelDetail.getLandLevelId());
-
     }
 
     public void initTaxeItem(MdCostApproach mdCostApproach) {
         List<MdCostApproachTaxes> taxesListByMasterId = mdCostApproachService.getMdCostApproachTaxesListByMasterId(mdCostApproach.getId());
         List<BaseDataDic> dataDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_SETTING);
-
         //全部清空后生成
         if (CollectionUtils.isNotEmpty(taxesListByMasterId)) {
             for (MdCostApproachTaxes item : taxesListByMasterId) {

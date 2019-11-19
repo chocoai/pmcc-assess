@@ -143,7 +143,7 @@ public class ProjectTaskBaseLandPriceAssist implements ProjectTaskInterface {
     private void setViewParam(ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) {
         Integer judgeObjectId = projectPlanDetails.getJudgeObjectId();
         SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
-        modelAndView.addObject("number", schemeJudgeObject.getNumber());
+        modelAndView.addObject("judgeObject", schemeJudgeObject);
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
         BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
         BasicEstate basicEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());

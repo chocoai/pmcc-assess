@@ -368,12 +368,12 @@ public class GenerateBaseDataService {
         }
     }
 
-    private String toolOrCode(String url, double width, double height) throws Exception {
+    private synchronized String toolOrCode(String url, double width, double height) throws Exception {
         String qrCode = erpRpcToolsService.generateQRCode(url);
         return toolBaseOrCode(qrCode, width, height);
     }
 
-    private String toolBaseOrCode(String qrCode, double width, double height) throws Exception {
+    private synchronized String toolBaseOrCode(String qrCode, double width, double height) throws Exception {
         String localPath = generateCommonMethod.getLocalPath();
         Document document = new Document();
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
@@ -2065,7 +2065,7 @@ public class GenerateBaseDataService {
         Document doc = new Document();
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
         generateCommonMethod.settingBuildingTable(builder);
-        String localPath = getLocalPath(RandomStringUtils.randomAscii(8));
+        String localPath = getLocalPath(RandomStringUtils.randomNumeric(8));
         if (groupItem != null && StringUtils.isNotBlank(groupItem.getRecordIds())) {
             String recordIds = groupItem.getRecordIds();
             List<Integer> recordList = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(recordIds));
@@ -5206,7 +5206,7 @@ public class GenerateBaseDataService {
         if (file.isFile()) {
             String title = generateCommonMethod.delHTMLTag(String.format("%s号:%s", generateCommonMethod.convertNumber(numbers), baseDataDic.getName()));
             AsposeUtils.insertHtml(builder, AsposeUtils.getWarpCssHtml(title, keyValueDtoList), true);
-            String key = String.join("", title, RandomStringUtils.randomAlphanumeric(16));
+            String key = String.join("", title, RandomStringUtils.randomNumeric(16));
             map.put(key, reportPath);
             builder.writeln(key);
         }
@@ -5902,7 +5902,7 @@ public class GenerateBaseDataService {
                 if (CollectionUtils.isNotEmpty(mdMarketCompareItemList)) {
                     //写入表格
                     String path = getICBCValuationCaseInformationSheet2(mdMarketCompareItemList);
-                    String key = RandomStringUtils.randomAlphabetic(7);
+                    String key = RandomStringUtils.randomNumeric(7);
                     documentBuilder.writeln(key);
                     stringMap.put(key, path);
                 }
@@ -6080,7 +6080,7 @@ public class GenerateBaseDataService {
      *
      * @return
      */
-    public String getAssessPriceClassification() throws Exception {
+    public synchronized String getAssessPriceClassification() throws Exception {
         StringBuilder stringBuilder = new StringBuilder(8);
         Map<SchemeJudgeObject, String> map = Maps.newHashMap();
         Map<SchemeJudgeObject, KeyValueDto> map2 = getAssessAssessTotalData();
@@ -6112,7 +6112,7 @@ public class GenerateBaseDataService {
     }
 
     //评估面积
-    public String getAssessArea() {
+    public synchronized String getAssessArea() {
         String value = "";
         Map<Integer, String> map = new HashMap<>(2);
         Map<SchemeJudgeObject, KeyValueDto> map2 = getAssessAssessTotalData();
@@ -6128,7 +6128,7 @@ public class GenerateBaseDataService {
     }
 
     //评估单价
-    public String getAssessPrice() {
+    public synchronized String getAssessPrice() {
         String value = "";
         Map<Integer, String> map = new HashMap<>(2);
         Map<SchemeJudgeObject, KeyValueDto> map2 = getAssessAssessTotalData();
@@ -6148,7 +6148,7 @@ public class GenerateBaseDataService {
      *
      * @return
      */
-    public String getAssessAssessTotal() {
+    public synchronized String getAssessAssessTotal() {
         String value = getAssessAssessTotal2();
         if (NumberUtils.isNumber(value)) {
             value = new BigDecimal(value).divide(new BigDecimal(10000)).setScale(2, BigDecimal.ROUND_DOWN).toString();
@@ -6162,7 +6162,7 @@ public class GenerateBaseDataService {
      *
      * @return
      */
-    public String getAssessAssessTotalAssessTotalRMB() {
+    public synchronized String getAssessAssessTotalAssessTotalRMB() {
         String value = getAssessAssessTotal2();
         if (NumberUtils.isNumber(value)) {
             value = CnNumberUtils.toUppercaseSubstring(value);
@@ -6311,7 +6311,7 @@ public class GenerateBaseDataService {
         return builder;
     }
 
-    public List<SchemeReimbursementItemVo> getSchemeReimbursementItemVoList() {
+    public synchronized List<SchemeReimbursementItemVo> getSchemeReimbursementItemVoList() {
         List<SchemeReimbursementItemVo> schemeReimbursementItemVoList = Lists.newArrayList();
         SchemeReimbursement query = new SchemeReimbursement();
         query.setAreaId(areaId);
@@ -6343,7 +6343,7 @@ public class GenerateBaseDataService {
      *
      * @return
      */
-    public List<SchemeJudgeObject> getSchemeJudgeObjectList() {
+    public synchronized List<SchemeJudgeObject> getSchemeJudgeObjectList() {
         return generateCommonMethod.getSortSchemeJudgeObject(this.schemeJudgeObjectList);
     }
 }
