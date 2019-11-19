@@ -19,6 +19,14 @@ public class BaseService {
     @Autowired
     private CommonService commonService;
 
+    public Logger getLogger(){
+        return log;
+    }
+
+    public Logger getLogger(Class<?> c){
+        return LoggerFactory.getLogger(c) ;
+    }
+
     /**
      * 自己拼接的异常打印数据
      * @param e

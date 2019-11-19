@@ -234,9 +234,11 @@ public class EvaluationHypothesisService {
                     if (type != null && baseDataDicService.getCacheDataDicByFieldName(AssessReportFieldConstant.TIME_ACTUAL_SURVEY).getId().equals(type)) {
                         Map<Integer, String> map = Maps.newHashMap();
                         actualTimenumbers.add(Integer.valueOf(judgeObject.getNumber()));
-                        completedTime.append(sdf.format(building.getBeCompletedTime())).append("、");
-                        times.add(sdf.format(building.getBeCompletedTime()));
-                        map.put(Integer.valueOf(judgeObject.getNumber()), sdf.format(building.getBeCompletedTime()));
+                        if (building.getBeCompletedTime() != null){
+                            completedTime.append(sdf.format(building.getBeCompletedTime())).append("、");
+                            times.add(sdf.format(building.getBeCompletedTime()));
+                            map.put(Integer.valueOf(judgeObject.getNumber()), sdf.format(building.getBeCompletedTime()));
+                        }
                         maps.add(map);
                     }
                     //用途

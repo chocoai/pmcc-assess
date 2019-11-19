@@ -433,7 +433,8 @@ public class GenerateCommonMethod {
         StringBuilder stringBuilder = new StringBuilder(8);
         if (CollectionUtils.isNotEmpty(numbers)) {
             numbers = numbers.stream().distinct().sorted().collect(Collectors.toList());
-            if (numbers.stream().reduce(Integer::max).get() > max) {
+            int num = numbers.stream().reduce(Integer::max).get();
+            if (num > max) {
                 return StringUtils.join(numbers, ",");
             }
             Integer[] ints = new Integer[numbers.size()];
