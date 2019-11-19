@@ -124,7 +124,9 @@ public class DeclareRealtyRealEstateCert {
 
     private BigDecimal landApportionArea;
 
-    private Integer houseCertUseCategory;
+    private String houseCertUseCategory;
+
+    private String acquisitionType;
 
     public Integer getId() {
         return id;
@@ -606,11 +608,19 @@ public class DeclareRealtyRealEstateCert {
         this.landApportionArea = landApportionArea;
     }
 
-    public Integer getHouseCertUseCategory() {
+    public String getHouseCertUseCategory() {
         return houseCertUseCategory;
     }
 
-    public void setHouseCertUseCategory(Integer houseCertUseCategory) {
-        this.houseCertUseCategory = houseCertUseCategory;
+    public void setHouseCertUseCategory(String houseCertUseCategory) {
+        this.houseCertUseCategory = houseCertUseCategory == null ? null : houseCertUseCategory.trim();
+    }
+
+    public String getAcquisitionType() {
+        return acquisitionType;
+    }
+
+    public void setAcquisitionType(String acquisitionType) {
+        this.acquisitionType = acquisitionType == null ? null : acquisitionType.trim();
     }
 }

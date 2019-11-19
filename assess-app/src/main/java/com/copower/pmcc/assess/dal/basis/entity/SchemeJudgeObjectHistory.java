@@ -5,6 +5,8 @@ import java.util.Date;
 public class SchemeJudgeObjectHistory {
     private Integer id;
 
+    private Integer judgeObjectId;
+
     private Integer projectId;
 
     private Integer areaGroupId;
@@ -33,6 +35,14 @@ public class SchemeJudgeObjectHistory {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getJudgeObjectId() {
+        return judgeObjectId;
+    }
+
+    public void setJudgeObjectId(Integer judgeObjectId) {
+        this.judgeObjectId = judgeObjectId;
     }
 
     public Integer getProjectId() {

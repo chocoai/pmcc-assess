@@ -21,9 +21,14 @@
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                     </ul>
-                    <h3>成本法 <button class="btn btn-primary" data-toggle="modal" href="#boxSchemeInfoModel"
+                    <h3>
+                        ${judgeObject.name}
+                        <small>(${judgeObject.evaluationArea}㎡)</small>
+                        <small>
+                            <button class="btn btn-xs btn-primary" data-toggle="modal" href="#boxSchemeInfoModel"
                                     onclick="developmentCommon.loadSchemeInfoTableList({projectId:'${projectPlanDetails.projectId}',methodDataId:'${mdCostVo.id}',methodType:'${methodTypeObj.id}'},'construction.selectFun');">
-                        引用</button>
+                                引用</button>
+                        </small>
                     </h3>
                     <div class="clearfix"></div>
                 </div>

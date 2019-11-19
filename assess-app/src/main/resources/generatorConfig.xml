@@ -44,10 +44,9 @@
         <!--<columnOverride column="json_content" jdbcType="VARCHAR"></columnOverride>-->
 
         <!-- 具体表 -->
-        <table tableName="tb_data_land_level_detail_achievement" >
+        <table tableName="tb_scheme_judge_object_history" >
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
-
 
         <!--<table tableName="tb_md_development" domainObjectName="MdDevelopment">-->
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->

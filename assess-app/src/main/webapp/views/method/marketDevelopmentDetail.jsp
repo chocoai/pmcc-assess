@@ -6,7 +6,10 @@
         <ul class="nav navbar-right panel_toolbox">
             <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
         </ul>
-        <h3>假设开发法</h3>
+        <h3>
+            ${judgeObject.name}
+            <small>(${judgeObject.evaluationArea}㎡)</small>
+        </h3>
         <div class="clearfix"></div>
     </div>
 
@@ -16,7 +19,8 @@
 
 </div>
 <script src="${pageContext.request.contextPath}/js/method/developmentCommon.js?v=${assessVersion}"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/declare/declare.common.js?v=${assessVersion}"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/declare/declare.common.js?v=${assessVersion}"></script>
 <%@include file="/views/method/module/developmentCommon.jsp" %>
 <%@include file="/views/project/tool/rewardRateDetail.jsp" %>
 

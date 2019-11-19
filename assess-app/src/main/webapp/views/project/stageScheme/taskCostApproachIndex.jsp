@@ -15,14 +15,15 @@
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
             <jsp:include page="/views/project/tool/rewardRate.jsp"></jsp:include>
-
-
             <div class="x_panel">
                 <div class="x_title collapse-link">
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                     </ul>
-                    <h3>成本逼近法测算表</h3>
+                    <h3>
+                        ${judgeObject.name}
+                        <small>(${judgeObject.evaluationArea}㎡)</small>
+                    </h3>
                     <div class="clearfix"></div>
                 </div>
 

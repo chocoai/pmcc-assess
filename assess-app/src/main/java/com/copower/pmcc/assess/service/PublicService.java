@@ -44,10 +44,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.io.File;
 import java.io.FileInputStream;
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -149,27 +146,6 @@ public class PublicService {
             maps.add(map);
         }
         return JSON.toJSONString(maps);
-    }
-
-    /**
-     * 提取模板中的字段为map格式字符串
-     *
-     * @param template
-     * @return
-     */
-    public List<Map<String, String>> extractFieldMap(String template) {
-        String regex = "\\{(.*?)\\}";
-        Pattern p = Pattern.compile(regex);
-        Matcher m = p.matcher(template);
-        List<Map<String, String>> maps = Lists.newArrayList();
-        while (m.find()) {
-            Map<String, String> map = Maps.newHashMap();
-            String result = m.group();
-            map.put("key", result.replaceAll("^\\{|\\}$", ""));
-            map.put("value", "");
-            maps.add(map);
-        }
-        return maps;
     }
 
     /**
@@ -314,8 +290,7 @@ public class PublicService {
         if (CollectionUtils.isEmpty(list)) return null;
         //去除重复
         list = generateCommonMethod.removeDuplicate(list);
-        //xx楼盘1栋2单元1011号
-        //xx楼盘2栋2单元1011号
+        //xx楼盘1栋2单元1011号 //xx楼盘2栋2单元1011号
         if (list.size() == 1) return list.get(0);
         String samePart = list.get(0);//以第一个字符串作为基础
         for (String s : list) {
@@ -378,8 +353,6 @@ public class PublicService {
     public BigDecimal diffDateYear(Date endDate, Date startDate) {
         if (startDate == null || endDate == null)
             throw new IllegalArgumentException();
-//        if (DateUtils.compareDate(startDate, endDate) > 0)
-//            throw new IllegalArgumentException();
 
         Integer year1 = DateUtils.getYear(startDate);
         Integer year2 = DateUtils.getYear(endDate);
@@ -504,5 +477,56 @@ public class PublicService {
     public void updateProcessEventExecutor(String processInsId, String executorName) throws BpmException {
         setRedisProcessExecutorName(processInsId, executorName);
         bpmRpcActivitiProcessManageService.setProcessEventExecutor(processInsId, executorName);
+    }
+
+    /**
+     * 判断两个list string是否完全一致
+     *
+     * @param var1
+     * @param var2
+     * @return
+     */
+    public Boolean listIsConsistent(List<String> var1, List<String> var2) {
+        if (CollectionUtils.isEmpty(var1) || CollectionUtils.isEmpty(var2)) return false;
+        if (var1.size() != var2.size()) return false;
+        Iterator<String> iteratorVar1 = var1.iterator();
+        while (iteratorVar1.hasNext()) {
+            Iterator<String> iteratorVar2 = var2.iterator();
+            while (iteratorVar2.hasNext()) {
+                if (iteratorVar1.next().equals(iteratorVar2.next())) {
+                    iteratorVar1.remove();
+                    iteratorVar2.remove();
+                }
+            }
+        }
+        if (var1.size() > 0 || var2.size() > 0) return false;
+        return true;
+    }
+
+    /**
+     * 比较Integer
+     *
+     * @param var1
+     * @param var2
+     * @return
+     */
+    public Boolean equalsInteger(Integer var1, Integer var2) {
+        if (var1 == null && var2 == null) return true;
+        if (var1 == null && var2 != null) return false;
+        if (var1 != null && var2 == null) return false;
+        return var1.intValue() == var2.intValue();
+    }
+
+    /**
+     * 比较String
+     * @param var1
+     * @param var2
+     * @return
+     */
+    public Boolean equalsString(String var1, String var2) {
+        if (var1 == null && var2 == null) return true;
+        if (var1 == null && var2 != null) return false;
+        if (var1 != null && var2 == null) return false;
+        return var1.equals(var2);
     }
 }

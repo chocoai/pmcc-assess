@@ -47,7 +47,7 @@
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
     <result column="ground_num" property="groundNum" jdbcType="VARCHAR" />
     <result column="apportionment_area" property="apportionmentArea" jdbcType="DECIMAL" />
-    <result column="cert_use_category" property="certUseCategory" jdbcType="INTEGER" />
+    <result column="cert_use_category" property="certUseCategory" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -181,7 +181,7 @@
       #{registrationDate,jdbcType=TIMESTAMP}, #{declareType,jdbcType=VARCHAR}, #{enable,jdbcType=VARCHAR}, 
       #{bisRecord,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
       #{gmtModified,jdbcType=TIMESTAMP}, #{groundNum,jdbcType=VARCHAR}, #{apportionmentArea,jdbcType=DECIMAL}, 
-      #{certUseCategory,jdbcType=INTEGER})
+      #{certUseCategory,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyHouseCert" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -459,7 +459,7 @@
         #{apportionmentArea,jdbcType=DECIMAL},
       </if>
       <if test="certUseCategory != null" >
-        #{certUseCategory,jdbcType=INTEGER},
+        #{certUseCategory,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -608,7 +608,7 @@
         apportionment_area = #{record.apportionmentArea,jdbcType=DECIMAL},
       </if>
       <if test="record.certUseCategory != null" >
-        cert_use_category = #{record.certUseCategory,jdbcType=INTEGER},
+        cert_use_category = #{record.certUseCategory,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -662,7 +662,7 @@
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       ground_num = #{record.groundNum,jdbcType=VARCHAR},
       apportionment_area = #{record.apportionmentArea,jdbcType=DECIMAL},
-      cert_use_category = #{record.certUseCategory,jdbcType=INTEGER}
+      cert_use_category = #{record.certUseCategory,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -803,7 +803,7 @@
         apportionment_area = #{apportionmentArea,jdbcType=DECIMAL},
       </if>
       <if test="certUseCategory != null" >
-        cert_use_category = #{certUseCategory,jdbcType=INTEGER},
+        cert_use_category = #{certUseCategory,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -854,7 +854,7 @@
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       ground_num = #{groundNum,jdbcType=VARCHAR},
       apportionment_area = #{apportionmentArea,jdbcType=DECIMAL},
-      cert_use_category = #{certUseCategory,jdbcType=INTEGER}
+      cert_use_category = #{certUseCategory,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

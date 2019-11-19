@@ -172,7 +172,7 @@ public class SchemeAreaGroupService {
             for (SchemeAreaGroup schemeAreaGroup : historyAreaGroups) {
                 List<SchemeJudgeObject> judgeObjects = schemeJudgeObjectService.getJudgeObjectListByAreaGroupId(schemeAreaGroup.getId());
                 if (CollectionUtils.isNotEmpty(judgeObjects)) {//清除估价对象下的任务
-                    judgeObjects.forEach(o -> clearJudgeObjectTask(o));
+                    judgeObjects.forEach(o -> clearJudgeObjectTask(projectId,o.getId()));
                     schemeJudgeObjectDao.deleteJudgeObjectByAreaId(schemeAreaGroup.getId());
                 }
                 //清除区域下工作任务
@@ -197,6 +197,7 @@ public class SchemeAreaGroupService {
                 areaGroup.setScopeInclude(projectInfo.getScopeInclude());
                 areaGroup.setScopeNotInclude(projectInfo.getScopeNotInclude());
                 areaGroup.setPid(0);
+                areaGroup.setBisNew(true);
                 areaGroup.setCreator(commonService.thisUserAccount());
                 this.add(areaGroup);
                 int i = 1;
@@ -236,7 +237,7 @@ public class SchemeAreaGroupService {
                     declareRecordList.forEach(o -> declareRecordToJudgeObject(o, sameAreaGroup, schemeJudgeObjectDao.getAreaGroupMaxNumber(projectId, sameAreaGroup.getId()) + 1));
                 }
                 if (CollectionUtils.isNotEmpty(judgeObjectDeclareList)) {//需被移除的估价对象
-                    judgeObjectDeclareList.forEach(o -> clearJudgeObjectTask(o));
+                    judgeObjectDeclareList.forEach(o -> clearJudgeObjectTask(projectId,o.getId()));
                     //需要重新排号
                 }
             }
@@ -330,17 +331,16 @@ public class SchemeAreaGroupService {
     /**
      * 清除估价对象相关任务
      *
-     * @param judgeObject
      */
-    private void clearJudgeObjectTask(SchemeJudgeObject judgeObject) {
+    public void clearJudgeObjectTask(Integer projectId, Integer judgeObjectId) {
         ProjectPlanDetails where = new ProjectPlanDetails();
-        where.setProjectId(judgeObject.getProjectId());
-        where.setJudgeObjectId(judgeObject.getId());
+        where.setProjectId(projectId);
+        where.setJudgeObjectId(judgeObjectId);
         List<ProjectPlanDetails> projectDetails = projectPlanDetailsService.getProjectDetails(where);
         if (CollectionUtils.isNotEmpty(projectDetails)) {
             projectDetails.forEach(o -> projectPlanDetailsService.deleteProjectPlanDetails(o));
         } else {
-            schemeJudgeObjectDao.removeSchemeJudgeObject(judgeObject.getId());
+            schemeJudgeObjectDao.removeSchemeJudgeObject(judgeObjectId);
         }
     }
 

@@ -2076,6 +2076,76 @@ public class SchemeJudgeObjectExample {
             return (Criteria) this;
         }
 
+        public Criteria andJudgeFunctionIsNull() {
+            addCriterion("judge_function is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeFunctionIsNotNull() {
+            addCriterion("judge_function is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeFunctionEqualTo(String value) {
+            addCriterion("judge_function =", value, "judgeFunction");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeFunctionNotEqualTo(String value) {
+            addCriterion("judge_function <>", value, "judgeFunction");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeFunctionGreaterThan(String value) {
+            addCriterion("judge_function >", value, "judgeFunction");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeFunctionGreaterThanOrEqualTo(String value) {
+            addCriterion("judge_function >=", value, "judgeFunction");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeFunctionLessThan(String value) {
+            addCriterion("judge_function <", value, "judgeFunction");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeFunctionLessThanOrEqualTo(String value) {
+            addCriterion("judge_function <=", value, "judgeFunction");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeFunctionLike(String value) {
+            addCriterion("judge_function like", value, "judgeFunction");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeFunctionNotLike(String value) {
+            addCriterion("judge_function not like", value, "judgeFunction");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeFunctionIn(List<String> values) {
+            addCriterion("judge_function in", values, "judgeFunction");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeFunctionNotIn(List<String> values) {
+            addCriterion("judge_function not in", values, "judgeFunction");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeFunctionBetween(String value1, String value2) {
+            addCriterion("judge_function between", value1, value2, "judgeFunction");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeFunctionNotBetween(String value1, String value2) {
+            addCriterion("judge_function not between", value1, value2, "judgeFunction");
+            return (Criteria) this;
+        }
+
         public Criteria andNotApplicableReasonIsNull() {
             addCriterion("not_applicable_reason is null");
             return (Criteria) this;
