@@ -6,10 +6,16 @@
         <ul class="nav navbar-right panel_toolbox">
             <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
         </ul>
-        <h3>假设开发法
-            <button class="btn btn-primary" data-toggle="modal" href="#boxSchemeInfoModel"
-                    onclick="developmentCommon.loadSchemeInfoTableList({projectId:'${projectPlanDetails.projectId}',methodDataId:'${mdDevelopment.id}',methodType:'${methodTypeObj.id}'},'landEngineering.selectFun');">
-                引用</button> </h3>
+        <h3>
+            ${judgeObject.name}
+            <small>(${judgeObject.evaluationArea}㎡)</small>
+            <small>
+                <button class="btn btn-xs btn-primary" data-toggle="modal" href="#boxSchemeInfoModel"
+                        onclick="developmentCommon.loadSchemeInfoTableList({projectId:'${projectPlanDetails.projectId}',methodDataId:'${mdDevelopment.id}',methodType:'${methodTypeObj.id}'},'landEngineering.selectFun');">
+                    引用
+                </button>
+            </small>
+        </h3>
         <div class="clearfix"></div>
     </div>
 
@@ -34,7 +40,8 @@
 
 </div>
 <script src="${pageContext.request.contextPath}/js/method/developmentCommon.js?v=${assessVersion}"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/declare/declare.common.js?v=${assessVersion}"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/declare/declare.common.js?v=${assessVersion}"></script>
 <%@include file="/views/method/module/developmentModule/landEngineeringJs.jsp" %>
 <%@include file="/views/method/module/developmentCommon.jsp" %>
 <%@include file="/views/project/tool/rewardRate.jsp" %>
@@ -67,11 +74,11 @@
         return false
     };
 
-    function loadParamsValue(that,t) {
+    function loadParamsValue(that, t) {
         var value = $(that).val();
         var i = 0;
         if (!development.isNotBlank(value)) {
-            if (t != 'not'){
+            if (t != 'not') {
                 $(that).attr("data-value", '0');
                 $(that).val(0);
             }
@@ -132,7 +139,7 @@
             $(that).attr("data-value", '');
             $(that).val('');
         }
-        loadParamsValue(that,'not') ;
+        loadParamsValue(that, 'not');
     }
 
     function calculationNumeric(data, callback) {
@@ -340,15 +347,15 @@
             resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '反选' + "</span>";
             resultHtml += "<input type=\"radio\" name=\"infrastructureSelect\"  onclick=\"development.checkedFun(this,'parcelSettingOuter',false)\">";
             resultHtml += "</div>";
-            if (industrySupplyInfoContainer.find("div").size() == 0){
+            if (industrySupplyInfoContainer.find("div").size() == 0) {
                 industrySupplyInfoContainer.append(resultHtml);
-            }else {
+            } else {
                 $.each(resultData, function (i, item) {
-                    var ele = "#parcelSettingOuterBBBBB"+item.id ;
-                    ele = $(ele) ;
+                    var ele = "#parcelSettingOuterBBBBB" + item.id;
+                    ele = $(ele);
                     if ($.inArray(item.id.toString(), array) > -1) {
                         ele.prop("checked", true);
-                    }else {
+                    } else {
                         ele.prop("checked", false);
                     }
                 });
@@ -376,15 +383,15 @@
             resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '反选' + "</span>";
             resultHtml += "<input type=\"radio\" name=\"infrastructureSelect\"  onclick=\"development.checkedFun(this,'parcelSettingInner',false)\">";
             resultHtml += "</div>";
-            if (developmentDegreeContentContainer.find("div").size() == 0){
+            if (developmentDegreeContentContainer.find("div").size() == 0) {
                 developmentDegreeContentContainer.append(resultHtml);
-            }else {
+            } else {
                 $.each(resultData, function (i, item) {
-                    var ele = "#parcelSettingInnerBBBBB"+item.id ;
-                    ele = $(ele) ;
+                    var ele = "#parcelSettingInnerBBBBB" + item.id;
+                    ele = $(ele);
                     if ($.inArray(item.id.toString(), array) > -1) {
                         ele.prop("checked", true);
-                    }else {
+                    } else {
                         ele.prop("checked", false);
                     }
                 });
@@ -407,8 +414,8 @@
                 $("#developmentEngineering").attr('checked', 'true');
                 $("#developmentLand").removeAttr("checked");
             }
-        }else {
-            type = $("#developmentCheckboxTool").find("input[type='radio'][name='type']:checked").val() ;
+        } else {
+            type = $("#developmentCheckboxTool").find("input[type='radio'][name='type']:checked").val();
         }
         development.writeValueEvent(type, function () {
             landEngineering.loadMdCalculatingMethodEngineeringCostTable();

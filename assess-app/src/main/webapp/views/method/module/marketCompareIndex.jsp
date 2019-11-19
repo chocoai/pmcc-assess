@@ -6,7 +6,8 @@
             <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
         </ul>
         <h3>
-            市场比较法
+            ${judgeObject.name}
+            <small>(${judgeObject.evaluationArea}㎡)</small>
             <small id="small_select_evaluation">
                 <input type="button" class="btn btn-primary btn-xs" value="选择估价对象"
                        onclick="marketCompare.loadStandardJudges();">

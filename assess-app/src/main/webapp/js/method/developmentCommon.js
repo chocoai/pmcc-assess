@@ -514,7 +514,7 @@ developmentCommon.loadMdCalculatingMethodEngineeringCostTable = function (table,
         }
     });
     cols.push({
-        field: 'price', title: '建筑安装工程费计算价格 (元/㎡)', width: "20%", class: 'editable', editable: {
+        field: 'price', title: '建安单价(元/㎡)', width: "20%", class: 'editable', editable: {
             type: 'text',
             validate: function (value) {
                 if (!$.isNumeric(value)) {
