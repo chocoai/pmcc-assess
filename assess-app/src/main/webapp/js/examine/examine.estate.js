@@ -923,7 +923,7 @@
                 if (landLevelBodyHtml) {
                     landLevelBodyHtml = landLevelBodyHtml.replace(/{dataLandLevelAchievement}/g, item.id);
                     landLevelBodyHtml = landLevelBodyHtml.replace(/{landFactorTotalScore}/g,AssessCommon.pointToPercent(item.achievement));
-                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelCategoryName}/g, item.category);
+                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelCategoryName}/g, item.categoryName);
                     landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelTypeName}/g, item.typeName);
                     var text = "";
                     $.each(obj, function (i, n) {
@@ -976,7 +976,7 @@
     //土地因素
     estateCommon.landLevelLoadHtmlApproval = function() {
         var landLevelContent = estateCommon.estateLandStateForm.find("input[name='landLevelContent']").val();
-
+console.log(landLevelContent+"==111")
         var jsonContent = JSON.parse(landLevelContent);
         var data = estateCommon.landLevelFilter(jsonContent);
         if (jQuery.isEmptyObject(data)) {
