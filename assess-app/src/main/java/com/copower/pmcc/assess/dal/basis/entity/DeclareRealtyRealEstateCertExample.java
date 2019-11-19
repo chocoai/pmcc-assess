@@ -4056,53 +4056,133 @@ public class DeclareRealtyRealEstateCertExample {
             return (Criteria) this;
         }
 
-        public Criteria andHouseCertUseCategoryEqualTo(Integer value) {
+        public Criteria andHouseCertUseCategoryEqualTo(String value) {
             addCriterion("house_cert_use_category =", value, "houseCertUseCategory");
             return (Criteria) this;
         }
 
-        public Criteria andHouseCertUseCategoryNotEqualTo(Integer value) {
+        public Criteria andHouseCertUseCategoryNotEqualTo(String value) {
             addCriterion("house_cert_use_category <>", value, "houseCertUseCategory");
             return (Criteria) this;
         }
 
-        public Criteria andHouseCertUseCategoryGreaterThan(Integer value) {
+        public Criteria andHouseCertUseCategoryGreaterThan(String value) {
             addCriterion("house_cert_use_category >", value, "houseCertUseCategory");
             return (Criteria) this;
         }
 
-        public Criteria andHouseCertUseCategoryGreaterThanOrEqualTo(Integer value) {
+        public Criteria andHouseCertUseCategoryGreaterThanOrEqualTo(String value) {
             addCriterion("house_cert_use_category >=", value, "houseCertUseCategory");
             return (Criteria) this;
         }
 
-        public Criteria andHouseCertUseCategoryLessThan(Integer value) {
+        public Criteria andHouseCertUseCategoryLessThan(String value) {
             addCriterion("house_cert_use_category <", value, "houseCertUseCategory");
             return (Criteria) this;
         }
 
-        public Criteria andHouseCertUseCategoryLessThanOrEqualTo(Integer value) {
+        public Criteria andHouseCertUseCategoryLessThanOrEqualTo(String value) {
             addCriterion("house_cert_use_category <=", value, "houseCertUseCategory");
             return (Criteria) this;
         }
 
-        public Criteria andHouseCertUseCategoryIn(List<Integer> values) {
+        public Criteria andHouseCertUseCategoryLike(String value) {
+            addCriterion("house_cert_use_category like", value, "houseCertUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseCertUseCategoryNotLike(String value) {
+            addCriterion("house_cert_use_category not like", value, "houseCertUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseCertUseCategoryIn(List<String> values) {
             addCriterion("house_cert_use_category in", values, "houseCertUseCategory");
             return (Criteria) this;
         }
 
-        public Criteria andHouseCertUseCategoryNotIn(List<Integer> values) {
+        public Criteria andHouseCertUseCategoryNotIn(List<String> values) {
             addCriterion("house_cert_use_category not in", values, "houseCertUseCategory");
             return (Criteria) this;
         }
 
-        public Criteria andHouseCertUseCategoryBetween(Integer value1, Integer value2) {
+        public Criteria andHouseCertUseCategoryBetween(String value1, String value2) {
             addCriterion("house_cert_use_category between", value1, value2, "houseCertUseCategory");
             return (Criteria) this;
         }
 
-        public Criteria andHouseCertUseCategoryNotBetween(Integer value1, Integer value2) {
+        public Criteria andHouseCertUseCategoryNotBetween(String value1, String value2) {
             addCriterion("house_cert_use_category not between", value1, value2, "houseCertUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andAcquisitionTypeIsNull() {
+            addCriterion("acquisition_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAcquisitionTypeIsNotNull() {
+            addCriterion("acquisition_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAcquisitionTypeEqualTo(String value) {
+            addCriterion("acquisition_type =", value, "acquisitionType");
+            return (Criteria) this;
+        }
+
+        public Criteria andAcquisitionTypeNotEqualTo(String value) {
+            addCriterion("acquisition_type <>", value, "acquisitionType");
+            return (Criteria) this;
+        }
+
+        public Criteria andAcquisitionTypeGreaterThan(String value) {
+            addCriterion("acquisition_type >", value, "acquisitionType");
+            return (Criteria) this;
+        }
+
+        public Criteria andAcquisitionTypeGreaterThanOrEqualTo(String value) {
+            addCriterion("acquisition_type >=", value, "acquisitionType");
+            return (Criteria) this;
+        }
+
+        public Criteria andAcquisitionTypeLessThan(String value) {
+            addCriterion("acquisition_type <", value, "acquisitionType");
+            return (Criteria) this;
+        }
+
+        public Criteria andAcquisitionTypeLessThanOrEqualTo(String value) {
+            addCriterion("acquisition_type <=", value, "acquisitionType");
+            return (Criteria) this;
+        }
+
+        public Criteria andAcquisitionTypeLike(String value) {
+            addCriterion("acquisition_type like", value, "acquisitionType");
+            return (Criteria) this;
+        }
+
+        public Criteria andAcquisitionTypeNotLike(String value) {
+            addCriterion("acquisition_type not like", value, "acquisitionType");
+            return (Criteria) this;
+        }
+
+        public Criteria andAcquisitionTypeIn(List<String> values) {
+            addCriterion("acquisition_type in", values, "acquisitionType");
+            return (Criteria) this;
+        }
+
+        public Criteria andAcquisitionTypeNotIn(List<String> values) {
+            addCriterion("acquisition_type not in", values, "acquisitionType");
+            return (Criteria) this;
+        }
+
+        public Criteria andAcquisitionTypeBetween(String value1, String value2) {
+            addCriterion("acquisition_type between", value1, value2, "acquisitionType");
+            return (Criteria) this;
+        }
+
+        public Criteria andAcquisitionTypeNotBetween(String value1, String value2) {
+            addCriterion("acquisition_type not between", value1, value2, "acquisitionType");
             return (Criteria) this;
         }
     }

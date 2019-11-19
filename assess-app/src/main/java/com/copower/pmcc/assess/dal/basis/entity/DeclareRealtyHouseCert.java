@@ -94,7 +94,7 @@ public class DeclareRealtyHouseCert {
 
     private BigDecimal apportionmentArea;
 
-    private Integer certUseCategory;
+    private String certUseCategory;
 
     public Integer getId() {
         return id;
@@ -456,11 +456,11 @@ public class DeclareRealtyHouseCert {
         this.apportionmentArea = apportionmentArea;
     }
 
-    public Integer getCertUseCategory() {
+    public String getCertUseCategory() {
         return certUseCategory;
     }
 
-    public void setCertUseCategory(Integer certUseCategory) {
-        this.certUseCategory = certUseCategory;
+    public void setCertUseCategory(String certUseCategory) {
+        this.certUseCategory = certUseCategory == null ? null : certUseCategory.trim();
     }
 }
