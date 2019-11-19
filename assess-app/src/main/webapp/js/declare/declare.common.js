@@ -600,7 +600,7 @@ declareCommon.initHouse = function (item, form, fileArr, callback) {
         frm.find("select[name='landAcquisition']").empty().html(html).trigger('change');
     });
     frm.find("input[name='certUse']").off('change').on('change', function () {
-        AssessCommon.certUseOnchenge(AssessDicKey.examineHouseLoadUtility,$(this).val(),item.landCertUseCategory, function (html, data) {
+        AssessCommon.getSonDataList(AssessDicKey.examineHouseLoadUtility,$(this).val(),item.certUseCategory, function (html, data) {
             frm.find("#housecertUseCategoryList").empty().html(html).trigger('change');
         });
     });
@@ -789,7 +789,7 @@ declareCommon.initDeclareRealty = function (item, form, fileArr, callback) {
         frm.find("#realHouseUseList2").empty().html(html).trigger('change');
     },true);
     frm.find("input[name='houseCertUse']").off('change').on('change', function () {
-        AssessCommon.certUseOnchenge(AssessDicKey.examineHouseLoadUtility,$(this).val(),item.houseCertUseCategory, function (html, data) {
+        AssessCommon.getSonDataList(AssessDicKey.examineHouseLoadUtility,$(this).val(),item.houseCertUseCategory, function (html, data) {
             frm.find("#houseCertUseCategoryList1").empty().html(html).trigger('change');
             frm.find("#houseCertUseCategoryList2").empty().html(html).trigger('change');
         });
