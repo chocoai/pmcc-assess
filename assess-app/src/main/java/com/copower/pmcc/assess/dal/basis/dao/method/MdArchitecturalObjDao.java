@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.dal.basis.entity.MdArchitecturalObj;
 import com.copower.pmcc.assess.dal.basis.entity.MdArchitecturalObjExample;
 import com.copower.pmcc.assess.dal.basis.mapper.MdArchitecturalObjMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -36,6 +37,9 @@ public class MdArchitecturalObjDao {
     }
 
     public void deleteMdArchitecturalObjByIds(List<Integer> ids){
+        if (CollectionUtils.isEmpty(ids)){
+            return;
+        }
         MdArchitecturalObjExample example = new MdArchitecturalObjExample();
         MdArchitecturalObjExample.Criteria criteria = example.createCriteria();
         criteria.andIdIn(ids) ;
