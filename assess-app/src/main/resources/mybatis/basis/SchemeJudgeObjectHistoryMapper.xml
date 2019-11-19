@@ -3,6 +3,7 @@
 <mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.SchemeJudgeObjectHistoryMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObjectHistory" >
     <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="judge_object_id" property="judgeObjectId" jdbcType="INTEGER" />
     <result column="project_id" property="projectId" jdbcType="INTEGER" />
     <result column="area_group_id" property="areaGroupId" jdbcType="INTEGER" />
     <result column="declare_record_id" property="declareRecordId" jdbcType="INTEGER" />
@@ -74,8 +75,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, project_id, area_group_id, declare_record_id, number, split_number, name, judge_function, 
-    sorting, creator, gmt_created, gmt_modified
+    id, judge_object_id, project_id, area_group_id, declare_record_id, number, split_number, 
+    name, judge_function, sorting, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObjectHistoryExample" >
     select
@@ -111,14 +112,16 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_scheme_judge_object_history (project_id, area_group_id, declare_record_id, 
-      number, split_number, name, 
-      judge_function, sorting, creator, 
-      gmt_created, gmt_modified)
-    values (#{projectId,jdbcType=INTEGER}, #{areaGroupId,jdbcType=INTEGER}, #{declareRecordId,jdbcType=INTEGER}, 
-      #{number,jdbcType=VARCHAR}, #{splitNumber,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
-      #{judgeFunction,jdbcType=VARCHAR}, #{sorting,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_scheme_judge_object_history (judge_object_id, project_id, area_group_id, 
+      declare_record_id, number, split_number, 
+      name, judge_function, sorting, 
+      creator, gmt_created, gmt_modified
+      )
+    values (#{judgeObjectId,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, #{areaGroupId,jdbcType=INTEGER}, 
+      #{declareRecordId,jdbcType=INTEGER}, #{number,jdbcType=VARCHAR}, #{splitNumber,jdbcType=INTEGER}, 
+      #{name,jdbcType=VARCHAR}, #{judgeFunction,jdbcType=VARCHAR}, #{sorting,jdbcType=INTEGER}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObjectHistory" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -126,6 +129,9 @@
     </selectKey>
     insert into tb_scheme_judge_object_history
     <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="judgeObjectId != null" >
+        judge_object_id,
+      </if>
       <if test="projectId != null" >
         project_id,
       </if>
@@ -161,6 +167,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="judgeObjectId != null" >
+        #{judgeObjectId,jdbcType=INTEGER},
+      </if>
       <if test="projectId != null" >
         #{projectId,jdbcType=INTEGER},
       </if>
@@ -208,6 +217,9 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
+      <if test="record.judgeObjectId != null" >
+        judge_object_id = #{record.judgeObjectId,jdbcType=INTEGER},
+      </if>
       <if test="record.projectId != null" >
         project_id = #{record.projectId,jdbcType=INTEGER},
       </if>
@@ -249,6 +261,7 @@
   <update id="updateByExample" parameterType="map" >
     update tb_scheme_judge_object_history
     set id = #{record.id,jdbcType=INTEGER},
+      judge_object_id = #{record.judgeObjectId,jdbcType=INTEGER},
       project_id = #{record.projectId,jdbcType=INTEGER},
       area_group_id = #{record.areaGroupId,jdbcType=INTEGER},
       declare_record_id = #{record.declareRecordId,jdbcType=INTEGER},
@@ -267,6 +280,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObjectHistory" >
     update tb_scheme_judge_object_history
     <set >
+      <if test="judgeObjectId != null" >
+        judge_object_id = #{judgeObjectId,jdbcType=INTEGER},
+      </if>
       <if test="projectId != null" >
         project_id = #{projectId,jdbcType=INTEGER},
       </if>
@@ -305,7 +321,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObjectHistory" >
     update tb_scheme_judge_object_history
-    set project_id = #{projectId,jdbcType=INTEGER},
+    set judge_object_id = #{judgeObjectId,jdbcType=INTEGER},
+      project_id = #{projectId,jdbcType=INTEGER},
       area_group_id = #{areaGroupId,jdbcType=INTEGER},
       declare_record_id = #{declareRecordId,jdbcType=INTEGER},
       number = #{number,jdbcType=VARCHAR},

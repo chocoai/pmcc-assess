@@ -66,6 +66,8 @@ public class SchemeJudgeObject {
 
     private String standardJudgeExplain;
 
+    private String judgeFunction;
+
     private String notApplicableReason;
 
     private String mergeExplain;
@@ -334,6 +336,14 @@ public class SchemeJudgeObject {
 
     public void setStandardJudgeExplain(String standardJudgeExplain) {
         this.standardJudgeExplain = standardJudgeExplain == null ? null : standardJudgeExplain.trim();
+    }
+
+    public String getJudgeFunction() {
+        return judgeFunction;
+    }
+
+    public void setJudgeFunction(String judgeFunction) {
+        this.judgeFunction = judgeFunction == null ? null : judgeFunction.trim();
     }
 
     public String getNotApplicableReason() {

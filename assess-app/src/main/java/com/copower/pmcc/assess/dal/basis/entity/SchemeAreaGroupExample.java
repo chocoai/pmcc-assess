@@ -1295,6 +1295,66 @@ public class SchemeAreaGroupExample {
             return (Criteria) this;
         }
 
+        public Criteria andBisNewIsNull() {
+            addCriterion("bis_new is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisNewIsNotNull() {
+            addCriterion("bis_new is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisNewEqualTo(Boolean value) {
+            addCriterion("bis_new =", value, "bisNew");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisNewNotEqualTo(Boolean value) {
+            addCriterion("bis_new <>", value, "bisNew");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisNewGreaterThan(Boolean value) {
+            addCriterion("bis_new >", value, "bisNew");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisNewGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_new >=", value, "bisNew");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisNewLessThan(Boolean value) {
+            addCriterion("bis_new <", value, "bisNew");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisNewLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_new <=", value, "bisNew");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisNewIn(List<Boolean> values) {
+            addCriterion("bis_new in", values, "bisNew");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisNewNotIn(List<Boolean> values) {
+            addCriterion("bis_new not in", values, "bisNew");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisNewBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_new between", value1, value2, "bisNew");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisNewNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_new not between", value1, value2, "bisNew");
+            return (Criteria) this;
+        }
+
         public Criteria andBisEnableIsNull() {
             addCriterion("bis_enable is null");
             return (Criteria) this;

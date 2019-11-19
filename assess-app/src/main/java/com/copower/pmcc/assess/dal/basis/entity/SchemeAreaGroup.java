@@ -39,6 +39,8 @@ public class SchemeAreaGroup {
 
     private String scopeNotInclude;
 
+    private Boolean bisNew;
+
     private Boolean bisEnable;
 
     private Boolean bisMerge;
@@ -191,6 +193,14 @@ public class SchemeAreaGroup {
 
     public void setScopeNotInclude(String scopeNotInclude) {
         this.scopeNotInclude = scopeNotInclude == null ? null : scopeNotInclude.trim();
+    }
+
+    public Boolean getBisNew() {
+        return bisNew;
+    }
+
+    public void setBisNew(Boolean bisNew) {
+        this.bisNew = bisNew;
     }
 
     public Boolean getBisEnable() {

@@ -10,8 +10,11 @@ import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeJudgeObjectDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeJudgeObjectHistoryDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeSurePriceFactorDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dto.input.method.MdNewAndRemoveDto;
+import com.copower.pmcc.assess.dto.input.project.scheme.SchemeJudgeObjectAppendTaskDto;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeProgrammeDto;
 import com.copower.pmcc.assess.dto.output.project.scheme.SchemeJudgeObjectVo;
 import com.copower.pmcc.assess.service.BaseService;
@@ -61,10 +64,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -130,6 +130,8 @@ public class SchemeJudgeObjectService {
     private BpmRpcBoxService bpmRpcBoxService;
     @Autowired
     private ProcessControllerComponent processControllerComponent;
+    @Autowired
+    private SchemeJudgeObjectHistoryDao schemeJudgeObjectHistoryDao;
 
     public boolean addSchemeJudgeObject(SchemeJudgeObject schemeJudgeObject) {
         return schemeJudgeObjectDao.addSchemeJudgeObject(schemeJudgeObject);
@@ -607,7 +609,7 @@ public class SchemeJudgeObjectService {
      * @param projectId
      * @param planId
      * @param schemeProgrammeDtos
-     * @param mustUseBox 当为true发起复核审批流程,当为false直接发起该阶段下的所有任务
+     * @param mustUseBox          当为true发起复核审批流程,当为false直接发起该阶段下的所有任务
      * @throws BusinessException
      * @throws BpmException
      */
@@ -620,6 +622,8 @@ public class SchemeJudgeObjectService {
         if (count > 0) {
             throw new BusinessException("还有委估对象未设置评估方法请检查");
         }
+
+
         this.saveProgrammeAll(schemeProgrammeDtos);
         ProjectPlan projectPlan = projectPlanService.getProjectplanById(planId);
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
@@ -629,7 +633,7 @@ public class SchemeJudgeObjectService {
             //这里根据参数获取复核模型来发起一个复核流程
             ProcessUserDto processUserDto = null;
             //发起相应的流程
-            String folio = String.join("","【方案审批】",projectPlan.getPlanName(), DateUtils.format(new Date(),DateUtils.DATETIME_MILL_SECOND));
+            String folio = String.join("", "【方案审批】", projectPlan.getPlanName(), DateUtils.format(new Date(), DateUtils.DATETIME_MILL_SECOND));
             //取得复核模型
             final String boxName = baseParameterService.getParameterValues(BaseParameterEnum.PROJECT__FORM__PROGRAMME__PROCESS__KEY.getParameterKey());
             BoxReDto boxReDto = bpmRpcBoxService.getBoxReByBoxName(boxName);
@@ -639,7 +643,7 @@ public class SchemeJudgeObjectService {
             processInfo.setProcessName(boxReDto.getProcessName());
             processInfo.setGroupName(boxReDto.getGroupName());
             processInfo.setFolio(folio);//流程描述
-//            processInfo.setTableName(FormatUtils.entityNameConvertToTableName(ProjectPlan.class));
+            processInfo.setTableName(FormatUtils.entityNameConvertToTableName(ProjectPlan.class));
             processInfo.setTableId(0);
             processInfo.setBoxId(boxReDto.getId());
             processInfo.setWorkStage(projectWorkStage.getWorkStageName());
@@ -653,9 +657,9 @@ public class SchemeJudgeObjectService {
                 throw new BusinessException(e.getMessage());
             }
             projectPlan.setProcessInsId(processUserDto.getProcessInsId());
-            projectPlanService.updateProjectPlan(projectPlan) ;
+            projectPlanService.updateProjectPlan(projectPlan);
         }
-        //原方法  这里会直接发起阶段任务我的理解 这里我只是把这个方法拆成2个而已，以前生成这个阶段下的任务的方法无任何修改,请以后的修改人注意
+
         if (!mustUseBox) {
             this.submitProgrammeHandle(projectInfo, projectPlan, projectWorkStage);
         }
@@ -663,6 +667,7 @@ public class SchemeJudgeObjectService {
 
     /**
      * 发起该阶段下的任务
+     *
      * @param projectInfo
      * @param projectPlan
      * @param projectWorkStage
@@ -670,21 +675,10 @@ public class SchemeJudgeObjectService {
      * @throws BpmException
      */
     public void submitProgrammeHandle(ProjectInfo projectInfo, ProjectPlan projectPlan, ProjectWorkStage projectWorkStage) throws BusinessException, BpmException {
-        //循环所有新的委估对象，与上一次生成的数据做对比,首先找出未发生变化的委估对象，再处理新添加的委估对象，
-        //1.当该委估对象为新添加的对象，则为该委估对象添加相关方法任务
-        //2.当委估对象与上一次委估对象一致，方法未发生变更则不做处理，方法发生了变化则处理变化的内容
-        //3.
-
-        //1.首先找出没有发生变化的估价对象，及检查选择的方法是否发生变化，分隔出什么都变化的估价对象，方法变更的估价对象，拆分合并变化的估价对象
-        //2.将没有发变化的事项与任务保留，其余的全部删除
-        //3.对于只变化了方法，则只处理方法变更的事项，其他的委估对象事项都重新生成
-
-
-
-        rollBackToProgramme(projectInfo.getId(), projectPlan.getId());
         String projectManager = projectMemberService.getProjectManager(projectInfo.getId());
         List<SchemeAreaGroup> areaGroupList = schemeAreaGroupService.getAreaGroupList(projectInfo.getId());
         if (CollectionUtils.isNotEmpty(areaGroupList)) {
+            List<MdNewAndRemoveDto> methodChangeJudges = Lists.newArrayList();//只是改变了评估方法的估价对象
             ProjectPhase phaseSurePrice = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.SURE_PRICE, projectInfo.getProjectCategoryId());
             ProjectPhase phaseLiquidationAnalysis = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.LIQUIDATION_ANALYSIS, projectInfo.getProjectCategoryId());
             ProjectPhase phaseReimbursement = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.REIMBURSEMENT, projectInfo.getProjectCategoryId());
@@ -696,39 +690,182 @@ public class SchemeJudgeObjectService {
                 judgeProjectPhases.add(phaseLiquidationAnalysis);
                 judgeProjectPhases.add(phaseReimbursement);
             }
+            List<SchemeJudgeObjectHistory> judgeObjectHistoryList = schemeJudgeObjectHistoryDao.getListByProjectId(projectInfo.getId());
+
+            SchemeJudgeObjectAppendTaskDto appendTaskDto = new SchemeJudgeObjectAppendTaskDto();
+            appendTaskDto.setProjectInfo(projectInfo);
+            appendTaskDto.setProjectWorkStage(projectWorkStage);
+            appendTaskDto.setProjectPlan(projectPlan);
+            appendTaskDto.setSorting(i);
+            appendTaskDto.setPhaseSurePrice(phaseSurePrice);
+            appendTaskDto.setProjectManager(projectManager);
+            appendTaskDto.setPhaseMap(phaseMap);
             for (SchemeAreaGroup schemeAreaGroup : areaGroupList) {
-                List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getSchemeJudgeObjectList(schemeAreaGroup.getId());
-                if (CollectionUtils.isNotEmpty(judgeObjectList)) {
-                    for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
-                        StringBuilder phaseName = new StringBuilder();
-                        phaseName.append(schemeAreaGroup.getAreaName()).append("/").append(schemeJudgeObject.getNumber());
-                        if (schemeJudgeObject.getSplitNumber() != null && schemeJudgeObject.getSplitNumber() > 0) {
-                            phaseName.append("-").append(schemeJudgeObject.getSplitNumber());
+                appendTaskDto.setSchemeAreaGroup(schemeAreaGroup);
+                if (schemeAreaGroup.getBisNew() == Boolean.TRUE) {
+                    List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getSchemeJudgeObjectList(schemeAreaGroup.getId());
+                    if (CollectionUtils.isNotEmpty(judgeObjectList)) {
+                        for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
+                            appendTaskDto.setSchemeJudgeObject(schemeJudgeObject);
+                            appendTaskForJudgeObject(appendTaskDto);
                         }
-                        phaseName.append(BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME);
-                        List<SchemeJudgeFunction> judgeFunctions = schemeJudgeFunctionService.getApplicableJudgeFunctions(schemeJudgeObject.getId());
-                        if (CollectionUtils.isNotEmpty(judgeFunctions)) {
-                            for (SchemeJudgeFunction judgeFunction : judgeFunctions) {
-                                ProjectPhase projectPhase = phaseMap.get(judgeFunction.getMethodType());
-                                if (projectPhase != null) {
-                                    i = savePlanDetails(projectInfo, projectWorkStage, projectPlan, i, null, schemeJudgeObject, phaseName.toString(), projectPhase, projectManager);
-                                    i++;
+                    }
+                    if (CollectionUtils.isNotEmpty(judgeProjectPhases)) {
+                        for (ProjectPhase projectPhase : judgeProjectPhases) {
+                            savePlanDetails(projectInfo, projectWorkStage, projectPlan, i, schemeAreaGroup, null, schemeAreaGroup.getAreaName(), projectPhase, projectManager);
+                        }
+                    }
+                    schemeAreaGroup.setBisNew(false);
+                    schemeAreaGroupService.saveAreaGroup(schemeAreaGroup);
+                } else {
+                    //先拿历史版本数据与当前数据进行比较，确定各种数据的处理方案
+                    //1.先用所有关键信息进行比对，完全一致，这部分数据不做处理，注意有可能选择的方法会不一致
+                    //2.不一致，其中新增或发生变化的先删除任务再为其添加新任务；已被删除的估价对象只将其任务删除掉
+
+                    List<SchemeJudgeObject> judgeObjectList = getJudgeObjectApplicableListByAreaGroupId(schemeAreaGroup.getId());
+                    if (CollectionUtils.isNotEmpty(judgeObjectList)) {
+                        Iterator<SchemeJudgeObject> judgeObjectIterator = judgeObjectList.iterator();
+                        while (judgeObjectIterator.hasNext()) {
+                            SchemeJudgeObject judgeObject = (SchemeJudgeObject) judgeObjectIterator.next();
+                            if (CollectionUtils.isNotEmpty(judgeObjectHistoryList)) {
+                                Iterator<SchemeJudgeObjectHistory> judgeObjectHistoryIterator = judgeObjectHistoryList.iterator();
+                                while (judgeObjectHistoryIterator.hasNext()) {
+                                    SchemeJudgeObjectHistory judgeObjectHistory = (SchemeJudgeObjectHistory) judgeObjectHistoryIterator.next();
+                                    boolean isSameAreaGroupId = publicService.equalsInteger(judgeObject.getAreaGroupId(), judgeObjectHistory.getAreaGroupId());
+                                    boolean isSameDeclareRecordId = publicService.equalsInteger(judgeObject.getDeclareRecordId(), judgeObjectHistory.getDeclareRecordId());
+                                    boolean isSameNumber = publicService.equalsString(judgeObject.getNumber(), judgeObjectHistory.getNumber());
+                                    boolean isSameSplitNumber = publicService.equalsInteger(judgeObject.getSplitNumber(), judgeObjectHistory.getSplitNumber());
+                                    if (isSameAreaGroupId && isSameDeclareRecordId && isSameNumber && isSameSplitNumber) {
+                                        judgeObjectIterator.remove();
+                                        judgeObjectHistoryIterator.remove();
+
+                                        List<String> judgeObjectFunctions = FormatUtils.transformString2List(judgeObject.getJudgeFunction());
+                                        List<String> judgeObjectHistoryFunctions = FormatUtils.transformString2List(judgeObjectHistory.getJudgeFunction());
+                                        if (!publicService.listIsConsistent(judgeObjectFunctions, judgeObjectHistoryFunctions)) {
+                                            MdNewAndRemoveDto mdNewAndRemoveDto = new MdNewAndRemoveDto();
+                                            mdNewAndRemoveDto.setJudgeObjectId(judgeObject.getId());
+                                            mdNewAndRemoveDto.setSchemeJudgeObject(judgeObject);
+                                            mdNewAndRemoveDto.setSchemeAreaGroup(schemeAreaGroup);
+                                            if (CollectionUtils.isNotEmpty(judgeObjectFunctions)) {
+                                                mdNewAndRemoveDto.setNewMethodList(FormatUtils.ListStringToListInteger(judgeObjectFunctions));
+                                            }
+                                            if (CollectionUtils.isNotEmpty(judgeObjectHistoryFunctions)) {
+                                                mdNewAndRemoveDto.setRemoveMethodList(FormatUtils.ListStringToListInteger(judgeObjectHistoryFunctions));
+                                            }
+                                            methodChangeJudges.add(mdNewAndRemoveDto);
+                                        }
+                                    }
                                 }
                             }
                         }
-                        savePlanDetails(projectInfo, projectWorkStage, projectPlan, i, null, schemeJudgeObject, phaseName.toString(), phaseSurePrice, projectManager);//确定单价
+                        //新添加的估价对象
+                        if (CollectionUtils.isNotEmpty(judgeObjectList)) {
+                            for (SchemeJudgeObject judgeObject : judgeObjectList) {
+                                appendTaskDto.setSchemeJudgeObject(judgeObject);
+                                appendTaskForJudgeObject(appendTaskDto);
+                            }
+                        }
                     }
                 }
-                if (CollectionUtils.isNotEmpty(judgeProjectPhases)) {
-                    for (ProjectPhase projectPhase : judgeProjectPhases) {
-                        savePlanDetails(projectInfo, projectWorkStage, projectPlan, i, schemeAreaGroup, null, schemeAreaGroup.getAreaName(), projectPhase, projectManager);
+            }
+            //已经被移除的估价对象
+            if (CollectionUtils.isNotEmpty(judgeObjectHistoryList)) {
+                judgeObjectHistoryList.forEach(o -> {
+                    schemeAreaGroupService.clearJudgeObjectTask(projectInfo.getId(), o.getJudgeObjectId());
+                });
+            }
+
+            //处理只改变了评估方法的估价对象
+            if (CollectionUtils.isNotEmpty(methodChangeJudges)) {
+                for (MdNewAndRemoveDto item : methodChangeJudges) {
+                    if (CollectionUtils.isNotEmpty(item.getRemoveMethodList())) {
+                        for (Integer methodType : item.getRemoveMethodList()) {
+                            BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicById(methodType);
+                            ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(baseDataDic.getFieldName());
+                            ProjectPlanDetails where = new ProjectPlanDetails();
+                            where.setProjectId(projectInfo.getId());
+                            where.setProjectPhaseId(projectPhase.getId());
+                            where.setJudgeObjectId(item.getJudgeObjectId());
+                            List<ProjectPlanDetails> projectDetails = projectPlanDetailsService.getProjectDetails(where);
+                            if (CollectionUtils.isNotEmpty(projectDetails))
+                                projectDetails.forEach(o -> projectPlanDetailsService.deleteProjectPlanDetails(o));
+                        }
+                    }
+                    if (CollectionUtils.isNotEmpty(item.getNewMethodList())) {
+                        String planRemark = generatePlanRemark(item.getSchemeAreaGroup(), item.getSchemeJudgeObject());
+                        for (Integer methodType : item.getNewMethodList()) {
+                            BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicById(methodType);
+                            ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(baseDataDic.getFieldName());
+                            savePlanDetails(projectInfo, projectWorkStage, projectPlan, 0, item.getSchemeAreaGroup(), item.getJudgeObjectId(), planRemark, projectPhase, projectManager);
+                        }
                     }
                 }
             }
         }
+
+        //当所有任务生成完成后，将当前方案版本数据存入历史数据表中
+        recordToHistory(projectInfo.getId());
     }
 
-    private int savePlanDetails(ProjectInfo projectInfo, ProjectWorkStage projectWorkStage, ProjectPlan projectPlan, int i, SchemeAreaGroup schemeAreaGroup, SchemeJudgeObject schemeJudgeObject, String planRemarks, ProjectPhase projectPhase, String projectManager) throws BpmException {
+    private void recordToHistory(Integer projectId) {
+        //先清除上个版本历史数据
+        schemeJudgeObjectHistoryDao.deleteSchemeJudgeObjectHistoryByProjectId(projectId);
+        List<SchemeJudgeObject> judgeObjects = getJudgeObjectListByProjectId(projectId);
+        if (CollectionUtils.isNotEmpty(judgeObjects)) {
+            judgeObjects.forEach(o -> {
+                SchemeJudgeObjectHistory judgeObjectHistory = new SchemeJudgeObjectHistory();
+                judgeObjectHistory.setJudgeObjectId(o.getId());
+                judgeObjectHistory.setProjectId(o.getProjectId());
+                judgeObjectHistory.setAreaGroupId(o.getAreaGroupId());
+                judgeObjectHistory.setDeclareRecordId(o.getDeclareRecordId());
+                judgeObjectHistory.setNumber(o.getNumber());
+                judgeObjectHistory.setSplitNumber(o.getSplitNumber());
+                judgeObjectHistory.setName(o.getName());
+                judgeObjectHistory.setJudgeFunction(o.getJudgeFunction());
+                judgeObjectHistory.setSorting(o.getSorting());
+                judgeObjectHistory.setCreator(commonService.thisUserAccount());
+                schemeJudgeObjectHistoryDao.addSchemeJudgeObjectHistory(judgeObjectHistory);
+            });
+        }
+    }
+
+    private int appendTaskForJudgeObject(SchemeJudgeObjectAppendTaskDto schemeJudgeObjectAppendTaskDto) throws BpmException {
+        ProjectInfo projectInfo = schemeJudgeObjectAppendTaskDto.getProjectInfo();
+        ProjectWorkStage projectWorkStage = schemeJudgeObjectAppendTaskDto.getProjectWorkStage();
+        ProjectPlan projectPlan = schemeJudgeObjectAppendTaskDto.getProjectPlan();
+        Integer sorting = schemeJudgeObjectAppendTaskDto.getSorting();
+        SchemeAreaGroup schemeAreaGroup = schemeJudgeObjectAppendTaskDto.getSchemeAreaGroup();
+        SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectAppendTaskDto.getSchemeJudgeObject();
+        ProjectPhase phaseSurePrice = schemeJudgeObjectAppendTaskDto.getPhaseSurePrice();
+        String projectManager = schemeJudgeObjectAppendTaskDto.getProjectManager();
+        Map<Integer, ProjectPhase> phaseMap = schemeJudgeObjectAppendTaskDto.getPhaseMap();
+
+        String planRemark = generatePlanRemark(schemeAreaGroup, schemeJudgeObject);
+        List<SchemeJudgeFunction> judgeFunctions = schemeJudgeFunctionService.getApplicableJudgeFunctions(schemeJudgeObject.getId());
+        if (CollectionUtils.isNotEmpty(judgeFunctions)) {
+            for (SchemeJudgeFunction judgeFunction : judgeFunctions) {
+                ProjectPhase projectPhase = phaseMap.get(judgeFunction.getMethodType());
+                if (projectPhase != null) {
+                    sorting = savePlanDetails(projectInfo, projectWorkStage, projectPlan, sorting, null, schemeJudgeObject.getId(), planRemark, projectPhase, projectManager);
+                    sorting++;
+                }
+            }
+        }
+        return savePlanDetails(projectInfo, projectWorkStage, projectPlan, sorting, null, schemeJudgeObject.getId(), planRemark, phaseSurePrice, projectManager);//确定单价
+    }
+
+    private String generatePlanRemark(SchemeAreaGroup schemeAreaGroup, SchemeJudgeObject schemeJudgeObject) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(schemeAreaGroup.getAreaName()).append("/").append(schemeJudgeObject.getNumber());
+        if (schemeJudgeObject.getSplitNumber() != null && schemeJudgeObject.getSplitNumber() > 0) {
+            stringBuilder.append("-").append(schemeJudgeObject.getSplitNumber());
+        }
+        stringBuilder.append(BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME);
+        return stringBuilder.toString();
+    }
+
+
+    private int savePlanDetails(ProjectInfo projectInfo, ProjectWorkStage projectWorkStage, ProjectPlan projectPlan, int sorting, SchemeAreaGroup schemeAreaGroup, Integer judgeObjectId, String planRemarks, ProjectPhase projectPhase, String projectManager) throws BpmException {
         ProjectPlanDetails details = new ProjectPlanDetails();
         details.setProjectWorkStageId(projectPlan.getWorkStageId());
         details.setPlanId(projectPlan.getId());
@@ -737,8 +874,7 @@ public class SchemeJudgeObjectService {
         details.setProjectPhaseId(projectPhase.getId());
         if (schemeAreaGroup != null)
             details.setAreaId(schemeAreaGroup.getId());
-        if (schemeJudgeObject != null)
-            details.setJudgeObjectId(schemeJudgeObject.getId());
+        details.setJudgeObjectId(judgeObjectId);
         details.setStatus(ProcessStatusEnum.RUN.getValue());
         details.setExecuteUserAccount(projectManager);
         details.setPlanStartDate(new Date());
@@ -746,11 +882,11 @@ public class SchemeJudgeObjectService {
         details.setPid(0);
         details.setPlanRemarks(planRemarks);
         details.setBisLastLayer(true);
-        details.setSorting(i++);
+        details.setSorting(sorting++);
         projectPlanDetailsDao.addProjectPlanDetails(details);
         //发起任务
         projectPlanService.saveProjectPlanDetailsResponsibility(details, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.TASK);
-        return i;
+        return sorting;
     }
 
     private Map<Integer, ProjectPhase> getProjectPhaseMap(Integer categoryId) {
