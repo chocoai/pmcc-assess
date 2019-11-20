@@ -1935,12 +1935,18 @@ public class GenerateBaseDataService {
         BaseDataDic type = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_ACTUAL_ADDRESS);
         List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaId);
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+            boolean isLabelJudgeObjectShowName = schemeJudgeObjectList.size() <= 20 ;
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                 if (schemeJudgeObject.getDeclareRecordId() != null) {
                     String registration = getActualRegistration(type, schemeJudgeObject.getDeclareRecordId());//证载地址
                     String addressAssetInventory = getActualAddressAssetInventory(type, schemeJudgeObject.getDeclareRecordId());//现场查勘地址
                     if (StringUtils.isNotBlank(registration) && StringUtils.isNotBlank(addressAssetInventory)) {
-                        stringBuilder.append(String.format("%s估价对象证载地址为", generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject)));
+                            String tempNumber = String.join("",schemeJudgeObject.getNumber(),"号") ;
+                            if (isLabelJudgeObjectShowName){
+                                tempNumber = generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject) ;
+                            }
+                        stringBuilder.append(String.format("%s估价对象证载地址为", tempNumber));
+
                         stringBuilder.append(registration);
                         stringBuilder.append("，");
                         stringBuilder.append("估价人员现场查勘地址为");
@@ -1985,6 +1991,7 @@ public class GenerateBaseDataService {
         LinkedList<String> linkedLists = new LinkedList<String>();
         final String nullValue = "";
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+            boolean isLabelJudgeObjectShowName = schemeJudgeObjectList.size() <= 20;
             builder.startTable();
             generateCommonMethod.writeWordTitle(builder, Lists.newLinkedList(Arrays.asList("估价序号", "权证号", "所有权人", "共有情况", "证载用途", "房屋性质", "面积")));
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
@@ -1995,7 +2002,11 @@ public class GenerateBaseDataService {
                 if (declareRecord == null) {
                     continue;
                 }
-                linkedLists.add(generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject));
+                if (isLabelJudgeObjectShowName) {
+                    linkedLists.add(generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject));
+                } else {
+                    linkedLists.add(String.join("", schemeJudgeObject.getNumber(), "号"));
+                }
                 linkedLists.add(StringUtils.isNotBlank(declareRecord.getName()) ? declareRecord.getName() : nullValue);
                 linkedLists.add(StringUtils.isNotBlank(declareRecord.getOwnership()) ? declareRecord.getOwnership() : nullValue);
                 linkedLists.add(StringUtils.isNotBlank(declareRecord.getPublicSituation()) ? declareRecord.getPublicSituation() : nullValue);
@@ -2189,32 +2200,45 @@ public class GenerateBaseDataService {
             Map<String, String> costMap = Maps.newHashMap();
             Map<String, String> developmentMap = Maps.newHashMap();
             for (SchemeJudgeFunction judgeFunction : functionList) {
-                SchemeJudgeObject judgeObject = this.schemeJudgeObjectMap.get(judgeFunction.getJudgeObjectId());
-                if (judgeObject == null) continue;
+                if (judgeFunction.getJudgeObjectId() == null) {
+                    continue;
+                }
+                SchemeJudgeObject judgeObject = schemeJudgeObjectMap.get(judgeFunction.getJudgeObjectId());
+                if (judgeObject == null) {
+                    continue;
+                }
                 DataSetUseField setUseField = dataSetUseFieldService.getCacheSetUseFieldById(judgeObject.getSetUse());
                 String setUseName = setUseField == null ? "" : StringUtils.defaultString(setUseField.getName());
                 String conent = String.format("作为%s,%s", setUseName, judgeFunction.getApplicableReason());
-                if (mdCommonService.isCompareMethod(judgeFunction.getMethodType()))
+                if (mdCommonService.isCompareMethod(judgeFunction.getMethodType())) {
                     compareMap.put(judgeObject.getNumber(), conent);
-                if (mdCommonService.isIncomeMethod(judgeFunction.getMethodType()))
+                }
+                if (mdCommonService.isIncomeMethod(judgeFunction.getMethodType())) {
                     incomeMap.put(judgeObject.getNumber(), conent);
-                if (mdCommonService.isCostMethod(judgeFunction.getMethodType()))
+                }
+                if (mdCommonService.isCostMethod(judgeFunction.getMethodType())) {
                     costMap.put(judgeObject.getNumber(), conent);
-                if (mdCommonService.isDevelopmentMethod(judgeFunction.getMethodType()))
+                }
+                if (mdCommonService.isDevelopmentMethod(judgeFunction.getMethodType())) {
                     developmentMap.put(judgeObject.getNumber(), conent);
+                }
             }
             String compareContent = generateCommonMethod.judgeEachDescExtend(compareMap, "", "。", true);
             String incomeContent = generateCommonMethod.judgeEachDescExtend(incomeMap, "", "。", true);
             String costContent = generateCommonMethod.judgeEachDescExtend(costMap, "", "。", true);
             String deveolpmentContent = generateCommonMethod.judgeEachDescExtend(developmentMap, "", "。", true);
-            if (StringUtils.isNotBlank(compareContent))
+            if (StringUtils.isNotBlank(compareContent)) {
                 builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml(generateCommonMethod.trim(compareContent))), false);
-            if (StringUtils.isNotBlank(incomeContent))
+            }
+            if (StringUtils.isNotBlank(incomeContent)) {
                 builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml(generateCommonMethod.trim(incomeContent))), false);
-            if (StringUtils.isNotBlank(costContent))
+            }
+            if (StringUtils.isNotBlank(costContent)) {
                 builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml(generateCommonMethod.trim(costContent))), false);
-            if (StringUtils.isNotBlank(deveolpmentContent))
+            }
+            if (StringUtils.isNotBlank(deveolpmentContent)) {
                 builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml(generateCommonMethod.trim(deveolpmentContent))), false);
+            }
         }
         doc.save(localPath);
         return localPath;
@@ -3149,9 +3173,14 @@ public class GenerateBaseDataService {
         final String nullString = "";
         List<String> stringList = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+            boolean isLabelJudgeObjectShowName = schemeJudgeObjectList.size() <= 20;
             generateCommonMethod.writeWordTitle(builder, Lists.newLinkedList(Lists.newArrayList("估价编号", "因素", "评估面积", "评估单价", "评估总价")));
             for (SchemeJudgeObjectVo schemeJudgeObject : schemeJudgeObjectList) {
-                stringList.add(generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject));
+                if (isLabelJudgeObjectShowName) {
+                    stringList.add(generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject));
+                } else {
+                    stringList.add(String.join("", schemeJudgeObject.getNumber(), "号"));
+                }
                 stringList.add(StringUtils.isNotBlank(schemeJudgeObject.getCoefficient()) ? schemeJudgeObject.getCoefficient() : nullString);
                 if (schemeJudgeObject.getEvaluationArea() != null) {
                     stringList.add(String.format("%s%s", schemeJudgeObject.getEvaluationArea().toString(), "㎡"));
@@ -3538,7 +3567,7 @@ public class GenerateBaseDataService {
                             if (declareRecord != null && declareRecord.getPrice() != null && declareRecord.getPracticalArea() != null) {
                                 total = total.add(declareRecord.getPracticalArea().multiply(declareRecord.getPrice()));
                             }
-                            this.writeJudgeObjectResultSurveyInCell(integerEntry.getKey(), integerEntry.getValue(), builder, doubleLinkedList, seat, mortgageFlag);
+                            this.writeJudgeObjectResultSurveyInCell(integerEntry.getKey(), integerEntry.getValue(), builder, doubleLinkedList, seat, mortgageFlag, schemeJudgeObjectList.size() <= 20);
                         }
                         Cell cellRange0 = null;
                         for (int j = 0; j < colMax; j++) {
@@ -3586,7 +3615,7 @@ public class GenerateBaseDataService {
                 for (SchemeJudgeObject schemeJudgeObject : objectList) {
                     BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
                     if (basicApply != null) {
-                        this.writeJudgeObjectResultSurveyInCell(basicApply, schemeJudgeObject, builder, doubleLinkedList, seat, mortgageFlag);
+                        this.writeJudgeObjectResultSurveyInCell(basicApply, schemeJudgeObject, builder, doubleLinkedList, seat, mortgageFlag, schemeJudgeObjectList.size() <= 20);
                     }
                 }
             }
@@ -3603,7 +3632,7 @@ public class GenerateBaseDataService {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                 BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
                 if (basicApply != null) {
-                    this.writeJudgeObjectResultSurveyInCell(basicApply, schemeJudgeObject, builder, doubleLinkedList, seat, mortgageFlag);
+                    this.writeJudgeObjectResultSurveyInCell(basicApply, schemeJudgeObject, builder, doubleLinkedList, seat, mortgageFlag, schemeJudgeObjectList.size() <= 20);
                 }
             }
         }
@@ -3648,7 +3677,7 @@ public class GenerateBaseDataService {
         if (!schemeJudgeObjectLinkedHashMap.isEmpty()) {
             AsposeUtils.writeWordTitle(builder, doubleLinkedList, strings);
             for (Map.Entry<BasicApply, SchemeJudgeObject> objectEntry : schemeJudgeObjectLinkedHashMap.entrySet()) {
-                writeJudgeObjectResultSurveyInCell2(objectEntry.getKey(), objectEntry.getValue(), builder, doubleLinkedList, false, false, mortgageFlag);
+                writeJudgeObjectResultSurveyInCell2(objectEntry.getKey(), objectEntry.getValue(), builder, doubleLinkedList, false, false, mortgageFlag, schemeJudgeObjectList.size() <= 20);
             }
         }
         generateCommonMethod.mergeCellTable(mergeCellModelList, table);
@@ -3657,11 +3686,15 @@ public class GenerateBaseDataService {
         return localPath;
     }
 
-    private void writeJudgeObjectResultSurveyInCell2(BasicApply basicApply, SchemeJudgeObject schemeJudgeObject, DocumentBuilder builder, LinkedList<Double> doubleLinkedList, boolean seat, boolean reimbursement, boolean mortgageFlag) throws Exception {
+    private void writeJudgeObjectResultSurveyInCell2(BasicApply basicApply, SchemeJudgeObject schemeJudgeObject, DocumentBuilder builder, LinkedList<Double> doubleLinkedList, boolean seat, boolean reimbursement, boolean mortgageFlag, boolean isLabelJudgeObjectShowName) throws Exception {
         LinkedList<String> linkedLists = Lists.newLinkedList();
         final String nullValue = "";
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
-        linkedLists.add(getSchemeJudgeObjectShowName(schemeJudgeObject));//0
+        if (isLabelJudgeObjectShowName) {
+            linkedLists.add(generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject));
+        } else {
+            linkedLists.add(String.join("", schemeJudgeObject.getNumber(), "号"));
+        }
         if (seat) {
             if (declareRecord != null && StringUtils.isNotBlank(declareRecord.getSeat())) {//1
                 linkedLists.add(declareRecord.getSeat());
@@ -3738,8 +3771,8 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
 
-    private void writeJudgeObjectResultSurveyInCell(BasicApply basicApply, SchemeJudgeObject schemeJudgeObject, DocumentBuilder builder, LinkedList<Double> doubleLinkedList, boolean seat, boolean mortgageFlag) throws Exception {
-        writeJudgeObjectResultSurveyInCell2(basicApply, schemeJudgeObject, builder, doubleLinkedList, seat, mortgageFlag, mortgageFlag);
+    private void writeJudgeObjectResultSurveyInCell(BasicApply basicApply, SchemeJudgeObject schemeJudgeObject, DocumentBuilder builder, LinkedList<Double> doubleLinkedList, boolean seat, boolean mortgageFlag, boolean isLabelJudgeObjectShowName) throws Exception {
+        writeJudgeObjectResultSurveyInCell2(basicApply, schemeJudgeObject, builder, doubleLinkedList, seat, mortgageFlag, mortgageFlag, isLabelJudgeObjectShowName);
     }
 
     /**
@@ -5649,7 +5682,8 @@ public class GenerateBaseDataService {
 
         List<Integer> baseJudgeNumber = Lists.newArrayList();//基准估价对象号
         List<Integer> otherJudgeNumber = Lists.newArrayList();//其它估价对象号
-        for (SchemeJudgeObject judgeObject : this.schemeJudgeObjectFullList) {
+        List<SchemeJudgeObject> schemeJudgeObjectFullList = this.schemeJudgeObjectFullList ;
+        for (SchemeJudgeObject judgeObject : schemeJudgeObjectFullList) {
             if (baseJudgeId.contains(judgeObject.getId())) {
                 baseJudgeNumber.add(Integer.valueOf(judgeObject.getNumber()));
             } else {
