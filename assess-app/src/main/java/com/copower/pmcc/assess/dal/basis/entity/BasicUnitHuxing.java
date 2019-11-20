@@ -38,6 +38,8 @@ public class BasicUnitHuxing {
 
     private Date gmtModified;
 
+    private String spatialDistribution;
+
     public Integer getId() {
         return id;
     }
@@ -172,5 +174,13 @@ public class BasicUnitHuxing {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getSpatialDistribution() {
+        return spatialDistribution;
+    }
+
+    public void setSpatialDistribution(String spatialDistribution) {
+        this.spatialDistribution = spatialDistribution == null ? null : spatialDistribution.trim();
     }
 }

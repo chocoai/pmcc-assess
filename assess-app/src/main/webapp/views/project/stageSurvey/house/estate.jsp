@@ -48,9 +48,10 @@
             </div>
         </div>
         <div class="x-valid">
-            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">楼盘方位</label>
+            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">楼盘方位<span
+                    class="symbol required"></span></label>
             <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                <select name="position" class="form-control search-select position select2">
+                <select name="position" class="form-control search-select position select2" required>
                 </select>
             </div>
         </div>
@@ -91,14 +92,14 @@
         </div>
     </div>
     <div class="form-group">
-        <div class="x-valid">
-            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">街道名称<span
-                    class="symbol required"></span></label>
-            <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                <input type="text" placeholder="街道名称" required
-                       name="street" class="form-control" value="${basicEstate.street}">
-            </div>
-        </div>
+        <%--<div class="x-valid">--%>
+        <%--<label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">街道名称<span--%>
+        <%--class="symbol required"></span></label>--%>
+        <%--<div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">--%>
+        <%--<input type="text" placeholder="街道名称" required--%>
+        <%--name="street" class="form-control" value="${basicEstate.street}">--%>
+        <%--</div>--%>
+        <%--</div>--%>
 
         <div class="x-valid">
             <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">街道号<span
@@ -117,8 +118,6 @@
                        name="attachNumber" class="form-control" value="${basicEstate.attachNumber}">
             </div>
         </div>
-    </div>
-    <div class="form-group">
         <div class="x-valid">
             <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">占地面积</label>
             <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
@@ -127,7 +126,8 @@
                        value="${basicEstate.coverAnArea}">
             </div>
         </div>
-
+    </div>
+    <div class="form-group">
         <div class="x-valid">
             <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">容积率</label>
             <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
@@ -145,8 +145,6 @@
                        value="${basicEstate.greeningRate}">
             </div>
         </div>
-    </div>
-    <div class="form-group">
         <div class="x-valid">
             <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">总楼栋数<span
                     class="symbol required"></span></label>
@@ -156,7 +154,8 @@
                        class="form-control" value="${basicEstate.buildingNumber}">
             </div>
         </div>
-
+    </div>
+    <div class="form-group">
         <div class="x-valid">
             <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">开发商</label>
             <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
@@ -174,8 +173,6 @@
                        value="${basicEstate.floorArea}">
             </div>
         </div>
-    </div>
-    <div class="form-group">
         <div class="x-valid">
             <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">均价</label>
             <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
@@ -184,7 +181,8 @@
                        value="${basicEstate.averagePrice}">
             </div>
         </div>
-
+    </div>
+    <div class="form-group">
         <div class="x-valid">
             <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">价格区间</label>
             <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
@@ -215,7 +213,8 @@
     </div>
     <div class="form-group">
         <div class="x-valid">
-            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">总平面图</label>
+            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">总平面图<span
+                    class="symbol required"></span></label>
             <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
                 <input id="estate_floor_total_plan" placeholder="上传附件" class="form-control"
                        type="file">
@@ -301,9 +300,10 @@
         <input type="hidden" name="landLevelContentResult" value="${basicEstateLandState.landLevelContent}">
         <div class="form-group">
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地名称</label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地名称<span
+                        class="symbol required"></span></label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text" class="form-control" name="name"
+                    <input type="text" class="form-control" name="name" required
                            placeholder="名称" value="${basicEstateLandState.name}">
                 </div>
             </div>
@@ -313,7 +313,8 @@
                 </label>
                 <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                     <div class="input-group">
-                        <input type="text"  name="landUseType" class="form-control" list="landUseTypeList" value="${basicEstateLandState.landUseType}">
+                        <input type="text" required name="landUseType" class="form-control" list="landUseTypeList"
+                               value="${basicEstateLandState.landUseType}">
                         <datalist id="landUseTypeList">
 
                         </datalist>
@@ -333,8 +334,9 @@
                 </label>
                 <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                     <div class="input-group">
-                        <input type="text" name="landUseCategory" list="landUseCategoryList" value="${basicEstateLandState.landUseCategory}"
-                               class="form-control">
+                        <input type="text" name="landUseCategory" list="landUseCategoryList"
+                               value="${basicEstateLandState.landUseCategory}"
+                               class="form-control" required>
                         <datalist id="landUseCategoryList">
 
                         </datalist>
@@ -351,35 +353,47 @@
         </div>
         <div class="form-group">
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">东至</label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">东至<span
+                        class="symbol required"></span></label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text" class="form-control" placeholder="东至"
+                    <input type="text" class="form-control" placeholder="东至" required
                            name="eastTo" value="${basicEstateLandState.eastTo}">
                 </div>
             </div>
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">南至</label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">南至<span
+                        class="symbol required"></span></label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text" class="form-control" placeholder="南至"
+                    <input type="text" class="form-control" placeholder="南至" required
                            name="southTo" value="${basicEstateLandState.southTo}">
                 </div>
             </div>
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">西至</label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">西至<span
+                        class="symbol required"></span></label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text" class="form-control" placeholder="西至"
+                    <input type="text" class="form-control" placeholder="西至" required
                            name="westTo" value="${basicEstateLandState.westTo}">
                 </div>
             </div>
         </div>
         <div class="form-group">
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地级别</label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">北至<span
+                        class="symbol required"></span></label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <input type="text" class="form-control" placeholder="北至" required
+                           name="northTo" value="${basicEstateLandState.northTo}">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地级别<span
+                        class="symbol required"></span></label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <div class="input-group">
                         <input type="hidden" name="landLevel" value="${basicEstateLandState.landLevel}">
                         <input type="text" readonly="readonly" onclick="examineCommon.landLevelSelect(this);"
-                               placeholder="土地级别" class="form-control" name="landLevelName"
+                               placeholder="土地级别" class="form-control" name="landLevelName" required
                                value="${basicEstateLandState.landLevelName}">
                         <span class="input-group-btn">
                         <button type="button" class="btn btn-default docs-tooltip"
@@ -403,25 +417,20 @@
                 </div>
             </div>
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地形状</label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地形状<span
+                        class="symbol required"></span></label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <select class="form-control shapeState" name="shapeState">
+                    <select class="form-control shapeState" name="shapeState" required>
                     </select>
-                </div>
-            </div>
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">北至</label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text" class="form-control" placeholder="北至"
-                           name="northTo" value="${basicEstateLandState.northTo}">
                 </div>
             </div>
         </div>
         <div class="form-group">
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地面积</label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地面积<span
+                        class="symbol required"></span></label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text" class="form-control" data-rule-number='true'
+                    <input type="text" class="form-control" data-rule-number='true' required
                            placeholder="土地面积(请输入数字)" name="landArea" value="${basicEstateLandState.landArea}">
                 </div>
             </div>
@@ -469,13 +478,7 @@
                  id="developmentDegreeContentContainer">
             </div>
         </div>
-        <div class="form-group">
-            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地实体结论</label>
-            <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
-                        <textarea class="form-control" name="conclusion"
-                                  placeholder="土地实体结论">${basicEstateLandState.conclusion}</textarea>
-            </div>
-        </div>
+
         <div class="x_title">开发限制条件</div>
         <div class="form-group">
             <div class="x-valid">
@@ -528,16 +531,18 @@
         <div class="x_title">土壤</div>
         <div class="form-group">
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">污染</label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">污染<span
+                        class="symbol required"></span></label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <select class="form-control search-select select2" name="contaminated">
+                    <select class="form-control search-select select2" name="contaminated" required>
                     </select>
                 </div>
             </div>
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">酸碱度</label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">酸碱度<span
+                        class="symbol required"></span></label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <select class="form-control search-select select2" name="ph">
+                    <select class="form-control search-select select2" name="ph" required>
                     </select>
                 </div>
             </div>
@@ -551,16 +556,18 @@
         </div>
         <div class="form-group">
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">稳定性</label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">稳定性<span
+                        class="symbol required"></span></label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <select class="form-control search-select select2" name="holdOn">
+                    <select class="form-control search-select select2" name="holdOn" required>
                     </select>
                 </div>
             </div>
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">承载力</label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">承载力<span
+                        class="symbol required"></span></label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <select class="form-control search-select select2" name="bearingCapacity">
+                    <select class="form-control search-select select2" name="bearingCapacity" required>
                     </select>
                 </div>
             </div>
@@ -577,7 +584,8 @@
 
     </form>
 </div>
-<div id="detailAchievementModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+<div id="detailAchievementModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
      aria-hidden="true" data-height="500">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -641,7 +649,8 @@
         <td>
             <input type="hidden" class="form-control" name="dataLandLevelAchievement"
                    value="{dataLandLevelAchievement}">
-            <input type="text" class="form-control x-percent" name="landFactorTotalScore" value="{landFactorTotalScore}">
+            <input type="text" class="form-control x-percent" name="landFactorTotalScore"
+                   value="{landFactorTotalScore}">
             <input type="hidden" name="landLevelContent" value='{landLevelContent}'>
         </td>
         <td>
@@ -675,8 +684,10 @@
 <%@include file="/views/project/tool/toolMapHandleView.jsp" %>
 
 <script src='${pageContext.request.contextPath}/js/common.column.js?v=${assessVersion}'></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.estate.js?v=${assessVersion}"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/sonEstateView.js?v=${assessVersion}"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/examine/examine.estate.js?v=${assessVersion}"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/examine/sonEstateView.js?v=${assessVersion}"></script>
 <script src="${pageContext.request.contextPath}/js/select/land.level.select.js?v=${assessVersion}"></script>
 <script src="${pageContext.request.contextPath}/js/select/block.select.js?v=${assessVersion}"></script>
 

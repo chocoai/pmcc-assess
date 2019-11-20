@@ -5,6 +5,8 @@ import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDetailDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicBuildingDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.service.project.ProjectInfoService;
+import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
@@ -37,7 +39,10 @@ public class BasicApplyBatchDetailService {
     private BasicEstateService basicEstateService;
     @Autowired
     private BasicBuildingService basicBuildingService;
-
+    @Autowired
+    private ProjectPlanDetailsService projectPlanDetailsService;
+    @Autowired
+    private ProjectInfoService projectInfoService;
     /**
      * 通过applyBatchId获取
      *
@@ -144,6 +149,14 @@ public class BasicApplyBatchDetailService {
                     basicApplyBatchDetail.setTableId(house.getId());
                     BasicHouseTrading houseTrading = new BasicHouseTrading();
                     houseTrading.setHouseId(house.getId());
+                    //引用一些项目信息
+                    ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
+                    if(planDetails!=null){
+                        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(planDetails.getProjectId());
+                        houseTrading.setScopeInclude(projectInfo.getScopeInclude());
+                        houseTrading.setScopeNotInclude(projectInfo.getScopeNotInclude());
+                        houseTrading.setScopeProperty(Integer.valueOf(projectInfo.getPropertyScope()));
+                    }
                     basicHouseTradingService.saveAndUpdateBasicHouseTrading(houseTrading, false);
 
                     break;

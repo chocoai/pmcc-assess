@@ -482,6 +482,7 @@ commonColumn.unitHuxingColumn = function () {
     });
     cols.push({field: 'area', title: '面积'});
     cols.push({field: 'orientationName', title: '朝向'});
+    cols.push({field: 'spatialDistributionName', title: '空间布局'});
     cols.push({field: 'description', title: '描述'});
     cols.push({field: 'fileViewName', title: '户型图'});
     return cols;

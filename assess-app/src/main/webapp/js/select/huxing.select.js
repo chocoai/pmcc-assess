@@ -15,6 +15,7 @@
         cols.push({field: 'name', title: '房型'});
         cols.push({field: 'area', title: '面积'});
         cols.push({field: 'orientationName', title: '朝向'});
+        cols.push({field: 'spatialDistributionName', title: '空间布局'});
         cols.push({field: 'fileViewName', title: '户型图'});
         cols.push({
             field: 'opt', title: '操作', formatter: function (value, row, index) {
@@ -42,6 +43,7 @@
         cols.push({field: 'name', title: '房型'});
         cols.push({field: 'area', title: '面积'});
         cols.push({field: 'orientationName', title: '朝向'});
+        cols.push({field: 'spatialDistributionName', title: '空间布局'});
         cols.push({field: 'fileViewName', title: '户型图'});
         cols.push({
             field: 'opt', title: '操作', formatter: function (value, row, index) {

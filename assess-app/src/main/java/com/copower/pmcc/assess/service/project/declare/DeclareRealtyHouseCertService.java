@@ -454,7 +454,7 @@ public class DeclareRealtyHouseCertService {
         }
         declareRecord.setFloor(oo.getFloor());
         declareRecord.setRoomNumber(oo.getRoomNumber());
-        declareRecord.setCertUse(baseDataDicService.getNameById(oo.getCertUseCategory()));
+        declareRecord.setCertUse(oo.getCertUseCategory());
         declareRecord.setFloorArea(oo.getEvidenceArea());
         declareRecord.setLandUseEndDate(oo.getUseEndDate());
         declareRecord.setHousingStructure(oo.getHousingStructure());
@@ -480,7 +480,8 @@ public class DeclareRealtyHouseCertService {
             realtyLandCert = declareRealtyLandCertDao.getDeclareRealtyLandCertById(oo.getPid());
         }
         if (realtyLandCert != null) {
-            declareRecord.setLandCertUse(baseDataDicService.getNameById(realtyLandCert.getCertUse()));
+            declareRecord.setLandCertUse(realtyLandCert.getCertUse());
+            declareRecord.setLandCertUseCategory(realtyLandCert.getCertUseCategory());
             declareRecord.setLandRightType(baseDataDicService.getNameById(realtyLandCert.getLandRightType()));
             declareRecord.setLandRightNature(baseDataDicService.getNameById(realtyLandCert.getLandRightNature()));
             declareRecord.setLandUseRightArea(realtyLandCert.getUseRightArea());

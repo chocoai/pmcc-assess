@@ -386,10 +386,11 @@ public class DeclareRealtyRealEstateCertService {
         declareRecord.setUnit(declareRealtyRealEstateCert.getUnit());
         declareRecord.setFloor(declareRealtyRealEstateCert.getFloor());
         declareRecord.setRoomNumber(declareRealtyRealEstateCert.getRoomNumber());
-        declareRecord.setCertUse(baseDataDicService.getNameById(declareRealtyRealEstateCert.getHouseCertUseCategory()));
+        declareRecord.setCertUse(declareRealtyRealEstateCert.getHouseCertUseCategory());
         declareRecord.setHousingStructure(declareRealtyRealEstateCert.getHousingStructure());
         declareRecord.setNature(baseDataDicService.getNameById(declareRealtyRealEstateCert.getNature()));
-        declareRecord.setLandCertUse(baseDataDicService.getNameById(declareRealtyRealEstateCert.getLandCertUseCategory()));
+        declareRecord.setLandCertUse(declareRealtyRealEstateCert.getLandCertUse());
+        declareRecord.setLandCertUseCategory(declareRealtyRealEstateCert.getLandCertUseCategory());
         declareRecord.setLandRightType(baseDataDicService.getNameById(declareRealtyRealEstateCert.getLandRightType()));//权利类型
         declareRecord.setLandRightNature(baseDataDicService.getNameById(declareRealtyRealEstateCert.getLandRightNature()));//权利性质
         declareRecord.setLandUseEndDate(declareRealtyRealEstateCert.getUseEndDate());
