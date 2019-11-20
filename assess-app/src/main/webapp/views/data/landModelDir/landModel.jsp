@@ -395,7 +395,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
                 <h3 class="modal-title">容积率修正系数</h3>
-                <input type="hidden" name="allocationVolumeRatioId">
+                <input type="hidden" name="levelDetailId">
             </div>
             <div class="modal-body">
                 <div type="button" class="btn btn-success"
@@ -423,7 +423,7 @@
             </div>
             <form id="dataAllocationCorrectionCoefficientVolumeRatioDetailFrm" class="form-horizontal">
                 <input type="hidden" name="id">
-                <input type="hidden" name="allocationVolumeRatioId">
+                <input type="hidden" name="levelDetailId">
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-12">
