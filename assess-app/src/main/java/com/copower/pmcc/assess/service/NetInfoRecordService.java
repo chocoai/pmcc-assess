@@ -199,7 +199,11 @@ public class NetInfoRecordService {
                             Elements body = getContent(String.format("%s" + contentHref, "https:"), "body", "GBK");
                             NetInfoRecordContent netInfoRecordContent = new NetInfoRecordContent();
                             netInfoRecordContent.setRecordId(netInfoRecord.getId());
-                            netInfoRecordContent.setFullDescription(body.html());
+                            if(body.html().length()>30000){
+                                netInfoRecordContent.setFullDescription(body.html().substring(0,30000));
+                            }else {
+                                netInfoRecordContent.setFullDescription(body.html());
+                            }
                             netInfoRecordContentDao.addInfo(netInfoRecordContent);
                         }
                     }
@@ -473,7 +477,11 @@ public class NetInfoRecordService {
                         if (contentBody.size() != 0 && contentBody != null) {
                             NetInfoRecordContent netInfoRecordContent = new NetInfoRecordContent();
                             netInfoRecordContent.setRecordId(netInfoRecord.getId());
-                            netInfoRecordContent.setFullDescription(contentBody.html());
+                            if(contentBody.html().length()>30000){
+                                netInfoRecordContent.setFullDescription(contentBody.html().substring(0,30000));
+                            }else {
+                                netInfoRecordContent.setFullDescription(contentBody.html());
+                            }
                             netInfoRecordContentDao.addInfo(netInfoRecordContent);
                         }
                     }
@@ -583,7 +591,11 @@ public class NetInfoRecordService {
                         if (contentBody.size() != 0 && contentBody != null) {
                             NetInfoRecordContent netInfoRecordContent = new NetInfoRecordContent();
                             netInfoRecordContent.setRecordId(netInfoRecord.getId());
-                            netInfoRecordContent.setFullDescription(contentBody.html());
+                            if(contentBody.html().length()>30000){
+                                netInfoRecordContent.setFullDescription(contentBody.html().substring(0,30000));
+                            }else {
+                                netInfoRecordContent.setFullDescription(contentBody.html());
+                            }
                             netInfoRecordContentDao.addInfo(netInfoRecordContent);
                         }
                     }
@@ -700,7 +712,11 @@ public class NetInfoRecordService {
                             if (contentBody.size() != 0 && contentBody != null) {
                                 NetInfoRecordContent netInfoRecordContent = new NetInfoRecordContent();
                                 netInfoRecordContent.setRecordId(netInfoRecord.getId());
-                                netInfoRecordContent.setFullDescription(contentBody.get(1).html());
+                                if(contentBody.get(1).html().length()>30000){
+                                    netInfoRecordContent.setFullDescription(contentBody.get(1).html().substring(0,30000));
+                                }else {
+                                    netInfoRecordContent.setFullDescription(contentBody.get(1).html());
+                                }
                                 netInfoRecordContentDao.addInfo(netInfoRecordContent);
                             }
                         } catch (Exception e) {
