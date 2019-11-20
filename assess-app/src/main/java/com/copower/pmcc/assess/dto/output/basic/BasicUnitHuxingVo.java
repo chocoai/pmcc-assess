@@ -13,6 +13,15 @@ public class BasicUnitHuxingVo extends BasicUnitHuxing {
     private String orientationName;
     private String tableName;
     private String creatorName;
+    private String spatialDistributionName;
+
+    public String getSpatialDistributionName() {
+        return spatialDistributionName;
+    }
+
+    public void setSpatialDistributionName(String spatialDistributionName) {
+        this.spatialDistributionName = spatialDistributionName;
+    }
 
     public String getFileViewName() {
         return fileViewName;

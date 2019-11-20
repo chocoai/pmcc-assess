@@ -25,6 +25,7 @@ import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
 import com.copower.pmcc.assess.service.cases.*;
 import com.copower.pmcc.assess.service.event.basic.BasicApplyBatchEvent;
+import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.bpm.api.dto.ProcessUserDto;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
@@ -160,6 +161,10 @@ public class BasicApplyBatchService {
     private BasicUnitHuxingService basicUnitHuxingService;
     @Autowired
     private BasicEstateDao basicEstateDao;
+    @Autowired
+    private ProjectPlanDetailsService projectPlanDetailsService;
+    @Autowired
+    private DeclareRecordService declareRecordService;
 
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -731,8 +736,21 @@ public class BasicApplyBatchService {
         BaseDataDic classifyDataDic = baseDataDicService.getCacheDataDicById(basicApplyBatch.getClassify());
         //楼盘
         BasicEstate basicEstate = new BasicEstate();
+        //申报表代入的信息
+        DeclareRecord declareRecord = new DeclareRecord();
+        ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(basicApplyBatch.getPlanDetailsId());
+        if (projectPlanDetails != null) {
+            declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
+        }
+        basicEstate.setProvince(declareRecord.getProvince());
+        basicEstate.setCity(declareRecord.getCity());
+        basicEstate.setDistrict(declareRecord.getDistrict());
+        basicEstate.setStreetNumber(declareRecord.getStreetNumber());
+        basicEstate.setAttachNumber(declareRecord.getAttachedNumber());
         basicEstateService.saveAndUpdateBasicEstate(basicEstate, false);
         BasicEstateLandState basicEstateLandState = new BasicEstateLandState();
+        basicEstateLandState.setLandUseType(declareRecord.getLandCertUse());
+        basicEstateLandState.setLandUseCategory(declareRecord.getLandCertUseCategory());
         basicEstateLandState.setEstateId(basicEstate.getId());
         basicEstateLandState.setCreator(commonService.thisUserAccount());
         basicEstateLandStateService.saveAndUpdateBasicEstateLandState(basicEstateLandState, false);

@@ -50,6 +50,8 @@ public class DeclareRecord {
 
     private String landCertUse;
 
+    private String landCertUseCategory;
+
     private String landPracticalUse;
 
     private String publicSituation;
@@ -274,6 +276,14 @@ public class DeclareRecord {
 
     public void setLandCertUse(String landCertUse) {
         this.landCertUse = landCertUse == null ? null : landCertUse.trim();
+    }
+
+    public String getLandCertUseCategory() {
+        return landCertUseCategory;
+    }
+
+    public void setLandCertUseCategory(String landCertUseCategory) {
+        this.landCertUseCategory = landCertUseCategory == null ? null : landCertUseCategory.trim();
     }
 
     public String getLandPracticalUse() {

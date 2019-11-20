@@ -1666,6 +1666,76 @@ public class DeclareRecordExample {
             return (Criteria) this;
         }
 
+        public Criteria andLandCertUseCategoryIsNull() {
+            addCriterion("land_cert_use_category is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertUseCategoryIsNotNull() {
+            addCriterion("land_cert_use_category is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertUseCategoryEqualTo(String value) {
+            addCriterion("land_cert_use_category =", value, "landCertUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertUseCategoryNotEqualTo(String value) {
+            addCriterion("land_cert_use_category <>", value, "landCertUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertUseCategoryGreaterThan(String value) {
+            addCriterion("land_cert_use_category >", value, "landCertUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertUseCategoryGreaterThanOrEqualTo(String value) {
+            addCriterion("land_cert_use_category >=", value, "landCertUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertUseCategoryLessThan(String value) {
+            addCriterion("land_cert_use_category <", value, "landCertUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertUseCategoryLessThanOrEqualTo(String value) {
+            addCriterion("land_cert_use_category <=", value, "landCertUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertUseCategoryLike(String value) {
+            addCriterion("land_cert_use_category like", value, "landCertUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertUseCategoryNotLike(String value) {
+            addCriterion("land_cert_use_category not like", value, "landCertUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertUseCategoryIn(List<String> values) {
+            addCriterion("land_cert_use_category in", values, "landCertUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertUseCategoryNotIn(List<String> values) {
+            addCriterion("land_cert_use_category not in", values, "landCertUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertUseCategoryBetween(String value1, String value2) {
+            addCriterion("land_cert_use_category between", value1, value2, "landCertUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertUseCategoryNotBetween(String value1, String value2) {
+            addCriterion("land_cert_use_category not between", value1, value2, "landCertUseCategory");
+            return (Criteria) this;
+        }
+
         public Criteria andLandPracticalUseIsNull() {
             addCriterion("land_practical_use is null");
             return (Criteria) this;

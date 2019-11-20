@@ -397,6 +397,9 @@ var unitHuxing;
             AssessCommon.loadDataDicByKey(AssessDicKey.examineCommonOrientation, item.orientation, function (html, data) {
                 $("#" + unitHuxing.prototype.config().frm).find('select.orientation').empty().html(html).trigger('change');
             });
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseSpatialDistribution, item.spatialDistribution, function (html, data) {
+                $("#" + unitHuxing.prototype.config().frm).find('select.spatialDistribution').empty().html(html).trigger('change');
+            });
         }
     }
 

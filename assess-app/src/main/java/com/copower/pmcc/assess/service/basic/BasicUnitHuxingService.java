@@ -169,6 +169,7 @@ public class BasicUnitHuxingService {
             vo.setFileViewName(builder.toString());
         }
         vo.setOrientationName(baseDataDicService.getNameById(NumberUtils.isNumber(basicUnitHuxing.getOrientation()) ? Integer.parseInt(basicUnitHuxing.getOrientation()) : null));
+        vo.setSpatialDistributionName(baseDataDicService.getNameById(NumberUtils.isNumber(basicUnitHuxing.getSpatialDistribution()) ? Integer.parseInt(basicUnitHuxing.getSpatialDistribution()) : null));
         vo.setCreatorName(publicService.getUserNameByAccount(basicUnitHuxing.getCreator()));
         return vo;
     }

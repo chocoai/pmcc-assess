@@ -1175,6 +1175,76 @@ public class BasicUnitHuxingExample {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
             return (Criteria) this;
         }
+
+        public Criteria andSpatialDistributionIsNull() {
+            addCriterion("spatial_distribution is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpatialDistributionIsNotNull() {
+            addCriterion("spatial_distribution is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpatialDistributionEqualTo(String value) {
+            addCriterion("spatial_distribution =", value, "spatialDistribution");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpatialDistributionNotEqualTo(String value) {
+            addCriterion("spatial_distribution <>", value, "spatialDistribution");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpatialDistributionGreaterThan(String value) {
+            addCriterion("spatial_distribution >", value, "spatialDistribution");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpatialDistributionGreaterThanOrEqualTo(String value) {
+            addCriterion("spatial_distribution >=", value, "spatialDistribution");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpatialDistributionLessThan(String value) {
+            addCriterion("spatial_distribution <", value, "spatialDistribution");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpatialDistributionLessThanOrEqualTo(String value) {
+            addCriterion("spatial_distribution <=", value, "spatialDistribution");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpatialDistributionLike(String value) {
+            addCriterion("spatial_distribution like", value, "spatialDistribution");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpatialDistributionNotLike(String value) {
+            addCriterion("spatial_distribution not like", value, "spatialDistribution");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpatialDistributionIn(List<String> values) {
+            addCriterion("spatial_distribution in", values, "spatialDistribution");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpatialDistributionNotIn(List<String> values) {
+            addCriterion("spatial_distribution not in", values, "spatialDistribution");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpatialDistributionBetween(String value1, String value2) {
+            addCriterion("spatial_distribution between", value1, value2, "spatialDistribution");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpatialDistributionNotBetween(String value1, String value2) {
+            addCriterion("spatial_distribution not between", value1, value2, "spatialDistribution");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

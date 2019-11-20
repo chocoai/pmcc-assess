@@ -515,7 +515,8 @@ public class DeclareRealtyLandCertService {
         declareRecord.setUnit(oo.getUnit());
         declareRecord.setFloor(oo.getFloor());
         declareRecord.setRoomNumber(oo.getRoomNumber());
-        declareRecord.setLandCertUse(baseDataDicService.getNameById(oo.getCertUseCategory()));
+        declareRecord.setLandCertUse(oo.getCertUse());
+        declareRecord.setLandCertUseCategory(oo.getCertUseCategory());
         declareRecord.setLandRightType(baseDataDicService.getNameById(oo.getLandRightType()));//权利类型
         declareRecord.setLandRightNature(baseDataDicService.getNameById(oo.getLandRightNature()));//权利性质
         declareRecord.setFloorArea(oo.getUseRightArea());
@@ -547,7 +548,7 @@ public class DeclareRealtyLandCertService {
         }
         if (realtyHouseCert != null) {
             //写入房产证的证载用途
-            declareRecord.setCertUse(baseDataDicService.getNameById(realtyHouseCert.getPublicSituation()));
+            declareRecord.setCertUse(realtyHouseCert.getCertUse());
             declareRecord.setHousingStructure(realtyHouseCert.getHousingStructure());
             declareRecord.setNature(baseDataDicService.getNameById(realtyHouseCert.getNature()));
         }

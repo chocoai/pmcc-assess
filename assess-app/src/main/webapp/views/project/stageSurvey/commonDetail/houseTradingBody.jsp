@@ -1,4 +1,3 @@
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <div class="form-group">
@@ -21,7 +20,7 @@
         </div>
     </div>
 </div>
-<div class="form-group" >
+<div class="form-group">
     <div class="x-valid">
         <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">税费负担</label>
         <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
@@ -31,7 +30,8 @@
     <div class="x-valid">
         <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">交易情况</label>
         <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-            <label class="form-control" name="transactionSituationName">${basicHouseTrading.transactionSituationName}</label>
+            <label class="form-control"
+                   name="transactionSituationName">${basicHouseTrading.transactionSituationName}</label>
         </div>
     </div>
     <div class="x-valid">
@@ -41,7 +41,7 @@
         </div>
     </div>
 </div>
-<div class="form-group" >
+<div class="form-group">
     <c:if test="${!empty basicHouseTrading.descriptionTypeName}">
         <div class="x-valid">
             <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">说明事项类型</label>
@@ -101,7 +101,8 @@
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">分期支付利率</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <label class="form-control" name="installmentInterestRate">${basicHouseTrading.installmentInterestRate}</label>
+                    <label class="form-control"
+                           name="installmentInterestRate">${basicHouseTrading.installmentInterestRate}</label>
                 </div>
             </div>
         </c:if>
@@ -176,7 +177,6 @@
 </c:if>
 
 
-
 <div class="form-group">
     <div class="x-valid">
         <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">交易时间</label>
@@ -186,15 +186,15 @@
         </div>
     </div>
     <div class="x-valid">
-        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">交易总价（元）</label>
-        <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-            <label class="form-control" name="tradingTotalPrice">${basicHouseTrading.tradingTotalPrice}</label>
-        </div>
-    </div>
-    <div class="x-valid">
         <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">单价内涵</label>
         <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
             <label class="form-control" name="priceConnotationName">${basicHouseTrading.priceConnotationName}</label>
+        </div>
+    </div>
+    <div class="x-valid">
+        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">交易总价（元）</label>
+        <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+            <label class="form-control" name="tradingTotalPrice">${basicHouseTrading.tradingTotalPrice}</label>
         </div>
     </div>
 </div>
@@ -206,12 +206,12 @@
         </div>
     </div>
 
-    <div class="x-valid">
-        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地买售人</label>
-        <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-            <label class="form-control" name="landBuyerSeller">${basicHouseTrading.landBuyerSeller}</label>
-        </div>
-    </div>
+    <%--<div class="x-valid">--%>
+    <%--<label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地买售人</label>--%>
+    <%--<div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">--%>
+    <%--<label class="form-control" name="landBuyerSeller">${basicHouseTrading.landBuyerSeller}</label>--%>
+    <%--</div>--%>
+    <%--</div>--%>
 </div>
 <div class="form-group">
     <div class="x-valid">
@@ -224,7 +224,8 @@
         <div class="x-valid">
             <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">信息来源类别</label>
             <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                <label class="form-control" name="informationCategoryName">${basicHouseTrading.informationCategoryName}</label>
+                <label class="form-control"
+                       name="informationCategoryName">${basicHouseTrading.informationCategoryName}</label>
             </div>
         </div>
     </c:if>

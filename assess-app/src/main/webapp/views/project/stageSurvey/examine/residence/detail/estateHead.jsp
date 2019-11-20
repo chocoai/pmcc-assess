@@ -1,6 +1,5 @@
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <div class="form-group">
     <div class="x-valid">
@@ -73,12 +72,12 @@
 </div>
 
 <div class="form-group">
-    <div class="x-valid">
-        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">街道名称</label>
-        <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-            <label class="form-control" name="street">${basicEstate.street}</label>
-        </div>
-    </div>
+    <%--<div class="x-valid">--%>
+    <%--<label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">街道名称</label>--%>
+    <%--<div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">--%>
+    <%--<label class="form-control" name="street">${basicEstate.street}</label>--%>
+    <%--</div>--%>
+    <%--</div>--%>
     <div class="x-valid">
         <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">街道号</label>
         <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
@@ -91,15 +90,15 @@
             <label class="form-control" name="attachNumber">${basicEstate.attachNumber}</label>
         </div>
     </div>
-</div>
-
-<div class="form-group">
     <div class="x-valid">
         <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">占地面积</label>
         <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
             <label class="form-control" name="coverAnArea">${basicEstate.coverAnArea}</label>
         </div>
     </div>
+</div>
+
+<div class="form-group">
 
     <div class="x-valid">
         <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">容积率</label>
@@ -114,16 +113,15 @@
             <label class="form-control" name="greeningRate">${basicEstate.greeningRate}</label>
         </div>
     </div>
-</div>
-
-<div class="form-group">
     <div class="x-valid">
         <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">总楼栋数</label>
         <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
             <label class="form-control" name="buildingNumber">${basicEstate.buildingNumber}</label>
         </div>
     </div>
+</div>
 
+<div class="form-group">
     <div class="x-valid">
         <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">开发商</label>
         <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
@@ -136,15 +134,15 @@
             <label class="form-control" name="floorArea">${basicEstate.floorArea}</label>
         </div>
     </div>
-</div>
-
-<div class="form-group">
     <div class="x-valid">
         <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">均价</label>
         <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
             <label class="form-control" name="averagePrice">${basicEstate.averagePrice}</label>
         </div>
     </div>
+</div>
+
+<div class="form-group">
 
     <div class="x-valid">
         <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">价格区间</label>

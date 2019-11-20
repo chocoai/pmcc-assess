@@ -102,31 +102,21 @@
                 </div>
             </div>
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">空间布局描述</label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">朝向</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text" data-rule-maxlength="255" placeholder="空间布局描述"
-                           name="spatialDistributionDesc"
-                           class="form-control" value="${basicHouse.spatialDistributionDesc}">
+                    <select class="form-control search-select select2 orientation" name="orientation">
+                    </select>
                 </div>
             </div>
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">朝向<span
-                        class="symbol required"></span></label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">面积</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <select class="form-control search-select select2 orientation" name="orientation" required>
-                    </select>
+                    <input type="text" placeholder="面积" name="area" data-rule-number="true"
+                           class="form-control" value="${basicHouse.area}">
                 </div>
             </div>
         </div>
         <div class="form-group">
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">面积<span
-                        class="symbol required"></span></label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text" placeholder="面积" name="area" data-rule-number="true" required
-                           class="form-control" value="${basicHouse.area}">
-                </div>
-            </div>
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">面积描述</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
@@ -142,8 +132,6 @@
                     </select>
                 </div>
             </div>
-        </div>
-        <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                     证载用途<span class="symbol required"></span>
@@ -165,14 +153,16 @@
                     </div>
                 </div>
             </div>
-
+        </div>
+        <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                     实际用途<span class="symbol required"></span>
                 </label>
                 <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                     <div class="input-group">
-                        <input type="text" name="practicalUse" list="practicalUseList" value="${basicHouse.practicalUse}"
+                        <input type="text" required name="practicalUse" list="practicalUseList"
+                               value="${basicHouse.practicalUse}"
                                class="form-control">
                         <datalist id="practicalUseList">
 
@@ -187,14 +177,13 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="form-group">
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">使用情况<span
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">装修情况描述<span
                         class="symbol required"></span></label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <select class="form-control useCondition" name="useCondition" required>
-                    </select>
+                    <input type="text" data-rule-maxlength="255" placeholder="装修情况描述" required
+                           name="decorateSituationDescription"
+                           class="form-control" value="${basicHouse.decorateSituationDescription}">
                 </div>
             </div>
             <div class="x-valid">
@@ -205,13 +194,14 @@
                     </select>
                 </div>
             </div>
+        </div>
+        <div class="form-group">
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">装修情况描述<span
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">使用情况<span
                         class="symbol required"></span></label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text" data-rule-maxlength="255" placeholder="装修情况描述"
-                           name="decorateSituationDescription"
-                           class="form-control" value="${basicHouse.decorateSituationDescription}">
+                    <select class="form-control useCondition" name="useCondition" required>
+                    </select>
                 </div>
             </div>
         </div>
@@ -272,16 +262,18 @@
                 </div>
             </div>
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">范围包括</label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">范围包括<span
+                        class="symbol required"></span></label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text" placeholder="范围包含" name="scopeInclude" class="form-control"
+                    <input type="text" placeholder="范围包含" name="scopeInclude" class="form-control" required
                            value="${basicHouseTrading.scopeInclude}">
                 </div>
             </div>
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">范围不包括</label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">范围不包括<span
+                        class="symbol required"></span></label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text" placeholder="范围不包含" name="scopeNotInclude" class="form-control"
+                    <input type="text" placeholder="范围不包含" name="scopeNotInclude" class="form-control" required
                            value="${basicHouseTrading.scopeNotInclude}">
                 </div>
             </div>
@@ -358,35 +350,36 @@
             </div>
         </div>
         <div class="form-group tradingCondition">
-        <div class="x_title">融资条件</div>
-        <div class="form-group">
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">首付款比例<span
-                        class="symbol required"></span></label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text" class="form-control" name="downPaymentRatio" placeholder="首付款比例" required>
+            <div class="x_title">融资条件</div>
+            <div class="form-group">
+                <div class="x-valid">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">首付款比例<span
+                            class="symbol required"></span></label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                        <input type="text" class="form-control" name="downPaymentRatio" placeholder="首付款比例" required>
+                    </div>
+                </div>
+                <div class="x-valid">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">贷款利率<span
+                            class="symbol required"></span></label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                        <input type="text" class="form-control" name="lendingRate" placeholder="贷款利率" required>
+                    </div>
+                </div>
+                <div class="x-valid">
+                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">贷款期限<span
+                            class="symbol required"></span></label>
+                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                        <input type="text" class="form-control" data-rule-digits="true" name="loanPeriod"
+                               placeholder="贷款期限"
+                               required>
+                    </div>
                 </div>
             </div>
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">贷款利率<span
-                        class="symbol required"></span></label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text" class="form-control" name="lendingRate" placeholder="贷款利率" required>
-                </div>
-            </div>
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">贷款期限<span
-                        class="symbol required"></span></label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text" class="form-control" data-rule-digits="true" name="loanPeriod" placeholder="贷款期限"
-                           required>
-                </div>
+            <div class="x_title">
+                <div class="clearfix"></div>
             </div>
         </div>
-        <div class="x_title">
-            <div class="clearfix"></div>
-        </div>
-            </div>
 
         <div class="form-group ExamineHouseTradingSell" style="display: none">
             <div class="x-valid">
@@ -468,20 +461,20 @@
                 </div>
             </div>
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">交易总价（元）${empty surveyCaseStudy?"":'<span class="symbol required"></span>'} </label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text" placeholder="交易总价（元）" class="form-control" name="tradingTotalPrice"
-                           onblur="houseCommon.computeUnitPrice();"
-                    ${empty surveyCaseStudy?"":'required'} value="${basicHouseTrading.tradingTotalPrice}">
-                </div>
-            </div>
-            <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">单价内涵<span
                         class="symbol required"></span></label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <select class="form-control search-select select2 priceConnotation" name="priceConnotation"
                             required>
                     </select>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">交易总价（元）${empty surveyCaseStudy?"":'<span class="symbol required"></span>'} </label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <input type="text" placeholder="交易总价（元）" class="form-control" name="tradingTotalPrice"
+                           onblur="houseCommon.computeUnitPrice();"
+                    ${empty surveyCaseStudy?"":'required'} value="${basicHouseTrading.tradingTotalPrice}">
                 </div>
             </div>
         </div>
@@ -494,13 +487,13 @@
                 </div>
             </div>
 
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地买售人</label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text" placeholder="土地买售人" class="form-control" name="landBuyerSeller"
-                           value="${basicHouseTrading.landBuyerSeller}">
-                </div>
-            </div>
+            <%--<div class="x-valid">--%>
+            <%--<label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地买售人</label>--%>
+            <%--<div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">--%>
+            <%--<input type="text" placeholder="土地买售人" class="form-control" name="landBuyerSeller"--%>
+            <%--value="${basicHouseTrading.landBuyerSeller}">--%>
+            <%--</div>--%>
+            <%--</div>--%>
         </div>
         <div class="form-group">
             <div class="x-valid">
@@ -518,16 +511,18 @@
                 </div>
             </div>
             <div class="x-valid infomationTypeOther" style="display: none;">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">姓名</label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">姓名<span
+                        class="symbol required"></span></label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text" placeholder="姓名" class="form-control" name="name"
+                    <input type="text" placeholder="姓名" class="form-control" name="name" required
                            value="${basicHouseTrading.name}">
                 </div>
             </div>
             <div class="x-valid infomationTypeOther" style="display: none;">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">电话</label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">电话<span
+                        class="symbol required"></span></label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text" placeholder="电话" class="form-control" name="phone"
+                    <input type="text" placeholder="电话" class="form-control" name="phone" required
                            value="${basicHouseTrading.phone}">
                 </div>
             </div>
@@ -673,11 +668,16 @@
 </div>
 <%@include file="/views/project/tool/toolMapHandleView.jsp" %>
 <script src='${pageContext.request.contextPath}/js/common.column.js?v=${assessVersion}'></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.common.js?v=${assessVersion}"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.house.js?v=${assessVersion}"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/sonHouseView.js?v=${assessVersion}"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/select/huxing.select.js?v=${assessVersion}"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/autocomplete/roomType.js?v=${assessVersion}"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/examine/examine.common.js?v=${assessVersion}"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/examine/examine.house.js?v=${assessVersion}"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/examine/sonHouseView.js?v=${assessVersion}"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/select/huxing.select.js?v=${assessVersion}"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/autocomplete/roomType.js?v=${assessVersion}"></script>
 <script type="text/javascript">
     $(function () {
         houseCommon.initById('${basicHouse.id}');
