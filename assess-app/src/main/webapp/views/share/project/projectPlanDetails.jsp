@@ -7,14 +7,14 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="x_panel">
-    <div class="x_title collapse-link">
+    <div class="x_title collapse-link" onclick="loadReturnRecordList();">
         <ul class="nav navbar-right panel_toolbox">
             <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
         </ul>
         <h3> ${projectPlanDetails.projectPhaseName}-工作内容</h3>
         <div class="clearfix"></div>
     </div>
-    <div class="x_content">
+    <div class="x_content collapse">
         <div class="form-horizontal">
             <div class="form-group">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
@@ -47,19 +47,11 @@
                 </div>
             </div>
         </div>
-    </div>
-</div>
-<div class="x_panel">
-    <div class="x_title collapse-link">
-        <ul class="nav navbar-right panel_toolbox">
-            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
-        </ul>
-        <h3>
-            任务重启记录
-        </h3>
-        <div class="clearfix"></div>
-    </div>
-    <div class="x_content collapse">
+        <div class="x_title">
+            <h4>
+                重启记录
+            </h4>
+        </div>
         <table class="table table-bordered" id="tb_returnRecordList">
         </table>
     </div>
