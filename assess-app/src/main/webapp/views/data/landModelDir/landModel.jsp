@@ -186,11 +186,11 @@
                                         </div>
                                     </div>
                                     <div class="x-valid">
-                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">每亩单价</label>
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">万元/亩单价</label>
                                         <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                             <input type="text" data-rule-number='true' class="form-control"
                                                    name="muPrice"
-                                                   placeholder="每亩单价">
+                                                   placeholder="万元/亩单价">
                                         </div>
                                     </div>
                                 </div>
