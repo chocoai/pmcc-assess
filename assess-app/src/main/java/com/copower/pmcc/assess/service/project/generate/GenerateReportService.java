@@ -260,7 +260,7 @@ public class GenerateReportService {
         }
         if (CollectionUtils.isNotEmpty(compareHashSet)) {
             count++;
-            final int factor = 15;
+            final int factor = 65;
             final long time = 120;//最多阻塞70秒
             List<List<String>> listList = splitsList(new ArrayList<>(compareHashSet), factor);
             for (int i = 0; i < listList.size(); i++) {

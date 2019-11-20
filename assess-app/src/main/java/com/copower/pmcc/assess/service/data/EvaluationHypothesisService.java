@@ -35,6 +35,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -208,6 +209,7 @@ public class EvaluationHypothesisService {
         SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy年MM月dd日");
         //对应委估对象
         List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaGroupId);
+        boolean isLabelJudgeObjectShowName = judgeObjectList.size() <= 20;
         Integer order = 0;
         Integer order2 = 0;
         Integer order3 = 0;
@@ -222,7 +224,7 @@ public class EvaluationHypothesisService {
                 List<Map<Integer, String>> maps = Lists.newArrayList();
                 List<Map<List<Integer>, String>> group = Lists.newArrayList();
 
-                StringBuilder completedTime = new StringBuilder();
+                Set<String> completedTime = Sets.newHashSet();
                 List<Integer> purposeNumbers = new ArrayList<>();
                 StringBuilder actualPurpose = new StringBuilder();
                 StringBuilder settingPurpose = new StringBuilder();
@@ -234,8 +236,8 @@ public class EvaluationHypothesisService {
                     if (type != null && baseDataDicService.getCacheDataDicByFieldName(AssessReportFieldConstant.TIME_ACTUAL_SURVEY).getId().equals(type)) {
                         Map<Integer, String> map = Maps.newHashMap();
                         actualTimenumbers.add(Integer.valueOf(judgeObject.getNumber()));
-                        if (building.getBeCompletedTime() != null){
-                            completedTime.append(sdf.format(building.getBeCompletedTime())).append("、");
+                        if (building.getBeCompletedTime() != null) {
+                            completedTime.add(sdf.format(building.getBeCompletedTime()));
                             times.add(sdf.format(building.getBeCompletedTime()));
                             map.put(Integer.valueOf(judgeObject.getNumber()), sdf.format(building.getBeCompletedTime()));
                         }
@@ -286,7 +288,8 @@ public class EvaluationHypothesisService {
                         }
                     } else {
                         DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.TIME_ACTUAL_SURVEY);
-                        stringBuilder.append(generateCommonMethod.getIndentHtml(dataReportTemplateByField.getTemplate().replace("#{竣工日期}", completedTime.deleteCharAt(completedTime.length() - 1)).replace("#{估价对象号}", (generateCommonMethod.convertNumber(actualTimenumbers) + "号"))));
+//                        stringBuilder.append(generateCommonMethod.getIndentHtml(dataReportTemplateByField.getTemplate().replace("#{竣工日期}", completedTime.deleteCharAt(completedTime.length() - 1)).replace("#{估价对象号}", (generateCommonMethod.convertNumber(actualTimenumbers) + "号"))));
+                        stringBuilder.append(generateCommonMethod.getIndentHtml(dataReportTemplateByField.getTemplate().replace("#{竣工日期}", String.join("、", completedTime)).replace("#{估价对象号}", (generateCommonMethod.convertNumber(actualTimenumbers) + "号"))));
                     }
                 }
                 if (CollectionUtils.isNotEmpty(purposeNumbers)) {
@@ -315,13 +318,18 @@ public class EvaluationHypothesisService {
                             if (AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_USE.equals(fieldName))
                                 dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.REGISTRATION_PURPOSES);
                             if (dataReportTemplateByField != null) {
-                                stringConsistent.append(generateCommonMethod.getIndentHtml(dataReportTemplateByField.getTemplate()
-                                        .replace("#{委估对象号}", generateCommonMethod.parseToCircleNumber(generateCommonMethod.parseIntJudgeNumber(judgeObject.getNumber())))
+                                String tempNumber =judgeObject.getNumber() ;
+                                if (isLabelJudgeObjectShowName){
+                                    tempNumber =  generateCommonMethod.parseToCircleNumber(generateCommonMethod.parseIntJudgeNumber(judgeObject.getNumber()));
+                                }
+                                String template = dataReportTemplateByField.getTemplate()
+                                        .replace("#{委估对象号}",tempNumber)
                                         .replace("#{登记信息}", StringUtils.defaultString(item.getRegistration()))
                                         .replace("#{实际信息}", StringUtils.defaultString(item.getActual()))
                                         .replace("#{证明人}", StringUtils.defaultString(item.getVoucher()))
                                         .replace("#{证明文件}", StringUtils.defaultString(item.getCredential()))
-                                        .replace("#{一致结论}", StringUtils.defaultString(item.getSureConsistent()))));
+                                        .replace("#{一致结论}", StringUtils.defaultString(item.getSureConsistent()));
+                                stringConsistent.append(generateCommonMethod.getIndentHtml(template));
                             }
                         }
                     }
@@ -537,7 +545,11 @@ public class EvaluationHypothesisService {
                         if (judgeObjectList.size() == 1) {
                             limitContent.append("委估对象,有转让限制").append(surveyAssetInventory.getTransferLimit()).append(";");
                         } else {
-                            limitContent.append(generateCommonMethod.convertNumber(Lists.newArrayList(generateCommonMethod.parseIntJudgeNumber(judgeObject.getNumber())))).append("号委估对象,有转让限制").append(surveyAssetInventory.getTransferLimit()).append(";");
+                            String tempNumber = judgeObject.getNumber();
+                            if (isLabelJudgeObjectShowName) {
+                                tempNumber = generateCommonMethod.convertNumber(Lists.newArrayList(generateCommonMethod.parseIntJudgeNumber(judgeObject.getNumber())));
+                            }
+                            limitContent.append(tempNumber).append("号委估对象,有转让限制").append(surveyAssetInventory.getTransferLimit()).append(";");
                         }
                     } else {
                         limit.append(judgeObject.getNumber()).append(",");
