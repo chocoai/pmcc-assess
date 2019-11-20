@@ -260,7 +260,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
                 <h3 class="modal-title">容积率修正系数配置 详情</h3>
-                <input type="hidden" name="allocationVolumeRatioId">
+                <input type="hidden" name="levelDetailId">
             </div>
             <div class="modal-body">
                 <table class="table table-bordered" id="dataAllocationCorrectionCoefficientVolumeRatioDetailTable">

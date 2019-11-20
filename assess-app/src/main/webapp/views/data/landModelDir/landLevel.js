@@ -751,7 +751,7 @@ landLevel.showDataAllocationCorrectionCoefficientVolumeRatioDetail = function ()
     if (nodes.length == 1) {
         var treeNode = nodes[0];
         if (treeNode.pid == 0) {
-            landLevel.config.dataAllocationCorrectionCoefficientVolumeRatioDetailTableBox.find("input[name='allocationVolumeRatioId']").val(treeNode.id);
+            landLevel.config.dataAllocationCorrectionCoefficientVolumeRatioDetailTableBox.find("input[name='levelDetailId']").val(treeNode.id);
             landLevel.config.dataAllocationCorrectionCoefficientVolumeRatioDetailTableBox.modal("show");
             landLevel.showDataHousePriceIndexDetailList(treeNode.id);
         } else {
@@ -764,8 +764,8 @@ landLevel.showDataAllocationCorrectionCoefficientVolumeRatioDetail = function ()
 
 landLevel.showDataAllocationCorrectionCoefficientVolumeRatioDetailBox = function () {
     landLevel.config.dataAllocationCorrectionCoefficientVolumeRatioDetailFrm.clearAll();
-    var allocationVolumeRatioId = landLevel.config.dataAllocationCorrectionCoefficientVolumeRatioDetailTableBox.find("input[name='allocationVolumeRatioId']").val();
-    landLevel.config.dataAllocationCorrectionCoefficientVolumeRatioDetailFrm.find('input[name=allocationVolumeRatioId]').val(allocationVolumeRatioId);
+    var levelDetailId = landLevel.config.dataAllocationCorrectionCoefficientVolumeRatioDetailTableBox.find("input[name='levelDetailId']").val();
+    landLevel.config.dataAllocationCorrectionCoefficientVolumeRatioDetailFrm.find('input[name=levelDetailId]').val(levelDetailId);
 };
 
 landLevel.deleteDataAllocationCorrectionCoefficientVolumeRatioDetail = function (index) {
@@ -780,7 +780,7 @@ landLevel.deleteDataAllocationCorrectionCoefficientVolumeRatioDetail = function 
                 Loading.progressHide();
                 if (result.ret) {
                     toastr.success('删除成功');
-                    landLevel.showDataHousePriceIndexDetailList(row.allocationVolumeRatioId);
+                    landLevel.showDataHousePriceIndexDetailList(row.levelDetailId);
                 } else {
                     Alert(result.errmsg);
                 }
@@ -791,25 +791,25 @@ landLevel.deleteDataAllocationCorrectionCoefficientVolumeRatioDetail = function 
 
 landLevel.importDataAllocationCorrectionCoefficientVolumeRatio = function (flag) {
     var target = $('#ajaxFileUploadLandLevelDetailCoefficientVolumeRatio');
-    var allocationVolumeRatioId = "";
+    var levelDetailId = "";
     if (flag) {
-        allocationVolumeRatioId = landLevel.config.dataAllocationCorrectionCoefficientVolumeRatioDetailTableBox.find("input[name='allocationVolumeRatioId']").val();
+        levelDetailId = landLevel.config.dataAllocationCorrectionCoefficientVolumeRatioDetailTableBox.find("input[name='levelDetailId']").val();
         target.val('').trigger('click');
-        target.attr({allocationVolumeRatioId: allocationVolumeRatioId});
+        target.attr({levelDetailId: levelDetailId});
         return flag;
     }
-    allocationVolumeRatioId = target.attr("allocationVolumeRatioId");
+    levelDetailId = target.attr("levelDetailId");
     $.ajaxFileUpload({
         type: "POST",
         url: getContextPath() + "/dataLandLevelDetailVolume/importDataAllocationCorrectionCoefficientVolumeRatio",
-        data: {allocationVolumeRatioId: allocationVolumeRatioId},//要传到后台的参数，没有可以不写
+        data: {levelDetailId: levelDetailId},//要传到后台的参数，没有可以不写
         secureuri: false,//是否启用安全提交，默认为false
         fileElementId: target.prop("id"),//文件选择框的id属性
         dataType: 'json',//服务器返回的格式
         async: false,
         success: function (result) {
             if (result.ret) {
-                landLevel.showDataHousePriceIndexDetailList(allocationVolumeRatioId);
+                landLevel.showDataHousePriceIndexDetailList(levelDetailId);
                 Alert(result.data);
             }
         },
@@ -842,7 +842,7 @@ landLevel.saveDataAllocationCorrectionCoefficientVolumeRatioDetail = function ()
         success: function (result) {
             if (result.ret) {
                 toastr.success('成功');
-                landLevel.showDataHousePriceIndexDetailList(data.allocationVolumeRatioId);
+                landLevel.showDataHousePriceIndexDetailList(data.levelDetailId);
                 landLevel.config.dataAllocationCorrectionCoefficientVolumeRatioDetailBox.modal("hide");
             } else {
                 Alert(result.errmsg);
@@ -851,7 +851,7 @@ landLevel.saveDataAllocationCorrectionCoefficientVolumeRatioDetail = function ()
     })
 };
 
-landLevel.showDataHousePriceIndexDetailList = function (allocationVolumeRatioId) {
+landLevel.showDataHousePriceIndexDetailList = function (levelDetailId) {
     var cols = [];
     cols.push({field: 'plotRatio', title: '容积率'});
     cols.push({field: 'correctionFactor', title: '修正系数'});
@@ -869,7 +869,7 @@ landLevel.showDataHousePriceIndexDetailList = function (allocationVolumeRatioId)
     }
     landLevel.config.dataAllocationCorrectionCoefficientVolumeRatioDetailTable.bootstrapTable('destroy');
     TableInit(landLevel.config.dataAllocationCorrectionCoefficientVolumeRatioDetailTable, getContextPath() + "/dataLandLevelDetailVolume/getBootstrapTableVo", cols, {
-        allocationVolumeRatioId: allocationVolumeRatioId
+        levelDetailId: levelDetailId
     }, {
         showColumns: false,
         showRefresh: false,
