@@ -354,38 +354,53 @@ public class DeclarePublicService {
             }
         }
 
+        //验证基础字典中数据
+        String type = PoiUtils.getCellValue(row.getCell(27));
+        if (StringUtils.isNotBlank(type)) {
+            typeDic = baseDataDicService.getDataDicByName(types, type);
+            if (typeDic == null) {
+                builder.append(String.format("\n第%s行异常：类型与系统配置的名称不一致(权利类型)", i));
+                return false;
+            } else {
+                //权利类型
+                oo.setLandRightType(typeDic.getId());
+            }
+        } else {
+            builder.append(String.format("\n第%s行异常：权利类型必须填写", i));
+            return false;
+        }
         //土地使用年限起
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(27)))) {
-            oo.setUseStartDate(DateUtils.parse(PoiUtils.getCellValue(row.getCell(27))));
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(28)))) {
+            oo.setUseStartDate(DateUtils.parse(PoiUtils.getCellValue(row.getCell(28))));
         } else {
             builder.append(String.format("\n第%s行异常：土地使用年限起必须填写", i));
             return false;
         }
         //土地使用年限止
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(28)))) {
-            oo.setUseEndDate(DateUtils.parse(PoiUtils.getCellValue(row.getCell(28))));
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(29)))) {
+            oo.setUseEndDate(DateUtils.parse(PoiUtils.getCellValue(row.getCell(29))));
         }
         //记事
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(29)))) {
-            oo.setMemo(PoiUtils.getCellValue(row.getCell(29)));
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(30)))) {
+            oo.setMemo(PoiUtils.getCellValue(row.getCell(30)));
         }
 
         //批文文号
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(30)))) {
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(31)))) {
 //            oo.setApprovalReferenceNumber(PoiUtils.getCellValue(row.getCell(28)));
-            oo.setCertName(PoiUtils.getCellValue(row.getCell(30)));
+            oo.setCertName(PoiUtils.getCellValue(row.getCell(31)));
         }
         //批文时间
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(31)))) {
-            oo.setApprovalTime(DateUtils.parse(PoiUtils.getCellValue(row.getCell(31))));
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(32)))) {
+            oo.setApprovalTime(DateUtils.parse(PoiUtils.getCellValue(row.getCell(32))));
         }
         //批文名称
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(32)))) {
-            oo.setApprovalName(PoiUtils.getCellValue(row.getCell(32)));
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(33)))) {
+            oo.setApprovalName(PoiUtils.getCellValue(row.getCell(33)));
         }
         //批文机关
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(33)))) {
-            oo.setApprovalMechanism(PoiUtils.getCellValue(row.getCell(33)));
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(34)))) {
+            oo.setApprovalMechanism(PoiUtils.getCellValue(row.getCell(34)));
         }
         return true;
     }

@@ -1748,15 +1748,15 @@
             </div>
         </div>
         <div class="form-group">
-            <%--<div class="x-valid">--%>
-                <%--<label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">权利类型<span--%>
-                        <%--class="symbol required"></span></label>--%>
-                <%--<div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">--%>
-                    <%--<select name="landRightType" class="form-control search-select select2 landRightType"--%>
-                            <%--required="required">--%>
-                    <%--</select>--%>
-                <%--</div>--%>
-            <%--</div>--%>
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">权利类型<span
+                        class="symbol required"></span></label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <select name="landRightType" class="form-control search-select select2 landRightType"
+                            required="required">
+                    </select>
+                </div>
+            </div>
 
                 <div class="x-valid">
                     <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地分摊面积
@@ -1778,6 +1778,8 @@
                            class="form-control date-picker dbdate roomTime">
                 </div>
             </div>
+        </div>
+        <div class="form-group">
                 <div class="x-valid">
                     <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                         土地使用年限止<span class="symbol required"></span>
@@ -2029,6 +2031,15 @@
 
         <div class="form-group">
             <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">权利类型<span
+                        class="symbol required"></span></label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <select name="landRightType" class="form-control search-select select2 landRightType"
+                            required="required">
+                    </select>
+                </div>
+            </div>
+            <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                     土地使用年限起<span class="symbol required"></span>
                 </label>
@@ -2048,6 +2059,8 @@
                            class="form-control date-picker dbdate roomTime">
                 </div>
             </div>
+        </div>
+        <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">共用宗地面积</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
@@ -2056,9 +2069,6 @@
                            data-rule-maxlength="100" data-rule-number='true'>
                 </div>
             </div>
-        </div>
-
-        <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">取得价格</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
