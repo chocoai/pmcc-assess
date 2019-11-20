@@ -57,25 +57,25 @@ public class PlanComplieExecute implements ProjectPlanExecuteInterface {
         ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.REPORT_ANALYSIS_CATEGORY_MARKET, projectInfo.getProjectCategoryId());
         for (SchemeAreaGroup schemeAreaGroup : areaGroupList) {
             //添加子项任务
-//            ProjectPlanDetails projectPlanDetails = new ProjectPlanDetails();
-//            projectPlanDetails.setProjectWorkStageId(projectPlan.getWorkStageId());
-//            projectPlanDetails.setPlanId(projectPlan.getId());
-//            projectPlanDetails.setProjectId(projectPlan.getProjectId());
-//            projectPlanDetails.setProjectPhaseName(projectPhase.getProjectPhaseName());
-//            projectPlanDetails.setProjectPhaseId(projectPhase.getId());
-//            projectPlanDetails.setExecuteUserAccount(projectManager.getUserAccount());
-//            projectPlanDetails.setExecuteDepartmentId(projectManager.getDepartmentId());
-//            projectPlanDetails.setPlanStartDate(new Date());
-//            projectPlanDetails.setPlanEndDate(new Date());
-//            projectPlanDetails.setBisEnable(true);
-//            projectPlanDetails.setProcessInsId("0");
-//            projectPlanDetails.setPlanRemarks(schemeAreaGroup.getAreaName());
-//            projectPlanDetails.setPid(0);
-//            projectPlanDetails.setSorting(i++);
-//            projectPlanDetails.setAreaId(schemeAreaGroup.getId());
-//            projectPlanDetails.setStatus(ProjectStatusEnum.RUNING.getKey());
-//            projectPlanDetailsService.saveProjectPlanDetails(projectPlanDetails);
-//            projectPlanService.saveProjectPlanDetailsResponsibility(projectPlanDetails, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.TASK);
+            ProjectPlanDetails projectPlanDetails = new ProjectPlanDetails();
+            projectPlanDetails.setProjectWorkStageId(projectPlan.getWorkStageId());
+            projectPlanDetails.setPlanId(projectPlan.getId());
+            projectPlanDetails.setProjectId(projectPlan.getProjectId());
+            projectPlanDetails.setProjectPhaseName(projectPhase.getProjectPhaseName());
+            projectPlanDetails.setProjectPhaseId(projectPhase.getId());
+            projectPlanDetails.setExecuteUserAccount(projectManager.getUserAccount());
+            projectPlanDetails.setExecuteDepartmentId(projectManager.getDepartmentId());
+            projectPlanDetails.setPlanStartDate(new Date());
+            projectPlanDetails.setPlanEndDate(new Date());
+            projectPlanDetails.setBisEnable(true);
+            projectPlanDetails.setProcessInsId("0");
+            projectPlanDetails.setPlanRemarks(schemeAreaGroup.getAreaName());
+            projectPlanDetails.setPid(0);
+            projectPlanDetails.setSorting(i++);
+            projectPlanDetails.setAreaId(schemeAreaGroup.getId());
+            projectPlanDetails.setStatus(ProjectStatusEnum.RUNING.getKey());
+            projectPlanDetailsService.saveProjectPlanDetails(projectPlanDetails);
+            projectPlanService.saveProjectPlanDetailsResponsibility(projectPlanDetails, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.TASK);
         }
         projectPlan.setProjectStatus(ProjectStatusEnum.TASK.getKey());
         projectPlan.setBisAutoComplete(true);
