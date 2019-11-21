@@ -212,7 +212,7 @@ public class GenerateLoactionService {
         }
         if (basicApply.getType().intValue() == BasicApplyTypeEnum.RESIDENCE.getId().intValue()) {
             BasicEstateVo basicEstateVo = generateBaseExamineService.getEstate();
-            if (basicEstateVo != null && StringUtils.isNotBlank(basicEstateVo.getSupplyCommunicationName())) {
+            if (basicEstateVo != null && StringUtils.isNotBlank(basicEstateVo.getInfrastructureName())) {
                 stringBuilder.append(basicEstateVo.getInfrastructureName());
             }
         }

@@ -19,7 +19,10 @@
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                     </ul>
-                    <h3>${areaGroup.areaName}</h3>
+                    <h3>
+                        ${projectPlanDetails.projectPhaseName}
+                        <small>${areaGroup.areaName}</small>
+                    </h3>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">

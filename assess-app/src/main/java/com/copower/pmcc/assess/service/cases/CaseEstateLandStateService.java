@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.service.cases;
 
-import com.copower.pmcc.assess.dal.basis.entity.DataLandLevelDetail;
 import com.copower.pmcc.assess.dal.cases.dao.CaseEstateLandStateDao;
 import com.copower.pmcc.assess.dal.cases.entity.CaseEstateLandState;
 import com.copower.pmcc.assess.dto.output.cases.CaseEstateLandStateVo;
@@ -69,12 +68,6 @@ public class CaseEstateLandStateService {
             vo.setLandUseCategoryName(baseDataDicService.getNameById(caseEstateLandState.getLandUseCategory()));
         }
         if (caseEstateLandState.getLandLevel() != null) {
-            DataLandLevelDetail dataLandLevelDetail = dataLandLevelDetailService.getDataLandLevelDetailById(caseEstateLandState.getLandLevel());
-            if (dataLandLevelDetail != null) {
-                vo.setLandLevelName(String.format("%s%s",dataLandLevelDetail.getCategory(),dataLandLevelDetail.getClassify()));
-            }
-        }
-        if (caseEstateLandState.getLandLevel() != null){
             vo.setLandLevelName(dataLandLevelDetailService.getCacheNameById(caseEstateLandState.getLandLevel()));
         }
         if (caseEstateLandState.getShapeState() != null) {

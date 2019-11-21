@@ -3,22 +3,22 @@
 <mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.DataLandLevelDetailMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.DataLandLevelDetail" >
     <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="pid" property="pid" jdbcType="INTEGER" />
     <result column="land_level_id" property="landLevelId" jdbcType="INTEGER" />
     <result column="classify" property="classify" jdbcType="INTEGER" />
     <result column="type" property="type" jdbcType="INTEGER" />
     <result column="category" property="category" jdbcType="VARCHAR" />
-    <result column="level_range" property="levelRange" jdbcType="VARCHAR" />
-    <result column="main_street" property="mainStreet" jdbcType="VARCHAR" />
-    <result column="bis_delete" property="bisDelete" jdbcType="BIT" />
-    <result column="land_acquisition_proportion" property="landAcquisitionProportion" jdbcType="VARCHAR" />
     <result column="price" property="price" jdbcType="DECIMAL" />
     <result column="mu_price" property="muPrice" jdbcType="DECIMAL" />
+    <result column="land_acquisition_proportion" property="landAcquisitionProportion" jdbcType="VARCHAR" />
     <result column="volume_rate" property="volumeRate" jdbcType="DECIMAL" />
     <result column="legal_age" property="legalAge" jdbcType="DECIMAL" />
+    <result column="main_street" property="mainStreet" jdbcType="VARCHAR" />
+    <result column="level_range" property="levelRange" jdbcType="VARCHAR" />
+    <result column="bis_delete" property="bisDelete" jdbcType="BIT" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
-    <result column="pid" property="pid" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -79,9 +79,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, land_level_id, classify, type, category, level_range, main_street, bis_delete, 
-    land_acquisition_proportion, price, mu_price, volume_rate, legal_age, creator, gmt_created, 
-    gmt_modified, pid
+    id, pid, land_level_id, classify, type, category, price, mu_price, land_acquisition_proportion, 
+    volume_rate, legal_age, main_street, level_range, bis_delete, creator, gmt_created, 
+    gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataLandLevelDetailExample" >
     select
@@ -117,18 +117,18 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_data_land_level_detail (land_level_id, classify, type, 
-      category, level_range, main_street, 
-      bis_delete, land_acquisition_proportion, price, 
-      mu_price, volume_rate, legal_age, 
-      creator, gmt_created, gmt_modified, 
-      pid)
-    values (#{landLevelId,jdbcType=INTEGER}, #{classify,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, 
-      #{category,jdbcType=VARCHAR}, #{levelRange,jdbcType=VARCHAR}, #{mainStreet,jdbcType=VARCHAR}, 
-      #{bisDelete,jdbcType=BIT}, #{landAcquisitionProportion,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, 
-      #{muPrice,jdbcType=DECIMAL}, #{volumeRate,jdbcType=DECIMAL}, #{legalAge,jdbcType=DECIMAL}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
-      #{pid,jdbcType=INTEGER})
+    insert into tb_data_land_level_detail (pid, land_level_id, classify, 
+      type, category, price, 
+      mu_price, land_acquisition_proportion, volume_rate, 
+      legal_age, main_street, level_range, 
+      bis_delete, creator, gmt_created, 
+      gmt_modified)
+    values (#{pid,jdbcType=INTEGER}, #{landLevelId,jdbcType=INTEGER}, #{classify,jdbcType=INTEGER}, 
+      #{type,jdbcType=INTEGER}, #{category,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, 
+      #{muPrice,jdbcType=DECIMAL}, #{landAcquisitionProportion,jdbcType=VARCHAR}, #{volumeRate,jdbcType=DECIMAL}, 
+      #{legalAge,jdbcType=DECIMAL}, #{mainStreet,jdbcType=VARCHAR}, #{levelRange,jdbcType=VARCHAR}, 
+      #{bisDelete,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataLandLevelDetail" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -136,6 +136,9 @@
     </selectKey>
     insert into tb_data_land_level_detail
     <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        pid,
+      </if>
       <if test="landLevelId != null" >
         land_level_id,
       </if>
@@ -148,29 +151,29 @@
       <if test="category != null" >
         category,
       </if>
-      <if test="levelRange != null" >
-        level_range,
-      </if>
-      <if test="mainStreet != null" >
-        main_street,
-      </if>
-      <if test="bisDelete != null" >
-        bis_delete,
-      </if>
-      <if test="landAcquisitionProportion != null" >
-        land_acquisition_proportion,
-      </if>
       <if test="price != null" >
         price,
       </if>
       <if test="muPrice != null" >
         mu_price,
       </if>
+      <if test="landAcquisitionProportion != null" >
+        land_acquisition_proportion,
+      </if>
       <if test="volumeRate != null" >
         volume_rate,
       </if>
       <if test="legalAge != null" >
         legal_age,
+      </if>
+      <if test="mainStreet != null" >
+        main_street,
+      </if>
+      <if test="levelRange != null" >
+        level_range,
+      </if>
+      <if test="bisDelete != null" >
+        bis_delete,
       </if>
       <if test="creator != null" >
         creator,
@@ -181,11 +184,11 @@
       <if test="gmtModified != null" >
         gmt_modified,
       </if>
-      <if test="pid != null" >
-        pid,
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        #{pid,jdbcType=INTEGER},
+      </if>
       <if test="landLevelId != null" >
         #{landLevelId,jdbcType=INTEGER},
       </if>
@@ -198,29 +201,29 @@
       <if test="category != null" >
         #{category,jdbcType=VARCHAR},
       </if>
-      <if test="levelRange != null" >
-        #{levelRange,jdbcType=VARCHAR},
-      </if>
-      <if test="mainStreet != null" >
-        #{mainStreet,jdbcType=VARCHAR},
-      </if>
-      <if test="bisDelete != null" >
-        #{bisDelete,jdbcType=BIT},
-      </if>
-      <if test="landAcquisitionProportion != null" >
-        #{landAcquisitionProportion,jdbcType=VARCHAR},
-      </if>
       <if test="price != null" >
         #{price,jdbcType=DECIMAL},
       </if>
       <if test="muPrice != null" >
         #{muPrice,jdbcType=DECIMAL},
       </if>
+      <if test="landAcquisitionProportion != null" >
+        #{landAcquisitionProportion,jdbcType=VARCHAR},
+      </if>
       <if test="volumeRate != null" >
         #{volumeRate,jdbcType=DECIMAL},
       </if>
       <if test="legalAge != null" >
         #{legalAge,jdbcType=DECIMAL},
+      </if>
+      <if test="mainStreet != null" >
+        #{mainStreet,jdbcType=VARCHAR},
+      </if>
+      <if test="levelRange != null" >
+        #{levelRange,jdbcType=VARCHAR},
+      </if>
+      <if test="bisDelete != null" >
+        #{bisDelete,jdbcType=BIT},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -230,9 +233,6 @@
       </if>
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="pid != null" >
-        #{pid,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -248,6 +248,9 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
+      <if test="record.pid != null" >
+        pid = #{record.pid,jdbcType=INTEGER},
+      </if>
       <if test="record.landLevelId != null" >
         land_level_id = #{record.landLevelId,jdbcType=INTEGER},
       </if>
@@ -260,29 +263,29 @@
       <if test="record.category != null" >
         category = #{record.category,jdbcType=VARCHAR},
       </if>
-      <if test="record.levelRange != null" >
-        level_range = #{record.levelRange,jdbcType=VARCHAR},
-      </if>
-      <if test="record.mainStreet != null" >
-        main_street = #{record.mainStreet,jdbcType=VARCHAR},
-      </if>
-      <if test="record.bisDelete != null" >
-        bis_delete = #{record.bisDelete,jdbcType=BIT},
-      </if>
-      <if test="record.landAcquisitionProportion != null" >
-        land_acquisition_proportion = #{record.landAcquisitionProportion,jdbcType=VARCHAR},
-      </if>
       <if test="record.price != null" >
         price = #{record.price,jdbcType=DECIMAL},
       </if>
       <if test="record.muPrice != null" >
         mu_price = #{record.muPrice,jdbcType=DECIMAL},
       </if>
+      <if test="record.landAcquisitionProportion != null" >
+        land_acquisition_proportion = #{record.landAcquisitionProportion,jdbcType=VARCHAR},
+      </if>
       <if test="record.volumeRate != null" >
         volume_rate = #{record.volumeRate,jdbcType=DECIMAL},
       </if>
       <if test="record.legalAge != null" >
         legal_age = #{record.legalAge,jdbcType=DECIMAL},
+      </if>
+      <if test="record.mainStreet != null" >
+        main_street = #{record.mainStreet,jdbcType=VARCHAR},
+      </if>
+      <if test="record.levelRange != null" >
+        level_range = #{record.levelRange,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bisDelete != null" >
+        bis_delete = #{record.bisDelete,jdbcType=BIT},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -293,9 +296,6 @@
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.pid != null" >
-        pid = #{record.pid,jdbcType=INTEGER},
-      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -304,22 +304,22 @@
   <update id="updateByExample" parameterType="map" >
     update tb_data_land_level_detail
     set id = #{record.id,jdbcType=INTEGER},
+      pid = #{record.pid,jdbcType=INTEGER},
       land_level_id = #{record.landLevelId,jdbcType=INTEGER},
       classify = #{record.classify,jdbcType=INTEGER},
       type = #{record.type,jdbcType=INTEGER},
       category = #{record.category,jdbcType=VARCHAR},
-      level_range = #{record.levelRange,jdbcType=VARCHAR},
-      main_street = #{record.mainStreet,jdbcType=VARCHAR},
-      bis_delete = #{record.bisDelete,jdbcType=BIT},
-      land_acquisition_proportion = #{record.landAcquisitionProportion,jdbcType=VARCHAR},
       price = #{record.price,jdbcType=DECIMAL},
       mu_price = #{record.muPrice,jdbcType=DECIMAL},
+      land_acquisition_proportion = #{record.landAcquisitionProportion,jdbcType=VARCHAR},
       volume_rate = #{record.volumeRate,jdbcType=DECIMAL},
       legal_age = #{record.legalAge,jdbcType=DECIMAL},
+      main_street = #{record.mainStreet,jdbcType=VARCHAR},
+      level_range = #{record.levelRange,jdbcType=VARCHAR},
+      bis_delete = #{record.bisDelete,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      pid = #{record.pid,jdbcType=INTEGER}
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -327,6 +327,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataLandLevelDetail" >
     update tb_data_land_level_detail
     <set >
+      <if test="pid != null" >
+        pid = #{pid,jdbcType=INTEGER},
+      </if>
       <if test="landLevelId != null" >
         land_level_id = #{landLevelId,jdbcType=INTEGER},
       </if>
@@ -339,29 +342,29 @@
       <if test="category != null" >
         category = #{category,jdbcType=VARCHAR},
       </if>
-      <if test="levelRange != null" >
-        level_range = #{levelRange,jdbcType=VARCHAR},
-      </if>
-      <if test="mainStreet != null" >
-        main_street = #{mainStreet,jdbcType=VARCHAR},
-      </if>
-      <if test="bisDelete != null" >
-        bis_delete = #{bisDelete,jdbcType=BIT},
-      </if>
-      <if test="landAcquisitionProportion != null" >
-        land_acquisition_proportion = #{landAcquisitionProportion,jdbcType=VARCHAR},
-      </if>
       <if test="price != null" >
         price = #{price,jdbcType=DECIMAL},
       </if>
       <if test="muPrice != null" >
         mu_price = #{muPrice,jdbcType=DECIMAL},
       </if>
+      <if test="landAcquisitionProportion != null" >
+        land_acquisition_proportion = #{landAcquisitionProportion,jdbcType=VARCHAR},
+      </if>
       <if test="volumeRate != null" >
         volume_rate = #{volumeRate,jdbcType=DECIMAL},
       </if>
       <if test="legalAge != null" >
         legal_age = #{legalAge,jdbcType=DECIMAL},
+      </if>
+      <if test="mainStreet != null" >
+        main_street = #{mainStreet,jdbcType=VARCHAR},
+      </if>
+      <if test="levelRange != null" >
+        level_range = #{levelRange,jdbcType=VARCHAR},
+      </if>
+      <if test="bisDelete != null" >
+        bis_delete = #{bisDelete,jdbcType=BIT},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -372,30 +375,27 @@
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
-      <if test="pid != null" >
-        pid = #{pid,jdbcType=INTEGER},
-      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataLandLevelDetail" >
     update tb_data_land_level_detail
-    set land_level_id = #{landLevelId,jdbcType=INTEGER},
+    set pid = #{pid,jdbcType=INTEGER},
+      land_level_id = #{landLevelId,jdbcType=INTEGER},
       classify = #{classify,jdbcType=INTEGER},
       type = #{type,jdbcType=INTEGER},
       category = #{category,jdbcType=VARCHAR},
-      level_range = #{levelRange,jdbcType=VARCHAR},
-      main_street = #{mainStreet,jdbcType=VARCHAR},
-      bis_delete = #{bisDelete,jdbcType=BIT},
-      land_acquisition_proportion = #{landAcquisitionProportion,jdbcType=VARCHAR},
       price = #{price,jdbcType=DECIMAL},
       mu_price = #{muPrice,jdbcType=DECIMAL},
+      land_acquisition_proportion = #{landAcquisitionProportion,jdbcType=VARCHAR},
       volume_rate = #{volumeRate,jdbcType=DECIMAL},
       legal_age = #{legalAge,jdbcType=DECIMAL},
+      main_street = #{mainStreet,jdbcType=VARCHAR},
+      level_range = #{levelRange,jdbcType=VARCHAR},
+      bis_delete = #{bisDelete,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      pid = #{pid,jdbcType=INTEGER}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

@@ -187,10 +187,10 @@
         </div>
     </div>
     <div class="x-valid" style="display: none">
-        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">建筑限高 m²</label>
+        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">建筑限高</label>
         <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
             <input type="text" class="form-control" data-rule-number='true'
-                   placeholder="建筑限高 m² (数字)" name="buildingHeightLimit" value="${basicEstateLandState.buildingHeightLimit}">
+                   placeholder="建筑限高(数字)" name="buildingHeightLimit" value="${basicEstateLandState.buildingHeightLimit}">
         </div>
     </div>
 </div>

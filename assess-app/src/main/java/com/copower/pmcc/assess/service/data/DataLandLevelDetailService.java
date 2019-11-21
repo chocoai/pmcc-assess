@@ -238,23 +238,40 @@ public class DataLandLevelDetailService {
      * @return
      */
     public String getCacheNameById(Integer id) {
-        DataLandLevelDetail dataLandLevelDetail = null;
+        DataLandLevelDetail dataLandLevelDetail = getCacheDataLandLevelDetail(id);
+        if (dataLandLevelDetail == null) return null;
+        String name = StringUtils.EMPTY;
+        BaseDataDic baseDataDic = null;
+        if (dataLandLevelDetail.getType() != null) {
+            baseDataDic = baseDataDicService.getCacheDataDicById(dataLandLevelDetail.getType());
+            if (baseDataDic == null) return null;
+            name = baseDataDic.getName();
+        }
+        if (dataLandLevelDetail.getPid() > 0) {
+            dataLandLevelDetail = getCacheDataLandLevelDetail(dataLandLevelDetail.getPid());
+            baseDataDic = baseDataDicService.getCacheDataDicById(dataLandLevelDetail.getClassify());
+            if (baseDataDic != null) {
+                name = baseDataDic.getName() + "/" + name;
+            }
+        }
+        return name;
+    }
+
+    /**
+     * 缓存中获取
+     *
+     * @param id
+     * @return
+     */
+    public DataLandLevelDetail getCacheDataLandLevelDetail(Integer id) {
+        String costsKeyPrefix = CacheConstant.getCostsKeyPrefix(AssessCacheConstant.PMCC_ASSESS_LAND_LEVEL_ID, String.valueOf(id));
         try {
-            String costsKeyPrefix = CacheConstant.getCostsKeyPrefix(AssessCacheConstant.PMCC_ASSESS_LAND_LEVEL_ID, String.valueOf(id));
-            dataLandLevelDetail = LangUtils.singleCache(costsKeyPrefix, id, DataLandLevelDetail.class, (o) -> {
+            return LangUtils.singleCache(costsKeyPrefix, id, DataLandLevelDetail.class, (o) -> {
                 return dataLandLevelDetailDao.getDataLandLevelDetailById(o);
             });
         } catch (Exception e) {
-            dataLandLevelDetail = dataLandLevelDetailDao.getDataLandLevelDetailById(id);
+            return dataLandLevelDetailDao.getDataLandLevelDetailById(id);
         }
-        if (dataLandLevelDetail == null) return null;
-        StringBuffer stringBuffer = new StringBuffer();
-        stringBuffer.append(dataLandLevelDetail.getClassify());
-        if (dataLandLevelDetail.getType() != null)
-            stringBuffer.append("/").append(dataLandLevelDetail.getType());
-        if (StringUtils.isNotBlank(dataLandLevelDetail.getCategory()))
-            stringBuffer.append("/").append(dataLandLevelDetail.getCategory());
-        return stringBuffer.toString();
     }
 
     /**

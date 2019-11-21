@@ -292,9 +292,8 @@ public class MdMarketCompareFieldService extends BaseService {
                             break;
                         case PROPERTY_MANAGEMENT://物业管理情况
                             stringBuilder = new StringBuilder();
-                            if (examineBuilding.getProperty() != null) {
-                                DataProperty dataProperty = dataPropertyService.getByDataPropertyId(examineBuilding.getProperty());
-                                stringBuilder.append(generateEquityService.getProperty(dataProperty));
+                            if (examineBuilding.getPropertyName() != null) {
+                                stringBuilder.append(examineBuilding.getPropertyName());
                             }
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.PROPERTY_MANAGEMENT.getKey(), stringBuilder.toString()));
                             break;

@@ -18,7 +18,10 @@
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                     </ul>
-                    <h3>${judgeObjectName}</h3>
+                    <h3>
+                        ${judgeObject.name}
+                        <small>(${judgeObject.evaluationArea}㎡)</small>
+                    </h3>
                     <div class="clearfix"></div>
                 </div>
                 <form class="form-horizontal" id="sure_price_form">

@@ -461,105 +461,45 @@
         </form>
 
         <!-- 网络通信 -->
-        <div class="network" style="display:${hasEstateNetworkData?'block':'none'};">
-            <%@include file="/views/case/caseEstate/caseNetwork.jsp" %>
-        </div>
-
+        <%@include file="/views/case/caseEstate/caseNetwork.jsp" %>
         <!-- 车位信息 -->
-        <div class="parking" style="display:${hasEstateParkingData?'block':'none'};">
-            <%@include file="/views/case/caseEstate/caseParking.jsp" %>
-        </div>
-
+        <%@include file="/views/case/caseEstate/caseParking.jsp" %>
         <!-- 教育 -->
-        <div class="education" style="display: ${hasMatchingEducationData?'block':'none'};">
-            <%@include file="/views/case/caseEstate/caseMatchingEducation.jsp" %>
-        </div>
-
+        <%@include file="/views/case/caseEstate/caseMatchingEducation.jsp" %>
         <!-- 环境 -->
-        <div class="environment" style="display: ${hasMatchingEnvironmentData?'block':'none'};">
-            <%@include file="/views/case/caseEstate/caseMatchingEnvironment.jsp" %>
-        </div>
-
+        <%@include file="/views/case/caseEstate/caseMatchingEnvironment.jsp" %>
         <!-- 金融 -->
-        <div class="finance" style="display: ${hasMatchingFinanceData?'block':'none'};">
-            <%@include file="/views/case/caseEstate/caseMatchingFinance.jsp" %>
-        </div>
-
+        <%@include file="/views/case/caseEstate/caseMatchingFinance.jsp" %>
         <!-- 购物商场 -->
-        <div class="matchingMarket" style="display: ${hasMatchingLeisurePlaceMarket?'block':'none'};">
-            <%@include file="/views/case/caseEstate/caseMatchingMarket.jsp" %>
-        </div>
-
+        <%@include file="/views/case/caseEstate/caseMatchingMarket.jsp" %>
         <!-- 医养条件 -->
-        <div class="medical" style="display: ${hasMatchingMedicalData?'block':'none'};">
-            <%@include file="/views/case/caseEstate/caseMatchingMedical.jsp" %>
-        </div>
-
+        <%@include file="/views/case/caseEstate/caseMatchingMedical.jsp" %>
         <!-- 休闲娱乐 -->
-        <div class="matchingRecreation" style="display: ${hasMatchingLeisurePlaceRecreation?'block':'none'};">
-            <%@include file="/views/case/caseEstate/caseMatchingRecreation.jsp" %>
-        </div>
-
+        <%@include file="/views/case/caseEstate/caseMatchingRecreation.jsp" %>
         <!-- 餐饮 -->
-        <div class="matchingRestaurant" style="display: ${hasMatchingLeisurePlaceRestaurant?'block':'none'};">
-            <%@include file="/views/case/caseEstate/caseMatchingRestaurant.jsp" %>
-        </div>
-
+        <%@include file="/views/case/caseEstate/caseMatchingRestaurant.jsp" %>
         <!-- 地铁 -->
-        <div class="metro" style="display: ${hasMatchingTrafficMetro?'block':'none'};">
-            <%@include file="/views/case/caseEstate/caseMatchingMetro.jsp" %>
-        </div>
-
+        <%@include file="/views/case/caseEstate/caseMatchingMetro.jsp" %>
         <!-- 公交 -->
-        <div class="transit" style="display: ${hasMatchingTrafficTransit?'block':'none'};">
-            <%@include file="/views/case/caseEstate/caseMatchingTransit.jsp" %>
-        </div>
-
-
+        <%@include file="/views/case/caseEstate/caseMatchingTransit.jsp" %>
         <!-- 主干道 -->
-        <div class="mainroad" style="display: ${hasMatchingTrafficMainRoad?'block':'none'};">
-            <%@include file="/views/case/caseEstate/caseMatchingMainRoad.jsp" %>
-        </div>
-
+        <%@include file="/views/case/caseEstate/caseMatchingMainRoad.jsp" %>
         <!-- 主要转换 -->
-        <div class="mainconversion" style="display: ${hasMatchingTrafficMainConversion?'block':'none'};">
-            <%@include file="/views/case/caseEstate/caseMatchingMainConversion.jsp" %>
-        </div>
-
+        <%@include file="/views/case/caseEstate/caseMatchingMainConversion.jsp" %>
         <!-- 交通枢纽 -->
-        <div class="trafficHub" style="display: ${hasMatchingTrafficTrafficHub?'block':'none'};">
-            <%@include file="/views/case/caseEstate/caseMatchingTrafficHub.jsp" %>
-        </div>
-
+        <%@include file="/views/case/caseEstate/caseMatchingTrafficHub.jsp" %>
         <!-- 供水 -->
-        <div class="supplywater" style="display: ${hasEstateSupplyWater?'block':'none'};">
-            <%@include file="/views/case/caseEstate/caseSupplyWater.jsp" %>
-        </div>
-
+        <%@include file="/views/case/caseEstate/caseSupplyWater.jsp" %>
         <!-- 排水 -->
-        <div class="drainwater" style="display: ${hasEstateDrainWater?'block':'none'};">
-            <%@include file="/views/case/caseEstate/caseDrainWater.jsp" %>
-        </div>
-
+        <%@include file="/views/case/caseEstate/caseDrainWater.jsp" %>
         <!-- 供电 -->
-        <div class="supplypower" style="display: ${hasEstateSupplyPower?'block':'none'};">
-            <%@include file="/views/case/caseEstate/caseSupplyPower.jsp" %>
-        </div>
-
+        <%@include file="/views/case/caseEstate/caseSupplyPower.jsp" %>
         <!-- 供热 -->
-        <div class="supplyheating" style="display: ${hasEstateSupplyHeating?'block':'none'};">
-            <%@include file="/views/case/caseEstate/caseSupplyHeating.jsp" %>
-        </div>
-
+        <%@include file="/views/case/caseEstate/caseSupplyHeating.jsp" %>
         <!-- 供气 -->
-        <div class="supplygas" style="display:${hasEstateSupplyGas?'block':'none'};">
-            <%@include file="/views/case/caseEstate/caseSupplyGas.jsp" %>
-        </div>
-
+        <%@include file="/views/case/caseEstate/caseSupplyGas.jsp" %>
         <!-- 原材料及销售条件 -->
-        <div class="material" style="display: ${hasMatchingMaterialData?'block':'none'};">
-            <%@include file="/views/case/caseEstate/caseMatchingMaterial.jsp" %>
-        </div>
+        <%@include file="/views/case/caseEstate/caseMatchingMaterial.jsp" %>
     </div>
 </div>
 
@@ -568,14 +508,10 @@
     <tr class="group">
         <td class="table-cell">
             {landLevelTypeName}
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td>
             {landLevelCategoryName}
         </td>
-
-
         <td>
             <label name="gradeName" class="form-control">{gradeName}</label>
         </td>
