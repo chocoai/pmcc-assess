@@ -220,7 +220,7 @@ public class EvaluationBasisService {
                         SurveyAssetInventory surveyAssetInventory = surveyAssetInventoryService.getDataByDeclareId(judgeObject.getDeclareRecordId());
                         if ("不正常".equals(surveyAssetInventory.getRimIsNormal())) {
                             List<SurveyDamageDto> zoneDamegeList = JSON.parseArray(surveyAssetInventory.getZoneDamage(), SurveyDamageDto.class);
-                            damageContent.append(judgeObject.getNumber()).append("号委估对象区位损坏,");
+                            damageContent.append(generateCommonMethod.getSchemeJudgeObjectShowName2(judgeObject,judgeObjectList)).append("号委估对象区位损坏,");
                             if (CollectionUtils.isNotEmpty(zoneDamegeList)) {
                                 for (SurveyDamageDto dto : zoneDamegeList) {
                                     damageContent.append("项目:").append(dto.getZoneProjectName()).append(",明细").append(dto.getZoneProjectItem()).append(";");
@@ -229,7 +229,7 @@ public class EvaluationBasisService {
                         }
                         if ("损坏".equals(surveyAssetInventory.getEntityIsDamage())) {
                             List<SurveyDamageDto> entityDamegeList = JSON.parseArray(surveyAssetInventory.getEntityDamage(), SurveyDamageDto.class);
-                            damageContent.append(judgeObject.getNumber()).append("号委估对象实体损坏,");
+                            damageContent.append(generateCommonMethod.getSchemeJudgeObjectShowName2(judgeObject,judgeObjectList)).append("号委估对象实体损坏,");
                             if (CollectionUtils.isNotEmpty(entityDamegeList)) {
                                 for (SurveyDamageDto dto : entityDamegeList) {
                                     damageContent.append("项目:").append(dto.getEntityProjectName()).append(",明细").append(dto.getEntityProjectItem()).append(";");

@@ -27,8 +27,6 @@ import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -54,7 +52,6 @@ import java.util.stream.Collectors;
  */
 @Component
 public class GenerateCommonMethod {
-    private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private DeclareRecordService declareRecordService;
     @Autowired
@@ -295,6 +292,68 @@ public class GenerateCommonMethod {
         return stringBuilder.toString();
     }
 
+    /**
+     * 类似于⑲号或者21号
+     * @param schemeJudgeObject
+     * @param schemeJudgeObjectList
+     * @return
+     */
+    public String getSchemeJudgeObjectShowName(SchemeJudgeObject schemeJudgeObject,List<SchemeJudgeObject> schemeJudgeObjectList) {
+        List<Integer> integerList = Lists.newArrayList();
+        for (int i = 0; i < schemeJudgeObjectList.size(); i++) {
+            SchemeJudgeObject object = schemeJudgeObjectList.get(i) ;
+            integerList.add(parseIntJudgeNumber(object.getNumber())) ;
+        }
+       return getSchemeJudgeObjectShowHandleName(schemeJudgeObject,integerList) ;
+    }
+
+
+    /**
+     * 类似于⑲或者21
+     * @param schemeJudgeObject
+     * @param schemeJudgeObjectList
+     * @return
+     */
+    public String getSchemeJudgeObjectShowName2(SchemeJudgeObject schemeJudgeObject,List<SchemeJudgeObject> schemeJudgeObjectList) {
+        List<Integer> integerList = Lists.newArrayList();
+        for (int i = 0; i < schemeJudgeObjectList.size(); i++) {
+            SchemeJudgeObject object = schemeJudgeObjectList.get(i) ;
+            integerList.add(parseIntJudgeNumber(object.getNumber())) ;
+        }
+       return StringUtils.remove(getSchemeJudgeObjectShowHandleName(schemeJudgeObject,integerList),"号") ;
+    }
+
+    /**
+     * 类似于⑲号或者21号
+     * @param schemeJudgeObject
+     * @param integerList
+     * @return
+     */
+    public String getSchemeJudgeObjectShowHandleName(SchemeJudgeObject schemeJudgeObject,List<Integer> integerList) {
+        if (checkSchemeJudgeObjectNumberOverloadTwenty(integerList)){
+            return getSchemeJudgeObjectShowName(schemeJudgeObject) ;
+        }else {
+            return String.join("",parseIntJudgeNumber(schemeJudgeObject.getNumber()).toString(),"号") ;
+        }
+    }
+
+    /**
+     * 校验是否超过word 的编号
+     * @param integerList
+     * @return
+     */
+    public boolean checkSchemeJudgeObjectNumberOverloadTwenty(List<Integer> integerList){
+        final int twenty = 20;
+        boolean flag = true;
+        if (CollectionUtils.isNotEmpty(integerList)){
+            integerList = integerList.stream().distinct().collect(Collectors.toList());
+            if (integerList.stream().reduce(Integer::max).get() > twenty || integerList.size() > twenty){
+                flag = false;
+            }
+        }
+        return flag;
+    }
+
     public String getPercentileSystem(BigDecimal bigDecimal) {
         return ArithmeticUtils.getPercentileSystem(bigDecimal, 2, BigDecimal.ROUND_HALF_UP);
     }
@@ -429,12 +488,10 @@ public class GenerateCommonMethod {
      * @return
      */
     public String convertNumber(List<Integer> numbers) {
-        final int max = 20;
         StringBuilder stringBuilder = new StringBuilder(8);
         if (CollectionUtils.isNotEmpty(numbers)) {
             numbers = numbers.stream().distinct().sorted().collect(Collectors.toList());
-            int num = numbers.stream().reduce(Integer::max).get();
-            if (num > max) {
+            if (!checkSchemeJudgeObjectNumberOverloadTwenty(numbers)){
                 return StringUtils.join(numbers, ",");
             }
             Integer[] ints = new Integer[numbers.size()];

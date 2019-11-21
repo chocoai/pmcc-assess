@@ -34,6 +34,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -140,7 +141,7 @@ public class GenerateReportService {
             if (baseReportTemplate == null) {
                 continue;
             }
-            String path = this.fullReportPath(baseReportTemplate, generateReportInfo, baseDataDic.getFieldName());
+            String path = this.fullReportHandlePath(baseReportTemplate, generateReportInfo, baseDataDic.getFieldName(), generateReportInfo.getIsAllow());
             if (StringUtils.isNotBlank(path)) {
                 this.createSysAttachment(path, generateReportInfo, baseDataDic.getFieldName(), sysAttachmentDtoList);
             }
@@ -182,15 +183,18 @@ public class GenerateReportService {
         baseAttachmentService.addAttachment(sysAttachmentDto);
     }
 
+
     /**
      * 创建报告模板(具体)
      *
      * @param baseReportTemplate
      * @param generateReportInfo
+     * @param reportType
+     * @param isSource           注意这个参数的意思是  当为true的时候使用报告对象的源word进行替换也就是说这个word可能曾经被修改过或者被替换过 , 当为 false的时候那么使用我们自定义配置的报告模板进行替换操作
      * @return
      * @throws Exception
      */
-    private String fullReportPath(BaseReportTemplate baseReportTemplate, GenerateReportInfo generateReportInfo, String reportType) throws Exception {
+    private String fullReportHandlePath(BaseReportTemplate baseReportTemplate, GenerateReportInfo generateReportInfo, String reportType, boolean isSource) throws Exception {
         List<String> names = Lists.newArrayList();
         //基础报告
         for (BaseReportFieldEnum baseReportFieldEnum : BaseReportFieldEnum.values()) {
@@ -210,11 +214,25 @@ public class GenerateReportService {
         });
         String dir = null;
         SysAttachmentDto query = new SysAttachmentDto();
-        query.setTableId(baseReportTemplate.getId());
-        query.setTableName(FormatUtils.entityNameConvertToTableName(BaseReportTemplate.class));
+        //这里很重要
+        //使用曾经使用过的word进行替换
+        if (isSource) {
+            query.setTableId(generateReportInfo.getId());
+            query.setTableName(FormatUtils.entityNameConvertToTableName(GenerateReportInfo.class));
+        }
+        //使用报告模板
+        if (!isSource) {
+            query.setTableId(baseReportTemplate.getId());
+            query.setTableName(FormatUtils.entityNameConvertToTableName(BaseReportTemplate.class));
+        }
         List<SysAttachmentDto> sysAttachmentDtoList = baseAttachmentService.getAttachmentList(query);
         if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
             dir = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDtoList.stream().findFirst().get().getId());
+        }
+        if (CollectionUtils.isEmpty(sysAttachmentDtoList)){
+            if (Objects.equal(query.getTableName(),FormatUtils.entityNameConvertToTableName(GenerateReportInfo.class))){
+                throw new Exception("先生成报告,再拿号!") ;
+            }
         }
         ProjectPlan projectPlan = projectPlanService.getProjectplanById(generateReportInfo.getProjectPlanId());
         ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(generateReportInfo.getProjectId()));
@@ -264,13 +282,12 @@ public class GenerateReportService {
             final long time = 120;//最多阻塞70秒
             List<List<String>> listList = splitsList(new ArrayList<>(compareHashSet), factor);
             for (int i = 0; i < listList.size(); i++) {
-                if (CollectionUtils.isEmpty(listList.get(i))){
+                if (CollectionUtils.isEmpty(listList.get(i))) {
                     continue;
                 }
                 Iterator<String> stringIterator = listList.get(i).iterator();
 
-                Logger logger = baseService.getLogger(getClass()) ;
-
+                Logger logger = baseService.getLogger(getClass());
 
 
                 //假如调试请把这段注释
@@ -298,11 +315,8 @@ public class GenerateReportService {
 //                countDownLatch.await(factor*time, TimeUnit.SECONDS);
 
 
-
-
-
                 //调试把这段开启,如果  方法发生了线程安全问题 那么也请把上面的注释,下面的开启
-                while (stringIterator.hasNext()){
+                while (stringIterator.hasNext()) {
                     handleReport(stringIterator.next(), textMap, bookmarkMap, fileMap, generateBaseDataService, generateReportInfo, reportType);
                 }
             }
@@ -362,7 +376,9 @@ public class GenerateReportService {
             if (StringUtils.isNotEmpty(textMap.get(name))) {
                 return;
             }
-            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getWordNumber());
+            if (generateReportInfo.getIsAllow()) {
+                generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getWordNumber());
+            }
         }
         //查询码
         if (Objects.equal(BaseReportFieldEnum.queryCode.getName(), name)) {
@@ -1384,7 +1400,11 @@ public class GenerateReportService {
             if (StringUtils.isNotEmpty(fileMap.get(name))) {
                 return;
             }
-            generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getValuation_Target_Live_Photos());
+            try {
+                generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getValuation_Target_Live_Photos());
+            } catch (Exception e) {
+                baseService.writeExceptionInfo(e, "估价对象实况照片");
+            }
         }
         //估价对象权属证明复印件
         if (Objects.equal(BaseReportFieldEnum.Copies_the_Ownership_Certificate_the_Valuation_Object.getName(), name)) {

@@ -17,6 +17,7 @@
     <result column="record_date" property="recordDate" jdbcType="TIMESTAMP" />
     <result column="record_no" property="recordNo" jdbcType="VARCHAR" />
     <result column="assess_category" property="assessCategory" jdbcType="INTEGER" />
+    <result column="is_allow" property="isAllow" jdbcType="BIT" />
     <result column="status" property="status" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
@@ -83,7 +84,7 @@
   <sql id="Base_Column_List" >
     id, project_id, project_plan_id, qualification_type, investigations_start_date, investigations_end_date, 
     report_issuance_date, home_work_end_time, real_estate_appraiser, area_group_id, process_ins_id, 
-    query_code, record_date, record_no, assess_category, status, creator, gmt_created, 
+    query_code, record_date, record_no, assess_category, is_allow, status, creator, gmt_created, 
     gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.GenerateReportInfoExample" >
@@ -125,15 +126,17 @@
       report_issuance_date, home_work_end_time, 
       real_estate_appraiser, area_group_id, process_ins_id, 
       query_code, record_date, record_no, 
-      assess_category, status, creator, 
-      gmt_created, gmt_modified)
+      assess_category, is_allow, status, 
+      creator, gmt_created, gmt_modified
+      )
     values (#{projectId,jdbcType=INTEGER}, #{projectPlanId,jdbcType=INTEGER}, #{qualificationType,jdbcType=VARCHAR}, 
       #{investigationsStartDate,jdbcType=TIMESTAMP}, #{investigationsEndDate,jdbcType=TIMESTAMP}, 
       #{reportIssuanceDate,jdbcType=TIMESTAMP}, #{homeWorkEndTime,jdbcType=TIMESTAMP}, 
       #{realEstateAppraiser,jdbcType=VARCHAR}, #{areaGroupId,jdbcType=INTEGER}, #{processInsId,jdbcType=VARCHAR}, 
       #{queryCode,jdbcType=VARCHAR}, #{recordDate,jdbcType=TIMESTAMP}, #{recordNo,jdbcType=VARCHAR}, 
-      #{assessCategory,jdbcType=INTEGER}, #{status,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+      #{assessCategory,jdbcType=INTEGER}, #{isAllow,jdbcType=BIT}, #{status,jdbcType=VARCHAR}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.GenerateReportInfo" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -182,6 +185,9 @@
       </if>
       <if test="assessCategory != null" >
         assess_category,
+      </if>
+      <if test="isAllow != null" >
+        is_allow,
       </if>
       <if test="status != null" >
         status,
@@ -238,6 +244,9 @@
       </if>
       <if test="assessCategory != null" >
         #{assessCategory,jdbcType=INTEGER},
+      </if>
+      <if test="isAllow != null" >
+        #{isAllow,jdbcType=BIT},
       </if>
       <if test="status != null" >
         #{status,jdbcType=VARCHAR},
@@ -307,6 +316,9 @@
       <if test="record.assessCategory != null" >
         assess_category = #{record.assessCategory,jdbcType=INTEGER},
       </if>
+      <if test="record.isAllow != null" >
+        is_allow = #{record.isAllow,jdbcType=BIT},
+      </if>
       <if test="record.status != null" >
         status = #{record.status,jdbcType=VARCHAR},
       </if>
@@ -341,6 +353,7 @@
       record_date = #{record.recordDate,jdbcType=TIMESTAMP},
       record_no = #{record.recordNo,jdbcType=VARCHAR},
       assess_category = #{record.assessCategory,jdbcType=INTEGER},
+      is_allow = #{record.isAllow,jdbcType=BIT},
       status = #{record.status,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -394,6 +407,9 @@
       <if test="assessCategory != null" >
         assess_category = #{assessCategory,jdbcType=INTEGER},
       </if>
+      <if test="isAllow != null" >
+        is_allow = #{isAllow,jdbcType=BIT},
+      </if>
       <if test="status != null" >
         status = #{status,jdbcType=VARCHAR},
       </if>
@@ -425,6 +441,7 @@
       record_date = #{recordDate,jdbcType=TIMESTAMP},
       record_no = #{recordNo,jdbcType=VARCHAR},
       assess_category = #{assessCategory,jdbcType=INTEGER},
+      is_allow = #{isAllow,jdbcType=BIT},
       status = #{status,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},

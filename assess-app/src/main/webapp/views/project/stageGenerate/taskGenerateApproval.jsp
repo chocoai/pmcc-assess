@@ -28,20 +28,20 @@
                             <input type="hidden" name="id">
                             <div class="form-group">
                                 <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
+                                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
                                         报告出具日期<span class="symbol required"></span>
                                     </label>
-                                    <div class="col-sm-3">
+                                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                                         <label class="form-control"><fmt:formatDate
                                                 value='${generationVo.investigationsStartDate}'
                                                 pattern='yyyy-MM-dd'/></label>
                                     </div>
                                 </div>
                                 <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
+                                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
                                         作业结束时间<span class="symbol required"></span>
                                     </label>
-                                    <div class="col-sm-3">
+                                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                                         <label class="form-control"><fmt:formatDate
                                                 value='${generationVo.investigationsStartDate}'
                                                 pattern='yyyy-MM-dd'/></label>
@@ -49,10 +49,10 @@
                                 </div>
                                 <div class="x-valid">
                                     <div>
-                                        <label class="col-sm-1 control-label">
+                                        <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
                                             资质类型
                                         </label>
-                                        <div class="col-sm-3">
+                                        <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                                             <label class="form-control">${generationVo.qualificationTypeName}</label>
                                         </div>
                                     </div>
@@ -60,65 +60,80 @@
                             </div>
                             <div class="form-group">
                                 <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
+                                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
                                         现场查勘开始日期
                                     </label>
-                                    <div class="col-sm-3">
+                                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                                         <label class="form-control"><fmt:formatDate
                                                 value='${generationVo.investigationsStartDate}'
                                                 pattern='yyyy-MM-dd'/></label>
                                     </div>
                                 </div>
                                 <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
+                                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
                                         现场查勘结束日期
                                     </label>
-                                    <div class="col-sm-3">
+                                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                                         <label class="form-control"><fmt:formatDate
                                                 value='${generationVo.investigationsStartDate}'
                                                 pattern='yyyy-MM-dd'/></label>
                                     </div>
                                 </div>
                                 <div class="x-valid">
-                                    <label class="col-sm-1 control-label">估价师</label>
-                                    <div class="col-sm-3">
+                                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">估价师</label>
+                                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                                         <label class="form-control">${generationVo.realEstateAppraiserName}</label>
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="x-valid">
-                                    <label class="col-sm-1 control-label">查询码</label>
-                                    <div class="col-sm-3">
+                                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">查询码</label>
+                                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                                         <label class="form-control">${generationVo.queryCode}</label>
                                     </div>
                                 </div>
 
                                 <div class="x-valid">
-                                    <label class="col-sm-1 control-label">备案号</label>
-                                    <div class="col-sm-3">
+                                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">备案号</label>
+                                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                                         <label class="form-control">${generationVo.recordNo}</label>
                                     </div>
                                 </div>
 
                                 <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
+                                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
                                         备案日期
                                     </label>
-                                    <div class="col-sm-3">
+                                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                                         <label class="form-control"><fmt:formatDate
                                                 value='${generationVo.recordDate}'
                                                 pattern='yyyy-MM-dd'/></label>
                                     </div>
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">拿取过文号</label>
+                                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                                        <label class="form-control">
+                                            <c:if test="${generationVo.isAllow}">
+                                                是
+                                            </c:if>
+                                            <c:if test="${!generationVo.isAllow}">
+                                                否
+                                            </c:if>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
                             <c:forEach items="${reportTypeList}" var="reportType" varStatus="status">
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
+                                        <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
                                                 ${reportType.name}
                                         </label>
-                                        <div class="col-sm-3">
+                                        <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                                             <div id="_${reportType.fieldName}${generationVo.areaGroupId}"></div>
                                         </div>
                                     </div>
@@ -144,7 +159,6 @@
 </div>
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
-</body>
 </html>
 <script type="text/javascript">
     function fileShow(fieldsName, deleteFlag, id) {

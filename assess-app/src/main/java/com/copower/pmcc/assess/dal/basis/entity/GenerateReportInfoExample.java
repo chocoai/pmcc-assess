@@ -1055,6 +1055,66 @@ public class GenerateReportInfoExample {
             return (Criteria) this;
         }
 
+        public Criteria andIsAllowIsNull() {
+            addCriterion("is_allow is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsAllowIsNotNull() {
+            addCriterion("is_allow is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsAllowEqualTo(Boolean value) {
+            addCriterion("is_allow =", value, "isAllow");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsAllowNotEqualTo(Boolean value) {
+            addCriterion("is_allow <>", value, "isAllow");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsAllowGreaterThan(Boolean value) {
+            addCriterion("is_allow >", value, "isAllow");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsAllowGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("is_allow >=", value, "isAllow");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsAllowLessThan(Boolean value) {
+            addCriterion("is_allow <", value, "isAllow");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsAllowLessThanOrEqualTo(Boolean value) {
+            addCriterion("is_allow <=", value, "isAllow");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsAllowIn(List<Boolean> values) {
+            addCriterion("is_allow in", values, "isAllow");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsAllowNotIn(List<Boolean> values) {
+            addCriterion("is_allow not in", values, "isAllow");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsAllowBetween(Boolean value1, Boolean value2) {
+            addCriterion("is_allow between", value1, value2, "isAllow");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsAllowNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("is_allow not between", value1, value2, "isAllow");
+            return (Criteria) this;
+        }
+
         public Criteria andStatusIsNull() {
             addCriterion("status is null");
             return (Criteria) this;
