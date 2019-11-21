@@ -209,7 +209,6 @@ public class EvaluationHypothesisService {
         SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy年MM月dd日");
         //对应委估对象
         List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaGroupId);
-        boolean isLabelJudgeObjectShowName = judgeObjectList.size() <= 20;
         Integer order = 0;
         Integer order2 = 0;
         Integer order3 = 0;
@@ -318,12 +317,8 @@ public class EvaluationHypothesisService {
                             if (AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_USE.equals(fieldName))
                                 dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.REGISTRATION_PURPOSES);
                             if (dataReportTemplateByField != null) {
-                                String tempNumber =judgeObject.getNumber() ;
-                                if (isLabelJudgeObjectShowName){
-                                    tempNumber =  generateCommonMethod.parseToCircleNumber(generateCommonMethod.parseIntJudgeNumber(judgeObject.getNumber()));
-                                }
                                 String template = dataReportTemplateByField.getTemplate()
-                                        .replace("#{委估对象号}",tempNumber)
+                                        .replace("#{委估对象号}",generateCommonMethod.getSchemeJudgeObjectShowName2(judgeObject,judgeObjectList))
                                         .replace("#{登记信息}", StringUtils.defaultString(item.getRegistration()))
                                         .replace("#{实际信息}", StringUtils.defaultString(item.getActual()))
                                         .replace("#{证明人}", StringUtils.defaultString(item.getVoucher()))
@@ -545,11 +540,7 @@ public class EvaluationHypothesisService {
                         if (judgeObjectList.size() == 1) {
                             limitContent.append("委估对象,有转让限制").append(surveyAssetInventory.getTransferLimit()).append(";");
                         } else {
-                            String tempNumber = judgeObject.getNumber();
-                            if (isLabelJudgeObjectShowName) {
-                                tempNumber = generateCommonMethod.convertNumber(Lists.newArrayList(generateCommonMethod.parseIntJudgeNumber(judgeObject.getNumber())));
-                            }
-                            limitContent.append(tempNumber).append("号委估对象,有转让限制").append(surveyAssetInventory.getTransferLimit()).append(";");
+                            limitContent.append(generateCommonMethod.getSchemeJudgeObjectShowName2(judgeObject,judgeObjectList)).append("号委估对象,有转让限制").append(surveyAssetInventory.getTransferLimit()).append(";");
                         }
                     } else {
                         limit.append(judgeObject.getNumber()).append(",");

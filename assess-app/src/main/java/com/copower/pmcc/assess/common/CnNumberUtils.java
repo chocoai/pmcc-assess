@@ -1,5 +1,7 @@
 package com.copower.pmcc.assess.common;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,24 +37,40 @@ public class CnNumberUtils implements Serializable {
         return toUppercase(String.valueOf(num));
     }
 
+
+
     /**
      * 强制保留2位
      * 转换成中文大写金额（最高支持万亿和两位小数）
-     *
+     * 修复负数 不能转中文的bug
      * @param num
      * @return
      */
     public static String toUppercaseSubstring(String num) {
+        if (StringUtils.isEmpty(num)){
+            return "" ;
+        }
+        if (!NumberUtils.isNumber(num)){
+            return "" ;
+        }
+        String negativeNumber = "" ;
+        if (Double.valueOf(num) < 0){
+            negativeNumber = "负" ;
+            num = String.valueOf(Math.abs(Double.valueOf(num))) ;
+        }
+        String value = "";
         String[] strNumArray = num.split("\\.");
         if (strNumArray.length == 2) {
             String number = strNumArray[1];
             if (number.length() > 2) {
                 number = number.substring(0, 2);
             }
-            return toUppercase(String.format("%s.%s", strNumArray[0], number));
+            value = String.join("", strNumArray[0], ".", number);
         } else {
-            return toUppercase(String.format("%s", strNumArray[0]));
+            value = strNumArray[0];
         }
+        value = toUppercase(value);
+        return String.join("",negativeNumber,value) ;
     }
 
     /**
