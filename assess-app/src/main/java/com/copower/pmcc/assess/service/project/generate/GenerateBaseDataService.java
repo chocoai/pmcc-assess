@@ -1932,31 +1932,44 @@ public class GenerateBaseDataService {
         StringBuilder stringBuilder = new StringBuilder(8);
         List<String> stringList = Lists.newArrayList();
         List<String> stringArrayList = Lists.newArrayList();
-        BaseDataDic type = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_ACTUAL_ADDRESS);
+        List<BaseDataDic> types = new ArrayList<>(Arrays.asList(
+                baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_ACTUAL_ADDRESS),
+                baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_HOUSE_LAND_ADDRESS)));
         List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaId);
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            boolean isLabelJudgeObjectShowName = schemeJudgeObjectList.size() <= 20 ;
+            boolean isLabelJudgeObjectShowName = schemeJudgeObjectList.size() <= 20;
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                 if (schemeJudgeObject.getDeclareRecordId() != null) {
-                    String registration = getActualRegistration(type, schemeJudgeObject.getDeclareRecordId());//证载地址
-                    String addressAssetInventory = getActualAddressAssetInventory(type, schemeJudgeObject.getDeclareRecordId());//现场查勘地址
-                    if (StringUtils.isNotBlank(registration) && StringUtils.isNotBlank(addressAssetInventory)) {
-                            String tempNumber = String.join("",schemeJudgeObject.getNumber(),"号") ;
-                            if (isLabelJudgeObjectShowName){
-                                tempNumber = generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject) ;
+                    for (BaseDataDic type:types){
+                        String registration = getActualRegistration(type, schemeJudgeObject.getDeclareRecordId());//证载地址
+                        String addressAssetInventory = getActualAddressAssetInventory(type, schemeJudgeObject.getDeclareRecordId());//现场查勘地址
+                        if (StringUtils.isNotBlank(registration) && StringUtils.isNotBlank(addressAssetInventory)) {
+                            String tempNumber = String.join("", schemeJudgeObject.getNumber(), "号");
+                            if (isLabelJudgeObjectShowName) {
+                                tempNumber = generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject);
                             }
-                        stringBuilder.append(String.format("%s估价对象证载地址为", tempNumber));
-
-                        stringBuilder.append(registration);
-                        stringBuilder.append("，");
-                        stringBuilder.append("估价人员现场查勘地址为");
-                        stringBuilder.append(addressAssetInventory);
-                        stringBuilder.append("，");
-                        stringBuilder.append(String.format("经%s出具《%s》确认一致。",
-                                getCertificateAssetInventory(type, schemeJudgeObject.getDeclareRecordId()),
-                                getCredentialAssetInventory(type, schemeJudgeObject.getDeclareRecordId())));
-                        stringArrayList.add(stringBuilder.toString());
-                        stringBuilder.delete(0, stringBuilder.toString().length());
+                            switch (type.getFieldName()){
+                                case AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_ACTUAL_ADDRESS:{
+                                    stringBuilder.append(String.format("%s估价对象证载地址为", tempNumber)).append(registration);
+                                    stringBuilder.append("，").append("估价人员现场查勘地址为");
+                                    stringBuilder.append(addressAssetInventory).append("，");
+                                    stringBuilder.append("经").append(getCertificateAssetInventory(type, schemeJudgeObject.getDeclareRecordId()));
+                                    stringBuilder.append("出具").append("《").append(getCredentialAssetInventory(type, schemeJudgeObject.getDeclareRecordId())).append("》").append("确认一致。");
+                                    break;
+                                }
+                                case AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_HOUSE_LAND_ADDRESS:{
+                                    stringBuilder.append(String.join("",tempNumber,"估价对象",type.getName(),"为")).append(registration);
+                                    stringBuilder.append("，").append("估价人员").append(type.getName()).append("为");
+                                    stringBuilder.append(addressAssetInventory).append("，");
+                                    stringBuilder.append("经").append(getCertificateAssetInventory(type, schemeJudgeObject.getDeclareRecordId()));
+                                    stringBuilder.append("出具").append("《").append(getCredentialAssetInventory(type, schemeJudgeObject.getDeclareRecordId())).append("》").append("确认一致。");
+                                    break;
+                                }
+                                default:break;
+                            }
+                            stringArrayList.add(stringBuilder.toString());
+                            stringBuilder.delete(0, stringBuilder.toString().length());
+                        }
                     }
                 }
             }
@@ -5682,7 +5695,7 @@ public class GenerateBaseDataService {
 
         List<Integer> baseJudgeNumber = Lists.newArrayList();//基准估价对象号
         List<Integer> otherJudgeNumber = Lists.newArrayList();//其它估价对象号
-        List<SchemeJudgeObject> schemeJudgeObjectFullList = this.schemeJudgeObjectFullList ;
+        List<SchemeJudgeObject> schemeJudgeObjectFullList = this.schemeJudgeObjectFullList;
         for (SchemeJudgeObject judgeObject : schemeJudgeObjectFullList) {
             if (baseJudgeId.contains(judgeObject.getId())) {
                 baseJudgeNumber.add(Integer.valueOf(judgeObject.getNumber()));

@@ -1384,7 +1384,11 @@ public class GenerateReportService {
             if (StringUtils.isNotEmpty(fileMap.get(name))) {
                 return;
             }
-            generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getValuation_Target_Live_Photos());
+            try {
+                generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getValuation_Target_Live_Photos());
+            } catch (Exception e) {
+                baseService.writeExceptionInfo(e,"估价对象实况照片");
+            }
         }
         //估价对象权属证明复印件
         if (Objects.equal(BaseReportFieldEnum.Copies_the_Ownership_Certificate_the_Valuation_Object.getName(), name)) {
