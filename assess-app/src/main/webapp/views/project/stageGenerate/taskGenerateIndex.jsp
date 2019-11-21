@@ -27,12 +27,13 @@
                             <input type="hidden" id="areaGroupId" name="areaGroupId"
                                    value="${generationVo.areaGroupId}">
                             <input type="hidden" name="id" value="${generationVo.id}">
+                            <input type="hidden" name="isAllow" value="${generationVo.isAllow}">
                             <div class="form-group">
                                 <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
+                                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
                                         报告出具日期<span class="symbol required"></span>
                                     </label>
-                                    <div class="col-sm-3">
+                                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                                         <input type="text" name="reportIssuanceDate" placeholder="报告出具日期"
                                                class="form-control date-picker dbdate" pattern='yyyy-MM-dd'
                                                data-date-format="yyyy-mm-dd" required
@@ -40,10 +41,10 @@
                                     </div>
                                 </div>
                                 <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
+                                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
                                         作业结束时间<span class="symbol required"></span>
                                     </label>
-                                    <div class="col-sm-3">
+                                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                                         <input type="text" name="homeWorkEndTime" placeholder="作业结束时间"
                                                class="form-control date-picker dbdate"
                                                data-date-format="yyyy-mm-dd"
@@ -53,10 +54,10 @@
                                 </div>
                                 <div class="x-valid">
                                     <div>
-                                        <label class="col-sm-1 control-label">
+                                        <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
                                             资质类型<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-3">
+                                        <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                                             <select class="form-control" name="qualificationType"
                                                     onchange="onChange(this)" required>
                                                 <option value="">--请选择--</option>
@@ -78,10 +79,10 @@
                             </div>
                             <div class="form-group">
                                 <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
+                                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
                                         现场查勘开始日期<span class="symbol required"></span>
                                     </label>
-                                    <div class="col-sm-3">
+                                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                                         <input type="text" required name="investigationsStartDate"
                                                placeholder="现场查勘开始日期"
                                                class="form-control date-picker dbdate"
@@ -91,10 +92,10 @@
                                     </div>
                                 </div>
                                 <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
+                                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
                                         现场查勘结束日期<span class="symbol required"></span>
                                     </label>
-                                    <div class="col-sm-3">
+                                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                                         <input type="text" required name="investigationsEndDate" placeholder="现场查勘结束日期"
                                                class="form-control date-picker dbdate"
                                                data-date-format="yyyy-mm-dd"
@@ -103,9 +104,9 @@
                                     </div>
                                 </div>
                                 <div class="x-valid">
-                                    <label class="col-sm-1 control-label">估价师<span
+                                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">估价师<span
                                             class="symbol required"></span></label>
-                                    <div class="col-sm-3">
+                                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                                         <select name="realEstateAppraiser" multiple="multiple"
                                                 class="form-control search-select select2"
                                                 required="required">
@@ -115,10 +116,10 @@
                             </div>
                             <div class="form-group">
                                 <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
+                                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
                                         备案日期
                                     </label>
-                                    <div class="col-sm-3">
+                                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                                         <input type="text" name="recordDate" placeholder="备案日期"
                                                class="form-control date-picker dbdate"
                                                data-date-format="yyyy-mm-dd"
@@ -128,23 +129,23 @@
                                 </div>
 
                                 <div class="x-valid">
-                                    <label class="col-sm-1 control-label">查询码</label>
-                                    <div class="col-sm-3">
+                                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">查询码</label>
+                                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                                         <input type="text" name="queryCode" class="form-control" placeholder="查询码">
                                     </div>
                                 </div>
 
                                 <div class="x-valid">
-                                    <label class="col-sm-1 control-label">备案号</label>
-                                    <div class="col-sm-3">
+                                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">备案号</label>
+                                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                                         <input type="text" name="recordNo" class="form-control" placeholder="备案号">
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="x-valid">
-                                    <label class="col-sm-1 control-label">评估类型(增加封面)</label>
-                                    <div class="col-sm-3">
+                                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">评估类型(增加封面)</label>
+                                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                                         <select name="assessCategory" class="form-control search-select select2">
                                             <option>请选择</option>
                                             <c:forEach items="${projectCategoryKeyValueDtoList}"
@@ -157,22 +158,25 @@
                             </div>
                             <c:forEach items="${reportTypeList}" var="reportType" varStatus="status">
                                 <div class="form-group">
+
                                     <div class="x-valid">
-                                        <div class="col-sm-1">
-                                            <a class="btn-primary btn "
-                                               onclick="reGetDocumentNumber('${projectPlan.projectId}','${generationVo.areaGroupId}','${reportType.id}')">重新拿号<i
-                                                    class="fa fa-undo"></i></a>
+
+                                        <div class="col-xs-1  col-sm-1  col-md-1  col-lg-1">
+                                            <%--<a class="btn-primary btn "--%>
+                                               <%--onclick="reGetDocumentNumber('${projectPlan.projectId}','${generationVo.areaGroupId}','${reportType.id}')">重新拿号<i--%>
+                                                    <%--class="fa fa-undo"></i></a>--%>
                                         </div>
-                                        <label class="col-sm-1">
+
+                                        <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1">
                                             <a class="btn-dark btn "
                                                onclick="generateReport('${generationVo.areaGroupId}','${reportType.id}',this)">生成${reportType.name}
                                                 <i class="fa fa-file-word-o"></i></a>
                                         </label>
-                                        <div class="col-sm-3">
+                                        <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                                             <div id="_${reportType.fieldName}${generationVo.areaGroupId}"></div>
                                         </div>
 
-                                        <div class="col-sm-1">
+                                        <div class="col-xs-1  col-sm-1  col-md-1  col-lg-1">
                                             <c:if test="${generationVo != null}">
                                                 <c:if test="${generationVo.id != null}">
                                                     <input id="GGGGGG${reportType.fieldName}${generationVo.areaGroupId}"
@@ -184,7 +188,7 @@
                                                 </c:if>
                                             </c:if>
                                         </div>
-                                        <div class="col-sm-1">
+                                        <div class="col-xs-1  col-sm-1  col-md-1  col-lg-1">
                                             <div class="btn-group">
                                                 <button type="button" class="btn btn-primary">
                                                     意见稿
@@ -204,6 +208,15 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class="x-valid">
+                                        <div class="col-xs-1  col-sm-1  col-md-1  col-lg-1">
+                                            <a class="btn-primary btn "
+                                               onclick="getReportNumber('${generationVo.areaGroupId}','${reportType.id}',this)">拿号<i
+                                                    class="fa fa-dot-circle-o"></i></a>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </c:forEach>
                         </form>
@@ -222,7 +235,7 @@
             </c:forEach>
             <div class="x_panel">
                 <div class="x_content">
-                    <div class="col-sm-4 col-sm-offset-5">
+                    <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4  col-xs-offset-5  col-sm-offset-5  col-md-offset-5  col-lg-offset-5">
                         <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
                             取消
                         </button>
@@ -433,6 +446,22 @@
         });
     }
 
+    //拿号
+    function getReportNumber(areaId, reportType, item) {
+        var form = $(item).closest("form");
+        var data = formSerializeArray(form);
+        data.areaGroupId = areaId;
+        data.isAllow = true;//拿号 标志
+        data.projectPlanId = '${projectPlan.id}';
+        data.projectId = '${projectPlan.projectId}';
+        if (!AssessCommon.isNumber(data.assessCategory)) {
+            data.assessCategory = null;
+        }
+        generateReportHandle(data,reportType, form, areaId, function () {
+            toastr.success('拿号成功!');
+        });
+    }
+
     //生成报告
     function generateReport(areaId, reportType, item) {
         var form = $(item).closest("form");
@@ -446,17 +475,24 @@
             toastr.success('估价师必须选择');
             return false;
         }
-        data.ids = reportType;
         data.areaGroupId = areaId;
         data.projectPlanId = '${projectPlan.id}';
         data.projectId = '${projectPlan.projectId}';
+        data.isAllow = false;//不拿号 标志
         if (!AssessCommon.isNumber(data.assessCategory)) {
             data.assessCategory = null;
         }
+        generateReportHandle(data,reportType ,form, areaId, function () {
+            toastr.success('报告生成成功!');
+        });
+    }
+
+    //报告替换 method
+    function generateReportHandle(data,ids, form, areaId, callback) {
         Loading.progressShow();
         $.ajax({
             url: "${pageContext.request.contextPath}/generateReport/generate",
-            data: data,
+            data: {ids:ids,fomData:JSON.stringify(data)},
             type: "post",
             dataType: "json",
             success: function (result) {
@@ -464,15 +500,16 @@
                 if (result.ret) {
                     getSchemeReportGeneration(data, function (info) {
                         initFormSchemeReportGeneration(info, form, areaId);
+                        if (callback) {
+                            callback();
+                        }
                         Loading.progressHide();
-                        toastr.success('报告生成成功!');
                     });
                 } else {
                     Alert(result.errmsg);
                 }
             },
             error: function (result) {
-                console.log(result);
                 alert("调用服务端方法失败，失败原因:" + result);
             }
         });

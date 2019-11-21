@@ -33,6 +33,8 @@ public class GenerateReportInfo {
 
     private Integer assessCategory;
 
+    private Boolean isAllow;
+
     private String status;
 
     private String creator;
@@ -159,6 +161,14 @@ public class GenerateReportInfo {
 
     public void setAssessCategory(Integer assessCategory) {
         this.assessCategory = assessCategory;
+    }
+
+    public Boolean getIsAllow() {
+        return isAllow;
+    }
+
+    public void setIsAllow(Boolean isAllow) {
+        this.isAllow = isAllow;
     }
 
     public String getStatus() {
