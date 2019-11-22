@@ -527,7 +527,7 @@ public class MdMarketCompareFieldService extends BaseService {
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.Other.getKey(), generateCommonMethod.trimText(stringBuilder.toString())));
                             break;
                         case BUILDING_YEAR://竣工时间
-                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.BUILDING_YEAR.getKey(), DateUtils.formatDate(examineBuilding.getBeCompletedTime()), isCase));
+                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.BUILDING_YEAR.getKey(), DateUtils.formatDate(examineBuilding.getBeCompletedTime(),DateUtils.DATE_YYYY_MM), isCase));
                             break;
                         case CONSTRUCTION_QUALITY://工程质量
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.CONSTRUCTION_QUALITY.getKey(), baseDataDicService.getNameById(examineBuilding.getConstructionQuality())));

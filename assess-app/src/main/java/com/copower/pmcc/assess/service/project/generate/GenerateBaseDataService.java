@@ -5,7 +5,6 @@ import com.aspose.words.*;
 import com.aspose.words.Table;
 import com.copower.pmcc.ad.api.dto.AdCompanyQualificationDto;
 import com.copower.pmcc.ad.api.dto.AdPersonalQualificationDto;
-import com.copower.pmcc.ad.api.enums.AdPersonalEnum;
 import com.copower.pmcc.assess.common.*;
 import com.copower.pmcc.assess.common.enums.*;
 import com.copower.pmcc.assess.common.enums.basic.EnvironmentalScienceEnum;
@@ -14,15 +13,14 @@ import com.copower.pmcc.assess.common.enums.basic.ExamineMatchingLeisurePlaceTyp
 import com.copower.pmcc.assess.common.enums.basic.ExamineMatchingTrafficTypeEnum;
 import com.copower.pmcc.assess.common.enums.method.MethodIncomeOperationModeEnum;
 import com.copower.pmcc.assess.common.enums.report.BaseReportFieldEnum;
-import com.copower.pmcc.assess.common.enums.AssessProjectTypeEnum;
-import com.copower.pmcc.assess.constant.*;
-import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInventoryDao;
+import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
+import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
+import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.survey.SurveyRightGroupDto;
 import com.copower.pmcc.assess.dto.output.MergeCellModel;
 import com.copower.pmcc.assess.dto.output.basic.*;
 import com.copower.pmcc.assess.dto.output.data.DataPropertyVo;
-import com.copower.pmcc.assess.dto.output.data.DataQualificationVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectPhaseVo;
 import com.copower.pmcc.assess.dto.output.project.scheme.SchemeJudgeObjectVo;
@@ -44,7 +42,10 @@ import com.copower.pmcc.assess.service.project.*;
 import com.copower.pmcc.assess.service.project.compile.CompileReportService;
 import com.copower.pmcc.assess.service.project.declare.*;
 import com.copower.pmcc.assess.service.project.scheme.*;
-import com.copower.pmcc.assess.service.project.survey.*;
+import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryRightRecordCenterService;
+import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryRightRecordService;
+import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryRightService;
+import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.ProjectDocumentDto;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
@@ -506,7 +507,6 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getExpertWorkOverview() {
-        String s = "茅以升1916年毕业于西南交通大学（时称交通部唐山工业专门学校英文名称Tangshan Engineering College），1917年获美国康乃尔大学硕士学位，1919年获美国卡耐基理工学院（先卡耐基梅隆大学）博士学位 [1]  ，回国后历任交通大学唐山工学院教授、国立东南大学（1928年更名为国立中央大学，1949年更名为南京大学）教授、工科主任、国立河海工科大学校长、交通部唐山大学校长（今西南交通大学）、北洋工学院院长、江苏省水利厅厅长、钱塘江大桥工程处处长、交通大学唐山工学院代院长、院长、中国桥梁公司总经理、北洋大学校长、中国/北方交通大学（时含今西南交通大学和今北京交通大学）校长、铁道科学研究院院长等职。1955年选聘为中国科学院院士（学部委员）。";
         return errorStr;
     }
 
