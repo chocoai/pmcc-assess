@@ -18,7 +18,10 @@
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                     </ul>
-                    <h3> ${projectPlanDetails.projectPhaseName}</h3>
+                    <h3>
+                        ${projectPlanDetails.projectPhaseName}
+                        <small>${declareRecord.name}</small>
+                    </h3>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content" style="min-height: 300px;">
@@ -134,17 +137,17 @@
         data.tableId = treeNode.tableId;
         data.tableName = treeNode.tableName;
 
-        window.open('${pageContext.request.contextPath}/basicApplyBatch/informationDetail?'+ parseParam(data) );
+        window.open('${pageContext.request.contextPath}/basicApplyBatch/informationDetail?' + parseParam(data));
     }
 
     //进入填写信息页面
-    function fillInformation () {
+    function fillInformation() {
         var node = zTreeObj.getSelectedNodes()[0];
         var frm = $("#frmProjectCIP");
         var data = formSerializeArray(frm);
         data.tbType = node.type;
         data.tbId = node.tableId;
-        window.open('${pageContext.request.contextPath}/basicApplyBatch/fillInfo?'+ parseParam(data) );
+        window.open('${pageContext.request.contextPath}/basicApplyBatch/fillInfo?' + parseParam(data));
     }
 
     //js对象转成路径参数
@@ -162,25 +165,11 @@
     };
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     //test
     var obj = {name: 'tom', 'class': {className: 'class1'}, classMates: [{name: 'lily'}]};
-//    console.log(parseParam(obj)) ;
+    //    console.log(parseParam(obj)) ;
     //output: "name=tom&class.className=class1&classMates[0].name=lily"
-//    console.log(parseParam(obj, 'stu')) ;
+    //    console.log(parseParam(obj, 'stu')) ;
     //output: "stu.name=tom&stu.class.className=class1&stu.classMates[0].name=lily"
 
 

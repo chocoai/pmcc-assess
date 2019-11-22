@@ -6,10 +6,7 @@ import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
-import com.copower.pmcc.assess.dal.basis.entity.BasicApply;
-import com.copower.pmcc.assess.dal.basis.entity.BasicEstate;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectPhase;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.basic.BasicApplyVo;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
@@ -202,7 +199,7 @@ public class BasicApplyService {
                         throw new BusinessException("该版块名称基础数据中已存在");
                 }
                 basicEstate.setBlockName(blockName);
-                basicEstateService.saveAndUpdateBasicEstate(basicEstate,false);
+                basicEstateService.saveAndUpdateBasicEstate(basicEstate, false);
 
                 basicApply.setWriteBackBlockFlag(writeBackBlockFlag);
                 updateBasicApply(basicApply);
@@ -251,13 +248,19 @@ public class BasicApplyService {
         }
         BasicApplyVo vo = new BasicApplyVo();
         BeanUtils.copyProperties(basicApply, vo);
-        vo.setFullName(getFullName(basicApply.getEstateName(), basicApply.getBuildingNumber(), basicApply.getUnitNumber(), basicApply.getHouseNumber()));
+        try {
+            BasicEstate basicEstate = basicEstateService.getBasicEstateById(basicApply.getBasicEstateId());
+            BasicBuilding basicBuilding = basicBuildingService.getBasicBuildingById(basicApply.getBasicBuildingId());
+            BasicUnit basicUnit = basicUnitService.getBasicUnitById(basicApply.getBasicUnitId());
+            BasicHouse basicHouse = basicHouseService.getBasicHouseById(basicApply.getBasicHouseId());
+            vo.setFullName(getFullName(basicEstate.getName(), basicBuilding.getBuildingName(), basicUnit.getUnitNumber(), basicHouse.getHouseNumber()));
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
         if (basicApply.getType() != null) {
-            for (BasicApplyTypeEnum typeEnum : BasicApplyTypeEnum.values()) {
-                if (basicApply.getType().intValue() == typeEnum.getId().intValue()) {
-                    vo.setTypeName(typeEnum.getName());
-                }
-            }
+            BasicApplyTypeEnum anEnum = BasicApplyTypeEnum.getEnumById(basicApply.getType());
+            if (anEnum != null)
+                vo.setTypeName(anEnum.getName());
         }
         return vo;
     }
@@ -266,17 +269,17 @@ public class BasicApplyService {
      * 获取申请完整名称
      *
      * @param estateName
-     * @param buildingNumber
+     * @param buildingName
      * @param unitNumber
      * @param houseNumber
      * @return
      */
-    public String getFullName(String estateName, String buildingNumber, String unitNumber, String houseNumber) {
+    public String getFullName(String estateName, String buildingName, String unitNumber, String houseNumber) {
         StringBuilder stringBuilder = new StringBuilder();
         if (StringUtils.isNotBlank(estateName))
             stringBuilder.append(estateName);
-        if (StringUtils.isNotBlank(buildingNumber))
-            stringBuilder.append(buildingNumber).append("栋");
+        if (StringUtils.isNotBlank(buildingName))
+            stringBuilder.append(buildingName);
         if (StringUtils.isNotBlank(unitNumber))
             stringBuilder.append(unitNumber).append("单元");
         if (StringUtils.isNotBlank(houseNumber))

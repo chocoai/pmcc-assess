@@ -97,7 +97,9 @@
             <!--填写表单-->
             <div class="x_panel">
                 <div>
-                    <h3>变现分析
+                    <h3>
+                        ${projectPlanDetails.projectPhaseName}
+                        <small>${areaGroup.areaName}</small>
                         <small>
                             <a href="javascript://;" class="btn btn-xs btn-success" onclick="appendHtml(false)">添加分组<i
                                     class="fa fa-plus"></i>

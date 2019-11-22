@@ -6,6 +6,8 @@ import java.util.Date;
 public class DataLandLevelDetail {
     private Integer id;
 
+    private Integer pid;
+
     private Integer landLevelId;
 
     private Integer classify;
@@ -14,21 +16,21 @@ public class DataLandLevelDetail {
 
     private String category;
 
-    private String levelRange;
-
-    private String mainStreet;
-
-    private Boolean bisDelete;
-
-    private String landAcquisitionProportion;
-
     private BigDecimal price;
 
     private BigDecimal muPrice;
 
+    private String landAcquisitionProportion;
+
     private BigDecimal volumeRate;
 
     private BigDecimal legalAge;
+
+    private String mainStreet;
+
+    private String levelRange;
+
+    private Boolean bisDelete;
 
     private String creator;
 
@@ -36,14 +38,20 @@ public class DataLandLevelDetail {
 
     private Date gmtModified;
 
-    private Integer pid;
-
     public Integer getId() {
         return id;
     }
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getPid() {
+        return pid;
+    }
+
+    public void setPid(Integer pid) {
+        this.pid = pid;
     }
 
     public Integer getLandLevelId() {
@@ -78,38 +86,6 @@ public class DataLandLevelDetail {
         this.category = category == null ? null : category.trim();
     }
 
-    public String getLevelRange() {
-        return levelRange;
-    }
-
-    public void setLevelRange(String levelRange) {
-        this.levelRange = levelRange == null ? null : levelRange.trim();
-    }
-
-    public String getMainStreet() {
-        return mainStreet;
-    }
-
-    public void setMainStreet(String mainStreet) {
-        this.mainStreet = mainStreet == null ? null : mainStreet.trim();
-    }
-
-    public Boolean getBisDelete() {
-        return bisDelete;
-    }
-
-    public void setBisDelete(Boolean bisDelete) {
-        this.bisDelete = bisDelete;
-    }
-
-    public String getLandAcquisitionProportion() {
-        return landAcquisitionProportion;
-    }
-
-    public void setLandAcquisitionProportion(String landAcquisitionProportion) {
-        this.landAcquisitionProportion = landAcquisitionProportion == null ? null : landAcquisitionProportion.trim();
-    }
-
     public BigDecimal getPrice() {
         return price;
     }
@@ -126,6 +102,14 @@ public class DataLandLevelDetail {
         this.muPrice = muPrice;
     }
 
+    public String getLandAcquisitionProportion() {
+        return landAcquisitionProportion;
+    }
+
+    public void setLandAcquisitionProportion(String landAcquisitionProportion) {
+        this.landAcquisitionProportion = landAcquisitionProportion == null ? null : landAcquisitionProportion.trim();
+    }
+
     public BigDecimal getVolumeRate() {
         return volumeRate;
     }
@@ -140,6 +124,30 @@ public class DataLandLevelDetail {
 
     public void setLegalAge(BigDecimal legalAge) {
         this.legalAge = legalAge;
+    }
+
+    public String getMainStreet() {
+        return mainStreet;
+    }
+
+    public void setMainStreet(String mainStreet) {
+        this.mainStreet = mainStreet == null ? null : mainStreet.trim();
+    }
+
+    public String getLevelRange() {
+        return levelRange;
+    }
+
+    public void setLevelRange(String levelRange) {
+        this.levelRange = levelRange == null ? null : levelRange.trim();
+    }
+
+    public Boolean getBisDelete() {
+        return bisDelete;
+    }
+
+    public void setBisDelete(Boolean bisDelete) {
+        this.bisDelete = bisDelete;
     }
 
     public String getCreator() {
@@ -164,13 +172,5 @@ public class DataLandLevelDetail {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public Integer getPid() {
-        return pid;
-    }
-
-    public void setPid(Integer pid) {
-        this.pid = pid;
     }
 }

@@ -1022,7 +1022,7 @@ landLevel.showLandDetailAchievementList = function (levelDetailId) {
     cols.push({field: 'reamark', title: '说明'});
     cols.push({
         field: 'achievement', title: '分值', formatter: function (value, row, index) {
-            if (value) {
+            if (value != null || value != undefined) {
                 return AssessCommon.pointToPercent(value);
             }
         }

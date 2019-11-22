@@ -2,9 +2,6 @@ package com.copower.pmcc.assess.controller.cases;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.copower.pmcc.assess.common.enums.basic.ExamineEstateSupplyEnumType;
-import com.copower.pmcc.assess.common.enums.basic.ExamineMatchingLeisurePlaceTypeEnum;
-import com.copower.pmcc.assess.common.enums.basic.ExamineMatchingTrafficTypeEnum;
 import com.copower.pmcc.assess.dal.cases.custom.entity.CustomCaseEntity;
 import com.copower.pmcc.assess.dal.cases.entity.CaseBuilding;
 import com.copower.pmcc.assess.dal.cases.entity.CaseEstate;
@@ -88,28 +85,6 @@ public class CaseEstateController {
             CaseEstate caseEstate = caseEstateService.getCaseEstateById(id);
             modelAndView.addObject("caseEstate", caseEstateService.getCaseEstateVo(caseEstate));
         }
-        modelAndView.addObject("hasEstateNetworkData", caseEstateNetworkService.hasEstateNetworkData(id));
-        modelAndView.addObject("hasEstateParkingData", caseEstateParkingService.hasEstateParkingData(id));
-        modelAndView.addObject("hasEstateSupplyGas", caseEstateSupplyService.hasEstateSupplyData(id, ExamineEstateSupplyEnumType.ESTATE_SUPPLY_GAS.getName()));
-        modelAndView.addObject("hasEstateSupplyHeating", caseEstateSupplyService.hasEstateSupplyData(id, ExamineEstateSupplyEnumType.ESTATE_SUPPLY_HEATING.getName()));
-        modelAndView.addObject("hasEstateSupplyPower", caseEstateSupplyService.hasEstateSupplyData(id, ExamineEstateSupplyEnumType.ESTATE_SUPPLY_POWER.getName()));
-        modelAndView.addObject("hasEstateSupplyWater", caseEstateSupplyService.hasEstateSupplyData(id, ExamineEstateSupplyEnumType.ESTATE_SUPPLY_WATER.getName()));
-        modelAndView.addObject("hasEstateDrainWater", caseEstateSupplyService.hasEstateSupplyData(id, ExamineEstateSupplyEnumType.ESTATE_DRAIN_WATER.getName()));
-
-        modelAndView.addObject("hasMatchingEducationData", caseMatchingEducationService.hasMatchingEducationData(id));
-        modelAndView.addObject("hasMatchingEnvironmentData", caseMatchingEnvironmentService.hasMatchingEnvironmentData(id));
-        modelAndView.addObject("hasMatchingFinanceData", caseMatchingFinanceService.hasMatchingFinanceData(id));
-        modelAndView.addObject("hasMatchingLeisurePlaceMarket", caseMatchingLeisurePlaceService.hasMatchingLeisurePlaceData(id, ExamineMatchingLeisurePlaceTypeEnum.MATCHINGMARKET.getKey()));
-        modelAndView.addObject("hasMatchingLeisurePlaceRecreation", caseMatchingLeisurePlaceService.hasMatchingLeisurePlaceData(id, ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRECREATION.getKey()));
-        modelAndView.addObject("hasMatchingLeisurePlaceRestaurant", caseMatchingLeisurePlaceService.hasMatchingLeisurePlaceData(id, ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRESTAURANT.getKey()));
-        modelAndView.addObject("hasMatchingMaterialData", caseMatchingMaterialService.hasMatchingMaterialData(id));
-        modelAndView.addObject("hasMatchingMedicalData", caseMatchingMedicalService.hasMatchingMedicalData(id));
-
-        modelAndView.addObject("hasMatchingTrafficTransit", caseMatchingTrafficService.hasMatchingTrafficData(id, ExamineMatchingTrafficTypeEnum.TRANSIT.getName()));
-        modelAndView.addObject("hasMatchingTrafficMetro", caseMatchingTrafficService.hasMatchingTrafficData(id, ExamineMatchingTrafficTypeEnum.METRO.getName()));
-        modelAndView.addObject("hasMatchingTrafficMainRoad", caseMatchingTrafficService.hasMatchingTrafficData(id, ExamineMatchingTrafficTypeEnum.MainRoad.getName()));
-        modelAndView.addObject("hasMatchingTrafficMainConversion", caseMatchingTrafficService.hasMatchingTrafficData(id, ExamineMatchingTrafficTypeEnum.MainConversion.getName()));
-        modelAndView.addObject("hasMatchingTrafficTrafficHub", caseMatchingTrafficService.hasMatchingTrafficData(id, ExamineMatchingTrafficTypeEnum.TrafficHub.getName()));
         return modelAndView;
     }
 

@@ -166,6 +166,66 @@ public class DataLandLevelDetailExample {
             return (Criteria) this;
         }
 
+        public Criteria andPidIsNull() {
+            addCriterion("pid is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidIsNotNull() {
+            addCriterion("pid is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidEqualTo(Integer value) {
+            addCriterion("pid =", value, "pid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidNotEqualTo(Integer value) {
+            addCriterion("pid <>", value, "pid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidGreaterThan(Integer value) {
+            addCriterion("pid >", value, "pid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidGreaterThanOrEqualTo(Integer value) {
+            addCriterion("pid >=", value, "pid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidLessThan(Integer value) {
+            addCriterion("pid <", value, "pid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidLessThanOrEqualTo(Integer value) {
+            addCriterion("pid <=", value, "pid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidIn(List<Integer> values) {
+            addCriterion("pid in", values, "pid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidNotIn(List<Integer> values) {
+            addCriterion("pid not in", values, "pid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidBetween(Integer value1, Integer value2) {
+            addCriterion("pid between", value1, value2, "pid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidNotBetween(Integer value1, Integer value2) {
+            addCriterion("pid not between", value1, value2, "pid");
+            return (Criteria) this;
+        }
+
         public Criteria andLandLevelIdIsNull() {
             addCriterion("land_level_id is null");
             return (Criteria) this;
@@ -416,276 +476,6 @@ public class DataLandLevelDetailExample {
             return (Criteria) this;
         }
 
-        public Criteria andLevelRangeIsNull() {
-            addCriterion("level_range is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andLevelRangeIsNotNull() {
-            addCriterion("level_range is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andLevelRangeEqualTo(String value) {
-            addCriterion("level_range =", value, "levelRange");
-            return (Criteria) this;
-        }
-
-        public Criteria andLevelRangeNotEqualTo(String value) {
-            addCriterion("level_range <>", value, "levelRange");
-            return (Criteria) this;
-        }
-
-        public Criteria andLevelRangeGreaterThan(String value) {
-            addCriterion("level_range >", value, "levelRange");
-            return (Criteria) this;
-        }
-
-        public Criteria andLevelRangeGreaterThanOrEqualTo(String value) {
-            addCriterion("level_range >=", value, "levelRange");
-            return (Criteria) this;
-        }
-
-        public Criteria andLevelRangeLessThan(String value) {
-            addCriterion("level_range <", value, "levelRange");
-            return (Criteria) this;
-        }
-
-        public Criteria andLevelRangeLessThanOrEqualTo(String value) {
-            addCriterion("level_range <=", value, "levelRange");
-            return (Criteria) this;
-        }
-
-        public Criteria andLevelRangeLike(String value) {
-            addCriterion("level_range like", value, "levelRange");
-            return (Criteria) this;
-        }
-
-        public Criteria andLevelRangeNotLike(String value) {
-            addCriterion("level_range not like", value, "levelRange");
-            return (Criteria) this;
-        }
-
-        public Criteria andLevelRangeIn(List<String> values) {
-            addCriterion("level_range in", values, "levelRange");
-            return (Criteria) this;
-        }
-
-        public Criteria andLevelRangeNotIn(List<String> values) {
-            addCriterion("level_range not in", values, "levelRange");
-            return (Criteria) this;
-        }
-
-        public Criteria andLevelRangeBetween(String value1, String value2) {
-            addCriterion("level_range between", value1, value2, "levelRange");
-            return (Criteria) this;
-        }
-
-        public Criteria andLevelRangeNotBetween(String value1, String value2) {
-            addCriterion("level_range not between", value1, value2, "levelRange");
-            return (Criteria) this;
-        }
-
-        public Criteria andMainStreetIsNull() {
-            addCriterion("main_street is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andMainStreetIsNotNull() {
-            addCriterion("main_street is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andMainStreetEqualTo(String value) {
-            addCriterion("main_street =", value, "mainStreet");
-            return (Criteria) this;
-        }
-
-        public Criteria andMainStreetNotEqualTo(String value) {
-            addCriterion("main_street <>", value, "mainStreet");
-            return (Criteria) this;
-        }
-
-        public Criteria andMainStreetGreaterThan(String value) {
-            addCriterion("main_street >", value, "mainStreet");
-            return (Criteria) this;
-        }
-
-        public Criteria andMainStreetGreaterThanOrEqualTo(String value) {
-            addCriterion("main_street >=", value, "mainStreet");
-            return (Criteria) this;
-        }
-
-        public Criteria andMainStreetLessThan(String value) {
-            addCriterion("main_street <", value, "mainStreet");
-            return (Criteria) this;
-        }
-
-        public Criteria andMainStreetLessThanOrEqualTo(String value) {
-            addCriterion("main_street <=", value, "mainStreet");
-            return (Criteria) this;
-        }
-
-        public Criteria andMainStreetLike(String value) {
-            addCriterion("main_street like", value, "mainStreet");
-            return (Criteria) this;
-        }
-
-        public Criteria andMainStreetNotLike(String value) {
-            addCriterion("main_street not like", value, "mainStreet");
-            return (Criteria) this;
-        }
-
-        public Criteria andMainStreetIn(List<String> values) {
-            addCriterion("main_street in", values, "mainStreet");
-            return (Criteria) this;
-        }
-
-        public Criteria andMainStreetNotIn(List<String> values) {
-            addCriterion("main_street not in", values, "mainStreet");
-            return (Criteria) this;
-        }
-
-        public Criteria andMainStreetBetween(String value1, String value2) {
-            addCriterion("main_street between", value1, value2, "mainStreet");
-            return (Criteria) this;
-        }
-
-        public Criteria andMainStreetNotBetween(String value1, String value2) {
-            addCriterion("main_street not between", value1, value2, "mainStreet");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisDeleteIsNull() {
-            addCriterion("bis_delete is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisDeleteIsNotNull() {
-            addCriterion("bis_delete is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisDeleteEqualTo(Boolean value) {
-            addCriterion("bis_delete =", value, "bisDelete");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisDeleteNotEqualTo(Boolean value) {
-            addCriterion("bis_delete <>", value, "bisDelete");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisDeleteGreaterThan(Boolean value) {
-            addCriterion("bis_delete >", value, "bisDelete");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisDeleteGreaterThanOrEqualTo(Boolean value) {
-            addCriterion("bis_delete >=", value, "bisDelete");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisDeleteLessThan(Boolean value) {
-            addCriterion("bis_delete <", value, "bisDelete");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisDeleteLessThanOrEqualTo(Boolean value) {
-            addCriterion("bis_delete <=", value, "bisDelete");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisDeleteIn(List<Boolean> values) {
-            addCriterion("bis_delete in", values, "bisDelete");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisDeleteNotIn(List<Boolean> values) {
-            addCriterion("bis_delete not in", values, "bisDelete");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisDeleteBetween(Boolean value1, Boolean value2) {
-            addCriterion("bis_delete between", value1, value2, "bisDelete");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisDeleteNotBetween(Boolean value1, Boolean value2) {
-            addCriterion("bis_delete not between", value1, value2, "bisDelete");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandAcquisitionProportionIsNull() {
-            addCriterion("land_acquisition_proportion is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandAcquisitionProportionIsNotNull() {
-            addCriterion("land_acquisition_proportion is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandAcquisitionProportionEqualTo(String value) {
-            addCriterion("land_acquisition_proportion =", value, "landAcquisitionProportion");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandAcquisitionProportionNotEqualTo(String value) {
-            addCriterion("land_acquisition_proportion <>", value, "landAcquisitionProportion");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandAcquisitionProportionGreaterThan(String value) {
-            addCriterion("land_acquisition_proportion >", value, "landAcquisitionProportion");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandAcquisitionProportionGreaterThanOrEqualTo(String value) {
-            addCriterion("land_acquisition_proportion >=", value, "landAcquisitionProportion");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandAcquisitionProportionLessThan(String value) {
-            addCriterion("land_acquisition_proportion <", value, "landAcquisitionProportion");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandAcquisitionProportionLessThanOrEqualTo(String value) {
-            addCriterion("land_acquisition_proportion <=", value, "landAcquisitionProportion");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandAcquisitionProportionLike(String value) {
-            addCriterion("land_acquisition_proportion like", value, "landAcquisitionProportion");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandAcquisitionProportionNotLike(String value) {
-            addCriterion("land_acquisition_proportion not like", value, "landAcquisitionProportion");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandAcquisitionProportionIn(List<String> values) {
-            addCriterion("land_acquisition_proportion in", values, "landAcquisitionProportion");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandAcquisitionProportionNotIn(List<String> values) {
-            addCriterion("land_acquisition_proportion not in", values, "landAcquisitionProportion");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandAcquisitionProportionBetween(String value1, String value2) {
-            addCriterion("land_acquisition_proportion between", value1, value2, "landAcquisitionProportion");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandAcquisitionProportionNotBetween(String value1, String value2) {
-            addCriterion("land_acquisition_proportion not between", value1, value2, "landAcquisitionProportion");
-            return (Criteria) this;
-        }
-
         public Criteria andPriceIsNull() {
             addCriterion("price is null");
             return (Criteria) this;
@@ -806,6 +596,76 @@ public class DataLandLevelDetailExample {
             return (Criteria) this;
         }
 
+        public Criteria andLandAcquisitionProportionIsNull() {
+            addCriterion("land_acquisition_proportion is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAcquisitionProportionIsNotNull() {
+            addCriterion("land_acquisition_proportion is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAcquisitionProportionEqualTo(String value) {
+            addCriterion("land_acquisition_proportion =", value, "landAcquisitionProportion");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAcquisitionProportionNotEqualTo(String value) {
+            addCriterion("land_acquisition_proportion <>", value, "landAcquisitionProportion");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAcquisitionProportionGreaterThan(String value) {
+            addCriterion("land_acquisition_proportion >", value, "landAcquisitionProportion");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAcquisitionProportionGreaterThanOrEqualTo(String value) {
+            addCriterion("land_acquisition_proportion >=", value, "landAcquisitionProportion");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAcquisitionProportionLessThan(String value) {
+            addCriterion("land_acquisition_proportion <", value, "landAcquisitionProportion");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAcquisitionProportionLessThanOrEqualTo(String value) {
+            addCriterion("land_acquisition_proportion <=", value, "landAcquisitionProportion");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAcquisitionProportionLike(String value) {
+            addCriterion("land_acquisition_proportion like", value, "landAcquisitionProportion");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAcquisitionProportionNotLike(String value) {
+            addCriterion("land_acquisition_proportion not like", value, "landAcquisitionProportion");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAcquisitionProportionIn(List<String> values) {
+            addCriterion("land_acquisition_proportion in", values, "landAcquisitionProportion");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAcquisitionProportionNotIn(List<String> values) {
+            addCriterion("land_acquisition_proportion not in", values, "landAcquisitionProportion");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAcquisitionProportionBetween(String value1, String value2) {
+            addCriterion("land_acquisition_proportion between", value1, value2, "landAcquisitionProportion");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAcquisitionProportionNotBetween(String value1, String value2) {
+            addCriterion("land_acquisition_proportion not between", value1, value2, "landAcquisitionProportion");
+            return (Criteria) this;
+        }
+
         public Criteria andVolumeRateIsNull() {
             addCriterion("volume_rate is null");
             return (Criteria) this;
@@ -923,6 +783,206 @@ public class DataLandLevelDetailExample {
 
         public Criteria andLegalAgeNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("legal_age not between", value1, value2, "legalAge");
+            return (Criteria) this;
+        }
+
+        public Criteria andMainStreetIsNull() {
+            addCriterion("main_street is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMainStreetIsNotNull() {
+            addCriterion("main_street is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMainStreetEqualTo(String value) {
+            addCriterion("main_street =", value, "mainStreet");
+            return (Criteria) this;
+        }
+
+        public Criteria andMainStreetNotEqualTo(String value) {
+            addCriterion("main_street <>", value, "mainStreet");
+            return (Criteria) this;
+        }
+
+        public Criteria andMainStreetGreaterThan(String value) {
+            addCriterion("main_street >", value, "mainStreet");
+            return (Criteria) this;
+        }
+
+        public Criteria andMainStreetGreaterThanOrEqualTo(String value) {
+            addCriterion("main_street >=", value, "mainStreet");
+            return (Criteria) this;
+        }
+
+        public Criteria andMainStreetLessThan(String value) {
+            addCriterion("main_street <", value, "mainStreet");
+            return (Criteria) this;
+        }
+
+        public Criteria andMainStreetLessThanOrEqualTo(String value) {
+            addCriterion("main_street <=", value, "mainStreet");
+            return (Criteria) this;
+        }
+
+        public Criteria andMainStreetLike(String value) {
+            addCriterion("main_street like", value, "mainStreet");
+            return (Criteria) this;
+        }
+
+        public Criteria andMainStreetNotLike(String value) {
+            addCriterion("main_street not like", value, "mainStreet");
+            return (Criteria) this;
+        }
+
+        public Criteria andMainStreetIn(List<String> values) {
+            addCriterion("main_street in", values, "mainStreet");
+            return (Criteria) this;
+        }
+
+        public Criteria andMainStreetNotIn(List<String> values) {
+            addCriterion("main_street not in", values, "mainStreet");
+            return (Criteria) this;
+        }
+
+        public Criteria andMainStreetBetween(String value1, String value2) {
+            addCriterion("main_street between", value1, value2, "mainStreet");
+            return (Criteria) this;
+        }
+
+        public Criteria andMainStreetNotBetween(String value1, String value2) {
+            addCriterion("main_street not between", value1, value2, "mainStreet");
+            return (Criteria) this;
+        }
+
+        public Criteria andLevelRangeIsNull() {
+            addCriterion("level_range is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLevelRangeIsNotNull() {
+            addCriterion("level_range is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLevelRangeEqualTo(String value) {
+            addCriterion("level_range =", value, "levelRange");
+            return (Criteria) this;
+        }
+
+        public Criteria andLevelRangeNotEqualTo(String value) {
+            addCriterion("level_range <>", value, "levelRange");
+            return (Criteria) this;
+        }
+
+        public Criteria andLevelRangeGreaterThan(String value) {
+            addCriterion("level_range >", value, "levelRange");
+            return (Criteria) this;
+        }
+
+        public Criteria andLevelRangeGreaterThanOrEqualTo(String value) {
+            addCriterion("level_range >=", value, "levelRange");
+            return (Criteria) this;
+        }
+
+        public Criteria andLevelRangeLessThan(String value) {
+            addCriterion("level_range <", value, "levelRange");
+            return (Criteria) this;
+        }
+
+        public Criteria andLevelRangeLessThanOrEqualTo(String value) {
+            addCriterion("level_range <=", value, "levelRange");
+            return (Criteria) this;
+        }
+
+        public Criteria andLevelRangeLike(String value) {
+            addCriterion("level_range like", value, "levelRange");
+            return (Criteria) this;
+        }
+
+        public Criteria andLevelRangeNotLike(String value) {
+            addCriterion("level_range not like", value, "levelRange");
+            return (Criteria) this;
+        }
+
+        public Criteria andLevelRangeIn(List<String> values) {
+            addCriterion("level_range in", values, "levelRange");
+            return (Criteria) this;
+        }
+
+        public Criteria andLevelRangeNotIn(List<String> values) {
+            addCriterion("level_range not in", values, "levelRange");
+            return (Criteria) this;
+        }
+
+        public Criteria andLevelRangeBetween(String value1, String value2) {
+            addCriterion("level_range between", value1, value2, "levelRange");
+            return (Criteria) this;
+        }
+
+        public Criteria andLevelRangeNotBetween(String value1, String value2) {
+            addCriterion("level_range not between", value1, value2, "levelRange");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteIsNull() {
+            addCriterion("bis_delete is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteIsNotNull() {
+            addCriterion("bis_delete is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteEqualTo(Boolean value) {
+            addCriterion("bis_delete =", value, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteNotEqualTo(Boolean value) {
+            addCriterion("bis_delete <>", value, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteGreaterThan(Boolean value) {
+            addCriterion("bis_delete >", value, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_delete >=", value, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteLessThan(Boolean value) {
+            addCriterion("bis_delete <", value, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_delete <=", value, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteIn(List<Boolean> values) {
+            addCriterion("bis_delete in", values, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteNotIn(List<Boolean> values) {
+            addCriterion("bis_delete not in", values, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_delete between", value1, value2, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_delete not between", value1, value2, "bisDelete");
             return (Criteria) this;
         }
 
@@ -1113,66 +1173,6 @@ public class DataLandLevelDetailExample {
 
         public Criteria andGmtModifiedNotBetween(Date value1, Date value2) {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
-            return (Criteria) this;
-        }
-
-        public Criteria andPidIsNull() {
-            addCriterion("pid is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andPidIsNotNull() {
-            addCriterion("pid is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andPidEqualTo(Integer value) {
-            addCriterion("pid =", value, "pid");
-            return (Criteria) this;
-        }
-
-        public Criteria andPidNotEqualTo(Integer value) {
-            addCriterion("pid <>", value, "pid");
-            return (Criteria) this;
-        }
-
-        public Criteria andPidGreaterThan(Integer value) {
-            addCriterion("pid >", value, "pid");
-            return (Criteria) this;
-        }
-
-        public Criteria andPidGreaterThanOrEqualTo(Integer value) {
-            addCriterion("pid >=", value, "pid");
-            return (Criteria) this;
-        }
-
-        public Criteria andPidLessThan(Integer value) {
-            addCriterion("pid <", value, "pid");
-            return (Criteria) this;
-        }
-
-        public Criteria andPidLessThanOrEqualTo(Integer value) {
-            addCriterion("pid <=", value, "pid");
-            return (Criteria) this;
-        }
-
-        public Criteria andPidIn(List<Integer> values) {
-            addCriterion("pid in", values, "pid");
-            return (Criteria) this;
-        }
-
-        public Criteria andPidNotIn(List<Integer> values) {
-            addCriterion("pid not in", values, "pid");
-            return (Criteria) this;
-        }
-
-        public Criteria andPidBetween(Integer value1, Integer value2) {
-            addCriterion("pid between", value1, value2, "pid");
-            return (Criteria) this;
-        }
-
-        public Criteria andPidNotBetween(Integer value1, Integer value2) {
-            addCriterion("pid not between", value1, value2, "pid");
             return (Criteria) this;
         }
     }

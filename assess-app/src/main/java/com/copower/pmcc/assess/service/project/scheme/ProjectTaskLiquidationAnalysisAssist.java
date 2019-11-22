@@ -8,12 +8,10 @@ import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.exception.BusinessException;
-import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -135,6 +133,6 @@ public class ProjectTaskLiquidationAnalysisAssist implements ProjectTaskInterfac
         modelAndView.addObject("salesTax", salesTax);
         List<DeclareRecord> declareRecordList = declareRecordService.getDeclareRecordByProjectId(projectPlanDetails.getProjectId());
         modelAndView.addObject("declareRecordList",declareRecordList);
-
+        modelAndView.addObject("areaGroup", schemeAreaGroupService.get(projectPlanDetails.getAreaId()));
     }
 }
