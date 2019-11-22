@@ -318,11 +318,11 @@ public class GenerateEquityService {
         Map<Integer, String> map = Maps.newHashMap();
         for (SurveyJudgeObjectGroupDto surveyJudgeObjectGroupDto : list) {
             if (StringUtils.equals(surveyJudgeObjectGroupDto.getResult(), "强"))
-                map.put(generateCommonMethod.parseIntJudgeNumber(surveyJudgeObjectGroupDto.getJudgeObjectNumber()), "产权清晰、权力明确、无特定转让限制。");
+                map.put(generateCommonMethod.parseIntJudgeNumber(surveyJudgeObjectGroupDto.getJudgeObjectNumber()), "产权清晰、权利明确、无特定转让限制。");
             if (StringUtils.equals(surveyJudgeObjectGroupDto.getResult(), "一般"))
-                map.put(generateCommonMethod.parseIntJudgeNumber(surveyJudgeObjectGroupDto.getJudgeObjectNumber()), "产权清晰、权力明确、转让受特定限制");
+                map.put(generateCommonMethod.parseIntJudgeNumber(surveyJudgeObjectGroupDto.getJudgeObjectNumber()), "产权清晰、权利明确、转让受特定限制");
             if (StringUtils.equals(surveyJudgeObjectGroupDto.getResult(), "弱"))
-                map.put(generateCommonMethod.parseIntJudgeNumber(surveyJudgeObjectGroupDto.getJudgeObjectNumber()), "产权清晰、权力明确、转让受到限制");
+                map.put(generateCommonMethod.parseIntJudgeNumber(surveyJudgeObjectGroupDto.getJudgeObjectNumber()), "产权清晰、权利明确、转让受到限制");
         }
         return generateCommonMethod.judgeEachDesc(map, "", "。", false);
     }

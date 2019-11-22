@@ -67,6 +67,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 
 import java.awt.*;
 import java.io.File;
@@ -1296,7 +1297,7 @@ public class GenerateBaseDataService {
                 });
             }
             if (CollectionUtils.isNotEmpty(names)) {
-                map.put(generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject,schemeJudgeObjectList), StringUtils.join(names, "、"));
+                map.put(generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject, schemeJudgeObjectList), StringUtils.join(names, "、"));
             }
         }
         if (!map.isEmpty()) {
@@ -1939,13 +1940,13 @@ public class GenerateBaseDataService {
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                 if (schemeJudgeObject.getDeclareRecordId() != null) {
-                    for (BaseDataDic type:types){
+                    for (BaseDataDic type : types) {
                         String registration = getActualRegistration(type, schemeJudgeObject.getDeclareRecordId());//证载地址
                         String addressAssetInventory = getActualAddressAssetInventory(type, schemeJudgeObject.getDeclareRecordId());//现场查勘地址
                         if (StringUtils.isNotBlank(registration) && StringUtils.isNotBlank(addressAssetInventory)) {
-                            String tempNumber = generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject,schemeJudgeObjectList);
-                            switch (type.getFieldName()){
-                                case AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_ACTUAL_ADDRESS:{
+                            String tempNumber = generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject, schemeJudgeObjectList);
+                            switch (type.getFieldName()) {
+                                case AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_ACTUAL_ADDRESS: {
                                     stringBuilder.append(String.format("%s估价对象证载地址为", tempNumber)).append(registration);
                                     stringBuilder.append("，").append("估价人员现场查勘地址为");
                                     stringBuilder.append(addressAssetInventory).append("，");
@@ -1953,15 +1954,16 @@ public class GenerateBaseDataService {
                                     stringBuilder.append("出具").append("《").append(getCredentialAssetInventory(type, schemeJudgeObject.getDeclareRecordId())).append("》").append("确认一致。");
                                     break;
                                 }
-                                case AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_HOUSE_LAND_ADDRESS:{
-                                    stringBuilder.append(String.join("",tempNumber,"估价对象",type.getName(),"为")).append(registration);
+                                case AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_HOUSE_LAND_ADDRESS: {
+                                    stringBuilder.append(String.join("", tempNumber, "估价对象", type.getName(), "为")).append(registration);
                                     stringBuilder.append("，").append("估价人员").append(type.getName()).append("为");
                                     stringBuilder.append(addressAssetInventory).append("，");
                                     stringBuilder.append("经").append(getCertificateAssetInventory(type, schemeJudgeObject.getDeclareRecordId()));
                                     stringBuilder.append("出具").append("《").append(getCredentialAssetInventory(type, schemeJudgeObject.getDeclareRecordId())).append("》").append("确认一致。");
                                     break;
                                 }
-                                default:break;
+                                default:
+                                    break;
                             }
                             stringArrayList.add(stringBuilder.toString());
                             stringBuilder.delete(0, stringBuilder.toString().length());
@@ -2010,8 +2012,31 @@ public class GenerateBaseDataService {
                 if (declareRecord == null) {
                     continue;
                 }
-                linkedLists.add(generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject,schemeJudgeObjectList));
-                linkedLists.add(StringUtils.isNotBlank(declareRecord.getName()) ? declareRecord.getName() : nullValue);
+                linkedLists.add(generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject, schemeJudgeObjectList));
+                String name = declareRecord.getName();
+                DeclareRealtyLandCert declareRealtyLandCert = null;
+                if (Objects.equal(declareRecord.getDataTableName(), FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class))) {
+                    DeclareRealtyHouseCert realtyHouseCertById = declareRealtyHouseCertService.getDeclareRealtyHouseCertById(declareRecord.getDataTableId());
+                    DeclareBuildEngineeringAndEquipmentCenter center = new DeclareBuildEngineeringAndEquipmentCenter();
+                    center.setHouseId(realtyHouseCertById.getId());
+                    center.setPlanDetailsId(realtyHouseCertById.getPlanDetailsId());
+                    List<DeclareBuildEngineeringAndEquipmentCenter> centerList = declareBuildEngineeringAndEquipmentCenterService.declareBuildEngineeringAndEquipmentCenterList(center);
+                    if (CollectionUtils.isNotEmpty(centerList)) {
+                        if (centerList.stream().anyMatch(oo -> oo.getLandId() != null)) {
+                            declareRealtyLandCert = new DeclareRealtyLandCert();
+                            BeanUtils.copyProperties(declareRealtyLandCertService.getDeclareRealtyLandCertById(centerList.stream().filter(oo -> oo.getLandId() != null).findFirst().get().getLandId()), declareRealtyLandCert);
+                        }
+                    }
+                }
+                if (declareRealtyLandCert != null) {
+                    if (StringUtils.isNotEmpty(declareRealtyLandCert.getLandCertName())){
+                        name = String.join("",name," 土地权证号:",declareRealtyLandCert.getLandCertName()) ;
+                    }
+                    if (StringUtils.isNotEmpty(declareRealtyLandCert.getLandNumber())){
+                        name = String.join("",name," 土地号:",declareRealtyLandCert.getLandNumber()) ;
+                    }
+                }
+                linkedLists.add(StringUtils.isNotBlank(name) ? name : nullValue);
                 linkedLists.add(StringUtils.isNotBlank(declareRecord.getOwnership()) ? declareRecord.getOwnership() : nullValue);
                 linkedLists.add(StringUtils.isNotBlank(declareRecord.getPublicSituation()) ? declareRecord.getPublicSituation() : nullValue);
                 linkedLists.add(StringUtils.isNotBlank(declareRecord.getCertUse()) ? declareRecord.getCertUse() : nullValue);
@@ -2345,7 +2370,7 @@ public class GenerateBaseDataService {
         String value = getSchemeAreaGroup().getValueDefinitionDesc();
         if (StringUtils.isNotEmpty(value)) {
             if (StringUtils.isNotEmpty(value.trim())) {
-                return generateCommonMethod.trim(value);
+                return value;
             }
         }
         return " ";
@@ -3092,7 +3117,7 @@ public class GenerateBaseDataService {
                 }
                 stringBuilder.delete(0, stringBuilder.toString().length());
                 if (objectListMap.size() > 1) {
-                    stringBuilder.append(generateCommonMethod.getSchemeJudgeObjectShowName(entry.getKey(),schemeJudgeObjectList));
+                    stringBuilder.append(generateCommonMethod.getSchemeJudgeObjectShowName(entry.getKey(), schemeJudgeObjectList));
                 }
                 if (size == 1) {
                     stringBuilder.append("通过对该区域的调查，考虑估价对象在该区域内的具体位置等因素，比较法的试算结果能反映估价对象市场价值。故最终单价=").append(generateCommonMethod.getBigDecimalRound(entry.getValue().stream().findFirst().get().getTrialPrice(), 2, false));
@@ -3147,7 +3172,7 @@ public class GenerateBaseDataService {
                     judgeObjectList.stream().forEach(oo -> {
                         SchemeJudgeObjectVo schemeJudgeObjectVo = schemeJudgeObjectService.getSchemeJudgeObjectVo(oo);
                         if (StringUtils.isNotBlank(schemeJudgeObjectVo.getCoefficient())) {
-                            stringList.add(String.format("%s标准价基础上经%s", generateCommonMethod.getSchemeJudgeObjectShowName(oo,schemeJudgeObjectList), schemeJudgeObjectVo.getCoefficient()));
+                            stringList.add(String.format("%s标准价基础上经%s", generateCommonMethod.getSchemeJudgeObjectShowName(oo, schemeJudgeObjectList), schemeJudgeObjectVo.getCoefficient()));
                         }
                     });
                     stringBuilder.append(StringUtils.join(stringList, "，")).append("估价对象结果如下表");
@@ -3179,7 +3204,7 @@ public class GenerateBaseDataService {
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             generateCommonMethod.writeWordTitle(builder, Lists.newLinkedList(Lists.newArrayList("估价编号", "因素", "评估面积", "评估单价", "评估总价")));
             for (SchemeJudgeObjectVo schemeJudgeObject : schemeJudgeObjectList) {
-                stringList.add(generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject,schemeJudgeObjectList.stream().map( poo -> (SchemeJudgeObject)poo).collect(Collectors.toList())));
+                stringList.add(generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject, schemeJudgeObjectList.stream().map(poo -> (SchemeJudgeObject) poo).collect(Collectors.toList())));
                 stringList.add(StringUtils.isNotBlank(schemeJudgeObject.getCoefficient()) ? schemeJudgeObject.getCoefficient() : nullString);
                 if (schemeJudgeObject.getEvaluationArea() != null) {
                     stringList.add(String.format("%s%s", schemeJudgeObject.getEvaluationArea().toString(), "㎡"));
@@ -3394,7 +3419,7 @@ public class GenerateBaseDataService {
                 String s = entry.getValue();
                 DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
                 if (map.size() != 1) {
-                    stringBuilder.append(StringUtils.repeat(ControlChar.PARAGRAPH_BREAK_CHAR, 1)).append(generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject,getSchemeJudgeObjectList()));
+                    stringBuilder.append(StringUtils.repeat(ControlChar.PARAGRAPH_BREAK_CHAR, 1)).append(generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject, getSchemeJudgeObjectList()));
                 }
                 if (Objects.equal(declareRecord.getDataTableName(), FormatUtils.entityNameConvertToTableName(DeclareRealtyRealEstateCert.class))) {
                     stringBuilder.append(s);
@@ -3690,7 +3715,7 @@ public class GenerateBaseDataService {
         final String nullValue = "";
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
         if (isLabelJudgeObjectShowName) {
-            linkedLists.add(generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject,getSchemeJudgeObjectList()));
+            linkedLists.add(generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject, getSchemeJudgeObjectList()));
         } else {
             linkedLists.add(String.join("", schemeJudgeObject.getNumber(), "号"));
         }
@@ -4583,7 +4608,7 @@ public class GenerateBaseDataService {
             SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectList.get(i);
             String documentPath = getCCB_Pre_Evaluation_Data_FormWriteWord(schemeJudgeObject, schemeJudgeObjectList, liquidationAnalysisItemList, schemeJudgeObjectList.size(), i);
             if (StringUtils.isNotEmpty(documentPath)) {
-                String title = AsposeUtils.getWarpCssHtml(generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject,schemeJudgeObjectList),Arrays.asList(new KeyValueDto("text-align","center"),new KeyValueDto("font-size","16.0pt")));
+                String title = AsposeUtils.getWarpCssHtml(generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject, schemeJudgeObjectList), Arrays.asList(new KeyValueDto("text-align", "center"), new KeyValueDto("font-size", "16.0pt")));
                 map.put(title, documentPath);
             }
         }
@@ -4986,7 +5011,7 @@ public class GenerateBaseDataService {
                         builder.insertCell();
                         switch (k) {
                             case 0:
-                                builder.write(generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObjectList.get(j - 2),schemeJudgeObjectList));
+                                builder.write(generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObjectList.get(j - 2), schemeJudgeObjectList));
                                 mergeCellModelList.add(new MergeCellModel(j, 0, j + 1, 0));
                                 break;
                             case 1:
@@ -5934,7 +5959,7 @@ public class GenerateBaseDataService {
             for (Map.Entry<SchemeJudgeObject, SchemeInfo> schemeJudgeObjectSchemeInfoEntry : objectSchemeInfoMap.entrySet()) {
                 //当多个估价对象的时候写入估价编号
                 if (objectSchemeInfoMap.size() > 1) {
-                    documentBuilder.writeln(generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObjectSchemeInfoEntry.getKey(),schemeJudgeObjectList));
+                    documentBuilder.writeln(generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObjectSchemeInfoEntry.getKey(), schemeJudgeObjectList));
                 }
                 BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObjectSchemeInfoEntry.getKey());
                 GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
@@ -5980,7 +6005,7 @@ public class GenerateBaseDataService {
                 BasicEstateVo basicEstate = generateBaseExamineService.getEstate();
                 //描述内容
                 if (StringUtils.isNotBlank(basicEstate.getLocationDescribe())) {
-                    String value = String.join("", generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject,schemeJudgeObjectList), basicEstate.getLocationDescribe());
+                    String value = String.join("", generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject, schemeJudgeObjectList), basicEstate.getLocationDescribe());
                     AsposeUtils.insertHtml(documentBuilder, AsposeUtils.getWarpCssHtml(value, Lists.newArrayList(new KeyValueDto("text-indent", "2em"), new KeyValueDto(AsposeUtils.FontFamily, AsposeUtils.ImitationSong), new KeyValueDto(AsposeUtils.FontSize, "12pt"))));
                 }
             }
@@ -6145,7 +6170,7 @@ public class GenerateBaseDataService {
             } else {
                 int i = 0;
                 for (Map.Entry<SchemeJudgeObject, String> entry : map.entrySet()) {
-                    stringBuilder.append(generateCommonMethod.getSchemeJudgeObjectShowName(entry.getKey(),schemeJudgeObjectList)).append(entry.getValue());
+                    stringBuilder.append(generateCommonMethod.getSchemeJudgeObjectShowName(entry.getKey(), schemeJudgeObjectList)).append(entry.getValue());
                     i++;
                     if (i != map.size()) {
                         //插入换行符
