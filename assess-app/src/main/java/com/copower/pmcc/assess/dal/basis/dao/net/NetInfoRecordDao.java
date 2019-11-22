@@ -37,7 +37,8 @@ public class NetInfoRecordDao {
      * @param queryTitle
      * @return
      */
-    public List<NetInfoRecord> getNetInfoRecordListByName(String queryTitle, String queryWebName, String provinceName, String cityName, String queryContent,String queryType, Date queryStratTime, Date queryEndTime) {
+    public List<NetInfoRecord> getNetInfoRecordListByName(String queryTitle, String queryWebName, String provinceName, String cityName, String queryContent,
+                                                          String queryType, Date queryStratTime, Date queryEndTime, String executor,Integer status) {
         NetInfoRecordExample example = new NetInfoRecordExample();
         NetInfoRecordExample.Criteria criteria = example.createCriteria();
         if (StringUtils.isNotBlank(queryTitle)) {
@@ -49,6 +50,9 @@ public class NetInfoRecordDao {
         if (StringUtils.isNotBlank(provinceName)) {
             criteria.andProvinceLike(String.format("%s%s%s", "%", provinceName, "%"));
         }
+        if (StringUtils.isNotBlank(executor)) {
+            criteria.andExecutorLike(String.format("%s%s%s", "%", executor, "%"));
+        }
         if (StringUtils.isNotBlank(cityName)) {
             criteria.andCityLike(String.format("%s%s%s", "%", cityName, "%"));
         }
@@ -58,11 +62,14 @@ public class NetInfoRecordDao {
         if (StringUtils.isNotBlank(queryType)) {
             criteria.andTypeLike(String.format("%s%s%s", "%", queryType, "%"));
         }
-        if (queryStratTime!=null) {
+        if (queryStratTime != null) {
             criteria.andBeginTimeGreaterThanOrEqualTo(queryStratTime);
         }
-        if (queryEndTime!=null) {
+        if (queryEndTime != null) {
             criteria.andEndTimeLessThanOrEqualTo(queryEndTime);
+        }
+        if(status!=null){
+            criteria.andStatusEqualTo(status);
         }
         example.setOrderByClause("id desc");
         return netInfoRecordMapper.selectByExample(example);

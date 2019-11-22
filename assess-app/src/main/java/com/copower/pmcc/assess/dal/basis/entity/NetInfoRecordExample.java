@@ -1745,6 +1745,146 @@ public class NetInfoRecordExample {
             addCriterion("status not between", value1, value2, "status");
             return (Criteria) this;
         }
+
+        public Criteria andExecutorIsNull() {
+            addCriterion("executor is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andExecutorIsNotNull() {
+            addCriterion("executor is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andExecutorEqualTo(String value) {
+            addCriterion("executor =", value, "executor");
+            return (Criteria) this;
+        }
+
+        public Criteria andExecutorNotEqualTo(String value) {
+            addCriterion("executor <>", value, "executor");
+            return (Criteria) this;
+        }
+
+        public Criteria andExecutorGreaterThan(String value) {
+            addCriterion("executor >", value, "executor");
+            return (Criteria) this;
+        }
+
+        public Criteria andExecutorGreaterThanOrEqualTo(String value) {
+            addCriterion("executor >=", value, "executor");
+            return (Criteria) this;
+        }
+
+        public Criteria andExecutorLessThan(String value) {
+            addCriterion("executor <", value, "executor");
+            return (Criteria) this;
+        }
+
+        public Criteria andExecutorLessThanOrEqualTo(String value) {
+            addCriterion("executor <=", value, "executor");
+            return (Criteria) this;
+        }
+
+        public Criteria andExecutorLike(String value) {
+            addCriterion("executor like", value, "executor");
+            return (Criteria) this;
+        }
+
+        public Criteria andExecutorNotLike(String value) {
+            addCriterion("executor not like", value, "executor");
+            return (Criteria) this;
+        }
+
+        public Criteria andExecutorIn(List<String> values) {
+            addCriterion("executor in", values, "executor");
+            return (Criteria) this;
+        }
+
+        public Criteria andExecutorNotIn(List<String> values) {
+            addCriterion("executor not in", values, "executor");
+            return (Criteria) this;
+        }
+
+        public Criteria andExecutorBetween(String value1, String value2) {
+            addCriterion("executor between", value1, value2, "executor");
+            return (Criteria) this;
+        }
+
+        public Criteria andExecutorNotBetween(String value1, String value2) {
+            addCriterion("executor not between", value1, value2, "executor");
+            return (Criteria) this;
+        }
+
+        public Criteria andBelongTypeIsNull() {
+            addCriterion("belong_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBelongTypeIsNotNull() {
+            addCriterion("belong_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBelongTypeEqualTo(String value) {
+            addCriterion("belong_type =", value, "belongType");
+            return (Criteria) this;
+        }
+
+        public Criteria andBelongTypeNotEqualTo(String value) {
+            addCriterion("belong_type <>", value, "belongType");
+            return (Criteria) this;
+        }
+
+        public Criteria andBelongTypeGreaterThan(String value) {
+            addCriterion("belong_type >", value, "belongType");
+            return (Criteria) this;
+        }
+
+        public Criteria andBelongTypeGreaterThanOrEqualTo(String value) {
+            addCriterion("belong_type >=", value, "belongType");
+            return (Criteria) this;
+        }
+
+        public Criteria andBelongTypeLessThan(String value) {
+            addCriterion("belong_type <", value, "belongType");
+            return (Criteria) this;
+        }
+
+        public Criteria andBelongTypeLessThanOrEqualTo(String value) {
+            addCriterion("belong_type <=", value, "belongType");
+            return (Criteria) this;
+        }
+
+        public Criteria andBelongTypeLike(String value) {
+            addCriterion("belong_type like", value, "belongType");
+            return (Criteria) this;
+        }
+
+        public Criteria andBelongTypeNotLike(String value) {
+            addCriterion("belong_type not like", value, "belongType");
+            return (Criteria) this;
+        }
+
+        public Criteria andBelongTypeIn(List<String> values) {
+            addCriterion("belong_type in", values, "belongType");
+            return (Criteria) this;
+        }
+
+        public Criteria andBelongTypeNotIn(List<String> values) {
+            addCriterion("belong_type not in", values, "belongType");
+            return (Criteria) this;
+        }
+
+        public Criteria andBelongTypeBetween(String value1, String value2) {
+            addCriterion("belong_type between", value1, value2, "belongType");
+            return (Criteria) this;
+        }
+
+        public Criteria andBelongTypeNotBetween(String value1, String value2) {
+            addCriterion("belong_type not between", value1, value2, "belongType");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

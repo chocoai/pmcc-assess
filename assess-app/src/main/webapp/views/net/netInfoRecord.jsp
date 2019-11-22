@@ -118,9 +118,13 @@
                                         onclick="detailInfo.prototype.getOldData()">
                                     测试
                                 </button>
+                                <%--<button type="button" class="btn btn-primary"--%>
+                                        <%--onclick="detailInfo.prototype.assignTask()">--%>
+                                    <%--任务分派--%>
+                                <%--</button>--%>
                                 <button type="button" class="btn btn-primary"
                                         onclick="detailInfo.prototype.assignTask()">
-                                    任务分派
+                                    任务分派(认领)
                                 </button>
                             </div>
                         </div>
@@ -290,14 +294,13 @@
                 }
             });
             cols.push({field: 'content', title: '内容', width: '25%'});
-            cols.push({field: 'liquidRatios', title: '变现率', width: '5%'});
-            cols.push({field: 'unitPrice', title: '单价', width: '5%'});
-            cols.push({field: 'liquidCycle', title: '变现周期', width: '5%'});
-            cols.push({field: 'statusName', title: '状态', width: '5%'});
+            cols.push({field: 'initPrice', title: '起始价', width: '5%'});
+            cols.push({field: 'consultPrice', title: '估算价', width: '5%'});
+            cols.push({field: 'currentPrice', title: '成交价', width: '5%'});
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
-                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="详情" onclick="detailInfo.prototype.getAndInit(' + row.id + ')"><i class="fa fa-search fa-white"></i></a>';
+                    // str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="详情" onclick="detailInfo.prototype.getAndInit(' + row.id + ')"><i class="fa fa-search fa-white"></i></a>';
                     str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="查看网址" onclick="detailInfo.prototype.openItem(' + index + ')"><i class="fa fa-eye fa-white"></i></a>';
                     str += '</div>';
                     return str;

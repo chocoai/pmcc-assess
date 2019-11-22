@@ -1,0 +1,748 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.NetInfoRecordLandMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordLand" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="master_id" property="masterId" jdbcType="INTEGER" />
+    <result column="province" property="province" jdbcType="VARCHAR" />
+    <result column="city" property="city" jdbcType="VARCHAR" />
+    <result column="district" property="district" jdbcType="VARCHAR" />
+    <result column="belong_type" property="belongType" jdbcType="VARCHAR" />
+    <result column="land_purpose" property="landPurpose" jdbcType="VARCHAR" />
+    <result column="street" property="street" jdbcType="VARCHAR" />
+    <result column="area" property="area" jdbcType="DECIMAL" />
+    <result column="area_unit" property="areaUnit" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="parcel_number" property="parcelNumber" jdbcType="VARCHAR" />
+    <result column="parcel_site" property="parcelSite" jdbcType="VARCHAR" />
+    <result column="deal_type" property="dealType" jdbcType="INTEGER" />
+    <result column="current_price" property="currentPrice" jdbcType="DECIMAL" />
+    <result column="negotiated_date" property="negotiatedDate" jdbcType="TIMESTAMP" />
+    <result column="consult_price" property="consultPrice" jdbcType="DECIMAL" />
+    <result column="assess_standard_date" property="assessStandardDate" jdbcType="TIMESTAMP" />
+    <result column="unit_price" property="unitPrice" jdbcType="DECIMAL" />
+    <result column="floor_price" property="floorPrice" jdbcType="DECIMAL" />
+    <result column="land_realization_ratios" property="landRealizationRatios" jdbcType="DECIMAL" />
+    <result column="realization_cycle" property="realizationCycle" jdbcType="VARCHAR" />
+    <result column="land_area" property="landArea" jdbcType="DECIMAL" />
+    <result column="plot_ratio" property="plotRatio" jdbcType="INTEGER" />
+    <result column="plot_ratio_remark" property="plotRatioRemark" jdbcType="VARCHAR" />
+    <result column="greening_rate" property="greeningRate" jdbcType="DECIMAL" />
+    <result column="greening_rate_remark" property="greeningRateRemark" jdbcType="VARCHAR" />
+    <result column="build_density" property="buildDensity" jdbcType="DECIMAL" />
+    <result column="build_density_remark" property="buildDensityRemark" jdbcType="VARCHAR" />
+    <result column="build_height" property="buildHeight" jdbcType="DECIMAL" />
+    <result column="build_height_remark" property="buildHeightRemark" jdbcType="VARCHAR" />
+    <result column="index_amount" property="indexAmount" jdbcType="DECIMAL" />
+    <result column="index_amount_remark" property="indexAmountRemark" jdbcType="VARCHAR" />
+    <result column="deal_part_info" property="dealPartInfo" jdbcType="VARCHAR" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
+    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="belong_category" property="belongCategory" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, master_id, province, city, district, belong_type, land_purpose, street, area, 
+    area_unit, name, parcel_number, parcel_site, deal_type, current_price, negotiated_date, 
+    consult_price, assess_standard_date, unit_price, floor_price, land_realization_ratios, 
+    realization_cycle, land_area, plot_ratio, plot_ratio_remark, greening_rate, greening_rate_remark, 
+    build_density, build_density_remark, build_height, build_height_remark, index_amount, 
+    index_amount_remark, deal_part_info, creator, gmt_created, gmt_modified, type, belong_category
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordLandExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_net_info_record_land
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_net_info_record_land
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_net_info_record_land
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordLandExample" >
+    delete from tb_net_info_record_land
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordLand" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_net_info_record_land (master_id, province, city, 
+      district, belong_type, land_purpose, 
+      street, area, area_unit, 
+      name, parcel_number, parcel_site, 
+      deal_type, current_price, negotiated_date, 
+      consult_price, assess_standard_date, unit_price, 
+      floor_price, land_realization_ratios, realization_cycle, 
+      land_area, plot_ratio, plot_ratio_remark, 
+      greening_rate, greening_rate_remark, build_density, 
+      build_density_remark, build_height, build_height_remark, 
+      index_amount, index_amount_remark, deal_part_info, 
+      creator, gmt_created, gmt_modified, 
+      type, belong_category)
+    values (#{masterId,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, 
+      #{district,jdbcType=VARCHAR}, #{belongType,jdbcType=VARCHAR}, #{landPurpose,jdbcType=VARCHAR}, 
+      #{street,jdbcType=VARCHAR}, #{area,jdbcType=DECIMAL}, #{areaUnit,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{parcelNumber,jdbcType=VARCHAR}, #{parcelSite,jdbcType=VARCHAR}, 
+      #{dealType,jdbcType=INTEGER}, #{currentPrice,jdbcType=DECIMAL}, #{negotiatedDate,jdbcType=TIMESTAMP}, 
+      #{consultPrice,jdbcType=DECIMAL}, #{assessStandardDate,jdbcType=TIMESTAMP}, #{unitPrice,jdbcType=DECIMAL}, 
+      #{floorPrice,jdbcType=DECIMAL}, #{landRealizationRatios,jdbcType=DECIMAL}, #{realizationCycle,jdbcType=VARCHAR}, 
+      #{landArea,jdbcType=DECIMAL}, #{plotRatio,jdbcType=INTEGER}, #{plotRatioRemark,jdbcType=VARCHAR}, 
+      #{greeningRate,jdbcType=DECIMAL}, #{greeningRateRemark,jdbcType=VARCHAR}, #{buildDensity,jdbcType=DECIMAL}, 
+      #{buildDensityRemark,jdbcType=VARCHAR}, #{buildHeight,jdbcType=DECIMAL}, #{buildHeightRemark,jdbcType=VARCHAR}, 
+      #{indexAmount,jdbcType=DECIMAL}, #{indexAmountRemark,jdbcType=VARCHAR}, #{dealPartInfo,jdbcType=VARCHAR}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
+      #{type,jdbcType=VARCHAR}, #{belongCategory,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordLand" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_net_info_record_land
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="masterId != null" >
+        master_id,
+      </if>
+      <if test="province != null" >
+        province,
+      </if>
+      <if test="city != null" >
+        city,
+      </if>
+      <if test="district != null" >
+        district,
+      </if>
+      <if test="belongType != null" >
+        belong_type,
+      </if>
+      <if test="landPurpose != null" >
+        land_purpose,
+      </if>
+      <if test="street != null" >
+        street,
+      </if>
+      <if test="area != null" >
+        area,
+      </if>
+      <if test="areaUnit != null" >
+        area_unit,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="parcelNumber != null" >
+        parcel_number,
+      </if>
+      <if test="parcelSite != null" >
+        parcel_site,
+      </if>
+      <if test="dealType != null" >
+        deal_type,
+      </if>
+      <if test="currentPrice != null" >
+        current_price,
+      </if>
+      <if test="negotiatedDate != null" >
+        negotiated_date,
+      </if>
+      <if test="consultPrice != null" >
+        consult_price,
+      </if>
+      <if test="assessStandardDate != null" >
+        assess_standard_date,
+      </if>
+      <if test="unitPrice != null" >
+        unit_price,
+      </if>
+      <if test="floorPrice != null" >
+        floor_price,
+      </if>
+      <if test="landRealizationRatios != null" >
+        land_realization_ratios,
+      </if>
+      <if test="realizationCycle != null" >
+        realization_cycle,
+      </if>
+      <if test="landArea != null" >
+        land_area,
+      </if>
+      <if test="plotRatio != null" >
+        plot_ratio,
+      </if>
+      <if test="plotRatioRemark != null" >
+        plot_ratio_remark,
+      </if>
+      <if test="greeningRate != null" >
+        greening_rate,
+      </if>
+      <if test="greeningRateRemark != null" >
+        greening_rate_remark,
+      </if>
+      <if test="buildDensity != null" >
+        build_density,
+      </if>
+      <if test="buildDensityRemark != null" >
+        build_density_remark,
+      </if>
+      <if test="buildHeight != null" >
+        build_height,
+      </if>
+      <if test="buildHeightRemark != null" >
+        build_height_remark,
+      </if>
+      <if test="indexAmount != null" >
+        index_amount,
+      </if>
+      <if test="indexAmountRemark != null" >
+        index_amount_remark,
+      </if>
+      <if test="dealPartInfo != null" >
+        deal_part_info,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created,
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="belongCategory != null" >
+        belong_category,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="masterId != null" >
+        #{masterId,jdbcType=INTEGER},
+      </if>
+      <if test="province != null" >
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="district != null" >
+        #{district,jdbcType=VARCHAR},
+      </if>
+      <if test="belongType != null" >
+        #{belongType,jdbcType=VARCHAR},
+      </if>
+      <if test="landPurpose != null" >
+        #{landPurpose,jdbcType=VARCHAR},
+      </if>
+      <if test="street != null" >
+        #{street,jdbcType=VARCHAR},
+      </if>
+      <if test="area != null" >
+        #{area,jdbcType=DECIMAL},
+      </if>
+      <if test="areaUnit != null" >
+        #{areaUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="parcelNumber != null" >
+        #{parcelNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="parcelSite != null" >
+        #{parcelSite,jdbcType=VARCHAR},
+      </if>
+      <if test="dealType != null" >
+        #{dealType,jdbcType=INTEGER},
+      </if>
+      <if test="currentPrice != null" >
+        #{currentPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="negotiatedDate != null" >
+        #{negotiatedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="consultPrice != null" >
+        #{consultPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="assessStandardDate != null" >
+        #{assessStandardDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="unitPrice != null" >
+        #{unitPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="floorPrice != null" >
+        #{floorPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="landRealizationRatios != null" >
+        #{landRealizationRatios,jdbcType=DECIMAL},
+      </if>
+      <if test="realizationCycle != null" >
+        #{realizationCycle,jdbcType=VARCHAR},
+      </if>
+      <if test="landArea != null" >
+        #{landArea,jdbcType=DECIMAL},
+      </if>
+      <if test="plotRatio != null" >
+        #{plotRatio,jdbcType=INTEGER},
+      </if>
+      <if test="plotRatioRemark != null" >
+        #{plotRatioRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="greeningRate != null" >
+        #{greeningRate,jdbcType=DECIMAL},
+      </if>
+      <if test="greeningRateRemark != null" >
+        #{greeningRateRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="buildDensity != null" >
+        #{buildDensity,jdbcType=DECIMAL},
+      </if>
+      <if test="buildDensityRemark != null" >
+        #{buildDensityRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="buildHeight != null" >
+        #{buildHeight,jdbcType=DECIMAL},
+      </if>
+      <if test="buildHeightRemark != null" >
+        #{buildHeightRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="indexAmount != null" >
+        #{indexAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="indexAmountRemark != null" >
+        #{indexAmountRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="dealPartInfo != null" >
+        #{dealPartInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null" >
+        #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="belongCategory != null" >
+        #{belongCategory,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordLandExample" resultType="java.lang.Integer" >
+    select count(*) from tb_net_info_record_land
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_net_info_record_land
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.masterId != null" >
+        master_id = #{record.masterId,jdbcType=INTEGER},
+      </if>
+      <if test="record.province != null" >
+        province = #{record.province,jdbcType=VARCHAR},
+      </if>
+      <if test="record.city != null" >
+        city = #{record.city,jdbcType=VARCHAR},
+      </if>
+      <if test="record.district != null" >
+        district = #{record.district,jdbcType=VARCHAR},
+      </if>
+      <if test="record.belongType != null" >
+        belong_type = #{record.belongType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.landPurpose != null" >
+        land_purpose = #{record.landPurpose,jdbcType=VARCHAR},
+      </if>
+      <if test="record.street != null" >
+        street = #{record.street,jdbcType=VARCHAR},
+      </if>
+      <if test="record.area != null" >
+        area = #{record.area,jdbcType=DECIMAL},
+      </if>
+      <if test="record.areaUnit != null" >
+        area_unit = #{record.areaUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.parcelNumber != null" >
+        parcel_number = #{record.parcelNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.parcelSite != null" >
+        parcel_site = #{record.parcelSite,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dealType != null" >
+        deal_type = #{record.dealType,jdbcType=INTEGER},
+      </if>
+      <if test="record.currentPrice != null" >
+        current_price = #{record.currentPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.negotiatedDate != null" >
+        negotiated_date = #{record.negotiatedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.consultPrice != null" >
+        consult_price = #{record.consultPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.assessStandardDate != null" >
+        assess_standard_date = #{record.assessStandardDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.unitPrice != null" >
+        unit_price = #{record.unitPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.floorPrice != null" >
+        floor_price = #{record.floorPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.landRealizationRatios != null" >
+        land_realization_ratios = #{record.landRealizationRatios,jdbcType=DECIMAL},
+      </if>
+      <if test="record.realizationCycle != null" >
+        realization_cycle = #{record.realizationCycle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.landArea != null" >
+        land_area = #{record.landArea,jdbcType=DECIMAL},
+      </if>
+      <if test="record.plotRatio != null" >
+        plot_ratio = #{record.plotRatio,jdbcType=INTEGER},
+      </if>
+      <if test="record.plotRatioRemark != null" >
+        plot_ratio_remark = #{record.plotRatioRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.greeningRate != null" >
+        greening_rate = #{record.greeningRate,jdbcType=DECIMAL},
+      </if>
+      <if test="record.greeningRateRemark != null" >
+        greening_rate_remark = #{record.greeningRateRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.buildDensity != null" >
+        build_density = #{record.buildDensity,jdbcType=DECIMAL},
+      </if>
+      <if test="record.buildDensityRemark != null" >
+        build_density_remark = #{record.buildDensityRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.buildHeight != null" >
+        build_height = #{record.buildHeight,jdbcType=DECIMAL},
+      </if>
+      <if test="record.buildHeightRemark != null" >
+        build_height_remark = #{record.buildHeightRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.indexAmount != null" >
+        index_amount = #{record.indexAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.indexAmountRemark != null" >
+        index_amount_remark = #{record.indexAmountRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dealPartInfo != null" >
+        deal_part_info = #{record.dealPartInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.creator != null" >
+        creator = #{record.creator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gmtCreated != null" >
+        gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gmtModified != null" >
+        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=VARCHAR},
+      </if>
+      <if test="record.belongCategory != null" >
+        belong_category = #{record.belongCategory,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_net_info_record_land
+    set id = #{record.id,jdbcType=INTEGER},
+      master_id = #{record.masterId,jdbcType=INTEGER},
+      province = #{record.province,jdbcType=VARCHAR},
+      city = #{record.city,jdbcType=VARCHAR},
+      district = #{record.district,jdbcType=VARCHAR},
+      belong_type = #{record.belongType,jdbcType=VARCHAR},
+      land_purpose = #{record.landPurpose,jdbcType=VARCHAR},
+      street = #{record.street,jdbcType=VARCHAR},
+      area = #{record.area,jdbcType=DECIMAL},
+      area_unit = #{record.areaUnit,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      parcel_number = #{record.parcelNumber,jdbcType=VARCHAR},
+      parcel_site = #{record.parcelSite,jdbcType=VARCHAR},
+      deal_type = #{record.dealType,jdbcType=INTEGER},
+      current_price = #{record.currentPrice,jdbcType=DECIMAL},
+      negotiated_date = #{record.negotiatedDate,jdbcType=TIMESTAMP},
+      consult_price = #{record.consultPrice,jdbcType=DECIMAL},
+      assess_standard_date = #{record.assessStandardDate,jdbcType=TIMESTAMP},
+      unit_price = #{record.unitPrice,jdbcType=DECIMAL},
+      floor_price = #{record.floorPrice,jdbcType=DECIMAL},
+      land_realization_ratios = #{record.landRealizationRatios,jdbcType=DECIMAL},
+      realization_cycle = #{record.realizationCycle,jdbcType=VARCHAR},
+      land_area = #{record.landArea,jdbcType=DECIMAL},
+      plot_ratio = #{record.plotRatio,jdbcType=INTEGER},
+      plot_ratio_remark = #{record.plotRatioRemark,jdbcType=VARCHAR},
+      greening_rate = #{record.greeningRate,jdbcType=DECIMAL},
+      greening_rate_remark = #{record.greeningRateRemark,jdbcType=VARCHAR},
+      build_density = #{record.buildDensity,jdbcType=DECIMAL},
+      build_density_remark = #{record.buildDensityRemark,jdbcType=VARCHAR},
+      build_height = #{record.buildHeight,jdbcType=DECIMAL},
+      build_height_remark = #{record.buildHeightRemark,jdbcType=VARCHAR},
+      index_amount = #{record.indexAmount,jdbcType=DECIMAL},
+      index_amount_remark = #{record.indexAmountRemark,jdbcType=VARCHAR},
+      deal_part_info = #{record.dealPartInfo,jdbcType=VARCHAR},
+      creator = #{record.creator,jdbcType=VARCHAR},
+      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      type = #{record.type,jdbcType=VARCHAR},
+      belong_category = #{record.belongCategory,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordLand" >
+    update tb_net_info_record_land
+    <set >
+      <if test="masterId != null" >
+        master_id = #{masterId,jdbcType=INTEGER},
+      </if>
+      <if test="province != null" >
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="district != null" >
+        district = #{district,jdbcType=VARCHAR},
+      </if>
+      <if test="belongType != null" >
+        belong_type = #{belongType,jdbcType=VARCHAR},
+      </if>
+      <if test="landPurpose != null" >
+        land_purpose = #{landPurpose,jdbcType=VARCHAR},
+      </if>
+      <if test="street != null" >
+        street = #{street,jdbcType=VARCHAR},
+      </if>
+      <if test="area != null" >
+        area = #{area,jdbcType=DECIMAL},
+      </if>
+      <if test="areaUnit != null" >
+        area_unit = #{areaUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="parcelNumber != null" >
+        parcel_number = #{parcelNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="parcelSite != null" >
+        parcel_site = #{parcelSite,jdbcType=VARCHAR},
+      </if>
+      <if test="dealType != null" >
+        deal_type = #{dealType,jdbcType=INTEGER},
+      </if>
+      <if test="currentPrice != null" >
+        current_price = #{currentPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="negotiatedDate != null" >
+        negotiated_date = #{negotiatedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="consultPrice != null" >
+        consult_price = #{consultPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="assessStandardDate != null" >
+        assess_standard_date = #{assessStandardDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="unitPrice != null" >
+        unit_price = #{unitPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="floorPrice != null" >
+        floor_price = #{floorPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="landRealizationRatios != null" >
+        land_realization_ratios = #{landRealizationRatios,jdbcType=DECIMAL},
+      </if>
+      <if test="realizationCycle != null" >
+        realization_cycle = #{realizationCycle,jdbcType=VARCHAR},
+      </if>
+      <if test="landArea != null" >
+        land_area = #{landArea,jdbcType=DECIMAL},
+      </if>
+      <if test="plotRatio != null" >
+        plot_ratio = #{plotRatio,jdbcType=INTEGER},
+      </if>
+      <if test="plotRatioRemark != null" >
+        plot_ratio_remark = #{plotRatioRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="greeningRate != null" >
+        greening_rate = #{greeningRate,jdbcType=DECIMAL},
+      </if>
+      <if test="greeningRateRemark != null" >
+        greening_rate_remark = #{greeningRateRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="buildDensity != null" >
+        build_density = #{buildDensity,jdbcType=DECIMAL},
+      </if>
+      <if test="buildDensityRemark != null" >
+        build_density_remark = #{buildDensityRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="buildHeight != null" >
+        build_height = #{buildHeight,jdbcType=DECIMAL},
+      </if>
+      <if test="buildHeightRemark != null" >
+        build_height_remark = #{buildHeightRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="indexAmount != null" >
+        index_amount = #{indexAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="indexAmountRemark != null" >
+        index_amount_remark = #{indexAmountRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="dealPartInfo != null" >
+        deal_part_info = #{dealPartInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="belongCategory != null" >
+        belong_category = #{belongCategory,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordLand" >
+    update tb_net_info_record_land
+    set master_id = #{masterId,jdbcType=INTEGER},
+      province = #{province,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      district = #{district,jdbcType=VARCHAR},
+      belong_type = #{belongType,jdbcType=VARCHAR},
+      land_purpose = #{landPurpose,jdbcType=VARCHAR},
+      street = #{street,jdbcType=VARCHAR},
+      area = #{area,jdbcType=DECIMAL},
+      area_unit = #{areaUnit,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      parcel_number = #{parcelNumber,jdbcType=VARCHAR},
+      parcel_site = #{parcelSite,jdbcType=VARCHAR},
+      deal_type = #{dealType,jdbcType=INTEGER},
+      current_price = #{currentPrice,jdbcType=DECIMAL},
+      negotiated_date = #{negotiatedDate,jdbcType=TIMESTAMP},
+      consult_price = #{consultPrice,jdbcType=DECIMAL},
+      assess_standard_date = #{assessStandardDate,jdbcType=TIMESTAMP},
+      unit_price = #{unitPrice,jdbcType=DECIMAL},
+      floor_price = #{floorPrice,jdbcType=DECIMAL},
+      land_realization_ratios = #{landRealizationRatios,jdbcType=DECIMAL},
+      realization_cycle = #{realizationCycle,jdbcType=VARCHAR},
+      land_area = #{landArea,jdbcType=DECIMAL},
+      plot_ratio = #{plotRatio,jdbcType=INTEGER},
+      plot_ratio_remark = #{plotRatioRemark,jdbcType=VARCHAR},
+      greening_rate = #{greeningRate,jdbcType=DECIMAL},
+      greening_rate_remark = #{greeningRateRemark,jdbcType=VARCHAR},
+      build_density = #{buildDensity,jdbcType=DECIMAL},
+      build_density_remark = #{buildDensityRemark,jdbcType=VARCHAR},
+      build_height = #{buildHeight,jdbcType=DECIMAL},
+      build_height_remark = #{buildHeightRemark,jdbcType=VARCHAR},
+      index_amount = #{indexAmount,jdbcType=DECIMAL},
+      index_amount_remark = #{indexAmountRemark,jdbcType=VARCHAR},
+      deal_part_info = #{dealPartInfo,jdbcType=VARCHAR},
+      creator = #{creator,jdbcType=VARCHAR},
+      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      type = #{type,jdbcType=VARCHAR},
+      belong_category = #{belongCategory,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

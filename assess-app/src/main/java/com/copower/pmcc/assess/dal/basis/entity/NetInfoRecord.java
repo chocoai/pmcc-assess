@@ -54,6 +54,10 @@ public class NetInfoRecord {
 
     private Integer status;
 
+    private String executor;
+
+    private String belongType;
+
     public Integer getId() {
         return id;
     }
@@ -252,5 +256,21 @@ public class NetInfoRecord {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public String getExecutor() {
+        return executor;
+    }
+
+    public void setExecutor(String executor) {
+        this.executor = executor == null ? null : executor.trim();
+    }
+
+    public String getBelongType() {
+        return belongType;
+    }
+
+    public void setBelongType(String belongType) {
+        this.belongType = belongType == null ? null : belongType.trim();
     }
 }

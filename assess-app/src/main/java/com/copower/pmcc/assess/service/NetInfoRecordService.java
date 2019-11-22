@@ -1666,7 +1666,7 @@ public class NetInfoRecordService {
         }
     }
 
-    public BootstrapTableVo getInfoRecordList(String queryTitle, String queryWebName, String province, String city, String queryContent, String queryType, String queryStartTime, String queryEndTime) throws Exception {
+    public BootstrapTableVo getInfoRecordList(String queryTitle, String queryWebName, String province, String city, String queryContent, String queryType, String queryStartTime, String queryEndTime,String executor,Integer status) throws Exception {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
@@ -1684,7 +1684,7 @@ public class NetInfoRecordService {
             calendar.add(Calendar.DAY_OF_MONTH, +1); //得到后1天
             endTimeParse = calendar.getTime();
         }
-        List<NetInfoRecord> netInfoRecords = netInfoRecordDao.getNetInfoRecordListByName(queryTitle, queryWebName, provinceName, cityName, queryContent, queryType, startTimeParse, endTimeParse);
+        List<NetInfoRecord> netInfoRecords = netInfoRecordDao.getNetInfoRecordListByName(queryTitle, queryWebName, provinceName, cityName, queryContent, queryType, startTimeParse, endTimeParse,executor,status);
         List<NetInfoRecordVo> vos = LangUtils.transform(netInfoRecords, o -> getNetInfoRecordVo(o));
         bootstrapTableVo.setTotal(page.getTotal());
         bootstrapTableVo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<NetInfoRecord>() : vos);
@@ -1708,16 +1708,16 @@ public class NetInfoRecordService {
             netInfoRecordVo.setLiquidCycle(String.format("%s%s", value, "天"));
         }
         if (netInfoRecord.getStatus().equals(0)) {
-            netInfoRecordVo.setStatusName("-");
+            netInfoRecordVo.setStatusName("未分派");
         }
         if (netInfoRecord.getStatus().equals(1)) {
-            netInfoRecordVo.setStatusName("审批中");
+            netInfoRecordVo.setStatusName("已分派");
         }
         if (netInfoRecord.getStatus().equals(2)) {
-            netInfoRecordVo.setStatusName("完成");
+            netInfoRecordVo.setStatusName("审批中");
         }
         if (netInfoRecord.getStatus().equals(3)) {
-            netInfoRecordVo.setStatusName("已分派");
+            netInfoRecordVo.setStatusName("审批通过");
         }
         return netInfoRecordVo;
     }
@@ -1742,41 +1742,51 @@ public class NetInfoRecordService {
     }
 
     //分派任务
+//    public void assignTask(String executor, String ids) throws Exception{
+//        List<Integer> integers = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(ids));
+//        List<NetInfoRecord> infoRecords = LangUtils.transform(integers, o -> netInfoRecordDao.getInfoById(o));
+//        if(CollectionUtils.isNotEmpty(infoRecords)){
+//            for (NetInfoRecord netInfo: infoRecords) {
+//                if(netInfo.getStatus().equals(1)||netInfo.getStatus().equals(3)){
+//                    throw new BusinessException("不能存在已经分派的信息或审批中的信息");
+//                }
+//            }
+//            //状态为已分派
+//            for (NetInfoRecord netInfo: infoRecords) {
+//                netInfo.setStatus(3);
+//                netInfoRecordDao.updateInfo(netInfo);
+//            }
+//        }
+//
+//        NetInfoAssignTask netInfoAssignTask = new NetInfoAssignTask();
+//        netInfoAssignTask.setExecutor(executor);
+//        netInfoAssignTask.setNetInfoIds(ids);
+//        netInfoAssignTask.setCreator(commonService.thisUserAccount());
+//        netInfoAssignTaskDao.addNetInfoAssignTask(netInfoAssignTask);
+//        //发起任务
+//        ProjectResponsibilityDto projectTask = new ProjectResponsibilityDto();
+//        projectTask.setProjectName("拍卖信息");
+//        projectTask.setUserAccount(executor);
+//        projectTask.setBisEnable(true);
+//        projectTask.setAppKey(applicationConstant.getAppKey());
+//        projectTask.setPlanDetailsName("补全拍卖信息");
+//
+//        projectTask.setUrl("/pmcc-assess/netInfoAssignTask/apply?id=" + netInfoAssignTask.getId());
+//        projectTask.setProjectDetailsUrl("/pmcc-assess/netInfoAssignTask/apply?id=" + netInfoAssignTask.getId());
+//        projectTask.setCreator(commonService.thisUserAccount());
+//        bpmRpcProjectTaskService.saveProjectTask(projectTask);
+//    }
     public void assignTask(String executor, String ids) throws Exception{
         List<Integer> integers = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(ids));
         List<NetInfoRecord> infoRecords = LangUtils.transform(integers, o -> netInfoRecordDao.getInfoById(o));
-        if(CollectionUtils.isNotEmpty(infoRecords)){
-            for (NetInfoRecord netInfo: infoRecords) {
-                if(netInfo.getStatus().equals(1)||netInfo.getStatus().equals(3)){
-                    throw new BusinessException("不能存在已经分派的信息或审批中的信息");
-                }
-            }
-            //状态为已分派
-            for (NetInfoRecord netInfo: infoRecords) {
-                netInfo.setStatus(3);
-                netInfoRecordDao.updateInfo(netInfo);
-            }
+        //状态为已分派
+        for (NetInfoRecord netInfo: infoRecords) {
+            netInfo.setStatus(1);
+            netInfo.setExecutor(executor);
+            netInfoRecordDao.updateInfo(netInfo);
         }
 
-        NetInfoAssignTask netInfoAssignTask = new NetInfoAssignTask();
-        netInfoAssignTask.setExecutor(executor);
-        netInfoAssignTask.setNetInfoIds(ids);
-        netInfoAssignTask.setCreator(commonService.thisUserAccount());
-        netInfoAssignTaskDao.addNetInfoAssignTask(netInfoAssignTask);
-        //发起任务
-        ProjectResponsibilityDto projectTask = new ProjectResponsibilityDto();
-        projectTask.setProjectName("拍卖信息");
-        projectTask.setUserAccount(executor);
-        projectTask.setBisEnable(true);
-        projectTask.setAppKey(applicationConstant.getAppKey());
-        projectTask.setPlanDetailsName("补全拍卖信息");
-
-        projectTask.setUrl("/pmcc-assess/netInfoAssignTask/apply?id=" + netInfoAssignTask.getId());
-        projectTask.setProjectDetailsUrl("/pmcc-assess/netInfoAssignTask/apply?id=" + netInfoAssignTask.getId());
-        projectTask.setCreator(commonService.thisUserAccount());
-        bpmRpcProjectTaskService.saveProjectTask(projectTask);
     }
-
 
     public BootstrapTableVo getInfoRecordListByIds(String ids) {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();

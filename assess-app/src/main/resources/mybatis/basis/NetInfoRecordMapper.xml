@@ -27,6 +27,8 @@
     <result column="negotiated_total_price" property="negotiatedTotalPrice" jdbcType="DECIMAL" />
     <result column="negotiated_date" property="negotiatedDate" jdbcType="TIMESTAMP" />
     <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="executor" property="executor" jdbcType="VARCHAR" />
+    <result column="belong_type" property="belongType" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -90,7 +92,7 @@
     id, province, city, title, content, type, notice_date, begin_time, end_time, source_site_name, 
     source_site_url, creator, gmt_created, gmt_modified, current_price, consult_price, 
     init_price, liquid_ratios, unit_name, amount, assess_base_date, area, negotiated_total_price, 
-    negotiated_date, status
+    negotiated_date, status, executor, belong_type
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordExample" >
     select
@@ -134,7 +136,8 @@
       init_price, liquid_ratios, unit_name, 
       amount, assess_base_date, area, 
       negotiated_total_price, negotiated_date, 
-      status)
+      status, executor, belong_type
+      )
     values (#{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, 
       #{content,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{noticeDate,jdbcType=VARCHAR}, 
       #{beginTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, #{sourceSiteName,jdbcType=VARCHAR}, 
@@ -143,7 +146,8 @@
       #{initPrice,jdbcType=VARCHAR}, #{liquidRatios,jdbcType=VARCHAR}, #{unitName,jdbcType=VARCHAR}, 
       #{amount,jdbcType=INTEGER}, #{assessBaseDate,jdbcType=TIMESTAMP}, #{area,jdbcType=DECIMAL}, 
       #{negotiatedTotalPrice,jdbcType=DECIMAL}, #{negotiatedDate,jdbcType=TIMESTAMP}, 
-      #{status,jdbcType=INTEGER})
+      #{status,jdbcType=INTEGER}, #{executor,jdbcType=VARCHAR}, #{belongType,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.NetInfoRecord" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -223,6 +227,12 @@
       <if test="status != null" >
         status,
       </if>
+      <if test="executor != null" >
+        executor,
+      </if>
+      <if test="belongType != null" >
+        belong_type,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="province != null" >
@@ -296,6 +306,12 @@
       </if>
       <if test="status != null" >
         #{status,jdbcType=INTEGER},
+      </if>
+      <if test="executor != null" >
+        #{executor,jdbcType=VARCHAR},
+      </if>
+      <if test="belongType != null" >
+        #{belongType,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -383,6 +399,12 @@
       <if test="record.status != null" >
         status = #{record.status,jdbcType=INTEGER},
       </if>
+      <if test="record.executor != null" >
+        executor = #{record.executor,jdbcType=VARCHAR},
+      </if>
+      <if test="record.belongType != null" >
+        belong_type = #{record.belongType,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -414,7 +436,9 @@
       area = #{record.area,jdbcType=DECIMAL},
       negotiated_total_price = #{record.negotiatedTotalPrice,jdbcType=DECIMAL},
       negotiated_date = #{record.negotiatedDate,jdbcType=TIMESTAMP},
-      status = #{record.status,jdbcType=INTEGER}
+      status = #{record.status,jdbcType=INTEGER},
+      executor = #{record.executor,jdbcType=VARCHAR},
+      belong_type = #{record.belongType,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -494,6 +518,12 @@
       <if test="status != null" >
         status = #{status,jdbcType=INTEGER},
       </if>
+      <if test="executor != null" >
+        executor = #{executor,jdbcType=VARCHAR},
+      </if>
+      <if test="belongType != null" >
+        belong_type = #{belongType,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -522,7 +552,9 @@
       area = #{area,jdbcType=DECIMAL},
       negotiated_total_price = #{negotiatedTotalPrice,jdbcType=DECIMAL},
       negotiated_date = #{negotiatedDate,jdbcType=TIMESTAMP},
-      status = #{status,jdbcType=INTEGER}
+      status = #{status,jdbcType=INTEGER},
+      executor = #{executor,jdbcType=VARCHAR},
+      belong_type = #{belongType,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
