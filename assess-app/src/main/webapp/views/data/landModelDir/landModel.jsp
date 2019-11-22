@@ -57,19 +57,19 @@
                                         <form class="form-horizontal">
                                             <div class="form-group" style="margin-bottom: 30px;">
                                                 <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11 col-lg-offset-1">
-                                                    <a class="btn btn-xs btn-success" onclick="landLevel.addLandLevelDetail()">
+                                                    <a class="btn btn-xs btn-success" data-permission="permission" onclick="landLevel.addLandLevelDetail()">
                                                         新增
                                                     </a>
                                                     <a class="btn btn-xs btn-primary" onclick="zTreeOnEdit()">
                                                         编辑
                                                     </a>
-                                                    <a class="btn btn-xs btn-warning" onclick="zTreeOnRemove();">
+                                                    <a class="btn btn-xs btn-warning"  data-permission="permission" onclick="zTreeOnRemove();">
                                                         删除
                                                     </a>
-                                                    <a class="btn btn-xs btn-primary" onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftpLandLevelDetailBaseTemplate);">
+                                                    <a class="btn btn-xs btn-primary"  data-permission="permission" onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftpLandLevelDetailBaseTemplate);">
                                                         模板下载
                                                     </a>
-                                                    <a class="btn btn-xs btn-primary" onclick="landLevel.importLandLevelDetail(true);">
+                                                    <a class="btn btn-xs btn-primary"  data-permission="permission" onclick="landLevel.importLandLevelDetail(true);">
                                                         数据上传
                                                     </a>
                                                     <a class="btn btn-xs btn-primary" onclick="landLevel.treeExpandAll(true);">

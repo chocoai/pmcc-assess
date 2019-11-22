@@ -25,6 +25,7 @@
                         <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
                             <form id="frmQuery" class="form-horizontal">
                                 <input type="hidden" name="readOnly" value="${readOnly}">
+                                <input type="hidden" name="permission" value="${permission}">
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">省</label>
@@ -97,7 +98,8 @@
 </div>
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
-<%@include file="/views/data/landModelDir/landModelApproval.jsp" %>
+<%--<%@include file="/views/data/landModelDir/landModelApproval.jsp" %>--%>
+<%@include file="/views/data/landModelDir/landModel.jsp" %>
 <script type="text/javascript" src="${pageContext.request.contextPath}/views/data/landModelDir/landLevel.js?v=${assessVersion}"></script>
 <script type="text/javascript">
     function findQuery() {

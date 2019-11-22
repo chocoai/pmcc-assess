@@ -16,6 +16,7 @@ import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -29,6 +30,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 /**
  * @Auther: zch
@@ -50,6 +52,8 @@ public class DataLandLevelController {
     private BpmRpcBoxService bpmRpcBoxService;
     @Autowired
     private BaseParameterService baseParameterService;
+    @Autowired
+    private ErpRpcUserService erpRpcUserService;
 
     @RequestMapping(value = "/importData", name = "导入 基础维护(土地级别区域)", method = RequestMethod.POST)
     public HttpResult importData(HttpServletRequest request, DataLandLevel dataLandLevel) {
@@ -73,6 +77,20 @@ public class DataLandLevelController {
         String view = "/data/dataLandLevelView";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
         setParams(modelAndView, true);
+        //超级管理员
+        String account = processControllerComponent.getThisUser() ;
+        //需要咨询处理bpm写这个方法的人
+//        if (processControllerComponent.userIsAdmin(account)) {//失效的方法
+//            modelAndView.addObject("permission", "admin");//不设置 processControllerComponent.getThisUser(),防止超级管理员变更或者直接变为一组
+//        } else {
+//            modelAndView.addObject("permission", account);
+//        }
+
+        if ("admin".equals(account)) {
+            modelAndView.addObject("permission", "admin");//不设置 processControllerComponent.getThisUser(),防止超级管理员变更或者直接变为一组
+        } else {
+            modelAndView.addObject("permission", account);
+        }
         return modelAndView;
     }
 
@@ -96,7 +114,7 @@ public class DataLandLevelController {
     }
 
     @RequestMapping(value = "/comeInLandLevelDetail", name = "详情页面 ", method = {RequestMethod.GET})
-    public ModelAndView comeInLandLevelDetail(Integer boxId,String processInsId) {
+    public ModelAndView comeInLandLevelDetail(Integer boxId, String processInsId) {
         String view = "/data/landModelDir/comeInLandLevelApproval";
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView(view, processInsId, boxId, "-1", "");
         setParams(modelAndView, true);
