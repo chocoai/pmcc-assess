@@ -43,7 +43,7 @@ public class GenerateLandEntityService {
         BasicEstateLandStateVo landStateVo = generateBaseExamineService.getBasicEstateLandState();
         LinkedHashSet<String> linkedHashSet = Sets.newLinkedHashSet();
         if (Lists.newArrayList(landStateVo.getEastTo(), landStateVo.getWestTo(), landStateVo.getSouthTo(), landStateVo.getNorthTo()).stream().filter(s -> StringUtils.isNotBlank(s)).count() >= 4) {
-            linkedHashSet.add("四至清淅");
+            linkedHashSet.add("四至清晰");
         }
         if (StringUtils.isNotBlank(landStateVo.getLandUseTypeName())) {
             linkedHashSet.add("用途明确");

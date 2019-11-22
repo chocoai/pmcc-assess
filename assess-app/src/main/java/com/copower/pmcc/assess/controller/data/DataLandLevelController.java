@@ -80,17 +80,17 @@ public class DataLandLevelController {
         //超级管理员
         String account = processControllerComponent.getThisUser() ;
         //需要咨询处理bpm写这个方法的人
-//        if (processControllerComponent.userIsAdmin(account)) {//失效的方法
-//            modelAndView.addObject("permission", "admin");//不设置 processControllerComponent.getThisUser(),防止超级管理员变更或者直接变为一组
-//        } else {
-//            modelAndView.addObject("permission", account);
-//        }
-
-        if ("admin".equals(account)) {
+        if (processControllerComponent.userIsAdmin(account)) {//失效的方法
             modelAndView.addObject("permission", "admin");//不设置 processControllerComponent.getThisUser(),防止超级管理员变更或者直接变为一组
         } else {
             modelAndView.addObject("permission", account);
         }
+
+//        if ("admin".equals(account)) {
+//            modelAndView.addObject("permission", "admin");//不设置 processControllerComponent.getThisUser(),防止超级管理员变更或者直接变为一组
+//        } else {
+//            modelAndView.addObject("permission", account);
+//        }
         return modelAndView;
     }
 
