@@ -82,7 +82,6 @@ public class NetInfoAssignTaskController extends BaseController {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("net/netInfoAssignTaskApproval", processInsId, boxId, taskId, agentUserAccount);
         NetInfoAssignTask data = netInfoAssignTaskService.getDataByProcessInsId(processInsId);
         modelAndView.addObject("netInfoAssignTask", data);
-
         return modelAndView;
     }
 
@@ -136,9 +135,15 @@ public class NetInfoAssignTaskController extends BaseController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/list", name = "取得土地信息", method = RequestMethod.GET)
-    public BootstrapTableVo list(String ids) {
+    @RequestMapping(value = "/landList", name = "取得土地信息", method = RequestMethod.GET)
+    public BootstrapTableVo landList(String ids) {
         List<Integer> integers = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(ids));
-        return netInfoAssignTaskService.getNetInfoRecordApprovalVos(integers);
+        return netInfoAssignTaskService.getNetInfoRecordLandList(integers);
+    }
+    @ResponseBody
+    @RequestMapping(value = "/houseList", name = "取得房产信息", method = RequestMethod.GET)
+    public BootstrapTableVo houseList(String ids) {
+        List<Integer> integers = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(ids));
+        return netInfoAssignTaskService.getNetInfoRecordHouseList(integers);
     }
 }

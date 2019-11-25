@@ -2,12 +2,14 @@ package com.copower.pmcc.assess.dal.basis.dao.net;
 
 import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordLand;
 import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordLandExample;
+import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordLand;
+import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordLandExample;
 import com.copower.pmcc.assess.dal.basis.mapper.NetInfoRecordLandMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -47,6 +49,30 @@ public class NetInfoRecordLandDao {
     public List<NetInfoRecordLand> getNetInfoRecordLandList(NetInfoRecordLand netInfoRecordLand) {
         NetInfoRecordLandExample example = new NetInfoRecordLandExample();
         MybatisUtils.convertObj2Example(netInfoRecordLand, example);
+        return netInfoRecordLandMapper.selectByExample(example);
+    }
+
+    public List<NetInfoRecordLand> getNetInfoRecordLandList(Integer status, String province, String city, String district, String street, String name) {
+        NetInfoRecordLandExample example = new NetInfoRecordLandExample();
+        NetInfoRecordLandExample.Criteria criteria = example.createCriteria();
+        criteria.andStatusEqualTo(status);
+        if (StringUtils.isNotBlank(province))
+            criteria.andProvinceEqualTo(province);
+        if (StringUtils.isNotBlank(city))
+            criteria.andCityEqualTo(city);
+        if (StringUtils.isNotBlank(district))
+            criteria.andDistrictEqualTo(district);
+        if (StringUtils.isNotBlank(street))
+            criteria.andStreetLike(String.format("%%%s%%", street));
+        if (StringUtils.isNotBlank(name))
+            criteria.andNameLike(String.format("%%%s%%", name));
+        return netInfoRecordLandMapper.selectByExample(example);
+    }
+
+    public List<NetInfoRecordLand> getLandListByMasterIds(List<Integer> masterIds){
+        NetInfoRecordLandExample example = new NetInfoRecordLandExample();
+        NetInfoRecordLandExample.Criteria criteria = example.createCriteria();
+        criteria.andMasterIdIn(masterIds);
         return netInfoRecordLandMapper.selectByExample(example);
     }
 
