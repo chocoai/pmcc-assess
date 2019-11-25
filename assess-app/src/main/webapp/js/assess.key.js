@@ -125,6 +125,7 @@ AssessDicKey.projectSurveyFormClassifySingel = "project.survey.form.classify.sin
 AssessDicKey.projectSurveyFormClassifyMultiple = "project.survey.form.classify.multiple";//多套房产
 AssessDicKey.projectSurveyFormClassifyLandOnly = "project.survey.form.classify.land.only";//纯土地
 AssessDicKey.projectSurveyFormClassifyLand = "project.survey.form.classify.land";//土地带房产
+AssessDicKey.dataDealType = "data.deal.type";//土地带房产
 
 
 //楼盘

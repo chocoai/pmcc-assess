@@ -1,84 +1,138 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: huhao
-  Date: 2018/01/29
-  Time: 15:50
-  To change this template use File | Settings | File Templates.
---%>
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
+<html lang="en" class="no-js">
 <head>
-    <title>拍卖信息补全申请</title>
-
     <%@include file="/views/share/main_css.jsp" %>
 </head>
-<body class="nav-md">
 
-
+<body class="nav-md footer_fixed">
 <div class="container body">
     <div class="main_container">
-        <div class="right_col" role="main" style="margin-left: 0px">
-            <!-- 公共模块引用 -->
-            <%@include file="/views/share/form_head.jsp" %>
-            <!-- 公共模块end -->
-
+        <%@include file="/views/share/main_navigation.jsp" %>
+        <%@include file="/views/share/main_head.jsp" %>
+        <div class="right_col" role="main">
             <div class="x_panel">
-
                 <div class="x_title collapse-link">
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                     </ul>
-                    <h3>拍卖信息补全
-                    </h3>
+                    <h2><i class="fa ${baseViewDto.currentMenu.icon}"></i>
+                        ${baseViewDto.currentMenu.name} <%--这是用来显示标题的，固定格式--%>
+                    </h2>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-                    <div class="row">
-                        <div class="panel-body">
-                            <form id="master_form" class="form-horizontal">
-                                <input type="hidden" name="id" value="${netInfoAssignTask.id}">
-
-                                <table class="table table-bordered" id="transaction_List">
-                                    <!-- cerare document add ajax data-->
-                                </table>
-                            </form>
-
+                    <form id="frmQuery" class="form-horizontal">
+                        <div class="form-group">
+                            <div>
+                                <label class="col-sm-1 control-label">
+                                    内容
+                                </label>
+                                <div class="col-sm-3">
+                                    <input type="text" data-rule-maxlength="50"
+                                           placeholder="内容" id="queryContent" name="queryContent"
+                                           class="form-control">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="col-sm-1 control-label">
+                                    标题
+                                </label>
+                                <div class="col-sm-3">
+                                    <input type="text" data-rule-maxlength="50"
+                                           placeholder="标题" id="queryTitle" name="queryTitle"
+                                           class="form-control">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="col-sm-1 control-label">
+                                    网站
+                                </label>
+                                <div class="col-sm-3">
+                                    <select class="form-control" required id="queryWebName">
+                                        <option value="">--请选择--</option>
+                                        <c:if test="${not empty webTypes}">
+                                            <c:forEach items="${webTypes}" var="item">
+                                                <option value="${item}">${item}</option>
+                                            </c:forEach>
+                                        </c:if>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
-
-                    </div>
+                        <div class="form-group ">
+                            <div>
+                                <label class="col-sm-1 control-label">省
+                                </label>
+                                <div class="col-sm-3">
+                                    <select id="province" name="province"
+                                            class="form-control search-select select2" required="required">
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="col-sm-1 control-label">市
+                                </label>
+                                <div class="col-sm-3">
+                                    <select id="city" name="city" class="form-control search-select select2"
+                                            required="required">
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="col-sm-1 control-label">
+                                    类型
+                                </label>
+                                <div class="col-sm-3">
+                                    <input type="text" data-rule-maxlength="50"
+                                           placeholder="类型" id="queryType" name="queryType"
+                                           class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">
+                                    开始日期
+                                </label>
+                                <div class="col-sm-3">
+                                    <input placeholder="开始日期" id="queryStartTime" data-date-format="yyyy-mm-dd"
+                                           class="form-control date-picker dbdate roomTime">
+                                </div>
+                            </div>
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">
+                                    结束日期
+                                </label>
+                                <div class="col-sm-3">
+                                    <input placeholder="结束日期" id="queryEndTime" data-date-format="yyyy-mm-dd"
+                                           class="form-control date-picker dbdate roomTime">
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <button type="button" class="btn btn-primary"
+                                        onclick="detailInfo.prototype.loadDataDicList()">
+                                    查询
+                                </button>
+                                <button type="button" class="btn btn-primary"
+                                        onclick="detailInfo.prototype.assignTask()">
+                                    发起审批
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    <input type="hidden" id="selectIds">
+                    <table class="table table-bordered" id="transaction_List">
+                        <!-- cerare document add ajax data-->
+                    </table>
                 </div>
             </div>
-
-            <!-- 公共尾部模块引用 -->
-            <div class="panel-body">
-                <div class="form-group">
-                    <div class="col-md-4 col-sm-4 col-xs-12 col-sm-offset-5">
-                        <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
-                            取消
-                        </button>
-
-                        <button id="commit_btn" class="btn btn-success" onclick="masterObj.commit();">
-                            提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <%--返回修改--%>
-            <c:if test="${processInsId != 0}">
-                <%@include file="/views/share/form_log.jsp" %>
-                <form id="process_variable_form">
-                    <%@include file="/views/share/form_edit.jsp" %>
-                </form>
-            </c:if>
-            <!-- 尾部end -->
-
         </div>
 
     </div>
-
+    <!-- end: MAIN CONTAINER -->
 </div>
-
+</body>
 <div id="divBoxFather" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -146,20 +200,20 @@
                                                 土地类型
                                             </label>
                                             <div class="col-sm-2">
-                                                <div class="input-group">
-                                                    <input type="text"  name="belongType" class="form-control" list="landUseList">
-                                                    <datalist id="landUseList">
+                                                    <div class="input-group">
+                                                        <input type="text"  name="belongType" class="form-control" list="landUseList">
+                                                        <datalist id="landUseList">
 
-                                                    </datalist>
-                                                    <span class="input-group-btn">
+                                                        </datalist>
+                                                        <span class="input-group-btn">
                                                 <button type="button" class="btn btn-default docs-tooltip"
                                                         onclick="$(this).closest('.input-group').find('input').val('');"
                                                         data-toggle="tooltip" data-original-title="清除">
                                                 <i class="fa fa-trash-o"></i>
                                                 </button>
                                             </span>
+                                                    </div>
                                                 </div>
-                                            </div>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -642,95 +696,18 @@
         </div>
     </div>
 </div>
+
 <%@include file="/views/share/main_footer.jsp" %>
-</body>
-</html>
-
 <script type="text/javascript">
-    $(function(){
+    $(function () {
         detailInfo.prototype.loadDataDicList();
-    })
-
-
-    var masterObj = {
-
-    };
-
-
-
-    /**
-     * 提交数据
-     * @returns {*}
-     */
-    masterObj.commit = function() {
-        if ("${processInsId}" == "0") {
-            //申请
-            commit();
-        } else {
-            //修改提交
-            editCommit();
-        }
-    }
-    
-    //申请提交
-    function commit() {
-        if(!$("#master_form").valid()){
-            return false;
-        }
-        var data = formParams("master_form");
-        data.projectId = "${projectInfo.id}";
-        Loading.progressShow("正在提交数据...");
-        $.ajax({
-            url: "${pageContext.request.contextPath}/netInfoAssignTask/applyCommit",
-            type: "post",
-            data: data,
-            success: function (result) {
-                Loading.progressHide();
-                if (result.ret) {
-                    Alert("提交数据成功!", 1, null, function () {
-                        window.close();
-                    });
-                }
-                else {
-                    Alert("提交数据失败，失败原因:" + result.errmsg);
-                }
-            },
-            error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
-            }
-        });
-    };
-
-    //返回修改
-    function editCommit() {
-        var data = formParams("master_form");
-
-        //返回修改要提交的数据
-        var approvalModelDto = formSerializeArray($("#process_variable_form"));
-        approvalModelDto.businessDataJson = JSON.stringify(data);
-        Loading.progressShow("正在提交数据...");
-        $.ajax({
-            url: "${pageContext.request.contextPath}/netInfoAssignTask/editCommit",
-            type: "post",
-            data: approvalModelDto,
-            success: function (result) {
-                Loading.progressHide();
-                if (result.ret) {
-                    Alert("提交数据成功!", 1, null, function () {
-                        window.close();
-                    });
-                }
-                else {
-                    Alert("提交数据失败，失败原因:" + result.errmsg);
-                }
-            },
-            error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
-            }
-        });
-    };
-
-
+        AssessCommon.initAreaInfo({
+            useDefaultText: false,
+            provinceTarget: $("#province"),
+            cityTarget: $("#city"),
+            districtTarget: $("#district")
+        })
+    });
     var detailInfo = function () {
 
     };
@@ -765,6 +742,24 @@
             cols.push({field: 'consultPrice', title: '估算价', width: '5%'});
             cols.push({field: 'currentPrice', title: '成交价', width: '5%'});
             cols.push({
+                field: 'status', width: '5%', title: '状态', formatter: function (value, row, index) {
+                    var s;
+                    if (row.status == 1) {
+                        s = '-';
+                    }
+                    if (row.status == 2) {
+                        s = '已填写';
+                    }
+                    if (row.status == 3) {
+                        s = '审批中';
+                    }
+                    if (row.status == 4) {
+                        s = '审批通过';
+                    }
+                    return s;
+                }
+            });
+            cols.push({
                 field: 'id', width: '6%', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="补全信息" onclick="detailInfo.prototype.getAndInit(' + row.id + ')"><i class="fa fa-edit fa-white"></i></a>';
@@ -774,8 +769,15 @@
                 }
             });
             $("#" + detailInfo.prototype.config().table).bootstrapTable('destroy');
-            TableInit(detailInfo.prototype.config().table, "${pageContext.request.contextPath}/netInfoRecordController/getInfoRecordListByIds", cols, {
-                ids: '${netInfoAssignTask.netInfoIds}'
+            TableInit(detailInfo.prototype.config().table, "${pageContext.request.contextPath}/netInfoRecordMyTaskController/getInfoRecordList", cols, {
+                queryTitle: $("#queryTitle").val(),
+                queryWebName: $("#queryWebName").val(),
+                province: $("#province").val(),
+                city: $("#city").val(),
+                queryContent: $("#queryContent").val(),
+                queryType: $("#queryType").val(),
+                queryStartTime: $("#queryStartTime").val(),
+                queryEndTime: $("#queryEndTime").val()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -783,7 +785,7 @@
                 onLoadSuccess: function () {
                     $('.tooltips').tooltip();
                 }
-            });
+            }, true);
         },
         openItem: function (index) {
             var row = $("#transaction_List").bootstrapTable('getData')[index];
@@ -944,6 +946,24 @@
                 }
             })
         },
+        assignTask: function () {
+            var rows = $('#transaction_List').bootstrapTable('getSelections');
+
+            if (rows && rows.length > 0) {
+                var idArray = [];
+                $.each(rows, function (i, item) {
+                    idArray.push(item.id);
+                })
+                var ids = idArray.join()
+                $("#selectIds").val(ids);
+                //确认
+                var href = "${pageContext.request.contextPath}/netInfoAssignTask/apply";
+                href += "?ids=" + ids;
+                window.open(href, "");
+            } else {
+                toastr.info('请选择要审批的数据');
+            }
+        },
         loadOnclickData: function (id) {
             var cols = [];
             cols.push({field: 'title', title: '标题', width: '15%'});
@@ -988,4 +1008,9 @@
         },
 
     }
+
+
 </script>
+
+
+</html>

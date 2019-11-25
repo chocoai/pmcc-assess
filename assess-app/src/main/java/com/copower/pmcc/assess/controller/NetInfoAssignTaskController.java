@@ -1,18 +1,18 @@
 package com.copower.pmcc.assess.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
 import com.copower.pmcc.assess.dal.basis.entity.NetInfoAssignTask;
 import com.copower.pmcc.assess.service.NetInfoAssignTaskService;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
-import com.copower.pmcc.assess.service.project.ProjectInfoService;
-import com.copower.pmcc.assess.service.project.ProjectStateChangeService;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -36,27 +35,25 @@ public class NetInfoAssignTaskController extends BaseController {
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
-    private ProjectStateChangeService stateChangeService;
-    @Autowired
     private BaseParameterService baseParameterService;
     @Autowired
     private BpmRpcBoxService bpmRpcBoxService;
     @Autowired
-    private ProjectInfoService projectInfoService;
+    private CommonService commonService;
     @Autowired
     private NetInfoAssignTaskService netInfoAssignTaskService;
 
     @RequestMapping(value = "/apply", name = "拍卖信息补充申请")
-    public ModelAndView apply(Integer id) throws BusinessException {
+    public ModelAndView apply(String ids) throws BusinessException {
+        NetInfoAssignTask netInfoAssignTask = new NetInfoAssignTask();
+        netInfoAssignTask.setNetInfoIds(ids);
+        netInfoAssignTask.setCreator(commonService.thisUserAccount());
+        netInfoAssignTaskService.addNetInfoAssignTask(netInfoAssignTask);
         //获取流程模型
         String boxName = baseParameterService.getBaseParameter(BaseParameterEnum.NET_INFO_COMPLEMENT_PROCESS_KEY);
         BoxReDto boxReDto = bpmRpcBoxService.getBoxReByBoxName(boxName);
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("net/netInfoAssignTaskApply", boxReDto.getId());
-        NetInfoAssignTask data = netInfoAssignTaskService.getDataById(id);
-        modelAndView.addObject("netInfoAssignTask", data);
-        String[] unitListStr = new String[]{"建筑面积", "土地面积", "生产能力"};
-        List<String> unitList = Arrays.asList(unitListStr);
-        modelAndView.addObject("unitList", unitList);
+        modelAndView.addObject("netInfoAssignTask", netInfoAssignTask);
         return modelAndView;
     }
 
@@ -103,9 +100,6 @@ public class NetInfoAssignTaskController extends BaseController {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("net/netInfoAssignTaskApply", processInsId, boxId, taskId, agentUserAccount);
         NetInfoAssignTask data = netInfoAssignTaskService.getDataByProcessInsId(processInsId);
         modelAndView.addObject("netInfoAssignTask", data);
-        String[] unitListStr = new String[]{"建筑面积", "土地面积", "生产能力"};
-        List<String> unitList = Arrays.asList(unitListStr);
-        modelAndView.addObject("unitList", unitList);
         return modelAndView;
     }
 
@@ -113,13 +107,19 @@ public class NetInfoAssignTaskController extends BaseController {
     @ResponseBody
     public HttpResult editCommit(String businessDataJson, ApprovalModelDto approvalModelDto) {
         try {
-//            NetInfoAssignTask netInfoAssignTask = JSON.parseObject(businessDataJson, NetInfoAssignTask.class);
-//            netInfoAssignTaskService.editData(netInfoAssignTask);
+            //Integer id = JSON.parseObject(businessDataJson, Integer.class);
             netInfoAssignTaskService.processEditSubmit(approvalModelDto);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             log.error("修改失败", e);
             return HttpResult.newErrorResult(e);
         }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/list", name = "取得土地信息", method = RequestMethod.GET)
+    public BootstrapTableVo list(String ids) {
+        List<Integer> integers = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(ids));
+        return netInfoAssignTaskService.getNetInfoRecordApprovalVos(integers);
     }
 }

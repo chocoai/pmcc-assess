@@ -1,11 +1,17 @@
 package com.copower.pmcc.assess.service;
 
+import com.copower.pmcc.assess.common.ArithmeticUtils;
 import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoAssignTaskDao;
 import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordDao;
 import com.copower.pmcc.assess.dal.basis.entity.NetInfoAssignTask;
 import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecord;
+import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordHouse;
+import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordLand;
+import com.copower.pmcc.assess.dto.output.net.NetInfoRecordApprovalVo;
+import com.copower.pmcc.assess.dto.output.net.NetInfoRecordHouseVo;
+import com.copower.pmcc.assess.dto.output.net.NetInfoRecordLandVo;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
 import com.copower.pmcc.assess.service.event.project.NetInfoAssignTaskEvent;
 import com.copower.pmcc.bpm.api.dto.ProcessUserDto;
@@ -18,17 +24,29 @@ import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -47,6 +65,10 @@ public class NetInfoAssignTaskService {
     private BpmRpcProjectTaskService bpmRpcProjectTaskService;
     @Autowired
     private NetInfoRecordDao netInfoRecordDao;
+    @Autowired
+    private NetInfoRecordHouseService netInfoRecordHouseService;
+    @Autowired
+    private NetInfoRecordLandService netInfoRecordLandService;
 
 
     private final Logger log = LoggerFactory.getLogger(getClass());
@@ -63,9 +85,9 @@ public class NetInfoAssignTaskService {
 
             List<Integer> integers = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(netInfoAssignTask.getNetInfoIds()));
             List<NetInfoRecord> infoRecords = LangUtils.transform(integers, o -> netInfoRecordDao.getInfoById(o));
-            if(CollectionUtils.isNotEmpty(infoRecords)){
-                for (NetInfoRecord netInfo: infoRecords) {
-                    netInfo.setStatus(1);
+            if (CollectionUtils.isNotEmpty(infoRecords)) {
+                for (NetInfoRecord netInfo : infoRecords) {
+                    netInfo.setStatus(3);
                     netInfoRecordDao.updateInfo(netInfo);
                 }
             }
@@ -150,5 +172,99 @@ public class NetInfoAssignTaskService {
         netInfoAssignTaskDao.modifyNetInfoAssignTask(netInfoAssignTask);
     }
 
+    public void addNetInfoAssignTask(NetInfoAssignTask netInfoAssignTask) {
+        netInfoAssignTaskDao.addNetInfoAssignTask(netInfoAssignTask);
+    }
 
+
+    public BootstrapTableVo getNetInfoRecordApprovalVos(List<Integer> integers) {
+        if (CollectionUtils.isEmpty(integers)) return null;
+        BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        List<NetInfoRecordApprovalVo> list = Lists.newArrayList();
+        List<NetInfoRecord> infoRecords = LangUtils.transform(integers, o -> netInfoRecordDao.getInfoById(o));
+        if (CollectionUtils.isNotEmpty(infoRecords)) {
+            for (NetInfoRecord netInfo : infoRecords) {
+                if (StringUtils.equals(netInfo.getBelongType(), "房产")) {
+                    NetInfoRecordHouse house = new NetInfoRecordHouse();
+                    house.setMasterId(netInfo.getId());
+                    List<NetInfoRecordHouseVo> vos = netInfoRecordHouseService.getVos(house);
+                    if (CollectionUtils.isNotEmpty(vos)) {
+                        NetInfoRecordHouseVo netInfoRecordHouseVo = vos.get(vos.size() - 1);
+                        NetInfoRecordApprovalVo vo = new NetInfoRecordApprovalVo();
+                        BeanUtils.copyProperties(netInfoRecordHouseVo, vo);
+                        vo.setSourceSiteUrl(netInfo.getSourceSiteUrl());
+                        StringBuilder content = new StringBuilder();
+                        content.append("大类:").append(StringUtils.isEmpty(netInfoRecordHouseVo.getType()) ? "未知" : netInfoRecordHouseVo.getType()).append(";");
+                        content.append("房产类型:").append(StringUtils.isEmpty(netInfoRecordHouseVo.getBelongType()) ? "未知" : netInfoRecordHouseVo.getBelongType()).append(";");
+                        content.append("房产类别:").append(StringUtils.isEmpty(netInfoRecordHouseVo.getBelongCategory()) ? "未知" : netInfoRecordHouseVo.getBelongCategory()).append(";");
+                        content.append("街道:").append(StringUtils.isEmpty(netInfoRecordHouseVo.getStreet()) ? "未知" : netInfoRecordHouseVo.getStreet()).append(";");
+                        content.append("面积:").append(netInfoRecordHouseVo.getArea() == null ? "未知" : netInfoRecordHouseVo.getArea()).append(";");
+                        content.append("楼盘名称:").append(StringUtils.isEmpty(netInfoRecordHouseVo.getName()) ? "未知" : netInfoRecordHouseVo.getName()).append(";");
+                        content.append("交易方式:").append(StringUtils.isEmpty(netInfoRecordHouseVo.getDealTypeName()) ? "未知" : netInfoRecordHouseVo.getDealTypeName()).append(";");
+                        content.append("成交价:").append(netInfoRecordHouseVo.getCurrentPrice() == null ? "未知" : netInfoRecordHouseVo.getCurrentPrice()).append(";");
+                        content.append("成交(协商)日期:").append(netInfoRecordHouseVo.getNegotiatedDate() == null ? "未知" : DateUtils.format(netInfoRecordHouseVo.getNegotiatedDate(), DateUtils.DATE_CHINESE_PATTERN)).append(";");
+                        content.append("评估价:").append(netInfoRecordHouseVo.getConsultPrice() == null ? "未知" : netInfoRecordHouseVo.getConsultPrice()).append(";");
+                        content.append("评估基准日:").append(netInfoRecordHouseVo.getAssessStandardDate() == null ? "未知" : DateUtils.format(netInfoRecordHouseVo.getAssessStandardDate(), DateUtils.DATE_CHINESE_PATTERN)).append(";");
+                        content.append("单价:").append(netInfoRecordHouseVo.getUnitPrice() == null ? "未知" : netInfoRecordHouseVo.getUnitPrice()).append(";");
+                        content.append("变现率:").append(netInfoRecordHouseVo.getHouseRealizationRatios() == null ? "未知" : ArithmeticUtils.getPercentileSystem(netInfoRecordHouseVo.getHouseRealizationRatios(), 4, BigDecimal.ROUND_HALF_UP)).append(";");
+                        content.append("变现周期:").append(StringUtils.isEmpty(netInfoRecordHouseVo.getRealizationCycle()) ? "未知" : netInfoRecordHouseVo.getRealizationCycle()).append(";");
+                        content.append("成交对象概况:").append(StringUtils.isEmpty(netInfoRecordHouseVo.getDealPartInfo()) ? "未知" : netInfoRecordHouseVo.getDealPartInfo()).append(";");
+                        vo.setContent(content.toString());
+                        list.add(vo);
+                    }
+                }
+                if (StringUtils.equals(netInfo.getBelongType(), "土地")) {
+                    NetInfoRecordLand land = new NetInfoRecordLand();
+                    land.setMasterId(netInfo.getId());
+                    List<NetInfoRecordLandVo> vos = netInfoRecordLandService.getVos(land);
+                    if (CollectionUtils.isNotEmpty(vos)) {
+                        NetInfoRecordLandVo netInfoRecordLandVo = vos.get(vos.size() - 1);
+                        NetInfoRecordApprovalVo vo = new NetInfoRecordApprovalVo();
+                        BeanUtils.copyProperties(netInfoRecordLandVo, vo);
+                        vo.setSourceSiteUrl(netInfo.getSourceSiteUrl());
+                        StringBuilder content = new StringBuilder();
+                        content.append("大类:").append(StringUtils.isEmpty(netInfoRecordLandVo.getType()) ? "未知" : netInfoRecordLandVo.getType()).append(";");
+                        content.append("土地类型:").append(StringUtils.isEmpty(netInfoRecordLandVo.getBelongType()) ? "未知" : netInfoRecordLandVo.getBelongType()).append(";");
+                        content.append("土地类别:").append(StringUtils.isEmpty(netInfoRecordLandVo.getBelongCategory()) ? "未知" : netInfoRecordLandVo.getBelongCategory()).append(";");
+                        content.append("土地性质:").append(StringUtils.isEmpty(netInfoRecordLandVo.getLandPurpose()) ? "未知" : netInfoRecordLandVo.getLandPurpose()).append(";");
+                        content.append("街道:").append(StringUtils.isEmpty(netInfoRecordLandVo.getStreet()) ? "未知" : netInfoRecordLandVo.getStreet()).append(";");
+                        content.append("面积:").append(netInfoRecordLandVo.getArea() == null ? "未知" : netInfoRecordLandVo.getArea()).append(";");
+                        content.append("单位（平方米、亩）:").append(netInfoRecordLandVo.getAreaUnit() == null ? "未知" : netInfoRecordLandVo.getAreaUnit()).append(";");
+                        content.append("地块名称:").append(StringUtils.isEmpty(netInfoRecordLandVo.getName()) ? "未知" : netInfoRecordLandVo.getName()).append(";");
+                        content.append("宗地编号:").append(netInfoRecordLandVo.getParcelNumber() == null ? "未知" : netInfoRecordLandVo.getParcelNumber()).append(";");
+                        content.append("宗地位置:").append(netInfoRecordLandVo.getParcelSite() == null ? "未知" : netInfoRecordLandVo.getParcelSite()).append(";");
+                        content.append("交易方式:").append(StringUtils.isEmpty(netInfoRecordLandVo.getDealTypeName()) ? "未知" : netInfoRecordLandVo.getDealTypeName()).append(";");
+                        content.append("成交(协商)日期:").append(netInfoRecordLandVo.getNegotiatedDate() == null ? "未知" : DateUtils.format(netInfoRecordLandVo.getNegotiatedDate(), DateUtils.DATE_CHINESE_PATTERN)).append(";");
+                        content.append("评估价:").append(netInfoRecordLandVo.getConsultPrice() == null ? "未知" : netInfoRecordLandVo.getConsultPrice()).append(";");
+                        content.append("评估基准日:").append(netInfoRecordLandVo.getAssessStandardDate() == null ? "未知" : DateUtils.format(netInfoRecordLandVo.getAssessStandardDate(), DateUtils.DATE_CHINESE_PATTERN)).append(";");
+                        content.append("单价:").append(netInfoRecordLandVo.getUnitPrice() == null ? "未知" : netInfoRecordLandVo.getUnitPrice()).append(";");
+                        content.append("楼面地价:").append(netInfoRecordLandVo.getFloorPrice() == null ? "未知" : netInfoRecordLandVo.getFloorPrice()).append(";");
+                        content.append("变现率:").append(netInfoRecordLandVo.getLandRealizationRatios() == null ? "未知" : ArithmeticUtils.getPercentileSystem(netInfoRecordLandVo.getLandRealizationRatios(), 4, BigDecimal.ROUND_HALF_UP)).append(";");
+                        content.append("变现周期:").append(StringUtils.isEmpty(netInfoRecordLandVo.getRealizationCycle()) ? "未知" : netInfoRecordLandVo.getRealizationCycle()).append(";");
+                        content.append("净用地面积:").append(netInfoRecordLandVo.getLandArea() == null ? "未知" : netInfoRecordLandVo.getLandArea()).append(";");
+                        content.append("容积率:").append(netInfoRecordLandVo.getPlotRatio() == null ? "未知" : netInfoRecordLandVo.getPlotRatio()).append(";");
+                        content.append("容积率说明:").append(netInfoRecordLandVo.getPlotRatioRemark() == null ? "未知" : netInfoRecordLandVo.getPlotRatioRemark()).append(";");
+                        content.append("绿化率:").append(netInfoRecordLandVo.getGreeningRate() == null ? "未知" : ArithmeticUtils.getPercentileSystem(netInfoRecordLandVo.getGreeningRate(), 4, BigDecimal.ROUND_HALF_UP)).append(";");
+                        content.append("绿化率说明:").append(StringUtils.isEmpty(netInfoRecordLandVo.getGreeningRateRemark()) ? "未知" : netInfoRecordLandVo.getGreeningRateRemark()).append(";");
+                        content.append("建筑密度:").append(netInfoRecordLandVo.getBuildDensity() == null ? "未知" : netInfoRecordLandVo.getBuildDensity()).append(";");
+                        content.append("建筑密度说明:").append(StringUtils.isEmpty(netInfoRecordLandVo.getBuildDensityRemark()) ? "未知" : netInfoRecordLandVo.getBuildDensityRemark()).append(";");
+                        content.append("建筑高度:").append(netInfoRecordLandVo.getBuildHeight() == null ? "未知" : netInfoRecordLandVo.getBuildHeight()).append(";");
+                        content.append("建筑高度说明:").append(StringUtils.isEmpty(netInfoRecordLandVo.getBuildHeightRemark()) ? "未知" : netInfoRecordLandVo.getBuildHeightRemark()).append(";");
+                        content.append("指标款:").append(netInfoRecordLandVo.getIndexAmount() == null ? "未知" : netInfoRecordLandVo.getIndexAmount()).append(";");
+                        content.append("指标款说明:").append(StringUtils.isEmpty(netInfoRecordLandVo.getIndexAmountRemark()) ? "未知" : netInfoRecordLandVo.getIndexAmountRemark()).append(";");
+                        content.append("成交对象概况:").append(StringUtils.isEmpty(netInfoRecordLandVo.getDealPartInfo()) ? "未知" : netInfoRecordLandVo.getDealPartInfo()).append(";");
+                        vo.setContent(content.toString());
+                        list.add(vo);
+                    }
+                }
+            }
+        }
+        bootstrapTableVo.setTotal(page.getTotal());
+        bootstrapTableVo.setRows(org.apache.commons.collections.CollectionUtils.isEmpty(list) ? new ArrayList<NetInfoRecordApprovalVo>() : list);
+        return bootstrapTableVo;
+
+
+    }
 }

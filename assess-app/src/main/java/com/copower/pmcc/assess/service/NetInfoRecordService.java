@@ -2,11 +2,9 @@ package com.copower.pmcc.assess.service;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.copower.pmcc.assess.common.enums.ResponsibileModelEnum;
 import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoAssignTaskDao;
 import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordContentDao;
 import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordDao;
-import com.copower.pmcc.assess.dal.basis.entity.NetInfoAssignTask;
 import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecord;
 import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordContent;
 import com.copower.pmcc.assess.dto.input.net.JDSFDto;
@@ -15,11 +13,9 @@ import com.copower.pmcc.assess.dto.input.net.TBSFDto;
 import com.copower.pmcc.assess.dto.input.net.ZGSFDto;
 import com.copower.pmcc.assess.dto.output.net.NetInfoRecordVo;
 import com.copower.pmcc.assess.service.project.generate.GenerateCommonMethod;
-import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
-import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.DateUtils;
@@ -199,9 +195,9 @@ public class NetInfoRecordService {
                             Elements body = getContent(String.format("%s" + contentHref, "https:"), "body", "GBK");
                             NetInfoRecordContent netInfoRecordContent = new NetInfoRecordContent();
                             netInfoRecordContent.setRecordId(netInfoRecord.getId());
-                            if(body.html().length()>30000){
-                                netInfoRecordContent.setFullDescription(body.html().substring(0,30000));
-                            }else {
+                            if (body.html().length() > 30000) {
+                                netInfoRecordContent.setFullDescription(body.html().substring(0, 30000));
+                            } else {
                                 netInfoRecordContent.setFullDescription(body.html());
                             }
                             netInfoRecordContentDao.addInfo(netInfoRecordContent);
@@ -477,9 +473,9 @@ public class NetInfoRecordService {
                         if (contentBody.size() != 0 && contentBody != null) {
                             NetInfoRecordContent netInfoRecordContent = new NetInfoRecordContent();
                             netInfoRecordContent.setRecordId(netInfoRecord.getId());
-                            if(contentBody.html().length()>30000){
-                                netInfoRecordContent.setFullDescription(contentBody.html().substring(0,30000));
-                            }else {
+                            if (contentBody.html().length() > 30000) {
+                                netInfoRecordContent.setFullDescription(contentBody.html().substring(0, 30000));
+                            } else {
                                 netInfoRecordContent.setFullDescription(contentBody.html());
                             }
                             netInfoRecordContentDao.addInfo(netInfoRecordContent);
@@ -591,9 +587,9 @@ public class NetInfoRecordService {
                         if (contentBody.size() != 0 && contentBody != null) {
                             NetInfoRecordContent netInfoRecordContent = new NetInfoRecordContent();
                             netInfoRecordContent.setRecordId(netInfoRecord.getId());
-                            if(contentBody.html().length()>30000){
-                                netInfoRecordContent.setFullDescription(contentBody.html().substring(0,30000));
-                            }else {
+                            if (contentBody.html().length() > 30000) {
+                                netInfoRecordContent.setFullDescription(contentBody.html().substring(0, 30000));
+                            } else {
                                 netInfoRecordContent.setFullDescription(contentBody.html());
                             }
                             netInfoRecordContentDao.addInfo(netInfoRecordContent);
@@ -712,9 +708,9 @@ public class NetInfoRecordService {
                             if (contentBody.size() != 0 && contentBody != null) {
                                 NetInfoRecordContent netInfoRecordContent = new NetInfoRecordContent();
                                 netInfoRecordContent.setRecordId(netInfoRecord.getId());
-                                if(contentBody.get(1).html().length()>30000){
-                                    netInfoRecordContent.setFullDescription(contentBody.get(1).html().substring(0,30000));
-                                }else {
+                                if (contentBody.get(1).html().length() > 30000) {
+                                    netInfoRecordContent.setFullDescription(contentBody.get(1).html().substring(0, 30000));
+                                } else {
                                     netInfoRecordContent.setFullDescription(contentBody.get(1).html());
                                 }
                                 netInfoRecordContentDao.addInfo(netInfoRecordContent);
@@ -1666,7 +1662,7 @@ public class NetInfoRecordService {
         }
     }
 
-    public BootstrapTableVo getInfoRecordList(String queryTitle, String queryWebName, String province, String city, String queryContent, String queryType, String queryStartTime, String queryEndTime) throws Exception {
+    public BootstrapTableVo getInfoRecordList(String queryTitle, String queryWebName, String province, String city, String queryContent, String queryType, String queryStartTime, String queryEndTime, String executor, Integer status) throws Exception {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
@@ -1684,7 +1680,7 @@ public class NetInfoRecordService {
             calendar.add(Calendar.DAY_OF_MONTH, +1); //得到后1天
             endTimeParse = calendar.getTime();
         }
-        List<NetInfoRecord> netInfoRecords = netInfoRecordDao.getNetInfoRecordListByName(queryTitle, queryWebName, provinceName, cityName, queryContent, queryType, startTimeParse, endTimeParse);
+        List<NetInfoRecord> netInfoRecords = netInfoRecordDao.getNetInfoRecordListByName(queryTitle, queryWebName, provinceName, cityName, queryContent, queryType, startTimeParse, endTimeParse, executor, status);
         List<NetInfoRecordVo> vos = LangUtils.transform(netInfoRecords, o -> getNetInfoRecordVo(o));
         bootstrapTableVo.setTotal(page.getTotal());
         bootstrapTableVo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<NetInfoRecord>() : vos);
@@ -1708,16 +1704,16 @@ public class NetInfoRecordService {
             netInfoRecordVo.setLiquidCycle(String.format("%s%s", value, "天"));
         }
         if (netInfoRecord.getStatus().equals(0)) {
-            netInfoRecordVo.setStatusName("-");
+            netInfoRecordVo.setStatusName("未分派");
         }
         if (netInfoRecord.getStatus().equals(1)) {
-            netInfoRecordVo.setStatusName("审批中");
+            netInfoRecordVo.setStatusName("已分派");
         }
         if (netInfoRecord.getStatus().equals(2)) {
-            netInfoRecordVo.setStatusName("完成");
+            netInfoRecordVo.setStatusName("审批中");
         }
         if (netInfoRecord.getStatus().equals(3)) {
-            netInfoRecordVo.setStatusName("已分派");
+            netInfoRecordVo.setStatusName("审批通过");
         }
         return netInfoRecordVo;
     }
@@ -1741,42 +1737,18 @@ public class NetInfoRecordService {
         this.getNetInfoFromTB(732);
     }
 
-    //分派任务
-    public void assignTask(String executor, String ids) throws Exception{
+
+    public void assignTask(String executor, String ids) throws Exception {
         List<Integer> integers = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(ids));
         List<NetInfoRecord> infoRecords = LangUtils.transform(integers, o -> netInfoRecordDao.getInfoById(o));
-        if(CollectionUtils.isNotEmpty(infoRecords)){
-            for (NetInfoRecord netInfo: infoRecords) {
-                if(netInfo.getStatus().equals(1)||netInfo.getStatus().equals(3)){
-                    throw new BusinessException("不能存在已经分派的信息或审批中的信息");
-                }
-            }
-            //状态为已分派
-            for (NetInfoRecord netInfo: infoRecords) {
-                netInfo.setStatus(3);
-                netInfoRecordDao.updateInfo(netInfo);
-            }
+        //状态为已分派
+        for (NetInfoRecord netInfo : infoRecords) {
+            netInfo.setStatus(1);
+            netInfo.setExecutor(executor);
+            netInfoRecordDao.updateInfo(netInfo);
         }
 
-        NetInfoAssignTask netInfoAssignTask = new NetInfoAssignTask();
-        netInfoAssignTask.setExecutor(executor);
-        netInfoAssignTask.setNetInfoIds(ids);
-        netInfoAssignTask.setCreator(commonService.thisUserAccount());
-        netInfoAssignTaskDao.addNetInfoAssignTask(netInfoAssignTask);
-        //发起任务
-        ProjectResponsibilityDto projectTask = new ProjectResponsibilityDto();
-        projectTask.setProjectName("拍卖信息");
-        projectTask.setUserAccount(executor);
-        projectTask.setBisEnable(true);
-        projectTask.setAppKey(applicationConstant.getAppKey());
-        projectTask.setPlanDetailsName("补全拍卖信息");
-
-        projectTask.setUrl("/pmcc-assess/netInfoAssignTask/apply?id=" + netInfoAssignTask.getId());
-        projectTask.setProjectDetailsUrl("/pmcc-assess/netInfoAssignTask/apply?id=" + netInfoAssignTask.getId());
-        projectTask.setCreator(commonService.thisUserAccount());
-        bpmRpcProjectTaskService.saveProjectTask(projectTask);
     }
-
 
     public BootstrapTableVo getInfoRecordListByIds(String ids) {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
