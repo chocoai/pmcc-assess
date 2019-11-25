@@ -219,6 +219,7 @@ public class GenerateReportService {
         if (isSource) {
             query.setTableId(generateReportInfo.getId());
             query.setTableName(FormatUtils.entityNameConvertToTableName(GenerateReportInfo.class));
+            query.setFieldsName(generateCommonMethod.getReportFieldsName(reportType, generateReportInfo.getAreaGroupId()));
         }
         //使用报告模板
         if (!isSource) {
