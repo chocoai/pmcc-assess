@@ -137,6 +137,15 @@
                                             <div id="_${reportType.fieldName}${generationVo.areaGroupId}"></div>
                                         </div>
                                     </div>
+
+                                    <div class="x-valid">
+                                        <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
+                                            结果表附件
+                                        </label>
+                                        <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                                            <div id="_${reportType.id}result_sheet_one${generationVo.areaGroupId}"></div>
+                                        </div>
+                                    </div>
                                 </div>
                             </c:forEach>
                         </form>
@@ -199,6 +208,8 @@
                         fileArray.push(tempArray.join(underline));
                     }
                 }
+                //单一的一个结果集
+                fileArray.push(value.id+"result_sheet_one") ;
             });
             if (callback) {
                 callback(fileArray);

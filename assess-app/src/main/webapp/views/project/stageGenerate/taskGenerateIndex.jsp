@@ -158,36 +158,27 @@
                             </div>
                             <c:forEach items="${reportTypeList}" var="reportType" varStatus="status">
                                 <div class="form-group">
-
                                     <div class="x-valid">
-
-                                        <div class="col-xs-1  col-sm-1  col-md-1  col-lg-1">
+                                            <%--<div class="col-xs-1  col-sm-1  col-md-1  col-lg-1">--%>
                                             <%--<a class="btn-primary btn "--%>
-                                               <%--onclick="reGetDocumentNumber('${projectPlan.projectId}','${generationVo.areaGroupId}','${reportType.id}')">重新拿号<i--%>
-                                                    <%--class="fa fa-undo"></i></a>--%>
-                                        </div>
+                                            <%--onclick="reGetDocumentNumber('${projectPlan.projectId}','${generationVo.areaGroupId}','${reportType.id}')">重新拿号<i--%>
+                                            <%--class="fa fa-undo"></i></a>--%>
+                                            <%--</div>--%>
 
                                         <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1">
+                                            <!-- 报告附件方法 -->
                                             <a class="btn-dark btn "
                                                onclick="generateReport('${generationVo.areaGroupId}','${reportType.id}',this)">生成${reportType.name}
                                                 <i class="fa fa-file-word-o"></i></a>
                                         </label>
+
                                         <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                                            <!-- 报告附件id -->
                                             <div id="_${reportType.fieldName}${generationVo.areaGroupId}"></div>
                                         </div>
+                                    </div>
 
-                                        <div class="col-xs-1  col-sm-1  col-md-1  col-lg-1">
-                                            <c:if test="${generationVo != null}">
-                                                <c:if test="${generationVo.id != null}">
-                                                    <input id="GGGGGG${reportType.fieldName}${generationVo.areaGroupId}"
-                                                           name="file" type="file" style="display: none"
-                                                           onchange="upFileLoadReport(this,'${reportType.fieldName}${generationVo.areaGroupId}' ,'${generationVo.id}' ,'${generationVo.areaGroupId}' )">
-                                                    <div class="btn btn-primary"
-                                                         onclick="$(this).prev().trigger('click')">上传报告
-                                                    </div>
-                                                </c:if>
-                                            </c:if>
-                                        </div>
+                                    <div class="x-valid">
                                         <div class="col-xs-1  col-sm-1  col-md-1  col-lg-1">
                                             <div class="btn-group">
                                                 <button type="button" class="btn btn-primary">
@@ -207,6 +198,18 @@
                                                 </ul>
                                             </div>
                                         </div>
+                                        <div class="col-xs-1  col-sm-1  col-md-1  col-lg-1">
+                                            <c:if test="${generationVo != null}">
+                                                <c:if test="${generationVo.id != null}">
+                                                    <input id="GGGGGG${reportType.fieldName}${generationVo.areaGroupId}"
+                                                           name="file" type="file" style="display: none"
+                                                           onchange="upFileLoadReport(this,'${reportType.fieldName}${generationVo.areaGroupId}' ,'${generationVo.id}' ,'${generationVo.areaGroupId}' )">
+                                                    <div class="btn btn-primary"
+                                                         onclick="$(this).prev().trigger('click')">上传报告
+                                                    </div>
+                                                </c:if>
+                                            </c:if>
+                                        </div>
                                     </div>
 
                                     <div class="x-valid">
@@ -217,6 +220,18 @@
                                         </div>
                                     </div>
 
+                                    <div class="x-valid">
+                                        <!-- 结果表附件 方法 -->
+                                        <div class="col-xs-1  col-sm-1  col-md-1  col-lg-1">
+                                            <a class="btn-primary btn "
+                                               onclick="resultSheetReport('${generationVo.areaGroupId}','${reportType.id}',this)">结果表附件<i
+                                                    class="fa fa-file-word-o"></i></a>
+                                        </div>
+                                        <!-- 结果表附件id -->
+                                        <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
+                                            <div id="_${reportType.id}result_sheet_one${generationVo.areaGroupId}"></div>
+                                        </div>
+                                    </div>
                                 </div>
                             </c:forEach>
                         </form>
@@ -337,6 +352,8 @@
                         fileArray.push(tempArray.join(underline));
                     }
                 }
+                //单一的一个结果集
+                fileArray.push(value.id+"result_sheet_one") ;
             });
             if (callback) {
                 callback(fileArray);
@@ -446,7 +463,7 @@
         });
     }
 
-    //拿号
+    //拿号 并替换文号
     function getReportNumber(areaId, reportType, item) {
         var form = $(item).closest("form");
         var data = formSerializeArray(form);
@@ -457,8 +474,40 @@
         if (!AssessCommon.isNumber(data.assessCategory)) {
             data.assessCategory = null;
         }
-        generateReportHandle(data,reportType, form, areaId, function () {
+        generateReportHandle(data, reportType, form, areaId, function () {
             toastr.success('拿号成功!');
+        });
+    }
+
+    //生成  结果集  附件
+    function resultSheetReport(areaId, reportType, item) {
+        var form = $(item).closest("form");
+        var data = formSerializeArray(form);
+        data.areaGroupId = areaId;
+        data.projectPlanId = '${projectPlan.id}';
+        data.projectId = '${projectPlan.projectId}';
+        if (!AssessCommon.isNumber(data.assessCategory)) {
+            data.assessCategory = null;
+        }
+        $.ajax({
+            url: "${pageContext.request.contextPath}/generateReport/resultSheetReport",
+            data: {fomData: JSON.stringify(data),reportType:reportType},
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    toastr.success('生成结果集附件成功!');
+                    getSchemeReportGeneration(data, function (info) {
+                        initFormSchemeReportGeneration(info, form, areaId);
+                    });
+                } else {
+                    Alert(result.errmsg);
+                }
+            },
+            error: function (result) {
+                alert("调用服务端方法失败，失败原因:" + result);
+            }
         });
     }
 
@@ -482,17 +531,17 @@
         if (!AssessCommon.isNumber(data.assessCategory)) {
             data.assessCategory = null;
         }
-        generateReportHandle(data,reportType ,form, areaId, function () {
+        generateReportHandle(data, reportType, form, areaId, function () {
             toastr.success('报告生成成功!');
         });
     }
 
     //报告替换 method
-    function generateReportHandle(data,ids, form, areaId, callback) {
+    function generateReportHandle(data, ids, form, areaId, callback) {
         Loading.progressShow();
         $.ajax({
             url: "${pageContext.request.contextPath}/generateReport/generate",
-            data: {ids:ids,fomData:JSON.stringify(data)},
+            data: {ids: ids, fomData: JSON.stringify(data)},
             type: "post",
             dataType: "json",
             success: function (result) {
