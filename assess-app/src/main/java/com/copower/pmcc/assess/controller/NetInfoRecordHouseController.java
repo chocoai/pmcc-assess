@@ -11,6 +11,7 @@ import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,9 +47,13 @@ public class NetInfoRecordHouseController {
 
 
     @ResponseBody
-    @RequestMapping(value = "/houseList", name = "取得土地信息", method = RequestMethod.GET)
-    public BootstrapTableVo houseList() {
+    @RequestMapping(value = "/houseList", name = "取得房产信息", method = RequestMethod.GET)
+    public BootstrapTableVo houseList(String province, String city, String district) {
         NetInfoRecordHouse netInfoRecordHouse = new NetInfoRecordHouse();
+        if (StringUtils.isNotEmpty(province)) netInfoRecordHouse.setProvince(province);
+        if (StringUtils.isNotEmpty(city)) netInfoRecordHouse.setCity(city);
+        if (StringUtils.isNotEmpty(district)) netInfoRecordHouse.setDistrict(district);
+        netInfoRecordHouse.setStatus(1);
         BootstrapTableVo vo = netInfoRecordHouseService.getNetInfoRecordHouseListVos(netInfoRecordHouse);
         return vo;
     }
@@ -70,7 +75,7 @@ public class NetInfoRecordHouseController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/delete", name = "删除文号规则", method = RequestMethod.POST)
+    @RequestMapping(value = "/delete", name = "删除", method = RequestMethod.POST)
     public HttpResult delete(@RequestParam(value = "id") Integer id) {
         try {
             netInfoRecordHouseService.removeNetInfoRecordHouse(id);

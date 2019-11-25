@@ -111,7 +111,7 @@
             cols.push({field: 'provinceName', title: '省', width: '5%'});
             cols.push({field: 'cityName', title: '市', width: '5%'});
             cols.push({field: 'districtName', title: '区', width: '5%'});
-            cols.push({field: 'content', title: '内容', width: '70%'});
+            cols.push({field: 'content', title: '内容', width: '77%'});
             cols.push({
                 field: 'id', title: '查看网址', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
@@ -121,7 +121,7 @@
                 }
             });
             $("#" + detailInfo.prototype.config().table).bootstrapTable('destroy');
-            TableInit(detailInfo.prototype.config().table, "${pageContext.request.contextPath}/netInfoRecordController/getInfoRecordListByIds", cols, {
+            TableInit(detailInfo.prototype.config().table, "${pageContext.request.contextPath}/netInfoAssignTask/list", cols, {
                 ids: '${netInfoAssignTask.netInfoIds}'
             }, {
                 showColumns: false,

@@ -11,6 +11,7 @@ import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,8 +48,12 @@ public class NetInfoRecordLandController {
 
     @ResponseBody
     @RequestMapping(value = "/landList", name = "取得土地信息", method = RequestMethod.GET)
-    public BootstrapTableVo landList() {
+    public BootstrapTableVo landList(String province,String city,String district) {
         NetInfoRecordLand netInfoRecordLand = new NetInfoRecordLand();
+        if(StringUtils.isNotEmpty(province))netInfoRecordLand.setProvince(province);
+        if(StringUtils.isNotEmpty(city))netInfoRecordLand.setCity(city);
+        if(StringUtils.isNotEmpty(district))netInfoRecordLand.setDistrict(district);
+        netInfoRecordLand.setStatus(1);
         BootstrapTableVo vo = netInfoRecordLandService.getNetInfoRecordLandListVos(netInfoRecordLand);
         return vo;
     }

@@ -7,11 +7,7 @@ import com.copower.pmcc.assess.dto.output.net.NetInfoRecordHouseVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
-import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
-import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
+import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -36,6 +32,8 @@ public class NetInfoRecordHouseService {
     private ErpAreaService erpAreaService;
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private NetInfoAssignTaskService netInfoAssignTaskService;
 
     public Integer saveAndUpdateNetInfoRecordHouse(NetInfoRecordHouse netInfoRecordHouse) {
         if (netInfoRecordHouse.getId() == null) {
@@ -52,13 +50,9 @@ public class NetInfoRecordHouseService {
     }
 
     public BootstrapTableVo getNetInfoRecordHouseListVos(NetInfoRecordHouse netInfoRecordHouse) {
-        BootstrapTableVo vo = new BootstrapTableVo();
-        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
-        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<NetInfoRecordHouseVo> vos = getVos(netInfoRecordHouse);
-        vo.setTotal(page.getTotal());
-        vo.setRows(vos);
-        return vo;
+        List<NetInfoRecordHouse> netInfoRecordHouses = netInfoRecordHouseDao.getNetInfoRecordHouseList(netInfoRecordHouse);
+        List<Integer> masterIds = LangUtils.transform(netInfoRecordHouses, o -> o.getMasterId());
+        return netInfoAssignTaskService.getNetInfoRecordApprovalVos(masterIds);
     }
 
     public List<NetInfoRecordHouseVo> getVos(NetInfoRecordHouse netInfoRecordHouse) {

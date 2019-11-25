@@ -82,6 +82,8 @@ public class NetInfoRecordLand {
 
     private String belongCategory;
 
+    private Integer status;
+
     public Integer getId() {
         return id;
     }
@@ -392,5 +394,13 @@ public class NetInfoRecordLand {
 
     public void setBelongCategory(String belongCategory) {
         this.belongCategory = belongCategory == null ? null : belongCategory.trim();
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }

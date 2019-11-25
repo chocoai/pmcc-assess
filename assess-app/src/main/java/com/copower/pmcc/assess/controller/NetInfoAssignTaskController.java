@@ -1,7 +1,6 @@
 package com.copower.pmcc.assess.controller;
 
 import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
-import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordDao;
 import com.copower.pmcc.assess.dal.basis.entity.NetInfoAssignTask;
 import com.copower.pmcc.assess.service.NetInfoAssignTaskService;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
@@ -13,6 +12,7 @@ import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 /**
  * 描述:
@@ -32,8 +34,6 @@ import org.springframework.web.servlet.ModelAndView;
 public class NetInfoAssignTaskController extends BaseController {
     @Autowired
     private ProcessControllerComponent processControllerComponent;
-    @Autowired
-    private NetInfoRecordDao netInfoRecordDao;
     @Autowired
     private BaseParameterService baseParameterService;
     @Autowired
@@ -107,6 +107,7 @@ public class NetInfoAssignTaskController extends BaseController {
     @ResponseBody
     public HttpResult editCommit(String businessDataJson, ApprovalModelDto approvalModelDto) {
         try {
+            //Integer id = JSON.parseObject(businessDataJson, Integer.class);
             netInfoAssignTaskService.processEditSubmit(approvalModelDto);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
@@ -117,7 +118,8 @@ public class NetInfoAssignTaskController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "/list", name = "取得土地信息", method = RequestMethod.GET)
-    public BootstrapTableVo landList(String ids) {
-        return netInfoAssignTaskService.getNetInfoRecordApprovalVos(ids);
+    public BootstrapTableVo list(String ids) {
+        List<Integer> integers = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(ids));
+        return netInfoAssignTaskService.getNetInfoRecordApprovalVos(integers);
     }
 }
