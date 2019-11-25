@@ -184,6 +184,7 @@ public class GenerateReportService {
     }
 
 
+
     /**
      * 创建报告模板(具体)
      *
@@ -219,6 +220,7 @@ public class GenerateReportService {
         if (isSource) {
             query.setTableId(generateReportInfo.getId());
             query.setTableName(FormatUtils.entityNameConvertToTableName(GenerateReportInfo.class));
+            query.setFieldsName(generateCommonMethod.getReportFieldsName(reportType, generateReportInfo.getAreaGroupId()));
         }
         //使用报告模板
         if (!isSource) {
@@ -1820,5 +1822,51 @@ public class GenerateReportService {
         return bookmarkAndRegexDtoHashSet;
     }
 
+
+    /**
+     * 仅仅生成结果集一个sheet
+     * @param generateReportInfo
+     * @throws Exception
+     */
+    public void resultSheetReport(GenerateReportInfo generateReportInfo,String reportType)throws Exception{
+        generateReportInfoService.saveGenerateReportInfo(generateReportInfo);
+        ProjectPlan projectPlan = projectPlanService.getProjectplanById(generateReportInfo.getProjectPlanId());
+        ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(generateReportInfo.getProjectId()));
+        GenerateBaseDataService generateBaseDataService = new GenerateBaseDataService(projectInfoVo, generateReportInfo.getAreaGroupId(), new BaseReportTemplate(), projectPlan);
+        String path = generateBaseDataService.getjudgeBuildResultSurveySheet(true);
+        resultSheetReportCreateSysAttachment(path,reportType,generateReportInfo) ;
+    }
+
+    private void resultSheetReportCreateSysAttachment(String path,String reportType, GenerateReportInfo generateReportInfo) throws Exception {
+        if (StringUtils.isEmpty(path)) {
+            return;
+        }
+        String fieldsName = String.join("",reportType,"result_sheet_one",generateReportInfo.getAreaGroupId().toString()) ;
+        SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
+        sysAttachmentDto.setTableId(generateReportInfo.getId());
+        sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(GenerateReportInfo.class));
+        sysAttachmentDto.setFieldsName(fieldsName);
+        sysAttachmentDto.setAppKey(applicationConstant.getAppKey());
+        List<SysAttachmentDto> sysAttachmentDtoList = baseAttachmentService.getAttachmentList(sysAttachmentDto) ;
+        if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
+            sysAttachmentDtoList.stream().forEach(attachmentDto -> {
+                if (Objects.equal(attachmentDto.getFieldsName(), sysAttachmentDto.getFieldsName())) {
+                    baseAttachmentService.deleteAttachmentByDto(attachmentDto);
+                }
+            });
+        }
+        File file = new File(path);
+//        sysAttachmentDto.setFileName(file.getName());
+        sysAttachmentDto.setFileName("结果集.doc");
+        sysAttachmentDto.setFileExtension(file.getName().substring(file.getName().lastIndexOf(".") + 1, file.getName().length()));
+        sysAttachmentDto.setCreater(processControllerComponent.getThisUser());
+        sysAttachmentDto.setFileSize(new Long(file.length()).toString());
+        String ftpBasePath = String.format("%s/%s/%s/%s", baseAttachmentService.createFTPBasePath(), DateUtils.format(new Date(), "yyyy-MM-dd"), processControllerComponent.getThisUser(), UUID.randomUUID().toString());
+        String ftpFileName = baseAttachmentService.createNoRepeatFileName(sysAttachmentDto.getFileExtension());
+        sysAttachmentDto.setFilePath(ftpBasePath);
+        sysAttachmentDto.setFtpFileName(ftpFileName);
+        ftpUtilsExtense.uploadFilesToFTP(ftpBasePath, new FileInputStream(file.getPath()), ftpFileName);
+        baseAttachmentService.addAttachment(sysAttachmentDto);
+    }
 
 }
