@@ -1,7 +1,11 @@
 package com.copower.pmcc.assess.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
+import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordDao;
 import com.copower.pmcc.assess.dal.basis.entity.NetInfoAssignTask;
+import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecord;
 import com.copower.pmcc.assess.service.NetInfoAssignTaskService;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
@@ -13,6 +17,8 @@ import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.copower.pmcc.erp.common.utils.LangUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,6 +46,8 @@ public class NetInfoAssignTaskController extends BaseController {
     private BpmRpcBoxService bpmRpcBoxService;
     @Autowired
     private CommonService commonService;
+    @Autowired
+    private NetInfoRecordDao netInfoRecordDao;
     @Autowired
     private NetInfoAssignTaskService netInfoAssignTaskService;
 
@@ -107,7 +115,18 @@ public class NetInfoAssignTaskController extends BaseController {
     @ResponseBody
     public HttpResult editCommit(String businessDataJson, ApprovalModelDto approvalModelDto) {
         try {
-            //Integer id = JSON.parseObject(businessDataJson, Integer.class);
+            JSONObject jsonObject = JSON.parseObject(businessDataJson);
+            Integer id = Integer.valueOf(jsonObject.getString("id"));
+            NetInfoAssignTask netInfoAssignTask = netInfoAssignTaskService.getDataById(id);
+
+            List<Integer> integers = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(netInfoAssignTask.getNetInfoIds()));
+            List<NetInfoRecord> infoRecords = LangUtils.transform(integers, o -> netInfoRecordDao.getInfoById(o));
+            if (CollectionUtils.isNotEmpty(infoRecords)) {
+                for (NetInfoRecord netInfo : infoRecords) {
+                    netInfo.setStatus(3);
+                    netInfoRecordDao.updateInfo(netInfo);
+                }
+            }
             netInfoAssignTaskService.processEditSubmit(approvalModelDto);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
