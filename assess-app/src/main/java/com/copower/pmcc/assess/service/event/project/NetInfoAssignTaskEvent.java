@@ -1,22 +1,20 @@
 package com.copower.pmcc.assess.service.event.project;
 
 import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordDao;
+import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordHouseDao;
+import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordLandDao;
 import com.copower.pmcc.assess.dal.basis.entity.NetInfoAssignTask;
 import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecord;
 import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordHouse;
 import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordLand;
-import com.copower.pmcc.assess.dto.output.net.NetInfoRecordHouseVo;
-import com.copower.pmcc.assess.dto.output.net.NetInfoRecordLandVo;
 import com.copower.pmcc.assess.service.NetInfoAssignTaskService;
 import com.copower.pmcc.assess.service.NetInfoRecordHouseService;
 import com.copower.pmcc.assess.service.NetInfoRecordLandService;
 import com.copower.pmcc.assess.service.event.BaseProcessEvent;
 import com.copower.pmcc.bpm.api.dto.model.ProcessExecution;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
-import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -33,6 +31,10 @@ public class NetInfoAssignTaskEvent extends BaseProcessEvent {
     private NetInfoRecordHouseService netInfoRecordHouseService;
     @Autowired
     private NetInfoRecordLandService netInfoRecordLandService;
+    @Autowired
+    private NetInfoRecordHouseDao netInfoRecordHouseDao;
+    @Autowired
+    private NetInfoRecordLandDao netInfoRecordLandDao;
 
     @Override
     public void processFinishExecute(ProcessExecution processExecution) throws Exception {
@@ -45,24 +47,25 @@ public class NetInfoAssignTaskEvent extends BaseProcessEvent {
         //修改土地或房产子表状态
         for (Integer id : integers) {
             NetInfoRecord netInfo = NetInfoRecordDao.getInfoById(id);
-            if (StringUtils.equals(netInfo.getBelongType(), "房产")) {
-                NetInfoRecordHouse house = new NetInfoRecordHouse();
-                house.setMasterId(id);
-                List<NetInfoRecordHouseVo> vos = netInfoRecordHouseService.getVos(house);
-                NetInfoRecordHouseVo houseVo = vos.get(vos.size() - 1);
-                house.setStatus(1);
-                netInfoRecordHouseService.saveAndUpdateNetInfoRecordHouse(houseVo);
-            }
-            if (StringUtils.equals(netInfo.getBelongType(), "土地")) {
-                NetInfoRecordLand land = new NetInfoRecordLand();
-                land.setMasterId(id);
-                List<NetInfoRecordLandVo> vos = netInfoRecordLandService.getVos(land);
-                NetInfoRecordLandVo landVo = vos.get(vos.size() - 1);
-                landVo.setStatus(1);
-                netInfoRecordLandService.saveAndUpdateNetInfoRecordLand(landVo);
-            }
+
             netInfo.setStatus(4);
             NetInfoRecordDao.updateInfo(netInfo);
+        }
+
+        List<NetInfoRecordHouse> netInfoRecordHouses = netInfoRecordHouseDao.getHouseListByMasterIds(integers);
+        if(CollectionUtils.isNotEmpty(netInfoRecordHouses)){
+            netInfoRecordHouses.forEach(o->{
+               o.setStatus(1);
+                netInfoRecordHouseService.saveAndUpdateNetInfoRecordHouse(o);
+            });
+        }
+        List<NetInfoRecordLand> netInfoRecordLands = netInfoRecordLandDao.getLandListByMasterIds(integers);
+
+        if(CollectionUtils.isNotEmpty(netInfoRecordLands)){
+            netInfoRecordLands.forEach(o->{
+                o.setStatus(1);
+                netInfoRecordLandService.saveAndUpdateNetInfoRecordLand(o);
+            });
         }
     }
 }

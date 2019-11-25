@@ -7,7 +7,12 @@ import com.copower.pmcc.assess.dto.output.net.NetInfoRecordHouseVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.LangUtils;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -15,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -49,10 +55,14 @@ public class NetInfoRecordHouseService {
         return netInfoRecordHouseDao.getNetInfoRecordHouseById(id);
     }
 
-    public BootstrapTableVo getNetInfoRecordHouseListVos(NetInfoRecordHouse netInfoRecordHouse) {
-        List<NetInfoRecordHouse> netInfoRecordHouses = netInfoRecordHouseDao.getNetInfoRecordHouseList(netInfoRecordHouse);
-        List<Integer> masterIds = LangUtils.transform(netInfoRecordHouses, o -> o.getMasterId());
-        return netInfoAssignTaskService.getNetInfoRecordApprovalVos(masterIds);
+    public BootstrapTableVo getNetInfoRecordHouseListVos(Integer status, String province, String city, String district, String street, String name) {
+        BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        List<NetInfoRecordHouse> netInfoRecordHouses = netInfoRecordHouseDao.getNetInfoRecordHouseList(status, province, city, district, street, name);
+        bootstrapTableVo.setTotal(page.getTotal());
+        bootstrapTableVo.setRows(netInfoRecordHouses == null ? new ArrayList() : LangUtils.transform(netInfoRecordHouses, o -> getNetInfoRecordHouseVo(o)));
+        return bootstrapTableVo;
     }
 
     public List<NetInfoRecordHouseVo> getVos(NetInfoRecordHouse netInfoRecordHouse) {

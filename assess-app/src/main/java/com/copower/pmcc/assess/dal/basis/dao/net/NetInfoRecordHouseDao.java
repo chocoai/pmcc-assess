@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordHouse;
 import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordHouseExample;
 import com.copower.pmcc.assess.dal.basis.mapper.NetInfoRecordHouseMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -50,4 +51,27 @@ public class NetInfoRecordHouseDao {
         return netInfoRecordHouseMapper.selectByExample(example);
     }
 
+    public List<NetInfoRecordHouse> getNetInfoRecordHouseList(Integer status, String province, String city, String district, String street, String name) {
+        NetInfoRecordHouseExample example = new NetInfoRecordHouseExample();
+        NetInfoRecordHouseExample.Criteria criteria = example.createCriteria();
+        criteria.andStatusEqualTo(status);
+        if (StringUtils.isNotBlank(province))
+            criteria.andProvinceEqualTo(province);
+        if (StringUtils.isNotBlank(city))
+            criteria.andCityEqualTo(city);
+        if (StringUtils.isNotBlank(district))
+            criteria.andDistrictEqualTo(district);
+        if (StringUtils.isNotBlank(street))
+            criteria.andStreetLike(String.format("%%%s%%", street));
+        if (StringUtils.isNotBlank(name))
+            criteria.andNameLike(String.format("%%%s%%", name));
+        return netInfoRecordHouseMapper.selectByExample(example);
+    }
+
+    public List<NetInfoRecordHouse> getHouseListByMasterIds(List<Integer> masterIds){
+        NetInfoRecordHouseExample example = new NetInfoRecordHouseExample();
+        NetInfoRecordHouseExample.Criteria criteria = example.createCriteria();
+        criteria.andMasterIdIn(masterIds);
+        return netInfoRecordHouseMapper.selectByExample(example);
+    }
 }

@@ -5,6 +5,8 @@ import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoAssignTaskDao;
 import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordDao;
+import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordHouseDao;
+import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordLandDao;
 import com.copower.pmcc.assess.dal.basis.entity.NetInfoAssignTask;
 import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecord;
 import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordHouse;
@@ -69,6 +71,10 @@ public class NetInfoAssignTaskService {
     private NetInfoRecordHouseService netInfoRecordHouseService;
     @Autowired
     private NetInfoRecordLandService netInfoRecordLandService;
+    @Autowired
+    private NetInfoRecordHouseDao netInfoRecordHouseDao;
+    @Autowired
+    private NetInfoRecordLandDao netInfoRecordLandDao;
 
 
     private final Logger log = LoggerFactory.getLogger(getClass());
@@ -174,6 +180,26 @@ public class NetInfoAssignTaskService {
 
     public void addNetInfoAssignTask(NetInfoAssignTask netInfoAssignTask) {
         netInfoAssignTaskDao.addNetInfoAssignTask(netInfoAssignTask);
+    }
+
+    public BootstrapTableVo getNetInfoRecordHouseList(List<Integer> integers){
+        BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        List<NetInfoRecordHouse> netInfoRecordHouses = netInfoRecordHouseDao.getHouseListByMasterIds(integers);
+        bootstrapTableVo.setTotal(page.getTotal());
+        bootstrapTableVo.setRows(netInfoRecordHouses == null ? new ArrayList() : LangUtils.transform(netInfoRecordHouses, o ->netInfoRecordHouseService.getNetInfoRecordHouseVo(o)));
+        return bootstrapTableVo;
+    }
+
+    public BootstrapTableVo getNetInfoRecordLandList(List<Integer> integers){
+        BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        List<NetInfoRecordLand> netInfoRecordLands = netInfoRecordLandDao.getLandListByMasterIds(integers);
+        bootstrapTableVo.setTotal(page.getTotal());
+        bootstrapTableVo.setRows(netInfoRecordLands == null ? new ArrayList() : LangUtils.transform(netInfoRecordLands, o ->netInfoRecordLandService.getNetInfoRecordLandVo(o)));
+        return bootstrapTableVo;
     }
 
 

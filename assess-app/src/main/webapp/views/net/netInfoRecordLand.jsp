@@ -48,8 +48,22 @@
                                 </div>
                             </div>
                             <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">街道</label>
                                 <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                    <label class="btn btn-primary" onclick="detailInfo.prototype.loadDataDicList();">
+                                    <input type="text" class="form-control" name="street">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">地块名称</label>
+                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                    <input type="text" class="form-control" name="name">
+                                </div>
+                            </div>
+                            <div class="x-valid">
+                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                    <label class="btn btn-primary" onclick="detailInfo.prototype.loadDataInfoList();">
                                         查询
                                     </label>
                                 </div>
@@ -72,7 +86,7 @@
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="text/javascript">
     $(function () {
-        detailInfo.prototype.loadDataDicList();
+        detailInfo.prototype.loadDataInfoList();
         AssessCommon.initAreaInfo({
             useDefaultText: false,
             provinceTarget: $("select[name='province']"),
@@ -92,25 +106,95 @@
             data.frm = "frmFather";
             return data;
         },
-        loadDataDicList: function () {
+        loadDataInfoList: function () {
             var cols = [];
-            cols.push({field: 'provinceName', title: '省', width: '5%'});
-            cols.push({field: 'cityName', title: '市', width: '5%'});
-            cols.push({field: 'districtName', title: '区', width: '5%'});
-            cols.push({field: 'content', title: '内容', width: '77%'});
             cols.push({
-                field: 'id', title: '查看网址', formatter: function (value, row, index) {
-                    var str = '<div class="btn-margin">';
-                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="查看网址" onclick="detailInfo.prototype.openItem(' + index + ')"><i class="fa fa-eye fa-white"></i></a>';
-                    str += '</div>';
+                field: 'provinceName', title: '区域', formatter: function (value, row, index) {
+                    var str = AssessCommon.getAreaFullName(row.provinceName, row.cityName, row.districtName);
+                    if (row.street) {
+                        str += row.street;
+                    }
                     return str;
                 }
             });
+            cols.push({field: 'area', title: '面积'});
+            cols.push({field: 'name', title: '地块名称'});
+            cols.push({field: 'dealTypeName', title: '交易方式'});
+            cols.push({field: 'currentPrice', title: '成交价'});
+            cols.push({
+                field: 'other', title: '其他', formatter: function (value, row, index) {
+                    var result = '';
+                    if (row.parcelNumber) {
+                        result += '宗地编号：' + row.parcelNumber + '<br/>';
+                    }
+                    if (row.parcelSite) {
+                        result += '宗地位置：' + row.parcelSite + '<br/>';
+                    }
+                    if (row.negotiatedDate) {
+                        result += '成交(协商)日期：' + formatDate(row.negotiatedDate) + '<br/>';
+                    }
+                    if (row.consultPrice) {
+                        result += '评估价：' + row.consultPrice + '<br/>';
+                    }
+                    if (row.assessStandardDate) {
+                        result += '评估基准日：' + formatDate(row.assessStandardDate) + '<br/>';
+                    }
+                    if (row.unitPrice) {
+                        result += '单价：' + row.unitPrice + '<br/>';
+                    }
+                    if (row.houseRealizationRatios) {
+                        result += '变现率：' + row.houseRealizationRatios + '<br/>';
+                    }
+                    if (row.realizationCycle) {
+                        result += '变现周期：' + row.realizationCycle + '<br/>';
+                    }
+                    if (row.floorPrice) {
+                        result += '楼面地价：' + row.floorPrice + '<br/>';
+                    }
+                    if (row.landArea) {
+                        result += '净用地面积：' + row.landArea + '<br/>';
+                    }
+                    if (row.plotRatio) {
+                        result += '容积率：' + row.plotRatio + '<br/>';
+                    }
+                    if (row.plotRatioRemark) {
+                        result += '容积率说明：' + row.plotRatioRemark + '<br/>';
+                    }
+                    if (row.greeningRate) {
+                        result += '绿化率：' + row.greeningRate*100 + '%<br/>';
+                    }
+                    if (row.greeningRateRemark) {
+                        result += '绿化率说明：' + row.greeningRateRemark + '<br/>';
+                    }
+                    if (row.buildDensity) {
+                        result += '建筑密度：' + row.buildDensity + '<br/>';
+                    }
+                    if (row.buildDensityRemark) {
+                        result += '建筑密度说明：' + row.buildDensityRemark + '<br/>';
+                    }
+                    if (row.buildHeight) {
+                        result += '建筑高度：' + row.buildHeight + '<br/>';
+                    }
+                    if (row.buildHeightRemark) {
+                        result += '建筑高度说明：' + row.buildHeightRemark + '<br/>';
+                    }
+                    if (row.indexAmount) {
+                        result += '指标款(亩)：' + row.indexAmount + '<br/>';
+                    }
+                    if (row.indexAmountRemark) {
+                        result += '指标款(亩)说明：' + row.indexAmountRemark + '<br/>';
+                    }
+                    return result;
+                }
+            });
+            cols.push({field: 'dealPartInfo', title: '成交对象概况'});
             $("#" + detailInfo.prototype.config().table).bootstrapTable('destroy');
             TableInit(detailInfo.prototype.config().table, "${pageContext.request.contextPath}/netInfoRecordLand/landList", cols, {
                 province: $("#frmQuery").find("select[name='province']").val(),
                 city: $("#frmQuery").find("select[name='city']").val(),
-                district: $("#frmQuery").find("select[name='district']").val()
+                district: $("#frmQuery").find("select[name='district']").val(),
+                street: $("#frmQuery").find("input[name='street']").val(),
+                name: $("#frmQuery").find("input[name='name']").val()
             }, {
                 showColumns: false,
                 showRefresh: false,
