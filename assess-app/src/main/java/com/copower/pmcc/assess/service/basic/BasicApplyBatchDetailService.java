@@ -10,6 +10,7 @@ import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -155,7 +156,9 @@ public class BasicApplyBatchDetailService {
                         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(planDetails.getProjectId());
                         houseTrading.setScopeInclude(projectInfo.getScopeInclude());
                         houseTrading.setScopeNotInclude(projectInfo.getScopeNotInclude());
-                        houseTrading.setScopeProperty(Integer.valueOf(projectInfo.getPropertyScope()));
+                        if (NumberUtils.isNumber(projectInfo.getPropertyScope())){
+                            houseTrading.setScopeProperty(Integer.valueOf(projectInfo.getPropertyScope()));
+                        }
                     }
                     basicHouseTradingService.saveAndUpdateBasicHouseTrading(houseTrading, false);
 

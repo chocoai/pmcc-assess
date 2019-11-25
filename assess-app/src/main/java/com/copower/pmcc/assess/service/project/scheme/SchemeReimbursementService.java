@@ -10,9 +10,11 @@ import com.copower.pmcc.assess.dto.output.project.scheme.SchemeReimbursementItem
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
+import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryRightRecordCenterService;
 import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryRightRecordService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.google.common.base.*;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
@@ -23,10 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -55,6 +54,8 @@ public class SchemeReimbursementService {
     private SurveyAssetInventoryRightRecordCenterService surveyAssetInventoryRightRecordCenterService;
     @Autowired
     private SurveyAssetInventoryRightRecordService surveyAssetInventoryRightRecordService;
+    @Autowired
+    private DeclareRecordService declareRecordService;
 
     public List<SchemeReimbursement> getObjectList(SchemeReimbursement schemeReimbursement) {
         return schemeReimbursementDao.getObjectList(schemeReimbursement);
@@ -244,51 +245,84 @@ public class SchemeReimbursementService {
         if (CollectionUtils.isEmpty(centerList)) {
             return;
         }
+        List<DeclareRecord> declareRecordLists = declareRecordService.getDeclareRecordByProjectId(projectPlanDetails.getProjectId());
+        Iterator<DeclareRecord> iterator = declareRecordLists.iterator();
         //他项权利组(多对) 每组有一个或者多个他项权力   他项权利组对应一个SchemeReimbursementItem
         List<SurveyAssetInventoryRightRecord> rightRecordList = surveyAssetInventoryRightRecordCenterService.getSurveyAssetInventoryRightRecordList(centerList.get(0).getId(), centerList.get(0).getProjectId(), centerList.get(0).getPlanDetailsId());
-        if (CollectionUtils.isEmpty(rightRecordList)) {
-            return;
-        }
-        for (SurveyAssetInventoryRightRecord surveyAssetInventoryRightRecord : rightRecordList) {
-            //取 生成多少条数据,1,2号
-            if (StringUtils.isNotBlank(surveyAssetInventoryRightRecord.getRecordIds())) {
-                List<DeclareRecord> declareRecordList = surveyAssetInventoryRightRecordCenterService.getDeclareRecordList(surveyAssetInventoryRightRecord.getRecordIds().split(","));
-                if (CollectionUtils.isNotEmpty(declareRecordList)) {
-                    Map<SchemeJudgeObject, DeclareRecord> schemeJudgeObjectDeclareRecordMap = surveyAssetInventoryRightRecordCenterService.getDeclareRecordJudgeObjectMap(declareRecordList, schemeJudgeObjectList);
-                    if (!schemeJudgeObjectDeclareRecordMap.isEmpty()) {
-                        List<SchemeJudgeObject> judgeObjectList = Lists.newArrayList();
-                        for (Map.Entry<SchemeJudgeObject, DeclareRecord> recordEntry : schemeJudgeObjectDeclareRecordMap.entrySet()) {
-                            judgeObjectList.add(recordEntry.getKey());
+        if (CollectionUtils.isNotEmpty(rightRecordList)) {
+            for (SurveyAssetInventoryRightRecord surveyAssetInventoryRightRecord : rightRecordList) {
+                //取 生成多少条数据,1,2号
+                if (StringUtils.isNotBlank(surveyAssetInventoryRightRecord.getRecordIds())) {
+                    List<DeclareRecord> declareRecordList = surveyAssetInventoryRightRecordCenterService.getDeclareRecordList(surveyAssetInventoryRightRecord.getRecordIds().split(","));
+                    if (CollectionUtils.isNotEmpty(declareRecordList)) {
+                        while (iterator.hasNext()) {
+                            DeclareRecord declareRecord = iterator.next();
+                            declareRecordList.stream().forEach(declareRecord1 -> {
+                                if (com.google.common.base.Objects.equal(declareRecord.getId(), declareRecord1.getId())) {
+                                    iterator.remove();
+                                }
+                            });
                         }
-                        //生成name
-                        List<String> stringList = Lists.newArrayList();
-                        judgeObjectList.stream().forEach(schemeJudgeObject -> stringList.add(schemeJudgeObject.getNumber()));
-                        //排一次序
-                        Ordering<String> ordering = Ordering.from((o1, o2) -> {
-                            int x = Integer.parseInt(o1.substring(0, 1));
-                            int y = Integer.parseInt(o2.substring(0, 1));
-                            return (x > y) ? -1 : ((x == y) ? 0 : 1);
-                        });
-                        stringList.sort(ordering.reverse());
-                        SchemeReimbursementItem itemVo = this.getSchemeReimbursementItemVoByInventoryRightRecordId(surveyAssetInventoryRightRecord.getId());
-                        //当查询不到则生成
-                        if (itemVo == null) {
-                            itemVo = new SchemeReimbursementItem();
-                            itemVo.setCreator(processControllerComponent.getThisUser());
-                            itemVo.setName(String.format("%s%s", StringUtils.join(stringList, ","), "号"));
-                        }
-                        itemVo.setMasterId(schemeReimbursement.getId());
-                        itemVo.setInventoryRightRecordId(surveyAssetInventoryRightRecord.getId());
-                        itemVo.setProjectId(schemeReimbursement.getProjectId());
-                        itemVo.setPlanDetailsId(schemeReimbursement.getPlanDetailsId());
-                        //注意这写入的估价对象id实际是随便写的一个实际上应当是 申报id -> 他项权力组 <==> 法定优先受偿款(子即Item)
-                        itemVo.setJudgeObjectId(judgeObjectList.get(0).getId());
-                        if (itemVo.getId() == null) {
-                            schemeReimbursementItemDao.addObject(itemVo);
-                        } else {
-                            schemeReimbursementItemDao.updateObject(itemVo);
+                        Map<SchemeJudgeObject, DeclareRecord> schemeJudgeObjectDeclareRecordMap = surveyAssetInventoryRightRecordCenterService.getDeclareRecordJudgeObjectMap(declareRecordList, schemeJudgeObjectList);
+                        if (!schemeJudgeObjectDeclareRecordMap.isEmpty()) {
+                            List<SchemeJudgeObject> judgeObjectList = Lists.newArrayList();
+                            for (Map.Entry<SchemeJudgeObject, DeclareRecord> recordEntry : schemeJudgeObjectDeclareRecordMap.entrySet()) {
+                                judgeObjectList.add(recordEntry.getKey());
+                            }
+                            //生成name
+                            List<String> stringList = Lists.newArrayList();
+                            judgeObjectList.stream().forEach(schemeJudgeObject -> stringList.add(schemeJudgeObject.getNumber()));
+                            //排一次序
+                            Ordering<String> ordering = Ordering.from((o1, o2) -> {
+                                int x = Integer.parseInt(o1.substring(0, 1));
+                                int y = Integer.parseInt(o2.substring(0, 1));
+                                return (x > y) ? -1 : ((x == y) ? 0 : 1);
+                            });
+                            stringList.sort(ordering.reverse());
+                            SchemeReimbursementItem itemVo = this.getSchemeReimbursementItemVoByInventoryRightRecordId(surveyAssetInventoryRightRecord.getId());
+                            //当查询不到则生成
+                            if (itemVo == null) {
+                                itemVo = new SchemeReimbursementItem();
+                                itemVo.setCreator(processControllerComponent.getThisUser());
+                                itemVo.setName(String.format("%s%s", StringUtils.join(stringList, ","), "号"));
+                            }
+                            itemVo.setMasterId(schemeReimbursement.getId());
+                            itemVo.setInventoryRightRecordId(surveyAssetInventoryRightRecord.getId());
+                            itemVo.setProjectId(schemeReimbursement.getProjectId());
+                            itemVo.setPlanDetailsId(schemeReimbursement.getPlanDetailsId());
+                            //注意这写入的估价对象id实际是随便写的一个实际上应当是 申报id -> 他项权力组 <==> 法定优先受偿款(子即Item)
+                            itemVo.setJudgeObjectId(judgeObjectList.get(0).getId());
+                            if (itemVo.getId() == null) {
+                                schemeReimbursementItemDao.addObject(itemVo);
+                            } else {
+                                schemeReimbursementItemDao.updateObject(itemVo);
+                            }
                         }
                     }
+                }
+            }
+
+        }
+
+        //对多余的申报id 同样生成 法定优先款
+        if (CollectionUtils.isNotEmpty(declareRecordLists)) {
+            Map<SchemeJudgeObject, DeclareRecord> schemeJudgeObjectDeclareRecordMap = surveyAssetInventoryRightRecordCenterService.getDeclareRecordJudgeObjectMap(declareRecordLists, schemeJudgeObjectList);
+            if (!schemeJudgeObjectDeclareRecordMap.isEmpty()) {
+                for (Map.Entry<SchemeJudgeObject, DeclareRecord> recordEntry : schemeJudgeObjectDeclareRecordMap.entrySet()) {
+                    SchemeReimbursementItem itemVo = new SchemeReimbursementItem();
+                    itemVo.setCreator(processControllerComponent.getThisUser());
+                    itemVo.setProjectId(schemeReimbursement.getProjectId());
+                    itemVo.setPlanDetailsId(schemeReimbursement.getPlanDetailsId());
+                    itemVo.setName(String.join("", recordEntry.getKey().getNumber(), "号"));
+                    itemVo.setMasterId(schemeReimbursement.getId());
+                    itemVo.setInventoryRightRecordId(null);
+                    //注意这写入的估价对象id实际是随便写的一个实际上应当是 申报id -> 他项权力组 <==> 法定优先受偿款(子即Item)
+                    itemVo.setJudgeObjectId(recordEntry.getKey().getId());
+                    List<SchemeReimbursementItem> schemeReimbursementItemList = schemeReimbursementItemDao.getListObject2(itemVo);
+                    if (CollectionUtils.isEmpty(schemeReimbursementItemList)) {
+                        schemeReimbursementItemDao.addObject(itemVo);
+                    }
+
                 }
             }
         }
