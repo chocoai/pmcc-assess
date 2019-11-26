@@ -19,10 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletContext;
 import java.io.*;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -320,16 +317,16 @@ public class BaseAttachmentService {
     }
 
     public String importAjaxFile(List<MultipartFile> multipartFileList, String tableName, String tableId, String fieldsName) throws Exception {
-       StringBuilder stringBuilder = new StringBuilder(8) ;
+       List<String> stringList = new ArrayList<String>(multipartFileList.size()) ;
        if (CollectionUtils.isNotEmpty(multipartFileList)){
            for (MultipartFile multipartFile:multipartFileList){
                String id = importAjaxFile(multipartFile, tableName, tableId, fieldsName) ;
                if (StringUtils.isNotBlank(id)){
-                   stringBuilder.append(id) ;
+                   stringList.add(id) ;
                }
            }
        }
-       return stringBuilder.toString();
+       return StringUtils.join(stringList,",");
     }
 
     public String importAjaxFile(MultipartFile multipartFile, String tableName, String tableId, String fieldsName) throws Exception {
