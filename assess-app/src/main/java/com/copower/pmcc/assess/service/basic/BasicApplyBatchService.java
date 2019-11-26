@@ -739,18 +739,22 @@ public class BasicApplyBatchService {
         //申报表代入的信息
         DeclareRecord declareRecord = new DeclareRecord();
         ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(basicApplyBatch.getPlanDetailsId());
-        if (projectPlanDetails != null) {
+        if (projectPlanDetails != null && projectPlanDetails.getDeclareRecordId() != null) {
             declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
         }
-        basicEstate.setProvince(declareRecord.getProvince());
-        basicEstate.setCity(declareRecord.getCity());
-        basicEstate.setDistrict(declareRecord.getDistrict());
-        basicEstate.setStreetNumber(declareRecord.getStreetNumber());
-        basicEstate.setAttachNumber(declareRecord.getAttachedNumber());
+        if (declareRecord != null) {
+            basicEstate.setProvince(declareRecord.getProvince());
+            basicEstate.setCity(declareRecord.getCity());
+            basicEstate.setDistrict(declareRecord.getDistrict());
+            basicEstate.setStreetNumber(declareRecord.getStreetNumber());
+            basicEstate.setAttachNumber(declareRecord.getAttachedNumber());
+        }
         basicEstateService.saveAndUpdateBasicEstate(basicEstate, false);
         BasicEstateLandState basicEstateLandState = new BasicEstateLandState();
-        basicEstateLandState.setLandUseType(declareRecord.getLandCertUse());
-        basicEstateLandState.setLandUseCategory(declareRecord.getLandCertUseCategory());
+        if (declareRecord != null) {
+            basicEstateLandState.setLandUseType(declareRecord.getLandCertUse());
+            basicEstateLandState.setLandUseCategory(declareRecord.getLandCertUseCategory());
+        }
         basicEstateLandState.setEstateId(basicEstate.getId());
         basicEstateLandState.setCreator(commonService.thisUserAccount());
         basicEstateLandStateService.saveAndUpdateBasicEstateLandState(basicEstateLandState, false);
