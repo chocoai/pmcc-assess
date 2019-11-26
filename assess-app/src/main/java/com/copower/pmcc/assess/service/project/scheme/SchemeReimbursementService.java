@@ -15,6 +15,7 @@ import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryRightR
 import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryRightRecordService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.google.common.base.*;
+import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
@@ -334,7 +335,8 @@ public class SchemeReimbursementService {
      * @param schemeJudgeObjectList
      * @return
      */
-    public Map<SchemeJudgeObject, List<SchemeReimbursementItemVo>> getSchemeReimbursementItemVoMapAndSchemeJudgeObject(List<SchemeJudgeObject> schemeJudgeObjectList, Integer projectId) {
+    @Deprecated
+    private Map<SchemeJudgeObject, List<SchemeReimbursementItemVo>> getSchemeReimbursementItemVoMapAndSchemeJudgeObject(List<SchemeJudgeObject> schemeJudgeObjectList, Integer projectId) {
         Map<SchemeJudgeObject, List<SchemeReimbursementItemVo>> schemeJudgeObjectListMap = Maps.newLinkedHashMap();
         List<Integer> idsB = Lists.newArrayList();
         List<Integer> idsA = Lists.newArrayList();
@@ -385,6 +387,70 @@ public class SchemeReimbursementService {
                     schemeJudgeObjectListMap.put(schemeJudgeObject, itemVoList.stream().distinct().collect(Collectors.toList()));
                 }
             });
+        }
+        return schemeJudgeObjectListMap;
+    }
+
+    /**
+     * 获取法定优先集合和估价对象的map
+     * @param schemeJudgeObjectList
+     * @param projectId
+     * @return
+     */
+    public Map<SchemeJudgeObject, List<SchemeReimbursementItemVo>> getSchemeReimbursementItemVoMapAndSchemeJudgeObject2(List<SchemeJudgeObject> schemeJudgeObjectList, Integer projectId) {
+        Map<SchemeJudgeObject, List<SchemeReimbursementItemVo>> schemeJudgeObjectListMap = Maps.newLinkedHashMap();
+        Map<Integer, List<SchemeReimbursementItemVo>> integerListMap = new HashMap<>();
+        //筛选出由他项权利组 生成的法定优先款
+        if (CollectionUtils.isEmpty(schemeJudgeObjectList)) {
+            return schemeJudgeObjectListMap ;
+        }
+
+        Iterator<SchemeJudgeObject> iterator = schemeJudgeObjectList.iterator();
+        while (iterator.hasNext()) {
+            SchemeJudgeObject next = iterator.next();
+            if (next.getDeclareRecordId() == null) {
+                continue;
+            }
+            List<SurveyAssetInventoryRightRecord> surveyAssetInventoryRightRecordList = surveyAssetInventoryRightRecordService.getSurveyAssetInventoryRightRecordByDeclareRecord(next.getDeclareRecordId(), projectId);
+            if (CollectionUtils.isEmpty(surveyAssetInventoryRightRecordList)) {
+                continue;
+            }
+            Map<Integer,SchemeReimbursementItemVo> integerSchemeReimbursementItemVoMap = Maps.newHashMap();
+            for (SurveyAssetInventoryRightRecord inventoryRightRecord : surveyAssetInventoryRightRecordList) {
+                SchemeReimbursementItemVo vo = this.getSchemeReimbursementItemVoByInventoryRightRecordId(inventoryRightRecord.getId());
+                integerSchemeReimbursementItemVoMap.put(vo.getId(),vo) ;
+            }
+            integerListMap.put(next.getId(),integerSchemeReimbursementItemVoMap.values().stream().collect(Collectors.toList()));
+        }
+        Set<Integer> integerSet = integerListMap.keySet();//已经从组里面 筛选出来的估价对象 id
+        Set<Integer> integers = schemeJudgeObjectList.stream().map(oo -> oo.getId()).collect(Collectors.toSet());
+        Collection<Integer> collection = CollectionUtils.subtract(integers,integerSet) ;
+        //自动生成的法定优先款
+        if (CollectionUtils.isNotEmpty(collection)){
+            Iterator<Integer> integerIterator = collection.iterator();
+            while (integerIterator.hasNext()){
+                Integer integer = integerIterator.next();
+                SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectList.stream().filter(obj -> Objects.equal(obj.getId(),integer)).findFirst().get();
+                SchemeReimbursementItem select = new SchemeReimbursementItem();
+                select.setProjectId(projectId);
+                select.setJudgeObjectId(integer);
+                select.setName(String.join("", schemeJudgeObject.getNumber(), "号"));
+                select.setInventoryRightRecordId(null);
+                List<SchemeReimbursementItem> schemeReimbursementItemList = schemeReimbursementItemDao.getListObject2(select) ;
+                if (CollectionUtils.isEmpty(schemeReimbursementItemList)){
+                    continue;
+                }
+                integerListMap.put(integer,schemeReimbursementItemList.stream().map( oo -> getSchemeReimbursementItemVo(oo)).collect(Collectors.toList()));
+            }
+        }
+        if (!integerListMap.isEmpty()){
+            Set<Map.Entry<Integer, List<SchemeReimbursementItemVo>>> entries = integerListMap.entrySet();
+            Iterator<Map.Entry<Integer, List<SchemeReimbursementItemVo>>> entryIterator = entries.iterator();
+            while (entryIterator.hasNext()){
+                Map.Entry<Integer, List<SchemeReimbursementItemVo>> entry = entryIterator.next();
+                SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectList.stream().filter(obj -> Objects.equal(obj.getId(),entry.getKey())).findFirst().get();
+                schemeJudgeObjectListMap.put(schemeJudgeObject,entry.getValue()) ;
+            }
         }
         return schemeJudgeObjectListMap;
     }
