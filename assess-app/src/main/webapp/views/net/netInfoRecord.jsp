@@ -114,10 +114,10 @@
                                         onclick="detailInfo.prototype.loadDataDicList()">
                                     查询
                                 </button>
-                                <button type="button" class="btn btn-primary"
-                                        onclick="detailInfo.prototype.getOldData()">
-                                    测试
-                                </button>
+                                <%--<button type="button" class="btn btn-primary"--%>
+                                        <%--onclick="detailInfo.prototype.getOldData()">--%>
+                                    <%--测试--%>
+                                <%--</button>--%>
                                 <%--<button type="button" class="btn btn-primary"--%>
                                         <%--onclick="detailInfo.prototype.assignTask()">--%>
                                     <%--任务分派--%>

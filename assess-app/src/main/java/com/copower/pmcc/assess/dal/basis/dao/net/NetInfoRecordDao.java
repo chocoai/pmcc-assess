@@ -66,7 +66,7 @@ public class NetInfoRecordDao {
             criteria.andBeginTimeGreaterThanOrEqualTo(queryStratTime);
         }
         if (queryEndTime != null) {
-            criteria.andEndTimeLessThanOrEqualTo(queryEndTime);
+            criteria.andBeginTimeLessThanOrEqualTo(queryEndTime);
         }
         if(status!=null){
             criteria.andStatusEqualTo(status);
