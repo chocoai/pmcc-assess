@@ -2,18 +2,25 @@ package com.copower.pmcc.assess.service;
 
 import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordLandDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
+import com.copower.pmcc.assess.dal.basis.entity.DataLandLevel;
 import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordLand;
 import com.copower.pmcc.assess.dto.output.net.NetInfoRecordLandVo;
+import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.api.provider.ErpRpcAttachmentService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
+import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,12 +46,26 @@ public class NetInfoRecordLandService {
     @Autowired
     private BaseDataDicService baseDataDicService;
     @Autowired
-    private NetInfoAssignTaskService netInfoAssignTaskService;
+    private ErpRpcAttachmentService erpRpcAttachmentService;
+    @Autowired
+    private ApplicationConstant applicationConstant;
+    @Autowired
+    private BaseAttachmentService baseAttachmentService;
 
     public Integer saveAndUpdateNetInfoRecordLand(NetInfoRecordLand netInfoRecordLand) {
         if (netInfoRecordLand.getId() == null) {
             netInfoRecordLand.setCreator(commonService.thisUserAccount());
-            return netInfoRecordLandDao.addNetInfoRecordLand(netInfoRecordLand);
+            netInfoRecordLandDao.addNetInfoRecordLand(netInfoRecordLand);
+            //更新附件id
+            SysAttachmentDto queryParam = new SysAttachmentDto();
+            queryParam.setTableName(FormatUtils.entityNameConvertToTableName(NetInfoRecordLand.class));
+            queryParam.setTableId(0);
+            queryParam.setCreater(commonService.thisUserAccount());
+            queryParam.setAppKey(applicationConstant.getAppKey());
+            SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
+            sysAttachmentDto.setTableId(netInfoRecordLand.getId());
+            erpRpcAttachmentService.updateAttachmentByParam(queryParam, sysAttachmentDto);
+            return netInfoRecordLand.getId();
         } else {
             netInfoRecordLandDao.updateNetInfoRecordLand(netInfoRecordLand);
             return null;
@@ -60,17 +81,24 @@ public class NetInfoRecordLandService {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<NetInfoRecordLand> netInfoRecordLands = netInfoRecordLandDao.getNetInfoRecordLandList(status, province, city, district, street, name);
+        SysAttachmentDto where = new SysAttachmentDto();
+        where.setTableName(FormatUtils.entityNameConvertToTableName(NetInfoRecordLand.class));
+        List<SysAttachmentDto> attachmentDtos = baseAttachmentService.getAttachmentList(LangUtils.transform(netInfoRecordLands, o -> o.getId()), where);
         bootstrapTableVo.setTotal(page.getTotal());
-        bootstrapTableVo.setRows(netInfoRecordLands == null ? new ArrayList() : LangUtils.transform(netInfoRecordLands, o -> getNetInfoRecordLandVo(o)));
+        bootstrapTableVo.setRows(netInfoRecordLands == null ? new ArrayList() : LangUtils.transform(netInfoRecordLands, o -> getNetInfoRecordLandVo(o,attachmentDtos)));
         return bootstrapTableVo;
     }
 
     public List<NetInfoRecordLandVo> getVos(NetInfoRecordLand netInfoRecordLand) {
         List<NetInfoRecordLand> netInfoRecordLands = netInfoRecordLandDao.getNetInfoRecordLandList(netInfoRecordLand);
+        SysAttachmentDto where = new SysAttachmentDto();
+        where.setTableName(FormatUtils.entityNameConvertToTableName(NetInfoRecordLand.class));
+        List<SysAttachmentDto> attachmentDtos = baseAttachmentService.getAttachmentList(LangUtils.transform(netInfoRecordLands, o -> o.getId()), where);
+
         List<NetInfoRecordLandVo> vos = Lists.newArrayList();
         if (!ObjectUtils.isEmpty(netInfoRecordLands)) {
             for (NetInfoRecordLand landLevel : netInfoRecordLands) {
-                vos.add(getNetInfoRecordLandVo(landLevel));
+                vos.add(getNetInfoRecordLandVo(landLevel,attachmentDtos));
             }
         }
         return vos;
@@ -80,7 +108,7 @@ public class NetInfoRecordLandService {
         netInfoRecordLandDao.deleteInfo(id);
     }
 
-    public NetInfoRecordLandVo getNetInfoRecordLandVo(NetInfoRecordLand netInfoRecordLand) {
+    public NetInfoRecordLandVo getNetInfoRecordLandVo(NetInfoRecordLand netInfoRecordLand, List<SysAttachmentDto> attachmentDtos) {
         NetInfoRecordLandVo vo = new NetInfoRecordLandVo();
         BaseDataDic baseDataDic = null;
         BeanUtils.copyProperties(netInfoRecordLand, vo);
@@ -99,6 +127,16 @@ public class NetInfoRecordLandService {
         if (StringUtils.isNotEmpty(netInfoRecordLand.getDistrict())) {
             vo.setDistrictName(erpAreaService.getSysAreaName(netInfoRecordLand.getDistrict()));
         }
+        if (!CollectionUtils.isEmpty(attachmentDtos)) {
+            StringBuilder stringBuilder = new StringBuilder();
+            for (SysAttachmentDto attachmentDto : attachmentDtos) {
+                if (attachmentDto.getTableId().equals(netInfoRecordLand.getId())) {
+                    stringBuilder.append(baseAttachmentService.getEditHtml(attachmentDto,false));
+                }
+            }
+            vo.setFileViewName(stringBuilder.toString());
+        }
+
 
         return vo;
     }

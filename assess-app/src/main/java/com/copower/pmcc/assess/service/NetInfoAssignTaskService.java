@@ -14,6 +14,7 @@ import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordLand;
 import com.copower.pmcc.assess.dto.output.net.NetInfoRecordApprovalVo;
 import com.copower.pmcc.assess.dto.output.net.NetInfoRecordHouseVo;
 import com.copower.pmcc.assess.dto.output.net.NetInfoRecordLandVo;
+import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
 import com.copower.pmcc.assess.service.event.project.NetInfoAssignTaskEvent;
 import com.copower.pmcc.bpm.api.dto.ProcessUserDto;
@@ -26,6 +27,7 @@ import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -75,6 +77,8 @@ public class NetInfoAssignTaskService {
     private NetInfoRecordHouseDao netInfoRecordHouseDao;
     @Autowired
     private NetInfoRecordLandDao netInfoRecordLandDao;
+    @Autowired
+    private BaseAttachmentService baseAttachmentService;
 
 
     private final Logger log = LoggerFactory.getLogger(getClass());
@@ -187,8 +191,12 @@ public class NetInfoAssignTaskService {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<NetInfoRecordHouse> netInfoRecordHouses = netInfoRecordHouseDao.getHouseListByMasterIds(integers);
+        SysAttachmentDto where = new SysAttachmentDto();
+        where.setTableName(FormatUtils.entityNameConvertToTableName(NetInfoRecordHouse.class));
+        List<SysAttachmentDto> attachmentDtos = baseAttachmentService.getAttachmentList(LangUtils.transform(netInfoRecordHouses, o -> o.getId()), where);
+
         bootstrapTableVo.setTotal(page.getTotal());
-        bootstrapTableVo.setRows(netInfoRecordHouses == null ? new ArrayList() : LangUtils.transform(netInfoRecordHouses, o ->netInfoRecordHouseService.getNetInfoRecordHouseVo(o)));
+        bootstrapTableVo.setRows(netInfoRecordHouses == null ? new ArrayList() : LangUtils.transform(netInfoRecordHouses, o ->netInfoRecordHouseService.getNetInfoRecordHouseVo(o,attachmentDtos)));
         return bootstrapTableVo;
     }
 
@@ -197,8 +205,12 @@ public class NetInfoAssignTaskService {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<NetInfoRecordLand> netInfoRecordLands = netInfoRecordLandDao.getLandListByMasterIds(integers);
+        SysAttachmentDto where = new SysAttachmentDto();
+        where.setTableName(FormatUtils.entityNameConvertToTableName(NetInfoRecordLand.class));
+        List<SysAttachmentDto> attachmentDtos = baseAttachmentService.getAttachmentList(LangUtils.transform(netInfoRecordLands, o -> o.getId()), where);
+
         bootstrapTableVo.setTotal(page.getTotal());
-        bootstrapTableVo.setRows(netInfoRecordLands == null ? new ArrayList() : LangUtils.transform(netInfoRecordLands, o ->netInfoRecordLandService.getNetInfoRecordLandVo(o)));
+        bootstrapTableVo.setRows(netInfoRecordLands == null ? new ArrayList() : LangUtils.transform(netInfoRecordLands, o ->netInfoRecordLandService.getNetInfoRecordLandVo(o,attachmentDtos)));
         return bootstrapTableVo;
     }
 
