@@ -484,13 +484,22 @@
                                             <label class="col-sm-1 control-label">
                                                 成交对象概况
                                             </label>
-                                            <div class="col-sm-2">
-                                                <input type="text" name="dealPartInfo" class="form-control">
+                                            <div class="col-sm-11">
+                                                <textarea name="dealPartInfo" class="form-control"></textarea>
                                             </div>
                                         </div>
                                     </div>
-
-
+                                    <div class="form-group">
+                                        <div class="x-valid">
+                                            <label class="col-sm-1 control-label">
+                                                附件
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input id="uploadLandFile" type="file" multiple="false">
+                                                <div id="_uploadLandFile"></div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="form-group houseContent" style="display: none">
                                     <div class="form-group">
@@ -669,8 +678,19 @@
                                             <label class="col-sm-1 control-label">
                                                 成交对象概况
                                             </label>
-                                            <div class="col-sm-2">
-                                                <input type="text" name="dealPartInfo" class="form-control">
+                                            <div class="col-sm-11">
+                                                <textarea name="dealPartInfo" class="form-control"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="x-valid">
+                                            <label class="col-sm-1 control-label">
+                                                附件
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input id="uploadHouseFile" type="file" multiple="false">
+                                                <div id="_uploadHouseFile"></div>
                                             </div>
                                         </div>
                                     </div>
@@ -831,7 +851,8 @@
             }
             $("#" + detailInfo.prototype.config().frm).find("input[name='masterId']").val(id);
             $("#" + detailInfo.prototype.config().frm).find("select[name='type']").val(type);
-
+            //附件tableId
+            var tableId = result.data.id?result.data.id:0;
             if (type == '房产') {
                 $("#" + detailInfo.prototype.config().frm).find(".houseContent").show();
                 $("#" + detailInfo.prototype.config().frm).find(".houseContent").find("input").attr("disabled", false);
@@ -860,6 +881,9 @@
                         $("#" + detailInfo.prototype.config().frm).find("select[name='dealType']").empty().html(html).trigger('change');
                     });
                 }
+                //加载附件
+                detailInfo.prototype.showFile("uploadHouseFile","tb_net_info_record_house",tableId);
+                detailInfo.prototype.fileUpload("uploadHouseFile","tb_net_info_record_house",tableId);
             } else if (type == '土地') {
                 $("#" + detailInfo.prototype.config().frm).find(".landContent").show();
                 $("#" + detailInfo.prototype.config().frm).find(".landContent").find("input").attr("disabled", false);
@@ -895,6 +919,9 @@
                 $("#" + detailInfo.prototype.config().frm).find(".houseContent").hide();
                 $("#" + detailInfo.prototype.config().frm).find(".landContent").hide();
             }
+            //加载附件
+            detailInfo.prototype.showFile("uploadLandFile","tb_net_info_record_land",tableId);
+            detailInfo.prototype.fileUpload("uploadLandFile","tb_net_info_record_land",tableId);
         },
         saveLandDetail: function () {
             if (!$("#" + detailInfo.prototype.config().frm).valid()) {
@@ -1006,7 +1033,32 @@
                 }
             });
         },
-
+        fileUpload : function (target, tableName, id) {
+        FileUtils.uploadFiles({
+            target: target,
+            disabledTarget: "btn_submit",
+            onUpload: function (file) {
+                var formData = {
+                    tableName: tableName,
+                    tableId: id
+                };
+                return formData;
+            }, onUploadComplete: function (result, file) {
+                detailInfo.prototype.showFile(target, tableName, id);
+            },
+            deleteFlag: true
+        });
+    },
+        showFile : function (target, tableName, id) {
+        FileUtils.getFileShows({
+            target: target,
+            formData: {
+                tableName: tableName,
+                tableId: id
+            },
+            deleteFlag: true
+        })
+    }
     }
 
 

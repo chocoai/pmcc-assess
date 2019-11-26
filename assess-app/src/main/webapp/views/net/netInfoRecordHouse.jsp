@@ -146,6 +146,7 @@
                 }
             });
             cols.push({field: 'dealPartInfo', title: '成交对象概况'});
+            cols.push({field: 'fileViewName', title: '附件'});
             $("#" + detailInfo.prototype.config().table).bootstrapTable('destroy');
             TableInit(detailInfo.prototype.config().table, "${pageContext.request.contextPath}/netInfoRecordHouse/houseList", cols, {
                 province: $("#frmQuery").find("select[name='province']").val(),

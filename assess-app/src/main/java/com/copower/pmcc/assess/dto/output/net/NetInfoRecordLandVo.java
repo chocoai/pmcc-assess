@@ -12,6 +12,15 @@ public class NetInfoRecordLandVo extends NetInfoRecordLand {
     private String provinceName;
     private String cityName;
     private String districtName;
+    private String fileViewName;
+
+    public String getFileViewName() {
+        return fileViewName;
+    }
+
+    public void setFileViewName(String fileViewName) {
+        this.fileViewName = fileViewName;
+    }
 
     public String getProvinceName() {
         return provinceName;

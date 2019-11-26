@@ -14,6 +14,15 @@ public class NetInfoRecordApprovalVo extends NetInfoRecordLand {
     private String districtName;
     private String content;
     private String sourceSiteUrl;
+    private String fileViewName;
+
+    public String getFileViewName() {
+        return fileViewName;
+    }
+
+    public void setFileViewName(String fileViewName) {
+        this.fileViewName = fileViewName;
+    }
 
     public String getSourceSiteUrl() {
         return sourceSiteUrl;
