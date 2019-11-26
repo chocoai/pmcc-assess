@@ -36,6 +36,7 @@ import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -164,11 +165,12 @@ public class GenerateReportService {
         File file = new File(path);
         sysAttachmentDto.setFileExtension(file.getName().substring(file.getName().lastIndexOf(".") + 1, file.getName().length()));
         sysAttachmentDto.setCreater(processControllerComponent.getThisUser());
-        sysAttachmentDto.setFileSize(new Long(file.length()).toString());
+        sysAttachmentDto.setFileSize(org.apache.commons.io.FileUtils.sizeOfAsBigInteger(file).toString());
         sysAttachmentDto.setAppKey(applicationConstant.getAppKey());
         sysAttachmentDto.setFieldsName(generateCommonMethod.getReportFieldsName(reportType, generateReportInfo.getAreaGroupId()));
         sysAttachmentDto.setFileName(baseDataDicService.getCacheDataDicByFieldName(reportType).getName());
-        String ftpBasePath = String.format("%s/%s/%s/%s", baseAttachmentService.createFTPBasePath(), DateUtils.format(new Date(), "yyyy-MM-dd"), processControllerComponent.getThisUser(), UUID.randomUUID().toString());
+        //注意这里因为是linux 路径所以采用/ 或者使用Java自带的判断符号 windows下 WinNTFileSystem linux 下UnixFileSystem
+        String ftpBasePath = String.join(File.separator, baseAttachmentService.createFTPBasePath(), DateUtils.format(new Date(), DateUtils.DATE_PATTERN), String.valueOf(RandomUtils.nextInt(1, 1000)), UUID.randomUUID().toString().substring(0, 10));
         String ftpFileName = baseAttachmentService.createNoRepeatFileName(sysAttachmentDto.getFileExtension());
         sysAttachmentDto.setFilePath(ftpBasePath);
         sysAttachmentDto.setFtpFileName(ftpFileName);
@@ -182,7 +184,6 @@ public class GenerateReportService {
         }
         baseAttachmentService.addAttachment(sysAttachmentDto);
     }
-
 
 
     /**
@@ -231,9 +232,9 @@ public class GenerateReportService {
         if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
             dir = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDtoList.stream().findFirst().get().getId());
         }
-        if (CollectionUtils.isEmpty(sysAttachmentDtoList)){
-            if (Objects.equal(query.getTableName(),FormatUtils.entityNameConvertToTableName(GenerateReportInfo.class))){
-                throw new Exception("先生成报告,再拿号!") ;
+        if (CollectionUtils.isEmpty(sysAttachmentDtoList)) {
+            if (Objects.equal(query.getTableName(), FormatUtils.entityNameConvertToTableName(GenerateReportInfo.class))) {
+                throw new Exception("先生成报告,再拿号!");
             }
         }
         ProjectPlan projectPlan = projectPlanService.getProjectplanById(generateReportInfo.getProjectPlanId());
@@ -1825,29 +1826,30 @@ public class GenerateReportService {
 
     /**
      * 仅仅生成结果集一个sheet
+     *
      * @param generateReportInfo
      * @throws Exception
      */
-    public void resultSheetReport(GenerateReportInfo generateReportInfo,String reportType)throws Exception{
+    public void resultSheetReport(GenerateReportInfo generateReportInfo, String reportType) throws Exception {
         generateReportInfoService.saveGenerateReportInfo(generateReportInfo);
         ProjectPlan projectPlan = projectPlanService.getProjectplanById(generateReportInfo.getProjectPlanId());
         ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(generateReportInfo.getProjectId()));
         GenerateBaseDataService generateBaseDataService = new GenerateBaseDataService(projectInfoVo, generateReportInfo.getAreaGroupId(), new BaseReportTemplate(), projectPlan);
         String path = generateBaseDataService.getjudgeBuildResultSurveySheet(true);
-        resultSheetReportCreateSysAttachment(path,reportType,generateReportInfo) ;
+        resultSheetReportCreateSysAttachment(path, reportType, generateReportInfo);
     }
 
-    private void resultSheetReportCreateSysAttachment(String path,String reportType, GenerateReportInfo generateReportInfo) throws Exception {
+    private void resultSheetReportCreateSysAttachment(String path, String reportType, GenerateReportInfo generateReportInfo) throws Exception {
         if (StringUtils.isEmpty(path)) {
             return;
         }
-        String fieldsName = String.join("",reportType,"result_sheet_one",generateReportInfo.getAreaGroupId().toString()) ;
+        String fieldsName = String.join("", reportType, "result_sheet_one", generateReportInfo.getAreaGroupId().toString());
         SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
         sysAttachmentDto.setTableId(generateReportInfo.getId());
         sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(GenerateReportInfo.class));
         sysAttachmentDto.setFieldsName(fieldsName);
         sysAttachmentDto.setAppKey(applicationConstant.getAppKey());
-        List<SysAttachmentDto> sysAttachmentDtoList = baseAttachmentService.getAttachmentList(sysAttachmentDto) ;
+        List<SysAttachmentDto> sysAttachmentDtoList = baseAttachmentService.getAttachmentList(sysAttachmentDto);
         if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
             sysAttachmentDtoList.stream().forEach(attachmentDto -> {
                 if (Objects.equal(attachmentDto.getFieldsName(), sysAttachmentDto.getFieldsName())) {
@@ -1856,12 +1858,12 @@ public class GenerateReportService {
             });
         }
         File file = new File(path);
-//        sysAttachmentDto.setFileName(file.getName());
         sysAttachmentDto.setFileName("结果集.doc");
         sysAttachmentDto.setFileExtension(file.getName().substring(file.getName().lastIndexOf(".") + 1, file.getName().length()));
         sysAttachmentDto.setCreater(processControllerComponent.getThisUser());
-        sysAttachmentDto.setFileSize(new Long(file.length()).toString());
-        String ftpBasePath = String.format("%s/%s/%s/%s", baseAttachmentService.createFTPBasePath(), DateUtils.format(new Date(), "yyyy-MM-dd"), processControllerComponent.getThisUser(), UUID.randomUUID().toString());
+        sysAttachmentDto.setFileSize(org.apache.commons.io.FileUtils.sizeOfAsBigInteger(file).toString());
+        //注意这里因为是linux 路径所以采用/ 或者使用Java自带的判断符号 windows下 WinNTFileSystem linux 下UnixFileSystem
+        String ftpBasePath = String.join(File.separator, baseAttachmentService.createFTPBasePath(), DateUtils.format(new Date(), DateUtils.DATE_PATTERN), String.valueOf(RandomUtils.nextInt(1, 1000)), UUID.randomUUID().toString().substring(0, 10));
         String ftpFileName = baseAttachmentService.createNoRepeatFileName(sysAttachmentDto.getFileExtension());
         sysAttachmentDto.setFilePath(ftpBasePath);
         sysAttachmentDto.setFtpFileName(ftpFileName);
