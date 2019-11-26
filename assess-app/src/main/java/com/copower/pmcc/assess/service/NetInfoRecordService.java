@@ -13,7 +13,6 @@ import com.copower.pmcc.assess.dto.input.net.TBSFDto;
 import com.copower.pmcc.assess.dto.input.net.ZGSFDto;
 import com.copower.pmcc.assess.dto.output.net.NetInfoRecordVo;
 import com.copower.pmcc.assess.service.project.generate.GenerateCommonMethod;
-import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
@@ -74,8 +73,6 @@ public class NetInfoRecordService {
     @Autowired
     private CommonService commonService;
     @Autowired
-    private BpmRpcProjectTaskService bpmRpcProjectTaskService;
-    @Autowired
     private NetInfoAssignTaskDao netInfoAssignTaskDao;
 
     //抓取数据
@@ -119,7 +116,8 @@ public class NetInfoRecordService {
                 endDate = date;//截止时间时间
             }
             String endDateStr = sdf.format(endDate);
-            String[] needContentType = new String[]{"住宅用房", "商业用房", "工业用房", "其他用房", "股权", "债权", "林权", "矿权", "土地", "资产", "无形资产"};
+//            String[] needContentType = new String[]{"住宅用房", "商业用房", "工业用房", "其他用房", "股权", "债权", "林权", "矿权", "土地", "资产", "无形资产"};
+            String[] needContentType = new String[]{"住宅用房", "商业用房", "工业用房", "其他用房", "土地"};
             List<String> types = Arrays.asList(needContentType);
             Map<String, String> strHrefs = Maps.newHashMap();//用于记录地址
             String urlInfo = "https://sf.taobao.com/item_list.htm?auction_source=0&sorder=2&st_param=-1&auction_start_seg=&" +
@@ -134,6 +132,7 @@ public class NetInfoRecordService {
                     Elements provinces = provinceElements.get(1).select("li a");
                     for (Element province : provinces) {
                         String provinceName = province.childNodes().get(0).toString();
+                        if (!StringUtils.equals(provinceName, "四川")) continue;
                         Elements cityElements = getContent(String.format("https:%s", province.attributes().get("href").trim()), ".J_SubCondition", "GBK");
                         Elements citys = cityElements.get(0).select("li a");
                         for (Element city : citys) {
@@ -161,6 +160,7 @@ public class NetInfoRecordService {
                         StringBuilder sb = new StringBuilder(dataStr);
                         sb.insert(1, "\"id\":\"\",");
                         TBSFDto tbsfDto = JSON.parseObject(sb.toString(), TBSFDto.class);
+                        if (!StringUtils.equals(tbsfDto.getStatus(), "done")) continue;
                         NetInfoRecord netInfoRecord = new NetInfoRecord();
                         netInfoRecord.setTitle(tbsfDto.getTitle());
                         netInfoRecord.setSourceSiteUrl(String.format("%s" + tbsfDto.getItemUrl(), "https:"));
@@ -218,14 +218,15 @@ public class NetInfoRecordService {
     public void getNetInfoFromJDSF(Integer days) {
         try {
             Date date = getInstanceDate(days);//得到前1天
-            String[] needContentType = new String[]{"住宅用房", "商业用房", "工业用房", "其他用房", "股权", "债权", "林权", "矿权", "土地", "无形资产"};
+            // String[] needContentType = new String[]{"住宅用房", "商业用房", "工业用房", "其他用房", "股权", "债权", "林权", "矿权", "土地", "无形资产"};
+            String[] needContentType = new String[]{"住宅用房", "商业用房", "工业用房", "其他用房", "土地"};
             Map<String, List<String>> strHrefs = Maps.newHashMap();
             List<String> types = Arrays.asList(needContentType);
 
             //首页
-            String urlInfo = "http://auction.jd.com/sifa_list.html?callback=jQuery8159673&page=1&limit=40&paimaiStatus=2";
+            String urlInfo = "https://auction.jd.com/sifa_list.html?callback=jQuery8159673&page=1&limit=40&paimaiStatus=2";
             //获取数据地址
-            String typeHref = "http://auction.jd.com/getJudicatureList.html?paimaiStatus=2";
+            String typeHref = "https://auction.jd.com/getJudicatureList.html?paimaiStatus=2";
             //获取起始价地址
             String initPriceHref = "https://api.m.jd.com/api?appid=paimai&functionId=getProductBasicInfo&body={%22paimaiId%22:%s}";
 
@@ -311,10 +312,10 @@ public class NetInfoRecordService {
             Map<String, String> needContentType = Maps.newHashMap();
             needContentType.put("房产", "12762");
             needContentType.put("土地林权", "12764");
-            needContentType.put("股权", "12766");
-            needContentType.put("债权", "12767");
-            needContentType.put("知识产权", "12768");
-            needContentType.put("无形资产", "12769");
+            // needContentType.put("股权", "12766");
+            // needContentType.put("债权", "12767");
+            // needContentType.put("知识产权", "12768");
+            // needContentType.put("无形资产", "12769");
             String typeHref = "https://auction.jd.com/getAssetsList.html?paimaiStatus=2";
 
             for (Map.Entry<String, String> entry : needContentType.entrySet()) {
@@ -335,7 +336,6 @@ public class NetInfoRecordService {
 
             for (Map.Entry<String, List<String>> entry : strHrefs.entrySet()) {
                 List<String> pageHref = entry.getValue();
-                circ:
                 for (String typeData : pageHref) {
                     Elements pageElements = getContent(typeData, "body", "");
                     String data = pageElements.get(0).childNodes().get(0).toString();
@@ -343,6 +343,7 @@ public class NetInfoRecordService {
                     List<String> dataList = JSON.parseArray(jsonObject.getString("ls"), String.class);
                     if (CollectionUtils.isEmpty(dataList)) continue;
                     String itemHrefStr = "https://paimai.jd.com/";
+                    circ:
                     for (String dataStr : dataList) {
                         JDZCDto jdzcDto = JSON.parseObject(dataStr, JDZCDto.class);
                         String itemHref = String.format("%s%s", itemHrefStr, jdzcDto.getId());
@@ -379,12 +380,12 @@ public class NetInfoRecordService {
             Map<String, String> needContentType = Maps.newHashMap();
             needContentType.put("房产", "6");
             needContentType.put("土地使用权", "5");
-            needContentType.put("股权", "16");
-            needContentType.put("债券", "14");
             needContentType.put("集体土地使用权", "4");
-            needContentType.put("森林、林木使用权", "3");
-            needContentType.put("知识产权", "17");
-            needContentType.put("其他财产", "255");
+            // needContentType.put("股权", "16");
+            // needContentType.put("债券", "14");
+            // needContentType.put("森林、林木使用权", "3");
+            // needContentType.put("知识产权", "17");
+            // needContentType.put("其他财产", "255");
             Map<String, List<String>> strHrefs = Maps.newHashMap();
             String typeHref = "http://sf.caa123.org.cn/caa-web-ws/ws/0.1/lots?sortname=&sortorder=&count=12&lotStatus=2";
 
@@ -497,9 +498,9 @@ public class NetInfoRecordService {
             Map<String, String> needContentType = Maps.newHashMap();
             needContentType.put("房产", "6");
             needContentType.put("土地", "7");
-            needContentType.put("股权债权", "8");
-            needContentType.put("无形资产", "18");
-            needContentType.put("其他财产", "255");
+//            needContentType.put("股权债权", "8");
+//            needContentType.put("无形资产", "18");
+//            needContentType.put("其他财产", "255");
 
             Map<String, List<String>> strHrefs = Maps.newHashMap();
             String typeHref = "https://paimai.caa123.org.cn/wt-web-ws/ws/0.1/lots?sortname=&sortorder=&count=12&status=3";
@@ -610,7 +611,8 @@ public class NetInfoRecordService {
         try {
             Date date = getInstanceDate(days);//得到前1天
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String[] needContentType = new String[]{"房产", "土地", "股权", "无形资产", "林权矿权"};
+            //  String[] needContentType = new String[]{"房产", "土地", "股权", "无形资产", "林权矿权"};
+            String[] needContentType = new String[]{"房产", "土地"};
             List<String> types = Arrays.asList(needContentType);
             Map<String, String> strHrefs = Maps.newHashMap();//用于记录地址
             String urlInfo = "http://s.gpai.net/sf/search.do?restate=3";
@@ -621,6 +623,7 @@ public class NetInfoRecordService {
             for (Element item : a) {
                 String type = item.childNodes().get(0).toString().trim();
                 String href = item.attributes().get("href").trim();
+                if (StringUtils.equals(type, "不限")) continue;
                 if (types.contains(type)) {
                     //省
                     Elements provinceElements = getContent(item.attributes().get("href").trim(), ".condition", "");
@@ -649,7 +652,6 @@ public class NetInfoRecordService {
                     String pageNume = m.replaceAll("").trim();
                     page = Integer.valueOf(pageNume);
                 }
-                ;
                 for (int i = 1; i <= page; i++) {
                     String href = String.format("%s%s", strHref, "&Page=" + i);
                     Elements elementsItem = getContent(href, ".filt-result-list", "");
@@ -694,12 +696,12 @@ public class NetInfoRecordService {
                             netInfoRecord.setSourceSiteName("公拍网");
                             netInfoRecord.setEndTime(endTime);
                             netInfoRecord.setBeginTime(endTime);
-                            netInfoRecord.setType(entry.getKey());
+                            netInfoRecord.setType(entry.getValue().substring(0, entry.getValue().indexOf("_")));
                             netInfoRecord.setCurrentPrice(getRealMoney(currentPrice));
                             netInfoRecord.setConsultPrice(getRealMoney(consultPrice));
                             netInfoRecord.setInitPrice(getRealMoney(initPrice));
                             netInfoRecord.setLiquidRatios(getLiquidRatios(currentPrice, consultPrice));
-                            String content = getContent(titleName, entry.getKey(), currentPrice, consultPrice, initPrice
+                            String content = getContent(titleName, netInfoRecord.getType(), currentPrice, consultPrice, initPrice
                                     , DateUtils.format(endTime, DateUtils.DATE_CHINESE_PATTERN), "");
                             netInfoRecord.setContent(content);
                             netInfoRecordDao.addInfo(netInfoRecord);
@@ -804,7 +806,8 @@ public class NetInfoRecordService {
     public void getNetInfoFromGGZYCD(Integer days) {
         try {
             Date date = getInstanceDate(days);//得到前1天
-            String[] needContentType = new String[]{"拍卖公告", "结果公告"};
+            //  String[] needContentType = new String[]{"拍卖公告", "结果公告"};
+            String[] needContentType = new String[]{"结果公告"};
             List<String> needTypes = Arrays.asList(needContentType);
 
             String urlInfo = "https://www.cdggzy.com/site/LandTrade/LandList.aspx";
@@ -1232,7 +1235,7 @@ public class NetInfoRecordService {
     public void getNetInfoFromGGZYPZH(Integer days) {
         try {
             Date date = getInstanceDate(days);//得到前1天
-            String urlInfo = "http://ggzy.panzhihua.gov.cn/jyxx/tdsyq/crgg";
+            String urlInfo = "http://ggzy.panzhihua.gov.cn/jyxx/tdsyq/cjqr";
             //取得页数
             Elements pageElements = getContent(urlInfo, ".mmggxlh a", "");
             String pageStr = pageElements.get(pageElements.size() - 2).childNodes().get(0).toString();
@@ -1283,7 +1286,7 @@ public class NetInfoRecordService {
     public Elements getGGZYPZHHtml(String element, String pageValue) {
         try {
             // 1. 获取访问地址URL
-            URL url = new URL("http://ggzy.panzhihua.gov.cn/jyxx/tdsyq/crgg");
+            URL url = new URL("http://ggzy.panzhihua.gov.cn/jyxx/tdsyq/cjqr");
             // 2. 创建HttpURLConnection对象
             HttpURLConnection connection = (HttpURLConnection) url
                     .openConnection();
@@ -1733,6 +1736,30 @@ public class NetInfoRecordService {
 
     //抓取两年前数据
     public void climbingOldData() {
+        //来源京东司法
+        this.getNetInfoFromJDSF(732);
+        //来源京东资产
+        this.getNetInfoFromJDZC(732);
+        //中国拍卖行业协会网-司法
+        this.getNetInfoFromZGSF(732);
+        //中国拍卖行业协会网-标的
+        this.getNetInfoFromZGBD(732);
+        //来源公拍网
+        this.getNetInfoFromGPW(732);
+        //公共资源交易平台-雅安
+        this.getNetInfoFromGGZYYA(732);
+        //公共资源交易平台-成都(土地矿权)
+        this.getNetInfoFromGGZYCD(732);
+        //公共资源交易平台-成都（资产资源）
+        this.getNetInfoFromGGZYCD2(732);
+        ////公共资源交易平台-凉山州（交易公告）
+        this.getNetInfoFromGGZYLSZ(732);
+        ////公共资源交易平台-攀枝花（交易信息）
+        this.getNetInfoFromGGZYPZH(732);
+        ////土流网
+        this.getNetInfoFromTDJY(732);
+        //农村产权交易中心
+        this.getNetInfoFromNCJY(732);
         //来源淘宝网
         this.getNetInfoFromTB(732);
     }
