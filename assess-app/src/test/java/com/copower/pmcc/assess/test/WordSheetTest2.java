@@ -121,7 +121,7 @@ public class WordSheetTest2 {
                         switch (key) {
                             case 1: {
                                 try {
-                                    handleSheet(sheetDemo, 13, dataLandLevelDetailVo);
+                                    handleSheet(sheetDemo, 10, dataLandLevelDetailVo);
                                 } catch (Exception e) {
                                     errorHandle(stringBuffer, e, className, key);
                                 }
@@ -129,7 +129,7 @@ public class WordSheetTest2 {
                             }
                             case 2: {
                                 try {
-                                    handleSheet(sheetDemo, 13, dataLandLevelDetailVo);
+                                    handleSheet(sheetDemo, 10, dataLandLevelDetailVo);
                                 } catch (Exception e) {
                                     errorHandle(stringBuffer, e, className, key);
                                 }
@@ -137,7 +137,7 @@ public class WordSheetTest2 {
                             }
                             case 3: {
                                 try {
-                                    handleSheet(sheetDemo, 13, dataLandLevelDetailVo);
+                                    handleSheet(sheetDemo, 10, dataLandLevelDetailVo);
                                 } catch (Exception e) {
                                     errorHandle(stringBuffer, e, className, key);
                                 }
@@ -158,7 +158,7 @@ public class WordSheetTest2 {
                         switch (key) {
                             case 1: {
                                 try {
-                                    handleSheet(sheetDemo, 10, dataLandLevelDetailVo);
+                                    handleSheet(sheetDemo, 7, dataLandLevelDetailVo);
                                 } catch (Exception e) {
                                     errorHandle(stringBuffer, e, className, key);
                                 }
@@ -166,7 +166,7 @@ public class WordSheetTest2 {
                             }
                             case 2: {
                                 try {
-                                    handleSheet(sheetDemo, 10, dataLandLevelDetailVo);
+                                    handleSheet(sheetDemo, 7, dataLandLevelDetailVo);
                                 } catch (Exception e) {
                                     errorHandle(stringBuffer, e, className, key);
                                 }
@@ -174,7 +174,7 @@ public class WordSheetTest2 {
                             }
                             case 3: {
                                 try {
-                                    handleSheet(sheetDemo, 10, dataLandLevelDetailVo);
+                                    handleSheet(sheetDemo, 7, dataLandLevelDetailVo);
                                 } catch (Exception e) {
                                     errorHandle(stringBuffer, e, className, key);
                                 }
@@ -182,7 +182,7 @@ public class WordSheetTest2 {
                             }
                             case 4: {
                                 try {
-                                    handleSheet(sheetDemo, 10, dataLandLevelDetailVo);
+                                    handleSheet(sheetDemo, 8, dataLandLevelDetailVo);
                                 } catch (Exception e) {
                                     errorHandle(stringBuffer, e, className, key);
                                 }
@@ -190,7 +190,7 @@ public class WordSheetTest2 {
                             }
                             case 5: {
                                 try {
-                                    handleSheet(sheetDemo, 9, dataLandLevelDetailVo);
+                                    handleSheet(sheetDemo, 8, dataLandLevelDetailVo);
                                 } catch (Exception e) {
                                     errorHandle(stringBuffer, e, className, key);
                                 }
@@ -198,7 +198,7 @@ public class WordSheetTest2 {
                             }
                             case 6: {
                                 try {
-                                    handleSheet(sheetDemo, 12, dataLandLevelDetailVo);
+                                    handleSheet(sheetDemo, 8, dataLandLevelDetailVo);
                                 } catch (Exception e) {
                                     errorHandle(stringBuffer, e, className, key);
                                 }
@@ -219,7 +219,7 @@ public class WordSheetTest2 {
                         switch (key) {
                             case 1: {
                                 try {
-                                    handleSheet(sheetDemo, 13, dataLandLevelDetailVo);
+                                    handleSheet(sheetDemo, 12, dataLandLevelDetailVo);
                                 } catch (Exception e) {
                                     errorHandle(stringBuffer, e, className, key);
                                 }
@@ -227,7 +227,7 @@ public class WordSheetTest2 {
                             }
                             case 2: {
                                 try {
-                                    handleSheet(sheetDemo, 10, dataLandLevelDetailVo);
+                                    handleSheet(sheetDemo, 8, dataLandLevelDetailVo);
                                 } catch (Exception e) {
                                     errorHandle(stringBuffer, e, className, key);
                                     e.printStackTrace();
@@ -236,7 +236,7 @@ public class WordSheetTest2 {
                             }
                             case 3: {
                                 try {
-                                    handleSheet(sheetDemo, 11, dataLandLevelDetailVo);
+                                    handleSheet(sheetDemo, 8, dataLandLevelDetailVo);
                                 } catch (Exception e) {
                                     errorHandle(stringBuffer, e, className, key);
                                 }
@@ -244,7 +244,7 @@ public class WordSheetTest2 {
                             }
                             case 4: {
                                 try {
-                                    handleSheet(sheetDemo, 11, dataLandLevelDetailVo);
+                                    handleSheet(sheetDemo, 9, dataLandLevelDetailVo);
                                 } catch (Exception e) {
                                     errorHandle(stringBuffer, e, className, key);
                                 }
@@ -252,7 +252,7 @@ public class WordSheetTest2 {
                             }
                             case 5: {
                                 try {
-                                    handleSheet(sheetDemo, 12, dataLandLevelDetailVo);
+                                    handleSheet(sheetDemo, 9, dataLandLevelDetailVo);
                                 } catch (Exception e) {
                                     errorHandle(stringBuffer, e, className, key);
                                 }
@@ -260,7 +260,7 @@ public class WordSheetTest2 {
                             }
                             case 6: {
                                 try {
-                                    handleSheet(sheetDemo, 12, dataLandLevelDetailVo);
+                                    handleSheet(sheetDemo, 9, dataLandLevelDetailVo);
                                 } catch (Exception e) {
                                     errorHandle(stringBuffer, e, className, key);
                                 }
@@ -268,7 +268,7 @@ public class WordSheetTest2 {
                             }
                             case 7: {
                                 try {
-                                    handleSheet(sheetDemo, 12, dataLandLevelDetailVo);
+                                    handleSheet(sheetDemo, 9, dataLandLevelDetailVo);
                                 } catch (Exception e) {
                                     errorHandle(stringBuffer, e, className, key);
                                 }
@@ -289,7 +289,7 @@ public class WordSheetTest2 {
                         switch (key) {
                             case 1: {
                                 try {
-                                    handleSheet(sheetDemo, 7, dataLandLevelDetailVo);
+                                    handleSheet(sheetDemo, 5, dataLandLevelDetailVo);
                                 } catch (Exception e) {
                                     errorHandle(stringBuffer, e, className, key);
                                 }
@@ -297,7 +297,7 @@ public class WordSheetTest2 {
                             }
                             case 2: {
                                 try {
-                                    handleSheet(sheetDemo, 7, dataLandLevelDetailVo);
+                                    handleSheet(sheetDemo, 5, dataLandLevelDetailVo);
                                 } catch (Exception e) {
                                     errorHandle(stringBuffer, e, className, key);
                                 }
@@ -305,7 +305,7 @@ public class WordSheetTest2 {
                             }
                             case 3: {
                                 try {
-                                    handleSheet(sheetDemo, 14, dataLandLevelDetailVo);
+                                    handleSheet(sheetDemo, 10, dataLandLevelDetailVo);
                                 } catch (Exception e) {
                                     errorHandle(stringBuffer, e, className, key);
                                 }
@@ -321,7 +321,7 @@ public class WordSheetTest2 {
                             }
                             case 5: {
                                 try {
-                                    handleSheet(sheetDemo, 15, dataLandLevelDetailVo);
+                                    handleSheet(sheetDemo, 10, dataLandLevelDetailVo);
                                 } catch (Exception e) {
                                     errorHandle(stringBuffer, e, className, key);
                                 }
@@ -329,7 +329,7 @@ public class WordSheetTest2 {
                             }
                             case 6: {
                                 try {
-                                    handleSheet(sheetDemo, 13, dataLandLevelDetailVo);
+                                    handleSheet(sheetDemo, 9, dataLandLevelDetailVo);
                                 } catch (Exception e) {
                                     errorHandle(stringBuffer, e, className, key);
                                 }
@@ -435,11 +435,11 @@ public class WordSheetTest2 {
                 }
             }
 
-            if (aRow.getCell(1) != null) {
-                if (StringUtils.isNotBlank(PoiUtils.getCellValue(aRow.getCell(1)))) {
-                    landAchievement.setCategory(PoiUtils.getCellValue(aRow.getCell(1)));
-                }
-            }
+//            if (aRow.getCell(1) != null) {
+//                if (StringUtils.isNotBlank(PoiUtils.getCellValue(aRow.getCell(1)))) {
+//                    landAchievement.setCategory(PoiUtils.getCellValue(aRow.getCell(1)));
+//                }
+//            }
             if (aRow.getCell(2) != null) {
                 if (StringUtils.isNotBlank(PoiUtils.getCellValue(aRow.getCell(2)))) {
                     landAchievement.setCategory(PoiUtils.getCellValue(aRow.getCell(2)));
@@ -461,11 +461,11 @@ public class WordSheetTest2 {
             }
 
 
-            if (bRow.getCell(1) != null) {
-                if (StringUtils.isNotBlank(PoiUtils.getCellValue(bRow.getCell(1)))) {
-                    landAchievement.setCategory(PoiUtils.getCellValue(bRow.getCell(1)));
-                }
-            }
+//            if (bRow.getCell(1) != null) {
+//                if (StringUtils.isNotBlank(PoiUtils.getCellValue(bRow.getCell(1)))) {
+//                    landAchievement.setCategory(PoiUtils.getCellValue(bRow.getCell(1)));
+//                }
+//            }
             if (bRow.getCell(2) != null) {
                 if (StringUtils.isNotBlank(PoiUtils.getCellValue(bRow.getCell(2)))) {
                     landAchievement.setCategory(PoiUtils.getCellValue(bRow.getCell(2)));
