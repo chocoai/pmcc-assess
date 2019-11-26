@@ -49,6 +49,33 @@ import static com.google.common.collect.Lists.newArrayList;
  */
 public class PoiTest {
 
+    @Test
+    public void getDocx() throws Exception {
+        Document wordDoc = new Document("D:\\test\\咨评报告.doc");
+        FontSettings fontSettings = new FontSettings();
+        IWarningCallback callback = info -> {
+            if (info.getWarningType() == WarningType.FONT_SUBSTITUTION) {
+
+            }
+        };
+        wordDoc.setWarningCallback(callback);
+        wordDoc.setFontSettings(fontSettings);
+        wordDoc.save("D:\\test\\咨评报告.docx", SaveFormat.DOCX);
+    }
+
+    @Test
+    public void getPdf() throws Exception {
+        Document wordDoc = new Document("D:\\test\\咨评报告.docx");
+        FontSettings fontSettings = new FontSettings();
+        IWarningCallback callback = info -> {
+            if (info.getWarningType() == WarningType.FONT_SUBSTITUTION) {
+
+            }
+        };
+        wordDoc.setWarningCallback(callback);
+        wordDoc.setFontSettings(fontSettings);
+        wordDoc.save("D:\\test\\咨评报告.pdf", SaveFormat.PDF);
+    }
 
     @Test
     public void testFun() {
