@@ -357,7 +357,7 @@ public class BaseAttachmentService {
         }
         SysAttachmentDto sysAttachment = getSysAttachmentDto(id);
         String localDirPath = servletContext.getRealPath(basePath + File.separator + DateUtils.formatNowToYMD());
-        String localFileName =String.join("",UUID.randomUUID().toString().substring(1,8),".",sysAttachment.getFileExtension() ;
+        String localFileName =String.join("",UUID.randomUUID().toString().substring(1,8),".",sysAttachment.getFileExtension() );
         //清除今天以前的临时文件
         FileUtils.deleteDir(servletContext.getRealPath(basePath), Lists.newArrayList(DateUtils.formatNowToYMD()));
         FileUtils.folderMake(localDirPath);
