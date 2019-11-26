@@ -5,24 +5,21 @@ import com.copower.pmcc.assess.dal.basis.entity.ProjectPhase;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.provider.ErpRpcAttachmentService;
 import com.copower.pmcc.erp.common.CommonService;
+import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.*;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.copower.pmcc.erp.constant.CacheConstant;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletContext;
 import java.io.*;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -45,7 +42,6 @@ public class BaseAttachmentService {
     private ApplicationConstant applicationConstant;
     @Autowired
     private FtpUtilsExtense ftpUtilsExtense;
-    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private final static String TEMP_UPLOAD_PATH = "Temp";//临时文件存放目录
 
@@ -321,16 +317,16 @@ public class BaseAttachmentService {
     }
 
     public String importAjaxFile(List<MultipartFile> multipartFileList, String tableName, String tableId, String fieldsName) throws Exception {
-       StringBuilder stringBuilder = new StringBuilder(8) ;
+       List<String> stringList = new ArrayList<String>(multipartFileList.size()) ;
        if (CollectionUtils.isNotEmpty(multipartFileList)){
            for (MultipartFile multipartFile:multipartFileList){
                String id = importAjaxFile(multipartFile, tableName, tableId, fieldsName) ;
                if (StringUtils.isNotBlank(id)){
-                   stringBuilder.append(id) ;
+                   stringList.add(id) ;
                }
            }
        }
-       return stringBuilder.toString();
+       return StringUtils.join(stringList,",");
     }
 
     public String importAjaxFile(MultipartFile multipartFile, String tableName, String tableId, String fieldsName) throws Exception {
@@ -345,36 +341,28 @@ public class BaseAttachmentService {
         sysAttachmentDto.setCreater(commonService.thisUserAccount());
         sysAttachmentDto.setProjectId(0);
         sysAttachmentDto.setFileSize(FileUtils.getSize(multipartFile.getBytes().length));
-        try {
-            String ftpBasePath = String.format("%s/%s/%s/%s", createFTPBasePath(), DateUtils.format(new Date(), "yyyy-MM-dd"), commonService.thisUserAccount(), UUID.randomUUID().toString());
-            String ftpFileName = createNoRepeatFileName(sysAttachmentDto.getFileExtension());
-            sysAttachmentDto.setFilePath(ftpBasePath);
-            sysAttachmentDto.setFtpFileName(ftpFileName);
-            ftpUtilsExtense.uploadFilesToFTP(ftpBasePath, new FileInputStream(filePath), ftpFileName);
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-        }
-        this.addAttachment(sysAttachmentDto);
-        return String.format("%d", sysAttachmentDto.getId());
+        String ftpBasePath = String.join(File.separator, createFTPBasePath(), DateUtils.format(new Date(), DateUtils.DATE_PATTERN), String.valueOf(RandomUtils.nextInt(1, 1000)), UUID.randomUUID().toString().substring(0, 10));
+        String ftpFileName = createNoRepeatFileName(sysAttachmentDto.getFileExtension());
+        sysAttachmentDto.setFilePath(ftpBasePath);
+        sysAttachmentDto.setFtpFileName(ftpFileName);
+        ftpUtilsExtense.uploadFilesToFTP(ftpBasePath, new FileInputStream(filePath), ftpFileName);
+        addAttachment(sysAttachmentDto);
+        return String.valueOf(sysAttachmentDto.getId());
     }
 
-    public String getViewImageUrl(Integer id) {
-        final String basePath = "/temporary";
-        try {
-            if (id != null) {
-                SysAttachmentDto sysAttachment = getSysAttachmentDto(id);
-                String localDirPath = servletContext.getRealPath(basePath + "/" + DateUtils.formatNowToYMD());
-                String localFileName = String.format("%s%s%s",UUID.randomUUID().toString().substring(1,8),".",sysAttachment.getFileExtension());
-                //清除今天以前的临时文件
-                FileUtils.deleteDir(servletContext.getRealPath(basePath), Lists.newArrayList(DateUtils.formatNowToYMD()));
-                FileUtils.folderMake(localDirPath);
-                ftpUtilsExtense.downloadFileToLocal(sysAttachment.getFtpFileName(), sysAttachment.getFilePath(), localFileName, localDirPath);
-                Stream<String> stringStream = Arrays.stream(new String[]{basePath,DateUtils.formatNowToYMD(),localFileName});
-                return StringUtils.join(stringStream.collect(Collectors.toList()), "/");
-            }
-        } catch (Exception e) {
-            logger.error(String.format("%s%s", "附件可能被删除了", e.getMessage()), e);
+    public String getViewImageUrl(Integer id)throws BusinessException {
+        final String basePath = String.join("",File.separator,"temporary");
+        if (id == null){
+            return null;
         }
-        return null;
+        SysAttachmentDto sysAttachment = getSysAttachmentDto(id);
+        String localDirPath = servletContext.getRealPath(basePath + File.separator + DateUtils.formatNowToYMD());
+        String localFileName =String.join("",UUID.randomUUID().toString().substring(1,8),".",sysAttachment.getFileExtension() ;
+        //清除今天以前的临时文件
+        FileUtils.deleteDir(servletContext.getRealPath(basePath), Lists.newArrayList(DateUtils.formatNowToYMD()));
+        FileUtils.folderMake(localDirPath);
+        ftpUtilsExtense.downloadFileToLocal(sysAttachment.getFtpFileName(), sysAttachment.getFilePath(), localFileName, localDirPath);
+        Stream<String> stringStream = Arrays.stream(new String[]{basePath,DateUtils.formatNowToYMD(),localFileName});
+        return StringUtils.join(stringStream.collect(Collectors.toList()), File.separator);
     }
 }
