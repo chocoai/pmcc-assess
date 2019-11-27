@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.service.data;
 import com.copower.pmcc.assess.common.ArithmeticUtils;
 import com.copower.pmcc.assess.common.PoiUtils;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataLandLevelDetailVolumeDao;
+import com.copower.pmcc.assess.dal.basis.entity.DataLandLevelDetail;
 import com.copower.pmcc.assess.dal.basis.entity.DataLandLevelDetailVolume;
 import com.copower.pmcc.assess.dto.output.data.DataLandLevelDetailVolumeVo;
 import com.copower.pmcc.assess.service.BaseService;
@@ -14,6 +15,8 @@ import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Ordering;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -25,6 +28,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileInputStream;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,7 +41,9 @@ import java.util.List;
 public class DataLandLevelDetailVolumeService {
 
     @Autowired
-    private DataLandLevelDetailVolumeDao dataLandDetailAchievementDao;
+    private DataLandLevelDetailVolumeDao dataLandDetailAchievementDao; 
+    @Autowired
+    private DataLandLevelDetailService dataLandLevelDetailService;
     @Autowired
     private CommonService commonService;
     @Autowired
@@ -169,6 +175,63 @@ public class DataLandLevelDetailVolumeService {
         DataLandLevelDetailVolumeVo vo = new DataLandLevelDetailVolumeVo();
         org.springframework.beans.BeanUtils.copyProperties(oo, vo);
         return vo;
+    }
+
+    //根据配置获取容积率修正
+    public BigDecimal getAmendByVolumetricRate(BigDecimal volumeRate,Integer dataLandLevelDetailId) {
+        DataLandLevelDetail levelDetail = dataLandLevelDetailService.getPidByDataLandLevelDetail(dataLandLevelDetailId);
+        if(levelDetail.getVolumeRate()==null) return null;
+
+        DataLandLevelDetailVolume data = new DataLandLevelDetailVolume();
+        data.setLevelDetailId(levelDetail.getId());
+        List<DataLandLevelDetailVolume> detailList = getDataLandLevelDetailVolumeList(data);
+        for (DataLandLevelDetailVolume detailItem : detailList) {
+            //直接匹配
+            if (detailItem.getPlotRatio() == null) continue;
+            if (detailItem.getPlotRatio().compareTo(volumeRate) == 0) {
+                return detailItem.getCorrectionFactor();
+            }
+        }
+        //不能直接匹配
+        return getAmend(detailList, volumeRate);
+    }
+
+    public BigDecimal getAmend(List<DataLandLevelDetailVolume> detailList, BigDecimal volumetricRate) {
+        if (detailList.size() >= 2) {
+            //排序
+            Ordering<DataLandLevelDetailVolume> ordering = Ordering.from((o1, o2) -> {
+                return (o1.getPlotRatio().compareTo(o2.getPlotRatio()));
+            });
+            detailList.sort(ordering);
+            //如果在两个值间
+            for (int i = 0; i < detailList.size() - 1; i++) {
+                if (detailList.get(i).getPlotRatio().compareTo(volumetricRate) == -1 &&
+                        volumetricRate.compareTo(detailList.get(i + 1).getPlotRatio()) == -1) {
+                    BigDecimal cardinalNumber = detailList.get(i + 1).getCorrectionFactor().subtract(detailList.get(i).getCorrectionFactor()).divide(detailList.get(i + 1).getPlotRatio().subtract(detailList.get(i).getPlotRatio()), 2, BigDecimal.ROUND_HALF_UP);
+                    BigDecimal amend = detailList.get(i).getCorrectionFactor().add(cardinalNumber.multiply(volumetricRate.subtract(detailList.get(i).getPlotRatio())));
+                    return amend;
+                }
+            }
+            //最小值
+            DataLandLevelDetailVolume minValue = detailList.get(0);
+            //最大值
+            DataLandLevelDetailVolume maxValue = detailList.get(detailList.size() - 1);
+            //小于最小值
+            if (minValue.getPlotRatio().compareTo(volumetricRate) == 1) {
+                DataLandLevelDetailVolume tempValue = detailList.get(1);
+                BigDecimal cardinalNumber = tempValue.getCorrectionFactor().subtract(minValue.getCorrectionFactor()).divide(tempValue.getPlotRatio().subtract(minValue.getPlotRatio()), 2, BigDecimal.ROUND_HALF_UP);
+                BigDecimal amend = minValue.getCorrectionFactor().subtract(cardinalNumber.multiply(minValue.getPlotRatio().subtract(volumetricRate)));
+                return amend;
+            }
+            //大于最大值
+            if (volumetricRate.compareTo(maxValue.getPlotRatio()) == 1) {
+                DataLandLevelDetailVolume tempValue = detailList.get(detailList.size() - 2);
+                BigDecimal cardinalNumber = maxValue.getCorrectionFactor().subtract(tempValue.getCorrectionFactor()).divide(maxValue.getPlotRatio().subtract(tempValue.getPlotRatio()), 2, BigDecimal.ROUND_HALF_UP);
+                BigDecimal amend = maxValue.getCorrectionFactor().add(cardinalNumber.multiply(volumetricRate.subtract(maxValue.getPlotRatio())));
+                return amend;
+            }
+        }
+        return null;
     }
 
 }

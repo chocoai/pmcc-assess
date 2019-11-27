@@ -329,8 +329,7 @@ public class DataLandLevelDetailService {
         if (dataLandLevelDetail.getPid() == null || dataLandLevelDetail.getPid() == 0) {
             return dataLandLevelDetail;
         } else {
-            getPidByDataLandLevelDetail(dataLandLevelDetail.getPid());
+            return getPidByDataLandLevelDetail(dataLandLevelDetail.getPid());
         }
-        return null;
     }
 }

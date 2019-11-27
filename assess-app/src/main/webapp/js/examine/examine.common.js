@@ -85,6 +85,8 @@ examineCommon.landLevelSelect = function (this_) {
         success: function (data) {
             formGroup.find("input[name='landLevel']").val(data.id);
             formGroup.find("input[name='landLevelName']").val(data.name);
+            estateCommon.estateLandStateForm.find("input[name=landLevelContentResult]").val('');
+            estateCommon.estateLandStateForm.find("input[name=landFactorTotalScoreResult]").val('');
         }
     })
 };

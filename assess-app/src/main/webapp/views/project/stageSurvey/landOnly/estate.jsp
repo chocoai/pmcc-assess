@@ -236,6 +236,8 @@
 </div>
 <form class="form-horizontal" id="frm_estateLandState">
     <input type="hidden" name="id" value="${basicEstateLandState.id}">
+    <input type="hidden" name="landFactorTotalScoreResult">
+    <input type="hidden" name="landLevelContentResult">
     <div class="form-group">
         <div class="x-valid">
             <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
@@ -304,12 +306,13 @@
     </div>
     <div class="form-group">
         <div class="x-valid">
-            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地级别</label>
+            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地级别<span
+                    class="symbol required"></span></label>
             <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                 <div class="input-group">
-                    <input type="hidden" name="landLevel" value="${basicEstateLandState.landLevel}">
+                    <input type="hidden" name="landLevel" value='${basicEstateLandState.landLevel}'>
                     <input type="text" readonly="readonly" onclick="examineCommon.landLevelSelect(this);"
-                           placeholder="土地级别" class="form-control" name="landLevelName"
+                           placeholder="土地级别" class="form-control" name="landLevelName" required
                            value="${basicEstateLandState.landLevelName}">
                     <span class="input-group-btn">
                         <button type="button" class="btn btn-default docs-tooltip"
@@ -322,6 +325,11 @@
                                 onclick="$(this).closest('.input-group').find('input').val('');"
                                 data-toggle="tooltip" data-original-title="清除">
                         <i class="fa fa-trash-o"></i>
+                        </button>
+                            <button type="button" class="btn btn-default docs-tooltip"
+                                    onclick="estateCommon.openLevelDetailModal(this);"
+                                    data-toggle="tooltip" data-original-title="土地因素">
+                        <i class="fa fa-magic"></i>
                         </button>
                 </span>
                 </div>
@@ -550,3 +558,83 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/sonHouseView.js?v=${assessVersion}"></script>
 <script src="${pageContext.request.contextPath}/js/select/land.level.select.js?v=${assessVersion}"></script>
 <script src="${pageContext.request.contextPath}/js/select/block.select.js?v=${assessVersion}"></script>
+<div id="detailAchievementModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true" data-height="500">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">土地因素</h3>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="landLevelContentFrm">
+                    <div class="form-group">
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                <tr>
+                                    <th width="10%">土地级别类别</th>
+                                    <th width="10%">土地级别类型</th>
+                                    <th width="10%">土地级别等级</th>
+                                    <th width="20%">说明</th>
+                                    <th width="10%">分值</th>
+                                    <th width="5%"></th>
+                                </tr>
+                                </thead>
+                                <tbody id="landLevelTabContent">
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="estateCommon.saveLandLevelTabContent()">
+                    保存
+                </button>
+                <button type="button" data-dismiss="modal" class="btn btn-default">
+                    关闭
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/html" id="landLevelTabContentBody">
+    <tr class="group">
+        <td class="table-cell">
+            {landLevelTypeName}
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td>
+            {landLevelCategoryName}
+        </td>
+        <td>
+            <select class="form-control" name="landLevelGrade" onchange="estateCommon.landLevelHandle(this);">
+                {landLevelGradeHTML}
+            </select>
+        </td>
+        <td>
+            <label name="reamark" class="form-control">{reamark}</label>
+        </td>
+        <td>
+            <input type="hidden" class="form-control" name="dataLandLevelAchievement"
+                   value="{dataLandLevelAchievement}">
+            <input type="text" class="form-control x-percent" name="landFactorTotalScore"
+                   value="{landFactorTotalScore}">
+            <input type="hidden" name="landLevelContent" value='{landLevelContent}'>
+        </td>
+        <td>
+            <input class="btn btn-warning" type="button" value="X"
+                   onclick="estateCommon.landLevelEmpty(this)">
+        </td>
+    </tr>
+</script>
+<script type="text/javascript">
+    $(function () {
+        estateCommon.initById('${basicEstate.id}');
+    })
+</script>

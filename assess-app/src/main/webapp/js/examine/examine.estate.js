@@ -330,7 +330,7 @@
 
         AssessCommon.loadDataListHtml(AssessDicKey.estate_total_land_use, data.land.landUseType, function (html, data) {
             estateCommon.estateLandStateForm.find("#landUseTypeList").empty().html(html).trigger('change');
-        },true);
+        }, true);
         AssessCommon.loadDataDicByKey(AssessDicKey.estatePlaneness, data.land.planeness, function (html, data) {
             estateCommon.estateLandStateForm.find('select.planeness').empty().html(html).trigger('change');
         });
@@ -359,22 +359,15 @@
         AssessCommon.loadDataDicByKey(AssessDicKey.estateLandBearingHoldOn, data.land.holdOn, function (html, data) {
             estateCommon.estateLandStateForm.find("select[name='holdOn']").empty().html(html).trigger('change');
         });
-
-
-        // if (estateCommon.isNotBlank(data.land.landLevelContent)) {
-        //     var obj = {};
-        //     try {
-        //         obj = JSON.parse(data.land.landLevelContent);
-        //     } catch (e) {
-        //     }
-        //     if (estateCommon.isNotBlankObject(obj)) {
-        //         var objData = estateCommon.landLevelFilter(obj);
-        //         estateCommon.landLevelLoadHtml(objData);
-        //     }
-        // }
+        if (estateCommon.isNotBlank(data.land.landLevelContent)) {
+            if (estateCommon.isNotBlank(data.land.landLevelContent)) {
+                estateCommon.estateLandStateForm.find("input[name='landLevelContentResult']").val(data.land.landLevelContent);
+                estateCommon.estateLandStateForm.find("input[name='landFactorTotalScoreResult']").val(data.land.landFactorTotalScore);
+            }
+        }
         //绑定变更事件
         estateCommon.estateLandStateForm.find("input[name='landUseType']").off('change').on('change', function () {
-            AssessCommon.getSonDataList(AssessDicKey.estate_total_land_use,$(this).val(),data.land.landUseCategory, function (html, data) {
+            AssessCommon.getSonDataList(AssessDicKey.estate_total_land_use, $(this).val(), data.land.landUseCategory, function (html, data) {
                 estateCommon.estateLandStateForm.find("#landUseCategoryList").empty().html(html).trigger('change');
             });
         });
@@ -563,9 +556,9 @@
                             type: 'estate',
                             pathArray: estateCommon.estateMapiframe.pathArrayJson,
                             name: estateCommon.getEstateName()
-                        },function () {
+                        }, function () {
                             toastr.success('标记成功');
-                        }) ;
+                        });
                     }
                 }
             }
@@ -581,7 +574,7 @@
             lat: lat,
             pathArray: pathArray,
             name: estateCommon.getEstateName()
-        },function () {
+        }, function () {
             estateCommon.loadMarkerList();//标注成功后，刷新地图上的标注
         })
     };
@@ -591,8 +584,8 @@
         examineCommon.getApplyBatchEstateTaggingsByTableId({
             tableId: estateCommon.getEstateId(),
             type: 'estate'
-        },function (data) {
-            if (estateCommon.estateMapiframe){
+        }, function (data) {
+            if (estateCommon.estateMapiframe) {
                 estateCommon.estateMapiframe.loadMarkerList(data);//标注成功后，刷新地图上的标注
             }
         })
@@ -628,7 +621,7 @@
             lng: lng,
             lat: lat,
             name: estateCommon.estateForm.find('[name=name]').val()
-        },function () {
+        }, function () {
             estateCommon.loadMarkerList2(estateCommon.tableId);//标注成功后，刷新地图上的标注
         });
     };
@@ -638,8 +631,8 @@
         examineCommon.getApplyBatchEstateTaggingsByTableId({
             tableId: tableId,
             type: 'estate'
-        },function (data) {
-            if (estateCommon.estateMapiframe){
+        }, function (data) {
+            if (estateCommon.estateMapiframe) {
                 estateCommon.estateMapiframe.loadMarkerList(data);//标注成功后，刷新地图上的标注
             }
         })
@@ -676,59 +669,59 @@
      * 然后对这个二维数组对象进行遍历在遍历得过程中随机选出一个对象然后在页面上显示这个对象得数据，并且用一个隐藏框把遍历到这个位置得对象json串化保存在这个input中
      * @param data
      */
-/*
-    estateCommon.landLevelLoadHtml = function (data) {
-        if (jQuery.isEmptyObject(data)) {
-            return false;
-        }
-        var target = $("#landLevelTabContent");
-        target.empty();
-        target.parent().show();
+    /*
+        estateCommon.landLevelLoadHtml = function (data) {
+            if (jQuery.isEmptyObject(data)) {
+                return false;
+            }
+            var target = $("#landLevelTabContent");
+            target.empty();
+            target.parent().show();
 
-        //由于js来筛选 有大量json 解析或者字符串化 影响代码阅读度，因此改为了后台直接处理,第一次的时候有2此筛选分类这样确实代码可读性差
-        data.forEach(function (dataA, indexM) {
-            $.each(dataA, function (i, obj) {
-                var item = estateCommon.getLandLevelFilter(obj);
-                var landLevelBodyHtml = $("#landLevelTabContentBody").html();
-                if (landLevelBodyHtml) {
-                    landLevelBodyHtml = landLevelBodyHtml.replace(/{dataLandLevelAchievement}/g, item.id);
-                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landFactorTotalScore}/g, item.achievement);
-                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelCategoryName}/g, item.category);
-                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelTypeName}/g, item.typeName);
-                    landLevelBodyHtml = landLevelBodyHtml.replace(/{gradeName}/g, item.gradeName);
-                    var text = "";
-                    $.each(obj, function (i, n) {
-                        text += "等级:" + n.gradeName + "，说明:" + n.reamark + "； \r";
+            //由于js来筛选 有大量json 解析或者字符串化 影响代码阅读度，因此改为了后台直接处理,第一次的时候有2此筛选分类这样确实代码可读性差
+            data.forEach(function (dataA, indexM) {
+                $.each(dataA, function (i, obj) {
+                    var item = estateCommon.getLandLevelFilter(obj);
+                    var landLevelBodyHtml = $("#landLevelTabContentBody").html();
+                    if (landLevelBodyHtml) {
+                        landLevelBodyHtml = landLevelBodyHtml.replace(/{dataLandLevelAchievement}/g, item.id);
+                        landLevelBodyHtml = landLevelBodyHtml.replace(/{landFactorTotalScore}/g, item.achievement);
+                        landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelCategoryName}/g, item.category);
+                        landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelTypeName}/g, item.typeName);
+                        landLevelBodyHtml = landLevelBodyHtml.replace(/{gradeName}/g, item.gradeName);
+                        var text = "";
+                        $.each(obj, function (i, n) {
+                            text += "等级:" + n.gradeName + "，说明:" + n.reamark + "； \r";
+                        });
+                        landLevelBodyHtml = landLevelBodyHtml.replace(/{reamark}/g, text);
+                        landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelContent}/g, JSON.stringify(obj));
+                        AssessCommon.loadAsyncDataDicByKey(AssessDicKey.programmeMarketCostapproachGrade, item.grade, function (html, data) {
+                            landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelGradeHTML}/g, html);
+                            target.append(landLevelBodyHtml);
+                        }, false);
+                    }
+                });
+
+                if (indexM == 0) {
+                    target.find("tr").first().find("td").first().attr("rowspan", dataA.length);
+                    target.find("tr").each(function (i, n) {
+                        if (i != 0) {
+                            $(n).find("td").first().remove();
+                        }
                     });
-                    landLevelBodyHtml = landLevelBodyHtml.replace(/{reamark}/g, text);
-                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelContent}/g, JSON.stringify(obj));
-                    AssessCommon.loadAsyncDataDicByKey(AssessDicKey.programmeMarketCostapproachGrade, item.grade, function (html, data) {
-                        landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelGradeHTML}/g, html);
-                        target.append(landLevelBodyHtml);
-                    }, false);
+                }
+                if (indexM == 1) {
+                    var length = data[0].length;
+                    target.find("tr").eq(length).find("td").first().attr("rowspan", dataA.length);
+                    target.find("tr").each(function (i, n) {
+                        if (i > length) {
+                            $(n).find("td").first().remove();
+                        }
+                    });
                 }
             });
-
-            if (indexM == 0) {
-                target.find("tr").first().find("td").first().attr("rowspan", dataA.length);
-                target.find("tr").each(function (i, n) {
-                    if (i != 0) {
-                        $(n).find("td").first().remove();
-                    }
-                });
-            }
-            if (indexM == 1) {
-                var length = data[0].length;
-                target.find("tr").eq(length).find("td").first().attr("rowspan", dataA.length);
-                target.find("tr").each(function (i, n) {
-                    if (i > length) {
-                        $(n).find("td").first().remove();
-                    }
-                });
-            }
-        });
-    };
-*/
+        };
+    */
 
     //js数组去重复 ,直接重载在原生js上
     Array.prototype.deleteEle = function () {
@@ -753,10 +746,11 @@
     estateCommon.getLandLevelFilter = function (obj) {
         var random = Math.random() * (obj.length - 1);
         random = Math.round(random);
-        if (random >= 0 && random <= obj.length - 1) {
-        } else {
-            random = 0;
-        }
+        // if (random >= 0 && random <= obj.length - 1) {
+        // } else {
+        //     random = 0;
+        // }
+        random = 0;
         var objArray = [];
         obj.forEach(function (data, index) {
             //这里主要是获取对象长度
@@ -829,7 +823,7 @@
             AssessCommon.getDataDicInfo($(that).val(), function (item) {
                 obj.forEach(function (data, index) {
                     if (data.gradeName == item.name) {
-                        group.find("input[name='landFactorTotalScore']").val(data.achievement);
+                        group.find("input[name='landFactorTotalScore']").val(AssessCommon.pointToPercent(data.achievement));
                         group.find("input[name='dataLandLevelAchievement']").val(data.id);
                     }
                 });
@@ -892,22 +886,26 @@
 
     //土地因素
     estateCommon.openLevelDetailModal = function (this_) {
-        var landLevelId = $(this_).closest('.input-group').find('input').val();
-        if(!landLevelId){
+        var landLevelId = $(this_).closest('.input-group').find('input[name="landLevel"]').val();
+        if (!landLevelId) {
             alert('请选择土地级别');
         }
-        $.ajax({
-            url: getContextPath() + "/dataLandLevelDetailAchievement/landLevelFilter",
-            type: "get",
-            data: {levelDetailId: landLevelId},
-            success: function (result) {
-                estateCommon.landLevelLoadHtml(result.data);
-            }
-        })
-
+        var landLevelContentResult = estateCommon.estateLandStateForm.find("input[name='landLevelContentResult']").val();
+        if (estateCommon.isNotBlank(landLevelContentResult)) {
+            estateCommon.landLevelLoadEditHtml();
+        }else{
+            $.ajax({
+                url: getContextPath() + "/dataLandLevelDetailAchievement/landLevelFilter",
+                type: "get",
+                data: {levelDetailId: landLevelId},
+                success: function (result) {
+                    estateCommon.landLevelLoadHtml(result.data,false);
+                }
+            })
+        }
     };
 
-    estateCommon.landLevelLoadHtml = function(data) {
+    estateCommon.landLevelLoadHtml = function (data, beEcho) {
         if (jQuery.isEmptyObject(data)) {
             return false;
         }
@@ -918,11 +916,22 @@
         //由于js来筛选 有大量json 解析或者字符串化 影响代码阅读度，因此改为了后台直接处理,第一次的时候有2此筛选分类这样确实代码可读性差
         data.forEach(function (dataA, indexM) {
             $.each(dataA, function (i, obj) {
-                var item = estateCommon.getLandLevelFilter(obj);
+                //默认选中最优
+                var item;
+                if (beEcho) {
+                    obj.forEach(function (value, index) {
+                        if (value.modelStr == "update") {
+                            item = value;
+                        }
+                    })
+                } else {
+                    item = estateCommon.getLandLevelFilter(obj);
+                }
+
                 var landLevelBodyHtml = $("#landLevelTabContentBody").html();
                 if (landLevelBodyHtml) {
                     landLevelBodyHtml = landLevelBodyHtml.replace(/{dataLandLevelAchievement}/g, item.id);
-                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landFactorTotalScore}/g,AssessCommon.pointToPercent(item.achievement));
+                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landFactorTotalScore}/g, AssessCommon.pointToPercent(item.achievement));
                     landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelCategoryName}/g, item.categoryName);
                     landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelTypeName}/g, item.typeName);
                     var text = "";
@@ -941,7 +950,14 @@
         });
     };
 
-    estateCommon.saveLandLevelTabContent = function(){
+    estateCommon.landLevelLoadEditHtml = function () {
+        var landLevelContentResult = estateCommon.estateLandStateForm.find("input[name='landLevelContentResult']").val();
+        var jsonContent = JSON.parse(landLevelContentResult);
+        var data = estateCommon.landLevelFilter(jsonContent);
+        estateCommon.landLevelLoadHtml(data,true);
+    };
+
+    estateCommon.saveLandLevelTabContent = function () {
         var landLevelContent = [];
         var landFactorTotalScoreResult = 0;
 
@@ -974,9 +990,9 @@
     }
 
     //土地因素
-    estateCommon.landLevelLoadHtmlApproval = function() {
+    estateCommon.landLevelLoadHtmlApproval = function () {
         var landLevelContent = estateCommon.estateLandStateForm.find("input[name='landLevelContent']").val();
-console.log(landLevelContent+"==111")
+
         var jsonContent = JSON.parse(landLevelContent);
         var data = estateCommon.landLevelFilter(jsonContent);
         if (jQuery.isEmptyObject(data)) {
@@ -1001,7 +1017,7 @@ console.log(landLevelContent+"==111")
                     landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelCategoryName}/g, item.category);
                     landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelTypeName}/g, item.typeName);
                     landLevelBodyHtml = landLevelBodyHtml.replace(/{gradeName}/g, item.gradeName);
-                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landFactorTotalScore}/g,AssessCommon.pointToPercent(item.achievement));
+                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landFactorTotalScore}/g, AssessCommon.pointToPercent(item.achievement));
                     var text = "";
                     $.each(obj, function (i, n) {
                         text += "等级:" + n.gradeName + "，说明:" + n.reamark + "； \r";
