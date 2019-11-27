@@ -758,6 +758,7 @@
                 }
             });
             cols.push({field: 'content', title: '内容', width: '20%'});
+            cols.push({field: 'sourceSiteUrl', title: '来源地址', width: '5%'});
             cols.push({field: 'initPrice', title: '起始价', width: '5%'});
             cols.push({field: 'consultPrice', title: '估算价', width: '5%'});
             cols.push({field: 'currentPrice', title: '成交价', width: '5%'});
