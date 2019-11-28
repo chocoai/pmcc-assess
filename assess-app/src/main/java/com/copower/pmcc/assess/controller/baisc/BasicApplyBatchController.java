@@ -526,6 +526,20 @@ public class BasicApplyBatchController extends BaseController {
         return basicApplyBatchService.getBootstrapTableVo(estateName, true);
     }
 
+    @RequestMapping(value = "/draftDetail", name = "草稿详情页面", method = RequestMethod.GET)
+    public ModelAndView basicApplyBatchDetail(Integer id) {
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/basic/basicBatchApplyDetail");
+        modelAndView.addObject("formClassifyList", basicApplyBatchService.getFormClassifyList());
+        modelAndView.addObject("examineFormTypeList", surveyCommonService.getExamineFormTypeList());
+        try {
+            BasicApplyBatch applyBatch = basicApplyBatchService.getBasicApplyBatchById(id);
+            modelAndView.addObject("applyBatch", applyBatch);
+        } catch (Exception e1) {
+            log.error(e1.getMessage(), e1);
+        }
+        return modelAndView;
+    }
+
     @ResponseBody
     @RequestMapping(value = "/saveApplyDraftInfo", name = "保存", method = {RequestMethod.POST})
     public HttpResult saveApplyDraftInfo(BasicApplyBatch basicApplyBatch) {
