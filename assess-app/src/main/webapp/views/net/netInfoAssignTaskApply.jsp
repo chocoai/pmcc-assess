@@ -9,7 +9,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>拍卖信息补全申请</title>
+    <title>案例整理申请</title>
 
     <%@include file="/views/share/main_css.jsp" %>
 </head>
@@ -29,7 +29,7 @@
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                     </ul>
-                    <h3>拍卖信息补全
+                    <h3>案例整理
                     </h3>
                     <div class="clearfix"></div>
                 </div>
@@ -784,6 +784,7 @@
                 }
             });
             cols.push({field: 'content', title: '内容', width: '20%'});
+            cols.push({field: 'sourceSiteUrl', title: '来源地址', width: '5%'});
             cols.push({field: 'initPrice', title: '起始价', width: '5%'});
             cols.push({field: 'consultPrice', title: '估算价', width: '5%'});
             cols.push({field: 'currentPrice', title: '成交价', width: '5%'});
@@ -933,7 +934,8 @@
                 url: "${pageContext.request.contextPath}/netInfoRecordLand/saveLandDetail",
                 type: "post",
                 dataType: "json",
-                data: {formData: JSON.stringify(data)},
+                data: {formData: JSON.stringify(data),
+                    changeStatus: false},
                 success: function (result) {
                     if (result.ret) {
                         toastr.success('保存成功');
@@ -958,7 +960,8 @@
                 url: "${pageContext.request.contextPath}/netInfoRecordHouse/saveHouseDetail",
                 type: "post",
                 dataType: "json",
-                data: {formData: JSON.stringify(data)},
+                data: {formData: JSON.stringify(data),
+                    changeStatus: false},
                 success: function (result) {
                     if (result.ret) {
                         toastr.success('保存成功');
@@ -998,7 +1001,7 @@
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
-                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="查看网址" onclick="detailInfo.prototype.openItem(' + index + ')"><i class="fa fa-eye fa-white"></i></a>';
+                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="查看网址" target="_blank" href="'+row.sourceSiteUrl+'" ><i class="fa fa-eye fa-white"></i></a>';
                     str += '</div>';
                     return str;
                 }

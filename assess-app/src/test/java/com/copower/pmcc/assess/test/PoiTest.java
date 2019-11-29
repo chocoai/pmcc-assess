@@ -51,7 +51,7 @@ public class PoiTest {
 
     @Test
     public void getDocx() throws Exception {
-        Document wordDoc = new Document("D:\\test\\咨评报告.doc");
+        Document wordDoc = new Document("D:\\test\\结果报告.doc");
         FontSettings fontSettings = new FontSettings();
         IWarningCallback callback = info -> {
             if (info.getWarningType() == WarningType.FONT_SUBSTITUTION) {
@@ -60,16 +60,16 @@ public class PoiTest {
         };
         wordDoc.setWarningCallback(callback);
         wordDoc.setFontSettings(fontSettings);
-        wordDoc.save("D:\\test\\咨评报告.docx", SaveFormat.DOCX);
+        wordDoc.save("D:\\test\\结果报告.docx", SaveFormat.DOCX);
     }
 
     @Test
     public void getPdf() throws Exception {
-        Document wordDoc = new Document("D:\\test\\咨评报告.docx");
+        Document wordDoc = new Document("D:\\test\\咨评报告.doc");
         FontSettings fontSettings = new FontSettings();
         IWarningCallback callback = info -> {
             if (info.getWarningType() == WarningType.FONT_SUBSTITUTION) {
-
+                System.out.print(1);
             }
         };
         wordDoc.setWarningCallback(callback);

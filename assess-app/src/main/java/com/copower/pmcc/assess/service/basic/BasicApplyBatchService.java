@@ -1040,19 +1040,10 @@ public class BasicApplyBatchService {
      * @throws Exception
      */
     public ProcessUserDto processStartSubmit(Integer id) throws Exception {
-        BasicApplyBatch applyBatch = basicApplyBatchDao.getBasicApplyBatchById(id);
-        BasicApplyBatch verifyData = new BasicApplyBatch();
-        verifyData.setEstateName(applyBatch.getEstateName());
-        verifyData.setStatus(ProjectStatusEnum.RUNING.getKey());
-        //案例楼盘的新增升级
-        if (applyBatch.getCaseEstateId() != null) {
-            verifyData.setCaseEstateId(applyBatch.getCaseEstateId());
-        }
-        List<BasicApplyBatch> infoList = basicApplyBatchDao.getInfoList(verifyData);
-        if (CollectionUtils.isNotEmpty(infoList)) {
-            throw new BusinessException("该楼盘正在审批中，请不要重复申请");
-        }
+        //验证是否已在审批
+        this.verifyApproval(id);
 
+        BasicApplyBatch applyBatch = basicApplyBatchDao.getBasicApplyBatchById(id);
         ProcessUserDto processUserDto = null;
         ProcessInfo processInfo = new ProcessInfo();
         //流程描述
@@ -1078,6 +1069,42 @@ public class BasicApplyBatchService {
             throw e;
         }
         return processUserDto;
+    }
+
+
+    //验证楼盘是否已发起审批
+    public void verifyApproval(Integer id) throws Exception {
+        BasicApplyBatch applyBatch = basicApplyBatchDao.getBasicApplyBatchById(id);
+        //需要验证的数据
+        BasicEstate basicEstate = basicEstateDao.getBasicEstateById(applyBatch.getEstateId());
+        BasicApplyBatch verifyData = new BasicApplyBatch();
+        //验证升级数据
+        if (applyBatch.getCaseEstateId() != null) {
+            verifyData.setEstateName(applyBatch.getEstateName());
+            verifyData.setStatus(ProjectStatusEnum.RUNING.getKey());
+            verifyData.setCaseEstateId(applyBatch.getCaseEstateId());
+            List<BasicApplyBatch> infoList = basicApplyBatchDao.getInfoList(verifyData);
+            if (CollectionUtils.isNotEmpty(infoList)) {
+                throw new BusinessException("升级楼盘正在审批中，请不要重复申请");
+            }
+        } else {
+            //获取所有审批中的数据
+            BasicApplyBatch approvalData = new BasicApplyBatch();
+            approvalData.setStatus(ProjectStatusEnum.RUNING.getKey());
+            List<BasicApplyBatch> infoList = basicApplyBatchDao.getInfoList(approvalData);
+            if (CollectionUtils.isNotEmpty(infoList)) {
+                List<Integer> estateIds = LangUtils.transform(infoList, o -> o.getEstateId());
+                List<BasicEstate> basicEstateList = LangUtils.transform(estateIds, p -> basicEstateDao.getBasicEstateById(p));
+                for (BasicEstate item : basicEstateList) {
+                    if (StringUtils.equals(item.getName(), basicEstate.getName()) && StringUtils.equals(item.getProvince()
+                            , basicEstate.getProvince()) && StringUtils.equals(item.getCity(), basicEstate.getCity())) {
+                        throw new BusinessException("该楼盘正在审批中，请不要重复申请");
+                    }
+                }
+            }
+        }
+
+
     }
 
     public BasicApplyBatchVo getBasicApplyBatchVo(BasicApplyBatch basicApplyBatch) throws Exception {

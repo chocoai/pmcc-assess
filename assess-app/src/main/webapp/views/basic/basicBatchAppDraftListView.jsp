@@ -163,6 +163,14 @@
         window.open(href, "");
     };
 
+
+    //查看
+    dataObjFun.checkData = function (id) {
+        var href = "${pageContext.request.contextPath}/basicApplyBatch/draftDetail";
+        href += "?id=" + id;
+        window.open(href, "");
+    };
+
     dataObjFun.openModal = function () {
         $("#" + dataObjFun.config.father.frm()).clearAll();
         AssessCommon.initAreaInfo({
@@ -230,9 +238,24 @@
             field: 'typeName', title: '类型'
         });
         cols.push({
+            field: 'finishName', title: '状态', formatter: function (value, row, index) {
+                if (row.status=='finish') {
+                    return "结束";
+                }else if(row.status=='runing'){
+                    return "进行中";
+                }else{
+                    return "草稿";
+                }
+            }
+        });
+        cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="继续申请" onclick="dataObjFun.temporary(' + row.id + ')">继续申请</a>';
+                if (row.draftFlag) {
+                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="继续申请" onclick="dataObjFun.temporary(' + row.id + ')">继续申请</a>';
+                }else{
+                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="查看" onclick="dataObjFun.checkData(' + row.id + ')">查看</a>';
+                }
                 str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="删除" onclick="dataObjFun.delete(' + row.id + ')">删除</a>';
                 str += '</div>';
                 return str;

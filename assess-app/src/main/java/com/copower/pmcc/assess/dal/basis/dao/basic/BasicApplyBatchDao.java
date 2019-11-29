@@ -35,7 +35,8 @@ public class BasicApplyBatchDao {
         if (StringUtils.isNotBlank(userAccount)) {
             criteria.andCreatorEqualTo(userAccount);
         }
-        criteria.andDraftFlagEqualTo(draftFlag).andBisDeleteEqualTo(false);
+        criteria.andPlanDetailsIdIsNull();
+        criteria.andBisDeleteEqualTo(false);
         example.setOrderByClause("id desc");
         return basicApplyBatchMapper.selectByExample(example);
     }

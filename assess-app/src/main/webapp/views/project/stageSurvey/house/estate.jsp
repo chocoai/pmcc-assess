@@ -296,8 +296,8 @@
     </div>
     <form id="frm_estateLandState" class="form-horizontal">
         <input type="hidden" name="id" value="${basicEstateLandState.id}">
-        <input type="hidden" name="landFactorTotalScoreResult" value="${basicEstateLandState.landFactorTotalScore}">
-        <input type="hidden" name="landLevelContentResult" value="${basicEstateLandState.landLevelContent}">
+        <input type="hidden" name="landFactorTotalScoreResult">
+        <input type="hidden" name="landLevelContentResult">
         <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地名称<span
@@ -391,7 +391,7 @@
                         class="symbol required"></span></label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <div class="input-group">
-                        <input type="hidden" name="landLevel" value="${basicEstateLandState.landLevel}">
+                        <input type="hidden" name="landLevel" value='${basicEstateLandState.landLevel}'>
                         <input type="text" readonly="readonly" onclick="examineCommon.landLevelSelect(this);"
                                placeholder="土地级别" class="form-control" name="landLevelName" required
                                value="${basicEstateLandState.landLevelName}">

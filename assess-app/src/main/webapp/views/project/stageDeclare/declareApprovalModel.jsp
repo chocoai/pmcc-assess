@@ -525,47 +525,47 @@
         <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%"
             color="#6f5499" size="10"/>
 
-        <div class="form-group">
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">街道号</label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <label class="form-control" name="streetNumber"></label>
-                </div>
-            </div>
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">附号</label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <label class="form-control" name="attachedNumber"></label>
-                </div>
-            </div>
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">栋号</label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <label class="form-control" name="buildingNumber"></label>
-                </div>
-            </div>
-        </div>
+        <%--<div class="form-group">--%>
+            <%--<div class="x-valid">--%>
+                <%--<label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">街道号</label>--%>
+                <%--<div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">--%>
+                    <%--<label class="form-control" name="streetNumber"></label>--%>
+                <%--</div>--%>
+            <%--</div>--%>
+            <%--<div class="x-valid">--%>
+                <%--<label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">附号</label>--%>
+                <%--<div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">--%>
+                    <%--<label class="form-control" name="attachedNumber"></label>--%>
+                <%--</div>--%>
+            <%--</div>--%>
+            <%--<div class="x-valid">--%>
+                <%--<label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">栋号</label>--%>
+                <%--<div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">--%>
+                    <%--<label class="form-control" name="buildingNumber"></label>--%>
+                <%--</div>--%>
+            <%--</div>--%>
+        <%--</div>--%>
 
-        <div class="form-group">
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">单元</label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <label class="form-control" name="unit"></label>
-                </div>
-            </div>
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">楼层</label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <label class="form-control" name="floor"></label>
-                </div>
-            </div>
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">房号</label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <label class="form-control" name="roomNumber"></label>
-                </div>
-            </div>
-        </div>
+        <%--<div class="form-group">--%>
+            <%--<div class="x-valid">--%>
+                <%--<label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">单元</label>--%>
+                <%--<div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">--%>
+                    <%--<label class="form-control" name="unit"></label>--%>
+                <%--</div>--%>
+            <%--</div>--%>
+            <%--<div class="x-valid">--%>
+                <%--<label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">楼层</label>--%>
+                <%--<div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">--%>
+                    <%--<label class="form-control" name="floor"></label>--%>
+                <%--</div>--%>
+            <%--</div>--%>
+            <%--<div class="x-valid">--%>
+                <%--<label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">房号</label>--%>
+                <%--<div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">--%>
+                    <%--<label class="form-control" name="roomNumber"></label>--%>
+                <%--</div>--%>
+            <%--</div>--%>
+        <%--</div>--%>
         <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">坐落</label>
@@ -754,47 +754,47 @@
         <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%"
             color="#6f5499" size="10"/>
 
-        <div class="form-group">
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">街道号</label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <label class="form-control" name="streetNumber"></label>
-                </div>
-            </div>
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">附号</label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <label class="form-control" name="attachedNumber"></label>
-                </div>
-            </div>
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">栋号</label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <label class="form-control" name="buildingNumber"></label>
-                </div>
-            </div>
-        </div>
+        <%--<div class="form-group">--%>
+            <%--<div class="x-valid">--%>
+                <%--<label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">街道号</label>--%>
+                <%--<div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">--%>
+                    <%--<label class="form-control" name="streetNumber"></label>--%>
+                <%--</div>--%>
+            <%--</div>--%>
+            <%--<div class="x-valid">--%>
+                <%--<label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">附号</label>--%>
+                <%--<div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">--%>
+                    <%--<label class="form-control" name="attachedNumber"></label>--%>
+                <%--</div>--%>
+            <%--</div>--%>
+            <%--<div class="x-valid">--%>
+                <%--<label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">栋号</label>--%>
+                <%--<div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">--%>
+                    <%--<label class="form-control" name="buildingNumber"></label>--%>
+                <%--</div>--%>
+            <%--</div>--%>
+        <%--</div>--%>
 
-        <div class="form-group">
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">单元</label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <label class="form-control" name="unit"></label>
-                </div>
-            </div>
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">楼层</label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <label class="form-control" name="floor"></label>
-                </div>
-            </div>
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">房号</label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <label class="form-control" name="roomNumber"></label>
-                </div>
-            </div>
-        </div>
+        <%--<div class="form-group">--%>
+            <%--<div class="x-valid">--%>
+                <%--<label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">单元</label>--%>
+                <%--<div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">--%>
+                    <%--<label class="form-control" name="unit"></label>--%>
+                <%--</div>--%>
+            <%--</div>--%>
+            <%--<div class="x-valid">--%>
+                <%--<label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">楼层</label>--%>
+                <%--<div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">--%>
+                    <%--<label class="form-control" name="floor"></label>--%>
+                <%--</div>--%>
+            <%--</div>--%>
+            <%--<div class="x-valid">--%>
+                <%--<label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">房号</label>--%>
+                <%--<div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">--%>
+                    <%--<label class="form-control" name="roomNumber"></label>--%>
+                <%--</div>--%>
+            <%--</div>--%>
+        <%--</div>--%>
         <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">坐落</label>

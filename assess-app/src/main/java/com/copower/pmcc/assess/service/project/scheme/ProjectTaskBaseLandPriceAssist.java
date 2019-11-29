@@ -7,6 +7,7 @@ import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.basic.BasicEstateLandStateService;
 import com.copower.pmcc.assess.service.basic.BasicEstateService;
 import com.copower.pmcc.assess.service.data.DataLandLevelDetailService;
+import com.copower.pmcc.assess.service.data.DataLandLevelDetailVolumeService;
 import com.copower.pmcc.assess.service.method.MdBaseLandPriceService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
@@ -52,7 +53,7 @@ public class ProjectTaskBaseLandPriceAssist implements ProjectTaskInterface {
     @Autowired
     private SchemeInfoService schemeInfoService;
     @Autowired
-    private SchemeAreaGroupService schemeAreaGroupService;
+    private DataLandLevelDetailVolumeService dataLandLevelDetailVolumeService;
     @Autowired
     private DataLandLevelDetailService dataLandLevelDetailService;
 
@@ -173,8 +174,8 @@ public class ProjectTaskBaseLandPriceAssist implements ProjectTaskInterface {
         if(data!=null) {
             modelAndView.addObject("standardPremium", data.getPrice());
             modelAndView.addObject("legalAge", data.getLegalAge());
-            BigDecimal amendValue = null;
-            String volumeFractionAmend = "无";
+            BigDecimal amendValue = dataLandLevelDetailVolumeService.getAmendByVolumetricRate(levelDetail.getVolumeRate(),landLevelDetailId);
+            String volumeFractionAmend = "未配置";
             if (amendValue != null) {
                 volumeFractionAmend = String.format("%.2f", amendValue);
             }

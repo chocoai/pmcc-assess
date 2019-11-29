@@ -270,8 +270,8 @@
     </div>
     <form id="frm_estateLandState" class="form-horizontal">
         <input type="hidden" name="id" value="${basicEstateLandState.id}">
-        <input type="hidden" name="landFactorTotalScoreResult" value="${basicEstateLandState.landFactorTotalScore}">
-        <input type="hidden" name="landLevelContentResult" value="${basicEstateLandState.landLevelContent}">
+        <input type="hidden" name="landFactorTotalScoreResult">
+        <input type="hidden" name="landLevelContentResult">
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">

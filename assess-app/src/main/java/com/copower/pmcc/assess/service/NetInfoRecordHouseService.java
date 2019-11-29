@@ -51,7 +51,7 @@ public class NetInfoRecordHouseService {
     @Autowired
     private BaseAttachmentService baseAttachmentService;
 
-    public Integer saveAndUpdateNetInfoRecordHouse(NetInfoRecordHouse netInfoRecordHouse) {
+    public NetInfoRecordHouse saveAndUpdateNetInfoRecordHouse(NetInfoRecordHouse netInfoRecordHouse) {
         if (netInfoRecordHouse.getId() == null) {
             netInfoRecordHouse.setCreator(commonService.thisUserAccount());
             netInfoRecordHouseDao.addNetInfoRecordHouse(netInfoRecordHouse);
@@ -64,10 +64,10 @@ public class NetInfoRecordHouseService {
             SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
             sysAttachmentDto.setTableId(netInfoRecordHouse.getId());
             erpRpcAttachmentService.updateAttachmentByParam(queryParam, sysAttachmentDto);
-            return netInfoRecordHouse.getId();
+            return netInfoRecordHouse;
         } else {
             netInfoRecordHouseDao.updateNetInfoRecordHouse(netInfoRecordHouse);
-            return null;
+            return netInfoRecordHouse;
         }
     }
 
@@ -85,7 +85,23 @@ public class NetInfoRecordHouseService {
         List<SysAttachmentDto> attachmentDtos = baseAttachmentService.getAttachmentList(LangUtils.transform(netInfoRecordHouses, o -> o.getId()), where);
 
         bootstrapTableVo.setTotal(page.getTotal());
-        bootstrapTableVo.setRows(netInfoRecordHouses == null ? new ArrayList() : LangUtils.transform(netInfoRecordHouses, o -> getNetInfoRecordHouseVo(o,attachmentDtos)));
+        bootstrapTableVo.setRows(netInfoRecordHouses == null ? new ArrayList() : LangUtils.transform(netInfoRecordHouses, o -> getNetInfoRecordHouseVo(o, attachmentDtos)));
+        return bootstrapTableVo;
+    }
+
+    public BootstrapTableVo getHouseListByMasterId(Integer masterId) {
+        BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        NetInfoRecordHouse netInfoRecordHouse = new NetInfoRecordHouse();
+        netInfoRecordHouse.setMasterId(masterId);
+        List<NetInfoRecordHouse> netInfoRecordHouses = netInfoRecordHouseDao.getNetInfoRecordHouseList(netInfoRecordHouse);
+        SysAttachmentDto where = new SysAttachmentDto();
+        where.setTableName(FormatUtils.entityNameConvertToTableName(NetInfoRecordHouse.class));
+        List<SysAttachmentDto> attachmentDtos = baseAttachmentService.getAttachmentList(LangUtils.transform(netInfoRecordHouses, o -> o.getId()), where);
+
+        bootstrapTableVo.setTotal(page.getTotal());
+        bootstrapTableVo.setRows(netInfoRecordHouses == null ? new ArrayList() : LangUtils.transform(netInfoRecordHouses, o -> getNetInfoRecordHouseVo(o, attachmentDtos)));
         return bootstrapTableVo;
     }
 
@@ -98,7 +114,7 @@ public class NetInfoRecordHouseService {
         List<NetInfoRecordHouseVo> vos = Lists.newArrayList();
         if (!ObjectUtils.isEmpty(netInfoRecordHouses)) {
             for (NetInfoRecordHouse houseLevel : netInfoRecordHouses) {
-                vos.add(getNetInfoRecordHouseVo(houseLevel,attachmentDtos));
+                vos.add(getNetInfoRecordHouseVo(houseLevel, attachmentDtos));
             }
         }
         return vos;
@@ -131,11 +147,22 @@ public class NetInfoRecordHouseService {
             StringBuilder stringBuilder = new StringBuilder();
             for (SysAttachmentDto attachmentDto : attachmentDtos) {
                 if (attachmentDto.getTableId().equals(netInfoRecordHouse.getId())) {
-                    stringBuilder.append(baseAttachmentService.getEditHtml(attachmentDto,false));
+                    stringBuilder.append(baseAttachmentService.getEditHtml(attachmentDto, false));
                 }
             }
             vo.setFileViewName(stringBuilder.toString());
         }
         return vo;
+    }
+
+    //取最新数据
+    public NetInfoRecordHouse getSingleByMasterId(Integer masterId) {
+        NetInfoRecordHouse netInfoRecordHouse = new NetInfoRecordHouse();
+        netInfoRecordHouse.setMasterId(masterId);
+        List<NetInfoRecordHouse> netInfoRecordHouses = netInfoRecordHouseDao.getNetInfoRecordHouseList(netInfoRecordHouse);
+        if (CollectionUtils.isNotEmpty(netInfoRecordHouses)) {
+            return netInfoRecordHouses.get(netInfoRecordHouses.size() - 1);
+        }
+        return null;
     }
 }
