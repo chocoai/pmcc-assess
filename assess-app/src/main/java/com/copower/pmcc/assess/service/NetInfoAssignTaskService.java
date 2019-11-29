@@ -112,7 +112,7 @@ public class NetInfoAssignTaskService {
         ProcessInfo processInfo = new ProcessInfo();
         String boxName = baseParameterService.getBaseParameter(baseParameterEnum);
         BoxReDto boxReDto = bpmRpcBoxService.getBoxReByBoxName(boxName);
-        processInfo.setFolio("【案例信息整理】");//流程描述
+        processInfo.setFolio("【案例整理】");//流程描述
         processInfo.setProcessName(boxReDto.getProcessName());
         processInfo.setGroupName(boxReDto.getGroupName());
         processInfo.setTableName(FormatUtils.entityNameConvertToTableName(NetInfoAssignTask.class));

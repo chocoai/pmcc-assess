@@ -9,7 +9,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>拍卖信息补全</title>
+    <title>案例整理</title>
 
     <%@include file="/views/share/main_css.jsp" %>
 </head>

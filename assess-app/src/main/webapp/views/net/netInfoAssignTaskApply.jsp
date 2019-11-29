@@ -9,7 +9,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>拍卖信息补全申请</title>
+    <title>案例整理申请</title>
 
     <%@include file="/views/share/main_css.jsp" %>
 </head>
@@ -29,7 +29,7 @@
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                     </ul>
-                    <h3>拍卖信息补全
+                    <h3>案例整理
                     </h3>
                     <div class="clearfix"></div>
                 </div>
