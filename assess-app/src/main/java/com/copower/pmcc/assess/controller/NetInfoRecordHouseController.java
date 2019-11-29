@@ -3,14 +3,19 @@ package com.copower.pmcc.assess.controller;
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordDao;
+import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordHouseDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecord;
 import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordHouse;
 import com.copower.pmcc.assess.service.NetInfoRecordHouseService;
+import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.copower.pmcc.erp.common.utils.LangUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,6 +40,10 @@ public class NetInfoRecordHouseController {
     private NetInfoRecordDao netInfoRecordDao;
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private NetInfoRecordHouseDao netInfoRecordHouseDao;
+    @Autowired
+    private BaseAttachmentService baseAttachmentService;
 
     @RequestMapping(value = "/index", name = "拍卖详细信息视图")
     public ModelAndView index() {
@@ -47,22 +56,29 @@ public class NetInfoRecordHouseController {
 
     @ResponseBody
     @RequestMapping(value = "/houseList", name = "取得房产信息", method = RequestMethod.GET)
-    public BootstrapTableVo houseList(String province, String city, String district,String street,String name) {
-        BootstrapTableVo vo = netInfoRecordHouseService.getNetInfoRecordHouseListVos(1,province,city,district,street,name);
+    public BootstrapTableVo houseList(String province, String city, String district, String street, String name) {
+        BootstrapTableVo vo = netInfoRecordHouseService.getNetInfoRecordHouseListVos(1, province, city, district, street, name);
         return vo;
     }
 
     @ResponseBody
     @RequestMapping(value = "/saveHouseDetail", method = {RequestMethod.POST}, name = "保存")
-    public HttpResult saveHouseDetail(String formData) {
+    public HttpResult saveHouseDetail(String formData, boolean changeStatus) {
         NetInfoRecordHouse netInfoRecordHouse = JSON.parseObject(formData, NetInfoRecordHouse.class);
         try {
-            netInfoRecordHouseService.saveAndUpdateNetInfoRecordHouse(netInfoRecordHouse);
-            NetInfoRecord record = netInfoRecordDao.getInfoById(netInfoRecordHouse.getMasterId());
-            record.setBelongType(netInfoRecordHouse.getType());
-            record.setStatus(2);
-            netInfoRecordDao.updateInfo(record);
-            return HttpResult.newCorrectResult("保存 success!");
+            NetInfoRecordHouse houseData = netInfoRecordHouseService.saveAndUpdateNetInfoRecordHouse(netInfoRecordHouse);
+            List<NetInfoRecordHouse> netInfoRecordHouses = netInfoRecordHouseDao.getNetInfoRecordHouseList(netInfoRecordHouse);
+            SysAttachmentDto where = new SysAttachmentDto();
+            where.setTableName(FormatUtils.entityNameConvertToTableName(NetInfoRecordHouse.class));
+            List<SysAttachmentDto> attachmentDtos = baseAttachmentService.getAttachmentList(LangUtils.transform(netInfoRecordHouses, o -> o.getId()), where);
+
+            if (changeStatus) {
+                NetInfoRecord record = netInfoRecordDao.getInfoById(netInfoRecordHouse.getMasterId());
+                record.setBelongType(netInfoRecordHouse.getType());
+                record.setStatus(2);
+                netInfoRecordDao.updateInfo(record);
+            }
+            return HttpResult.newCorrectResult(netInfoRecordHouseService.getNetInfoRecordHouseVo(houseData, attachmentDtos));
         } catch (Exception e) {
             return HttpResult.newErrorResult("保存异常");
         }
@@ -77,6 +93,14 @@ public class NetInfoRecordHouseController {
             return HttpResult.newErrorResult(e.getMessage());
         }
         return HttpResult.newCorrectResult();
+    }
+
+
+    @ResponseBody
+    @RequestMapping(value = "/getHouseListByMasterId", name = "取得房产历史信息", method = RequestMethod.GET)
+    public BootstrapTableVo getHouseListByMasterId(Integer masterId) {
+        BootstrapTableVo vo = netInfoRecordHouseService.getHouseListByMasterId(masterId);
+        return vo;
     }
 
 }

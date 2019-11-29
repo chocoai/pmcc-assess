@@ -934,7 +934,8 @@
                 url: "${pageContext.request.contextPath}/netInfoRecordLand/saveLandDetail",
                 type: "post",
                 dataType: "json",
-                data: {formData: JSON.stringify(data)},
+                data: {formData: JSON.stringify(data),
+                    changeStatus: false},
                 success: function (result) {
                     if (result.ret) {
                         toastr.success('保存成功');
@@ -959,7 +960,8 @@
                 url: "${pageContext.request.contextPath}/netInfoRecordHouse/saveHouseDetail",
                 type: "post",
                 dataType: "json",
-                data: {formData: JSON.stringify(data)},
+                data: {formData: JSON.stringify(data),
+                    changeStatus: false},
                 success: function (result) {
                     if (result.ret) {
                         toastr.success('保存成功');

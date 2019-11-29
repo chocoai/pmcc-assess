@@ -52,7 +52,7 @@ public class NetInfoRecordLandService {
     @Autowired
     private BaseAttachmentService baseAttachmentService;
 
-    public Integer saveAndUpdateNetInfoRecordLand(NetInfoRecordLand netInfoRecordLand) {
+    public NetInfoRecordLand saveAndUpdateNetInfoRecordLand(NetInfoRecordLand netInfoRecordLand) {
         if (netInfoRecordLand.getId() == null) {
             netInfoRecordLand.setCreator(commonService.thisUserAccount());
             netInfoRecordLandDao.addNetInfoRecordLand(netInfoRecordLand);
@@ -65,10 +65,10 @@ public class NetInfoRecordLandService {
             SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
             sysAttachmentDto.setTableId(netInfoRecordLand.getId());
             erpRpcAttachmentService.updateAttachmentByParam(queryParam, sysAttachmentDto);
-            return netInfoRecordLand.getId();
+            return netInfoRecordLand;
         } else {
             netInfoRecordLandDao.updateNetInfoRecordLand(netInfoRecordLand);
-            return null;
+            return netInfoRecordLand;
         }
     }
 
@@ -88,6 +88,22 @@ public class NetInfoRecordLandService {
         bootstrapTableVo.setRows(netInfoRecordLands == null ? new ArrayList() : LangUtils.transform(netInfoRecordLands, o -> getNetInfoRecordLandVo(o,attachmentDtos)));
         return bootstrapTableVo;
     }
+
+    public BootstrapTableVo getLandListByMasterId(Integer masterId) {
+        BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        NetInfoRecordLand netInfoRecordLand = new NetInfoRecordLand();
+        netInfoRecordLand.setMasterId(masterId);
+        List<NetInfoRecordLand> netInfoRecordLands = netInfoRecordLandDao.getNetInfoRecordLandList(netInfoRecordLand);
+        SysAttachmentDto where = new SysAttachmentDto();
+        where.setTableName(FormatUtils.entityNameConvertToTableName(NetInfoRecordLand.class));
+        List<SysAttachmentDto> attachmentDtos = baseAttachmentService.getAttachmentList(LangUtils.transform(netInfoRecordLands, o -> o.getId()), where);
+        bootstrapTableVo.setTotal(page.getTotal());
+        bootstrapTableVo.setRows(netInfoRecordLands == null ? new ArrayList() : LangUtils.transform(netInfoRecordLands, o -> getNetInfoRecordLandVo(o,attachmentDtos)));
+        return bootstrapTableVo;
+    }
+
 
     public List<NetInfoRecordLandVo> getVos(NetInfoRecordLand netInfoRecordLand) {
         List<NetInfoRecordLand> netInfoRecordLands = netInfoRecordLandDao.getNetInfoRecordLandList(netInfoRecordLand);
@@ -139,5 +155,16 @@ public class NetInfoRecordLandService {
 
 
         return vo;
+    }
+
+    //取最新数据
+    public NetInfoRecordLand getSingleByMasterId(Integer masterId) {
+        NetInfoRecordLand netInfoRecordLand = new NetInfoRecordLand();
+        netInfoRecordLand.setMasterId(masterId);
+        List<NetInfoRecordLand> netInfoRecordLands = netInfoRecordLandDao.getNetInfoRecordLandList(netInfoRecordLand);
+        if(CollectionUtils.isNotEmpty(netInfoRecordLands)){
+            return netInfoRecordLands.get(netInfoRecordLands.size()-1);
+        }
+        return null;
     }
 }
