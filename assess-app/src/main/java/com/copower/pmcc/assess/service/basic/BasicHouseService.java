@@ -119,6 +119,10 @@ public class BasicHouseService {
         return basicHouseDao.getBasicHouseById(id);
     }
 
+    public List<BasicHouse> getBasicHouseIds(List<Integer> ids){
+        return basicHouseDao.getBasicHouseIds(ids) ;
+    }
+
     /**
      * 新增或者修改
      *

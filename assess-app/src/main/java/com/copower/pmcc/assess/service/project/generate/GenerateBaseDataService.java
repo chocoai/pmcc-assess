@@ -7,10 +7,7 @@ import com.copower.pmcc.ad.api.dto.AdCompanyQualificationDto;
 import com.copower.pmcc.ad.api.dto.AdPersonalQualificationDto;
 import com.copower.pmcc.assess.common.*;
 import com.copower.pmcc.assess.common.enums.*;
-import com.copower.pmcc.assess.common.enums.basic.EnvironmentalScienceEnum;
-import com.copower.pmcc.assess.common.enums.basic.ExamineHouseEquipmentTypeEnum;
-import com.copower.pmcc.assess.common.enums.basic.ExamineMatchingLeisurePlaceTypeEnum;
-import com.copower.pmcc.assess.common.enums.basic.ExamineMatchingTrafficTypeEnum;
+import com.copower.pmcc.assess.common.enums.basic.*;
 import com.copower.pmcc.assess.common.enums.method.MethodIncomeOperationModeEnum;
 import com.copower.pmcc.assess.common.enums.report.BaseReportFieldEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
@@ -32,8 +29,7 @@ import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.base.BaseReportFieldService;
-import com.copower.pmcc.assess.service.basic.BasicApplyService;
-import com.copower.pmcc.assess.service.basic.BasicUnitHuxingService;
+import com.copower.pmcc.assess.service.basic.*;
 import com.copower.pmcc.assess.service.data.*;
 import com.copower.pmcc.assess.service.method.MdCommonService;
 import com.copower.pmcc.assess.service.method.MdIncomeService;
@@ -75,6 +71,9 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
 import java.util.List;
+import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -137,6 +136,11 @@ public class GenerateBaseDataService {
     private BasicUnitHuxingService basicUnitHuxingService;
     private BaseService baseService;
     private ErpRpcUserService erpRpcUserService;
+    private BasicApplyBatchDetailService basicApplyBatchDetailService;
+    private BasicApplyBatchService basicApplyBatchService;
+    private BasicBuildingService basicBuildingService;
+    private BasicUnitService basicUnitService;
+    private BasicHouseService basicHouseService;
 
     /**
      * 构造器必须传入的参数
@@ -1998,12 +2002,13 @@ public class GenerateBaseDataService {
         Document doc = new Document();
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
         generateCommonMethod.settingBuildingTable(builder);
+        LinkedList<Double> doubleLinkedList = Lists.newLinkedList(Lists.newArrayList(20d, 100d, 30d, 30d, 30d, 50d, 55d));
         List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaId);
         LinkedList<String> linkedLists = new LinkedList<String>();
         final String nullValue = "";
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             builder.startTable();
-            generateCommonMethod.writeWordTitle(builder, Lists.newLinkedList(Arrays.asList("估价序号", "权证号", "所有权人", "共有情况", "证载用途", "房屋性质", "面积")));
+            generateCommonMethod.writeWordTitle(builder, doubleLinkedList, Lists.newLinkedList(Arrays.asList("估价序号", "权证号", "所有权人", "共有情况", "证载用途", "房屋性质", "面积")));
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                 if (schemeJudgeObject.getDeclareRecordId() == null) {
                     continue;
@@ -2029,11 +2034,8 @@ public class GenerateBaseDataService {
                     }
                 }
                 if (declareRealtyLandCert != null) {
-                    if (StringUtils.isNotEmpty(declareRealtyLandCert.getLandCertName())){
-                        name = String.join("",name," 土地权证号:",declareRealtyLandCert.getLandCertName()) ;
-                    }
-                    if (StringUtils.isNotEmpty(declareRealtyLandCert.getLandNumber())){
-                        name = String.join("",name," 土地号:",declareRealtyLandCert.getLandNumber()) ;
+                    if (StringUtils.isNotEmpty(declareRealtyLandCert.getLandCertName())) {
+                        name = String.join("", name, StringUtils.repeat(ControlChar.LINE_BREAK, 1), " 土地权证号:", declareRealtyLandCert.getLandCertName());
                     }
                 }
                 linkedLists.add(StringUtils.isNotBlank(name) ? name : nullValue);
@@ -2042,7 +2044,7 @@ public class GenerateBaseDataService {
                 linkedLists.add(StringUtils.isNotBlank(declareRecord.getCertUse()) ? declareRecord.getCertUse() : nullValue);
                 linkedLists.add(StringUtils.isNotBlank(declareRecord.getNature()) ? declareRecord.getNature() : nullValue);
                 linkedLists.add(declareRecord.getFloorArea() != null ? String.format("%s%s", declareRecord.getFloorArea().toString(), "㎡") : nullValue);
-                generateCommonMethod.writeWordTitle(builder, linkedLists);
+                generateCommonMethod.writeWordTitle(builder, doubleLinkedList, linkedLists);
                 linkedLists.clear();
             }
             builder.endTable();
@@ -4344,6 +4346,165 @@ public class GenerateBaseDataService {
         return value;
     }
 
+    /**
+     * 估价对象区位状况表 采集数据
+     *
+     * @param name
+     * @param basicEstate
+     * @param formNameEnum
+     * @param schemeJudgeObjectList
+     * @return
+     */
+    private BasicExamineHandle.BasicVo judgeObjectAreaStatusFun(String name, BasicEstate basicEstate, BasicApplyFormNameEnum formNameEnum, List<SchemeJudgeObject> schemeJudgeObjectList) {
+        BasicExamineHandle.BasicVo basicVo = new BasicExamineHandle.BasicVo();
+        switch (formNameEnum) {
+            case BASIC_ESTATE: {
+                BasicApply basicApply = basicApplyService.getByBasicApplyByEstateId(basicEstate.getId());
+                basicVo.setName(StringUtils.isNotEmpty(name) ? name : basicEstate.getName());
+                basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo("楼盘信息"));
+                basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo("1、位置状况:"));
+                basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo("坐落", generateCommonMethod.trim(generateLoactionService.getSeat(basicEstate, schemeJudgeObjectList))));
+                basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo("方位", generateCommonMethod.trim(generateLoactionService.getPosition(basicEstate))));
+                basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo("与重要场所的距离", generateCommonMethod.trim(generateLoactionService.getWithImportantLocationDistance(basicApply))));
+                basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo("2、交通状况包括:"));
+                basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo("道路状况", generateCommonMethod.trim(generateLoactionService.getRoadCondition(schemeJudgeObjectList))));
+                String transport = generateLoactionService.getAccessAvailableMeansTransport(basicApply);
+                if (StringUtils.isNotEmpty(transport)) {
+                    basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo("出入可利用的交通工具", transport));
+                }
+                String trafficControl = generateLoactionService.getTrafficControl(basicApply);
+                if (StringUtils.isNotEmpty(trafficControl)) {
+                    basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo("交通管制情况", trafficControl));
+                }
+                String parkingConvenience = generateLoactionService.getParkingConvenience(basicApply);
+                if (StringUtils.isNotEmpty(parkingConvenience)) {
+                    basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo("停车方便度", parkingConvenience));
+                }
+                String trafficCharges = generateLoactionService.getTrafficCharges(basicApply);
+                if (StringUtils.isNotEmpty(trafficCharges)) {
+                    basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo("交通收费情况", trafficCharges));
+                }
+                String externalInfrastructure = generateLoactionService.getExternalInfrastructure(basicApply);
+                basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo("3、外部基础设施", StringUtils.isNotEmpty(externalInfrastructure) ? externalInfrastructure : ""));
+
+                List<String> stringArrayList = generateLoactionService.getExternalPublicServiceFacilities(basicApply, true);
+                if (CollectionUtils.isNotEmpty(stringArrayList)) {
+                    basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo("4、外部公共服务设施", StringUtils.join(stringArrayList.stream().distinct().map(s -> generateCommonMethod.getIndentHtml(s)).collect(Collectors.toList()), "")));
+                } else {
+                    basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo("4、外部公共服务设施", ""));
+                }
+                basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo("5、周围环境:"));
+                String natural = generateLoactionService.getEnvironmentalScience(basicApply, EnvironmentalScienceEnum.NATURAL);
+                String humanity = generateLoactionService.getEnvironmentalScience(basicApply, EnvironmentalScienceEnum.HUMANITY);
+                String scenery = generateLoactionService.getEnvironmentalScience(basicApply, EnvironmentalScienceEnum.SCENERY);
+                if (StringUtils.isNotBlank(natural)) {
+                    basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo("自然要素", natural));
+                }
+                if (StringUtils.isNotBlank(humanity)) {
+                    basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo("人文环境要素", humanity));
+                }
+                if (StringUtils.isNotBlank(scenery)) {
+                    basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo("景观", scenery));
+                }
+                break;
+            }
+            case BASIC_BUILDING: {
+                basicVo.setName(name);
+                basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo("楼栋信息"));
+                String count = generateCommonMethod.trim(generateLoactionService.getFloor(schemeJudgeObjectList));
+                if (StringUtils.isNotBlank(count)) {
+                    basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo("楼层", count));
+                }
+                break;
+            }
+            case BASIC_HOUSE: {
+                basicVo.setName(name);
+                basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo("房屋信息"));
+                String orientation = generateCommonMethod.trim(generateLoactionService.getOrientation(schemeJudgeObjectList));
+                if (StringUtils.isNotBlank(orientation)) {
+                    basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo("朝向", orientation));
+                }
+                String faceStreet = generateLoactionService.getFaceStreet(schemeJudgeObjectList);
+                if (StringUtils.isNotBlank(faceStreet)) {
+                    basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo("临街（路）状况", faceStreet));
+                }
+                break;
+            }
+            default:
+                break;
+        }
+        return basicVo;
+    }
+
+    /**
+     * 合并数据
+     *
+     * @param basicVoLinkedList
+     * @return
+     */
+    private String mergeJudgeObjectAreaStatus(LinkedList<BasicExamineHandle.BasicVo> basicVoLinkedList) {
+        final StringBuilder stringBuilder = new StringBuilder();
+        if (CollectionUtils.isEmpty(basicVoLinkedList)) {
+            return stringBuilder.toString();
+        }
+        Iterator<BasicExamineHandle.BasicVo> iterator = basicVoLinkedList.iterator();
+        LinkedHashMap<String, LinkedList<BasicExamineHandle.BasicVo>> linkedListLinkedHashMap = new LinkedHashMap<>();
+        while (iterator.hasNext()) {
+            BasicExamineHandle.BasicVo basicVo = iterator.next();
+            if (linkedListLinkedHashMap.containsKey(basicVo.getName())) {
+                linkedListLinkedHashMap.get(basicVo.getName()).add(basicVo);
+            }
+            if (!linkedListLinkedHashMap.containsKey(basicVo.getName())) {
+                LinkedList<BasicExamineHandle.BasicVo> list = new LinkedList<>();
+                list.add(basicVo);
+                linkedListLinkedHashMap.put(basicVo.getName(), list);
+            }
+
+        }
+        if (linkedListLinkedHashMap.isEmpty()) {
+            return stringBuilder.toString();
+        }
+        for (Map.Entry<String, LinkedList<BasicExamineHandle.BasicVo>> listEntry : linkedListLinkedHashMap.entrySet()) {
+            LinkedHashMap<String, LinkedHashSet<String>> linkedHashSetLinkedHashMap = new LinkedHashMap<>();
+            LinkedList<BasicExamineHandle.BasicVo> basicVos = listEntry.getValue();
+            //start
+            if (CollectionUtils.isNotEmpty(basicVos)) {
+                ListIterator<BasicExamineHandle.BasicVo> it = basicVos.listIterator();
+                while (it.hasNext()) {
+                    BasicExamineHandle.BasicVo basicVo = it.next();
+                    LinkedHashSet<BasicExamineHandle.BasicVo> linkedHashSet = basicVo.getBasicVoLinkedHashSet();
+                    if (CollectionUtils.isNotEmpty(linkedHashSet)) {
+                        for (BasicExamineHandle.BasicVo vo : linkedHashSet) {
+                            if (linkedHashSetLinkedHashMap.containsKey(vo.getType())) {
+                                linkedHashSetLinkedHashMap.get(vo.getType()).add(vo.getValue());
+                            }
+                            if (!linkedHashSetLinkedHashMap.containsKey(vo.getType())) {
+                                LinkedHashSet<String> stringLinkedHashSet = new LinkedHashSet<>();
+                                stringLinkedHashSet.add(vo.getValue());
+                                linkedHashSetLinkedHashMap.put(vo.getType(), stringLinkedHashSet);
+                            }
+                        }
+                    }
+                }
+            }
+            //end
+            stringBuilder.append(generateCommonMethod.getWarpCssHtml(String.join("", "<div style='text-align:center;;font-size:16.0pt;'>", listEntry.getKey(), "</div>")));
+            if (!linkedHashSetLinkedHashMap.isEmpty()) {
+                linkedHashSetLinkedHashMap.forEach((type, strings) -> {
+                    if (CollectionUtils.isNotEmpty(strings) && StringUtils.isNotBlank(StringUtils.join(strings, ""))) {
+                        String value = String.join(":", type, StringUtils.join(strings, " "));
+                        stringBuilder.append(generateCommonMethod.getIndentHtml(value));
+                    } else {
+                        stringBuilder.append(generateCommonMethod.getIndentHtml(type));
+                    }
+                    stringBuilder.append(StringUtils.repeat(ControlChar.PAGE_BREAK, 1));
+                });
+            }
+            stringBuilder.append(StringUtils.repeat(ControlChar.PAGE_BREAK, 1));//一个非重复楼盘描述完 换一个行
+        }
+        return stringBuilder.toString();
+    }
+
 
     /**
      * 估价对象区位状况表
@@ -4352,74 +4513,105 @@ public class GenerateBaseDataService {
         Document doc = new Document();
         DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(doc);
         String localPath = getLocalPath();
-
         LinkedHashMap<BasicEstate, List<SchemeJudgeObject>> linkedHashMap = generateCommonMethod.getEstateGroupByAreaId(areaId);
         if (!linkedHashMap.isEmpty()) {
-            for (Map.Entry<BasicEstate, List<SchemeJudgeObject>> entry : linkedHashMap.entrySet()) {
-                if (CollectionUtils.isEmpty(entry.getValue())) {
-                    continue;
+            Set<Map.Entry<BasicEstate, List<SchemeJudgeObject>>> basicEstateListSet = linkedHashMap.entrySet();
+            Iterator<Map.Entry<BasicEstate, List<SchemeJudgeObject>>> it = basicEstateListSet.iterator();
+            LinkedList<BasicExamineHandle.BasicVo> estateHandleList = new LinkedList<>();
+            LinkedList<BasicExamineHandle.BasicVo> buildHandleList = new LinkedList<>();
+            LinkedList<BasicExamineHandle.BasicVo> houseHandleList = new LinkedList<>();
+            LinkedHashMap<List<BasicBuilding>, List<SchemeJudgeObject>> buildMap = new LinkedHashMap<>();
+            LinkedHashMap<List<BasicHouse>, List<SchemeJudgeObject>> houseMap = new LinkedHashMap<>();
+            while (it.hasNext()) {
+                Map.Entry<BasicEstate, List<SchemeJudgeObject>> estateListEntry = it.next();
+                BasicExamineHandle basicExamineHandle = BasicExamineHandle.getBasicExamineHandle(estateListEntry.getKey().getId());
+                estateHandleList.add(judgeObjectAreaStatusFun(estateListEntry.getKey().getName(), estateListEntry.getKey(), BasicApplyFormNameEnum.BASIC_ESTATE, estateListEntry.getValue()));
+                List<BasicBuilding> basicBuildingList2 = basicExamineHandle.getBasicBuildingAll();
+                if (CollectionUtils.isNotEmpty(basicBuildingList2)) {
+                    buildMap.put(basicBuildingList2, estateListEntry.getValue());
                 }
-                List<Integer> judgeObjectIds = Lists.newArrayList(entry.getValue().stream().map(oo -> oo.getId()).collect(Collectors.toList()));
-                if (CollectionUtils.isEmpty(judgeObjectIds)) {
-                    continue;
+                List<BasicHouse> basicHouseList2 = basicExamineHandle.getBasicHouseAll();
+                if (CollectionUtils.isNotEmpty(basicHouseList2)) {
+                    houseMap.put(basicHouseList2, estateListEntry.getValue());
                 }
-                BasicEstate basicEstate = entry.getKey();
-                BasicApply basicApply = basicApplyService.getByBasicApplyByEstateId(basicEstate.getId());
-                List<SchemeJudgeObject> judgeObjects = entry.getValue();
-                if (linkedHashMap.size() > 1)
-                    documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml("<div style='text-align:center;;font-size:16.0pt;'>" + basicEstate.getName() + "</div>"), true);
-                StringBuilder stringBuilder = new StringBuilder(8);
-                stringBuilder.append(generateCommonMethod.getIndentHtml("1、位置状况"));
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("坐落:%s", generateCommonMethod.trim(generateLoactionService.getSeat(basicEstate, judgeObjects)))));
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("方位:%s", generateCommonMethod.trim(generateLoactionService.getPosition(basicEstate)))));
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("与重要场所的距离:%s", generateCommonMethod.trim(generateLoactionService.getWithImportantLocationDistance(basicApply)))));
-                String faceStreet = generateLoactionService.getFaceStreet(judgeObjects);
-                if (StringUtils.isNotBlank(faceStreet.trim())) {
-                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("临街（路）状况:%s", generateCommonMethod.trim(faceStreet))));
-                }
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("楼层:%s", generateCommonMethod.trim(generateLoactionService.getFloor(judgeObjects)))));
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("朝向:%s", generateCommonMethod.trim(generateLoactionService.getOrientation(judgeObjects)))));
-                stringBuilder.append(generateCommonMethod.getIndentHtml("2、交通状况包括"));
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("道路状况:%s", generateCommonMethod.trim(generateLoactionService.getRoadCondition(judgeObjects)))));
-
-                String transport = generateLoactionService.getAccessAvailableMeansTransport(basicApply);
-                if (StringUtils.isNotEmpty(transport)) {
-                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("出入可利用的交通工具:%s", generateCommonMethod.trim(transport))));
-                }
-
-                String trafficControl = generateLoactionService.getTrafficControl(basicApply);
-                if (StringUtils.isNotEmpty(trafficControl)) {
-                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("交通管制情况:%s", generateCommonMethod.trim(trafficControl))));
-                }
-
-                String parkingConvenience = generateLoactionService.getParkingConvenience(basicApply);
-                if (StringUtils.isNotBlank(parkingConvenience))
-                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("停车方便度:%s", generateCommonMethod.trim(parkingConvenience))));
-
-                String trafficCharges = generateLoactionService.getTrafficCharges(basicApply);
-                if (StringUtils.isNotBlank(trafficCharges)) {
-                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("交通收费情况:%s", generateCommonMethod.trim(trafficCharges))));
-                }
-
-                stringBuilder.append(generateCommonMethod.getIndentHtml("3、外部基础设施"));
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s", generateCommonMethod.trim(generateLoactionService.getExternalInfrastructure(basicApply)))));
-                stringBuilder.append(generateCommonMethod.getIndentHtml("4、外部公共服务设施"));
-                List<String> stringArrayList = generateLoactionService.getExternalPublicServiceFacilities(basicApply, true);
-                if (CollectionUtils.isNotEmpty(stringArrayList)) {
-                    stringArrayList.stream().forEach(s -> stringBuilder.append(generateCommonMethod.getIndentHtml(s)));
-                }
-                stringBuilder.append(generateCommonMethod.getIndentHtml("5、周围环境"));
-                String natural = generateLoactionService.getEnvironmentalScience(basicApply, EnvironmentalScienceEnum.NATURAL);
-                String humanity = generateLoactionService.getEnvironmentalScience(basicApply, EnvironmentalScienceEnum.HUMANITY);
-                String scenery = generateLoactionService.getEnvironmentalScience(basicApply, EnvironmentalScienceEnum.SCENERY);
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("自然要素:%s", generateCommonMethod.trim(natural))));
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("人文环境要素:%s", generateCommonMethod.trim(humanity))));
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("景观:%s", generateCommonMethod.trim(scenery))));
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("综述:%s", generateCommonMethod.trim(basicEstate.getLocationDescribe()))));
-                documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml(stringBuilder.toString()), false);
             }
+            //去重
+            Function<List<SchemeJudgeObject>,List<SchemeJudgeObject>> function = new Function<List<SchemeJudgeObject>, List<SchemeJudgeObject>>() {
+                @Override
+                public List<SchemeJudgeObject> apply(List<SchemeJudgeObject> schemeJudgeObjectList1) {
+                    Set<Integer> integers = new HashSet<>();
+                    List<SchemeJudgeObject> judgeObjectList = new ArrayList<>();
+                    if (CollectionUtils.isNotEmpty(schemeJudgeObjectList1)) {
+                        schemeJudgeObjectList1.forEach(schemeJudgeObject -> integers.add(schemeJudgeObject.getId()));
+                    }
+                    if (CollectionUtils.isNotEmpty(integers)) {
+                        integers.forEach(integer -> {
+                            judgeObjectList.add(schemeJudgeObjectList1.stream().filter(schemeJudgeObject -> Objects.equal(schemeJudgeObject.getId(), integer)).findFirst().get());
+                        });
+                    }
+                    return judgeObjectList;
+                }
+            };
+            //楼栋分组
+            if (!buildMap.isEmpty()) {
+                LinkedHashMap<String, List<SchemeJudgeObject>> listLinkedHashMap = new LinkedHashMap<>();
+                LinkedHashMap<String, List<SchemeJudgeObject>> listLinkedHashMap2 = new LinkedHashMap<>();
+                buildMap.forEach((basicBuildings, judgeObjectList) -> {
+                    basicBuildings.forEach(basicBuilding -> {
+                        if (StringUtils.isNotEmpty(basicBuilding.getBuildingName())) {
+                            if (listLinkedHashMap.containsKey(basicBuilding.getBuildingName())) {
+                                listLinkedHashMap.get(basicBuilding.getBuildingName()).addAll(judgeObjectList);
+                            } else {
+                                listLinkedHashMap.put(basicBuilding.getBuildingName(), new ArrayList<>(judgeObjectList));
+                            }
+                        }
+                    });
+                });
+                if (!listLinkedHashMap.isEmpty()) {
+                    listLinkedHashMap.forEach((s, schemeJudgeObjectList1) -> {
+                        listLinkedHashMap2.put(s, function.apply(schemeJudgeObjectList1));
+                    });
+                }
+                if (!listLinkedHashMap2.isEmpty()){
+                    listLinkedHashMap2.forEach((s, schemeJudgeObjectList1) -> {
+                        buildHandleList.add(judgeObjectAreaStatusFun(s, null, BasicApplyFormNameEnum.BASIC_BUILDING, schemeJudgeObjectList1));
+                    });
+                }
+            }
+            //房屋分组
+            if (!houseMap.isEmpty()) {
+                LinkedHashMap<String, List<SchemeJudgeObject>> listLinkedHashMap = new LinkedHashMap<>();
+                LinkedHashMap<String, List<SchemeJudgeObject>> listLinkedHashMap2 = new LinkedHashMap<>();
+                houseMap.forEach((houseList, judgeObjectList) -> {
+                    houseList.forEach(houseConsumer -> {
+                        if (StringUtils.isNotEmpty(houseConsumer.getHouseNumber())) {
+                            if (listLinkedHashMap.containsKey(houseConsumer.getHouseNumber())) {
+                                listLinkedHashMap.get(houseConsumer.getHouseNumber()).addAll(judgeObjectList);
+                            } else {
+                                listLinkedHashMap.put(houseConsumer.getHouseNumber(), new ArrayList<>(judgeObjectList));
+                            }
+                        }
+                    });
+                });
+                if (!listLinkedHashMap.isEmpty()) {
+                    listLinkedHashMap.forEach((s, schemeJudgeObjectList1) -> {
+                        listLinkedHashMap2.put(s, function.apply(schemeJudgeObjectList1));
+                    });
+                }
+                if (!listLinkedHashMap2.isEmpty()){
+                    listLinkedHashMap2.forEach((s, schemeJudgeObjectList1) -> {
+                        houseHandleList.add(judgeObjectAreaStatusFun(s, null, BasicApplyFormNameEnum.BASIC_HOUSE, schemeJudgeObjectList1));
+                    });
+                }
+            }
+            String estateMergeValue = mergeJudgeObjectAreaStatus(estateHandleList);
+            String buildMergeValue = mergeJudgeObjectAreaStatus(buildHandleList);
+            String houseMergeValue = mergeJudgeObjectAreaStatus(houseHandleList);
+            AsposeUtils.insertHtml(documentBuilder, estateMergeValue, true);
+            AsposeUtils.insertHtml(documentBuilder, buildMergeValue, true);
+            AsposeUtils.insertHtml(documentBuilder, houseMergeValue, true);
         }
-        doc.save(localPath);
+        AsposeUtils.saveWord(localPath,doc);
         return localPath;
     }
 
@@ -6329,8 +6521,13 @@ public class GenerateBaseDataService {
         this.declareBuildEngineeringAndEquipmentCenterService = SpringContextUtils.getBean(DeclareBuildEngineeringAndEquipmentCenterService.class);
         this.dataSetUseFieldService = SpringContextUtils.getBean(DataSetUseFieldService.class);
         this.basicUnitHuxingService = SpringContextUtils.getBean(BasicUnitHuxingService.class);
+        this.basicBuildingService = SpringContextUtils.getBean(BasicBuildingService.class);
+        this.basicUnitService = SpringContextUtils.getBean(BasicUnitService.class);
+        this.basicHouseService = SpringContextUtils.getBean(BasicHouseService.class);
         this.baseService = SpringContextUtils.getBean(BaseService.class);
         this.erpRpcUserService = SpringContextUtils.getBean(ErpRpcUserService.class);
+        this.basicApplyBatchDetailService = SpringContextUtils.getBean(BasicApplyBatchDetailService.class);
+        this.basicApplyBatchService = SpringContextUtils.getBean(BasicApplyBatchService.class);
         //必须在bean之后
         SchemeAreaGroup areaGroup = schemeAreaGroupService.get(areaId);
         if (areaGroup == null) {

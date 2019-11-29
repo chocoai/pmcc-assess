@@ -25,6 +25,13 @@ public class BasicBuildingDao {
         return basicBuildingMapper.selectByPrimaryKey(id);
     }
 
+    public List<BasicBuilding> getBasicBuildingIds(List<Integer> ids){
+        BasicBuildingExample example = new BasicBuildingExample();
+        BasicBuildingExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
+        criteria.andIdIn(ids) ;
+        return basicBuildingMapper.selectByExample(example) ;
+    }
+
     public Integer addBasicBuilding(BasicBuilding basicBuilding) {
         basicBuildingMapper.insertSelective(basicBuilding);
         return basicBuilding.getId();

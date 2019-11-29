@@ -102,7 +102,7 @@ public class BasicHouseFaceStreetService {
      * @return
      * @throws Exception
      */
-    public List<BasicHouseFaceStreet> basicHouseFaceStreetList(BasicHouseFaceStreet basicHouseFaceStreet) throws Exception {
+    public List<BasicHouseFaceStreet> basicHouseFaceStreetList(BasicHouseFaceStreet basicHouseFaceStreet)  {
         return basicHouseFaceStreetDao.basicHouseFaceStreetList(basicHouseFaceStreet);
     }
 

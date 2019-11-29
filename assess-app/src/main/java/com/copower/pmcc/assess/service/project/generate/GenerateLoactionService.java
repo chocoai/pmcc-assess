@@ -51,7 +51,7 @@ public class GenerateLoactionService {
      * @return
      * @throws Exception
      */
-    public String getSeat(BasicEstate basicEstate, List<SchemeJudgeObject> judgeObjects) throws Exception {
+    public String getSeat(BasicEstate basicEstate, List<SchemeJudgeObject> judgeObjects) {
         DeclareRecord record = declareRecordService.getDeclareRecordById(judgeObjects.get(0).getDeclareRecordId());
         return String.format("%s%s", record.getStreetNumber(), basicEstate.getName());
     }
@@ -64,7 +64,7 @@ public class GenerateLoactionService {
      * @return
      * @throws Exception
      */
-    public String getFaceStreet(List<SchemeJudgeObject> judgeObjectList) throws Exception {
+    public String getFaceStreet(List<SchemeJudgeObject> judgeObjectList)  {
         String value = null;
         try {
             Map<Integer, String> map = Maps.newHashMap();
@@ -118,7 +118,7 @@ public class GenerateLoactionService {
      * @return
      * @throws Exception
      */
-    public String getEnvironmentalScience(BasicApply basicApply, EnvironmentalScienceEnum scienceEnum) throws Exception {
+    public String getEnvironmentalScience(BasicApply basicApply, EnvironmentalScienceEnum scienceEnum) {
         StringBuilder builder = new StringBuilder(8);
         GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
         List<BasicMatchingEnvironmentVo> basicMatchingEnvironmentVoList = generateBaseExamineService.getBasicMatchingEnvironmentList();
@@ -155,7 +155,7 @@ public class GenerateLoactionService {
      * @return
      * @throws Exception
      */
-    public String getExternalInfrastructure(BasicApply basicApply) throws Exception {
+    public String getExternalInfrastructure(BasicApply basicApply) {
         if (basicApply == null) return null;
         StringBuilder stringBuilder = new StringBuilder(8);
         GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
@@ -273,7 +273,7 @@ public class GenerateLoactionService {
      * @return
      * @throws Exception
      */
-    public String getRoadCondition(List<SchemeJudgeObject> judgeObjectList) throws Exception {
+    public String getRoadCondition(List<SchemeJudgeObject> judgeObjectList)  {
         Map<Integer, String> map = Maps.newHashMap();
 
         for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
@@ -286,7 +286,7 @@ public class GenerateLoactionService {
         return StringUtils.strip(s, "。");
     }
 
-    public String getRoadConditionExtend(BasicApply basicApply) throws Exception {
+    public String getRoadConditionExtend(BasicApply basicApply) {
         if (basicApply == null || basicApply.getId() == 0) {
             return "";
         }
@@ -326,7 +326,7 @@ public class GenerateLoactionService {
      * @return
      * @throws Exception
      */
-    public String getAccessAvailableMeansTransport(BasicApply basicApply) throws Exception {
+    public String getAccessAvailableMeansTransport(BasicApply basicApply) {
         if (basicApply == null) return null;
         StringBuilder contentBuilder = new StringBuilder();
         GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
@@ -384,7 +384,7 @@ public class GenerateLoactionService {
      * @return
      * @throws Exception
      */
-    public String getParkingConvenience(BasicApply basicApply) throws Exception {
+    public String getParkingConvenience(BasicApply basicApply) {
         if (basicApply == null) return null;
         StringBuilder builder = new StringBuilder(8);
         Set<String> stringSet = Sets.newHashSet();
@@ -440,7 +440,7 @@ public class GenerateLoactionService {
      * @return
      * @throws Exception
      */
-    public String getTrafficCharges(BasicApply basicApply) throws Exception {
+    public String getTrafficCharges(BasicApply basicApply)  {
         if (basicApply == null) return null;
         StringBuilder builder = new StringBuilder(8);
         GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
@@ -465,7 +465,7 @@ public class GenerateLoactionService {
      * @return
      * @throws Exception
      */
-    public String getTrafficControl(BasicApply basicApply) throws Exception {
+    public String getTrafficControl(BasicApply basicApply)  {
         if (basicApply == null) return null;
         StringBuilder builder = new StringBuilder();
         GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
@@ -497,7 +497,7 @@ public class GenerateLoactionService {
      *
      * @return
      */
-    public String getWithImportantLocationDistance(BasicApply basicApply) throws Exception {
+    public String getWithImportantLocationDistance(BasicApply basicApply)  {
         if (basicApply == null) return null;
         StringBuilder stringBuilder = new StringBuilder(8);
         GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
@@ -533,7 +533,7 @@ public class GenerateLoactionService {
      * @return
      * @throws Exception
      */
-    public List<String> getExternalPublicServiceFacilities(BasicApply basicApply, Boolean isShowName) throws Exception {
+    public List<String> getExternalPublicServiceFacilities(BasicApply basicApply, Boolean isShowName) {
         if (basicApply == null) return null;
         List<String> stringArrayList = Lists.newArrayList();
         GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
@@ -577,7 +577,7 @@ public class GenerateLoactionService {
      * @return
      * @throws Exception
      */
-    public String getOrientation(List<SchemeJudgeObject> judgeObjectList) throws Exception {
+    public String getOrientation(List<SchemeJudgeObject> judgeObjectList)  {
         Map<Integer, String> map = Maps.newHashMap();
         for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
             BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
@@ -602,7 +602,7 @@ public class GenerateLoactionService {
      * @return
      * @throws Exception
      */
-    public String getPosition(BasicEstate basicEstate) throws Exception {
+    public String getPosition(BasicEstate basicEstate) {
         StringBuffer stringBuffer = new StringBuffer(8);
         stringBuffer.delete(0, stringBuffer.toString().length());
         if (basicEstate != null) {

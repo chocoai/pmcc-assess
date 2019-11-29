@@ -327,7 +327,7 @@ public class BasicApplyBatchDetailService {
         return basicBuildings;
     }
 
-    public List<BasicApplyBatchDetail> getBuildingBatchDetailsByBatchId(Integer id) throws Exception {
+    public List<BasicApplyBatchDetail> getBuildingBatchDetailsByBatchId(Integer id)  {
         BasicApplyBatchDetail basicApplyBatchDetail = new BasicApplyBatchDetail();
         basicApplyBatchDetail.setTableName("tb_basic_building");
         basicApplyBatchDetail.setApplyBatchId(id);

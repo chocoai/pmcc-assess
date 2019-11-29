@@ -92,7 +92,9 @@ public class BasicBuildingService {
 
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
-
+    public List<BasicBuilding> getBasicBuildingIds(List<Integer> ids){
+        return basicBuildingDao.getBasicBuildingIds(ids) ;
+    }
 
     private void updateSysAttachmentDto(BasicBuilding basicBuilding, Integer id) {
         SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();

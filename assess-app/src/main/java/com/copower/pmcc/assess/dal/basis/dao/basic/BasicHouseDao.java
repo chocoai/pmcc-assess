@@ -41,6 +41,13 @@ public class BasicHouseDao {
         return basicHouseMapper.updateByPrimaryKeySelective(basicHouse) == 1;
     }
 
+    public List<BasicHouse> getBasicHouseIds(List<Integer> ids){
+        BasicHouseExample example = new BasicHouseExample();
+        BasicHouseExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
+        criteria.andIdIn(ids) ;
+        return basicHouseMapper.selectByExample(example);
+    }
+
     public List<BasicHouse> basicHouseList(BasicHouse basicHouse) {
         BasicHouseExample example = new BasicHouseExample();
         BasicHouseExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);

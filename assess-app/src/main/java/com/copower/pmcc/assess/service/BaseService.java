@@ -19,57 +19,108 @@ public class BaseService {
     @Autowired
     private CommonService commonService;
 
-    public Logger getLogger(){
+    public static enum Type {
+        Info("正常日志", "info"),
+        Error("错误日志", "error"),
+        Throw("异常日志", "throw"),;
+        private String remark;
+        private String key;
+
+        Type(String remark, String key) {
+            this.remark = remark;
+            this.key = key;
+        }
+
+        public String getRemark() {
+            return remark;
+        }
+
+        public String getKey() {
+            return key;
+        }
+    }
+
+    public void writeInfo(Type type,String data) {
+        StringBuilder stringBuilder = new StringBuilder(8);
+        final String filling = "\r ";
+        stringBuilder.append("{").append(StringUtils.repeat(filling, 1));
+        stringBuilder.append("时间:").append(DateUtils.format(new Date(), DateUtils.DATETIME_PATTERN)).append(StringUtils.repeat(filling, 1));
+        try {
+            stringBuilder.append("操作人,").append(commonService.thisUserAccount()).append(StringUtils.repeat(filling, 1));
+        } catch (Exception e1) {
+            //可能不能获取当前登陆人
+        }
+        stringBuilder.append(data) ;
+        stringBuilder.append("}").append(StringUtils.repeat(filling, 1));
+        switch (type) {
+            case Info: {
+                getLogger().info(stringBuilder.toString());
+                break;
+            }
+            case Error: {
+                getLogger().error(stringBuilder.toString());
+                break;
+            }
+            case Throw: {
+                getLogger().error(stringBuilder.toString());
+                break;
+            }
+        }
+    }
+
+    public Logger getLogger() {
         return log;
     }
 
-    public Logger getLogger(Class<?> c){
-        return LoggerFactory.getLogger(c) ;
+    public Logger getLogger(Class<?> c) {
+        return LoggerFactory.getLogger(c);
     }
 
     /**
      * 自己拼接的异常打印数据
+     *
      * @param e
      */
-    public void writeExceptionInfo(Exception e){
-        writeExceptionInfo(e,null);
+    public void writeExceptionInfo(Exception e) {
+        writeExceptionInfo(e, null);
     }
 
-    public void writeExceptionInfo(Exception e,String errorName){
-        writeExceptionInfo(log,e,errorName) ;
+    public void writeExceptionInfo(Exception e, String errorName) {
+        writeExceptionInfo(log, e, errorName);
     }
 
     /**
      * 编写一个日志书写模式
+     *
      * @param logger
      * @param e
      * @param errorName
      */
-    public void writeExceptionInfo(Logger logger,Exception e,String errorName){
+    public void writeExceptionInfo(Logger logger, Exception e, String errorName) {
         StringBuilder stringBuilder = new StringBuilder(8);
-        final String filling = "\r " ;
-        stringBuilder.append("{").append(StringUtils.repeat(filling,1)) ;
-        stringBuilder.append("时间:").append(DateUtils.format(new Date(), DateUtils.DATETIME_PATTERN)).append(StringUtils.repeat(filling,1));
+        final String filling = "\r ";
+        stringBuilder.append("{").append(StringUtils.repeat(filling, 1));
+        stringBuilder.append("时间:").append(DateUtils.format(new Date(), DateUtils.DATETIME_PATTERN)).append(StringUtils.repeat(filling, 1));
         try {
-            stringBuilder.append("操作人,").append(commonService.thisUserAccount()).append(StringUtils.repeat(filling,1)) ;
+            stringBuilder.append("操作人,").append(commonService.thisUserAccount()).append(StringUtils.repeat(filling, 1));
         } catch (Exception e1) {
             //可能不能获取当前登陆人
         }
-        stringBuilder.append(StringUtils.isNotBlank(errorName)?errorName:"").append("异常").append(",").append("异常具体原因").append(StringUtils.repeat(filling,1));
+        stringBuilder.append(StringUtils.isNotBlank(errorName) ? errorName : "").append("异常").append(",").append("异常具体原因").append(StringUtils.repeat(filling, 1));
         //默认jdk刚好第一个是调用方法  获取的是堆栈信息
-        if (e.getStackTrace().length != 0){
+        if (e.getStackTrace().length != 0) {
             StackTraceElement stackTraceElement = e.getStackTrace()[0];
             if (stackTraceElement != null) {
-                stringBuilder.append("[").append(StringUtils.repeat(filling,1));
-                stringBuilder.append("异常class:").append(stackTraceElement.getClassName()).append(StringUtils.repeat(filling,1));
-                stringBuilder.append("方法名称:").append(stackTraceElement.getMethodName()).append(StringUtils.repeat(filling,1));
-                stringBuilder.append("字段名称:").append(stackTraceElement.getFileName()).append(StringUtils.repeat(filling,1));
-                stringBuilder.append("行号:").append(stackTraceElement.getLineNumber()).append(StringUtils.repeat(filling,1));
-                stringBuilder.append("异常:").append(e.getMessage()).append(StringUtils.repeat(filling,1));
+                stringBuilder.append("[").append(StringUtils.repeat(filling, 1));
+                stringBuilder.append("异常class:").append(stackTraceElement.getClassName()).append(StringUtils.repeat(filling, 1));
+                stringBuilder.append("方法名称:").append(stackTraceElement.getMethodName()).append(StringUtils.repeat(filling, 1));
+                stringBuilder.append("字段名称:").append(stackTraceElement.getFileName()).append(StringUtils.repeat(filling, 1));
+                stringBuilder.append("行号:").append(stackTraceElement.getLineNumber()).append(StringUtils.repeat(filling, 1));
+                stringBuilder.append("异常:").append(e.getMessage()).append(StringUtils.repeat(filling, 1));
                 stringBuilder.append("]");
             }
         }
-        stringBuilder.append("}").append(StringUtils.repeat(filling,1)) ;
+        stringBuilder.append("}").append(StringUtils.repeat(filling, 1));
         logger.debug(stringBuilder.toString());
         logger.error(stringBuilder.toString(), e);
     }

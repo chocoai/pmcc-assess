@@ -96,6 +96,10 @@ public class BasicUnitService {
         return basicUnitDao.getBasicUnitById(id);
     }
 
+    public List<BasicUnit> getBasicUnitListByIds(List<Integer> ids)  {
+        return basicUnitDao.getBasicUnitListByIds(ids);
+    }
+
     /**
      * 新增或者修改
      *

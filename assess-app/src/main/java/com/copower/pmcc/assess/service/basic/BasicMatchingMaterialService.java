@@ -102,11 +102,11 @@ public class BasicMatchingMaterialService {
      * @return
      * @throws Exception
      */
-    public List<BasicMatchingMaterial> basicMatchingMaterialList(BasicMatchingMaterial basicMatchingMaterial) throws Exception {
+    public List<BasicMatchingMaterial> basicMatchingMaterialList(BasicMatchingMaterial basicMatchingMaterial)  {
         return basicMatchingMaterialDao.basicMatchingMaterialList(basicMatchingMaterial);
     }
 
-    public BootstrapTableVo getBootstrapTableVo(BasicMatchingMaterial basicMatchingMaterial) throws Exception {
+    public BootstrapTableVo getBootstrapTableVo(BasicMatchingMaterial basicMatchingMaterial) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());

@@ -102,7 +102,7 @@ public class BasicEstateParkingService {
      * @return
      * @throws Exception
      */
-    public List<BasicEstateParking> basicEstateParkingList(BasicEstateParking basicEstateParking) throws Exception {
+    public List<BasicEstateParking> basicEstateParkingList(BasicEstateParking basicEstateParking)  {
         return basicEstateParkingDao.basicEstateParkingList(basicEstateParking);
     }
 

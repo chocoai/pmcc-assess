@@ -22,6 +22,14 @@ public class BasicUnitDao {
     @Autowired
     private BasicUnitMapper basicUnitMapper;
 
+    public List<BasicUnit> getBasicUnitListByIds(List<Integer> ids){
+        BasicUnitExample example = new BasicUnitExample();
+        BasicUnitExample.Criteria criteria = example.createCriteria();
+        criteria.andBisDeleteEqualTo(false);
+        criteria.andIdIn(ids);
+        return basicUnitMapper.selectByExample(example);
+    }
+
     public BasicUnit getBasicUnitById(Integer id) {
         return basicUnitMapper.selectByPrimaryKey(id);
     }

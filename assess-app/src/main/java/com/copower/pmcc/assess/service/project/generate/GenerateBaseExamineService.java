@@ -84,29 +84,29 @@ public class GenerateBaseExamineService {
         return dataBlockVo;
     }
 
-    public List<BasicEstateNetwork> getBasicEstateNetworkList() throws Exception {
+    public List<BasicEstateNetwork> getBasicEstateNetworkList() {
         return basicEstateNetworkService.getBasicEstateNetworkList(getEstate().getId());
     }
 
-    public List<BasicEstateParking> getBasicEstateParkingList() throws Exception {
+    public List<BasicEstateParking> getBasicEstateParkingList()  {
         BasicEstateParking query = new BasicEstateParking();
         query.setEstateId(getEstate().getId());
         return basicEstateParkingService.basicEstateParkingList(query);
     }
 
-    public List<BasicEstateSupply> getBasicEstateSupplyList() throws Exception {
+    public List<BasicEstateSupply> getBasicEstateSupplyList()  {
         return basicEstateSupplyService.getBasicEstateSupplyList(getEstate().getId());
     }
 
-    public List<BasicMatchingEducation> getBasicMatchingEducatioListn() throws Exception {
+    public List<BasicMatchingEducation> getBasicMatchingEducatioListn()  {
         return basicMatchingEducationService.getBasicMatchingEducationList(getEstate().getId());
     }
 
-    public List<BasicMatchingEnvironmentVo> getBasicMatchingEnvironmentList() throws Exception {
+    public List<BasicMatchingEnvironmentVo> getBasicMatchingEnvironmentList()  {
         return basicMatchingEnvironmentService.getBasicMatchingEnvironmentVos(getEstate().getId());
     }
 
-    public List<BasicMatchingFinanceVo> getBasicMatchingFinanceList() throws Exception {
+    public List<BasicMatchingFinanceVo> getBasicMatchingFinanceList()  {
         List<BasicMatchingFinanceVo> vos = Lists.newArrayList();
         List<BasicMatchingFinance> financeList = basicMatchingFinanceService.getBasicMatchingFinanceList(getEstate().getId());
         if (CollectionUtils.isNotEmpty(financeList)){
@@ -117,21 +117,21 @@ public class GenerateBaseExamineService {
         return vos;
     }
 
-    public List<BasicMatchingLeisurePlace> getBasicMatchingLeisurePlaceList() throws Exception {
+    public List<BasicMatchingLeisurePlace> getBasicMatchingLeisurePlaceList()  {
         return basicMatchingLeisurePlaceService.getBasicMatchingLeisurePlaceList(getEstate().getId());
     }
 
-    public List<BasicMatchingMaterial> getBasicMatchingMaterialList() throws Exception {
+    public List<BasicMatchingMaterial> getBasicMatchingMaterialList() {
         BasicMatchingMaterial query = new BasicMatchingMaterial();
         query.setEstateId(getEstate().getId());
         return basicMatchingMaterialService.basicMatchingMaterialList(query);
     }
 
-    public List<BasicMatchingMedical> getBasicMatchingMedicalList() throws Exception {
+    public List<BasicMatchingMedical> getBasicMatchingMedicalList()  {
         return basicMatchingMedicalService.getBasicMatchingMedicalList(getEstate().getId());
     }
 
-    public List<BasicMatchingTrafficVo> getBasicMatchingTrafficList() throws Exception {
+    public List<BasicMatchingTrafficVo> getBasicMatchingTrafficList()  {
         return basicMatchingTrafficService.getBasicMatchingTrafficVos(getEstate().getId());
     }
 
@@ -256,7 +256,7 @@ public class GenerateBaseExamineService {
         return basicHouseRoomDecorateService.getHouseRoomDecorateList(roomId);
     }
 
-    public List<BasicHouseFaceStreetVo> getBasicHouseFaceStreetList() throws Exception {
+    public List<BasicHouseFaceStreetVo> getBasicHouseFaceStreetList()  {
         List<BasicHouseFaceStreetVo> vos = Lists.newArrayList();
         BasicHouseFaceStreet query = new BasicHouseFaceStreet();
         query.setHouseId(getBasicHouse().getId());
@@ -350,30 +350,4 @@ public class GenerateBaseExamineService {
     private GenerateBaseExamineService() {
     }
 
-    public void getCommonSupply(StringBuilder stringBuilder, BasicEstateSupply supply) {
-        stringBuilder.append(StringUtils.isEmpty(supply.getName()) ? "" : String.format("供应商名称:%s；", supply.getName()));
-        stringBuilder.append(supply.getLineGrade() == null ? "" : String.format("供应保障等级:%s；", baseDataDicService.getNameById(supply.getLineGrade())));
-        stringBuilder.append(supply.getReputation() == null ? "" : String.format("供应商信誉:%s；", baseDataDicService.getNameById(supply.getReputation())));
-        stringBuilder.append(supply.getGrade() == null ? "" : String.format("供应商等级:%s；", baseDataDicService.getNameById(supply.getGrade())));
-        stringBuilder.append(StringUtils.isEmpty(supply.getPower()) ? "" : String.format("供应量或功率:%s；", supply.getPower()));
-    }
-
-    public void getCommonBuildingFunction(List<BasicBuildingFunction> buildingFunctions, StringBuilder stringBuilder, BaseDataDic heatPreservationDic) {
-        for (BasicBuildingFunction buildingFunction : buildingFunctions) {
-            if (buildingFunction.getType() != null && buildingFunction.getType().equals(heatPreservationDic.getId())) {
-                stringBuilder.append(buildingFunction.getDecorationPart() == null ? "" : String.format("装修部位:%s；", baseDataDicService.getNameById(buildingFunction.getDecorationPart())));
-                stringBuilder.append(buildingFunction.getDecoratingMaterial() == null ? "" : String.format("装修材料:%s；", baseDataDicService.getNameById(buildingFunction.getDecoratingMaterial())));
-                stringBuilder.append(buildingFunction.getConstructionTechnology() == null ? "" : String.format("施工工艺:%s；", baseDataDicService.getNameById(buildingFunction.getConstructionTechnology())));
-                stringBuilder.append(buildingFunction.getMaterialPrice() == null ? "" : String.format("材料价格区间:%s；", baseDataDicService.getNameById(buildingFunction.getMaterialPrice())));
-            }
-        }
-    }
-
-    public void getEnvironmentString(StringBuilder stringBuilder, BaseDataDic sceneryDic, BasicMatchingEnvironment examineMatchingEnvironment) {
-        if (StringUtils.equals(String.valueOf(sceneryDic.getId()), examineMatchingEnvironment.getType())) {
-            stringBuilder.append(baseDataDicService.getNameById(examineMatchingEnvironment.getCategory()));
-            stringBuilder.append(baseDataDicService.getNameById(examineMatchingEnvironment.getInfluenceDegree()));
-            stringBuilder.append("；");
-        }
-    }
 }
