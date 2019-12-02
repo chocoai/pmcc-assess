@@ -573,8 +573,8 @@ public class AsposeUtils {
                 map.put(path, "");
                 imgList.add(map);
             }
-            imageInsertToWrod2A(imgList, colCount, builder);
         }
+        imageInsertToWrod2A(imgList, colCount, builder);
     }
 
     private static void imageInsertToWrod2A(List<Map<String, String>> imgList, Integer colCount, DocumentBuilder builder) throws Exception {
