@@ -5742,7 +5742,9 @@ public class GenerateBaseDataService {
                     //关联的土地复印件
                     List<String> landFilePathList = schemeReportFileService.getLandFilePathList(schemeJudgeObject.getDeclareRecordId());
                     paths.addAll(landFilePathList);
-                    AsposeUtils.imageInsertToWrod2(null, 1, builder, paths);
+                    if (CollectionUtils.isNotEmpty(paths)){
+                        AsposeUtils.imageInsertToWrod2(null, 1, builder, paths);
+                    }
 
                 }
             }
