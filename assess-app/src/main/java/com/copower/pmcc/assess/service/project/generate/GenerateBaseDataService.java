@@ -4513,6 +4513,84 @@ public class GenerateBaseDataService {
         Document doc = new Document();
         DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(doc);
         String localPath = getLocalPath();
+
+        LinkedHashMap<BasicEstate, List<SchemeJudgeObject>> linkedHashMap = generateCommonMethod.getEstateGroupByAreaId(areaId);
+        if (!linkedHashMap.isEmpty()) {
+            for (Map.Entry<BasicEstate, List<SchemeJudgeObject>> entry : linkedHashMap.entrySet()) {
+                if (CollectionUtils.isEmpty(entry.getValue())) {
+                    continue;
+                }
+                List<Integer> judgeObjectIds = Lists.newArrayList(entry.getValue().stream().map(oo -> oo.getId()).collect(Collectors.toList()));
+                if (CollectionUtils.isEmpty(judgeObjectIds)) {
+                    continue;
+                }
+                BasicEstate basicEstate = entry.getKey();
+                BasicApply basicApply = basicApplyService.getByBasicApplyByEstateId(basicEstate.getId());
+                List<SchemeJudgeObject> judgeObjects = entry.getValue();
+                if (linkedHashMap.size() > 1)
+                    documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml("<div style='text-align:center;;font-size:16.0pt;'>" + basicEstate.getName() + "</div>"), true);
+                StringBuilder stringBuilder = new StringBuilder(8);
+                stringBuilder.append(generateCommonMethod.getIndentHtml("1、位置状况"));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("坐落:%s", generateCommonMethod.trim(generateLoactionService.getSeat(basicEstate, judgeObjects)))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("方位:%s", generateCommonMethod.trim(generateLoactionService.getPosition(basicEstate)))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("与重要场所的距离:%s", generateCommonMethod.trim(generateLoactionService.getWithImportantLocationDistance(basicApply)))));
+                String faceStreet = generateLoactionService.getFaceStreet(judgeObjects);
+                if (StringUtils.isNotBlank(faceStreet.trim())) {
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("临街（路）状况:%s", generateCommonMethod.trim(faceStreet))));
+                }
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("楼层:%s", generateCommonMethod.trim(generateLoactionService.getFloor(judgeObjects)))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("朝向:%s", generateCommonMethod.trim(generateLoactionService.getOrientation(judgeObjects)))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml("2、交通状况包括"));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("道路状况:%s", generateCommonMethod.trim(generateLoactionService.getRoadCondition(judgeObjects)))));
+
+                String transport = generateLoactionService.getAccessAvailableMeansTransport(basicApply);
+                if (StringUtils.isNotEmpty(transport)) {
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("出入可利用的交通工具:%s", generateCommonMethod.trim(transport))));
+                }
+
+                String trafficControl = generateLoactionService.getTrafficControl(basicApply);
+                if (StringUtils.isNotEmpty(trafficControl)) {
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("交通管制情况:%s", generateCommonMethod.trim(trafficControl))));
+                }
+
+                String parkingConvenience = generateLoactionService.getParkingConvenience(basicApply);
+                if (StringUtils.isNotBlank(parkingConvenience))
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("停车方便度:%s", generateCommonMethod.trim(parkingConvenience))));
+
+                String trafficCharges = generateLoactionService.getTrafficCharges(basicApply);
+                if (StringUtils.isNotBlank(trafficCharges)) {
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("交通收费情况:%s", generateCommonMethod.trim(trafficCharges))));
+                }
+
+                stringBuilder.append(generateCommonMethod.getIndentHtml("3、外部基础设施"));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s", generateCommonMethod.trim(generateLoactionService.getExternalInfrastructure(basicApply)))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml("4、外部公共服务设施"));
+                List<String> stringArrayList = generateLoactionService.getExternalPublicServiceFacilities(basicApply, true);
+                if (CollectionUtils.isNotEmpty(stringArrayList)) {
+                    stringArrayList.stream().forEach(s -> stringBuilder.append(generateCommonMethod.getIndentHtml(s)));
+                }
+                stringBuilder.append(generateCommonMethod.getIndentHtml("5、周围环境"));
+                String natural = generateLoactionService.getEnvironmentalScience(basicApply, EnvironmentalScienceEnum.NATURAL);
+                String humanity = generateLoactionService.getEnvironmentalScience(basicApply, EnvironmentalScienceEnum.HUMANITY);
+                String scenery = generateLoactionService.getEnvironmentalScience(basicApply, EnvironmentalScienceEnum.SCENERY);
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("自然要素:%s", generateCommonMethod.trim(natural))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("人文环境要素:%s", generateCommonMethod.trim(humanity))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("景观:%s", generateCommonMethod.trim(scenery))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("综述:%s", generateCommonMethod.trim(basicEstate.getLocationDescribe()))));
+                documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml(stringBuilder.toString()), false);
+            }
+        }
+        doc.save(localPath);
+        return localPath;
+    }
+
+    /**
+     * 估价对象区位状况表
+     */
+    public String getJudgeObjectAreaStatusSheet2() throws Exception {
+        Document doc = new Document();
+        DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(doc);
+        String localPath = getLocalPath();
         LinkedHashMap<BasicEstate, List<SchemeJudgeObject>> linkedHashMap = generateCommonMethod.getEstateGroupByAreaId(areaId);
         if (!linkedHashMap.isEmpty()) {
             Set<Map.Entry<BasicEstate, List<SchemeJudgeObject>>> basicEstateListSet = linkedHashMap.entrySet();
