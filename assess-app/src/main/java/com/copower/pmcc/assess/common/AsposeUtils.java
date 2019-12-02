@@ -117,6 +117,7 @@ public class AsposeUtils {
 
     /**
      * 使用aspose组件获取表格内容
+     *
      * @param document
      * @return
      */
@@ -127,7 +128,7 @@ public class AsposeUtils {
             nodeCollection = document.getChildNodes(NodeType.TABLE, true);
         } catch (Exception e) {
         }
-        if (nodeCollection == null){
+        if (nodeCollection == null) {
             return stringBuilder.toString();
         }
         if (nodeCollection.getCount() == 0) {
@@ -563,15 +564,23 @@ public class AsposeUtils {
     }
 
     public static void imageInsertToWrod2(List<Map<String, String>> imgList, Integer colCount, DocumentBuilder builder, List<String> paths) throws Exception {
-        if (CollectionUtils.isEmpty(imgList) && CollectionUtils.isNotEmpty(paths)) {
+       if (CollectionUtils.isEmpty(imgList)){
             imgList = Lists.newArrayList();
+       }
+        if (CollectionUtils.isNotEmpty(paths)) {
             for (String path : paths) {
                 Map<String, String> map = Maps.newHashMap();
                 map.put(path, "");
                 imgList.add(map);
             }
         }
-        if (CollectionUtils.isEmpty(imgList)) throw new RuntimeException("imgPathList empty");
+        imageInsertToWrod2A(imgList, colCount, builder);
+    }
+
+    private static void imageInsertToWrod2A(List<Map<String, String>> imgList, Integer colCount, DocumentBuilder builder) throws Exception {
+        if (CollectionUtils.isEmpty(imgList)) {
+            return;
+        }
         if (colCount == null || colCount <= 0) throw new RuntimeException("colCount empty");
         if (builder == null) throw new RuntimeException("builder empty");
         Table table = builder.startTable();
