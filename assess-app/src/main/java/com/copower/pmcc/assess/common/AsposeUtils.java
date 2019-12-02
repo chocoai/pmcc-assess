@@ -564,17 +564,17 @@ public class AsposeUtils {
     }
 
     public static void imageInsertToWrod2(List<Map<String, String>> imgList, Integer colCount, DocumentBuilder builder, List<String> paths) throws Exception {
-       if (CollectionUtils.isEmpty(imgList)){
+        if (CollectionUtils.isEmpty(imgList)) {
             imgList = Lists.newArrayList();
-       }
+        }
         if (CollectionUtils.isNotEmpty(paths)) {
             for (String path : paths) {
                 Map<String, String> map = Maps.newHashMap();
                 map.put(path, "");
                 imgList.add(map);
             }
+            imageInsertToWrod2A(imgList, colCount, builder);
         }
-        imageInsertToWrod2A(imgList, colCount, builder);
     }
 
     private static void imageInsertToWrod2A(List<Map<String, String>> imgList, Integer colCount, DocumentBuilder builder) throws Exception {
