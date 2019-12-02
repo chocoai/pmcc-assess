@@ -37,10 +37,17 @@ public class GenerateLandEntityService {
      * @return
      * @throws Exception
      */
-    public String getContent(BasicApply basicApply) throws Exception {
+    public String getContent(BasicApply basicApply)throws Exception  {
         if (basicApply == null) return null;
         GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
         BasicEstateLandStateVo landStateVo = generateBaseExamineService.getBasicEstateLandState();
+        if (landStateVo == null || landStateVo.getId() == null){
+            return "" ;
+        }
+       return getContent2(generateBaseExamineService.getBasicEstateLandState()) ;
+    }
+
+    public String getContent2(BasicEstateLandStateVo landStateVo) {
         LinkedHashSet<String> linkedHashSet = Sets.newLinkedHashSet();
         if (Lists.newArrayList(landStateVo.getEastTo(), landStateVo.getWestTo(), landStateVo.getSouthTo(), landStateVo.getNorthTo()).stream().filter(s -> StringUtils.isNotBlank(s)).count() >= 4) {
             linkedHashSet.add("四至清晰");

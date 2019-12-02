@@ -294,34 +294,34 @@ public class GenerateReportService {
 
 
                 //假如调试请把这段注释
-//                final CountDownLatch countDownLatch = new CountDownLatch(listList.get(i).size());
-//                while (stringIterator.hasNext()) {
-//                    String key = stringIterator.next();
-//                    executor.execute(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            try {
-//                                handleReport(key, textMap, bookmarkMap, fileMap, generateBaseDataService, generateReportInfo, reportType);
-//                                logger.info(String.join("",StringUtils.repeat("-",6),key,StringUtils.repeat("-",16)));
-//                                logger.debug(String.join("",StringUtils.repeat("-",6),key,StringUtils.repeat("-",16)));
-//                            } catch (Exception e) {
-//                                logger.debug(String.join("",StringUtils.repeat("-",6),key,StringUtils.repeat("-",16)));
-//                                logger.error(String.join("",StringUtils.repeat("_",6),key,StringUtils.repeat("_",16)));
-//                                baseService.writeExceptionInfo(e,String.join("",StringUtils.repeat(" ",factor),"报告 ==> ",key,":异常","........................"));
-//                            }finally {
-//                                countDownLatch.countDown();
-//                            }
-//                        }
-//                    });
-//                }
-//                //能够阻塞线程 直到调用N次end.countDown() 方法才释放线程
-//                countDownLatch.await(factor*time, TimeUnit.SECONDS);
+                final CountDownLatch countDownLatch = new CountDownLatch(listList.get(i).size());
+                while (stringIterator.hasNext()) {
+                    String key = stringIterator.next();
+                    executor.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                handleReport(key, textMap, bookmarkMap, fileMap, generateBaseDataService, generateReportInfo, reportType);
+                                logger.info(String.join("",StringUtils.repeat("-",6),key,StringUtils.repeat("-",16)));
+                                logger.debug(String.join("",StringUtils.repeat("-",6),key,StringUtils.repeat("-",16)));
+                            } catch (Exception e) {
+                                logger.debug(String.join("",StringUtils.repeat("-",6),key,StringUtils.repeat("-",16)));
+                                logger.error(String.join("",StringUtils.repeat("_",6),key,StringUtils.repeat("_",16)));
+                                baseService.writeExceptionInfo(e,String.join("",StringUtils.repeat(" ",factor),"报告 ==> ",key,":异常","........................"));
+                            }finally {
+                                countDownLatch.countDown();
+                            }
+                        }
+                    });
+                }
+                //能够阻塞线程 直到调用N次end.countDown() 方法才释放线程
+                countDownLatch.await(factor*time, TimeUnit.SECONDS);
 
 
                 //调试把这段开启,如果  方法发生了线程安全问题 那么也请把上面的注释,下面的开启
-                while (stringIterator.hasNext()) {
-                    handleReport(stringIterator.next(), textMap, bookmarkMap, fileMap, generateBaseDataService, generateReportInfo, reportType);
-                }
+//                while (stringIterator.hasNext()) {
+//                    handleReport(stringIterator.next(), textMap, bookmarkMap, fileMap, generateBaseDataService, generateReportInfo, reportType);
+//                }
             }
             replaceWord(tempDir, textMap, bookmarkMap, fileMap);
             System.gc();
@@ -1272,28 +1272,28 @@ public class GenerateReportService {
             if (StringUtils.isNotEmpty(fileMap.get(name))) {
                 return;
             }
-            generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectAreaStatusSheet());
+            generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectAreaStatusSheet2());
         }
         //估价土地实体状况表
         if (Objects.equal(BaseReportFieldEnum.JudgeObjectLandStateSheet.getName(), name)) {
             if (StringUtils.isNotEmpty(fileMap.get(name))) {
                 return;
             }
-            generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectLandStateSheet());
+            generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectLandStateSheet2());
         }
         //估价对象建筑实体状况表
         if (Objects.equal(BaseReportFieldEnum.JudgeBuildLandStateSheet.getName(), name)) {
             if (StringUtils.isNotEmpty(fileMap.get(name))) {
                 return;
             }
-            generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeBuildLandStateSheet());
+            generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeBuildLandStateSheet2());
         }
         //估价对象权益状况表
         if (Objects.equal(BaseReportFieldEnum.JudgeObjectEquitySheet.getName(), name)) {
             if (StringUtils.isNotEmpty(fileMap.get(name))) {
                 return;
             }
-            generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectEquitySheet());
+            generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectEquitySheet2());
         }
         //汇总表
         if (Objects.equal(BaseReportFieldEnum.judgeSummarySheet.getName(), name)) {

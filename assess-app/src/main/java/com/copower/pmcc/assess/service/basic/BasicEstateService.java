@@ -112,7 +112,7 @@ public class BasicEstateService {
      * @return
      * @throws Exception
      */
-    public BasicEstate getBasicEstateById(Integer id) throws Exception {
+    public BasicEstate getBasicEstateById(Integer id) {
         return basicEstateDao.getBasicEstateById(id);
     }
 

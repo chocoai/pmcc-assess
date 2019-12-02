@@ -106,7 +106,7 @@ public class BasicHouseWaterService {
         return basicHouseWaterDao.basicHouseWaterList(basicHouseWater);
     }
 
-    public List<BasicHouseWater> getBasicHouseWaterList(Integer houseId) throws Exception {
+    public List<BasicHouseWater> getBasicHouseWaterList(Integer houseId)  {
         BasicHouseWater where = new BasicHouseWater();
         where.setHouseId(houseId);
         return basicHouseWaterDao.basicHouseWaterList(where);

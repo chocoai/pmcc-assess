@@ -105,7 +105,7 @@ public class BasicUnitDecorateService {
         return basicUnitDecorateDao.basicUnitDecorateList(basicUnitDecorate);
     }
 
-    public List<BasicUnitDecorateVo> getBasicUnitDecorateList(Integer unitId) throws Exception {
+    public List<BasicUnitDecorateVo> getBasicUnitDecorateList(Integer unitId)  {
         if (unitId == null) return null;
         BasicUnitDecorate where = new BasicUnitDecorate();
         where.setUnitId(unitId);

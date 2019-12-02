@@ -330,13 +330,20 @@ public class BasicExamineHandle implements Serializable {
 
 
     public BasicEstateVoAndLandStateVo getBasicEstateVoAndLandStateVo() {
-        BasicEstate examineEstate = basicEstateService.getBasicEstateByApplyId(basicApplyBatch.getEstateId());
+        BasicEstate examineEstate = null;
+        BasicEstateLandState estateLandState = null;
+        BasicApplyBatch basicApplyBatch = this.basicApplyBatch;
+        if (basicApplyBatch != null && basicApplyBatch.getEstateId() != null) {
+            examineEstate = basicEstateService.getBasicEstateById(basicApplyBatch.getEstateId());
+        }
         if (examineEstate == null) {
             examineEstate = new BasicEstate();
             baseService.writeInfo(BaseService.Type.Throw, "获取数据异常!");
         }
         BasicEstateVoAndLandStateVo target = new BasicEstateVoAndLandStateVo(basicEstateService.getBasicEstateVo(examineEstate));
-        BasicEstateLandState estateLandState = basicEstateLandStateService.getLandStateByEstateId(target.getBasicEstateVo().getId());
+        if (target.getBasicEstateVo() != null && target.getBasicEstateVo().getId() != null) {
+            estateLandState = basicEstateLandStateService.getLandStateByEstateId(target.getBasicEstateVo().getId());
+        }
         if (estateLandState == null) {
             estateLandState = new BasicEstateLandState();
             baseService.writeInfo(BaseService.Type.Throw, "获取数据异常!");
@@ -501,21 +508,21 @@ public class BasicExamineHandle implements Serializable {
 
 
     public BasicExamineHandle(Integer applyBatchId) {
-        beanInit() ;
+        beanInit();
         this.basicApplyBatch = basicApplyBatchService.getBasicApplyBatchById(applyBatchId);
     }
 
-    private BasicExamineHandle(){
+    private BasicExamineHandle() {
     }
 
-    public static BasicExamineHandle getBasicExamineHandle(Integer estateId){
+    public static BasicExamineHandle getBasicExamineHandle(Integer estateId) {
         BasicExamineHandle basicExamineHandle = new BasicExamineHandle();
-        basicExamineHandle.beanInit() ;
-        basicExamineHandle.basicApplyBatch =  basicExamineHandle.basicApplyBatchService.getBasicApplyBatchByEstateId(estateId);
-        return basicExamineHandle ;
+        basicExamineHandle.beanInit();
+        basicExamineHandle.basicApplyBatch = basicExamineHandle.basicApplyBatchService.getBasicApplyBatchByEstateId(estateId);
+        return basicExamineHandle;
     }
 
-    private void beanInit(){
+    private void beanInit() {
         this.baseService = SpringContextUtils.getBean(BaseService.class);
         this.basicApplyBatchDetailService = SpringContextUtils.getBean(BasicApplyBatchDetailService.class);
         this.basicApplyBatchService = SpringContextUtils.getBean(BasicApplyBatchService.class);
@@ -562,11 +569,11 @@ public class BasicExamineHandle implements Serializable {
         this.baseDataDicService = SpringContextUtils.getBean(BaseDataDicService.class);
     }
 
-    private List<BasicApplyBatchDetail> getBasicApplyBatchDetailList(){
-        if (CollectionUtils.isEmpty(basicApplyBatchDetailList)){
-            basicApplyBatchDetailList = basicApplyBatchDetailService.getBuildingBatchDetailsByBatchId2(this.basicApplyBatch.getId()) ;
+    private List<BasicApplyBatchDetail> getBasicApplyBatchDetailList() {
+        if (CollectionUtils.isEmpty(basicApplyBatchDetailList)) {
+            basicApplyBatchDetailList = basicApplyBatchDetailService.getBuildingBatchDetailsByBatchId2(this.basicApplyBatch.getId());
         }
-        return basicApplyBatchDetailList ;
+        return basicApplyBatchDetailList;
     }
 
     public static class BasicVo implements Serializable {
@@ -574,7 +581,7 @@ public class BasicExamineHandle implements Serializable {
         private String parentName;
         private String type;
         private String value;
-        private LinkedHashSet<BasicVo> basicVoLinkedHashSet = new LinkedHashSet<>() ;
+        private LinkedHashSet<BasicVo> basicVoLinkedHashSet = new LinkedHashSet<>();
 
         public String getName() {
             return name;
@@ -616,15 +623,16 @@ public class BasicExamineHandle implements Serializable {
             this.basicVoLinkedHashSet = basicVoLinkedHashSet;
         }
 
-        public BasicVo(String type){
+        public BasicVo(String type) {
             this.type = type;
         }
-        public BasicVo(String type,String value){
+
+        public BasicVo(String type, String value) {
             this.type = type;
             this.value = value;
         }
 
-        public BasicVo(){
+        public BasicVo() {
         }
 
         @Override

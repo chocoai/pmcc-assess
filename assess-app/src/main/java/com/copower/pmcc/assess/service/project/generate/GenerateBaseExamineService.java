@@ -199,11 +199,11 @@ public class GenerateBaseExamineService {
         return basicUnitHuxingService.basicUnitHuxingList(query);
     }
 
-    public List<BasicUnitElevator> getBasicUnitElevatorList() throws Exception {
+    public List<BasicUnitElevator> getBasicUnitElevatorList()  {
         return basicUnitElevatorService.getBasicUnitElevatorList(getBasicUnit().getId());
     }
 
-    public List<BasicUnitDecorateVo> getBasicUnitDecorateList() throws Exception {
+    public List<BasicUnitDecorateVo> getBasicUnitDecorateList()  {
         return basicUnitDecorateService.getBasicUnitDecorateList(getBasicUnit().getId());
     }
 
@@ -244,11 +244,11 @@ public class GenerateBaseExamineService {
         return basicHouseTradingService.basicHouseTradingList(query);
     }
 
-    public List<BasicHouseWater> getBasicHouseWaterList() throws Exception {
+    public List<BasicHouseWater> getBasicHouseWaterList()  {
         return basicHouseWaterService.getBasicHouseWaterList(getBasicHouse().getId());
     }
 
-    public List<BasicHouseWaterDrain> getBasicHouseWaterDrainList() throws Exception {
+    public List<BasicHouseWaterDrain> getBasicHouseWaterDrainList()  {
         return basicHouseWaterDrainService.getBasicHouseWaterDrainList(getBasicHouse().getId());
     }
 

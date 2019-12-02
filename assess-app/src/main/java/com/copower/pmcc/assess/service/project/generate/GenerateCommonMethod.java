@@ -1280,6 +1280,21 @@ public class GenerateCommonMethod {
         return basicApply;
     }
 
+    public BasicApplyBatch getBasicApplyBatchBySchemeJudgeObject(SchemeJudgeObject schemeJudgeObject) {
+        if (schemeJudgeObject.getDeclareRecordId() == null) {
+            return null;
+        }
+        DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
+        if (declareRecord == null) {
+            return null;
+        }
+        BasicApplyBatch basicApplyBatch = surveyCommonService.getBasicApplyBatchById(schemeJudgeObject.getDeclareRecordId());
+        if (basicApplyBatch == null) {
+            return null;
+        }
+        return basicApplyBatch;
+    }
+
     /**
      * 计算数值差异
      *

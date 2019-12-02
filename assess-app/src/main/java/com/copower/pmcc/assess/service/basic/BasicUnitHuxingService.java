@@ -66,7 +66,7 @@ public class BasicUnitHuxingService {
      * @return
      * @throws Exception
      */
-    public BasicUnitHuxing getBasicUnitHuxingById(Integer id) throws Exception {
+    public BasicUnitHuxing getBasicUnitHuxingById(Integer id)  {
         return basicUnitHuxingDao.getBasicUnitHuxingById(id);
     }
 

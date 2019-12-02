@@ -195,7 +195,7 @@ public class GenerateHouseEntityService {
      * @param judgeObjectList
      * @return
      */
-    public String getSpatialDistribution(List<SchemeJudgeObject> judgeObjectList) throws Exception {
+    public String getSpatialDistribution(List<SchemeJudgeObject> judgeObjectList)  {
         Map<Integer, String> map = Maps.newHashMap();
         BaseDataDic production = baseDataDicService.getCacheDataDicByFieldName(AssessExamineTaskConstant.EXAMINE_UNIT_HUXING_TYPE_PRODUCTION);
         BaseDataDic office = baseDataDicService.getCacheDataDicByFieldName(AssessExamineTaskConstant.EXAMINE_UNIT_HUXING_TYPE_OFFICE);
@@ -248,7 +248,7 @@ public class GenerateHouseEntityService {
      * @param judgeObjectList
      * @return
      */
-    public String getDecoration(List<SchemeJudgeObject> judgeObjectList) throws Exception {
+    public String getDecoration(List<SchemeJudgeObject> judgeObjectList)  {
         Map<Integer, String> outfitMap = Maps.newHashMap();
         Map<Integer, String> unitDecorateMap = Maps.newHashMap();
         Map<Integer, String> roomDecorateMap = Maps.newHashMap();
@@ -348,7 +348,7 @@ public class GenerateHouseEntityService {
      * @param judgeObjectList
      * @return
      */
-    public String getAppearance(List<SchemeJudgeObject> judgeObjectList) throws Exception {
+    public String getAppearance(List<SchemeJudgeObject> judgeObjectList)  {
         Map<String, List<Integer>> map = groupByBuilding(judgeObjectList);
         Map<Integer, String> stringMap = Maps.newHashMap();
         for (Map.Entry<String, List<Integer>> entry : map.entrySet()) {
@@ -379,7 +379,7 @@ public class GenerateHouseEntityService {
      * @return
      * @throws Exception
      */
-    public String getOther(List<SchemeJudgeObject> judgeObjectList) throws Exception {
+    public String getOther(List<SchemeJudgeObject> judgeObjectList)  {
         Map<Integer, String> map = Maps.newHashMap();
         for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
             BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
@@ -395,7 +395,7 @@ public class GenerateHouseEntityService {
         return StringUtils.strip(stringBuilder.toString(), ";");
     }
 
-    public String getOtherExtend(BasicApply basicApply) throws Exception {
+    public String getOtherExtend(BasicApply basicApply)  {
         GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
         BasicEstateVo basicEstate = basicEstateService.getBasicEstateVo(generateBaseExamineService.getEstate());
         BasicBuildingVo basicBuilding = basicBuildingService.getBasicBuildingVo(generateBaseExamineService.getBasicBuilding());
@@ -422,11 +422,11 @@ public class GenerateHouseEntityService {
      * @return
      * @throws Exception
      */
-    public String getDamagedDegree(List<SchemeJudgeObject> judgeObjectList) throws Exception {
+    public String getDamagedDegree(List<SchemeJudgeObject> judgeObjectList)  {
         return getDamagedDegreeBase(judgeObjectList, true);
     }
 
-    public String getDamagedDegreeBase(List<SchemeJudgeObject> judgeObjectList, boolean html) throws Exception {
+    public String getDamagedDegreeBase(List<SchemeJudgeObject> judgeObjectList, boolean html) {
         LinkedHashSet<String> linkedHashSet = Sets.newLinkedHashSet();
         LinkedHashSet<String> stringLinkedHashSet = Sets.newLinkedHashSet();
         //类型一共其实有4个类型也就是4部分
@@ -495,7 +495,7 @@ public class GenerateHouseEntityService {
      * @return
      * @throws Exception
      */
-    public String getBuildEntityAnalysis(List<SchemeJudgeObject> judgeObjectList, SchemeAreaGroup schemeAreaGroup) throws Exception {
+    public String getBuildEntityAnalysis(List<SchemeJudgeObject> judgeObjectList, SchemeAreaGroup schemeAreaGroup) {
         int size = judgeObjectList.size();
         Map<String, String> map = Maps.newHashMap();
         LinkedHashSet<String> linkedHashSet = Sets.newLinkedHashSet();
@@ -652,7 +652,7 @@ public class GenerateHouseEntityService {
      * @return
      * @throws Exception
      */
-    public String getMatchingEquipment(List<SchemeJudgeObject> judgeObjectList) throws Exception {
+    public String getMatchingEquipment(List<SchemeJudgeObject> judgeObjectList) {
         judgeObjectList = judgeObjectList.stream().filter(schemeJudgeObject -> {
             if (schemeJudgeObject.getDeclareRecordId() == null) {
                 return false;
@@ -962,7 +962,7 @@ public class GenerateHouseEntityService {
      * @return
      * @throws Exception
      */
-    public String getHouseEquipment(List<SchemeJudgeObject> judgeObjectList, ExamineHouseEquipmentTypeEnum equipmentTypeEnum) throws Exception {
+    public String getHouseEquipment(List<SchemeJudgeObject> judgeObjectList, ExamineHouseEquipmentTypeEnum equipmentTypeEnum)  {
         if (CollectionUtils.isNotEmpty(judgeObjectList)) {
             judgeObjectList = judgeObjectList.stream().filter(schemeJudgeObject -> {
                 if (schemeJudgeObject.getDeclareRecordId() == null) {
@@ -1049,7 +1049,7 @@ public class GenerateHouseEntityService {
      * @param judgeObjectList
      * @return
      */
-    public String getUnitElevator(List<SchemeJudgeObject> judgeObjectList) throws Exception {
+    public String getUnitElevator(List<SchemeJudgeObject> judgeObjectList)  {
         Map<String, List<Integer>> unitMap = groupByUnit(judgeObjectList);
         LinkedHashSet<String> newLinkedHashSet = Sets.newLinkedHashSet();
         Map<String, String> map = Maps.newHashMap();

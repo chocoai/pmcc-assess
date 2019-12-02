@@ -9,8 +9,10 @@ import com.copower.pmcc.assess.dal.basis.custom.entity.CustomSurveyExamineTask;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
 import com.copower.pmcc.assess.dto.output.project.survey.SurveyExamineTaskVo;
+import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.basic.BasicApplyBatchService;
 import com.copower.pmcc.assess.service.basic.BasicApplyService;
 import com.copower.pmcc.assess.service.basic.BasicBuildingService;
 import com.copower.pmcc.assess.service.basic.BasicHouseService;
@@ -68,6 +70,8 @@ public class SurveyCommonService {
     @Autowired
     private BasicApplyService basicApplyService;
     @Autowired
+    private BasicApplyBatchService basicApplyBatchService;
+    @Autowired
     private BasicBuildingService basicBuildingService;
     @Autowired
     private BaseDataDicService baseDataDicService;
@@ -75,6 +79,8 @@ public class SurveyCommonService {
     private DataBuildingNewRateService dataBuildingNewRateService;
     @Autowired
     private BasicHouseService basicHouseService;
+    @Autowired
+    private BaseService baseService ;
 
 
     /**
@@ -111,10 +117,25 @@ public class SurveyCommonService {
             BasicApply basicApply = basicApplyService.getBasicApplyByPlanDetailsId(planDetails.getId());
             return basicApply;
         } catch (Exception e) {
-            logger.error(e.getMessage(), e);
+            baseService.writeExceptionInfo(e);
             return null;
         }
     }
+
+    public BasicApplyBatch getBasicApplyBatchById(Integer declareId){
+        try {
+            DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(declareId);
+            ProjectInfo projectInfo = projectInfoService.getProjectInfoById(declareRecord.getProjectId());
+            ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.SCENE_EXPLORE, projectInfo.getProjectCategoryId());
+            ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetails(declareId, projectPhase.getId());
+            BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchByPlanDetailsId(planDetails.getId()) ;
+            return basicApplyBatch;
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
+            return null;
+        }
+    }
+
 
 
     /**
