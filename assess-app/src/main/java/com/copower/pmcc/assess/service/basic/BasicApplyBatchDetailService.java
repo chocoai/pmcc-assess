@@ -334,6 +334,12 @@ public class BasicApplyBatchDetailService {
         return basicApplyBatchDetailDao.getInfoList(basicApplyBatchDetail);
     }
 
+    public List<BasicApplyBatchDetail> getBuildingBatchDetailsByBatchId2(Integer id)  {
+        BasicApplyBatchDetail basicApplyBatchDetail = new BasicApplyBatchDetail();
+        basicApplyBatchDetail.setApplyBatchId(id);
+        return basicApplyBatchDetailDao.getInfoList(basicApplyBatchDetail);
+    }
+
 
     //获取单元
     public List<BasicUnit> getBasicUnitListByBatchId(Integer id, BasicBuilding basicBuilding) throws Exception {

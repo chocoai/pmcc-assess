@@ -356,7 +356,7 @@ public class BasicExamineHandle implements Serializable {
 
     public List<BasicBuilding> getBasicBuildingAll() {
         List<BasicBuilding> basicBuildingList = new ArrayList<>(1);
-        List<BasicApplyBatchDetail> buildTree = basicApplyBatchDetailList.stream().filter(oo -> Objects.equal(oo.getTableName(), FormatUtils.entityNameConvertToTableName(BasicBuilding.class))).collect(Collectors.toList());
+        List<BasicApplyBatchDetail> buildTree = getBasicApplyBatchDetailList().stream().filter(oo -> Objects.equal(oo.getTableName(), FormatUtils.entityNameConvertToTableName(BasicBuilding.class))).collect(Collectors.toList());
         if (CollectionUtils.isNotEmpty(buildTree)) {
             List<BasicBuilding> basicBuildingList2 = basicBuildingService.getBasicBuildingIds(buildTree.stream().map(oo -> oo.getTableId()).collect(Collectors.toList()));
             basicBuildingList.addAll(basicBuildingList2);
@@ -380,7 +380,7 @@ public class BasicExamineHandle implements Serializable {
 
     public List<BasicUnit> getBasicUnitAll() {
         List<BasicUnit> basicUnitList = new ArrayList<>(1);
-        List<BasicApplyBatchDetail> unitTree = basicApplyBatchDetailList.stream().filter(oo -> Objects.equal(oo.getTableName(), FormatUtils.entityNameConvertToTableName(BasicUnit.class))).collect(Collectors.toList());
+        List<BasicApplyBatchDetail> unitTree = getBasicApplyBatchDetailList().stream().filter(oo -> Objects.equal(oo.getTableName(), FormatUtils.entityNameConvertToTableName(BasicUnit.class))).collect(Collectors.toList());
         if (CollectionUtils.isNotEmpty(unitTree)) {
             List<BasicUnit> basicUnitList2 = basicUnitService.getBasicUnitListByIds(unitTree.stream().map(oo -> oo.getTableId()).collect(Collectors.toList()));
             basicUnitList.addAll(basicUnitList2);
@@ -435,7 +435,8 @@ public class BasicExamineHandle implements Serializable {
     public List<BasicHouseAndTrading> getBasicHouseAndTradingAll() {
         List<BasicHouseAndTrading> list = new ArrayList<>(1);
         List<BasicHouse> basicHouseList = new ArrayList<>(1);
-        List<BasicApplyBatchDetail> houseTree = basicApplyBatchDetailList.stream().filter(oo -> Objects.equal(oo.getTableName(), FormatUtils.entityNameConvertToTableName(BasicHouse.class))).collect(Collectors.toList());
+        List<BasicApplyBatchDetail> basicApplyBatchDetails = getBasicApplyBatchDetailList();
+        List<BasicApplyBatchDetail> houseTree = basicApplyBatchDetails.stream().filter(oo -> Objects.equal(oo.getTableName(), FormatUtils.entityNameConvertToTableName(BasicHouse.class))).collect(Collectors.toList());
         if (CollectionUtils.isNotEmpty(houseTree)) {
             List<BasicHouse> basicHouseList2 = basicHouseService.getBasicHouseIds(houseTree.stream().map(oo -> oo.getTableId()).collect(Collectors.toList()));
             basicHouseList.addAll(basicHouseList2);
@@ -502,18 +503,15 @@ public class BasicExamineHandle implements Serializable {
     public BasicExamineHandle(Integer applyBatchId) {
         beanInit() ;
         this.basicApplyBatch = basicApplyBatchService.getBasicApplyBatchById(applyBatchId);
-        init();
     }
 
     private BasicExamineHandle(){
-
     }
 
     public static BasicExamineHandle getBasicExamineHandle(Integer estateId){
         BasicExamineHandle basicExamineHandle = new BasicExamineHandle();
         basicExamineHandle.beanInit() ;
         basicExamineHandle.basicApplyBatch =  basicExamineHandle.basicApplyBatchService.getBasicApplyBatchByEstateId(estateId);
-        basicExamineHandle.init() ;
         return basicExamineHandle ;
     }
 
@@ -564,8 +562,11 @@ public class BasicExamineHandle implements Serializable {
         this.baseDataDicService = SpringContextUtils.getBean(BaseDataDicService.class);
     }
 
-    private void init() {
-        this.basicApplyBatchDetailList = basicApplyBatchDetailService.getBuildingBatchDetailsByBatchId(this.basicApplyBatch.getId());
+    private List<BasicApplyBatchDetail> getBasicApplyBatchDetailList(){
+        if (CollectionUtils.isEmpty(basicApplyBatchDetailList)){
+            basicApplyBatchDetailList = basicApplyBatchDetailService.getBuildingBatchDetailsByBatchId2(this.basicApplyBatch.getId()) ;
+        }
+        return basicApplyBatchDetailList ;
     }
 
     public static class BasicVo implements Serializable {
