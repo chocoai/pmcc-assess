@@ -85,6 +85,18 @@ public class NetInfoRecordHouseController {
     }
 
     @ResponseBody
+    @RequestMapping(value = "/updateHouseStatus", method = {RequestMethod.POST}, name = "保存")
+    public HttpResult updateHouseStatus(Integer houseId) {
+        try {
+            NetInfoRecordHouse recordHouse = netInfoRecordHouseService.getNetInfoRecordHouseById(houseId);
+            NetInfoRecord infoRecord = netInfoRecordDao.getInfoById(recordHouse.getMasterId());
+            return HttpResult.newCorrectResult(infoRecord);
+        } catch (Exception e) {
+            return HttpResult.newErrorResult("保存异常");
+        }
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/delete", name = "删除", method = RequestMethod.POST)
     public HttpResult delete(@RequestParam(value = "id") Integer id) {
         try {
