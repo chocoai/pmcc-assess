@@ -1622,7 +1622,30 @@
                     if (result.ret) {
                         toastr.success('保存成功');
                         $('#' + detailInfo.prototype.config().box).modal('hide');
-                        detailInfo.prototype.loadDataDicList();
+                        //detailInfo.prototype.loadDataDicList();
+                        //$("#" + detailInfo.prototype.config().table).bootstrapTable('updateByUniqueId', {id: result.data.id, row: result.data});
+                        detailInfo.prototype.updateLandStatus(result.data.id);
+                    }
+                    else {
+                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        },
+        updateLandStatus: function (landId) {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/netInfoRecordLand/updateLandStatus",
+                type: "post",
+                dataType: "json",
+                data: {
+                    landId: landId,
+                },
+                success: function (result) {
+                    if (result.ret) {
+                        $("#" + detailInfo.prototype.config().table).bootstrapTable('updateByUniqueId', {id: result.data.id, row: result.data});
                     }
                     else {
                         Alert("保存数据失败，失败原因:" + result.errmsg);
@@ -1651,7 +1674,29 @@
                     if (result.ret) {
                         toastr.success('保存成功');
                         $('#' + detailInfo.prototype.config().box).modal('hide');
-                        detailInfo.prototype.loadDataDicList();
+                        //detailInfo.prototype.loadDataDicList();
+                        detailInfo.prototype.updateHouseStatus(result.data.id);
+                    }
+                    else {
+                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        },
+        updateHouseStatus: function (houseId) {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/netInfoRecordHouse/updateHouseStatus",
+                type: "post",
+                dataType: "json",
+                data: {
+                    houseId: houseId,
+                },
+                success: function (result) {
+                    if (result.ret) {
+                        $("#" + detailInfo.prototype.config().table).bootstrapTable('updateByUniqueId', {id: result.data.id, row: result.data});
                     }
                     else {
                         Alert("保存数据失败，失败原因:" + result.errmsg);
