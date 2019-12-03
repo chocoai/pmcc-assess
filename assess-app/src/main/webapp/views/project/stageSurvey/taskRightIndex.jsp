@@ -21,18 +21,23 @@
                     <div class="x-valid">
                         <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">权证信息<span
                                 class="symbol required"></span></label>
-                        <div class=" col-xs-560  col-sm-560  col-md-560  col-lg-560 " style="overflow:auto;height:60px;">
-                            <select class="form-control search-select select2" multiple="multiple" required="required"
-                                    name="recordIds">
-                                <c:forEach var="items" items="${declareRecordList}">
-                                    <option value="${items.id}">${items.name}</option>
-                                </c:forEach>
-                            </select>
+                        <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
+                            <input type="hidden" name="recordIds">
+                            <div class="btn-primary btn" onclick="declareRecordModeObj.init({callback:selectRecord,this_:this,ids:$(this).closest('.form-group').find('[name=recordIds]').val()});">选择权证
+                                <span class="glyphicon  glyphicon-new-window" aria-hidden="true"></span>
+                            </div>
+                            <%--<select class="form-control search-select select2" multiple="multiple" required="required"--%>
+                                    <%--name="recordIds">--%>
+                                <%--<c:forEach var="items" items="${declareRecordList}">--%>
+                                    <%--<option value="${items.id}">${items.name}</option>--%>
+                                <%--</c:forEach>--%>
+                            <%--</select>--%>
+
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class="col-sm-offset-1  col-xs-111  col-sm-111  col-md-111  col-lg-111 ">
+                    <div class="col-sm-offset-1  col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
                         <div class="btn-group">
                             <button type="button" class="btn btn-success" onclick="addData(this,'_number')"
                                     data-toggle="modal" data-target="#divBox_number"> 新增
@@ -51,18 +56,18 @@
                             </button>
                         </div>
                         <%--<div class="btn-group">--%>
-                            <%--<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"--%>
-                                    <%--aria-expanded="false">导入数据--%>
-                                <%--<span class="caret"></span>--%>
-                            <%--</button>--%>
-                            <%--<ul class="dropdown-menu" role="menu">--%>
-                                <%--<li><a href="javascript://"--%>
-                                       <%--onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftAssetInventoryRight);">下载模板</a>--%>
-                                <%--</li>--%>
-                                <%--<li><a href="javascript://;"--%>
-                                       <%--onclick="$('#ajaxFileUpload_number').val('').trigger('click')">导入数据</a>--%>
-                                <%--</li>--%>
-                            <%--</ul>--%>
+                        <%--<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"--%>
+                        <%--aria-expanded="false">导入数据--%>
+                        <%--<span class="caret"></span>--%>
+                        <%--</button>--%>
+                        <%--<ul class="dropdown-menu" role="menu">--%>
+                        <%--<li><a href="javascript://"--%>
+                        <%--onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftAssetInventoryRight);">下载模板</a>--%>
+                        <%--</li>--%>
+                        <%--<li><a href="javascript://;"--%>
+                        <%--onclick="$('#ajaxFileUpload_number').val('').trigger('click')">导入数据</a>--%>
+                        <%--</li>--%>
+                        <%--</ul>--%>
                         <%--</div>--%>
                     </div>
                 </div>
@@ -307,6 +312,7 @@
 </div>
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
+<%@include file="/views/project/tool/declareRecordModeView.jsp" %>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/ajaxfileupload.js?v=${assessVersion}"></script>
 <script type="text/javascript">
 
@@ -326,6 +332,11 @@
             return number;
         }
     };
+
+    function selectRecord(_this,id) {
+        var group = $(_this).closest(".form-group") ;
+        group.find("input[name='recordIds']").val(id) ;
+    }
 
     //上传附件通用
     function uploadFileCommon(fieldsName, tableName, id) {

@@ -22,14 +22,20 @@
                     <div class="x-valid">
                         <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">权证信息<span
                                 class="symbol required"></span></label>
-                        <div class=" col-xs-560  col-sm-560  col-md-560  col-lg-560 "
-                             style="overflow:auto;height:60px;">
-                            <select class="form-control search-select select2" multiple="multiple" required="required"
-                                    name="recordIds" onchange="getGroupAndPriceVo(this);">
-                                <c:forEach var="items" items="${declareRecordList}">
-                                    <option value="${items.id}">${items.name}</option>
-                                </c:forEach>
-                            </select>
+                        <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
+
+                            <input type="hidden" name="recordIds">
+                            <div class="btn-primary btn" onclick="declareRecordModeObj.init({callback:selectRecord,this_:this,ids:$(this).closest('.form-group').find('[name=recordIds]').val()});">选择权证
+                                <span class="glyphicon  glyphicon-new-window" aria-hidden="true"></span>
+                            </div>
+
+                            <%--<select class="form-control search-select select2" multiple="multiple" required="required"--%>
+                                    <%--name="recordIds" onchange="getGroupAndPriceVo(this);">--%>
+                                <%--<c:forEach var="items" items="${declareRecordList}">--%>
+                                    <%--<option value="${items.id}">${items.name}</option>--%>
+                                <%--</c:forEach>--%>
+                            <%--</select>--%>
+
                         </div>
                     </div>
                 </div>
@@ -152,6 +158,7 @@
 </div>
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
+<%@include file="/views/project/tool/declareRecordModeView.jsp" %>
 <script type="application/javascript">
     var commonField = {
         taskLiquidationAnalysisFrm: "taskLiquidationAnalysisFrm",
@@ -159,6 +166,11 @@
         taskLiquidationAnalysisDiv: "taskLiquidationAnalysisDiv",
 
     };
+
+    function selectRecord(_this,id) {
+        var group = $(_this).closest(".form-group") ;
+        group.find("input[name='recordIds']").val(id) ;
+    }
 
 
     /**
