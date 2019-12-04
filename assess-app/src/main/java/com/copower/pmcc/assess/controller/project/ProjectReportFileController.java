@@ -4,13 +4,12 @@ import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeReportFileItem;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeReportFileDto;
+import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.SchemeReportFileService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.apache.commons.collections.CollectionUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,13 +25,14 @@ import java.util.List;
 @Controller
 @RequestMapping("/projectReportFile")
 public class ProjectReportFileController {
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     private SchemeReportFileService schemeReportFileService;
     @Autowired
     private ProjectInfoService projectInfoService;
     @Autowired
     private DeclareRecordService declareRecordService;
+    @Autowired
+    private BaseService baseService;
 
 
     @RequestMapping(value = "/index", name = "委托书及证明文件")
@@ -63,7 +63,7 @@ public class ProjectReportFileController {
             }
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
-            logger.error(e.getMessage(), e);
+            baseService.writeExceptionInfo(e,"取得计划编制信息异常");
             return HttpResult.newErrorResult("取得计划编制信息异常");
         }
     }
@@ -75,7 +75,7 @@ public class ProjectReportFileController {
         try {
             return HttpResult.newCorrectResult(schemeReportFileService.getOwnershipCertFileAll(declareRecordId));
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            baseService.writeExceptionInfo(e,"获取权属证明复印件图片");
             return HttpResult.newErrorResult(e.getMessage());
         }
     }
@@ -87,7 +87,7 @@ public class ProjectReportFileController {
             schemeReportFileService.removeOwnershipCertFile(id);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            baseService.writeExceptionInfo(e,"移除权属证明复印件图片");
             return HttpResult.newErrorResult(e.getMessage());
         }
     }
@@ -98,7 +98,7 @@ public class ProjectReportFileController {
         try {
             return HttpResult.newCorrectResult(schemeReportFileService.getLandCertId(declareRecordId));
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            baseService.writeExceptionInfo(e,"获取关联土地证id");
             return HttpResult.newErrorResult(e.getMessage());
         }
     }
@@ -110,7 +110,7 @@ public class ProjectReportFileController {
         try {
             return HttpResult.newCorrectResult(schemeReportFileService.getLandFileAll(tableId));
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            baseService.writeExceptionInfo(e,"获取权属证明复印件图片");
             return HttpResult.newErrorResult(e.getMessage());
         }
     }
@@ -121,7 +121,7 @@ public class ProjectReportFileController {
         try {
             return HttpResult.newCorrectResult(schemeReportFileService.getAddressFileListByDeclareRecordId(declareRecordId));
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            baseService.writeExceptionInfo(e,"获取地址不一致附件");
             return HttpResult.newErrorResult(e.getMessage());
         }
     }

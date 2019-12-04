@@ -8,6 +8,7 @@ import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectNumberRecord;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectTakeNumber;
 import com.copower.pmcc.assess.dto.output.project.ProjectTakeNumberVo;
+import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.ProjectTakeNumberService;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
@@ -47,6 +48,8 @@ public class ProjectTakeNumberController extends BaseController {
     private ProjectInfoService projectInfoService;
     @Autowired
     private ProjectTakeNumberService projectTakeNumberService;
+    @Autowired
+    private BaseService baseService;
 
     @RequestMapping(value = "/apply", name = "项目拿号申请")
     public ModelAndView apply(Integer projectId) throws BusinessException {
@@ -66,11 +69,11 @@ public class ProjectTakeNumberController extends BaseController {
     public HttpResult applyCommit(ProjectTakeNumber projectTakeNumber) {
         try {
             projectTakeNumberService.applyCommit(projectTakeNumber, BaseParameterEnum.PROJECT_TAKE_NUMBER_PROCESS_KEY);
+            return HttpResult.newCorrectResult();
         } catch (BusinessException e) {
-            log.error("修改项目信息异常", e);
-            e.printStackTrace();
+            baseService.writeExceptionInfo(e, "修改项目信息异常");
+            return HttpResult.newErrorResult(e);
         }
-        return HttpResult.newCorrectResult();
     }
 
     @RequestMapping(value = "/approvalView", name = "项目拿号审批页")
@@ -82,8 +85,8 @@ public class ProjectTakeNumberController extends BaseController {
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(data.getProjectId());
         modelAndView.addObject("projectInfo", projectInfoService.getSimpleProjectInfoVo(projectInfo));
         //详情页
-        if(taskId.equals("-1")){
-            if(data.getNumberRecordId()!=null) {
+        if (taskId.equals("-1")) {
+            if (data.getNumberRecordId() != null) {
                 ProjectNumberRecord projectNumberRecord = projectNumberRecordDao.getProjectNumberRecord(data.getNumberRecordId());
                 modelAndView.addObject("numberValue", projectNumberRecord.getNumberValue());
             }
@@ -103,7 +106,7 @@ public class ProjectTakeNumberController extends BaseController {
             projectTakeNumberService.approvalCommit(approvalModelDto);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
-            log.error("提交失败", e);
+            baseService.writeExceptionInfo(e, "提交失败");
             return HttpResult.newErrorResult(e);
         }
     }
@@ -129,7 +132,7 @@ public class ProjectTakeNumberController extends BaseController {
             projectTakeNumberService.processEditSubmit(approvalModelDto);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
-            log.error("修改失败", e);
+            baseService.writeExceptionInfo(e, "修改失败");
             return HttpResult.newErrorResult(e);
         }
     }

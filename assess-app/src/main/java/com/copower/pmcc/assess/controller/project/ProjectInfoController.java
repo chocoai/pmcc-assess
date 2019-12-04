@@ -12,6 +12,7 @@ import com.copower.pmcc.assess.dto.output.project.ProjectPlanVo;
 import com.copower.pmcc.assess.dto.output.project.initiate.InitiateConsignorVo;
 import com.copower.pmcc.assess.dto.output.project.initiate.InitiatePossessorVo;
 import com.copower.pmcc.assess.dto.output.project.initiate.InitiateUnitInformationVo;
+import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
@@ -32,8 +33,6 @@ import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -56,7 +55,8 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "/projectInfo", name = "项目控制器")
 public class ProjectInfoController {
-    private final Logger logger = LoggerFactory.getLogger(getClass());
+    @Autowired
+    private BaseService baseService;
     @Autowired
     private BaseDataDicService baseDataDicService;
     @Autowired
@@ -180,10 +180,11 @@ public class ProjectInfoController {
     public HttpResult projectApplySubmit(String formData, Boolean bisNextUser, @RequestParam(defaultValue = "false") boolean mustUseBox) {
         try {
             projectInfoService.projectApply(projectInfoService.format(formData), true, mustUseBox);
+            return HttpResult.newCorrectResult();
         } catch (Exception e) {
+            baseService.writeExceptionInfo(e, "项目立项");
             return HttpResult.newErrorResult(e.getMessage());
         }
-        return HttpResult.newCorrectResult();
     }
 
 
@@ -192,10 +193,11 @@ public class ProjectInfoController {
     public HttpResult projectApplyDraft(String formData, Boolean bisNextUser, @RequestParam(defaultValue = "false") boolean mustUseBox) {
         try {
             projectInfoService.projectApply(projectInfoService.format(formData), false, mustUseBox);
+            return HttpResult.newCorrectResult();
         } catch (Exception e) {
+            baseService.writeExceptionInfo(e, "项目草稿");
             return HttpResult.newErrorResult(e.getMessage());
         }
-        return HttpResult.newCorrectResult();
     }
 
     @ResponseBody
@@ -203,10 +205,11 @@ public class ProjectInfoController {
     public HttpResult projectDataUpdate(ProjectInfo projectInfo) {
         try {
             projectInfoService.saveProjectInfo(projectInfo);
+            return HttpResult.newCorrectResult();
         } catch (Exception e) {
+            baseService.writeExceptionInfo(e, "项目更新  注意这个方法不是和任何流程相关的方法");
             return HttpResult.newErrorResult(e.getMessage());
         }
-        return HttpResult.newCorrectResult();
     }
 
     @ResponseBody
@@ -214,10 +217,11 @@ public class ProjectInfoController {
     public HttpResult projectClearData(Integer id) {
         try {
             projectInfoService.projectClearData(id);
+            return HttpResult.newCorrectResult();
         } catch (Exception e) {
+            baseService.writeExceptionInfo(e, "项目清除所属项目的数据  仅仅限于草稿这样做");
             return HttpResult.newErrorResult(e.getMessage());
         }
-        return HttpResult.newCorrectResult();
     }
 
     @ResponseBody
@@ -225,10 +229,11 @@ public class ProjectInfoController {
     public HttpResult projectEditSubmit(ApprovalModelDto approvalModelDto, String formData, Integer projectInfoId) {
         try {
             projectInfoService.projectEditApproval(approvalModelDto, formData, projectInfoId);
+            return HttpResult.newCorrectResult();
         } catch (Exception e) {
+            baseService.writeExceptionInfo(e, "项目立项返回修改");
             return HttpResult.newErrorResult(e.getMessage());
         }
-        return HttpResult.newCorrectResult();
     }
 
     @ResponseBody
@@ -236,10 +241,11 @@ public class ProjectInfoController {
     public HttpResult projectApprovalSubmit(ApprovalModelDto approvalModelDto) {
         try {
             projectInfoService.projectApproval(approvalModelDto);
+            return HttpResult.newCorrectResult();
         } catch (Exception e) {
+            baseService.writeExceptionInfo(e, "项目立项审批");
             return HttpResult.newErrorResult(e.getMessage());
         }
-        return HttpResult.newCorrectResult();
     }
 
     @ResponseBody
@@ -247,10 +253,11 @@ public class ProjectInfoController {
     public HttpResult projectApprovalAssignSubmit(ApprovalModelDto approvalModelDto) {
         try {
             projectInfoService.projectAssignApproval(approvalModelDto);
+            return HttpResult.newCorrectResult();
         } catch (Exception e) {
+            baseService.writeExceptionInfo(e, "分派项目经理审批");
             return HttpResult.newErrorResult(e.getMessage());
         }
-        return HttpResult.newCorrectResult();
     }
 
     @RequestMapping(value = "/projectAssignDetails", name = "分派项目经理详情")
@@ -365,7 +372,7 @@ public class ProjectInfoController {
             ProjectPlanVo projectPlanItem = projectInfoService.getProjectPlanItem(planId);
             return HttpResult.newCorrectResult(projectPlanItem);
         } catch (Exception e) {
-            logger.error(e.getMessage(), e);
+            baseService.writeExceptionInfo(e, "取得计划编制信息异常");
             return HttpResult.newErrorResult("取得计划编制信息异常");
         }
     }
@@ -377,7 +384,7 @@ public class ProjectInfoController {
             DataValueDefinition valueDefinition = dataValueDefinitionService.getValueDefinition(entrustPurpose, valueType);
             return HttpResult.newCorrectResult(valueDefinition);
         } catch (Exception e) {
-            logger.error(e.getMessage(), e);
+            baseService.writeExceptionInfo(e, "取得价值定义信息异常");
             return HttpResult.newErrorResult("取得价值定义信息异常");
         }
     }
@@ -389,8 +396,8 @@ public class ProjectInfoController {
             BaseDataDic dataDicById = baseDataDicService.getDataDicById(entrustAimType);
             return HttpResult.newCorrectResult(dataDicById);
         } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-            return HttpResult.newErrorResult("取得价值定义信息异常");
+            baseService.writeExceptionInfo(e, "取得委托目的描述");
+            return HttpResult.newErrorResult("取得委托目的描述");
         }
     }
 
@@ -403,7 +410,7 @@ public class ProjectInfoController {
         } catch (BusinessException e) {
             return HttpResult.newErrorResult(e.getMessage());
         } catch (Exception e) {
-            logger.error(e.getMessage(), e);
+            baseService.writeExceptionInfo(e, "完成项目异常");
             return HttpResult.newErrorResult("完成项目异常");
         }
     }
@@ -415,7 +422,7 @@ public class ProjectInfoController {
             Integer total = projectPlanDetailsService.getTotalPlanDetails(planId);
             return HttpResult.newCorrectResult(total);
         } catch (Exception e) {
-            logger.error(e.getMessage(), e);
+            baseService.writeExceptionInfo(e, "取得计划总数异常");
             return HttpResult.newErrorResult("取得计划总数异常");
         }
     }
@@ -426,7 +433,7 @@ public class ProjectInfoController {
         try {
             return HttpResult.newCorrectResult(projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(id)));
         } catch (Exception e) {
-            logger.error(e.getMessage(), e);
+            baseService.writeExceptionInfo(e, "根据id获取项目信息");
             return HttpResult.newErrorResult("获取项目信息异常");
         }
     }
@@ -440,7 +447,7 @@ public class ProjectInfoController {
         } catch (BusinessException e) {
             return HttpResult.newErrorResult(e.getMessage());
         } catch (Exception e) {
-            logger.error(e.getMessage(), e);
+            baseService.writeExceptionInfo(e, "进入项目下个阶段");
             return HttpResult.newErrorResult("进入项目下个阶段");
         }
     }

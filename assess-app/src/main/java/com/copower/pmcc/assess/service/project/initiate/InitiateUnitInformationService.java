@@ -13,6 +13,7 @@ import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.google.common.base.Objects;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,19 +55,21 @@ public class InitiateUnitInformationService {
             return ;
         }
         CrmCustomerDto crmCustomerDto = new CrmCustomerDto();
-        if (NumberUtils.isNumber(initiateUnitInformation.getuUseUnit())) {
-            if (initiateUnitInformation.getInfoWrite() != null) {
-                if (initiateUnitInformation.getInfoWrite().booleanValue()) {
-                    //更新单元信息
-                    crmCustomerDto.setId(Integer.parseInt(initiateUnitInformation.getuUseUnit()));
-                    crmCustomerDto.setLegalRepresentative(initiateUnitInformation.getuLegalRepresentative());
-                    crmCustomerDto.setAddress(initiateUnitInformation.getuAddress());
-                    crmCustomerDto.setBusinessScope(initiateUnitInformation.getuScopeOperation());
-                    crmCustomerDto.setCertificateNumber(initiateUnitInformation.getuCertificateNumber());
-                    if (NumberUtils.isNumber(initiateUnitInformation.getuUnitProperties())) {
-                        crmCustomerDto.setUnitProperties(Integer.parseInt(initiateUnitInformation.getuUnitProperties()));
+        if (org.apache.commons.lang3.StringUtils.isNotEmpty(initiateUnitInformation.getuUseUnit())){
+            if (NumberUtils.isNumber(initiateUnitInformation.getuUseUnit())) {
+                if (initiateUnitInformation.getInfoWrite() != null) {
+                    if (initiateUnitInformation.getInfoWrite().booleanValue()) {
+                        //更新单元信息
+                        crmCustomerDto.setId(Integer.parseInt(initiateUnitInformation.getuUseUnit()));
+                        crmCustomerDto.setLegalRepresentative(initiateUnitInformation.getuLegalRepresentative());
+                        crmCustomerDto.setAddress(initiateUnitInformation.getuAddress());
+                        crmCustomerDto.setBusinessScope(initiateUnitInformation.getuScopeOperation());
+                        crmCustomerDto.setCertificateNumber(initiateUnitInformation.getuCertificateNumber());
+                        if (NumberUtils.isNumber(initiateUnitInformation.getuUnitProperties())) {
+                            crmCustomerDto.setUnitProperties(Integer.parseInt(initiateUnitInformation.getuUnitProperties()));
+                        }
+                        crmRpcCustomerService.updateCustomer(crmCustomerDto);
                     }
-                    crmRpcCustomerService.updateCustomer(crmCustomerDto);
                 }
             }
         }
@@ -153,7 +156,7 @@ public class InitiateUnitInformationService {
         sysAttachmentDto.setCreater(commonService.thisUserAccount());
         sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(InitiateUnitInformation.class));
         List<SysAttachmentDto> sysAttachmentDtoList = baseAttachmentService.getAttachmentList(sysAttachmentDto);
-        if (!ObjectUtils.isEmpty(sysAttachmentDtoList)) {
+        if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
             for (SysAttachmentDto attachmentDto : sysAttachmentDtoList) {
                 baseAttachmentService.deleteAttachmentByDto(attachmentDto);
             }

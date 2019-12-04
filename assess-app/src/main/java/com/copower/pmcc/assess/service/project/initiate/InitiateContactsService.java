@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.common.enums.InitiateContactsEnum;
 import com.copower.pmcc.assess.dal.basis.dao.project.initiate.InitiateContactsDao;
 import com.copower.pmcc.assess.dal.basis.entity.InitiateContacts;
 import com.copower.pmcc.assess.dto.output.project.initiate.InitiateUnitInformationVo;
+import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.CrmCustomerService;
 import com.copower.pmcc.crm.api.dto.CrmCustomerLinkmanDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -36,7 +37,8 @@ import java.util.List;
  */
 @Service
 public class InitiateContactsService {
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    @Autowired
+    private BaseService baseService;
     @Lazy
     @Autowired
     private CrmCustomerService crmCustomerService;
@@ -54,25 +56,27 @@ public class InitiateContactsService {
     }
 
     public void copyContacts(String str, InitiateContacts initiateContacts) {
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(str)) {
-            List<Integer> ids = new ArrayList<>(10);
-            for (String id : str.split(",")) {
-                if (NumberUtils.isNumber(id)) {
-                    ids.add(Integer.parseInt(id));
-                }
+        if (org.apache.commons.lang3.StringUtils.isEmpty(str)){
+            return;
+        }
+        List<Integer> ids = new ArrayList<>(10);
+        for (String id : str.split(",")) {
+            if (NumberUtils.isNumber(id)) {
+                ids.add(Integer.parseInt(id));
             }
-            List<InitiateContacts> initiateContactsList = dao.getByIds(ids);
-            if (!ObjectUtils.isEmpty(initiateContactsList)) {
-                for (InitiateContacts contacts : initiateContactsList) {
-                    contacts.setcType(initiateContacts.getcType());
-                    contacts.setcPid(initiateContacts.getcPid());
-                    contacts.setCustomerId(initiateContacts.getCustomerId());
-                    contacts.setCrmId(initiateContacts.getCrmId());
-                    contacts.setCreator(commonService.thisUserAccount());
-                    contacts.setId(null);
-                    dao.save(contacts);
-                }
-            }
+        }
+        List<InitiateContacts> initiateContactsList = dao.getByIds(ids);
+        if (CollectionUtils.isEmpty(initiateContactsList)){
+            return;
+        }
+        for (InitiateContacts contacts : initiateContactsList) {
+            contacts.setcType(initiateContacts.getcType());
+            contacts.setcPid(initiateContacts.getcPid());
+            contacts.setCustomerId(initiateContacts.getCustomerId());
+            contacts.setCrmId(initiateContacts.getCrmId());
+            contacts.setCreator(commonService.thisUserAccount());
+            contacts.setId(null);
+            dao.save(contacts);
         }
     }
 
@@ -119,43 +123,43 @@ public class InitiateContactsService {
      * @return
      */
     public void writeContacts(Integer customerId, Integer cType, Integer pid) {
-        if (customerId != null) {
-            List<CrmCustomerLinkmanDto> linkmanDtos = crmCustomerService.getCustomerLinkmanList(customerId);
-            try {
-                Ordering<CrmCustomerLinkmanDto> firstOrdering = Ordering.from(new Comparator<CrmCustomerLinkmanDto>() {
-                    @Override
-                    public int compare(CrmCustomerLinkmanDto o1, CrmCustomerLinkmanDto o2) {
-                        return o1.getId().compareTo(o2.getId());
-                    }
-                }).reverse();//排序 并且反转
-                //排序之后 取5个写入本地
-                Collections.sort(linkmanDtos, firstOrdering);
-                int temp = 5;
-                for (int i = 0; i < temp; i++) {
-                    CrmCustomerLinkmanDto crmCustomerLinkmanDto = linkmanDtos.get(i);
-                    InitiateContacts contactsDto = new InitiateContacts();
-                    if (contactsDto != null) {
-                        contactsDto.setcPid(pid);
-                        contactsDto.setcDept(crmCustomerLinkmanDto.getDepartment());
-                        contactsDto.setCrmId(String.valueOf(crmCustomerLinkmanDto.getId()));
-                        contactsDto.setcName(crmCustomerLinkmanDto.getName());
-                        contactsDto.setcEmail(crmCustomerLinkmanDto.getEmail());
-                        contactsDto.setcPhone(crmCustomerLinkmanDto.getPhoneNumber());
-                        contactsDto.setcType(cType);
-                        contactsDto.setCreator(commonService.thisUserAccount());
-                        contactsDto.setCustomerId(String.valueOf(customerId));
-                        //为了使得页面刷新不至于再次写入数据,因此需要校验 已经写入的数据不再写入了
-                        List<InitiateContacts> contactsList = dao.getList(pid, cType, null, customerId, crmCustomerLinkmanDto.getId());
-                        if (contactsList.size() == 0) {
-                            dao.save(contactsDto);
-                        }
-                    }
-
+        if (customerId == null){
+            return;
+        }
+        List<CrmCustomerLinkmanDto> linkmanDtos = crmCustomerService.getCustomerLinkmanList(customerId);
+        try {
+            Ordering<CrmCustomerLinkmanDto> firstOrdering = Ordering.from(new Comparator<CrmCustomerLinkmanDto>() {
+                @Override
+                public int compare(CrmCustomerLinkmanDto o1, CrmCustomerLinkmanDto o2) {
+                    return o1.getId().compareTo(o2.getId());
                 }
-            } catch (Exception e) {
-                logger.error(e.getMessage());
+            }).reverse();//排序 并且反转
+            //排序之后 取5个写入本地
+            Collections.sort(linkmanDtos, firstOrdering);
+            int temp = 5;
+            for (int i = 0; i < temp; i++) {
+                CrmCustomerLinkmanDto crmCustomerLinkmanDto = linkmanDtos.get(i);
+                InitiateContacts contactsDto = new InitiateContacts();
+                if (contactsDto != null) {
+                    contactsDto.setcPid(pid);
+                    contactsDto.setcDept(crmCustomerLinkmanDto.getDepartment());
+                    contactsDto.setCrmId(String.valueOf(crmCustomerLinkmanDto.getId()));
+                    contactsDto.setcName(crmCustomerLinkmanDto.getName());
+                    contactsDto.setcEmail(crmCustomerLinkmanDto.getEmail());
+                    contactsDto.setcPhone(crmCustomerLinkmanDto.getPhoneNumber());
+                    contactsDto.setcType(cType);
+                    contactsDto.setCreator(commonService.thisUserAccount());
+                    contactsDto.setCustomerId(String.valueOf(customerId));
+                    //为了使得页面刷新不至于再次写入数据,因此需要校验 已经写入的数据不再写入了
+                    List<InitiateContacts> contactsList = dao.getList(pid, cType, null, customerId, crmCustomerLinkmanDto.getId());
+                    if (contactsList.size() == 0) {
+                        dao.save(contactsDto);
+                    }
+                }
+
             }
-        } else {
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
         }
     }
 
@@ -235,11 +239,12 @@ public class InitiateContactsService {
         query.setcType(flag);
         query.setCreator(commonService.thisUserAccount());
         List<InitiateContacts> contactsList = initiateContactsList(query);
-        if (!ObjectUtils.isEmpty(contactsList)) {
-            for (InitiateContacts contact : contactsList) {
-                contact.setcPid(pid);
-                dao.update(contact);
-            }
+        if (CollectionUtils.isEmpty(contactsList)){
+            return;
+        }
+        for (InitiateContacts contact : contactsList) {
+            contact.setcPid(pid);
+            dao.update(contact);
         }
     }
 

@@ -13,6 +13,7 @@ import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.google.common.base.Objects;
 import com.google.common.collect.Sets;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -109,17 +109,18 @@ public class InitiatePossessorService {
         InitiatePossessorVo vo = new InitiatePossessorVo();
         BeanUtils.copyProperties(possessor, vo);
         List<CrmBaseDataDicDto> crmBaseDataDicDtos = crmRpcBaseDataDicService.getUnitPropertiesList();
-        if (!ObjectUtils.isEmpty(crmBaseDataDicDtos)) {
+        if (CollectionUtils.isNotEmpty(crmBaseDataDicDtos)) {
             for (CrmBaseDataDicDto dicDto : crmBaseDataDicDtos) {
-                if (!StringUtils.isEmpty(possessor.getpUnitProperties())) {
-                    if (Objects.equal(Integer.parseInt(possessor.getpUnitProperties()), dicDto.getId())) {
-                        vo.setpUnitPropertiesName(dicDto.getName());
-                        break;
-                    }
+                if (org.apache.commons.lang3.StringUtils.isEmpty(possessor.getpUnitProperties())){
+                    continue;
+                }
+                if (Objects.equal(possessor.getpUnitProperties(), dicDto.getId().toString())) {
+                    vo.setpUnitPropertiesName(dicDto.getName());
+                    break;
                 }
             }
         }
-        if (!StringUtils.isEmpty(possessor.getpEntrustmentUnit())) {
+        if (org.apache.commons.lang.StringUtils.isNotEmpty(possessor.getpEntrustmentUnit())) {
             if (NumberUtils.isNumber(possessor.getpEntrustmentUnit())) {
                 vo.setpEntrustmentUnitName(baseDataDicService.getNameById(Integer.valueOf(possessor.getpEntrustmentUnit())));
             }
@@ -134,7 +135,7 @@ public class InitiatePossessorService {
         sysAttachmentDto.setCreater(commonService.thisUserAccount());
         sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(InitiatePossessor.class));
         List<SysAttachmentDto> sysAttachmentDtoList = baseAttachmentService.getAttachmentList(sysAttachmentDto);
-        if (!ObjectUtils.isEmpty(sysAttachmentDtoList)) {
+        if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
             for (SysAttachmentDto attachmentDto : sysAttachmentDtoList) {
                 baseAttachmentService.deleteAttachmentByDto(attachmentDto);
             }

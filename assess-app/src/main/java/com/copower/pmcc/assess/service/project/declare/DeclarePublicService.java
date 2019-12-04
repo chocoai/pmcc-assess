@@ -56,13 +56,13 @@ public class DeclarePublicService {
     @Autowired
     private PublicService publicService;
 
-    private final String UNIT = "单元";
-    private final String FLOOR = "层";
-    private final String ATTACHED = "附";
-    private final String BUILDING = "幢";
-    private final String STREET = "STREET";
-    private final String RoomNumber = "RoomNumber";
-    private final String NUMBER = "号";
+    private static final String UNIT = "单元";
+    private static final String FLOOR = "层";
+    private static final String ATTACHED = "附";
+    private static final String BUILDING = "幢";
+    private static final String STREET = "STREET";
+    private static final String RoomNumber = "RoomNumber";
+    private static final String NUMBER = "号";
 
     /**
      * 专门处理坐落问题

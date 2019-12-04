@@ -8,6 +8,7 @@ import com.copower.pmcc.assess.dal.basis.entity.ProjectWorkStage;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
 import com.copower.pmcc.assess.proxy.face.ProjectPlanInterface;
+import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.project.*;
 import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
@@ -62,6 +63,8 @@ public class ProjectPlanController {
     private ProjectPlanDetailsService projectPlanDetailsService;
     @Autowired
     private BpmRpcProjectTaskService bpmRpcProjectTaskService;
+    @Autowired
+    private BaseService baseService;
 
     @RequestMapping(value = "/planIndex", name = "项目计划进入页")
     public ModelAndView planIndex(Integer planId) {
@@ -145,7 +148,7 @@ public class ProjectPlanController {
                     projectPlanDetailsVos = new ArrayList<>();
                 }
             } catch (BusinessException e) {
-                e.printStackTrace();
+                baseService.writeExceptionInfo(e);
             }
         }
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
@@ -158,7 +161,6 @@ public class ProjectPlanController {
     @ResponseBody
     @RequestMapping(value = "/getProjectPlan", name = "取得项目详情计划", method = RequestMethod.GET)
     public BootstrapTableVo getProjectPlan(Integer planId) {
-
         List<ProjectPlanDetailsVo> projectPlanDetailsVos = projectPlanDetailsService.getProjectPlanDetailsByPlanId(planId);
         if (CollectionUtils.isEmpty(projectPlanDetailsVos)) {
             try {
@@ -190,6 +192,7 @@ public class ProjectPlanController {
             bootstrapTableVo.setRows(projectPlanDetailsVos);
             return HttpResult.newCorrectResult(bootstrapTableVo);
         } catch (BusinessException e) {
+            baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult(e.getMessage());
         }
     }
@@ -205,6 +208,7 @@ public class ProjectPlanController {
             bootstrapTableVo.setRows(projectPlanDetailsVos);
             return HttpResult.newCorrectResult(bootstrapTableVo);
         } catch (BusinessException e) {
+            baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult(e.getMessage());
         }
     }
@@ -220,6 +224,7 @@ public class ProjectPlanController {
             bootstrapTableVo.setRows(projectPlanDetailsVos);
             return HttpResult.newCorrectResult(bootstrapTableVo);
         } catch (BusinessException e) {
+            baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult(e.getMessage());
         }
     }
@@ -229,11 +234,11 @@ public class ProjectPlanController {
     public HttpResult saveProjectPlan(String formData, String appointUserAccount) {
         try {
             projectPlanService.saveProjectPlan(formData, appointUserAccount);
+            return HttpResult.newCorrectResult();
         } catch (Exception e) {
-            logger.error(e.getMessage(),e);
+            baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult("保存项目计划异常");
         }
-        return HttpResult.newCorrectResult();
     }
 
     @RequestMapping(value = "/planApproval", name = "项目计划审批页")
@@ -360,11 +365,11 @@ public class ProjectPlanController {
             approvalModelDto.setWorkStageId(projectPlan.getWorkStageId());
             approvalModelDto.setWorkPhaseId(0);
             processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
-
+            return HttpResult.newCorrectResult();
         } catch (BpmException e) {
+            baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult(e.getMessage());
         }
-        return HttpResult.newCorrectResult();
     }
 
     @ResponseBody
@@ -372,21 +377,22 @@ public class ProjectPlanController {
     public HttpResult submitPlanEdit(String formData) {
         try {
             projectPlanService.submitPlanEdit(formData);
-
+            return HttpResult.newCorrectResult();
         } catch (BusinessException e) {
+            baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult(e.getMessage());
         }
-        return HttpResult.newCorrectResult();
     }
 
     @ResponseBody
     @RequestMapping(value = "/replyProjectPlan", name = "重启阶段计划", method = RequestMethod.POST)
     public HttpResult replyProjectPlan(Integer planId, String reason) {
         try {
-            projectPlanService.replyProjectPlan(planId,reason);
+            projectPlanService.replyProjectPlan(planId, reason);
+            return HttpResult.newCorrectResult();
         } catch (BusinessException e) {
+            baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult(e.getMessage());
         }
-        return HttpResult.newCorrectResult();
     }
 }

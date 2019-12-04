@@ -12,9 +12,8 @@ import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.google.common.collect.Sets;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.math.NumberUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -22,7 +21,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -33,7 +31,6 @@ import java.util.stream.Collectors;
  */
 @Service
 public class InitiateConsignorService {
-    private Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private CommonService commonService;
     @Autowired
@@ -88,7 +85,7 @@ public class InitiateConsignorService {
         InitiateConsignor consignor = new InitiateConsignor();
         consignor.setProjectId(projectId);
         List<InitiateConsignor> initiateConsignors = initiateConsignorList(consignor);
-        if (!ObjectUtils.isEmpty(initiateConsignors)) {
+        if (CollectionUtils.isNotEmpty(initiateConsignors)) {
             return getInitiateConsignorVo(initiateConsignors.get(0));
         }
         return null;

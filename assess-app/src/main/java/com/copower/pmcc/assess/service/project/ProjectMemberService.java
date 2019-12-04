@@ -58,6 +58,9 @@ public class ProjectMemberService {
 
     public Map<String, SysUserDto> relationUserMap(List<SysUserDto> sysUserList) {
         Map<String, SysUserDto> map = Maps.newHashMap();
+        if (CollectionUtils.isEmpty(sysUserList)) {
+            return map;
+        }
         for (SysUserDto dto : sysUserList) {
             map.put(dto.getUserAccount(), dto);
         }
@@ -105,8 +108,14 @@ public class ProjectMemberService {
     }
 
     private void upateProjectMemeberToErp(Integer projectId, String projectManager, String projectMember) {
+        if (projectId == null) {
+            return;
+        }
         SysProjectDto sysProjectDto = erpRpcProjectService.getProjectInfoByProjectId(projectId, applicationConstant.getAppKey());
-        if (sysProjectDto != null && sysProjectDto.getId() != null && sysProjectDto.getId() > 0) {
+        if (sysProjectDto == null || sysProjectDto.getId() == null) {
+            return;
+        }
+        if (sysProjectDto.getId() > 0) {
             sysProjectDto.setProjectManager(projectManager);
             sysProjectDto.setProjectMember(projectMember);
             erpRpcProjectService.saveProject(sysProjectDto);
@@ -115,6 +124,12 @@ public class ProjectMemberService {
 
     @Transactional(rollbackFor = Exception.class)
     public void saveChangeProjectMemeber(ProjectMember projectMember) throws BusinessException {
+        if (projectMember == null) {
+            return;
+        }
+        if (projectMember.getProjectId() == null) {
+            return;
+        }
         ProjectMember projectMemberItem = projectMemberDao.getProjectMemberItem(projectMember.getProjectId());
         if (projectMemberItem == null) {
             projectMemberItem = new ProjectMember();
@@ -151,15 +166,22 @@ public class ProjectMemberService {
     }
 
     public String getProjectManager(Integer projectId) {
+        if (projectId == null) {
+            return null;
+        }
         ProjectMember projectMemberItem = projectMemberDao.getProjectMemberItem(projectId);
         if (projectMemberItem != null) {
-            return projectMemberItem.getUserAccountManager();
+            if (StringUtils.isNotEmpty(projectMemberItem.getUserAccountManager())) {
+                return projectMemberItem.getUserAccountManager();
+            }
         }
         return "";
     }
 
     public ProjectMemberVo getProjectMemberVo(ProjectMember projectMember) {
-        if (projectMember == null) return null;
+        if (projectMember == null){
+            return null;
+        }
         ProjectMemberVo vo = new ProjectMemberVo();
         BeanUtils.copyProperties(projectMember, vo);
         if (StringUtils.isNotBlank(projectMember.getUserAccountManager())) {
@@ -181,6 +203,9 @@ public class ProjectMemberService {
      * @return
      */
     public ProjectMemberVo getProjectMember(Integer projectId) {
+        if (projectId == null){
+            return null;
+        }
         ProjectMember projectMember = projectMemberDao.getProjectMemberItem(projectId);
         return getProjectMemberVo(projectMember);
     }
@@ -241,7 +266,7 @@ public class ProjectMemberService {
                 }
                 projectMember.setUserAccountMember(StringUtils.join(stringList, ","));
             } catch (Exception e) {
-                if (!StringUtils.containsIgnoreCase(projectMember.getUserAccountMember(),projectPlanDetails.getExecuteUserAccount())){
+                if (!StringUtils.containsIgnoreCase(projectMember.getUserAccountMember(), projectPlanDetails.getExecuteUserAccount())) {
                     String v = String.join("", projectMember.getUserAccountMember(), ",", projectPlanDetails.getExecuteUserAccount());
                     projectMember.setUserAccountMember(v);
                 }

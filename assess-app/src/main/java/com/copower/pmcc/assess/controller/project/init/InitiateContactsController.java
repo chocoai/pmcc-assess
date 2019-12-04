@@ -2,13 +2,12 @@ package com.copower.pmcc.assess.controller.project.init;
 
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.dal.basis.entity.InitiateContacts;
+import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.project.initiate.InitiateContactsService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.apache.commons.collections.CollectionUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,8 +21,8 @@ import java.util.List;
 @RequestMapping(value = "/initiateContacts")
 @RestController
 public class InitiateContactsController {
-
-    private final Logger logger = LoggerFactory.getLogger(getClass());
+    @Autowired
+    private BaseService baseService;
 
     @Autowired
     private CommonService commonService;
@@ -36,7 +35,7 @@ public class InitiateContactsController {
         try {
             initiateContactsService.remove(id);
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            baseService.writeExceptionInfo(e,"联系人");
             return HttpResult.newErrorResult(500, e.getMessage());
         }
         return HttpResult.newCorrectResult();
@@ -47,6 +46,7 @@ public class InitiateContactsController {
         try {
             initiateContactsService.clear(initiateContacts);
         } catch (Exception e) {
+            baseService.writeExceptionInfo(e,"联系人");
             return HttpResult.newErrorResult(500, e.getMessage());
         }
         return HttpResult.newCorrectResult();
@@ -71,7 +71,7 @@ public class InitiateContactsController {
         try {
             initiateContactsService.saveUpdateInitiateContacts(initiateContacts);
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            baseService.writeExceptionInfo(e,"联系人");
             return HttpResult.newErrorResult(500, e.getMessage());
         }
         return HttpResult.newCorrectResult();
@@ -87,7 +87,7 @@ public class InitiateContactsController {
                 });
             }
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            baseService.writeExceptionInfo(e,"联系人");
             return HttpResult.newErrorResult(500, e.getMessage());
         }
         return HttpResult.newCorrectResult();
@@ -99,7 +99,7 @@ public class InitiateContactsController {
             InitiateContacts contacts = initiateContactsService.get(id);
             return HttpResult.newCorrectResult(200, contacts);
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            baseService.writeExceptionInfo(e,"联系人");
             return HttpResult.newErrorResult(500, e.getMessage());
         }
     }
@@ -110,7 +110,7 @@ public class InitiateContactsController {
             initiateContactsService.copyContacts(ids,initiateContacts);
             return HttpResult.newCorrectResult(200, initiateContacts);
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            baseService.writeExceptionInfo(e,"联系人");
             return HttpResult.newErrorResult(500, e.getMessage());
         }
     }

@@ -9,6 +9,7 @@ import com.copower.pmcc.assess.dal.basis.entity.ProjectPlan;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectMemberVo;
 import com.copower.pmcc.assess.dto.output.project.initiate.InitiateUnitInformationVo;
+import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.project.initiate.InitiateUnitInformationService;
@@ -25,7 +26,6 @@ import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.StringUtil;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,7 +46,8 @@ import java.util.List;
  */
 @Service
 public class ProjectCenterService {
-    private final org.slf4j.Logger logger = LoggerFactory.getLogger(getClass());
+    @Autowired
+    private BaseService baseService;
     @Autowired
     private ProjectPlanDao projectPlanDao;
     @Autowired
@@ -149,7 +150,7 @@ public class ProjectCenterService {
                         }
                     }
                 } catch (Exception e) {
-                    logger.error(e.getMessage(), e);
+                    baseService.writeExceptionInfo(e);
                 }
                 projectInfoVos.add(projectInfoVo);
             }

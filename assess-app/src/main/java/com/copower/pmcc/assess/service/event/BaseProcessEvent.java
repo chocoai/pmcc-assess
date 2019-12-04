@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.service.event;
 
 import com.copower.pmcc.assess.dal.basis.custom.mapper.CustomDdlTableMapper;
+import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.bpm.api.dto.model.BoxRuDto;
 import com.copower.pmcc.bpm.api.dto.model.ProcessExecution;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
@@ -21,7 +22,8 @@ import java.util.Date;
  */
 @Component
 public class BaseProcessEvent implements ProcessEventExecutor {
-    private final Logger logger = LoggerFactory.getLogger(getClass());
+    @Autowired
+    private BaseService baseService;
     @Autowired
     private BpmRpcBoxService bpmRpcBoxService;
     @Autowired
@@ -46,7 +48,7 @@ public class BaseProcessEvent implements ProcessEventExecutor {
             String sql = String.format("update %s set status='%s' where id=%s", boxRuDto.getTableName(), processExecution.getProcessStatus().getValue(), boxRuDto.getTableId());
             customDdlTableMapper.customTableSelect(sql);
         } catch (Exception e) {
-            logger.error(e.getMessage(),e);
+            baseService.writeExceptionInfo(e);
         }
         return boxRuDto;
     }

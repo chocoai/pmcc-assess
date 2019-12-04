@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dto.input.project.ProjectTaskDto;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
+import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
@@ -68,6 +69,8 @@ public class ProjectTaskController extends BaseController {
     private CommonService commonService;
     @Autowired
     private BpmRpcToolsService bpmRpcToolsService;
+    @Autowired
+    private BaseService baseService;
 
 
     @RequestMapping(value = "/projectTaskIndex", name = "提交工作成果公共页面")
@@ -117,11 +120,11 @@ public class ProjectTaskController extends BaseController {
     public HttpResult submitTask(ProjectTaskDto projectTaskDto) {
         try {
             projectTaskService.submitTask(projectTaskDto);
+            return HttpResult.newCorrectResult();
         } catch (Exception e) {
-            log.error(e.getMessage(), e);
+            baseService.writeExceptionInfo(e,"提交工作成果数据异常");
             return HttpResult.newErrorResult("提交工作成果数据异常");
         }
-        return HttpResult.newCorrectResult();
     }
 
     @RequestMapping(value = "/projectTaskApproval", name = "工作成果审批")
@@ -172,10 +175,11 @@ public class ProjectTaskController extends BaseController {
     public HttpResult submitTaskApproval(ApprovalModelDto approvalModelDto, String formData) {
         try {
             projectTaskService.submitTaskApproval(approvalModelDto, formData);
+            return HttpResult.newCorrectResult();
         } catch (BusinessException e) {
+            baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult(e.getMessage());
         }
-        return HttpResult.newCorrectResult();
     }
 
     @RequestMapping(value = "/projectTaskEdit", name = "工作成果返回修改")
@@ -263,11 +267,11 @@ public class ProjectTaskController extends BaseController {
     public HttpResult submitTaskEdit(ApprovalModelDto approvalModelDto, String formData, String taskRemarks, String actualHours) {
         try {
             projectTaskService.submitPlanEdit(approvalModelDto, formData, taskRemarks, actualHours);
-
+            return HttpResult.newCorrectResult();
         } catch (BusinessException e) {
+            baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult(e.getMessage());
         }
-        return HttpResult.newCorrectResult();
     }
 
     @ResponseBody

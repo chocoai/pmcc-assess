@@ -1,12 +1,11 @@
 package com.copower.pmcc.assess.controller.project.init;
 
+import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.CrmCustomerService;
 import com.copower.pmcc.assess.service.project.initiate.InitiateContactsService;
 import com.copower.pmcc.crm.api.dto.CrmCustomerDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,8 +17,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value = "/initiateCrmCustomer")
 @RestController
 public class InitiateCrmCustomerController {
-
-    private final Logger logger = LoggerFactory.getLogger(getClass()) ;
+    @Autowired
+    private BaseService baseService;
 
     @Autowired
     private CrmCustomerService crmCustomerService;
@@ -29,11 +28,12 @@ public class InitiateCrmCustomerController {
 
     @GetMapping(value = "/getCrmCustomerDto")
     public HttpResult getCrmCustomerDto(Integer customerId){
-        CrmCustomerDto crmCustomerDto = crmCustomerService.getCustomer(customerId);
-        if (crmCustomerDto != null){
+        CrmCustomerDto crmCustomerDto = null;
+        try {
+            crmCustomerDto = crmCustomerService.getCustomer(customerId);
             return HttpResult.newCorrectResult(200,crmCustomerDto);
-        }else {
-            logger.error("null point");
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult(500,"未获取到数据");
         }
     }
@@ -49,7 +49,8 @@ public class InitiateCrmCustomerController {
         try {
             initiateContactsService.writeContacts(customerId, cType, cPid);
             return HttpResult.newCorrectResult(200,customerId);
-        } catch (Exception e1) {
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult(500,"写入失败!");
         }
     }

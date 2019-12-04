@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.controller.project;
 
 import com.copower.pmcc.assess.dal.basis.entity.ProjectMember;
+import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.project.ProjectMemberService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
@@ -22,16 +23,19 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class ProjectMemberController {
     @Autowired
     private ProjectMemberService projectMemberService;
+    @Autowired
+    private BaseService baseService;
 
     @ResponseBody
     @RequestMapping(value = "/saveChangeProjectMemeber", name = "更新项目组成员", method = RequestMethod.POST)
     public HttpResult saveChangeProjectMemeber(ProjectMember projectMember) {
         try {
             projectMemberService.saveChangeProjectMemeber(projectMember);
+            return HttpResult.newCorrectResult();
         } catch (BusinessException e) {
-            HttpResult.newErrorResult(e.getMessage());
+            baseService.writeExceptionInfo(e, "更新项目组成员");
+            return HttpResult.newErrorResult(e.getMessage());
         }
-        return HttpResult.newCorrectResult();
     }
 
     @ResponseBody
@@ -41,10 +45,11 @@ public class ProjectMemberController {
             projectMemberService.saveProjectMemeber(projectMember);
             //提交到下一个阶段
             //projectBidAssist.updatePlanStatus(planId);
+            return HttpResult.newCorrectResult();
         } catch (Exception e) {
-            HttpResult.newErrorResult(e.getMessage());
+            baseService.writeExceptionInfo(e);
+            return HttpResult.newErrorResult(e.getMessage());
         }
-        return HttpResult.newCorrectResult();
     }
 
 }
