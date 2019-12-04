@@ -54,8 +54,8 @@ import java.util.regex.Pattern;
  * Created by zch on 2019-8-26.
  * 成本法报告模板
  */
-public class GenerateMdCostService implements Serializable {
-    private final String errorStr = "无";
+public class GenerateMdCostService {
+    private static final String errorStr = "无";
 
     private SchemeAreaGroup schemeAreaGroup;
     private SchemeJudgeObject schemeJudgeObject;
@@ -753,8 +753,8 @@ public class GenerateMdCostService implements Serializable {
                     switch (toolResidueRatio.getType()) {
                         case 0:
                             //"1-(1-残值率)×已使用年限÷耐用年限"
-                            stringBuilder.append("1-(1-").append(ArithmeticUtils.getPercentileSystem(toolResidueRatio.getResidualRatio(),2)).append(")");
-                            stringBuilder.append("×") ;
+                            stringBuilder.append("1-(1-").append(ArithmeticUtils.getPercentileSystem(toolResidueRatio.getResidualRatio(), 2)).append(")");
+                            stringBuilder.append("×");
                             stringBuilder.append(ArithmeticUtils.getBigDecimalString(toolResidueRatio.getUsedYear()));
                             stringBuilder.append("÷");
                             stringBuilder.append(ArithmeticUtils.getBigDecimalString(toolResidueRatio.getUsableYear()));
@@ -763,23 +763,23 @@ public class GenerateMdCostService implements Serializable {
                             break;
                         case 2:
                             //(1-(1-残值率)×已使用年限÷耐用年限)×年限法权重+(主题结构成新率+设备成新率+装饰成新率)×观察法权重
-                            stringBuilder.append("[") ;
-                            stringBuilder.append("(1-(1-").append(ArithmeticUtils.getPercentileSystem(toolResidueRatio.getResidualRatio(),2)).append(")");
-                            stringBuilder.append("×") ;
+                            stringBuilder.append("[");
+                            stringBuilder.append("(1-(1-").append(ArithmeticUtils.getPercentileSystem(toolResidueRatio.getResidualRatio(), 2)).append(")");
+                            stringBuilder.append("×");
                             stringBuilder.append(ArithmeticUtils.getBigDecimalString(toolResidueRatio.getUsedYear()));
                             stringBuilder.append("÷");
                             stringBuilder.append(ArithmeticUtils.getBigDecimalString(toolResidueRatio.getUsableYear()));
-                            stringBuilder.append(")") ;
-                            stringBuilder.append("]") ;
-                            stringBuilder.append("×") ;
-                            stringBuilder.append(ArithmeticUtils.getPercentileSystem(toolResidueRatio.getAgeRate(),2));
+                            stringBuilder.append(")");
+                            stringBuilder.append("]");
+                            stringBuilder.append("×");
+                            stringBuilder.append(ArithmeticUtils.getPercentileSystem(toolResidueRatio.getAgeRate(), 2));
 
-                            stringBuilder.append(" + ") ;
-                            double v = ArithmeticUtils.parseFormatBigDecimal(toolResidueRatio.getResultValue()).doubleValue() ;
-                            double v1 = (1-(1-toolResidueRatio.getResidualRatio().doubleValue()) * toolResidueRatio.getUsedYear().doubleValue()/toolResidueRatio.getUsableYear().doubleValue()) * toolResidueRatio.getAgeRate().doubleValue() ;
-                            double tax = (v-v1)/toolResidueRatio.getObserveRate().doubleValue();
-                            stringBuilder.append(ArithmeticUtils.getPercentileSystem(ArithmeticUtils.createBigDecimal(tax),2)).append("×");
-                            stringBuilder.append(ArithmeticUtils.getPercentileSystem(toolResidueRatio.getObserveRate(),2));
+                            stringBuilder.append(" + ");
+                            double v = ArithmeticUtils.parseFormatBigDecimal(toolResidueRatio.getResultValue()).doubleValue();
+                            double v1 = (1 - (1 - toolResidueRatio.getResidualRatio().doubleValue()) * toolResidueRatio.getUsedYear().doubleValue() / toolResidueRatio.getUsableYear().doubleValue()) * toolResidueRatio.getAgeRate().doubleValue();
+                            double tax = (v - v1) / toolResidueRatio.getObserveRate().doubleValue();
+                            stringBuilder.append(ArithmeticUtils.getPercentileSystem(ArithmeticUtils.createBigDecimal(tax), 2)).append("×");
+                            stringBuilder.append(ArithmeticUtils.getPercentileSystem(toolResidueRatio.getObserveRate(), 2));
                             break;
                     }
                     if (StringUtils.isNotBlank(stringBuilder.toString())) {
@@ -788,12 +788,12 @@ public class GenerateMdCostService implements Serializable {
                         generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), toolResidueRatio.getResultValue());
                     }
                 } catch (Exception e) {
+                    baseService.writeExceptionInfo(e);
                 }
             }
             break;
-            default: {
-            }
-            break;
+            default:
+                break;
         }
     }
 

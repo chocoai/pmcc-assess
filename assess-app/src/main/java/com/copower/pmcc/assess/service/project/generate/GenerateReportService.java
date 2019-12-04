@@ -24,6 +24,7 @@ import com.copower.pmcc.assess.service.project.ProjectPlanService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
+import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FileUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
@@ -45,6 +46,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.CountDownLatch;
@@ -174,7 +176,11 @@ public class GenerateReportService {
         String ftpFileName = baseAttachmentService.createNoRepeatFileName(sysAttachmentDto.getFileExtension());
         sysAttachmentDto.setFilePath(ftpBasePath);
         sysAttachmentDto.setFtpFileName(ftpFileName);
-        ftpUtilsExtense.uploadFilesToFTP(ftpBasePath, new FileInputStream(file.getPath()), ftpFileName);
+        try {
+            ftpUtilsExtense.uploadFilesToFTP(ftpBasePath, new FileInputStream(file.getPath()), ftpFileName);
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e,"erp上传文件出错");
+        }
         if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
             sysAttachmentDtoList.stream().forEach(attachmentDto -> {
                 if (Objects.equal(attachmentDto.getFieldsName(), sysAttachmentDto.getFieldsName())) {
@@ -324,7 +330,6 @@ public class GenerateReportService {
                 }
             }
             replaceWord(tempDir, textMap, bookmarkMap, fileMap);
-            System.gc();
             if (count >= max) {
                 return tempDir;
             }
@@ -1882,7 +1887,13 @@ public class GenerateReportService {
         String ftpFileName = baseAttachmentService.createNoRepeatFileName(sysAttachmentDto.getFileExtension());
         sysAttachmentDto.setFilePath(ftpBasePath);
         sysAttachmentDto.setFtpFileName(ftpFileName);
-        ftpUtilsExtense.uploadFilesToFTP(ftpBasePath, new FileInputStream(file.getPath()), ftpFileName);
+        try {
+            ftpUtilsExtense.uploadFilesToFTP(ftpBasePath, new FileInputStream(file.getPath()), ftpFileName);
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e,"erp上传文件出错");
+        }finally {
+            //暂时不处理
+        }
         baseAttachmentService.addAttachment(sysAttachmentDto);
     }
 

@@ -48,8 +48,8 @@ import java.util.regex.Pattern;
  * Created by zch on 2019/7/9.
  * 假设开发法
  */
-public class GenerateMdDevelopmentService implements Serializable{
-    private final String errorStr = "无";
+public class GenerateMdDevelopmentService {
+    private static final String errorStr = "无";
 
     private MdDevelopmentVo mdDevelopmentVo;
     private SchemeAreaGroup schemeAreaGroup;
@@ -193,7 +193,7 @@ public class GenerateMdDevelopmentService implements Serializable{
      * @param fileMap
      * @param bookmarkMap
      */
-    private void setDevelopment_EconomicIndicatorsValue(final ConcurrentHashMap<String, String> textMap, final ConcurrentHashMap<String, String> fileMap, final ConcurrentHashMap<String, String> bookmarkMap)throws Exception {
+    private void setDevelopment_EconomicIndicatorsValue(final ConcurrentHashMap<String, String> textMap, final ConcurrentHashMap<String, String> fileMap, final ConcurrentHashMap<String, String> bookmarkMap) throws Exception {
         List<MdEconomicIndicatorsItem> filterList = Lists.newArrayList();
         Document doc = new Document();
         DocumentBuilder builder = new DocumentBuilder(doc);
@@ -219,16 +219,16 @@ public class GenerateMdDevelopmentService implements Serializable{
         if (CollectionUtils.isNotEmpty(itemList)) {
             LinkedList<String> stringLinkedList = Lists.newLinkedList();
             builder.startTable();
-            stringLinkedList.addAll(Arrays.asList("名称", "规划建筑面积 (㎡)", "可出售面积 (㎡)",  "评估面积 (㎡)/个数", "单位售价(元/㎡)", "备注"));
+            stringLinkedList.addAll(Arrays.asList("名称", "规划建筑面积 (㎡)", "可出售面积 (㎡)", "评估面积 (㎡)/个数", "单位售价(元/㎡)", "备注"));
             AsposeUtils.writeWordTitle(builder, stringLinkedList);
             stringLinkedList.clear();
             for (MdEconomicIndicatorsItem indicatorsItem : itemList) {
                 stringLinkedList.add(StringUtils.isNotBlank(indicatorsItem.getName()) ? indicatorsItem.getName() : "");
                 stringLinkedList.add(ArithmeticUtils.getBigDecimalString(indicatorsItem.getPlannedBuildingArea()));
                 stringLinkedList.add(ArithmeticUtils.getBigDecimalString(indicatorsItem.getSaleableArea()));
-                String value =indicatorsItem.getNumber() == null ? "" : indicatorsItem.getNumber().toString() ;
-                if (indicatorsItem.getAssessArea() != null){
-                    value += String.join("","/",ArithmeticUtils.getBigDecimalString(indicatorsItem.getAssessArea())) ;
+                String value = indicatorsItem.getNumber() == null ? "" : indicatorsItem.getNumber().toString();
+                if (indicatorsItem.getAssessArea() != null) {
+                    value += String.join("", "/", ArithmeticUtils.getBigDecimalString(indicatorsItem.getAssessArea()));
                 }
                 stringLinkedList.add(value);
                 stringLinkedList.add(ArithmeticUtils.getBigDecimalString(indicatorsItem.getUnitPrice()));
@@ -255,7 +255,7 @@ public class GenerateMdDevelopmentService implements Serializable{
 
             }
         }
-        AsposeUtils.saveWord(localPath,doc);
+        AsposeUtils.saveWord(localPath, doc);
         generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, BaseReportFieldEnum.Development_EconomicIndicators.getName(), localPath);
     }
 
@@ -682,8 +682,8 @@ public class GenerateMdDevelopmentService implements Serializable{
 //                    value = ArithmeticUtils.getBigDecimalString(mdEconomicIndicatorsApplyDto.getEconomicIndicators().getAssessUseLandArea());
 //                }
                 value = mdDevelopmentService.getFieldObjectValue(BaseReportFieldEnum.Development_total_saleableArea, target);
-                if (StringUtils.isNotBlank(value)){
-                    value = ArithmeticUtils.round(value,2) ;
+                if (StringUtils.isNotBlank(value)) {
+                    value = ArithmeticUtils.round(value, 2);
                 }
                 break;
             }
@@ -729,6 +729,8 @@ public class GenerateMdDevelopmentService implements Serializable{
                 value = ArithmeticUtils.round(target.getConstructionInstallationEngineeringFee(), 2);
                 break;
             }
+            default:
+                break;
         }
         if (StringUtils.isNotBlank(value)) {
             if (NumberUtils.isNumber(value)) {

@@ -83,7 +83,7 @@ import java.util.stream.Collectors;
  */
 public class GenerateBaseDataService {
     private final Logger logger = LoggerFactory.getLogger(getClass());
-    protected final String errorStr = "无";
+    protected static final String errorStr = "无";
     //spring bean
     private SchemeJudgeObjectService schemeJudgeObjectService;
     private SchemeJudgeFunctionService schemeJudgeFunctionService;
@@ -119,7 +119,7 @@ public class GenerateBaseDataService {
     private SurveyAssetInventoryRightRecordService surveyAssetInventoryRightRecordService;
     private GenerateLoactionService generateLoactionService;
     private GenerateLandEntityService generateLandEntityService;
-    private SurveyCommonService surveyCommonService;
+
     private GenerateHouseEntityService generateHouseEntityService;
     private ErpAreaService erpAreaService;
     private MdCommonService mdCommonService;
@@ -127,7 +127,7 @@ public class GenerateBaseDataService {
     private BasicApplyService basicApplyService;
     private SurveyAssetInventoryRightRecordCenterService surveyAssetInventoryRightRecordCenterService;
     private DataBestUseDescriptionService dataBestUseDescriptionService;
-    private BaseProjectClassifyService baseProjectClassifyService;
+
     private ProjectQrcodeRecordService projectQrcodeRecordService;
     private ErpRpcToolsService erpRpcToolsService;
     private ApplicationConstant applicationConstant;
@@ -136,11 +136,6 @@ public class GenerateBaseDataService {
     private BasicUnitHuxingService basicUnitHuxingService;
     private BaseService baseService;
     private ErpRpcUserService erpRpcUserService;
-    private BasicApplyBatchDetailService basicApplyBatchDetailService;
-    private BasicApplyBatchService basicApplyBatchService;
-    private BasicBuildingService basicBuildingService;
-    private BasicUnitService basicUnitService;
-    private BasicHouseService basicHouseService;
 
     /**
      * 构造器必须传入的参数
@@ -742,16 +737,20 @@ public class GenerateBaseDataService {
             }
             if (StringUtils.isEmpty(val)) {
                 BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
-                if (basicApply != null || basicApply.getId() != null) {
-                    GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
-                    BasicBuildingVo basicBuildingVo = generateBaseExamineService.getBasicBuilding();
-                    if (basicBuildingVo != null) {
-                        if (StringUtils.isNotEmpty(basicBuildingVo.getBuildingStructureTypeName())) {
-                            if (StringUtils.isNotEmpty(basicBuildingVo.getBuildingStructureCategoryName())) {
-                                val = String.format("%s%s", basicBuildingVo.getBuildingStructureTypeName(), basicBuildingVo.getBuildingStructureCategoryName());
-                            } else {
-                                val = String.format("%s", basicBuildingVo.getBuildingStructureTypeName());
-                            }
+                if (basicApply == null) {
+                    continue;
+                }
+                if (basicApply.getId() == null) {
+                    continue;
+                }
+                GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
+                BasicBuildingVo basicBuildingVo = generateBaseExamineService.getBasicBuilding();
+                if (basicBuildingVo != null) {
+                    if (StringUtils.isNotEmpty(basicBuildingVo.getBuildingStructureTypeName())) {
+                        if (StringUtils.isNotEmpty(basicBuildingVo.getBuildingStructureCategoryName())) {
+                            val = String.format("%s%s", basicBuildingVo.getBuildingStructureTypeName(), basicBuildingVo.getBuildingStructureCategoryName());
+                        } else {
+                            val = String.format("%s", basicBuildingVo.getBuildingStructureTypeName());
                         }
                     }
                     if (StringUtils.isNotEmpty(basicBuildingVo.getBuildingStructureTypeName())) {
@@ -778,13 +777,17 @@ public class GenerateBaseDataService {
         Map<Integer, String> map = Maps.newHashMap();
         for (SchemeJudgeObject schemeJudgeObject : getSchemeJudgeObjectList()) {
             BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
-            if (basicApply != null || basicApply.getId() != null) {
-                GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
-                BasicBuildingVo basicBuildingVo = generateBaseExamineService.getBasicBuilding();
-                if (basicBuildingVo != null) {
-                    if (StringUtils.isNotEmpty(basicBuildingVo.getPropertyTypeName())) {
-                        map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), basicBuildingVo.getPropertyTypeName());
-                    }
+            if (basicApply == null) {
+                continue;
+            }
+            if (basicApply.getId() == null) {
+                continue;
+            }
+            GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
+            BasicBuildingVo basicBuildingVo = generateBaseExamineService.getBasicBuilding();
+            if (basicBuildingVo != null) {
+                if (StringUtils.isNotEmpty(basicBuildingVo.getPropertyTypeName())) {
+                    map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), basicBuildingVo.getPropertyTypeName());
                 }
             }
         }
@@ -2598,24 +2601,31 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getPrincipleBasisHypothesis(SchemeSupportTypeEnum schemeSupportTypeEnum) throws Exception {
-        if (projectInfo == null || schemeSupportTypeEnum == null) return "";
-        String result = "";
-        switch (schemeSupportTypeEnum) {
-            case HYPOTHESIS:
-                result = evaluationHypothesisService.getReportHypothesis(this.projectInfo, areaId);
-                break;
-            case BASIS:
-                result = evaluationBasisService.getReportBasic(this.projectInfo, areaId);
-                break;
-            case PRINCIPLE:
-                result = evaluationPrincipleService.getReportPrinciple(this.projectInfo, areaId);
-                break;
-        }
-        String localPath = getLocalPath();
         Document document = new Document();
+        String localPath = getLocalPath();
+        AsposeUtils.saveWord(localPath, document);
+        if (projectInfo == null) {
+            return localPath;
+        }
+        String result = "";
+        if (schemeSupportTypeEnum != null) {
+            switch (schemeSupportTypeEnum) {
+                case HYPOTHESIS:
+                    result = evaluationHypothesisService.getReportHypothesis(this.projectInfo, areaId);
+                    break;
+                case BASIS:
+                    result = evaluationBasisService.getReportBasic(this.projectInfo, areaId);
+                    break;
+                case PRINCIPLE:
+                    result = evaluationPrincipleService.getReportPrinciple(this.projectInfo, areaId);
+                    break;
+                default:
+                    break;
+            }
+        }
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
         builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.trim(result, false)), true);
-        document.save(localPath);
+        AsposeUtils.saveWord(localPath, document);
         return localPath;
     }
 
@@ -2629,23 +2639,27 @@ public class GenerateBaseDataService {
     public String getLiquidityRisk(SchemeSupportTypeEnum schemeSupportTypeEnum) throws Exception {
         String localPath = getLocalPath();
         Document document = new Document();
+        AsposeUtils.saveWord(localPath, document);
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
         String result = "";
-        switch (schemeSupportTypeEnum) {
-            case REPORT_ANALYSIS_CATEGORY_LIQUIDITY:
-                result = dataReportAnalysisService.getReportLiquidity(this.projectInfo, areaId);
-                if (StringUtils.isNotBlank(result)) {
-                    builder.insertHtml(generateCommonMethod.getWarpCssHtml(result), true);
-                }
-                break;
-            case REPORT_ANALYSIS_CATEGORY_RISK:
-                result = dataReportAnalysisRiskService.getReportRisk(areaId);
-                if (StringUtils.isNotBlank(result)) {
-                    builder.insertHtml(generateCommonMethod.getWarpCssHtml(result), true);
-                }
-                break;
+        if (schemeSupportTypeEnum != null) {
+            switch (schemeSupportTypeEnum) {
+                case REPORT_ANALYSIS_CATEGORY_LIQUIDITY:
+                    result = dataReportAnalysisService.getReportLiquidity(this.projectInfo, areaId);
+                    if (StringUtils.isNotBlank(result)) {
+                        builder.insertHtml(generateCommonMethod.getWarpCssHtml(result), true);
+                    }
+                    break;
+                case REPORT_ANALYSIS_CATEGORY_RISK:
+                    result = dataReportAnalysisRiskService.getReportRisk(areaId);
+                    if (StringUtils.isNotBlank(result)) {
+                        builder.insertHtml(generateCommonMethod.getWarpCssHtml(result), true);
+                    }
+                    break;
+                    default:break;
+            }
         }
-        document.save(localPath);
+        AsposeUtils.saveWord(localPath, document);
         return localPath;
     }
 
@@ -3652,6 +3666,12 @@ public class GenerateBaseDataService {
     private void writeJudgeObjectResultSurveyInCell2(BasicApply basicApply, SchemeJudgeObject schemeJudgeObject, DocumentBuilder builder, LinkedList<Double> doubleLinkedList, boolean seat, boolean reimbursement, boolean mortgageFlag, boolean isLabelJudgeObjectShowName) throws Exception {
         LinkedList<String> linkedLists = Lists.newLinkedList();
         final String nullValue = "";
+        if (schemeJudgeObject == null) {
+            return;
+        }
+        if (schemeJudgeObject.getDeclareRecordId() == null) {
+            return;
+        }
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
         if (isLabelJudgeObjectShowName) {
             linkedLists.add(generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject, getSchemeJudgeObjectList()));
@@ -3691,7 +3711,7 @@ public class GenerateBaseDataService {
         } else {
             linkedLists.add(nullValue);
         }
-        if (schemeJudgeObject != null && schemeJudgeObject.getPrice() != null) {//7
+        if (schemeJudgeObject.getPrice() != null) {//7
             linkedLists.add(schemeJudgeObject.getPrice().toString());
         } else {
             linkedLists.add(nullValue);
@@ -5015,7 +5035,7 @@ public class GenerateBaseDataService {
                 //根据不同项目类别确定获取数据的方法
                 LinkedList<String> stringLinkedList = new LinkedList<>();
                 if (linkedHashMap.size() > 1) {//添加楼盘或估价对象编号作区分
-                    stringLinkedList.add(generateCommonMethod.getWarpCssHtml("<div style='text-align:center;;font-size:16.0pt;'>" + entry.getKey().getName() + "</div>")) ;
+                    stringLinkedList.add(generateCommonMethod.getWarpCssHtml("<div style='text-align:center;;font-size:16.0pt;'>" + entry.getKey().getName() + "</div>"));
                 }
                 if (projectInfo.getProjectCategoryName().contains("房产")) {
                     if (true) {
@@ -5056,20 +5076,20 @@ public class GenerateBaseDataService {
                         stringLinkedList.add(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml(s)));
                     }
                 }
-                if (!linkedHashSetLinkedHashMap.containsKey(entry.getKey().getName())){
-                    linkedHashSetLinkedHashMap.put(entry.getKey().getName(),new LinkedHashSet<>()) ;
+                if (!linkedHashSetLinkedHashMap.containsKey(entry.getKey().getName())) {
+                    linkedHashSetLinkedHashMap.put(entry.getKey().getName(), new LinkedHashSet<>());
                 }
-                linkedHashSetLinkedHashMap.get(entry.getKey().getName()).add(StringUtils.join(stringLinkedList," ")) ;
+                linkedHashSetLinkedHashMap.get(entry.getKey().getName()).add(StringUtils.join(stringLinkedList, " "));
             }
         }
-        if (!linkedHashSetLinkedHashMap.isEmpty()){
-            for (Map.Entry<String,LinkedHashSet<String>> stringLinkedHashSetEntry:linkedHashSetLinkedHashMap.entrySet()){
-                String value = StringUtils.join(stringLinkedHashSetEntry.getValue(),"") ;
-                AsposeUtils.insertHtml(builder,value);
+        if (!linkedHashSetLinkedHashMap.isEmpty()) {
+            for (Map.Entry<String, LinkedHashSet<String>> stringLinkedHashSetEntry : linkedHashSetLinkedHashMap.entrySet()) {
+                String value = StringUtils.join(stringLinkedHashSetEntry.getValue(), "");
+                AsposeUtils.insertHtml(builder, value);
             }
         }
-        String localPath = generateCommonMethod.getLocalPath() ;
-        AsposeUtils.saveWord(localPath,doc);
+        String localPath = generateCommonMethod.getLocalPath();
+        AsposeUtils.saveWord(localPath, doc);
         return localPath;
     }
 
@@ -5240,7 +5260,7 @@ public class GenerateBaseDataService {
             DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
             documentBuilder.startTable();
             //start
-            {
+            if (true){
                 String val = "";
                 if (StringUtils.isNotEmpty(declareRecord.getSeat())) {
                     if (StringUtils.isNotEmpty(declareRecord.getStreetNumber())) {
@@ -5252,7 +5272,6 @@ public class GenerateBaseDataService {
                 }
                 ccb_Pre_Evaluation_Data_FormWriteWord2(documentBuilder, stringLinkedList, "项目名称", val);
             }
-
             List<String> cityList = Arrays.asList("凉山");
             if (cityList.stream().anyMatch(s -> StringUtils.contains(basicEstate.getCityName(), s))) {
                 ccb_Pre_Evaluation_Data_FormWriteWord2(documentBuilder, stringLinkedList, "城市", basicEstate.getDistrictName());
@@ -6636,36 +6655,45 @@ public class GenerateBaseDataService {
                 //序号
                 stringLinkedList.add(String.valueOf(++count));
                 //名称
-                {
+                if (true) {
                     String value = null;
-                    value = basicEstate.getName();
+                    if (basicEstate != null && StringUtils.isNotEmpty(basicEstate.getName())) {
+                        value = basicEstate.getName();
+                    }
                     if (StringUtils.isEmpty(value)) {
                         value = nullValue;
                     }
                     stringLinkedList.add(value);
                 }
+
                 //位置
-                {
+                if (true) {
                     String value = null;
-                    value = basicEstate.getStreet();
+                    if (basicEstate != null && StringUtils.isNotEmpty(basicEstate.getStreet())) {
+                        value = basicEstate.getStreet();
+                    }
                     if (StringUtils.isEmpty(value)) {
                         value = nullValue;
                     }
                     stringLinkedList.add(value);
                 }
+
                 //所在楼层
-                {
+                if (true) {
                     String value = null;
-                    value = basicHouseVo.getFloor();
+                    if (basicHouseVo != null && StringUtils.isNotEmpty(basicHouseVo.getFloor())) {
+                        value = basicHouseVo.getFloor();
+                    }
                     if (StringUtils.isEmpty(value)) {
                         value = nullValue;
                     }
                     stringLinkedList.add(value);
                 }
+
                 //面积(㎡)
-                {
+                if (true) {
                     String value = null;
-                    if (basicHouseVo.getArea() != null) {
+                    if (basicHouseVo != null && basicHouseVo.getArea() != null) {
                         value = generateCommonMethod.getBigDecimalRound(basicHouseVo.getArea(), 2, false);
                     }
                     if (StringUtils.isEmpty(value)) {
@@ -6673,8 +6701,9 @@ public class GenerateBaseDataService {
                     }
                     stringLinkedList.add(value);
                 }
+
                 //单价(元/㎡)
-                {
+                if (true) {
                     String value = null;
                     if (basicHouseTrading != null && basicHouseTrading.getTradingUnitPrice() != null) {
                         value = generateCommonMethod.getBigDecimalRound(basicHouseTrading.getTradingUnitPrice(), 2, false);
@@ -6684,17 +6713,22 @@ public class GenerateBaseDataService {
                     }
                     stringLinkedList.add(value);
                 }
+
                 //装修状况
-                {
-                    String value = basicHouseVo.getDecorateSituationName();
+                if (true) {
+                    String value = null;
+                    if (basicHouseVo != null && StringUtils.isNotEmpty(basicHouseVo.getDecorateSituationName())) {
+                        value = basicHouseVo.getDecorateSituationName();
+                    }
                     if (StringUtils.isEmpty(value)) {
                         value = nullValue;
                     }
                     stringLinkedList.add(value);
                 }
+
                 //平面布局
-                {
-                    String value = nullValue;
+                if (true){
+                    String value = null;
                     if (basicHouseVo != null && basicHouseVo.getHuxingId() != null) {
                         BasicUnitHuxing basicUnitHuxing = basicUnitHuxingService.getBasicUnitHuxingById(basicHouseVo.getHuxingId());
                         if (basicUnitHuxing != null) {
@@ -6702,6 +6736,9 @@ public class GenerateBaseDataService {
                                 value = basicUnitHuxing.getName();
                             }
                         }
+                    }
+                    if (StringUtils.isEmpty(value)) {
+                        value = nullValue;
                     }
                     stringLinkedList.add(value);
                 }
@@ -6880,7 +6917,6 @@ public class GenerateBaseDataService {
         this.surveyAssetInventoryRightRecordService = SpringContextUtils.getBean(SurveyAssetInventoryRightRecordService.class);
         this.generateLoactionService = SpringContextUtils.getBean(GenerateLoactionService.class);
         this.generateLandEntityService = SpringContextUtils.getBean(GenerateLandEntityService.class);
-        this.surveyCommonService = SpringContextUtils.getBean(SurveyCommonService.class);
         this.generateHouseEntityService = SpringContextUtils.getBean(GenerateHouseEntityService.class);
         this.erpAreaService = SpringContextUtils.getBean(ErpAreaService.class);
         this.mdCommonService = SpringContextUtils.getBean(MdCommonService.class);
@@ -6888,7 +6924,6 @@ public class GenerateBaseDataService {
         this.basicApplyService = SpringContextUtils.getBean(BasicApplyService.class);
         this.surveyAssetInventoryRightRecordCenterService = SpringContextUtils.getBean(SurveyAssetInventoryRightRecordCenterService.class);
         this.dataBestUseDescriptionService = SpringContextUtils.getBean(DataBestUseDescriptionService.class);
-        this.baseProjectClassifyService = SpringContextUtils.getBean(BaseProjectClassifyService.class);
         this.declareRealtyRealEstateCertService = SpringContextUtils.getBean(DeclareRealtyRealEstateCertService.class);
         this.declareRealtyHouseCertService = SpringContextUtils.getBean(DeclareRealtyHouseCertService.class);
         this.declareRealtyLandCertService = SpringContextUtils.getBean(DeclareRealtyLandCertService.class);
@@ -6898,13 +6933,8 @@ public class GenerateBaseDataService {
         this.declareBuildEngineeringAndEquipmentCenterService = SpringContextUtils.getBean(DeclareBuildEngineeringAndEquipmentCenterService.class);
         this.dataSetUseFieldService = SpringContextUtils.getBean(DataSetUseFieldService.class);
         this.basicUnitHuxingService = SpringContextUtils.getBean(BasicUnitHuxingService.class);
-        this.basicBuildingService = SpringContextUtils.getBean(BasicBuildingService.class);
-        this.basicUnitService = SpringContextUtils.getBean(BasicUnitService.class);
-        this.basicHouseService = SpringContextUtils.getBean(BasicHouseService.class);
         this.baseService = SpringContextUtils.getBean(BaseService.class);
         this.erpRpcUserService = SpringContextUtils.getBean(ErpRpcUserService.class);
-        this.basicApplyBatchDetailService = SpringContextUtils.getBean(BasicApplyBatchDetailService.class);
-        this.basicApplyBatchService = SpringContextUtils.getBean(BasicApplyBatchService.class);
         //必须在bean之后
         SchemeAreaGroup areaGroup = schemeAreaGroupService.get(areaId);
         if (areaGroup == null) {

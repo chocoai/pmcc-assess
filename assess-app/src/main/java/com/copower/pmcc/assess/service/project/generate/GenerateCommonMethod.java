@@ -73,7 +73,7 @@ public class GenerateCommonMethod {
     @Autowired
     private SurveyAssetInventoryContentService surveyAssetInventoryContentService;
 
-    public final String SchemeJudgeObjectName = "委估对象";
+    public static final String SchemeJudgeObjectName = "委估对象";
 
 
     //房地产总价
@@ -211,8 +211,8 @@ public class GenerateCommonMethod {
         Ordering<SchemeJudgeObject> ordering = Ordering.from(new Comparator<SchemeJudgeObject>() {
             @Override
             public int compare(SchemeJudgeObject o1, SchemeJudgeObject o2) {
-                Integer a = new Integer(parseIntJudgeNumber(o1.getNumber()));
-                Integer b = new Integer(parseIntJudgeNumber(o2.getNumber()));
+                Integer a = parseIntJudgeNumber(o1.getNumber());
+                Integer b = parseIntJudgeNumber(o2.getNumber());
                 return a.compareTo(b);
             }
         });

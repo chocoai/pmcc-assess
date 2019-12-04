@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.service.project.generate;
 import com.copower.pmcc.assess.common.enums.basic.*;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.basic.*;
+import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataBlockService;
@@ -14,8 +15,6 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,8 +38,9 @@ public class GenerateLoactionService {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private ErpAreaService erpAreaService;
-    private final Logger logger = LoggerFactory.getLogger(getClass());
-    private final String error = "无";
+    private static final String error = "无";
+    @Autowired
+    private BaseService baseService;
 
 
     /**
@@ -83,7 +83,7 @@ public class GenerateLoactionService {
             String s = generateCommonMethod.judgeEachDesc(map, "", ";", false);
             value = StringUtils.strip(s, "，");
         } catch (Exception ex) {
-            logger.error(ex.getMessage(), ex);
+            baseService.writeExceptionInfo(ex);
             return "";
         }
         return StringUtils.isNotBlank(value) ? value : "不临街";
@@ -126,22 +126,23 @@ public class GenerateLoactionService {
         LinkedHashSet<String> hashSet = Sets.newLinkedHashSet();
         if (CollectionUtils.isNotEmpty(basicMatchingEnvironmentVoList)) {
             for (BasicMatchingEnvironmentVo oo : basicMatchingEnvironmentVoList) {
-                if (Objects.equal(new Integer(oo.getType()), baseDataDic.getId())) {
-                    if (StringUtils.isNotBlank(oo.getRemark())) {
-                        builder.append(oo.getRemark());
-                    } else if (StringUtils.isNotBlank(oo.getHumanImpactName())) {
-                        String name = oo.getHumanImpactName();
-                        if ("无".equals(name)) {
-                            builder.append("无").append(oo.getCategoryName());
-                        } else {
-                            builder.append(oo.getCategoryName()).append(name);
-                        }
-                    }
-                    if (StringUtils.isNotBlank(builder.toString())) {
-                        hashSet.add(builder.toString());
-                    }
-                    builder.delete(0, builder.toString().length());
+                if (!Objects.equal(oo.getType(), baseDataDic.getId().toString())){
+                    continue;
                 }
+                if (StringUtils.isNotBlank(oo.getRemark())) {
+                    builder.append(oo.getRemark());
+                } else if (StringUtils.isNotBlank(oo.getHumanImpactName())) {
+                    String name = oo.getHumanImpactName();
+                    if ("无".equals(name)) {
+                        builder.append("无").append(oo.getCategoryName());
+                    } else {
+                        builder.append(oo.getCategoryName()).append(name);
+                    }
+                }
+                if (StringUtils.isNotBlank(builder.toString())) {
+                    hashSet.add(builder.toString());
+                }
+                builder.delete(0, builder.toString().length());
             }
         }
         return StringUtils.join(hashSet, ",");
@@ -156,8 +157,10 @@ public class GenerateLoactionService {
      * @throws Exception
      */
     public String getExternalInfrastructure(BasicApply basicApply) {
-        if (basicApply == null) return null;
         StringBuilder stringBuilder = new StringBuilder(8);
+        if (basicApply == null) {
+            return null;
+        }
         GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
         List<BasicHouseFaceStreetVo> basicHouseFaceStreetVoList = generateBaseExamineService.getBasicHouseFaceStreetList();
         List<BasicEstateSupply> basicEstateSupplyList = generateBaseExamineService.getBasicEstateSupplyList();
@@ -327,7 +330,9 @@ public class GenerateLoactionService {
      * @throws Exception
      */
     public String getAccessAvailableMeansTransport(BasicApply basicApply) {
-        if (basicApply == null) return null;
+        if (basicApply == null) {
+            return null;
+        }
         StringBuilder contentBuilder = new StringBuilder();
         GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
         List<BasicMatchingTrafficVo> basicMatchingTrafficList = generateBaseExamineService.getBasicMatchingTrafficList();
@@ -385,7 +390,9 @@ public class GenerateLoactionService {
      * @throws Exception
      */
     public String getParkingConvenience(BasicApply basicApply) {
-        if (basicApply == null) return null;
+        if (basicApply == null){
+            return null;
+        }
         StringBuilder builder = new StringBuilder(8);
         Set<String> stringSet = Sets.newHashSet();
         LinkedHashSet<String> linkedHashSet = Sets.newLinkedHashSet();
@@ -441,7 +448,9 @@ public class GenerateLoactionService {
      * @throws Exception
      */
     public String getTrafficCharges(BasicApply basicApply)  {
-        if (basicApply == null) return null;
+        if (basicApply == null) {
+            return null;
+        }
         StringBuilder builder = new StringBuilder(8);
         GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
         List<BasicMatchingTrafficVo> basicMatchingTrafficList = generateBaseExamineService.getBasicMatchingTrafficList().stream().filter(basicMatchingTrafficVo -> {
@@ -466,7 +475,9 @@ public class GenerateLoactionService {
      * @throws Exception
      */
     public String getTrafficControl(BasicApply basicApply)  {
-        if (basicApply == null) return null;
+        if (basicApply == null) {
+            return null;
+        }
         StringBuilder builder = new StringBuilder();
         GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
         List<BasicMatchingTrafficVo> basicMatchingTrafficList = generateBaseExamineService.getBasicMatchingTrafficList().stream().filter(basicMatchingTrafficVo -> {
@@ -498,7 +509,9 @@ public class GenerateLoactionService {
      * @return
      */
     public String getWithImportantLocationDistance(BasicApply basicApply)  {
-        if (basicApply == null) return null;
+        if (basicApply == null) {
+            return null;
+        }
         StringBuilder stringBuilder = new StringBuilder(8);
         GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
         List<BasicMatchingTrafficVo> basicMatchingTrafficList = generateBaseExamineService.getBasicMatchingTrafficList();
@@ -534,7 +547,9 @@ public class GenerateLoactionService {
      * @throws Exception
      */
     public List<String> getExternalPublicServiceFacilities(BasicApply basicApply, Boolean isShowName) {
-        if (basicApply == null) return null;
+        if (basicApply == null) {
+            return null;
+        }
         List<String> stringArrayList = Lists.newArrayList();
         GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
         List<BasicMatchingFinanceVo> basicMatchingFinanceVoList = generateBaseExamineService.getBasicMatchingFinanceList();
@@ -604,12 +619,12 @@ public class GenerateLoactionService {
      */
     public String getPosition(BasicEstate basicEstate) {
         StringBuffer stringBuffer = new StringBuffer(8);
-        stringBuffer.delete(0, stringBuffer.toString().length());
-        if (basicEstate != null) {
-            stringBuffer.append(erpAreaService.getSysAreaName(basicEstate.getProvince()))
-                    .append(erpAreaService.getSysAreaName(basicEstate.getCity()))
-                    .append(erpAreaService.getSysAreaName(basicEstate.getDistrict()));
+        if (basicEstate == null){
+            return stringBuffer.toString();
         }
+        stringBuffer.append(erpAreaService.getSysAreaName(basicEstate.getProvince()))
+                .append(erpAreaService.getSysAreaName(basicEstate.getCity()))
+                .append(erpAreaService.getSysAreaName(basicEstate.getDistrict()));
         if (basicEstate.getBlockId() != null) {
             DataBlock dataBlock = dataBlockService.getDataBlockById(basicEstate.getBlockId());
             if (dataBlock != null) {
@@ -634,7 +649,6 @@ public class GenerateLoactionService {
      */
     public String getFloor(List<SchemeJudgeObject> judgeObjectList) {
         StringBuffer stringBuffer = new StringBuffer(8);
-        stringBuffer.delete(0, stringBuffer.toString().length());
         Map<Integer, String> map = Maps.newHashMap();
         if (CollectionUtils.isNotEmpty(judgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {

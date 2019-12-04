@@ -8,8 +8,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,8 +21,7 @@ import java.util.stream.Collectors;
  */
 @Service
 public class GenerateLandEntityService {
-    private final Logger logger = LoggerFactory.getLogger(getClass());
-    private final String error = "";
+    private static final String error = "";
     @Autowired
     private GenerateCommonMethod generateCommonMethod;
     @Autowired

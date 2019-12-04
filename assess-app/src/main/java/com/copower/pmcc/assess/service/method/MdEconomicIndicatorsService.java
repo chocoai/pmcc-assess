@@ -49,8 +49,8 @@ public class MdEconomicIndicatorsService {
         }
     }
 
-    public void deleteById(Integer id){
-        mdEconomicIndicatorsDao.deleteEconomicIndicators(id) ;
+    public void deleteById(Integer id) {
+        mdEconomicIndicatorsDao.deleteEconomicIndicators(id);
         mdEconomicIndicatorsItemDao.deleteItemByEconomicId(id);
     }
 
@@ -59,8 +59,10 @@ public class MdEconomicIndicatorsService {
         List<MdEconomicIndicatorsItem> mdEconomicIndicatorsItems = mdEconomicIndicatorsApplyDto.getEconomicIndicatorsItemList();
         if (mdEconomicIndicators != null) {
             saveEconomicIndicators(mdEconomicIndicators);
+            if (mdEconomicIndicators.getId() != null) {
+                mdEconomicIndicatorsItemDao.deleteItemByEconomicId(mdEconomicIndicators.getId());
+            }
         }
-        mdEconomicIndicatorsItemDao.deleteItemByEconomicId(mdEconomicIndicators.getId());
         if (CollectionUtils.isNotEmpty(mdEconomicIndicatorsItems)) {
             for (MdEconomicIndicatorsItem mdEconomicIndicatorsItem : mdEconomicIndicatorsItems) {
                 mdEconomicIndicatorsItem.setEconomicId(mdEconomicIndicators.getId());
@@ -70,25 +72,25 @@ public class MdEconomicIndicatorsService {
         return mdEconomicIndicators;
     }
 
-    public void copyDataEconomicIndicators(Integer copyId,MdEconomicIndicators target){
-        if (copyId == null){
+    public void copyDataEconomicIndicators(Integer copyId, MdEconomicIndicators target) {
+        if (copyId == null) {
             return;
         }
-        MdEconomicIndicatorsApplyDto applyDto = getEconomicIndicatorsInfo(copyId) ;
-        if (applyDto == null){
+        MdEconomicIndicatorsApplyDto applyDto = getEconomicIndicatorsInfo(copyId);
+        if (applyDto == null) {
             return;
         }
-        if (applyDto.getEconomicIndicators() == null){
+        if (applyDto.getEconomicIndicators() == null) {
             return;
         }
         applyDto.getEconomicIndicators().setId(null);
         applyDto.getEconomicIndicators().setPlanDetailsId(null);
         BeanCopyHelp.copyPropertiesIgnoreNull(applyDto.getEconomicIndicators(), target);
-        saveEconomicIndicators(target) ;
-        if (CollectionUtils.isEmpty(applyDto.getEconomicIndicatorsItemList())){
+        saveEconomicIndicators(target);
+        if (CollectionUtils.isEmpty(applyDto.getEconomicIndicatorsItemList())) {
             return;
         }
-        for (MdEconomicIndicatorsItem indicatorsItem:applyDto.getEconomicIndicatorsItemList()){
+        for (MdEconomicIndicatorsItem indicatorsItem : applyDto.getEconomicIndicatorsItemList()) {
             MdEconomicIndicatorsItem indicatorsItem2 = new MdEconomicIndicatorsItem();
             indicatorsItem.setPlanDetailsId(null);
             indicatorsItem.setMcId(null);
@@ -102,10 +104,10 @@ public class MdEconomicIndicatorsService {
         }
     }
 
-    public MdEconomicIndicatorsApplyDto getEconomicIndicatorsInfo(Integer economicId){
-        MdEconomicIndicatorsApplyDto mdEconomicIndicatorsApplyDto=new MdEconomicIndicatorsApplyDto();
+    public MdEconomicIndicatorsApplyDto getEconomicIndicatorsInfo(Integer economicId) {
+        MdEconomicIndicatorsApplyDto mdEconomicIndicatorsApplyDto = new MdEconomicIndicatorsApplyDto();
         MdEconomicIndicators economicIndicators = mdEconomicIndicatorsDao.getEconomicIndicatorsById(economicId);
-        MdEconomicIndicatorsItem where=new MdEconomicIndicatorsItem();
+        MdEconomicIndicatorsItem where = new MdEconomicIndicatorsItem();
         where.setEconomicId(economicId);
         List<MdEconomicIndicatorsItem> economicIndicatorsItemList = mdEconomicIndicatorsItemDao.getEconomicIndicatorsItemList(where);
         mdEconomicIndicatorsApplyDto.setEconomicIndicators(economicIndicators);
@@ -115,13 +117,14 @@ public class MdEconomicIndicatorsService {
 
     /**
      * 根据估价对象id获取经济指标
+     *
      * @param judgeId
      * @return
      */
-    public MdEconomicIndicators getMdEconomicIndicatorsByJudgeId(Integer judgeId){
+    public MdEconomicIndicators getMdEconomicIndicatorsByJudgeId(Integer judgeId) {
         SchemeJudgeObject judgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeId);
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(judgeObject.getDeclareRecordId());
-        DeclareBuildEngineeringAndEquipmentCenter where=new  DeclareBuildEngineeringAndEquipmentCenter();
+        DeclareBuildEngineeringAndEquipmentCenter where = new DeclareBuildEngineeringAndEquipmentCenter();
         where.setRealEstateId(declareRecord.getDataTableId());
         where.setType(DeclareRealtyRealEstateCert.class.getSimpleName());
         List<DeclareBuildEngineeringAndEquipmentCenter> equipmentCenters = declareBuildEconomicIndicatorsCenterList.declareBuildEngineeringAndEquipmentCenterList(where);

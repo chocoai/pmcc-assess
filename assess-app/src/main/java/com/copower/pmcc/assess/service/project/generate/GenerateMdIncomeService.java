@@ -92,23 +92,22 @@ public class GenerateMdIncomeService implements Serializable {
     private GenerateCommonMethod generateCommonMethod;
     private BaseService baseService;
 
-    private final String name = "name";
-    private final String ratio = "ratio";
-    private final String remark = "remark";
-    public final String errorStr = "无";
+    private static final String name = "name";
+    private static final String ratio = "ratio";
+    private static final String remark = "remark";
+    private static final String errorStr = "无";
     //机会成本
-    private final String opportunityCost = "opportunityCost";
+    private static final String opportunityCost = "opportunityCost";
     //投资风险补偿
-    private final String riskCompensation = "riskCompensation";
+    private static final String riskCompensation = "riskCompensation";
     //管理负担补偿
-    private final String manageCompensation = "manageCompensation";
+    private static final String manageCompensation = "manageCompensation";
     //缺乏流动性补偿
-    private final String liquidCompensation = "liquidCompensation";
+    private static final String liquidCompensation = "liquidCompensation";
     //易与获得融资的好处
-    private final String financingAdvantage = "financingAdvantage";
+    private static final String financingAdvantage = "financingAdvantage";
     //所得税抵扣的好处
-    private final String taxDeductionAdvantage = "taxDeductionAdvantage";
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    private static final String taxDeductionAdvantage = "taxDeductionAdvantage";
 
     /**
      * 获取替换后的报告模板

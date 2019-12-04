@@ -79,7 +79,7 @@ public class MdDevelopmentInfrastructureChildrenService {
 
     public void clear(Integer pid){
         MdDevelopmentInfrastructureChildren oo = new MdDevelopmentInfrastructureChildren();
-        oo.setPid(pid == null?0:pid);
+        oo.setPid(pid == null?Integer.valueOf(0):pid);
         oo.setCreator(commonService.thisUserAccount());
         List<MdDevelopmentInfrastructureChildren> childrenList = getMdDevelopmentInfrastructureChildrenListByExample(oo);
         if (CollectionUtils.isNotEmpty(childrenList)){
