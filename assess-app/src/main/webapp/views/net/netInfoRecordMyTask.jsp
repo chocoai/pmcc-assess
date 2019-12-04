@@ -268,8 +268,8 @@
                                                 面积
                                             </label>
                                             <div class="col-sm-2">
-                                                <input type="text" data-rule-number="true" data-rule-maxlength="50"
-                                                       name="area" class="form-control">
+                                                <input type="text" data-rule-number="true" data-rule-maxlength="50" id="landArea"
+                                                       name="area" class="form-control" onblur="detailInfo.prototype.getUnitPrice()">
                                             </div>
                                         </div>
                                     </div>
@@ -322,8 +322,8 @@
                                                 成交价
                                             </label>
                                             <div class="col-sm-2">
-                                                <input type="text" data-rule-number="true" data-rule-maxlength="50"
-                                                       name="currentPrice" class="form-control">
+                                                <input type="text" data-rule-number="true" data-rule-maxlength="50" id="landCurrentPrice"
+                                                       name="currentPrice" class="form-control" onblur="detailInfo.prototype.getUnitPrice()">
                                             </div>
                                         </div>
                                         <div class="x-valid">
@@ -361,7 +361,7 @@
                                             </label>
                                             <div class="col-sm-2">
                                                 <input type="text" data-rule-number="true" data-rule-maxlength="50"
-                                                       name="unitPrice" class="form-control">
+                                                       name="unitPrice" class="form-control" id="landUnitPrice">
                                             </div>
                                         </div>
                                         <div class="x-valid">
@@ -598,8 +598,8 @@
                                                 面积
                                             </label>
                                             <div class="col-sm-2">
-                                                <input type="text" data-rule-number="true" data-rule-maxlength="50"
-                                                       name="area" class="form-control">
+                                                <input type="text" data-rule-number="true" data-rule-maxlength="50" id="houseArea"
+                                                       name="area" class="form-control" onblur="detailInfo.prototype.getUnitPrice()">
                                             </div>
                                         </div>
                                         <div class="x-valid">
@@ -626,8 +626,8 @@
                                                 成交价
                                             </label>
                                             <div class="col-sm-2">
-                                                <input type="text" data-rule-number="true" data-rule-maxlength="50"
-                                                       name="currentPrice" class="form-control">
+                                                <input type="text" data-rule-number="true" data-rule-maxlength="50" id="houseCurrentPrice"
+                                                       name="currentPrice" class="form-control" onblur="detailInfo.prototype.getUnitPrice()">
                                             </div>
                                         </div>
                                         <div class="x-valid">
@@ -665,7 +665,7 @@
                                             </label>
                                             <div class="col-sm-2">
                                                 <input type="text" data-rule-number="true" data-rule-maxlength="50"
-                                                       name="unitPrice" class="form-control">
+                                                       name="unitPrice" class="form-control" id="houseUnitPrice">
                                             </div>
                                         </div>
                                         <div class="x-valid">
@@ -2061,6 +2061,20 @@
                 }
             })
         },
+        getUnitPrice:function(){
+            var landCurrentPrice = Number($("#landCurrentPrice").val());
+            var landArea = Number($("#landArea").val());
+            var houseCurrentPrice = Number($("#houseCurrentPrice").val());
+            var houseArea = Number($("#houseArea").val());
+            if(houseCurrentPrice>0&&houseArea>0) {
+                var houseUnitPrice = (houseCurrentPrice / houseArea).toFixed(2);
+                $("#houseUnitPrice").val(houseUnitPrice);
+            }
+            if(landCurrentPrice>0&&landArea>0) {
+                var landUnitPrice = (landCurrentPrice / landArea).toFixed(2);
+                $("#landUnitPrice").val(landUnitPrice);
+            }
+        }
     }
 
 
