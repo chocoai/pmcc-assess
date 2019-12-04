@@ -670,6 +670,9 @@ public class BasicApplyBatchController extends BaseController {
     public HttpResult saveBasicApplyBatch(String formData) {
         try {
             BasicApplyBatch applyBatch = JSON.parseObject(formData, BasicApplyBatch.class);
+            if(applyBatch.getPlanDetailsId()==null){
+                applyBatch.setDraftFlag(true);
+            }
             basicApplyBatchService.saveApplyInfo(applyBatch);
             return HttpResult.newCorrectResult(applyBatch);
         } catch (Exception e) {

@@ -21,12 +21,12 @@ public class BasicApplyBatchDao {
     private BasicApplyBatchMapper basicApplyBatchMapper;
 
     /**
-     * 获取数据列表
+     * 获取已经提交的数据列表
      *
      * @param estateName
      * @return
      */
-    public List<BasicApplyBatch> getBasicApplyBatchListByName(String estateName,String userAccount, Boolean draftFlag) {
+    public List<BasicApplyBatch> getCommitBasicApplyBatchListByName(String estateName,String userAccount, Boolean draftFlag) {
         BasicApplyBatchExample example = new BasicApplyBatchExample();
         BasicApplyBatchExample.Criteria criteria = example.createCriteria();
         if (StringUtils.isNotBlank(estateName)) {
@@ -36,6 +36,31 @@ public class BasicApplyBatchDao {
             criteria.andCreatorEqualTo(userAccount);
         }
         criteria.andPlanDetailsIdIsNull();
+        criteria.andProcessInsIdIsNotNull();
+        criteria.andDraftFlagEqualTo(false);
+        criteria.andBisDeleteEqualTo(false);
+        example.setOrderByClause("id desc");
+        return basicApplyBatchMapper.selectByExample(example);
+    }
+
+    /**
+     * 获取草稿数据列表
+     *
+     * @param estateName
+     * @return
+     */
+    public List<BasicApplyBatch> getDraftBasicApplyBatchListByName(String estateName,String userAccount, Boolean draftFlag) {
+        BasicApplyBatchExample example = new BasicApplyBatchExample();
+        BasicApplyBatchExample.Criteria criteria = example.createCriteria();
+        if (StringUtils.isNotBlank(estateName)) {
+            criteria.andEstateNameLike(String.format("%s%s%s", "%", estateName, "%"));
+        }
+        if (StringUtils.isNotBlank(userAccount)) {
+            criteria.andCreatorEqualTo(userAccount);
+        }
+        criteria.andPlanDetailsIdIsNull();
+        criteria.andProcessInsIdIsNull();
+        criteria.andDraftFlagEqualTo(true);
         criteria.andBisDeleteEqualTo(false);
         example.setOrderByClause("id desc");
         return basicApplyBatchMapper.selectByExample(example);

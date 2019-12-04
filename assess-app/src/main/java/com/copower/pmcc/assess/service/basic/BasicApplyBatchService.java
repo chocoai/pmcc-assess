@@ -645,7 +645,11 @@ public class BasicApplyBatchService {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<BasicApplyBatch> BasicApplyBatchList = basicApplyBatchDao.getBasicApplyBatchListByName(estateName, commonService.thisUserAccount(), draftFlag);
+        List<BasicApplyBatch> BasicApplyBatchList = Lists.newArrayList();
+        List<BasicApplyBatch> commit = basicApplyBatchDao.getCommitBasicApplyBatchListByName(estateName, commonService.thisUserAccount(), draftFlag);
+        List<BasicApplyBatch> draft = basicApplyBatchDao.getDraftBasicApplyBatchListByName(estateName, commonService.thisUserAccount(), draftFlag);
+        BasicApplyBatchList.addAll(draft);
+        BasicApplyBatchList.addAll(commit);
         List<BasicApplyBatchVo> vos = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(BasicApplyBatchList)) {
             for (BasicApplyBatch basicApplyBatch : BasicApplyBatchList) {
@@ -1060,9 +1064,9 @@ public class BasicApplyBatchService {
         processInfo.setTableId(id);
         try {
             processUserDto = processControllerComponent.processStart(processControllerComponent.getThisUser(), processInfo, processControllerComponent.getThisUser(), false);
+            applyBatch.setDraftFlag(false);
             applyBatch.setProcessInsId(processUserDto.getProcessInsId());
             applyBatch.setStatus(ProjectStatusEnum.RUNING.getKey());
-            applyBatch.setDraftFlag(false);
             basicApplyBatchDao.updateInfo(applyBatch);
         } catch (Exception e) {
             logger.error(String.format("流程发起失败: %s", e.getMessage()), e);
@@ -2235,7 +2239,7 @@ public class BasicApplyBatchService {
         applyBatch.setType(caseEstate.getType());
         applyBatch.setCaseEstateId(caseEstate.getId());
         applyBatch.setEstateName(String.format("案例楼盘(%s)", caseEstate.getName()));
-        applyBatch.setDraftFlag(false);
+        applyBatch.setDraftFlag(true);
         applyBatch.setCreator(commonService.thisUserAccount());
         return applyBatch;
 
