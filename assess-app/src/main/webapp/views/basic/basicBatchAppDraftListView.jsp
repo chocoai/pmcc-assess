@@ -253,10 +253,10 @@
                 var str = '<div class="btn-margin">';
                 if (row.draftFlag) {
                     str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="继续申请" onclick="dataObjFun.temporary(' + row.id + ')">继续申请</a>';
+                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="删除" onclick="dataObjFun.delete(' + row.id + ')">删除</a>';
                 }else{
                     str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="查看" onclick="dataObjFun.checkData(' + row.id + ')">查看</a>';
                 }
-                str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="删除" onclick="dataObjFun.delete(' + row.id + ')">删除</a>';
                 str += '</div>';
                 return str;
             }
