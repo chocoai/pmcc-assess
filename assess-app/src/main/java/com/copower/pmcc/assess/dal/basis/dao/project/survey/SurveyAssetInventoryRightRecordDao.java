@@ -33,7 +33,7 @@ public class SurveyAssetInventoryRightRecordDao {
         return surveyAssetInventoryRightRecordMapper.deleteByPrimaryKey(id) == 1;
     }
 
-    public SurveyAssetInventoryRightRecord getSurveyAssetInventoryRightRecordById(Integer id)throws SQLException{
+    public SurveyAssetInventoryRightRecord getSurveyAssetInventoryRightRecordById(Integer id){
         return surveyAssetInventoryRightRecordMapper.selectByPrimaryKey(id);
     }
 

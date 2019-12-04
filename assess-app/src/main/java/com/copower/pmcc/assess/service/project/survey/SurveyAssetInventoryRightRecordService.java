@@ -257,7 +257,7 @@ public class SurveyAssetInventoryRightRecordService {
         return surveyAssetInventoryRightRecordDao.deleteSurveyAssetInventoryRightRecordById(id);
     }
 
-    public SurveyAssetInventoryRightRecord getSurveyAssetInventoryRightRecordById(Integer id) throws Exception {
+    public SurveyAssetInventoryRightRecord getSurveyAssetInventoryRightRecordById(Integer id)  {
         return surveyAssetInventoryRightRecordDao.getSurveyAssetInventoryRightRecordById(id);
     }
 

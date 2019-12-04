@@ -574,8 +574,13 @@
                                                                           type="percent" maxFractionDigits="4"/></label>
                             <span class="input-group-btn">
                                         <input type="hidden" name="rewardRateId" value="${mdDevelopment.rewardRateId}">
-                                  <input type="button" class="btn btn-primary" value="报酬率测算"
-                                         onclick="rewardRateDetail.calculationDetail('${mdDevelopment.rewardRateId}');"/>
+                                <c:if test="${!empty mdDevelopment.rewardRateId}">
+                                      <input type="button" class="btn btn-primary" value="报酬率测算"
+                                             onclick="rewardRateDetail.calculationDetail('${mdDevelopment.rewardRateId}');"/>
+                                </c:if>
+                                <c:if test="${empty mdDevelopment.rewardRateId}">
+                                      <input type="button" class="btn btn-primary" value="报酬率测算" onclick="Alert('未添加土地还原率!')"/>
+                                </c:if>
                                 </span>
                         </div>
                     </div>
