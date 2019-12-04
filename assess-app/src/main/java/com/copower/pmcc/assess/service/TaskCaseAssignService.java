@@ -248,7 +248,7 @@ public class TaskCaseAssignService {
             assign.setStatus(ProjectStatusEnum.RUNING.getKey());
             this.updateTaskCaseAssign(assign);
             //删除待提交任务
-            bpmRpcProjectTaskService.deleteProjectTaskByProjectid(applicationConstant.getAppKey(), assign.getId());
+            //bpmRpcProjectTaskService.deleteProjectTaskByProjectid(applicationConstant.getAppKey(), assign.getId());
         } catch (Exception e) {
             logger.error(String.format("流程发起失败: %s", e.getMessage()), e);
             throw e;
