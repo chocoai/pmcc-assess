@@ -141,7 +141,6 @@
 
     //打开历史数据modal
     function showHistoryModal() {
-        console.log('${basicApplyBatch.id}'+'==');
         //打开楼盘modal
         if ("estate" == "${tbType}") {
             historyInfo.caseEstate.showModel('${tbId}','${formClassify}','${tbType}','${basicApplyBatch.id}');

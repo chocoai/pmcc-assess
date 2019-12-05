@@ -159,7 +159,6 @@
             if (!$("#" + dataReportTemplateItem.prototype.config().frm).valid()) {
                 return false;
             }
-            console.log(masterType+"++++++");
             //var masterId = masterId;
             var data = formParams(dataReportTemplateItem.prototype.config().frm);
             data.masterId = masterId;
@@ -210,7 +209,6 @@
         showStartModel: function (id,type) {
             masterId = id;
             masterType = type;
-            console.log(masterType+"========++++")
             dataReportTemplateItem.prototype.loadDataDicList(masterId,masterType);
             $('#' + dataReportTemplateItem.prototype.config().startBox).modal("show");
         }

@@ -463,18 +463,14 @@
         var frmId = $(_this).closest('.form-horizontal').attr("id");
         //增值税率
         var salesTax = $("#" + frmId).find("input[data-key='data.tax.rate.allocation.sales.tax']").attr('data-value');
-        console.log("salesTax:" + salesTax)
         //城建税率
         var constructionTax = $("#" + frmId).find("input[data-key='data.tax.rate.allocation.construction.tax']").attr('data-value');
-        console.log("constructionTax:" + constructionTax)
         var constructionPrice = "price_data.tax.rate.allocation.construction.tax";
         //教育税附加率
         var educationTax = $("#" + frmId).find("input[data-key='data.tax.rate.allocation.education.fee.plus']").attr('data-value');
-        console.log("educationTax:" + educationTax)
         var educationPrice = "price_data.tax.rate.allocation.education.fee.plus";
         //地方教育税附加率
         var landEducationTax = $("#" + frmId).find("input[data-key='data.tax.rate.allocation.local.education.tax.additional']").attr('data-value');
-        console.log("landEducationTax:" + landEducationTax)
         var landEducationPrice = "price_data.tax.rate.allocation.local.education.tax.additional";
         //交易手续费
         var transactionCharges = $("#" + frmId).find("input[data-key='data.tax.rate.allocation.transaction.charges']");
@@ -482,25 +478,19 @@
 
         var evaluationArea = $("#" + frmId).find("td[name='evaluationArea']").val();
         var evaluationPrice = $("#" + frmId).find("td[name='evaluationPrice']").val();
-        console.log(evaluationArea + evaluationPrice + "ppp")
         var $taxRateValue = $(_this).parent().parent().find('[name^=taxRateValue]');
         var rate = $taxRateValue.val();
         console.log("rate:" + rate)
         var price = 0;
         if ($taxRateValue.hasClass('x-percent')) {
             rate = $taxRateValue.attr('data-value');
-            console.log("rate2:" + rate)
             var key = $taxRateValue.attr('data-key');
-            console.log("key:" + key);
             switch (key) {
                 //增值税
                 case "data.tax.rate.allocation.sales.tax": {
-                    console.log(rate + "===" + Number(evaluationPrice))
                     if (rate && evaluationPrice) {
                         var temp = evaluationPrice / 1.05;
-                        console.log("temp" + temp)
                         price = Number(temp * rate).toFixed(2);
-                        console.log("ptice:" + price)
                     }
                     $("#" + frmId).find('input[data-key="' + constructionPrice + '"]').attr("data-value", (price * constructionTax).toFixed(2));
                     $("#" + frmId).find('input[data-key="' + educationPrice + '"]').attr("data-value", (price * educationTax).toFixed(2));
@@ -616,7 +606,6 @@
                         toastr.success('删除成功');
                         var frmId = $(_this).closest('.form-horizontal').attr("id");
                         $(_this).parent().parent().parent().empty();
-                        console.log(frmId + "-=-=-=-=")
                         getTotal(frmId);
                     }
                     else {

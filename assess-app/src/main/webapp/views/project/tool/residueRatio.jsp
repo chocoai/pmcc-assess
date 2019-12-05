@@ -375,7 +375,6 @@
                 decorationScore >= 0 &&
                 equipmentScore >= 0 &&
                 otherScore >= 0) {
-                console.log("111")
                 if (!$("#residueRatioType0").is(":checked")) {
                     observeCxl = residueRatio.getLevel(observeCxl);
                 }

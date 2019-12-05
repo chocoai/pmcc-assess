@@ -521,7 +521,6 @@
 
     //加载土地证附件
     function getLandFileAll(tbody, tableId) {
-        console.log(tableId + "=2=")
         $.ajax({
             url: '${pageContext.request.contextPath}/projectReportFile/getLandFileAll',
             data: {

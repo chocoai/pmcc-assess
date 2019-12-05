@@ -160,7 +160,6 @@
 
     //初始化tree
     batchTreeTool.ztreeInit = function (data) {
-        console.log(${showTab}+"==")
         batchApply = data;
         zTreeObj = $.fn.zTree.init($("#ztree"), setting, [{
             "id": 0,

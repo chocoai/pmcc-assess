@@ -864,7 +864,6 @@
                     var data = result.data;
                     var landId = data.landId;
                     if (civilEngineering.isNotBlank(landId)) {
-                        console.log("436364433") ;
                         $.ajax({
                             url: getContextPath() + "/declareRealtyLandCert/getDeclareRealtyLandCertById",
                             type: "get",

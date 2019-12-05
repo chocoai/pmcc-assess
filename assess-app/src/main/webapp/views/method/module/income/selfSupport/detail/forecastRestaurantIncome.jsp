@@ -201,7 +201,6 @@
 
     //加载历史数据分析
     forecastRestaurant.loadCostForecastAnalyseList = function (type) {
-        console.log("chengben"+type)
         var cols = [];
         cols.push({field: 'year', title: '年份'});
         cols.push({field: 'sourceType', title: '类型'});
