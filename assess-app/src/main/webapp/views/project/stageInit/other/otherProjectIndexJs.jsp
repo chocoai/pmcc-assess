@@ -472,7 +472,6 @@
                             valueType: valueType
                         },
                         success: function (result) {
-                            console.log("111")
                             if (result.ret) {
                                 if (result.data) {
                                     $("#" + objProject.config.info.frm).find("select.propertyScope").val([result.data.propertyScope]).trigger('change');

@@ -173,7 +173,7 @@
     areaMap.createImgMarker = function (n, map) {
         var imageUrl = '${pageContext.request.contextPath}' + n.huxingImg;
         document.getElementById("oImg").src = imageUrl;
-        console.log("imageUrl:"+imageUrl) ;
+        //console.log("imageUrl:"+imageUrl) ;
         areaMap.getImgNaturalDimensions(document.getElementById("oImg"), function (data) {
             var max = 10;
             var min = 2;

@@ -319,7 +319,6 @@
         var length = strs.length;
         var lableValue = name;
         for (var i = 0; i < length; i++) {
-            console.log("i:" + i);
             var html = "<div class='form-group' style='margin-top:8px;'>";
             html += "<label class='col-md-2 col-sm-2 col-xs-12 control-label'>" + lableValue + "</label>";
             html += "<div class='col-md-10 col-sm-10 col-xs-12 input-group'>";

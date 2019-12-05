@@ -749,7 +749,6 @@
     selfSupport.operatingCostItem = function(){
         $("#frmCostItem").clearAll();
         var id = $("#frm_forecast_cost_detail").find("input[name='id']").val();
-        console.log(id+"==")
         $(".system").empty();
         $.ajax({
             url: "${pageContext.request.contextPath}/income/getForecastById",

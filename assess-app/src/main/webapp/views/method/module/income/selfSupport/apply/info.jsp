@@ -1655,8 +1655,7 @@
                 $(this).find('[data-name=operatingProfit]').text(operatingProfit);
                 //净收益
                 var netProfit = incomeTotal - costTotal - operatingProfit;
-                console.log("incomeTotal:" + incomeTotal)
-                console.log("netProfit:" + netProfit)
+
                 $(this).find('[data-name=netProfit]').text(netProfit.toFixed(2));
             }
         })
