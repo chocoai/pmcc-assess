@@ -377,7 +377,7 @@ public class SchemeLiquidationAnalysisService {
     }
 
     public ProjectTaskLiquidationAnalysisGroupAndPriceVo getGroupAndPriceVoByJsonStr(String recordIdsJson) {
-        List<Integer> recordList = JSON.parseArray(recordIdsJson, Integer.class);
+        List<Integer> recordList = FormatUtils.transformString2Integer(recordIdsJson) ;
         return this.getGroupAndPriceVoByRecordList(recordList);
     }
 
@@ -409,8 +409,8 @@ public class SchemeLiquidationAnalysisService {
     }
 
     public void addAnalysisGroupFromDto(SchemeLiquidationAnalysisGroupDto analysisGroupDto) {
-        List<String> records = JSON.parseArray(analysisGroupDto.getRecordIds(), String.class);
-        analysisGroupDto.setRecordIds(String.join(",", records));
+//        List<String> records = JSON.parseArray(analysisGroupDto.getRecordIds(), String.class);
+//        analysisGroupDto.setRecordIds(String.join(",", records));
         SchemeLiquidationAnalysisGroup analysisGroup = this.getLiquidationAnalysisGroupById(analysisGroupDto.getId());
         BeanUtils.copyProperties(analysisGroupDto, analysisGroup);
         this.saveLiquidationAnalysisGroup(analysisGroup);

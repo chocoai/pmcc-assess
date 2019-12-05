@@ -1837,8 +1837,7 @@ public class GenerateBaseDataService {
                 }
                 List<Integer> integerList = Lists.newArrayList();
                 if (StringUtils.isNotBlank(schemeJudgeObject.getNumber())) {
-                    List<String> stringList = Lists.newArrayList(schemeJudgeObject.getNumber().split(","));
-                    stringList.stream().forEach(s -> integerList.add(Integer.parseInt(s)));
+                    integerList.addAll(generateCommonMethod.splitIntegerListJudgeNumber(schemeJudgeObject.getNumber())) ;
                 }
                 String s = String.format("%s号%s 。", generateCommonMethod.convertNumber(integerList), StringUtils.join(linkedHashSet, "，"));
                 builder.insertHtml(generateCommonMethod.getWarpCssHtml(StringUtils.trimToEmpty(s)), false);
@@ -2658,7 +2657,8 @@ public class GenerateBaseDataService {
                         builder.insertHtml(generateCommonMethod.getWarpCssHtml(result), true);
                     }
                     break;
-                    default:break;
+                default:
+                    break;
             }
         }
         AsposeUtils.saveWord(localPath, document);
@@ -3463,13 +3463,15 @@ public class GenerateBaseDataService {
         for (SurveyAssetInventoryRightRecord rightRecord : rightRecordList) {
             SchemeReimbursementItemVo vo = schemeReimbursementService.getSchemeReimbursementItemVoByInventoryRightRecordId(rightRecord.getId());
             if (vo != null && StringUtils.isNotBlank(rightRecord.getRecordIds())) {
-                List<Integer> integerList = Lists.newArrayList(rightRecord.getRecordIds().split(",")).stream().map(s -> Integer.parseInt(s)).collect(Collectors.toList());
+                List<Integer> integerList = FormatUtils.transformString2Integer(rightRecord.getRecordIds());
                 List<SchemeJudgeObject> judgeObjectList = Lists.newArrayList();
-                for (Integer integer : integerList) {
-                    if (schemeJudgeObjectList.stream().filter(oo -> oo.getDeclareRecordId().intValue() == integer.intValue()).count() >= 1) {
-                        SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectList.stream().filter(oo -> oo.getDeclareRecordId().intValue() == integer.intValue()).findFirst().get();
-                        judgeObjectList.add(schemeJudgeObject);
-                        schemeJudgeObjectList.remove(schemeJudgeObject);
+                if (CollectionUtils.isNotEmpty(integerList)){
+                    for (Integer integer : integerList) {
+                        if (schemeJudgeObjectList.stream().filter(oo -> oo.getDeclareRecordId().intValue() == integer.intValue()).count() >= 1) {
+                            SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectList.stream().filter(oo -> oo.getDeclareRecordId().intValue() == integer.intValue()).findFirst().get();
+                            judgeObjectList.add(schemeJudgeObject);
+                            schemeJudgeObjectList.remove(schemeJudgeObject);
+                        }
                     }
                 }
                 if (CollectionUtils.isNotEmpty(judgeObjectList)) {
@@ -5038,31 +5040,31 @@ public class GenerateBaseDataService {
             for (Map.Entry<BasicEstate, List<SchemeJudgeObject>> entry : linkedHashMap.entrySet()) {
                 //根据不同项目类别确定获取数据的方法
                 BasicExamineHandle.BasicVo basicVo = new BasicExamineHandle.BasicVo();
-                basicVo.setName( entry.getKey().getName());
+                basicVo.setName(entry.getKey().getName());
                 Consumer<BasicExamineHandle.BasicVo> houseFun = new Consumer<BasicExamineHandle.BasicVo>() {
                     @Override
                     public void accept(BasicExamineHandle.BasicVo basicVo) {
-                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo("2、房屋权益状况")) ;
-                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("",  "房屋性质:"), generateEquityService2.getHouseEquityValue(entry.getValue(),projectId,"房屋性质")));
-                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("",  "规划用途:"), generateEquityService2.getHouseEquityValue(entry.getValue(),projectId,"规划用途")));
-                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("",  "共有情况:"), generateEquityService2.getHouseEquityValue(entry.getValue(),projectId,"共有情况")));
-                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("",  "权益人:"), generateEquityService2.getHouseEquityValue(entry.getValue(),projectId,"权益人")));
-                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("",  "他项权利:"), generateEquityService2.getHouseEquityValue(entry.getValue(),projectId,"他项权利")));
-                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("",  "转让限制:"), generateEquityService2.getHouseEquityValue(entry.getValue(),projectId,"转让限制")));
-                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("",  "他权综述:"), generateEquityService2.getHouseEquityValue(entry.getValue(),projectId,"他权综述")));
-                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("",  "物业:"), generateEquityService2.getHouseEquityValue(entry.getValue(),projectId,"物业")));
-                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("",  "综合评价:"), generateEquityService2.getHouseEquityValue(entry.getValue(),projectId,"综合评价")));
+                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo("2、房屋权益状况"));
+                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("", "房屋性质:"), generateEquityService2.getHouseEquityValue(entry.getValue(), projectId, "房屋性质")));
+                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("", "规划用途:"), generateEquityService2.getHouseEquityValue(entry.getValue(), projectId, "规划用途")));
+                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("", "共有情况:"), generateEquityService2.getHouseEquityValue(entry.getValue(), projectId, "共有情况")));
+                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("", "权益人:"), generateEquityService2.getHouseEquityValue(entry.getValue(), projectId, "权益人")));
+                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("", "他项权利:"), generateEquityService2.getHouseEquityValue(entry.getValue(), projectId, "他项权利")));
+                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("", "转让限制:"), generateEquityService2.getHouseEquityValue(entry.getValue(), projectId, "转让限制")));
+                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("", "他权综述:"), generateEquityService2.getHouseEquityValue(entry.getValue(), projectId, "他权综述")));
+                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("", "物业:"), generateEquityService2.getHouseEquityValue(entry.getValue(), projectId, "物业")));
+                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("", "综合评价:"), generateEquityService2.getHouseEquityValue(entry.getValue(), projectId, "综合评价")));
                     }
                 };
                 Consumer<BasicExamineHandle.BasicVo> landFun = new Consumer<BasicExamineHandle.BasicVo>() {
                     @Override
                     public void accept(BasicExamineHandle.BasicVo basicVo) {
-                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo("1、土地权益状况")) ;
-                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("",  GenerateEquityService2.Land_acquisition_methods,":"), generateEquityService2.getLandEquityValue(entry.getKey(),entry.getValue(),GenerateEquityService2.Land_acquisition_methods)));
-                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("",  GenerateEquityService2.Land_use,":"), generateEquityService2.getLandEquityValue(entry.getKey(),entry.getValue(),GenerateEquityService2.Land_use)));
-                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("",  GenerateEquityService2.Stakeholder,":"), generateEquityService2.getLandEquityValue(entry.getKey(),entry.getValue(),GenerateEquityService2.Stakeholder)));
-                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("",  GenerateEquityService2.PLANNINGCONDITIONS,":"), generateEquityService2.getLandEquityValue(entry.getKey(),entry.getValue(),GenerateEquityService2.PLANNINGCONDITIONS)));
-                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("",  GenerateEquityService2.DEGREEOFLANDDEVELOPMENT,":"), generateEquityService2.getLandEquityValue(entry.getKey(),entry.getValue(),GenerateEquityService2.DEGREEOFLANDDEVELOPMENT)));
+                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo("1、土地权益状况"));
+                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("", GenerateEquityService2.Land_acquisition_methods, ":"), generateEquityService2.getLandEquityValue(entry.getKey(), entry.getValue(), GenerateEquityService2.Land_acquisition_methods)));
+                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("", GenerateEquityService2.Land_use, ":"), generateEquityService2.getLandEquityValue(entry.getKey(), entry.getValue(), GenerateEquityService2.Land_use)));
+                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("", GenerateEquityService2.Stakeholder, ":"), generateEquityService2.getLandEquityValue(entry.getKey(), entry.getValue(), GenerateEquityService2.Stakeholder)));
+                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("", GenerateEquityService2.PLANNINGCONDITIONS, ":"), generateEquityService2.getLandEquityValue(entry.getKey(), entry.getValue(), GenerateEquityService2.PLANNINGCONDITIONS)));
+                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("", GenerateEquityService2.DEGREEOFLANDDEVELOPMENT, ":"), generateEquityService2.getLandEquityValue(entry.getKey(), entry.getValue(), GenerateEquityService2.DEGREEOFLANDDEVELOPMENT)));
                     }
                 };
                 try {
@@ -5074,9 +5076,9 @@ public class GenerateBaseDataService {
                         landFun.accept(basicVo);
                     }
                 } catch (Exception e) {
-                    baseService.writeExceptionInfo(e,String.join("","权益数据",e.getMessage()));
+                    baseService.writeExceptionInfo(e, String.join("", "权益数据", e.getMessage()));
                 }
-                estateHandleList.add(basicVo) ;
+                estateHandleList.add(basicVo);
             }
         }
         if (CollectionUtils.isNotEmpty(estateHandleList)) {
@@ -5254,7 +5256,7 @@ public class GenerateBaseDataService {
             DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
             documentBuilder.startTable();
             //start
-            if (true){
+            if (true) {
                 String val = "";
                 if (StringUtils.isNotEmpty(declareRecord.getSeat())) {
                     if (StringUtils.isNotEmpty(declareRecord.getStreetNumber())) {
@@ -5797,7 +5799,7 @@ public class GenerateBaseDataService {
                 if (baseDataDic == null || StringUtils.isEmpty(baseDataDic.getFieldName())) {
                     continue;
                 }
-                List<Integer> numbers = Lists.newArrayList(Lists.newArrayList(entry.getValue().getNumber().split(",")).stream().map(s -> Integer.parseInt(s)).collect(Collectors.toList()));
+                List<Integer> numbers = generateCommonMethod.splitIntegerListJudgeNumber(entry.getValue().getNumber()) ;
                 switch (baseDataDic.getFieldName()) {
                     case AssessDataDicKeyConstant.MD_MARKET_COMPARE:
                         GenerateMdCompareService generateMdCompareService = new GenerateMdCompareService(entry.getValue().getId(), entry.getKey().getMethodDataId(), areaId);
@@ -6291,9 +6293,9 @@ public class GenerateBaseDataService {
         List<SchemeJudgeObject> schemeJudgeObjectFullList = this.schemeJudgeObjectFullList;
         for (SchemeJudgeObject judgeObject : schemeJudgeObjectFullList) {
             if (baseJudgeId.contains(judgeObject.getId())) {
-                baseJudgeNumber.add(Integer.valueOf(judgeObject.getNumber()));
+                baseJudgeNumber.addAll(generateCommonMethod.splitIntegerListJudgeNumber(judgeObject.getNumber()));
             } else {
-                otherJudgeNumber.add(Integer.valueOf(judgeObject.getNumber()));
+                otherJudgeNumber.addAll(generateCommonMethod.splitIntegerListJudgeNumber(judgeObject.getNumber()));
             }
         }
         String localPath = getLocalPath();
@@ -6721,7 +6723,7 @@ public class GenerateBaseDataService {
                 }
 
                 //平面布局
-                if (true){
+                if (true) {
                     String value = null;
                     if (basicHouseVo != null && basicHouseVo.getHuxingId() != null) {
                         BasicUnitHuxing basicUnitHuxing = basicUnitHuxingService.getBasicUnitHuxingById(basicHouseVo.getHuxingId());

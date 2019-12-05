@@ -18,6 +18,7 @@ import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryConten
 import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.common.utils.DateUtils;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.common.utils.Reflections;
 import com.google.common.collect.Lists;
@@ -1120,6 +1121,33 @@ public class GenerateCommonMethod {
         }else {
             return Integer.valueOf(number.substring(0,ten-1)) ;
         }
+    }
+
+    public List<Integer> splitIntegerListJudgeNumber(String number){
+        List<Integer> integerList = new ArrayList<>() ;
+        if (StringUtils.isEmpty(number)){
+            return integerList;
+        }
+        List<String> stringList = FormatUtils.transformString2List(number) ;
+        if (CollectionUtils.isEmpty(stringList)){
+            return integerList;
+        }
+        for (String s:stringList){
+            if (NumberUtils.isNumber(s)){
+                integerList.add(Integer.parseInt(s)) ;
+            }else {
+                List<String> strings = FormatUtils.transformString2List(s) ;
+                if (CollectionUtils.isEmpty(strings)){
+                    continue;
+                }
+                for (String ss:strings){
+                    if (NumberUtils.isNumber(ss)){
+                        integerList.add(Integer.parseInt(ss)) ;
+                    }
+                }
+            }
+        }
+        return integerList;
     }
 
 

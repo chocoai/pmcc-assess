@@ -234,7 +234,7 @@ public class EvaluationHypothesisService {
                     Integer type = building.getCompletedTimeType();
                     if (type != null && baseDataDicService.getCacheDataDicByFieldName(AssessReportFieldConstant.TIME_ACTUAL_SURVEY).getId().equals(type)) {
                         Map<Integer, String> map = Maps.newHashMap();
-                        actualTimenumbers.add(Integer.valueOf(judgeObject.getNumber()));
+                        actualTimenumbers.add(generateCommonMethod.parseIntJudgeNumber(judgeObject.getNumber()));
                         if (building.getBeCompletedTime() != null) {
                             completedTime.add(sdf.format(building.getBeCompletedTime()));
                             times.add(sdf.format(building.getBeCompletedTime()));
@@ -249,7 +249,7 @@ public class EvaluationHypothesisService {
                     surveyAsset.setProjectId(projectInfo.getId());
                     SurveyAssetInventoryContent singleObject = surveyAssetInventoryContentDao.getSingleObject(surveyAsset);
                     if (StringUtils.isEmpty(singleObject.getRegistration()) || "无".equals(singleObject.getRegistration().trim())) {
-                        purposeNumbers.add(Integer.valueOf(judgeObject.getNumber()));
+                        purposeNumbers.add(generateCommonMethod.parseIntJudgeNumber(judgeObject.getNumber()));
                         SchemeJudgeObjectVo schemeJudgeObjectVo = schemeJudgeObjectService.getSchemeJudgeObjectVo(judgeObject);
                         actualPurpose.append(judgeObject.getPracticalUse()).append("、");
                         settingPurpose.append(schemeJudgeObjectVo.getSetUseName()).append("、");

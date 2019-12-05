@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeLiquidationAna
 import com.copower.pmcc.assess.dal.basis.entity.SchemeLiquidationAnalysisGroup;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeLiquidationAnalysisGroupDto;
 import com.copower.pmcc.assess.dto.output.project.scheme.SchemeLiquidationAnalysisGroupVo;
+import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeLiquidationAnalysisService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
@@ -28,6 +29,8 @@ public class SchemeLiquidationAnalysisController {
     private SchemeLiquidationAnalysisService projectTaskLiquidationAnalysisService;
     @Autowired
     private SchemeLiquidationAnalysisItemDao schemeLiquidationAnalysisItemDao;
+    @Autowired
+    private BaseService baseService;
 
 
     @ResponseBody
@@ -42,6 +45,7 @@ public class SchemeLiquidationAnalysisController {
         try {
             schemeLiquidationAnalysisItemDao.deleteSchemeLiquidationAnalysisItem(id);
         } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult(e.getMessage());
         }
         return HttpResult.newCorrectResult();
@@ -53,6 +57,7 @@ public class SchemeLiquidationAnalysisController {
         try {
             projectTaskLiquidationAnalysisService.removeLiquidationAnalysisGroup(id);
         } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult(e.getMessage());
         }
         return HttpResult.newCorrectResult();
@@ -65,6 +70,7 @@ public class SchemeLiquidationAnalysisController {
             List<SchemeLiquidationAnalysisGroupVo> schemeLiquidationAnalysisGroupList = projectTaskLiquidationAnalysisService.getSchemeLiquidationAnalysisGroupList(planDetailsId, projectId);
             return HttpResult.newCorrectResult(schemeLiquidationAnalysisGroupList);
         } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult(e.getMessage());
         }
     }
@@ -75,6 +81,7 @@ public class SchemeLiquidationAnalysisController {
         try {
             return HttpResult.newCorrectResult(projectTaskLiquidationAnalysisService.getAnalysisItemListByGroupId(groupId));
         } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult(e.getMessage());
         }
     }
@@ -85,6 +92,7 @@ public class SchemeLiquidationAnalysisController {
         try {
             return HttpResult.newCorrectResult(projectTaskLiquidationAnalysisService.getGroupAndPriceVoByJsonStr(recordIds));
         } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult(e.getMessage());
         }
     }
@@ -97,6 +105,7 @@ public class SchemeLiquidationAnalysisController {
             projectTaskLiquidationAnalysisService.addAnalysisGroupFromDto(analysisGroupDto);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult(e.getMessage());
         }
     }
@@ -109,6 +118,7 @@ public class SchemeLiquidationAnalysisController {
             projectTaskLiquidationAnalysisService.initTaxAllocation(schemeLiquidationAnalysisGroup.getAreaId(), schemeLiquidationAnalysisGroup.getPlanDetailsId(), schemeLiquidationAnalysisGroup.getId());
             return HttpResult.newCorrectResult(schemeLiquidationAnalysisGroup);
         } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult(e.getMessage());
         }
     }
@@ -119,6 +129,7 @@ public class SchemeLiquidationAnalysisController {
         try {
             return HttpResult.newCorrectResult(projectTaskLiquidationAnalysisService.getGroupAndPriceVoByString(recordIds));
         } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult(e.getMessage());
         }
     }

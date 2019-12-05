@@ -25,16 +25,11 @@
                         <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
 
                             <input type="hidden" name="recordIds">
-                            <div class="btn-primary btn" onclick="declareRecordModeObj.init({callback:selectRecord,this_:this,ids:$(this).closest('.form-group').find('[name=recordIds]').val()});">选择权证
+                            <div class="btn-primary btn"
+                                 onclick="declareRecordModeObj.init({callback:selectRecord,this_:this,ids:$(this).closest('.form-group').find('[name=recordIds]').val()});">
+                                选择权证
                                 <span class="glyphicon  glyphicon-new-window" aria-hidden="true"></span>
                             </div>
-
-                            <%--<select class="form-control search-select select2" multiple="multiple" required="required"--%>
-                                    <%--name="recordIds" onchange="getGroupAndPriceVo(this);">--%>
-                                <%--<c:forEach var="items" items="${declareRecordList}">--%>
-                                    <%--<option value="${items.id}">${items.name}</option>--%>
-                                <%--</c:forEach>--%>
-                            <%--</select>--%>
 
                         </div>
                     </div>
@@ -167,9 +162,10 @@
 
     };
 
-    function selectRecord(_this,id) {
-        var group = $(_this).closest(".form-group") ;
-        group.find("input[name='recordIds']").val(id) ;
+    function selectRecord(_this, id) {
+        var group = $(_this).closest(".form-group");
+        group.find("input[name='recordIds']").val(id);
+        getGroupAndPriceVo(_this);
     }
 
 
@@ -197,11 +193,9 @@
                                 $("#" + commonField.taskLiquidationAnalysisAppend).append(html);
 
                                 $("#" + commonField.taskLiquidationAnalysisFrm + number).initForm(item);
-                                if (item.recordIds) {
-                                    $("#" + commonField.taskLiquidationAnalysisFrm + number).find("select[name='recordIds']").val(item.recordIds.split(",")).trigger("change").select2();
-                                } else {
-                                    $("#" + commonField.taskLiquidationAnalysisFrm + number).find("select[name='recordIds']").select2();
-                                }
+//                                if (item.recordIds) {
+//                                    $("#" + commonField.taskLiquidationAnalysisFrm + number).find("input[name='recordIds']").val(item.recordIds);
+//                                }
                                 getAnalysisItemList(number);
                                 setTimeout(function () {
                                     if (item.total) {
@@ -285,19 +279,21 @@
      * @param _this
      */
     function getGroupAndPriceVo(_this) {
-        var recordIds = $(_this).val();
+        var group = $(_this).closest(".form-group");
+        var recordIds = group.find("input[name='recordIds']").val();
         var frmId = $(_this).closest('.form-horizontal').attr("id");
-        console.log(recordIds);
+        console.log("recordIds:" + recordIds + " frmId:" + frmId);
         if (recordIds) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/schemeLiquidationAnalysis/getGroupAndPriceVo",
                 type: "post",
                 dataType: "json",
-                data: {recordIds: JSON.stringify(recordIds)},
+                data: {recordIds: recordIds},
                 success: function (result) {
+                        console.log(result) ;
                     if (result.ret) {
                         if (result.data) {
-
+                            toastr.success('成功!');
                             initResult(frmId, result.data.groupArea, result.data.groupPrice);
                             $("#" + frmId).find('[name=evaluationArea]').text(fmoney(Number(result.data.groupArea).toFixed(2), 2));
                             $("#" + frmId).find('[name=evaluationArea]').val(Number(result.data.groupArea));
@@ -639,7 +635,7 @@
     function getFormData(frmId) {
         var data = {};
         data.id = $('#' + frmId).find('[name=id]').val();
-        data.recordIds = $('#' + frmId).find("select[name='recordIds']").val();
+        data.recordIds = $('#' + frmId).find("input[name='recordIds']").val();
         data.total = $('#' + frmId).find('[name=total]').text().replace(/,/g, '');
         data.analysisItemList = [];
         $('#' + frmId).find("tbody[name='tbody_data_section']").find('tr').each(function () {
