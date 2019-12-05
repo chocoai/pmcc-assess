@@ -24,7 +24,6 @@ import com.copower.pmcc.assess.service.project.ProjectPlanService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
-import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FileUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
@@ -165,7 +164,7 @@ public class GenerateReportService {
         sysAttachmentDto.setTableId(generateReportInfo.getId());
         sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(GenerateReportInfo.class));
         File file = new File(path);
-        sysAttachmentDto.setFileExtension(file.getName().substring(file.getName().lastIndexOf(".") + 1, file.getName().length()));
+        sysAttachmentDto.setFileExtension(FilenameUtils.getExtension(file.getName()));//获取文件后缀名,FilenameUtils.getName()获取文件夹或文件的名称,FilenameUtils.isExtension()判断后缀是否是指定后缀(区分大小写)
         sysAttachmentDto.setCreater(processControllerComponent.getThisUser());
         sysAttachmentDto.setFileSize(org.apache.commons.io.FileUtils.sizeOfAsBigInteger(file).toString());
         sysAttachmentDto.setAppKey(applicationConstant.getAppKey());
@@ -173,11 +172,10 @@ public class GenerateReportService {
         sysAttachmentDto.setFileName(baseDataDicService.getCacheDataDicByFieldName(reportType).getName());
         //注意这里因为是linux 路径所以采用/ 或者使用Java自带的判断符号 windows下 WinNTFileSystem linux 下UnixFileSystem
         String ftpBasePath = String.join(File.separator, baseAttachmentService.createFTPBasePath(), DateUtils.format(new Date(), DateUtils.DATE_PATTERN), String.valueOf(RandomUtils.nextInt(1, 1000)), UUID.randomUUID().toString().substring(0, 10));
-        String ftpFileName = baseAttachmentService.createNoRepeatFileName(sysAttachmentDto.getFileExtension());
         sysAttachmentDto.setFilePath(ftpBasePath);
-        sysAttachmentDto.setFtpFileName(ftpFileName);
+        sysAttachmentDto.setFtpFileName(baseAttachmentService.createNoRepeatFileName(sysAttachmentDto.getFileExtension()));
         try {
-            ftpUtilsExtense.uploadFilesToFTP(ftpBasePath, new FileInputStream(file.getPath()), ftpFileName);
+            ftpUtilsExtense.uploadFilesToFTP(ftpBasePath, new FileInputStream(file.getPath()), sysAttachmentDto.getFtpFileName());
         } catch (Exception e) {
             baseService.writeExceptionInfo(e,"erp上传文件出错");
         }
@@ -1277,28 +1275,28 @@ public class GenerateReportService {
             if (StringUtils.isNotEmpty(fileMap.get(name))) {
                 return;
             }
-            generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectAreaStatusSheet2());
+            generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectAreaStatusSheet());
         }
         //估价土地实体状况表
         if (Objects.equal(BaseReportFieldEnum.JudgeObjectLandStateSheet.getName(), name)) {
             if (StringUtils.isNotEmpty(fileMap.get(name))) {
                 return;
             }
-            generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectLandStateSheet2());
+            generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectLandStateSheet());
         }
         //估价对象建筑实体状况表
         if (Objects.equal(BaseReportFieldEnum.JudgeBuildLandStateSheet.getName(), name)) {
             if (StringUtils.isNotEmpty(fileMap.get(name))) {
                 return;
             }
-            generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeBuildLandStateSheet2());
+            generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeBuildLandStateSheet());
         }
         //估价对象权益状况表
         if (Objects.equal(BaseReportFieldEnum.JudgeObjectEquitySheet.getName(), name)) {
             if (StringUtils.isNotEmpty(fileMap.get(name))) {
                 return;
             }
-            generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectEquitySheet2());
+            generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectEquitySheet());
         }
         //汇总表
         if (Objects.equal(BaseReportFieldEnum.judgeSummarySheet.getName(), name)) {
@@ -1859,6 +1857,13 @@ public class GenerateReportService {
         resultSheetReportCreateSysAttachment(path, reportType, generateReportInfo);
     }
 
+    /**
+     * 结果集上传erp的ftp 形成ftp上的文件
+     * @param path
+     * @param reportType
+     * @param generateReportInfo
+     * @throws Exception
+     */
     private void resultSheetReportCreateSysAttachment(String path, String reportType, GenerateReportInfo generateReportInfo) throws Exception {
         if (StringUtils.isEmpty(path)) {
             return;
@@ -1879,20 +1884,17 @@ public class GenerateReportService {
         }
         File file = new File(path);
         sysAttachmentDto.setFileName("结果集.doc");
-        sysAttachmentDto.setFileExtension(file.getName().substring(file.getName().lastIndexOf(".") + 1, file.getName().length()));
+        sysAttachmentDto.setFileExtension(FilenameUtils.getExtension(file.getName()));// sysAttachmentDto.setFileExtension(file.getName().substring(file.getName().lastIndexOf(".") + 1, file.getName().length()))
         sysAttachmentDto.setCreater(processControllerComponent.getThisUser());
         sysAttachmentDto.setFileSize(org.apache.commons.io.FileUtils.sizeOfAsBigInteger(file).toString());
         //注意这里因为是linux 路径所以采用/ 或者使用Java自带的判断符号 windows下 WinNTFileSystem linux 下UnixFileSystem
         String ftpBasePath = String.join(File.separator, baseAttachmentService.createFTPBasePath(), DateUtils.format(new Date(), DateUtils.DATE_PATTERN), String.valueOf(RandomUtils.nextInt(1, 1000)), UUID.randomUUID().toString().substring(0, 10));
-        String ftpFileName = baseAttachmentService.createNoRepeatFileName(sysAttachmentDto.getFileExtension());
         sysAttachmentDto.setFilePath(ftpBasePath);
-        sysAttachmentDto.setFtpFileName(ftpFileName);
+        sysAttachmentDto.setFtpFileName(baseAttachmentService.createNoRepeatFileName(sysAttachmentDto.getFileExtension()));
         try {
-            ftpUtilsExtense.uploadFilesToFTP(ftpBasePath, new FileInputStream(file.getPath()), ftpFileName);
+            ftpUtilsExtense.uploadFilesToFTP(ftpBasePath, new FileInputStream(file.getPath()), sysAttachmentDto.getFtpFileName());
         } catch (Exception e) {
             baseService.writeExceptionInfo(e,"erp上传文件出错");
-        }finally {
-            //暂时不处理
         }
         baseAttachmentService.addAttachment(sysAttachmentDto);
     }

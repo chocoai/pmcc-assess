@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.common.enums.basic.EstateTaggingTypeEnum;
 import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatch;
 import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchDetail;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateTaggingVo;
+import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.basic.BasicApplyBatchDetailService;
 import com.copower.pmcc.assess.service.basic.BasicApplyBatchService;
@@ -38,8 +39,8 @@ public class MapController {
     private BasicApplyBatchDetailService basicApplyBatchDetailService;
     @Autowired
     private BasicApplyBatchService basicApplyBatchService;
-
-    private final Logger logger = LoggerFactory.getLogger(getClass());
+    @Autowired
+    private BaseService baseService;
 
     @RequestMapping(value = "/positionPicker", name = "当前位置定位")
     public ModelAndView positionPicker() {
@@ -81,7 +82,7 @@ public class MapController {
                     modelAndView.addObject("attachmentId", attachmentId);
                 }
             } catch (Exception e) {
-                logger.error(String.format("%s%s", "附件可能被删除了", e.getMessage()), e);
+                baseService.writeExceptionInfo(e,"房屋标注 附件可能被删除了");
             }
         }
         modelAndView.addObject("lng", StringUtils.isEmpty(lng) ? "" : lng);
@@ -92,21 +93,21 @@ public class MapController {
     }
 
     @RequestMapping(value = "/mapMarkerEstate", name = "楼盘地图标注")
-    public ModelAndView mapMarkerEstate(String estateName, String click, String lng,String lat) {
+    public ModelAndView mapMarkerEstate(String estateName, String click, String lng, String lat) {
         ModelAndView modelAndView = new ModelAndView("base/mapMarkerEstate");
         modelAndView.addObject("estateName", estateName);
         modelAndView.addObject("click", click);
-        modelAndView.addObject("center", JSONObject.toJSONString(new KeyValueDto(lng,lat)) );
+        modelAndView.addObject("center", JSONObject.toJSONString(new KeyValueDto(lng, lat)));
         return modelAndView;
     }
 
     @RequestMapping(value = "/mapMarkerEstateByTableId", name = "楼盘地图标注")
-    public ModelAndView mapMarkerEstateByTableId(Integer tableId,String tableName, String click) {
+    public ModelAndView mapMarkerEstateByTableId(Integer tableId, String tableName, String click) {
         ModelAndView modelAndView = new ModelAndView("base/mapMarkerEstate");
         BasicApplyBatch applyBatch = null;
-        if("tb_basic_estate".equals(tableName)){
+        if ("tb_basic_estate".equals(tableName)) {
             applyBatch = basicApplyBatchService.getBasicApplyBatchByEstateId(tableId);
-        }else {
+        } else {
             BasicApplyBatchDetail basicApplyBatchDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(tableName, tableId);
             applyBatch = basicApplyBatchService.getBasicApplyBatchById(basicApplyBatchDetail.getApplyBatchId());
         }
