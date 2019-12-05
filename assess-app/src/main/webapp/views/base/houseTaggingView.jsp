@@ -34,7 +34,7 @@
             </td>
         </tr>
     </table>
-    <img id="oImg" src="${pageContext.request.contextPath}${huxingImg}" style="display:none;">
+    <img id="oImg" src="${pageContext.request.contextPath}${huxingImg}" style="display: none;">
 </div>
 <script type="text/javascript"
         src="https://webapi.amap.com/maps?v=1.4.10&key=ac9fb0371e0405ef74cb1ca003fd0eef"></script>
@@ -93,7 +93,7 @@
             // 图标尺寸
             size: new AMap.Size(width * 10, height * 10),
             // 图标的取图地址
-            image: config.imageUrl,
+            image:oImg.attr("src"),
             // 图标所用图片大小
             imageSize: new AMap.Size(width / 2.5, height / 2.5),
             // 图标取图偏移量
