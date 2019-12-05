@@ -434,7 +434,7 @@
                                                 成交对象概况
                                             </label>
                                             <div class="col-sm-11">
-                                                <textarea name="dealPartInfo" class="form-control"></textarea>
+                                                <textarea name="dealPartInfo" name="landDealPartInfo" class="form-control"></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -631,7 +631,7 @@
                                                 成交对象概况
                                             </label>
                                             <div class="col-sm-11">
-                                                <textarea name="dealPartInfo" class="form-control"></textarea>
+                                                <textarea name="dealPartInfo" id="houseDealPartInfo" class="form-control"></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -930,6 +930,7 @@
                 return false;
             }
             var data = formParams(detailInfo.prototype.config().frm);
+            data.dealPartInfo = $("#" + detailInfo.prototype.config().frm).find("#landDealPartInfo").val();
             $.ajax({
                 url: "${pageContext.request.contextPath}/netInfoRecordLand/saveLandDetail",
                 type: "post",
@@ -956,6 +957,7 @@
                 return false;
             }
             var data = formParams(detailInfo.prototype.config().frm);
+            data.dealPartInfo = $("#" + detailInfo.prototype.config().frm).find("#houseDealPartInfo").val();
             $.ajax({
                 url: "${pageContext.request.contextPath}/netInfoRecordHouse/saveHouseDetail",
                 type: "post",
