@@ -7,6 +7,7 @@ import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordLandDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecord;
 import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordLand;
+import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.NetInfoRecordLandService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -44,6 +45,8 @@ public class NetInfoRecordLandController {
     private NetInfoRecordLandDao netInfoRecordLandDao;
     @Autowired
     private BaseAttachmentService baseAttachmentService;
+    @Autowired
+    private BaseService baseService;
 
     @RequestMapping(value = "/index", name = "拍卖详细信息视图")
     public ModelAndView index() {
@@ -87,6 +90,7 @@ public class NetInfoRecordLandController {
             }
             return HttpResult.newCorrectResult(netInfoRecordLandService.getNetInfoRecordLandVo(landData, attachmentDtos));
         } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult("保存异常");
         }
     }
@@ -99,6 +103,7 @@ public class NetInfoRecordLandController {
             NetInfoRecord infoRecord = netInfoRecordDao.getInfoById(landData.getMasterId());
             return HttpResult.newCorrectResult(infoRecord);
         } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult("保存异常");
         }
     }
@@ -109,6 +114,7 @@ public class NetInfoRecordLandController {
         try {
             netInfoRecordLandService.removeNetInfoRecordLand(id);
         } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult(e.getMessage());
         }
         return HttpResult.newCorrectResult();
