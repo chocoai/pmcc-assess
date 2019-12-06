@@ -1,7 +1,9 @@
 package com.copower.pmcc.assess.service;
 
+import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordDao;
 import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordHouseDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
+import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecord;
 import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordHouse;
 import com.copower.pmcc.assess.dto.output.net.NetInfoRecordHouseVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
@@ -50,6 +52,8 @@ public class NetInfoRecordHouseService {
     private ApplicationConstant applicationConstant;
     @Autowired
     private BaseAttachmentService baseAttachmentService;
+    @Autowired
+    private NetInfoRecordDao netInfoRecordDao;
 
     public NetInfoRecordHouse saveAndUpdateNetInfoRecordHouse(NetInfoRecordHouse netInfoRecordHouse) {
         if (netInfoRecordHouse.getId() == null) {
@@ -152,6 +156,8 @@ public class NetInfoRecordHouseService {
             }
             vo.setFileViewName(stringBuilder.toString());
         }
+        NetInfoRecord record = netInfoRecordDao.getInfoById(netInfoRecordHouse.getMasterId());
+        vo.setSourceSiteUrl(record.getSourceSiteUrl());
         return vo;
     }
 

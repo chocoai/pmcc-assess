@@ -1,8 +1,10 @@
 package com.copower.pmcc.assess.service;
 
+import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordDao;
 import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordLandDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.DataLandLevel;
+import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecord;
 import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordLand;
 import com.copower.pmcc.assess.dto.output.net.NetInfoRecordLandVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
@@ -38,7 +40,8 @@ import java.util.List;
 public class NetInfoRecordLandService {
     @Autowired
     private NetInfoRecordLandDao netInfoRecordLandDao;
-
+    @Autowired
+    private NetInfoRecordDao netInfoRecordDao;
     @Autowired
     private CommonService commonService;
     @Autowired
@@ -152,8 +155,8 @@ public class NetInfoRecordLandService {
             }
             vo.setFileViewName(stringBuilder.toString());
         }
-
-
+        NetInfoRecord record = netInfoRecordDao.getInfoById(netInfoRecordLand.getMasterId());
+        vo.setSourceSiteUrl(record.getSourceSiteUrl());
         return vo;
     }
 

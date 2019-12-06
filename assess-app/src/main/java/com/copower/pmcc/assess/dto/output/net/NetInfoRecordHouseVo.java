@@ -13,6 +13,15 @@ public class NetInfoRecordHouseVo extends NetInfoRecordHouse {
     private String cityName;
     private String districtName;
     private String fileViewName;
+    private String sourceSiteUrl;
+
+    public String getSourceSiteUrl() {
+        return sourceSiteUrl;
+    }
+
+    public void setSourceSiteUrl(String sourceSiteUrl) {
+        this.sourceSiteUrl = sourceSiteUrl;
+    }
 
     public String getFileViewName() {
         return fileViewName;
