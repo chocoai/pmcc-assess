@@ -29,6 +29,9 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -60,12 +63,14 @@ public class DeclarePublicService {
     private static final String FLOOR = "层";
     private static final String ATTACHED = "附";
     private static final String BUILDING = "幢";
+    private static final String BUILDING2 = "栋";
     private static final String STREET = "STREET";
     private static final String RoomNumber = "RoomNumber";
     private static final String NUMBER = "号";
 
     /**
      * 专门处理坐落问题
+     * 优化后可以处理负数以及下划线等的连接如2-4栋
      *
      * @param text
      * @return
@@ -75,40 +80,100 @@ public class DeclarePublicService {
         if (StringUtils.isEmpty(text)) {
             return stringMap;
         }
-        String streetName = org.apache.commons.lang3.StringUtils.substringBetween(text, "", NUMBER);
+        final String numberRegex = "-?\\d";//负整数或者正整数
+        Function<Matcher, String> function = matcher -> {
+            while (matcher.find()) {
+                if (StringUtils.isNotEmpty(matcher.group())) {
+                    return matcher.group();
+                }
+            }
+            return null;
+        };
+        BiFunction<String,String,String> replaceFun = (s2, s) -> Pattern.compile(String.join("", "[", "^", numberRegex, "]", "*")).matcher(s2).replaceAll(s);
+        String streetName = String.join("",org.apache.commons.lang3.StringUtils.substringBetween(text, "", NUMBER),NUMBER);
         stringMap.put(STREET, streetName);
-        final String value = StringUtils.removeStart(text, streetName);
-        List<String> stringList = generateCommonMethod.convertNumberHelp(value);
-        if (CollectionUtils.isNotEmpty(stringList)) {
-            stringList = stringList.stream().filter(s -> NumberUtils.isNumber(s)).collect(Collectors.toList());
-        }
-        if (CollectionUtils.isNotEmpty(stringList)) {
-            stringList.stream().forEachOrdered(s -> {
-                //附
-                if (StringUtils.contains(value, String.format("%s%d%s", ATTACHED, Integer.parseInt(s), NUMBER))) {
-                    stringMap.put(ATTACHED, s);
-                }
-                //栋
-                if (StringUtils.contains(value, String.format("%d%s", Integer.parseInt(s), BUILDING))) {
-                    stringMap.put(BUILDING, s);
-                }
-                //单元
-                if (StringUtils.contains(value, String.format("%d%s", Integer.parseInt(s), UNIT))) {
-                    stringMap.put(UNIT, s);
-                }
-                //层
-                if (StringUtils.contains(value, String.format("%d%s", Integer.parseInt(s), FLOOR))) {
-                    stringMap.put(FLOOR, s);
-                }
-                //房
-                if (StringUtils.contains(value, String.format("%d%s", Integer.parseInt(s), NUMBER))) {
-                    stringMap.put(RoomNumber, s);
-                }
 
-            });
+//        final String value = StringUtils.removeStart(text, streetName);
+//        List<String> stringList = generateCommonMethod.convertNumberHelp(value);
+//        if (CollectionUtils.isNotEmpty(stringList)) {
+//            stringList = stringList.stream().filter(s -> NumberUtils.isNumber(s)).collect(Collectors.toList());
+//        }
+//        if (CollectionUtils.isNotEmpty(stringList)) {
+//            stringList.stream().forEachOrdered(s -> {
+//                //附
+//                if (StringUtils.contains(value, String.format("%s%d%s", ATTACHED, Integer.parseInt(s), NUMBER))) {
+//                    stringMap.put(ATTACHED, s);
+//                }
+//                //栋
+//                if (StringUtils.contains(value, String.format("%d%s", Integer.parseInt(s), BUILDING))) {
+//                    stringMap.put(BUILDING, s);
+//                }
+//                //单元
+//                if (StringUtils.contains(value, String.format("%d%s", Integer.parseInt(s), UNIT))) {
+//                    stringMap.put(UNIT, s);
+//                }
+//                //层
+//                if (StringUtils.contains(value, String.format("%d%s", Integer.parseInt(s), FLOOR))) {
+//                    stringMap.put(FLOOR, s);
+//                }
+//                //房
+//                if (StringUtils.contains(value, String.format("%d%s", Integer.parseInt(s), NUMBER))) {
+//                    stringMap.put(RoomNumber, s);
+//                }
+//
+//            });
+//        }
+
+
+        String value = "";
+        value = StringUtils.removeStart(text, streetName);
+        if (StringUtils.isNotEmpty(value)) {
+            if (StringUtils.contains(value, ATTACHED)) {
+                String attached = function.apply(Pattern.compile(String.join("", "^", ATTACHED, numberRegex, "*")).matcher(value));
+                if (StringUtils.isNotEmpty(attached)) {
+                    String number = replaceFun.apply(attached,"") ;//提取出整个字符中的数字
+                    stringMap.put(ATTACHED, number);
+                    value = StringUtils.replaceOnce(value, String.join("", attached, NUMBER), "");
+                }
+            }
+        }
+        if (StringUtils.isNotEmpty(value)) {
+            if (StringUtils.contains(value, BUILDING)) {
+                String building = org.apache.commons.lang3.StringUtils.substringBetween(value, "", BUILDING);
+                value = StringUtils.replaceOnce(value, String.join("", building, BUILDING), "");
+                stringMap.put(BUILDING, replaceFun.apply(building,""));
+            }
+        }
+        if (StringUtils.isNotEmpty(value)) {
+            if (StringUtils.contains(value, BUILDING2)) {
+                String building = org.apache.commons.lang3.StringUtils.substringBetween(value, "", BUILDING2);
+                value = StringUtils.replaceOnce(value, String.join("", building, BUILDING2), "");
+                stringMap.put(BUILDING, replaceFun.apply(building,""));
+            }
+        }
+        if (StringUtils.isNotEmpty(value)) {
+            if (StringUtils.contains(value, UNIT)) {
+                String unit = org.apache.commons.lang3.StringUtils.substringBetween(value, "", UNIT);
+                value = StringUtils.replaceOnce(value, String.join("", unit, UNIT), "");
+                stringMap.put(UNIT, replaceFun.apply(unit,""));
+            }
+        }
+
+        if (StringUtils.isNotEmpty(value)) {
+            if (StringUtils.contains(value, FLOOR)) {
+                String floor = org.apache.commons.lang3.StringUtils.substringBetween(value, "", FLOOR);
+                value = StringUtils.replaceOnce(value, String.join("", floor, FLOOR), "");
+                stringMap.put(FLOOR, replaceFun.apply(floor,""));
+            }
+        }
+        if (StringUtils.isNotEmpty(value)) {
+            if (StringUtils.contains(value, NUMBER)) {//最后剩余的就是房号
+                stringMap.put(RoomNumber, replaceFun.apply(value,""));
+            }
         }
         return stringMap;
     }
+
 
     /**
      * 不动产
@@ -684,7 +749,7 @@ public class DeclarePublicService {
                 //共有情况
                 declareRealtyHouseCert.setPublicSituation(typeDic.getId());
             }
-        }else {
+        } else {
             builder.append(String.format("\n第%s行异常：共有情况必须填写", i));
             return false;
         }
@@ -732,7 +797,7 @@ public class DeclarePublicService {
         //房屋用途类型
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(11)))) {
             declareRealtyHouseCert.setCertUse(PoiUtils.getCellValue(row.getCell(11)));
-        }else {
+        } else {
             builder.append(String.format("\n第%s行异常：房屋用途类型必须填写", i));
             return false;
         }
@@ -761,7 +826,7 @@ public class DeclarePublicService {
                 builder.append(String.format("\n第%s行异常：证载面积应填写数字", i));
                 return false;
             }
-        }else {
+        } else {
             builder.append(String.format("\n第%s行异常：证载面积必须填写", i));
             return false;
         }
