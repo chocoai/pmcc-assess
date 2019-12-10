@@ -30,8 +30,9 @@ public class NetInfoRecordHouseDao {
         return netInfoRecordHouseMapper.selectByPrimaryKey(id);
     }
 
-    public boolean updateNetInfoRecordHouse(NetInfoRecordHouse netInfoRecordHouse) {
-        return netInfoRecordHouseMapper.updateByPrimaryKeySelective(netInfoRecordHouse) == 1;
+    public boolean updateNetInfoRecordHouse(NetInfoRecordHouse netInfoRecordHouse, boolean updateNull) {
+        //return netInfoRecordHouseMapper.updateByPrimaryKeySelective(netInfoRecordHouse) == 1;
+        return updateNull ? netInfoRecordHouseMapper.updateByPrimaryKey(netInfoRecordHouse) == 1 : netInfoRecordHouseMapper.updateByPrimaryKeySelective(netInfoRecordHouse) == 1;
     }
 
 

@@ -8,6 +8,8 @@ public class NetInfoRecordLand {
 
     private Integer masterId;
 
+    private String type;
+
     private String province;
 
     private String city;
@@ -15,6 +17,8 @@ public class NetInfoRecordLand {
     private String district;
 
     private String belongType;
+
+    private String belongCategory;
 
     private String landPurpose;
 
@@ -72,17 +76,15 @@ public class NetInfoRecordLand {
 
     private String dealPartInfo;
 
+    private Integer status;
+
     private String creator;
 
     private Date gmtCreated;
 
     private Date gmtModified;
 
-    private String type;
-
-    private String belongCategory;
-
-    private Integer status;
+    private String approver;
 
     public Integer getId() {
         return id;
@@ -98,6 +100,14 @@ public class NetInfoRecordLand {
 
     public void setMasterId(Integer masterId) {
         this.masterId = masterId;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type == null ? null : type.trim();
     }
 
     public String getProvince() {
@@ -130,6 +140,14 @@ public class NetInfoRecordLand {
 
     public void setBelongType(String belongType) {
         this.belongType = belongType == null ? null : belongType.trim();
+    }
+
+    public String getBelongCategory() {
+        return belongCategory;
+    }
+
+    public void setBelongCategory(String belongCategory) {
+        this.belongCategory = belongCategory == null ? null : belongCategory.trim();
     }
 
     public String getLandPurpose() {
@@ -356,6 +374,14 @@ public class NetInfoRecordLand {
         this.dealPartInfo = dealPartInfo == null ? null : dealPartInfo.trim();
     }
 
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
     public String getCreator() {
         return creator;
     }
@@ -380,27 +406,11 @@ public class NetInfoRecordLand {
         this.gmtModified = gmtModified;
     }
 
-    public String getType() {
-        return type;
+    public String getApprover() {
+        return approver;
     }
 
-    public void setType(String type) {
-        this.type = type == null ? null : type.trim();
-    }
-
-    public String getBelongCategory() {
-        return belongCategory;
-    }
-
-    public void setBelongCategory(String belongCategory) {
-        this.belongCategory = belongCategory == null ? null : belongCategory.trim();
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
+    public void setApprover(String approver) {
+        this.approver = approver == null ? null : approver.trim();
     }
 }

@@ -38,6 +38,30 @@ public class CaseBaseHouse {
 
     private Date gmtModified;
 
+    private String houseType;
+
+    private String houseCategory;
+
+    private BigDecimal area;
+
+    private String estateName;
+
+    private Integer dealType;
+
+    private BigDecimal currentPrice;
+
+    private BigDecimal consultPrice;
+
+    private Date assessStandardDate;
+
+    private BigDecimal realizationRatios;
+
+    private String realizationCycle;
+
+    private String dealPartInfo;
+
+    private String approver;
+
     public Integer getId() {
         return id;
     }
@@ -172,5 +196,101 @@ public class CaseBaseHouse {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getHouseType() {
+        return houseType;
+    }
+
+    public void setHouseType(String houseType) {
+        this.houseType = houseType == null ? null : houseType.trim();
+    }
+
+    public String getHouseCategory() {
+        return houseCategory;
+    }
+
+    public void setHouseCategory(String houseCategory) {
+        this.houseCategory = houseCategory == null ? null : houseCategory.trim();
+    }
+
+    public BigDecimal getArea() {
+        return area;
+    }
+
+    public void setArea(BigDecimal area) {
+        this.area = area;
+    }
+
+    public String getEstateName() {
+        return estateName;
+    }
+
+    public void setEstateName(String estateName) {
+        this.estateName = estateName == null ? null : estateName.trim();
+    }
+
+    public Integer getDealType() {
+        return dealType;
+    }
+
+    public void setDealType(Integer dealType) {
+        this.dealType = dealType;
+    }
+
+    public BigDecimal getCurrentPrice() {
+        return currentPrice;
+    }
+
+    public void setCurrentPrice(BigDecimal currentPrice) {
+        this.currentPrice = currentPrice;
+    }
+
+    public BigDecimal getConsultPrice() {
+        return consultPrice;
+    }
+
+    public void setConsultPrice(BigDecimal consultPrice) {
+        this.consultPrice = consultPrice;
+    }
+
+    public Date getAssessStandardDate() {
+        return assessStandardDate;
+    }
+
+    public void setAssessStandardDate(Date assessStandardDate) {
+        this.assessStandardDate = assessStandardDate;
+    }
+
+    public BigDecimal getRealizationRatios() {
+        return realizationRatios;
+    }
+
+    public void setRealizationRatios(BigDecimal realizationRatios) {
+        this.realizationRatios = realizationRatios;
+    }
+
+    public String getRealizationCycle() {
+        return realizationCycle;
+    }
+
+    public void setRealizationCycle(String realizationCycle) {
+        this.realizationCycle = realizationCycle == null ? null : realizationCycle.trim();
+    }
+
+    public String getDealPartInfo() {
+        return dealPartInfo;
+    }
+
+    public void setDealPartInfo(String dealPartInfo) {
+        this.dealPartInfo = dealPartInfo == null ? null : dealPartInfo.trim();
+    }
+
+    public String getApprover() {
+        return approver;
+    }
+
+    public void setApprover(String approver) {
+        this.approver = approver == null ? null : approver.trim();
     }
 }

@@ -70,7 +70,10 @@ public class NetInfoRecordHouseService {
             erpRpcAttachmentService.updateAttachmentByParam(queryParam, sysAttachmentDto);
             return netInfoRecordHouse;
         } else {
-            netInfoRecordHouseDao.updateNetInfoRecordHouse(netInfoRecordHouse);
+            NetInfoRecordHouse recordHouse = getNetInfoRecordHouseById(netInfoRecordHouse.getId());
+            netInfoRecordHouse.setStatus(recordHouse.getStatus());
+            netInfoRecordHouse.setCreator(commonService.thisUserAccount());
+            netInfoRecordHouseDao.updateNetInfoRecordHouse(netInfoRecordHouse, true);
             return netInfoRecordHouse;
         }
     }

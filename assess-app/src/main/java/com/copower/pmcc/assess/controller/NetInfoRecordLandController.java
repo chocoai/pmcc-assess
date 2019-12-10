@@ -81,10 +81,11 @@ public class NetInfoRecordLandController {
             SysAttachmentDto where = new SysAttachmentDto();
             where.setTableName(FormatUtils.entityNameConvertToTableName(NetInfoRecordLand.class));
             List<SysAttachmentDto> attachmentDtos = baseAttachmentService.getAttachmentList(LangUtils.transform(netInfoRecordLands, o -> o.getId()), where);
-
+            //改为已填写状态
             if (changeStatus) {
                 NetInfoRecord record = netInfoRecordDao.getInfoById(netInfoRecordLand.getMasterId());
                 record.setBelongType(netInfoRecordLand.getType());
+                if(record.getStatus()==1||record.getStatus()==2)
                 record.setStatus(2);
                 netInfoRecordDao.updateInfo(record);
             }
@@ -116,6 +117,20 @@ public class NetInfoRecordLandController {
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getDataById", method = {RequestMethod.GET}, name = "通过id获取信息")
+    public HttpResult getDataById(Integer id) {
+        try {
+            if (id != null) {
+                NetInfoRecordLand recordLand = netInfoRecordLandService.getNetInfoRecordLandById(id);
+                return HttpResult.newCorrectResult(recordLand);
+            }
+        } catch (Exception e) {
+            return HttpResult.newErrorResult(String.format("异常! %s", e.getMessage()));
         }
         return HttpResult.newCorrectResult();
     }

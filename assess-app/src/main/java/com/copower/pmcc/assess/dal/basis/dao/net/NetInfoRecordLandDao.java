@@ -31,8 +31,9 @@ public class NetInfoRecordLandDao {
         return netInfoRecordLandMapper.selectByPrimaryKey(id);
     }
 
-    public boolean updateNetInfoRecordLand(NetInfoRecordLand netInfoRecordLand) {
-        return netInfoRecordLandMapper.updateByPrimaryKeySelective(netInfoRecordLand) == 1;
+    public boolean updateNetInfoRecordLand(NetInfoRecordLand netInfoRecordLand, boolean updateNull) {
+        //return netInfoRecordLandMapper.updateByPrimaryKeySelective(netInfoRecordLand) == 1;
+        return updateNull ? netInfoRecordLandMapper.updateByPrimaryKey(netInfoRecordLand) == 1 : netInfoRecordLandMapper.updateByPrimaryKeySelective(netInfoRecordLand) == 1;
     }
 
 
@@ -69,7 +70,7 @@ public class NetInfoRecordLandDao {
         return netInfoRecordLandMapper.selectByExample(example);
     }
 
-    public List<NetInfoRecordLand> getLandListByMasterIds(List<Integer> masterIds){
+    public List<NetInfoRecordLand> getLandListByMasterIds(List<Integer> masterIds) {
         NetInfoRecordLandExample example = new NetInfoRecordLandExample();
         NetInfoRecordLandExample.Criteria criteria = example.createCriteria();
         criteria.andMasterIdIn(masterIds);

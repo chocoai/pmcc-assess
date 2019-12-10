@@ -4,11 +4,13 @@ import com.copower.pmcc.assess.dal.cases.custom.mapper.CustomCaseMapper;
 import com.copower.pmcc.assess.dal.cases.dao.CaseBaseHouseDao;
 import com.copower.pmcc.assess.dal.cases.entity.CaseBaseHouse;
 import com.copower.pmcc.assess.dto.output.cases.CaseBaseHouseVo;
+import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.LangUtils;
+import com.copower.pmcc.erp.common.utils.PasswordUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -35,16 +37,18 @@ public class CaseBaseHouseService {
     private CustomCaseMapper customCaseMapper;
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private PublicService publicService;
 
     public CaseBaseHouse getBaseHouseById(Integer id){
         return caseBaseHouseDao.getBaseHouseById(id);
     }
 
-    public BootstrapTableVo getBootstrapTableVo(BigDecimal tradingUnitPriceStart, BigDecimal tradingUnitPriceEnd, Date tradingTimeStart, Date tradingTimeEnd, CaseBaseHouse caseBaseHouse)throws Exception{
+    public BootstrapTableVo getBootstrapTableVo(BigDecimal areaStart, BigDecimal areaEnd, Date tradingTimeStart, Date tradingTimeEnd, CaseBaseHouse caseBaseHouse)throws Exception{
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<CaseBaseHouse> list = customCaseMapper.findCaseBaseHouseList(tradingUnitPriceStart, tradingUnitPriceEnd, tradingTimeStart, tradingTimeEnd, caseBaseHouse);
+        List<CaseBaseHouse> list = customCaseMapper.findCaseBaseHouseList(areaStart, areaEnd, tradingTimeStart, tradingTimeEnd, caseBaseHouse);
         List<CaseBaseHouseVo> vos= LangUtils.transform(list,o->getCaseBaseHouseVo(o));
         vo.setTotal(page.getTotal());
         vo.setRows(vos);
@@ -59,6 +63,10 @@ public class CaseBaseHouseService {
             caseBaseHouseVo.setPracticalUseName(baseDataDicService.getNameById(caseBaseHouse.getPracticalUse()));
         if(caseBaseHouse.getTradingType()!=null)
             caseBaseHouseVo.setTradingTypeName(baseDataDicService.getNameById(caseBaseHouse.getTradingType()));
+        if(caseBaseHouse.getDealType()!=null)
+            caseBaseHouseVo.setDealTypeName(baseDataDicService.getNameById(caseBaseHouse.getDealType()));
+        if(StringUtils.isNotEmpty(caseBaseHouse.getApprover()))
+            caseBaseHouseVo.setApproverName(publicService.getUserNameByAccount(caseBaseHouse.getApprover()));
         return caseBaseHouseVo;
     }
 
@@ -98,4 +106,22 @@ public class CaseBaseHouseService {
     public void deleteBaseHouseById(Integer id) {
         caseBaseHouseDao.deleteBaseHouse(id);
     }
+
+    /**
+     * 验证
+     *
+     */
+    public boolean checkFullName(String fullName) {
+        List<CaseBaseHouse> baseHouseList = getBaseHouseList(new CaseBaseHouse());
+        if(!CollectionUtils.isEmpty(baseHouseList)){
+            for (CaseBaseHouse item: baseHouseList) {
+                if(StringUtils.equals(fullName,item.getFullName())){
+                    return false;
+                }
+            }
+        }
+        return true;
+
+    }
+
 }

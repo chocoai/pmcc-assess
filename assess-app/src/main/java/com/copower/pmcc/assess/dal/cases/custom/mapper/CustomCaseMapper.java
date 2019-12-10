@@ -63,7 +63,7 @@ public interface CustomCaseMapper {
      * @return
      * @throws SQLException
      */
-    public List<CaseBaseHouse> findCaseBaseHouseList(@Param("tradingUnitPriceStart") BigDecimal tradingUnitPriceStart, @Param("tradingUnitPriceEnd") BigDecimal tradingUnitPriceEnd, @Param("tradingTimeStart") Date tradingTimeStart, @Param("tradingTimeEnd") Date tradingTimeEnd, @Param("caseBaseHouse") CaseBaseHouse caseBaseHouse) throws SQLException;
+    public List<CaseBaseHouse> findCaseBaseHouseList(@Param("areaStart") BigDecimal tradingUnitPriceStart, @Param("areaEnd") BigDecimal tradingUnitPriceEnd, @Param("tradingTimeStart") Date tradingTimeStart, @Param("tradingTimeEnd") Date tradingTimeEnd, @Param("caseBaseHouse") CaseBaseHouse caseBaseHouse) throws SQLException;
 
     /**
      * 筛选版本最新并且筛选版本不重复的楼栋号码

@@ -3,7 +3,6 @@ package com.copower.pmcc.assess.service;
 import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordDao;
 import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordLandDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.basis.entity.DataLandLevel;
 import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecord;
 import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordLand;
 import com.copower.pmcc.assess.dto.output.net.NetInfoRecordLandVo;
@@ -70,7 +69,10 @@ public class NetInfoRecordLandService {
             erpRpcAttachmentService.updateAttachmentByParam(queryParam, sysAttachmentDto);
             return netInfoRecordLand;
         } else {
-            netInfoRecordLandDao.updateNetInfoRecordLand(netInfoRecordLand);
+            NetInfoRecordLand recordLand = getNetInfoRecordLandById(netInfoRecordLand.getId());
+            netInfoRecordLand.setStatus(recordLand.getStatus());
+            netInfoRecordLand.setCreator(commonService.thisUserAccount());
+            netInfoRecordLandDao.updateNetInfoRecordLand(netInfoRecordLand, true);
             return netInfoRecordLand;
         }
     }
@@ -88,7 +90,7 @@ public class NetInfoRecordLandService {
         where.setTableName(FormatUtils.entityNameConvertToTableName(NetInfoRecordLand.class));
         List<SysAttachmentDto> attachmentDtos = baseAttachmentService.getAttachmentList(LangUtils.transform(netInfoRecordLands, o -> o.getId()), where);
         bootstrapTableVo.setTotal(page.getTotal());
-        bootstrapTableVo.setRows(netInfoRecordLands == null ? new ArrayList() : LangUtils.transform(netInfoRecordLands, o -> getNetInfoRecordLandVo(o,attachmentDtos)));
+        bootstrapTableVo.setRows(netInfoRecordLands == null ? new ArrayList() : LangUtils.transform(netInfoRecordLands, o -> getNetInfoRecordLandVo(o, attachmentDtos)));
         return bootstrapTableVo;
     }
 
@@ -103,7 +105,7 @@ public class NetInfoRecordLandService {
         where.setTableName(FormatUtils.entityNameConvertToTableName(NetInfoRecordLand.class));
         List<SysAttachmentDto> attachmentDtos = baseAttachmentService.getAttachmentList(LangUtils.transform(netInfoRecordLands, o -> o.getId()), where);
         bootstrapTableVo.setTotal(page.getTotal());
-        bootstrapTableVo.setRows(netInfoRecordLands == null ? new ArrayList() : LangUtils.transform(netInfoRecordLands, o -> getNetInfoRecordLandVo(o,attachmentDtos)));
+        bootstrapTableVo.setRows(netInfoRecordLands == null ? new ArrayList() : LangUtils.transform(netInfoRecordLands, o -> getNetInfoRecordLandVo(o, attachmentDtos)));
         return bootstrapTableVo;
     }
 
@@ -117,7 +119,7 @@ public class NetInfoRecordLandService {
         List<NetInfoRecordLandVo> vos = Lists.newArrayList();
         if (!ObjectUtils.isEmpty(netInfoRecordLands)) {
             for (NetInfoRecordLand landLevel : netInfoRecordLands) {
-                vos.add(getNetInfoRecordLandVo(landLevel,attachmentDtos));
+                vos.add(getNetInfoRecordLandVo(landLevel, attachmentDtos));
             }
         }
         return vos;
@@ -150,7 +152,7 @@ public class NetInfoRecordLandService {
             StringBuilder stringBuilder = new StringBuilder();
             for (SysAttachmentDto attachmentDto : attachmentDtos) {
                 if (attachmentDto.getTableId().equals(netInfoRecordLand.getId())) {
-                    stringBuilder.append(baseAttachmentService.getEditHtml(attachmentDto,false));
+                    stringBuilder.append(baseAttachmentService.getEditHtml(attachmentDto, false));
                 }
             }
             vo.setFileViewName(stringBuilder.toString());
@@ -165,8 +167,8 @@ public class NetInfoRecordLandService {
         NetInfoRecordLand netInfoRecordLand = new NetInfoRecordLand();
         netInfoRecordLand.setMasterId(masterId);
         List<NetInfoRecordLand> netInfoRecordLands = netInfoRecordLandDao.getNetInfoRecordLandList(netInfoRecordLand);
-        if(CollectionUtils.isNotEmpty(netInfoRecordLands)){
-            return netInfoRecordLands.get(netInfoRecordLands.size()-1);
+        if (CollectionUtils.isNotEmpty(netInfoRecordLands)) {
+            return netInfoRecordLands.get(netInfoRecordLands.size() - 1);
         }
         return null;
     }

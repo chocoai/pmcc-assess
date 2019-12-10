@@ -8,6 +8,24 @@ import com.copower.pmcc.assess.dal.cases.entity.CaseBaseHouse;
 public class CaseBaseHouseVo extends CaseBaseHouse {
     private String practicalUseName;
     private String tradingTypeName;
+    private String approverName;
+    private String dealTypeName;
+
+    public String getDealTypeName() {
+        return dealTypeName;
+    }
+
+    public void setDealTypeName(String dealTypeName) {
+        this.dealTypeName = dealTypeName;
+    }
+
+    public String getApproverName() {
+        return approverName;
+    }
+
+    public void setApproverName(String approverName) {
+        this.approverName = approverName;
+    }
 
     public String getPracticalUseName() {
         return practicalUseName;

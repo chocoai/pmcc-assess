@@ -8,6 +8,8 @@ public class NetInfoRecordHouse {
 
     private Integer masterId;
 
+    private String type;
+
     private String province;
 
     private String city;
@@ -15,6 +17,8 @@ public class NetInfoRecordHouse {
     private String district;
 
     private String belongType;
+
+    private String belongCategory;
 
     private String street;
 
@@ -40,17 +44,21 @@ public class NetInfoRecordHouse {
 
     private String dealPartInfo;
 
+    private Integer status;
+
     private String creator;
 
     private Date gmtCreated;
 
     private Date gmtModified;
 
-    private String type;
+    private String buildingNumber;
 
-    private String belongCategory;
+    private String unitNumber;
 
-    private Integer status;
+    private String houseNumber;
+
+    private String approver;
 
     public Integer getId() {
         return id;
@@ -66,6 +74,14 @@ public class NetInfoRecordHouse {
 
     public void setMasterId(Integer masterId) {
         this.masterId = masterId;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type == null ? null : type.trim();
     }
 
     public String getProvince() {
@@ -98,6 +114,14 @@ public class NetInfoRecordHouse {
 
     public void setBelongType(String belongType) {
         this.belongType = belongType == null ? null : belongType.trim();
+    }
+
+    public String getBelongCategory() {
+        return belongCategory;
+    }
+
+    public void setBelongCategory(String belongCategory) {
+        this.belongCategory = belongCategory == null ? null : belongCategory.trim();
     }
 
     public String getStreet() {
@@ -196,6 +220,14 @@ public class NetInfoRecordHouse {
         this.dealPartInfo = dealPartInfo == null ? null : dealPartInfo.trim();
     }
 
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
     public String getCreator() {
         return creator;
     }
@@ -220,27 +252,35 @@ public class NetInfoRecordHouse {
         this.gmtModified = gmtModified;
     }
 
-    public String getType() {
-        return type;
+    public String getBuildingNumber() {
+        return buildingNumber;
     }
 
-    public void setType(String type) {
-        this.type = type == null ? null : type.trim();
+    public void setBuildingNumber(String buildingNumber) {
+        this.buildingNumber = buildingNumber == null ? null : buildingNumber.trim();
     }
 
-    public String getBelongCategory() {
-        return belongCategory;
+    public String getUnitNumber() {
+        return unitNumber;
     }
 
-    public void setBelongCategory(String belongCategory) {
-        this.belongCategory = belongCategory == null ? null : belongCategory.trim();
+    public void setUnitNumber(String unitNumber) {
+        this.unitNumber = unitNumber == null ? null : unitNumber.trim();
     }
 
-    public Integer getStatus() {
-        return status;
+    public String getHouseNumber() {
+        return houseNumber;
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
+    public void setHouseNumber(String houseNumber) {
+        this.houseNumber = houseNumber == null ? null : houseNumber.trim();
+    }
+
+    public String getApprover() {
+        return approver;
+    }
+
+    public void setApprover(String approver) {
+        this.approver = approver == null ? null : approver.trim();
     }
 }

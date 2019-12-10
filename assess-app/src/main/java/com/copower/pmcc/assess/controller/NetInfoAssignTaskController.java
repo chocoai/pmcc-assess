@@ -92,9 +92,9 @@ public class NetInfoAssignTaskController extends BaseController {
 
     @RequestMapping(value = "/approvalCommit", name = "审批提交", method = RequestMethod.POST)
     @ResponseBody
-    public HttpResult approvalCommit(ApprovalModelDto approvalModelDto) {
+    public HttpResult approvalCommit(ApprovalModelDto approvalModelDto, String processInsId) {
         try {
-            netInfoAssignTaskService.approvalCommit(approvalModelDto);
+            netInfoAssignTaskService.approvalCommit(approvalModelDto,processInsId);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             log.error("提交失败", e);
