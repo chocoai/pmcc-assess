@@ -159,49 +159,49 @@ public class SchemeReportFileService extends BaseService {
     /**
      * 生成位置示意图
      *
-     * @param declareRecordList
+     * @param declareRecordId
      */
-    public void makeJudgeObjectPosition(List<DeclareRecord> declareRecordList) throws Exception {
-        if (CollectionUtils.isEmpty(declareRecordList)) return;
-        for (DeclareRecord declareRecord : declareRecordList) {
-            BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(declareRecord.getId());
-            if (basicApply == null) continue;
-            // 删除原位置图
-            SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
-            sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(DeclareRecord.class));
-            sysAttachmentDto.setProjectId(declareRecord.getProjectId());
-            sysAttachmentDto.setTableId(declareRecord.getId());
-            sysAttachmentDto.setFieldsName(AssessUploadEnum.JUDGE_OBJECT_POSITION.getKey());
-            sysAttachmentDto.setFileName("位置示意图.jpg");
-            List<SysAttachmentDto> attachmentList = baseAttachmentService.getAttachmentList(sysAttachmentDto);
-            if (CollectionUtils.isNotEmpty(attachmentList)) {
-                for (SysAttachmentDto attachment : attachmentList) {
-                    baseAttachmentService.deleteAttachmentByDto(attachment);
-                }
-            }
+    public void makeJudgeObjectPosition(Integer declareRecordId) throws Exception {
+        if (declareRecordId == null) return;
+        DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(declareRecordId);
+        BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(declareRecordId);
+        if (basicApply == null) return;
 
-            Integer basicEstateId = basicApply.getBasicEstateId();
-            BasicApplyBatch applyBatch = basicApplyBatchService.getBasicApplyBatchByEstateId(basicEstateId);
-            //获取楼栋
-            List<BasicBuilding> buildingListByBatchId = basicApplyBatchDetailService.getBuildingListByBatchId(applyBatch.getId());
-            if (CollectionUtils.isNotEmpty(buildingListByBatchId)) {
-                for (BasicBuilding build : buildingListByBatchId) {
-                    //获取单元
-                    List<BasicUnit> unitListByBatchId = basicApplyBatchDetailService.getBasicUnitListByBatchId(applyBatch.getId(), build);
-                    if (CollectionUtils.isNotEmpty(unitListByBatchId)) {
-                        for (BasicUnit unit : unitListByBatchId) {
-                            List<BasicEstateTaggingVo> taggingList = basicEstateTaggingService.getApplyBatchEstateTaggingsByTableId(unit.getId(), EstateTaggingTypeEnum.UNIT.getKey());
-                            if (CollectionUtils.isNotEmpty(taggingList)) {
-                                //生成位置图
-                                BasicEstateTagging tagging = taggingList.get(0);
-                                publicService.downLoadLocationImage(tagging.getLng(), tagging.getLat(), sysAttachmentDto);
-                            }
+        // 删除原位置图
+        SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
+        sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(DeclareRecord.class));
+        sysAttachmentDto.setProjectId(declareRecord.getProjectId());
+        sysAttachmentDto.setTableId(declareRecord.getId());
+        sysAttachmentDto.setFieldsName(AssessUploadEnum.JUDGE_OBJECT_POSITION.getKey());
+        sysAttachmentDto.setFileName("位置示意图.jpg");
+        List<SysAttachmentDto> attachmentList = baseAttachmentService.getAttachmentList(sysAttachmentDto);
+        if (CollectionUtils.isNotEmpty(attachmentList)) {
+            for (SysAttachmentDto attachment : attachmentList) {
+                baseAttachmentService.deleteAttachmentByDto(attachment);
+            }
+        }
+
+        Integer basicEstateId = basicApply.getBasicEstateId();
+        BasicApplyBatch applyBatch = basicApplyBatchService.getBasicApplyBatchByEstateId(basicEstateId);
+        //获取楼栋
+        List<BasicBuilding> buildingListByBatchId = basicApplyBatchDetailService.getBuildingListByBatchId(applyBatch.getId());
+        if (CollectionUtils.isNotEmpty(buildingListByBatchId)) {
+            for (BasicBuilding build : buildingListByBatchId) {
+                //获取单元
+                List<BasicUnit> unitListByBatchId = basicApplyBatchDetailService.getBasicUnitListByBatchId(applyBatch.getId(), build);
+                if (CollectionUtils.isNotEmpty(unitListByBatchId)) {
+                    for (BasicUnit unit : unitListByBatchId) {
+                        List<BasicEstateTaggingVo> taggingList = basicEstateTaggingService.getApplyBatchEstateTaggingsByTableId(unit.getId(), EstateTaggingTypeEnum.UNIT.getKey());
+                        if (CollectionUtils.isNotEmpty(taggingList)) {
+                            //生成位置图
+                            BasicEstateTagging tagging = taggingList.get(0);
+                            publicService.downLoadLocationImage(tagging.getLng(), tagging.getLat(), sysAttachmentDto);
                         }
                     }
                 }
             }
-
         }
+
     }
 
     /**
