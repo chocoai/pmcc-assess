@@ -105,16 +105,16 @@
                             </div>
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    交易单价
+                                    面积
                                 </label>
                                 <div class=" col-xs-1  col-sm-1  col-md-1  col-lg-1 ">
                                     <input type="text" class="form-control" placeholder="从"
-                                           id="tradingUnitPriceStart"
-                                           data-rule-number="true" name="tradingUnitPriceStart"/>
+                                           id="areaStart"
+                                           data-rule-number="true" name="areaStart"/>
                                 </div>
                                 <div class=" col-xs-1  col-sm-1  col-md-1  col-lg-1 ">
-                                    <input type="text" class="form-control" placeholder="到" id="tradingUnitPriceEnd"
-                                           data-rule-number="true" name="tradingUnitPriceEnd"/>
+                                    <input type="text" class="form-control" placeholder="到" id="areaEnd"
+                                           data-rule-number="true" name="areaEnd"/>
                                 </div>
                             </div>
                             <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2 col-xs-offset-1 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">
@@ -153,6 +153,9 @@
                 houseSearch.loadDataList();
             }
         });
+        AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseTransactionType, '', function (html, data) {
+            $("#frmCaseBaseHouse").find("select[name='tradingType']").empty().html(html).trigger('change');
+        });
     });
     var houseSearch = {};
     var houseFrm = $("#frmCaseBaseHouse");
@@ -174,7 +177,15 @@
             return false;
         }
         var cols = [];
-        cols.push({field: 'fullName', title: '名称'});
+        cols.push({
+            field: 'name', title: '名称',  formatter: function (value, row, index) {
+                var s = row.fullName;
+                if (row.approverName) {
+                    s += "<label style='padding: 5px;' class='label label-info'>" + row.approverName + "</label>"
+                }
+                return s;
+            }
+        });
         cols.push({field: 'blockName', title: '版块名称'});
         cols.push({field: 'street', title: '街道'});
         cols.push({field: 'practicalUseName', title: '实际用途'});
@@ -185,10 +196,28 @@
             }
         });
         cols.push({field: 'tradingUnitPrice', title: '交易单价'});
+        cols.push({field: 'area', title: '面积'});
+        cols.push({field: 'houseType', title: '房屋类型'});
+        cols.push({field: 'houseCategory', title: '房屋类别'});
+        cols.push({field: 'dealTypeName', title: '交易方式'});
+        cols.push({field: 'currentPrice', title: '成交价'});
+        cols.push({field: 'consultPrice', title: '评估价'});
+        cols.push({
+            field: 'assessStandardDate', title: '评估基准日', formatter: function (value, row, index) {
+                return formatDate(value);
+            }
+        });
+        cols.push({
+            field: 'realizationRatios', title: '变现率', formatter: function (value, row, index) {
+                return AssessCommon.pointToPercent(value);
+            }
+        });
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="查看" onclick="houseSearch.findHouse(' + row.caseHouseId + ')"><i class="fa fa-search fa-white"></i></a>';
+                if(row.caseHouseId){
+                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="查看" onclick="houseSearch.findHouse(' + row.caseHouseId + ')"><i class="fa fa-search fa-white"></i></a>';
+                }
                 str += '</div>';
                 return str;
             }

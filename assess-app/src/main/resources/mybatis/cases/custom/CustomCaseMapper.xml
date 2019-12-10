@@ -65,9 +65,11 @@
     </select>
 
     <sql id="Base_Column_ListCaseBaseHouse">
-        id, case_house_id, type, province, city, district, block_name, full_name, street,
-        practical_use, trading_type, trading_time, trading_unit_price, version, creator,
-        gmt_created, gmt_modified
+    id, case_house_id, type, province, city, district, block_name, full_name, street,
+    practical_use, trading_type, trading_time, trading_unit_price, version, creator,
+    gmt_created, gmt_modified, house_type, house_category, area, estate_name, deal_type,
+    current_price, consult_price, assess_standard_date, realization_ratios, realization_cycle,
+    deal_part_info, approver
     </sql>
 
     <select id="findCaseBaseHouseList" parameterType="map"
@@ -106,11 +108,11 @@
             <if test="tradingTimeEnd != null">
                 and trading_time <![CDATA[ <= ]]> #{tradingTimeEnd}
             </if>
-            <if test="tradingUnitPriceStart != null">
-                and trading_unit_price <![CDATA[ >= ]]> #{tradingUnitPriceStart}
+            <if test="areaStart != null">
+                and area <![CDATA[ >= ]]> #{areaStart}
             </if>
-            <if test="tradingUnitPriceEnd != null">
-                and trading_unit_price <![CDATA[ <= ]]> #{tradingUnitPriceEnd}
+            <if test="areaEnd != null">
+                and area <![CDATA[ <= ]]> #{areaEnd}
             </if>
         </where>
     </select>

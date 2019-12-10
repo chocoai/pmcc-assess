@@ -1040,6 +1040,11 @@ var getCorrectResult = function (type, num1, num2, result) {
     return result;
 };
 
-
-
+var getDateDiff = function(sDate, eDate) { //sDate和eDate是yyyy-MM-dd格式
+    var date1 = new Date(sDate);
+    var date2 = new Date(eDate);
+    var date3=date2.getTime()-date1.getTime();
+    var days=Math.floor(date3/(24*3600*1000));
+    return days;
+}
 

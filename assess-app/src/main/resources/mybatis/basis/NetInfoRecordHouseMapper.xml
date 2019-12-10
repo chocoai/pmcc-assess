@@ -4,10 +4,12 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordHouse" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="master_id" property="masterId" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
     <result column="province" property="province" jdbcType="VARCHAR" />
     <result column="city" property="city" jdbcType="VARCHAR" />
     <result column="district" property="district" jdbcType="VARCHAR" />
     <result column="belong_type" property="belongType" jdbcType="VARCHAR" />
+    <result column="belong_category" property="belongCategory" jdbcType="VARCHAR" />
     <result column="street" property="street" jdbcType="VARCHAR" />
     <result column="area" property="area" jdbcType="DECIMAL" />
     <result column="name" property="name" jdbcType="VARCHAR" />
@@ -20,12 +22,14 @@
     <result column="house_realization_ratios" property="houseRealizationRatios" jdbcType="DECIMAL" />
     <result column="realization_cycle" property="realizationCycle" jdbcType="VARCHAR" />
     <result column="deal_part_info" property="dealPartInfo" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
-    <result column="type" property="type" jdbcType="VARCHAR" />
-    <result column="belong_category" property="belongCategory" jdbcType="VARCHAR" />
-    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="building_number" property="buildingNumber" jdbcType="VARCHAR" />
+    <result column="unit_number" property="unitNumber" jdbcType="VARCHAR" />
+    <result column="house_number" property="houseNumber" jdbcType="VARCHAR" />
+    <result column="approver" property="approver" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -86,10 +90,10 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, master_id, province, city, district, belong_type, street, area, name, deal_type, 
-    current_price, negotiated_date, consult_price, assess_standard_date, unit_price, 
-    house_realization_ratios, realization_cycle, deal_part_info, creator, gmt_created, 
-    gmt_modified, type, belong_category, status
+    id, master_id, type, province, city, district, belong_type, belong_category, street, 
+    area, name, deal_type, current_price, negotiated_date, consult_price, assess_standard_date, 
+    unit_price, house_realization_ratios, realization_cycle, deal_part_info, status, 
+    creator, gmt_created, gmt_modified, building_number, unit_number, house_number, approver
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordHouseExample" >
     select
@@ -125,22 +129,26 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_net_info_record_house (master_id, province, city, 
-      district, belong_type, street, 
-      area, name, deal_type, 
-      current_price, negotiated_date, consult_price, 
-      assess_standard_date, unit_price, house_realization_ratios, 
-      realization_cycle, deal_part_info, creator, 
-      gmt_created, gmt_modified, type, 
-      belong_category, status)
-    values (#{masterId,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, 
-      #{district,jdbcType=VARCHAR}, #{belongType,jdbcType=VARCHAR}, #{street,jdbcType=VARCHAR}, 
-      #{area,jdbcType=DECIMAL}, #{name,jdbcType=VARCHAR}, #{dealType,jdbcType=INTEGER}, 
-      #{currentPrice,jdbcType=DECIMAL}, #{negotiatedDate,jdbcType=TIMESTAMP}, #{consultPrice,jdbcType=DECIMAL}, 
-      #{assessStandardDate,jdbcType=TIMESTAMP}, #{unitPrice,jdbcType=DECIMAL}, #{houseRealizationRatios,jdbcType=DECIMAL}, 
-      #{realizationCycle,jdbcType=VARCHAR}, #{dealPartInfo,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{type,jdbcType=VARCHAR}, 
-      #{belongCategory,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER})
+    insert into tb_net_info_record_house (master_id, type, province, 
+      city, district, belong_type, 
+      belong_category, street, area, 
+      name, deal_type, current_price, 
+      negotiated_date, consult_price, assess_standard_date, 
+      unit_price, house_realization_ratios, realization_cycle, 
+      deal_part_info, status, creator, 
+      gmt_created, gmt_modified, building_number, 
+      unit_number, house_number, approver
+      )
+    values (#{masterId,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, 
+      #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, #{belongType,jdbcType=VARCHAR}, 
+      #{belongCategory,jdbcType=VARCHAR}, #{street,jdbcType=VARCHAR}, #{area,jdbcType=DECIMAL}, 
+      #{name,jdbcType=VARCHAR}, #{dealType,jdbcType=INTEGER}, #{currentPrice,jdbcType=DECIMAL}, 
+      #{negotiatedDate,jdbcType=TIMESTAMP}, #{consultPrice,jdbcType=DECIMAL}, #{assessStandardDate,jdbcType=TIMESTAMP}, 
+      #{unitPrice,jdbcType=DECIMAL}, #{houseRealizationRatios,jdbcType=DECIMAL}, #{realizationCycle,jdbcType=VARCHAR}, 
+      #{dealPartInfo,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{buildingNumber,jdbcType=VARCHAR}, 
+      #{unitNumber,jdbcType=VARCHAR}, #{houseNumber,jdbcType=VARCHAR}, #{approver,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordHouse" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -150,6 +158,9 @@
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="masterId != null" >
         master_id,
+      </if>
+      <if test="type != null" >
+        type,
       </if>
       <if test="province != null" >
         province,
@@ -162,6 +173,9 @@
       </if>
       <if test="belongType != null" >
         belong_type,
+      </if>
+      <if test="belongCategory != null" >
+        belong_category,
       </if>
       <if test="street != null" >
         street,
@@ -199,6 +213,9 @@
       <if test="dealPartInfo != null" >
         deal_part_info,
       </if>
+      <if test="status != null" >
+        status,
+      </if>
       <if test="creator != null" >
         creator,
       </if>
@@ -208,19 +225,25 @@
       <if test="gmtModified != null" >
         gmt_modified,
       </if>
-      <if test="type != null" >
-        type,
+      <if test="buildingNumber != null" >
+        building_number,
       </if>
-      <if test="belongCategory != null" >
-        belong_category,
+      <if test="unitNumber != null" >
+        unit_number,
       </if>
-      <if test="status != null" >
-        status,
+      <if test="houseNumber != null" >
+        house_number,
+      </if>
+      <if test="approver != null" >
+        approver,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="masterId != null" >
         #{masterId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
       </if>
       <if test="province != null" >
         #{province,jdbcType=VARCHAR},
@@ -233,6 +256,9 @@
       </if>
       <if test="belongType != null" >
         #{belongType,jdbcType=VARCHAR},
+      </if>
+      <if test="belongCategory != null" >
+        #{belongCategory,jdbcType=VARCHAR},
       </if>
       <if test="street != null" >
         #{street,jdbcType=VARCHAR},
@@ -270,6 +296,9 @@
       <if test="dealPartInfo != null" >
         #{dealPartInfo,jdbcType=VARCHAR},
       </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
       </if>
@@ -279,14 +308,17 @@
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
       </if>
-      <if test="type != null" >
-        #{type,jdbcType=VARCHAR},
+      <if test="buildingNumber != null" >
+        #{buildingNumber,jdbcType=VARCHAR},
       </if>
-      <if test="belongCategory != null" >
-        #{belongCategory,jdbcType=VARCHAR},
+      <if test="unitNumber != null" >
+        #{unitNumber,jdbcType=VARCHAR},
       </if>
-      <if test="status != null" >
-        #{status,jdbcType=INTEGER},
+      <if test="houseNumber != null" >
+        #{houseNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="approver != null" >
+        #{approver,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -305,6 +337,9 @@
       <if test="record.masterId != null" >
         master_id = #{record.masterId,jdbcType=INTEGER},
       </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=VARCHAR},
+      </if>
       <if test="record.province != null" >
         province = #{record.province,jdbcType=VARCHAR},
       </if>
@@ -316,6 +351,9 @@
       </if>
       <if test="record.belongType != null" >
         belong_type = #{record.belongType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.belongCategory != null" >
+        belong_category = #{record.belongCategory,jdbcType=VARCHAR},
       </if>
       <if test="record.street != null" >
         street = #{record.street,jdbcType=VARCHAR},
@@ -353,6 +391,9 @@
       <if test="record.dealPartInfo != null" >
         deal_part_info = #{record.dealPartInfo,jdbcType=VARCHAR},
       </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=INTEGER},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -362,14 +403,17 @@
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.type != null" >
-        type = #{record.type,jdbcType=VARCHAR},
+      <if test="record.buildingNumber != null" >
+        building_number = #{record.buildingNumber,jdbcType=VARCHAR},
       </if>
-      <if test="record.belongCategory != null" >
-        belong_category = #{record.belongCategory,jdbcType=VARCHAR},
+      <if test="record.unitNumber != null" >
+        unit_number = #{record.unitNumber,jdbcType=VARCHAR},
       </if>
-      <if test="record.status != null" >
-        status = #{record.status,jdbcType=INTEGER},
+      <if test="record.houseNumber != null" >
+        house_number = #{record.houseNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.approver != null" >
+        approver = #{record.approver,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -380,10 +424,12 @@
     update tb_net_info_record_house
     set id = #{record.id,jdbcType=INTEGER},
       master_id = #{record.masterId,jdbcType=INTEGER},
+      type = #{record.type,jdbcType=VARCHAR},
       province = #{record.province,jdbcType=VARCHAR},
       city = #{record.city,jdbcType=VARCHAR},
       district = #{record.district,jdbcType=VARCHAR},
       belong_type = #{record.belongType,jdbcType=VARCHAR},
+      belong_category = #{record.belongCategory,jdbcType=VARCHAR},
       street = #{record.street,jdbcType=VARCHAR},
       area = #{record.area,jdbcType=DECIMAL},
       name = #{record.name,jdbcType=VARCHAR},
@@ -396,12 +442,14 @@
       house_realization_ratios = #{record.houseRealizationRatios,jdbcType=DECIMAL},
       realization_cycle = #{record.realizationCycle,jdbcType=VARCHAR},
       deal_part_info = #{record.dealPartInfo,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      type = #{record.type,jdbcType=VARCHAR},
-      belong_category = #{record.belongCategory,jdbcType=VARCHAR},
-      status = #{record.status,jdbcType=INTEGER}
+      building_number = #{record.buildingNumber,jdbcType=VARCHAR},
+      unit_number = #{record.unitNumber,jdbcType=VARCHAR},
+      house_number = #{record.houseNumber,jdbcType=VARCHAR},
+      approver = #{record.approver,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -411,6 +459,9 @@
     <set >
       <if test="masterId != null" >
         master_id = #{masterId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
       </if>
       <if test="province != null" >
         province = #{province,jdbcType=VARCHAR},
@@ -423,6 +474,9 @@
       </if>
       <if test="belongType != null" >
         belong_type = #{belongType,jdbcType=VARCHAR},
+      </if>
+      <if test="belongCategory != null" >
+        belong_category = #{belongCategory,jdbcType=VARCHAR},
       </if>
       <if test="street != null" >
         street = #{street,jdbcType=VARCHAR},
@@ -460,6 +514,9 @@
       <if test="dealPartInfo != null" >
         deal_part_info = #{dealPartInfo,jdbcType=VARCHAR},
       </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -469,14 +526,17 @@
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
-      <if test="type != null" >
-        type = #{type,jdbcType=VARCHAR},
+      <if test="buildingNumber != null" >
+        building_number = #{buildingNumber,jdbcType=VARCHAR},
       </if>
-      <if test="belongCategory != null" >
-        belong_category = #{belongCategory,jdbcType=VARCHAR},
+      <if test="unitNumber != null" >
+        unit_number = #{unitNumber,jdbcType=VARCHAR},
       </if>
-      <if test="status != null" >
-        status = #{status,jdbcType=INTEGER},
+      <if test="houseNumber != null" >
+        house_number = #{houseNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="approver != null" >
+        approver = #{approver,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -484,10 +544,12 @@
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordHouse" >
     update tb_net_info_record_house
     set master_id = #{masterId,jdbcType=INTEGER},
+      type = #{type,jdbcType=VARCHAR},
       province = #{province,jdbcType=VARCHAR},
       city = #{city,jdbcType=VARCHAR},
       district = #{district,jdbcType=VARCHAR},
       belong_type = #{belongType,jdbcType=VARCHAR},
+      belong_category = #{belongCategory,jdbcType=VARCHAR},
       street = #{street,jdbcType=VARCHAR},
       area = #{area,jdbcType=DECIMAL},
       name = #{name,jdbcType=VARCHAR},
@@ -500,12 +562,14 @@
       house_realization_ratios = #{houseRealizationRatios,jdbcType=DECIMAL},
       realization_cycle = #{realizationCycle,jdbcType=VARCHAR},
       deal_part_info = #{dealPartInfo,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      type = #{type,jdbcType=VARCHAR},
-      belong_category = #{belongCategory,jdbcType=VARCHAR},
-      status = #{status,jdbcType=INTEGER}
+      building_number = #{buildingNumber,jdbcType=VARCHAR},
+      unit_number = #{unitNumber,jdbcType=VARCHAR},
+      house_number = #{houseNumber,jdbcType=VARCHAR},
+      approver = #{approver,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

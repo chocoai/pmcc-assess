@@ -19,6 +19,18 @@
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+    <result column="house_type" property="houseType" jdbcType="VARCHAR" />
+    <result column="house_category" property="houseCategory" jdbcType="VARCHAR" />
+    <result column="area" property="area" jdbcType="DECIMAL" />
+    <result column="estate_name" property="estateName" jdbcType="VARCHAR" />
+    <result column="deal_type" property="dealType" jdbcType="INTEGER" />
+    <result column="current_price" property="currentPrice" jdbcType="DECIMAL" />
+    <result column="consult_price" property="consultPrice" jdbcType="DECIMAL" />
+    <result column="assess_standard_date" property="assessStandardDate" jdbcType="TIMESTAMP" />
+    <result column="realization_ratios" property="realizationRatios" jdbcType="DECIMAL" />
+    <result column="realization_cycle" property="realizationCycle" jdbcType="VARCHAR" />
+    <result column="deal_part_info" property="dealPartInfo" jdbcType="VARCHAR" />
+    <result column="approver" property="approver" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -81,7 +93,9 @@
   <sql id="Base_Column_List" >
     id, case_house_id, type, province, city, district, block_name, full_name, street, 
     practical_use, trading_type, trading_time, trading_unit_price, version, creator, 
-    gmt_created, gmt_modified
+    gmt_created, gmt_modified, house_type, house_category, area, estate_name, deal_type, 
+    current_price, consult_price, assess_standard_date, realization_ratios, realization_cycle, 
+    deal_part_info, approver
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseBaseHouseExample" >
     select
@@ -122,13 +136,21 @@
       full_name, street, practical_use, 
       trading_type, trading_time, trading_unit_price, 
       version, creator, gmt_created, 
-      gmt_modified)
+      gmt_modified, house_type, house_category, 
+      area, estate_name, deal_type, 
+      current_price, consult_price, assess_standard_date, 
+      realization_ratios, realization_cycle, deal_part_info, 
+      approver)
     values (#{caseHouseId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, 
       #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, #{blockName,jdbcType=VARCHAR}, 
       #{fullName,jdbcType=VARCHAR}, #{street,jdbcType=VARCHAR}, #{practicalUse,jdbcType=INTEGER}, 
       #{tradingType,jdbcType=INTEGER}, #{tradingTime,jdbcType=TIMESTAMP}, #{tradingUnitPrice,jdbcType=DECIMAL}, 
       #{version,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{gmtModified,jdbcType=TIMESTAMP}, #{houseType,jdbcType=VARCHAR}, #{houseCategory,jdbcType=VARCHAR}, 
+      #{area,jdbcType=DECIMAL}, #{estateName,jdbcType=VARCHAR}, #{dealType,jdbcType=INTEGER}, 
+      #{currentPrice,jdbcType=DECIMAL}, #{consultPrice,jdbcType=DECIMAL}, #{assessStandardDate,jdbcType=TIMESTAMP}, 
+      #{realizationRatios,jdbcType=DECIMAL}, #{realizationCycle,jdbcType=VARCHAR}, #{dealPartInfo,jdbcType=VARCHAR}, 
+      #{approver,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseBaseHouse" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -184,6 +206,42 @@
       <if test="gmtModified != null" >
         gmt_modified,
       </if>
+      <if test="houseType != null" >
+        house_type,
+      </if>
+      <if test="houseCategory != null" >
+        house_category,
+      </if>
+      <if test="area != null" >
+        area,
+      </if>
+      <if test="estateName != null" >
+        estate_name,
+      </if>
+      <if test="dealType != null" >
+        deal_type,
+      </if>
+      <if test="currentPrice != null" >
+        current_price,
+      </if>
+      <if test="consultPrice != null" >
+        consult_price,
+      </if>
+      <if test="assessStandardDate != null" >
+        assess_standard_date,
+      </if>
+      <if test="realizationRatios != null" >
+        realization_ratios,
+      </if>
+      <if test="realizationCycle != null" >
+        realization_cycle,
+      </if>
+      <if test="dealPartInfo != null" >
+        deal_part_info,
+      </if>
+      <if test="approver != null" >
+        approver,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="caseHouseId != null" >
@@ -233,6 +291,42 @@
       </if>
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="houseType != null" >
+        #{houseType,jdbcType=VARCHAR},
+      </if>
+      <if test="houseCategory != null" >
+        #{houseCategory,jdbcType=VARCHAR},
+      </if>
+      <if test="area != null" >
+        #{area,jdbcType=DECIMAL},
+      </if>
+      <if test="estateName != null" >
+        #{estateName,jdbcType=VARCHAR},
+      </if>
+      <if test="dealType != null" >
+        #{dealType,jdbcType=INTEGER},
+      </if>
+      <if test="currentPrice != null" >
+        #{currentPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="consultPrice != null" >
+        #{consultPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="assessStandardDate != null" >
+        #{assessStandardDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="realizationRatios != null" >
+        #{realizationRatios,jdbcType=DECIMAL},
+      </if>
+      <if test="realizationCycle != null" >
+        #{realizationCycle,jdbcType=VARCHAR},
+      </if>
+      <if test="dealPartInfo != null" >
+        #{dealPartInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="approver != null" >
+        #{approver,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -296,6 +390,42 @@
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.houseType != null" >
+        house_type = #{record.houseType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.houseCategory != null" >
+        house_category = #{record.houseCategory,jdbcType=VARCHAR},
+      </if>
+      <if test="record.area != null" >
+        area = #{record.area,jdbcType=DECIMAL},
+      </if>
+      <if test="record.estateName != null" >
+        estate_name = #{record.estateName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dealType != null" >
+        deal_type = #{record.dealType,jdbcType=INTEGER},
+      </if>
+      <if test="record.currentPrice != null" >
+        current_price = #{record.currentPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.consultPrice != null" >
+        consult_price = #{record.consultPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.assessStandardDate != null" >
+        assess_standard_date = #{record.assessStandardDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.realizationRatios != null" >
+        realization_ratios = #{record.realizationRatios,jdbcType=DECIMAL},
+      </if>
+      <if test="record.realizationCycle != null" >
+        realization_cycle = #{record.realizationCycle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dealPartInfo != null" >
+        deal_part_info = #{record.dealPartInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.approver != null" >
+        approver = #{record.approver,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -319,7 +449,19 @@
       version = #{record.version,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      house_type = #{record.houseType,jdbcType=VARCHAR},
+      house_category = #{record.houseCategory,jdbcType=VARCHAR},
+      area = #{record.area,jdbcType=DECIMAL},
+      estate_name = #{record.estateName,jdbcType=VARCHAR},
+      deal_type = #{record.dealType,jdbcType=INTEGER},
+      current_price = #{record.currentPrice,jdbcType=DECIMAL},
+      consult_price = #{record.consultPrice,jdbcType=DECIMAL},
+      assess_standard_date = #{record.assessStandardDate,jdbcType=TIMESTAMP},
+      realization_ratios = #{record.realizationRatios,jdbcType=DECIMAL},
+      realization_cycle = #{record.realizationCycle,jdbcType=VARCHAR},
+      deal_part_info = #{record.dealPartInfo,jdbcType=VARCHAR},
+      approver = #{record.approver,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -375,6 +517,42 @@
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="houseType != null" >
+        house_type = #{houseType,jdbcType=VARCHAR},
+      </if>
+      <if test="houseCategory != null" >
+        house_category = #{houseCategory,jdbcType=VARCHAR},
+      </if>
+      <if test="area != null" >
+        area = #{area,jdbcType=DECIMAL},
+      </if>
+      <if test="estateName != null" >
+        estate_name = #{estateName,jdbcType=VARCHAR},
+      </if>
+      <if test="dealType != null" >
+        deal_type = #{dealType,jdbcType=INTEGER},
+      </if>
+      <if test="currentPrice != null" >
+        current_price = #{currentPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="consultPrice != null" >
+        consult_price = #{consultPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="assessStandardDate != null" >
+        assess_standard_date = #{assessStandardDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="realizationRatios != null" >
+        realization_ratios = #{realizationRatios,jdbcType=DECIMAL},
+      </if>
+      <if test="realizationCycle != null" >
+        realization_cycle = #{realizationCycle,jdbcType=VARCHAR},
+      </if>
+      <if test="dealPartInfo != null" >
+        deal_part_info = #{dealPartInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="approver != null" >
+        approver = #{approver,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -395,7 +573,19 @@
       version = #{version,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      house_type = #{houseType,jdbcType=VARCHAR},
+      house_category = #{houseCategory,jdbcType=VARCHAR},
+      area = #{area,jdbcType=DECIMAL},
+      estate_name = #{estateName,jdbcType=VARCHAR},
+      deal_type = #{dealType,jdbcType=INTEGER},
+      current_price = #{currentPrice,jdbcType=DECIMAL},
+      consult_price = #{consultPrice,jdbcType=DECIMAL},
+      assess_standard_date = #{assessStandardDate,jdbcType=TIMESTAMP},
+      realization_ratios = #{realizationRatios,jdbcType=DECIMAL},
+      realization_cycle = #{realizationCycle,jdbcType=VARCHAR},
+      deal_part_info = #{dealPartInfo,jdbcType=VARCHAR},
+      approver = #{approver,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

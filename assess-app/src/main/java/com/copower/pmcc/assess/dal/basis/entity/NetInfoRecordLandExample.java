@@ -226,6 +226,76 @@ public class NetInfoRecordLandExample {
             return (Criteria) this;
         }
 
+        public Criteria andTypeIsNull() {
+            addCriterion("type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeIsNotNull() {
+            addCriterion("type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeEqualTo(String value) {
+            addCriterion("type =", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeNotEqualTo(String value) {
+            addCriterion("type <>", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeGreaterThan(String value) {
+            addCriterion("type >", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeGreaterThanOrEqualTo(String value) {
+            addCriterion("type >=", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeLessThan(String value) {
+            addCriterion("type <", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeLessThanOrEqualTo(String value) {
+            addCriterion("type <=", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeLike(String value) {
+            addCriterion("type like", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeNotLike(String value) {
+            addCriterion("type not like", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeIn(List<String> values) {
+            addCriterion("type in", values, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeNotIn(List<String> values) {
+            addCriterion("type not in", values, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeBetween(String value1, String value2) {
+            addCriterion("type between", value1, value2, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeNotBetween(String value1, String value2) {
+            addCriterion("type not between", value1, value2, "type");
+            return (Criteria) this;
+        }
+
         public Criteria andProvinceIsNull() {
             addCriterion("province is null");
             return (Criteria) this;
@@ -503,6 +573,76 @@ public class NetInfoRecordLandExample {
 
         public Criteria andBelongTypeNotBetween(String value1, String value2) {
             addCriterion("belong_type not between", value1, value2, "belongType");
+            return (Criteria) this;
+        }
+
+        public Criteria andBelongCategoryIsNull() {
+            addCriterion("belong_category is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBelongCategoryIsNotNull() {
+            addCriterion("belong_category is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBelongCategoryEqualTo(String value) {
+            addCriterion("belong_category =", value, "belongCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andBelongCategoryNotEqualTo(String value) {
+            addCriterion("belong_category <>", value, "belongCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andBelongCategoryGreaterThan(String value) {
+            addCriterion("belong_category >", value, "belongCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andBelongCategoryGreaterThanOrEqualTo(String value) {
+            addCriterion("belong_category >=", value, "belongCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andBelongCategoryLessThan(String value) {
+            addCriterion("belong_category <", value, "belongCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andBelongCategoryLessThanOrEqualTo(String value) {
+            addCriterion("belong_category <=", value, "belongCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andBelongCategoryLike(String value) {
+            addCriterion("belong_category like", value, "belongCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andBelongCategoryNotLike(String value) {
+            addCriterion("belong_category not like", value, "belongCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andBelongCategoryIn(List<String> values) {
+            addCriterion("belong_category in", values, "belongCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andBelongCategoryNotIn(List<String> values) {
+            addCriterion("belong_category not in", values, "belongCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andBelongCategoryBetween(String value1, String value2) {
+            addCriterion("belong_category between", value1, value2, "belongCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andBelongCategoryNotBetween(String value1, String value2) {
+            addCriterion("belong_category not between", value1, value2, "belongCategory");
             return (Criteria) this;
         }
 
@@ -2316,6 +2456,66 @@ public class NetInfoRecordLandExample {
             return (Criteria) this;
         }
 
+        public Criteria andStatusIsNull() {
+            addCriterion("status is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusIsNotNull() {
+            addCriterion("status is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusEqualTo(Integer value) {
+            addCriterion("status =", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusNotEqualTo(Integer value) {
+            addCriterion("status <>", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusGreaterThan(Integer value) {
+            addCriterion("status >", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusGreaterThanOrEqualTo(Integer value) {
+            addCriterion("status >=", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusLessThan(Integer value) {
+            addCriterion("status <", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusLessThanOrEqualTo(Integer value) {
+            addCriterion("status <=", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusIn(List<Integer> values) {
+            addCriterion("status in", values, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusNotIn(List<Integer> values) {
+            addCriterion("status not in", values, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusBetween(Integer value1, Integer value2) {
+            addCriterion("status between", value1, value2, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusNotBetween(Integer value1, Integer value2) {
+            addCriterion("status not between", value1, value2, "status");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatorIsNull() {
             addCriterion("creator is null");
             return (Criteria) this;
@@ -2506,203 +2706,73 @@ public class NetInfoRecordLandExample {
             return (Criteria) this;
         }
 
-        public Criteria andTypeIsNull() {
-            addCriterion("type is null");
+        public Criteria andApproverIsNull() {
+            addCriterion("approver is null");
             return (Criteria) this;
         }
 
-        public Criteria andTypeIsNotNull() {
-            addCriterion("type is not null");
+        public Criteria andApproverIsNotNull() {
+            addCriterion("approver is not null");
             return (Criteria) this;
         }
 
-        public Criteria andTypeEqualTo(String value) {
-            addCriterion("type =", value, "type");
+        public Criteria andApproverEqualTo(String value) {
+            addCriterion("approver =", value, "approver");
             return (Criteria) this;
         }
 
-        public Criteria andTypeNotEqualTo(String value) {
-            addCriterion("type <>", value, "type");
+        public Criteria andApproverNotEqualTo(String value) {
+            addCriterion("approver <>", value, "approver");
             return (Criteria) this;
         }
 
-        public Criteria andTypeGreaterThan(String value) {
-            addCriterion("type >", value, "type");
+        public Criteria andApproverGreaterThan(String value) {
+            addCriterion("approver >", value, "approver");
             return (Criteria) this;
         }
 
-        public Criteria andTypeGreaterThanOrEqualTo(String value) {
-            addCriterion("type >=", value, "type");
+        public Criteria andApproverGreaterThanOrEqualTo(String value) {
+            addCriterion("approver >=", value, "approver");
             return (Criteria) this;
         }
 
-        public Criteria andTypeLessThan(String value) {
-            addCriterion("type <", value, "type");
+        public Criteria andApproverLessThan(String value) {
+            addCriterion("approver <", value, "approver");
             return (Criteria) this;
         }
 
-        public Criteria andTypeLessThanOrEqualTo(String value) {
-            addCriterion("type <=", value, "type");
+        public Criteria andApproverLessThanOrEqualTo(String value) {
+            addCriterion("approver <=", value, "approver");
             return (Criteria) this;
         }
 
-        public Criteria andTypeLike(String value) {
-            addCriterion("type like", value, "type");
+        public Criteria andApproverLike(String value) {
+            addCriterion("approver like", value, "approver");
             return (Criteria) this;
         }
 
-        public Criteria andTypeNotLike(String value) {
-            addCriterion("type not like", value, "type");
+        public Criteria andApproverNotLike(String value) {
+            addCriterion("approver not like", value, "approver");
             return (Criteria) this;
         }
 
-        public Criteria andTypeIn(List<String> values) {
-            addCriterion("type in", values, "type");
+        public Criteria andApproverIn(List<String> values) {
+            addCriterion("approver in", values, "approver");
             return (Criteria) this;
         }
 
-        public Criteria andTypeNotIn(List<String> values) {
-            addCriterion("type not in", values, "type");
+        public Criteria andApproverNotIn(List<String> values) {
+            addCriterion("approver not in", values, "approver");
             return (Criteria) this;
         }
 
-        public Criteria andTypeBetween(String value1, String value2) {
-            addCriterion("type between", value1, value2, "type");
+        public Criteria andApproverBetween(String value1, String value2) {
+            addCriterion("approver between", value1, value2, "approver");
             return (Criteria) this;
         }
 
-        public Criteria andTypeNotBetween(String value1, String value2) {
-            addCriterion("type not between", value1, value2, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andBelongCategoryIsNull() {
-            addCriterion("belong_category is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBelongCategoryIsNotNull() {
-            addCriterion("belong_category is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBelongCategoryEqualTo(String value) {
-            addCriterion("belong_category =", value, "belongCategory");
-            return (Criteria) this;
-        }
-
-        public Criteria andBelongCategoryNotEqualTo(String value) {
-            addCriterion("belong_category <>", value, "belongCategory");
-            return (Criteria) this;
-        }
-
-        public Criteria andBelongCategoryGreaterThan(String value) {
-            addCriterion("belong_category >", value, "belongCategory");
-            return (Criteria) this;
-        }
-
-        public Criteria andBelongCategoryGreaterThanOrEqualTo(String value) {
-            addCriterion("belong_category >=", value, "belongCategory");
-            return (Criteria) this;
-        }
-
-        public Criteria andBelongCategoryLessThan(String value) {
-            addCriterion("belong_category <", value, "belongCategory");
-            return (Criteria) this;
-        }
-
-        public Criteria andBelongCategoryLessThanOrEqualTo(String value) {
-            addCriterion("belong_category <=", value, "belongCategory");
-            return (Criteria) this;
-        }
-
-        public Criteria andBelongCategoryLike(String value) {
-            addCriterion("belong_category like", value, "belongCategory");
-            return (Criteria) this;
-        }
-
-        public Criteria andBelongCategoryNotLike(String value) {
-            addCriterion("belong_category not like", value, "belongCategory");
-            return (Criteria) this;
-        }
-
-        public Criteria andBelongCategoryIn(List<String> values) {
-            addCriterion("belong_category in", values, "belongCategory");
-            return (Criteria) this;
-        }
-
-        public Criteria andBelongCategoryNotIn(List<String> values) {
-            addCriterion("belong_category not in", values, "belongCategory");
-            return (Criteria) this;
-        }
-
-        public Criteria andBelongCategoryBetween(String value1, String value2) {
-            addCriterion("belong_category between", value1, value2, "belongCategory");
-            return (Criteria) this;
-        }
-
-        public Criteria andBelongCategoryNotBetween(String value1, String value2) {
-            addCriterion("belong_category not between", value1, value2, "belongCategory");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusIsNull() {
-            addCriterion("status is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusIsNotNull() {
-            addCriterion("status is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusEqualTo(Integer value) {
-            addCriterion("status =", value, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusNotEqualTo(Integer value) {
-            addCriterion("status <>", value, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusGreaterThan(Integer value) {
-            addCriterion("status >", value, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusGreaterThanOrEqualTo(Integer value) {
-            addCriterion("status >=", value, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusLessThan(Integer value) {
-            addCriterion("status <", value, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusLessThanOrEqualTo(Integer value) {
-            addCriterion("status <=", value, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusIn(List<Integer> values) {
-            addCriterion("status in", values, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusNotIn(List<Integer> values) {
-            addCriterion("status not in", values, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusBetween(Integer value1, Integer value2) {
-            addCriterion("status between", value1, value2, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusNotBetween(Integer value1, Integer value2) {
-            addCriterion("status not between", value1, value2, "status");
+        public Criteria andApproverNotBetween(String value1, String value2) {
+            addCriterion("approver not between", value1, value2, "approver");
             return (Criteria) this;
         }
     }

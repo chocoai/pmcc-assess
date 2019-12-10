@@ -17,7 +17,7 @@ import com.copower.pmcc.assess.service.project.ProjectCenterService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
-import com.copower.pmcc.assess.service.project.scheme.ProjectPlanSchemeAssist;
+import com.copower.pmcc.assess.service.project.plan.execute.PlanSchemeExecute;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
@@ -179,7 +179,7 @@ public class ProjectCenterController {
         String projectTypeKey = projectInfoService.getAssessProjectType(projectInfo.getProjectCategoryId()).getKey();
         if (AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_HOUSE.getKey().equals(projectTypeKey) || AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_LAND.getKey().equals(projectTypeKey)) {
             //评估方案计划
-            if (StringUtils.equals(projectWorkStage.getStageForm(), StringUtils.uncapitalize(ProjectPlanSchemeAssist.class.getSimpleName()))) {
+            if (StringUtils.equals(projectWorkStage.getStageForm(), StringUtils.uncapitalize(PlanSchemeExecute.class.getSimpleName()))) {
                 viewUrl = "/project/detailInfo/house/schemeStageInfo";
             }
         }

@@ -91,7 +91,7 @@ public class CaseController {
 
     @ResponseBody
     @RequestMapping(value = "/getBootstrapTableCaseBaseHouseVo", method = {RequestMethod.GET}, name = "获取列表")
-    public BootstrapTableVo getBootstrapTableVo(BigDecimal tradingUnitPriceStart, BigDecimal tradingUnitPriceEnd, String tradingTimeStart, String tradingTimeEnd, CaseBaseHouse caseBaseHouse) {
+    public BootstrapTableVo getBootstrapTableVo(BigDecimal areaStart, BigDecimal areaEnd, String tradingTimeStart, String tradingTimeEnd, CaseBaseHouse caseBaseHouse) {
         BootstrapTableVo vo = null;
         try {
             Date dateA = null;
@@ -102,7 +102,7 @@ public class CaseController {
             if (StringUtils.isNotBlank(tradingTimeEnd)) {
                 dateB = DateUtils.parse(tradingTimeEnd);
             }
-            vo = caseBaseHouseService.getBootstrapTableVo(tradingUnitPriceStart, tradingUnitPriceEnd, dateA, dateB, caseBaseHouse);
+            vo = caseBaseHouseService.getBootstrapTableVo(areaStart, areaEnd, dateA, dateB, caseBaseHouse);
         } catch (Exception e1) {
             logger.error("", e1);
         }

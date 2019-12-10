@@ -92,8 +92,22 @@ public class NetInfoAssignTaskService {
             ProcessUserDto processUserDto = submitTask(netInfoAssignTask, baseParameterEnum);
             if (processUserDto != null) netInfoAssignTask.setProcessInsId(processUserDto.getProcessInsId());
             netInfoAssignTaskDao.modifyNetInfoAssignTask(netInfoAssignTask);
-
+            //修改状态
             List<Integer> integers = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(netInfoAssignTask.getNetInfoIds()));
+            List<NetInfoRecordLand> netInfoRecordLands = netInfoRecordLandDao.getLandListByMasterIds(integers);
+            if(CollectionUtils.isNotEmpty(netInfoRecordLands)){
+                netInfoRecordLands.forEach(o->{
+                    o.setStatus(2);
+                    netInfoRecordLandDao.updateNetInfoRecordLand(o,true);
+                });
+            }
+            List<NetInfoRecordHouse> netInfoRecordHouses = netInfoRecordHouseDao.getHouseListByMasterIds(integers);
+            if(CollectionUtils.isNotEmpty(netInfoRecordHouses)){
+                netInfoRecordHouses.forEach(o->{
+                    o.setStatus(2);
+                    netInfoRecordHouseDao.updateNetInfoRecordHouse(o,true);
+                });
+            }
             List<NetInfoRecord> infoRecords = LangUtils.transform(integers, o -> netInfoRecordDao.getInfoById(o));
             if (CollectionUtils.isNotEmpty(infoRecords)) {
                 for (NetInfoRecord netInfo : infoRecords) {
@@ -153,8 +167,25 @@ public class NetInfoAssignTaskService {
         return netInfoAssignTaskDao.getDataById(id);
     }
 
-    public void approvalCommit(ApprovalModelDto approvalModelDto) {
+    public void approvalCommit(ApprovalModelDto approvalModelDto,String processInsId) {
         try {
+            //审批提交写入审批人
+            NetInfoAssignTask data = getDataByProcessInsId(processInsId);
+            List<Integer> integers = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(data.getNetInfoIds()));
+            List<NetInfoRecordLand> netInfoRecordLands = netInfoRecordLandDao.getLandListByMasterIds(integers);
+            if(CollectionUtils.isNotEmpty(netInfoRecordLands)){
+                netInfoRecordLands.forEach(o->{
+                    o.setApprover(commonService.thisUserAccount());
+                    netInfoRecordLandDao.updateNetInfoRecordLand(o,true);
+                });
+            }
+            List<NetInfoRecordHouse> netInfoRecordHouses = netInfoRecordHouseDao.getHouseListByMasterIds(integers);
+            if(CollectionUtils.isNotEmpty(netInfoRecordHouses)){
+                netInfoRecordHouses.forEach(o->{
+                    o.setApprover(commonService.thisUserAccount());
+                    netInfoRecordHouseDao.updateNetInfoRecordHouse(o,true);
+                });
+            }
             processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
         } catch (BpmException e) {
             e.printStackTrace();
@@ -190,8 +221,8 @@ public class NetInfoAssignTaskService {
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        //List<NetInfoRecordHouse> netInfoRecordHouses = netInfoRecordHouseDao.getHouseListByMasterIds(integers);
-        List<NetInfoRecordHouse> netInfoRecordHouses = LangUtils.transform(integers, o -> netInfoRecordHouseService.getSingleByMasterId(o));
+        List<NetInfoRecordHouse> netInfoRecordHouses = netInfoRecordHouseDao.getHouseListByMasterIds(integers);
+        //List<NetInfoRecordHouse> netInfoRecordHouses = LangUtils.transform(integers, o -> netInfoRecordHouseService.getSingleByMasterId(o));
 
         SysAttachmentDto where = new SysAttachmentDto();
         where.setTableName(FormatUtils.entityNameConvertToTableName(NetInfoRecordHouse.class));
@@ -206,9 +237,9 @@ public class NetInfoAssignTaskService {
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        List<NetInfoRecordLand> netInfoRecordLands = netInfoRecordLandDao.getLandListByMasterIds(integers);
         //取最新一条
-        List<NetInfoRecordLand> netInfoRecordLands = LangUtils.transform(integers, o -> netInfoRecordLandService.getSingleByMasterId(o));
-        //List<NetInfoRecordLand> netInfoRecordLands = netInfoRecordLandDao.getLandListByMasterIds(integers);
+        //List<NetInfoRecordLand> netInfoRecordLands = LangUtils.transform(integers, o -> netInfoRecordLandService.getSingleByMasterId(o));
 
         SysAttachmentDto where = new SysAttachmentDto();
         where.setTableName(FormatUtils.entityNameConvertToTableName(NetInfoRecordLand.class));

@@ -3,9 +3,6 @@ package com.copower.pmcc.assess.controller;
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordDao;
 import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecord;
-import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordHouse;
-import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordLand;
-import com.copower.pmcc.assess.dto.output.net.NetInfoRecordHouseVo;
 import com.copower.pmcc.assess.dto.output.net.NetInfoRecordLandVo;
 import com.copower.pmcc.assess.service.NetInfoRecordHouseService;
 import com.copower.pmcc.assess.service.NetInfoRecordLandService;
@@ -14,7 +11,6 @@ import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
@@ -71,28 +68,15 @@ public class NetInfoRecordMyTaskController {
     public HttpResult getDetailByMasterId(Integer id) {
         try {
             if (id != null) {
-                NetInfoRecord netInfoRecord = netInfoRecordDao.getInfoById(id);
-                if (StringUtils.equals(netInfoRecord.getBelongType(), "房产")) {
-                    NetInfoRecordHouse house = new NetInfoRecordHouse();
-                    house.setMasterId(id);
-                    List<NetInfoRecordHouseVo> vos = netInfoRecordHouseService.getVos(house);
-                    if (CollectionUtils.isNotEmpty(vos)) {
-                        return HttpResult.newCorrectResult(vos.get(vos.size() - 1));
-                    }
-                    return HttpResult.newCorrectResult(new NetInfoRecordHouse());
-                }
-                if (StringUtils.equals(netInfoRecord.getBelongType(), "土地")) {
-                    NetInfoRecordLand land = new NetInfoRecordLand();
-                    land.setMasterId(id);
-                    List<NetInfoRecordLandVo> vos = netInfoRecordLandService.getVos(land);
-                    if (CollectionUtils.isNotEmpty(vos)) {
-                        return HttpResult.newCorrectResult(vos.get(vos.size() - 1));
-                    }
-                    return HttpResult.newCorrectResult(new NetInfoRecordLand());
-                }
                 NetInfoRecordLandVo data = new NetInfoRecordLandVo();
+                NetInfoRecord netInfoRecord = netInfoRecordDao.getInfoById(id);
                 data.setProvinceName(netInfoRecord.getProvince());
                 data.setCityName(netInfoRecord.getCity());
+                if (StringUtils.isNotEmpty(netInfoRecord.getConsultPrice()))
+                    data.setConsultPrice(new BigDecimal(netInfoRecord.getConsultPrice()));
+                if (StringUtils.isNotEmpty(netInfoRecord.getCurrentPrice()))
+                    data.setCurrentPrice(new BigDecimal(netInfoRecord.getCurrentPrice()));
+
                 return HttpResult.newCorrectResult(data);
             }
         } catch (Exception e) {

@@ -74,10 +74,11 @@ public class NetInfoRecordHouseController {
             SysAttachmentDto where = new SysAttachmentDto();
             where.setTableName(FormatUtils.entityNameConvertToTableName(NetInfoRecordHouse.class));
             List<SysAttachmentDto> attachmentDtos = baseAttachmentService.getAttachmentList(LangUtils.transform(netInfoRecordHouses, o -> o.getId()), where);
-
+            //改为已填写状态
             if (changeStatus) {
                 NetInfoRecord record = netInfoRecordDao.getInfoById(netInfoRecordHouse.getMasterId());
                 record.setBelongType(netInfoRecordHouse.getType());
+                if(record.getStatus()==1||record.getStatus()==2)
                 record.setStatus(2);
                 netInfoRecordDao.updateInfo(record);
             }
@@ -121,4 +122,18 @@ public class NetInfoRecordHouseController {
         return vo;
     }
 
+
+    @ResponseBody
+    @RequestMapping(value = "/getDataById", method = {RequestMethod.GET}, name = "通过id获取信息")
+    public HttpResult getDataById(Integer id) {
+        try {
+            if (id != null) {
+                NetInfoRecordHouse recordHouse = netInfoRecordHouseService.getNetInfoRecordHouseById(id);
+                return HttpResult.newCorrectResult(recordHouse);
+            }
+        } catch (Exception e) {
+            return HttpResult.newErrorResult(String.format("异常! %s", e.getMessage()));
+        }
+        return HttpResult.newCorrectResult();
+    }
 }
