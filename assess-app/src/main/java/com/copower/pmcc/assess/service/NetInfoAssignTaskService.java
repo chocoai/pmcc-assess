@@ -79,6 +79,8 @@ public class NetInfoAssignTaskService {
     private NetInfoRecordLandDao netInfoRecordLandDao;
     @Autowired
     private BaseAttachmentService baseAttachmentService;
+    @Autowired
+    private PublicService publicService;
 
 
     private final Logger log = LoggerFactory.getLogger(getClass());
@@ -126,7 +128,8 @@ public class NetInfoAssignTaskService {
         ProcessInfo processInfo = new ProcessInfo();
         String boxName = baseParameterService.getBaseParameter(baseParameterEnum);
         BoxReDto boxReDto = bpmRpcBoxService.getBoxReByBoxName(boxName);
-        processInfo.setFolio("【案例整理】");//流程描述
+        List<String> list = FormatUtils.transformString2List(netInfoAssignTask.getNetInfoIds());
+        processInfo.setFolio(String.format("【案例整理】%s%s(合计%s)",publicService.getUserNameByAccount(commonService.thisUserAccount()),DateUtils.todayDate(),list.size()));//流程描述
         processInfo.setProcessName(boxReDto.getProcessName());
         processInfo.setGroupName(boxReDto.getGroupName());
         processInfo.setTableName(FormatUtils.entityNameConvertToTableName(NetInfoAssignTask.class));

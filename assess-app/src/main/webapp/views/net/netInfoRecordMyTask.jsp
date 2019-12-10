@@ -865,7 +865,11 @@
             cols.push({field: 'title', title: '标题', width: '12%'});
             cols.push({field: 'province', title: '省', width: '5%'});
             cols.push({field: 'city', title: '市', width: '5%'});
-            cols.push({field: 'sourceSiteName', title: '来源网站', width: '10%'});
+            cols.push({field: 'sourceSiteName', title: '来源网站', width: '10%', formatter: function (value, row, index) {
+                var str='<a href="'+row.sourceSiteUrl+'" target="_blank" >'+row.sourceSiteName+'</a>';
+                str+='<br/>('+row.sourceSiteUrl+')';
+                return str;
+            }});
             cols.push({field: 'type', title: '类型', width: '6%'});
             cols.push({
                 field: 'beginTime', title: '开始时间', width: '7%', formatter: function (value, row, index) {
@@ -877,11 +881,7 @@
                     return formatDate(row.endTime, false);
                 }
             });
-            cols.push({field: 'content', title: '内容', width: '20%'});
-            cols.push({field: 'sourceSiteUrl', title: '来源地址', width: '5%'});
-            cols.push({field: 'initPrice', title: '起始价', width: '5%'});
-            cols.push({field: 'consultPrice', title: '估算价', width: '5%'});
-            cols.push({field: 'currentPrice', title: '成交价', width: '5%'});
+            cols.push({field: 'content', title: '内容', width: '25%'});
             cols.push({
                 field: 'status', width: '5%', title: '状态', formatter: function (value, row, index) {
                     var s;
