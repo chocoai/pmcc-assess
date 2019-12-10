@@ -42,11 +42,11 @@ public class ProjectReportFileController {
         //modelAndView.addObject("ownershipCertFileList", schemeReportFileService.getOwnershipCertFileList(projectId));
         //modelAndView.addObject("inventoryAddressFileList", schemeReportFileService.getInventoryAddressFileList(projectId));
         //modelAndView.addObject("reimbursementFileList", schemeReportFileService.getReimbursementFileList(projectId));
-        List<DeclareRecord> declareRecordList = declareRecordService.getDeclareRecordByProjectId(projectId);
+        //List<DeclareRecord> declareRecordList = declareRecordService.getDeclareRecordByProjectId(projectId);
         //modelAndView.addObject("declareRecordList", declareRecordList);
         modelAndView.addObject("projectId", projectId);
         //生成位置图
-        schemeReportFileService.makeJudgeObjectPosition(declareRecordList);
+        //schemeReportFileService.makeJudgeObjectPosition(declareRecordList);
         return modelAndView;
     }
 
@@ -125,5 +125,18 @@ public class ProjectReportFileController {
             return HttpResult.newErrorResult(e.getMessage());
         }
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/makeJudgeObjectPosition", name = "生成位置图", method = RequestMethod.POST)
+    public HttpResult makeJudgeObjectPosition(Integer declareRecordId) {
+        try {
+            schemeReportFileService.makeJudgeObjectPosition(declareRecordId);
+            return HttpResult.newCorrectResult();
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e,"生成位置图");
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
+
 
 }
