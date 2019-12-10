@@ -122,24 +122,63 @@
                     return str;
                 }
             });
-            cols.push({field: 'area', title: '面积'});
-            cols.push({field: 'name', title: '楼盘名称'});
-            cols.push({field: 'dealTypeName', title: '交易方式'});
-            cols.push({field: 'currentPrice', title: '成交价'});
             cols.push({
-                field: 'other', title: '其他', formatter: function (value, row, index) {
+                field: 'name', title: '楼盘', formatter: function (value, row, index) {
                     var result = '';
-                    if (row.negotiatedDate) {
-                        result += '成交(协商)日期：' + formatDate(row.negotiatedDate) + '<br/>';
+                    if (row.name) {
+                        result += row.name;
+                    }
+                    if (row.buildingNumber) {
+                        result += row.buildingNumber + "栋";
+                    }
+                    if (row.unitNumber) {
+                        result += row.unitNumber + "单元";
+                    }
+                    if (row.houseNumber) {
+                        result += row.houseNumber;
+                    }
+                    return result;
+                }
+            });
+            cols.push({
+                field: 'currentPrice', title: '价格', formatter: function (value, row, index) {
+                    var result = '';
+                    if (row.currentPrice) {
+                        result += '成交价：' + row.currentPrice + '<br/>';
                     }
                     if (row.consultPrice) {
                         result += '评估价：' + row.consultPrice + '<br/>';
                     }
-                    if (row.assessStandardDate) {
-                        result += '评估基准日：' + formatDate(row.assessStandardDate) + '<br/>';
-                    }
                     if (row.unitPrice) {
                         result += '单价：' + row.unitPrice + '<br/>';
+                    }
+                    return result;
+                }
+            });
+            cols.push({field: 'area', title: '信息1', formatter: function (value, row, index) {
+                var result = '';
+                if (row.area) {
+                    result += '面积：' + row.area + '<br/>';
+                }
+                if (row.belongType) {
+                    result += '类型：' + row.belongType + '<br/>';
+                }
+                if (row.belongCategory) {
+                    result += '类别：' + row.belongCategory + '<br/>';
+                }
+                if (row.dealTypeName) {
+                    result += '交易方式：' + row.dealTypeName + '<br/>';
+                }
+                return result;
+            }});
+            cols.push({
+                field: 'other', title: '信息2', formatter: function (value, row, index) {
+                    var result = '';
+                    if (row.negotiatedDate) {
+                        result += '成交(协商)日期：' + formatDate(row.negotiatedDate) + '<br/>';
+                    }
+                    if (row.assessStandardDate) {
+                        result += '评估基准日：' + formatDate(row.assessStandardDate) + '<br/>';
                     }
                     if (row.houseRealizationRatios) {
                         result += '变现率：' + row.houseRealizationRatios + '<br/>';
