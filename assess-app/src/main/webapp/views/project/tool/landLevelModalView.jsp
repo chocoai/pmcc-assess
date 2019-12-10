@@ -99,7 +99,8 @@
             if (!select) {
                 var frm = AssessLandLevelTool.prototype.box.find("form").first();
                 var data = formSerializeArray(frm);
-                data.status = "finish";
+//                data.status = "finish";
+                data.status = "";
                 select = data;
             }
             var cols = [];

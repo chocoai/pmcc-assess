@@ -47,7 +47,7 @@
                                     </label>
                                     <div class="col-sm-3">
                                         <label class="form-control"><fmt:formatDate
-                                                value='${generationVo.investigationsStartDate}'
+                                                value='${generationVo.reportIssuanceDate}'
                                                 pattern='yyyy-MM-dd'/></label>
                                     </div>
                                 </div>
@@ -79,7 +79,7 @@
                                     </label>
                                     <div class="col-sm-3">
                                         <label class="form-control"><fmt:formatDate
-                                                value='${generationVo.investigationsStartDate}'
+                                                value='${generationVo.investigationsEndDate}'
                                                 pattern='yyyy-MM-dd'/></label>
                                     </div>
                                 </div>

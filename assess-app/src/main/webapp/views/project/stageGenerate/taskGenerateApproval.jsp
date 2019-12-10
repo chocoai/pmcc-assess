@@ -33,7 +33,7 @@
                                     </label>
                                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                                         <label class="form-control"><fmt:formatDate
-                                                value='${generationVo.investigationsStartDate}'
+                                                value='${generationVo.reportIssuanceDate}'
                                                 pattern='yyyy-MM-dd'/></label>
                                     </div>
                                 </div>
@@ -43,7 +43,7 @@
                                     </label>
                                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                                         <label class="form-control"><fmt:formatDate
-                                                value='${generationVo.investigationsStartDate}'
+                                                value='${generationVo.homeWorkEndTime}'
                                                 pattern='yyyy-MM-dd'/></label>
                                     </div>
                                 </div>
@@ -75,7 +75,7 @@
                                     </label>
                                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                                         <label class="form-control"><fmt:formatDate
-                                                value='${generationVo.investigationsStartDate}'
+                                                value='${generationVo.investigationsEndDate}'
                                                 pattern='yyyy-MM-dd'/></label>
                                     </div>
                                 </div>
