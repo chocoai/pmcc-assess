@@ -28,8 +28,7 @@
                                         </label>
                                         <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
                                             <input type="text" data-rule-maxlength="50"
-                                                   placeholder="项目名称" id="queryName" name="queryName"
-                                                   class="form-control">
+                                                   placeholder="项目名称"  name="projectName" class="form-control">
                                         </div>
                                     </div>
                                     <div>
@@ -37,7 +36,7 @@
                                             状态
                                         </label>
                                         <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                            <select id="status" class="form-control">
+                                            <select name="projectStatus" class="form-control">
                                                 <option value="">--请选择--</option>
                                                 <c:forEach var="item" items="${statusEnumList}">
                                                     <option value="${item.key}">${item.value}</option>
@@ -50,10 +49,10 @@
                                             项目成员
                                         </label>
                                         <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                            <input type="hidden" id="queryMember">
-                                            <input type="text" data-rule-maxlength="50" readonly onclick="selectProjectMember()"
-                                                   placeholder="项目成员" id="queryMemberName" name="queryMemberName"
-                                                   class="form-control">
+                                            <input type="hidden" name="queryMember" data-title="account">
+                                            <input type="text" data-rule-maxlength="50" readonly="readonly" onclick="selectCreate(this)"
+                                                   placeholder="项目成员" name="queryMemberName"
+                                                   class="form-control" data-title="name">
                                         </div>
                                     </div>
                                     <div>
@@ -61,10 +60,9 @@
                                             项目经理
                                         </label>
                                         <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                            <input type="hidden" id="queryManager">
-                                            <input type="text" data-rule-maxlength="50" readonly onclick="selectProjectManager()"
-                                                   placeholder="项目经理" id="queryManagerName" name="queryManagerName"
-                                                   class="form-control">
+                                            <input type="hidden" name="queryManager" data-title="account">
+                                            <input type="text"  readonly="readonly" onclick="selectCreate(this)"
+                                                   placeholder="项目经理"  name="queryManagerName" class="form-control" data-title="name">
                                         </div>
                                     </div>
                                 </div>
@@ -75,10 +73,10 @@
                                             立项人
                                         </label>
                                         <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                            <input type="hidden" id="queryCreator">
-                                            <input type="text" data-rule-maxlength="50" readonly onclick="selectProjectCreator()"
-                                                   placeholder="立项人" id="queryCreatorName" name="queryCreatorName"
-                                                   class="form-control">
+                                            <input type="hidden" name="queryCreator" data-title="account">
+                                            <input type="text"  readonly="readonly" onclick="selectCreate(this)"
+                                                   placeholder="立项人"  name="queryCreatorName"
+                                                   class="form-control" data-title="name">
                                         </div>
                                     </div>
                                     <div>
@@ -86,7 +84,7 @@
                                             委托目的
                                         </label>
                                         <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                            <select id="entrustPurpose" class="form-control">
+                                            <select name="entrustPurpose" class="form-control">
                                                 <option value="">--请选择--</option>
                                                 <c:forEach var="item" items="${entrustPurposeList}">
                                                     <option value="${item.id}">${item.name}</option>
@@ -100,7 +98,7 @@
                                         </label>
                                         <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
                                             <input type="text" class="form-control date-picker dbdate"
-                                                   data-date-format="yyyy-mm-dd" id="queryTimeStart" placeholder="开始时间"/>
+                                                   data-date-format="yyyy-mm-dd" name="queryTimeStart" placeholder="开始时间"/>
                                         </div>
                                     </div>
                                     <div>
@@ -109,7 +107,7 @@
                                         </label>
                                         <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
                                             <input type="text" class="form-control date-picker dbdate"
-                                                   data-date-format="yyyy-mm-dd" id="queryTimeEnd" placeholder="结束时间"/>
+                                                   data-date-format="yyyy-mm-dd" name="queryTimeEnd" placeholder="结束时间"/>
                                         </div>
                                     </div>
 
@@ -117,21 +115,12 @@
                                 <div class="form-group ">
                                     <div>
                                         <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                            委托人
-                                        </label>
-                                        <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                            <input type="text" data-rule-maxlength="50" placeholder="委托人"
-                                                   id="queryConsignor" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                             报告使用单位
                                         </label>
                                         <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                            <input type="hidden" id="queryUseUnit">
+                                            <input type="hidden" name="queryUseUnit">
                                             <input type="text" readonly="readonly" required="required"
-                                                   placeholder="单位" class="form-control" id="queryUseUnitName"
+                                                   placeholder="单位" class="form-control" name="queryUseUnitName"
                                                    onclick="selectCustomer(this)">
                                         </div>
                                     </div>
@@ -140,19 +129,31 @@
                                             评估部门
                                         </label>
                                         <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                            <input id="queryDepartmentId" name="queryDepartmentId"
-                                                   class="form-control" type="hidden"/>
-                                            <input id="queryDepartmentName" name="queryDepartmentName" class="form-control"
-                                                   placeholder="评估部门"
+                                            <input  name="queryDepartmentId" class="form-control" type="hidden" />
+                                            <input  name="queryDepartmentName" class="form-control" placeholder="评估部门"
                                                    onclick="selectDepartment(this)" readonly="readonly"/>
                                         </div>
                                     </div>
-                                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                    <div>
+                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                            委托人
+                                        </label>
+                                        <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">
+                                                    <input type="radio"  name="queryConsignorType" value="1">法人
+                                                    <input type="radio" checked="checked" name="queryConsignorType" value="0">法定单位
+                                                </span>
+                                                <input type="text"  placeholder="委托人" class="form-control" name="queryConsignor">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
                                         <button type="button" class="btn btn-primary"
                                                 onclick="loadParticipationList()">
                                             查询
                                         </button>
-                                        <button type="button" class="btn btn-success" onclick="queryReset()">
+                                        <button type="button" class="btn btn-success" onclick="$('#frmQuery').clearAll()">
                                             重置
                                         </button>
                                     </div>
@@ -176,8 +177,10 @@
     $(function () {
         loadParticipationList();
 
-    })
+    });
     function loadParticipationList() {
+        var selectObj = formSerializeArray($("#frmQuery")) ;
+        console.log(selectObj) ;
         var cols = [];
         var cols = [];
         cols.push({field: 'projectName', title: '项目名称',width:'30%'});
@@ -229,19 +232,7 @@
             }
         });
         $("#tb_myParticipation").bootstrapTable('destroy');
-        TableInit("tb_myParticipation", "${pageContext.request.contextPath}/projectCenter/getParticipationProject", cols, {
-            queryName: $("#queryName").val(),
-            projectStatus:$("#status").val(),
-            queryCreator:$("#queryCreator").val(),
-            queryMember:$("#queryMember").val(),
-            queryManager:$("#queryManager").val(),
-            entrustPurpose:$("#entrustPurpose").val(),
-            queryTimeStart:$("#queryTimeStart").val(),
-            queryTimeEnd:$("#queryTimeEnd").val(),
-            queryConsignor:$("#queryConsignor").val(),
-            queryUseUnit:$("#queryUseUnit").val(),
-            queryDepartmentId:$("#queryDepartmentId").val()
-        }, {
+        TableInit("tb_myParticipation", "${pageContext.request.contextPath}/projectCenter/getParticipationProject", cols, selectObj, {
             showColumns: false,
             showRefresh: false,
             search: false,
@@ -250,73 +241,43 @@
             }
         });
     }
+    
+    function selectCreate(_this) {
+        var div = $(_this).closest("div") ;
+        erpEmployee.select({
+            currOrgId: '${companyId}',
+            onSelected: function (data) {
+                div.find("input[data-title='name']") .val(data.name) ;
+                div.find("input[data-title='account']") .val(data.account) ;
+            }
+        });
+    }
 
-    //项目成员选择
-    function selectProjectMember() {
-        erpEmployee.select({
-            currOrgId: '${companyId}',
-            onSelected: function (data) {
-                $("#queryMember").val(data.account);
-                $("#queryMemberName").val(data.name);
-            }
-        });
-    }
-    //项目经理选择
-    function selectProjectManager() {
-        erpEmployee.select({
-            currOrgId: '${companyId}',
-            onSelected: function (data) {
-                $("#queryManager").val(data.account);
-                $("#queryManagerName").val(data.name);
-            }
-        });
-    }
-    //立项人选择
-    function selectProjectCreator() {
-        erpEmployee.select({
-            currOrgId: '${companyId}',
-            onSelected: function (data) {
-                $("#queryCreator").val(data.account);
-                $("#queryCreatorName").val(data.name);
-            }
-        });
-    }
 
     function selectCustomer(this_) {
+        var div = $(this_).closest("div") ;
         //选择客户
         crmCustomer.select({
             multi: false,//是否允许多选
             companyId:"${companyId}",
             onSelected: function (nodes) {
-                $("#queryUseUnit").val(nodes[0].id);
-                $("#queryUseUnitName").val(nodes[0].name);
-                $.ajax({
-                    type: "get",
-                    url: "${pageContext.request.contextPath}/initiateCrmCustomer/getCrmCustomerDto",
-                    data: "crmId=" + nodes[0].id,
-                    success: function (msg) {
-
-                    }
-                });
+                div.find("[name='queryUseUnit']") .val(nodes[0].id) ;
+                div.find("[name='queryUseUnitName']") .val(nodes[0].name) ;
             }
         });
-    };
-
-    //重置查询条件
-    function queryReset() {
-        $("#frmQuery").find("input").val("");
-        $("#frmQuery").find("select").val("");
     }
     //部门
     function selectDepartment(this_) {
+        var div = $(this_).closest("div") ;
         var options = {
             onSelected: function (nodes) {
-                $("#queryDepartmentId").val(nodes[0].id);
-                $("#queryDepartmentName").val(nodes[0].text);
+                div.find("[name='queryDepartmentId']") .val(nodes[0].id) ;
+                div.find("[name='queryDepartmentName']") .val(nodes[0].text) ;
             }
         };
         erpDepartment.select(options);
     };
+
 </script>
-</body>
+
 </html>

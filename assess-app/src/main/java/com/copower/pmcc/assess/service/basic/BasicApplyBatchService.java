@@ -895,6 +895,8 @@ public class BasicApplyBatchService {
             basicEstateService.saveAndUpdateBasicEstate(version, true);
 
             if (basicEstate != null) {
+                basicEstate.setClassify(oldBasicEstate.getClassify());
+                basicEstate.setType(oldBasicEstate.getType());
                 basicEstateService.saveAndUpdateBasicEstate(basicEstate, true);
                 BasicApplyBatch basicApplyBatch = getBasicApplyBatchByEstateId(basicEstate.getId());
                 if (basicApplyBatch != null) {

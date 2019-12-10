@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.dal.basis.dao.project.ProjectInfoDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDao;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlan;
+import com.copower.pmcc.assess.dto.input.project.QueryProjectInfo;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectMemberVo;
 import com.copower.pmcc.assess.dto.output.project.initiate.InitiateUnitInformationVo;
@@ -18,12 +19,10 @@ import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.provider.ErpRpcDepartmentService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
-import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.github.pagehelper.StringUtil;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
@@ -31,10 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -70,22 +66,13 @@ public class ProjectCenterService {
      *
      * @return
      */
-    public BootstrapTableVo getProjectList(String queryName, String projectStatus, String queryCreator, String queryMember, Integer entrustPurpose,
-                                           String queryManager, String queryTimeStart, String queryTimeEnd, String queryConsignor,
-                                           Integer queryUseUnit, String queryEstateName, Integer queryLoanType, Integer queryDepartmentId) throws Exception {
+    public BootstrapTableVo getProjectList(QueryProjectInfo queryName) throws Exception {
 
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        Date startTimeParse = null;
-        Date endTimeParse = null;
-        if (StringUtil.isNotEmpty(queryTimeStart))
-            startTimeParse = DateUtils.convertDate(queryTimeStart);
-        if (StringUtil.isNotEmpty(queryTimeEnd)) {
-            endTimeParse=DateUtils.addDay(queryTimeEnd,1);
-        }
-        List<ProjectInfo> projectInfoList = projectInfoDao.getProjectListByUserAccount("", queryName, projectStatus, queryCreator, queryMember, entrustPurpose,
-                queryManager, startTimeParse, endTimeParse, queryConsignor, queryUseUnit, queryEstateName, queryLoanType, queryDepartmentId);
+        queryName.setUserAccount(null);
+        List<ProjectInfo> projectInfoList = projectInfoDao.getProjectListByUserAccount(queryName);
         List<ProjectInfoVo> projectInfoVos = getProjectInfoVos(projectInfoList);
         bootstrapTableVo.setTotal(page.getTotal());
         bootstrapTableVo.setRows(projectInfoVos);
@@ -183,25 +170,13 @@ public class ProjectCenterService {
      *
      * @return
      */
-    public BootstrapTableVo getParticipationProject(String projectName, String projectStatus, String queryCreator, String queryMember, Integer entrustPurpose,
-                                                    String queryManager, String queryTimeStart, String queryTimeEnd, String queryConsignor, Integer queryUseUnit, Integer queryLoanType, Integer queryDepartmentId) throws Exception {
+    public BootstrapTableVo getParticipationProject(QueryProjectInfo queryProjectInfo) throws Exception {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Date startTimeParse = null;
-        Date endTimeParse = null;
-        if (StringUtil.isNotEmpty(queryTimeStart))
-            startTimeParse = sdf.parse(queryTimeStart);
-        if (StringUtil.isNotEmpty(queryTimeEnd)) {
-            Date temp = sdf.parse(queryTimeEnd);
-            Calendar c = Calendar.getInstance();
-            c.setTime(temp);
-            c.add(Calendar.DATE, 1); // 日期加1天
-            endTimeParse = c.getTime();
-        }
-        List<ProjectInfo> list = projectInfoDao.getProjectListByUserAccount(processControllerComponent.getThisUser(), projectName, projectStatus, queryCreator, queryMember, entrustPurpose,
-                queryManager, startTimeParse, endTimeParse, queryConsignor, queryUseUnit, null, queryLoanType, queryDepartmentId);
+        queryProjectInfo.setUserAccount(processControllerComponent.getThisUser());
+        queryProjectInfo.setQueryEstateName(null);
+        List<ProjectInfo> list = projectInfoDao.getProjectListByUserAccount(queryProjectInfo);
         List<ProjectInfoVo> projectInfoVos = getProjectInfoVos(list);
         vo.setTotal(page.getTotal());
         vo.setRows(ObjectUtils.isEmpty(projectInfoVos) ? Lists.newArrayList() : projectInfoVos);

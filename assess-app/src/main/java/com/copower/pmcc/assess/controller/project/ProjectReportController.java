@@ -6,11 +6,14 @@ import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.project.generate.GenerateReportInfoService;
 import com.copower.pmcc.assess.service.project.generate.GenerateReportService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * Created by kings on 2018-5-23.
@@ -25,30 +28,30 @@ public class ProjectReportController {
     private GenerateReportInfoService generateReportGenerationService;
     @Autowired
     private BaseService baseService;
-    private final String error = "生成报告,或者出具报告" ;
+    private final String error = "生成报告,或者出具报告";
 
     @PostMapping(value = "/generate", name = "生成报告")
     public HttpResult generate(String ids, String fomData) {
         //生成报告信息
         try {
-            GenerateReportInfo generateReportGeneration = JSONObject.parseObject(fomData,GenerateReportInfo.class) ;
+            GenerateReportInfo generateReportGeneration = JSONObject.parseObject(fomData, GenerateReportInfo.class);
             generateReportService.createReportWord(ids, generateReportGeneration);
             return HttpResult.newCorrectResult(200, generateReportGeneration);
         } catch (Exception e) {
-            baseService.writeExceptionInfo(e,error);
+            baseService.writeExceptionInfo(e, error);
             return HttpResult.newErrorResult(500, e.getMessage());
         }
     }
 
     @PostMapping(value = "/resultSheetReport", name = "生成单一的结果集")
-    public HttpResult resultSheetReport(String fomData,String reportType) {
+    public HttpResult resultSheetReport(String fomData, String reportType) {
         //生成单一的结果集
         try {
-            GenerateReportInfo generateReportGeneration = JSONObject.parseObject(fomData,GenerateReportInfo.class) ;
-            generateReportService.resultSheetReport(generateReportGeneration,reportType);
+            GenerateReportInfo generateReportGeneration = JSONObject.parseObject(fomData, GenerateReportInfo.class);
+            generateReportService.resultSheetReport(generateReportGeneration, reportType);
             return HttpResult.newCorrectResult(200, generateReportGeneration);
         } catch (Exception e) {
-            baseService.writeExceptionInfo(e,"生成单一的结果集");
+            baseService.writeExceptionInfo(e, "生成单一的结果集");
             return HttpResult.newErrorResult(500, e.getMessage());
         }
     }
@@ -60,7 +63,23 @@ public class ProjectReportController {
             generateReportGeneration = generateReportGenerationService.getGenerateReportInfoByAreaGroupId(areaGroupId, projectPlanId);
             return HttpResult.newCorrectResult(200, generateReportGeneration);
         } catch (Exception e) {
-            baseService.writeExceptionInfo(e,error);
+            baseService.writeExceptionInfo(e, error);
+            return HttpResult.newErrorResult(500, e.getMessage());
+        }
+    }
+
+    @PostMapping(value = "/saveGenerateReportInfo", name = "修改数据")
+    public HttpResult saveGenerateReportInfo(String fomData) {
+        try {
+            List<GenerateReportInfo> list = JSONObject.parseArray(fomData, GenerateReportInfo.class);
+            if (CollectionUtils.isNotEmpty(list)) {
+                for (GenerateReportInfo generateReportGeneration : list) {
+                    generateReportGenerationService.saveGenerateReportInfo(generateReportGeneration);
+                }
+            }
+            return HttpResult.newCorrectResult(200, list);
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e, error);
             return HttpResult.newErrorResult(500, e.getMessage());
         }
     }

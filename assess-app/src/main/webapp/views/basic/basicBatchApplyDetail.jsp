@@ -76,6 +76,7 @@
                     </div>
                 </div>
             </div>
+            <%@include file="/views/share/form_log.jsp" %>
         </div>
     </div>
     <!-- end: MAIN CONTAINER -->

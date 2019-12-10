@@ -33,7 +33,7 @@
         <result column="assign_status" property="assignStatus" jdbcType="VARCHAR"/>
     </resultMap>
 
-    <select id="getProjectListByUserAccount" parameterType="map" resultMap="BaseResultMap">
+    <select id="getProjectListByUserAccount" parameterType="com.copower.pmcc.assess.dto.input.project.QueryProjectInfo" resultMap="BaseResultMap">
         SELECT A.* FROM tb_project_info A LEFT JOIN tb_project_member B on A.id=B.project_id
         LEFT JOIN tb_initiate_consignor D on A.id=D.project_id  LEFT JOIN tb_initiate_unit_information E on A.id=E.project_id
         WHERE 1=1
@@ -66,8 +66,15 @@
         <if test="queryTimeEnd!=null">
             AND A.gmt_created &lt;= #{queryTimeEnd}
         </if>
-        <if test="queryConsignor!=null and queryConsignor!=''">
-            AND D.cs_name LIKE CONCAT(CONCAT('%', #{queryConsignor}), '%')
+        <if test="queryConsignorType != null">
+            <if test="queryConsignor!=null and queryConsignor!=''">
+                <if test="queryConsignorType == 1">
+                    AND D.cs_name LIKE CONCAT(CONCAT('%', #{queryConsignor}), '%')
+                </if>
+                <if test="queryConsignorType == 0">
+                    AND D.cs_entrustment_unit LIKE CONCAT(CONCAT('%', #{queryConsignor}), '%')
+                </if>
+            </if>
         </if>
         <if test="queryUseUnit!=null">
             AND E.u_use_unit = #{queryUseUnit}

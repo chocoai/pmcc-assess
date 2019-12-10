@@ -7,6 +7,7 @@ import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.DocumentTemplate;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectWorkStage;
+import com.copower.pmcc.assess.dto.input.project.QueryProjectInfo;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanVo;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -108,10 +109,8 @@ public class ProjectCenterController {
 
     @ResponseBody
     @RequestMapping(value = "/getParticipationProject", name = "取得参与项目", method = RequestMethod.GET)
-    public BootstrapTableVo getParticipationProject(String queryName, String projectStatus, String queryCreator, String queryMember, Integer entrustPurpose,
-                                                    String queryManager, String queryTimeStart, String queryTimeEnd, String queryConsignor, Integer queryUseUnit, Integer queryDepartmentId) throws Exception {
-        return projectCenterService.getParticipationProject(queryName, projectStatus, queryCreator, queryMember, entrustPurpose,
-                queryManager, queryTimeStart, queryTimeEnd, queryConsignor, queryUseUnit, null, queryDepartmentId);
+    public BootstrapTableVo getParticipationProject(QueryProjectInfo queryProjectInfo) throws Exception {
+        return projectCenterService.getParticipationProject(queryProjectInfo);
     }
 
     @RequestMapping(value = "/projectList", name = "所有项目")
@@ -132,11 +131,8 @@ public class ProjectCenterController {
 
     @ResponseBody
     @RequestMapping(value = "/getProjectList", name = "取得所有项目列表", method = RequestMethod.GET)
-    public BootstrapTableVo getProjectList(String queryName, String projectStatus, String queryCreator, String queryMember, Integer entrustPurpose,
-                                           String queryManager, String queryTimeStart, String queryTimeEnd, String queryConsignor, Integer queryUseUnit,
-                                           String queryEstateName, Integer queryLoanType, Integer queryDepartmentId) throws Exception {
-        return projectCenterService.getProjectList(queryName, projectStatus, queryCreator, queryMember, entrustPurpose,
-                queryManager, queryTimeStart, queryTimeEnd, queryConsignor, queryUseUnit, queryEstateName, queryLoanType, queryDepartmentId);
+    public BootstrapTableVo getProjectList(QueryProjectInfo queryName) throws Exception {
+        return projectCenterService.getProjectList(queryName);
     }
 
 

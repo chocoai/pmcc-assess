@@ -4,14 +4,13 @@ import com.copower.pmcc.assess.dal.basis.custom.mapper.CustomProjectInfoMapper;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfoExample;
 import com.copower.pmcc.assess.dal.basis.mapper.ProjectInfoMapper;
+import com.copower.pmcc.assess.dto.input.project.QueryProjectInfo;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.aspectj.apache.bcel.generic.RET;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -114,11 +113,8 @@ public class ProjectInfoDao {
         return projectInfoMapper.selectByExample(example);
     }
 
-    public List<ProjectInfo> getProjectListByUserAccount(String userAccount, String projectName, String projectStatus, String queryCreator, String queryMember, Integer entrustPurpose,
-                                                         String queryManager, Date queryTimeStart, Date queryTimeEnd, String queryConsignor, Integer queryUseUnit, String queryEstateName,
-                                                         Integer queryLoanType, Integer queryDepartmentId) {
-        return customProjectInfoMapper.getProjectListByUserAccount(userAccount, projectName, projectStatus, queryCreator, queryMember, entrustPurpose,
-                queryManager, queryTimeStart, queryTimeEnd, queryConsignor, queryUseUnit, queryEstateName, queryLoanType, queryDepartmentId);
+    public List<ProjectInfo> getProjectListByUserAccount(QueryProjectInfo queryProjectInfo) {
+        return customProjectInfoMapper.getProjectListByUserAccount(queryProjectInfo);
     }
 
 

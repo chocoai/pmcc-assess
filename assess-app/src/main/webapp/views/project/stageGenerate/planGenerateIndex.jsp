@@ -51,7 +51,7 @@
                                         <input type="text" name="reportIssuanceDate" placeholder="报告出具日期"
                                                class="form-control date-picker dbdate" pattern='yyyy-MM-dd'
                                                data-date-format="yyyy-mm-dd" required
-                                               value="<fmt:formatDate value='${generationVo.investigationsStartDate}' pattern='yyyy-MM-dd'/>">
+                                               value="<fmt:formatDate value='${generationVo.reportIssuanceDate}' pattern='yyyy-MM-dd'/>">
                                     </div>
                                 </div>
                                 <div class="x-valid">
@@ -63,7 +63,7 @@
                                                class="form-control date-picker dbdate"
                                                data-date-format="yyyy-mm-dd"
                                                pattern='yyyy-MM-dd' required
-                                               value="<fmt:formatDate value='${generationVo.investigationsStartDate}' pattern='yyyy-MM-dd'/>">
+                                               value="<fmt:formatDate value='${generationVo.homeWorkEndTime}' pattern='yyyy-MM-dd'/>">
                                     </div>
                                 </div>
                                 <div class="x-valid">
@@ -478,13 +478,42 @@
         });
     }
 
+    /**
+     * 报告信息 修改或者添加
+     * @param data
+     * @param callback
+     */
+    function saveGenerateReportInfo(data,callback) {
+        $.ajax({
+            url: "${pageContext.request.contextPath}/generateReport/saveGenerateReportInfo",
+            data: {fomData: JSON.stringify(data)},
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                if (result.ret) {
+                    if (callback) {
+                        callback();
+                    }
+                } else {
+                    Alert(result.errmsg);
+                }
+            },
+            error: function (result) {
+                alert("调用服务端方法失败，失败原因:" + result);
+            }
+        });
+    }
+
     //提交
     function commitApply() {
+        var allData = [] ;
         var isPass = true;
         $(".area_panel").each(function () {
             $(this).find('.x_content').show();
-            isPass = $(this).find('form').valid();
-        })
+            var form = $(this).find('form') ;
+            isPass = form.valid();
+            allData.push(formSerializeArray(form)) ;
+        }) ;
         if (!isPass) {
             return false;
         }
@@ -497,20 +526,22 @@
             var approvalData = formParams("frm_approval");
             data = $.extend(data, approvalData);
         }
-        //提交流程
-        $.ajax({
-            url: url,
-            data: data,
-            success: function (result) {
-                if (result.ret) {
-                    Alert('提交成功', 1, null, function () {
-                        closeWindow();
-                    });
-                } else {
-                    Alert(result.errmsg);
+        saveGenerateReportInfo(allData,function () {
+            //提交流程
+            $.ajax({
+                url: url,
+                data: data,
+                success: function (result) {
+                    if (result.ret) {
+                        Alert('提交成功', 1, null, function () {
+                            closeWindow();
+                        });
+                    } else {
+                        Alert(result.errmsg);
+                    }
                 }
-            }
-        })
+            })
+        }) ;
     }
 
 </script>
