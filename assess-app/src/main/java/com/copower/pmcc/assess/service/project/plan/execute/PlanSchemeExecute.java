@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Component
 @WorkFlowAnnotation(desc = "评估方案自动(空)")
-public class PlanSchemeEmptyExecute implements ProjectPlanExecuteInterface {
+public class PlanSchemeExecute implements ProjectPlanExecuteInterface {
     @Autowired
     private ProjectPlanService projectPlanService;
 
@@ -26,6 +26,8 @@ public class PlanSchemeEmptyExecute implements ProjectPlanExecuteInterface {
     @Transactional(rollbackFor = Exception.class)
     public void execute(ProjectPlan projectPlan, ProjectWorkStage projectWorkStage) throws BusinessException, BpmException {
         if (projectPlan != null) {
+            //产生一个设置方案的任务
+
             projectPlan.setProjectStatus(ProjectStatusEnum.TASK.getKey());
             projectPlan.setBisAutoComplete(true);
             projectPlanService.updateProjectPlan(projectPlan);

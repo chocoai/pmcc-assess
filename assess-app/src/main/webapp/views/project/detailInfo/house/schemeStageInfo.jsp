@@ -26,7 +26,6 @@
 </html>
 <script type="text/javascript">
     $(document).ready(function () {
-        alert(1);
         $('#workStageCustomBtn').append($('#schemeCustomeBtnHtml').html());
     });
     //设置方案
