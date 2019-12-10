@@ -34,34 +34,9 @@
 
     $(function () {
         $(".tooltips").tooltip();
-
-        mainObj.storeAccess();
-        mainObj.fetchMessage();
     });
-    mainObj.fetchMessage = function () {
-        //先关闭之前的websocket
-        if (mainObj.websocket) {
-            mainObj.websocket.close();
-        }
-        //新实例化一个websocket
-        mainObj.websocket = new WebSocket(mainObj.systemMessageWs);
-        mainObj.websocket.onmessage = function (event) {
-            // 接收到消息
-            var message = event.data;
-            toastr.options = {
-                closeButton: true,
-                positionClass: "toast-bottom-right",
-                showDuration: "300",
-                hideDuration: "1000",
-                timeOut: "10000",
-                extendedTimeOut: "1000"
-            };
-            toastr.info("系统消息:" + message);
-        };
-    };
     mainObj.storeAccess = function () {
         window.sessionStorage.setItem("${requestAccessKey}", "${baseViewDto.thisUser.sessionId}");
-
         //设置全局ajax头
         $.ajaxSetup({
             headers: {
