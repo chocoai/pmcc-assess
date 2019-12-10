@@ -140,6 +140,185 @@
     <!-- end: MAIN CONTAINER -->
 </div>
 </body>
+
+<div id="divBoxFather" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">详细信息</h3>
+            </div>
+            <form id="frmFather" class="form-horizontal">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            省
+                                        </label>
+                                        <div class="col-sm-2">
+                                            <label class="form-control" name="provinceName"></label>
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            市
+                                        </label>
+                                        <div class="col-sm-2">
+                                            <label class="form-control" name="cityName"></label>
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            区
+                                        </label>
+                                        <div class="col-sm-2">
+                                            <label class="form-control" name="districtName"></label>
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            房产类型
+                                        </label>
+                                        <div class="col-sm-2">
+                                            <label class="form-control" name="houseType"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            房产类别
+                                        </label>
+                                        <div class="col-sm-2">
+                                            <label class="form-control" name="houseCategory"></label>
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            街道
+                                        </label>
+                                        <div class="col-sm-2">
+                                            <label class="form-control" name="street"></label>
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            面积
+                                        </label>
+                                        <div class="col-sm-2">
+                                            <label class="form-control" name="area"></label>
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            楼盘名称
+                                        </label>
+                                        <div class="col-sm-2">
+                                            <label class="form-control" name="estateName"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            交易方式
+                                        </label>
+                                        <div class="col-sm-2">
+                                            <label class="form-control" name="dealTypeName"></label>
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            成交价
+                                        </label>
+                                        <div class="col-sm-2">
+                                            <label class="form-control" name="currentPrice"></label>
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            评估价
+                                        </label>
+                                        <div class="col-sm-2">
+                                            <label class="form-control" name="consultPrice"></label>
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            评估基准日期
+                                        </label>
+                                        <div class="col-sm-2">
+                                            <input name="assessStandardDate" data-date-format="yyyy-mm-dd"
+                                                   class="form-control date-picker dbdate">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            单价
+                                        </label>
+                                        <div class="col-sm-2">
+                                            <label class="form-control" name="tradingUnitPrice"></label>
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            变现率
+                                        </label>
+                                        <div class="col-sm-2">
+                                            <input class="form-control" id="realizationRatios" readonly></input>
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            变现周期
+                                        </label>
+                                        <div class="col-sm-2">
+                                            <label class="form-control" name="realizationCycle"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            成交对象概况
+                                        </label>
+                                        <div class="col-sm-11">
+                                            <label class="form-control" name="dealPartInfo"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            附件
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <div id="_uploadHouseFile"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-default">
+                        关闭
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/map.position.js?v=${assessVersion}"></script>
 </html>
@@ -197,26 +376,13 @@
         });
         cols.push({field: 'tradingUnitPrice', title: '交易单价'});
         cols.push({field: 'area', title: '面积'});
-        cols.push({field: 'houseType', title: '房屋类型'});
-        cols.push({field: 'houseCategory', title: '房屋类别'});
-        cols.push({field: 'dealTypeName', title: '交易方式'});
-        cols.push({field: 'currentPrice', title: '成交价'});
-        cols.push({field: 'consultPrice', title: '评估价'});
-        cols.push({
-            field: 'assessStandardDate', title: '评估基准日', formatter: function (value, row, index) {
-                return formatDate(value);
-            }
-        });
-        cols.push({
-            field: 'realizationRatios', title: '变现率', formatter: function (value, row, index) {
-                return AssessCommon.pointToPercent(value);
-            }
-        });
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
                 if(row.caseHouseId){
                     str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="查看" onclick="houseSearch.findHouse(' + row.caseHouseId + ')"><i class="fa fa-search fa-white"></i></a>';
+                }else{
+                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="查看" onclick="houseSearch.showItem(' + row.id + ')"><i class="fa fa-search fa-white"></i></a>';
                 }
                 str += '</div>';
                 return str;
@@ -234,4 +400,36 @@
             });
     };
 
+    houseSearch.showItem = function (id) {
+        $.ajax({
+            url: "${pageContext.request.contextPath}/case/getDataById",
+            type: "get",
+            dataType: "json",
+            data: {id: id},
+            success: function (result) {
+                if (result.ret) {
+                    $("#frmFather").initForm(result.data);
+                    $("#frmFather").find("input[name='assessStandardDate']").attr("disabled", true);
+                    $("#realizationRatios").val(AssessCommon.pointToPercent(result.data.realizationRatios));
+                    houseSearch.showFile(id);
+                    $("#divBoxFather").modal("show");
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
+    };
+
+
+    houseSearch.showFile=function (id) {
+        FileUtils.getFileShows({
+            target: "uploadHouseFile",
+            formData: {
+                tableName: "tb_case_base_house",
+                tableId: id
+            },
+            deleteFlag: true
+        })
+    };
 </script>
