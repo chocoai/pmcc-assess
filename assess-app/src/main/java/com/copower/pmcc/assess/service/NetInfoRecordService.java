@@ -1614,12 +1614,6 @@ public class NetInfoRecordService {
      */
     public String getContent(String title, String type, String currentPrice, String consultPrice, String initPrice, String endTime, String startTime) {
         StringBuilder content = new StringBuilder();
-        if (StringUtil.isNotEmpty(title)) {
-            content.append("标题：" + title + "。");
-        }
-        if (StringUtil.isNotEmpty(type)) {
-            content.append("类型：" + type + "。");
-        }
         if (StringUtil.isNotEmpty(currentPrice)) {
             content.append("成交价：" + currentPrice + "。");
         }
@@ -1629,14 +1623,6 @@ public class NetInfoRecordService {
         if (StringUtil.isNotEmpty(initPrice)) {
             content.append("起始价：" + initPrice + "。");
         }
-        if (StringUtil.isNotEmpty(startTime)) {
-            content.append("开始时间：" + startTime + "。");
-        }
-        if (StringUtil.isNotEmpty(endTime)) {
-            content.append("结束时间：" + endTime + "。");
-        }
-
-
         return content.toString();
     }
 
