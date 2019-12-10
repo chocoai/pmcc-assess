@@ -120,7 +120,7 @@ public class ProjectSubsequentService {
         ProjectSubsequent projectSubsequent = new ProjectSubsequent();
         projectSubsequent.setProcessInsId(processInsId);
         List<ProjectSubsequent> projectSubsequents = projectSubsequentDao.getProjectSubsequent(projectSubsequent);
-        if (com.alibaba.dubbo.common.utils.CollectionUtils.isNotEmpty(projectSubsequents))
+        if (CollectionUtils.isNotEmpty(projectSubsequents))
             projectSubsequent = projectSubsequents.get(0);
         return projectSubsequent;
     }

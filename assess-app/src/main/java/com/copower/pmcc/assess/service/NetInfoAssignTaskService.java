@@ -161,7 +161,7 @@ public class NetInfoAssignTaskService {
         NetInfoAssignTask netInfoAssignTask = new NetInfoAssignTask();
         netInfoAssignTask.setProcessInsId(processInsId);
         List<NetInfoAssignTask> netInfoAssignTasks = netInfoAssignTaskDao.getNetInfoAssignTask(netInfoAssignTask);
-        if (com.alibaba.dubbo.common.utils.CollectionUtils.isNotEmpty(netInfoAssignTasks))
+        if (CollectionUtils.isNotEmpty(netInfoAssignTasks))
             netInfoAssignTask = netInfoAssignTasks.get(0);
         return netInfoAssignTask;
     }
