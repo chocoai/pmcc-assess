@@ -102,7 +102,7 @@
         });
     }
 
-    $(function(){
+    $(function () {
         detailInfo.prototype.loadDataHouseList();
         detailInfo.prototype.loadDataLandList();
     })
@@ -155,22 +155,27 @@
                     return result;
                 }
             });
-            cols.push({field: 'area', title: '信息1', formatter: function (value, row, index) {
-                var result = '';
-                if (row.area) {
-                    result += '面积：' + row.area + '<br/>';
+            cols.push({
+                field: 'area', title: '信息1', formatter: function (value, row, index) {
+                    var result = '';
+                    if (row.area) {
+                        result += '面积：' + row.area + '<br/>';
+                    }
+                    if (row.belongType) {
+                        result += '类型：' + row.belongType + '<br/>';
+                    }
+                    if (row.belongCategory) {
+                        result += '类别：' + row.belongCategory + '<br/>';
+                    }
+                    if (row.dealTypeName) {
+                        result += '交易方式：' + row.dealTypeName + '<br/>';
+                    }
+                    if (row.tradingTypeName) {
+                        result += '交易类型：' + row.tradingTypeName + '<br/>';
+                    }
+                    return result;
                 }
-                if (row.belongType) {
-                    result += '类型：' + row.belongType + '<br/>';
-                }
-                if (row.belongCategory) {
-                    result += '类别：' + row.belongCategory + '<br/>';
-                }
-                if (row.dealTypeName) {
-                    result += '交易方式：' + row.dealTypeName + '<br/>';
-                }
-                return result;
-            }});
+            });
             cols.push({
                 field: 'other', title: '信息2', formatter: function (value, row, index) {
                     var result = '';
@@ -194,7 +199,7 @@
             cols.push({
                 field: 'id', title: '查看网址', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
-                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="查看网址" target="_blank" href="'+row.sourceSiteUrl+'" ><i class="fa fa-eye fa-white"></i></a>';
+                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="查看网址" target="_blank" href="' + row.sourceSiteUrl + '" ><i class="fa fa-eye fa-white"></i></a>';
                     str += '</div>';
                     return str;
                 }
@@ -267,7 +272,7 @@
                         result += '容积率说明：' + row.plotRatioRemark + '<br/>';
                     }
                     if (row.greeningRate) {
-                        result += '绿化率：' + row.greeningRate*100 + '%<br/>';
+                        result += '绿化率：' + row.greeningRate * 100 + '%<br/>';
                     }
                     if (row.greeningRateRemark) {
                         result += '绿化率说明：' + row.greeningRateRemark + '<br/>';

@@ -150,6 +150,12 @@ public class NetInfoRecordHouseService {
                 vo.setDealTypeName(baseDataDic.getName());
             }
         }
+        if (netInfoRecordHouse.getTradingType() != null) {
+            baseDataDic = baseDataDicService.getDataDicById(netInfoRecordHouse.getTradingType());
+            if (baseDataDic != null) {
+                vo.setTradingTypeName(baseDataDic.getName());
+            }
+        }
         if (!CollectionUtils.isEmpty(attachmentDtos)) {
             StringBuilder stringBuilder = new StringBuilder();
             for (SysAttachmentDto attachmentDto : attachmentDtos) {

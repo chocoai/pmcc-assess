@@ -111,14 +111,6 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <%--<button type="button" style="display: none" class="btn btn-primary landContent"--%>
-                                    <%--onclick="detailInfo.prototype.showLandHistoryModal()">--%>
-                                    <%--新增及历史--%>
-                                    <%--</button>--%>
-                                    <%--<button type="button" style="display: none" class="btn btn-primary houseContent"--%>
-                                    <%--onclick="detailInfo.prototype.showHouseHistoryModal()">--%>
-                                    <%--新增及历史--%>
-                                    <%--</button>--%>
                                 </div>
                                 <div class="form-group landContent" style="display: none">
                                     <div class="form-group">
@@ -127,7 +119,8 @@
                                                 省
                                             </label>
                                             <div class="col-sm-2">
-                                                <select name="province" class="form-control search-select select2">
+                                                <select name="province" id="landProvince"
+                                                        class="form-control search-select select2">
                                                 </select>
                                             </div>
                                         </div>
@@ -136,7 +129,8 @@
                                                 市
                                             </label>
                                             <div class="col-sm-2">
-                                                <select name="city" class="form-control search-select select2">
+                                                <select name="city" id="landCity"
+                                                        class="form-control search-select select2">
                                                 </select>
                                             </div>
                                         </div>
@@ -145,7 +139,8 @@
                                                 区
                                             </label>
                                             <div class="col-sm-2">
-                                                <select name="district" class="form-control search-select select2">
+                                                <select name="district" id="landDistrict"
+                                                        class="form-control search-select select2">
                                                 </select>
                                             </div>
                                         </div>
@@ -333,6 +328,7 @@
                                             </label>
                                             <div class="col-sm-2">
                                                 <input type="text" name="landRealizationRatios"
+                                                       onfocus="detailInfo.prototype.getHouseRealizationRatios()"
                                                        class="form-control x-percent">
                                             </div>
                                         </div>
@@ -475,7 +471,8 @@
                                                 省
                                             </label>
                                             <div class="col-sm-2">
-                                                <select name="province" class="form-control search-select select2">
+                                                <select name="province" id="houseProvince"
+                                                        class="form-control search-select select2">
                                                 </select>
                                             </div>
                                         </div>
@@ -484,7 +481,8 @@
                                                 市
                                             </label>
                                             <div class="col-sm-2">
-                                                <select name="city" class="form-control search-select select2">
+                                                <select name="city" id="houseCity"
+                                                        class="form-control search-select select2">
                                                 </select>
                                             </div>
                                         </div>
@@ -493,7 +491,8 @@
                                                 区
                                             </label>
                                             <div class="col-sm-2">
-                                                <select name="district" class="form-control search-select select2">
+                                                <select name="district" id="houseDistrict"
+                                                        class="form-control search-select select2">
                                                 </select>
                                             </div>
                                         </div>
@@ -664,6 +663,7 @@
                                             </label>
                                             <div class="col-sm-2">
                                                 <input type="text" name="houseRealizationRatios"
+                                                       onfocus="detailInfo.prototype.getHouseRealizationRatios()"
                                                        class="form-control x-percent">
                                             </div>
                                         </div>
@@ -674,6 +674,15 @@
                                             <div class="col-sm-2">
                                                 <input type="text" name="realizationCycle" id="houseRealizationCycle"
                                                        class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="x-valid">
+                                            <label class="col-sm-1 control-label">
+                                                交易类型
+                                            </label>
+                                            <div class="col-sm-2">
+                                                <select name="tradingType" class="form-control search-select select2">
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
@@ -967,14 +976,21 @@
             if (type == result.data.type) {
                 $("#" + detailInfo.prototype.config().frm).initForm(result.data);
                 AssessCommon.initAreaInfo({
-                    provinceTarget: $("#" + detailInfo.prototype.config().frm).find("select[name='province']"),
-                    cityTarget: $("#" + detailInfo.prototype.config().frm).find("select[name='city']"),
-                    districtTarget: $("#" + detailInfo.prototype.config().frm).find("select[name='district']"),
+                    provinceTarget: $("#houseProvince"),
+                    cityTarget: $("#houseCity"),
+                    districtTarget: $("#houseDistrict"),
                     provinceValue: result.data.province,
                     cityValue: result.data.city,
                     districtValue: result.data.district
                 })
-
+                AssessCommon.initAreaInfo({
+                    provinceTarget: $("#landProvince"),
+                    cityTarget: $("#landCity"),
+                    districtTarget: $("#landDistrict"),
+                    provinceValue: result.data.province,
+                    cityValue: result.data.city,
+                    districtValue: result.data.district
+                })
             }
             $("#" + detailInfo.prototype.config().frm).find("input[name='masterId']").val(id);
             $("#" + detailInfo.prototype.config().frm).find("select[name='type']").val(type);
@@ -1003,9 +1019,15 @@
                     AssessCommon.loadDataDicByKey(AssessDicKey.dataDealType, result.data.dealType, function (html, data) {
                         $("#" + detailInfo.prototype.config().frm).find("select[name='dealType']").empty().html(html).trigger('change');
                     });
+                    AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseTransactionType, result.data.tradingType, function (html, data) {
+                        $("#" + detailInfo.prototype.config().frm).find("select[name='tradingType']").empty().html(html).trigger('change');
+                    });
                 } else {
                     AssessCommon.loadDataDicByKey(AssessDicKey.dataDealType, '', function (html, data) {
                         $("#" + detailInfo.prototype.config().frm).find("select[name='dealType']").empty().html(html).trigger('change');
+                    });
+                    AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseTransactionType, '', function (html, data) {
+                        $("#" + detailInfo.prototype.config().frm).find("select[name='tradingType']").empty().html(html).trigger('change');
                     });
                 }
                 //加载附件
@@ -1376,22 +1398,27 @@
                     return result;
                 }
             });
-            cols.push({field: 'area', title: '信息1', formatter: function (value, row, index) {
-                var result = '';
-                if (row.area) {
-                    result += '面积：' + row.area + '<br/>';
+            cols.push({
+                field: 'area', title: '信息1', formatter: function (value, row, index) {
+                    var result = '';
+                    if (row.area) {
+                        result += '面积：' + row.area + '<br/>';
+                    }
+                    if (row.belongType) {
+                        result += '类型：' + row.belongType + '<br/>';
+                    }
+                    if (row.belongCategory) {
+                        result += '类别：' + row.belongCategory + '<br/>';
+                    }
+                    if (row.dealTypeName) {
+                        result += '交易方式：' + row.dealTypeName + '<br/>';
+                    }
+                    if (row.tradingTypeName) {
+                        result += '交易类型：' + row.tradingTypeName + '<br/>';
+                    }
+                    return result;
                 }
-                if (row.belongType) {
-                    result += '类型：' + row.belongType + '<br/>';
-                }
-                if (row.belongCategory) {
-                    result += '类别：' + row.belongCategory + '<br/>';
-                }
-                if (row.dealTypeName) {
-                    result += '交易方式：' + row.dealTypeName + '<br/>';
-                }
-                return result;
-            }});
+            });
             cols.push({
                 field: 'other', title: '信息2', formatter: function (value, row, index) {
                     var result = '';

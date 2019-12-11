@@ -70,12 +70,10 @@
                             </div>
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    实际用途
+                                    用途
                                 </label>
                                 <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                    <select name="practicalUse"
-                                            class="form-control search-select select2">
-                                    </select>
+                                    <input type="text" class="form-control" name="houseType" placeholder="用途"/>
                                 </div>
                             </div>
                             <div class="x-valid">
@@ -359,15 +357,15 @@
         cols.push({
             field: 'name', title: '名称',  formatter: function (value, row, index) {
                 var s = row.fullName;
-                if (row.approverName) {
-                    s += "<label style='padding: 5px;' class='label label-info'>" + row.approverName + "</label>"
+                if (row.creatorName) {
+                    s += "<label style='padding: 5px;' class='label label-info'>" + row.creatorName + "</label>"
                 }
                 return s;
             }
         });
         cols.push({field: 'blockName', title: '版块名称'});
         cols.push({field: 'street', title: '街道'});
-        cols.push({field: 'practicalUseName', title: '实际用途'});
+        cols.push({field: 'houseType', title: '用途'});
         cols.push({field: 'tradingTypeName', title: '交易类型'});
         cols.push({
             field: 'tradingTime', title: '交易时间', formatter: function (value, row, index) {
