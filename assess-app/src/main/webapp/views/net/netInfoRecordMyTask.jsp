@@ -109,6 +109,22 @@
                                            class="form-control date-picker dbdate roomTime">
                                 </div>
                             </div>
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">
+                                    状态
+                                </label>
+                                <div class="col-sm-3">
+                                    <select class="form-control" required id="queryStatus">
+                                        <option value="">--请选择--</option>
+                                        <option value="1">未填写</option>
+                                        <option value="2">已填写</option>
+                                        <option value="3">审批中</option>
+                                        <option value="4">审批完成</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group ">
                             <div class="col-sm-4">
                                 <button type="button" class="btn btn-primary"
                                         onclick="detailInfo.prototype.loadDataDicList()">
@@ -386,7 +402,7 @@
                                                 变现率
                                             </label>
                                             <div class="col-sm-2">
-                                                <input type="text" name="landRealizationRatios"
+                                                <input type="text" name="landRealizationRatios"  onfocus="detailInfo.prototype.getHouseRealizationRatios()"
                                                        class="form-control x-percent">
                                             </div>
                                         </div>
@@ -717,7 +733,7 @@
                                                 变现率
                                             </label>
                                             <div class="col-sm-2">
-                                                <input type="text" name="houseRealizationRatios"
+                                                <input type="text" name="houseRealizationRatios" onfocus="detailInfo.prototype.getHouseRealizationRatios()"
                                                        class="form-control x-percent">
                                             </div>
                                         </div>
@@ -865,7 +881,13 @@
             cols.push({field: 'title', title: '标题', width: '12%'});
             cols.push({field: 'province', title: '省', width: '5%'});
             cols.push({field: 'city', title: '市', width: '5%'});
-            cols.push({field: 'sourceSiteName', title: '来源网站', width: '10%'});
+            cols.push({
+                field: 'sourceSiteName', title: '来源网站', width: '10%', formatter: function (value, row, index) {
+                    var str = '<a href="' + row.sourceSiteUrl + '" target="_blank" >' + row.sourceSiteName + '</a>';
+                    str += '<br/>(' + row.sourceSiteUrl + ')';
+                    return str;
+                }
+            });
             cols.push({field: 'type', title: '类型', width: '6%'});
             cols.push({
                 field: 'beginTime', title: '开始时间', width: '7%', formatter: function (value, row, index) {
@@ -877,11 +899,7 @@
                     return formatDate(row.endTime, false);
                 }
             });
-            cols.push({field: 'content', title: '内容', width: '20%'});
-            cols.push({field: 'sourceSiteUrl', title: '来源地址', width: '5%'});
-            cols.push({field: 'initPrice', title: '起始价', width: '5%'});
-            cols.push({field: 'consultPrice', title: '估算价', width: '5%'});
-            cols.push({field: 'currentPrice', title: '成交价', width: '5%'});
+            cols.push({field: 'content', title: '内容', width: '25%'});
             cols.push({
                 field: 'status', width: '5%', title: '状态', formatter: function (value, row, index) {
                     var s;
@@ -918,7 +936,8 @@
                 queryContent: $("#queryContent").val(),
                 queryType: $("#queryType").val(),
                 queryStartTime: $("#queryStartTime").val(),
-                queryEndTime: $("#queryEndTime").val()
+                queryEndTime: $("#queryEndTime").val(),
+                queryStatus: $("#queryStatus").val(),
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -957,7 +976,7 @@
                         $("#" + detailInfo.prototype.config().frm).find("select[name='type']").off('change').on('change', function () {
                             detailInfo.prototype.showContent($(this).val(), result, id)
                         });
-                        $('#' + detailInfo.prototype.config().box).modal("show");
+                        $('#' + detailInfo.prototype.config().box)
                     }
                 },
                 error: function (result) {
@@ -1095,7 +1114,10 @@
                 },
                 success: function (result) {
                     if (result.ret) {
-                        $("#" + detailInfo.prototype.config().table).bootstrapTable('updateByUniqueId', {id: result.data.id, row: result.data});
+                        $("#" + detailInfo.prototype.config().table).bootstrapTable('updateByUniqueId', {
+                            id: result.data.id,
+                            row: result.data
+                        });
                     }
                     else {
                         Alert("保存数据失败，失败原因:" + result.errmsg);
@@ -1148,7 +1170,10 @@
                 },
                 success: function (result) {
                     if (result.ret) {
-                        $("#" + detailInfo.prototype.config().table).bootstrapTable('updateByUniqueId', {id: result.data.id, row: result.data});
+                        $("#" + detailInfo.prototype.config().table).bootstrapTable('updateByUniqueId', {
+                            id: result.data.id,
+                            row: result.data
+                        });
                     }
                     else {
                         Alert("保存数据失败，失败原因:" + result.errmsg);
@@ -1332,7 +1357,7 @@
                 field: 'id', width: '6%', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="detailInfo.prototype.getAndInitLand(' + row.id + ')"><i class="fa fa-edit fa-white"></i></a>';
-                    if(row.status==0) {
+                    if (row.status == 0) {
                         str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="删除" onclick="detailInfo.prototype.deleteLandItem(' + row.id + ')"><i class="fa fa-minus fa-white"></i></a>';
                     }
                     str += '</div>';
@@ -1440,7 +1465,7 @@
                 field: 'id', width: '6%', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="detailInfo.prototype.getAndInitHouse(' + row.id + ')"><i class="fa fa-edit fa-white"></i></a>';
-                    if(row.status==0) {
+                    if (row.status == 0) {
                         str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="删除" onclick="detailInfo.prototype.deleteHouseItem(' + row.id + ')"><i class="fa fa-minus fa-white"></i></a>';
                     }
                     str += '</div>';

@@ -11,10 +11,12 @@ import com.copower.pmcc.assess.dal.cases.entity.CaseBaseHouse;
 import com.copower.pmcc.assess.service.NetInfoAssignTaskService;
 import com.copower.pmcc.assess.service.NetInfoRecordHouseService;
 import com.copower.pmcc.assess.service.NetInfoRecordLandService;
+import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.cases.CaseBaseHouseService;
 import com.copower.pmcc.assess.service.event.BaseProcessEvent;
 import com.copower.pmcc.bpm.api.dto.model.ProcessExecution;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
+import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -40,6 +42,8 @@ public class NetInfoAssignTaskEvent extends BaseProcessEvent {
     private NetInfoRecordLandDao netInfoRecordLandDao;
     @Autowired
     private CaseBaseHouseService caseBaseHouseService;
+    @Autowired
+    private BaseAttachmentService baseAttachmentService;
 
     @Override
     public void processFinishExecute(ProcessExecution processExecution) throws Exception {
@@ -58,12 +62,12 @@ public class NetInfoAssignTaskEvent extends BaseProcessEvent {
         }
 
         List<NetInfoRecordHouse> netInfoRecordHouses = netInfoRecordHouseDao.getHouseListByMasterIds(integers);
-        if(CollectionUtils.isNotEmpty(netInfoRecordHouses)){
-            netInfoRecordHouses.forEach(o->{
-               o.setStatus(1);
+        if (CollectionUtils.isNotEmpty(netInfoRecordHouses)) {
+            for (NetInfoRecordHouse o : netInfoRecordHouses) {
+                o.setStatus(1);
                 netInfoRecordHouseService.saveAndUpdateNetInfoRecordHouse(o);
                 //验证后写入到标准表中
-                if(caseBaseHouseService.checkFullName(getFullName(o.getName(),o.getBuildingNumber(),o.getUnitNumber(),o.getHouseNumber()))) {
+                if (caseBaseHouseService.checkFullName(getFullName(o.getName(), o.getBuildingNumber(), o.getUnitNumber(), o.getHouseNumber()))) {
                     CaseBaseHouse caseBaseHouse = new CaseBaseHouse();
                     caseBaseHouse.setProvince(o.getProvince());
                     caseBaseHouse.setCity(o.getCity());
@@ -87,13 +91,22 @@ public class NetInfoAssignTaskEvent extends BaseProcessEvent {
                     caseBaseHouse.setApprover(o.getApprover());
                     caseBaseHouse.setCreator(o.getCreator());
                     caseBaseHouseService.addBaseHouse(caseBaseHouse);
+
+                    //附件拷贝
+                    SysAttachmentDto example = new SysAttachmentDto();
+                    example.setTableId(o.getId());
+                    example.setTableName(FormatUtils.entityNameConvertToTableName(NetInfoRecordHouse.class));
+                    SysAttachmentDto attachmentDto = new SysAttachmentDto();
+                    attachmentDto.setTableId(caseBaseHouse.getId());
+                    attachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(CaseBaseHouse.class));
+                    baseAttachmentService.copyFtpAttachments(example, attachmentDto);
                 }
-            });
+            }
         }
         List<NetInfoRecordLand> netInfoRecordLands = netInfoRecordLandDao.getLandListByMasterIds(integers);
 
-        if(CollectionUtils.isNotEmpty(netInfoRecordLands)){
-            netInfoRecordLands.forEach(o->{
+        if (CollectionUtils.isNotEmpty(netInfoRecordLands)) {
+            netInfoRecordLands.forEach(o -> {
                 o.setStatus(1);
                 netInfoRecordLandService.saveAndUpdateNetInfoRecordLand(o);
             });

@@ -1935,6 +1935,66 @@ public class NetInfoRecordHouseExample {
             addCriterion("approver not between", value1, value2, "approver");
             return (Criteria) this;
         }
+
+        public Criteria andTradingTypeIsNull() {
+            addCriterion("trading_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingTypeIsNotNull() {
+            addCriterion("trading_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingTypeEqualTo(Integer value) {
+            addCriterion("trading_type =", value, "tradingType");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingTypeNotEqualTo(Integer value) {
+            addCriterion("trading_type <>", value, "tradingType");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingTypeGreaterThan(Integer value) {
+            addCriterion("trading_type >", value, "tradingType");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingTypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("trading_type >=", value, "tradingType");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingTypeLessThan(Integer value) {
+            addCriterion("trading_type <", value, "tradingType");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingTypeLessThanOrEqualTo(Integer value) {
+            addCriterion("trading_type <=", value, "tradingType");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingTypeIn(List<Integer> values) {
+            addCriterion("trading_type in", values, "tradingType");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingTypeNotIn(List<Integer> values) {
+            addCriterion("trading_type not in", values, "tradingType");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingTypeBetween(Integer value1, Integer value2) {
+            addCriterion("trading_type between", value1, value2, "tradingType");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingTypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("trading_type not between", value1, value2, "tradingType");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

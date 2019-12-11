@@ -1128,7 +1128,7 @@
             showRefresh: false,
             search: false,
             onClickRow: function (row) {
-                loadPositionHtml(row);
+                makeJudgeObjectPosition(row);
                 loadLiveSituationHtml(row);
                 loadOwnershipCertHtml(row);
                 loadLandFileHtml(row);
@@ -1140,6 +1140,25 @@
         });
     };
 
+    //位置示意图
+    function makeJudgeObjectPosition(declareRecord) {
+        $.ajax({
+            url: "${pageContext.request.contextPath}/projectReportFile/makeJudgeObjectPosition",
+            type: "post",
+            dataType: "json",
+            data: {
+                declareRecordId:declareRecord.id
+            },
+            success: function (result) {
+                if (result.ret) {
+                    loadPositionHtml(declareRecord);
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
+    }
     //位置示意图html
     function loadPositionHtml(declareRecord) {
         var html = '';

@@ -125,7 +125,7 @@ public class ProjectTakeNumberService {
         ProjectTakeNumber projectTakeNumber = new ProjectTakeNumber();
         projectTakeNumber.setProcessInsId(processInsId);
         List<ProjectTakeNumber> projectTakeNumbers = projectTakeNumberDao.getProjectTakeNumber(projectTakeNumber);
-        if (com.alibaba.dubbo.common.utils.CollectionUtils.isNotEmpty(projectTakeNumbers))
+        if (CollectionUtils.isNotEmpty(projectTakeNumbers))
             projectTakeNumber = projectTakeNumbers.get(0);
         return projectTakeNumber;
     }

@@ -8,13 +8,7 @@
 <div class="container body">
     <div class="main_container">
         <div class="right_col" id="basicApplyId" role="main" style="margin-left: 0">
-            <div class="page-title">
-                <div class="title_left">
-                    <h2><i class="fa "></i>
-                        案例批量申请
-                    </h2>
-                </div>
-            </div>
+            <%@include file="/views/share/form_head.jsp" %>
 
             <div class="x_panel">
                 <div class="x_title collapse-link">

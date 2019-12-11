@@ -885,7 +885,13 @@
             cols.push({field: 'title', title: '标题', width: '12%'});
             cols.push({field: 'province', title: '省', width: '5%'});
             cols.push({field: 'city', title: '市', width: '5%'});
-            cols.push({field: 'sourceSiteName', title: '来源网站', width: '10%'});
+            cols.push({
+                field: 'sourceSiteName', title: '来源网站', width: '10%', formatter: function (value, row, index) {
+                    var str = '<a href="' + row.sourceSiteUrl + '" target="_blank" >' + row.sourceSiteName + '</a>';
+                    str += '<br/>(' + row.sourceSiteUrl + ')';
+                    return str;
+                }
+            });
             cols.push({field: 'type', title: '类型', width: '6%'});
             cols.push({
                 field: 'beginTime', title: '开始时间', width: '7%', formatter: function (value, row, index) {
@@ -898,10 +904,6 @@
                 }
             });
             cols.push({field: 'content', title: '内容', width: '20%'});
-            cols.push({field: 'sourceSiteUrl', title: '来源地址', width: '5%'});
-            cols.push({field: 'initPrice', title: '起始价', width: '5%'});
-            cols.push({field: 'consultPrice', title: '估算价', width: '5%'});
-            cols.push({field: 'currentPrice', title: '成交价', width: '5%'});
             cols.push({
                 field: 'id', width: '6%', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
@@ -1115,7 +1117,13 @@
             cols.push({field: 'title', title: '标题', width: '15%'});
             cols.push({field: 'province', title: '省', width: '5%'});
             cols.push({field: 'city', title: '市', width: '5%'});
-            cols.push({field: 'sourceSiteName', title: '来源网站', width: '10%'});
+            cols.push({
+                field: 'sourceSiteName', title: '来源网站', width: '10%', formatter: function (value, row, index) {
+                    var str = '<a href="' + row.sourceSiteUrl + '" target="_blank" >' + row.sourceSiteName + '</a>';
+                    str += '<br/>(' + row.sourceSiteUrl + ')';
+                    return str;
+                }
+            });
             cols.push({field: 'type', title: '类型', width: '6%'});
             cols.push({
                 field: 'beginTime', title: '开始时间', width: '7%', formatter: function (value, row, index) {
@@ -1128,13 +1136,10 @@
                 }
             });
             cols.push({field: 'content', title: '内容', width: '25%'});
-            cols.push({field: 'initPrice', title: '起始价', width: '5%'});
-            cols.push({field: 'consultPrice', title: '估算价', width: '5%'});
-            cols.push({field: 'currentPrice', title: '成交价', width: '5%'});
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
-                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="查看网址" target="_blank" href="'+row.sourceSiteUrl+'" ><i class="fa fa-eye fa-white"></i></a>';
+                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="查看网址" target="_blank" href="' + row.sourceSiteUrl + '" ><i class="fa fa-eye fa-white"></i></a>';
                     str += '</div>';
                     return str;
                 }
@@ -1337,24 +1342,64 @@
                     return str;
                 }
             });
-            cols.push({field: 'area', title: '面积'});
-            cols.push({field: 'name', title: '楼盘名称'});
-            cols.push({field: 'dealTypeName', title: '交易方式'});
-            cols.push({field: 'currentPrice', title: '成交价'});
+
             cols.push({
-                field: 'other', title: '其他', formatter: function (value, row, index) {
+                field: 'name', title: '楼盘', formatter: function (value, row, index) {
                     var result = '';
-                    if (row.negotiatedDate) {
-                        result += '成交(协商)日期：' + formatDate(row.negotiatedDate) + '<br/>';
+                    if (row.name) {
+                        result += row.name;
+                    }
+                    if (row.buildingNumber) {
+                        result += row.buildingNumber + "栋";
+                    }
+                    if (row.unitNumber) {
+                        result += row.unitNumber + "单元";
+                    }
+                    if (row.houseNumber) {
+                        result += row.houseNumber;
+                    }
+                    return result;
+                }
+            });
+            cols.push({
+                field: 'currentPrice', title: '价格', formatter: function (value, row, index) {
+                    var result = '';
+                    if (row.currentPrice) {
+                        result += '成交价：' + row.currentPrice + '<br/>';
                     }
                     if (row.consultPrice) {
                         result += '评估价：' + row.consultPrice + '<br/>';
                     }
-                    if (row.assessStandardDate) {
-                        result += '评估基准日：' + formatDate(row.assessStandardDate) + '<br/>';
-                    }
                     if (row.unitPrice) {
                         result += '单价：' + row.unitPrice + '<br/>';
+                    }
+                    return result;
+                }
+            });
+            cols.push({field: 'area', title: '信息1', formatter: function (value, row, index) {
+                var result = '';
+                if (row.area) {
+                    result += '面积：' + row.area + '<br/>';
+                }
+                if (row.belongType) {
+                    result += '类型：' + row.belongType + '<br/>';
+                }
+                if (row.belongCategory) {
+                    result += '类别：' + row.belongCategory + '<br/>';
+                }
+                if (row.dealTypeName) {
+                    result += '交易方式：' + row.dealTypeName + '<br/>';
+                }
+                return result;
+            }});
+            cols.push({
+                field: 'other', title: '信息2', formatter: function (value, row, index) {
+                    var result = '';
+                    if (row.negotiatedDate) {
+                        result += '成交(协商)日期：' + formatDate(row.negotiatedDate) + '<br/>';
+                    }
+                    if (row.assessStandardDate) {
+                        result += '评估基准日：' + formatDate(row.assessStandardDate) + '<br/>';
                     }
                     if (row.houseRealizationRatios) {
                         result += '变现率：' + row.houseRealizationRatios + '<br/>';

@@ -4,9 +4,13 @@ import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.enums.basic.EstateTaggingTypeEnum;
 import com.copower.pmcc.assess.dal.cases.entity.CaseBaseHouse;
 import com.copower.pmcc.assess.dto.input.cases.CaseEstateTaggingDto;
-import com.copower.pmcc.assess.service.cases.*;
+import com.copower.pmcc.assess.dto.output.cases.CaseBaseHouseVo;
+import com.copower.pmcc.assess.service.cases.CaseBaseHouseService;
+import com.copower.pmcc.assess.service.cases.CaseEstateService;
+import com.copower.pmcc.assess.service.cases.CaseEstateTaggingService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -57,17 +61,17 @@ public class CaseController {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
         try {
             if (estateId != null) {
-                CaseEstateTaggingDto dto = caseEstateTaggingService.getCaseEstateTagging(estateId,EstateTaggingTypeEnum.ESTATE.getKey()) ;
-                if (dto != null){
-                    List<CaseEstateTaggingDto> list = caseEstateTaggingService.queryCaseEstateTagging(dto.getDataId(),EstateTaggingTypeEnum.ESTATE.getKey()) ;
-                    if (!ObjectUtils.isEmpty(list)){
-                        for (CaseEstateTaggingDto caseEstateTaggingDto:list){
+                CaseEstateTaggingDto dto = caseEstateTaggingService.getCaseEstateTagging(estateId, EstateTaggingTypeEnum.ESTATE.getKey());
+                if (dto != null) {
+                    List<CaseEstateTaggingDto> list = caseEstateTaggingService.queryCaseEstateTagging(dto.getDataId(), EstateTaggingTypeEnum.ESTATE.getKey());
+                    if (!ObjectUtils.isEmpty(list)) {
+                        for (CaseEstateTaggingDto caseEstateTaggingDto : list) {
                             dto.getChildren().add(caseEstateTaggingDto);
                         }
                     }
                 }
                 modelAndView.addObject("mapTree", JSON.toJSONString(dto));
-                modelAndView.addObject("caseEstate",caseEstateService.getCaseEstateById(estateId));
+                modelAndView.addObject("caseEstate", caseEstateService.getCaseEstateById(estateId));
             }
         } catch (Exception e1) {
             logger.error("区域楼盘案例获取经度和纬度出错!", e1);
@@ -107,5 +111,19 @@ public class CaseController {
             logger.error("", e1);
         }
         return vo;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getDataById", method = {RequestMethod.GET}, name = "通过id获取信息")
+    public HttpResult getDataById(Integer id) {
+        try {
+            if (id != null) {
+                CaseBaseHouseVo vo = caseBaseHouseService.getCaseBaseHouseVo(caseBaseHouseService.getBaseHouseById(id));
+                return HttpResult.newCorrectResult(vo);
+            }
+        } catch (Exception e) {
+            return HttpResult.newErrorResult(String.format("异常! %s", e.getMessage()));
+        }
+        return HttpResult.newCorrectResult();
     }
 }

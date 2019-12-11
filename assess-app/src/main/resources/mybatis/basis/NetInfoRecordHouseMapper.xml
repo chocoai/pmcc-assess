@@ -30,6 +30,7 @@
     <result column="unit_number" property="unitNumber" jdbcType="VARCHAR" />
     <result column="house_number" property="houseNumber" jdbcType="VARCHAR" />
     <result column="approver" property="approver" jdbcType="VARCHAR" />
+    <result column="trading_type" property="tradingType" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -93,7 +94,8 @@
     id, master_id, type, province, city, district, belong_type, belong_category, street, 
     area, name, deal_type, current_price, negotiated_date, consult_price, assess_standard_date, 
     unit_price, house_realization_ratios, realization_cycle, deal_part_info, status, 
-    creator, gmt_created, gmt_modified, building_number, unit_number, house_number, approver
+    creator, gmt_created, gmt_modified, building_number, unit_number, house_number, approver, 
+    trading_type
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordHouseExample" >
     select
@@ -137,8 +139,8 @@
       unit_price, house_realization_ratios, realization_cycle, 
       deal_part_info, status, creator, 
       gmt_created, gmt_modified, building_number, 
-      unit_number, house_number, approver
-      )
+      unit_number, house_number, approver, 
+      trading_type)
     values (#{masterId,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, 
       #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, #{belongType,jdbcType=VARCHAR}, 
       #{belongCategory,jdbcType=VARCHAR}, #{street,jdbcType=VARCHAR}, #{area,jdbcType=DECIMAL}, 
@@ -147,8 +149,8 @@
       #{unitPrice,jdbcType=DECIMAL}, #{houseRealizationRatios,jdbcType=DECIMAL}, #{realizationCycle,jdbcType=VARCHAR}, 
       #{dealPartInfo,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
       #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{buildingNumber,jdbcType=VARCHAR}, 
-      #{unitNumber,jdbcType=VARCHAR}, #{houseNumber,jdbcType=VARCHAR}, #{approver,jdbcType=VARCHAR}
-      )
+      #{unitNumber,jdbcType=VARCHAR}, #{houseNumber,jdbcType=VARCHAR}, #{approver,jdbcType=VARCHAR}, 
+      #{tradingType,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordHouse" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -237,6 +239,9 @@
       <if test="approver != null" >
         approver,
       </if>
+      <if test="tradingType != null" >
+        trading_type,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="masterId != null" >
@@ -319,6 +324,9 @@
       </if>
       <if test="approver != null" >
         #{approver,jdbcType=VARCHAR},
+      </if>
+      <if test="tradingType != null" >
+        #{tradingType,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -415,6 +423,9 @@
       <if test="record.approver != null" >
         approver = #{record.approver,jdbcType=VARCHAR},
       </if>
+      <if test="record.tradingType != null" >
+        trading_type = #{record.tradingType,jdbcType=INTEGER},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -449,7 +460,8 @@
       building_number = #{record.buildingNumber,jdbcType=VARCHAR},
       unit_number = #{record.unitNumber,jdbcType=VARCHAR},
       house_number = #{record.houseNumber,jdbcType=VARCHAR},
-      approver = #{record.approver,jdbcType=VARCHAR}
+      approver = #{record.approver,jdbcType=VARCHAR},
+      trading_type = #{record.tradingType,jdbcType=INTEGER}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -538,6 +550,9 @@
       <if test="approver != null" >
         approver = #{approver,jdbcType=VARCHAR},
       </if>
+      <if test="tradingType != null" >
+        trading_type = #{tradingType,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -569,7 +584,8 @@
       building_number = #{buildingNumber,jdbcType=VARCHAR},
       unit_number = #{unitNumber,jdbcType=VARCHAR},
       house_number = #{houseNumber,jdbcType=VARCHAR},
-      approver = #{approver,jdbcType=VARCHAR}
+      approver = #{approver,jdbcType=VARCHAR},
+      trading_type = #{tradingType,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

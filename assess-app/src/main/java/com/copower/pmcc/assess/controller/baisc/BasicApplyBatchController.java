@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.controller.baisc;
 
 import com.alibaba.fastjson.JSON;
+import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
 import com.copower.pmcc.assess.common.enums.basic.BasicApplyTypeEnum;
 import com.copower.pmcc.assess.common.enums.basic.EstateTaggingTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
@@ -10,11 +11,12 @@ import com.copower.pmcc.assess.dto.input.ZtreeDto;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateVo;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.base.BaseParameterService;
 import com.copower.pmcc.assess.service.basic.*;
-import com.copower.pmcc.assess.service.cases.CaseEstateService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
+import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.crm.api.dto.CrmBaseDataDicDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -82,11 +84,15 @@ public class BasicApplyBatchController extends BaseController {
     @Autowired
     private SurveyCommonService surveyCommonService;
     @Autowired
-    private CaseEstateService caseEstateService;
+    private BpmRpcBoxService bpmRpcBoxService;
+    @Autowired
+    private BaseParameterService baseParameterService;
 
     @RequestMapping(value = "/basicBatchApplyIndex", name = "申请首页", method = RequestMethod.GET)
     public ModelAndView basicApplyIndex(Integer caseEstateId) throws Exception {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/basic/basicBatchApplyIndex", "0", 0, "0", "");
+        String boxName = baseParameterService.getParameterValues(BaseParameterEnum.CASE_BASE_INFO_BATCH_APPLY_KEY.getParameterKey());
+        Integer boxId = bpmRpcBoxService.getBoxIdByBoxName(boxName);
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/basic/basicBatchApplyIndex", "0", boxId, "0", "");
         if (caseEstateId != null && caseEstateId != 0) {
             BasicApplyBatch applyBatch = basicApplyBatchService.initCaseApplyBatch(caseEstateId);
             basicApplyBatchService.addBasicApplyBatch(applyBatch);
@@ -293,12 +299,12 @@ public class BasicApplyBatchController extends BaseController {
 
 
     @RequestMapping(value = "/informationDetail", name = "信息详情页面", method = RequestMethod.GET)
-    public ModelAndView informationDetail(Integer formClassify, Integer formType, Integer tableId, String tableName, String tbType, Integer planDetailsId, Integer applyBatchId,boolean isHistory) throws Exception {
+    public ModelAndView informationDetail(Integer formClassify, Integer formType, Integer tableId, String tableName, String tbType, Integer planDetailsId, Integer applyBatchId, boolean isHistory) throws Exception {
         final StringBuffer stringBuffer = new StringBuffer("/project/stageSurvey");
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(stringBuffer.toString());
         setViewParam(modelAndView, tableName, tbType, tableId, applyBatchId);
         //查看历史记录标识
-        if(isHistory){
+        if (isHistory) {
             modelAndView.addObject("isHistory", isHistory);
         }
         //根据表单大类 类型可确定使用哪个view，因为现在的查勘分为房屋和土地以及房屋带土地,其中这三者都有可能使用相同的表单,因此上面参数直接使用表单名称和表单id来获取参数，而这里会参照fillInfo()来设计表单view路径
@@ -528,15 +534,14 @@ public class BasicApplyBatchController extends BaseController {
 
     @RequestMapping(value = "/draftDetail", name = "草稿详情页面", method = RequestMethod.GET)
     public ModelAndView basicApplyBatchDetail(Integer id) {
-        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/basic/basicBatchApplyDetail");
+        String boxName = baseParameterService.getParameterValues(BaseParameterEnum.CASE_BASE_INFO_BATCH_APPLY_KEY.getParameterKey());
+        Integer boxId = bpmRpcBoxService.getBoxIdByBoxName(boxName);
+        BasicApplyBatch applyBatch = basicApplyBatchService.getBasicApplyBatchById(id);
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/basic/basicBatchApplyDetail", applyBatch.getProcessInsId(), boxId, "-1", null);
+        modelAndView.addObject("applyBatch", applyBatch);
         modelAndView.addObject("formClassifyList", basicApplyBatchService.getFormClassifyList());
         modelAndView.addObject("examineFormTypeList", surveyCommonService.getExamineFormTypeList());
-        try {
-            BasicApplyBatch applyBatch = basicApplyBatchService.getBasicApplyBatchById(id);
-            modelAndView.addObject("applyBatch", applyBatch);
-        } catch (Exception e1) {
-            log.error(e1.getMessage(), e1);
-        }
+
         return modelAndView;
     }
 
@@ -670,7 +675,7 @@ public class BasicApplyBatchController extends BaseController {
     public HttpResult saveBasicApplyBatch(String formData) {
         try {
             BasicApplyBatch applyBatch = JSON.parseObject(formData, BasicApplyBatch.class);
-            if(applyBatch.getPlanDetailsId()==null){
+            if (applyBatch.getPlanDetailsId() == null) {
                 applyBatch.setDraftFlag(true);
             }
             basicApplyBatchService.saveApplyInfo(applyBatch);

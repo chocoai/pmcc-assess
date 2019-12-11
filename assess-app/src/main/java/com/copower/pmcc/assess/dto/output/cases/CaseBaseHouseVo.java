@@ -6,10 +6,37 @@ import com.copower.pmcc.assess.dal.cases.entity.CaseBaseHouse;
  * Created by kings on 2018-12-5.
  */
 public class CaseBaseHouseVo extends CaseBaseHouse {
+    private String provinceName;
+    private String cityName;
+    private String districtName;
     private String practicalUseName;
     private String tradingTypeName;
     private String approverName;
     private String dealTypeName;
+
+    public String getCityName() {
+        return cityName;
+    }
+
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
+    }
+
+    public String getDistrictName() {
+        return districtName;
+    }
+
+    public void setDistrictName(String districtName) {
+        this.districtName = districtName;
+    }
+
+    public String getProvinceName() {
+        return provinceName;
+    }
+
+    public void setProvinceName(String provinceName) {
+        this.provinceName = provinceName;
+    }
 
     public String getDealTypeName() {
         return dealTypeName;

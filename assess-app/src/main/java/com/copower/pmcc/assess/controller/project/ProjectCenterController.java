@@ -163,8 +163,6 @@ public class ProjectCenterController {
         signBillDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_TEMPLATE_TYPE_REPORT_SIGNFOR);
         if (signBillDataDic != null) {
             signBill = documentTemplateService.getDocumentTemplateList("", signBillDataDic.getId());
-        }
-        if (CollectionUtils.isNotEmpty(signBill)) {
             modelAndView.addObject("signBill", signBill);
         }
         return modelAndView;

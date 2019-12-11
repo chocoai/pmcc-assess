@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
  * 直接自动跳过计划编制
  */
 @Component
-@WorkFlowAnnotation(desc = "评估方案自动(空)")
+@WorkFlowAnnotation(desc = "评估方案自动")
 public class PlanSchemeExecute implements ProjectPlanExecuteInterface {
     @Autowired
     private ProjectPlanService projectPlanService;

@@ -60,6 +60,8 @@ public class NetInfoRecordHouse {
 
     private String approver;
 
+    private Integer tradingType;
+
     public Integer getId() {
         return id;
     }
@@ -282,5 +284,13 @@ public class NetInfoRecordHouse {
 
     public void setApprover(String approver) {
         this.approver = approver == null ? null : approver.trim();
+    }
+
+    public Integer getTradingType() {
+        return tradingType;
+    }
+
+    public void setTradingType(Integer tradingType) {
+        this.tradingType = tradingType;
     }
 }

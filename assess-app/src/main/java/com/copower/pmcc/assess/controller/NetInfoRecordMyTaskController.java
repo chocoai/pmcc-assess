@@ -58,9 +58,9 @@ public class NetInfoRecordMyTaskController {
 
     @ResponseBody
     @RequestMapping(value = "/getInfoRecordList", name = "信息列表", method = RequestMethod.GET)
-    public BootstrapTableVo getInfoRecordList(String queryTitle, String queryWebName, String province, String city, String queryContent, String queryType, String queryStartTime, String queryEndTime) throws Exception {
+    public BootstrapTableVo getInfoRecordList(String queryTitle, String queryWebName, String province, String city, String queryContent, String queryType, String queryStartTime, String queryEndTime,Integer queryStatus) throws Exception {
         String executor = commonService.thisUserAccount();
-        return netInfoRecordService.getInfoRecordList(queryTitle, queryWebName, province, city, queryContent, queryType, queryStartTime, queryEndTime, executor, null);
+        return netInfoRecordService.getInfoRecordList(queryTitle, queryWebName, province, city, queryContent, queryType, queryStartTime, queryEndTime, executor, queryStatus);
     }
 
     @ResponseBody

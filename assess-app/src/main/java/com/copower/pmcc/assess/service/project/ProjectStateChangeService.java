@@ -202,7 +202,7 @@ public class ProjectStateChangeService extends BaseService {
         ProjectChangeLog costsProjectChangeLog = new ProjectChangeLog();
         costsProjectChangeLog.setProcessInsId(processInsId);
         List<ProjectChangeLog> costsProjectChangeLogs = projectChangeLogMapper.getProjectChangeLog(costsProjectChangeLog);
-        if (com.alibaba.dubbo.common.utils.CollectionUtils.isNotEmpty(costsProjectChangeLogs))
+        if (CollectionUtils.isNotEmpty(costsProjectChangeLogs))
             costsProjectChangeLog = costsProjectChangeLogs.get(0);
         return costsProjectChangeLog;
     }

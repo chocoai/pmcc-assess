@@ -10,9 +10,9 @@ public class CaseEstateLandState {
 
     private String name;
 
-    private Integer landUseType;
+    private String landUseType;
 
-    private Integer landUseCategory;
+    private String landUseCategory;
 
     private Integer landLevel;
 
@@ -72,8 +72,6 @@ public class CaseEstateLandState {
 
     private BigDecimal landFactorTotalScore;
 
-    private String landLevelContent;
-
     private String dataLandLevelAchievement;
 
     private String presentSituationLandUse;
@@ -85,6 +83,8 @@ public class CaseEstateLandState {
     private Date gmtCreated;
 
     private Date gmtModified;
+
+    private String landLevelContent;
 
     public Integer getId() {
         return id;
@@ -110,20 +110,20 @@ public class CaseEstateLandState {
         this.name = name == null ? null : name.trim();
     }
 
-    public Integer getLandUseType() {
+    public String getLandUseType() {
         return landUseType;
     }
 
-    public void setLandUseType(Integer landUseType) {
-        this.landUseType = landUseType;
+    public void setLandUseType(String landUseType) {
+        this.landUseType = landUseType == null ? null : landUseType.trim();
     }
 
-    public Integer getLandUseCategory() {
+    public String getLandUseCategory() {
         return landUseCategory;
     }
 
-    public void setLandUseCategory(Integer landUseCategory) {
-        this.landUseCategory = landUseCategory;
+    public void setLandUseCategory(String landUseCategory) {
+        this.landUseCategory = landUseCategory == null ? null : landUseCategory.trim();
     }
 
     public Integer getLandLevel() {
@@ -358,14 +358,6 @@ public class CaseEstateLandState {
         this.landFactorTotalScore = landFactorTotalScore;
     }
 
-    public String getLandLevelContent() {
-        return landLevelContent;
-    }
-
-    public void setLandLevelContent(String landLevelContent) {
-        this.landLevelContent = landLevelContent == null ? null : landLevelContent.trim();
-    }
-
     public String getDataLandLevelAchievement() {
         return dataLandLevelAchievement;
     }
@@ -412,5 +404,13 @@ public class CaseEstateLandState {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getLandLevelContent() {
+        return landLevelContent;
+    }
+
+    public void setLandLevelContent(String landLevelContent) {
+        this.landLevelContent = landLevelContent == null ? null : landLevelContent.trim();
     }
 }
