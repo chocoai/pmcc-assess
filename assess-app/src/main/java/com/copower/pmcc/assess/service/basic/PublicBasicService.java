@@ -549,8 +549,9 @@ public class PublicBasicService {
         caseBaseHouse.setDistrict(caseEstate.getDistrict());
         caseBaseHouse.setBlockName(caseEstate.getBlockName());
         caseBaseHouse.setFullName(fullName);
-        caseBaseHouse.setStreet(caseEstate.getStreet());
-        caseBaseHouse.setPracticalUse(caseHouse.getPracticalUse());
+        caseBaseHouse.setStreet(caseEstate.getStreetNumber());
+        caseBaseHouse.setArea(caseHouse.getArea());
+        caseBaseHouse.setHouseType(caseHouse.getPracticalUse());
         caseBaseHouse.setTradingType(caseHouseTrading.getTradingType());
         caseBaseHouse.setTradingTime(caseHouseTrading.getTradingTime());
         caseBaseHouse.setTradingUnitPrice(caseHouseTrading.getTradingUnitPrice());

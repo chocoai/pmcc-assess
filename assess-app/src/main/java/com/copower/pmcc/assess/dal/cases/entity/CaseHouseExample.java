@@ -646,52 +646,62 @@ public class CaseHouseExample {
             return (Criteria) this;
         }
 
-        public Criteria andCertUseEqualTo(Integer value) {
+        public Criteria andCertUseEqualTo(String value) {
             addCriterion("cert_use =", value, "certUse");
             return (Criteria) this;
         }
 
-        public Criteria andCertUseNotEqualTo(Integer value) {
+        public Criteria andCertUseNotEqualTo(String value) {
             addCriterion("cert_use <>", value, "certUse");
             return (Criteria) this;
         }
 
-        public Criteria andCertUseGreaterThan(Integer value) {
+        public Criteria andCertUseGreaterThan(String value) {
             addCriterion("cert_use >", value, "certUse");
             return (Criteria) this;
         }
 
-        public Criteria andCertUseGreaterThanOrEqualTo(Integer value) {
+        public Criteria andCertUseGreaterThanOrEqualTo(String value) {
             addCriterion("cert_use >=", value, "certUse");
             return (Criteria) this;
         }
 
-        public Criteria andCertUseLessThan(Integer value) {
+        public Criteria andCertUseLessThan(String value) {
             addCriterion("cert_use <", value, "certUse");
             return (Criteria) this;
         }
 
-        public Criteria andCertUseLessThanOrEqualTo(Integer value) {
+        public Criteria andCertUseLessThanOrEqualTo(String value) {
             addCriterion("cert_use <=", value, "certUse");
             return (Criteria) this;
         }
 
-        public Criteria andCertUseIn(List<Integer> values) {
+        public Criteria andCertUseLike(String value) {
+            addCriterion("cert_use like", value, "certUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertUseNotLike(String value) {
+            addCriterion("cert_use not like", value, "certUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertUseIn(List<String> values) {
             addCriterion("cert_use in", values, "certUse");
             return (Criteria) this;
         }
 
-        public Criteria andCertUseNotIn(List<Integer> values) {
+        public Criteria andCertUseNotIn(List<String> values) {
             addCriterion("cert_use not in", values, "certUse");
             return (Criteria) this;
         }
 
-        public Criteria andCertUseBetween(Integer value1, Integer value2) {
+        public Criteria andCertUseBetween(String value1, String value2) {
             addCriterion("cert_use between", value1, value2, "certUse");
             return (Criteria) this;
         }
 
-        public Criteria andCertUseNotBetween(Integer value1, Integer value2) {
+        public Criteria andCertUseNotBetween(String value1, String value2) {
             addCriterion("cert_use not between", value1, value2, "certUse");
             return (Criteria) this;
         }
@@ -706,52 +716,62 @@ public class CaseHouseExample {
             return (Criteria) this;
         }
 
-        public Criteria andPracticalUseEqualTo(Integer value) {
+        public Criteria andPracticalUseEqualTo(String value) {
             addCriterion("practical_use =", value, "practicalUse");
             return (Criteria) this;
         }
 
-        public Criteria andPracticalUseNotEqualTo(Integer value) {
+        public Criteria andPracticalUseNotEqualTo(String value) {
             addCriterion("practical_use <>", value, "practicalUse");
             return (Criteria) this;
         }
 
-        public Criteria andPracticalUseGreaterThan(Integer value) {
+        public Criteria andPracticalUseGreaterThan(String value) {
             addCriterion("practical_use >", value, "practicalUse");
             return (Criteria) this;
         }
 
-        public Criteria andPracticalUseGreaterThanOrEqualTo(Integer value) {
+        public Criteria andPracticalUseGreaterThanOrEqualTo(String value) {
             addCriterion("practical_use >=", value, "practicalUse");
             return (Criteria) this;
         }
 
-        public Criteria andPracticalUseLessThan(Integer value) {
+        public Criteria andPracticalUseLessThan(String value) {
             addCriterion("practical_use <", value, "practicalUse");
             return (Criteria) this;
         }
 
-        public Criteria andPracticalUseLessThanOrEqualTo(Integer value) {
+        public Criteria andPracticalUseLessThanOrEqualTo(String value) {
             addCriterion("practical_use <=", value, "practicalUse");
             return (Criteria) this;
         }
 
-        public Criteria andPracticalUseIn(List<Integer> values) {
+        public Criteria andPracticalUseLike(String value) {
+            addCriterion("practical_use like", value, "practicalUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andPracticalUseNotLike(String value) {
+            addCriterion("practical_use not like", value, "practicalUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andPracticalUseIn(List<String> values) {
             addCriterion("practical_use in", values, "practicalUse");
             return (Criteria) this;
         }
 
-        public Criteria andPracticalUseNotIn(List<Integer> values) {
+        public Criteria andPracticalUseNotIn(List<String> values) {
             addCriterion("practical_use not in", values, "practicalUse");
             return (Criteria) this;
         }
 
-        public Criteria andPracticalUseBetween(Integer value1, Integer value2) {
+        public Criteria andPracticalUseBetween(String value1, String value2) {
             addCriterion("practical_use between", value1, value2, "practicalUse");
             return (Criteria) this;
         }
 
-        public Criteria andPracticalUseNotBetween(Integer value1, Integer value2) {
+        public Criteria andPracticalUseNotBetween(String value1, String value2) {
             addCriterion("practical_use not between", value1, value2, "practicalUse");
             return (Criteria) this;
         }
