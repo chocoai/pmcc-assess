@@ -128,14 +128,17 @@
                                 </div>
                             </div>
                         </div>
-                        <c:forTokens items="${declare.name}" delims="," var="item" varStatus="status">
+                    </form>
+
+                    <form class="form-horizontal">
+                        <c:forEach items="${declareApplyExtensionList}" var="itemData">
                             <div class="form-group">
                                 <div class="x-valid">
                                     <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                        自定义名称
+                                        自定义名称<span class="symbol required"></span>
                                     </label>
                                     <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                        <label class="form-control">${item}</label>
+                                        <label class="form-control">${itemData.name}</label>
                                     </div>
                                 </div>
                                 <div class="x-valid">
@@ -143,16 +146,18 @@
                                         附件
                                     </label>
                                     <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3  ">
-                                        <div id="_other_Enclosure${status.index+1}"></div>
+                                        <div id="_other_Enclosure${itemData.id}"></div>
                                     </div>
                                 </div>
                                 <script>
                                     $(function () {
-                                        declareCommon.showFile('other_Enclosure${status.index+1}', AssessDBKey.ProjectInfo, "${projectPlanDetails.projectId}", false, 'other_Enclosure${status.index+1}');
+                                        (function (fileId) {
+                                            declareCommon.showFile(fileId, AssessDBKey.DeclareApplyExtension, "${itemData.id}", false, fileId);
+                                        }('other_Enclosure${itemData.id}')) ;
                                     });
                                 </script>
                             </div>
-                        </c:forTokens>
+                        </c:forEach>
                     </form>
                 </div>
             </div>

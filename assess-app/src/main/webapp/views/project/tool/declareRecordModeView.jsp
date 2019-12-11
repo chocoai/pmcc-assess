@@ -193,8 +193,8 @@
         cols.push({field: 'unit', title: '单元号', width: "6%"});
         cols.push({field: 'ownership', title: '所有权人', width: "6%"});
         cols.push({field: 'seat', title: '坐落', width: "19%"});
-        cols.push({field: 'floorArea', title: '证载面积', width: "9%"});
-        cols.push({field: 'practicalArea', title: '实际面积', width: "9%"});
+//        cols.push({field: 'floorArea', title: '证载面积', width: "9%"});
+//        cols.push({field: 'practicalArea', title: '实际面积', width: "9%"});
         var method = {
             showColumns: true,
             showRefresh: true,

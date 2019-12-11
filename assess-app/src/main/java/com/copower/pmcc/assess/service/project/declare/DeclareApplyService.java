@@ -45,7 +45,7 @@ public class DeclareApplyService {
      *
      * @param declareApply
      */
-    public void saveDeclareApply(DeclareApply declareApply) throws BusinessException {
+    public void saveDeclareApply(DeclareApply declareApply)  {
         if (declareApply.getId() != null && declareApply.getId() > 0) {
             declareApplyDao.updateDeclareApply(declareApply);
         } else {

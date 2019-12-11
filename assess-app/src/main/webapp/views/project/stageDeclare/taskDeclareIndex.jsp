@@ -104,47 +104,53 @@
                                 </div>
                             </div>
                         </div>
+                    </form>
+
+                    <form class="form-horizontal">
+
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                     自定义附件
                                 </label>
                                 <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
-                                    <div class="btn  btn-success" onclick="appendHTML(this)"><i class="fa fa-plus"></i></div>
+                                    <div class="btn  btn-success" onclick="declareApplyExtensionCumstom.appendHTML('${declare.id}','${projectPlanDetails.projectId}',this)"><i class="fa fa-plus"></i></div>
                                 </div>
                             </div>
                         </div>
-                        <c:forTokens items="${declare.name}" delims="," var="item" varStatus="status">
+
+                        <c:forEach items="${declareApplyExtensionList}" var="itemData">
                             <div class="form-group">
                                 <div class="x-valid">
                                     <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                         自定义名称<span class="symbol required"></span>
                                     </label>
+                                    <input type="hidden" name="id" value="${itemData.id}">
                                     <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                        <input name="name" class="form-control" placeholder="自定义名称" value="${item}" />
+                                        <input name="name" class="form-control" placeholder="自定义名称" value="${itemData.name}" onblur="declareApplyExtensionCumstom.targetSave(this);" />
                                     </div>
                                 </div>
                                 <div class="x-valid">
                                     <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                        附件${status.index}
+                                        附件
                                     </label>
                                     <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3  ">
-                                        <input id="other_Enclosure${status.index+1}" name="other_Enclosure${status.index+1}" type="file" multiple="false">
-                                        <div id="_other_Enclosure${status.index+1}"></div>
+                                        <input id="other_Enclosure${itemData.id}" name="other_Enclosure${itemData.id}" type="file" multiple="false">
+                                        <div id="_other_Enclosure${itemData.id}"></div>
                                     </div>
                                 </div>
                                 <script>
                                     $(function () {
-                                        var fileId = 'other_Enclosure${status.index+1}' ;
-                                        declareCommon.showFile(fileId, AssessDBKey.ProjectInfo, "${projectPlanDetails.projectId}", true, fileId);
-                                        declareCommon.fileUpload(fileId, AssessDBKey.ProjectInfo, "${projectPlanDetails.projectId}", true, fileId);
+                                        var fileId = 'other_Enclosure${itemData.id}' ;
+                                        declareCommon.showFile(fileId, AssessDBKey.DeclareApplyExtension, "${itemData.id}", true, fileId);
+                                        declareCommon.fileUpload(fileId, AssessDBKey.DeclareApplyExtension, "${itemData.id}", true, fileId);
                                     });
                                 </script>
                                 <div class="x-valid">
-                                    <span class="input-group-btn"><input class="btn btn-warning" type="button" value="X" onclick="cleanItemHTML(this)"></span>
+                                    <span class="input-group-btn"><input class="btn btn-warning" type="button" value="X" onclick="declareApplyExtensionCumstom.cleanItemHTML(this)"></span>
                                 </div>
                             </div>
-                        </c:forTokens>
+                        </c:forEach>
                     </form>
 
                 </div>
@@ -174,36 +180,14 @@
                 </div>
             </div>
             <%@include file="/views/method/module/economicIndicators.jsp" %>
+            <%@include file="/views/project/tool/declareApplyExtensionCumstomModelView.jsp" %>
             <%@include file="/views/share/form_log.jsp" %>
         </div>
     </div>
 </div>
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
-<script type="text/html" id="other_EnclosureModel">
-    <div class="form-group">
-        <div class="x-valid">
-            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                自定义名称<span class="symbol required"></span>
-            </label>
-            <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                <input name="name" class="form-control" placeholder="自定义名称" />
-            </div>
-        </div>
-        <div class="x-valid">
-            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                附件
-            </label>
-            <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3  ">
-                <input id="other_Enclosure{number}" name="other_Enclosure{number}" type="file" multiple="false">
-                <div id="_other_Enclosure{number}"></div>
-            </div>
-        </div>
-        <div class="x-valid">
-            <span class="input-group-btn"><input class="btn btn-warning" type="button" value="X" onclick="cleanItemHTML(this)"></span>
-        </div>
-    </div>
-</script>
+
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/tree-grid/js/jquery.treegrid.js?v=${assessVersion}"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/declare/declare.common.js?v=${assessVersion}"></script>
 <script type="text/javascript"
@@ -214,31 +198,12 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/map.position.js?v=1.0"></script>
 <input type="file" id="ajaxFileUpload" name="file" style="display: none;">
 <script type="text/javascript">
-
-    function appendHTML(_this) {
-        var frm = $("#declareApplyForm") ;
-        var target = $(_this).parent().parent().parent() ;
-        var number = Number(frm.find("input[name='name']").size()) ;
-        number++;
-        var html = $("#other_EnclosureModel").html() ;
-        var fileId = "other_Enclosure" + number;
-        html = html.replace(/{number}/g,number) ;
-        target.after(html) ;
-        declareCommon.showFile(fileId, AssessDBKey.ProjectInfo, "${projectPlanDetails.projectId}", true, fileId);
-        declareCommon.fileUpload(fileId, AssessDBKey.ProjectInfo, "${projectPlanDetails.projectId}", true, fileId);
-    }
-
-    function cleanItemHTML(_this) {
-        $(_this).parent().parent().parent().remove() ;
-    }
-
     $(document).ready(function () {
         var fileArr = [AssessUploadKey.PROJECT_PROXY ,AssessUploadKey.ASSESS_REPORT_Enclosure ] ;
         $.each(fileArr,function (i,n) {
             declareCommon.showFile(n, AssessDBKey.ProjectInfo, "${projectPlanDetails.projectId}", true, n);
             declareCommon.fileUpload(n, AssessDBKey.ProjectInfo, "${projectPlanDetails.projectId}", true, n);
         });
-
     });
 </script>
 <script type="application/javascript">
@@ -263,18 +228,13 @@
         if (!frm.valid()) {
             return false;
         }
-        var formData = formSerializeArray(frm);
-        var number = Number(frm.find("input[name='name']").size()) ;
-        if (formData.name){
-            if (formData.name.split(",").length != number){
-                toastr.success('自定义字段必须填写完整!');
-                return false;
-            }
+        if (!declareApplyExtensionCumstom.valid(frm.next('form'))) {
+            return false;
         }
+        var formData = formSerializeArray(frm);
         if ("${processInsId}" != "0") {
             submitEditToServer(JSON.stringify(formData));
-        }
-        else {
+        } else {
             submitToServer(JSON.stringify(formData), mustUseBox);
         }
     }

@@ -40,6 +40,10 @@ public class ProjectTaskDeclareAssist implements ProjectTaskInterface {
     private InitiateConsignorService initiateConsignorService;
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private DeclareApplyExtensionService declareApplyExtensionService;
+    @Autowired
+    private DeclareApplyService declareApplyService;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
@@ -94,8 +98,12 @@ public class ProjectTaskDeclareAssist implements ProjectTaskInterface {
         DeclareApply declare = declarePublicService.getDeclareApplyByProjectId(projectPlanDetails.getProjectId());
         if (declare == null) {
             declare = new DeclareApply();
+            declare.setPlanDetailsId(projectPlanDetails.getId());
+            declare.setProjectId(projectPlanDetails.getProjectId());
+            declareApplyService.saveDeclareApply(declare);
         }
         modelAndView.addObject("declare", declare);
+        modelAndView.addObject("declareApplyExtensionList", declareApplyExtensionService.getDeclareApplyExtensionListByDeclareId(declare.getId()));
         modelAndView.addObject("ProvinceList", erpAreaService.getProvinceList());//所有省份
         modelAndView.addObject(StringUtils.uncapitalize(ProjectPlanDetails.class.getSimpleName()), projectPlanDetails);
         modelAndView.addObject(StringUtils.uncapitalize(DeclareApply.class.getSimpleName()), declare);
