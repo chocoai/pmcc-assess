@@ -228,9 +228,9 @@
         if (!frm.valid()) {
             return false;
         }
-        if (!declareApplyExtensionCumstom.valid(frm.next('form'))) {
-            return false;
-        }
+//        if (!declareApplyExtensionCumstom.valid(frm.next('form'))) {
+//            return false;
+//        }
         var formData = formSerializeArray(frm);
         if ("${processInsId}" != "0") {
             submitEditToServer(JSON.stringify(formData));

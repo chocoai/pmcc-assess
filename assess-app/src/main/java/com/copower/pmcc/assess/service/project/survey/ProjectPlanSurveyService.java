@@ -130,8 +130,9 @@ public class ProjectPlanSurveyService {
 
     private void generateSurveyPlanDetails(Integer planId, ProjectInfo projectInfo, ProjectWorkStage projectWorkStage, List<ProjectPhase> projectPhases, List<DeclareRecord> declareRecords) {
         String projectManager = projectMemberService.getProjectManager(projectInfo.getId());
+
         for (DeclareRecord declareRecord : declareRecords) {
-            int j = 0;
+            int j = declareRecord.getId();
             for (ProjectPhase projectPhase : projectPhases) {
                 ProjectPlanDetails projectPlanDetail = new ProjectPlanDetails();
                 projectPlanDetail.setProjectWorkStageId(projectWorkStage.getId());
