@@ -529,7 +529,7 @@ public class BasicApplyBatchController extends BaseController {
     @ResponseBody
     @RequestMapping(value = "/getBasicAppBatchDraftList", name = "获取草稿数据列表", method = {RequestMethod.GET})
     public BootstrapTableVo getBasicAppBatchDraftList(String estateName) throws Exception {
-        return basicApplyBatchService.getBootstrapTableVo(estateName, true);
+        return basicApplyBatchService.getBootstrapTableVo(estateName);
     }
 
     @RequestMapping(value = "/draftDetail", name = "草稿详情页面", method = RequestMethod.GET)

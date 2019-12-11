@@ -38,7 +38,7 @@
 
         <div class="form-group">
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">户型</label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">户型(开发商)</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <div class="input-group">
                         <input type="hidden" name="huxingId" value="${basicHouse.huxingId}">
@@ -63,7 +63,7 @@
             </div>
 
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">户型图</label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">户型图(开发商)</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <div id="_house_huxing_plan"></div>
                 </div>
@@ -73,14 +73,14 @@
         </div>
         <div class="form-group">
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">新户型</label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">户型(装修)</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <input type="text" placeholder="新户型" name="newHuxingName"
                            class="form-control" value="${basicHouse.newHuxingName}">
                 </div>
             </div>
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">新户型图</label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">户型图(装修)</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <input id="house_new_huxing_plan" placeholder="上传附件" class="form-control" type="file">
                     <div id="_house_new_huxing_plan"></div>
@@ -178,20 +178,20 @@
                 </div>
             </div>
             <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">装修情况<span
+                        class="symbol required"></span></label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <select class="form-control 	decorateSituation" name="decorateSituation" required>
+                    </select>
+                </div>
+            </div>
+            <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">装修情况描述<span
                         class="symbol required"></span></label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <input type="text" data-rule-maxlength="255" placeholder="装修情况描述" required
                            name="decorateSituationDescription"
                            class="form-control" value="${basicHouse.decorateSituationDescription}">
-                </div>
-            </div>
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">装修情况<span
-                        class="symbol required"></span></label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <select class="form-control 	decorateSituation" name="decorateSituation" required>
-                    </select>
                 </div>
             </div>
         </div>

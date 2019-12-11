@@ -61,7 +61,7 @@ public class InitiateContactsController {
             return initiateContactsService.getBootstrapTableVo(initiateContacts);
         }else {
             //非审批情况 会加上当前申请人进行查询联系人
-            initiateContacts.setCreator(commonService.thisUserAccount());
+            //initiateContacts.setCreator(commonService.thisUserAccount());
             return initiateContactsService.getBootstrapTableVo(initiateContacts);
         }
     }

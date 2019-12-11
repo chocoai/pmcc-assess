@@ -142,6 +142,9 @@
                     if (row.realizationCycle) {
                         result += '变现周期：' + row.realizationCycle + '<br/>';
                     }
+                    if (row.tradingTypeName) {
+                        result += '交易类型：' + row.tradingTypeName + '<br/>';
+                    }
                     return result;
                 }
             });

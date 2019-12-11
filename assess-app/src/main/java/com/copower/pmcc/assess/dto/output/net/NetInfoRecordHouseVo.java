@@ -14,6 +14,15 @@ public class NetInfoRecordHouseVo extends NetInfoRecordHouse {
     private String districtName;
     private String fileViewName;
     private String sourceSiteUrl;
+    private String tradingTypeName;
+
+    public String getTradingTypeName() {
+        return tradingTypeName;
+    }
+
+    public void setTradingTypeName(String tradingTypeName) {
+        this.tradingTypeName = tradingTypeName;
+    }
 
     public String getSourceSiteUrl() {
         return sourceSiteUrl;

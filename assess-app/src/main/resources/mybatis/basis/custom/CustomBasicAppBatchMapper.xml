@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.copower.pmcc.assess.dal.basis.custom.mapper.CustomBasicAppBatchMapper">
+    <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatch">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="process_ins_id" property="processInsId" jdbcType="VARCHAR"/>
+        <result column="plan_details_id" property="planDetailsId" jdbcType="INTEGER"/>
+        <result column="province" property="province" jdbcType="VARCHAR"/>
+        <result column="city" property="city" jdbcType="VARCHAR"/>
+        <result column="classify" property="classify" jdbcType="INTEGER"/>
+        <result column="type" property="type" jdbcType="INTEGER"/>
+        <result column="estate_id" property="estateId" jdbcType="INTEGER"/>
+        <result column="estate_name" property="estateName" jdbcType="VARCHAR"/>
+        <result column="quote_id" property="quoteId" jdbcType="INTEGER"/>
+        <result column="base_type" property="baseType" jdbcType="VARCHAR"/>
+        <result column="show_tab" property="showTab" jdbcType="BIT"/>
+        <result column="case_estate_id" property="caseEstateId" jdbcType="INTEGER"/>
+        <result column="status" property="status" jdbcType="VARCHAR"/>
+        <result column="draft_flag" property="draftFlag" jdbcType="BIT"/>
+        <result column="bis_delete" property="bisDelete" jdbcType="BIT"/>
+        <result column="creator" property="creator" jdbcType="VARCHAR"/>
+        <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP"/>
+        <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_ListCustom">
+       id, process_ins_id, plan_details_id, province, city, classify, type, estate_id, estate_name, 
+    quote_id, base_type, show_tab, case_estate_id, status, draft_flag, bis_delete, creator, 
+    gmt_created, gmt_modified
+    </sql>
+
+    <select id="getCustomDraftList" parameterType="map"
+            resultMap="com.copower.pmcc.assess.dal.basis.custom.mapper.CustomBasicAppBatchMapper.BaseResultMap">
+        select
+        <include refid="Base_Column_ListCustom"/>
+        from tb_basic_apply_batch where 1=1
+        and plan_details_id is null and bis_delete = false
+        <if test="estateName != null and estateName!=''">
+            and estate_name LIKE concat(concat('%',#{estateName}),'%')
+        </if>
+        <if test="creator != null and creator!=''">
+            and creator LIKE concat(concat('%',#{creator}),'%')
+        </if>
+        and ((process_ins_id is null and draft_flag=true ) or (process_ins_id is not null and draft_flag=false ))
+        ORDER BY id DESC
+    </select>
+
+</mapper>
+

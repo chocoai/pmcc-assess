@@ -78,6 +78,8 @@ public class CaseBaseHouseService {
             caseBaseHouseVo.setDealTypeName(baseDataDicService.getNameById(caseBaseHouse.getDealType()));
         if (StringUtils.isNotEmpty(caseBaseHouse.getApprover()))
             caseBaseHouseVo.setApproverName(publicService.getUserNameByAccount(caseBaseHouse.getApprover()));
+        if (StringUtils.isNotEmpty(caseBaseHouse.getCreator()))
+            caseBaseHouseVo.setCreatorName(publicService.getUserNameByAccount(caseBaseHouse.getCreator()));
         return caseBaseHouseVo;
     }
 

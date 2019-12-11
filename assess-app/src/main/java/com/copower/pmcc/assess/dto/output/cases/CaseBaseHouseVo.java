@@ -12,7 +12,16 @@ public class CaseBaseHouseVo extends CaseBaseHouse {
     private String practicalUseName;
     private String tradingTypeName;
     private String approverName;
+    private String creatorName;
     private String dealTypeName;
+
+    public String getCreatorName() {
+        return creatorName;
+    }
+
+    public void setCreatorName(String creatorName) {
+        this.creatorName = creatorName;
+    }
 
     public String getCityName() {
         return cityName;

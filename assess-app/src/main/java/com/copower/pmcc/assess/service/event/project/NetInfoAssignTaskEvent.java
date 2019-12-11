@@ -65,7 +65,7 @@ public class NetInfoAssignTaskEvent extends BaseProcessEvent {
         if (CollectionUtils.isNotEmpty(netInfoRecordHouses)) {
             for (NetInfoRecordHouse o : netInfoRecordHouses) {
                 o.setStatus(1);
-                netInfoRecordHouseService.saveAndUpdateNetInfoRecordHouse(o);
+                netInfoRecordHouseDao.updateNetInfoRecordHouse(o,true);
                 //验证后写入到标准表中
                 if (caseBaseHouseService.checkFullName(getFullName(o.getName(), o.getBuildingNumber(), o.getUnitNumber(), o.getHouseNumber()))) {
                     CaseBaseHouse caseBaseHouse = new CaseBaseHouse();
@@ -89,6 +89,7 @@ public class NetInfoAssignTaskEvent extends BaseProcessEvent {
                     caseBaseHouse.setRealizationCycle(o.getRealizationCycle());
                     caseBaseHouse.setDealPartInfo(o.getDealPartInfo());
                     caseBaseHouse.setApprover(o.getApprover());
+                    caseBaseHouse.setTradingType(o.getTradingType());
                     caseBaseHouse.setCreator(o.getCreator());
                     caseBaseHouseService.addBaseHouse(caseBaseHouse);
 
@@ -108,7 +109,7 @@ public class NetInfoAssignTaskEvent extends BaseProcessEvent {
         if (CollectionUtils.isNotEmpty(netInfoRecordLands)) {
             netInfoRecordLands.forEach(o -> {
                 o.setStatus(1);
-                netInfoRecordLandService.saveAndUpdateNetInfoRecordLand(o);
+                netInfoRecordLandDao.updateNetInfoRecordLand(o,true);
             });
         }
     }

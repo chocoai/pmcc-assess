@@ -1218,25 +1218,31 @@ public class GenerateMdCompareService {
                 builder.endRow();
             }
         }
-        //单独处理楼层，使楼层放在最后一行
-        builder.insertCell();
-        builder.write(MethodCompareFieldEnum.FLOOR.getName());
-        if (CollectionUtils.isNotEmpty(data)) {
-            for (MdMarketCompareItem caseItem : data) {
-                List<MarketCompareItemDto> dtos = JSON.parseArray(caseItem.getJsonContent(), MarketCompareItemDto.class);
-                for (MarketCompareItemDto item2 : dtos) {
-                    if (item2.getName().equals(MethodCompareFieldEnum.FLOOR.getKey())) {
-                        builder.insertCell();
-                        if (isIndex) {
-                            builder.write(item2.getScore().toString());
-                        } else {
-                            builder.write(item2.getValue());
+        //楼层单独处理
+        for (DataSetUseField useField : useFieldList) {
+            if (useField.getFieldName().equals(MethodCompareFieldEnum.FLOOR.getKey())) {
+                builder.insertCell();
+                builder.write(MethodCompareFieldEnum.getNameByKey(useField.getFieldName()));
+                if (CollectionUtils.isNotEmpty(data)) {
+                    for (MdMarketCompareItem caseItem : data) {
+                        List<MarketCompareItemDto> dtos = JSON.parseArray(caseItem.getJsonContent(), MarketCompareItemDto.class);
+                        for (MarketCompareItemDto item2 : dtos) {
+                            if (item2.getName().equals(MethodCompareFieldEnum.FLOOR.getKey())) {
+                                builder.insertCell();
+                                if (isIndex) {
+                                    builder.write(item2.getScore() == null ? "" : item2.getScore().toString());
+                                } else {
+                                    builder.write(StringUtil.isEmpty(item2.getValue()) ? "无" : item2.getValue());
+                                }
+                            }
+
                         }
                     }
                 }
+                builder.endRow();
             }
         }
-        builder.endRow();
+
     }
 
 
