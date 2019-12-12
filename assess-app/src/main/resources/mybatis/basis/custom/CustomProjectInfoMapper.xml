@@ -68,10 +68,10 @@
         </if>
         <if test="queryConsignorType != null">
             <if test="queryConsignor!=null and queryConsignor!=''">
-                <if test="queryConsignorType == 1">
+                <if test="queryConsignorType == 0">
                     AND D.cs_name LIKE CONCAT(CONCAT('%', #{queryConsignor}), '%')
                 </if>
-                <if test="queryConsignorType == 0">
+                <if test="queryConsignorType == 1">
                     AND D.cs_entrustment_unit LIKE CONCAT(CONCAT('%', #{queryConsignor}), '%')
                 </if>
             </if>

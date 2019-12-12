@@ -144,8 +144,8 @@
                                         <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
                                             <div class="input-group">
                                                 <span class="input-group-addon">
-                                                    <input type="radio"  name="queryConsignorType" value="1">法人
-                                                    <input type="radio" checked="checked" name="queryConsignorType" value="0">法定单位
+                                                    <input type="radio"  name="queryConsignorType" value="0">自然人
+                                                    <input type="radio" checked="checked" name="queryConsignorType" value="1">法人
                                                 </span>
                                                 <input type="text"  placeholder="委托人" class="form-control" name="queryConsignor">
                                             </div>
