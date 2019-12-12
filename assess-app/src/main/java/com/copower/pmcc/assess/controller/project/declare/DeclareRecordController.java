@@ -6,6 +6,8 @@ import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -61,8 +63,17 @@ public class DeclareRecordController {
     @RequestMapping(value = "/getCertificateId", name = "获取证书id", method = RequestMethod.GET)
     public HttpResult getCertificateId(Integer declareRecordId) {
         try {
-            DeclareRecord declareRecordById = declareRecordService.getDeclareRecordById(declareRecordId);
-            return HttpResult.newCorrectResult(declareRecordById);
+            return HttpResult.newCorrectResult(declareRecordService.getDeclareRecordById(declareRecordId));
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "/getDeclareRecordListByIds", name = "获取证书id", method = RequestMethod.GET)
+    public HttpResult getDeclareRecordListByIds(String id) {
+        try {
+            return HttpResult.newCorrectResult(declareRecordService.getDeclareRecordListByIds(FormatUtils.transformString2Integer(id)));
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult(e.getMessage());

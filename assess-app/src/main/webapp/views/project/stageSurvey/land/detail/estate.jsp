@@ -543,7 +543,7 @@
 </html>
 <script type="text/javascript">
     $(function () {
-        estateCommon.initById('${basicEstate.id}');
+        estateCommon.initDetailById('${basicEstate.id}','',false);
     })
 </script>
 

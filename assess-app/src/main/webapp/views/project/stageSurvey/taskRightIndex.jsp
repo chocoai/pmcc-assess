@@ -9,7 +9,8 @@
         <div class="x_title">
             <h3>他权分组（0{index}）
                 <small>
-                    <a href="javascript://;" class="btn btn-xs btn-warning" onclick="saveSurveyAssetInventoryRightRecord(true,'_number',null);">保存</a>
+                    <a href="javascript://;" class="btn btn-xs btn-warning"
+                       onclick="saveSurveyAssetInventoryRightRecord(true,'_number',null);">保存</a>
                     <a href="javascript://;" class="btn btn-xs btn-warning" onclick="cleanHTMLData(this)">移除</a>
                 </small>
             </h3>
@@ -19,20 +20,21 @@
                 <input type="hidden" name="id">
                 <div class="form-group">
                     <div class="x-valid">
-                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">权证信息<span
-                                class="symbol required"></span></label>
-                        <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
-                            <input type="hidden" name="recordIds">
-                            <div class="btn-primary btn" onclick="declareRecordModeObj.init({callback:selectRecord,this_:this,ids:$(this).closest('.form-group').find('[name=recordIds]').val()});">选择权证
+                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">权证信息</label>
+                        <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                            <input type="hidden" name="recordIds" data-count="_number">
+                            <div class="btn-primary btn"
+                                 onclick="declareRecordModeObj.init({callback:selectRecord,this_:this});">选择权证
                                 <span class="glyphicon  glyphicon-new-window" aria-hidden="true"></span>
                             </div>
-                            <%--<select class="form-control search-select select2" multiple="multiple" required="required"--%>
-                                    <%--name="recordIds">--%>
-                                <%--<c:forEach var="items" items="${declareRecordList}">--%>
-                                    <%--<option value="${items.id}">${items.name}</option>--%>
-                                <%--</c:forEach>--%>
-                            <%--</select>--%>
+                        </div>
+                    </div>
 
+                    <div class="x-valid">
+                        <div class=" col-xs-9  col-sm-9  col-md-9  col-lg-9 ">
+                            <table class="table table-bordered" id="tb_List_recordTable_number">
+                                <!-- cerare document add ajax data-->
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -107,7 +109,8 @@
                                         类别<span class="symbol required"></span>
                                     </label>
                                     <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
-                                        <select class="form-control" required  name="category" onchange="changeRemark(this,'_number')">
+                                        <select class="form-control" required name="category"
+                                                onchange="changeRemark(this,'_number')">
                                             <c:forEach var="item" items="${inventoryRightTypeList}">
                                                 <option value="${item.id}">${item.name}</option>
                                             </c:forEach>
@@ -313,7 +316,8 @@
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
 <%@include file="/views/project/tool/declareRecordModeView.jsp" %>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/ajaxfileupload.js?v=${assessVersion}"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/ajaxfileupload.js?v=${assessVersion}"></script>
 <script type="text/javascript">
 
     //_number
@@ -333,9 +337,34 @@
         }
     };
 
-    function selectRecord(_this,id) {
-        var group = $(_this).closest(".form-group") ;
-        group.find("input[name='recordIds']").val(id) ;
+    function selectRecord(_this, id) {
+        var group = $(_this).closest(".form-group");
+        var recordIds = group.find("input[name='recordIds']").val();
+        var value = "";
+        if (recordIds) {
+            var arr = recordIds.split(",");
+            arr.push(id);
+            value = unique(arr).join(",");
+        } else {
+            value = id;
+        }
+        group.find("input[name='recordIds']").val(value);
+        var number = group.find("input[name='recordIds']").attr("data-count");
+        loadDeclareRecordTable(number, value, "#" + commonField.surveyFrm + number);
+        saveSurveyAssetInventoryRightRecord(true,number,null) ;
+    }
+
+    function unique(arr) {
+        if (!Array.isArray(arr)) {
+            return;
+        }
+        var array = [];
+        for (var i = 0; i < arr.length; i++) {
+            if (array.indexOf(arr[i]) === -1) {
+                array.push(arr[i]);
+            }
+        }
+        return array;
     }
 
     //上传附件通用
@@ -364,6 +393,91 @@
             deleteFlag: true
         })
     }
+
+    function loadDeclareRecordTable(number, ids, item) {
+        var tableId = "tb_List_recordTable" + number;
+        $.ajax({
+            url: "${pageContext.request.contextPath}/declareRecord/getDeclareRecordListByIds",
+            type: "get",
+            dataType: "json",
+            data: {id: ids},
+            success: function (result) {
+                if (result.ret) {
+                    loadDeclareRecordTable2($("#" + tableId), result.data, item);
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        });
+    }
+
+    /**
+     * 清除选择的权证
+     */
+    function removeDataDeclareRecord(id, item, tableId) {
+        var table = $("#" + tableId);
+        table.bootstrapTable('remove', {
+            field: 'id',
+            values: [id]
+        });
+        var data = table.bootstrapTable('getData');
+        var target = $(item);
+        var recordIds = target.find("input[name='recordIds']") ;
+        var ids = [] ;
+        $.each(data,function (i,obj) {
+            ids.push(obj.id) ;
+        }) ;
+        recordIds.val(ids.join(","));
+        toastr.success('清除成功!');
+        saveSurveyAssetInventoryRightRecord(true,recordIds.attr("data-count"),null) ;
+    }
+
+    function loadDeclareRecordTable2(target, data, item) {
+        target.bootstrapTable('destroy');
+        var cols = [];
+        cols.push({field: 'name', title: '权证名称', width: "22%"});
+        cols.push({field: 'buildingNumber', title: '楼栋号', width: "6%"});
+        cols.push({field: 'unit', title: '单元号', width: "6%"});
+        cols.push({field: 'ownership', title: '所有权人', width: "6%"});
+        cols.push({field: 'seat', title: '坐落', width: "19%"});
+        cols.push({
+            field: 'id', title: '操作', width: 200, formatter: function (value, row, index) {
+                var str = '<div class="btn-margin">';
+                str += '<a class="btn btn-xs btn-success" data-title="删除" href="javascript:removeDataDeclareRecord(' + row.id + ",'" + item + "'" + ",'" + target.attr("id") + "'" + ');" ><i class="fa fa-remove">删除</i></a>';
+                str += '</div>';
+                return str;
+            }
+        });
+        var init = {
+            searchAlign: 'left',
+            search: false,   //显示隐藏搜索框
+            showHeader: true,     //是否显示列头
+            showLoading: false,
+            undefinedText: '',
+            pageNumber: 1,                       //初始化加载第一页，默认第一页
+            pageSize: 10,                       //每页的记录行数（*）
+            pageList: [2, 5, 10, 15],        //可供选择的每页的行数（*）
+            showFullscreen: false,
+            striped: true,                      //是否显示行间隔色
+            cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+            pagination: false,                   //是否显示分页（*）
+            strictSearch: true,
+            showColumns: true,                  //是否显示所有的列
+            showRefresh: false,                  //是否显示刷新按钮
+            minimumCountColumns: 2,             //最少允许的列数
+            clickToSelect: false,                //是否启用点击选中行
+            //height: 680,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+            uniqueId: "id",                     //每一行的唯一标识，一般为主键列
+            showToggle: false,                   //是否显示详细视图和列表视图的切换按钮
+            data: data,
+            columns: cols
+        };
+        target.bootstrapTable(init);
+        //隐藏正在加载 正在努力地加载数据中，请稍候……
+        target.bootstrapTable('hideLoading');
+    }
+
 
     //加载 他项权利列表
     function loadAssetRightList(number, inventoryRightRecordId) {
@@ -396,6 +510,7 @@
      * @returns {*|jQuery}
      */
     function appendHtml(flag) {
+        //获取数据并赋值
         if (flag) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/surveyAssetInventoryRightRecord/getSurveyAssetInventoryRightRecordList",
@@ -412,16 +527,15 @@
                             $.each(result.data, function (i, item) {
                                 var html = $("#" + commonField.taskRightAssistDiv).html();
                                 var number = commonField.getNumber();
-                                html = html.replace(/_number/g, number).replace(/{index}/g, i+1);
+                                html = html.replace(/_number/g, number).replace(/{index}/g, i + 1);
                                 $("#" + commonField.taskRightAssistAppend).append(html);
                                 uploadFileCommon(commonField.specialCaseFile + number, AssessDBKey.SurveyAssetInventoryRightRecord, item.id);
                                 showFileCommon(commonField.specialCaseFile + number, AssessDBKey.SurveyAssetInventoryRightRecord, item.id);
                                 $("#" + commonField.inventoryFrm + number).find('[name=inventoryRightRecordId]').val(item.id);
                                 $("#" + commonField.surveyFrm + number).initForm(item);
                                 if (item.recordIds) {
-                                    $("#" + commonField.surveyFrm + number).find("select[name='recordIds']").val(item.recordIds.split(",")).trigger("change").select2();
-                                } else {
-                                    $("#" + commonField.surveyFrm + number).find("select[name='recordIds']").select2();
+                                    $("#" + commonField.surveyFrm + number).find("input[name='recordIds']").val(item.recordIds);
+                                    loadDeclareRecordTable(number, item.recordIds, "#" + commonField.surveyFrm + number);
                                 }
                                 loadAssetRightList(number, item.id);
                             });
@@ -435,11 +549,12 @@
                 }
             });
         }
+        //添加 html
         if (!flag) {
             var html = $("#" + commonField.taskRightAssistDiv).html();
             var number = commonField.getNumber();
             var index = $("#" + commonField.taskRightAssistAppend).find('.x_panel').length;
-            html = html.replace(/_number/g, number).replace(/{index}/g, index+1);
+            html = html.replace(/_number/g, number).replace(/{index}/g, index + 1);
             $("#" + commonField.taskRightAssistAppend).append(html);
             $.ajax({
                 url: "${pageContext.request.contextPath}/surveyAssetInventoryRightRecord/save",
@@ -454,7 +569,6 @@
                         uploadFileCommon(commonField.specialCaseFile + number, AssessDBKey.SurveyAssetInventoryRightRecord, result.data.id);
                         showFileCommon(commonField.specialCaseFile + number, AssessDBKey.SurveyAssetInventoryRightRecord, result.data.id);
                         $("#" + commonField.inventoryFrm + number).find('[name=inventoryRightRecordId]').val(result.data.id);
-                        $("#" + commonField.surveyFrm + number).find("select[name='recordIds']").select2();
                         $("#" + commonField.surveyFrm + number).initForm(result.data);
                         loadAssetRightList(number, result.data.id);
                     }
@@ -477,7 +591,7 @@
         form.find('[name=inventoryRightRecordId]').val(inventoryRightRecordId);
         uploadFileCommon(commonField.inventoryRightFile + value, AssessDBKey.SurveyAssetInventoryRight, 0);
         showFileCommon(commonField.inventoryRightFile + value, AssessDBKey.SurveyAssetInventoryRight, 0);
-        AssessCommon.loadDataDicByKey(AssessDicKey.houseInventoryRightCategory,null,function (html) {
+        AssessCommon.loadDataDicByKey(AssessDicKey.houseInventoryRightCategory, null, function (html) {
             form.find("select[name='category']").empty().html(html).trigger('change');
         })
         //日期触发
@@ -521,9 +635,9 @@
         }
     }
 
-    function changeRemark(that,value) {
+    function changeRemark(that, value) {
         var form = $("#" + commonField.inventoryFrm + value);
-        form.find("textarea[name='remark']").val($(that).find('option:selected').attr('title')) ;
+        form.find("textarea[name='remark']").val($(that).find('option:selected').attr('title'));
     }
 
     /**
@@ -709,7 +823,9 @@
                 data: {formData: JSON.stringify(data)},
                 success: function (result) {
                     if (result.ret) {
-                        callback(data);
+                        if (callback) {
+                            callback(data);
+                        }
                     }
                     else {
                         Alert("保存数据失败，失败原因:" + result.errmsg);
