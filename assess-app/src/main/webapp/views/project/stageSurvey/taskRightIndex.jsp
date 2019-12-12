@@ -265,9 +265,7 @@
                     </h3>
                 </div>
             </div>
-            <div id="taskRightAssistAppend">
-
-            </div>
+            <div id="taskRightAssistAppend"></div>
             <div class="x_panel">
                 <div class="x_content">
                     <div class="col-sm-4 col-sm-offset-5">
