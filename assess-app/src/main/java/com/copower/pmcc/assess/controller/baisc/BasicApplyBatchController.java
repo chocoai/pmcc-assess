@@ -167,9 +167,7 @@ public class BasicApplyBatchController extends BaseController {
     public HttpResult saveItemData(String formData, Integer planDetailsId) {
         try {
             BasicApplyBatchDetail basicApplyBatchDetail = JSON.parseObject(formData, BasicApplyBatchDetail.class);
-            if (basicApplyBatchDetail.getBisStandard() == null) {
-                basicApplyBatchDetail.setBisStandard(false);
-            }
+
             return HttpResult.newCorrectResult(basicApplyBatchDetailService.addBasicApplyBatchDetail(basicApplyBatchDetail, planDetailsId));
         } catch (Exception e1) {
             log.error(e1.getMessage(), e1);
@@ -663,6 +661,18 @@ public class BasicApplyBatchController extends BaseController {
     public HttpResult paste(Integer sourceBatchDetailId, Integer targeBatchDetailId) {
         try {
             basicApplyBatchService.pasteExamineInfo(sourceBatchDetailId, targeBatchDetailId);
+            return HttpResult.newCorrectResult();
+        } catch (Exception e1) {
+            log.error(e1.getMessage(), e1);
+            return HttpResult.newErrorResult("保存数据异常");
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/deepCopy", name = "深复制", method = {RequestMethod.POST})
+    public HttpResult deepCopy(Integer sourceBatchDetailId) {
+        try {
+            basicApplyBatchService.deepCopy(sourceBatchDetailId);
             return HttpResult.newCorrectResult();
         } catch (Exception e1) {
             log.error(e1.getMessage(), e1);
