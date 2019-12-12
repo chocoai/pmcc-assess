@@ -1,9 +1,9 @@
 package com.copower.pmcc.assess.controller.project.declare;
 
 import com.alibaba.fastjson.JSONObject;
-import com.copower.pmcc.assess.dal.basis.entity.DeclareApplyExtension;
+import com.copower.pmcc.assess.dal.basis.entity.DeclareApplyDetail;
 import com.copower.pmcc.assess.service.BaseService;
-import com.copower.pmcc.assess.service.project.declare.DeclareApplyExtensionService;
+import com.copower.pmcc.assess.service.project.declare.DeclareApplyDetailService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
@@ -23,21 +23,21 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = "/declareApplyExtension")
-public class DeclareApplyExtensionController {
+public class DeclareApplyDetailController {
     private static final String STRING = "申报扩展自定义字段" ;
     @Autowired
     private BaseService baseService;
     @Autowired
-    private DeclareApplyExtensionService declareApplyExtensionService;
+    private DeclareApplyDetailService declareApplyExtensionService;
 
     @PostMapping(value = "/saveAndUpdateDeclareApplyExtensionAll",name = "save")
     public HttpResult saveAndUpdateDeclareApplyExtensionAll(String fomData,boolean updateNull){
         try {
-            List<DeclareApplyExtension> declareApplyExtensionList = JSONObject.parseArray(fomData,DeclareApplyExtension.class) ;
+            List<DeclareApplyDetail> declareApplyExtensionList = JSONObject.parseArray(fomData,DeclareApplyDetail.class) ;
             if (CollectionUtils.isNotEmpty(declareApplyExtensionList)){
-                Iterator<DeclareApplyExtension> iterator = declareApplyExtensionList.iterator();
+                Iterator<DeclareApplyDetail> iterator = declareApplyExtensionList.iterator();
                 while (iterator.hasNext()){
-                    declareApplyExtensionService.saveAndUpdateDeclareApplyExtension(iterator.next(),updateNull);
+                    declareApplyExtensionService.saveAndUpdateDeclareApplyDetail(iterator.next(),updateNull);
                 }
             }
             return HttpResult.newCorrectResult(200,declareApplyExtensionList) ;
@@ -48,9 +48,9 @@ public class DeclareApplyExtensionController {
     }
 
     @PostMapping(value = "/deleteDeclareApplyExtensionById",name = "delete")
-    public HttpResult deleteDeclareApplyExtensionById(String id){
+    public HttpResult deleteDeclareApplyDetailById(String id){
         try {
-            declareApplyExtensionService.deleteDeclareApplyExtensionById(id);
+            declareApplyExtensionService.deleteDeclareApplyDetailById(id);
             return HttpResult.newCorrectResult(200,"success") ;
         } catch (Exception e) {
             baseService.writeExceptionInfo(e,String.join("", STRING,e.getMessage()));
@@ -60,13 +60,13 @@ public class DeclareApplyExtensionController {
 
 
     @GetMapping(value = "/getDeclareApplyExtensionById",name = "get")
-    public HttpResult getDeclareApplyExtensionById(String id){
+    public HttpResult getDeclareApplyDetailById(String id){
         try {
             List<Integer> ids = FormatUtils.transformString2Integer(id);
             if (ids.size() == 1){
-                return HttpResult.newCorrectResult(200,declareApplyExtensionService.getDeclareApplyExtensionById(ids.get(0))) ;
+                return HttpResult.newCorrectResult(200,declareApplyExtensionService.getDeclareApplyDetailById(ids.get(0))) ;
             }else {
-                return HttpResult.newCorrectResult(200,declareApplyExtensionService.getDeclareApplyExtensionByIds(ids)) ;
+                return HttpResult.newCorrectResult(200,declareApplyExtensionService.getDeclareApplyDetailByIds(ids)) ;
             }
         } catch (Exception e) {
             baseService.writeExceptionInfo(e,String.join("", STRING,e.getMessage()));
@@ -75,9 +75,9 @@ public class DeclareApplyExtensionController {
     }
 
     @GetMapping(value = "/getDeclareApplyExtensionListByExample",name = "get list")
-    public HttpResult getDeclareApplyExtensionListByExample(DeclareApplyExtension oo){
+    public HttpResult getDeclareApplyDetailListByExample(DeclareApplyDetail oo){
         try {
-            return HttpResult.newCorrectResult(200,declareApplyExtensionService.getDeclareApplyExtensionListByExample(oo)) ;
+            return HttpResult.newCorrectResult(200,declareApplyExtensionService.getDeclareApplyDetailListByExample(oo)) ;
         } catch (Exception e) {
             baseService.writeExceptionInfo(e,String.join("", STRING,e.getMessage()));
             return HttpResult.newErrorResult(500,e) ;
@@ -85,7 +85,7 @@ public class DeclareApplyExtensionController {
     }
 
     @GetMapping(value = "/getBootstrapTableVo",name = "get Pagination list")
-    public BootstrapTableVo getBootstrapTableVo(DeclareApplyExtension oo){
+    public BootstrapTableVo getBootstrapTableVo(DeclareApplyDetail oo){
         return declareApplyExtensionService.getBootstrapTableVo(oo) ;
     }
 

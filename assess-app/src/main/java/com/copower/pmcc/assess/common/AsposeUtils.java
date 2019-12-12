@@ -367,8 +367,20 @@ public class AsposeUtils {
                 }
             }
         }
-        doc.save(filePath);
+        saveWord(filePath,doc);
         return stringMap;
+    }
+
+    public static void replaceText(String filePath,String key,String value)throws Exception{
+        if (StringUtils.isEmpty(key)){
+            return;
+        }
+        if (StringUtils.isEmpty(value)){
+            return;
+        }
+        Document doc = new Document(filePath);
+        doc.getRange().replace(key, value, false, false);
+        saveWord(filePath,doc);
     }
 
     /**

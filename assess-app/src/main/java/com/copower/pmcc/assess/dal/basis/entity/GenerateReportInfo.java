@@ -33,7 +33,7 @@ public class GenerateReportInfo {
 
     private Integer assessCategory;
 
-    private Boolean isAllow;
+    private String symbolOperation;
 
     private String status;
 
@@ -163,12 +163,12 @@ public class GenerateReportInfo {
         this.assessCategory = assessCategory;
     }
 
-    public Boolean getIsAllow() {
-        return isAllow;
+    public String getSymbolOperation() {
+        return symbolOperation;
     }
 
-    public void setIsAllow(Boolean isAllow) {
-        this.isAllow = isAllow;
+    public void setSymbolOperation(String symbolOperation) {
+        this.symbolOperation = symbolOperation == null ? null : symbolOperation.trim();
     }
 
     public String getStatus() {

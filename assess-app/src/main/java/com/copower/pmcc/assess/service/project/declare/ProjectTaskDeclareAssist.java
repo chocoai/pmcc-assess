@@ -41,7 +41,7 @@ public class ProjectTaskDeclareAssist implements ProjectTaskInterface {
     @Autowired
     private BaseDataDicService baseDataDicService;
     @Autowired
-    private DeclareApplyExtensionService declareApplyExtensionService;
+    private DeclareApplyDetailService declareApplyExtensionService;
     @Autowired
     private DeclareApplyService declareApplyService;
 
@@ -103,7 +103,7 @@ public class ProjectTaskDeclareAssist implements ProjectTaskInterface {
             declareApplyService.saveDeclareApply(declare);
         }
         modelAndView.addObject("declare", declare);
-        modelAndView.addObject("declareApplyExtensionList", declareApplyExtensionService.getDeclareApplyExtensionListByDeclareId(declare.getId()));
+        modelAndView.addObject("declareApplyExtensionList", declareApplyExtensionService.getDeclareApplyDetailListByDeclareId(declare.getId()));
         modelAndView.addObject("ProvinceList", erpAreaService.getProvinceList());//所有省份
         modelAndView.addObject(StringUtils.uncapitalize(ProjectPlanDetails.class.getSimpleName()), projectPlanDetails);
         modelAndView.addObject(StringUtils.uncapitalize(DeclareApply.class.getSimpleName()), declare);

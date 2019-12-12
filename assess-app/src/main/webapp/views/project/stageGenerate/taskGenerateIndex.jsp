@@ -27,7 +27,6 @@
                             <input type="hidden" id="areaGroupId" name="areaGroupId"
                                    value="${generationVo.areaGroupId}">
                             <input type="hidden" name="id" value="${generationVo.id}">
-                            <input type="hidden" name="isAllow" value="${generationVo.isAllow}">
                             <div class="form-group">
                                 <div class="x-valid">
                                     <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
@@ -159,11 +158,11 @@
                             <c:forEach items="${reportTypeList}" var="reportType" varStatus="status">
                                 <div class="form-group">
                                     <div class="x-valid">
-                                            <%--<div class="col-xs-1  col-sm-1  col-md-1  col-lg-1">--%>
-                                            <%--<a class="btn-primary btn "--%>
-                                            <%--onclick="reGetDocumentNumber('${projectPlan.projectId}','${generationVo.areaGroupId}','${reportType.id}')">重新拿号<i--%>
-                                            <%--class="fa fa-undo"></i></a>--%>
-                                            <%--</div>--%>
+                                        <div class="col-xs-1  col-sm-1  col-md-1  col-lg-1">
+                                            <a class="btn-primary btn "
+                                               onclick="reGetDocumentNumber('${generationVo.areaGroupId}','${reportType.id}',this)">重新拿号<i
+                                                    class="fa fa-undo"></i></a>
+                                        </div>
 
                                         <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1">
                                             <!-- 报告附件方法 -->
@@ -353,7 +352,7 @@
                     }
                 }
                 //单一的一个结果集
-                fileArray.push(value.id+"result_sheet_one") ;
+                fileArray.push(value.id + "result_sheet_one");
             });
             if (callback) {
                 callback(fileArray);
@@ -440,26 +439,21 @@
         });
     }
 
-    //重新拿号
-    function reGetDocumentNumber(projectId, areaId, reportType) {
-        $.ajax({
-            url: "${pageContext.request.contextPath}/generate/reGetDocumentNumber",
-            data: {
-                projectId: projectId,
-                areaId: areaId,
-                reportType: reportType
-            },
-            dataType: "json",
-            success: function (result) {
-                if (result.ret) {
-                    Alert("重新拿号成功");
-                } else {
-                    Alert(result.errmsg);
-                }
-            },
-            error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
-            }
+    //重新拿号 也会替换文号相关的内容
+    function reGetDocumentNumber(areaId, reportType, item) {
+        var form = $(item).closest("form");
+        var data = formSerializeArray(form);
+        data.areaGroupId = areaId;
+        data.symbolOperation = 'reset';//重新拿号 标志
+        data.projectPlanId = '${projectPlan.id}';
+        data.projectId = '${projectPlan.projectId}';
+        if (!AssessCommon.isNumber(data.assessCategory)) {
+            data.assessCategory = null;
+        }
+        Alert("请注意报告二维码无法自动替换,假如要替换类似于报告二维码这样的数据请在页面上上删除报告二维码,然后用\\${报告二维码}这样的文本放置在删除的位置", 2, null, function () {
+            generateReportHandle(data, reportType, form, areaId, function () {
+                toastr.success('重新拿号成功!');
+            });
         });
     }
 
@@ -468,7 +462,7 @@
         var form = $(item).closest("form");
         var data = formSerializeArray(form);
         data.areaGroupId = areaId;
-        data.isAllow = true;//拿号 标志
+        data.symbolOperation = 'get';//拿号 标志
         data.projectPlanId = '${projectPlan.id}';
         data.projectId = '${projectPlan.projectId}';
         if (!AssessCommon.isNumber(data.assessCategory)) {
@@ -491,7 +485,7 @@
         }
         $.ajax({
             url: "${pageContext.request.contextPath}/generateReport/resultSheetReport",
-            data: {fomData: JSON.stringify(data),reportType:reportType},
+            data: {fomData: JSON.stringify(data), reportType: reportType},
             type: "post",
             dataType: "json",
             success: function (result) {
@@ -527,7 +521,7 @@
         data.areaGroupId = areaId;
         data.projectPlanId = '${projectPlan.id}';
         data.projectId = '${projectPlan.projectId}';
-        data.isAllow = false;//不拿号 标志
+        data.symbolOperation = 'none';//不拿号 标志
         if (!AssessCommon.isNumber(data.assessCategory)) {
             data.assessCategory = null;
         }
@@ -569,7 +563,7 @@
      * @param data
      * @param callback
      */
-    function saveGenerateReportInfo(data,callback) {
+    function saveGenerateReportInfo(data, callback) {
         $.ajax({
             url: "${pageContext.request.contextPath}/generateReport/saveGenerateReportInfo",
             data: {fomData: JSON.stringify(data)},
@@ -592,12 +586,12 @@
 
     //提交
     function submit() {
-        var allData = [] ;
+        var allData = [];
         $(".area_panel").each(function () {
-            var form = $(this).find('form') ;
-            allData.push(formSerializeArray(form)) ;
+            var form = $(this).find('form');
+            allData.push(formSerializeArray(form));
         });
-        saveGenerateReportInfo(allData,function () {
+        saveGenerateReportInfo(allData, function () {
             var data = {};
             data.planId = '${projectPlan.id}';
             data.areaGroupId = $("#areaGroupId").val();
@@ -607,18 +601,18 @@
             else {
                 submitToServer(JSON.stringify(data));
             }
-        }) ;
+        });
     }
 
     //提交
     function commitApply() {
-        var allData = [] ;
+        var allData = [];
         var isPass = true;
         $(".area_panel").each(function () {
             $(this).find('.x_content').show();
-            var form = $(this).find('form') ;
+            var form = $(this).find('form');
             isPass = form.valid();
-            allData.push(formSerializeArray(form)) ;
+            allData.push(formSerializeArray(form));
         });
         if (!isPass) {
             return false;
@@ -632,7 +626,7 @@
             var approvalData = formParams("frm_approval");
             data = $.extend(data, approvalData);
         }
-        saveGenerateReportInfo(allData,function () {
+        saveGenerateReportInfo(allData, function () {
             //提交流程
             $.ajax({
                 url: url,
@@ -647,7 +641,7 @@
                     }
                 }
             })
-        }) ;
+        });
     }
 
 </script>

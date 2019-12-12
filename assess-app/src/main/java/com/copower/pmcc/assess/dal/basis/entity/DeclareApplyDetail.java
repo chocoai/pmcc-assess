@@ -2,7 +2,7 @@ package com.copower.pmcc.assess.dal.basis.entity;
 
 import java.util.Date;
 
-public class DeclareApplyExtension {
+public class DeclareApplyDetail {
     private Integer id;
 
     private Integer projectId;

@@ -186,7 +186,7 @@
 
 
 
-        <table tableName="tb_declare_apply_extension" domainObjectName="DeclareApplyExtension">
+        <table tableName="tb_declare_apply_detail" domainObjectName="DeclareApplyDetail">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 

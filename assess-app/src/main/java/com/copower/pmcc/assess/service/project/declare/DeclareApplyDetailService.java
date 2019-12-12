@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.service.project.declare;
 
-import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareApplyExtensionDao;
-import com.copower.pmcc.assess.dal.basis.entity.DeclareApplyExtension;
+import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareApplyDetailDao;
+import com.copower.pmcc.assess.dal.basis.entity.DeclareApplyDetail;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -25,36 +25,36 @@ import java.util.List;
  * 申报扩展自定义字段
  */
 @Service
-public class DeclareApplyExtensionService {
+public class DeclareApplyDetailService {
     @Autowired
     private CommonService commonService;
     @Autowired
-    private DeclareApplyExtensionDao declareApplyExtensionDao;
+    private DeclareApplyDetailDao declareApplyExtensionDao;
     @Autowired
     private BaseAttachmentService baseAttachmentService;
 
-    public boolean updateDeclareApplyExtension(DeclareApplyExtension oo, boolean updateNull) {
-        return declareApplyExtensionDao.updateDeclareApplyExtension(oo, updateNull);
+    public boolean updateDeclareApplyDetail(DeclareApplyDetail oo, boolean updateNull) {
+        return declareApplyExtensionDao.updateDeclareApplyDetail(oo, updateNull);
     }
 
-    public boolean saveDeclareApplyExtension(DeclareApplyExtension oo) {
+    public boolean saveDeclareApplyDetail(DeclareApplyDetail oo) {
         if (oo == null) {
             return false;
         }
         if (StringUtils.isEmpty(oo.getCreator())) {
             oo.setCreator(commonService.thisUserAccount());
         }
-        return declareApplyExtensionDao.saveDeclareApplyExtension(oo);
+        return declareApplyExtensionDao.saveDeclareApplyDetail(oo);
     }
 
-    public void saveAndUpdateDeclareApplyExtension(DeclareApplyExtension oo,boolean updateNull) {
+    public void saveAndUpdateDeclareApplyDetail(DeclareApplyDetail oo,boolean updateNull) {
         if (oo == null) {
             return;
         }
         if (oo.getId() != null && oo.getId() != 0) {
-            declareApplyExtensionDao.updateDeclareApplyExtension(oo, updateNull);
+            declareApplyExtensionDao.updateDeclareApplyDetail(oo, updateNull);
         } else {
-            saveDeclareApplyExtension(oo);
+            saveDeclareApplyDetail(oo);
         }
     }
 
@@ -64,7 +64,7 @@ public class DeclareApplyExtensionService {
         }
         SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
         sysAttachmentDto.setTableId(tableId);
-        sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(DeclareApplyExtension.class));
+        sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(DeclareApplyDetail.class));
         List<SysAttachmentDto> sysAttachmentDtoList = baseAttachmentService.getAttachmentList(sysAttachmentDto) ;
         if (CollectionUtils.isEmpty(sysAttachmentDtoList)){
             return;
@@ -72,7 +72,7 @@ public class DeclareApplyExtensionService {
         sysAttachmentDtoList.forEach(sysAttachmentDto1 -> baseAttachmentService.deleteAttachment(sysAttachmentDto1.getId()));
     }
 
-    public void deleteDeclareApplyExtensionById(String id) {
+    public void deleteDeclareApplyDetailById(String id) {
         if (StringUtils.isEmpty(id)) {
             return;
         }
@@ -80,42 +80,42 @@ public class DeclareApplyExtensionService {
         if (CollectionUtils.isNotEmpty(ids)) {
             if (ids.size() == 1) {
                 removeFileByTableId(ids.get(0)) ;
-                declareApplyExtensionDao.deleteDeclareApplyExtensionById(ids.get(0));
+                declareApplyExtensionDao.deleteDeclareApplyDetailById(ids.get(0));
             } else {
                 ids.forEach(integer -> removeFileByTableId(integer));
-                declareApplyExtensionDao.deleteDeclareApplyExtensionByIds(ids);
+                declareApplyExtensionDao.deleteDeclareApplyDetailByIds(ids);
             }
         }
     }
 
-    public BootstrapTableVo getBootstrapTableVo(DeclareApplyExtension oo) {
+    public BootstrapTableVo getBootstrapTableVo(DeclareApplyDetail oo) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<DeclareApplyExtension> declareApplyExtensionList = getDeclareApplyExtensionListByExample(oo);
+        List<DeclareApplyDetail> declareApplyExtensionList = getDeclareApplyDetailListByExample(oo);
         vo.setTotal(page.getTotal());
         vo.setRows(CollectionUtils.isNotEmpty(declareApplyExtensionList) ? declareApplyExtensionList : new ArrayList(0));
         return vo;
     }
 
-    protected List<DeclareApplyExtension> getDeclareApplyExtensionListByDeclareId(Integer declareId){
+    protected List<DeclareApplyDetail> getDeclareApplyDetailListByDeclareId(Integer declareId){
         if (declareId == null){
             return new ArrayList<>(0) ;
         }
-        DeclareApplyExtension query = new DeclareApplyExtension();
+        DeclareApplyDetail query = new DeclareApplyDetail();
         query.setDeclareId(declareId);
-        return getDeclareApplyExtensionListByExample(query) ;
+        return getDeclareApplyDetailListByExample(query) ;
     }
 
-    public List<DeclareApplyExtension> getDeclareApplyExtensionByIds(List<Integer> ids) {
-        return declareApplyExtensionDao.getDeclareApplyExtensionByIds(ids);
+    public List<DeclareApplyDetail> getDeclareApplyDetailByIds(List<Integer> ids) {
+        return declareApplyExtensionDao.getDeclareApplyDetailByIds(ids);
     }
 
-    public DeclareApplyExtension getDeclareApplyExtensionById(Integer id) {
-        return declareApplyExtensionDao.getDeclareApplyExtensionById(id);
+    public DeclareApplyDetail getDeclareApplyDetailById(Integer id) {
+        return declareApplyExtensionDao.getDeclareApplyDetailById(id);
     }
 
-    public List<DeclareApplyExtension> getDeclareApplyExtensionListByExample(DeclareApplyExtension oo) {
-        return declareApplyExtensionDao.getDeclareApplyExtensionListByExample(oo);
+    public List<DeclareApplyDetail> getDeclareApplyDetailListByExample(DeclareApplyDetail oo) {
+        return declareApplyExtensionDao.getDeclareApplyDetailListByExample(oo);
     }
 }

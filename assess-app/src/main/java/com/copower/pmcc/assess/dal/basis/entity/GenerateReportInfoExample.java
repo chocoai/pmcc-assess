@@ -1055,63 +1055,73 @@ public class GenerateReportInfoExample {
             return (Criteria) this;
         }
 
-        public Criteria andIsAllowIsNull() {
-            addCriterion("is_allow is null");
+        public Criteria andSymbolOperationIsNull() {
+            addCriterion("symbol_operation is null");
             return (Criteria) this;
         }
 
-        public Criteria andIsAllowIsNotNull() {
-            addCriterion("is_allow is not null");
+        public Criteria andSymbolOperationIsNotNull() {
+            addCriterion("symbol_operation is not null");
             return (Criteria) this;
         }
 
-        public Criteria andIsAllowEqualTo(Boolean value) {
-            addCriterion("is_allow =", value, "isAllow");
+        public Criteria andSymbolOperationEqualTo(String value) {
+            addCriterion("symbol_operation =", value, "symbolOperation");
             return (Criteria) this;
         }
 
-        public Criteria andIsAllowNotEqualTo(Boolean value) {
-            addCriterion("is_allow <>", value, "isAllow");
+        public Criteria andSymbolOperationNotEqualTo(String value) {
+            addCriterion("symbol_operation <>", value, "symbolOperation");
             return (Criteria) this;
         }
 
-        public Criteria andIsAllowGreaterThan(Boolean value) {
-            addCriterion("is_allow >", value, "isAllow");
+        public Criteria andSymbolOperationGreaterThan(String value) {
+            addCriterion("symbol_operation >", value, "symbolOperation");
             return (Criteria) this;
         }
 
-        public Criteria andIsAllowGreaterThanOrEqualTo(Boolean value) {
-            addCriterion("is_allow >=", value, "isAllow");
+        public Criteria andSymbolOperationGreaterThanOrEqualTo(String value) {
+            addCriterion("symbol_operation >=", value, "symbolOperation");
             return (Criteria) this;
         }
 
-        public Criteria andIsAllowLessThan(Boolean value) {
-            addCriterion("is_allow <", value, "isAllow");
+        public Criteria andSymbolOperationLessThan(String value) {
+            addCriterion("symbol_operation <", value, "symbolOperation");
             return (Criteria) this;
         }
 
-        public Criteria andIsAllowLessThanOrEqualTo(Boolean value) {
-            addCriterion("is_allow <=", value, "isAllow");
+        public Criteria andSymbolOperationLessThanOrEqualTo(String value) {
+            addCriterion("symbol_operation <=", value, "symbolOperation");
             return (Criteria) this;
         }
 
-        public Criteria andIsAllowIn(List<Boolean> values) {
-            addCriterion("is_allow in", values, "isAllow");
+        public Criteria andSymbolOperationLike(String value) {
+            addCriterion("symbol_operation like", value, "symbolOperation");
             return (Criteria) this;
         }
 
-        public Criteria andIsAllowNotIn(List<Boolean> values) {
-            addCriterion("is_allow not in", values, "isAllow");
+        public Criteria andSymbolOperationNotLike(String value) {
+            addCriterion("symbol_operation not like", value, "symbolOperation");
             return (Criteria) this;
         }
 
-        public Criteria andIsAllowBetween(Boolean value1, Boolean value2) {
-            addCriterion("is_allow between", value1, value2, "isAllow");
+        public Criteria andSymbolOperationIn(List<String> values) {
+            addCriterion("symbol_operation in", values, "symbolOperation");
             return (Criteria) this;
         }
 
-        public Criteria andIsAllowNotBetween(Boolean value1, Boolean value2) {
-            addCriterion("is_allow not between", value1, value2, "isAllow");
+        public Criteria andSymbolOperationNotIn(List<String> values) {
+            addCriterion("symbol_operation not in", values, "symbolOperation");
+            return (Criteria) this;
+        }
+
+        public Criteria andSymbolOperationBetween(String value1, String value2) {
+            addCriterion("symbol_operation between", value1, value2, "symbolOperation");
+            return (Criteria) this;
+        }
+
+        public Criteria andSymbolOperationNotBetween(String value1, String value2) {
+            addCriterion("symbol_operation not between", value1, value2, "symbolOperation");
             return (Criteria) this;
         }
 

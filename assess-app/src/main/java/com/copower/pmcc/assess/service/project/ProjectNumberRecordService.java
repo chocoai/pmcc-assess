@@ -15,6 +15,7 @@ import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.PageHelper;
+import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
 import org.apache.commons.collections.CollectionUtils;
@@ -24,6 +25,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by kings on 2019-1-14.
@@ -97,6 +100,33 @@ public class ProjectNumberRecordService {
 
     public void delProjectNumberRecord(Integer id) {
         projectNumberRecordDao.deleteProjectNumberRecord(id);
+    }
+
+
+    /**
+     * 文号中的编号
+     * @param projectId
+     * @param areaId
+     * @param reportType
+     * @return
+     * @throws BusinessException
+     */
+    public String getWordNumber(Integer projectId, Integer areaId, Integer reportType)throws BusinessException{
+        String value = getReportNumber(projectId, areaId, reportType);
+        return getWordNumber2(value) ;
+    }
+
+    public String getWordNumber2(String value)throws BusinessException{
+        Pattern pattern = Pattern.compile("\\d+号$");
+        if (StringUtils.isNotEmpty(value)) {
+            Matcher matcher = pattern.matcher(value);
+            while (matcher.find()) {
+                if (StringUtils.isNotEmpty(matcher.group())) {
+                    return StringUtils.remove(matcher.group(), "号");
+                }
+            }
+        }
+        return "" ;
     }
 
     /**

@@ -6,10 +6,7 @@ import com.copower.pmcc.ad.api.dto.AdCompanyQualificationDto;
 import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.PoiUtils;
 import com.copower.pmcc.assess.common.enums.*;
-import com.copower.pmcc.assess.common.enums.report.BaseReportFieldCompareEnum;
-import com.copower.pmcc.assess.common.enums.report.BaseReportFieldEnum;
-import com.copower.pmcc.assess.common.enums.report.BaseReportFieldMdBaseLandPriceEnum;
-import com.copower.pmcc.assess.common.enums.report.BaseReportFieldMdIncomeEnum;
+import com.copower.pmcc.assess.common.enums.report.*;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.generate.BookmarkAndRegexDto;
@@ -20,6 +17,7 @@ import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseReportFieldService;
 import com.copower.pmcc.assess.service.base.BaseReportService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
+import com.copower.pmcc.assess.service.project.ProjectNumberRecordService;
 import com.copower.pmcc.assess.service.project.ProjectPlanService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
@@ -45,7 +43,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.CountDownLatch;
@@ -87,6 +84,8 @@ public class GenerateReportService {
     private BaseService baseService;
     @Autowired
     private BaseReportFieldService baseReportFieldService;
+    @Autowired
+    private ProjectNumberRecordService projectNumberRecordService;
 
     public List<SchemeAreaGroup> getAreaGroupList(Integer projectId) {
         return schemeAreaGroupService.getAreaGroupList(projectId);
@@ -100,7 +99,6 @@ public class GenerateReportService {
      * @return
      * @throws Exception
      */
-//    @Transactional(rollbackFor = {Exception.class})
     public void createReportWord(String ids, GenerateReportInfo generateReportInfo) throws Exception {
         if (StringUtils.isEmpty(ids) || generateReportInfo.getProjectPlanId() == null) {
             return;
@@ -143,7 +141,7 @@ public class GenerateReportService {
             if (baseReportTemplate == null) {
                 continue;
             }
-            String path = this.fullReportHandlePath(baseReportTemplate, generateReportInfo, baseDataDic.getFieldName(), generateReportInfo.getIsAllow());
+            String path = this.fullReportHandlePath(baseReportTemplate, generateReportInfo, baseDataDic);
             if (StringUtils.isNotBlank(path)) {
                 this.createSysAttachment(path, generateReportInfo, baseDataDic.getFieldName(), sysAttachmentDtoList);
             }
@@ -177,7 +175,7 @@ public class GenerateReportService {
         try {
             ftpUtilsExtense.uploadFilesToFTP(ftpBasePath, new FileInputStream(file.getPath()), sysAttachmentDto.getFtpFileName());
         } catch (Exception e) {
-            baseService.writeExceptionInfo(e,"erp上传文件出错");
+            baseService.writeExceptionInfo(e, "erp上传文件出错");
         }
         if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
             sysAttachmentDtoList.stream().forEach(attachmentDto -> {
@@ -196,11 +194,10 @@ public class GenerateReportService {
      * @param baseReportTemplate
      * @param generateReportInfo
      * @param reportType
-     * @param isSource           注意这个参数的意思是  当为true的时候使用报告对象的源word进行替换也就是说这个word可能曾经被修改过或者被替换过 , 当为 false的时候那么使用我们自定义配置的报告模板进行替换操作
      * @return
      * @throws Exception
      */
-    private String fullReportHandlePath(BaseReportTemplate baseReportTemplate, GenerateReportInfo generateReportInfo, String reportType, boolean isSource) throws Exception {
+    private String fullReportHandlePath(BaseReportTemplate baseReportTemplate, GenerateReportInfo generateReportInfo, BaseDataDic reportType) throws Exception {
         List<String> names = Lists.newArrayList();
         //基础报告
         for (BaseReportFieldEnum baseReportFieldEnum : BaseReportFieldEnum.values()) {
@@ -222,13 +219,16 @@ public class GenerateReportService {
         SysAttachmentDto query = new SysAttachmentDto();
         //这里很重要
         //使用曾经使用过的word进行替换
-        if (isSource) {
-            query.setTableId(generateReportInfo.getId());
-            query.setTableName(FormatUtils.entityNameConvertToTableName(GenerateReportInfo.class));
-            query.setFieldsName(generateCommonMethod.getReportFieldsName(reportType, generateReportInfo.getAreaGroupId()));
+        String[] keys = new String[]{BaseReportSymbolOperationEnum.GET.getKey(),BaseReportSymbolOperationEnum.RESET.getKey()} ;
+        for (int i = 0; i < keys.length; i++) {
+            if (Objects.equal(generateReportInfo.getSymbolOperation(), keys[i])) {
+                query.setTableId(generateReportInfo.getId());
+                query.setTableName(FormatUtils.entityNameConvertToTableName(GenerateReportInfo.class));
+                query.setFieldsName(generateCommonMethod.getReportFieldsName(reportType.getFieldName(), generateReportInfo.getAreaGroupId()));
+            }
         }
         //使用报告模板
-        if (!isSource) {
+        if (Objects.equal(generateReportInfo.getSymbolOperation(), BaseReportSymbolOperationEnum.NONE.getKey())) {
             query.setTableId(baseReportTemplate.getId());
             query.setTableName(FormatUtils.entityNameConvertToTableName(BaseReportTemplate.class));
         }
@@ -238,12 +238,27 @@ public class GenerateReportService {
         }
         if (CollectionUtils.isEmpty(sysAttachmentDtoList)) {
             if (Objects.equal(query.getTableName(), FormatUtils.entityNameConvertToTableName(GenerateReportInfo.class))) {
-                throw new Exception("先生成报告,再拿号!");
+                throw new Exception("先生成报告,再拿号或者重新拿号!");
             }
         }
         ProjectPlan projectPlan = projectPlanService.getProjectplanById(generateReportInfo.getProjectPlanId());
         ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(generateReportInfo.getProjectId()));
         GenerateBaseDataService generateBaseDataService = new GenerateBaseDataService(projectInfoVo, generateReportInfo.getAreaGroupId(), baseReportTemplate, projectPlan);
+        //重新拿号
+        if (Objects.equal(generateReportInfo.getSymbolOperation(), BaseReportSymbolOperationEnum.RESET.getKey())) {
+            ProjectNumberRecord numberRecord = projectNumberRecordService.getProjectNumberRecord(generateReportInfo.getProjectId(), generateReportInfo.getAreaGroupId(), reportType.getId());
+            if (numberRecord != null) {
+                numberRecord.setBisDelete(true);
+                projectNumberRecordService.updateProjectNumberRecord(numberRecord);
+                //将已经老旧的文号替换为最新的文号
+                String value = projectNumberRecordService.getReportNumber(generateReportInfo.getProjectId(),generateReportInfo.getAreaGroupId(),reportType.getId()) ;
+                AsposeUtils.replaceText(dir, numberRecord.getNumberValue(), value);
+                //替换编号
+                AsposeUtils.replaceText(dir, projectNumberRecordService.getWordNumber2(numberRecord.getNumberValue()), projectNumberRecordService.getWordNumber2(value));
+            }
+            //重新设回拿号标志
+            generateReportInfo.setSymbolOperation(BaseReportSymbolOperationEnum.GET.getKey());
+        }
         //评估类型(添加一个封面)
         if (generateReportInfo.getAssessCategory() != null) {
             generateBaseDataService.handleReportCover(generateReportInfo, dir, baseAttachmentService, baseReportFieldService);
@@ -255,7 +270,7 @@ public class GenerateReportService {
         Map<String, String> textMap = Maps.newHashMap();
         Map<String, String> bookmarkMap = Maps.newHashMap();
         Map<String, String> fileMap = Maps.newHashMap();
-        generateReplaceWord(names, textMap, bookmarkMap, fileMap, dir, generateBaseDataService, generateReportInfo, reportType, count, max);
+        generateReplaceWord(names, textMap, bookmarkMap, fileMap, dir, generateBaseDataService, generateReportInfo, reportType.getFieldName(), count, max);
         return dir;
     }
 
@@ -338,43 +353,6 @@ public class GenerateReportService {
         }
     }
 
-    /**
-     * 按指定大小对列表分组
-     *
-     * @param list
-     * @param splitSize
-     * @return
-     */
-    private List<List<String>> splitsList(List<String> list, int splitSize) {
-        if (null == list) {
-            return null;
-        }
-        int listSize = list.size();
-        List<List<String>> newList = new ArrayList<List<String>>();
-        if (listSize < splitSize) {
-            newList.add(list);
-            return newList;
-        }
-        int addLength = splitSize;
-        int times = listSize / splitSize;
-        if (listSize % splitSize != 0) {
-            times += 1;
-        }
-        int start = 0;
-        int end = 0;
-        int last = times - 1;
-        for (int i = 0; i < times; i++) {
-            start = i * splitSize;
-            if (i < last) {
-                end = start + addLength;
-            } else {
-                end = listSize;
-            }
-            newList.add(list.subList(start, end));
-        }
-        return newList;
-    }
-
 
     private void handleReport(String name, Map<String, String> textMap, Map<String, String> bookmarkMap, Map<String, String> fileMap, GenerateBaseDataService generateBaseDataService, GenerateReportInfo generateReportInfo, String reportType) throws Exception {
         //文号
@@ -382,7 +360,7 @@ public class GenerateReportService {
             if (StringUtils.isNotEmpty(textMap.get(name))) {
                 return;
             }
-            if (generateReportInfo.getIsAllow()) {
+            if (Objects.equal(generateReportInfo.getSymbolOperation(), BaseReportSymbolOperationEnum.GET.getKey())) {
                 generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getWordNumber());
             }
         }
@@ -416,14 +394,18 @@ public class GenerateReportService {
             if (StringUtils.isNotEmpty(textMap.get(name))) {
                 return;
             }
-            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getWordNumber2());
+            if (Objects.equal(generateReportInfo.getSymbolOperation(), BaseReportSymbolOperationEnum.GET.getKey())) {
+                generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getWordNumber2());
+            }
         }
         //报告二维码
         if (Objects.equal(BaseReportFieldEnum.ReportQrcode.getName(), name)) {
             if (StringUtils.isNotEmpty(fileMap.get(name))) {
                 return;
             }
-            generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getReportQrcode(generateReportInfo, reportType));
+            if (Objects.equal(generateReportInfo.getSymbolOperation(), BaseReportSymbolOperationEnum.GET.getKey())) {
+                generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getReportQrcode(generateReportInfo, reportType));
+            }
         }
         //报告类别
         if (Objects.equal(BaseReportFieldEnum.ReportingCategories.getName(), name)) {
@@ -1787,9 +1769,9 @@ public class GenerateReportService {
             text = PoiUtils.getWordContent(tempDir);
         } catch (Exception e) {
             try {
-                text =  AsposeUtils.getWordTableText(document) ;
+                text = AsposeUtils.getWordTableText(document);
             } catch (Exception e1) {
-                baseService.writeExceptionInfo(e1,"java.lang.IndexOutOfBoundsException,或者是aspose数据越界 ");
+                baseService.writeExceptionInfo(e1, "java.lang.IndexOutOfBoundsException,或者是aspose数据越界 ");
             }
         }
         if (StringUtils.isNotEmpty(text)) {
@@ -1803,9 +1785,9 @@ public class GenerateReportService {
         List<String> regexList = new ArrayList<>();
         try {
             List<String> regexList2 = AsposeUtils.getRegexList(document, null);
-            regexList.addAll(regexList2) ;
+            regexList.addAll(regexList2);
         } catch (Exception e) {
-            baseService.writeExceptionInfo(e,"java.lang.IndexOutOfBoundsException,或者是aspose数据越界 ");
+            baseService.writeExceptionInfo(e, "java.lang.IndexOutOfBoundsException,或者是aspose数据越界 ");
         }
         if (CollectionUtils.isNotEmpty(regexList)) {
             stringList.addAll(regexList);
@@ -1859,6 +1841,7 @@ public class GenerateReportService {
 
     /**
      * 结果集上传erp的ftp 形成ftp上的文件
+     *
      * @param path
      * @param reportType
      * @param generateReportInfo
@@ -1894,9 +1877,46 @@ public class GenerateReportService {
         try {
             ftpUtilsExtense.uploadFilesToFTP(ftpBasePath, new FileInputStream(file.getPath()), sysAttachmentDto.getFtpFileName());
         } catch (Exception e) {
-            baseService.writeExceptionInfo(e,"erp上传文件出错");
+            baseService.writeExceptionInfo(e, "erp上传文件出错");
         }
         baseAttachmentService.addAttachment(sysAttachmentDto);
+    }
+
+    /**
+     * 按指定大小对列表分组
+     *
+     * @param list
+     * @param splitSize
+     * @return
+     */
+    private List<List<String>> splitsList(List<String> list, int splitSize) {
+        if (null == list) {
+            return null;
+        }
+        int listSize = list.size();
+        List<List<String>> newList = new ArrayList<List<String>>();
+        if (listSize < splitSize) {
+            newList.add(list);
+            return newList;
+        }
+        int addLength = splitSize;
+        int times = listSize / splitSize;
+        if (listSize % splitSize != 0) {
+            times += 1;
+        }
+        int start = 0;
+        int end = 0;
+        int last = times - 1;
+        for (int i = 0; i < times; i++) {
+            start = i * splitSize;
+            if (i < last) {
+                end = start + addLength;
+            } else {
+                end = listSize;
+            }
+            newList.add(list.subList(start, end));
+        }
+        return newList;
     }
 
 }

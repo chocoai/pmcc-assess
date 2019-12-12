@@ -175,18 +175,8 @@ public class GenerateBaseDataService {
      *
      * @return
      */
-    public String getWordNumber2() {
-        String value = getWordNumber();
-        Pattern pattern = Pattern.compile("\\d+号$");
-        if (StringUtils.isNotEmpty(value) && !Objects.equal(value, errorStr)) {
-            Matcher matcher = pattern.matcher(value);
-            while (matcher.find()) {
-                if (StringUtils.isNotEmpty(matcher.group())) {
-                    return StringUtils.remove(matcher.group(), "号");
-                }
-            }
-        }
-        return errorStr;
+    public String getWordNumber2()throws BusinessException {
+       return projectNumberRecordService.getWordNumber2(getWordNumber()) ;
     }
 
     /**

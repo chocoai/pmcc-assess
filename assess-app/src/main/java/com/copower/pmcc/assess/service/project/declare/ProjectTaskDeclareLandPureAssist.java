@@ -43,7 +43,7 @@ public class ProjectTaskDeclareLandPureAssist implements ProjectTaskInterface {
     @Autowired
     private DeclareApplyService declareApplyService;
     @Autowired
-    private DeclareApplyExtensionService declareApplyExtensionService;
+    private DeclareApplyDetailService declareApplyExtensionService;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
@@ -104,7 +104,7 @@ public class ProjectTaskDeclareLandPureAssist implements ProjectTaskInterface {
             declareApplyService.saveDeclareApply(declare);
         }
         modelAndView.addObject("declare", declare);
-        modelAndView.addObject("declareApplyExtensionList", declareApplyExtensionService.getDeclareApplyExtensionListByDeclareId(declare.getId()));
+        modelAndView.addObject("declareApplyExtensionList", declareApplyExtensionService.getDeclareApplyDetailListByDeclareId(declare.getId()));
         modelAndView.addObject("ProvinceList", erpAreaService.getProvinceList());//所有省份
         modelAndView.addObject(StringUtils.uncapitalize(ProjectPlanDetails.class.getSimpleName()), projectPlanDetails);
         modelAndView.addObject(StringUtils.uncapitalize(DeclareApply.class.getSimpleName()), declare);
