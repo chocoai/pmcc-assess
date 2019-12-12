@@ -204,6 +204,23 @@
         })
     };
 
+    //房屋详情页
+    houseCommon.initDetailById = function (id, callback,bisDetail) {
+        $.ajax({
+            url: getContextPath() + '/basicHouse/getBasicHouseMapById',
+            type: 'get',
+            data: {id: id},
+            success: function (result) {
+                houseCommon.initForm(result.data,bisDetail);
+                if (result.ret) {
+                    if (callback) {
+                        callback(result.data);
+                    }
+                }
+            }
+        })
+    };
+
     //项目中引用数据
     houseCommon.getDataFromProject = function (applyId, callback) {
         $.ajax({
@@ -264,7 +281,7 @@
     };
 
     //房屋初始化以及赋值
-    houseCommon.initForm = function (data) {
+    houseCommon.initForm = function (data,bisDetail) {
         if (!data || !data.basicHouse) return;
         //基本信息
         houseCommon.houseForm.initForm(data.basicHouse, function () {
@@ -307,7 +324,11 @@
             //初始化上传控件
             $.each(houseCommon.houseFileControlIdArray, function (i, item) {
                 houseCommon.fileUpload(item);
-                houseCommon.fileShow(item);
+                if(bisDetail==false){
+                    houseCommon.fileShow(item,false);
+                }else{
+                    houseCommon.fileShow(item,true);
+                }
             });
         });
 
