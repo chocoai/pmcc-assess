@@ -57,18 +57,6 @@
                         <%@include file="/views/project/stageSurvey/commonDetail/matchingMainRoad.jsp" %>
                         <%@include file="/views/project/stageSurvey/commonDetail/matchingMainConversion.jsp" %>
 
-
-                        <!-- 非工业交通仓储 -->
-                        <c:if test="${basicApplyBatch.type == 1}">
-                            <%@include file="/views/project/stageSurvey/commonDetail/industry/estateSupplyWater.jsp" %>
-                            <%@include
-                                    file="/views/project/stageSurvey/commonDetail/industry/estateSupplyDrainWater.jsp" %>
-                            <%@include file="/views/project/stageSurvey/commonDetail/industry/estateSupplyPower.jsp" %>
-                            <%@include
-                                    file="/views/project/stageSurvey/commonDetail/industry/estateSupplyHeating.jsp" %>
-                            <%@include file="/views/project/stageSurvey/commonDetail/industry/estateSupplyGas.jsp" %>
-                        </c:if>
-
                         <!-- 工业交通仓储 -->
                         <c:if test="${basicApplyBatch.type == 1}">
                             <%@include file="/views/project/stageSurvey/commonDetail/industry/matchingMaterial.jsp" %>
