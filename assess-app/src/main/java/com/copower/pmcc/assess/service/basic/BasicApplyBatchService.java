@@ -10,6 +10,7 @@ import com.copower.pmcc.assess.common.enums.basic.EstateTaggingTypeEnum;
 import com.copower.pmcc.assess.common.enums.basic.ExamineFileUpLoadFieldEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.BaseConstant;
+import com.copower.pmcc.assess.dal.basis.custom.mapper.CustomBasicAppBatchMapper;
 import com.copower.pmcc.assess.dal.basis.dao.basic.*;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dal.cases.entity.*;
@@ -53,6 +54,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
@@ -165,6 +167,9 @@ public class BasicApplyBatchService {
     private ProjectPlanDetailsService projectPlanDetailsService;
     @Autowired
     private DeclareRecordService declareRecordService;
+    @Lazy
+    @Autowired
+    private CustomBasicAppBatchMapper customBasicAppBatchMapper;
 
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -641,23 +646,15 @@ public class BasicApplyBatchService {
     }
 
     //获取草稿数据
-    public BootstrapTableVo getBootstrapTableVo(String estateName, Boolean draftFlag) throws Exception {
+    public BootstrapTableVo getBootstrapTableVo(String estateName) throws Exception {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<BasicApplyBatch> BasicApplyBatchList = Lists.newArrayList();
-        List<BasicApplyBatch> commit = basicApplyBatchDao.getCommitBasicApplyBatchListByName(estateName, commonService.thisUserAccount(), draftFlag);
-        List<BasicApplyBatch> draft = basicApplyBatchDao.getDraftBasicApplyBatchListByName(estateName, commonService.thisUserAccount(), draftFlag);
-        BasicApplyBatchList.addAll(draft);
-        BasicApplyBatchList.addAll(commit);
-        List<BasicApplyBatchVo> vos = Lists.newArrayList();
-        if (CollectionUtils.isNotEmpty(BasicApplyBatchList)) {
-            for (BasicApplyBatch basicApplyBatch : BasicApplyBatchList) {
-                vos.add(getBasicApplyBatchVo(basicApplyBatch));
-            }
-        }
+        String creator = commonService.thisUserAccount();
+        List<BasicApplyBatch> basicAppBatchDraftList = customBasicAppBatchMapper.getCustomDraftList(estateName, creator);
+        List<BasicApplyBatchVo> voList = LangUtils.transform(basicAppBatchDraftList, o -> getBasicApplyBatchVo(o));
         vo.setTotal(page.getTotal());
-        vo.setRows(ObjectUtils.isEmpty(vos) ? new ArrayList<BasicApplyBatchVo>(10) : vos);
+        vo.setRows(CollectionUtils.isEmpty(voList) ? new ArrayList<BasicApplyBatchVo>() : voList);
         return vo;
     }
 
@@ -1113,7 +1110,7 @@ public class BasicApplyBatchService {
 
     }
 
-    public BasicApplyBatchVo getBasicApplyBatchVo(BasicApplyBatch basicApplyBatch) throws Exception {
+    public BasicApplyBatchVo getBasicApplyBatchVo(BasicApplyBatch basicApplyBatch) {
         if (basicApplyBatch == null) {
             return null;
         }

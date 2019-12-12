@@ -118,6 +118,25 @@
         })
     };
 
+    //楼栋详情页
+    buildingCommon.initDetailById = function (id, callback,bisDetail) {
+        $.ajax({
+            url: getContextPath() + '/basicBuilding/getBasicBuildingById',
+            type: 'get',
+            data: {id: id},
+            success: function (result) {
+                if (result.ret) {
+                    if (result.data) {
+                        buildingCommon.initForm(result.data,bisDetail);
+                    }
+                    if (callback) {
+                        callback(result.data);
+                    }
+                }
+            }
+        })
+    };
+
     //项目中引用数据
     buildingCommon.getDataFromProject = function (applyId, callback) {
         $.ajax({
@@ -193,7 +212,7 @@
     };
 
 
-    buildingCommon.initForm = function (data) {
+    buildingCommon.initForm = function (data,bisDetail) {
         try {
             data.estateId = buildingCommon.buildingForm.find("input[name='estateId']").val();
         } catch (e) {
@@ -268,7 +287,11 @@
 
         //附件显示
         $.each(buildingCommon.buildingFileControlIdArray, function (i, item) {
-            buildingCommon.fileShow(item);
+            if(bisDetail==false){
+                buildingCommon.fileShow(item,false);
+            }else {
+                buildingCommon.fileShow(item,true);
+            }
         });
         if (data.vSpecifications) {
             buildingCommon.writeSpecificationsHTMLData(data.vSpecifications);
@@ -478,7 +501,7 @@
     };
 
     //附件显示
-    buildingCommon.fileShow = function (fieldsName) {
+    buildingCommon.fileShow = function (fieldsName,deleteFlag) {
         FileUtils.getFileShows({
             target: fieldsName,
             formData: {
@@ -486,7 +509,7 @@
                 tableName: AssessDBKey.BasicBuilding,
                 tableId: buildingCommon.getBuildingId()
             },
-            deleteFlag: true
+            deleteFlag: deleteFlag
         })
     };
 

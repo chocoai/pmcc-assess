@@ -185,7 +185,7 @@
             });
             $("#" + projectData.prototype.config().table).bootstrapTable('destroy');
             TableInit(projectData.prototype.config().table, "${pageContext.request.contextPath}/projectCenter/getProjectList", cols, {
-                queryName: $("#queryName").val(),
+                projectName: $("#queryName").val(),
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -517,7 +517,7 @@
                                         省
                                     </label>
                                     <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                        <select name="province" class="form-control search-select select2">
+                                        <select id="queryProvince" class="form-control search-select select2">
                                         </select>
                                     </div>
                                 </div>
@@ -526,14 +526,14 @@
                                         市
                                     </label>
                                     <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                        <select name="city" class="form-control search-select select2">
+                                        <select id="queryCity" class="form-control search-select select2">
                                         </select>
                                     </div>
                                 </div>
                                 <div class="x-valid">
                                     <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">楼盘名称</label>
                                     <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                        <input type="text" class="form-control" name="search"/>
+                                        <input type="text" class="form-control" id="querySearch"/>
                                     </div>
                                 </div>
                                 <div class="x-valid">
@@ -714,9 +714,12 @@
          * @date:2018-09-13
          **/
         loadDataList: function (flag) {
-            var estate = formParams(caseFun.config.father.caseEstate.frm());
+            var estate={};
+            estate.querySearch = $("#querySearch").val();
+            estate.queryProvince = $("#queryProvince").val();
+            estate.queryCity = $("#queryCity").val();
             if (!flag) {
-                estate = {search: null, city: null, district: null, province: null};
+                estate = {querySearch: null, queryCity: null, queryProvince: null};
             }
             var cols = [];
             cols.push({field: 'name', title: '名称'});
@@ -741,9 +744,9 @@
             });
             $("#" + caseFun.config.father.caseEstate.table()).bootstrapTable('destroy');
             TableInit(caseFun.config.father.caseEstate.table(), "${pageContext.request.contextPath}/caseEstate/getCaseEstateVos", cols, {
-                name: estate.search,
-                city: estate.city,
-                province: estate.province
+                name: estate.querySearch,
+                city: estate.queryCity,
+                province: estate.queryProvince
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -770,11 +773,11 @@
         },
         showModel: function () {
             AssessCommon.initAreaInfo({
-                provinceTarget: $("#" + caseFun.config.father.caseEstate.frm()).find('[name=province]'),
-                cityTarget: $("#" + caseFun.config.father.caseEstate.frm()).find('[name=city]')
+                provinceTarget: $("#queryProvince"),
+                cityTarget: $("#queryCity")
             });
             $("#" + caseFun.config.father.caseEstate.frm()).clearAll();
-            caseFun.caseEstate.loadDataList(true);
+            caseFun.caseEstate.loadDataList(false);
             $('#' + caseFun.config.father.caseEstate.box()).modal("show");
         },
         quote: function (id) {

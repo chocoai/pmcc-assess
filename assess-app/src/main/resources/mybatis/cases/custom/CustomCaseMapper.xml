@@ -96,8 +96,8 @@
             <if test="caseBaseHouse.district != null and caseBaseHouse.district!=''">
                 and district = #{caseBaseHouse.district}
             </if>
-            <if test="caseBaseHouse.practicalUse != null">
-                and practical_use = #{caseBaseHouse.practicalUse}
+            <if test="caseBaseHouse.houseType != null and caseBaseHouse.houseType!=''">
+                and house_type = #{caseBaseHouse.houseType}
             </if>
             <if test="caseBaseHouse.tradingType != null">
                 and trading_type = #{caseBaseHouse.tradingType}

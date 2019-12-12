@@ -27,9 +27,9 @@ import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
-import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.base.BaseReportFieldService;
-import com.copower.pmcc.assess.service.basic.*;
+import com.copower.pmcc.assess.service.basic.BasicApplyService;
+import com.copower.pmcc.assess.service.basic.BasicUnitHuxingService;
 import com.copower.pmcc.assess.service.data.*;
 import com.copower.pmcc.assess.service.method.MdCommonService;
 import com.copower.pmcc.assess.service.method.MdIncomeService;
@@ -41,7 +41,6 @@ import com.copower.pmcc.assess.service.project.scheme.*;
 import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryRightRecordCenterService;
 import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryRightRecordService;
 import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryRightService;
-import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.ProjectDocumentDto;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
@@ -71,10 +70,8 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
 import java.util.List;
-import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -4741,7 +4738,7 @@ public class GenerateBaseDataService {
                 int index = 0;
                 if (true) {
                     String s = generateLandEntityService.getLandName(basicEstateVoAndLandStateVo.getBasicEstateLandStateVo());
-                    if (StringUtils.isNotBlank(s.trim())) {
+                    if (StringUtils.isNotBlank(s)) {
                         BasicExamineHandle.BasicVo sun = new BasicExamineHandle.BasicVo();
                         sun.setType(String.join("", String.valueOf(++index), "、", "名称", ":"));
                         sun.setValue(generateCommonMethod.trim(s));
@@ -4750,7 +4747,7 @@ public class GenerateBaseDataService {
                 }
                 if (true) {
                     String s = generateLandEntityService.fourTheFor(basicEstateVoAndLandStateVo.getBasicEstateLandStateVo());
-                    if (StringUtils.isNotBlank(s.trim())) {
+                    if (StringUtils.isNotBlank(s)) {
                         BasicExamineHandle.BasicVo sun = new BasicExamineHandle.BasicVo();
                         sun.setType(String.join("", String.valueOf(++index), "、", "四至", ":"));
                         sun.setValue(generateCommonMethod.trim(s));
@@ -4759,7 +4756,7 @@ public class GenerateBaseDataService {
                 }
                 if (true) {
                     String s = generateLandEntityService.getLandArea(basicEstateVoAndLandStateVo.getBasicEstateLandStateVo());
-                    if (StringUtils.isNotBlank(s.trim())) {
+                    if (StringUtils.isNotBlank(s)) {
                         BasicExamineHandle.BasicVo sun = new BasicExamineHandle.BasicVo();
                         sun.setType(String.join("", String.valueOf(++index), "、", "土地面积", ":"));
                         sun.setValue(generateCommonMethod.trim(s));

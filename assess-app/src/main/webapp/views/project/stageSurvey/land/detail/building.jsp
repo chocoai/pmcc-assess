@@ -296,7 +296,7 @@
 </html>
 <script type="text/javascript">
     $(function () {
-        buildingCommon.initById('${basicBuilding.id}');
+        buildingCommon.initDetailById('${basicBuilding.id}','',false);
     })
 </script>
 

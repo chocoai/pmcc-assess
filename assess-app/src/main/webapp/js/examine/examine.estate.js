@@ -84,7 +84,7 @@
     };
 
     //附件显示
-    estateCommon.fileShow = function (fieldsName, tableName, id) {
+    estateCommon.fileShow = function (fieldsName, tableName, id,deleteFlag) {
         FileUtils.getFileShows({
             target: fieldsName,
             formData: {
@@ -92,7 +92,7 @@
                 tableName: tableName,
                 tableId: estateCommon.getEstateId()
             },
-            deleteFlag: true
+            deleteFlag: deleteFlag
         })
     };
 
@@ -196,6 +196,27 @@
         })
     };
 
+    //楼盘详情页面
+    estateCommon.initDetailById = function (id, callback,bisDetail) {
+        $.ajax({
+            url: getContextPath() + '/basicEstate/getBasicEstateMapById',
+            type: 'get',
+            data: {id: id},
+            success: function (result) {
+                if (result.ret) {
+                    var data = result.data;
+                    var basicEstate = data.basicEstate;
+                    var basicEstateLandState = data.basicEstateLandState;
+                    estateCommon.initForm({estate: basicEstate, land: basicEstateLandState},bisDetail);
+                    if (callback) {
+                        callback(result.data);
+                    }
+                }
+            }
+        })
+    };
+
+
     //项目中引用楼盘
     estateCommon.getDataFromProject = function (applyId, callback) {
         $.ajax({
@@ -259,8 +280,9 @@
     /**
      * 楼盘信息 赋值
      * @param data
+     * @param bisDetail 是否是详情页面
      */
-    estateCommon.initForm = function (data) {
+    estateCommon.initForm = function (data,bisDetail) {
         estateCommon.estateForm.clearAll();
         estateCommon.estateLandStateForm.clearAll();
         estateCommon.estateForm.initForm(data.estate);
@@ -325,7 +347,11 @@
 
         $.each(estateCommon.estateFileControlIdArray, function (i, n) {
             estateCommon.fileUpload(n, AssessDBKey.BasicEstate, data.estate.id);
-            estateCommon.fileShow(n, AssessDBKey.BasicEstate, data.estate.id);
+            if(bisDetail==false){
+                estateCommon.fileShow(n, AssessDBKey.BasicEstate, data.estate.id,false);
+            }else{
+                estateCommon.fileShow(n, AssessDBKey.BasicEstate, data.estate.id,true);
+            }
         });
 
         AssessCommon.loadDataListHtml(AssessDicKey.estate_total_land_use, data.land.landUseType, function (html, data) {

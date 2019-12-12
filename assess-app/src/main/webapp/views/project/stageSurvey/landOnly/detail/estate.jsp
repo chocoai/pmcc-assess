@@ -437,9 +437,9 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/examine.house.detail.js?v=${assessVersion}"></script>
 <script type="text/javascript">
     $(function () {
-        houseCommon.initById('${basicHouse.id}');
+        houseCommon.initDetailById('${basicHouse.id}','',false);
     })
     $(function () {
-        estateCommon.initById('${basicEstate.id}');
+        estateCommon.initDetailById('${basicEstate.id}','',false);
     })
 </script>

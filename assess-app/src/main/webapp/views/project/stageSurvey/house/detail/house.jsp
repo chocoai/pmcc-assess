@@ -83,7 +83,7 @@
 
 <script>
     $(function () {
-        houseCommon.initById('${basicHouse.id}');
+        houseCommon.initDetailById('${basicHouse.id}','',false);
     })
 </script>
 </html>

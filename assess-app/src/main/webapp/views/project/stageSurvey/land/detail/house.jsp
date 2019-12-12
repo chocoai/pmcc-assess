@@ -187,7 +187,7 @@
         src="${pageContext.request.contextPath}/js/examine/sonHouseView.js?v=${assessVersion}"></script>
 <script type="text/javascript">
     $(function () {
-        houseCommon.initById('${basicHouse.id}');
+        houseCommon.initDetailById('${basicHouse.id}','',false);
     })
 </script>
 </html>
