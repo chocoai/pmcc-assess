@@ -4,13 +4,11 @@ import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.common.enums.ResponsibileModelEnum;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.proxy.face.ProjectPlanExecuteInterface;
-import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.project.*;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
-import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +26,6 @@ import java.util.List;
 @WorkFlowAnnotation(desc = "计划自动(默认)")
 public class PlanDefaultExecute implements ProjectPlanExecuteInterface {
     @Autowired
-    private ProjectPhaseService projectPhaseService;
-    @Autowired
     private ProjectInfoService projectInfoService;
     @Autowired
     private ProjectPlanService projectPlanService;
@@ -39,46 +35,43 @@ public class PlanDefaultExecute implements ProjectPlanExecuteInterface {
     private ProjectMemberService projectMemberService;
     @Autowired
     private ErpRpcUserService erpRpcUserService;
+    @Autowired
+    private ProjectPhaseService projectPhaseService;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void execute(ProjectPlan projectPlan,ProjectWorkStage projectWorkStage) throws BusinessException, BpmException {
-        //自动执行
-        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlan.getProjectId());
-        List<ProjectPhase> phaseList = projectPhaseService.getCacheProjectPhaseByCategoryId(projectInfo.getProjectCategoryId(), projectPlan.getWorkStageId());
-        String projectManager = projectMemberService.getProjectManager(projectInfo.getId());
-        if (CollectionUtils.isNotEmpty(phaseList)) {
-            for (ProjectPhase projectPhase : phaseList) {
-                //1.写入projectPlanDetails表 2.写入bpm任务表
+    public void execute(ProjectPlan projectPlan, ProjectWorkStage projectWorkStage) throws BusinessException, BpmException {
+        if (projectWorkStage.getBisLoadDefalut() == Boolean.TRUE) {
+            ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlan.getProjectId());
+            SysUserDto projectManager = erpRpcUserService.getSysUser(projectMemberService.getProjectManager(projectInfo.getId()));
+            List<ProjectPhase> projectPhaseList = projectPhaseService.getCacheProjectPhaseByCategoryId(projectInfo.getProjectCategoryId(), projectWorkStage.getId());
+            if (CollectionUtils.isEmpty(projectPhaseList)) return;
+            for (ProjectPhase projectPhase : projectPhaseList) {
                 ProjectPlanDetails projectPlanDetails = new ProjectPlanDetails();
-                projectPlanDetails.setPid(0);
-                projectPlanDetails.setProjectPhaseName(projectPhase.getProjectPhaseName());
-                projectPlanDetails.setProjectId(projectInfo.getId());
+                projectPlanDetails.setProjectWorkStageId(projectPlan.getWorkStageId());
                 projectPlanDetails.setPlanId(projectPlan.getId());
-                projectPlanDetails.setProjectWorkStageId(projectWorkStage.getId());
+                projectPlanDetails.setProjectId(projectPlan.getProjectId());
+                projectPlanDetails.setProjectPhaseName(projectPhase.getProjectPhaseName());
                 projectPlanDetails.setProjectPhaseId(projectPhase.getId());
-                projectPlanDetails.setExecuteUserAccount(projectManager);
-                SysUserDto sysUser = erpRpcUserService.getSysUser(projectManager);
-                if (sysUser != null) {
-                    projectPlanDetails.setExecuteDepartmentId(sysUser.getDepartmentId());
-                }
-                projectPlanDetails.setBisEnable(true);
-                projectPlanDetails.setSorting(projectPhase.getPhaseSort());
-                projectPlanDetails.setProcessInsId("0");
-                projectPlanDetails.setBisLastLayer(true);
+                projectPlanDetails.setExecuteUserAccount(projectManager.getUserAccount());
+                projectPlanDetails.setExecuteDepartmentId(projectManager.getDepartmentId());
                 projectPlanDetails.setPlanStartDate(new Date());
                 projectPlanDetails.setPlanEndDate(new Date());
-                projectPlanDetails.setPlanHours(projectPhase.getPhaseTime());
+                projectPlanDetails.setBisEnable(true);
+                projectPlanDetails.setProcessInsId("0");
+                projectPlanDetails.setPid(0);
+                projectPlanDetails.setSorting(projectPhase.getPhaseSort());
                 projectPlanDetails.setStatus(ProjectStatusEnum.RUNING.getKey());
-                projectPlanDetails.setCreator(projectManager);
                 projectPlanDetailsService.saveProjectPlanDetails(projectPlanDetails);
-
                 projectPlanService.saveProjectPlanDetailsResponsibility(projectPlanDetails, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.TASK);
             }
         }
-        projectPlan.setProjectStatus(ProjectStatusEnum.TASK.getKey());
-        projectPlan.setBisAutoComplete(true);
-        projectPlanService.updateProjectPlan(projectPlan);
+
+        if (projectPlan != null) {
+            projectPlan.setProjectStatus(ProjectStatusEnum.TASK.getKey());
+            projectPlan.setBisAutoComplete(true);
+            projectPlanService.updateProjectPlan(projectPlan);
+        }
     }
 
 }
