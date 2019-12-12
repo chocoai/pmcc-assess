@@ -226,7 +226,11 @@ public class DataBlockController extends BaseController {
             List<ProjectInfo> projectInfoList = projectInfoService.getProjectInfoList(new ProjectInfo());
             if(CollectionUtils.isNotEmpty(projectInfoList)){
                 for (ProjectInfo projectInfo : projectInfoList) {
-                    updateDocNumberToErp(projectInfo.getId());
+                    try{
+                        updateDocNumberToErp(projectInfo.getId());
+                    }catch (Exception ex){
+
+                    }
                 }
             }
             return HttpResult.newCorrectResult();
