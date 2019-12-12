@@ -44,6 +44,7 @@ public class BasicApplyBatchDetailService {
     private ProjectPlanDetailsService projectPlanDetailsService;
     @Autowired
     private ProjectInfoService projectInfoService;
+
     /**
      * 通过applyBatchId获取
      *
@@ -152,11 +153,11 @@ public class BasicApplyBatchDetailService {
                     houseTrading.setHouseId(house.getId());
                     //引用一些项目信息
                     ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
-                    if(planDetails!=null){
+                    if (planDetails != null) {
                         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(planDetails.getProjectId());
                         houseTrading.setScopeInclude(projectInfo.getScopeInclude());
                         houseTrading.setScopeNotInclude(projectInfo.getScopeNotInclude());
-                        if (NumberUtils.isNumber(projectInfo.getPropertyScope())){
+                        if (NumberUtils.isNumber(projectInfo.getPropertyScope())) {
                             houseTrading.setScopeProperty(Integer.valueOf(projectInfo.getPropertyScope()));
                         }
                     }
@@ -166,10 +167,9 @@ public class BasicApplyBatchDetailService {
             }
             basicApplyBatchDetailDao.addInfo(basicApplyBatchDetail);
         }
-        //若房屋设置为标准，则存入basicApply
-        if (basicApplyBatchDetail.getBisStandard()) {
-            this.standardIntoBasicApply(basicApplyBatchDetail, planDetailsId);
-        }
+        //存入basicApply
+        this.standardIntoBasicApply(basicApplyBatchDetail, planDetailsId);
+
         return basicApplyBatchDetail;
     }
 
@@ -181,7 +181,7 @@ public class BasicApplyBatchDetailService {
         where.setPlanDetailsId(planDetailsId);
         where.setBasicHouseId(basicApplyBatchDetail.getTableId());
         BasicApply basicApplyOnly = basicApplyService.getBasicApplyOnly(where);
-        if (basicApplyOnly == null && basicApplyBatchDetail.getBisStandard() == Boolean.TRUE) {
+        if (basicApplyOnly == null) {
             BasicApply basicApply = new BasicApply();
             basicApply.setBasicHouseId(basicApplyBatchDetail.getTableId());
             basicApply.setHouseNumber(basicHouseService.getBasicHouseById(basicApplyBatchDetail.getTableId()).getHouseNumber());
@@ -200,9 +200,9 @@ public class BasicApplyBatchDetailService {
             basicApply.setPlanDetailsId(planDetailsId);
             basicApplyService.saveBasicApply(basicApply);
         }
-        if (basicApplyOnly != null && basicApplyBatchDetail.getBisStandard() == Boolean.FALSE) {
-            basicApplyDao.deleteBasicApply(basicApplyOnly.getId());//取消标准时，删除原来的数据
-        }
+//        if (basicApplyOnly != null && basicApplyBatchDetail.getBisStandard() == Boolean.FALSE) {
+//            basicApplyDao.deleteBasicApply(basicApplyOnly.getId());//取消标准时，删除原来的数据
+//        }
     }
 
     /**
@@ -270,7 +270,7 @@ public class BasicApplyBatchDetailService {
                 BasicApply basicApply = new BasicApply();
                 basicApply.setBasicHouseId(basicApplyBatchDetail.getTableId());
                 BasicApply basicApplyOnly = basicApplyService.getBasicApplyOnly(basicApply);
-                //删除标准时，删除原来的数据
+                //删除原来的数据
                 if (basicApplyOnly != null) {
                     basicApplyDao.deleteBasicApply(basicApplyOnly.getId());
                 }
@@ -327,14 +327,14 @@ public class BasicApplyBatchDetailService {
         return basicBuildings;
     }
 
-    public List<BasicApplyBatchDetail> getBuildingBatchDetailsByBatchId(Integer id)  {
+    public List<BasicApplyBatchDetail> getBuildingBatchDetailsByBatchId(Integer id) {
         BasicApplyBatchDetail basicApplyBatchDetail = new BasicApplyBatchDetail();
         basicApplyBatchDetail.setTableName("tb_basic_building");
         basicApplyBatchDetail.setApplyBatchId(id);
         return basicApplyBatchDetailDao.getInfoList(basicApplyBatchDetail);
     }
 
-    public List<BasicApplyBatchDetail> getBuildingBatchDetailsByBatchId2(Integer id)  {
+    public List<BasicApplyBatchDetail> getBuildingBatchDetailsByBatchId2(Integer id) {
         BasicApplyBatchDetail basicApplyBatchDetail = new BasicApplyBatchDetail();
         basicApplyBatchDetail.setApplyBatchId(id);
         return basicApplyBatchDetailDao.getInfoList(basicApplyBatchDetail);

@@ -92,6 +92,9 @@
                         <a class="btn btn-xs btn-warning paste" onclick="batchTreeTool.paste();">
                             粘贴
                         </a>
+                        <a class="btn btn-xs btn-warning paste" onclick="batchTreeTool.deepCopy();">
+                            深复制
+                        </a>
                     </div>
                     <div id="detail_modal" class="modal fade bs-example-modal-lg" data-backdrop="static"
                          aria-hidden="true"
@@ -399,17 +402,6 @@
                 html += " <div class='col-sm-4'>";
                 html += "<input type='text'  name='name' class='form-control' required value=''>";
                 html += "</div>";
-                html += "<label class='col-sm-2 control-label'>";
-                html += "是否标准";
-                html += "<span class='symbol required'></span>";
-                html += "</label>";
-                html += " <div class='col-sm-4'>";
-                html += "<select id='bisStandard' name='bisStandard' required class='form-control'>";
-                html += "<option value=''>--请选择--</option>";
-                html += "<option value='true'>是</option>";
-                html += "<option value='false'>否</option>";
-                html += "</select>";
-                html += "</div>";
                 break;
             }
 
@@ -512,16 +504,6 @@
                 html += "</label>";
                 html += " <div class='col-sm-4'>";
                 html += "<input type='text'  name='name' class='form-control' required>";
-                html += "</div>";
-                html += "<label class='col-sm-2 control-label'>";
-                html += "是否标准";
-                html += "</label>";
-                html += "<div class='col-sm-4'>";
-                html += "<select id='bisStandard_b' name='bisStandard' required class='form-control'>";
-                html += "<option value=''>--请选择--</option>";
-                html += "<option value='true'>是</option>";
-                html += "<option value='false'>否</option>";
-                html += "</select>";
                 html += "</div>";
                 break;
             }
@@ -668,6 +650,34 @@
                     }
                 }
             });
+        });
+    }
+
+    //深复制
+    batchTreeTool.deepCopy = function () {
+        var node = zTreeObj.getSelectedNodes()[0];
+        if (node.level == 0) {
+            Alert("不能复制楼盘，重新选择")
+            return false;
+        }
+        Loading.progressShow();
+        $.ajax({
+            url: "${pageContext.request.contextPath}/basicApplyBatch/deepCopy",
+            data: {
+                sourceBatchDetailId: node.id,
+            },
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    toastr.success("复制成功");
+                    batchTreeTool.ztreeInit(${applyBatch.estateId});
+                }
+                else {
+                    Alert("获取数据失败，失败原因:" + result.errmsg, 1, null, null);
+                }
+            }
         });
     }
 
