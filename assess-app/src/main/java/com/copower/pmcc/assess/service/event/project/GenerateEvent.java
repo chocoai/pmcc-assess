@@ -71,9 +71,7 @@ public class GenerateEvent extends BaseProcessEvent {
     public void updateDocNumberToErp(Integer projectId) {
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
         if (projectInfo == null) return;
-        Integer publicProjectId = projectInfo.getPublicProjectId();
-        if (publicProjectId == null) return;
-        SysProjectDto sysProjectDto = erpRpcProjectService.getProjectInfoByProjectId(publicProjectId, BaseConstant.ASSESS_APP_KEY);
+        SysProjectDto sysProjectDto = erpRpcProjectService.getProjectInfoByProjectId(projectId, BaseConstant.ASSESS_APP_KEY);
         if (sysProjectDto != null && sysProjectDto.getId() > 0) {
             sysProjectDto.setStatus(ProjectStatusEnum.FINISH.getKey());
             List<String> reportNumberList = projectNumberRecordService.getReportNumberList(projectId, null);
