@@ -19,19 +19,20 @@
             <form class="form-horizontal" id="surveyAssetInventoryRightFrm_number">
                 <input type="hidden" name="id">
                 <div class="form-group">
-                    <div class="x-valid">
-                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">权证信息</label>
-                        <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                    <div class="col-sm-offset-1  col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
+                        <div class="btn-group">
                             <input type="hidden" name="recordIds" data-count="_number">
-                            <div class="btn-primary btn"
+                            <button class="btn-primary btn" type="button"
                                  onclick="declareRecordModeObj.init({callback:selectRecord,this_:this});">选择权证
-                                <span class="glyphicon  glyphicon-new-window" aria-hidden="true"></span>
-                            </div>
+                            </button>
                         </div>
                     </div>
-
+                </div>
+                <div class="form-group">
                     <div class="x-valid">
-                        <div class=" col-xs-9  col-sm-9  col-md-9  col-lg-9 ">
+                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">权证信息<span
+                                class="symbol required"></span></label>
+                        <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
                             <table class="table table-bordered" id="tb_List_recordTable_number">
                                 <!-- cerare document add ajax data-->
                             </table>
@@ -57,20 +58,6 @@
                                 删除
                             </button>
                         </div>
-                        <%--<div class="btn-group">--%>
-                        <%--<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"--%>
-                        <%--aria-expanded="false">导入数据--%>
-                        <%--<span class="caret"></span>--%>
-                        <%--</button>--%>
-                        <%--<ul class="dropdown-menu" role="menu">--%>
-                        <%--<li><a href="javascript://"--%>
-                        <%--onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftAssetInventoryRight);">下载模板</a>--%>
-                        <%--</li>--%>
-                        <%--<li><a href="javascript://;"--%>
-                        <%--onclick="$('#ajaxFileUpload_number').val('').trigger('click')">导入数据</a>--%>
-                        <%--</li>--%>
-                        <%--</ul>--%>
-                        <%--</div>--%>
                     </div>
                 </div>
                 <div class="form-group">
@@ -88,7 +75,6 @@
             <input type="file" id="ajaxFileUpload_number" name="file" style="display: none;"
                    onchange="importRightData(this,'_number');">
         </div>
-
         <div id="divBox_number" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
              role="dialog"
              aria-hidden="true">
@@ -463,7 +449,7 @@
             cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
             pagination: false,                   //是否显示分页（*）
             strictSearch: true,
-            showColumns: true,                  //是否显示所有的列
+            showColumns: false,                  //是否显示所有的列
             showRefresh: false,                  //是否显示刷新按钮
             minimumCountColumns: 2,             //最少允许的列数
             clickToSelect: false,                //是否启用点击选中行
