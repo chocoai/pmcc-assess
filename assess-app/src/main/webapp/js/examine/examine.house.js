@@ -366,6 +366,8 @@
                 AssessCommon.loadDataDicByKey(AssessDicKey.examineHouse_transaction_price_type, data.basicHouseTrading.priceType, function (html, data) {
                     houseCommon.houseTradingForm.find("select[name='priceType']").empty().html(html).trigger('change');
                 });
+                 houseCommon.showPriceConnotationUnit(data);
+
             }
         });
 
@@ -409,6 +411,42 @@
                 });
             }
         });
+    }
+
+
+    houseCommon.showPriceConnotationUnit = function (data) {
+        if (houseCommon.isNotBlank(data.basicHouseTrading.priceConnotation)) {
+            var strArr = ["建筑面积单价", "套内面积单价"];//来自于实体描述1(1).docx中的规则
+            var priceConnotationId = data.basicHouseTrading.priceConnotation;
+            if (priceConnotationId) {
+                AssessCommon.getDataDicInfo(priceConnotationId, function (priceConnotationData) {
+                    var str = strArr.join(",");
+                    //当属于数组中的任意一项时显示
+                    if (str.indexOf(priceConnotationData.name) != -1) {
+                        $("#priceConnotationUnit").parent().parent().hide();
+                    } else {
+                        $("#priceConnotationUnit").parent().parent().show();
+                    }
+                });
+            }
+        }
+        //绑定变更事件
+        houseCommon.houseTradingForm.find("select[name='priceConnotation']").off('change').on('change', function () {
+            var strArr = ["建筑面积单价", "套内面积单价"];//来自于实体描述1(1).docx中的规则
+            var priceConnotationId = houseCommon.houseTradingForm.find("select.priceConnotation").val();
+            if (priceConnotationId) {
+                AssessCommon.getDataDicInfo(priceConnotationId, function (priceConnotationData) {
+                    var str = strArr.join(",");
+                    //当属于数组中的任意一项时显示
+                    if (str.indexOf(priceConnotationData.name) != -1) {
+                        $("#priceConnotationUnit").parent().parent().hide();
+                    } else {
+                        $("#priceConnotationUnit").parent().parent().show();
+                    }
+                });
+            }
+        });
+
     }
 
     //附件上传

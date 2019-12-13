@@ -1111,6 +1111,8 @@ public class GenerateMdCompareService {
         allContent.append("比较价格：");
         BigDecimal num = new BigDecimal("0");
         content.append("(");
+        //报告使用的单位
+        String unit = "元/㎡";
         if (CollectionUtils.isNotEmpty(caseItemList)) {
             for (MdMarketCompareItem item : caseItemList) {
                 if (StringUtils.isEmpty(item.getSpecificPrice())) {
@@ -1129,6 +1131,23 @@ public class GenerateMdCompareService {
             if (StringUtils.isNotBlank(weightRemark.toString())) {
                 weightRemark.replace(weightRemark.length() - 1, weightRemark.length(), "。");
             }
+            //使用什么单位
+            List<MarketCompareItemDto> dtos = JSON.parseArray(caseItemList.get(0).getJsonContent(), MarketCompareItemDto.class);
+            for (MarketCompareItemDto item2 : dtos) {
+                if (item2.getName().equals(MethodCompareFieldEnum.PRICE_CONNOTATION.getKey())) {
+                    //建筑面积单价及套内面积单价用元/㎡
+                    BaseDataDic buildAreaUnitPrice = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_BUILD_AREA_UNIT_PRICE);
+                    BaseDataDic buildInteriorUnitPrice = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_INTERIOR_AREA_UNIT_PRICE);
+                    if(!item2.getValue().equals(buildAreaUnitPrice.getName())&&!item2.getValue().equals(buildInteriorUnitPrice.getName())){
+                       //获取单位
+                        BasicApply apply = basicApplyService.getByBasicApplyId(getEvaluationItemList().getBasicApplyId());
+                        if(apply!=null) {
+                            BasicHouseTrading houseTrading = basicHouseTradingService.getTradingByHouseId(apply.getBasicHouseId());
+                            unit = houseTrading.getPriceConnotationUnit();
+                        }
+                    }
+                }
+            }
         }
         if (StringUtils.isEmpty(weightRemark.toString())) {
             front.append(toChinese(String.valueOf(size)) + "个比较价格差异幅度较小，我们认为" + toChinese(String.valueOf(size)) + "个比较实例与估价对象在同一区域范围内，其价格具有一致性，综合考虑各种因素，并结合该区域同类房地产交易价格水平，确定以" + toChinese(String.valueOf(size)) + "个交易案例比较价格的算术平均值作为估价对象的比较价格，计算过程如下：");
@@ -1136,14 +1155,14 @@ public class GenerateMdCompareService {
             String result = String.format("%.2f", num);
             content.deleteCharAt(content.length() - 1);
             content.append(")").append("÷").append(caseItemList.size()).append("=").append(result);
-            content.append("元/㎡；").append("即,估价对象房地产的单价为").append(result).append("元/㎡。");
+            content.append(unit).append("；").append("即,估价对象房地产的单价为").append(result).append(unit);
         } else {
             front.append(weightRemark).append("计算过程如下：");
             String result = String.format("%.2f", num);
             content.deleteCharAt(0);
             content.deleteCharAt(content.length() - 1);
             content.append("=").append(result);
-            content.append("元/㎡；").append("即,估价对象房地产的单价为").append(result).append("元/㎡。");
+            content.append(unit).append("；").append("即,估价对象房地产的单价为").append(result).append(unit);
         }
         allContent.append(content);
         builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml(front.toString())));

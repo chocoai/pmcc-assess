@@ -30,6 +30,9 @@ public class AssessDataDicKeyConstant {
     public static final String DATA_TEMPLATE_TYPE_DISPATCH_CLIENT = "data.template.type.dispatch.client";//委托方发文模板
     public static final String DATA_TEMPLATE_TYPE_OPINION = "data.template.type.opinion";//模板（意见稿）
     public static final String DATA_TEMPLATE_TYPE_REPORT_SIGNFOR = "data.template.type.report.signfor";//模板（报告签收单）
+    public static final String DATA_BUILD_AREA_UNIT_PRICE = "data.build.area.unit.price";//单价内涵（建筑面积单价）
+    public static final String DATA_INTERIOR_AREA_UNIT_PRICE = "data.interior.area.unit.price";//单价内涵（套内面积单价）
+
 
     /*
      * 土地逼近法补偿配置

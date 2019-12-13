@@ -464,7 +464,7 @@
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">单价内涵<span
                         class="symbol required"></span></label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <select class="form-control search-select select2 priceConnotation" name="priceConnotation"
+                    <select class="form-control priceConnotation" name="priceConnotation"
                             required>
                     </select>
                 </div>
@@ -486,7 +486,13 @@
                     ${empty surveyCaseStudy?"":'required'} value="${basicHouseTrading.tradingUnitPrice}">
                 </div>
             </div>
-
+            <div class="x-valid" style="display: none">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">单位</label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <input type="text" placeholder="单位" class="form-control" name="priceConnotationUnit" id="priceConnotationUnit" required
+                    ${empty surveyCaseStudy?"":'required'} value="${basicHouseTrading.priceConnotationUnit}">
+                </div>
+            </div>
             <%--<div class="x-valid">--%>
             <%--<label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地买售人</label>--%>
             <%--<div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">--%>

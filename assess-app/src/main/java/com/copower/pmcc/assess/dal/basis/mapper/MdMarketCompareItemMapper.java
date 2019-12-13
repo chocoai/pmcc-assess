@@ -16,21 +16,15 @@ public interface MdMarketCompareItemMapper {
 
     int insertSelective(MdMarketCompareItem record);
 
-    List<MdMarketCompareItem> selectByExampleWithBLOBs(MdMarketCompareItemExample example);
-
     List<MdMarketCompareItem> selectByExample(MdMarketCompareItemExample example);
 
     MdMarketCompareItem selectByPrimaryKey(Integer id);
 
     int updateByExampleSelective(@Param("record") MdMarketCompareItem record, @Param("example") MdMarketCompareItemExample example);
 
-    int updateByExampleWithBLOBs(@Param("record") MdMarketCompareItem record, @Param("example") MdMarketCompareItemExample example);
-
     int updateByExample(@Param("record") MdMarketCompareItem record, @Param("example") MdMarketCompareItemExample example);
 
     int updateByPrimaryKeySelective(MdMarketCompareItem record);
-
-    int updateByPrimaryKeyWithBLOBs(MdMarketCompareItem record);
 
     int updateByPrimaryKey(MdMarketCompareItem record);
 }

@@ -16,6 +16,8 @@ public class MdMarketCompareItem {
 
     private Integer basicApplyId;
 
+    private String jsonContent;
+
     private String tradingTimeExplain;
 
     private Integer residueRatioId;
@@ -64,8 +66,6 @@ public class MdMarketCompareItem {
 
     private Date gmtModified;
 
-    private String jsonContent;
-
     public Integer getId() {
         return id;
     }
@@ -112,6 +112,14 @@ public class MdMarketCompareItem {
 
     public void setBasicApplyId(Integer basicApplyId) {
         this.basicApplyId = basicApplyId;
+    }
+
+    public String getJsonContent() {
+        return jsonContent;
+    }
+
+    public void setJsonContent(String jsonContent) {
+        this.jsonContent = jsonContent == null ? null : jsonContent.trim();
     }
 
     public String getTradingTimeExplain() {
@@ -304,13 +312,5 @@ public class MdMarketCompareItem {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public String getJsonContent() {
-        return jsonContent;
-    }
-
-    public void setJsonContent(String jsonContent) {
-        this.jsonContent = jsonContent == null ? null : jsonContent.trim();
     }
 }

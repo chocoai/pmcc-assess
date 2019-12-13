@@ -433,9 +433,9 @@
                             </div>
 
                             <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地买售人</label>
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">单位</label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <label class="form-control" name="landBuyerSeller">${basicHouseTrading.landBuyerSeller}</label>
+                                    <label class="form-control" name="priceConnotationUnit" id="priceConnotationUnit">${basicHouseTrading.priceConnotationUnit}</label>
                                 </div>
                             </div>
                         </div>

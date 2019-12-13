@@ -76,6 +76,8 @@ public class BasicHouseTrading {
 
     private Date gmtModified;
 
+    private String priceConnotationUnit;
+
     public Integer getId() {
         return id;
     }
@@ -362,5 +364,13 @@ public class BasicHouseTrading {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getPriceConnotationUnit() {
+        return priceConnotationUnit;
+    }
+
+    public void setPriceConnotationUnit(String priceConnotationUnit) {
+        this.priceConnotationUnit = priceConnotationUnit == null ? null : priceConnotationUnit.trim();
     }
 }

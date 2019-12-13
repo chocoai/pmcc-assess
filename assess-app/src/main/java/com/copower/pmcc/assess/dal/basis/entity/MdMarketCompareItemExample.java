@@ -476,6 +476,76 @@ public class MdMarketCompareItemExample {
             return (Criteria) this;
         }
 
+        public Criteria andJsonContentIsNull() {
+            addCriterion("json_content is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andJsonContentIsNotNull() {
+            addCriterion("json_content is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andJsonContentEqualTo(String value) {
+            addCriterion("json_content =", value, "jsonContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andJsonContentNotEqualTo(String value) {
+            addCriterion("json_content <>", value, "jsonContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andJsonContentGreaterThan(String value) {
+            addCriterion("json_content >", value, "jsonContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andJsonContentGreaterThanOrEqualTo(String value) {
+            addCriterion("json_content >=", value, "jsonContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andJsonContentLessThan(String value) {
+            addCriterion("json_content <", value, "jsonContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andJsonContentLessThanOrEqualTo(String value) {
+            addCriterion("json_content <=", value, "jsonContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andJsonContentLike(String value) {
+            addCriterion("json_content like", value, "jsonContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andJsonContentNotLike(String value) {
+            addCriterion("json_content not like", value, "jsonContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andJsonContentIn(List<String> values) {
+            addCriterion("json_content in", values, "jsonContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andJsonContentNotIn(List<String> values) {
+            addCriterion("json_content not in", values, "jsonContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andJsonContentBetween(String value1, String value2) {
+            addCriterion("json_content between", value1, value2, "jsonContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andJsonContentNotBetween(String value1, String value2) {
+            addCriterion("json_content not between", value1, value2, "jsonContent");
+            return (Criteria) this;
+        }
+
         public Criteria andTradingTimeExplainIsNull() {
             addCriterion("trading_time_explain is null");
             return (Criteria) this;

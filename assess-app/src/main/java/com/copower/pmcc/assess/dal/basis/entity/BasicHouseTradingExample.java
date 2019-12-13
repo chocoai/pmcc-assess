@@ -2425,6 +2425,76 @@ public class BasicHouseTradingExample {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
             return (Criteria) this;
         }
+
+        public Criteria andPriceConnotationUnitIsNull() {
+            addCriterion("price_connotation_unit is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceConnotationUnitIsNotNull() {
+            addCriterion("price_connotation_unit is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceConnotationUnitEqualTo(String value) {
+            addCriterion("price_connotation_unit =", value, "priceConnotationUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceConnotationUnitNotEqualTo(String value) {
+            addCriterion("price_connotation_unit <>", value, "priceConnotationUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceConnotationUnitGreaterThan(String value) {
+            addCriterion("price_connotation_unit >", value, "priceConnotationUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceConnotationUnitGreaterThanOrEqualTo(String value) {
+            addCriterion("price_connotation_unit >=", value, "priceConnotationUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceConnotationUnitLessThan(String value) {
+            addCriterion("price_connotation_unit <", value, "priceConnotationUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceConnotationUnitLessThanOrEqualTo(String value) {
+            addCriterion("price_connotation_unit <=", value, "priceConnotationUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceConnotationUnitLike(String value) {
+            addCriterion("price_connotation_unit like", value, "priceConnotationUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceConnotationUnitNotLike(String value) {
+            addCriterion("price_connotation_unit not like", value, "priceConnotationUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceConnotationUnitIn(List<String> values) {
+            addCriterion("price_connotation_unit in", values, "priceConnotationUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceConnotationUnitNotIn(List<String> values) {
+            addCriterion("price_connotation_unit not in", values, "priceConnotationUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceConnotationUnitBetween(String value1, String value2) {
+            addCriterion("price_connotation_unit between", value1, value2, "priceConnotationUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceConnotationUnitNotBetween(String value1, String value2) {
+            addCriterion("price_connotation_unit not between", value1, value2, "priceConnotationUnit");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

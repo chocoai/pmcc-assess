@@ -175,8 +175,8 @@ public class GenerateBaseDataService {
      *
      * @return
      */
-    public String getWordNumber2()throws BusinessException {
-       return projectNumberRecordService.getWordNumber2(getWordNumber()) ;
+    public String getWordNumber2() throws BusinessException {
+        return projectNumberRecordService.getWordNumber2(getWordNumber());
     }
 
     /**
@@ -1824,7 +1824,7 @@ public class GenerateBaseDataService {
                 }
                 List<Integer> integerList = Lists.newArrayList();
                 if (StringUtils.isNotBlank(schemeJudgeObject.getNumber())) {
-                    integerList.addAll(generateCommonMethod.splitIntegerListJudgeNumber(schemeJudgeObject.getNumber())) ;
+                    integerList.addAll(generateCommonMethod.splitIntegerListJudgeNumber(schemeJudgeObject.getNumber()));
                 }
                 String s = String.format("%s号%s 。", generateCommonMethod.convertNumber(integerList), StringUtils.join(linkedHashSet, "，"));
                 builder.insertHtml(generateCommonMethod.getWarpCssHtml(StringUtils.trimToEmpty(s)), false);
@@ -3216,15 +3216,27 @@ public class GenerateBaseDataService {
                 } else {
                     stringList.add(nullString);
                 }
+                //报告使用的单位
+                String unit = "元/㎡";
+                BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
+                if (basicApply != null) {
+                    GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
+                    BasicHouseTrading basicHouseTrading = generateBaseExamineService.getBasicTrading();
+                    BaseDataDic buildAreaUnitPrice = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_BUILD_AREA_UNIT_PRICE);
+                    BaseDataDic buildInteriorUnitPrice = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_INTERIOR_AREA_UNIT_PRICE);
+                    if (basicHouseTrading.getPriceConnotation() != buildAreaUnitPrice.getId() && basicHouseTrading.getPriceConnotation() != buildInteriorUnitPrice.getId()) {
+                        unit = basicHouseTrading.getPriceConnotationUnit();
+                    }
+                }
                 if (schemeJudgeObject.getPrice() != null) {
-                    stringList.add(String.format("%s%s", schemeJudgeObject.getPrice().toString(), "元"));
+                    stringList.add(String.format("%s%s", schemeJudgeObject.getPrice().toString(), unit));
                 } else {
                     stringList.add(nullString);
                 }
                 if (schemeJudgeObject.getPrice() != null && schemeJudgeObject.getEvaluationArea() != null) {
                     BigDecimal bigDecimal = schemeJudgeObject.getPrice().multiply(schemeJudgeObject.getEvaluationArea());
                     bigDecimal = bigDecimal.setScale(2, BigDecimal.ROUND_UP);
-                    stringList.add(String.format("%s%s", bigDecimal.toString(), "元"));
+                    stringList.add(String.format("%s%s", bigDecimal.toString(), unit));
                 } else {
                     stringList.add(nullString);
                 }
@@ -3452,7 +3464,7 @@ public class GenerateBaseDataService {
             if (vo != null && StringUtils.isNotBlank(rightRecord.getRecordIds())) {
                 List<Integer> integerList = FormatUtils.transformString2Integer(rightRecord.getRecordIds());
                 List<SchemeJudgeObject> judgeObjectList = Lists.newArrayList();
-                if (CollectionUtils.isNotEmpty(integerList)){
+                if (CollectionUtils.isNotEmpty(integerList)) {
                     for (Integer integer : integerList) {
                         if (schemeJudgeObjectList.stream().filter(oo -> oo.getDeclareRecordId().intValue() == integer.intValue()).count() >= 1) {
                             SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectList.stream().filter(oo -> oo.getDeclareRecordId().intValue() == integer.intValue()).findFirst().get();
@@ -5786,7 +5798,7 @@ public class GenerateBaseDataService {
                 if (baseDataDic == null || StringUtils.isEmpty(baseDataDic.getFieldName())) {
                     continue;
                 }
-                List<Integer> numbers = generateCommonMethod.splitIntegerListJudgeNumber(entry.getValue().getNumber()) ;
+                List<Integer> numbers = generateCommonMethod.splitIntegerListJudgeNumber(entry.getValue().getNumber());
                 switch (baseDataDic.getFieldName()) {
                     case AssessDataDicKeyConstant.MD_MARKET_COMPARE:
                         GenerateMdCompareService generateMdCompareService = new GenerateMdCompareService(entry.getValue().getId(), entry.getKey().getMethodDataId(), areaId);
