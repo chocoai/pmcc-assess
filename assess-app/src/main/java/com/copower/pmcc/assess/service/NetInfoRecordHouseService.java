@@ -14,6 +14,7 @@ import com.copower.pmcc.erp.api.provider.ErpRpcAttachmentService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
@@ -72,7 +73,9 @@ public class NetInfoRecordHouseService {
         } else {
             NetInfoRecordHouse recordHouse = getNetInfoRecordHouseById(netInfoRecordHouse.getId());
             netInfoRecordHouse.setStatus(recordHouse.getStatus());
-            netInfoRecordHouse.setCreator(commonService.thisUserAccount());
+            netInfoRecordHouse.setCreator(recordHouse.getCreator());
+            netInfoRecordHouse.setGmtCreated(recordHouse.getGmtCreated());
+            netInfoRecordHouse.setGmtModified(DateUtils.now());
             netInfoRecordHouseDao.updateNetInfoRecordHouse(netInfoRecordHouse, true);
             return netInfoRecordHouse;
         }

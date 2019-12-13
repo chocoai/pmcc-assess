@@ -188,6 +188,7 @@ public class MdMarketCompareService {
         mdMarketCompareItem.setType(ExamineTypeEnum.EXPLORE.getId());
         mdMarketCompareItem.setCreator(commonService.thisUserAccount());
         mdMarketCompareItem.setPlanDetailsId(basicApply.getPlanDetailsId());
+        mdMarketCompareItem.setBasicApplyId(basicApply.getId());
         mdMarketCompareItem.setJsonContent(mdMarketCompareFieldService.getCompareInfo(areaGroup, schemeJudgeObject, basicApply, setUseFieldList, false));
         if (isLand) {//如果是土地比较法 则需额外处理 年期修正系数与容积率修正系数
             setCoefficient(areaGroup, schemeJudgeObject, mdMarketCompareItem, basicApply, false);

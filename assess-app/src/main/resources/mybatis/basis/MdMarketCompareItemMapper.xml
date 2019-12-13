@@ -7,7 +7,7 @@
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="type" property="type" jdbcType="INTEGER" />
     <result column="plan_details_id" property="planDetailsId" jdbcType="INTEGER" />
-    <result column="json_content" property="jsonContent" jdbcType="VARCHAR" />
+    <result column="basic_apply_id" property="basicApplyId" jdbcType="INTEGER" />
     <result column="trading_time_explain" property="tradingTimeExplain" jdbcType="VARCHAR" />
     <result column="residue_ratio_id" property="residueRatioId" jdbcType="INTEGER" />
     <result column="used_year" property="usedYear" jdbcType="INTEGER" />
@@ -32,6 +32,9 @@
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareItem" extends="BaseResultMap" >
+    <result column="json_content" property="jsonContent" jdbcType="LONGVARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -92,12 +95,31 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, mc_id, name, type, plan_details_id, json_content, trading_time_explain, residue_ratio_id, 
+    id, mc_id, name, type, plan_details_id, basic_apply_id, trading_time_explain, residue_ratio_id, 
     used_year, usable_year, house_id, area, initial_price, must_adjust_price, annual_coefficient, 
     volume_ratio_coefficient, specific_price, correction_difference, case_difference, 
     weight, weight_description, average_price, deve_degree, evaluate_price, location_factor_ratio, 
     equity_factor_ratio, entity_factor_ratio, creator, gmt_created, gmt_modified
   </sql>
+  <sql id="Blob_Column_List" >
+    json_content
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareItemExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from tb_md_market_compare_item
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareItemExample" >
     select
     <if test="distinct" >
@@ -112,9 +134,11 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
     from tb_md_market_compare_item
     where id = #{id,jdbcType=INTEGER}
   </select>
@@ -133,7 +157,7 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_md_market_compare_item (mc_id, name, type, 
-      plan_details_id, json_content, trading_time_explain, 
+      plan_details_id, basic_apply_id, trading_time_explain, 
       residue_ratio_id, used_year, usable_year, 
       house_id, area, initial_price, 
       must_adjust_price, annual_coefficient, volume_ratio_coefficient, 
@@ -141,9 +165,10 @@
       weight, weight_description, average_price, 
       deve_degree, evaluate_price, location_factor_ratio, 
       equity_factor_ratio, entity_factor_ratio, creator, 
-      gmt_created, gmt_modified)
+      gmt_created, gmt_modified, json_content
+      )
     values (#{mcId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
-      #{planDetailsId,jdbcType=INTEGER}, #{jsonContent,jdbcType=VARCHAR}, #{tradingTimeExplain,jdbcType=VARCHAR}, 
+      #{planDetailsId,jdbcType=INTEGER}, #{basicApplyId,jdbcType=INTEGER}, #{tradingTimeExplain,jdbcType=VARCHAR}, 
       #{residueRatioId,jdbcType=INTEGER}, #{usedYear,jdbcType=INTEGER}, #{usableYear,jdbcType=INTEGER}, 
       #{houseId,jdbcType=INTEGER}, #{area,jdbcType=DECIMAL}, #{initialPrice,jdbcType=DECIMAL}, 
       #{mustAdjustPrice,jdbcType=BIT}, #{annualCoefficient,jdbcType=DECIMAL}, #{volumeRatioCoefficient,jdbcType=DECIMAL}, 
@@ -151,7 +176,8 @@
       #{weight,jdbcType=VARCHAR}, #{weightDescription,jdbcType=VARCHAR}, #{averagePrice,jdbcType=DECIMAL}, 
       #{deveDegree,jdbcType=DECIMAL}, #{evaluatePrice,jdbcType=DECIMAL}, #{locationFactorRatio,jdbcType=DECIMAL}, 
       #{equityFactorRatio,jdbcType=DECIMAL}, #{entityFactorRatio,jdbcType=DECIMAL}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{jsonContent,jdbcType=LONGVARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareItem" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -171,8 +197,8 @@
       <if test="planDetailsId != null" >
         plan_details_id,
       </if>
-      <if test="jsonContent != null" >
-        json_content,
+      <if test="basicApplyId != null" >
+        basic_apply_id,
       </if>
       <if test="tradingTimeExplain != null" >
         trading_time_explain,
@@ -246,6 +272,9 @@
       <if test="gmtModified != null" >
         gmt_modified,
       </if>
+      <if test="jsonContent != null" >
+        json_content,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="mcId != null" >
@@ -260,8 +289,8 @@
       <if test="planDetailsId != null" >
         #{planDetailsId,jdbcType=INTEGER},
       </if>
-      <if test="jsonContent != null" >
-        #{jsonContent,jdbcType=VARCHAR},
+      <if test="basicApplyId != null" >
+        #{basicApplyId,jdbcType=INTEGER},
       </if>
       <if test="tradingTimeExplain != null" >
         #{tradingTimeExplain,jdbcType=VARCHAR},
@@ -335,6 +364,9 @@
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="jsonContent != null" >
+        #{jsonContent,jdbcType=LONGVARCHAR},
+      </if>
     </trim>
   </insert>
   <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareItemExample" resultType="java.lang.Integer" >
@@ -361,8 +393,8 @@
       <if test="record.planDetailsId != null" >
         plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
       </if>
-      <if test="record.jsonContent != null" >
-        json_content = #{record.jsonContent,jdbcType=VARCHAR},
+      <if test="record.basicApplyId != null" >
+        basic_apply_id = #{record.basicApplyId,jdbcType=INTEGER},
       </if>
       <if test="record.tradingTimeExplain != null" >
         trading_time_explain = #{record.tradingTimeExplain,jdbcType=VARCHAR},
@@ -436,7 +468,47 @@
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.jsonContent != null" >
+        json_content = #{record.jsonContent,jdbcType=LONGVARCHAR},
+      </if>
     </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update tb_md_market_compare_item
+    set id = #{record.id,jdbcType=INTEGER},
+      mc_id = #{record.mcId,jdbcType=INTEGER},
+      name = #{record.name,jdbcType=VARCHAR},
+      type = #{record.type,jdbcType=INTEGER},
+      plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
+      basic_apply_id = #{record.basicApplyId,jdbcType=INTEGER},
+      trading_time_explain = #{record.tradingTimeExplain,jdbcType=VARCHAR},
+      residue_ratio_id = #{record.residueRatioId,jdbcType=INTEGER},
+      used_year = #{record.usedYear,jdbcType=INTEGER},
+      usable_year = #{record.usableYear,jdbcType=INTEGER},
+      house_id = #{record.houseId,jdbcType=INTEGER},
+      area = #{record.area,jdbcType=DECIMAL},
+      initial_price = #{record.initialPrice,jdbcType=DECIMAL},
+      must_adjust_price = #{record.mustAdjustPrice,jdbcType=BIT},
+      annual_coefficient = #{record.annualCoefficient,jdbcType=DECIMAL},
+      volume_ratio_coefficient = #{record.volumeRatioCoefficient,jdbcType=DECIMAL},
+      specific_price = #{record.specificPrice,jdbcType=VARCHAR},
+      correction_difference = #{record.correctionDifference,jdbcType=VARCHAR},
+      case_difference = #{record.caseDifference,jdbcType=VARCHAR},
+      weight = #{record.weight,jdbcType=VARCHAR},
+      weight_description = #{record.weightDescription,jdbcType=VARCHAR},
+      average_price = #{record.averagePrice,jdbcType=DECIMAL},
+      deve_degree = #{record.deveDegree,jdbcType=DECIMAL},
+      evaluate_price = #{record.evaluatePrice,jdbcType=DECIMAL},
+      location_factor_ratio = #{record.locationFactorRatio,jdbcType=DECIMAL},
+      equity_factor_ratio = #{record.equityFactorRatio,jdbcType=DECIMAL},
+      entity_factor_ratio = #{record.entityFactorRatio,jdbcType=DECIMAL},
+      creator = #{record.creator,jdbcType=VARCHAR},
+      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      json_content = #{record.jsonContent,jdbcType=LONGVARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -448,7 +520,7 @@
       name = #{record.name,jdbcType=VARCHAR},
       type = #{record.type,jdbcType=INTEGER},
       plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
-      json_content = #{record.jsonContent,jdbcType=VARCHAR},
+      basic_apply_id = #{record.basicApplyId,jdbcType=INTEGER},
       trading_time_explain = #{record.tradingTimeExplain,jdbcType=VARCHAR},
       residue_ratio_id = #{record.residueRatioId,jdbcType=INTEGER},
       used_year = #{record.usedYear,jdbcType=INTEGER},
@@ -492,8 +564,8 @@
       <if test="planDetailsId != null" >
         plan_details_id = #{planDetailsId,jdbcType=INTEGER},
       </if>
-      <if test="jsonContent != null" >
-        json_content = #{jsonContent,jdbcType=VARCHAR},
+      <if test="basicApplyId != null" >
+        basic_apply_id = #{basicApplyId,jdbcType=INTEGER},
       </if>
       <if test="tradingTimeExplain != null" >
         trading_time_explain = #{tradingTimeExplain,jdbcType=VARCHAR},
@@ -567,7 +639,44 @@
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="jsonContent != null" >
+        json_content = #{jsonContent,jdbcType=LONGVARCHAR},
+      </if>
     </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareItem" >
+    update tb_md_market_compare_item
+    set mc_id = #{mcId,jdbcType=INTEGER},
+      name = #{name,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER},
+      plan_details_id = #{planDetailsId,jdbcType=INTEGER},
+      basic_apply_id = #{basicApplyId,jdbcType=INTEGER},
+      trading_time_explain = #{tradingTimeExplain,jdbcType=VARCHAR},
+      residue_ratio_id = #{residueRatioId,jdbcType=INTEGER},
+      used_year = #{usedYear,jdbcType=INTEGER},
+      usable_year = #{usableYear,jdbcType=INTEGER},
+      house_id = #{houseId,jdbcType=INTEGER},
+      area = #{area,jdbcType=DECIMAL},
+      initial_price = #{initialPrice,jdbcType=DECIMAL},
+      must_adjust_price = #{mustAdjustPrice,jdbcType=BIT},
+      annual_coefficient = #{annualCoefficient,jdbcType=DECIMAL},
+      volume_ratio_coefficient = #{volumeRatioCoefficient,jdbcType=DECIMAL},
+      specific_price = #{specificPrice,jdbcType=VARCHAR},
+      correction_difference = #{correctionDifference,jdbcType=VARCHAR},
+      case_difference = #{caseDifference,jdbcType=VARCHAR},
+      weight = #{weight,jdbcType=VARCHAR},
+      weight_description = #{weightDescription,jdbcType=VARCHAR},
+      average_price = #{averagePrice,jdbcType=DECIMAL},
+      deve_degree = #{deveDegree,jdbcType=DECIMAL},
+      evaluate_price = #{evaluatePrice,jdbcType=DECIMAL},
+      location_factor_ratio = #{locationFactorRatio,jdbcType=DECIMAL},
+      equity_factor_ratio = #{equityFactorRatio,jdbcType=DECIMAL},
+      entity_factor_ratio = #{entityFactorRatio,jdbcType=DECIMAL},
+      creator = #{creator,jdbcType=VARCHAR},
+      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      json_content = #{jsonContent,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareItem" >
@@ -576,7 +685,7 @@
       name = #{name,jdbcType=VARCHAR},
       type = #{type,jdbcType=INTEGER},
       plan_details_id = #{planDetailsId,jdbcType=INTEGER},
-      json_content = #{jsonContent,jdbcType=VARCHAR},
+      basic_apply_id = #{basicApplyId,jdbcType=INTEGER},
       trading_time_explain = #{tradingTimeExplain,jdbcType=VARCHAR},
       residue_ratio_id = #{residueRatioId,jdbcType=INTEGER},
       used_year = #{usedYear,jdbcType=INTEGER},
