@@ -92,15 +92,6 @@
         </div>
     </div>
     <div class="form-group">
-        <%--<div class="x-valid">--%>
-        <%--<label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">街道名称<span--%>
-        <%--class="symbol required"></span></label>--%>
-        <%--<div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">--%>
-        <%--<input type="text" placeholder="街道名称" required--%>
-        <%--name="street" class="form-control" value="${basicEstate.street}">--%>
-        <%--</div>--%>
-        <%--</div>--%>
-
         <div class="x-valid">
             <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">街道号<span
                     class="symbol required"></span></label>
@@ -678,6 +669,11 @@
     <%@include file="/views/project/stageSurvey/common/matchingMainRoad.jsp" %>
     <%@include file="/views/project/stageSurvey/common/matchingMainConversion.jsp" %>
     <c:if test="${formType eq 'industry'}">
+        <%@include file="/views/project/stageSurvey/common/estateSupplyWater.jsp" %>
+        <%@include file="/views/project/stageSurvey/common/estateSupplyDrainWater.jsp" %>
+        <%@include file="/views/project/stageSurvey/common/estateSupplyPower.jsp" %>
+        <%@include file="/views/project/stageSurvey/common/estateSupplyHeating.jsp" %>
+        <%@include file="/views/project/stageSurvey/common/estateSupplyGas.jsp" %>
         <%@include file="/views/project/stageSurvey/common/matchingMaterial.jsp" %>
     </c:if>
 </div>

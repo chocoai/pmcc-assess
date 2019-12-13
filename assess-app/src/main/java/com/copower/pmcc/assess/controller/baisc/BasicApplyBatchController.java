@@ -300,6 +300,7 @@ public class BasicApplyBatchController extends BaseController {
     public ModelAndView informationDetail(Integer formClassify, Integer formType, Integer tableId, String tableName, String tbType, Integer planDetailsId, Integer applyBatchId, boolean isHistory) throws Exception {
         final StringBuffer stringBuffer = new StringBuffer("/project/stageSurvey");
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(stringBuffer.toString());
+        modelAndView.addObject("formType", BasicApplyTypeEnum.getEnumById(formType).getKey());
         setViewParam(modelAndView, tableName, tbType, tableId, applyBatchId);
         //查看历史记录标识
         if (isHistory) {

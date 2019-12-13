@@ -15,9 +15,7 @@
         </table>
     </div>
 </div>
-
 <script>
-
     function examineBuildingMaintenanceList() {
         var cols = commonColumn.buildingMaintenanceColumn();
         $("#ExamineBuildingMaintenanceList").bootstrapTable('destroy');

@@ -24,7 +24,7 @@ public class MdCostDao {
      * @param id
      * @return
      */
-    public MdCost getEstateNetworkById(Integer id) {
+    public MdCost getMdCostById(Integer id) {
         return mdCostMapper.selectByPrimaryKey(id);
     }
 
@@ -33,7 +33,7 @@ public class MdCostDao {
      * @param mdCost
      * @return
      */
-    public List<MdCost> getEstateNetworkList(MdCost mdCost) {
+    public List<MdCost> getMdCostList(MdCost mdCost) {
         MdCostExample example = new MdCostExample();
         MybatisUtils.convertObj2Example(mdCost, example);
         return mdCostMapper.selectByExample(example);
@@ -44,7 +44,7 @@ public class MdCostDao {
      * @param mdCost
      * @return
      */
-    public int addEstateNetwork(MdCost mdCost) {
+    public int addMdCost(MdCost mdCost) {
         mdCostMapper.insertSelective(mdCost);
         return mdCost.getId();
     }
@@ -54,7 +54,7 @@ public class MdCostDao {
      * @param mdCost
      * @return
      */
-    public boolean updateEstateNetwork(MdCost mdCost) {
+    public boolean updateMdCost(MdCost mdCost) {
         return mdCostMapper.updateByPrimaryKeySelective(mdCost) > 0;
     }
 

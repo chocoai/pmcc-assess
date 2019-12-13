@@ -231,9 +231,9 @@ public class MdMarketCostService {
     public void saveAndUpdateMdCost(MdCost mdCost) {
         if (mdCost.getId() == null || mdCost.getId() == 0) {
             mdCost.setCreator(commonService.thisUserAccount());
-            mdCostDao.addEstateNetwork(mdCost);
+            mdCostDao.addMdCost(mdCost);
         } else {
-            mdCostDao.updateEstateNetwork(mdCost);
+            mdCostDao.updateMdCost(mdCost);
         }
     }
 
@@ -275,12 +275,12 @@ public class MdMarketCostService {
     }
 
     public MdCost getByMdCostId(int id) {
-        MdCost mdCost = mdCostDao.getEstateNetworkById(id);
+        MdCost mdCost = mdCostDao.getMdCostById(id);
         return mdCost;
     }
 
     public List<MdCost> getMdCostList(MdCost mdCost) {
-        return mdCostDao.getEstateNetworkList(mdCost);
+        return mdCostDao.getMdCostList(mdCost);
     }
 
 

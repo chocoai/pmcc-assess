@@ -106,7 +106,6 @@
             </div>
         </c:if>
     </div>
-
     <div class="form-group">
         <div class="x-valid">
             <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">买方额外支付的税</label>
@@ -129,8 +128,6 @@
         </div>
     </div>
 </c:if>
-
-
 <c:if test="${basicHouseTrading.tradingTypeName != '出售'}">
     <div class="form-group">
         <div class="x-valid">
@@ -174,9 +171,6 @@
         </div>
     </div>
 </c:if>
-
-
-
 <div class="form-group">
     <div class="x-valid">
         <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">交易时间</label>

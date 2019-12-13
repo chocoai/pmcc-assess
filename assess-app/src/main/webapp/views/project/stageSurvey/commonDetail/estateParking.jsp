@@ -9,7 +9,7 @@
             <li><a class="collapse-link"><i
                     class="fa fa-chevron-up"></i></a></li>
         </ul>
-        <h4>车位</h4>
+        <h4>停车场</h4>
         <div class="clearfix"></div>
     </div>
     <div class="x_content collapse">

@@ -247,7 +247,7 @@ public class SchemeSurePriceService {
                     price = mdIncome.getPrice();
                 break;
             case AssessDataDicKeyConstant.MD_COST:
-                MdCost mdCost = mdCostDao.getEstateNetworkById(methodDataId);
+                MdCost mdCost = mdCostDao.getMdCostById(methodDataId);
                 if (mdCost != null)
                     price = mdCost.getPrice();
                 break;

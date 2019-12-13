@@ -24,7 +24,6 @@
         </div>
     </div>
 </div>
-
 <div class="form-group">
     <div class="x-valid">
         <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">楼盘名称</label>
@@ -70,14 +69,7 @@
         </div>
     </div>
 </div>
-
 <div class="form-group">
-    <%--<div class="x-valid">--%>
-    <%--<label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">街道名称</label>--%>
-    <%--<div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">--%>
-    <%--<label class="form-control" name="street">${basicEstate.street}</label>--%>
-    <%--</div>--%>
-    <%--</div>--%>
     <div class="x-valid">
         <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">街道号</label>
         <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
@@ -97,16 +89,13 @@
         </div>
     </div>
 </div>
-
 <div class="form-group">
-
     <div class="x-valid">
         <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">容积率</label>
         <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
             <label class="form-control" name="volumetricRate">${basicEstate.volumetricRate}</label>
         </div>
     </div>
-
     <div class="x-valid">
         <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">绿化率</label>
         <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
@@ -120,7 +109,6 @@
         </div>
     </div>
 </div>
-
 <div class="form-group">
     <div class="x-valid">
         <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">开发商</label>
@@ -141,9 +129,7 @@
         </div>
     </div>
 </div>
-
 <div class="form-group">
-
     <div class="x-valid">
         <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">价格区间</label>
         <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
@@ -169,7 +155,6 @@
         </div>
     </div>
 </div>
-
 <div class="x_content">
     <div class="x_title">基础设施情况</div>
     <div class="form-group">
@@ -185,6 +170,5 @@
         </div>
     </div>
 </div>
-
 <script src="${pageContext.request.contextPath}/js/method/developmentCommon.js?v=${assessVersion}"></script>
 <%@include file="/views/method/module/developmentCommon.jsp" %>

@@ -10,14 +10,11 @@
         <div class="right_col" role="main" style="margin-left: 0">
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <div class="x_panel">
-                <div class="x_title collapse-link">
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                    </ul>
+                <div class="x_title">
                     <h3>估价委托书</h3>
                     <div class="clearfix"></div>
                 </div>
-                <div class="x_content collapse">
+                <div class="x_content">
                     <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                         <input id="project_proxy" name="project_proxy" type="file" multiple="false">
                         <div id="_project_proxy"></div>
@@ -30,81 +27,111 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-                    <form class="form-horizontal">
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    省
-                                </label>
-                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                    <select id="queryProvince" class="form-control search-select select2">
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    市
-                                </label>
-                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                    <select id="queryCity" class="form-control search-select select2">
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    区
-                                </label>
-                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                    <select id="queryDistrict" class="form-control search-select select2">
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">名称</label>
-                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                    <input type="text" class="form-control" id="queryName"/>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">坐落</label>
-                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                    <input type="text" class="form-control" id="querySeat"/>
-                                </div>
-                            </div>
-                            <div class="x-valid">
-                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                    <label class="btn btn-primary" onclick="reloadDeclareList();">
-                                        查询
+                    <div class=" col-xs-6  col-sm-6  col-md-6  col-lg-6 ">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                        省
                                     </label>
+                                    <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                        <select id="queryProvince" class="form-control">
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="x-valid">
+                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                        市
+                                    </label>
+                                    <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                        <select id="queryCity" class="form-control">
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="x-valid">
+                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                        区
+                                    </label>
+                                    <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                        <select id="queryDistrict" class="form-control">
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="x-valid">
+                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">名称</label>
+                                    <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                        <input type="text" class="form-control" id="queryName"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">坐落</label>
+                                    <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                        <input type="text" class="form-control" id="querySeat"/>
+                                    </div>
+                                </div>
+                                <div class="x-valid">
+                                    <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                        <label class="btn btn-primary" onclick="reloadDeclareList();">
+                                            查询
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <table class="table table-bordered" id="declareTable">
+                                <!-- cerare document add ajax data-->
+                            </table>
+                        </form>
+                    </div>
+                    <div class=" col-xs-6  col-sm-6  col-md-6  col-lg-6 ">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h4>位置示意图</h4>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <div class=" col-xs-6  col-sm-6  col-md-6  col-lg-6 ">
+                                    <table class="table table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th>权证对象</th>
+                                            <th>位置图</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="positionTbody">
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
-                        <table class="table table-bordered" id="declareTable">
-                            <!-- cerare document add ajax data-->
-                        </table>
-                    </form>
-                    <div class="x_panel">
-                        <div class="x_title collapse-link">
-                            <ul class="nav navbar-right panel_toolbox">
-                                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                            </ul>
-                            <h4>位置示意图</h4>
-                            <div class="clearfix"></div>
-                        </div>
-                        <div class="x_content collapse">
-                            <div class=" col-xs-6  col-sm-6  col-md-6  col-lg-6 ">
-                                <table class="table table-hover">
-                                    <thead>
-                                    <tr>
-                                        <th>权证对象</th>
-                                        <th>位置图</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody id="positionTbody">
-                                    </tbody>
-                                </table>
+                        <%--<div class="x_panel">--%>
+                            <%--<div class="x_title collapse-link">--%>
+                                <%--<h4>权属证明复印件</h4>--%>
+                                <%--<div class="clearfix"></div>--%>
+                            <%--</div>--%>
+                            <%--<div class="x_content" id="ownershipCertHtml">--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
+                        <%--<div class="x_panel">--%>
+                            <%--<div class="x_title collapse-link">--%>
+                                <%--<ul class="nav navbar-right panel_toolbox">--%>
+                                    <%--<li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>--%>
+                                <%--</ul>--%>
+                                <%--<h4>关联土地证附件</h4>--%>
+                                <%--<div class="clearfix"></div>--%>
+                            <%--</div>--%>
+                            <%--<div class="x_content collapse" id="landFileHtml">--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h4>
+                                    估价中引用的专用文件资料
+                                </h4>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content " id="ReportFileCustom">
                             </div>
                         </div>
                     </div>
@@ -119,56 +146,17 @@
                         <div class="x_content collapse" id="liveSituationHtml">
                         </div>
                     </div>
-                    <div class="x_panel">
-                        <div class="x_title collapse-link">
-                            <ul class="nav navbar-right panel_toolbox">
-                                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                            </ul>
-                            <h4>权属证明复印件</h4>
-                            <div class="clearfix"></div>
-                        </div>
-                        <div class="x_content collapse" id="ownershipCertHtml">
-
-                        </div>
-                    </div>
-                    <div class="x_panel">
-                        <div class="x_title collapse-link">
-                            <ul class="nav navbar-right panel_toolbox">
-                                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                            </ul>
-                            <h4>关联土地证附件</h4>
-                            <div class="clearfix"></div>
-                        </div>
-                        <div class="x_content collapse" id="landFileHtml">
-                        </div>
-                    </div>
-                    <div class="x_panel">
-                        <div class="x_title collapse-link">
-                            <ul class="nav navbar-right panel_toolbox">
-                                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                            </ul>
-                            <h4>
-                                估价中引用的专用文件资料
-                            </h4>
-                            <div class="clearfix"></div>
-                        </div>
-                        <div class="x_content collapse" id="ReportFileCustom">
-
-
-                        </div>
-                    </div>
 
                 </div>
             </div>
-
             <div class="x_panel">
                 <div class="x_content">
                     <div class="col-sm-4 col-sm-offset-5">
                         <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
                             取消
                         </button>
-                        <button id="btn_submit" class="btn btn-success" onclick="submit()">
-                            提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
+                        <button id="btn_submit" class="btn btn-warning" onclick="submit()">
+                            保存<i style="margin-left: 10px" class="fa fa-save"></i>
                         </button>
                     </div>
                 </div>
@@ -415,7 +403,7 @@
     </div>
 </div>
 <script type="text/html" id="reportFileCustomHtml">
-    <div class=" col-xs-6  col-sm-6  col-md-6  col-lg-6 ">
+    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
         <div class="x_panel">
             <div class="x_title">
                 <label>{name}</label>
@@ -433,12 +421,10 @@
 <script type="application/javascript">
     $(function () {
         AssessCommon.initAreaInfo({
+            useDefaultText: false,
             provinceTarget: $("#queryProvince"),
             cityTarget: $("#queryCity"),
-            districtTarget: $("#queryDistrict"),
-            provinceValue: '',
-            cityValue: '',
-            districtValue: ''
+            districtTarget: $("#queryDistrict")
         });
 
         reloadDeclareList();
@@ -1109,7 +1095,7 @@
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = "";
-                str += "<a href='javascript://' onclick='loadCertAllFile(" + row.id + ",\'" + row.name + "\')' style='margin-left: 5px;' data-placement='top' data-original-title='选择' class='btn btn-xs btn-success tooltips' >选择<i class='fa fa-search fa-white'></i></a>";
+                str += "<a href='javascript://'  style='margin-left: 5px;' data-placement='top' data-original-title='选择' class='btn btn-xs btn-success tooltips' >选择<i class='fa fa-search fa-white'></i></a>";
                 return str;
             }
         });
@@ -1120,14 +1106,13 @@
             city: $("#queryCity").val(),
             district: $("#queryDistrict").val(),
             name: $("#queryName").val(),
-            seat: $("#querySeat").val(),
-
+            seat: $("#querySeat").val()
         }, {
             showColumns: false,
             showRefresh: false,
             search: false,
             onClickRow: function (row) {
-                loadCertAllFile(row.id, row.name);
+                loadCertAllFile(row);
             },
             onLoadSuccess: function () {
                 $('.tooltips').tooltip();
@@ -1135,26 +1120,26 @@
         });
     };
 
-    function loadCertAllFile(id, name) {
-        makeJudgeObjectPosition(id, name);
-        loadLiveSituationHtml(id, name);
-        loadOwnershipCertHtml(id, name);
-        loadLandFileHtml(id, name);
-        loadReportFileCustomHtml(id, name);
+    function loadCertAllFile(declareRecord) {
+        makeJudgeObjectPosition(declareRecord);
+        loadLiveSituationHtml(declareRecord);
+        loadOwnershipCertHtml(declareRecord);
+        loadLandFileHtml(declareRecord);
+        loadReportFileCustomHtml(declareRecord);
     }
 
     //位置示意图
-    function makeJudgeObjectPosition(id, name) {
+    function makeJudgeObjectPosition(declareRecord) {
         $.ajax({
             url: "${pageContext.request.contextPath}/projectReportFile/makeJudgeObjectPosition",
             type: "post",
             dataType: "json",
             data: {
-                declareRecordId: id
+                declareRecordId: declareRecord.id
             },
             success: function (result) {
                 if (result.ret) {
-                    loadPositionHtml(id, name);
+                    loadPositionHtml(declareRecord);
                 }
             },
             error: function (result) {
@@ -1163,90 +1148,90 @@
         })
     }
     //位置示意图html
-    function loadPositionHtml(id, name) {
+    function loadPositionHtml(declareRecord) {
         var html = '';
-        html += '<tr><td>' + name + '</td><td>' +
-            '<input type="file" multiple="false"  id="judge_object_position' + id + '">' +
-            '<div id="_judge_object_position' + id + '"></div></td></tr>';
+        html += '<tr><td>' + declareRecord.name + '</td><td>' +
+            '<input type="file" multiple="false"  id="judge_object_position' + declareRecord.id + '">' +
+            '<div id="_judge_object_position' + declareRecord.id + '"></div></td></tr>';
         $("#positionTbody").empty().append(html);
-        uploadFiles(AssessDBKey.DeclareRecord, id, AssessUploadKey.JUDGE_OBJECT_POSITION, "judge_object_position" + id);
-        loadUploadFiles(AssessDBKey.DeclareRecord, id, AssessUploadKey.JUDGE_OBJECT_POSITION, "judge_object_position" + id);
+        uploadFiles(AssessDBKey.DeclareRecord, declareRecord.id, AssessUploadKey.JUDGE_OBJECT_POSITION, "judge_object_position" + declareRecord.id);
+        loadUploadFiles(AssessDBKey.DeclareRecord, declareRecord.id, AssessUploadKey.JUDGE_OBJECT_POSITION, "judge_object_position" + declareRecord.id);
     }
 
     //实况照片html
-    function loadLiveSituationHtml(id, name) {
+    function loadLiveSituationHtml(declareRecord) {
         var html = '';
         html += '<div class="row">';
-        html += '<input type="hidden" name="declareRecordId" value="' + id + '">';
+        html += '<input type="hidden" name="declareRecordId" value="' + declareRecord.id + '">';
         html += '<div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10  col-sm-10 col-xs-10">';
         html += '<div class="x_panel">';
         html += '<div class="x_title"><h4>';
-        html += '<strong>' + name + '</strong>';
-        html += '<small><input type="button" value="新增照片" onclick="addLiveSituationFile(' + id + ')" class="btn btn-success btn-xs"></small>';
-        html += '<small><input type="button" value="选择查勘中图片" onclick="getLiveSituationAll(' + id + ')" class="btn btn-success btn-xs"></small>';
-        html += '<small><input type="button" value="新增查勘照片模板" onclick="selectPictureTempale(' + id + ')" class="btn btn-success btn-xs"></small></h4>';
+        html += '<strong>' + declareRecord.name + '</strong>';
+        html += '<small><input type="button" value="新增照片" onclick="addLiveSituationFile(' + declareRecord.id + ')" class="btn btn-success btn-xs"></small>';
+        html += '<small><input type="button" value="选择查勘中图片" onclick="getLiveSituationAll(' + declareRecord.id + ')" class="btn btn-success btn-xs"></small>';
+        html += '<small><input type="button" value="新增查勘照片模板" onclick="selectPictureTempale(' + declareRecord.id + ')" class="btn btn-success btn-xs"></small></h4>';
         html += '</div><table class="table table-hover"><thead><tr><th width="10%">文件名称</th><th width="10%">排序</th><th width="20%">附件</th><th width="15%">对应查勘部位</th><th width="10%">附件类别</th><th width="10%">是否上报告</th><th width="20%">操作</th></tr></thead>';
-        html += '<tbody data-id="' + id + '" data-name="live_situation_select"></tbody></table>';
+        html += '<tbody data-id="' + declareRecord.id + '" data-name="live_situation_select"></tbody></table>';
         html += '</div></div></div>';
         $("#liveSituationHtml").empty().append(html);
         loadLiveSituation($('tbody[data-id=' + declareRecord.id + '][data-name=live_situation_select]'), declareRecord.id);
     }
 
     //权属证明复印件html
-    function loadOwnershipCertHtml(id, name) {
+    function loadOwnershipCertHtml(declareRecord) {
         var html = '';
         html += '<div class="row">';
         html += '<div class="col-xs-6612  col-sm-6612  col-md-6612  col-lg-6612  col-sm-6 col-xs-12">';
         html += '<div class="x_panel">';
-        html += '<div class="x_title"><h4><strong>' + name + '</strong></h4></div>';
+        html += '<div class="x_title"><h4><strong>' + declareRecord.name + '</strong></h4></div>';
         html += '<table class="table table-hover"><thead><tr><th width="20%">序号</th><th width="35%">文件名称</th><th width="45%">操作</th></tr></thead>';
-        html += '<tbody data-id="' + id + '" data-name="ownership_cert_file_list"></tbody></table>';
+        html += '<tbody data-id="' + declareRecord.id + '" data-name="ownership_cert_file_list"></tbody></table>';
         html += '<div class="x-valid">';
         html += '<label class="col-sm-1 control-label">复印件</label>';
         html += '<div class="col-sm-10">';
-        html += '<input id="uploadOwnershipCertFile' + id + '" class="form-control" type="file">';
-        html += '<div id="_uploadOwnershipCertFile' + id + '"></div>';
+        html += '<input id="uploadOwnershipCertFile' + declareRecord.id + '" class="form-control" type="file">';
+        html += '<div id="_uploadOwnershipCertFile' + declareRecord.id + '"></div>';
         html += '</div></div></div></div>';
 
         $("#ownershipCertHtml").empty().append(html);
-        uploadOwnershipCertFile(declareRecord.dataTableName, declareRecord.dataTableId, "uploadOwnershipCertFile" + id, $('tbody[data-id=' + declareRecord.id + '][data-name=ownership_cert_file_list]'), id);
-        getOwnershipCertFileAll($('tbody[data-id=' + id + '][data-name=ownership_cert_file_list]'), id);
+        uploadOwnershipCertFile(declareRecord.dataTableName, declareRecord.dataTableId, "uploadOwnershipCertFile" + declareRecord.id, $('tbody[data-id=' + declareRecord.id + '][data-name=ownership_cert_file_list]'), declareRecord.id);
+        getOwnershipCertFileAll($('tbody[data-id=' + declareRecord.id + '][data-name=ownership_cert_file_list]'), declareRecord.id);
     }
 
     //关联土地证附件html
-    function loadLandFileHtml(id, name) {
+    function loadLandFileHtml(declareRecord) {
         var html = '';
         html += '<div class="row">';
         html += '<div class="col-xs-6612  col-sm-6612  col-md-6612  col-lg-6612  col-sm-6 col-xs-12">';
         html += '<div class="x_panel">';
-        html += '<div class="x_title"><h4><strong>' + name + '</strong></h4></div>';
+        html += '<div class="x_title"><h4><strong>' + declareRecord.name + '</strong></h4></div>';
         html += '<table class="table table-hover"><thead><tr><th width="20%">序号</th><th width="35%">文件名称</th><th width="45%">操作</th></tr></thead>';
-        html += '<tbody data-id="' + id + '" data-name="land_file_list"></tbody></table>';
-        html += '<div class="x-valid" data-id="' + id + '" data-name="land_file_btn">';
+        html += '<tbody data-id="' + declareRecord.id + '" data-name="land_file_list"></tbody></table>';
+        html += '<div class="x-valid" data-id="' + declareRecord.id + '" data-name="land_file_btn">';
         html += '</div></div></div></div>';
 
         $("#landFileHtml").empty().append(html);
-        uploadLandFile(AssessDBKey.DeclareRealtyLandCert, "uploadlandFile" + id, $('tbody[data-id=' + declareRecord.id + '][data-name=land_file_list]'), id);
-        getLandFileAllByDeclareRecord($('tbody[data-id=' + declareRecord.id + '][data-name=land_file_list]'), id);
+        uploadLandFile(AssessDBKey.DeclareRealtyLandCert, "uploadlandFile" + declareRecord.id, $('tbody[data-id=' + declareRecord.id + '][data-name=land_file_list]'), declareRecord.id);
+        getLandFileAllByDeclareRecord($('tbody[data-id=' + declareRecord.id + '][data-name=land_file_list]'), declareRecord.id);
     }
 
     //估价中引用的专用文件资料html
-    function loadReportFileCustomHtml(id, name) {
-        if (id) {
+    function loadReportFileCustomHtml(declareRecord) {
+        if (declareRecord) {
             $.ajax({
                 url: '${pageContext.request.contextPath}/projectReportFile/getAddressFileListByDeclareRecordId',
                 type: "post",
                 dataType: "json",
                 data: {
-                    declareRecordId: id,
+                    declareRecordId: declareRecord.id,
                 },
                 success: function (result) {
                     if (result.ret) {
                         var html = '';
                         html += '<div class="row">';
-                        html += '<div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10">';
+                        html += '<div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12">';
                         html += '<div class="x_panel">';
-                        html += '<div class="x_title"><h4><strong>' + name + '</strong></h4></div>';
+                        html += '<div class="x_title"><h4><strong>' + declareRecord.name + '</strong></h4></div>';
                         if (result.data) {
                             $.each(result.data, function (i, item) {
                                 ++i;
@@ -1258,10 +1243,10 @@
                                 html += '</td></tr></tbody></table></div></div>';
                             })
                         }
-                        html += '<input type="button" class="btn btn-success" value="自定义添加"onclick="addReportFileCustom(' + id + ');">';
-                        html += '<div class="row report-file-custom' + id + '"></div></div></div></div>';
+                        html += '<input type="button" class="btn btn-success" value="自定义添加"onclick="addReportFileCustom(' + declareRecord.id + ');">';
+                        html += '<div class="row report-file-custom' + declareRecord.id + '"></div></div></div></div>';
                         $("#ReportFileCustom").empty().append(html);
-                        loadReportFileCustomList(id);
+                        loadReportFileCustomList(declareRecord.id);
                     } else {
                         Alert(result.errmsg);
                     }
