@@ -323,6 +323,7 @@
 <script type="text/javascript">
     $(function () {
         AssessCommon.initAreaInfo({
+            useDefaultText: false,
             provinceTarget: $("#province"),
             cityTarget: $("#city"),
             districtTarget: $("#district"),
@@ -355,7 +356,7 @@
         }
         var cols = [];
         cols.push({
-            field: 'name', title: '名称',  formatter: function (value, row, index) {
+            field: 'name', title: '名称', formatter: function (value, row, index) {
                 var s = row.fullName;
                 if (row.creatorName) {
                     s += "<label style='padding: 5px;' class='label label-info'>" + row.creatorName + "</label>"
@@ -363,7 +364,15 @@
                 return s;
             }
         });
-        cols.push({field: 'blockName', title: '版块名称'});
+        cols.push({
+            field: 'blockName', title: '版块名称', formatter: function (value, row, index) {
+                var s = AssessCommon.getAreaFullName(row.provinceName,row.cityName,row.districtName);
+                if (row.blockName) {
+                    s += "/" + row.blockName;
+                }
+                return s;
+            }
+        });
         cols.push({field: 'street', title: '街道'});
         cols.push({field: 'houseType', title: '用途'});
         cols.push({field: 'tradingTypeName', title: '交易类型'});
@@ -377,9 +386,9 @@
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                if(row.caseHouseId){
+                if (row.caseHouseId) {
                     str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="查看" onclick="houseSearch.findHouse(' + row.caseHouseId + ')"><i class="fa fa-search fa-white"></i></a>';
-                }else{
+                } else {
                     str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="查看" onclick="houseSearch.showItem(' + row.id + ')"><i class="fa fa-search fa-white"></i></a>';
                 }
                 str += '</div>';
@@ -420,7 +429,7 @@
     };
 
 
-    houseSearch.showFile=function (id) {
+    houseSearch.showFile = function (id) {
         FileUtils.getFileShows({
             target: "uploadHouseFile",
             formData: {
