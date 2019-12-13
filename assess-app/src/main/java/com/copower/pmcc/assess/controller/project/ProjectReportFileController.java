@@ -1,7 +1,6 @@
 package com.copower.pmcc.assess.controller.project;
 
 import com.alibaba.fastjson.JSON;
-import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeReportFileItem;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeReportFileDto;
 import com.copower.pmcc.assess.service.BaseService;
@@ -39,14 +38,7 @@ public class ProjectReportFileController {
     public ModelAndView index(Integer projectId) throws Exception {
         ModelAndView modelAndView = new ModelAndView("/project/projectReportFileIndex");
         modelAndView.addObject("projectInfo", projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(projectId)));
-        //modelAndView.addObject("ownershipCertFileList", schemeReportFileService.getOwnershipCertFileList(projectId));
-        //modelAndView.addObject("inventoryAddressFileList", schemeReportFileService.getInventoryAddressFileList(projectId));
-        //modelAndView.addObject("reimbursementFileList", schemeReportFileService.getReimbursementFileList(projectId));
-        //List<DeclareRecord> declareRecordList = declareRecordService.getDeclareRecordByProjectId(projectId);
-        //modelAndView.addObject("declareRecordList", declareRecordList);
         modelAndView.addObject("projectId", projectId);
-        //生成位置图
-        //schemeReportFileService.makeJudgeObjectPosition(declareRecordList);
         return modelAndView;
     }
 

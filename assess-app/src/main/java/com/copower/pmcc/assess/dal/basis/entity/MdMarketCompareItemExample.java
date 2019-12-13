@@ -416,73 +416,63 @@ public class MdMarketCompareItemExample {
             return (Criteria) this;
         }
 
-        public Criteria andJsonContentIsNull() {
-            addCriterion("json_content is null");
+        public Criteria andBasicApplyIdIsNull() {
+            addCriterion("basic_apply_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andJsonContentIsNotNull() {
-            addCriterion("json_content is not null");
+        public Criteria andBasicApplyIdIsNotNull() {
+            addCriterion("basic_apply_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andJsonContentEqualTo(String value) {
-            addCriterion("json_content =", value, "jsonContent");
+        public Criteria andBasicApplyIdEqualTo(Integer value) {
+            addCriterion("basic_apply_id =", value, "basicApplyId");
             return (Criteria) this;
         }
 
-        public Criteria andJsonContentNotEqualTo(String value) {
-            addCriterion("json_content <>", value, "jsonContent");
+        public Criteria andBasicApplyIdNotEqualTo(Integer value) {
+            addCriterion("basic_apply_id <>", value, "basicApplyId");
             return (Criteria) this;
         }
 
-        public Criteria andJsonContentGreaterThan(String value) {
-            addCriterion("json_content >", value, "jsonContent");
+        public Criteria andBasicApplyIdGreaterThan(Integer value) {
+            addCriterion("basic_apply_id >", value, "basicApplyId");
             return (Criteria) this;
         }
 
-        public Criteria andJsonContentGreaterThanOrEqualTo(String value) {
-            addCriterion("json_content >=", value, "jsonContent");
+        public Criteria andBasicApplyIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("basic_apply_id >=", value, "basicApplyId");
             return (Criteria) this;
         }
 
-        public Criteria andJsonContentLessThan(String value) {
-            addCriterion("json_content <", value, "jsonContent");
+        public Criteria andBasicApplyIdLessThan(Integer value) {
+            addCriterion("basic_apply_id <", value, "basicApplyId");
             return (Criteria) this;
         }
 
-        public Criteria andJsonContentLessThanOrEqualTo(String value) {
-            addCriterion("json_content <=", value, "jsonContent");
+        public Criteria andBasicApplyIdLessThanOrEqualTo(Integer value) {
+            addCriterion("basic_apply_id <=", value, "basicApplyId");
             return (Criteria) this;
         }
 
-        public Criteria andJsonContentLike(String value) {
-            addCriterion("json_content like", value, "jsonContent");
+        public Criteria andBasicApplyIdIn(List<Integer> values) {
+            addCriterion("basic_apply_id in", values, "basicApplyId");
             return (Criteria) this;
         }
 
-        public Criteria andJsonContentNotLike(String value) {
-            addCriterion("json_content not like", value, "jsonContent");
+        public Criteria andBasicApplyIdNotIn(List<Integer> values) {
+            addCriterion("basic_apply_id not in", values, "basicApplyId");
             return (Criteria) this;
         }
 
-        public Criteria andJsonContentIn(List<String> values) {
-            addCriterion("json_content in", values, "jsonContent");
+        public Criteria andBasicApplyIdBetween(Integer value1, Integer value2) {
+            addCriterion("basic_apply_id between", value1, value2, "basicApplyId");
             return (Criteria) this;
         }
 
-        public Criteria andJsonContentNotIn(List<String> values) {
-            addCriterion("json_content not in", values, "jsonContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonContentBetween(String value1, String value2) {
-            addCriterion("json_content between", value1, value2, "jsonContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonContentNotBetween(String value1, String value2) {
-            addCriterion("json_content not between", value1, value2, "jsonContent");
+        public Criteria andBasicApplyIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("basic_apply_id not between", value1, value2, "basicApplyId");
             return (Criteria) this;
         }
 

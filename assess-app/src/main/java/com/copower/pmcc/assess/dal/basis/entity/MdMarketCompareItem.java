@@ -14,7 +14,7 @@ public class MdMarketCompareItem {
 
     private Integer planDetailsId;
 
-    private String jsonContent;
+    private Integer basicApplyId;
 
     private String tradingTimeExplain;
 
@@ -64,6 +64,8 @@ public class MdMarketCompareItem {
 
     private Date gmtModified;
 
+    private String jsonContent;
+
     public Integer getId() {
         return id;
     }
@@ -104,12 +106,12 @@ public class MdMarketCompareItem {
         this.planDetailsId = planDetailsId;
     }
 
-    public String getJsonContent() {
-        return jsonContent;
+    public Integer getBasicApplyId() {
+        return basicApplyId;
     }
 
-    public void setJsonContent(String jsonContent) {
-        this.jsonContent = jsonContent == null ? null : jsonContent.trim();
+    public void setBasicApplyId(Integer basicApplyId) {
+        this.basicApplyId = basicApplyId;
     }
 
     public String getTradingTimeExplain() {
@@ -302,5 +304,13 @@ public class MdMarketCompareItem {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getJsonContent() {
+        return jsonContent;
+    }
+
+    public void setJsonContent(String jsonContent) {
+        this.jsonContent = jsonContent == null ? null : jsonContent.trim();
     }
 }
