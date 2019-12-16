@@ -8,6 +8,7 @@ import com.copower.pmcc.assess.dto.output.project.ProjectTaskReturnRecordVo;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
+import com.copower.pmcc.assess.service.chks.ChksAssessmentProjectPerformanceService;
 import com.copower.pmcc.assess.service.event.EmptyProcessEvent;
 import com.copower.pmcc.assess.service.event.project.ProjectTaskEvent;
 import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
@@ -90,6 +91,8 @@ public class ProjectTaskService {
     private ProjectMemberService projectMemberService;
     @Autowired
     private PublicService publicService;
+    @Autowired
+    private ChksAssessmentProjectPerformanceService chksAssessmentProjectPerformanceService;
 
     @Transactional(rollbackFor = Exception.class)
     public void submitTask(ProjectTaskDto projectTaskDto) throws Exception {
@@ -206,9 +209,13 @@ public class ProjectTaskService {
         }
     }
 
-    public void submitTaskApproval(ApprovalModelDto approvalModelDto, String formData) throws BusinessException {
+    public void submitTaskApproval(ApprovalModelDto approvalModelDto, String formData, String chksScore, String remarks, String byExaminePeople) throws BusinessException {
 
         ProjectPlanDetails projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsItemByProcessInsId(approvalModelDto.getProcessInsId());
+        if (StringUtils.isNotBlank(chksScore)) {
+            //存入考核的数据走这里
+            chksAssessmentProjectPerformanceService.saveAssessmentProjectPerformance(approvalModelDto, chksScore, remarks, byExaminePeople);
+        }
         ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlanDetails.getProjectWorkStageId());
 
         ProjectTaskInterface bean = (ProjectTaskInterface) SpringContextUtils.getBean(approvalModelDto.getViewUrl());

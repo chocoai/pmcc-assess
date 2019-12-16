@@ -111,6 +111,11 @@
                         </div>
                     </div>
                 </div>
+
+                <c:if test="${bisCheck==1}">
+                    <%@include file="form_chks.jsp" %>
+                </c:if>
+
                 <div class="form-group">
                     <%@include file="/views/share/ApprovalVariable.jsp" %>
                 </div>
