@@ -186,7 +186,19 @@
 
 
 
-        <table tableName="tb_declare_apply_detail" domainObjectName="DeclareApplyDetail">
+        <table tableName="tb_survey_asset_right" domainObjectName="SurveyAssetRight">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+
+        <table tableName="tb_survey_asset_right_declare" domainObjectName="SurveyAssetRightDeclare">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+
+        <table tableName="tb_survey_asset_right_group" domainObjectName="SurveyAssetRightGroup">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+
+        <table tableName="tb_survey_asset_right_item" domainObjectName="SurveyAssetRightItem">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 
