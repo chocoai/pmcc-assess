@@ -571,7 +571,7 @@ declareCommon.saveDeclareRealtyData = function (data, callback) {
 };
 
 //房产初始化并且赋值
-declareCommon.initHouse = function (item, form, fileArr, callback) {
+declareCommon.initHouse = function (item, form, fileArr, callback, bisDetail) {
     var frm = $(form.selector);
     frm.clearAll();
     frm.initForm(item);
@@ -657,8 +657,13 @@ declareCommon.initHouse = function (item, form, fileArr, callback) {
 
     if (fileArr) {
         $.each(fileArr, function (i, n) {
-            declareCommon.showFile(n, AssessDBKey.DeclareRealtyHouseCert, declareCommon.isNotBlank(item.id) ? item.id : '0', true);
-            declareCommon.fileUpload(n, AssessDBKey.DeclareRealtyHouseCert, declareCommon.isNotBlank(item.id) ? item.id : '0', true);
+            if(bisDetail==false){
+                declareCommon.showFile(n, AssessDBKey.DeclareRealtyHouseCert, declareCommon.isNotBlank(item.id) ? item.id : '0', false);
+                declareCommon.fileUpload(n, AssessDBKey.DeclareRealtyHouseCert, declareCommon.isNotBlank(item.id) ? item.id : '0', false);
+            }else{
+                declareCommon.showFile(n, AssessDBKey.DeclareRealtyHouseCert, declareCommon.isNotBlank(item.id) ? item.id : '0', true);
+                declareCommon.fileUpload(n, AssessDBKey.DeclareRealtyHouseCert, declareCommon.isNotBlank(item.id) ? item.id : '0', true);
+            }
         });
     }
     if (callback) {
@@ -672,7 +677,7 @@ declareCommon.initHouse = function (item, form, fileArr, callback) {
 };
 
 //土地初始化并且赋值
-declareCommon.initLand = function (item, form, fileArr, callback) {
+declareCommon.initLand = function (item, form, fileArr, callback,bisDetail) {
     var frm = $(form.selector);
     frm.clearAll();
     frm.initForm(item);
@@ -744,8 +749,13 @@ declareCommon.initLand = function (item, form, fileArr, callback) {
     }
     if (fileArr) {
         $.each(fileArr, function (i, n) {
-            declareCommon.showFile(n, AssessDBKey.DeclareRealtyLandCert, declareCommon.isNotBlank(item.id) ? item.id : '0', true);
-            declareCommon.fileUpload(n, AssessDBKey.DeclareRealtyLandCert, declareCommon.isNotBlank(item.id) ? item.id : '0', true);
+            if(bisDetail==false){
+                declareCommon.showFile(n, AssessDBKey.DeclareRealtyLandCert, declareCommon.isNotBlank(item.id) ? item.id : '0', false);
+                declareCommon.fileUpload(n, AssessDBKey.DeclareRealtyLandCert, declareCommon.isNotBlank(item.id) ? item.id : '0', false);
+            }else {
+                declareCommon.showFile(n, AssessDBKey.DeclareRealtyLandCert, declareCommon.isNotBlank(item.id) ? item.id : '0', true);
+                declareCommon.fileUpload(n, AssessDBKey.DeclareRealtyLandCert, declareCommon.isNotBlank(item.id) ? item.id : '0', true);
+            }
         });
     }
     if (callback) {
@@ -758,7 +768,7 @@ declareCommon.initLand = function (item, form, fileArr, callback) {
 };
 
 //不动产初始化并且赋值
-declareCommon.initDeclareRealty = function (item, form, fileArr, callback) {
+declareCommon.initDeclareRealty = function (item, form, fileArr, callback,bisDetail) {
     var frm = $(form.selector);
     frm.clearAll();
     frm.initForm(item);
@@ -856,8 +866,13 @@ declareCommon.initDeclareRealty = function (item, form, fileArr, callback) {
     }
     if (fileArr) {
         $.each(fileArr, function (i, n) {
-            declareCommon.showFile(n, AssessDBKey.DeclareRealtyRealEstateCert, declareCommon.isNotBlank(item.id) ? item.id : '0', true);
-            declareCommon.fileUpload(n, AssessDBKey.DeclareRealtyRealEstateCert, declareCommon.isNotBlank(item.id) ? item.id : '0', true);
+            if(bisDetail==false){
+                declareCommon.showFile(n, AssessDBKey.DeclareRealtyRealEstateCert, declareCommon.isNotBlank(item.id) ? item.id : '0', false);
+                declareCommon.fileUpload(n, AssessDBKey.DeclareRealtyRealEstateCert, declareCommon.isNotBlank(item.id) ? item.id : '0', false);
+            }else{
+                declareCommon.showFile(n, AssessDBKey.DeclareRealtyRealEstateCert, declareCommon.isNotBlank(item.id) ? item.id : '0', true);
+                declareCommon.fileUpload(n, AssessDBKey.DeclareRealtyRealEstateCert, declareCommon.isNotBlank(item.id) ? item.id : '0', true);
+            }
         });
     }
     if (callback) {

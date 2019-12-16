@@ -15,6 +15,8 @@ import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.ProjectTaskService;
 import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
+import com.copower.pmcc.bpm.api.dto.model.AssessmentItemDto;
+import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxRuDto;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
@@ -161,7 +163,17 @@ public class ProjectTaskController extends BaseController {
         } else {
             modelAndView.addObject("boxCnName", String.format("%s-成果审批", boxCnName.toString()));
         }
+        //获取相应的考核项
+        BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(boxId);
+        if (boxReDto.getBisLaunchCheck() != null && boxReDto.getBisLaunchCheck()) {
+            modelAndView.addObject("bisCheck", 1);
+            Object activityId = modelAndView.getModel().get("activityId");
+            if (activityId != null) {
+                List<AssessmentItemDto> assessmentItemList = bpmRpcBoxService.getAssessmentItemList(boxId, (int) activityId);
+                modelAndView.addObject("assessmentItemList", assessmentItemList);
+            }
 
+        }
         modelAndView.addObject("viewUrl", viewUrl);
         modelAndView.addObject("projectId", projectPlanDetails.getProjectId());
         modelAndView.addObject("projectFlog", "1");
@@ -172,9 +184,9 @@ public class ProjectTaskController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "/submitTaskApproval", name = "审批提交的工作成果数据", method = RequestMethod.POST)
-    public HttpResult submitTaskApproval(ApprovalModelDto approvalModelDto, String formData) {
+    public HttpResult submitTaskApproval(ApprovalModelDto approvalModelDto, String formData,String chksScore,String chksRemarks,String byExaminePeople) {
         try {
-            projectTaskService.submitTaskApproval(approvalModelDto, formData);
+            projectTaskService.submitTaskApproval(approvalModelDto, formData,chksScore,chksRemarks,byExaminePeople);
             return HttpResult.newCorrectResult();
         } catch (BusinessException e) {
             baseService.writeExceptionInfo(e);

@@ -200,7 +200,7 @@
             $('#' + declareApprovalFun.landConfig.box).find("#" + commonDeclareApprovalModel.config.land.handleId).remove();
             $('#' + declareApprovalFun.landConfig.box).find(".panel-body").append(commonDeclareApprovalModel.land.getHtml());
             declareCommon.showHtmlMastInit($("#" + declareApprovalFun.landConfig.frm), function (area) {
-                declareCommon.initLand(item, $("#" + declareApprovalFun.landConfig.frm), [declareApprovalFun.landConfig.fileId], null);
+                declareCommon.initLand(item, $("#" + declareApprovalFun.landConfig.frm), [declareApprovalFun.landConfig.fileId], null,false);
                 $('#' + declareApprovalFun.landConfig.box).modal("show");
             });
         });
@@ -220,7 +220,7 @@
                 if (declareCommon.isNotBlank(centerData.houseId)) {
                     declareCommon.getHouseData(centerData.houseId, function (data) {
                         if (declareCommon.isNotBlank(data)) {
-                            declareCommon.initHouse(data, $("#" + declareApprovalFun.landConfig.HouseCert.frm), [declareApprovalFun.landConfig.houseFileId], null);
+                            declareCommon.initHouse(data, $("#" + declareApprovalFun.landConfig.HouseCert.frm), [declareCommon.config.house.fileId], null,false);
                             $('#' + declareApprovalFun.landConfig.HouseCert.box).modal("show");
                         } else {
                             toastr.success('关联数据已经被删除了!');
@@ -294,7 +294,7 @@
             $('#' + declareApprovalFun.declareRealtyRealEstateCertConfig.box).find("#" + commonDeclareApprovalModel.config.realEstateCert.handleId).remove();
             $('#' + declareApprovalFun.declareRealtyRealEstateCertConfig.box).find(".panel-body").append(commonDeclareApprovalModel.realEstateCert.getHtml());
             declareCommon.showHtmlMastInit($("#" + declareApprovalFun.declareRealtyRealEstateCertConfig.frm), function (area) {
-                declareCommon.initDeclareRealty(item, $("#" + declareApprovalFun.declareRealtyRealEstateCertConfig.frm), [declareApprovalFun.declareRealtyRealEstateCertConfig.newFileId], null);
+                declareCommon.initDeclareRealty(item, $("#" + declareApprovalFun.declareRealtyRealEstateCertConfig.frm), [declareApprovalFun.declareRealtyRealEstateCertConfig.newFileId,declareApprovalFun.declareRealtyRealEstateCertConfig.fileId], null,false);
                 $('#' + declareApprovalFun.declareRealtyRealEstateCertConfig.box).modal("show");
             });
         });
@@ -419,11 +419,11 @@
                     <div class="row">
                         <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
                             <div class="panel-body">
-                                <div class="form-group">
-                                    <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
-                                        <div id="_declareRealtyLandCertFileId"></div>
-                                    </div>
-                                </div>
+                                <%--<div class="form-group">--%>
+                                    <%--<div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">--%>
+                                        <%--<div id="_declareRealtyLandCertFileId"></div>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
                             </div>
                         </div>
                     </div>
@@ -454,11 +454,11 @@
                     <div class="row">
                         <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
                             <div class="panel-body">
-                                <div class="form-group">
-                                    <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
-                                        <div id="_declareRealtyRealEstateCertFileId"></div>
-                                    </div>
-                                </div>
+                                <%--<div class="form-group">--%>
+                                    <%--<div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">--%>
+                                        <%--<div id="_declareRealtyRealEstateCertFileId"></div>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
                             </div>
                         </div>
                     </div>
