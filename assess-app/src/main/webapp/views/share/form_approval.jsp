@@ -95,8 +95,7 @@
                         </c:if>
                         <c:if test="${approvalReview==0}">
                             <div class="x-valid">
-                           <textarea required placeholder="审批意见" id="opinionsTemp" name="opinionsTemp"
-                                     class="form-control"></textarea>
+                                <div id="opinionsTemp" style="height: auto; background-color:#EEE;"></div>
                             </div>
                         </c:if>
                     </div>
@@ -180,7 +179,7 @@
                 opation = opation.substring(0, opation.length - 1);
             }
             else {
-                opation = $("#opinionsTemp").val();
+                opation = opinionsTemp.getContent();
             }
             return opation;
         },
@@ -194,6 +193,9 @@
     };
 
     $(function () {
+        window.opinionsTemp = UE.getEditor('opinionsTemp', {
+            zIndex: 1000
+        });
         var selectNextUser = "${selectNextUser}";
         if (selectNextUser) {
             $.ajax({
