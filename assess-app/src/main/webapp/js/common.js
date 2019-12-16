@@ -445,7 +445,7 @@ $(function () {
                 var isProvinceFirstChange = true;
                 var isCityFirstChange = true;
                 var defaults = {
-                    useDefaultText: true,
+                    useDefaultText: false,
                     provinceTarget: undefined,
                     cityTarget: undefined,
                     districtTarget: undefined,

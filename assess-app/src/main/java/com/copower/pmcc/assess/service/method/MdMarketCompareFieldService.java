@@ -171,17 +171,23 @@ public class MdMarketCompareFieldService extends BaseService {
                         case TRADING_TRANSACTION_SITUATION://交易情况
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.TRADING_TRANSACTION_SITUATION.getKey(), baseDataDicService.getNameById(houseTrading.getTransactionSituation()), isCase));
                             break;
-                        case TRADING_TIME://交易时间
-                            if (isCase)
-                                list.add(getMarketCompareItemDto(MethodCompareFieldEnum.TRADING_TIME.getKey(), DateUtils.formatDate(houseTrading.getTradingTime()), isCase));
-                            else
-                                list.add(getMarketCompareItemDto(MethodCompareFieldEnum.TRADING_TIME.getKey(), DateUtils.formatDate(areaGroup.getValueTimePoint()), isCase));
-                            break;
                         case TRADING_PRICE://交易价格
                             if (houseTrading.getTradingUnitPrice() != null && isCase)
                                 list.add(getMarketCompareItemDto(MethodCompareFieldEnum.TRADING_PRICE.getKey(), String.valueOf(houseTrading.getTradingUnitPrice())));
                             else
                                 list.add(getMarketCompareItemDto(MethodCompareFieldEnum.TRADING_PRICE.getKey(), null));
+                            break;
+                        case TRADING_TIME://交易时间|市场状况
+                            if (isCase)
+                                list.add(getMarketCompareItemDto(MethodCompareFieldEnum.TRADING_TIME.getKey(), DateUtils.formatDate(houseTrading.getTradingTime()), isCase));
+                            else
+                                list.add(getMarketCompareItemDto(MethodCompareFieldEnum.TRADING_TIME.getKey(), DateUtils.formatDate(areaGroup.getValueTimePoint()), isCase));
+                            break;
+                        case PRICE_CONNOTATION://单价内涵
+                            String priceConnotationName = baseDataDicService.getNameById(houseTrading.getPriceConnotation());
+                            if("其它".equals(priceConnotationName))
+                                priceConnotationName=houseTrading.getPriceConnotationUnit();
+                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.PRICE_CONNOTATION.getKey(), priceConnotationName));
                             break;
                         case LOCATION://房地产坐落
                             stringBuilder = new StringBuilder();
@@ -532,9 +538,7 @@ public class MdMarketCompareFieldService extends BaseService {
                         case CONSTRUCTION_QUALITY://工程质量
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.CONSTRUCTION_QUALITY.getKey(), baseDataDicService.getNameById(examineBuilding.getConstructionQuality())));
                             break;
-                        case PRICE_CONNOTATION://单价内涵
-                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.PRICE_CONNOTATION.getKey(), baseDataDicService.getNameById(houseTrading.getPriceConnotation())));
-                            break;
+
 
                         /*-------------------------------------------------------------土地相关*/
 
