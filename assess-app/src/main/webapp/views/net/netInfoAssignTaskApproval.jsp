@@ -194,7 +194,7 @@
                     return result;
                 }
             });
-            cols.push({field: 'dealPartInfo', title: '成交对象概况'});
+            cols.push({field: 'dealPartInfo', title: '成交对象概况',width:'30%'});
             cols.push({field: 'fileViewName', title: '附件'});
             cols.push({
                 field: 'id', title: '查看网址', formatter: function (value, row, index) {

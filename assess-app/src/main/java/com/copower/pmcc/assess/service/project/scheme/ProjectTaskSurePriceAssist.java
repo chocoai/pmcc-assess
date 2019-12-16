@@ -49,7 +49,7 @@ public class ProjectTaskSurePriceAssist implements ProjectTaskInterface {
             schemeSurePriceService.saveSchemeSurePrice(schemeSurePrice);
         }
         modelAndView.addObject("schemeSurePrice", schemeSurePrice);
-        modelAndView.addObject("judgeObjectName", schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId()).getName());
+        modelAndView.addObject("judgeObject", schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId()));
         modelAndView.addObject("subJudgeObjectList", schemeJudgeObjectService.getAdjustObjectListByPid(projectPlanDetails.getJudgeObjectId()));
         return modelAndView;
     }
@@ -68,7 +68,7 @@ public class ProjectTaskSurePriceAssist implements ProjectTaskInterface {
     public ModelAndView approvalView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskSurePriceApproval", processInsId, boxId, taskId, agentUserAccount);
         modelAndView.addObject("schemeSurePrice", schemeSurePriceService.getSurePriceByPlanDetailsId(projectPlanDetails.getId()));
-        modelAndView.addObject("judgeObjectName", schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId()).getName());
+        modelAndView.addObject("judgeObject", schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId()));
         List<SchemeSurePriceItem> surePriceItemList = null;
         try {
             surePriceItemList = schemeSurePriceService.getSchemeSurePriceItemList(projectPlanDetails.getJudgeObjectId(), false);
@@ -95,7 +95,7 @@ public class ProjectTaskSurePriceAssist implements ProjectTaskInterface {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskSurePriceIndex", processInsId, boxId, taskId, agentUserAccount);
         SchemeSurePrice schemeSurePrice = schemeSurePriceService.getSurePriceByPlanDetailsId(projectPlanDetails.getId());
         modelAndView.addObject("schemeSurePrice", schemeSurePrice == null ? new SchemeSurePrice() : schemeSurePrice);
-        modelAndView.addObject("judgeObjectName", schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId()).getName());
+        modelAndView.addObject("judgeObject", schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId()));
         modelAndView.addObject("subJudgeObjectList", schemeJudgeObjectService.getAdjustObjectListByPid(projectPlanDetails.getJudgeObjectId()));
         return modelAndView;
     }
@@ -109,7 +109,7 @@ public class ProjectTaskSurePriceAssist implements ProjectTaskInterface {
     public ModelAndView detailsView(ProjectPlanDetails projectPlanDetails, Integer boxId) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskSurePriceApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
         modelAndView.addObject("schemeSurePrice", schemeSurePriceService.getSurePriceByPlanDetailsId(projectPlanDetails.getId()));
-        modelAndView.addObject("judgeObjectName", schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId()).getName());
+        modelAndView.addObject("judgeObject", schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId()));
         List<SchemeSurePriceItem> surePriceItemList = null;
         try {
             surePriceItemList = schemeSurePriceService.getSchemeSurePriceItemList(projectPlanDetails.getJudgeObjectId(), false);

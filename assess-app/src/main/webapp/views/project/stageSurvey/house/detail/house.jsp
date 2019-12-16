@@ -417,12 +417,6 @@
                                     <label class="form-control" name="tradingTotalPrice">${basicHouseTrading.tradingTotalPrice}</label>
                                 </div>
                             </div>
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">单价内涵</label>
-                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <label class="form-control" name="priceConnotationName">${basicHouseTrading.priceConnotationName}</label>
-                                </div>
-                            </div>
                         </div>
                         <div class="form-group">
                             <div class="x-valid">
@@ -431,13 +425,20 @@
                                     <label class="form-control" name="tradingUnitPrice">${basicHouseTrading.tradingUnitPrice}</label>
                                 </div>
                             </div>
-
                             <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">单位</label>
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">单价内涵</label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <label class="form-control" name="priceConnotationUnit" id="priceConnotationUnit">${basicHouseTrading.priceConnotationUnit}</label>
+                                    <label class="form-control" name="priceConnotationName">${basicHouseTrading.priceConnotationName}</label>
                                 </div>
                             </div>
+                            <c:if test="${not empty basicHouseTrading.priceConnotationUnit}">
+                                <div class="x-valid">
+                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">单价单位</label>
+                                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                        <label class="form-control" name="priceConnotationUnit" id="priceConnotationUnit">${basicHouseTrading.priceConnotationUnit}</label>
+                                    </div>
+                                </div>
+                            </c:if>
                         </div>
                         <div class="form-group">
                             <div class="x-valid">

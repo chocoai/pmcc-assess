@@ -656,7 +656,7 @@
                 土地证
             </label>
             <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
-                <div id="_sonDeclareRealtyLandCertFileId"></div>
+                <div id="_declareRealtyLandCertFileId"></div>
             </div>
         </div>
     </div>

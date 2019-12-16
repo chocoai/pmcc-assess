@@ -163,7 +163,7 @@ public class NetInfoRecordHouseService {
             StringBuilder stringBuilder = new StringBuilder();
             for (SysAttachmentDto attachmentDto : attachmentDtos) {
                 if (attachmentDto.getTableId().equals(netInfoRecordHouse.getId())) {
-                    stringBuilder.append(baseAttachmentService.getEditHtml(attachmentDto, false));
+                    stringBuilder.append(baseAttachmentService.getViewHtml(attachmentDto));
                 }
             }
             vo.setFileViewName(stringBuilder.toString());
