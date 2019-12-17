@@ -34,7 +34,7 @@
                     <h3>权证信息</h3>
                     <div class="clearfix"></div>
                 </div>
-                <div class="x_content collapse">
+                <div class="x_content ${empty areaGroups?'':'collapse'}">
                     <form id="declare_record_form" class="form-horizontal">
                         <div class="form-group">
                             <label class="col-sm-1 control-label">
@@ -76,7 +76,6 @@
                     <table class="table table-bordered" id="tb_declare_record_list"></table>
                 </div>
             </div>
-
             <c:forEach items="${areaGroups}" var="item">
                 <div class="x_panel area_panel">
                     <input type="hidden" name="areaGroupId" value="${item.id}">
@@ -200,35 +199,34 @@
                                         <select class="form-control" name="propertyScope" required></select>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="form-group">
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
                                         财产包括<span class="symbol required"></span>
                                     </label>
-                                    <div class="col-sm-2">
-                                        <input type="text" class="form-control" name="scopeInclude"
-                                               placeholder="财产包括" value="${item.scopeInclude}" required>
+                                    <div class="col-sm-11">
+                                        <textarea class="form-control" name="scopeInclude" placeholder="财产包括"
+                                                  required>${item.scopeInclude}</textarea>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="form-group">
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
                                         财产不包括
                                     </label>
-                                    <div class="col-sm-2">
-                                        <input type="text" class="form-control" name="scopeNotInclude"
-                                               placeholder="财产不包括" value="${item.scopeNotInclude}" required>
+                                    <div class="col-sm-11">
+                                        <textarea class="form-control" name="scopeNotInclude" placeholder="财产不包括"
+                                                  required>${item.scopeNotInclude}</textarea>
                                     </div>
                                 </div>
                             </div>
-                            <div class="x_title"></div>
-                            <div class="form-group">
-                                <button type="button" class="btn btn-primary"
-                                        onclick="programme.batchMerge(this);">
-                                    批量合并
-                                </button>
+                            <div class="x_title">
+                                <h4>估价对象信息</h4>
+                                <div class="clearfix"></div>
                             </div>
-                            <div class="judge-object-content">
-
-                            </div>
+                            <div class="judge-object-content"></div>
                         </form>
                         <script type="text/javascript">
                             $(function () {
@@ -388,99 +386,11 @@
 </div>
 <!--评估对象-->
 <script type="text/html" id="judgeObjectHtml">
-    <tr>
-        <td>
-            <input type="hidden" data-name="id" value="{id}">
-            <input type="hidden" data-name="bisSplit" value="{bisSplit}">
-            <input type="hidden" data-name="bisMerge" value="{bisMerge}">
-            <input type="hidden" data-name="number" value="{number}">
-            <input type="hidden" data-name="splitNumber" value="{splitNumber}">
-            <input type="hidden" data-name="declareId" value="{declareId}">
-            <input type="hidden" data-name="rentalPossessionDesc" value="{rentalPossessionDesc}">
-            <label class="form-control" data-name="mergeNumber">{mergeNumber}</label>
-        </td>
-        <td>
-            <label class="form-control" data-name="ownership">{ownership}
-                <a href="javascript://" onclick="programme.viewJudgeInfo(this);"
-                   class="btn btn-xs btn-success tooltips"><i class="fa fa-white fa-search"></i></a>
-            </label></td>
-        <td><label class="form-control" data-name="seat"><span>{seat}</span></label></td>
-        <td><label class="form-control" data-name="landUseEndDate"><span>{landUseEndDate}</span></label></td>
-        <td><label class="form-control" data-name="landRemainingYear"><span>{landRemainingYear}</span></label></td>
-        <td><label class="form-control" data-name="certUse">{certUse}</label></td>
-        <td><label class="form-control" data-name="practicalUse">{practicalUse}</label></td>
-        <c:if test="${projectInfo.projectCategoryName eq '房产'}">
-            <td>
-                <div class="x-valid">
-                    <select class="form-control" required data-name="setUse" name="setUse{id}">
-                        <option value="">--请选择--</option>
-                        <c:forEach items="${setUseList}" var="setUse">
-                            <option value="${setUse.id}">${setUse.name}</option>
-                        </c:forEach>
-                    </select>
-                </div>
-            </td>
-            <td>
-                <div class="x-valid">
-                    <select class="form-control" required data-name="bestUse" name="bestUse{id}">
-                        <c:forEach items="${bestUseList}" var="bestUse">
-                            <option value="${bestUse.id}">${bestUse.name}</option>
-                        </c:forEach>
-                    </select>
-                </div>
-            </td>
-        </c:if>
-        <c:if test="${projectInfo.projectCategoryName eq '土地'}">
-            <td>
-                <div class="x-valid">
-                    <input class="form-control" type="text" required data-rule-number="true"
-                           name="setPlotRatio{id}" data-name="setPlotRatio"
-                           placeholder="设定容积率" value="{setPlotRatio}">
-                </div>
-            </td>
-            <td>
-                <div class="x-valid">
-                    <input class="form-control" type="text" required data-rule-number="true"
-                           name="planPlotRatio{id}" data-name="planPlotRatio"
-                           placeholder="规划容积率" value="{planPlotRatio}">
-                </div>
-            </td>
-            <td>
-                <div class="x-valid">
-                    <input class="form-control" type="text" required data-rule-number="true"
-                           name="actualPlotRatio{id}" data-name="actualPlotRatio"
-                           placeholder="实际容积率" value="{actualPlotRatio}">
-                </div>
-            </td>
-        </c:if>
-        <td><label class="form-control">{floorArea}</label></td>
-        <td>
-            <div class="x-valid">
-                <input class="form-control" type="text" required data-rule-number="true"
-                       data-rule-range="[1,{floorArea}]"
-                       name="evaluationArea{id}" data-name="evaluationArea"
-                       placeholder="评估面积" value="{evaluationArea}">
-            </div>
-        </td>
-        <td>
-            <a href="javascript://" onclick="programme.splitJudge(this);"
-               class="btn btn-xs btn-success judge-split tooltips">拆分</a>
-            <a href="javascript://" onclick="programme.delSplitJudge(this);"
-               class="btn btn-xs btn-warning judge-remove tooltips">移除</a>
-            <a href="javascript://" onclick="programme.mergeJudge(this);"
-               class="btn btn-xs btn-warning judge-merge tooltips">合并</a>
-            <a href="javascript://" onclick="programme.mergeJudgeCancel(this);"
-               class="btn btn-xs btn-warning judge-merge-cancel tooltips">取消合并</a>
-            <a href="javascript://" title="评估方法" onclick="programmeMethod.setMethod(this);"
-               class="btn btn-xs btn-success judge-method tooltips">方法</a>
-        </td>
-    </tr>
-</script>
-
-<script type="text/html" id="judgeObjectHtml2">
     <div class="x_panel">
         <div class="x_title">
-            <h3>{mergeNumber}
+            <h3>
+                <input type="checkbox">
+                {mergeNumber}
                 <small>
                     <a href="javascript://" onclick="programme.splitJudge(this);"
                        class="btn btn-xs btn-success judge-split tooltips">拆分</a>
@@ -700,7 +610,7 @@
             success: function (result) {
                 if (result.ret) {
                     $.each(result.data, function (i, item) {
-                        var html = $("#judgeObjectHtml2").html();
+                        var html = $("#judgeObjectHtml").html();
                         html = html.replace(/{id}/g, item.id == undefined ? "" : item.id);
                         html = html.replace(/{bisSplit}/g, item.bisSplit == undefined ? false : item.bisSplit);
                         html = html.replace(/{bisMerge}/g, item.bisMerge == undefined ? false : item.bisMerge);
