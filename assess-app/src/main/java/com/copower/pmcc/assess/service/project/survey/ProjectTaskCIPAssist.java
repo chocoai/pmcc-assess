@@ -62,7 +62,6 @@ public class ProjectTaskCIPAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView approvalView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskCIPApproval", processInsId, boxId, taskId, agentUserAccount);
-        modelAndView.addObject("isApproval", "isApproval");
         setViewParam(projectPlanDetails,modelAndView) ;
         return modelAndView;
     }

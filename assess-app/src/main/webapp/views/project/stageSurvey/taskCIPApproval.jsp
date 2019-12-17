@@ -72,7 +72,7 @@
                                 <a class="btn btn-xs btn-success" onclick="informationDetail()">
                                     详情
                                 </a>
-                                <c:if test="${isApproval == 'isApproval'}">
+                                <c:if test="${flog=='approval'}">
                                     <a class="btn btn-xs btn-primary" onclick="fillInformation();">
                                         编辑
                                     </a>

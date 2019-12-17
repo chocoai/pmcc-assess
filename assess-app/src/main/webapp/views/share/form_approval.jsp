@@ -120,20 +120,22 @@
         <%@include file="form_chks.jsp" %>
     </c:if>
 </form>
-<div class="x_panel">
-    <div class="x_content">
-        <div class="form-group" style="text-align: center;">
-            <div>
-                <button class="btn btn-default" onclick="window.close()">
-                    取消
-                </button>
-                <button id="btn_submit" class="btn btn-primary" onclick="saveform()">
-                    提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
-                </button>
+<c:if test="${flog=='approval'}">
+    <div class="x_panel">
+        <div class="x_content">
+            <div class="form-group" style="text-align: center;">
+                <div>
+                    <button class="btn btn-default" onclick="window.close()">
+                        取消
+                    </button>
+                    <button id="btn_submit" class="btn btn-primary" onclick="saveform()">
+                        提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
-</div>
+</c:if>
 <c:if test="${flog=='details'}">
     <%@include file="/views/share/form_details.jsp" %>
 </c:if>
