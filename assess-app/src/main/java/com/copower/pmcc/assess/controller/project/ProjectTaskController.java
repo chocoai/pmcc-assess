@@ -172,7 +172,6 @@ public class ProjectTaskController extends BaseController {
                 List<AssessmentItemDto> assessmentItemList = bpmRpcBoxService.getAssessmentItemList(boxId, (int) activityId);
                 modelAndView.addObject("assessmentItemList", assessmentItemList);
             }
-
         }
         modelAndView.addObject("viewUrl", viewUrl);
         modelAndView.addObject("projectId", projectPlanDetails.getProjectId());

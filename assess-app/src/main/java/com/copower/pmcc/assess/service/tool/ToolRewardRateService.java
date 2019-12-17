@@ -1,12 +1,10 @@
-package com.copower.pmcc.assess.service;
+package com.copower.pmcc.assess.service.tool;
 
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.dal.basis.dao.data.ToolRewardRateDao;
 import com.copower.pmcc.assess.dal.basis.entity.ToolRewardRate;
 import com.copower.pmcc.erp.common.CommonService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

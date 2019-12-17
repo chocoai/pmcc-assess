@@ -6,17 +6,17 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<c:if test="${flog=='approval'}">
-    <div class="x_panel">
-        <div class="x_title collapse-link">
-            <ul class="nav navbar-right panel_toolbox">
-                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-            </ul>
-            <h3> 审批信息</h3>
-            <div class="clearfix"></div>
-        </div>
-        <div class="x_content">
-            <form id="frm_approval" class="form-horizontal">
+<form id="frm_approval" class="form-horizontal">
+    <c:if test="${flog=='approval'}">
+        <div class="x_panel">
+            <div class="x_title collapse-link">
+                <ul class="nav navbar-right panel_toolbox">
+                    <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                </ul>
+                <h3> 审批信息</h3>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
                 <div class="form-group">
                     <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                         审批结论<span class="symbol required"></span>
@@ -44,7 +44,8 @@
                     <c:if test="${lastNodes==0}"> <%--如果有下级节点--%>
                         <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 " id="div_bisNext">
                             <label class="checkbox-inline">
-                                <input type="checkbox" id="chk_bisNext" name="chk_bisNext" value="" class="grey" onclick="formApproval.chkbisNextClick();">
+                                <input type="checkbox" id="chk_bisNext" name="chk_bisNext" value="" class="grey"
+                                       onclick="formApproval.chkbisNextClick();">
                                 跳过多级审批
                             </label>
                         </div>
@@ -77,7 +78,6 @@
                         </c:forEach>
                     </label>
                     <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
-
                         <c:if test="${approvalReview==1}">
                             <c:forEach var="item" items="${boxReviewTemplate}">
                                 <div class="form-group">
@@ -110,28 +110,30 @@
                         </div>
                     </div>
                 </div>
-
-                <c:if test="${bisCheck==1}">
-                    <%@include file="form_chks.jsp" %>
-                </c:if>
-
                 <div class="form-group">
                     <%@include file="/views/share/ApprovalVariable.jsp" %>
                 </div>
-            </form>
-            <div class="form-group" style="text-align: center;">
-                <div>
-                    <button class="btn btn-default" onclick="window.close()">
-                        取消
-                    </button>
-                    <button id="btn_submit" class="btn btn-primary" onclick="saveform()">
-                        提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
-                    </button>
-                </div>
+            </div>
+        </div>
+    </c:if>
+    <c:if test="${bisCheck==1}">
+        <%@include file="form_chks.jsp" %>
+    </c:if>
+</form>
+<div class="x_panel">
+    <div class="x_content">
+        <div class="form-group" style="text-align: center;">
+            <div>
+                <button class="btn btn-default" onclick="window.close()">
+                    取消
+                </button>
+                <button id="btn_submit" class="btn btn-primary" onclick="saveform()">
+                    提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
+                </button>
             </div>
         </div>
     </div>
-</c:if>
+</div>
 <c:if test="${flog=='details'}">
     <%@include file="/views/share/form_details.jsp" %>
 </c:if>

@@ -22,7 +22,7 @@ import com.copower.pmcc.assess.dto.output.MergeCellModel;
 import com.copower.pmcc.assess.dto.output.method.MdIncomeForecastVo;
 import com.copower.pmcc.assess.dto.output.method.MdIncomeLeaseCostVo;
 import com.copower.pmcc.assess.service.BaseService;
-import com.copower.pmcc.assess.service.ToolRewardRateService;
+import com.copower.pmcc.assess.service.tool.ToolRewardRateService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseReportFieldService;

@@ -29,7 +29,10 @@ import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
@@ -39,9 +42,9 @@ import java.util.Set;
  * Created by zch on 2019-12-16.
  * 考核
  */
-@org.springframework.stereotype.Service
+@Service
 public class ChksAssessmentProjectPerformanceService {
-
+    private final Logger LOGGER = LoggerFactory.getLogger(getClass());
     @Autowired
     private ApplicationConstant applicationConstant;
     @Autowired
@@ -74,6 +77,7 @@ public class ChksAssessmentProjectPerformanceService {
         if (boxReActivityDto != null) {
             dto.setActivityName(boxReActivityDto.getCnName());
         }
+        dto.setSpotActivityId(0);//抽查节点id
         dto.setBoxId(approvalModelDto.getBoxId());
         dto.setCreator(processControllerComponent.getThisUser());
         dto.setExaminePeople(processControllerComponent.getThisUser());
@@ -87,16 +91,16 @@ public class ChksAssessmentProjectPerformanceService {
             //业务标识
             if (projectPlanDetails.getProjectWorkStageId() != null) {
                 ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlanDetails.getProjectWorkStageId());
-                if (projectWorkStage != null){
+                if (projectWorkStage != null) {
                     dto.setBusinessKey(projectWorkStage.getWorkStageName());
                 }
             }
         }
         JSONObject jsonObject = JSON.parseObject(chksScore);
         Set<String> keySet = jsonObject.keySet();
-        if (CollectionUtils.isNotEmpty(keySet)){
+        if (CollectionUtils.isNotEmpty(keySet)) {
             for (String id : keySet) {
-                if (!NumberUtils.isNumber(id)){
+                if (!NumberUtils.isNumber(id)) {
                     continue;
                 }
                 //添加从表
@@ -121,6 +125,35 @@ public class ChksAssessmentProjectPerformanceService {
             chksBootstrapTableVo = dtoAndDetail.getChksBootstrapTableVo();
         }
         return chksBootstrapTableVo;
+    }
+
+    /**
+     * 获取流程抽查人员账号
+     *
+     * @param boxId
+     * @return
+     */
+    public List<String> getSpotCheckUserAccounts(Integer boxId) {
+        BoxReActivityDto boxReActivityDto = bpmRpcBoxService.getEndActivityByBoxId(boxId);
+        try {
+            List<String> userAccounts = Lists.newArrayList();
+            List<String> list = bpmRpcBoxService.getRoleUserByActivityId(boxReActivityDto.getActivityId());
+            if (CollectionUtils.isNotEmpty(list)) userAccounts.addAll(list);
+            return userAccounts;
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+        return null;
+    }
+
+    /**
+     * 获取抽查人员填写的考核项
+     * @param boxId
+     * @return
+     */
+    public List<AssessmentItemDto> getSpotCheckAssessmentItems(Integer boxId){
+        BoxReActivityDto boxReActivityDto = bpmRpcBoxService.getEndActivityByBoxId(boxId);
+        return bpmRpcBoxService.getAssessmentItemList(boxId,boxReActivityDto.getActivityId());
     }
 
 }

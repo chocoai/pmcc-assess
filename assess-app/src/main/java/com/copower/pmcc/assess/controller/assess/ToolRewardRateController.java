@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.controller.assess;
 
 import com.copower.pmcc.assess.dal.basis.entity.ToolRewardRate;
-import com.copower.pmcc.assess.service.ToolRewardRateService;
+import com.copower.pmcc.assess.service.tool.ToolRewardRateService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
