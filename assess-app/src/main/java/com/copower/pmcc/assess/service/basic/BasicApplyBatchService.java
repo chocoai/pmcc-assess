@@ -2522,6 +2522,8 @@ public class BasicApplyBatchService {
                         newBatchDetail.setTableId(targetId);
                         newBatchDetail.setCreator(commonService.thisUserAccount());
                         basicApplyBatchDetailDao.addInfo(newBatchDetail);
+                        //生成BasicApply
+                        createBasicApply(newBatchDetail);
                     }
                     if (unitParent != null && unitParent.getId() != null) {
                         BasicApplyBatchDetail basicApplyBatchDetail = new BasicApplyBatchDetail();
@@ -2533,6 +2535,7 @@ public class BasicApplyBatchService {
                         basicApplyBatchDetail.setDisplayName(targetHouse.getHouseNumber());
                         basicApplyBatchDetail.setCreator(commonService.thisUserAccount());
                         basicApplyBatchDetailDao.addInfo(basicApplyBatchDetail);
+                        createBasicApply(basicApplyBatchDetail);
                     }
                     basicHouseService.clearInvalidChildData(targetHouse.getId());
                     //房屋交易信息
@@ -2629,5 +2632,32 @@ public class BasicApplyBatchService {
                     }
                 }
             }
+    }
+
+    //写入BasicApply表中
+    public void createBasicApply(BasicApplyBatchDetail houseApplyBatchDetail){
+        //单元
+        BasicApplyBatchDetail unitApplyBatchDetail = basicApplyBatchDetailService.getDataById(houseApplyBatchDetail.getPid());
+        Integer unitId = unitApplyBatchDetail.getTableId();
+        //楼栋
+        BasicApplyBatchDetail buildApplyBatchDetail = basicApplyBatchDetailService.getDataById(unitApplyBatchDetail.getPid());
+        Integer buildId = buildApplyBatchDetail.getTableId();
+        //楼盘
+        BasicApplyBatch applyBatch = getBasicApplyBatchById(houseApplyBatchDetail.getApplyBatchId());
+        Integer estateId = applyBatch.getEstateId();
+        //新增basicApply
+        BasicApply basicApply = new BasicApply();
+        basicApply.setBasicHouseId(houseApplyBatchDetail.getTableId());
+        basicApply.setBasicUnitId(unitId);
+        basicApply.setBasicBuildingId(buildId);
+        basicApply.setBasicEstateId(estateId);
+        basicApply.setPlanDetailsId(applyBatch.getPlanDetailsId());
+        basicApply.setType(applyBatch.getType());
+        basicApply.setBuildingNumber(buildApplyBatchDetail.getName());
+        basicApply.setUnitNumber(unitApplyBatchDetail.getName());
+        basicApply.setHouseNumber(houseApplyBatchDetail.getName());
+        basicApply.setDraftFlag(false);
+        basicApply.setDraftFlag(false);
+        basicApplyService.saveBasicApply(basicApply);
     }
 }

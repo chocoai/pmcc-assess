@@ -364,6 +364,24 @@
             }
         })
     }
+    //初始化treeByPlanDetailsId
+    batchTreeTool.ztreeInitByPlanDetailsId = function (planDetailsId) {
+        $.ajax({
+            url: '${pageContext.request.contextPath}/basicApplyBatch/getTreeByPlanDetailsId',
+            data:{
+                planDetailsId:planDetailsId
+            },
+            type: 'get',
+            dataType: "json",
+            success: function (result) {
+                zTreeObj = $.fn.zTree.init($("#ztree"), setting, result);
+                //展开第一级，选中根节点
+                var rootNode = zTreeObj.getNodes()[0];
+                zTreeObj.selectNode(rootNode);
+                zTreeObj.expandAll(true);
+            }
+        })
+    }
 
     //添加数据打开modal
     batchTreeTool.showAddModal = function () {
@@ -672,7 +690,7 @@
                 Loading.progressHide();
                 if (result.ret) {
                     toastr.success("复制成功");
-                    batchTreeTool.ztreeInit(${applyBatch.estateId});
+                    batchTreeTool.ztreeInitByPlanDetailsId('${projectPlanDetails.id}');
                 }
                 else {
                     Alert("获取数据失败，失败原因:" + result.errmsg, 1, null, null);

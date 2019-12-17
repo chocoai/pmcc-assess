@@ -29,6 +29,7 @@ import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseReportFieldService;
 import com.copower.pmcc.assess.service.basic.BasicApplyService;
+import com.copower.pmcc.assess.service.basic.BasicHouseTradingService;
 import com.copower.pmcc.assess.service.basic.BasicUnitHuxingService;
 import com.copower.pmcc.assess.service.data.*;
 import com.copower.pmcc.assess.service.method.MdCommonService;
@@ -135,6 +136,7 @@ public class GenerateBaseDataService {
     private BaseService baseService;
     private ErpRpcUserService erpRpcUserService;
     private GenerateEquityService2 generateEquityService2;
+    private BasicHouseTradingService basicHouseTradingService;
 
     /**
      * 构造器必须传入的参数
@@ -3506,7 +3508,8 @@ public class GenerateBaseDataService {
         final Integer colMax = seat ? new Integer(11) : new Integer(10);
         Set<MergeCellModel> mergeCellModelList = Sets.newHashSet();
         Map<SchemeReimbursementItemVo, List<SchemeJudgeObject>> reimbursementItemVoListMap = this.getSurveyAssetInventoryRightRecordListMap(schemeJudgeObjectList);
-        LinkedList<String> strings = Lists.newLinkedList(Lists.newArrayList("估价对象", "坐落", "用途(证载)", "用途(实际)", "房屋总层数", "所在层数", "建筑面积㎡", "单价（元/㎡）", "评估总价（万元）", "法定优先受偿款(万元)", "抵押价值(万元)"));
+
+        LinkedList<String> strings = Lists.newLinkedList(Lists.newArrayList("估价对象", "坐落", "用途(证载)", "用途(实际)", "房屋总层数", "所在层数", "建筑面积㎡", "单价", "评估总价（万元）", "法定优先受偿款(万元)", "抵押价值(万元)"));
         //有他项权力的情况
         if (!reimbursementItemVoListMap.isEmpty()) {
             List<SchemeJudgeObject> listA = Lists.newArrayList();
@@ -3564,7 +3567,7 @@ public class GenerateBaseDataService {
                                 builder.write(evaluationArea.toString());
                             }
                             if (j == colMax - 4) {
-                                builder.write(price.toString());
+                                builder.write(String.format("%s%s",price.toString(),"元"));
                             }
                             if (j == colMax - 3) {
                                 BigDecimal temp = new BigDecimal(total.toString());
@@ -3643,7 +3646,7 @@ public class GenerateBaseDataService {
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
         generateCommonMethod.settingBuildingTable(builder);
         boolean mortgageFlag = Objects.equal(projectInfo.getEntrustPurpose(), baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE_MORTGAGE).getId());
-        LinkedList<String> strings = Lists.newLinkedList(Lists.newArrayList("估价对象", "用途(证载)", "用途(实际)", "房屋总层数", "所在层数", "建筑面积㎡", "单价（元/㎡）", "评估总价（万元）", "抵押价值(万元)"));
+        LinkedList<String> strings = Lists.newLinkedList(Lists.newArrayList("估价对象", "用途(证载)", "用途(实际)", "房屋总层数", "所在层数", "建筑面积㎡", "单价", "评估总价（万元）", "抵押价值(万元)"));
         if (!mortgageFlag) {
             strings.removeLast();
         }
@@ -3714,8 +3717,18 @@ public class GenerateBaseDataService {
         } else {
             linkedLists.add(nullValue);
         }
+        //使用什么单位
+        String unit = "元/㎡";
+        if (basicApply != null) {
+            BasicHouseTrading basicHouseTrading = basicHouseTradingService.getTradingByHouseId(basicApply.getBasicHouseId());
+            BaseDataDic buildAreaUnitPrice = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_BUILD_AREA_UNIT_PRICE);
+            BaseDataDic buildInteriorUnitPrice = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_INTERIOR_AREA_UNIT_PRICE);
+            if (basicHouseTrading.getPriceConnotation() != buildAreaUnitPrice.getId() && basicHouseTrading.getPriceConnotation() != buildInteriorUnitPrice.getId()) {
+                unit = basicHouseTrading.getPriceConnotationUnit();
+            }
+        }
         if (schemeJudgeObject.getPrice() != null) {//7
-            linkedLists.add(schemeJudgeObject.getPrice().toString());
+            linkedLists.add(String.format("%s%s",schemeJudgeObject.getPrice().toString(),unit));
         } else {
             linkedLists.add(nullValue);
         }
@@ -6930,6 +6943,7 @@ public class GenerateBaseDataService {
         this.basicUnitHuxingService = SpringContextUtils.getBean(BasicUnitHuxingService.class);
         this.baseService = SpringContextUtils.getBean(BaseService.class);
         this.erpRpcUserService = SpringContextUtils.getBean(ErpRpcUserService.class);
+        this.basicHouseTradingService = SpringContextUtils.getBean(BasicHouseTradingService.class);
         this.generateEquityService2 = SpringContextUtils.getBean(GenerateEquityService2.class);
         //必须在bean之后
         SchemeAreaGroup areaGroup = schemeAreaGroupService.get(areaId);
