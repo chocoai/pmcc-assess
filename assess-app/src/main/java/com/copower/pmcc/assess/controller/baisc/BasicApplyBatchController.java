@@ -129,7 +129,7 @@ public class BasicApplyBatchController extends BaseController {
 
     /**
      * 新增楼盘时获取树
-     *
+     *初始化treeByPlanDetailsId
      * @return
      */
     @ResponseBody
@@ -138,6 +138,17 @@ public class BasicApplyBatchController extends BaseController {
         return basicApplyBatchService.getZtreeDto(estateId);
     }
 
+    /**
+     *
+     *初始化treeByPlanDetailsId
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/getTreeByPlanDetailsId", method = RequestMethod.GET)
+    public List<ZtreeDto> getTreeByPlanDetailsId(Integer planDetailsId) throws Exception {
+        BasicApplyBatch applyBatch = basicApplyBatchService.getBasicApplyBatchByPlanDetailsId(planDetailsId);
+        return basicApplyBatchService.getZtreeDto(applyBatch.getEstateId());
+    }
 
     @ResponseBody
     @RequestMapping(value = "/getBasicApplyBatchDetailList", method = RequestMethod.GET)
