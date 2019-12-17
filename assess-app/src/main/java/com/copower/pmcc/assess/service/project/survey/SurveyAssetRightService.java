@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.service.project.survey;
 
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetRightDao;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetRight;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
@@ -16,23 +17,47 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by zch on 2019-12-16.
+ * 他项权力
  */
 @Service
 public class SurveyAssetRightService {
-
-
     @Autowired
     private CommonService commonService;
     @Autowired
     private SurveyAssetRightDao surveyAssetRightDao;
     @Autowired
     private BaseAttachmentService baseAttachmentService;
+    @Autowired
+    private SurveyAssetRightGroupService surveyAssetRightGroupService;
+
+    @Transactional(rollbackFor = {Exception.class})
+    public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) {
+        surveyAssetRightGroupService.clear(projectPlanDetails);
+        SurveyAssetRight right = getSurveyAssetRightOnly(projectPlanDetails, processInsId) ;
+        surveyAssetRightGroupService.updateOnlyMasterId(right.getId(),projectPlanDetails);
+    }
+
+    private SurveyAssetRight getSurveyAssetRightOnly(ProjectPlanDetails projectPlanDetails, String processInsId) {
+        SurveyAssetRight rightQuery = new SurveyAssetRight();
+        rightQuery.setProcessInsId(StringUtils.isNotEmpty(processInsId) ? processInsId : "0");
+        rightQuery.setPlanDetailsId(projectPlanDetails.getId());
+        rightQuery.setProjectId(projectPlanDetails.getProjectId());
+        rightQuery.setPlanId(projectPlanDetails.getPlanId());
+        List<SurveyAssetRight> rightList = getSurveyAssetRightListByExample(rightQuery);
+        if (CollectionUtils.isEmpty(rightList)) {
+            rightList = new ArrayList<>(1) ;
+            saveSurveyAssetRight(rightQuery) ;
+            rightList.add(rightQuery) ;
+        }
+        return rightList.stream().findFirst().get();
+    }
 
     public boolean updateSurveyAssetRight(SurveyAssetRight oo, boolean updateNull) {
         return surveyAssetRightDao.updateSurveyAssetRight(oo, updateNull);
@@ -48,26 +73,26 @@ public class SurveyAssetRightService {
         return surveyAssetRightDao.saveSurveyAssetRight(oo);
     }
 
-    public void saveAndUpdateSurveyAssetRight(SurveyAssetRight oo,boolean updateNull) {
+    public void saveAndUpdateSurveyAssetRight(SurveyAssetRight oo, boolean updateNull) {
         if (oo == null) {
             return;
         }
         if (oo.getId() != null && oo.getId() != 0) {
-            surveyAssetRightDao.updateSurveyAssetRight(oo, updateNull);
+            updateSurveyAssetRight(oo, updateNull);
         } else {
             saveSurveyAssetRight(oo);
         }
     }
 
-    private void removeFileByTableId(Integer tableId){
-        if (tableId == null){
+    private void removeFileByTableId(Integer tableId) {
+        if (tableId == null) {
             return;
         }
         SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
         sysAttachmentDto.setTableId(tableId);
         sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(SurveyAssetRight.class));
-        List<SysAttachmentDto> sysAttachmentDtoList = baseAttachmentService.getAttachmentList(sysAttachmentDto) ;
-        if (CollectionUtils.isEmpty(sysAttachmentDtoList)){
+        List<SysAttachmentDto> sysAttachmentDtoList = baseAttachmentService.getAttachmentList(sysAttachmentDto);
+        if (CollectionUtils.isEmpty(sysAttachmentDtoList)) {
             return;
         }
         sysAttachmentDtoList.forEach(sysAttachmentDto1 -> baseAttachmentService.deleteAttachment(sysAttachmentDto1.getId()));
@@ -80,7 +105,7 @@ public class SurveyAssetRightService {
         List<Integer> ids = FormatUtils.transformString2Integer(id);
         if (CollectionUtils.isNotEmpty(ids)) {
             if (ids.size() == 1) {
-                removeFileByTableId(ids.get(0)) ;
+                removeFileByTableId(ids.get(0));
                 surveyAssetRightDao.deleteSurveyAssetRightById(ids.get(0));
             } else {
                 ids.forEach(integer -> removeFileByTableId(integer));
@@ -111,5 +136,5 @@ public class SurveyAssetRightService {
     public List<SurveyAssetRight> getSurveyAssetRightListByExample(SurveyAssetRight oo) {
         return surveyAssetRightDao.getSurveyAssetRightListByExample(oo);
     }
-    
+
 }

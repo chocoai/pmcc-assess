@@ -1,7 +1,10 @@
 package com.copower.pmcc.assess.service.project.survey;
 
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetRightGroupDao;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
+import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetRightDeclare;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetRightGroup;
+import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetRightItem;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -18,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -26,14 +30,71 @@ import java.util.List;
  */
 @Service
 public class SurveyAssetRightGroupService {
-
-
     @Autowired
     private CommonService commonService;
     @Autowired
     private SurveyAssetRightGroupDao surveyAssetRightGroupDao;
     @Autowired
     private BaseAttachmentService baseAttachmentService;
+    @Autowired
+    private SurveyAssetRightDeclareService surveyAssetRightDeclareService;
+    @Autowired
+    private SurveyAssetRightItemService surveyAssetRightItemService;
+
+    /**
+     * 根据主id更新从表
+     * @param masterId
+     * @param projectPlanDetails
+     */
+    protected void updateOnlyMasterId(Integer masterId,ProjectPlanDetails projectPlanDetails){
+        SurveyAssetRightGroup groupQuery = new SurveyAssetRightGroup();
+        groupQuery.setProjectId(projectPlanDetails.getProjectId());
+        groupQuery.setPlanDetailsId(projectPlanDetails.getId());
+        groupQuery.setCreator(commonService.thisUserAccount());
+        List<SurveyAssetRightGroup> groupList = getSurveyAssetRightGroupListByExample(groupQuery) ;
+        if (CollectionUtils.isEmpty(groupList)){
+            return;
+        }
+        Iterator<SurveyAssetRightGroup> groupIterator = groupList.iterator();
+        while (groupIterator.hasNext()){
+            SurveyAssetRightGroup rightGroup = groupIterator.next();
+            rightGroup.setMasterId(masterId);
+            updateSurveyAssetRightGroup(rightGroup,false) ;
+        }
+    }
+
+    /**
+     * 清除数据 (没用子类的会被清除)
+     * @param projectPlanDetails
+     */
+    public void clear(ProjectPlanDetails projectPlanDetails){
+        SurveyAssetRightGroup groupQuery = new SurveyAssetRightGroup();
+        groupQuery.setProjectId(projectPlanDetails.getProjectId());
+        groupQuery.setPlanDetailsId(projectPlanDetails.getId());
+        groupQuery.setCreator(commonService.thisUserAccount());
+        List<SurveyAssetRightGroup> groupList = getSurveyAssetRightGroupListByExample(groupQuery) ;
+        if (CollectionUtils.isEmpty(groupList)){
+            return;
+        }
+        Iterator<SurveyAssetRightGroup> groupIterator = groupList.iterator();
+        while (groupIterator.hasNext()){
+            SurveyAssetRightGroup rightGroup = groupIterator.next();
+            SurveyAssetRightItem itemQuery =  new SurveyAssetRightItem();
+            itemQuery.setGroupId(rightGroup.getId());
+            List<SurveyAssetRightItem> itemList = surveyAssetRightItemService.getSurveyAssetRightItemListByExample(itemQuery) ;
+            SurveyAssetRightDeclare declareQuery = new SurveyAssetRightDeclare();
+            declareQuery.setGroupId(rightGroup.getId());
+            List<SurveyAssetRightDeclare> declareList = surveyAssetRightDeclareService.getSurveyAssetRightDeclareListByExample(declareQuery) ;
+            if (CollectionUtils.isNotEmpty(declareList)){
+                continue;
+            }
+            if (CollectionUtils.isNotEmpty(itemList)){
+                continue;
+            }
+            //当从表数据没用那么认为是垃圾数据,则清除
+            deleteSurveyAssetRightGroupById(rightGroup.getId().toString()) ;
+        }
+    }
 
     public boolean updateSurveyAssetRightGroup(SurveyAssetRightGroup oo, boolean updateNull) {
         return surveyAssetRightGroupDao.updateSurveyAssetRightGroup(oo, updateNull);
@@ -61,7 +122,7 @@ public class SurveyAssetRightGroupService {
     }
 
     private void removeFileByTableId(Integer tableId){
-        if (tableId == null){
+        if (tableId == null || tableId == 0){
             return;
         }
         SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
@@ -72,6 +133,35 @@ public class SurveyAssetRightGroupService {
             return;
         }
         sysAttachmentDtoList.forEach(sysAttachmentDto1 -> baseAttachmentService.deleteAttachment(sysAttachmentDto1.getId()));
+        removeBranch(tableId) ;
+    }
+
+    /**
+     * 删除此id下的所有子数据
+     * @param integer
+     */
+    private void removeBranch(Integer integer){
+        if (integer == null || integer == 0){
+            return;
+        }
+        SurveyAssetRightItem itemQuery =  new SurveyAssetRightItem();
+        itemQuery.setGroupId(integer);
+        List<SurveyAssetRightItem> itemList = surveyAssetRightItemService.getSurveyAssetRightItemListByExample(itemQuery) ;
+        if (CollectionUtils.isNotEmpty(itemList)){
+            Iterator<SurveyAssetRightItem> it = itemList.iterator();
+            while (it.hasNext()){
+                surveyAssetRightItemService.deleteSurveyAssetRightItemById(it.next().getId().toString());
+            }
+        }
+        SurveyAssetRightDeclare declareQuery = new SurveyAssetRightDeclare();
+        declareQuery.setGroupId(integer);
+        List<SurveyAssetRightDeclare> declareList = surveyAssetRightDeclareService.getSurveyAssetRightDeclareListByExample(declareQuery) ;
+        if (CollectionUtils.isNotEmpty(declareList)){
+            Iterator<SurveyAssetRightDeclare> it = declareList.iterator();
+            while (it.hasNext()){
+                surveyAssetRightDeclareService.deleteSurveyAssetRightDeclareById(it.next().getId().toString());
+            }
+        }
     }
 
     public void deleteSurveyAssetRightGroupById(String id) {
