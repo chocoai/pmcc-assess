@@ -2101,12 +2101,16 @@ public class GenerateBaseDataService {
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
         generateCommonMethod.settingBuildingTable(builder);
         String localPath = getLocalPath(RandomStringUtils.randomNumeric(8));
-        if (groupItem != null && StringUtils.isNotBlank(groupItem.getRecordIds())) {
-            String recordIds = groupItem.getRecordIds();
-            List<Integer> recordList = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(recordIds));
-            List<Integer> judgeNumberByDeclareIds = schemeJudgeObjectService.getJudgeNumberByDeclareIds(recordList);
-            String number = generateCommonMethod.convertNumber(judgeNumberByDeclareIds);
-            builder.insertHtml(generateCommonMethod.getSongWarpCssHtml3(String.format("%s%s", number, "号委估对象")));
+        if (groupItem != null) {
+//            String recordIds = groupItem.getRecordIds();
+//            List<Integer> recordList = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(recordIds));
+//            List<Integer> judgeNumberByDeclareIds = schemeJudgeObjectService.getJudgeNumberByDeclareIds(recordList);
+            List<Integer> schemeJudgeObjIds = schemeLiquidationAnalysisService.getSchemeJudgeObjIds(groupItem.getId());
+            List<Integer> judgeNumbers = schemeJudgeObjectService.getJudgeNumberByIds(schemeJudgeObjIds);
+            String number = generateCommonMethod.convertNumber(judgeNumbers);
+            if(StringUtils.isNotEmpty(number)){
+                builder.insertHtml(generateCommonMethod.getSongWarpCssHtml3(String.format("%s%s", number, "号委估对象")));
+            }
         }
         List<SchemeLiquidationAnalysisItem> itemList = Lists.newArrayList();
         if (groupItem != null && groupItem.getId() != null) {

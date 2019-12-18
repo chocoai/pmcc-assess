@@ -1,13 +1,24 @@
 package com.copower.pmcc.assess.controller.project.scheme;
 
 import com.alibaba.fastjson.JSON;
+import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeJudgeObjectDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeLiquidationAnalysisItemDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeLiquidationAnalysisJudgeDao;
+import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeLiquidationAnalysisGroup;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeLiquidationAnalysisGroupDto;
 import com.copower.pmcc.assess.dto.output.project.scheme.SchemeLiquidationAnalysisGroupVo;
 import com.copower.pmcc.assess.service.BaseService;
+import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeLiquidationAnalysisService;
+import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,6 +43,12 @@ public class SchemeLiquidationAnalysisController {
     private SchemeLiquidationAnalysisItemDao schemeLiquidationAnalysisItemDao;
     @Autowired
     private BaseService baseService;
+    @Autowired
+    private SchemeJudgeObjectService schemeJudgeObjectService;
+    @Autowired
+    private SchemeLiquidationAnalysisJudgeDao schemeLiquidationAnalysisJudgeDao;
+    @Autowired
+    private SchemeJudgeObjectDao schemeJudgeObjectDao;
 
 
     @ResponseBody
@@ -88,9 +106,9 @@ public class SchemeLiquidationAnalysisController {
 
     @ResponseBody
     @RequestMapping(value = "/getGroupAndPriceVo", name = "获取面积及单价", method = RequestMethod.POST)
-    public HttpResult getGroupAndPriceVoByJsonStr(String recordIds) {
+    public HttpResult getGroupAndPriceVoByJsonStr(String judgeObjectIds, Integer areaGroupId, Integer groupId) {
         try {
-            return HttpResult.newCorrectResult(projectTaskLiquidationAnalysisService.getGroupAndPriceVoByJsonStr(recordIds));
+            return HttpResult.newCorrectResult(projectTaskLiquidationAnalysisService.getGroupAndPriceVoByJsonStr(judgeObjectIds, areaGroupId, groupId));
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult(e.getMessage());
@@ -125,12 +143,41 @@ public class SchemeLiquidationAnalysisController {
 
     @ResponseBody
     @RequestMapping(value = "/getGroupAndPrice", method = RequestMethod.POST)
-    public HttpResult getGroupAndPriceVoByString(String recordIds) {
+    public HttpResult getGroupAndPriceVoByString(Integer groupId) {
         try {
-            return HttpResult.newCorrectResult(projectTaskLiquidationAnalysisService.getGroupAndPriceVoByString(recordIds));
+            return HttpResult.newCorrectResult(projectTaskLiquidationAnalysisService.getGroupAndPriceVoByString(groupId));
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult(e.getMessage());
         }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getSchemeJudgeObjList", method = {RequestMethod.GET}, name = "获取启用的估价对象列表")
+    public BootstrapTableVo getDataBlockList(String name, String certName, String seat, String ownership, Integer areaGroupId) {
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getJudgeObjectListByQuery(name, certName, seat, ownership, areaGroupId, null);
+        vo.setTotal(page.getTotal());
+        vo.setRows(CollectionUtils.isEmpty(judgeObjectList) ? new ArrayList<SchemeJudgeObject>() : judgeObjectList);
+        return vo;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getSchemeLiquidationJudgeList", method = {RequestMethod.GET}, name = "获取启用的估价对象列表")
+    public BootstrapTableVo getSchemeLiquidationJudgeList(String name, String certName, String seat, String ownership, Integer areaGroupId, Integer groupId) {
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        List<Integer> ids = projectTaskLiquidationAnalysisService.getSchemeJudgeObjIds(groupId);
+        if (CollectionUtils.isEmpty(ids)) {
+            //防止查出所有数据
+            ids.add(0);
+        }
+        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getJudgeObjectListByQuery(name, certName, seat, ownership, areaGroupId, ids);
+        vo.setTotal(page.getTotal());
+        vo.setRows(CollectionUtils.isEmpty(judgeObjectList) ? new ArrayList<SchemeJudgeObject>() : judgeObjectList);
+        return vo;
     }
 }

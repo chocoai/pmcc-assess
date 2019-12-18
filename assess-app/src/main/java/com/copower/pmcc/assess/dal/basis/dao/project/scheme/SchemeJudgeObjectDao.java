@@ -5,7 +5,6 @@ import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObjectExample;
 import com.copower.pmcc.assess.dal.basis.mapper.SchemeJudgeObjectMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -37,6 +36,30 @@ public class SchemeJudgeObjectDao {
         SchemeJudgeObjectExample example = new SchemeJudgeObjectExample();
         MybatisUtils.convertObj2Example(schemeJudgeObject, example);
         example.setOrderByClause("sorting,split_number");
+        return mapper.selectByExample(example);
+    }
+
+    public List<SchemeJudgeObject> getJudgeObjectListByQuery(String name,String certName, String seat,String ownership,Integer areaGroupId,List<Integer> ids) {
+        SchemeJudgeObjectExample example = new SchemeJudgeObjectExample();
+        SchemeJudgeObjectExample.Criteria criteria = example.createCriteria();
+        if(areaGroupId!=null){
+            criteria.andAreaGroupIdEqualTo(areaGroupId);
+        }
+        if (StringUtils.isNotBlank(name)) {
+            criteria.andNameLike(String.format("%%%s%%", name));
+        }
+        if (StringUtils.isNotBlank(seat)) {
+            criteria.andSeatLike(String.format("%%%s%%", seat));
+        }
+          if (StringUtils.isNotBlank(certName)) {
+            criteria.andCertNameLike(String.format("%%%s%%", certName));
+        }
+          if (StringUtils.isNotBlank(ownership)) {
+            criteria.andOwnershipLike(String.format("%%%s%%", ownership));
+        }
+        if(CollectionUtils.isNotEmpty(ids)){
+            criteria.andIdIn(ids);
+        }
         return mapper.selectByExample(example);
     }
 

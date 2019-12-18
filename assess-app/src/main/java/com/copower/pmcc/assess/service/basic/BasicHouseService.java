@@ -161,24 +161,19 @@ public class BasicHouseService {
      /**
      * 删除同一单元下的房屋数据
      *
-     * @param unitId
+     * @param houseId
      * @return
      * @throws Exception
      */
-    public void deleteHousesByUnitId(Integer unitId) throws Exception {
-        List<BasicHouse> houses = getHousesByUnitId(unitId);
-        if(CollectionUtils.isNotEmpty(houses)){
-            for (BasicHouse houseItem: houses) {
-                this.deleteBasicHouse(houseItem.getId());
-                this.clearInvalidChildData(houseItem.getId());
-                //删除标准时，删除原来basicApply的数据
-                BasicApply basicApply = new BasicApply();
-                basicApply.setBasicHouseId(houseItem.getId());
-                BasicApply basicApplyOnly = basicApplyService.getBasicApplyOnly(basicApply);
-                if (basicApplyOnly != null) {
-                    basicApplyDao.deleteBasicApply(basicApplyOnly.getId());
-                }
-            }
+    public void deleteHousesAndBasicApply(Integer houseId) throws Exception {
+        this.deleteBasicHouse(houseId);
+        this.clearInvalidChildData(houseId);
+        //删除标准时，删除原来basicApply的数据
+        BasicApply basicApply = new BasicApply();
+        basicApply.setBasicHouseId(houseId);
+        BasicApply basicApplyOnly = basicApplyService.getBasicApplyOnly(basicApply);
+        if (basicApplyOnly != null) {
+            basicApplyDao.deleteBasicApply(basicApplyOnly.getId());
         }
 
     }
