@@ -13,6 +13,7 @@ import com.copower.pmcc.assess.dto.input.project.scheme.SchemeProgrammeDto;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
 import com.copower.pmcc.assess.dto.output.project.scheme.SchemeAreaGroupVo;
+import com.copower.pmcc.assess.dto.output.project.scheme.SchemeJudgeObjectVo;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -90,7 +91,7 @@ public class SchemeProgrammeController {
      * @param projectId
      * @param planId
      */
-    private void setEditParams(ModelAndView modelAndView, Integer projectId, Integer planId,String processInsId) {
+    private void setEditParams(ModelAndView modelAndView, Integer projectId, Integer planId, String processInsId) {
         List<SchemeAreaGroupVo> areaGroups = schemeAreaGroupService.getSchemeAreaGroup(projectId);//获取分组信息
         ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(projectId));
         modelAndView.addObject("projectInfo", projectInfoVo);
@@ -109,7 +110,7 @@ public class SchemeProgrammeController {
         BaseDataDic entrustPurposeData = baseDataDicService.getDataDicById(projectInfoVo.getEntrustPurpose());
         String valueDateExplain = baseDataDicService.getValueByKey("valueDateExplain", entrustPurposeData);
         modelAndView.addObject("valueDateExplain", valueDateExplain);
-        if (StringUtils.isNotBlank(processInsId)){
+        if (StringUtils.isNotBlank(processInsId)) {
             modelAndView.addObject("processInsId", processInsId);
         }
     }
@@ -121,7 +122,7 @@ public class SchemeProgrammeController {
      * @param projectId
      * @param planId
      */
-    private void setDetailParams(ModelAndView modelAndView, Integer projectId, Integer planId,String processInsId) {
+    private void setDetailParams(ModelAndView modelAndView, Integer projectId, Integer planId, String processInsId) {
         List<SchemeAreaGroupVo> areaGroups = schemeAreaGroupService.getSchemeAreaGroup(projectId);//获取分组信息
         ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(projectId));
         modelAndView.addObject("projectInfo", projectInfoVo);
@@ -130,31 +131,31 @@ public class SchemeProgrammeController {
         modelAndView.addObject("setUseList", baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.EXAMINE_HOUSE_PRACTICAL_USE));
         modelAndView.addObject("dataDicMethodList", baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_EVALUATION_METHOD));
         modelAndView.addObject("planId", planId);
-        if (StringUtils.isNotBlank(processInsId)){
+        if (StringUtils.isNotBlank(processInsId)) {
             modelAndView.addObject("processInsId", processInsId);
         }
     }
 
     @RequestMapping(value = "/index", name = "方案设置视图", method = {RequestMethod.GET})
-    public ModelAndView index(Integer projectId, Integer planId,String processInsId) {
+    public ModelAndView index(Integer projectId, Integer planId, String processInsId) {
         String view = "/project/stageScheme/programmeIndex";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
-        setEditParams(modelAndView, projectId, planId,processInsId);
+        setEditParams(modelAndView, projectId, planId, processInsId);
         return modelAndView;
     }
 
     @RequestMapping(value = "/view", name = "方案设置视图 (实际相当于详情)", method = {RequestMethod.GET})
-    public ModelAndView view(Integer projectId, Integer planId,String processInsId) {
+    public ModelAndView view(Integer projectId, Integer planId, String processInsId) {
         String view = "/project/stageScheme/programmeView";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
-        setDetailParams(modelAndView, projectId, planId,processInsId);
+        setDetailParams(modelAndView, projectId, planId, processInsId);
         return modelAndView;
     }
 
     @RequestMapping(value = "/schemeProgrammeApprovalDetails", name = "方案流程详情", method = {RequestMethod.GET})
     public ModelAndView schemeProgrammeApprovalDetails(String processInsId, String taskId, Integer boxId, String agentUserAccount) {
         ProjectPlan projectPlan = projectPlanService.getProjectplanByProcessInsId(processInsId);
-        return view(projectPlan.getProjectId(), projectPlan.getId(),null);
+        return view(projectPlan.getProjectId(), projectPlan.getId(), null);
     }
 
     @RequestMapping(value = "/schemeProgrammeEdit", name = "方案流程编辑", method = {RequestMethod.GET})
@@ -162,7 +163,7 @@ public class SchemeProgrammeController {
         String view = "/project/stageScheme/programmeIndex";
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView(view, processInsId, boxId, taskId, agentUserAccount);
         ProjectPlan projectPlan = projectPlanService.getProjectplanByProcessInsId(processInsId);
-        setEditParams(modelAndView, projectPlan.getProjectId(), projectPlan.getId(),processInsId);
+        setEditParams(modelAndView, projectPlan.getProjectId(), projectPlan.getId(), processInsId);
         return modelAndView;
     }
 
@@ -171,7 +172,7 @@ public class SchemeProgrammeController {
         ProjectPlan projectPlan = projectPlanService.getProjectplanByProcessInsId(processInsId);
         String view = "/project/stageScheme/programmeView";
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView(view, processInsId, boxId, taskId, agentUserAccount);
-        setDetailParams(modelAndView,  projectPlan.getProjectId(), projectPlan.getId(),processInsId);
+        setDetailParams(modelAndView, projectPlan.getProjectId(), projectPlan.getId(), processInsId);
         return modelAndView;
     }
 
@@ -182,7 +183,7 @@ public class SchemeProgrammeController {
             processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
             return HttpResult.newCorrectResult();
         } catch (BpmException e) {
-            baseService.writeExceptionInfo(e,"方案 审批任务提交");
+            baseService.writeExceptionInfo(e, "方案 审批任务提交");
             return HttpResult.newErrorResult("异常");
         }
     }
@@ -193,15 +194,16 @@ public class SchemeProgrammeController {
             processControllerComponent.processSubmitLoopTaskNodeArg(publicService.getEditApprovalModel(approvalModelDto), false);
             return HttpResult.newCorrectResult();
         } catch (BpmException e) {
-            baseService.writeExceptionInfo(e,"方案 编辑任务提交");
+            baseService.writeExceptionInfo(e, "方案 编辑任务提交");
             return HttpResult.newErrorResult("异常");
         }
     }
 
     @RequestMapping(value = "/getSchemeJudgeObjectList", name = "区域下的委估对象数据列表 ", method = RequestMethod.POST)
-    public HttpResult getSchemeJudgeObjectList(Integer areaGroupId) {
+    public HttpResult getSchemeJudgeObjectList(Integer areaGroupId, String number, String ownership, String seat) {
         try {
-            return HttpResult.newCorrectResult(schemeJudgeObjectService.getSchemeJudgeObjectList(areaGroupId));
+            List<SchemeJudgeObjectVo> schemeJudgeObjectList = schemeJudgeObjectService.getSchemeJudgeObjectList(areaGroupId, number, ownership, seat);
+            return HttpResult.newCorrectResult(schemeJudgeObjectList);
         } catch (Exception e) {
             logger.error(e.getMessage());
             return HttpResult.newErrorResult(e.getMessage());
@@ -246,9 +248,9 @@ public class SchemeProgrammeController {
     }
 
     @PostMapping(name = "委估对象拆分", value = "/splitJudge")
-    public HttpResult splitJudge(Integer projectId, Integer areaGroupId, Integer id) {
+    public HttpResult splitJudge(Integer projectId, Integer areaGroupId, Integer id, Integer splitCount) {
         try {
-            schemeJudgeObjectService.splitJudge(projectId, areaGroupId, id);
+            schemeJudgeObjectService.splitJudge(projectId, areaGroupId, id, splitCount);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             logger.error("委估对象拆分", e);
@@ -304,6 +306,20 @@ public class SchemeProgrammeController {
         } catch (Exception e) {
             logger.error("保存区域下方案", e);
             return HttpResult.newErrorResult("保存区域下方案异常");
+        }
+    }
+
+    @RequestMapping(value = "/saveProgrammeJudge", name = "保存估价对象", method = RequestMethod.POST)
+    public HttpResult saveProgrammeJudge(String formData) {
+        try {
+            if (StringUtils.isNotBlank(formData)) {
+                SchemeJudgeObject schemeJudgeObject = JSON.parseObject(formData, SchemeJudgeObject.class);
+                schemeJudgeObjectService.updateSchemeJudgeObject(schemeJudgeObject);
+            }
+            return HttpResult.newCorrectResult();
+        } catch (Exception e) {
+            logger.error("保存估价对象", e);
+            return HttpResult.newErrorResult("保存估价对象异常");
         }
     }
 

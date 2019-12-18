@@ -214,7 +214,7 @@
                             <div class="form-group">
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
-                                        财产不包括
+                                        财产不包括<span class="symbol required"></span>
                                     </label>
                                     <div class="col-sm-11">
                                         <textarea class="form-control" name="scopeNotInclude" placeholder="财产不包括"
@@ -223,8 +223,53 @@
                                 </div>
                             </div>
                             <div class="x_title">
-                                <h4>估价对象信息</h4>
+                                <h4>估价对象查询</h4>
                                 <div class="clearfix"></div>
+                            </div>
+                            <div class="judge-object-query">
+                                <div class="form-group">
+                                    <label class="col-sm-1 control-label">
+                                        估价对象号
+                                    </label>
+                                    <div class="col-sm-2">
+                                        <input type="text" data-rule-maxlength="100" placeholder="估价对象号" name="number"
+                                               class="form-control">
+                                    </div>
+                                    <label class="col-sm-1 control-label">
+                                        所有权人
+                                    </label>
+                                    <div class="col-sm-2">
+                                        <input type="text" data-rule-maxlength="100" placeholder="所有权人" name="ownership"
+                                               class="form-control">
+                                    </div>
+                                    <label class="col-sm-1 control-label">
+                                        坐落
+                                    </label>
+                                    <div class="col-sm-2">
+                                        <input type="text" data-rule-maxlength="100" placeholder="坐落" name="seat"
+                                               class="form-control">
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <button type="button" class="btn btn-primary"
+                                                onclick="programme.loadJudgeObjectList(this);">查询
+                                        </button>
+                                        <button type="button" class="btn btn-primary"
+                                                onclick="programme.batchMerge(this);">批量合并
+                                        </button>
+                                        <button type="button" class="btn btn-primary"
+                                                onclick="programme.selectAll(this);">全选
+                                        </button>
+                                        <button type="button" class="btn btn-primary"
+                                                onclick="programme.selectInvert(this);">反选
+                                        </button>
+                                        <button type="button" class="btn btn-primary"
+                                                onclick="programme.collectJudge(this);">收起
+                                        </button>
+                                        <button type="button" class="btn btn-primary"
+                                                onclick="programme.expandJudge(this);">展开
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                             <div class="judge-object-content"></div>
                         </form>
@@ -281,7 +326,6 @@
                                 <thead>
                                 <tr>
                                     <th width="35%">基本方法</th>
-                                    <%--<th>其它方法</th>--%>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -377,9 +421,7 @@
                 <h3 class="modal-title"></h3>
             </div>
             <div class="modal-body">
-                <table class="table table-bordered" id="tb_judge_detail_list">
-                    <!-- cerare document add ajax data-->
-                </table>
+                <table class="table table-bordered" id="tb_judge_detail_list"></table>
             </div>
         </div>
     </div>
@@ -388,9 +430,12 @@
 <script type="text/html" id="judgeObjectHtml">
     <div class="x_panel">
         <div class="x_title">
+            <ul class="nav navbar-right panel_toolbox">
+                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+            </ul>
             <h3>
                 <input type="checkbox">
-                {mergeNumber}
+                <label>{mergeNumber}</label>
                 <small>
                     <a href="javascript://" onclick="programme.splitJudge(this);"
                        class="btn btn-xs btn-success judge-split tooltips">拆分</a>
@@ -399,9 +444,11 @@
                     <a href="javascript://" onclick="programme.mergeJudge(this);"
                        class="btn btn-xs btn-warning judge-merge tooltips">合并</a>
                     <a href="javascript://" onclick="programme.mergeJudgeCancel(this);"
-                       class="btn btn-xs btn-warning judge-merge-cancel tooltips">取消合并</a>
+                       class="btn btn-xs btn-warning judge-merge-cancel tooltips">取消合并(全部)</a>
+                    <a href="javascript://" onclick="programme.mergeJudgeCancel(this);"
+                       class="btn btn-xs btn-warning judge-merge-cancel tooltips">取消合并(部分)</a>
                     <a href="javascript://" title="评估方法" onclick="programmeMethod.setMethod(this);"
-                       class="btn btn-xs btn-success judge-method tooltips">方法</a>
+                       class="btn btn-xs btn-success judge-method tooltips">评估方法</a>
                 </small>
             </h3>
             <div class="clearfix"></div>
@@ -475,7 +522,8 @@
                         设定用途
                     </label>
                     <div class="col-sm-2">
-                        <select class="form-control" required data-name="setUse" name="setUse{id}">
+                        <select class="form-control" required data-name="setUse" name="setUse{id}"
+                                onchange="programme.saveProgrammeJudge(this);">
                             <option value="">--请选择--</option>
                             <c:forEach items="${setUseList}" var="setUse">
                                 <option value="${setUse.id}">${setUse.name}</option>
@@ -488,7 +536,8 @@
                         最佳利用方式
                     </label>
                     <div class="col-sm-2">
-                        <select class="form-control" required data-name="bestUse" name="bestUse{id}">
+                        <select class="form-control" required data-name="bestUse" name="bestUse{id}"
+                                onchange="programme.saveProgrammeJudge(this);">
                             <c:forEach items="${bestUseList}" var="bestUse">
                                 <option value="${bestUse.id}">${bestUse.name}</option>
                             </c:forEach>
@@ -511,7 +560,7 @@
                     </label>
                     <div class="col-sm-2">
                         <input class="form-control" type="text" required data-rule-number="true"
-                               data-rule-range="[1,{floorArea}]"
+                               data-rule-range="[1,{floorArea}]" onblur="programme.saveProgrammeJudge(this);"
                                name="evaluationArea{id}" data-name="evaluationArea"
                                placeholder="评估面积" value="{evaluationArea}">
                     </div>
@@ -522,6 +571,7 @@
                     </label>
                     <div class="col-sm-2">
                         <input class="form-control" type="text" required name="mergeExplain{id}"
+                               onblur="programme.saveProgrammeJudge(this);"
                                data-name="mergeExplain" placeholder="合并对象说明" value="{mergeExplain}">
                     </div>
                 </div>
@@ -531,6 +581,7 @@
                     </label>
                     <div class="col-sm-2">
                         <input class="form-control" type="text" required name="splitExplain{id}"
+                               onblur="programme.saveProgrammeJudge(this);"
                                data-name="splitExplain" placeholder="拆分对象说明" value="{splitExplain}">
                     </div>
                 </div>
@@ -576,15 +627,46 @@
         });
     })
 
+    //  提交 编辑数据(流程状态下)
+    function saveform() {
+        if (!$("#frm_approval").valid()) {
+            return false;
+        }
+        //进行保存操作
+        programme.saveProgrammeAll(function () {
+            var item = formApproval.getFormData();
+            $.extend(item, {planId: '${planId}', projectId: '${projectInfo.id}'});
+            $.ajax({
+                url: "${pageContext.request.contextPath}/schemeProgramme/submitProgrammeEdit",
+                type: "post",
+                dataType: "json",
+                data: item,
+                success: function (result) {
+                    if (result.ret) {
+                        Alert("提交数据成功!", 1, null, function () {
+                            window.close();
+                        });
+                    }
+                    else {
+                        Alert(result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+                }
+            })
+        });
+    }
+
     //方案
     var programme = {};
     programme.config = {
         areaPopIndex: 0,//区域弹框index
         judgePopIndex: 0,//委估对象弹框index
         //区域合并项html
-        areaItemHtml: '<li data-areaGroupId="{areaGroupId}"> <p> <label>{areaName}</label> <a href="javascript://" onclick="programme.mergeItemRemove(this);" class="btn btn-xs btn-warning tooltips" style="float: right;"><i class="fa fa-minus fa-white" ></i></a> </p> </li>',
+        areaItemHtml: '<li data-areaGroupId="{areaGroupId}"> <label>{areaName}</label> <a href="javascript://" onclick="programme.mergeItemRemove(this);" style="float: right;"><i class="fa fa-remove fa-white" ></i></a> </li>',
         //委估对象合并项html
-        judgeItemHtml: '<li data-judgeId="{judgeId}"> <p> <label onclick="programme.setStandardJudge(this);">{mergeNumber}号估价对象</label> <a href="javascript://" onclick="programme.mergeItemRemove(this);" class="btn btn-xs btn-warning tooltips" style="float: right;"><i class="fa fa-minus fa-white" ></i></a> </p> </li>',
+        judgeItemHtml: '<li data-judgeId="{judgeId}">  <label onclick="programme.setStandardJudge(this);">{mergeNumber}号估价对象</label> <a href="javascript://" onclick="programme.mergeItemRemove(this);"  style="float: right;"><i class="fa fa-remove fa-white" ></i></a>  </li>',
         currJudgeMethodButton: undefined //当前评估方法button
     };
 
@@ -600,11 +682,14 @@
         var tbody = $(_this).closest(".area_panel").find(".judge-object-content");
         tbody.empty();
         var areaGroupId = $(_this).closest('.area_panel').find('[name=areaGroupId]').val();
+        var $query = $(_this).closest(".area_panel").find(".judge-object-query");
+        var data = {areaGroupId: areaGroupId};
+        data.number = $query.find('[name=number]').val();
+        data.ownership = $query.find('[name=ownership]').val();
+        data.seat = $query.find('[name=seat]').val();
         $.ajax({
             url: "${pageContext.request.contextPath}/schemeProgramme/getSchemeJudgeObjectList",
-            data: {
-                areaGroupId: areaGroupId
-            },
+            data: data,
             type: "post",
             dataType: "json",
             success: function (result) {
@@ -647,6 +732,7 @@
                         }
                         if (item.bisMerge) {
                             lastTr.find('[data-name=mergeExplainContainer' + item.id + ']').show();
+                            lastTr.find('.x_title').find('.judge-split').remove();
                         }
                         if (!item.bisSplit && item.splitNumber) {
                             lastTr.find('[data-name=splitExplainContainer' + item.id + ']').show();
@@ -679,11 +765,11 @@
             layer.closeAll();
             programme.config.areaPopIndex = layer.open({
                 title: "区域合并",
-                offset: 't',
+                offset: 'rt',
                 shade: false,
                 zIndex: 998,
                 area: ['420px', '300px'], //宽高
-                content: '<ul id="area-merge-ul" class="to_do"></ul>',
+                content: '<ul id="area-merge-ul" class="list-unstyled project_files"></ul>',
                 yes: function (index, layero) {
                     programme.areaMergeSubmit();
                 },
@@ -768,37 +854,42 @@
 
     //委估对象拆分
     programme.splitJudge = function (_this) {
-        programme.saveProgrammeArea($(_this).closest('.area_panel'));
-        //后台添加数据
-        Loading.progressShow();
-        $.ajax({
-            url: '${pageContext.request.contextPath}/schemeProgramme/splitJudge',
-            data: {
-                projectId: '${projectInfo.id}',
-                areaGroupId: $(_this).closest('.area_panel').find('[name=areaGroupId]').val(),
-                id: $(_this).closest('.x_panel').find('[data-name="id"]').val()
-            },
-            type: "post",
-            dataType: "json",
-            success: function (result) {
-                Loading.progressHide();
-                if (result.ret) {
-                    programme.loadJudgeObjectList($(_this).closest('.area_panel'));
-                } else {
-                    Alert("委估对象拆分失败:" + result.errmsg);
-                }
-            },
-            error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+        layer.prompt({
+            formType: 0,
+            title: '拆分个数',
+        }, function (value, index, elem) {
+            if (!AssessCommon.isNumber(value)) {
+                toastr.info("只能填写数字");
+                return;
             }
+
+            $.ajax({
+                url: '${pageContext.request.contextPath}/schemeProgramme/splitJudge',
+                data: {
+                    projectId: '${projectInfo.id}',
+                    areaGroupId: $(_this).closest('.area_panel').find('[name=areaGroupId]').val(),
+                    id: $(_this).closest('.x_panel').find('[data-name="id"]').val(),
+                    splitCount: value
+                },
+                type: "post",
+                dataType: "json",
+                success: function (result) {
+                    layer.close(index);
+                    if (result.ret) {
+                        programme.loadJudgeObjectList($(_this).closest('.area_panel'));
+                    } else {
+                        Alert("委估对象拆分失败:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+                }
+            });
         });
     };
 
     //删除拆分出来的委估对象
     programme.delSplitJudge = function (_this) {
-        programme.saveProgrammeArea($(_this).closest('.area_panel'));
-        //后台添加数据
-        Loading.progressShow();
         $.ajax({
             url: '${pageContext.request.contextPath}/schemeProgramme/delSplitJudge',
             data: {
@@ -811,7 +902,7 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    programme.loadJudgeObjectList($(_this).closest('.area_panel'));
+                    $(_this).closest('.x_panel').remove();
                 } else {
                     Alert("委估对象删除失败:" + result.errmsg);
                 }
@@ -822,38 +913,56 @@
         });
     };
 
+    //估价对象数据验证
+    programme.valideJudge = function (_this) {
+        var $form = $(_this).closest('form');
+        var $panel = $(_this).closest('.x_panel');
+        var $chevron = $panel.find('.fa-chevron-up');
+        if ($chevron.length > 0) {
+            $chevron.closest('.collapse-link').trigger('click');
+        }
+        var passFlag = true;
+        $panel.find('.x_content').find('input,select').each(function () {
+            if (!$(this).is(':hidden') && !$form.validate().element($(this))) {
+                passFlag = false;
+            }
+        })
+        if(passFlag&&$chevron.length > 0){
+            $chevron.closest('.collapse-link').trigger('click');
+        }
+        return passFlag;
+    }
+
     //委估对象合并
     programme.mergeJudge = function (_this) {
         //先验证该行数据是否填写正确及完整
         var $form = $(_this).closest('form');
         var $panel = $(_this).closest('.x_panel');
-        var passFlag = $form.validate().element($panel.find('[data-name=setUse]'));
-        if (!passFlag) return false;
-        passFlag = $form.validate().element($panel.find('[data-name=evaluationArea]'));
-        if (!passFlag) return false;
-
-        programme.saveProgrammeArea($(_this).closest('.area_panel'));
+        var judgeNumber = $(_this).closest('h3').find('label').text();
+        if (!programme.valideJudge(_this)) {
+            toastr.info('请先完善估价对象' + judgeNumber + '信息');
+            return false;
+        }
         var mergeNumber = $panel.find('[data-name="mergeNumber"]').val();
         var judgeId = $panel.find('[data-name="id"]').val();
         var html = programme.config.judgeItemHtml;
         if (programme.config.judgePopIndex <= 0) {
             programme.config.judgePopIndex = layer.open({
                 title: "委估对象合并",
-                offset: 't',
+                offset: 'rt',
                 shade: false,
                 zIndex: 999,
                 area: ['420px', '300px'], //宽高
-                content: '<ul id="judge-merge-ul" class="to_do"></ul>',
+                content: '<ul id="judge-merge-ul" class="list-unstyled project_files"></ul>',
                 yes: function (index, layero) {
-                    programme.saveProgrammeAll(function () {
-                        programme.mergeJudgeSubmit(_this, $(_this).closest('.area_panel'));
-                    });
+                    programme.mergeJudgeSubmit(_this, $(_this).closest('.area_panel'));
                 },
                 end: function () {
                     programme.config.judgePopIndex = 0;
                 },
                 success: function () {
                     $("#judge-merge-ul").prepend(html.replace(/{mergeNumber}/g, mergeNumber).replace(/{judgeId}/g, judgeId));
+                    programme.setStandardJudge($("#judge-merge-ul").find('li label'));
                 }
             });
         } else {
@@ -882,7 +991,7 @@
             }
         })
         if (!standardJudgeId) {
-            toastr.warning('参与合并的估价对象中未设置标准房地产');
+            toastr.info('参与合并的估价对象中未设置标准房地产');
             return false;
         }
         $.ajax({
@@ -949,24 +1058,6 @@
         data.propertyScope = $(areaPanel).find('[name="propertyScope"]').val();
         data.scopeInclude = $(areaPanel).find('[name="scopeInclude"]').val();
         data.scopeNotInclude = $(areaPanel).find('[name="scopeNotInclude"]').val();
-        data.schemeJudgeObjects = [];
-
-        var panels = $(areaPanel).find(".x_panel");
-        if (panels && panels.length > 0) {
-            $.each(panels, function (i, panel) {
-                var schemeJudgeObject = {};
-                schemeJudgeObject.id = $(panel).find('[data-name="id"]').val();
-                schemeJudgeObject.setUse = $(panel).find('[data-name="setUse"]').val();
-                schemeJudgeObject.bestUse = $(panel).find('[data-name="bestUse"]').val();
-                schemeJudgeObject.setPlotRatio = $(panel).find('[data-name="setPlotRatio"]').val();
-                schemeJudgeObject.planPlotRatio = $(panel).find('[data-name="planPlotRatio"]').val();
-                schemeJudgeObject.actualPlotRatio = $(panel).find('[data-name="actualPlotRatio"]').val();
-                schemeJudgeObject.evaluationArea = $(panel).find('[data-name="evaluationArea"]').val();
-                schemeJudgeObject.mergeExplain = $(panel).find('[data-name="mergeExplain"]').val();
-                schemeJudgeObject.splitExplain = $(panel).find('[data-name="splitExplain"]').val();
-                data.schemeJudgeObjects.push(schemeJudgeObject);
-            })
-        }
         return data;
     };
 
@@ -976,6 +1067,36 @@
         $(_this).closest('ul').find('label').css('color', '');
         $(_this).closest('li').attr('data-standard-flag', 'true');
         $(_this).css('color', 'red');
+    }
+
+    //保存估价对象信息
+    programme.saveProgrammeJudge = function (_this) {
+        var $panel = $(_this).closest('.x_panel');
+        var schemeJudgeObject = {};
+        schemeJudgeObject.id = $panel.find('[data-name="id"]').val();
+        schemeJudgeObject.setUse = $panel.find('[data-name="setUse"]').val();
+        schemeJudgeObject.bestUse = $panel.find('[data-name="bestUse"]').val();
+        schemeJudgeObject.setPlotRatio = $panel.find('[data-name="setPlotRatio"]').val();
+        schemeJudgeObject.planPlotRatio = $panel.find('[data-name="planPlotRatio"]').val();
+        schemeJudgeObject.actualPlotRatio = $panel.find('[data-name="actualPlotRatio"]').val();
+        schemeJudgeObject.evaluationArea = $panel.find('[data-name="evaluationArea"]').val();
+        schemeJudgeObject.mergeExplain = $panel.find('[data-name="mergeExplain"]').val();
+        schemeJudgeObject.splitExplain = $panel.find('[data-name="splitExplain"]').val();
+        $.ajax({
+            url: '${pageContext.request.contextPath}/schemeProgramme/saveProgrammeJudge',
+            data: {
+                formData: JSON.stringify(schemeJudgeObject)
+            },
+            async: false,
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                //不做任何信息提示
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+            }
+        });
     }
 
     //保存区域下方案
@@ -1075,37 +1196,6 @@
             }
         });
     };
-
-    //  提交 编辑数据(流程状态下)
-    function saveform() {
-        if (!$("#frm_approval").valid()) {
-            return false;
-        }
-        //进行保存操作
-        programme.saveProgrammeAll(function () {
-            var item = formApproval.getFormData();
-            $.extend(item, {planId: '${planId}', projectId: '${projectInfo.id}'});
-            $.ajax({
-                url: "${pageContext.request.contextPath}/schemeProgramme/submitProgrammeEdit",
-                type: "post",
-                dataType: "json",
-                data: item,
-                success: function (result) {
-                    if (result.ret) {
-                        Alert("提交数据成功!", 1, null, function () {
-                            window.close();
-                        });
-                    }
-                    else {
-                        Alert(result.errmsg);
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
-                }
-            })
-        });
-    }
 
     //加载合并对象的明细
     programme.loadJudgeDetailList = function (pid) {
@@ -1329,18 +1419,56 @@
         })
     };
 
+    //批量合并
     programme.batchMerge = function (_this) {
-        $(_this).closest('form').find('.judge-merge').each(function () {
-            $(this).trigger('click');
+        var checkedBoxs = $(_this).closest('.area_panel').find('input:checkbox:checked');
+        if (checkedBoxs.length <= 0) {
+            toastr.info('请选择需要合并的估价对象');
+            return false;
+        }
+        checkedBoxs.each(function () {
+            if (false == programme.mergeJudge($(this))) {
+                return false;
+            }
         })
     }
 
+    //全选
+    programme.selectAll = function (_this) {
+        $(_this).closest('.area_panel').find('input:checkbox').prop('checked', true);
+    }
+
+    //反选
+    programme.selectInvert = function (_this) {
+        $(_this).closest('.area_panel').find('input:checkbox').each(function () {
+            $(this).prop('checked', !$(this).prop('checked'));
+        })
+    }
+
+    //收起
+    programme.collectJudge = function (_this) {
+        $(_this).closest('.area_panel').find('.judge-object-content').find('.fa-chevron-down').each(function () {
+            $(this).closest('.collapse-link').trigger('click');
+        })
+    }
+
+    //展开
+    programme.expandJudge = function (_this) {
+        $(_this).closest('.area_panel').find('.judge-object-content').find('.fa-chevron-up').each(function () {
+            $(this).closest('.collapse-link').trigger('click');
+        })
+    }
 </script>
 <script type="text/javascript">
     var programmeMethod = {};
 
     programmeMethod.setMethod = function (_this) {
-        programmeMethod.clean();
+        var judgeNumber = $(_this).closest('h3').find('label').text();
+        if (!programme.valideJudge(_this)) {
+            toastr.info('请先完善估价对象' + judgeNumber + '信息');
+            return false;
+        }
+        programmeMethod.clear();
         var judgeObjectId = $(_this).closest(".x_panel").find('[data-name="id"]').val();
         $.ajax({
             url: '${pageContext.request.contextPath}/schemeProgramme/getJudgeFunction',
@@ -1504,7 +1632,7 @@
     }
 
     //清空数据
-    programmeMethod.clean = function () {
+    programmeMethod.clear = function () {
         $("#frm_method_info").find('[name=judgeObjectId]').val('');
         $("#frm_method_info").find('.btn-select-use').attr('data-use-flag', false).addClass('btn-default').removeClass('btn-success');
         $('#applicableTbody,#notApplicableTbody').empty();

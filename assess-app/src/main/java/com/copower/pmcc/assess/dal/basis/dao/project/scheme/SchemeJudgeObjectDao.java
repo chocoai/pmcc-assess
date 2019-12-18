@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObjectExample;
 import com.copower.pmcc.assess.dal.basis.mapper.SchemeJudgeObjectMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -82,6 +83,23 @@ public class SchemeJudgeObjectDao {
         return mapper.selectByExample(example);
     }
 
+    public List<SchemeJudgeObject> getSchemeJudgeObjectList(Integer areaGroupId, String number, String ownership, String seat) {
+        SchemeJudgeObjectExample example = new SchemeJudgeObjectExample();
+        SchemeJudgeObjectExample.Criteria criteria = example.createCriteria();
+        criteria.andAreaGroupIdEqualTo(areaGroupId).andBisEnableEqualTo(true);
+        if (StringUtils.isNotBlank(number)) {
+            criteria.andNumberLike(String.format("%%%s%%", number));
+        }
+        if (StringUtils.isNotBlank(ownership)) {
+            criteria.andOwnershipLike(String.format("%%%s%%", ownership));
+        }
+        if (StringUtils.isNotBlank(seat)) {
+            criteria.andSeatLike(String.format("%%%s%%", seat));
+        }
+        example.setOrderByClause("sorting,split_number");
+        return mapper.selectByExample(example);
+    }
+
     public List<SchemeJudgeObject> getListByPid(Integer pid) {
         SchemeJudgeObjectExample example = new SchemeJudgeObjectExample();
         example.createCriteria().andPidEqualTo(pid);
@@ -121,7 +139,7 @@ public class SchemeJudgeObjectDao {
         example.createCriteria().andProjectIdEqualTo(projectId).andAreaGroupIdEqualTo(areaGroupId).andBisMergeEqualTo(false).andBisSplitEqualTo(false);
         example.setOrderByClause("number desc");
         List<SchemeJudgeObject> judgeObjects = mapper.selectByExample(example);
-        if(CollectionUtils.isEmpty(judgeObjects)) return 0;
+        if (CollectionUtils.isEmpty(judgeObjects)) return 0;
         return Integer.valueOf(judgeObjects.get(0).getNumber());
     }
 }
