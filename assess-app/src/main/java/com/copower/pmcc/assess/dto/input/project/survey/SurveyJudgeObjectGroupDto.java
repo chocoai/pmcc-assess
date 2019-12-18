@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.dto.input.project.survey;
 
-import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventoryRight;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetRightItem;
 
 import java.util.List;

@@ -133,7 +133,6 @@ public class GenerateBaseDataService {
     private BasicUnitHuxingService basicUnitHuxingService;
     private BaseService baseService;
     private ErpRpcUserService erpRpcUserService;
-    private GenerateEquityService2 generateEquityService2;
     private BasicHouseTradingService basicHouseTradingService;
     private GenerateEquityService generateEquityService;
 
@@ -6896,7 +6895,6 @@ public class GenerateBaseDataService {
         this.surveyAssetRightGroupService = SpringContextUtils.getBean(SurveyAssetRightGroupService.class);
         this.surveyAssetRightService = SpringContextUtils.getBean(SurveyAssetRightService.class);
         this.basicHouseTradingService = SpringContextUtils.getBean(BasicHouseTradingService.class);
-        this.generateEquityService2 = SpringContextUtils.getBean(GenerateEquityService2.class);
         //必须在bean之后
         SchemeAreaGroup areaGroup = schemeAreaGroupService.get(areaId);
         if (areaGroup == null) {
