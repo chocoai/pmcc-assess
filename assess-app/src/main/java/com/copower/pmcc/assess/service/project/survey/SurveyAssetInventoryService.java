@@ -3,14 +3,12 @@ package com.copower.pmcc.assess.service.project.survey;
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInventoryDao;
-import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInventoryRightDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.survey.SurveyAssetCommonDataDto;
 import com.copower.pmcc.assess.dto.output.basic.SurveyAssetInventoryVo;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
-import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
@@ -46,11 +44,6 @@ public class SurveyAssetInventoryService extends BaseService {
     private SurveyAssetInventoryContentService surveyAssetInventoryContentService;
     @Autowired
     private BaseAttachmentService baseAttachmentService;
-    @Autowired
-    private ProjectPlanDetailsService projectPlanDetailsService;
-    @Autowired
-    private SurveyAssetInventoryRightDao surveyAssetInventoryRightDao;
-
     /**
      * 保存资产清查数据
      *
@@ -136,69 +129,6 @@ public class SurveyAssetInventoryService extends BaseService {
         }
     }
 
-
-    /**
-     * 资产清查数据拷贝
-     *
-     * @param sourcePlanDetailsId
-     * @param targetPlanDetailsId
-     */
-    @Transactional(rollbackFor = Exception.class)
-    public void copyAssetInventory(Integer sourcePlanDetailsId, Integer targetPlanDetailsId) {
-        SurveyAssetInventory surveyAssetInventory = surveyAssetInventoryDao.getDataByPlanDetailsId(sourcePlanDetailsId);
-        if (surveyAssetInventory == null) return;
-        ProjectPlanDetails targetPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(targetPlanDetailsId);
-        SurveyAssetInventory target = surveyAssetInventoryDao.getDataByPlanDetailsId(targetPlanDetailsId);
-        target = target == null ? new SurveyAssetInventory() : target;
-        target.setProjectId(surveyAssetInventory.getProjectId());
-        target.setPlanDetailId(targetPlanDetailsId);
-        target.setDeclareRecordId(targetPlanDetails.getDeclareRecordId());
-        target.setEvaluator(surveyAssetInventory.getEvaluator());
-        target.setCheckDate(surveyAssetInventory.getCheckDate());
-        target.setBisCheckOriginal(surveyAssetInventory.getBisCheckOriginal());
-        target.setRemark(surveyAssetInventory.getRemark());
-        target.setSpecialCase(surveyAssetInventory.getSpecialCase());
-        target.setCreator(commonService.thisUserAccount());
-        surveyAssetInventoryDao.save(target);
-
-        //處理附件
-        SysAttachmentDto where = new SysAttachmentDto();
-        where.setTableName(FormatUtils.entityNameConvertToTableName(SurveyAssetInventory.class));
-        where.setTableId(surveyAssetInventory.getId());
-        List<SysAttachmentDto> attachmentList = baseAttachmentService.getAttachmentList(where);
-        if (CollectionUtils.isNotEmpty(attachmentList)) {
-            where.setTableId(target.getId());
-            baseAttachmentService.deleteAttachmentByDto(where);
-            where.setTableName(null);
-            for (SysAttachmentDto dto : attachmentList) {
-                try {
-                    baseAttachmentService.copyFtpAttachment(dto.getId(), where);
-                } catch (Exception e) {
-                    log.error(e.getMessage(), e);
-                }
-            }
-        }
-
-        DeclareRecord targetDeclareRecord = declareRecordService.getDeclareRecordById(targetPlanDetails.getDeclareRecordId());
-        //复制他权
-        surveyAssetInventoryRightDao.deleteByPlanDetailsId(targetPlanDetailsId);
-        List<SurveyAssetInventoryRight> inventoryRights = surveyAssetInventoryRightDao.getListByPlanDetailsId(sourcePlanDetailsId);
-        if (CollectionUtils.isNotEmpty(inventoryRights)) {
-            for (SurveyAssetInventoryRight inventoryRight : inventoryRights) {
-                SurveyAssetInventoryRight targetRight = new SurveyAssetInventoryRight();
-                BeanUtils.copyProperties(inventoryRight, targetRight);
-                targetRight.setCertName(targetDeclareRecord.getName());
-                targetRight.setId(null);
-                targetRight.setPlanDetailsId(targetPlanDetailsId);
-                targetRight.setCreator(commonService.thisUserAccount());
-                targetRight.setGmtCreated(null);
-                targetRight.setGmtModified(null);
-                surveyAssetInventoryRightDao.add(targetRight);
-            }
-        }
-        //初始化清查内容项
-        surveyAssetInventoryContentService.initAssetInventoryContent(targetPlanDetails, targetDeclareRecord);
-    }
 
     public SurveyAssetInventoryVo getSurveyAssetInventoryVo(SurveyAssetInventory surveyAssetInventory) {
         if (surveyAssetInventory == null) {

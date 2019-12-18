@@ -112,5 +112,11 @@ public class SurveyAssetRightDeclareService {
     public List<SurveyAssetRightDeclare> getSurveyAssetRightDeclareListByExample(SurveyAssetRightDeclare oo) {
         return surveyAssetRightDeclareDao.getSurveyAssetRightDeclareListByExample(oo);
     }
+
+    public List<SurveyAssetRightDeclare> getSurveyAssetRightDeclareListByGroupId(Integer groupId){
+        SurveyAssetRightDeclare select = new SurveyAssetRightDeclare();
+        select.setGroupId(groupId);
+        return getSurveyAssetRightDeclareListByExample(select) ;
+    }
     
 }

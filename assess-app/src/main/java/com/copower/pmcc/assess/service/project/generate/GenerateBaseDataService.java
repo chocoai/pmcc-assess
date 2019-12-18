@@ -39,9 +39,8 @@ import com.copower.pmcc.assess.service.project.*;
 import com.copower.pmcc.assess.service.project.compile.CompileReportService;
 import com.copower.pmcc.assess.service.project.declare.*;
 import com.copower.pmcc.assess.service.project.scheme.*;
-import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryRightRecordCenterService;
-import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryRightRecordService;
-import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryRightService;
+import com.copower.pmcc.assess.service.project.survey.SurveyAssetRightGroupService;
+import com.copower.pmcc.assess.service.project.survey.SurveyAssetRightService;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.ProjectDocumentDto;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
@@ -92,7 +91,6 @@ public class GenerateBaseDataService {
     private BaseAttachmentService baseAttachmentService;
     private ProjectPlanDetailsService projectPlanDetailsService;
     private ProjectPhaseService projectPhaseService;
-    private SurveyAssetInventoryRightService surveyAssetInventoryRightService;
     private DeclareRecordService declareRecordService;
     private SchemeSurePriceService schemeSurePriceService;
     private SchemeReimbursementService schemeReimbursementService;
@@ -115,16 +113,16 @@ public class GenerateBaseDataService {
     private EvaluationPrincipleService evaluationPrincipleService;
     private DataReportAnalysisService dataReportAnalysisService;
     private DataReportAnalysisRiskService dataReportAnalysisRiskService;
-    private SurveyAssetInventoryRightRecordService surveyAssetInventoryRightRecordService;
     private GenerateLoactionService generateLoactionService;
     private GenerateLandEntityService generateLandEntityService;
 
     private GenerateHouseEntityService generateHouseEntityService;
     private ErpAreaService erpAreaService;
     private MdCommonService mdCommonService;
-    private GenerateEquityService generateEquityService;
     private BasicApplyService basicApplyService;
-    private SurveyAssetInventoryRightRecordCenterService surveyAssetInventoryRightRecordCenterService;
+
+    private SurveyAssetRightGroupService surveyAssetRightGroupService;
+    private SurveyAssetRightService surveyAssetRightService;
     private DataBestUseDescriptionService dataBestUseDescriptionService;
 
     private ProjectQrcodeRecordService projectQrcodeRecordService;
@@ -135,8 +133,8 @@ public class GenerateBaseDataService {
     private BasicUnitHuxingService basicUnitHuxingService;
     private BaseService baseService;
     private ErpRpcUserService erpRpcUserService;
-    private GenerateEquityService2 generateEquityService2;
     private BasicHouseTradingService basicHouseTradingService;
+    private GenerateEquityService generateEquityService;
 
     /**
      * 构造器必须传入的参数
@@ -2817,22 +2815,26 @@ public class GenerateBaseDataService {
      *
      * @return
      */
-    private Map<SchemeJudgeObject, List<SurveyAssetInventoryRight>> getSurveyAssetInventoryRightMapAndSchemeJudgeObject() {
-        Map<SchemeJudgeObject, List<SurveyAssetInventoryRight>> map = Maps.newHashMap();
+    private Map<SchemeJudgeObject, List<SurveyAssetRightItem>> getSurveyAssetInventoryRightMapAndSchemeJudgeObject() {
+        Map<SchemeJudgeObject, List<SurveyAssetRightItem>> map = Maps.newHashMap();
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList().stream().filter(oo -> oo.getDeclareRecordId() != null).collect(Collectors.toList());
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                List<SurveyAssetInventoryRightRecord> rightRecordList = surveyAssetInventoryRightRecordService.getSurveyAssetInventoryRightRecordByDeclareRecord(schemeJudgeObject.getDeclareRecordId(), projectId);
-                if (CollectionUtils.isNotEmpty(rightRecordList)) {
-                    rightRecordList.stream().forEach(oo -> {
-                        List<SurveyAssetInventoryRight> list = surveyAssetInventoryRightService.getSurveyAssetInventoryRightBy(oo.getId());
-                        if (CollectionUtils.isNotEmpty(list)) {
-                            list = list.stream().distinct().collect(Collectors.toList());
-                            if (CollectionUtils.isNotEmpty(list)) {
-                                map.put(schemeJudgeObject, list);
-                            }
-                        }
-                    });
+                if (schemeJudgeObject.getDeclareRecordId() == null) {
+                    continue;
+                }
+                List<SurveyAssetRightGroup> rightGroupList = surveyAssetRightGroupService.getSurveyAssetRightGroupByDeclareRecord(schemeJudgeObject.getDeclareRecordId(), projectId);
+                if (CollectionUtils.isEmpty(rightGroupList)) {
+                    continue;
+                }
+                Iterator<SurveyAssetRightGroup> groupIterator = rightGroupList.iterator();
+                while (groupIterator.hasNext()) {
+                    SurveyAssetRightGroup rightGroup = groupIterator.next();
+                    List<SurveyAssetRightItem> rightItemList = surveyAssetRightGroupService.getSurveyAssetRightItemListByGroupId(rightGroup.getId());
+                    if (CollectionUtils.isEmpty(rightItemList)) {
+                        continue;
+                    }
+                    map.put(schemeJudgeObject, rightItemList);
                 }
             }
         }
@@ -2846,7 +2848,7 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getHisRightType(Boolean containDetail) throws Exception {
-        List<SurveyRightGroupDto> groupDtoList = surveyAssetInventoryRightRecordService.groupRightByCategory(projectId, schemeJudgeObjectDeclareList);
+        List<SurveyRightGroupDto> groupDtoList = surveyAssetRightGroupService.groupRightByCategory(projectId, schemeJudgeObjectDeclareList);
         if (CollectionUtils.isEmpty(groupDtoList)) return "";
         StringBuilder stringBuilder = new StringBuilder("、《他权权证》");
         if (containDetail) {
@@ -3437,9 +3439,14 @@ public class GenerateBaseDataService {
         return knowTotalPrice;
     }
 
+    /**
+     * 分组
+     * @param list
+     * @return
+     */
     private Map<SchemeReimbursementItemVo, List<SchemeJudgeObject>> getSurveyAssetInventoryRightRecordListMap(List<SchemeJudgeObject> list) {
         Map<SchemeReimbursementItemVo, List<SchemeJudgeObject>> map = Maps.newHashMap();
-        List<SchemeJudgeObject> schemeJudgeObjectList = Lists.newArrayList();
+        final List<SchemeJudgeObject> schemeJudgeObjectList = new ArrayList<>(list.size()) ;
         if (CollectionUtils.isNotEmpty(list)) {
             for (SchemeJudgeObject oo : list) {
                 schemeJudgeObjectList.add(oo);
@@ -3453,34 +3460,38 @@ public class GenerateBaseDataService {
         if (CollectionUtils.isEmpty(projectPlanDetailsList)) {
             return map;
         }
-        SurveyAssetInventoryRightRecordCenter selectRightRecordCenter = new SurveyAssetInventoryRightRecordCenter();
-        selectRightRecordCenter.setProjectId(projectPlanDetailsList.stream().findFirst().get().getProjectId());
-        selectRightRecordCenter.setPlanDetailsId(projectPlanDetailsList.stream().findFirst().get().getId());
-        selectRightRecordCenter.setProcessInsId(projectPlanDetailsList.stream().findFirst().get().getProcessInsId());
-        List<SurveyAssetInventoryRightRecordCenter> centerList = surveyAssetInventoryRightRecordCenterService.getSurveyAssetInventoryRightRecordCenterList(selectRightRecordCenter);
-        if (CollectionUtils.isEmpty(centerList)) {
+        SurveyAssetRight surveyAssetRight = surveyAssetRightService.getSurveyAssetRightOnly2(projectPlanDetailsList.get(0));
+        if (surveyAssetRight == null) {
             return map;
         }
-        List<SurveyAssetInventoryRightRecord> rightRecordList = surveyAssetInventoryRightRecordCenterService.getSurveyAssetInventoryRightRecordList(centerList.stream().findFirst().get().getId(), projectId, centerList.stream().findFirst().get().getPlanDetailsId());
-        if (CollectionUtils.isEmpty(rightRecordList)) {
+        List<SurveyAssetRightGroup> rightGroupList = surveyAssetRightGroupService.getSurveyAssetRightGroupListByMasterId(surveyAssetRight.getId());
+        if (CollectionUtils.isEmpty(rightGroupList)) {
             return map;
         }
-        for (SurveyAssetInventoryRightRecord rightRecord : rightRecordList) {
-            SchemeReimbursementItemVo vo = schemeReimbursementService.getSchemeReimbursementItemVoByInventoryRightRecordId(rightRecord.getId());
-            if (vo != null && StringUtils.isNotBlank(rightRecord.getRecordIds())) {
-                List<Integer> integerList = FormatUtils.transformString2Integer(rightRecord.getRecordIds());
+        Iterator<SurveyAssetRightGroup> rightGroupIterator = rightGroupList.iterator();
+        while (rightGroupIterator.hasNext()) {
+            SurveyAssetRightGroup rightGroup = rightGroupIterator.next();
+            List<SurveyAssetRightDeclare> rightDeclareList = surveyAssetRightGroupService.getSurveyAssetRightDeclareListByGroupId(rightGroup.getId());
+            SchemeReimbursementItemVo vo = schemeReimbursementService.getSchemeReimbursementItemVoByInventoryRightRecordId(rightGroup.getId());
+            if (CollectionUtils.isNotEmpty(rightDeclareList)) {
+                List<Integer> integerList = LangUtils.transform(rightDeclareList,oo -> oo.getDeclareId()) ;
                 List<SchemeJudgeObject> judgeObjectList = Lists.newArrayList();
-                if (CollectionUtils.isNotEmpty(integerList)) {
-                    for (Integer integer : integerList) {
-                        if (schemeJudgeObjectList.stream().filter(oo -> oo.getDeclareRecordId().intValue() == integer.intValue()).count() >= 1) {
-                            SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectList.stream().filter(oo -> oo.getDeclareRecordId().intValue() == integer.intValue()).findFirst().get();
-                            judgeObjectList.add(schemeJudgeObject);
-                            schemeJudgeObjectList.remove(schemeJudgeObject);
-                        }
+                if (CollectionUtils.isEmpty(integerList)) {
+                    continue;
+                }
+                Iterator<SchemeJudgeObject> schemeJudgeObjectIterator = schemeJudgeObjectList.iterator();
+                while (schemeJudgeObjectIterator.hasNext()){
+                    SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectIterator.next();
+                    if (schemeJudgeObject.getDeclareRecordId() == null){
+                        continue;
+                    }
+                    if (integerList.contains(schemeJudgeObject.getDeclareRecordId())){
+                        judgeObjectList.add(schemeJudgeObject);
+                        schemeJudgeObjectIterator.remove();
                     }
                 }
                 if (CollectionUtils.isNotEmpty(judgeObjectList)) {
-                    map.put(vo, judgeObjectList.stream().distinct().collect(Collectors.toList()));
+                    map.put(vo, judgeObjectList);
                 }
             }
         }
@@ -5061,26 +5072,26 @@ public class GenerateBaseDataService {
                     @Override
                     public void accept(BasicExamineHandle.BasicVo basicVo) {
                         basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo("2、房屋权益状况"));
-                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("", "房屋性质:"), generateEquityService2.getHouseEquityValue(entry.getValue(), projectId, "房屋性质")));
-                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("", "规划用途:"), generateEquityService2.getHouseEquityValue(entry.getValue(), projectId, "规划用途")));
-                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("", "共有情况:"), generateEquityService2.getHouseEquityValue(entry.getValue(), projectId, "共有情况")));
-                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("", "权益人:"), generateEquityService2.getHouseEquityValue(entry.getValue(), projectId, "权益人")));
-                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("", "他项权利:"), generateEquityService2.getHouseEquityValue(entry.getValue(), projectId, "他项权利")));
-                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("", "转让限制:"), generateEquityService2.getHouseEquityValue(entry.getValue(), projectId, "转让限制")));
-                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("", "他权综述:"), generateEquityService2.getHouseEquityValue(entry.getValue(), projectId, "他权综述")));
-                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("", "物业:"), generateEquityService2.getHouseEquityValue(entry.getValue(), projectId, "物业")));
-                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("", "综合评价:"), generateEquityService2.getHouseEquityValue(entry.getValue(), projectId, "综合评价")));
+                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("", "房屋性质:"), generateEquityService.getHouseEquityValue(entry.getValue(), projectId, "房屋性质")));
+                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("", "规划用途:"), generateEquityService.getHouseEquityValue(entry.getValue(), projectId, "规划用途")));
+                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("", "共有情况:"), generateEquityService.getHouseEquityValue(entry.getValue(), projectId, "共有情况")));
+                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("", "权益人:"), generateEquityService.getHouseEquityValue(entry.getValue(), projectId, "权益人")));
+                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("", "他项权利:"), generateEquityService.getHouseEquityValue(entry.getValue(), projectId, "他项权利")));
+                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("", "转让限制:"), generateEquityService.getHouseEquityValue(entry.getValue(), projectId, "转让限制")));
+                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("", "他权综述:"), generateEquityService.getHouseEquityValue(entry.getValue(), projectId, "他权综述")));
+                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("", "物业:"), generateEquityService.getHouseEquityValue(entry.getValue(), projectId, "物业")));
+                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("", "综合评价:"), generateEquityService.getHouseEquityValue(entry.getValue(), projectId, "综合评价")));
                     }
                 };
                 Consumer<BasicExamineHandle.BasicVo> landFun = new Consumer<BasicExamineHandle.BasicVo>() {
                     @Override
                     public void accept(BasicExamineHandle.BasicVo basicVo) {
                         basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo("1、土地权益状况"));
-                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("", GenerateEquityService2.Land_acquisition_methods, ":"), generateEquityService2.getLandEquityValue(entry.getKey(), entry.getValue(), GenerateEquityService2.Land_acquisition_methods)));
-                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("", GenerateEquityService2.Land_use, ":"), generateEquityService2.getLandEquityValue(entry.getKey(), entry.getValue(), GenerateEquityService2.Land_use)));
-                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("", GenerateEquityService2.Stakeholder, ":"), generateEquityService2.getLandEquityValue(entry.getKey(), entry.getValue(), GenerateEquityService2.Stakeholder)));
-                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("", GenerateEquityService2.PLANNINGCONDITIONS, ":"), generateEquityService2.getLandEquityValue(entry.getKey(), entry.getValue(), GenerateEquityService2.PLANNINGCONDITIONS)));
-                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("", GenerateEquityService2.DEGREEOFLANDDEVELOPMENT, ":"), generateEquityService2.getLandEquityValue(entry.getKey(), entry.getValue(), GenerateEquityService2.DEGREEOFLANDDEVELOPMENT)));
+                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("", GenerateEquityService.Land_acquisition_methods, ":"), generateEquityService.getLandEquityValue(entry.getKey(), entry.getValue(), GenerateEquityService.Land_acquisition_methods)));
+                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("", GenerateEquityService.Land_use, ":"), generateEquityService.getLandEquityValue(entry.getKey(), entry.getValue(), GenerateEquityService.Land_use)));
+                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("", GenerateEquityService.Stakeholder, ":"), generateEquityService.getLandEquityValue(entry.getKey(), entry.getValue(), GenerateEquityService.Stakeholder)));
+                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("", GenerateEquityService.PLANNINGCONDITIONS, ":"), generateEquityService.getLandEquityValue(entry.getKey(), entry.getValue(), GenerateEquityService.PLANNINGCONDITIONS)));
+                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("", GenerateEquityService.DEGREEOFLANDDEVELOPMENT, ":"), generateEquityService.getLandEquityValue(entry.getKey(), entry.getValue(), GenerateEquityService.DEGREEOFLANDDEVELOPMENT)));
                     }
                 };
                 try {
@@ -5105,70 +5116,7 @@ public class GenerateBaseDataService {
         return localPath;
     }
 
-    /**
-     * 估价对象权益状况表
-     *
-     * @return
-     * @throws Exception
-     */
-    @Deprecated
-    public String getJudgeObjectEquitySheet() throws Exception {
-        Document doc = new Document();
-        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
-        //1.先根据楼盘分组，再分别获取到楼盘下的权益信息
-        generateCommonMethod.setDefaultDocumentBuilderSetting(builder);
-        LinkedHashMap<BasicEstate, List<SchemeJudgeObject>> linkedHashMap = generateCommonMethod.getEstateGroupByAreaId(areaId);
-        if (!linkedHashMap.isEmpty()) {
-            for (Map.Entry<BasicEstate, List<SchemeJudgeObject>> entry : linkedHashMap.entrySet()) {
-                //根据不同项目类别确定获取数据的方法
-                if (linkedHashMap.size() > 1) {//添加楼盘或估价对象编号作区分
-                    builder.insertHtml(generateCommonMethod.getWarpCssHtml("<div style='text-align:center;;font-size:16.0pt;'>" + entry.getKey().getName() + "</div>"));
-                }
-                if (projectInfo.getProjectCategoryName().contains("房产")) {
-                    {
-                        String s = null;
-                        try {
-                            s = generateEquityService.getLandEquity(entry.getKey(), entry.getValue());
-                        } catch (Exception e) {
-                            baseService.writeExceptionInfo(e, "土地权益状况未获取到");
-                        }
-                        if (StringUtils.isNotBlank(s)) {
-                            builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml("1、土地权益状况")));
-                            builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml(s)), false);
-                        }
-                    }
-                    {
-                        String s = null;
-                        try {
-                            s = generateEquityService.getHouseEquity(entry.getValue(), projectId);
-                        } catch (Exception e) {
-                            baseService.writeExceptionInfo(e, "房屋权益状况未获取到");
-                        }
-                        if (StringUtils.isNotBlank(s)) {
-                            builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml("2、房屋权益状况")));
-                            builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml(s)), false);
-                        }
-                    }
-                } else if (projectInfo.getProjectCategoryName().contains("土地")) {
-                    {
-                        String s = null;
-                        try {
-                            s = generateEquityService.getLandEquityFull(entry.getKey(), entry.getValue(), projectId);
-                        } catch (Exception e) {
-                            baseService.writeExceptionInfo(e, "土地权益状况未获取到");
-                        }
-                        if (StringUtils.isNotBlank(s)) {
-                            builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml("1、土地权益状况")));
-                            builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml(s)), false);
-                        }
-                    }
-                }
-            }
-        }
-        String localPath = getLocalPath();
-        doc.save(localPath);
-        return localPath;
-    }
+
 
     /**
      * 户型及布局
@@ -6907,7 +6855,6 @@ public class GenerateBaseDataService {
         this.baseAttachmentService = SpringContextUtils.getBean(BaseAttachmentService.class);
         this.projectPlanDetailsService = SpringContextUtils.getBean(ProjectPlanDetailsService.class);
         this.projectPhaseService = SpringContextUtils.getBean(ProjectPhaseService.class);
-        this.surveyAssetInventoryRightService = SpringContextUtils.getBean(SurveyAssetInventoryRightService.class);
         this.declareRecordService = SpringContextUtils.getBean(DeclareRecordService.class);
         this.schemeSurePriceService = SpringContextUtils.getBean(SchemeSurePriceService.class);
         this.schemeReimbursementService = SpringContextUtils.getBean(SchemeReimbursementService.class);
@@ -6926,15 +6873,12 @@ public class GenerateBaseDataService {
         this.evaluationPrincipleService = SpringContextUtils.getBean(EvaluationPrincipleService.class);
         this.dataReportAnalysisService = SpringContextUtils.getBean(DataReportAnalysisService.class);
         this.dataReportAnalysisRiskService = SpringContextUtils.getBean(DataReportAnalysisRiskService.class);
-        this.surveyAssetInventoryRightRecordService = SpringContextUtils.getBean(SurveyAssetInventoryRightRecordService.class);
         this.generateLoactionService = SpringContextUtils.getBean(GenerateLoactionService.class);
         this.generateLandEntityService = SpringContextUtils.getBean(GenerateLandEntityService.class);
         this.generateHouseEntityService = SpringContextUtils.getBean(GenerateHouseEntityService.class);
         this.erpAreaService = SpringContextUtils.getBean(ErpAreaService.class);
         this.mdCommonService = SpringContextUtils.getBean(MdCommonService.class);
-        this.generateEquityService = SpringContextUtils.getBean(GenerateEquityService.class);
         this.basicApplyService = SpringContextUtils.getBean(BasicApplyService.class);
-        this.surveyAssetInventoryRightRecordCenterService = SpringContextUtils.getBean(SurveyAssetInventoryRightRecordCenterService.class);
         this.dataBestUseDescriptionService = SpringContextUtils.getBean(DataBestUseDescriptionService.class);
         this.declareRealtyRealEstateCertService = SpringContextUtils.getBean(DeclareRealtyRealEstateCertService.class);
         this.declareRealtyHouseCertService = SpringContextUtils.getBean(DeclareRealtyHouseCertService.class);
@@ -6947,8 +6891,10 @@ public class GenerateBaseDataService {
         this.basicUnitHuxingService = SpringContextUtils.getBean(BasicUnitHuxingService.class);
         this.baseService = SpringContextUtils.getBean(BaseService.class);
         this.erpRpcUserService = SpringContextUtils.getBean(ErpRpcUserService.class);
+        this.generateEquityService = SpringContextUtils.getBean(GenerateEquityService.class);
+        this.surveyAssetRightGroupService = SpringContextUtils.getBean(SurveyAssetRightGroupService.class);
+        this.surveyAssetRightService = SpringContextUtils.getBean(SurveyAssetRightService.class);
         this.basicHouseTradingService = SpringContextUtils.getBean(BasicHouseTradingService.class);
-        this.generateEquityService2 = SpringContextUtils.getBean(GenerateEquityService2.class);
         //必须在bean之后
         SchemeAreaGroup areaGroup = schemeAreaGroupService.get(areaId);
         if (areaGroup == null) {

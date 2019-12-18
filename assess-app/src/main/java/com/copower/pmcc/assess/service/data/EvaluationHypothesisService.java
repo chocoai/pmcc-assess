@@ -5,9 +5,7 @@ import com.copower.pmcc.assess.common.enums.SchemeSupportTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
-import com.copower.pmcc.assess.dal.basis.dao.data.DataReportTemplateItemDao;
 import com.copower.pmcc.assess.dal.basis.dao.data.EvaluationHypothesisDao;
-import com.copower.pmcc.assess.dal.basis.dao.method.MdIncomeDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInventoryContentDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.data.DataEvaluationHypothesisVo;
@@ -19,7 +17,6 @@ import com.copower.pmcc.assess.service.basic.BasicBuildingService;
 import com.copower.pmcc.assess.service.basic.BasicHouseService;
 import com.copower.pmcc.assess.service.project.generate.GenerateCommonMethod;
 import com.copower.pmcc.assess.service.project.generate.GenerateReportInfoService;
-import com.copower.pmcc.assess.service.project.scheme.SchemeInfoService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.assess.service.project.survey.*;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
@@ -38,8 +35,6 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,7 +50,6 @@ import java.util.regex.Pattern;
  */
 @Service
 public class EvaluationHypothesisService {
-    private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private ApplicationConstant applicationConstant;
     @Autowired
@@ -68,8 +62,6 @@ public class EvaluationHypothesisService {
     private BaseProjectClassifyService baseProjectClassifyService;
     @Autowired
     private DataReportTemplateItemService dataReportTemplateItemService;
-    @Autowired
-    private DataReportTemplateItemDao dataReportTemplateItemDao;
     @Autowired
     private SurveyAssetInventoryContentService surveyAssetInventoryContentService;
     @Autowired
@@ -89,15 +81,9 @@ public class EvaluationHypothesisService {
     @Autowired
     private GenerateCommonMethod generateCommonMethod;
     @Autowired
-    private SchemeInfoService schemeInfoService;
-    @Autowired
-    private MdIncomeDao mdIncomeDao;
-    @Autowired
     private GenerateReportInfoService generateReportGenerationService;
     @Autowired
-    private SurveyAssetInventoryRightService surveyAssetInventoryRightService;
-    @Autowired
-    private SurveyAssetInventoryRightRecordService surveyAssetInventoryRightRecordService;
+    private SurveyAssetRightGroupService surveyAssetRightGroupService;
 
 
     /**
@@ -416,19 +402,26 @@ public class EvaluationHypothesisService {
                     }
 
                     //对应的他权信息
-                    List<SurveyAssetInventoryRight> rightList = Lists.newArrayList();
-                    List<SurveyAssetInventoryRightRecord> surveyAssetInventoryRightRecordList = surveyAssetInventoryRightRecordService.getSurveyAssetInventoryRightRecordByDeclareRecord(judgeObject.getDeclareRecordId(), judgeObject.getProjectId());
+                    List<SurveyAssetRightItem> rightList = Lists.newArrayList();
+                    List<SurveyAssetRightGroup> surveyAssetInventoryRightRecordList = surveyAssetRightGroupService.getSurveyAssetRightGroupByDeclareRecord(judgeObject.getDeclareRecordId(), judgeObject.getProjectId());
                     if (CollectionUtils.isNotEmpty(surveyAssetInventoryRightRecordList)) {
-                        rightList = surveyAssetInventoryRightService.getSurveyAssetInventoryRightBy(surveyAssetInventoryRightRecordList.get(0).getId());
-                    }
-                    for (SurveyAssetInventoryRight inventoryRight : rightList) {
-                        if (rightId.equals(inventoryRight.getCategory())) {
-                            havePledge.append(judgeObject.getNumber()).append(",");
-                            pledgeRemark = inventoryRight.getRemark();
+                        Iterator<SurveyAssetRightGroup> iterator = surveyAssetInventoryRightRecordList.iterator();
+                        while (iterator.hasNext()){
+                            rightList.addAll(surveyAssetRightGroupService.getSurveyAssetRightItemListByGroupId(iterator.next().getId())) ;
                         }
-                        if (otherId.equals(inventoryRight.getCategory())) {
-                            haveOther.append(judgeObject.getNumber()).append(",");
-                            otherRemark = inventoryRight.getRemark();
+                    }
+                    if (CollectionUtils.isNotEmpty(rightList)){
+                        Iterator<SurveyAssetRightItem> rightItemIterator = rightList.iterator();
+                        while (rightItemIterator.hasNext()){
+                            SurveyAssetRightItem inventoryRight = rightItemIterator.next();
+                            if (rightId.equals(inventoryRight.getCategory())) {
+                                havePledge.append(judgeObject.getNumber()).append(",");
+                                pledgeRemark = inventoryRight.getRemark();
+                            }
+                            if (otherId.equals(inventoryRight.getCategory())) {
+                                haveOther.append(judgeObject.getNumber()).append(",");
+                                otherRemark = inventoryRight.getRemark();
+                            }
                         }
                     }
                 }
@@ -519,20 +512,26 @@ public class EvaluationHypothesisService {
                         }
                     }
                     //对应的他权信息
-                    List<SurveyAssetInventoryRight> rightList = Lists.newArrayList();
-                    List<SurveyAssetInventoryRightRecord> surveyAssetInventoryRightRecordList = surveyAssetInventoryRightRecordService.getSurveyAssetInventoryRightRecordByDeclareRecord(judgeObject.getDeclareRecordId(), judgeObject.getProjectId());
+                    List<SurveyAssetRightItem> rightList = Lists.newArrayList();
+                    List<SurveyAssetRightGroup> surveyAssetInventoryRightRecordList = surveyAssetRightGroupService.getSurveyAssetRightGroupByDeclareRecord(judgeObject.getDeclareRecordId(), judgeObject.getProjectId());
                     if (CollectionUtils.isNotEmpty(surveyAssetInventoryRightRecordList)) {
-                        rightList = surveyAssetInventoryRightService.getSurveyAssetInventoryRightBy(surveyAssetInventoryRightRecordList.get(0).getId());
-                    }
-
-                    for (SurveyAssetInventoryRight inventoryRight : rightList) {
-                        if (rightId.equals(inventoryRight.getCategory())) {
-                            havePledge.append(judgeObject.getNumber()).append(",");
-                            pledgeRemark = inventoryRight.getRemark();
+                        Iterator<SurveyAssetRightGroup> iterator = surveyAssetInventoryRightRecordList.iterator();
+                        while (iterator.hasNext()){
+                            rightList.addAll(surveyAssetRightGroupService.getSurveyAssetRightItemListByGroupId(iterator.next().getId())) ;
                         }
-                        if (otherId.equals(inventoryRight.getCategory())) {
-                            haveOther.append(judgeObject.getNumber()).append(",");
-                            otherRemark = inventoryRight.getRemark();
+                    }
+                    if (CollectionUtils.isNotEmpty(rightList)){
+                        Iterator<SurveyAssetRightItem> rightItemIterator = rightList.iterator();
+                        while (rightItemIterator.hasNext()){
+                            SurveyAssetRightItem inventoryRight = rightItemIterator.next();
+                            if (rightId.equals(inventoryRight.getCategory())) {
+                                havePledge.append(judgeObject.getNumber()).append(",");
+                                pledgeRemark = inventoryRight.getRemark();
+                            }
+                            if (otherId.equals(inventoryRight.getCategory())) {
+                                haveOther.append(judgeObject.getNumber()).append(",");
+                                otherRemark = inventoryRight.getRemark();
+                            }
                         }
                     }
                     //转让限制

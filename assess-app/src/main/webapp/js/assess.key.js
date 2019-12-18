@@ -47,6 +47,9 @@ AssessDBKey.SurveyAssetInventoryContent = "tb_survey_asset_inventory_content";
 AssessDBKey.SurveyAssetInventoryRight = "tb_survey_asset_inventory_right";
 AssessDBKey.SurveyAssetInventoryRightRecord = "tb_survey_asset_inventory_right_record";
 
+AssessDBKey.SurveyAssetRightItem = "tb_survey_asset_right_item";
+AssessDBKey.SurveyAssetRightGroup = "tb_survey_asset_right_group";
+
 AssessDBKey.SchemeJudgeObject = "tb_scheme_judge_object";
 AssessDBKey.SchemeReimbursement = "tb_scheme_reimbursement";
 AssessDBKey.SchemeReportFileCustom = "tb_scheme_report_file_custom";
