@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.dto.input.project.survey;
 
 import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventoryRight;
+import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetRightItem;
 
 import java.util.List;
 
@@ -12,7 +13,7 @@ public class SurveyJudgeObjectGroupDto {
     private Integer judgeObjectId;
     private Integer declareRecordId;
     private String transferLimit;
-    private List<SurveyAssetInventoryRight> rightList;
+    private List<SurveyAssetRightItem> rightList;
     private String result;
 
     public String getJudgeObjectNumber() {
@@ -47,13 +48,6 @@ public class SurveyJudgeObjectGroupDto {
         this.transferLimit = transferLimit;
     }
 
-    public List<SurveyAssetInventoryRight> getRightList() {
-        return rightList;
-    }
-
-    public void setRightList(List<SurveyAssetInventoryRight> rightList) {
-        this.rightList = rightList;
-    }
 
     public String getResult() {
         return result;
@@ -61,5 +55,13 @@ public class SurveyJudgeObjectGroupDto {
 
     public void setResult(String result) {
         this.result = result;
+    }
+
+    public List<SurveyAssetRightItem> getRightList() {
+        return rightList;
+    }
+
+    public void setRightList(List<SurveyAssetRightItem> rightList) {
+        this.rightList = rightList;
     }
 }

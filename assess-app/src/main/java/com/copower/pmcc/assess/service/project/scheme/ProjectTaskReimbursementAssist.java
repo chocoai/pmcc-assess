@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.service.project.scheme;
 
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
+import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
@@ -27,13 +28,14 @@ import java.util.List;
 @Component
 @WorkFlowAnnotation(desc = "法定优先受偿款")
 public class ProjectTaskReimbursementAssist implements ProjectTaskInterface {
-    private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
     private SchemeReimbursementService schemeReimbursementService;
     @Autowired
     private SchemeAreaGroupService schemeAreaGroupService;
+    @Autowired
+    private BaseService baseService;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
@@ -41,7 +43,7 @@ public class ProjectTaskReimbursementAssist implements ProjectTaskInterface {
         try {
             writeSchemeReimbursement(projectPlanDetails, schemeAreaGroupService.get(projectPlanDetails.getAreaId()),modelAndView);
         } catch (Exception e) {
-            logger.error("生成法定优先受偿款初始数据失败!", e);
+            baseService.writeExceptionInfo(e,"生成法定优先受偿款初始数据失败!");
         }
         return modelAndView;
     }
@@ -79,7 +81,7 @@ public class ProjectTaskReimbursementAssist implements ProjectTaskInterface {
         try {
             writeSchemeReimbursement(projectPlanDetails, schemeAreaGroupService.get(projectPlanDetails.getAreaId()),modelAndView);
         } catch (Exception e) {
-            logger.error("生成法定优先受偿款初始数据失败!", e);
+            baseService.writeExceptionInfo(e,"生成法定优先受偿款初始数据失败!");
         }
         return modelAndView;
     }

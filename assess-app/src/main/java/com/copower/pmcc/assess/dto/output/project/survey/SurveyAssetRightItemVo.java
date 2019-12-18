@@ -3,9 +3,9 @@ package com.copower.pmcc.assess.dto.output.project.survey;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetRightItem;
 
 /**
- * Created by zly on 2018/6/12.
+ * Created by zch on 2019-12-17.
  */
-public class SurveyAssetInventoryRightVo extends SurveyAssetRightItem {
+public class SurveyAssetRightItemVo extends SurveyAssetRightItem {
     private String typeName;
     private String categoryName;
 
