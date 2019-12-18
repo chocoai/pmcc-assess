@@ -933,6 +933,17 @@ public class SchemeJudgeObjectService {
         return list;
     }
 
+    public List<Integer> getJudgeNumberByIds(List<Integer> ids) {
+        if (CollectionUtils.isEmpty(ids)) return null;
+        List<SchemeJudgeObject> judgeObjects = schemeJudgeObjectDao.getListByIds(ids);
+        List<Integer> list = Lists.newArrayList();
+        for (SchemeJudgeObject judgeObject : judgeObjects) {
+            if (NumberUtils.isNumber(judgeObject.getNumber())) {
+                list.add(NumberUtils.createInteger(judgeObject.getNumber()));
+            }
+        }
+        return list;
+    }
     /**
      * 根据申报信息获取对应估价对象
      *

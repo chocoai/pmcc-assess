@@ -20,18 +20,57 @@
                 <input type="hidden" name="id">
                 <div class="form-group">
                     <div class="x-valid">
-                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">权证信息<span
+                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">估价对象信息<span
                                 class="symbol required"></span></label>
                         <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
 
-                            <input type="hidden" name="recordIds">
+                            <input type="hidden" name="judgeObjectIds">
                             <div class="btn-primary btn"
-                                 onclick="declareRecordModeObj.init({callback:selectRecord,this_:this,ids:$(this).closest('.form-group').find('[name=recordIds]').val()});">
-                                选择权证
+                                 onclick="schemeJudgeObj.init({callback:selectRecord,this_:this});">
+                                选择估价对象
                                 <span class="glyphicon  glyphicon-new-window" aria-hidden="true"></span>
                             </div>
-
                         </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="x-valid">
+                        <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">估价对象名称</label>
+                        <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
+                            <input class="form-control" type="text" name="name"
+                                   placeholder="估价对象名称">
+                        </div>
+                    </div>
+                    <div class="x-valid">
+                        <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">权证名称</label>
+                        <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
+                            <input class="form-control" type="text" name="certName"
+                                   placeholder="权证名称">
+                        </div>
+                    </div>
+                    <div class="x-valid">
+                        <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">所有权人</label>
+                        <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
+                            <input class="form-control" type="text" name="ownership"
+                                   placeholder="所有权人">
+                        </div>
+                    </div>
+                    <div class="x-valid">
+                        <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                            <div class="input-group">
+                                <input class="form-control" type="text" name="seat"
+                                       placeholder="坐落">
+                                <span class="input-group-addon"
+                                      onclick="searchLiquidationJudgeData(this);">搜索<i
+                                        class="fa fa-search"></i> </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                        <table class="table table-bordered" id="schemeLiquidationJudgeList_number">
+                        </table>
                     </div>
                 </div>
                 <table class="table">
@@ -152,6 +191,78 @@
     </div>
 </div>
 </body>
+<div id="boxSchemeJudgeObj" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">权证估价对象</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                        <div class="panel-body">
+                            <div class="form-horizontal">
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">估价对象名称</label>
+                                        <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
+                                            <input class="form-control" type="text" name="name"
+                                                   placeholder="估价对象名称">
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">权证名称</label>
+                                        <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
+                                            <input class="form-control" type="text" name="certName"
+                                                   placeholder="权证名称">
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">所有权人</label>
+                                        <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
+                                            <input class="form-control" type="text" name="ownership"
+                                                   placeholder="所有权人">
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                                            <div class="input-group">
+                                                <input class="form-control" type="text" name="seat"
+                                                       placeholder="坐落">
+                                                <span class="input-group-addon"
+                                                      onclick="schemeJudgeObj.searchData(this);">搜索<i
+                                                        class="fa fa-search"></i> </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                                        <table class="table table-bordered" id="boxSchemeJudgeObjList">
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-primary" onclick="schemeJudgeObj.select()">
+                    确定
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <%@include file="/views/share/main_footer.jsp" %>
 <%@include file="/views/project/tool/declareRecordModeView.jsp" %>
 <script type="application/javascript">
@@ -164,7 +275,7 @@
 
     function selectRecord(_this, id) {
         var group = $(_this).closest(".form-group");
-        group.find("input[name='recordIds']").val(id);
+        group.find("input[name='judgeObjectIds']").val(id);
         getGroupAndPriceVo(_this);
     }
 
@@ -193,9 +304,8 @@
                                 $("#" + commonField.taskLiquidationAnalysisAppend).append(html);
 
                                 $("#" + commonField.taskLiquidationAnalysisFrm + number).initForm(item);
-//                                if (item.recordIds) {
-//                                    $("#" + commonField.taskLiquidationAnalysisFrm + number).find("input[name='recordIds']").val(item.recordIds);
-//                                }
+                                getGroupAndPrice(item.id, commonField.taskLiquidationAnalysisFrm + number);
+                                loadSchemeLiquidationJudgeTable(item.id, {groupId: item.id});
                                 getAnalysisItemList(number);
                                 setTimeout(function () {
                                     if (item.total) {
@@ -233,9 +343,9 @@
                         var number = result.data.id;
                         html = html.replace(/_number/g, number).replace(/{index}/g, index + 1);
                         $("#" + commonField.taskLiquidationAnalysisAppend).append(html);
-                        $("#" + commonField.taskLiquidationAnalysisFrm + number).find("select[name='recordIds']").select2();
-
+                        // $("#" + commonField.taskLiquidationAnalysisFrm + number).find("select[name='judgeObjectIds']").select2();
                         $("#" + commonField.taskLiquidationAnalysisFrm + number).initForm(result.data);
+                        loadSchemeLiquidationJudgeTable(result.data.id, {groupId: result.data.id});
                         getAnalysisItemList(number);
                     }
                 },
@@ -250,6 +360,7 @@
     $(function () {
         appendHtml(true);
     });
+
     /**
      * 清除html
      * @param _this
@@ -257,20 +368,22 @@
     function cleanHTMLData(_this) {
         var x_panel = $(_this).closest(".x_panel");
         var form = x_panel.find("form").eq(0);
-        $.ajax({
-            url: "${pageContext.request.contextPath}/schemeLiquidationAnalysis/removeLiquidationAnalysisGroup",
-            type: "post",
-            dataType: "json",
-            data: {id: form.find("input[name='id']").val()},
-            success: function (result) {
-                if (result.ret) {
-                    x_panel.remove();
-                    toastr.success('移除成功');
+        Alert("确认移除!", 2, null, function () {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/schemeLiquidationAnalysis/removeLiquidationAnalysisGroup",
+                type: "post",
+                dataType: "json",
+                data: {id: form.find("input[name='id']").val()},
+                success: function (result) {
+                    if (result.ret) {
+                        x_panel.remove();
+                        toastr.success('移除成功');
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
                 }
-            },
-            error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
-            }
+            });
         });
     }
 
@@ -280,17 +393,20 @@
      */
     function getGroupAndPriceVo(_this) {
         var group = $(_this).closest(".form-group");
-        var recordIds = group.find("input[name='recordIds']").val();
+        var judgeObjectIds = group.find("input[name='judgeObjectIds']").val();
         var frmId = $(_this).closest('.form-horizontal').attr("id");
-        console.log("recordIds:" + recordIds + " frmId:" + frmId);
-        if (recordIds) {
+        var groupId = $(_this).closest('.form-horizontal').find("input[name='id']").val();
+        if (judgeObjectIds) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/schemeLiquidationAnalysis/getGroupAndPriceVo",
                 type: "post",
                 dataType: "json",
-                data: {recordIds: recordIds},
+                data: {
+                    judgeObjectIds: judgeObjectIds,
+                    areaGroupId: '${areaGroup.id}',
+                    groupId: groupId
+                },
                 success: function (result) {
-                        console.log(result) ;
                     if (result.ret) {
                         if (result.data) {
                             toastr.success('成功!');
@@ -299,6 +415,7 @@
                             $("#" + frmId).find('[name=evaluationArea]').val(Number(result.data.groupArea));
                             $("#" + frmId).find('[name=evaluationPrice]').text(fmoney(Number(result.data.groupPrice).toFixed(2), 2));
                             $("#" + frmId).find('[name=evaluationPrice]').val(Number(result.data.groupPrice));
+                            loadSchemeLiquidationJudgeTable(groupId, {groupId: groupId});
                         }
                     }
                 },
@@ -307,6 +424,27 @@
                 }
             });
         }
+    }
+
+    function getGroupAndPrice(groupId, frmId) {
+        $.ajax({
+            url: "${pageContext.request.contextPath}/schemeLiquidationAnalysis/getGroupAndPrice",
+            type: "post",
+            dataType: "json",
+            data: {groupId: groupId},
+            success: function (result) {
+                if (result.ret) {
+                    if (result.data) {
+                        $("#" + frmId).find('[name=evaluationArea]').text(fmoney(Number(result.data.groupArea).toFixed(2), 2));
+                        $("#" + frmId).find('[name=evaluationPrice]').text(fmoney(Number(result.data.groupPrice).toFixed(2), 2));
+                    }
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        });
+
     }
 
     //初始化计算结果
@@ -480,7 +618,6 @@
         var evaluationPrice = $("#" + frmId).find("td[name='evaluationPrice']").val();
         var $taxRateValue = $(_this).parent().parent().find('[name^=taxRateValue]');
         var rate = $taxRateValue.val();
-        console.log("rate:" + rate)
         var price = 0;
         if ($taxRateValue.hasClass('x-percent')) {
             rate = $taxRateValue.attr('data-value');
@@ -624,7 +761,7 @@
     function getFormData(frmId) {
         var data = {};
         data.id = $('#' + frmId).find('[name=id]').val();
-        data.recordIds = $('#' + frmId).find("input[name='recordIds']").val();
+
         data.total = $('#' + frmId).find('[name=total]').text().replace(/,/g, '');
         data.analysisItemList = [];
         $('#' + frmId).find("tbody[name='tbody_data_section']").find('tr').each(function () {
@@ -650,7 +787,6 @@
         if (flag) {
             //单个保存
             var data = getFormData(_this);
-            console.log(data);
             $.ajax({
                 url: "${pageContext.request.contextPath}/schemeLiquidationAnalysis/saveAnalysisGroup",
                 type: "post",
@@ -697,7 +833,6 @@
                 formData.taskLiquidationAnalysisGroups.push(item);
             }
         });
-        console.log(formData);
         if ("${processInsId}" != "0") {
             submitEditToServer(JSON.stringify(formData));
         }
@@ -706,8 +841,135 @@
         }
     }
 
-</script>
+    //已选择估价对象
+    function loadSchemeLiquidationJudgeTable(groupId, options) {
+        var cols = [];
+        cols.push({field: 'name', title: '估价对象名称', width: "22%"});
+        cols.push({field: 'certName', title: '权证名称', width: "22%"});
+        cols.push({field: 'ownership', title: '所有权人', width: "22%"});
+        cols.push({field: 'seat', title: '坐落', width: "22%"});
+        var method = {
+            showColumns: false,
+            showRefresh: false,
+            search: false,
+            onLoadSuccess: function () {
+                $('.tooltips').tooltip();
+            }
+        };
+        $("#schemeLiquidationJudgeList" + groupId).bootstrapTable('destroy');
+        TableInit("schemeLiquidationJudgeList" + groupId, "${pageContext.request.contextPath}/schemeLiquidationAnalysis/getSchemeLiquidationJudgeList", cols, options, method);
+    };
 
+    //查询已选择估价对象
+    function searchLiquidationJudgeData(_this) {
+        var group = $(_this).closest(".form-group");
+        var groupId = $(_this).closest('.form-horizontal').find("input[name='id']").val();
+        var name = group.find("[name='name']").val();
+        var certName = group.find("[name='certName']").val();
+        var ownership = group.find("[name='ownership']").val();
+        var seat = group.find("[name='seat']").val();
+        var data = {areaGroupId: '${areaGroup.id}'};
+        var data = {groupId: groupId};
+        if (name) {
+            data.name = name;
+        }
+        if (certName) {
+            data.certName = certName;
+        }
+        if (ownership) {
+            data.ownership = ownership;
+        }
+        if (seat) {
+            data.seat = seat;
+        }
+
+        loadSchemeLiquidationJudgeTable(groupId, data);
+    };
+</script>
+<script type="application/javascript">
+    //选择估价对象
+    var schemeJudgeObj = {};
+
+    schemeJudgeObj.targetTable = $("#boxSchemeJudgeObjList");
+    schemeJudgeObj.targetBox = $("#boxSchemeJudgeObj");
+    schemeJudgeObj.callback = undefined;
+    schemeJudgeObj.this_ = undefined;
+    schemeJudgeObj.groupId = undefined;
+
+    schemeJudgeObj.init = function (options) {
+        var defaultObj = {};
+        jQuery.extend(defaultObj, options);
+        if (defaultObj.callback) {
+            schemeJudgeObj.callback = defaultObj.callback;
+        }
+        if (defaultObj.this_) {
+            schemeJudgeObj.this_ = defaultObj.this_;
+        }
+        schemeJudgeObj.loadSchemeJudgeObjTable({areaGroupId: '${areaGroup.id}'});
+        schemeJudgeObj.targetBox.modal('show');
+    };
+
+    schemeJudgeObj.loadSchemeJudgeObjTable = function (options) {
+        var table = schemeJudgeObj.targetTable;
+        var cols = [];
+        cols.push({field: 'name', title: '估价对象名称', width: "22%"});
+        cols.push({field: 'certName', title: '权证名称', width: "22%"});
+        cols.push({field: 'ownership', title: '所有权人', width: "22%"});
+        cols.push({field: 'seat', title: '坐落', width: "22%"});
+        var method = {
+            showColumns: false,
+            showRefresh: false,
+            search: false,
+            onLoadSuccess: function () {
+                $('.tooltips').tooltip();
+            }
+        };
+        table.bootstrapTable('destroy');
+        TableInit(table, "${pageContext.request.contextPath}/schemeLiquidationAnalysis/getSchemeJudgeObjList", cols, options, method, true);
+    };
+
+    schemeJudgeObj.select = function () {
+        var rows = schemeJudgeObj.targetTable.bootstrapTable('getSelections');
+        if (rows && rows.length > 0) {
+            var idArray = [];
+            $.each(rows, function (i, item) {
+                idArray.push(item.id);
+            })
+
+            var ids = idArray.join(",");
+            if (schemeJudgeObj.callback) {
+                schemeJudgeObj.callback(schemeJudgeObj.this_, ids);
+                schemeJudgeObj.targetBox.modal('hide');
+            }
+
+        } else {
+            toastr.info('至少选择一个');
+        }
+    }
+
+    schemeJudgeObj.searchData = function (_this) {
+        var group = $(_this).closest(".form-group");
+        var name = group.find("[name='name']").val();
+        var certName = group.find("[name='certName']").val();
+        var ownership = group.find("[name='ownership']").val();
+        var seat = group.find("[name='seat']").val();
+        var data = {areaGroupId: '${areaGroup.id}'};
+        if (name) {
+            data.name = name;
+        }
+        if (certName) {
+            data.certName = certName;
+        }
+        if (ownership) {
+            data.ownership = ownership;
+        }
+        if (seat) {
+            data.seat = seat;
+        }
+
+        schemeJudgeObj.loadSchemeJudgeObjTable(data);
+    };
+</script>
 
 </html>
 

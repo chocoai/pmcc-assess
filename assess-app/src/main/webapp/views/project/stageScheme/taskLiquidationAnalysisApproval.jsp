@@ -14,20 +14,56 @@
         <div class="x_content">
             <form class="form-horizontal" id="taskLiquidationAnalysisFrm_number">
                 <input type="hidden" name="id">
+                <%--<div class="form-group">--%>
+                    <%--<div class="x-valid">--%>
+                        <%--<label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">估价对象信息<span--%>
+                                <%--class="symbol required"></span></label>--%>
+                        <%--<div class=" col-xs-560  col-sm-560  col-md-560  col-lg-560 "--%>
+                             <%--style="overflow:auto;height:60px;">--%>
+
+                            <%--<label class="form-control" name="recordNames"></label>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
+                    <%----%>
+                <%--</div>--%>
                 <div class="form-group">
                     <div class="x-valid">
-                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">权证信息<span
-                                class="symbol required"></span></label>
-                        <div class=" col-xs-560  col-sm-560  col-md-560  col-lg-560 "
-                             style="overflow:auto;height:60px;">
-                            <%--<select class="form-control search-select select2" multiple="multiple" required="required"--%>
-                            <%--name="recordIds" onchange="getGroupAndPriceVo(this);">--%>
-                            <%--<c:forEach var="items" items="${declareRecordList}">--%>
-                            <%--<option value="${items.id}">${items.name}</option>--%>
-                            <%--</c:forEach>--%>
-                            <%--</select>--%>
-                            <label class="form-control" name="recordNames"></label>
+                        <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">估价对象名称</label>
+                        <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
+                            <input class="form-control" type="text" name="name"
+                                   placeholder="估价对象名称">
                         </div>
+                    </div>
+                    <div class="x-valid">
+                        <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">权证名称</label>
+                        <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
+                            <input class="form-control" type="text" name="certName"
+                                   placeholder="权证名称">
+                        </div>
+                    </div>
+                    <div class="x-valid">
+                        <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">所有权人</label>
+                        <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
+                            <input class="form-control" type="text" name="ownership"
+                                   placeholder="所有权人">
+                        </div>
+                    </div>
+                    <div class="x-valid">
+                        <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                            <div class="input-group">
+                                <input class="form-control" type="text" name="seat"
+                                       placeholder="坐落">
+                                <span class="input-group-addon"
+                                      onclick="searchLiquidationJudgeData(this);">搜索<i
+                                        class="fa fa-search"></i> </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                        <table class="table table-bordered" id="schemeLiquidationJudgeList_number">
+                        </table>
                     </div>
                 </div>
                 <table class="table">
@@ -179,7 +215,8 @@
                                 if (item.recordNames) {
                                     $("#" + commonFieldApproval.taskLiquidationAnalysisFrm + number).find('[name=recordNames]').text(item.recordNames);
                                 }
-                                getGroupAndPrice(item.recordIds, commonFieldApproval.taskLiquidationAnalysisFrm + number);
+                                loadSchemeLiquidationJudgeTable(item.id,{groupId: item.id});
+                                getGroupAndPrice(item.id, commonFieldApproval.taskLiquidationAnalysisFrm + number);
                                 getAnalysisItemList(number);
                                 setTimeout(function () {
                                     if (item.total) {
@@ -202,12 +239,12 @@
         }
     }
 
-    function getGroupAndPrice(recordIds, frmId) {
+    function getGroupAndPrice(groupId, frmId) {
         $.ajax({
             url: "${pageContext.request.contextPath}/schemeLiquidationAnalysis/getGroupAndPrice",
             type: "post",
             dataType: "json",
-            data: {recordIds: recordIds},
+            data: {groupId: groupId},
             success: function (result) {
                 if (result.ret) {
                     if (result.data) {
@@ -289,6 +326,51 @@
         }
         return t.split("").reverse().join("") + "." + r.substring(0, 2);//保留2位小数  如果要改动 把substring 最后一位数改动就可
     }
+
+    //已选择估价对象
+    function loadSchemeLiquidationJudgeTable(groupId,options) {
+        var cols = [];
+        cols.push({field: 'name', title: '估价对象名称', width: "22%"});
+        cols.push({field: 'certName', title: '权证名称', width: "22%"});
+        cols.push({field: 'ownership', title: '所有权人', width: "22%"});
+        cols.push({field: 'seat', title: '坐落', width: "22%"});
+        var method = {
+            showColumns: false,
+            showRefresh: false,
+            search: false,
+            onLoadSuccess: function () {
+                $('.tooltips').tooltip();
+            }
+        };
+        $("#schemeLiquidationJudgeList"+groupId).bootstrapTable('destroy');
+        TableInit("schemeLiquidationJudgeList"+groupId, "${pageContext.request.contextPath}/schemeLiquidationAnalysis/getSchemeLiquidationJudgeList", cols,options, method);
+    };
+
+    //查询已选择估价对象
+    function searchLiquidationJudgeData(_this) {
+        var group = $(_this).closest(".form-group");
+        var groupId = $(_this).closest('.form-horizontal').find("input[name='id']").val();
+        var name = group.find("[name='name']").val();
+        var certName = group.find("[name='certName']").val();
+        var ownership = group.find("[name='ownership']").val();
+        var seat = group.find("[name='seat']").val();
+        var data = {areaGroupId: '${areaGroup.id}'};
+        var data = {groupId: groupId};
+        if (name) {
+            data.name = name;
+        }
+        if (certName) {
+            data.certName = certName;
+        }
+        if (ownership) {
+            data.ownership = ownership;
+        }
+        if (seat) {
+            data.seat = seat;
+        }
+
+        loadSchemeLiquidationJudgeTable(groupId,data);
+    };
 </script>
 </body>
 </html>
