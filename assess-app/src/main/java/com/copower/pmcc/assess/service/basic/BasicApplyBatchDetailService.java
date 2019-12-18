@@ -237,13 +237,14 @@ public class BasicApplyBatchDetailService {
                         List<BasicApplyBatchDetail> houseDetails = getBasicApplyBatchDetailByPid(unit.getId(), basicApplyBatchDetail.getApplyBatchId());
                         if (CollectionUtils.isNotEmpty(houseDetails)) {
                             for (BasicApplyBatchDetail house : houseDetails) {
+                                //删除房屋
+                                basicHouseService.deleteHousesAndBasicApply(house.getTableId());
+                                basicHouseTradingService.deleteBasicHouseTradingByHouseId(house.getTableId());
                                 basicApplyBatchDetailDao.deleteInfo(house.getId());
                             }
                         }
-                        basicApplyBatchDetailDao.deleteInfo(unit.getId());
-                        //删除房屋
-                        basicHouseService.deleteHousesByUnitId(unit.getTableId());
                         //删除单元
+                        basicApplyBatchDetailDao.deleteInfo(unit.getId());
                         basicUnitService.deleteBasicUnit(unit.getTableId());
                         basicUnitService.clearInvalidChildData(unit.getTableId());
                     }
@@ -253,27 +254,20 @@ public class BasicApplyBatchDetailService {
                 //删除原来单元数据
                 basicUnitService.deleteBasicUnit(basicApplyBatchDetail.getTableId());
                 basicUnitService.clearInvalidChildData(basicApplyBatchDetail.getTableId());
-                //删除单元下房屋
-                basicHouseService.deleteHousesByUnitId(basicApplyBatchDetail.getTableId());
                 List<BasicApplyBatchDetail> houseDetails = getBasicApplyBatchDetailByPid(id, basicApplyBatchDetail.getApplyBatchId());
                 if (CollectionUtils.isNotEmpty(houseDetails)) {
                     for (BasicApplyBatchDetail house : houseDetails) {
+                         //删除单元下房屋
+                        basicHouseService.deleteHousesAndBasicApply(house.getTableId());
+                        basicHouseTradingService.deleteBasicHouseTradingByHouseId(house.getTableId());
                         basicApplyBatchDetailDao.deleteInfo(house.getId());
                     }
                 }
                 break;
             case "tb_basic_house":
                 //删除原来房屋数据
-                basicHouseService.deleteBasicHouse(basicApplyBatchDetail.getTableId());
+                basicHouseService.deleteHousesAndBasicApply(basicApplyBatchDetail.getTableId());
                 basicHouseTradingService.deleteBasicHouseTradingByHouseId(basicApplyBatchDetail.getTableId());
-                basicHouseService.clearInvalidChildData(basicApplyBatchDetail.getTableId());
-                BasicApply basicApply = new BasicApply();
-                basicApply.setBasicHouseId(basicApplyBatchDetail.getTableId());
-                BasicApply basicApplyOnly = basicApplyService.getBasicApplyOnly(basicApply);
-                //删除原来的数据
-                if (basicApplyOnly != null) {
-                    basicApplyDao.deleteBasicApply(basicApplyOnly.getId());
-                }
                 break;
         }
         basicApplyBatchDetailDao.deleteInfo(id);
