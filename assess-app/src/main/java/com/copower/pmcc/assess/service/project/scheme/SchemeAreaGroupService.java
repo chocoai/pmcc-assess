@@ -12,8 +12,6 @@ import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.method.MdIncomeService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
-import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryRightService;
-import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryService;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -53,10 +51,6 @@ public class SchemeAreaGroupService {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private ErpAreaService erpAreaService;
-    @Autowired
-    private SurveyAssetInventoryService surveyAssetInventoryService;
-    @Autowired
-    private SurveyAssetInventoryRightService surveyAssetInventoryRightService;
     @Autowired
     private SchemeJudgeObjectService schemeJudgeObjectService;
     @Autowired

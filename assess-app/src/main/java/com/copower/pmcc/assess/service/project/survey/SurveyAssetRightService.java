@@ -1,9 +1,12 @@
 package com.copower.pmcc.assess.service.project.survey;
 
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetRightDao;
+import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
+import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetRight;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
+import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -13,6 +16,8 @@ import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.base.Objects;
+import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by zch on 2019-12-16.
@@ -36,25 +42,59 @@ public class SurveyAssetRightService {
     private BaseAttachmentService baseAttachmentService;
     @Autowired
     private SurveyAssetRightGroupService surveyAssetRightGroupService;
+    @Autowired
+    private DeclareRecordService declareRecordService;
+
+    public Map<SchemeJudgeObject, DeclareRecord> getDeclareRecordJudgeObjectMap(List<DeclareRecord> declareRecordList, List<SchemeJudgeObject> schemeJudgeObjectList) {
+        Map<SchemeJudgeObject, DeclareRecord> schemeJudgeObjectDeclareRecordMap = Maps.newHashMap();
+        for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+            DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
+            if (declareRecord != null) {
+                long count = declareRecordList.stream().filter(declareRecord1 -> Objects.equal(declareRecord1.getId(), declareRecord.getId())).count();
+                if (count >= 1) {
+                    schemeJudgeObjectDeclareRecordMap.put(schemeJudgeObject, declareRecord);
+                }
+            }
+        }
+        return schemeJudgeObjectDeclareRecordMap;
+    }
 
     @Transactional(rollbackFor = {Exception.class})
     public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) {
         surveyAssetRightGroupService.clear(projectPlanDetails);
-        SurveyAssetRight right = getSurveyAssetRightOnly(projectPlanDetails, processInsId) ;
-        surveyAssetRightGroupService.updateOnlyMasterId(right.getId(),projectPlanDetails);
+        SurveyAssetRight right = getSurveyAssetRightOnly(projectPlanDetails, processInsId);
+        surveyAssetRightGroupService.updateOnlyMasterId(right.getId(), projectPlanDetails);
     }
 
-    private SurveyAssetRight getSurveyAssetRightOnly(ProjectPlanDetails projectPlanDetails, String processInsId) {
+    public SurveyAssetRight getSurveyAssetRightOnly(ProjectPlanDetails projectPlanDetails, String processInsId) {
         SurveyAssetRight rightQuery = new SurveyAssetRight();
-        rightQuery.setProcessInsId(StringUtils.isNotEmpty(processInsId) ? processInsId : "0");
+        if (StringUtils.isNotEmpty(processInsId)) {
+            rightQuery.setProcessInsId(processInsId);
+        } else {
+            if (StringUtils.isNotEmpty(projectPlanDetails.getProcessInsId())) {
+                rightQuery.setProcessInsId(projectPlanDetails.getProcessInsId());
+            }
+        }
         rightQuery.setPlanDetailsId(projectPlanDetails.getId());
         rightQuery.setProjectId(projectPlanDetails.getProjectId());
         rightQuery.setPlanId(projectPlanDetails.getPlanId());
         List<SurveyAssetRight> rightList = getSurveyAssetRightListByExample(rightQuery);
         if (CollectionUtils.isEmpty(rightList)) {
-            rightList = new ArrayList<>(1) ;
-            saveSurveyAssetRight(rightQuery) ;
-            rightList.add(rightQuery) ;
+            rightList = new ArrayList<>(1);
+            saveSurveyAssetRight(rightQuery);
+            rightList.add(rightQuery);
+        }
+        return rightList.stream().findFirst().get();
+    }
+
+    public SurveyAssetRight getSurveyAssetRightOnly2(ProjectPlanDetails projectPlanDetails) {
+        SurveyAssetRight rightQuery = new SurveyAssetRight();
+        rightQuery.setPlanDetailsId(projectPlanDetails.getId());
+        rightQuery.setProjectId(projectPlanDetails.getProjectId());
+        rightQuery.setPlanId(projectPlanDetails.getPlanId());
+        List<SurveyAssetRight> rightList = getSurveyAssetRightListByExample(rightQuery);
+        if (CollectionUtils.isEmpty(rightList)) {
+            return null;
         }
         return rightList.stream().findFirst().get();
     }

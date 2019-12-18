@@ -188,11 +188,56 @@
             <div class="form-horizontal">
                 <div class="form-group">
                     <div class="col-sm-offset-1  col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
-                        <div class="btn-group">
-                            <input type="hidden" name="groupId" value="_number">
-                            <button class="btn-primary btn" type="button"
-                                    onclick="declareRecordModeObj.init({callback:selectRecord,this_:this});">选择权证
-                            </button>
+                        <div class="row">
+                            <div class="col-xs-1  col-sm-1  col-md-1  col-lg-1">
+                                <div class="btn-group">
+                                    <input type="hidden" name="groupId" value="_number">
+                                    <button class="btn-primary btn" type="button"
+                                            onclick="declareRecordModeObj.init({callback:selectRecord,this_:this});">
+                                        选择权证
+                                    </button>
+                                </div>
+                            </div>
+
+                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                权证名称
+                            </label>
+                            <div class="col-xs-1  col-sm-1  col-md-1  col-lg-1 ">
+                                <input type="text" placeholder="权证名称" name="declareName" class="form-control">
+                            </div>
+                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                楼栋号
+                            </label>
+                            <div class="col-xs-1  col-sm-1  col-md-1  col-lg-1 ">
+                                <input type="text" placeholder="楼栋号" name="buildingNumber" class="form-control">
+                            </div>
+                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                单元号
+                            </label>
+                            <div class="col-xs-1  col-sm-1  col-md-1  col-lg-1 ">
+                                <input type="text" placeholder="单元号" name="unitNumber" class="form-control">
+                            </div>
+                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                坐落
+                            </label>
+                            <div class="col-xs-1  col-sm-1  col-md-1  col-lg-1 ">
+                                <input type="text" placeholder="坐落" name="seat" class="form-control">
+                            </div>
+
+                            <div class="col-xs-1  col-sm-1  col-md-1  col-lg-1 ">
+                                <button type="button" class="btn btn-primary"
+                                        onclick="queryDeclareRecordTable(this,true);" aria-expanded="false">
+                                    查询 <i class="fa fa-search"></i>
+                                </button>
+                            </div>
+
+                            <div class="col-xs-1  col-sm-1  col-md-1  col-lg-1 ">
+                                <button type="button" class="btn btn-primary"
+                                        onclick="queryDeclareRecordTable(this,false);" aria-expanded="false">
+                                    重置 <i class="fa fa-paper-plane"></i>
+                                </button>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -227,12 +272,15 @@
                         </div>
                         <div class="btn-group">
                             <button type="button" class="btn btn-warning"
-                                    onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftAssetInventoryRight)" aria-expanded="false">
+                                    onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftAssetInventoryRight)"
+                                    aria-expanded="false">
                                 下载模板
                             </button>
                         </div>
                         <div class="btn-group">
-                            <button type="button" class="btn btn-primary" onclick="$('#ajaxFileUpload_number').val('').trigger('click')"> 导入</button>
+                            <button type="button" class="btn btn-primary"
+                                    onclick="$('#ajaxFileUpload_number').val('').trigger('click')"> 导入
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -329,7 +377,7 @@
 
     //上传附件通用
     function uploadFileCommon(fieldsName, tableName, id) {
-        if (! id){
+        if (!id) {
             id = 0;
         }
         FileUtils.uploadFiles({
@@ -346,7 +394,7 @@
 
     //显示附件通用
     function showFileCommon(fieldsName, tableName, id) {
-        if (! id){
+        if (!id) {
             id = 0;
         }
         FileUtils.getFileShows({
@@ -511,8 +559,8 @@
     }
 
     function selectRecord(_this, id) {
-        var group = $(_this).closest(".form-group") ;
-        var groupId = group.find("input[name='groupId']").val() ;
+        var group = $(_this).closest(".form-group");
+        var groupId = group.find("input[name='groupId']").val();
         $.ajax({
             url: "${pageContext.request.contextPath}/declareRecord/getDeclareRecordListByIds",
             type: "get",
@@ -520,20 +568,21 @@
             data: {id: id},
             success: function (result) {
                 if (result.ret) {
-                    var arr = [] ;
-                    $.each(result.data,function (i,item) {
-                        var obj = {declareId:item.id,declareName:item.name} ;
+                    var arr = [];
+                    $.each(result.data, function (i, item) {
+                        var obj = {declareId: item.id, declareName: item.name};
                         obj.buildingNumber = item.buildingNumber;
                         obj.unitNumber = item.unit;
                         obj.ownership = item.ownership;
                         obj.seat = item.seat;
                         obj.groupId = groupId;
-                        arr.push(obj) ;
-                    }) ;
-                    if (arr.length >= 1){
-                        saveSurveyAssetRightDeclare(arr,function () {
-                            loadDeclareRecordTable(groupId) ;
-                        }) ;
+                        obj.planDetailsId = '${projectPlanDetails.id}';
+                        arr.push(obj);
+                    });
+                    if (arr.length >= 1) {
+                        saveSurveyAssetRightDeclare(arr, function () {
+                            loadDeclareRecordTable(groupId);
+                        });
                     }
                 } else {
                     Alert("保存数据失败，失败原因:" + result.errmsg);
@@ -545,14 +594,14 @@
         });
     }
 
-    function removeDataDeclareRecord(id,groupId) {
-        deleteSurveyAssetRightDeclareById(id,function () {
-            loadDeclareRecordTable(groupId) ;
-        }) ;
+    function removeDataDeclareRecord(id, groupId) {
+        deleteSurveyAssetRightDeclareById(id, function () {
+            loadDeclareRecordTable(groupId);
+        });
     }
 
-    function loadDeclareRecordTable(groupId) {
-        var target  =  $("#" + commonField.recordTable + groupId);
+    function loadDeclareRecordTable2(groupId, data) {
+        var target = $("#" + commonField.recordTable + groupId);
         var cols = [];
         cols.push({field: 'declareName', title: '权证名称', width: "12%"});
         cols.push({field: 'buildingNumber', title: '楼栋号', width: "6%"});
@@ -562,15 +611,13 @@
         cols.push({
             field: 'id', title: '操作', width: 200, formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-success" data-title="删除" href="javascript:removeDataDeclareRecord(' + row.id + ",'" + row.groupId + "'"  + ');" ><i class="fa fa-remove">删除</i></a>';
+                str += '<a class="btn btn-xs btn-success" data-title="删除" href="javascript:removeDataDeclareRecord(' + row.id + ",'" + row.groupId + "'" + ');" ><i class="fa fa-remove">删除</i></a>';
                 str += '</div>';
                 return str;
             }
         });
         target.bootstrapTable('destroy');
-        TableInit(target, "${pageContext.request.contextPath}/surveyAssetRightDeclare/getBootstrapTableVo", cols, {
-            projectId: '${projectPlanDetails.projectId}', groupId: groupId
-        }, {
+        TableInit(target, "${pageContext.request.contextPath}/surveyAssetRightDeclare/getBootstrapTableVo", cols, data, {
             method: "get",
             showColumns: false,
             showRefresh: false,
@@ -582,6 +629,41 @@
         });
         //隐藏正在加载 正在努力地加载数据中，请稍候……
         target.bootstrapTable('hideLoading');
+    }
+
+    function loadDeclareRecordTable(groupId) {
+        loadDeclareRecordTable2(groupId, {
+            groupId: groupId,planDetailsId:'${projectPlanDetails.id}'
+        });
+    }
+
+    function queryDeclareRecordTable(_this,flag) {
+        var group = $(_this).closest(".form-group");
+        if (flag){
+            var select = {groupId:group.find("input[name='groupId']").val(),planDetailsId:'${projectPlanDetails.id}'};
+            var declareName = group.find("input[name='declareName']").val();
+            if (declareName) {
+                select.declareName = declareName;
+            }
+            var buildingNumber = group.find("input[name='buildingNumber']").val();
+            if (buildingNumber) {
+                select.buildingNumber = buildingNumber;
+            }
+            var unitNumber = group.find("input[name='unitNumber']").val();
+            if (unitNumber) {
+                select.unitNumber = unitNumber;
+            }
+            var seat = group.find("input[name='seat']").val();
+            if (seat) {
+                select.seat = seat;
+            }
+            loadDeclareRecordTable2(select.groupId,select) ;
+        }else {
+            group.find("input[name='declareName']").val('');
+            group.find("input[name='buildingNumber']").val('');
+            group.find("input[name='unitNumber']").val('');
+            group.find("input[name='seat']").val('');
+        }
     }
 
 
@@ -644,11 +726,11 @@
      * 替换关键数据
      */
     function appendHtml2(data) {
-        var target = $("#" + commonField.taskRightAssistAppend) ;
-        var index = target.find(".x_panel").size() ;
+        var target = $("#" + commonField.taskRightAssistAppend);
+        var index = target.find(".x_panel").size();
         $.each(data, function (i, item) {
             var html = $("#" + commonField.taskRightAssistDiv).html();
-            html = html.replace(/_number/g, item.id).replace(/{index}/g,index+ i + 1);
+            html = html.replace(/_number/g, item.id).replace(/{index}/g, index + i + 1);
             target.append(html);
             uploadFileCommon(commonField.specialCaseFile + item.id, AssessDBKey.SurveyAssetRightGroup, item.id);
             showFileCommon(commonField.specialCaseFile + item.id, AssessDBKey.SurveyAssetRightGroup, item.id);

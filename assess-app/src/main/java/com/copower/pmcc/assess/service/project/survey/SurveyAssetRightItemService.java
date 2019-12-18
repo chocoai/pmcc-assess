@@ -155,6 +155,12 @@ public class SurveyAssetRightItemService {
         return surveyAssetRightItemDao.getSurveyAssetRightItemListByExample(oo);
     }
 
+    public List<SurveyAssetRightItem> getSurveyAssetRightItemListByGroupId(Integer groupId) {
+        SurveyAssetRightItem select = new SurveyAssetRightItem();
+        select.setGroupId(groupId);
+        return getSurveyAssetRightItemListByExample(select) ;
+    }
+
     private boolean importData(SurveyAssetRightItem target, StringBuilder builder, Row row, int i) throws Exception {
         List<BaseDataDic> typeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.HOUSE_INVENTORY_RIGHT_CATEGORY);
         for (int j = 0; j < 12; j++) {
