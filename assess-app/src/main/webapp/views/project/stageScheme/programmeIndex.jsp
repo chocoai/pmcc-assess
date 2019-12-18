@@ -445,7 +445,7 @@
                        class="btn btn-xs btn-warning judge-merge tooltips">合并</a>
                     <a href="javascript://" onclick="programme.mergeJudgeCancel(this);"
                        class="btn btn-xs btn-warning judge-merge-cancel tooltips">取消合并(全部)</a>
-                    <a href="javascript://" onclick="programme.mergeJudgeCancel(this);"
+                    <a href="javascript://" onclick="programme.mergeJudgeCancelPart(this);"
                        class="btn btn-xs btn-warning judge-merge-cancel tooltips">取消合并(部分)</a>
                     <a href="javascript://" title="评估方法" onclick="programmeMethod.setMethod(this);"
                        class="btn btn-xs btn-success judge-method tooltips">评估方法</a>
@@ -610,21 +610,6 @@
             programme.areaMergeCancel($(this).closest('.area_panel').find('[name=areaGroupId]').val());
             e.stopPropagation();
         })
-
-        FileUtils.uploadFiles({
-            target: "inventoryRightFile",
-            showFileList: false,
-            onUpload: function (file) {//上传之前触发
-                var formData = {
-                    tableName: AssessDBKey.SurveyAssetInventoryRight,
-                    tableId: $("#frm_inventory_right").find('[name=id]').val()
-                };
-                return formData;
-            },
-            onUploadComplete: function () {
-                programme.loadInventoryRightFile($("#frm_inventory_right").find('[name=id]').val());
-            }
-        });
     })
 
     //  提交 编辑数据(流程状态下)
@@ -666,7 +651,8 @@
         //区域合并项html
         areaItemHtml: '<li data-areaGroupId="{areaGroupId}"> <label>{areaName}</label> <a href="javascript://" onclick="programme.mergeItemRemove(this);" style="float: right;"><i class="fa fa-remove fa-white" ></i></a> </li>',
         //委估对象合并项html
-        judgeItemHtml: '<li data-judgeId="{judgeId}">  <label onclick="programme.setStandardJudge(this);">{mergeNumber}号估价对象</label> <a href="javascript://" onclick="programme.mergeItemRemove(this);"  style="float: right;"><i class="fa fa-remove fa-white" ></i></a>  </li>',
+        judgeItemHtml: '<li data-judgeId="{judgeId}">  <label onclick="programme.setStandardJudge(this);">{mergeNumber}号估价对象</label> <a href="javascript://"  onclick="$(this).closest(\"li\").remove();"  style="float: right;"><i class="fa fa-remove fa-white" ></i></a>  </li>',
+        judgeSplitItemHtml: '<li data-judgeId="{judgeId}">  <label>{name}</label> <a href="javascript://" onclick="programme.splitItemRemove(this);"  style="float: right;"><i class="fa fa-remove fa-white" ></i></a>  </li>',
         currJudgeMethodButton: undefined //当前评估方法button
     };
 
@@ -749,11 +735,6 @@
                 alert("调用服务端方法失败，失败原因:" + result);
             }
         });
-    };
-
-    //合并项移除
-    programme.mergeItemRemove = function (_this) {
-        $(_this).closest('li').remove();
     };
 
     //区域合并
@@ -927,7 +908,7 @@
                 passFlag = false;
             }
         })
-        if(passFlag&&$chevron.length > 0){
+        if (passFlag && $chevron.length > 0) {
             $chevron.closest('.collapse-link').trigger('click');
         }
         return passFlag;
@@ -1017,23 +998,63 @@
         });
     };
 
-    //取消委估对象合并
+    //取消委估对象合并(全部)
     programme.mergeJudgeCancel = function (_this) {
-        programme.saveProgrammeArea($(_this).closest('.area_panel'));
-        //后台添加数据
-        Loading.progressShow();
+        Alert("确定要取消合并么？", 2, null, function () {
+            $.ajax({
+                url: '${pageContext.request.contextPath}/schemeProgramme/mergeJudgeCancel',
+                data: {
+                    id: $(_this).closest('.x_panel').find('[data-name="id"]').val()
+                },
+                type: "post",
+                dataType: "json",
+                success: function (result) {
+                    Loading.progressHide();
+                    if (result.ret) {
+                        toastr.success('委估对象取消合并成功');
+                        programme.loadJudgeObjectList($(_this).closest('.area_panel'));
+                    } else {
+                        Alert(result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+                }
+            });
+        })
+    };
+
+    //取消委估对象合并(部分)
+    programme.mergeJudgeCancelPart = function (_this) {
+        var id = $(_this).closest('.x_panel').find('[data-name=id]').val();
         $.ajax({
-            url: '${pageContext.request.contextPath}/schemeProgramme/mergeJudgeCancel',
+            url: '${pageContext.request.contextPath}/schemeProgramme/getJudgeObjectListByPid',
             data: {
-                id: $(_this).closest('.x_panel').find('[data-name="id"]').val()
+                pid: id,
+                limit: 1000,
+                offset: 1
             },
-            type: "post",
+            type: "get",
             dataType: "json",
             success: function (result) {
-                Loading.progressHide();
-                if (result.ret) {
-                    toastr.success('委估对象取消合并成功');
-                    programme.loadJudgeObjectList($(_this).closest('.area_panel'));
+                if (result.rows) {
+                    layer.open({
+                        title: "委估对象合并",
+                        offset: 'rt',
+                        shade: false,
+                        zIndex: 999,
+                        area: ['420px', '300px'], //宽高
+                        content: '<ul id="judge-split-ul" class="list-unstyled project_files" data-remove-ids=""></ul>',
+                        yes: function (index, layero) {
+                            programme.mergeJudgeCancelPartSave(id,$(_this).closest('.x_panel'));
+                        },
+                        success: function () {
+                            var html = programme.config.judgeSplitItemHtml;
+                            $.each(result.rows, function (i, item) {
+                                $("#judge-split-ul").prepend(html.replace(/{name}/g, item.name).replace(/{judgeId}/g, item.id));
+                            })
+                        }
+                    });
                 } else {
                     Alert(result.errmsg);
                 }
@@ -1043,6 +1064,38 @@
             }
         });
     };
+
+    //拆分项移除
+    programme.splitItemRemove = function (_this) {
+        var li = $(_this).closest('li');
+        var id = li.attr('data-judgeid');
+        var removeIds = $("#judge-split-ul").attr('data-remove-ids');
+        $("#judge-split-ul").attr('data-remove-ids', (removeIds + "," + id).replace(/^,/, ""));
+        li.remove();
+    };
+
+    //取消委估对象合并(部分)保存
+    programme.mergeJudgeCancelPartSave = function (id,panel) {
+        $.ajax({
+            url: '${pageContext.request.contextPath}/schemeProgramme/mergeJudgeCancelPart',
+            data: {
+                id: id,
+                cancelSplitIds: $("#judge-split-ul").attr('data-remove-ids')
+            },
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                if (result.ret) {
+                    programme.loadJudgeObjectList(panel);
+                } else {
+                    Alert(result.errmsg);
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+            }
+        });
+    }
 
     //获取区域下的方案数据
     programme.getProgrammeAreaData = function (areaPanel) {

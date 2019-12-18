@@ -373,7 +373,7 @@ public class SchemeJudgeObjectService {
      * @param id
      */
     @Transactional(rollbackFor = Exception.class)
-    public void splitJudge(Integer projectId, Integer areaGroupId, Integer id,Integer splitCount) {
+    public void splitJudge(Integer projectId, Integer areaGroupId, Integer id, Integer splitCount) {
         //1.找出该权证已拆分的数据，以确定新权证的拆分序号
         //2.添加拆分数据,如果没有拆分数据，则需将主数据的拆分号设置为1
         SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectDao.getSchemeJudgeObject(id);
@@ -515,17 +515,45 @@ public class SchemeJudgeObjectService {
      *
      * @param id
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void mergeJudgeCancel(Integer id) {
         //1.将原参与合并的委估对象设置为可用，删除该合并的委估对象
-        SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectDao.getSchemeJudgeObject(id);
-        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getListByPid(schemeJudgeObject.getId());
+        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getListByPid(id);
         for (SchemeJudgeObject judgeObject : judgeObjectList) {
             judgeObject.setBisEnable(true);
             judgeObject.setPid(0);
             schemeJudgeObjectDao.updateSchemeJudgeObject(judgeObject);
         }
         schemeJudgeObjectDao.removeSchemeJudgeObject(id);
+    }
+
+    /**
+     * 委估对象合并取消(部分)
+     *
+     * @param id
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void mergeJudgeCancelPart(Integer id, String cancelSplitIds) {
+        //1.将原参与合并的委估对象设置为可用，更该估价对象号及名称
+        //2.标准估价对象无法移除
+        SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectDao.getSchemeJudgeObject(id);
+        List<Integer> list = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(cancelSplitIds));
+        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getListByIds(list);
+        String number = schemeJudgeObject.getNumber();
+        String name = schemeJudgeObject.getName();
+        if (CollectionUtils.isNotEmpty(judgeObjectList)) {
+            for (SchemeJudgeObject judgeObject : judgeObjectList) {
+                judgeObject.setBisEnable(true);
+                judgeObject.setPid(0);
+                schemeJudgeObjectDao.updateSchemeJudgeObject(judgeObject);
+
+                number = number.replace(judgeObject.getNumber(), "");
+                name = name.replace(judgeObject.getName(), "");
+            }
+        }
+        schemeJudgeObject.setNumber(number.replaceAll(",+?", ","));
+        schemeJudgeObject.setName(name.replaceAll(",+?", ","));
+        schemeJudgeObjectDao.updateSchemeJudgeObject(schemeJudgeObject);
     }
 
     /**
@@ -936,6 +964,7 @@ public class SchemeJudgeObjectService {
         }
         return list;
     }
+
     /**
      * 根据申报信息获取对应估价对象
      *

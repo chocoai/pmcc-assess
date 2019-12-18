@@ -293,6 +293,17 @@ public class SchemeProgrammeController {
         }
     }
 
+    @PostMapping(name = "取消合并的委估对象部分", value = "/mergeJudgeCancelPart")
+    public HttpResult mergeJudgeCancelPart(Integer id,String cancelSplitIds) {
+        try {
+            schemeJudgeObjectService.mergeJudgeCancelPart(id,cancelSplitIds);
+            return HttpResult.newCorrectResult();
+        } catch (Exception e) {
+            logger.error("取消合并的委估对象部分", e);
+            return HttpResult.newErrorResult("取消合并的委估对象部分异常");
+        }
+    }
+
     @RequestMapping(value = "/saveProgrammeArea", name = "保存区域下方案 ", method = RequestMethod.POST)
     public HttpResult saveProgrammeArea(String formData) {
         try {
