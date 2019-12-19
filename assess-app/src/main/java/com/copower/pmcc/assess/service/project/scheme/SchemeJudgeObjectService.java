@@ -533,26 +533,28 @@ public class SchemeJudgeObjectService {
      * @param id
      */
     @Transactional(rollbackFor = Exception.class)
-    public void mergeJudgeCancelPart(Integer id, String cancelSplitIds) {
+    public void mergeJudgeAdjudt(Integer id, String removeIds,String addIds) {
         //1.将原参与合并的委估对象设置为可用，更该估价对象号及名称
         //2.标准估价对象无法移除
+        if (StringUtils.isBlank(removeIds)) return;
         SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectDao.getSchemeJudgeObject(id);
-        List<Integer> list = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(cancelSplitIds));
+        List<Integer> list = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(removeIds));
         List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getListByIds(list);
-        String number = schemeJudgeObject.getNumber();
-        String name = schemeJudgeObject.getName();
+        String number = "," + schemeJudgeObject.getNumber();
+        String name = "," + schemeJudgeObject.getName();
         if (CollectionUtils.isNotEmpty(judgeObjectList)) {
             for (SchemeJudgeObject judgeObject : judgeObjectList) {
+                if (judgeObject.getId().equals(schemeJudgeObject.getStandardJudgeId())) continue;
                 judgeObject.setBisEnable(true);
                 judgeObject.setPid(0);
                 schemeJudgeObjectDao.updateSchemeJudgeObject(judgeObject);
-
-                number = number.replace(judgeObject.getNumber(), "");
-                name = name.replace(judgeObject.getName(), "");
+                String fullNumber = "," + judgeObject.getNumber() + (judgeObject.getSplitNumber() == null ? "" : "-" + judgeObject.getSplitNumber());
+                number = number.replace(fullNumber, "");
+                name = name.replace(fullNumber, "");
             }
         }
-        schemeJudgeObject.setNumber(number.replaceAll(",+?", ","));
-        schemeJudgeObject.setName(name.replaceAll(",+?", ","));
+        schemeJudgeObject.setNumber(number.replaceAll("^,+?", ""));
+        schemeJudgeObject.setName(name.replaceAll("^,+?", ""));
         schemeJudgeObjectDao.updateSchemeJudgeObject(schemeJudgeObject);
     }
 
