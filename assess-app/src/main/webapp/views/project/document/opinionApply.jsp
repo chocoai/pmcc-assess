@@ -62,10 +62,16 @@
                                         <a class="btn btn-success" onclick="previewContract()">生成文件</a>
                                     </label>
                                     <div class="col-sm-11">
-
                                         <div id="_file_upload">
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        <input id="file_upload" name="file_upload" type="file" multiple="false">
+                                    </label>
                                 </div>
                             </div>
                         </form>
@@ -99,6 +105,19 @@
     $(function () {
         loadContractAttachment();
         $("#opinionInfoFrm").validate();
+
+        FileUtils.uploadFiles({
+            target: "file_upload",
+            disabledTarget: "btn_submit",
+            formData: {
+                tableName: "tb_document_opinion",
+                tableId: $("#id").val(),
+                proectId:${documentOpinion.projectId}
+            },
+            deleteFlag: true,
+            editFlag: true
+        });
+
         //显示报告附件
         FileUtils.getFileShows({
             target: "file_report",
