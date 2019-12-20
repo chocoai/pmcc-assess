@@ -47,15 +47,19 @@
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">梯户比</label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <label class="form-control" name="elevatorHouseholdRatio">${basicUnit.elevatorHouseholdRatio}</label>
+                                    <label class="form-control"
+                                           name="elevatorHouseholdRatio">${basicUnit.elevatorHouseholdRatio}</label>
                                 </div>
                             </div>
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">户型说明</label>
-                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <label class="form-control" name="huxingExplain">${basicUnit.huxingExplain}</label>
+                            <c:if test="${formType eq 'industry'}">
+                                <div class="x-valid">
+                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">户型说明</label>
+                                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                        <label class="form-control"
+                                               name="huxingExplain">${basicUnit.huxingExplain}</label>
+                                    </div>
                                 </div>
-                            </div>
+                            </c:if>
                         </div>
                     </form>
                 </div>
@@ -63,8 +67,8 @@
             <c:if test="${empty isHistory}">
                 <div class="x_panel">
                     <div class="x_content">
-                        <%@include file="/views/project/stageSurvey/commonDetail/unitDecorate.jsp" %>
                         <%@include file="/views/project/stageSurvey/commonDetail/unitHuxing.jsp" %>
+                        <%@include file="/views/project/stageSurvey/commonDetail/unitDecorate.jsp" %>
                         <%@include file="/views/project/stageSurvey/commonDetail/unitElevator.jsp" %>
                         <%@include file="/views/project/stageSurvey/commonDetail/unitHuxingPriceDetail.jsp" %>
                     </div>

@@ -1,16 +1,23 @@
 package com.copower.pmcc.assess.controller.cases;
 
+import com.copower.pmcc.assess.common.enums.basic.BasicApplyTypeEnum;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicBuildingDao;
+import com.copower.pmcc.assess.dal.basis.entity.BasicBuilding;
 import com.copower.pmcc.assess.dal.cases.custom.entity.CustomCaseEntity;
 import com.copower.pmcc.assess.dal.cases.entity.CaseBuilding;
+import com.copower.pmcc.assess.dal.cases.entity.CaseEstate;
+import com.copower.pmcc.assess.service.basic.PublicBasicService;
 import com.copower.pmcc.assess.service.cases.CaseBuildingService;
 import com.copower.pmcc.assess.service.cases.CaseEstateService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -33,14 +40,34 @@ public class CaseBuildingController {
     private CaseBuildingService caseBuildingService;
     @Autowired
     private CaseEstateService caseEstateService;
+    @Autowired
+    private BasicBuildingDao basicBuildingDao;
+    @Autowired
+    private PublicBasicService publicBasicService;
 
     @RequestMapping(value = "/detailView", name = "详情页面 ", method = RequestMethod.GET)
-    public ModelAndView detailView(Integer id) {
-        String view = "/case/caseBuild/caseBuildingView";
+    public ModelAndView detailView(Integer id) throws Exception {
+        String view = "project/stageSurvey/house/detail/building";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
         CaseBuilding caseBuilding = caseBuildingService.getCaseBuildingById(id);
-        modelAndView.addObject("caseBuilding", caseBuildingService.getCaseBuildingVo(caseBuilding));
-        modelAndView.addObject("caseEstate", caseEstateService.getCaseEstateById(caseBuilding.getEstateId()));
+        CaseEstate caseEstate = caseEstateService.getCaseEstateById(caseBuilding.getEstateId());
+        if (caseEstate.getType() != null) {
+            modelAndView.addObject("formType", BasicApplyTypeEnum.getEnumById(caseEstate.getType()).getKey());
+        }
+        BasicBuilding building = new BasicBuilding();
+        building.setDisplayCaseId(id);
+        List<BasicBuilding> buildings = basicBuildingDao.getBasicBuildingList(building);
+        if (CollectionUtils.isNotEmpty(buildings)) {
+            building = buildings.get(0);
+        } else {
+            basicBuildingDao.addBasicBuilding(building);
+        }
+        caseBuildingService.quoteCaseBuildToBasic(id, building.getId());
+        building.setDisplayCaseId(id);
+        basicBuildingDao.updateBasicBuilding(building, false);
+
+        modelAndView.addObject(StringUtils.uncapitalize(BasicBuilding.class.getSimpleName()), publicBasicService.getBasicBuildingById(building.getId()));
+
         return modelAndView;
     }
 
@@ -68,9 +95,9 @@ public class CaseBuildingController {
 
     @ResponseBody
     @RequestMapping(value = "/quoteCaseBuildToBasic", name = "引用案列数据", method = {RequestMethod.GET})
-    public HttpResult quoteCaseBuildToBasic(Integer id,Integer tableId) {
+    public HttpResult quoteCaseBuildToBasic(Integer id, Integer tableId) {
         try {
-            return HttpResult.newCorrectResult(caseBuildingService.quoteCaseBuildToBasic(id,tableId));
+            return HttpResult.newCorrectResult(caseBuildingService.quoteCaseBuildToBasic(id, tableId));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(e.getMessage());

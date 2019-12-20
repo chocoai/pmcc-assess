@@ -262,7 +262,7 @@ public class CaseEstateService {
         }
 
         CaseEstateTagging oldCaseEstateTagging = new CaseEstateTagging();
-        oldCaseEstateTagging.setDataId(quoteId);
+        oldCaseEstateTagging.setTableId(quoteId);
         oldCaseEstateTagging.setType(EstateTaggingTypeEnum.ESTATE.getKey());
         List<CaseEstateTagging> oldCaseEstateTaggingList = caseEstateTaggingService.getCaseEstateTaggingList(oldCaseEstateTagging);
         if (!ObjectUtils.isEmpty(oldCaseEstateTaggingList)) {

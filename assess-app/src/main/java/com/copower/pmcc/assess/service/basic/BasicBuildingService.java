@@ -379,7 +379,7 @@ public class BasicBuildingService {
         baseAttachmentService.copyFtpAttachments(example, attachmentDto);
         //标注拷贝
         CaseEstateTagging caseEstateTagging = new CaseEstateTagging();
-        caseEstateTagging.setDataId(caseBuildingId);
+        caseEstateTagging.setTableId(caseBuildingId);
         caseEstateTagging.setType(EstateTaggingTypeEnum.BUILDING.getKey());
         List<CaseEstateTagging> oldCaseEstateTaggingList = caseEstateTaggingService.getCaseEstateTaggingList(caseEstateTagging);
         if (!ObjectUtils.isEmpty(oldCaseEstateTaggingList)) {

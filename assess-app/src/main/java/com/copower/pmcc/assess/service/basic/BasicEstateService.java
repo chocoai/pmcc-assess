@@ -429,7 +429,7 @@ public class BasicEstateService {
         }
         //标注拷贝
         CaseEstateTagging caseEstateTagging = new CaseEstateTagging();
-        caseEstateTagging.setDataId(caseEstateId);
+        caseEstateTagging.setTableId(caseEstateId);
         caseEstateTagging.setType(EstateTaggingTypeEnum.ESTATE.getKey());
         List<CaseEstateTagging> oldCaseEstateTaggingList = caseEstateTaggingService.getCaseEstateTaggingList(caseEstateTagging);
         if (!ObjectUtils.isEmpty(oldCaseEstateTaggingList)) {
