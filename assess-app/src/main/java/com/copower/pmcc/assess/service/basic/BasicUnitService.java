@@ -28,10 +28,8 @@ import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -96,7 +94,7 @@ public class BasicUnitService {
         return basicUnitDao.getBasicUnitById(id);
     }
 
-    public List<BasicUnit> getBasicUnitListByIds(List<Integer> ids)  {
+    public List<BasicUnit> getBasicUnitListByIds(List<Integer> ids) {
         return basicUnitDao.getBasicUnitListByIds(ids);
     }
 
@@ -113,14 +111,14 @@ public class BasicUnitService {
             Integer id = basicUnitDao.addBasicUnit(basicUnit);
             return id;
         } else {
-            if(updateNull){
+            if (updateNull) {
                 BasicUnit unit = basicUnitDao.getBasicUnitById(basicUnit.getId());
-                if(unit!=null){
+                if (unit != null) {
                     basicUnit.setCreator(unit.getCreator());
                     basicUnit.setGmtCreated(unit.getGmtCreated());
                 }
             }
-            basicUnitDao.updateBasicUnit(basicUnit,updateNull);
+            basicUnitDao.updateBasicUnit(basicUnit, updateNull);
             return basicUnit.getId();
         }
     }
@@ -327,7 +325,7 @@ public class BasicUnitService {
                     basicUnitHuxing.setId(null);
                     basicUnitHuxing.setGmtCreated(null);
                     basicUnitHuxing.setGmtModified(null);
-                    Integer id = basicUnitHuxingService.saveAndUpdateBasicUnitHuxing(basicUnitHuxing,false);
+                    Integer id = basicUnitHuxingService.saveAndUpdateBasicUnitHuxing(basicUnitHuxing, false);
 
                     //附件拷贝
                     example = new SysAttachmentDto();
@@ -382,7 +380,7 @@ public class BasicUnitService {
         basicUnit.setGmtCreated(null);
         basicUnit.setGmtModified(null);
         basicUnit.setId(null);
-        this.saveAndUpdateBasicUnit(basicUnit,true);
+        this.saveAndUpdateBasicUnit(basicUnit, true);
 
 
         //附件拷贝
@@ -421,7 +419,7 @@ public class BasicUnitService {
                     basicUnitHuxing.setId(null);
                     basicUnitHuxing.setGmtCreated(null);
                     basicUnitHuxing.setGmtModified(null);
-                    Integer id = basicUnitHuxingService.saveAndUpdateBasicUnitHuxing(basicUnitHuxing,false);
+                    Integer id = basicUnitHuxingService.saveAndUpdateBasicUnitHuxing(basicUnitHuxing, false);
 
                     //附件拷贝
                     example = new SysAttachmentDto();
@@ -488,7 +486,7 @@ public class BasicUnitService {
         basicUnit.setApplyId(null);
         basicUnit.setBuildingId(parentTableId);
 
-        this.saveAndUpdateBasicUnit(basicUnit,false);
+        this.saveAndUpdateBasicUnit(basicUnit, false);
 
 
         //删除原有的附件
@@ -540,7 +538,7 @@ public class BasicUnitService {
                     basicUnitHuxing.setId(null);
                     basicUnitHuxing.setGmtCreated(null);
                     basicUnitHuxing.setGmtModified(null);
-                    Integer huxingId = basicUnitHuxingService.saveAndUpdateBasicUnitHuxing(basicUnitHuxing,false);
+                    Integer huxingId = basicUnitHuxingService.saveAndUpdateBasicUnitHuxing(basicUnitHuxing, false);
 
                     //附件拷贝
                     example = new SysAttachmentDto();
@@ -576,6 +574,78 @@ public class BasicUnitService {
         return basicUnit;
     }
 
+    /**
+     * 拷贝查勘楼栋数据
+     *
+     * @param sourceUnitId
+     * @param containChild
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public BasicUnit copyBasicUnit(Integer sourceUnitId, Boolean containChild) throws Exception {
+        if (sourceUnitId == null) return null;
+        BasicUnit sourceBasicUnit = getBasicUnitById(sourceUnitId);
+        if (sourceBasicUnit == null) return null;
+        BasicUnit targetBasicUnit = new BasicUnit();
+        BeanUtils.copyProperties(sourceBasicUnit,targetBasicUnit);
+        targetBasicUnit.setId(null);
+        targetBasicUnit.setCreator(commonService.thisUserAccount());
+        targetBasicUnit.setGmtCreated(null);
+        targetBasicUnit.setGmtModified(null);
+        this.saveAndUpdateBasicUnit(targetBasicUnit, true);
 
+        //附件拷贝
+        SysAttachmentDto example = new SysAttachmentDto();
+        example.setTableId(sourceUnitId);
+        example.setTableName(FormatUtils.entityNameConvertToTableName(BasicUnit.class));
+        SysAttachmentDto attachmentDto = new SysAttachmentDto();
+        attachmentDto.setTableId(targetBasicUnit.getId());
+        attachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicUnit.class));
+        baseAttachmentService.copyFtpAttachments(example, attachmentDto);
+
+        basicEstateTaggingService.copyTagging(EstateTaggingTypeEnum.UNIT, sourceUnitId, targetBasicUnit.getId());
+
+        if(containChild){
+            try {
+                List<BasicUnitHuxing> oldBasicUnitHuxingList = null;
+                BasicUnitHuxing query = new BasicUnitHuxing();
+                query.setUnitId(sourceUnitId);
+                oldBasicUnitHuxingList = basicUnitHuxingService.basicUnitHuxingList(query);
+                if (!ObjectUtils.isEmpty(oldBasicUnitHuxingList)) {
+                    for (BasicUnitHuxing oldBasicUnitHuxing : oldBasicUnitHuxingList) {
+                        BasicUnitHuxing basicUnitHuxing = new BasicUnitHuxing();
+                        BeanUtils.copyProperties(oldBasicUnitHuxing, basicUnitHuxing);
+                        basicUnitHuxing.setUnitId(targetBasicUnit.getId());
+                        basicUnitHuxing.setId(null);
+                        basicUnitHuxing.setGmtCreated(null);
+                        basicUnitHuxing.setGmtModified(null);
+                        Integer huxingId = basicUnitHuxingService.saveAndUpdateBasicUnitHuxing(basicUnitHuxing, false);
+                        baseAttachmentService.copyFtpAttachments(oldBasicUnitHuxing.getId(), huxingId);//附件拷贝
+                    }
+                }
+            } catch (Exception e) {
+                logger.info(e.getMessage(), e);
+            }
+
+            StringBuilder sqlBuilder = new StringBuilder();
+            SynchronousDataDto synchronousDataDto = new SynchronousDataDto();
+            HashMap<String, String> map = Maps.newHashMap();
+            map.put("unit_id", String.valueOf(targetBasicUnit.getId()));
+            map.put("creator", commonService.thisUserAccount());
+            synchronousDataDto.setFieldDefaultValue(map);
+            synchronousDataDto.setWhereSql("unit_id=" + sourceUnitId);
+            synchronousDataDto.setSourceDataBase(BaseConstant.DATABASE_PMCC_ASSESS);
+            synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicUnitDecorate.class));
+            synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicUnitDecorate.class));
+            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//楼栋内装sql
+
+            synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicUnitElevator.class));
+            synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicUnitElevator.class));
+            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//配备电梯sql
+
+            ddlMySqlAssist.customTableDdl(sqlBuilder.toString());//执行sql
+        }
+        return targetBasicUnit;
+    }
 
 }

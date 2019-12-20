@@ -1,9 +1,10 @@
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/assets/dataAssetsAppraisalDic.js?v=${assessVersion}"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/assets/assetsAppraisalDic.common.js?v=${assessVersion}"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/assets/dataAssetsAppraisalDic.js?v=${assessVersion}"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/assets/assetsAppraisalDic.common.js?v=${assessVersion}"></script>
 
 <div class="x_panel">
     <div class="x_title">
@@ -41,7 +42,7 @@
                     <script type="text/javascript">
                         $(function () {
                             var fileId = 'assetsCustomizeDataField_Fixed_file${item.id}';
-                            commonAssets.showFile2(fileId, AssessDBKey.AssetsCustomizeDataField, "${item.id}", false,false, fileId);
+                            commonAssets.showFile2(fileId, AssessDBKey.AssetsCustomizeDataField, "${item.id}", false, true, fileId);
                         });
                     </script>
                 </div>
@@ -72,7 +73,7 @@
                     <script type="text/javascript">
                         $(function () {
                             var fileId = 'assetsCustomizeDataField_Fixed${item.id}';
-                            commonAssets.showFile2(fileId, AssessDBKey.AssetsCustomizeDataField, "${item.id}", false,false, fileId);
+                            commonAssets.showFile2(fileId, AssessDBKey.AssetsCustomizeDataField, "${item.id}", false, true, fileId);
                         });
                     </script>
                 </div>
@@ -83,7 +84,7 @@
 <c:if test="${(fixedDataFieldAndFile== null || fn:length(fixedDataFieldAndFile) == 0) && (fixedDataField== null || fn:length(fixedDataField) == 0)}">
     <script type="text/javascript">
         $(document).ready(function () {
-            commonAssets.declareApplyForm.find(".x_panel").first().hide() ;
+            commonAssets.declareApplyForm.find(".x_panel").first().hide();
         });
     </script>
 </c:if>
@@ -142,7 +143,7 @@
                     <script type="text/javascript">
                         $(function () {
                             var fileId = 'other_Enclosure${item.id}';
-                            commonAssets.showFile3(fileId, AssessDBKey.AssetsCustomizeDataField, "${item.id}", false,false,'${activityCnName}'.indexOf("盖章") > -1, fileId);
+                            commonAssets.showFile3(fileId, AssessDBKey.AssetsCustomizeDataField, "${item.id}", false, 'approval' == '${flog}', '${activityCnName}'.indexOf("盖章") > -1, fileId);
                         });
                     </script>
                 </div>
@@ -158,9 +159,9 @@
                     备注
                 </label>
                 <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11  ">
-                        <label class=" form-control">
-                            ${assetsCustomizeDataField.remark}
-                        </label>
+                    <label class=" form-control">
+                        ${assetsCustomizeDataField.remark}
+                    </label>
                 </div>
             </div>
         </div>

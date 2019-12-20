@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.service.base;
 
 import com.copower.pmcc.assess.constant.AssessCacheConstant;
+import com.copower.pmcc.assess.dal.basis.entity.BasicUnitHuxing;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPhase;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.provider.ErpRpcAttachmentService;
@@ -259,6 +260,21 @@ public class BaseAttachmentService {
                 this.copyFtpAttachment(dto.getId(), sysAttachmentDto);
             }
         }
+    }
+
+    /**
+     * 拷贝FTP附件
+     *
+     * @param sourceTableId
+     * @param targetTableId
+     * @return
+     */
+    public void copyFtpAttachments(Integer sourceTableId, Integer targetTableId) throws Exception {
+        SysAttachmentDto example = new SysAttachmentDto();
+        example.setTableId(sourceTableId);
+        SysAttachmentDto attachmentDto = new SysAttachmentDto();
+        attachmentDto.setTableId(targetTableId);
+        copyFtpAttachments(example, attachmentDto);
     }
 
     /**

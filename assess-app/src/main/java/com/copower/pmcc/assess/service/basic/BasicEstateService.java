@@ -457,7 +457,7 @@ public class BasicEstateService {
                     queryBasicEstateParking.setGmtCreated(null);
                     queryBasicEstateParking.setGmtModified(null);
                     queryBasicEstateParking.setCreator(commonService.thisUserAccount());
-                    Integer id = basicEstateParkingService.saveAndUpdateBasicEstateParking(queryBasicEstateParking,false);
+                    Integer id = basicEstateParkingService.saveAndUpdateBasicEstateParking(queryBasicEstateParking, false);
 
                     example = new SysAttachmentDto();
                     example.setTableId(caseEstateParking.getId());
@@ -543,7 +543,7 @@ public class BasicEstateService {
         basicEstate.setGmtModified(null);
         basicEstate.setId(null);
 
-        this.saveAndUpdateBasicEstate(basicEstate,false);
+        this.saveAndUpdateBasicEstate(basicEstate, false);
         objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicEstate.class.getSimpleName()), getBasicEstateVo(basicEstate));
 
 
@@ -602,7 +602,7 @@ public class BasicEstateService {
                     queryBasicEstateParking.setGmtCreated(null);
                     queryBasicEstateParking.setGmtModified(null);
                     queryBasicEstateParking.setCreator(commonService.thisUserAccount());
-                    Integer id = basicEstateParkingService.saveAndUpdateBasicEstateParking(queryBasicEstateParking,false);
+                    Integer id = basicEstateParkingService.saveAndUpdateBasicEstateParking(queryBasicEstateParking, false);
 
                     example = new SysAttachmentDto();
                     example.setTableId(oldBasicEstateParking.getId());
@@ -703,7 +703,7 @@ public class BasicEstateService {
         basicEstate.setId(tableId);
         basicEstate.setApplyId(null);
 
-        this.saveAndUpdateBasicEstate(basicEstate,false);
+        this.saveAndUpdateBasicEstate(basicEstate, false);
         objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicEstate.class.getSimpleName()), getBasicEstateVo(basicEstate));
 
         //删除原有的附件
@@ -773,7 +773,7 @@ public class BasicEstateService {
                     queryBasicEstateParking.setGmtCreated(null);
                     queryBasicEstateParking.setGmtModified(null);
                     queryBasicEstateParking.setCreator(commonService.thisUserAccount());
-                    Integer parkingId = basicEstateParkingService.saveAndUpdateBasicEstateParking(queryBasicEstateParking,false);
+                    Integer parkingId = basicEstateParkingService.saveAndUpdateBasicEstateParking(queryBasicEstateParking, false);
 
                     example = new SysAttachmentDto();
                     example.setTableId(oldBasicEstateParking.getId());
@@ -878,4 +878,115 @@ public class BasicEstateService {
         objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicEstateLandState.class.getSimpleName()), basicEstateLandStateService.getBasicEstateLandStateVo(estateLandState));
         return objectMap;
     }
+
+    /**
+     * 拷贝查勘楼盘数据
+     *
+     * @param sourceEstateId
+     * @param containChild
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public BasicEstate copyBasicEstate(Integer sourceEstateId, Boolean containChild) throws Exception {
+        if (sourceEstateId == null) return null;
+        BasicEstate sourceBasicEstate = getBasicEstateById(sourceEstateId);
+        if (sourceBasicEstate == null) return null;
+        BasicEstate targetBasicEstate = new BasicEstate();
+        BeanUtils.copyProperties(sourceEstateId, targetBasicEstate);
+        targetBasicEstate.setId(null);
+        targetBasicEstate.setCreator(commonService.thisUserAccount());
+        targetBasicEstate.setGmtCreated(null);
+        targetBasicEstate.setGmtModified(null);
+        this.saveAndUpdateBasicEstate(targetBasicEstate, true);
+        //附件拷贝
+        baseAttachmentService.copyFtpAttachments(sourceEstateId, targetBasicEstate.getId());
+
+        //标记tagging
+        basicEstateTaggingService.copyTagging(EstateTaggingTypeEnum.ESTATE, sourceEstateId, targetBasicEstate.getId());
+
+        //土地信息
+        BasicEstateLandState sourceEstateLandState = basicEstateLandStateService.getLandStateByEstateId(sourceEstateId);
+        if (sourceEstateLandState != null) {
+            BasicEstateLandState targeEstateLandState = new BasicEstateLandState();
+            BeanUtils.copyProperties(sourceEstateLandState, targeEstateLandState);
+            targeEstateLandState.setEstateId(targetBasicEstate.getId());
+            targeEstateLandState.setId(null);
+            targeEstateLandState.setCreator(commonService.thisUserAccount());
+            targeEstateLandState.setGmtCreated(null);
+            targeEstateLandState.setGmtModified(null);
+            basicEstateLandStateDao.addBasicEstateLandState(targeEstateLandState);
+        }
+
+        if (containChild) { //处理从表数据
+            try {  //停车场数据
+                BasicEstateParking estateParking = new BasicEstateParking();
+                estateParking.setEstateId(sourceEstateId);
+                List<BasicEstateParking> oldBasicEstateParkings = basicEstateParkingService.basicEstateParkingList(estateParking);
+                if (!ObjectUtils.isEmpty(oldBasicEstateParkings)) {
+                    for (BasicEstateParking oldBasicEstateParking : oldBasicEstateParkings) {
+                        BasicEstateParking queryBasicEstateParking = new BasicEstateParking();
+                        BeanCopyHelp.copyPropertiesIgnoreNull(oldBasicEstateParking, queryBasicEstateParking);
+                        queryBasicEstateParking.setEstateId(targetBasicEstate.getId());
+                        queryBasicEstateParking.setId(null);
+                        queryBasicEstateParking.setGmtCreated(null);
+                        queryBasicEstateParking.setGmtModified(null);
+                        queryBasicEstateParking.setCreator(commonService.thisUserAccount());
+                        Integer parkingId = basicEstateParkingService.saveAndUpdateBasicEstateParking(queryBasicEstateParking, false);
+
+                        baseAttachmentService.copyFtpAttachments(oldBasicEstateParking.getId(), parkingId);
+                    }
+                }
+            } catch (Exception e) {
+                logger.error(e.getMessage(), e);
+            }
+
+            StringBuilder sqlBuilder = new StringBuilder();
+            SynchronousDataDto synchronousDataDto = new SynchronousDataDto();
+            HashMap<String, String> map = Maps.newHashMap();
+            map.put("estate_id", String.valueOf(targetBasicEstate.getId()));
+            map.put("creator", commonService.thisUserAccount());
+            synchronousDataDto.setFieldDefaultValue(map);
+            synchronousDataDto.setSourceDataBase(BaseConstant.DATABASE_PMCC_ASSESS);
+            synchronousDataDto.setWhereSql("estate_id=" + sourceEstateId);
+            synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicEstateNetwork.class));
+            synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicEstateNetwork.class));
+            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//通信网络sql
+
+            synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicEstateSupply.class));
+            synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicEstateSupply.class));
+            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//供应信息sql
+
+            synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicMatchingTraffic.class));
+            synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicMatchingTraffic.class));
+            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//交通信息sql
+
+            synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicMatchingMedical.class));
+            synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicMatchingMedical.class));
+            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//医养信息sql
+
+            synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicMatchingMaterial.class));
+            synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicMatchingMaterial.class));
+            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//原材料信息sql
+
+            synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicMatchingLeisurePlace.class));
+            synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicMatchingLeisurePlace.class));
+            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//休闲场所信息sql
+
+            synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicMatchingFinance.class));
+            synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicMatchingFinance.class));
+            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//金融服务信息sql
+
+            synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicMatchingEnvironment.class));
+            synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicMatchingEnvironment.class));
+            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//环境因素信息sql
+
+            synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicMatchingEducation.class));
+            synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicMatchingEducation.class));
+            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//教育信息sql
+
+            ddlMySqlAssist.customTableDdl(sqlBuilder.toString());//执行sql
+        }
+        return targetBasicEstate;
+    }
+
 }

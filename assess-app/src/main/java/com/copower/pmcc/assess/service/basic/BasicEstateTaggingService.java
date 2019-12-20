@@ -1,7 +1,6 @@
 package com.copower.pmcc.assess.service.basic;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.enums.basic.EstateTaggingTypeEnum;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateTaggingDao;
 import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchDetail;
@@ -19,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.ObjectUtils;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -213,10 +213,6 @@ public class BasicEstateTaggingService {
         BeanUtils.copyProperties(oo, vo);
         if (StringUtils.isNotEmpty(oo.getPathArray())) {
             try {
-                JSONObject jsonObject = JSON.parseObject(oo.getPathArray());
-                if (jsonObject != null) {
-
-                }
                 List<BasicEstateTaggingGaoDe> gaoDeList = JSON.parseArray(oo.getPathArray(), BasicEstateTaggingGaoDe.class);
                 if (org.apache.commons.collections.CollectionUtils.isNotEmpty(gaoDeList)) {
                     vo.getGaoDeList().addAll(gaoDeList);
@@ -225,6 +221,32 @@ public class BasicEstateTaggingService {
             }
         }
         return vo;
+    }
+
+    /**
+     * 拷贝
+     * @param taggingTypeEnum
+     * @param sourceId
+     * @param targetId
+     * @throws Exception
+     */
+    public void copyTagging(EstateTaggingTypeEnum taggingTypeEnum,Integer sourceId,Integer targetId) throws Exception {
+        BasicEstateTagging oldBasicEstateTagging = new BasicEstateTagging();
+        oldBasicEstateTagging.setTableId(sourceId);
+        oldBasicEstateTagging.setType(taggingTypeEnum.getKey());
+        List<BasicEstateTagging> oldBasicEstateTaggingList = getBasicEstateTaggingList(oldBasicEstateTagging);
+        if (!ObjectUtils.isEmpty(oldBasicEstateTaggingList)) {
+            for (BasicEstateTagging tagging : oldBasicEstateTaggingList) {
+                BasicEstateTagging basicEstateTagging = new BasicEstateTagging();
+                BeanUtils.copyProperties(tagging, basicEstateTagging);
+                basicEstateTagging.setId(null);
+                basicEstateTagging.setTableId(targetId);
+                basicEstateTagging.setCreator(commonService.thisUserAccount());
+                basicEstateTagging.setGmtCreated(null);
+                basicEstateTagging.setGmtModified(null);
+                addBasicEstateTagging(basicEstateTagging);
+            }
+        }
     }
 
 }
