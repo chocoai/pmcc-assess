@@ -2635,6 +2635,196 @@ public class CaseEstateExample {
             addCriterion("new_versions not between", value1, value2, "newVersions");
             return (Criteria) this;
         }
+
+        public Criteria andOpenTimeIsNull() {
+            addCriterion("open_time is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOpenTimeIsNotNull() {
+            addCriterion("open_time is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOpenTimeEqualTo(Date value) {
+            addCriterion("open_time =", value, "openTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andOpenTimeNotEqualTo(Date value) {
+            addCriterion("open_time <>", value, "openTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andOpenTimeGreaterThan(Date value) {
+            addCriterion("open_time >", value, "openTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andOpenTimeGreaterThanOrEqualTo(Date value) {
+            addCriterion("open_time >=", value, "openTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andOpenTimeLessThan(Date value) {
+            addCriterion("open_time <", value, "openTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andOpenTimeLessThanOrEqualTo(Date value) {
+            addCriterion("open_time <=", value, "openTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andOpenTimeIn(List<Date> values) {
+            addCriterion("open_time in", values, "openTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andOpenTimeNotIn(List<Date> values) {
+            addCriterion("open_time not in", values, "openTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andOpenTimeBetween(Date value1, Date value2) {
+            addCriterion("open_time between", value1, value2, "openTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andOpenTimeNotBetween(Date value1, Date value2) {
+            addCriterion("open_time not between", value1, value2, "openTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfrastructureIsNull() {
+            addCriterion("infrastructure is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfrastructureIsNotNull() {
+            addCriterion("infrastructure is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfrastructureEqualTo(String value) {
+            addCriterion("infrastructure =", value, "infrastructure");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfrastructureNotEqualTo(String value) {
+            addCriterion("infrastructure <>", value, "infrastructure");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfrastructureGreaterThan(String value) {
+            addCriterion("infrastructure >", value, "infrastructure");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfrastructureGreaterThanOrEqualTo(String value) {
+            addCriterion("infrastructure >=", value, "infrastructure");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfrastructureLessThan(String value) {
+            addCriterion("infrastructure <", value, "infrastructure");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfrastructureLessThanOrEqualTo(String value) {
+            addCriterion("infrastructure <=", value, "infrastructure");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfrastructureLike(String value) {
+            addCriterion("infrastructure like", value, "infrastructure");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfrastructureNotLike(String value) {
+            addCriterion("infrastructure not like", value, "infrastructure");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfrastructureIn(List<String> values) {
+            addCriterion("infrastructure in", values, "infrastructure");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfrastructureNotIn(List<String> values) {
+            addCriterion("infrastructure not in", values, "infrastructure");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfrastructureBetween(String value1, String value2) {
+            addCriterion("infrastructure between", value1, value2, "infrastructure");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfrastructureNotBetween(String value1, String value2) {
+            addCriterion("infrastructure not between", value1, value2, "infrastructure");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfrastructureCompletenessIsNull() {
+            addCriterion("infrastructure_completeness is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfrastructureCompletenessIsNotNull() {
+            addCriterion("infrastructure_completeness is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfrastructureCompletenessEqualTo(Integer value) {
+            addCriterion("infrastructure_completeness =", value, "infrastructureCompleteness");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfrastructureCompletenessNotEqualTo(Integer value) {
+            addCriterion("infrastructure_completeness <>", value, "infrastructureCompleteness");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfrastructureCompletenessGreaterThan(Integer value) {
+            addCriterion("infrastructure_completeness >", value, "infrastructureCompleteness");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfrastructureCompletenessGreaterThanOrEqualTo(Integer value) {
+            addCriterion("infrastructure_completeness >=", value, "infrastructureCompleteness");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfrastructureCompletenessLessThan(Integer value) {
+            addCriterion("infrastructure_completeness <", value, "infrastructureCompleteness");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfrastructureCompletenessLessThanOrEqualTo(Integer value) {
+            addCriterion("infrastructure_completeness <=", value, "infrastructureCompleteness");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfrastructureCompletenessIn(List<Integer> values) {
+            addCriterion("infrastructure_completeness in", values, "infrastructureCompleteness");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfrastructureCompletenessNotIn(List<Integer> values) {
+            addCriterion("infrastructure_completeness not in", values, "infrastructureCompleteness");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfrastructureCompletenessBetween(Integer value1, Integer value2) {
+            addCriterion("infrastructure_completeness between", value1, value2, "infrastructureCompleteness");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfrastructureCompletenessNotBetween(Integer value1, Integer value2) {
+            addCriterion("infrastructure_completeness not between", value1, value2, "infrastructureCompleteness");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

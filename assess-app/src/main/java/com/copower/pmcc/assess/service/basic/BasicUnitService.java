@@ -300,7 +300,7 @@ public class BasicUnitService {
 
         //标注拷贝
         CaseEstateTagging caseEstateTagging = new CaseEstateTagging();
-        caseEstateTagging.setDataId(caseUnitId);
+        caseEstateTagging.setTableId(caseUnitId);
         caseEstateTagging.setType(EstateTaggingTypeEnum.UNIT.getKey());
         List<CaseEstateTagging> oldCaseEstateTaggingList = caseEstateTaggingService.getCaseEstateTaggingList(caseEstateTagging);
         if (!ObjectUtils.isEmpty(oldCaseEstateTaggingList)) {

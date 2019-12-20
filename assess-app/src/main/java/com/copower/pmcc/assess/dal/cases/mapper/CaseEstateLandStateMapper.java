@@ -16,21 +16,15 @@ public interface CaseEstateLandStateMapper {
 
     int insertSelective(CaseEstateLandState record);
 
-    List<CaseEstateLandState> selectByExampleWithBLOBs(CaseEstateLandStateExample example);
-
     List<CaseEstateLandState> selectByExample(CaseEstateLandStateExample example);
 
     CaseEstateLandState selectByPrimaryKey(Integer id);
 
     int updateByExampleSelective(@Param("record") CaseEstateLandState record, @Param("example") CaseEstateLandStateExample example);
 
-    int updateByExampleWithBLOBs(@Param("record") CaseEstateLandState record, @Param("example") CaseEstateLandStateExample example);
-
     int updateByExample(@Param("record") CaseEstateLandState record, @Param("example") CaseEstateLandStateExample example);
 
     int updateByPrimaryKeySelective(CaseEstateLandState record);
-
-    int updateByPrimaryKeyWithBLOBs(CaseEstateLandState record);
 
     int updateByPrimaryKey(CaseEstateLandState record);
 }

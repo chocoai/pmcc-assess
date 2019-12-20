@@ -208,7 +208,7 @@ public class CaseUnitService {
 
     public CaseEstateTagging getCaseEstateTaggingByUnitId(Integer unitId) throws Exception {
         CaseEstateTagging query = new CaseEstateTagging();
-        query.setDataId(unitId);
+        query.setTableId(unitId);
         query.setType(EstateTaggingTypeEnum.UNIT.getKey());
         List<CaseEstateTagging> caseEstateTaggingList = caseEstateTaggingService.getCaseEstateTaggingList(query);
         if (!ObjectUtils.isEmpty(caseEstateTaggingList)) {
@@ -273,7 +273,7 @@ public class CaseUnitService {
         baseAttachmentService.copyFtpAttachments(example, attachmentDto);
 
         CaseEstateTagging oldCaseEstateTagging = new CaseEstateTagging();
-        oldCaseEstateTagging.setDataId(id);
+        oldCaseEstateTagging.setTableId(id);
         oldCaseEstateTagging.setType(EstateTaggingTypeEnum.UNIT.getKey());
         List<CaseEstateTagging> oldCaseUnitTaggingList = caseEstateTaggingService.getCaseEstateTaggingList(oldCaseEstateTagging);
         if (!ObjectUtils.isEmpty(oldCaseUnitTaggingList)) {

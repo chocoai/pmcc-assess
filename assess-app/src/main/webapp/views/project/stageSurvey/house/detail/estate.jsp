@@ -50,6 +50,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">楼盘名称</label>
@@ -57,14 +58,10 @@
                                     <div class="input-group">
                                         <label class="form-control" name="name">${basicEstate.name}</label>
                                         <span class="input-group-btn">
-                            <c:if test="${empty isApplyBatch}">
-                            <div onclick="estateCommon.mapMarker(true);" class="btn btn-info"><i
-                                    class="fa fa-map-marker"></i> 标注</div>
-                            </c:if>
-                            <c:if test="${isApplyBatch eq 'show'}">
-                            <div onclick="estateCommon.mapMarker2(true,${tableId});" class="btn btn-info"><i
-                                    class="fa fa-map-marker"></i> 标注</div>
-                            </c:if>
+                            <input type="hidden" name="mapId" value="${basicEstate.mapId}">
+                             <div onclick="estateCommon.mapMarker(true);" class="btn btn-info">
+                                 <i class="fa fa-map-marker"></i> 标注
+                             </div>
                         </span>
 
                                         <span class="input-group-btn" style="display: none">
@@ -81,8 +78,7 @@
                                 </div>
                             </div>
                             <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">基础版块<span
-                                        class="symbol required"></span></label>
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">基础版块<span class="symbol required"></span></label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                     <label class="form-control" name="blockName">${basicEstate.blockName}</label>
                                 </div>
@@ -120,8 +116,7 @@
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">容积率</label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <label class="form-control"
-                                           name="volumetricRate">${basicEstate.volumetricRate}</label>
+                                    <label class="form-control" name="volumetricRate">${basicEstate.volumetricRate}</label>
                                 </div>
                             </div>
                             <div class="x-valid">
@@ -133,8 +128,7 @@
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">总楼栋数</label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <label class="form-control"
-                                           name="buildingNumber">${basicEstate.buildingNumber}</label>
+                                    <label class="form-control" name="buildingNumber">${basicEstate.buildingNumber}</label>
                                 </div>
                             </div>
                         </div>
@@ -142,8 +136,7 @@
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">开发商</label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <label class="form-control"
-                                           name="developerName">${basicEstate.developerName}</label>
+                                    <label class="form-control" name="developerName">${basicEstate.developerName}</label>
                                 </div>
                             </div>
                             <div class="x-valid">
@@ -185,21 +178,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="x_content">
-                            <div class="x_title">基础设施情况</div>
-                            <div class="form-group">
-                                <div class="x-valid">
-                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">基础设施完备度</label>
-                                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                        <label class="form-control">${basicEstate.infrastructureCompletenessName}</label>
-                                    </div>
-                                </div>
-                                <div class=" col-xs-6  col-sm-6  col-md-6  col-lg-6  col-sm-offset-1">
 
-                                    <label class="form-control">${basicEstate.infrastructureName}</label>
-                                </div>
-                            </div>
-                        </div>
                         <script src="${pageContext.request.contextPath}/js/method/developmentCommon.js?v=${assessVersion}"></script>
                         <%@include file="/views/method/module/developmentCommon.jsp" %>
                         <div class="form-group">

@@ -1,18 +1,25 @@
 package com.copower.pmcc.assess.controller.cases;
 
+import com.copower.pmcc.assess.common.enums.basic.BasicApplyTypeEnum;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicUnitDao;
+import com.copower.pmcc.assess.dal.basis.entity.BasicBuilding;
+import com.copower.pmcc.assess.dal.basis.entity.BasicUnit;
 import com.copower.pmcc.assess.dal.cases.custom.entity.CustomCaseEntity;
 import com.copower.pmcc.assess.dal.cases.entity.CaseBuilding;
 import com.copower.pmcc.assess.dal.cases.entity.CaseEstate;
 import com.copower.pmcc.assess.dal.cases.entity.CaseHouse;
 import com.copower.pmcc.assess.dal.cases.entity.CaseUnit;
+import com.copower.pmcc.assess.service.basic.PublicBasicService;
 import com.copower.pmcc.assess.service.cases.*;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -40,27 +47,39 @@ public class CaseUnitController {
     @Autowired
     private CaseUnitElevatorService caseUnitElevatorService;
     @Autowired
-    private CaseUnitHuxingService caseUnitHuxingService;
+    private CaseEstateService caseEstateService;
     @Autowired
     private CaseBuildingService caseBuildingService;
     @Autowired
-    private CaseEstateService caseEstateService;
+    private BasicUnitDao basicUnitDao;
+    @Autowired
+    private PublicBasicService publicBasicService;
 
 
     @RequestMapping(value = "/detailView", name = "转到详情页面 ", method = RequestMethod.GET)
-    public ModelAndView detailView(Integer id) {
-        String view = "/case/caseUnit/caseUnitView";
-        CaseUnit caseUnit = null;
+    public ModelAndView detailView(Integer id) throws Exception{
+        String view = "project/stageSurvey/house/detail/unit";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
-        caseUnit = caseUnitService.getCaseUnitById(id);
-        modelAndView.addObject("caseUnit", caseUnit);
-        modelAndView.addObject("hasUnitDecorateData",caseUnitDecorateService.hasUnitDecorateData(id));
-        modelAndView.addObject("hasUnitElevatorData",caseUnitElevatorService.hasUnitElevatorData(id));
-        modelAndView.addObject("hasUnitHuxingData",caseUnitHuxingService.hasUnitHuxingData(id));
+        CaseUnit caseUnit = caseUnitService.getCaseUnitById(id);
         CaseBuilding caseBuilding = caseBuildingService.getCaseBuildingById(caseUnit.getBuildingId());
         CaseEstate caseEstate = caseEstateService.getCaseEstateById(caseBuilding.getEstateId());
-        modelAndView.addObject("caseBuilding", caseBuilding);
-        modelAndView.addObject("caseEstate", caseEstate);
+        if(caseEstate.getType()!=null) {
+            modelAndView.addObject("formType", BasicApplyTypeEnum.getEnumById(caseEstate.getType()).getKey());
+        }
+
+        BasicUnit unit = new BasicUnit();
+        unit.setDisplayCaseId(id);
+        List<BasicUnit> units = basicUnitDao.basicUnitList(unit);
+        if (CollectionUtils.isNotEmpty(units)) {
+            unit = units.get(0);
+        }else{
+            basicUnitDao.addBasicUnit(unit);
+        }
+        caseUnitService.quoteCaseUnitToBasic(id, unit.getId());
+        unit.setDisplayCaseId(id);
+        basicUnitDao.updateBasicUnit(unit, false);
+
+        modelAndView.addObject(StringUtils.uncapitalize(BasicUnit.class.getSimpleName()), publicBasicService.getBasicUnitById(unit.getId()));
         return modelAndView;
     }
 

@@ -63,7 +63,7 @@ public class CaseController {
             if (estateId != null) {
                 CaseEstateTaggingDto dto = caseEstateTaggingService.getCaseEstateTagging(estateId, EstateTaggingTypeEnum.ESTATE.getKey());
                 if (dto != null) {
-                    List<CaseEstateTaggingDto> list = caseEstateTaggingService.queryCaseEstateTagging(dto.getDataId(), EstateTaggingTypeEnum.ESTATE.getKey());
+                    List<CaseEstateTaggingDto> list = caseEstateTaggingService.queryCaseEstateTagging(dto.getTableId(), EstateTaggingTypeEnum.ESTATE.getKey());
                     if (!ObjectUtils.isEmpty(list)) {
                         for (CaseEstateTaggingDto caseEstateTaggingDto : list) {
                             dto.getChildren().add(caseEstateTaggingDto);

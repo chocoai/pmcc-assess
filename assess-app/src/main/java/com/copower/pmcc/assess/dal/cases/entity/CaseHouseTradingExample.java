@@ -346,66 +346,6 @@ public class CaseHouseTradingExample {
             return (Criteria) this;
         }
 
-        public Criteria andTradingTotalPriceIsNull() {
-            addCriterion("trading_total_price is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andTradingTotalPriceIsNotNull() {
-            addCriterion("trading_total_price is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andTradingTotalPriceEqualTo(BigDecimal value) {
-            addCriterion("trading_total_price =", value, "tradingTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andTradingTotalPriceNotEqualTo(BigDecimal value) {
-            addCriterion("trading_total_price <>", value, "tradingTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andTradingTotalPriceGreaterThan(BigDecimal value) {
-            addCriterion("trading_total_price >", value, "tradingTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andTradingTotalPriceGreaterThanOrEqualTo(BigDecimal value) {
-            addCriterion("trading_total_price >=", value, "tradingTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andTradingTotalPriceLessThan(BigDecimal value) {
-            addCriterion("trading_total_price <", value, "tradingTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andTradingTotalPriceLessThanOrEqualTo(BigDecimal value) {
-            addCriterion("trading_total_price <=", value, "tradingTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andTradingTotalPriceIn(List<BigDecimal> values) {
-            addCriterion("trading_total_price in", values, "tradingTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andTradingTotalPriceNotIn(List<BigDecimal> values) {
-            addCriterion("trading_total_price not in", values, "tradingTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andTradingTotalPriceBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("trading_total_price between", value1, value2, "tradingTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andTradingTotalPriceNotBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("trading_total_price not between", value1, value2, "tradingTotalPrice");
-            return (Criteria) this;
-        }
-
         public Criteria andTradingUnitPriceIsNull() {
             addCriterion("trading_unit_price is null");
             return (Criteria) this;
@@ -463,6 +403,66 @@ public class CaseHouseTradingExample {
 
         public Criteria andTradingUnitPriceNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("trading_unit_price not between", value1, value2, "tradingUnitPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingTotalPriceIsNull() {
+            addCriterion("trading_total_price is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingTotalPriceIsNotNull() {
+            addCriterion("trading_total_price is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingTotalPriceEqualTo(BigDecimal value) {
+            addCriterion("trading_total_price =", value, "tradingTotalPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingTotalPriceNotEqualTo(BigDecimal value) {
+            addCriterion("trading_total_price <>", value, "tradingTotalPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingTotalPriceGreaterThan(BigDecimal value) {
+            addCriterion("trading_total_price >", value, "tradingTotalPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingTotalPriceGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("trading_total_price >=", value, "tradingTotalPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingTotalPriceLessThan(BigDecimal value) {
+            addCriterion("trading_total_price <", value, "tradingTotalPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingTotalPriceLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("trading_total_price <=", value, "tradingTotalPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingTotalPriceIn(List<BigDecimal> values) {
+            addCriterion("trading_total_price in", values, "tradingTotalPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingTotalPriceNotIn(List<BigDecimal> values) {
+            addCriterion("trading_total_price not in", values, "tradingTotalPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingTotalPriceBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("trading_total_price between", value1, value2, "tradingTotalPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingTotalPriceNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("trading_total_price not between", value1, value2, "tradingTotalPrice");
             return (Criteria) this;
         }
 
@@ -1186,146 +1186,6 @@ public class CaseHouseTradingExample {
             return (Criteria) this;
         }
 
-        public Criteria andScopeIncludeIsNull() {
-            addCriterion("scope_include is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andScopeIncludeIsNotNull() {
-            addCriterion("scope_include is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andScopeIncludeEqualTo(String value) {
-            addCriterion("scope_include =", value, "scopeInclude");
-            return (Criteria) this;
-        }
-
-        public Criteria andScopeIncludeNotEqualTo(String value) {
-            addCriterion("scope_include <>", value, "scopeInclude");
-            return (Criteria) this;
-        }
-
-        public Criteria andScopeIncludeGreaterThan(String value) {
-            addCriterion("scope_include >", value, "scopeInclude");
-            return (Criteria) this;
-        }
-
-        public Criteria andScopeIncludeGreaterThanOrEqualTo(String value) {
-            addCriterion("scope_include >=", value, "scopeInclude");
-            return (Criteria) this;
-        }
-
-        public Criteria andScopeIncludeLessThan(String value) {
-            addCriterion("scope_include <", value, "scopeInclude");
-            return (Criteria) this;
-        }
-
-        public Criteria andScopeIncludeLessThanOrEqualTo(String value) {
-            addCriterion("scope_include <=", value, "scopeInclude");
-            return (Criteria) this;
-        }
-
-        public Criteria andScopeIncludeLike(String value) {
-            addCriterion("scope_include like", value, "scopeInclude");
-            return (Criteria) this;
-        }
-
-        public Criteria andScopeIncludeNotLike(String value) {
-            addCriterion("scope_include not like", value, "scopeInclude");
-            return (Criteria) this;
-        }
-
-        public Criteria andScopeIncludeIn(List<String> values) {
-            addCriterion("scope_include in", values, "scopeInclude");
-            return (Criteria) this;
-        }
-
-        public Criteria andScopeIncludeNotIn(List<String> values) {
-            addCriterion("scope_include not in", values, "scopeInclude");
-            return (Criteria) this;
-        }
-
-        public Criteria andScopeIncludeBetween(String value1, String value2) {
-            addCriterion("scope_include between", value1, value2, "scopeInclude");
-            return (Criteria) this;
-        }
-
-        public Criteria andScopeIncludeNotBetween(String value1, String value2) {
-            addCriterion("scope_include not between", value1, value2, "scopeInclude");
-            return (Criteria) this;
-        }
-
-        public Criteria andScopeNotIncludeIsNull() {
-            addCriterion("scope_not_include is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andScopeNotIncludeIsNotNull() {
-            addCriterion("scope_not_include is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andScopeNotIncludeEqualTo(String value) {
-            addCriterion("scope_not_include =", value, "scopeNotInclude");
-            return (Criteria) this;
-        }
-
-        public Criteria andScopeNotIncludeNotEqualTo(String value) {
-            addCriterion("scope_not_include <>", value, "scopeNotInclude");
-            return (Criteria) this;
-        }
-
-        public Criteria andScopeNotIncludeGreaterThan(String value) {
-            addCriterion("scope_not_include >", value, "scopeNotInclude");
-            return (Criteria) this;
-        }
-
-        public Criteria andScopeNotIncludeGreaterThanOrEqualTo(String value) {
-            addCriterion("scope_not_include >=", value, "scopeNotInclude");
-            return (Criteria) this;
-        }
-
-        public Criteria andScopeNotIncludeLessThan(String value) {
-            addCriterion("scope_not_include <", value, "scopeNotInclude");
-            return (Criteria) this;
-        }
-
-        public Criteria andScopeNotIncludeLessThanOrEqualTo(String value) {
-            addCriterion("scope_not_include <=", value, "scopeNotInclude");
-            return (Criteria) this;
-        }
-
-        public Criteria andScopeNotIncludeLike(String value) {
-            addCriterion("scope_not_include like", value, "scopeNotInclude");
-            return (Criteria) this;
-        }
-
-        public Criteria andScopeNotIncludeNotLike(String value) {
-            addCriterion("scope_not_include not like", value, "scopeNotInclude");
-            return (Criteria) this;
-        }
-
-        public Criteria andScopeNotIncludeIn(List<String> values) {
-            addCriterion("scope_not_include in", values, "scopeNotInclude");
-            return (Criteria) this;
-        }
-
-        public Criteria andScopeNotIncludeNotIn(List<String> values) {
-            addCriterion("scope_not_include not in", values, "scopeNotInclude");
-            return (Criteria) this;
-        }
-
-        public Criteria andScopeNotIncludeBetween(String value1, String value2) {
-            addCriterion("scope_not_include between", value1, value2, "scopeNotInclude");
-            return (Criteria) this;
-        }
-
-        public Criteria andScopeNotIncludeNotBetween(String value1, String value2) {
-            addCriterion("scope_not_include not between", value1, value2, "scopeNotInclude");
-            return (Criteria) this;
-        }
-
         public Criteria andScopePropertyExplainIsNull() {
             addCriterion("scope_property_explain is null");
             return (Criteria) this;
@@ -1926,136 +1786,6 @@ public class CaseHouseTradingExample {
             return (Criteria) this;
         }
 
-        public Criteria andLandBuyerSellerIsNull() {
-            addCriterion("land_buyer_seller is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandBuyerSellerIsNotNull() {
-            addCriterion("land_buyer_seller is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandBuyerSellerEqualTo(String value) {
-            addCriterion("land_buyer_seller =", value, "landBuyerSeller");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandBuyerSellerNotEqualTo(String value) {
-            addCriterion("land_buyer_seller <>", value, "landBuyerSeller");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandBuyerSellerGreaterThan(String value) {
-            addCriterion("land_buyer_seller >", value, "landBuyerSeller");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandBuyerSellerGreaterThanOrEqualTo(String value) {
-            addCriterion("land_buyer_seller >=", value, "landBuyerSeller");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandBuyerSellerLessThan(String value) {
-            addCriterion("land_buyer_seller <", value, "landBuyerSeller");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandBuyerSellerLessThanOrEqualTo(String value) {
-            addCriterion("land_buyer_seller <=", value, "landBuyerSeller");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandBuyerSellerLike(String value) {
-            addCriterion("land_buyer_seller like", value, "landBuyerSeller");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandBuyerSellerNotLike(String value) {
-            addCriterion("land_buyer_seller not like", value, "landBuyerSeller");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandBuyerSellerIn(List<String> values) {
-            addCriterion("land_buyer_seller in", values, "landBuyerSeller");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandBuyerSellerNotIn(List<String> values) {
-            addCriterion("land_buyer_seller not in", values, "landBuyerSeller");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandBuyerSellerBetween(String value1, String value2) {
-            addCriterion("land_buyer_seller between", value1, value2, "landBuyerSeller");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandBuyerSellerNotBetween(String value1, String value2) {
-            addCriterion("land_buyer_seller not between", value1, value2, "landBuyerSeller");
-            return (Criteria) this;
-        }
-
-        public Criteria andPriceTypeIsNull() {
-            addCriterion("price_type is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andPriceTypeIsNotNull() {
-            addCriterion("price_type is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andPriceTypeEqualTo(Integer value) {
-            addCriterion("price_type =", value, "priceType");
-            return (Criteria) this;
-        }
-
-        public Criteria andPriceTypeNotEqualTo(Integer value) {
-            addCriterion("price_type <>", value, "priceType");
-            return (Criteria) this;
-        }
-
-        public Criteria andPriceTypeGreaterThan(Integer value) {
-            addCriterion("price_type >", value, "priceType");
-            return (Criteria) this;
-        }
-
-        public Criteria andPriceTypeGreaterThanOrEqualTo(Integer value) {
-            addCriterion("price_type >=", value, "priceType");
-            return (Criteria) this;
-        }
-
-        public Criteria andPriceTypeLessThan(Integer value) {
-            addCriterion("price_type <", value, "priceType");
-            return (Criteria) this;
-        }
-
-        public Criteria andPriceTypeLessThanOrEqualTo(Integer value) {
-            addCriterion("price_type <=", value, "priceType");
-            return (Criteria) this;
-        }
-
-        public Criteria andPriceTypeIn(List<Integer> values) {
-            addCriterion("price_type in", values, "priceType");
-            return (Criteria) this;
-        }
-
-        public Criteria andPriceTypeNotIn(List<Integer> values) {
-            addCriterion("price_type not in", values, "priceType");
-            return (Criteria) this;
-        }
-
-        public Criteria andPriceTypeBetween(Integer value1, Integer value2) {
-            addCriterion("price_type between", value1, value2, "priceType");
-            return (Criteria) this;
-        }
-
-        public Criteria andPriceTypeNotBetween(Integer value1, Integer value2) {
-            addCriterion("price_type not between", value1, value2, "priceType");
-            return (Criteria) this;
-        }
-
         public Criteria andCreatorIsNull() {
             addCriterion("creator is null");
             return (Criteria) this;
@@ -2303,6 +2033,346 @@ public class CaseHouseTradingExample {
 
         public Criteria andPriceConnotationNotBetween(Integer value1, Integer value2) {
             addCriterion("price_connotation not between", value1, value2, "priceConnotation");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopeNotIncludeIsNull() {
+            addCriterion("scope_not_include is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopeNotIncludeIsNotNull() {
+            addCriterion("scope_not_include is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopeNotIncludeEqualTo(String value) {
+            addCriterion("scope_not_include =", value, "scopeNotInclude");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopeNotIncludeNotEqualTo(String value) {
+            addCriterion("scope_not_include <>", value, "scopeNotInclude");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopeNotIncludeGreaterThan(String value) {
+            addCriterion("scope_not_include >", value, "scopeNotInclude");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopeNotIncludeGreaterThanOrEqualTo(String value) {
+            addCriterion("scope_not_include >=", value, "scopeNotInclude");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopeNotIncludeLessThan(String value) {
+            addCriterion("scope_not_include <", value, "scopeNotInclude");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopeNotIncludeLessThanOrEqualTo(String value) {
+            addCriterion("scope_not_include <=", value, "scopeNotInclude");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopeNotIncludeLike(String value) {
+            addCriterion("scope_not_include like", value, "scopeNotInclude");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopeNotIncludeNotLike(String value) {
+            addCriterion("scope_not_include not like", value, "scopeNotInclude");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopeNotIncludeIn(List<String> values) {
+            addCriterion("scope_not_include in", values, "scopeNotInclude");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopeNotIncludeNotIn(List<String> values) {
+            addCriterion("scope_not_include not in", values, "scopeNotInclude");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopeNotIncludeBetween(String value1, String value2) {
+            addCriterion("scope_not_include between", value1, value2, "scopeNotInclude");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopeNotIncludeNotBetween(String value1, String value2) {
+            addCriterion("scope_not_include not between", value1, value2, "scopeNotInclude");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopeIncludeIsNull() {
+            addCriterion("scope_include is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopeIncludeIsNotNull() {
+            addCriterion("scope_include is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopeIncludeEqualTo(String value) {
+            addCriterion("scope_include =", value, "scopeInclude");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopeIncludeNotEqualTo(String value) {
+            addCriterion("scope_include <>", value, "scopeInclude");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopeIncludeGreaterThan(String value) {
+            addCriterion("scope_include >", value, "scopeInclude");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopeIncludeGreaterThanOrEqualTo(String value) {
+            addCriterion("scope_include >=", value, "scopeInclude");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopeIncludeLessThan(String value) {
+            addCriterion("scope_include <", value, "scopeInclude");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopeIncludeLessThanOrEqualTo(String value) {
+            addCriterion("scope_include <=", value, "scopeInclude");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopeIncludeLike(String value) {
+            addCriterion("scope_include like", value, "scopeInclude");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopeIncludeNotLike(String value) {
+            addCriterion("scope_include not like", value, "scopeInclude");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopeIncludeIn(List<String> values) {
+            addCriterion("scope_include in", values, "scopeInclude");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopeIncludeNotIn(List<String> values) {
+            addCriterion("scope_include not in", values, "scopeInclude");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopeIncludeBetween(String value1, String value2) {
+            addCriterion("scope_include between", value1, value2, "scopeInclude");
+            return (Criteria) this;
+        }
+
+        public Criteria andScopeIncludeNotBetween(String value1, String value2) {
+            addCriterion("scope_include not between", value1, value2, "scopeInclude");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandBuyerSellerIsNull() {
+            addCriterion("land_buyer_seller is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandBuyerSellerIsNotNull() {
+            addCriterion("land_buyer_seller is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandBuyerSellerEqualTo(String value) {
+            addCriterion("land_buyer_seller =", value, "landBuyerSeller");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandBuyerSellerNotEqualTo(String value) {
+            addCriterion("land_buyer_seller <>", value, "landBuyerSeller");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandBuyerSellerGreaterThan(String value) {
+            addCriterion("land_buyer_seller >", value, "landBuyerSeller");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandBuyerSellerGreaterThanOrEqualTo(String value) {
+            addCriterion("land_buyer_seller >=", value, "landBuyerSeller");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandBuyerSellerLessThan(String value) {
+            addCriterion("land_buyer_seller <", value, "landBuyerSeller");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandBuyerSellerLessThanOrEqualTo(String value) {
+            addCriterion("land_buyer_seller <=", value, "landBuyerSeller");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandBuyerSellerLike(String value) {
+            addCriterion("land_buyer_seller like", value, "landBuyerSeller");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandBuyerSellerNotLike(String value) {
+            addCriterion("land_buyer_seller not like", value, "landBuyerSeller");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandBuyerSellerIn(List<String> values) {
+            addCriterion("land_buyer_seller in", values, "landBuyerSeller");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandBuyerSellerNotIn(List<String> values) {
+            addCriterion("land_buyer_seller not in", values, "landBuyerSeller");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandBuyerSellerBetween(String value1, String value2) {
+            addCriterion("land_buyer_seller between", value1, value2, "landBuyerSeller");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandBuyerSellerNotBetween(String value1, String value2) {
+            addCriterion("land_buyer_seller not between", value1, value2, "landBuyerSeller");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceTypeIsNull() {
+            addCriterion("price_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceTypeIsNotNull() {
+            addCriterion("price_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceTypeEqualTo(Integer value) {
+            addCriterion("price_type =", value, "priceType");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceTypeNotEqualTo(Integer value) {
+            addCriterion("price_type <>", value, "priceType");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceTypeGreaterThan(Integer value) {
+            addCriterion("price_type >", value, "priceType");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceTypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("price_type >=", value, "priceType");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceTypeLessThan(Integer value) {
+            addCriterion("price_type <", value, "priceType");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceTypeLessThanOrEqualTo(Integer value) {
+            addCriterion("price_type <=", value, "priceType");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceTypeIn(List<Integer> values) {
+            addCriterion("price_type in", values, "priceType");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceTypeNotIn(List<Integer> values) {
+            addCriterion("price_type not in", values, "priceType");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceTypeBetween(Integer value1, Integer value2) {
+            addCriterion("price_type between", value1, value2, "priceType");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceTypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("price_type not between", value1, value2, "priceType");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceConnotationUnitIsNull() {
+            addCriterion("price_connotation_unit is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceConnotationUnitIsNotNull() {
+            addCriterion("price_connotation_unit is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceConnotationUnitEqualTo(String value) {
+            addCriterion("price_connotation_unit =", value, "priceConnotationUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceConnotationUnitNotEqualTo(String value) {
+            addCriterion("price_connotation_unit <>", value, "priceConnotationUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceConnotationUnitGreaterThan(String value) {
+            addCriterion("price_connotation_unit >", value, "priceConnotationUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceConnotationUnitGreaterThanOrEqualTo(String value) {
+            addCriterion("price_connotation_unit >=", value, "priceConnotationUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceConnotationUnitLessThan(String value) {
+            addCriterion("price_connotation_unit <", value, "priceConnotationUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceConnotationUnitLessThanOrEqualTo(String value) {
+            addCriterion("price_connotation_unit <=", value, "priceConnotationUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceConnotationUnitLike(String value) {
+            addCriterion("price_connotation_unit like", value, "priceConnotationUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceConnotationUnitNotLike(String value) {
+            addCriterion("price_connotation_unit not like", value, "priceConnotationUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceConnotationUnitIn(List<String> values) {
+            addCriterion("price_connotation_unit in", values, "priceConnotationUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceConnotationUnitNotIn(List<String> values) {
+            addCriterion("price_connotation_unit not in", values, "priceConnotationUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceConnotationUnitBetween(String value1, String value2) {
+            addCriterion("price_connotation_unit between", value1, value2, "priceConnotationUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceConnotationUnitNotBetween(String value1, String value2) {
+            addCriterion("price_connotation_unit not between", value1, value2, "priceConnotationUnit");
             return (Criteria) this;
         }
     }

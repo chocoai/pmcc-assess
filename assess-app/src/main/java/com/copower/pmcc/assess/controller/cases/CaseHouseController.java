@@ -2,19 +2,25 @@ package com.copower.pmcc.assess.controller.cases;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.copower.pmcc.assess.common.enums.basic.EstateTaggingTypeEnum;
-import com.copower.pmcc.assess.common.enums.basic.ExamineHouseEquipmentTypeEnum;
+import com.copower.pmcc.assess.common.enums.basic.BasicApplyTypeEnum;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicHouseDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
+import com.copower.pmcc.assess.dal.basis.entity.BasicHouse;
+import com.copower.pmcc.assess.dal.basis.entity.BasicHouseTrading;
 import com.copower.pmcc.assess.dal.cases.custom.entity.CustomCaseEntity;
 import com.copower.pmcc.assess.dal.cases.entity.*;
 import com.copower.pmcc.assess.dto.input.cases.CaseHouseTradingLeaseAndSellDto;
+import com.copower.pmcc.assess.dto.output.basic.BasicHouseVo;
 import com.copower.pmcc.assess.dto.output.cases.CaseHouseTradingVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.basic.BasicHouseTradingService;
+import com.copower.pmcc.assess.service.basic.PublicBasicService;
 import com.copower.pmcc.assess.service.cases.*;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,41 +79,41 @@ public class CaseHouseController {
     private CaseHouseWaterDrainService caseHouseWaterDrainService;
     @Autowired
     private CaseHouseDamagedDegreeService caseHouseDamagedDegreeService;
+    @Autowired
+    private BasicHouseDao basicHouseDao;
+    @Autowired
+    private PublicBasicService publicBasicService;
+    @Autowired
+    private BasicHouseTradingService basicHouseTradingService;
 
 
     @RequestMapping(value = "/detailView", name = "转到详情页面 ", method = RequestMethod.GET)
     public ModelAndView detailView(Integer id) throws Exception {
-        String view = "/case/caseHouse/caseHouseView";
-        CaseHouse caseHouse = null;
-        CaseHouseTrading caseHouseTrading = new CaseHouseTrading();
-        caseHouseTrading.setHouseId(id);
-        List<CaseHouseTradingVo> caseHouseTradingList = caseHouseTradingService.caseHouseTradingVoList(caseHouseTrading);
-        if (!ObjectUtils.isEmpty(caseHouseTradingList)) {
-            caseHouseTrading = caseHouseTradingList.get(0);
-        }
+        String view = "project/stageSurvey/house/detail/house";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
-        caseHouse = caseHouseService.getCaseHouseById(id);
-        modelAndView.addObject("caseHouse", caseHouseService.getCaseHouseVo(caseHouse));
-        CaseHouseTradingVo caseHouseTradingVo = caseHouseTradingService.getCaseHouseTradingVo(caseHouseTrading);
-        modelAndView.addObject("caseHouseTrading", caseHouseTradingVo);
-        modelAndView.addObject("hasHouseFaceStreetData", caseHouseFaceStreetService.hasHouseFaceStreetData(id));
-        modelAndView.addObject("hasHouseCorollaryEquipmentData", caseHouseCorollaryEquipmentService.hasHouseCorollaryEquipmentData(id));
-        modelAndView.addObject("hasHouseIntelligentData", caseHouseIntelligentService.hasHouseIntelligentData(id));
-        modelAndView.addObject("hasHouseRoomData", caseHouseRoomService.hasHouseRoomData(id));
-        modelAndView.addObject("hasHouseWaterData", caseHouseWaterService.hasHouseWaterData(id));
-        modelAndView.addObject("hasHouseWaterDrainData", caseHouseWaterDrainService.hasHouseWaterDrainData(id));
-        modelAndView.addObject("hasHouseEquipmentAirConditioner", caseHouseEquipmentService.hasHouseEquipmentData(id, ExamineHouseEquipmentTypeEnum.houseAirConditioner.getKey()));
-        modelAndView.addObject("hasHouseEquipmentHeating", caseHouseEquipmentService.hasHouseEquipmentData(id, ExamineHouseEquipmentTypeEnum.houseHeating.getKey()));
-        modelAndView.addObject("hasHouseEquipmentNewWind", caseHouseEquipmentService.hasHouseEquipmentData(id, ExamineHouseEquipmentTypeEnum.houseNewWind.getKey()));
-        modelAndView.addObject("hasHouseDamagedDegreeData", caseHouseDamagedDegreeService.hasHouseDamagedDegreeData(id));
-        setHouseElementRender(caseHouseTradingVo,modelAndView);
+        CaseHouse caseHouse = caseHouseService.getCaseHouseById(id);
         CaseUnit caseUnit = caseUnitService.getCaseUnitById(caseHouse.getUnitId());
         CaseBuilding caseBuilding = caseBuildingService.getCaseBuildingById(caseUnit.getBuildingId());
         CaseEstate caseEstate = caseEstateService.getCaseEstateById(caseBuilding.getEstateId());
-        modelAndView.addObject("caseUnit", caseUnit);
-        modelAndView.addObject("caseBuilding", caseBuilding);
-        modelAndView.addObject("caseEstate", caseEstate);
-        modelAndView.addObject("caseEstateTagging",   caseEstateTaggingService.getCaseEstateTagging(id, EstateTaggingTypeEnum.HOUSE.getKey()));
+        if (caseEstate.getType() != null) {
+            modelAndView.addObject("formType", BasicApplyTypeEnum.getEnumById(caseEstate.getType()).getKey());
+        }
+
+        BasicHouse house = new BasicHouse();
+        house.setDisplayCaseId(id);
+        List<BasicHouse> houses = basicHouseDao.basicHouseList(house);
+        if (CollectionUtils.isNotEmpty(houses)) {
+            house = houses.get(0);
+        } else {
+            basicHouseDao.addBasicHouse(house);
+        }
+        caseHouseService.quoteCaseHouseToBasic(id, house.getId());
+        house.setDisplayCaseId(id);
+        basicHouseDao.updateBasicHouse(house, false);
+
+        BasicHouseVo basicHouseVo = publicBasicService.getBasicHouseVoById(house.getId());
+        modelAndView.addObject(org.springframework.util.StringUtils.uncapitalize(BasicHouse.class.getSimpleName()), basicHouseVo);
+        modelAndView.addObject(org.springframework.util.StringUtils.uncapitalize(BasicHouseTrading.class.getSimpleName()), basicHouseTradingService.getBasicHouseTradingVo(basicHouseTradingService.getTradingByHouseId(basicHouseVo.getId())));
         return modelAndView;
     }
 
@@ -310,9 +316,9 @@ public class CaseHouseController {
 
     @ResponseBody
     @RequestMapping(value = "/quoteCaseHouseToBasic", name = "引用案列数据", method = {RequestMethod.GET})
-    public HttpResult quoteCaseHouseToBasic(Integer id,Integer tableId) {
+    public HttpResult quoteCaseHouseToBasic(Integer id, Integer tableId) {
         try {
-            return HttpResult.newCorrectResult(caseHouseService.quoteCaseHouseToBasic(id,tableId));
+            return HttpResult.newCorrectResult(caseHouseService.quoteCaseHouseToBasic(id, tableId));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(e.getMessage());

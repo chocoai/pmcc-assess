@@ -314,7 +314,7 @@ public class CaseHouseService {
 
     public CaseEstateTagging getCaseEstateTaggingByUnitId(Integer houseId) throws Exception {
         CaseEstateTagging query = new CaseEstateTagging();
-        query.setDataId(houseId);
+        query.setTableId(houseId);
         query.setType(EstateTaggingTypeEnum.HOUSE.getKey());
         List<CaseEstateTagging> caseEstateTaggingList = caseEstateTaggingService.getCaseEstateTaggingList(query);
         if (!ObjectUtils.isEmpty(caseEstateTaggingList)) {
@@ -355,6 +355,11 @@ public class CaseHouseService {
             BasicHouseTrading basicHouseTrading = basicHouseTradingService.getTradingByHouseId(basicHouse.getId());
             if (basicHouseTrading != null) {
                 BeanUtils.copyProperties(oldCaseHouseTradings.get(0), basicHouseTrading, "id","houseId","creator","gmtCreated","gmtModified");
+                basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicHouseTrading, false);
+            }else{
+                basicHouseTrading = new BasicHouseTrading();
+                BeanUtils.copyProperties(oldCaseHouseTradings.get(0), basicHouseTrading, "id","houseId","creator","gmtCreated","gmtModified");
+                basicHouseTrading.setHouseId(basicHouse.getId());
                 basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicHouseTrading, false);
             }
         }

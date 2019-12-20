@@ -205,13 +205,13 @@
     };
 
     //房屋详情页
-    houseCommon.initDetailById = function (id, callback,bisDetail) {
+    houseCommon.initDetailById = function (id, callback, bisDetail) {
         $.ajax({
             url: getContextPath() + '/basicHouse/getBasicHouseMapById',
             type: 'get',
             data: {id: id},
             success: function (result) {
-                houseCommon.initForm(result.data,bisDetail);
+                houseCommon.initForm(result.data, bisDetail);
                 if (result.ret) {
                     if (callback) {
                         callback(result.data);
@@ -281,17 +281,17 @@
     };
 
     //房屋初始化以及赋值
-    houseCommon.initForm = function (data,bisDetail) {
+    houseCommon.initForm = function (data, bisDetail) {
         if (!data || !data.basicHouse) return;
         //基本信息
         houseCommon.houseForm.initForm(data.basicHouse, function () {
             //1.初始化下拉框；2.初始化上传控件；3.显示已上传的附件信息；
             AssessCommon.loadDataListHtml(AssessDicKey.examineHouseLoadUtility, data.basicHouse.certUse, function (html, data) {
                 houseCommon.houseForm.find("#certUseList").empty().html(html).trigger('change');
-            },true);
+            }, true);
             AssessCommon.loadDataListHtml(AssessDicKey.examineHousePracticalUse, data.basicHouse.practicalUse, function (html, data) {
                 houseCommon.houseForm.find("#practicalUseList").empty().html(html).trigger('change');
-            },true);
+            }, true);
             AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseEnvironmentUse, data.basicHouse.useEnvironment, function (html, data) {
                 houseCommon.houseForm.find("select.useEnvironment").empty().html(html).trigger('change');
             });
@@ -324,10 +324,10 @@
             //初始化上传控件
             $.each(houseCommon.houseFileControlIdArray, function (i, item) {
                 houseCommon.fileUpload(item);
-                if(bisDetail==false){
-                    houseCommon.fileShow(item,false);
-                }else{
-                    houseCommon.fileShow(item,true);
+                if (bisDetail == false) {
+                    houseCommon.fileShow(item, false);
+                } else {
+                    houseCommon.fileShow(item, true);
                 }
             });
         });
@@ -366,8 +366,13 @@
                 AssessCommon.loadDataDicByKey(AssessDicKey.examineHouse_transaction_price_type, data.basicHouseTrading.priceType, function (html, data) {
                     houseCommon.houseTradingForm.find("select[name='priceType']").empty().html(html).trigger('change');
                 });
-                 houseCommon.showPriceConnotationUnit(data);
+                houseCommon.showPriceConnotationUnit(data);
+                if (bisDetail == false) {
+                    houseCommon.showTradingCondition(data.basicHouseTrading);
+                    houseCommon.loadTradingSellAndLeaseList(AssessDicKey.examineHouseTransactionTypeSell, true);
+                    houseCommon.loadTradingSellAndLeaseList(AssessDicKey.examineHouseTransactionTypeLease, true);
 
+                }
             }
         });
 
@@ -393,6 +398,8 @@
                     }
                 });
             }
+        } else {
+            $("#useConditionDescription").parent().parent().hide();
         }
 
         //绑定变更事件
@@ -449,6 +456,24 @@
 
     }
 
+    houseCommon.showTradingCondition = function (data) {
+        var value = data.paymentMethod;
+        AssessCommon.getDataDicInfo(value, function (bicData) {
+            var key = bicData.fieldName;
+            if (key == AssessDicKey.examineHousePaymentMethodInstallment) {
+                $(this).closest('.form-group').children().eq(2).show();
+            } else {
+                $(this).closest('.form-group').children().eq(2).hide();
+            }
+            if (key == AssessDicKey.examineHousePaymentMethodDisposable || key == AssessDicKey.examineHousePaymentMethodLeaseDisposable) {
+                houseCommon.houseTradingForm.find('.tradingCondition').hide();
+            } else {
+                houseCommon.houseTradingForm.find('.tradingCondition').show();
+            }
+        });
+
+    };
+
     //附件上传
     houseCommon.fileUpload = function (fieldsName) {
         FileUtils.uploadFiles({
@@ -478,6 +503,7 @@
     houseCommon.showReplenishLand = function (projectTypeId) {
         AssessCommon.getProjectClassifyInfo(projectTypeId, function (data) {
             var projectTypeField = data.fieldName;
+            console.log(projectTypeField + '===12==')
             switch (projectTypeField) {
                 //房产
                 case AssessProjectClassifyKey.singleHousePropertyCertificateTypeSimple: {
@@ -560,7 +586,7 @@
             } else {
                 $(this).closest('.form-group').children().eq(2).hide();
             }
-            if (key == AssessDicKey.examineHousePaymentMethodDisposable||key == AssessDicKey.examineHousePaymentMethodLeaseDisposable) {
+            if (key == AssessDicKey.examineHousePaymentMethodDisposable || key == AssessDicKey.examineHousePaymentMethodLeaseDisposable) {
                 houseCommon.houseTradingForm.find('.tradingCondition').hide();
             } else {
                 houseCommon.houseTradingForm.find('.tradingCondition').show();

@@ -2,21 +2,29 @@ package com.copower.pmcc.assess.controller.cases;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.copower.pmcc.assess.common.enums.basic.BasicApplyTypeEnum;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateDao;
+import com.copower.pmcc.assess.dal.basis.entity.BasicEstate;
+import com.copower.pmcc.assess.dal.basis.entity.BasicEstateLandState;
 import com.copower.pmcc.assess.dal.cases.custom.entity.CustomCaseEntity;
 import com.copower.pmcc.assess.dal.cases.entity.CaseBuilding;
 import com.copower.pmcc.assess.dal.cases.entity.CaseEstate;
 import com.copower.pmcc.assess.dal.cases.entity.CaseEstateLandState;
+import com.copower.pmcc.assess.dto.output.basic.BasicEstateVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
+import com.copower.pmcc.assess.service.basic.BasicEstateLandStateService;
+import com.copower.pmcc.assess.service.basic.BasicEstateService;
+import com.copower.pmcc.assess.service.basic.PublicBasicService;
 import com.copower.pmcc.assess.service.cases.*;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -67,23 +75,43 @@ public class CaseEstateController {
     private CaseMatchingTrafficService caseMatchingTrafficService;
     @Autowired
     private CaseEstateTaggingService caseEstateTaggingService;
+    @Autowired
+    private BasicEstateDao basicEstateDao;
+    @Autowired
+    private BasicEstateService basicEstateService;
+    @Autowired
+    private PublicBasicService publicBasicService;
+    @Autowired
+    private BasicEstateLandStateService basicEstateLandStateService;
 
 
     @RequestMapping(value = "/detailView", name = "转到详情页面 ", method = RequestMethod.GET)
-    public ModelAndView detailView(Integer id) {
-        String view = "/case/caseEstate/caseEstateView";
+    public ModelAndView detailView(Integer id) throws Exception {
+        String view = "project/stageSurvey/house/detail/estate";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
         if (id != null && id.intValue() != 0) {
-            //楼盘 土地实体情况
-            CaseEstateLandState caseEstateLandState = new CaseEstateLandState();
-            caseEstateLandState.setEstateId(id);
-            List<CaseEstateLandState> caseEstateLandStateList = caseEstateLandStateService.getCaseEstateLandStateList(caseEstateLandState);
-            if (!ObjectUtils.isEmpty(caseEstateLandStateList)) {
-                modelAndView.addObject("caseEstateLandState", caseEstateLandStateService.getCaseEstateLandStateVo(caseEstateLandStateList.get(0)));
+            //使用查勘html
+            //复制到basic用来显示
+            //已复制则更新
+            BasicEstate estate = new BasicEstate();
+            estate.setDisplayCaseId(id);
+            List<BasicEstate> basicEstates = basicEstateDao.basicEstateList(estate);
+            if (CollectionUtils.isNotEmpty(basicEstates)) {
+                estate = basicEstates.get(0);
+            } else {
+                basicEstateDao.addBasicEstate(estate);
             }
-            //楼盘 基本信息
+            caseEstateService.quoteCaseEstateToBasic(id, estate.getId());
+            estate.setDisplayCaseId(id);
+            basicEstateDao.updateBasicEstate(estate, false);
+            BasicEstateVo basicEstateVo = publicBasicService.getBasicEstateById(estate.getId());
+            modelAndView.addObject(StringUtils.uncapitalize(BasicEstate.class.getSimpleName()), basicEstateVo);
+            modelAndView.addObject(StringUtils.uncapitalize(BasicEstateLandState.class.getSimpleName()), basicEstateLandStateService.getBasicEstateLandStateVo(basicEstateLandStateService.getLandStateByEstateId(basicEstateVo.getId())));
             CaseEstate caseEstate = caseEstateService.getCaseEstateById(id);
-            modelAndView.addObject("caseEstate", caseEstateService.getCaseEstateVo(caseEstate));
+            if (caseEstate.getType() != null) {
+                modelAndView.addObject("formType", BasicApplyTypeEnum.getEnumById(caseEstate.getType()).getKey());
+            }
+
         }
         return modelAndView;
     }
@@ -100,9 +128,9 @@ public class CaseEstateController {
 
     @ResponseBody
     @GetMapping(value = "/getEstateTaggingList", name = "获取标注信息列表")
-    public BootstrapTableVo getEstateTaggingList(Integer dataId,String type) {
+    public BootstrapTableVo getEstateTaggingList(Integer dataId, String type) {
         try {
-            return caseEstateTaggingService.getEstateTaggingList(dataId,type);
+            return caseEstateTaggingService.getEstateTaggingList(dataId, type);
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return null;
@@ -222,9 +250,9 @@ public class CaseEstateController {
 
     @ResponseBody
     @RequestMapping(value = "/autoCompleteCaseEstate", method = {RequestMethod.GET}, name = "楼盘 信息自动补全")
-    public HttpResult autoCompleteCaseEstate(String name,String province,String city) {
+    public HttpResult autoCompleteCaseEstate(String name, String province, String city) {
         try {
-            List<CustomCaseEntity> caseEstateList = caseEstateService.autoCompleteCaseEstate(name,province,city);
+            List<CustomCaseEntity> caseEstateList = caseEstateService.autoCompleteCaseEstate(name, province, city);
             return HttpResult.newCorrectResult(caseEstateList);
         } catch (Exception e1) {
             return HttpResult.newErrorResult("异常");
@@ -233,9 +261,9 @@ public class CaseEstateController {
 
     @ResponseBody
     @RequestMapping(value = "/quoteCaseEstateToBasic", name = "引用案列数据", method = {RequestMethod.GET})
-    public HttpResult quoteCaseEstateToBasic(Integer id,Integer tableId) {
+    public HttpResult quoteCaseEstateToBasic(Integer id, Integer tableId) {
         try {
-            return HttpResult.newCorrectResult(caseEstateService.quoteCaseEstateToBasic(id,tableId));
+            return HttpResult.newCorrectResult(caseEstateService.quoteCaseEstateToBasic(id, tableId));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(e.getMessage());

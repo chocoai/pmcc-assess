@@ -72,6 +72,8 @@ public class CaseEstateLandState {
 
     private BigDecimal landFactorTotalScore;
 
+    private String landLevelContent;
+
     private String dataLandLevelAchievement;
 
     private String presentSituationLandUse;
@@ -83,8 +85,6 @@ public class CaseEstateLandState {
     private Date gmtCreated;
 
     private Date gmtModified;
-
-    private String landLevelContent;
 
     public Integer getId() {
         return id;
@@ -358,6 +358,14 @@ public class CaseEstateLandState {
         this.landFactorTotalScore = landFactorTotalScore;
     }
 
+    public String getLandLevelContent() {
+        return landLevelContent;
+    }
+
+    public void setLandLevelContent(String landLevelContent) {
+        this.landLevelContent = landLevelContent == null ? null : landLevelContent.trim();
+    }
+
     public String getDataLandLevelAchievement() {
         return dataLandLevelAchievement;
     }
@@ -404,13 +412,5 @@ public class CaseEstateLandState {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public String getLandLevelContent() {
-        return landLevelContent;
-    }
-
-    public void setLandLevelContent(String landLevelContent) {
-        this.landLevelContent = landLevelContent == null ? null : landLevelContent.trim();
     }
 }

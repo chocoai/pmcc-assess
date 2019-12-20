@@ -88,7 +88,7 @@ public class CaseEstateTaggingService {
         List<MapDto> mapDtoList = new ArrayList<MapDto>(10);
         CaseEstateTagging query = new CaseEstateTagging();
         if (dataId != null) {
-            query.setDataId(dataId);
+            query.setTableId(dataId);
         }
         if (StringUtils.isNotBlank(type)) {
             query.setType(type);
@@ -100,7 +100,7 @@ public class CaseEstateTaggingService {
                     continue;
                 }
                 MapDto mapDto = new MapDto();
-                mapDto.setLat(new BigDecimal(tagging.getLat())).setLon(new BigDecimal(tagging.getLng())).setId(tagging.getId()).setType(tagging.getType()).setDataId(tagging.getDataId());
+                mapDto.setLat(new BigDecimal(tagging.getLat())).setLon(new BigDecimal(tagging.getLng())).setId(tagging.getId()).setType(tagging.getType()).setDataId(tagging.getTableId());
                 if (StringUtils.isNotBlank(tagging.getName())) {
                     mapDto.setName(tagging.getName());
                 }
@@ -168,7 +168,7 @@ public class CaseEstateTaggingService {
     public BootstrapTableVo getEstateTaggingList(Integer dataId, String type) throws Exception {
         BootstrapTableVo vo = new BootstrapTableVo();
         CaseEstateTagging where = new CaseEstateTagging();
-        where.setDataId(dataId);
+        where.setTableId(dataId);
         where.setType(type);
         List<CaseEstateTagging> caseEstateTaggingList = caseEstateTaggingDao.caseEstateTaggingList(where);
         vo.setTotal((long) caseEstateTaggingList.size());
@@ -184,7 +184,7 @@ public class CaseEstateTaggingService {
             return null;
         }
         CaseEstateTagging query = new CaseEstateTagging();
-        query.setDataId(dataId);
+        query.setTableId(dataId);
         query.setType(type);
         List<CaseEstateTagging> caseEstateTaggingList = caseEstateTaggingDao.caseEstateTaggingList(query);
         if (!ObjectUtils.isEmpty(caseEstateTaggingList)) {
