@@ -40,8 +40,6 @@ public class ProjectTaskCompareAssist implements ProjectTaskInterface {
     @Autowired
     private MdMarketCompareService mdMarketCompareService;
     @Autowired
-    private SchemeSupportInfoService schemeSupportInfoService;
-    @Autowired
     private ProjectInfoService projectInfoService;
     @Autowired
     private SchemeInfoService schemeInfoService;
