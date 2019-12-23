@@ -293,10 +293,10 @@ public class SchemeProgrammeController {
         }
     }
 
-    @PostMapping(name = "取消合并的委估对象部分", value = "/mergeJudgeCancelPart")
-    public HttpResult mergeJudgeCancelPart(Integer id,String cancelSplitIds) {
+    @PostMapping(name = "取消合并的委估对象部分", value = "/mergeJudgeAdjudt")
+    public HttpResult mergeJudgeAdjudt(Integer id,String removeIds,String addIds) {
         try {
-            schemeJudgeObjectService.mergeJudgeCancelPart(id,cancelSplitIds);
+            schemeJudgeObjectService.mergeJudgeAdjudt(id,removeIds,addIds);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             logger.error("取消合并的委估对象部分", e);

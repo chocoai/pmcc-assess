@@ -117,6 +117,7 @@ public class ProjectTaskController extends BaseController {
         modelAndView.addObject("projectId", projectPlanDetails.getProjectId());
 
         modelAndView.addObject("responsibilityId", responsibilityId);
+        modelAndView.addObject("projectPlanResponsibility", projectPlanResponsibility);
         ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId()));
         modelAndView.addObject("projectInfo", projectInfoVo);
         return modelAndView;

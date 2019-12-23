@@ -41,6 +41,9 @@
     <result column="supply_road" property="supplyRoad" jdbcType="INTEGER" />
     <result column="block_description" property="blockDescription" jdbcType="VARCHAR" />
     <result column="new_versions" property="newVersions" jdbcType="BIT" />
+    <result column="open_time" property="openTime" jdbcType="TIMESTAMP" />
+    <result column="infrastructure" property="infrastructure" jdbcType="VARCHAR" />
+    <result column="infrastructure_completeness" property="infrastructureCompleteness" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -106,7 +109,7 @@
     volumetric_rate, greening_rate, building_number, position, description, average_price, 
     price_range, supply_power, supply_water, drain_water, supply_gas, supply_heating, 
     version, creator, gmt_created, gmt_modified, location_describe, supply_communication, 
-    supply_road, block_description, new_versions
+    supply_road, block_description, new_versions, open_time, infrastructure, infrastructure_completeness
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseEstateExample" >
     select
@@ -154,7 +157,8 @@
       supply_gas, supply_heating, version, 
       creator, gmt_created, gmt_modified, 
       location_describe, supply_communication, 
-      supply_road, block_description, new_versions
+      supply_road, block_description, new_versions, 
+      open_time, infrastructure, infrastructure_completeness
       )
     values (#{classify,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, 
       #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, #{blockId,jdbcType=INTEGER}, 
@@ -168,7 +172,8 @@
       #{supplyGas,jdbcType=INTEGER}, #{supplyHeating,jdbcType=INTEGER}, #{version,jdbcType=INTEGER}, 
       #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
       #{locationDescribe,jdbcType=VARCHAR}, #{supplyCommunication,jdbcType=INTEGER}, 
-      #{supplyRoad,jdbcType=INTEGER}, #{blockDescription,jdbcType=VARCHAR}, #{newVersions,jdbcType=BIT}
+      #{supplyRoad,jdbcType=INTEGER}, #{blockDescription,jdbcType=VARCHAR}, #{newVersions,jdbcType=BIT}, 
+      #{openTime,jdbcType=TIMESTAMP}, #{infrastructure,jdbcType=VARCHAR}, #{infrastructureCompleteness,jdbcType=INTEGER}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseEstate" >
@@ -291,6 +296,15 @@
       <if test="newVersions != null" >
         new_versions,
       </if>
+      <if test="openTime != null" >
+        open_time,
+      </if>
+      <if test="infrastructure != null" >
+        infrastructure,
+      </if>
+      <if test="infrastructureCompleteness != null" >
+        infrastructure_completeness,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="classify != null" >
@@ -406,6 +420,15 @@
       </if>
       <if test="newVersions != null" >
         #{newVersions,jdbcType=BIT},
+      </if>
+      <if test="openTime != null" >
+        #{openTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="infrastructure != null" >
+        #{infrastructure,jdbcType=VARCHAR},
+      </if>
+      <if test="infrastructureCompleteness != null" >
+        #{infrastructureCompleteness,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -535,6 +558,15 @@
       <if test="record.newVersions != null" >
         new_versions = #{record.newVersions,jdbcType=BIT},
       </if>
+      <if test="record.openTime != null" >
+        open_time = #{record.openTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.infrastructure != null" >
+        infrastructure = #{record.infrastructure,jdbcType=VARCHAR},
+      </if>
+      <if test="record.infrastructureCompleteness != null" >
+        infrastructure_completeness = #{record.infrastructureCompleteness,jdbcType=INTEGER},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -580,7 +612,10 @@
       supply_communication = #{record.supplyCommunication,jdbcType=INTEGER},
       supply_road = #{record.supplyRoad,jdbcType=INTEGER},
       block_description = #{record.blockDescription,jdbcType=VARCHAR},
-      new_versions = #{record.newVersions,jdbcType=BIT}
+      new_versions = #{record.newVersions,jdbcType=BIT},
+      open_time = #{record.openTime,jdbcType=TIMESTAMP},
+      infrastructure = #{record.infrastructure,jdbcType=VARCHAR},
+      infrastructure_completeness = #{record.infrastructureCompleteness,jdbcType=INTEGER}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -702,6 +737,15 @@
       <if test="newVersions != null" >
         new_versions = #{newVersions,jdbcType=BIT},
       </if>
+      <if test="openTime != null" >
+        open_time = #{openTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="infrastructure != null" >
+        infrastructure = #{infrastructure,jdbcType=VARCHAR},
+      </if>
+      <if test="infrastructureCompleteness != null" >
+        infrastructure_completeness = #{infrastructureCompleteness,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -744,7 +788,10 @@
       supply_communication = #{supplyCommunication,jdbcType=INTEGER},
       supply_road = #{supplyRoad,jdbcType=INTEGER},
       block_description = #{blockDescription,jdbcType=VARCHAR},
-      new_versions = #{newVersions,jdbcType=BIT}
+      new_versions = #{newVersions,jdbcType=BIT},
+      open_time = #{openTime,jdbcType=TIMESTAMP},
+      infrastructure = #{infrastructure,jdbcType=VARCHAR},
+      infrastructure_completeness = #{infrastructureCompleteness,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

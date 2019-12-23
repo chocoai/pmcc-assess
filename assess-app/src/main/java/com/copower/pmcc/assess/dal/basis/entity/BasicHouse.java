@@ -76,6 +76,8 @@ public class BasicHouse {
 
     private Integer relevanceId;
 
+    private Integer displayCaseId;
+
     public Integer getId() {
         return id;
     }
@@ -362,5 +364,13 @@ public class BasicHouse {
 
     public void setRelevanceId(Integer relevanceId) {
         this.relevanceId = relevanceId;
+    }
+
+    public Integer getDisplayCaseId() {
+        return displayCaseId;
+    }
+
+    public void setDisplayCaseId(Integer displayCaseId) {
+        this.displayCaseId = displayCaseId;
     }
 }

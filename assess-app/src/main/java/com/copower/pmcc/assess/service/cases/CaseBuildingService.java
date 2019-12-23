@@ -269,7 +269,7 @@ public class CaseBuildingService {
         }
         //更新批量申请表信息
         BasicApplyBatchDetail batchDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail("tb_basic_building", tableId);
-        if(batchDetail!=null) {
+        if (batchDetail != null) {
             batchDetail.setQuoteId(id);
             batchDetail.setBaseType(BaseConstant.DATABASE_PMCC_ASSESS_CASE);
             basicApplyBatchDetailDao.updateInfo(batchDetail);
@@ -287,7 +287,7 @@ public class CaseBuildingService {
         basicBuilding.setEstateId(null);
         basicBuilding.setEstateId(oldBasicBuilding.getEstateId());
 
-        basicBuildingService.saveAndUpdateBasicBuilding(basicBuilding,false);
+        basicBuildingService.saveAndUpdateBasicBuilding(basicBuilding, false);
 
         //删除原有的附件
         SysAttachmentDto deleteExample = new SysAttachmentDto();
@@ -310,7 +310,7 @@ public class CaseBuildingService {
         baseAttachmentService.copyFtpAttachments(example, attachmentDto);
 
         CaseEstateTagging oldCaseEstateTagging = new CaseEstateTagging();
-        oldCaseEstateTagging.setDataId(id);
+        oldCaseEstateTagging.setTableId(id);
         oldCaseEstateTagging.setType(EstateTaggingTypeEnum.BUILDING.getKey());
         List<CaseEstateTagging> oldCaseEstateTaggingList = caseEstateTaggingService.getCaseEstateTaggingList(oldCaseEstateTagging);
         if (!ObjectUtils.isEmpty(oldCaseEstateTaggingList)) {

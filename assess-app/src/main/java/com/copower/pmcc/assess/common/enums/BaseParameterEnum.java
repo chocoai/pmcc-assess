@@ -17,6 +17,7 @@ public enum BaseParameterEnum {
      */
     SYS_URL_KEY("sys.url.key", "系统链接地址key", "sys"),
     SYS_ASSESS_VERSION("sys.assess.version", "系统更新版本号", "sys"),
+    SYS_CLIMBING_NET_CASE("sys.climbing.net.case", "自动爬取网络案例数据", "sys"),
     CSR_PROJECT_APPLY_PROCESS_KEY("csr.project.apply.process.key", "债权项目立项流程key", "box"),
 
     PROJECT__FORM__TASK__PROCESS__KEY("project.form.task.process.key", "项目立项审批流程key", "box"),

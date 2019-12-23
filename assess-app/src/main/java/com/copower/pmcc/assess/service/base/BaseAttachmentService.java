@@ -262,6 +262,21 @@ public class BaseAttachmentService {
     }
 
     /**
+     * 拷贝FTP附件
+     *
+     * @param sourceTableId
+     * @param targetTableId
+     * @return
+     */
+    public void copyFtpAttachments(Integer sourceTableId, Integer targetTableId) throws Exception {
+        SysAttachmentDto example = new SysAttachmentDto();
+        example.setTableId(sourceTableId);
+        SysAttachmentDto attachmentDto = new SysAttachmentDto();
+        attachmentDto.setTableId(targetTableId);
+        copyFtpAttachments(example, attachmentDto);
+    }
+
+    /**
      * 获取附件显示html
      *
      * @param baseAttachment

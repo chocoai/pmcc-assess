@@ -444,9 +444,9 @@
                     <a href="javascript://" onclick="programme.mergeJudge(this);"
                        class="btn btn-xs btn-warning judge-merge tooltips">合并</a>
                     <a href="javascript://" onclick="programme.mergeJudgeCancel(this);"
-                       class="btn btn-xs btn-warning judge-merge-cancel tooltips">取消合并(全部)</a>
+                       class="btn btn-xs btn-warning judge-merge-cancel tooltips">取消合并</a>
                     <a href="javascript://" onclick="programme.mergeJudgeCancelPart(this);"
-                       class="btn btn-xs btn-warning judge-merge-cancel tooltips">取消合并(部分)</a>
+                       class="btn btn-xs btn-warning judge-merge-cancel tooltips">调整合并</a>
                     <a href="javascript://" title="评估方法" onclick="programmeMethod.setMethod(this);"
                        class="btn btn-xs btn-success judge-method tooltips">评估方法</a>
                 </small>
@@ -648,10 +648,11 @@
     programme.config = {
         areaPopIndex: 0,//区域弹框index
         judgePopIndex: 0,//委估对象弹框index
+        judgeAdjustPopIndex: 0,//委估对象调整弹框index
         //区域合并项html
         areaItemHtml: '<li data-areaGroupId="{areaGroupId}"> <label>{areaName}</label> <a href="javascript://" onclick="programme.mergeItemRemove(this);" style="float: right;"><i class="fa fa-remove fa-white" ></i></a> </li>',
         //委估对象合并项html
-        judgeItemHtml: '<li data-judgeId="{judgeId}">  <label onclick="programme.setStandardJudge(this);">{mergeNumber}号估价对象</label> <a href="javascript://"  onclick="$(this).closest(\"li\").remove();"  style="float: right;"><i class="fa fa-remove fa-white" ></i></a>  </li>',
+        judgeItemHtml: '<li data-judgeId="{judgeId}">  <label onclick="programme.setStandardJudge(this);">{mergeNumber}号估价对象</label> <a href="javascript://"  onclick="$(this).closest(\'li\').remove();"  style="float: right;"><i class="fa fa-remove fa-white" ></i></a>  </li>',
         judgeSplitItemHtml: '<li data-judgeId="{judgeId}">  <label>{name}</label> <a href="javascript://" onclick="programme.splitItemRemove(this);"  style="float: right;"><i class="fa fa-remove fa-white" ></i></a>  </li>',
         currJudgeMethodButton: undefined //当前评估方法button
     };
@@ -843,7 +844,6 @@
                 toastr.info("只能填写数字");
                 return;
             }
-
             $.ajax({
                 url: '${pageContext.request.contextPath}/schemeProgramme/splitJudge',
                 data: {
@@ -998,7 +998,7 @@
         });
     };
 
-    //取消委估对象合并(全部)
+    //取消委估对象合并
     programme.mergeJudgeCancel = function (_this) {
         Alert("确定要取消合并么？", 2, null, function () {
             $.ajax({
@@ -1024,7 +1024,7 @@
         })
     };
 
-    //取消委估对象合并(部分)
+    //调整合并的委估对象
     programme.mergeJudgeCancelPart = function (_this) {
         var id = $(_this).closest('.x_panel').find('[data-name=id]').val();
         $.ajax({
@@ -1038,15 +1038,18 @@
             dataType: "json",
             success: function (result) {
                 if (result.rows) {
-                    layer.open({
-                        title: "委估对象合并",
+                    programme.config.judgeAdjustPopIndex = layer.open({
+                        title: "委估对象调整",
                         offset: 'rt',
                         shade: false,
                         zIndex: 999,
                         area: ['420px', '300px'], //宽高
-                        content: '<ul id="judge-split-ul" class="list-unstyled project_files" data-remove-ids=""></ul>',
+                        content: '<ul id="judge-split-ul" class="list-unstyled project_files" data-remove-ids="" data-add-ids=""></ul>',
                         yes: function (index, layero) {
-                            programme.mergeJudgeCancelPartSave(id,$(_this).closest('.x_panel'));
+                            programme.mergeJudgeAdjudt(id, $(_this).closest('.area_panel'));
+                        },
+                        end: function () {
+                            programme.config.judgeAdjustPopIndex = 0;
                         },
                         success: function () {
                             var html = programme.config.judgeSplitItemHtml;
@@ -1074,18 +1077,20 @@
         li.remove();
     };
 
-    //取消委估对象合并(部分)保存
-    programme.mergeJudgeCancelPartSave = function (id,panel) {
+    //调整合并的委估对象
+    programme.mergeJudgeAdjudt = function (id, panel) {
         $.ajax({
-            url: '${pageContext.request.contextPath}/schemeProgramme/mergeJudgeCancelPart',
+            url: '${pageContext.request.contextPath}/schemeProgramme/mergeJudgeAdjudt',
             data: {
                 id: id,
-                cancelSplitIds: $("#judge-split-ul").attr('data-remove-ids')
+                removeIds: $("#judge-split-ul").attr('data-remove-ids'),
+                addIds: $("#judge-split-ul").attr('data-add-ids')
             },
             type: "post",
             dataType: "json",
             success: function (result) {
                 if (result.ret) {
+                    layer.close(programme.config.judgeAdjustPopIndex);
                     programme.loadJudgeObjectList(panel);
                 } else {
                     Alert(result.errmsg);

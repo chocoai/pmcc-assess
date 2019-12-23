@@ -57,6 +57,13 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        <input id="file_upload" name="file_upload" type="file" multiple="false">
+                                    </label>
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -88,6 +95,18 @@
     $(function () {
         loadContractAttachment();
         $("#cmsContractInfo").validate();
+
+        FileUtils.uploadFiles({
+            target: "file_upload",
+            disabledTarget: "btn_submit",
+            formData: {
+                tableName: "tb_document_send",
+                tableId: $("#id").val(),
+                proectId:${documentSend.projectId}
+            },
+            deleteFlag: true,
+            editFlag: true
+        });
     })
 
     function previewContract() {
@@ -103,7 +122,7 @@
                 extendConten: extendConten,
                 contractType:${documentSend.contractType},
                 projectId:${documentSend.projectId},
-                processInsId:'${empty documentSend.processInsId?0:documentOpinion.processInsId}',
+                processInsId: '${empty documentSend.processInsId?0:documentOpinion.processInsId}',
                 id: $("#id").val(),
                 title: $("#title").val()
             },

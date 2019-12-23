@@ -41,8 +41,6 @@ public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
     @Autowired
     private ProjectInfoService projectInfoService;
     @Autowired
-    private SchemeSupportInfoService schemeSupportInfoService;
-    @Autowired
     private SchemeInfoService schemeInfoService;
     @Autowired
     private MdIncomeService mdIncomeService;

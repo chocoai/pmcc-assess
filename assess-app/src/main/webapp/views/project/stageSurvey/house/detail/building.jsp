@@ -34,17 +34,12 @@
                                 </label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                     <div class="input-group">
-                                        <label class="form-control"
-                                               name="buildingNumber">${basicBuilding.buildingNumber}</label>
+                                        <label class="form-control" name="buildingNumber">${basicBuilding.buildingNumber}</label>
                                         <span class="input-group-btn">
-                               <c:if test="${empty isApplyBatch}">
-                            <div onclick="buildingCommon.mapMarker(true);" class="btn btn-info"><i
-                                    class="fa fa-map-marker"></i> 标注</div>
-                               </c:if>
-                                <c:if test="${isApplyBatch eq 'show'}">
-                                 <div onclick="buildingCommon.mapMarker2(true,${tableId});" class="btn btn-info"><i
-                                         class="fa fa-map-marker"></i> 标注</div>
-                                </c:if>
+                            <input type="hidden" name="mapId" value="${basicBuilding.mapId}">
+                             <div onclick="buildingCommon.mapMarker(true);" class="btn btn-info">
+                                 <i class="fa fa-map-marker"></i> 标注
+                             </div>
                         </span>
                                     </div>
                                 </div>
@@ -54,29 +49,19 @@
                                     楼栋名称
                                 </label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <label class="form-control"
-                                           name="buildingName">${basicBuilding.buildingName}</label>
+                                    <label class="form-control" name="buildingName">${basicBuilding.buildingName}</label>
                                 </div>
                             </div>
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    总层数
-                                </label>
-                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <label class="form-control" name="floorCount">${basicBuilding.floorCount}</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                     物业类型
                                 </label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <label class="form-control"
-                                           name="propertyTypeName">${basicBuilding.propertyTypeName}</label>
+                                    <label class="form-control" name="propertyTypeName">${basicBuilding.propertyTypeName}</label>
                                 </div>
                             </div>
+                        </div>
+                        <div class="form-group">
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                     物业类别
@@ -88,37 +73,18 @@
                             </div>
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    首层位置
+                                    土地使用年限
                                 </label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <label class="form-control" name="firstFloor">${basicBuilding.firstFloor}</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    最高层
-                                </label>
-                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <label class="form-control" name="maxFloor">${basicBuilding.maxFloor}</label>
+                                    <label class="form-control" name="landUseYear">${basicBuilding.landUseYear}</label>
                                 </div>
                             </div>
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    套内面积
+                                    户型区间
                                 </label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <label class="form-control"
-                                           name="inJacketArea">${basicBuilding.inJacketArea}</label>
-                                </div>
-                            </div>
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    使用面积
-                                </label>
-                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <label class="form-control" name="useArea">${basicBuilding.useArea}</label>
+                                    <label class="form-control" name="unitInterval">${basicBuilding.unitInterval}</label>
                                 </div>
                             </div>
                         </div>
@@ -133,45 +99,36 @@
                             </div>
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    建筑使用年限
+                                    首层位置
                                 </label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <c:if test="${!empty basicBuilding.residenceUseYearName}">
-                                        <label class="form-control"
-                                               name="residenceUseYearName">${basicBuilding.residenceUseYearName}</label>
-                                    </c:if>
-                                    <c:if test="${!empty basicBuilding.industryUseYearName}">
-                                        <label class="form-control"
-                                               name="industryUseYearName">${basicBuilding.industryUseYearName}</label>
-                                    </c:if>
+                                    <label class="form-control" name="firstFloor">${basicBuilding.firstFloor}</label>
                                 </div>
                             </div>
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    户型区间
+                                    最高层
                                 </label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <label class="form-control"
-                                           name="unitInterval">${basicBuilding.unitInterval}</label>
+                                    <label class="form-control" name="maxFloor">${basicBuilding.maxFloor}</label>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    物业费
+                                    总层数
                                 </label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <label class="form-control" name="propertyFee">${basicBuilding.propertyFee}</label>
+                                    <label class="form-control" name="floorCount">${basicBuilding.floorCount}</label>
                                 </div>
                             </div>
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    配套公共设施使用费
+                                    层高
                                 </label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <label class="form-control"
-                                           name="facilitiesUseFee">${basicBuilding.facilitiesUseFee}</label>
+                                    <label class="form-control" name="floorHeight">${basicBuilding.floorHeight}</label>
                                 </div>
                             </div>
                             <div class="x-valid">
@@ -179,8 +136,7 @@
                                     建筑高度
                                 </label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <label class="form-control"
-                                           name="buildingHeight">${basicBuilding.buildingHeight}</label>
+                                    <label class="form-control" name="buildingHeight">${basicBuilding.buildingHeight}</label>
                                 </div>
                             </div>
                         </div>
@@ -190,8 +146,7 @@
                                     建筑面积
                                 </label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <label class="form-control"
-                                           name="buildingArea">${basicBuilding.buildingArea}</label>
+                                    <label class="form-control" name="buildingArea">${basicBuilding.buildingArea}</label>
                                 </div>
                             </div>
                             <div class="x-valid">
@@ -203,47 +158,12 @@
                                 </div>
                             </div>
                             <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    层高
-                                </label>
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">单元说明</label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <label class="form-control" name="floorHeight">${basicBuilding.floorHeight}</label>
+                                    <label class="form-control" name="remark">${basicBuilding.remark}</label>
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    土地使用年限
-                                </label>
-                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <label class="form-control" name="landUseYear">${basicBuilding.landUseYear}</label>
-                                </div>
-                            </div>
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    开盘时间
-                                </label>
-                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <label class="form-control dbdate" name="openTime">
-                                        <fmt:formatDate
-                                                value='${basicBuilding.openTime}' pattern='yyyy-MM-dd'/>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    交房时间
-                                </label>
-                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <label class="form-control dbdate" name="roomTime">
-                                        <fmt:formatDate
-                                                value='${basicBuilding.roomTime}' pattern='yyyy-MM-dd'/>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
@@ -263,24 +183,21 @@
                                            name="buildingStructureCategoryName">${basicBuilding.buildingStructureCategoryName}</label>
                                 </div>
                             </div>
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    建筑公司
-                                </label>
-                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <label class="form-control" name="builderName">${basicBuilding.builderName}</label>
-                                </div>
-                            </div>
                         </div>
-
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    工程质量
+                                    建筑使用年限
                                 </label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <label class="form-control"
-                                           name="constructionQualityName">${basicBuilding.constructionQualityName}</label>
+                                    <c:if test="${!empty basicBuilding.residenceUseYearName}">
+                                        <label class="form-control"
+                                               name="residenceUseYearName">${basicBuilding.residenceUseYearName}</label>
+                                    </c:if>
+                                    <c:if test="${!empty basicBuilding.industryUseYearName}">
+                                        <label class="form-control"
+                                               name="industryUseYearName">${basicBuilding.industryUseYearName}</label>
+                                    </c:if>
                                 </div>
                             </div>
                             <div class="x-valid">
@@ -288,8 +205,7 @@
                                     外观风格
                                 </label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <label class="form-control"
-                                           name="appearanceStyleName">${basicBuilding.appearanceStyleName}</label>
+                                    <label class="form-control" name="appearanceStyleName">${basicBuilding.appearanceStyleName}</label>
                                 </div>
                             </div>
                             <div class="x-valid">
@@ -304,29 +220,20 @@
                         </div>
                         <div class="form-group">
                             <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                    楼间距
+                                </label>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                    <label class="form-control" name="betweenDistanceName">${basicBuilding.betweenDistanceName}</label>
+                                </div>
+                            </div>
+                            <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">楼间距描述</label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                     <label class="form-control"
                                            name="betweenDistanceDescription">${basicBuilding.betweenDistanceDescription}</label>
                                 </div>
                             </div>
-
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    楼间距
-                                </label>
-                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <label class="form-control"
-                                           name="betweenDistanceName">${basicBuilding.betweenDistanceName}</label>
-                                </div>
-                            </div>
-                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">单元说明</label>
-                            <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                <label class="form-control" name="remark">${basicBuilding.remark}</label>
-                            </div>
-                        </div>
-                        <div class="form-group">
-
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                     竣工时间获取方式
@@ -336,6 +243,8 @@
                                            name="completedTimeTypeName">${basicBuilding.completedTimeTypeName}</label>
                                 </div>
                             </div>
+                        </div>
+                        <div class="form-group">
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                     竣工时间
@@ -346,29 +255,60 @@
 
                                 </div>
                             </div>
-
                             <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1 ">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                    开盘时间
                                 </label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <label class=" control-label">
-                                        建筑安装工程费
+                                    <label class="form-control dbdate" name="openTime">
+                                        <fmt:formatDate
+                                                value='${basicBuilding.openTime}' pattern='yyyy-MM-dd'/>
                                     </label>
-                                    <button type="button" class="btn btn-default"
-                                            onclick="buildingCommon.constructionInstallationEngineeringFeeEvent.loadHtml();">
-                                        <i class="fa fa-object-group" aria-hidden="true"></i>
-                                    </button>
+                                </div>
+                            </div>
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                    工程质量
+                                </label>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                    <label class="form-control"
+                                           name="constructionQualityName">${basicBuilding.constructionQualityName}</label>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    物业公司
+                                    建筑公司
                                 </label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <label class="form-control"
-                                           name="propertyName">${basicBuilding.propertyName}</label>
+                                    <label class="form-control" name="builderName">${basicBuilding.builderName}</label>
+                                </div>
+                            </div>
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                    物业费
+                                </label>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                    <label class="form-control" name="propertyFee">${basicBuilding.propertyFee}</label>
+                                </div>
+                            </div>
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                    配套公共设施使用费
+                                </label>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                    <label class="form-control" name="facilitiesUseFee">${basicBuilding.facilitiesUseFee}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                    物业公司名称
+                                </label>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                    <label class="form-control" name="propertyName">${basicBuilding.propertyName}</label>
                                 </div>
                             </div>
 
@@ -381,7 +321,6 @@
                                            name="propertyCompanyNatureName">${basicBuilding.propertyCompanyNatureName}</label>
                                 </div>
                             </div>
-
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                     物业公司社会信誉
@@ -389,6 +328,21 @@
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                     <label class="form-control"
                                            name="propertySocialPrestigeName">${basicBuilding.propertySocialPrestigeName}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1 ">
+                                </label>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                    <label class=" control-label">
+                                        建筑安装完工度调查
+                                    </label>
+                                    <button type="button" class="btn btn-default"
+                                            onclick="buildingCommon.constructionInstallationEngineeringFeeEvent.loadHtml();">
+                                        <i class="fa fa-object-group" aria-hidden="true"></i>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -404,7 +358,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="form-group" id="navButtonBuildGroupFileId">
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">平面图</label>

@@ -82,6 +82,12 @@ public class CaseEstate {
 
     private Boolean newVersions;
 
+    private Date openTime;
+
+    private String infrastructure;
+
+    private Integer infrastructureCompleteness;
+
     public Integer getId() {
         return id;
     }
@@ -392,5 +398,29 @@ public class CaseEstate {
 
     public void setNewVersions(Boolean newVersions) {
         this.newVersions = newVersions;
+    }
+
+    public Date getOpenTime() {
+        return openTime;
+    }
+
+    public void setOpenTime(Date openTime) {
+        this.openTime = openTime;
+    }
+
+    public String getInfrastructure() {
+        return infrastructure;
+    }
+
+    public void setInfrastructure(String infrastructure) {
+        this.infrastructure = infrastructure == null ? null : infrastructure.trim();
+    }
+
+    public Integer getInfrastructureCompleteness() {
+        return infrastructureCompleteness;
+    }
+
+    public void setInfrastructureCompleteness(Integer infrastructureCompleteness) {
+        this.infrastructureCompleteness = infrastructureCompleteness;
     }
 }

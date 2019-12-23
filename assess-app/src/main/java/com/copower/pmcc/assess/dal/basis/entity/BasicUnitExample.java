@@ -864,6 +864,66 @@ public class BasicUnitExample {
             addCriterion("relevance_id not between", value1, value2, "relevanceId");
             return (Criteria) this;
         }
+
+        public Criteria andDisplayCaseIdIsNull() {
+            addCriterion("display_case_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayCaseIdIsNotNull() {
+            addCriterion("display_case_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayCaseIdEqualTo(Integer value) {
+            addCriterion("display_case_id =", value, "displayCaseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayCaseIdNotEqualTo(Integer value) {
+            addCriterion("display_case_id <>", value, "displayCaseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayCaseIdGreaterThan(Integer value) {
+            addCriterion("display_case_id >", value, "displayCaseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayCaseIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("display_case_id >=", value, "displayCaseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayCaseIdLessThan(Integer value) {
+            addCriterion("display_case_id <", value, "displayCaseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayCaseIdLessThanOrEqualTo(Integer value) {
+            addCriterion("display_case_id <=", value, "displayCaseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayCaseIdIn(List<Integer> values) {
+            addCriterion("display_case_id in", values, "displayCaseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayCaseIdNotIn(List<Integer> values) {
+            addCriterion("display_case_id not in", values, "displayCaseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayCaseIdBetween(Integer value1, Integer value2) {
+            addCriterion("display_case_id between", value1, value2, "displayCaseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayCaseIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("display_case_id not between", value1, value2, "displayCaseId");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

@@ -2,7 +2,6 @@ package com.copower.pmcc.assess.service;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoAssignTaskDao;
 import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordContentDao;
 import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordDao;
 import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecord;
@@ -32,6 +31,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -58,6 +59,7 @@ import java.util.zip.GZIPInputStream;
  */
 @Service
 public class NetInfoRecordService {
+    private final static Logger logger = LoggerFactory.getLogger(NetInfoRecordService.class);
     @Autowired
     private NetInfoRecordDao netInfoRecordDao;
     @Autowired
@@ -72,8 +74,7 @@ public class NetInfoRecordService {
     private ApplicationConstant applicationConstant;
     @Autowired
     private CommonService commonService;
-    @Autowired
-    private NetInfoAssignTaskDao netInfoAssignTaskDao;
+
 
     //抓取数据
     public void climbingData() {
@@ -805,6 +806,7 @@ public class NetInfoRecordService {
     //公共资源交易平台-成都(土地矿权)
     public void getNetInfoFromGGZYCD(Integer days) {
         try {
+            logger.info("----公共资源交易平台-成都(土地矿权), start---------");
             Date date = getInstanceDate(days);//得到前1天
             //  String[] needContentType = new String[]{"拍卖公告", "结果公告"};
             String[] needContentType = new String[]{"结果公告"};
@@ -926,7 +928,7 @@ public class NetInfoRecordService {
                 }
             }
 
-
+            logger.info("----公共资源交易平台-成都(土地矿权), end---------");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1005,6 +1007,7 @@ public class NetInfoRecordService {
 
     //公共资源交易平台-成都（资产资源）
     public void getNetInfoFromGGZYCD2(Integer days) {
+        logger.info("----公共资源交易平台-成都(资产资源), start---------");
         try {
             Date date = getInstanceDate(days);//得到前1天
 
@@ -1103,7 +1106,7 @@ public class NetInfoRecordService {
                     }
                 }
             }
-
+            logger.info("----公共资源交易平台-成都(资产资源), end---------");
         } catch (Exception e) {
             e.printStackTrace();
         }

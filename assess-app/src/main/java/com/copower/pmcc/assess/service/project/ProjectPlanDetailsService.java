@@ -151,24 +151,7 @@ public class ProjectPlanDetailsService {
      */
     @Transactional(rollbackFor = Exception.class)
     public void deletePlanDetailsById(Integer planDetailsId) {
-        ProjectPlanDetails projectPlanDetails = getProjectPlanDetailsById(planDetailsId);
         projectPlanDetailsDao.deleteProjectPlanDetails(planDetailsId);
-        ProjectResponsibilityDto projectPlanResponsibility = new ProjectResponsibilityDto();
-        projectPlanResponsibility.setPlanId(projectPlanDetails.getPlanId());
-        projectPlanResponsibility.setPlanDetailsId(planDetailsId);
-        projectPlanResponsibility.setProjectId(projectPlanDetails.getProjectId());
-        List<ProjectResponsibilityDto> projectResponsibilityDtoList = bpmRpcProjectTaskService.getProjectTaskList(projectPlanResponsibility);
-        if (CollectionUtils.isNotEmpty(projectResponsibilityDtoList)) {
-            for (ProjectResponsibilityDto oo : projectResponsibilityDtoList) {
-                if (!Objects.equal(projectPlanDetails.getProjectId(), oo.getProjectId())) {
-                    continue;
-                }
-                if (!Objects.equal(projectPlanDetails.getPlanId(), oo.getPlanId())) {
-                    continue;
-                }
-                bpmRpcProjectTaskService.deleteProjectTask(oo.getId());
-            }
-        }
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -246,26 +229,10 @@ public class ProjectPlanDetailsService {
     public void saveProjectStagePlan(ProjectPlanDetails projectPlanDetails) {
         if (projectPlanDetails.getId() != null && projectPlanDetails.getId() > 0) {
             projectPlanDetailsDao.updateProjectPlanDetails(projectPlanDetails);
-            projectPlanDetailsDao.updateProjectPlanDetails(projectPlanDetails);
-            projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsById(projectPlanDetails.getId());//重新取得新数据
-            if (projectPlanDetails.getReturnDetailsId() != null)//说明已发起待办任务，则修改相应的责任人
-            {
-                ProjectResponsibilityDto projectPlanResponsibility = new ProjectResponsibilityDto();
-                projectPlanResponsibility.setId(projectPlanDetails.getReturnDetailsId());
-                projectPlanResponsibility.setUserAccount(projectPlanDetails.getExecuteUserAccount());
-                bpmRpcProjectTaskService.updateProjectTask(projectPlanResponsibility);
-            }
         } else {
-            ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
-            ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlanDetails.getProjectWorkStageId());
             projectPlanDetails.setStatus(ProcessStatusEnum.WAIT.getValue());
             projectPlanDetails.setCreator(processControllerComponent.getThisUser());
             projectPlanDetailsDao.addProjectPlanDetails(projectPlanDetails);
-            try {
-                projectPlanService.saveProjectPlanDetailsResponsibility(projectPlanDetails, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.TASK);
-            } catch (BpmException e) {
-                logger.error("添加task任务" + e.getMessage(), e);
-            }
         }
     }
 
@@ -759,17 +726,7 @@ public class ProjectPlanDetailsService {
             throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
         ProjectPlanDetails copyPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsById(copyPlanDetailsId);
         ProjectPlanDetails pastePlanDetails = projectPlanDetailsDao.getProjectPlanDetailsById(pastePlanDetailsId);
-        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(copyPlanDetails.getProjectId());
-        ProjectPhase sceneExplorePhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.SCENE_EXPLORE, projectInfo.getProjectCategoryId());
-        ProjectPhase caseStudyChildPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.COMMON_CASE_STUDY_EXAMINE);
-        ProjectPhase caseStudyExtendPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.CASE_STUDY_EXTEND);
-        List<Integer> commonPhaseIds = Lists.newArrayList(sceneExplorePhase.getId(), caseStudyChildPhase.getId(), caseStudyExtendPhase.getId());
-        //現場查勘案例調查
-        if (commonPhaseIds.contains(copyPlanDetails.getProjectPhaseId())) {
-            if (commonPhaseIds.contains(pastePlanDetails.getProjectPhaseId())) {
-                basicApplyTransferService.copyForExamine(copyPlanDetails.getId(), pastePlanDetails.getId());
-            }
-        }
+        basicApplyTransferService.copyForExamine(copyPlanDetails.getId(), pastePlanDetails.getId());
     }
 
     /**
