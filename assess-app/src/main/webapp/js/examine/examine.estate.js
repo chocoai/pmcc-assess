@@ -477,30 +477,9 @@
      * 选择案例的楼盘后处理方法
      * @param id
      */
-    estateCommon.onSelect = function (id) {
-        Loading.progressShow();
-        $.ajax({
-            url: getContextPath() + '/basicEstate/appWriteEstate',
-            data: {
-                applyId: basicCommon.getApplyId(),
-                caseEstateId: id
-            },
-            type: 'post',
-            success: function (result) {
-                Loading.progressHide();
-                if (result.ret) {
-                    estateCommon.detail(basicCommon.getApplyId(), function (data) {
-                        basicCommon.update({caseEstateId: id, id: basicCommon.getApplyId()}, function () {
-                            estateCommon.initForm({estate: data.basicEstate, land: data.basicEstateLandState});
-                            basicCommon.basicApplyForm.find("input[name='caseEstateId']").val(id);
-                        });
-                    });
-                } else {
-                    console.log(result.errmsg);
-                    Alert("转移失败!");
-                }
-            }
-        })
+    estateCommon.onSelect = function (name) {
+        caseFun.caseEstate.showModel(name);
+
     };
 
     /**
@@ -510,7 +489,7 @@
         if ($("#txt_estate_search").size() >= 1) {
             $("#txt_estate_search").apEstate({
                 onSelect: function (id, name) {
-                    estateCommon.onSelect(id);
+                    estateCommon.onSelect(name);
                 }
             });
         }

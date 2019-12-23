@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.common.enums.basic.EnvironmentalScienceEnum;
 import com.copower.pmcc.assess.common.enums.basic.ExamineHouseEquipmentTypeEnum;
 import com.copower.pmcc.assess.common.enums.basic.MethodCompareFieldEnum;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicUnitHuxingDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.method.MarketCompareItemDto;
 import com.copower.pmcc.assess.dto.output.basic.BasicBuildingOutfitVo;
@@ -25,6 +26,7 @@ import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -87,6 +89,8 @@ public class MdMarketCompareFieldService extends BaseService {
     private DataPropertyService dataPropertyService;
     @Autowired
     private GenerateLandFactorService generateLandFactorService;
+    @Autowired
+    private BasicUnitHuxingDao basicUnitHuxingDao;
 
     /**
      * 获取市场比较法各个字段对应值
@@ -222,7 +226,12 @@ public class MdMarketCompareFieldService extends BaseService {
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.FLOOR.getKey(), stringBuilder.toString()));
                             break;
                         case ORIENTATION://朝向
-                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.ORIENTATION.getKey(), baseDataDicService.getNameById(examineHouse.getOrientation())));
+                            BasicUnitHuxing basicUnitHuxing = new BasicUnitHuxing();
+                            basicUnitHuxing.setUnitId(examineUnit.getId());
+                            List<BasicUnitHuxing> basicUnitHuxingList = basicUnitHuxingDao.basicUnitHuxingList(basicUnitHuxing);
+                            if(CollectionUtils.isNotEmpty(basicUnitHuxingList)){
+                                list.add(getMarketCompareItemDto(MethodCompareFieldEnum.ORIENTATION.getKey(), baseDataDicService.getNameById(NumberUtils.isNumber(basicUnitHuxingList.get(0).getOrientation()) ? Integer.parseInt(basicUnitHuxingList.get(0).getOrientation()) : null)));
+                            }
                             break;
                         case TRAFFIC_CONDITIONS://交通条件
                             stringBuilder = new StringBuilder();
