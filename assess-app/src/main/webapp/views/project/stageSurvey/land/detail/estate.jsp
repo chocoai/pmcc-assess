@@ -266,17 +266,24 @@
                                        value='${basicEstateLandState.landLevelContent}'>
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地级别</label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <div class="input-group">
-                                        <input type="text" readonly="readonly" class="form-control" name="landLevelName"
-                                               value="${basicEstateLandState.landLevelName}">
-                                        <span class="input-group-btn">
-                            <button type="button" class="btn btn-default docs-tooltip"
-                                    onclick="estateCommon.landLevelLoadHtmlApproval();"
-                                    data-toggle="tooltip" data-original-title="土地因素">
+                                    <c:if test="${empty basicEstateLandState.landLevelContent && !empty basicEstateLandState.landLevelName}">
+                                        <label class="form-control"
+                                               name="landLevelName">${basicEstateLandState.landLevelName}</label>
+                                    </c:if>
+                                    <c:if test="${!empty basicEstateLandState.landLevelContent}">
+                                        <div class="input-group">
+                                            <input type="text" readonly="readonly" class="form-control"
+                                                   name="landLevelName"
+                                                   value="${basicEstateLandState.landLevelName}">
+                                            <span class="input-group-btn">
+                                              <button type="button" class="btn btn-default docs-tooltip"
+                                                      onclick="estateCommon.landLevelLoadHtmlApproval();"
+                                                      data-toggle="tooltip" data-original-title="土地因素">
                         <i class="fa fa-magic"></i>
                         </button>
                 </span>
-                                    </div>
+                                        </div>
+                                    </c:if>
                                 </div>
                             </div>
                             <div class="x-valid">
@@ -452,7 +459,7 @@
                         <%@include file="/views/project/stageSurvey/commonDetail/matchingMainConversion.jsp" %>
 
                         <c:if test="${basicApplyBatch.type == 1}">
-                            <%@include file="/views/project/stageSurvey/commonDetail/industry/matchingMaterial.jsp" %>
+                            <%--<%@include file="/views/project/stageSurvey/commonDetail/industry/matchingMaterial.jsp" %>--%>
                         </c:if>
                     </div>
 
@@ -543,7 +550,7 @@
 </html>
 <script type="text/javascript">
     $(function () {
-        estateCommon.initDetailById('${basicEstate.id}','',false);
+        estateCommon.initDetailById('${basicEstate.id}', '', false);
     })
 </script>
 
