@@ -713,7 +713,10 @@
          * 描述:加载数据列表
          * @date:2018-09-13
          **/
-        loadDataList: function (flag) {
+        loadDataList: function (flag,estateName) {
+            if(estateName){
+                $("#querySearch").val(estateName);
+            }
             var estate={};
             estate.querySearch = $("#querySearch").val();
             estate.queryProvince = $("#queryProvince").val();
@@ -771,13 +774,13 @@
             href += "?id=" + id;
             window.open(href, "");
         },
-        showModel: function () {
+        showModel: function (estateName) {
             AssessCommon.initAreaInfo({
                 provinceTarget: $("#queryProvince"),
                 cityTarget: $("#queryCity")
             });
             $("#" + caseFun.config.father.caseEstate.frm()).clearAll();
-            caseFun.caseEstate.loadDataList(false);
+            caseFun.caseEstate.loadDataList(true,estateName);
             $('#' + caseFun.config.father.caseEstate.box()).modal("show");
         },
         quote: function (id) {

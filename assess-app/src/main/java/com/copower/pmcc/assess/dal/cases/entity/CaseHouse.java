@@ -66,6 +66,8 @@ public class CaseHouse {
 
     private Boolean newVersions;
 
+    private String huxingData;
+
     public Integer getId() {
         return id;
     }
@@ -312,5 +314,13 @@ public class CaseHouse {
 
     public void setNewVersions(Boolean newVersions) {
         this.newVersions = newVersions;
+    }
+
+    public String getHuxingData() {
+        return huxingData;
+    }
+
+    public void setHuxingData(String huxingData) {
+        this.huxingData = huxingData == null ? null : huxingData.trim();
     }
 }

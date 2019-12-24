@@ -1199,22 +1199,25 @@
             })
         },
         assignTask: function () {
-            var rows = $('#transaction_List').bootstrapTable('getSelections');
-
-            if (rows && rows.length > 0) {
-                var idArray = [];
-                $.each(rows, function (i, item) {
-                    idArray.push(item.id);
-                })
-                var ids = idArray.join()
-                $("#selectIds").val(ids);
-                //确认
-                var href = "${pageContext.request.contextPath}/netInfoAssignTask/apply";
-                href += "?ids=" + ids;
-                window.open(href, "");
-            } else {
-                toastr.info('请选择要审批的数据');
-            }
+            Alert("过滤掉已申请数据", 2, null, function () {
+                var rows = $('#transaction_List').bootstrapTable('getSelections');
+                if (rows && rows.length > 0) {
+                    var idArray = [];
+                    $.each(rows, function (i, item) {
+                        if (item.status == 2) {
+                            idArray.push(item.id);
+                        }
+                    })
+                    var ids = idArray.join()
+                    $("#selectIds").val(ids);
+                    //确认
+                    var href = "${pageContext.request.contextPath}/netInfoAssignTask/apply";
+                    href += "?ids=" + ids;
+                    window.open(href, "");
+                } else {
+                    toastr.info('请选择要审批的数据');
+                }
+            })
         },
         loadOnclickData: function (id) {
             var cols = [];
@@ -1370,7 +1373,9 @@
             cols.push({
                 field: 'id', width: '6%', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
-                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="detailInfo.prototype.getAndInitLand(' + row.id + ')"><i class="fa fa-edit fa-white"></i></a>';
+                    if(row.status != 1){
+                        str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="detailInfo.prototype.getAndInitLand(' + row.id + ')"><i class="fa fa-edit fa-white"></i></a>';
+                    }
                     if (row.status == 0) {
                         str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="删除" onclick="detailInfo.prototype.deleteLandItem(' + row.id + ')"><i class="fa fa-minus fa-white"></i></a>';
                     }
@@ -1481,7 +1486,9 @@
             cols.push({
                 field: 'id', width: '6%', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
-                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="detailInfo.prototype.getAndInitHouse(' + row.id + ')"><i class="fa fa-edit fa-white"></i></a>';
+                    if(row.status != 1) {
+                        str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="detailInfo.prototype.getAndInitHouse(' + row.id + ')"><i class="fa fa-edit fa-white"></i></a>';
+                    }
                     if (row.status == 0) {
                         str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="删除" onclick="detailInfo.prototype.deleteHouseItem(' + row.id + ')"><i class="fa fa-minus fa-white"></i></a>';
                     }

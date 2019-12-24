@@ -33,6 +33,7 @@
     <result column="use_year" property="useYear" jdbcType="INTEGER" />
     <result column="land_location" property="landLocation" jdbcType="VARCHAR" />
     <result column="new_versions" property="newVersions" jdbcType="BIT" />
+    <result column="huxing_data" property="huxingData" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -97,7 +98,7 @@
     cert_use, practical_use, orientation, area, right_interests_restriction, use_environment, 
     description, case_date, version, creator, gmt_created, gmt_modified, new_degree, 
     price_connotation, huxing_id, area_desc, research_type, spatial_distribution_desc, 
-    spatial_distribution, floor_price, use_year, land_location, new_versions
+    spatial_distribution, floor_price, use_year, land_location, new_versions, huxing_data
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouseExample" >
     select
@@ -143,7 +144,7 @@
       huxing_id, area_desc, research_type, 
       spatial_distribution_desc, spatial_distribution, 
       floor_price, use_year, land_location, 
-      new_versions)
+      new_versions, huxing_data)
     values (#{unitId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{houseNumber,jdbcType=VARCHAR}, 
       #{floor,jdbcType=VARCHAR}, #{floorDesc,jdbcType=VARCHAR}, #{huxingName,jdbcType=VARCHAR}, 
       #{newHuxingName,jdbcType=VARCHAR}, #{certUse,jdbcType=VARCHAR}, #{practicalUse,jdbcType=VARCHAR}, 
@@ -154,7 +155,7 @@
       #{huxingId,jdbcType=INTEGER}, #{areaDesc,jdbcType=VARCHAR}, #{researchType,jdbcType=INTEGER}, 
       #{spatialDistributionDesc,jdbcType=VARCHAR}, #{spatialDistribution,jdbcType=INTEGER}, 
       #{floorPrice,jdbcType=DECIMAL}, #{useYear,jdbcType=INTEGER}, #{landLocation,jdbcType=VARCHAR}, 
-      #{newVersions,jdbcType=BIT})
+      #{newVersions,jdbcType=BIT}, #{huxingData,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouse" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -252,6 +253,9 @@
       <if test="newVersions != null" >
         new_versions,
       </if>
+      <if test="huxingData != null" >
+        huxing_data,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="unitId != null" >
@@ -343,6 +347,9 @@
       </if>
       <if test="newVersions != null" >
         #{newVersions,jdbcType=BIT},
+      </if>
+      <if test="huxingData != null" >
+        #{huxingData,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -448,6 +455,9 @@
       <if test="record.newVersions != null" >
         new_versions = #{record.newVersions,jdbcType=BIT},
       </if>
+      <if test="record.huxingData != null" >
+        huxing_data = #{record.huxingData,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -485,7 +495,8 @@
       floor_price = #{record.floorPrice,jdbcType=DECIMAL},
       use_year = #{record.useYear,jdbcType=INTEGER},
       land_location = #{record.landLocation,jdbcType=VARCHAR},
-      new_versions = #{record.newVersions,jdbcType=BIT}
+      new_versions = #{record.newVersions,jdbcType=BIT},
+      huxing_data = #{record.huxingData,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -583,6 +594,9 @@
       <if test="newVersions != null" >
         new_versions = #{newVersions,jdbcType=BIT},
       </if>
+      <if test="huxingData != null" >
+        huxing_data = #{huxingData,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -617,7 +631,8 @@
       floor_price = #{floorPrice,jdbcType=DECIMAL},
       use_year = #{useYear,jdbcType=INTEGER},
       land_location = #{landLocation,jdbcType=VARCHAR},
-      new_versions = #{newVersions,jdbcType=BIT}
+      new_versions = #{newVersions,jdbcType=BIT},
+      huxing_data = #{huxingData,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

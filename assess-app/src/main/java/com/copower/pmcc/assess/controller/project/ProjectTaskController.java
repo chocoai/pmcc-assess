@@ -9,18 +9,19 @@ import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
+import com.copower.pmcc.assess.service.chks.ChksAssessmentProjectPerformanceService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.ProjectTaskService;
 import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
-import com.copower.pmcc.bpm.api.dto.model.AssessmentItemDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxRuDto;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcToolsService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -73,6 +74,10 @@ public class ProjectTaskController extends BaseController {
     private BpmRpcToolsService bpmRpcToolsService;
     @Autowired
     private BaseService baseService;
+    @Autowired
+    private ChksAssessmentProjectPerformanceService chksAssessmentProjectPerformanceService;
+    @Autowired
+    private ProcessControllerComponent processControllerComponent;
 
 
     @RequestMapping(value = "/projectTaskIndex", name = "提交工作成果公共页面")
@@ -125,7 +130,7 @@ public class ProjectTaskController extends BaseController {
             projectTaskService.submitTask(projectTaskDto);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
-            baseService.writeExceptionInfo(e,"提交工作成果数据异常");
+            baseService.writeExceptionInfo(e, "提交工作成果数据异常");
             return HttpResult.newErrorResult("提交工作成果数据异常");
         }
     }
@@ -167,11 +172,15 @@ public class ProjectTaskController extends BaseController {
         //获取相应的考核项
         BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(boxId);
         if (boxReDto.getBisLaunchCheck() != null && boxReDto.getBisLaunchCheck()) {
+            //考核标识符
             modelAndView.addObject("bisCheck", 1);
             Object activityId = modelAndView.getModel().get("activityId");
             if (activityId != null) {
-                List<AssessmentItemDto> assessmentItemList = bpmRpcBoxService.getAssessmentItemList(boxId, (int) activityId);
-                modelAndView.addObject("assessmentItemList", assessmentItemList);
+                Integer boxReActivitiId = (Integer) activityId;
+                //当前节点即将要填写的考核记录
+                modelAndView.addObject("assessmentItemList", bpmRpcBoxService.getAssessmentItemList(boxId, boxReActivitiId));
+                setCheckParams(projectPlanDetails, processInsId, boxId, boxReActivitiId, modelAndView, false);
+
             }
         }
         modelAndView.addObject("viewUrl", viewUrl);
@@ -184,9 +193,9 @@ public class ProjectTaskController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "/submitTaskApproval", name = "审批提交的工作成果数据", method = RequestMethod.POST)
-    public HttpResult submitTaskApproval(ApprovalModelDto approvalModelDto, String formData,String chksScore,String chksRemarks,String byExaminePeople) {
+    public HttpResult submitTaskApproval(ApprovalModelDto approvalModelDto, String formData, String chksScore, String chksRemarks, String byExaminePeople) {
         try {
-            projectTaskService.submitTaskApproval(approvalModelDto, formData,chksScore,chksRemarks,byExaminePeople);
+            projectTaskService.submitTaskApproval(approvalModelDto, formData, chksScore, chksRemarks, byExaminePeople);
             return HttpResult.newCorrectResult();
         } catch (BusinessException e) {
             baseService.writeExceptionInfo(e);
@@ -271,6 +280,19 @@ public class ProjectTaskController extends BaseController {
         modelAndView.addObject("projectFlog", "1");
         ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId()));
         modelAndView.addObject("projectInfo", projectInfoVo);
+        if (boxId != 0 && boxId != null){
+            //获取相应的考核项
+            BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(boxId);
+            if (boxReDto.getBisLaunchCheck() != null && boxReDto.getBisLaunchCheck()) {
+                //考核标识符
+                modelAndView.addObject("bisCheck", 1);
+                Object activityId = modelAndView.getModel().get("activityId");
+                if (activityId != null) {
+                    setCheckParams(projectPlanDetails, null, boxId, (Integer) activityId, modelAndView, true);
+
+                }
+            }
+        }
         return modelAndView;
     }
 
@@ -291,6 +313,29 @@ public class ProjectTaskController extends BaseController {
     public BootstrapTableVo loadReturnRecordList(Integer planDetailsId) {
         BootstrapTableVo bootstrapTableVo = projectTaskService.getDataLandLevelListVos(planDetailsId);
         return bootstrapTableVo;
+    }
+
+    /**
+     * @param projectPlanDetails
+     * @param processInsId
+     * @param boxId
+     * @param boxReActivitiId
+     * @param modelAndView
+     * @param isDetail           是否是详情页 ,详情页不显示考核记录 除非是抽查人员
+     */
+    private void setCheckParams(ProjectPlanDetails projectPlanDetails, String processInsId, Integer boxId, Integer boxReActivitiId, ModelAndView modelAndView, boolean isDetail) {
+        //巡查人或者抽查人  可以看到当前模型下 所有人的考核记录
+        boolean spotCheck = chksAssessmentProjectPerformanceService.getSpotCheck(boxId, processControllerComponent.getThisUser());
+        //抽查或者巡查标识符
+        modelAndView.addObject("spotCheck", spotCheck);
+        if (spotCheck) {
+            //抽查人员需要填写的考核记录
+            modelAndView.addObject("spotCheckAssessmentItemList", chksAssessmentProjectPerformanceService.getSpotCheckAssessmentItems(boxId));
+            isDetail = false;//把考核记录设置为可以查看,因为是抽查人员嘛
+        }
+        if (!isDetail) {
+            modelAndView.addObject("assessmentProjectPerformanceDtoList", chksAssessmentProjectPerformanceService.getAssessmentProjectPerformanceDtoMap(boxId, boxReActivitiId, spotCheck, processInsId, projectPlanDetails.getProjectId()));
+        }
     }
 
 }

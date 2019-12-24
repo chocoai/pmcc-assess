@@ -8,6 +8,7 @@ import com.copower.pmcc.assess.dal.basis.dao.basic.BasicBuildingDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
+import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -47,6 +48,8 @@ public class BasicApplyBatchDetailService {
     private ProjectPlanDetailsService projectPlanDetailsService;
     @Autowired
     private ProjectInfoService projectInfoService;
+    @Autowired
+    private DeclareRecordService declareRecordService;
 
     /**
      * 通过applyBatchId获取
@@ -149,6 +152,16 @@ public class BasicApplyBatchDetailService {
                         house.setUnitId(0);
                     } else {
                         house.setUnitId(this.getParentTableId(basicApplyBatchDetail));
+                    }
+                    //申报表代入的信息
+                    DeclareRecord declareRecord = new DeclareRecord();
+                    ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
+                    if (projectPlanDetails != null && projectPlanDetails.getDeclareRecordId() != null) {
+                        declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
+                    }
+                    if (declareRecord != null) {
+                        house.setCertUse(declareRecord.getCertUse());
+                        house.setPracticalUse(declareRecord.getCertUse());
                     }
                     basicHouseService.saveAndUpdateBasicHouse(house, false);
                     basicApplyBatchDetail.setTableId(house.getId());

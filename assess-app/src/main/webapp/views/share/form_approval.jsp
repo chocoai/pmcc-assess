@@ -116,10 +116,10 @@
             </div>
         </div>
     </c:if>
-    <c:if test="${bisCheck==1}">
-        <%@include file="form_chks.jsp" %>
-    </c:if>
 </form>
+<c:if test="${bisCheck==1}">
+    <%@include file="form_chks.jsp" %>
+</c:if>
 <c:if test="${flog=='approval'}">
     <div class="x_panel">
         <div class="x_content">

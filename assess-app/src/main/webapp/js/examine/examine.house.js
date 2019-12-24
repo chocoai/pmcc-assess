@@ -503,7 +503,6 @@
     houseCommon.showReplenishLand = function (projectTypeId) {
         AssessCommon.getProjectClassifyInfo(projectTypeId, function (data) {
             var projectTypeField = data.fieldName;
-            console.log(projectTypeField + '===12==')
             switch (projectTypeField) {
                 //房产
                 case AssessProjectClassifyKey.singleHousePropertyCertificateTypeSimple: {
@@ -957,6 +956,46 @@
             var tradingUnitPrice = parseFloat(tradingTotalPrice) / parseFloat(area);
             houseCommon.houseTradingForm.find('[name=tradingUnitPrice]').val(parseInt(tradingUnitPrice));
         }
+    };
+
+    //打开户型字段modal
+    houseCommon.openHuxingModal = function(){
+        var huxingData = houseCommon.houseForm.find("input[name='huxingData']").val();
+        $("#divBoxHuxing").clearAll();
+        if(huxingData){
+            $("#frmHuxing").initForm(JSON.parse(huxingData));
+        }
+        $("#divBoxHuxing").modal("show");
+    };
+
+    //拼接户型字段
+    houseCommon.spliceHuxing = function(){
+        if (!$("#frmHuxing").valid()) {
+            return false;
+        }
+        var text = "";
+        if (houseCommon.isNotBlank($("#frmHuxing").find("input[name='house']").val())) {
+            text += $("#frmHuxing").find("input[name='house']").val() + "房";
+        }
+        if (houseCommon.isNotBlank($("#frmHuxing").find("input[name='saloon']").val())) {
+            text += $("#frmHuxing").find("input[name='saloon']").val() + "客厅";
+        }
+        if (houseCommon.isNotBlank($("#frmHuxing").find("input[name='kitchen']").val())) {
+            text += $("#frmHuxing").find("input[name='kitchen']").val() + "厨房";
+        }
+        if (houseCommon.isNotBlank($("#frmHuxing").find("input[name='toilet']").val())) {
+            text += $("#frmHuxing").find("input[name='toilet']").val() + "卫生间";
+        }
+        if (houseCommon.isNotBlank($("#frmHuxing").find("input[name='garden']").val())) {
+            text += $("#frmHuxing").find("input[name='garden']").val() + "花园";
+        }
+        if (houseCommon.isNotBlank($("#frmHuxing").find("input[name='balcony']").val())) {
+            text += $("#frmHuxing").find("input[name='balcony']").val() + "阳台";
+        }
+        houseCommon.houseForm.find("input[name='newHuxingName']").val(text);
+        $("#divBoxHuxing").modal('hide');
+        var huxingData = JSON.stringify(formParams("frmHuxing"));
+        houseCommon.houseForm.find("input[name='huxingData']").val(huxingData);
     };
 
 

@@ -78,7 +78,8 @@
                                 </div>
                             </div>
                             <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">基础版块<span class="symbol required"></span></label>
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">基础版块<span
+                                        class="symbol required"></span></label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                     <label class="form-control" name="blockName">${basicEstate.blockName}</label>
                                 </div>
@@ -116,7 +117,8 @@
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">容积率</label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <label class="form-control" name="volumetricRate">${basicEstate.volumetricRate}</label>
+                                    <label class="form-control"
+                                           name="volumetricRate">${basicEstate.volumetricRate}</label>
                                 </div>
                             </div>
                             <div class="x-valid">
@@ -128,7 +130,8 @@
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">总楼栋数</label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <label class="form-control" name="buildingNumber">${basicEstate.buildingNumber}</label>
+                                    <label class="form-control"
+                                           name="buildingNumber">${basicEstate.buildingNumber}</label>
                                 </div>
                             </div>
                         </div>
@@ -136,7 +139,8 @@
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">开发商</label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <label class="form-control" name="developerName">${basicEstate.developerName}</label>
+                                    <label class="form-control"
+                                           name="developerName">${basicEstate.developerName}</label>
                                 </div>
                             </div>
                             <div class="x-valid">
@@ -312,17 +316,23 @@
                                    value='${basicEstateLandState.landLevelContent}'>
                             <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地级别</label>
                             <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                <div class="input-group">
-                                    <input type="text" readonly="readonly" class="form-control" name="landLevelName"
-                                           value="${basicEstateLandState.landLevelName}">
-                                    <span class="input-group-btn">
-                            <button type="button" class="btn btn-default docs-tooltip"
-                                    onclick="estateCommon.landLevelLoadHtmlApproval();"
-                                    data-toggle="tooltip" data-original-title="土地因素">
+                                <c:if test="${empty basicEstateLandState.landLevelContent && !empty basicEstateLandState.landLevelName}">
+                                    <label class="form-control"
+                                           name="landLevelName">${basicEstateLandState.landLevelName}</label>
+                                </c:if>
+                                <c:if test="${!empty basicEstateLandState.landLevelContent}">
+                                    <div class="input-group">
+                                        <input type="text" readonly="readonly" class="form-control" name="landLevelName"
+                                               value="${basicEstateLandState.landLevelName}">
+                                        <span class="input-group-btn">
+                                              <button type="button" class="btn btn-default docs-tooltip"
+                                                      onclick="estateCommon.landLevelLoadHtmlApproval();"
+                                                      data-toggle="tooltip" data-original-title="土地因素">
                         <i class="fa fa-magic"></i>
                         </button>
                 </span>
-                                </div>
+                                    </div>
+                                </c:if>
                             </div>
                         </div>
                         <div class="x-valid">

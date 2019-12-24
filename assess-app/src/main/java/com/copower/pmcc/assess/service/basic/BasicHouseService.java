@@ -236,7 +236,7 @@ public class BasicHouseService {
         if (basicHouse.getDecorateSituation() != null) {
             vo.setDecorateSituationName(baseDataDicService.getNameById(basicHouse.getDecorateSituation()));
         }
-        vo.setSpatialDistributionName(baseDataDicService.getNameById(basicHouse.getSpatialDistribution()));
+        //vo.setSpatialDistributionName(baseDataDicService.getNameById(basicHouse.getSpatialDistribution()));
         vo.setCreatorName(publicService.getUserNameByAccount(basicHouse.getCreator()));
         return vo;
     }

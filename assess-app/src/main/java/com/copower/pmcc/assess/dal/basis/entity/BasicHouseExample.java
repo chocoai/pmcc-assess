@@ -2485,6 +2485,76 @@ public class BasicHouseExample {
             addCriterion("display_case_id not between", value1, value2, "displayCaseId");
             return (Criteria) this;
         }
+
+        public Criteria andHuxingDataIsNull() {
+            addCriterion("huxing_data is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingDataIsNotNull() {
+            addCriterion("huxing_data is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingDataEqualTo(String value) {
+            addCriterion("huxing_data =", value, "huxingData");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingDataNotEqualTo(String value) {
+            addCriterion("huxing_data <>", value, "huxingData");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingDataGreaterThan(String value) {
+            addCriterion("huxing_data >", value, "huxingData");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingDataGreaterThanOrEqualTo(String value) {
+            addCriterion("huxing_data >=", value, "huxingData");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingDataLessThan(String value) {
+            addCriterion("huxing_data <", value, "huxingData");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingDataLessThanOrEqualTo(String value) {
+            addCriterion("huxing_data <=", value, "huxingData");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingDataLike(String value) {
+            addCriterion("huxing_data like", value, "huxingData");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingDataNotLike(String value) {
+            addCriterion("huxing_data not like", value, "huxingData");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingDataIn(List<String> values) {
+            addCriterion("huxing_data in", values, "huxingData");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingDataNotIn(List<String> values) {
+            addCriterion("huxing_data not in", values, "huxingData");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingDataBetween(String value1, String value2) {
+            addCriterion("huxing_data between", value1, value2, "huxingData");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingDataNotBetween(String value1, String value2) {
+            addCriterion("huxing_data not between", value1, value2, "huxingData");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

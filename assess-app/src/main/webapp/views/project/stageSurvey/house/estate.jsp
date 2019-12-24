@@ -703,5 +703,7 @@
 <script type="text/javascript">
     $(function () {
         estateCommon.initById('${basicEstate.id}');
+        //楼盘自动填充插件
+        estateCommon.autocompleteStart();
     })
 </script>

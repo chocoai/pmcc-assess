@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <div class="x_panel">
     <div class="x_title collapse-link">
         <ul class="nav navbar-right panel_toolbox">
@@ -8,166 +9,117 @@
         <h3>考核信息</h3>
         <div class="clearfix"></div>
     </div>
+
     <div class="x_content">
-        <table class="table">
-            <thead>
-            <tr>
-                <th width="3%">序号</th>
-                <th width="7%">节点名称</th>
-                <th width="60%">考核标准</th>
-                <th width="10%">综合得分</th>
-                <th width="10%">操作</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <th scope="row">1</th>
-                <td>项目经理</td>
-                <td>
-                    <table class="table">
+        <form id="chksDataFrm">
+            <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                <c:if test="${!empty assessmentProjectPerformanceDtoList}">
+                    <c:forEach items="${assessmentProjectPerformanceDtoList}" var="entryItem"
+                               varStatus="userStatus">
+                        <div class="row">
+                            <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                                <h2 class="text-center">${userStatus.index+1} : ${entryItem.key}
+
+                                    <!-- 抽查标识 -->
+                                    <c:if test="${spotCheck}">
+                                        <c:forEach items="${entryItem.value}" var="item" varStatus="userStatus">
+                                            <c:if test="${userStatus.last}">
+                                                <input type="button" class="btn btn-xs btn-primary" value="抽查"
+                                                       onclick="showChkSpotAssessmentParent({projectId:'${item.projectId}',processInsId:'${item.processInsId}',boxId:'${item.boxId}',activityId:'${item.activityId}',activityName:'${item.activityName}',byExaminePeople:'${item.examinePeople}'});">
+                                            </c:if>
+                                        </c:forEach>
+                                    </c:if>
+
+
+                                </h2>
+                            </div>
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <td>考核标准</td>
+                                    <td>综合分值</td>
+                                    <td>实际得分</td>
+                                    <td>被考核人</td>
+                                    <td>考核人</td>
+                                    <td>考核项说明</td>
+                                    <td>考核时间</td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <c:forEach items="${entryItem.value}" var="item">
+                                    <tr>
+                                        <td>${item.performanceDetailDto.content}</td>
+                                        <td>${item.examineScore}</td>
+                                        <td>${item.validScore}</td>
+                                        <td>${item.byExaminePeopleName}</td>
+                                        <td>${item.examinePeopleName}</td>
+                                        <td>${item.performanceDetailDto.remark} ${item.remarks}</td>
+                                        <td>
+                                            <fmt:formatDate value="${item.examineDate}"
+                                                            pattern="yyyy-MM-dd"/>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                                </tbody>
+                            </table>
+                        </div>
+                    </c:forEach>
+                </c:if>
+            </div>
+
+            <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                <c:if test="${!empty assessmentItemList}">
+                <table class="table" id="chksTableList">
+                    <thead>
+                    <tr>
+                        <th width="3%">序号</th>
+                        <th width="7%">节点名称</th>
+                        <th width="50%">考核标准</th>
+                        <th width="10%">打分</th>
+                        <th width="10%">说明</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <c:forEach items="${assessmentItemList}" var="assessmentItem" varStatus="userStatus">
                         <tr>
-                            <td>
-                                每一个产权资产清查信息包括工作内容中的四项，如果有出现需要填写的信息不完整采取扣分方法进行评分，
-                                并不是一个产权对应的每一个信息都客观存在；如果为多个产权每增加一个产权增加１０%的得分
-                                ，最高增加分不超过本项的标准设定分值。(1.0~10.0)
+                            <th scope="row">${userStatus.index+1} <input data-name="id" type="hidden"
+                                                                         name="id${assessmentItem.id}"
+                                                                         value="${assessmentItem.id}"></th>
+                            <td>${assessmentItem.boxReActivitiNameCn}</td>
+                            <td>${assessmentItem.assessmentDes}
+                                (${assessmentItem.minScore}~${assessmentItem.maxScore})
                             </td>
-                            <td width="10%">
-                                <label class="form-control">5</label>
-                            </td>
+                            <td><input type="text" required="required" data-rule-number='true' data-name="actualScore"
+                                       data-minScore="${assessmentItem.minScore}"
+                                       data-maxScore="${assessmentItem.maxScore}"
+                                       class="form-control" name="actualScore${assessmentItem.id}" placeholder="(请输入数字)"
+                                       onblur="chksVerification(this);"></td>
+                            <td><input type="text" data-name="remark" class="form-control"
+                                       name="remark${assessmentItem.id}"
+                                       placeholder="说明"></td>
                         </tr>
-                        <tr>
-                            <td>
-                                每一个产权资产清查信息包括工作内容中的四项，如果有出现需要填写的信息不完整采取扣分方法进行评分，
-                                并不是一个产权对应的每一个信息都客观存在；如果为多个产权每增加一个产权增加１０%的得分
-                                ，最高增加分不超过本项的标准设定分值。(1.0~10.0)
-                            </td>
-                            <td>
-                                <label class="form-control">5</label>
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-                <td>
-                    <ul class="list-unstyled user_data">
-                        <li> 张三（33分）</li>
-                    </ul>
-                </td>
-                <td>
-                    <input type="button" class="btn btn-xs btn-primary" value="考核记录">
-                </td>
-            </tr>
-            <tr>
-                <th scope="row">2</th>
-                <td>技术总工</td>
-                <td>
-                    <table class="table">
-                        <tr>
-                            <td>
-                                每一个产权资产清查信息包括工作内容中的四项，如果有出现需要填写的信息不完整采取扣分方法进行评分，
-                                并不是一个产权对应的每一个信息都客观存在；如果为多个产权每增加一个产权增加１０%的得分
-                                ，最高增加分不超过本项的标准设定分值。(1.0~10.0)
-                            </td>
-                            <td width="10%">
-                                <label class="form-control">5</label>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                每一个产权资产清查信息包括工作内容中的四项，如果有出现需要填写的信息不完整采取扣分方法进行评分，
-                                并不是一个产权对应的每一个信息都客观存在；如果为多个产权每增加一个产权增加１０%的得分
-                                ，最高增加分不超过本项的标准设定分值。(1.0~10.0)
-                            </td>
-                            <td>
-                                <label class="form-control">5</label>
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-                <td>
-                    <ul class="list-unstyled user_data">
-                        <li> 张三（33分）</li>
-                    </ul>
-                </td>
-                <td>
-                    <input type="button" class="btn btn-xs btn-primary" value="考核记录">
-                </td>
-            </tr>
-            <tr>
-                <th scope="row">3</th>
-                <td>部门负责人</td>
-                <td>
-                    <table class="table">
-                        <tr>
-                            <td>
-                                每一个产权资产清查信息包括工作内容中的四项，如果有出现需要填写的信息不完整采取扣分方法进行评分，
-                                并不是一个产权对应的每一个信息都客观存在；如果为多个产权每增加一个产权增加１０%的得分
-                                ，最高增加分不超过本项的标准设定分值。(1.0~10.0)
-                            </td>
-                            <td width="10%">
-                                <input type="text" placeholder="1.0~10.0" class="form-control" value="">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                每一个产权资产清查信息包括工作内容中的四项，如果有出现需要填写的信息不完整采取扣分方法进行评分，
-                                并不是一个产权对应的每一个信息都客观存在；如果为多个产权每增加一个产权增加１０%的得分
-                                ，最高增加分不超过本项的标准设定分值。(1.0~10.0)
-                            </td>
-                            <td width="10%">
-                                <input type="text" placeholder="1.0~10.0" class="form-control" value="">
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-                <td>
-                    <ul class="list-unstyled user_data">
-                        <li> 张三（33分）</li>
-                    </ul>
-                </td>
-                <td>
-                    <input type="button" class="btn btn-xs btn-primary" value="考核记录" data-toggle="modal" href="#divChksRecordModal">
-                    <input type="button" class="btn btn-xs btn-primary" value="抽查" data-toggle="modal" href="#divChksRecordModal">
-                </td>
-            </tr>
-            </tbody>
-        </table>
-        <div class="form-group">
-            <label class="col-sm-1 control-label">
-                考核说明<span class="symbol required"></span>
-            </label>
-            <div class="col-sm-11">
-                <div class="x-valid">
-                           <textarea required placeholder="考核说明" id="chksRemarks" name="chksRemarks"
-                                     class="form-control"></textarea>
+                    </c:forEach>
+                    </tbody>
+                </table>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
+                    考核说明<span class="symbol required"></span>
+                </label>
+                <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
+                    <div class="x-valid">
+                                       <textarea required placeholder="考核说明" name="chksRemarks"
+                                                 class="form-control"></textarea>
+                    </div>
                 </div>
             </div>
-        </div>
+            </c:if>
+
+        </form>
+
     </div>
 </div>
 
-<div class="form-group">
-    <label class="col-sm-1 control-label">
-        考核<span class="symbol required"></span>
-    </label>
-    <div class="col-sm-11">
-        <div class="form-group">
-            <button type="button" id="addData" class="btn btn-primary"
-                    href="#divBox" onclick="historyChksData();"> 历史考核
-            </button>
-        </div>
-        <c:forEach var="item" items="${assessmentItemList}">
-            <div class="x-valid">
-                <label class="col-sm-12" for="chks_${item.id}">
-                        ${item.assessmentDes}(${item.minScore}~${item.maxScore})
-                </label>
-            </div>
-            <div class="col-sm-2">
-                <input type="number" required name="chks_${item.id}" id="chks_${item.id}"
-                       class="form-control">
-            </div>
-        </c:forEach>
-    </div>
-</div>
 
 <div id="divChksRecordModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
@@ -179,7 +131,17 @@
                 <h3 class="modal-title">考核记录</h3>
             </div>
             <div class="modal-body">
-                <input type="button" class="btn btn-primary" value="考核" data-toggle="modal" href="#divChksContentModal">
+                <input type="button" class="btn btn-primary" value="考核" onclick="showChkSpotAssessment();">
+                <!-- 把页面上待考核人的节点信息 带入到这里来 -->
+                <form>
+                    <input type="hidden" name="projectId">
+                    <input type="hidden" name="processInsId">
+                    <input type="hidden" name="boxId">
+                    <input type="hidden" name="activityName">
+                    <input type="hidden" name="activityId">
+                    <input type="hidden" name="byExaminePeople">
+                    <input type="hidden" name="spotActivityId">
+                </form>
                 <table class="table">
                     <thead>
                     <tr>
@@ -188,77 +150,10 @@
                         <th width="60%">考核项</th>
                         <th width="10%">得分</th>
                         <th width="10%">考核时间</th>
+                        <th width="10%">说明</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>张三</td>
-                        <td>李四</td>
-                        <td>
-                            <table class="table">
-                                <tr>
-                                    <td>
-                                        每一个产权资产清查信息包括工作内容中的四项，如果有出现需要填写的信息不完整采取扣分方法进行评分，
-                                        并不是一个产权对应的每一个信息都客观存在；如果为多个产权每增加一个产权增加１０%的得分
-                                        ，最高增加分不超过本项的标准设定分值。(1.0~10.0)
-                                    </td>
-                                    <td width="10%">
-                                        <label class="form-control">5</label>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        每一个产权资产清查信息包括工作内容中的四项，如果有出现需要填写的信息不完整采取扣分方法进行评分，
-                                        并不是一个产权对应的每一个信息都客观存在；如果为多个产权每增加一个产权增加１０%的得分
-                                        ，最高增加分不超过本项的标准设定分值。(1.0~10.0)
-                                    </td>
-                                    <td>
-                                        <label class="form-control">5</label>
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                        <td>
-                            10分
-                        </td>
-                        <td>
-                            2019-1-1
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>张三</td>
-                        <td>李四</td>
-                        <td>
-                            <table class="table">
-                                <tr>
-                                    <td>
-                                        每一个产权资产清查信息包括工作内容中的四项，如果有出现需要填写的信息不完整采取扣分方法进行评分，
-                                        并不是一个产权对应的每一个信息都客观存在；如果为多个产权每增加一个产权增加１０%的得分
-                                        ，最高增加分不超过本项的标准设定分值。(1.0~10.0)
-                                    </td>
-                                    <td width="10%">
-                                        <label class="form-control">5</label>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        每一个产权资产清查信息包括工作内容中的四项，如果有出现需要填写的信息不完整采取扣分方法进行评分，
-                                        并不是一个产权对应的每一个信息都客观存在；如果为多个产权每增加一个产权增加１０%的得分
-                                        ，最高增加分不超过本项的标准设定分值。(1.0~10.0)
-                                    </td>
-                                    <td>
-                                        <label class="form-control">5</label>
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                        <td>
-                            10分
-                        </td>
-                        <td>
-                            2019-1-1
-                        </td>
-                    </tr>
                     </tbody>
                 </table>
             </div>
@@ -281,42 +176,55 @@
                 <h3 class="modal-title">考核</h3>
             </div>
             <div class="modal-body">
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th width="90%">考核项</th>
-                        <th width="10%">得分</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>
-                            每一个产权资产清查信息包括工作内容中的四项，如果有出现需要填写的信息不完整采取扣分方法进行评分，
-                            并不是一个产权对应的每一个信息都客观存在；如果为多个产权每增加一个产权增加１０%的得分
-                            ，最高增加分不超过本项的标准设定分值。(1.0~10.0)
-                        </td>
-                        <td>
-                            <input type="text" class="form-control">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            每一个产权资产清查信息包括工作内容中的四项，如果有出现需要填写的信息不完整采取扣分方法进行评分，
-                            并不是一个产权对应的每一个信息都客观存在；如果为多个产权每增加一个产权增加１０%的得分
-                            ，最高增加分不超过本项的标准设定分值。(1.0~10.0)
-                        </td>
-                        <td>
-                            <input type="text" class="form-control">
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+                <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                    <c:if test="${!empty spotCheckAssessmentItemList}">
+                        <form>
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th width="3%">序号</th>
+                                    <th width="7%">节点名称</th>
+                                    <th width="50%">考核标准</th>
+                                    <th width="10%">打分</th>
+                                    <th width="10%">说明</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <c:forEach items="${spotCheckAssessmentItemList}" var="assessmentItem"
+                                           varStatus="userStatus">
+                                    <tr>
+                                        <th scope="row">${userStatus.index+1} <input data-name="id" type="hidden"
+                                                                                     name="id${assessmentItem.id}"
+                                                                                     value="${assessmentItem.id}"></th>
+                                        <td>${assessmentItem.boxReActivitiNameCn}</td>
+                                        <td>${assessmentItem.assessmentDes}
+                                            (${assessmentItem.minScore}~${assessmentItem.maxScore})
+                                        </td>
+                                        <td><input type="text" required="required" data-rule-number='true'
+                                                   data-name="actualScore"
+                                                   data-minScore="${assessmentItem.minScore}"
+                                                   data-maxScore="${assessmentItem.maxScore}"
+                                                   class="form-control" name="actualScore${assessmentItem.id}"
+                                                   placeholder="(请输入数字)"
+                                                   onblur="chksVerification(this);"></td>
+                                        <td><input type="text" data-name="remark" class="form-control"
+                                                   name="remark${assessmentItem.id}"
+                                                   placeholder="说明"></td>
+                                    </tr>
+                                </c:forEach>
+                                </tbody>
+                            </table>
+                        </form>
+
+
+                    </c:if>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" data-dismiss="modal" class="btn btn-default">
                     取消
                 </button>
-                <button type="button" data-dismiss="modal" class="btn btn-primary">
+                <button type="button" class="btn btn-primary" onclick="saveAndUpdateChkSpotAssessment(this);">
                     保存
                 </button>
             </div>
@@ -324,86 +232,170 @@
     </div>
 </div>
 
-<div id="divBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">历史考核</h3>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="panel-body">
-                            <table id="tb_list"
-                                   class="table table-striped jambo_table bulk_action table-bordered"></table>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn btn-default">
-                        取消
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
 <script type="text/javascript">
 
-    function checkChks(data) {
-        var json = {};
-        <c:forEach var="item" items="${assessmentItemList}">
-        var score = Number($("#chks_${item.id}").val());
-        var maxScore = Number("${item.maxScore}");
-        var minScore = Number("${item.minScore}");
-        if (score > maxScore || score < minScore) {
-            toastr.warning("请在考核范围内打分");
+    function getChkSpotAssessmentBySpotActivityId(query, callback) {
+        $.ajax({
+            url: "${pageContext.request.contextPath}/chksAssessmentProjectPerformance/getChkSpotAssessmentBySpotActivityId",
+            type: "get",
+            dataType: "json",
+            data: query,
+            success: function (result) {
+                if (result.ret) {
+                    if (callback) {
+                        callback(result.data);
+                    }
+                } else {
+                    Alert("失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result.errmsg);
+            }
+        });
+    }
+
+    /**
+     * 抽查数据保存
+     */
+    function saveAndUpdateChkSpotAssessment() {
+        var box = $("#divChksContentModal");
+        var boxRecord = $("#divChksRecordModal");
+        var form = box.find("form");
+        if (!form.valid()) {
             return false;
         }
-        json["${item.id}"] = $("#chks_${item.id}").val();
-        </c:forEach>
-        data["chksScore"] = JSON.stringify(json);
-        var row = undefined;
+        var frm = boxRecord.find("form");
+        var target = box.find("tbody");
+        var data = [];
+        getChksSonData(target, data);
+        var parentData = formSerializeArray(frm);
+        $.ajax({
+            url: "${pageContext.request.contextPath}/chksAssessmentProjectPerformance/saveAndUpdateChkSpotAssessment",
+            type: "post",
+            dataType: "json",
+            data: {chksScore: JSON.stringify(data), fomData: JSON.stringify(parentData)},
+            success: function (result) {
+                if (result.ret) {
+                    box.modal("hide");
+                    writeChkSpotAssessmentParent(parentData) ;
+                } else {
+                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result.errmsg);
+            }
+        });
+
+    }
+
+    /*抽查数据添加页面*/
+    function showChkSpotAssessment() {
+        var box = $("#divChksContentModal");
+        var frm = box.find("form");
+        frm.find("tr").each(function (i, tr) {
+            var ele = $(tr);
+            ele.find("[data-name='actualScore']").val('');
+            ele.find("[data-name='remark']").val('');
+        });
+        box.modal("show");
+    }
+
+    /*显示抽查数据页面*/
+    function showChkSpotAssessmentParent(data) {
+        var box = $("#divChksRecordModal");
+        var from = box.find("form");
+        from.clearAll();
+        var obj = JSON.parse('${el:toJsonString(spotCheckAssessmentItemList[0])}');
+        data.spotActivityId = obj.boxReActivitiId;
+        from.initForm(data);
+        box.modal("show");
+        writeChkSpotAssessmentParent(data) ;
+    }
+
+    function writeChkSpotAssessmentParent(data) {
+        var box = $("#divChksRecordModal");
+        getChkSpotAssessmentBySpotActivityId(data, function (objData) {
+            var html = "";
+            $.each(objData, function (i, item) {
+                var tr = "<tr>";
+                tr += "<td>" + item.byExaminePeopleName + "</td>";
+                tr += "<td>" + item.examinePeopleName + "</td>";
+                tr += "<td>" + item.performanceDetailDto.content + "</td>";
+                tr += "<td>" + item.examineScore + "</td>";
+                tr += "<td>" + formatDate(item.examineDate) + "</td>";
+                tr += "<td>" + item.performanceDetailDto.remark + "</td>";
+                tr += "</tr>";
+                html += tr;
+            });
+            box.find("tbody").empty();
+            box.find("tbody").append(html);
+        });
+    }
+
+
+    /**
+     * 范围校验
+     * @param _this
+     * @returns {boolean}
+     */
+    function chksVerification(_this) {
+        var target = $(_this);
+        var value = target.val();
+        if (!value) {
+            return false;
+        }
+        if (!$.isNumeric(value)) {
+            target.val('');
+            return false;
+        }
+        var minScore = target.attr("data-minScore");
+        var maxScore = target.attr("data-maxScore");
+        value = Number(value);
+        minScore = Number(minScore);
+        maxScore = Number(maxScore);
+        if (value > maxScore || value < minScore) {
+            toastr.warning("请在考核范围内打分");
+            target.val('');
+        }
+        // console.info('value:'+value+" minScore:"+minScore+" maxScore:"+maxScore) ;
+    }
+
+    //数据非空校验
+    function validChks() {
+        return $("#chksDataFrm").valid();
+    }
+
+    function getChksSonData(target, data) {
+        target.find("tr").each(function (i, tr) {
+            var ele = $(tr);
+            var obj = {};
+            obj.contentId = ele.find("[data-name='id']").val();
+            obj.actualScore = ele.find("[data-name='actualScore']").val();
+            obj.remark = ele.find("[data-name='remark']").val();
+            data.push(obj);
+        });
+    }
+
+    //收集数据
+    function getChksData() {
+        var target = $("#chksTableList").find("tbody");
+        var frm = $("#chksDataFrm");
+        var data = [];
+        getChksSonData(target, data);
+        var result = {};
+        result.chksScore = JSON.stringify(data);
         $.each($("#tb_log").bootstrapTable("getData"), function (i, item) {
             //确定申请人
             if (item.bisApply) {
-                row = item;
+                result.byExaminePeople = item.creator;
             }
         });
-        if (row) {
-            data["byExaminePeople"] = row.creator;
-        }
+        result.chksRemarks = frm.find("textarea[name='chksRemarks']").val();
+        return result;
     }
 
-    function historyChksData() {
-        var cols = [];
-        cols.push({field: 'activityName', title: '考核节点'});
-        cols.push({field: 'examinePeopleName', title: '考核人'});
-        cols.push({field: 'byExaminePeopleName', title: '被考核人'});
-        cols.push({
-            field: 'examineDate', title: '考核时间', formatter: function (value, row, index) {
-                if (value) {
-                    return formatDate(value, false);
-                }
-                return "";
-            }
-        });
-        cols.push({field: 'examineScore', title: '考核分值'});
-        cols.push({field: 'validScore', title: '实际分值'});
-        $("#tb_list").bootstrapTable('destroy');
-        TableInit("tb_list", "${pageContext.request.contextPath}/chksAssessmentProjectPerformance/getHistoryChksData", cols, {
-            processInsId: "${processInsId}"
-        }, {
-            showColumns: false,
-            showRefresh: false,
-            search: false,
-            onLoadSuccess: function () {
-                $("#divBox").modal();
-            }
-        });
-    }
+
 </script>

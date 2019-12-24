@@ -75,8 +75,19 @@
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">户型(装修)</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                <div class="input-group">
+                    <input type="hidden"  name="huxingData" value="${basicHouse.huxingData}">
                     <input type="text" placeholder="户型(装修)" name="newHuxingName"
                            class="form-control" value="${basicHouse.newHuxingName}">
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default docs-tooltip"
+                                data-toggle="tooltip"
+                                data-original-title="编辑"
+                                onclick="houseCommon.openHuxingModal();">
+                             <i class="fa fa-edit"></i>
+                        </button>
+                        </span>
+                </div>
                 </div>
             </div>
             <div class="x-valid">
@@ -95,28 +106,12 @@
         </div>
         <div class="form-group">
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">空间布局</label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <select class="form-control spatialDistribution" name="spatialDistribution">
-                    </select>
-                </div>
-            </div>
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">朝向</label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <select class="form-control search-select select2 orientation" name="orientation">
-                    </select>
-                </div>
-            </div>
-            <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">面积</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <input type="text" placeholder="面积" name="area" data-rule-number="true"
                            class="form-control" value="${basicHouse.area}">
                 </div>
             </div>
-        </div>
-        <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">面积描述</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
@@ -132,6 +127,8 @@
                     </select>
                 </div>
             </div>
+        </div>
+        <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                     证载用途<span class="symbol required"></span>
@@ -153,8 +150,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                     实际用途<span class="symbol required"></span>
@@ -185,6 +180,8 @@
                     </select>
                 </div>
             </div>
+        </div>
+        <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">装修情况描述<span
                         class="symbol required"></span></label>
@@ -194,8 +191,6 @@
                            class="form-control" value="${basicHouse.decorateSituationDescription}">
                 </div>
             </div>
-        </div>
-        <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">使用情况<span
                         class="symbol required"></span></label>
@@ -645,6 +640,91 @@
         </div>
     </div>
 </div>
+<div id="divBoxHuxing" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">户型</h3>
+            </div>
+            <form id="frmHuxing" class="form-horizontal">
+                <div class="modal-body">
+                    <div>
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                    卧室
+                                </label>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                    <input type="text" placeholder="个数" name="house" data-rule-number='true'
+                                           class="form-control">
+                                </div>
+                            </div>
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                    客厅
+                                </label>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                    <input type="text" placeholder="个数" name="saloon" data-rule-number='true'
+                                           class="form-control">
+                                </div>
+                            </div>
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                    厨房
+                                </label>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                    <input type="text" placeholder="个数" name="kitchen" data-rule-number='true'
+                                           class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                    卫生间
+                                </label>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                    <input type="text" placeholder="个数" name="toilet" data-rule-number='true'
+                                           class="form-control">
+                                </div>
+                            </div>
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                    花园
+                                </label>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                    <input type="text" placeholder="个数" name="garden" data-rule-number='true'
+                                           class="form-control">
+                                </div>
+                            </div>
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                    阳台
+                                </label>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                    <input type="text" placeholder="个数" name="balcony" data-rule-number='true'
+                                           class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">
+                    取消
+                </button>
+                <button type="button" class="btn btn-primary" onclick="houseCommon.spliceHuxing()">
+                    保存
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="x_content">
     <%@include file="/views/project/stageSurvey/common/houseFaceStreet.jsp" %>
     <%@include file="/views/project/stageSurvey/common/houseRoom.jsp" %>

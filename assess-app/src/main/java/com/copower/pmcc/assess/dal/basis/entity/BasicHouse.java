@@ -78,6 +78,8 @@ public class BasicHouse {
 
     private Integer displayCaseId;
 
+    private String huxingData;
+
     public Integer getId() {
         return id;
     }
@@ -372,5 +374,13 @@ public class BasicHouse {
 
     public void setDisplayCaseId(Integer displayCaseId) {
         this.displayCaseId = displayCaseId;
+    }
+
+    public String getHuxingData() {
+        return huxingData;
+    }
+
+    public void setHuxingData(String huxingData) {
+        this.huxingData = huxingData == null ? null : huxingData.trim();
     }
 }

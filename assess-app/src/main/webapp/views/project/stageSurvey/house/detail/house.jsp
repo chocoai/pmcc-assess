@@ -91,28 +91,11 @@
                         </div>
                         <div class="form-group">
                             <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">空间布局</label>
-                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <label class="form-control"
-                                           name="spatialDistributionName">${basicHouse.spatialDistributionName}</label>
-                                </div>
-                            </div>
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">朝向</label>
-                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <label class="form-control"
-                                           name="orientationName">${basicHouse.orientationName}</label>
-                                </div>
-                            </div>
-                            <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">面积</label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                     <label class="form-control" name="area">${basicHouse.area}</label>
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">面积描述</label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
@@ -126,14 +109,14 @@
                                            name="researchTypeName">${basicHouse.researchTypeName}</label>
                                 </div>
                             </div>
+                        </div>
+                        <div class="form-group">
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">证载用途</label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                     <label class="form-control" name="certUseName">${basicHouse.certUseName}</label>
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-group">
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">实际用途</label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
@@ -141,7 +124,6 @@
                                            name="practicalUseName">${basicHouse.practicalUseName}</label>
                                 </div>
                             </div>
-
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">装修情况</label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
@@ -149,11 +131,20 @@
                                            name="decorateSituationName">${basicHouse.decorateSituationName}</label>
                                 </div>
                             </div>
+                        </div>
+                        <div class="form-group">
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">装修情况描述</label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                     <label class="form-control"
                                            name="decorateSituationDescription">${basicHouse.decorateSituationDescription}</label>
+                                </div>
+                            </div>
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">使用情况</label>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                    <label class="form-control"
+                                           name="useConditionName">${basicHouse.useConditionName}</label>
                                 </div>
                             </div>
                         </div>
@@ -180,15 +171,6 @@
                         <%--</div>--%>
                         <%--</div>--%>
                         <%--</div>--%>
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">使用情况</label>
-                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <label class="form-control"
-                                           name="useConditionName">${basicHouse.useConditionName}</label>
-                                </div>
-                            </div>
-                        </div>
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">使用情况描述</label>
