@@ -224,7 +224,7 @@
                 <button type="button" data-dismiss="modal" class="btn btn-default">
                     取消
                 </button>
-                <button type="button" class="btn btn-primary" onclick="saveAndUpdateChkSpotAssessment(this);">
+                <button type="button" class="btn btn-primary" onclick="saveChkSpotAssessment(this);">
                     保存
                 </button>
             </div>
@@ -234,6 +234,36 @@
 
 
 <script type="text/javascript">
+
+
+    function getChksBootstrapTableVoBase(table, query) {
+        var cols = [];
+        cols.push({field: 'projectName', title: '项目名称'});
+        cols.push({field: 'businessKey', title: '业务名称'});
+        cols.push({field: 'activityName', title: '考核节点'});
+        cols.push({field: 'examinePeopleName', title: '考核人'});
+        cols.push({field: 'byExaminePeopleName', title: '被考核人'});
+        cols.push({
+            field: 'examineDate', title: '考核时间', formatter: function (value, row, index) {
+                if (value) {
+                    return formatDate(value, false);
+                }
+                return "";
+            }
+        });
+        cols.push({field: 'examineScore', title: '考核分值'});
+        cols.push({field: 'validScore', title: '实际分值'});
+        var method = {
+            showColumns: false,
+            showRefresh: false,
+            search: false,
+            onLoadSuccess: function () {
+
+            }
+        };
+        table.bootstrapTable('destroy');
+        TableInit(table, "${pageContext.request.contextPath}/chksAssessmentProjectPerformance/getChksBootstrapTableVo", cols, query, method);
+    }
 
     function getChkSpotAssessmentBySpotActivityId(query, callback) {
         $.ajax({
@@ -259,7 +289,7 @@
     /**
      * 抽查数据保存
      */
-    function saveAndUpdateChkSpotAssessment() {
+    function saveChkSpotAssessment() {
         var box = $("#divChksContentModal");
         var boxRecord = $("#divChksRecordModal");
         var form = box.find("form");
@@ -272,14 +302,14 @@
         getChksSonData(target, data);
         var parentData = formSerializeArray(frm);
         $.ajax({
-            url: "${pageContext.request.contextPath}/chksAssessmentProjectPerformance/saveAndUpdateChkSpotAssessment",
+            url: "${pageContext.request.contextPath}/chksAssessmentProjectPerformance/saveChkSpotAssessment",
             type: "post",
             dataType: "json",
-            data: {chksScore: JSON.stringify(data), fomData: JSON.stringify(parentData)},
+            data: {chksScore: JSON.stringify(data), fomData: JSON.stringify(parentData),planDetailsId:'${projectPlanDetails.id}'},
             success: function (result) {
                 if (result.ret) {
                     box.modal("hide");
-                    writeChkSpotAssessmentParent(parentData) ;
+                    writeChkSpotAssessmentParent(parentData);
                 } else {
                     Alert("保存数据失败，失败原因:" + result.errmsg);
                 }
@@ -312,7 +342,7 @@
         data.spotActivityId = obj.boxReActivitiId;
         from.initForm(data);
         box.modal("show");
-        writeChkSpotAssessmentParent(data) ;
+        writeChkSpotAssessmentParent(data);
     }
 
     function writeChkSpotAssessmentParent(data) {

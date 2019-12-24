@@ -1,7 +1,6 @@
 package com.copower.pmcc.assess.service.chks;
 
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
@@ -18,13 +17,17 @@ import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.chks.api.dto.AssessmentProjectPerformanceDetailDto;
 import com.copower.pmcc.chks.api.dto.AssessmentProjectPerformanceDto;
+import com.copower.pmcc.chks.api.dto.AssessmentProjectPerformanceDtoAndDetail;
+import com.copower.pmcc.chks.api.dto.ChksBootstrapTableVo;
 import com.copower.pmcc.chks.api.provider.ChksRpcAssessmentService;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
+import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -55,59 +58,125 @@ public class ChksAssessmentProjectPerformanceService {
     @Autowired
     private PublicService publicService;
 
+    public ChksBootstrapTableVo getChksBootstrapTableVo(AssessmentProjectPerformanceDto where) {
+        ChksBootstrapTableVo chksBootstrapTableVo = new ChksBootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        AssessmentProjectPerformanceDtoAndDetail dtoAndDetail = chksRpcAssessmentService.getAssessmentProjectPerformanceDtosByExample(where, requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        if (dtoAndDetail != null) {
+            chksBootstrapTableVo = dtoAndDetail.getChksBootstrapTableVo();
+        }
+        return chksBootstrapTableVo;
+    }
+
+    /**
+     * 保存抽查数据
+     *
+     * @param assessmentProjectPerformanceDto
+     * @param detailDtoList
+     */
+    public void saveAndUpdateChkSpotAssessment(AssessmentProjectPerformanceDto assessmentProjectPerformanceDto, List<AssessmentProjectPerformanceDetailDto> detailDtoList, Integer planDetailsId) {
+        if (assessmentProjectPerformanceDto.getProjectId() != null) {
+            ProjectInfo projectInfo = projectInfoService.getProjectInfoById(assessmentProjectPerformanceDto.getProjectId());
+            if (projectInfo != null) {
+                assessmentProjectPerformanceDto.setProjectName(projectInfo.getProjectName());
+            }
+        }
+        assessmentProjectPerformanceDto.setTableName(FormatUtils.entityNameConvertToTableName(ProjectPlanDetails.class));
+        ProjectPlanDetails projectPlanDetails = null;
+        if (StringUtils.isNotBlank(assessmentProjectPerformanceDto.getProcessInsId())) {
+            projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsByProcessInsId(assessmentProjectPerformanceDto.getProcessInsId());
+        }
+        if (projectPlanDetails == null) {
+            if (planDetailsId != null) {
+                projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
+            }
+        }
+        saveAssessmentProjectPerformanceBase(assessmentProjectPerformanceDto, detailDtoList, projectPlanDetails);
+    }
+
+    /**
+     * 抽取的保存考核信息
+     *
+     * @param projectPerformanceDto
+     * @param detailDtos
+     * @param projectPlanDetails
+     */
+    private void saveAssessmentProjectPerformanceBase(AssessmentProjectPerformanceDto projectPerformanceDto, List<AssessmentProjectPerformanceDetailDto> detailDtos, ProjectPlanDetails projectPlanDetails) {
+        projectPerformanceDto.setCreator(processControllerComponent.getThisUser());
+        projectPerformanceDto.setExaminePeople(processControllerComponent.getThisUser());
+        projectPerformanceDto.setExamineDate(new Date());
+        projectPerformanceDto.setAppKey(applicationConstant.getAppKey());
+        if (projectPerformanceDto.getSpotActivityId() == null || projectPerformanceDto.getSpotActivityId().intValue() < 0) {
+            projectPerformanceDto.setSpotActivityId(0);//抽查节点id
+        }
+        if (projectPlanDetails != null) {
+            if (projectPerformanceDto.getTableId() == null) {
+                projectPerformanceDto.setTableId(projectPlanDetails.getId());
+            }
+            if (StringUtils.isEmpty(projectPerformanceDto.getTableName())) {
+                projectPerformanceDto.setTableName(FormatUtils.entityNameConvertToTableName(ProjectPlanDetails.class));
+            }
+            if (StringUtils.isNotBlank(projectPlanDetails.getProjectPhaseName())) {
+                projectPerformanceDto.setBusinessKey(projectPlanDetails.getProjectPhaseName());
+            }
+            //业务标识
+            if (projectPlanDetails.getProjectWorkStageId() != null) {
+                ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlanDetails.getProjectWorkStageId());
+                if (projectWorkStage != null) {
+                    if (StringUtils.isNotBlank(projectPerformanceDto.getBusinessKey())) {
+                        projectPerformanceDto.setBusinessKey(String.join("-", projectPerformanceDto.getBusinessKey(), projectWorkStage.getWorkStageName()));
+                    } else {
+                        projectPerformanceDto.setBusinessKey(projectWorkStage.getWorkStageName());
+                    }
+                }
+            }
+            ProjectInfo projectInfo = null;
+            if (projectPlanDetails.getProjectId() != null) {
+                if (projectPerformanceDto.getProjectId() == null) {
+                    projectPerformanceDto.setProjectId(projectPlanDetails.getProjectId());
+                }
+                projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
+            }
+            if (projectInfo != null) {
+                projectPerformanceDto.setProjectName(projectInfo.getProjectName());
+            }
+        }
+        if (CollectionUtils.isNotEmpty(detailDtos)) {
+            Iterator<AssessmentProjectPerformanceDetailDto> detailDtoIterator = detailDtos.iterator();
+            while (detailDtoIterator.hasNext()) {
+                AssessmentProjectPerformanceDetailDto performanceDetailDto = detailDtoIterator.next();
+                performanceDetailDto.setCreator(processControllerComponent.getThisUser());
+                if (performanceDetailDto.getContentId() != null) {
+                    AssessmentItemDto assessmentItem = bpmRpcBoxService.getAssessmentItem(performanceDetailDto.getContentId());
+                    if (assessmentItem != null) {
+                        performanceDetailDto.setContent(assessmentItem.getAssessmentDes());
+                    }
+                }
+            }
+        }
+
+        chksRpcAssessmentService.saveAssessmentProjectPerformanceBase(projectPerformanceDto, detailDtos);
+    }
 
     public void saveAssessmentProjectPerformance(ApprovalModelDto approvalModelDto, String chksScore, String remarks, String byExaminePeople) {
         //添加主表
         AssessmentProjectPerformanceDto dto = new AssessmentProjectPerformanceDto();
-        List<AssessmentProjectPerformanceDetailDto> detailDtos = Lists.newArrayList();
-        dto.setAppKey(applicationConstant.getAppKey());
         dto.setProcessInsId(approvalModelDto.getProcessInsId());
         dto.setProjectId(approvalModelDto.getProjectId());
-        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(approvalModelDto.getProjectId());
-        if (projectInfo != null) {
-            dto.setProjectName(projectInfo.getProjectName());
-        }
         dto.setActivityId(approvalModelDto.getActivityId());
         BoxReActivityDto boxReActivityDto = bpmRpcBoxService.getBoxreActivityInfoById(approvalModelDto.getActivityId());
         if (boxReActivityDto != null) {
             dto.setActivityName(boxReActivityDto.getCnName());
         }
-        dto.setSpotActivityId(0);//抽查节点id
         dto.setBoxId(approvalModelDto.getBoxId());
-        dto.setCreator(processControllerComponent.getThisUser());
-        dto.setExaminePeople(processControllerComponent.getThisUser());
         dto.setByExaminePeople(byExaminePeople);
         dto.setRemarks(remarks);
-        dto.setExamineDate(new Date());
-        ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsByProcessInsId(approvalModelDto.getProcessInsId());
-        if (projectPlanDetails != null) {
-            dto.setTableId(projectPlanDetails.getId());
-            dto.setTableName(FormatUtils.entityNameConvertToTableName(ProjectPlanDetails.class));
-            //业务标识
-            if (projectPlanDetails.getProjectWorkStageId() != null) {
-                ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlanDetails.getProjectWorkStageId());
-                if (projectWorkStage != null) {
-                    dto.setBusinessKey(projectWorkStage.getWorkStageName());
-                }
-            }
+        ProjectPlanDetails projectPlanDetails = null;
+        if (StringUtils.isNotBlank(approvalModelDto.getProcessInsId())) {
+            projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsByProcessInsId(approvalModelDto.getProcessInsId());
         }
-        List<AssessmentProjectPerformanceDetailDto> detailDtoList = JSONObject.parseArray(chksScore, AssessmentProjectPerformanceDetailDto.class);
-        if (CollectionUtils.isNotEmpty(detailDtoList)) {
-            Iterator<AssessmentProjectPerformanceDetailDto> detailDtoIterator = detailDtoList.iterator();
-            while (detailDtoIterator.hasNext()) {
-                AssessmentProjectPerformanceDetailDto target = detailDtoIterator.next();
-                //添加从表
-                AssessmentProjectPerformanceDetailDto detailDto = new AssessmentProjectPerformanceDetailDto();
-                BeanUtils.copyProperties(target, detailDto);
-                AssessmentItemDto assessmentItem = bpmRpcBoxService.getAssessmentItem(detailDto.getContentId());
-                if (assessmentItem != null) {
-                    detailDto.setContent(assessmentItem.getAssessmentDes());
-                }
-                detailDto.setCreator(processControllerComponent.getThisUser());
-                detailDtos.add(detailDto);
-            }
-        }
-        chksRpcAssessmentService.saveAssessmentProjectPerformance(JSON.toJSONString(dto), JSON.toJSONString(detailDtos));
+        saveAssessmentProjectPerformanceBase(dto, JSONObject.parseArray(chksScore, AssessmentProjectPerformanceDetailDto.class), projectPlanDetails);
     }
 
     /**
@@ -172,58 +241,6 @@ public class ChksAssessmentProjectPerformanceService {
 
 
     /**
-     * 保存抽查数据
-     *
-     * @param assessmentProjectPerformanceDto
-     * @param detailDtoList2
-     */
-    public void saveAndUpdateChkSpotAssessment(AssessmentProjectPerformanceDto assessmentProjectPerformanceDto, List<AssessmentProjectPerformanceDetailDto> detailDtoList2) {
-        assessmentProjectPerformanceDto.setAppKey(applicationConstant.getAppKey());
-        assessmentProjectPerformanceDto.setCreator(processControllerComponent.getThisUser());
-        assessmentProjectPerformanceDto.setExaminePeople(processControllerComponent.getThisUser());
-        assessmentProjectPerformanceDto.setExamineDate(new Date());
-
-        if (assessmentProjectPerformanceDto.getProjectId() != null) {
-            ProjectInfo projectInfo = projectInfoService.getProjectInfoById(assessmentProjectPerformanceDto.getProjectId());
-            if (projectInfo != null) {
-                assessmentProjectPerformanceDto.setProjectName(projectInfo.getProjectName());
-            }
-        }
-        assessmentProjectPerformanceDto.setTableName(FormatUtils.entityNameConvertToTableName(ProjectPlanDetails.class));
-        if (StringUtils.isNotBlank(assessmentProjectPerformanceDto.getProcessInsId())) {
-            ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsByProcessInsId(assessmentProjectPerformanceDto.getProcessInsId());
-            if (projectPlanDetails != null) {
-                assessmentProjectPerformanceDto.setTableId(projectPlanDetails.getId());
-                //业务标识
-                if (projectPlanDetails.getProjectWorkStageId() != null) {
-                    ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlanDetails.getProjectWorkStageId());
-                    if (projectWorkStage != null) {
-                        assessmentProjectPerformanceDto.setBusinessKey(projectWorkStage.getWorkStageName());
-                    }
-                }
-            }
-        }
-        List<AssessmentProjectPerformanceDetailDto> detailDtos = Lists.newArrayList();
-        if (CollectionUtils.isNotEmpty(detailDtoList2)) {
-            Iterator<AssessmentProjectPerformanceDetailDto> detailDtoIterator = detailDtoList2.iterator();
-            while (detailDtoIterator.hasNext()) {
-                AssessmentProjectPerformanceDetailDto target = detailDtoIterator.next();
-                //添加从表
-                AssessmentProjectPerformanceDetailDto detailDto = new AssessmentProjectPerformanceDetailDto();
-                BeanUtils.copyProperties(target, detailDto);
-                AssessmentItemDto assessmentItem = bpmRpcBoxService.getAssessmentItem(detailDto.getContentId());
-                if (assessmentItem != null) {
-                    detailDto.setContent(assessmentItem.getAssessmentDes());
-                }
-                detailDto.setCreator(processControllerComponent.getThisUser());
-                detailDtos.add(detailDto);
-            }
-        }
-        chksRpcAssessmentService.saveAssessmentProjectPerformance(JSON.toJSONString(assessmentProjectPerformanceDto), JSON.toJSONString(detailDtos));
-    }
-
-
-    /**
      * 获取抽查人员保存后的考核数据
      *
      * @param boxId
@@ -235,7 +252,7 @@ public class ChksAssessmentProjectPerformanceService {
      */
     public List<AssessmentProjectPerformanceDto> getChkSpotAssessmentBySpotActivityId(Integer boxId, Integer activityId, Integer spotActivityId, String processInsId, Integer projectId) {
         List<AssessmentProjectPerformanceDto> assessmentProjectPerformanceDtos = chksRpcAssessmentService.getAssessmentProjectPerformanceDtoList(boxId, activityId, spotActivityId, applicationConstant.getAppKey(), processInsId, projectId);
-        if (CollectionUtils.isNotEmpty(assessmentProjectPerformanceDtos)){
+        if (CollectionUtils.isNotEmpty(assessmentProjectPerformanceDtos)) {
             Iterator<AssessmentProjectPerformanceDto> assessmentProjectPerformanceDtoIterator = assessmentProjectPerformanceDtos.iterator();
             while (assessmentProjectPerformanceDtoIterator.hasNext()) {
                 AssessmentProjectPerformanceDto vo = assessmentProjectPerformanceDtoIterator.next();
@@ -355,6 +372,14 @@ public class ChksAssessmentProjectPerformanceService {
             baseService.writeExceptionInfo(e);
         }
         return null;
+    }
+
+    public void updateAssessmentProjectPerformanceDto(AssessmentProjectPerformanceDto assessmentProjectPerformanceDto, boolean updateNull) {
+        chksRpcAssessmentService.updateAssessmentProjectPerformanceDto(assessmentProjectPerformanceDto, updateNull);
+    }
+
+    public void updateAssessmentProjectPerformanceDetailDto(List<AssessmentProjectPerformanceDetailDto> detailDtoList, boolean updateNull) {
+        chksRpcAssessmentService.updateAssessmentProjectPerformanceDetailDto(detailDtoList, updateNull);
     }
 
 
