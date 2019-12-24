@@ -1,9 +1,12 @@
 package com.copower.pmcc.assess.dal.basis.entity;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class BasicApply {
     private Integer id;
+
+    private String name;
 
     private Integer caseEstateId;
 
@@ -22,6 +25,8 @@ public class BasicApply {
     private Integer basicHouseId;
 
     private Integer planDetailsId;
+
+    private BigDecimal area;
 
     private String processInsId;
 
@@ -69,6 +74,14 @@ public class BasicApply {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
     }
 
     public Integer getCaseEstateId() {
@@ -141,6 +154,14 @@ public class BasicApply {
 
     public void setPlanDetailsId(Integer planDetailsId) {
         this.planDetailsId = planDetailsId;
+    }
+
+    public BigDecimal getArea() {
+        return area;
+    }
+
+    public void setArea(BigDecimal area) {
+        this.area = area;
     }
 
     public String getProcessInsId() {

@@ -384,6 +384,7 @@ public class SchemeJudgeObjectService {
                 schemeJudgeObject.setName(String.format("%s-%s%s", schemeJudgeObject.getNumber(), schemeJudgeObject.getSplitNumber(), BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME));
                 schemeJudgeObject.setEvaluationArea(new BigDecimal("0"));
                 schemeJudgeObjectDao.updateSchemeJudgeObject(schemeJudgeObject);
+                i++;
             }
             SchemeJudgeObject splitJudgeObject = new SchemeJudgeObject();
             splitJudgeObject.setPid(0);

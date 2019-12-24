@@ -16,6 +16,8 @@ public class SchemeJudgeObject {
 
     private Integer declareRecordId;
 
+    private Integer basicApplyId;
+
     private String number;
 
     private String originalNumber;
@@ -136,6 +138,14 @@ public class SchemeJudgeObject {
 
     public void setDeclareRecordId(Integer declareRecordId) {
         this.declareRecordId = declareRecordId;
+    }
+
+    public Integer getBasicApplyId() {
+        return basicApplyId;
+    }
+
+    public void setBasicApplyId(Integer basicApplyId) {
+        this.basicApplyId = basicApplyId;
     }
 
     public String getNumber() {

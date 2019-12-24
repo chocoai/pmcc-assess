@@ -62,8 +62,6 @@ public class SurveyCommonService {
     @Autowired
     private DeclareRecordService declareRecordService;
     @Autowired
-    private JdbcTemplate jdbcTemplate;
-    @Autowired
     private ProjectPhaseService projectPhaseService;
     @Autowired
     private ProjectInfoService projectInfoService;
@@ -80,7 +78,7 @@ public class SurveyCommonService {
     @Autowired
     private BasicHouseService basicHouseService;
     @Autowired
-    private BaseService baseService ;
+    private BaseService baseService;
 
 
     /**
@@ -122,20 +120,39 @@ public class SurveyCommonService {
         }
     }
 
-    public BasicApplyBatch getBasicApplyBatchById(Integer declareId){
+    /**
+     * 获取查勘过程申请表信息
+     *
+     * @param declareId
+     * @return
+     */
+    public List<BasicApply> getSceneExploreBasicApplyList(Integer declareId) {
         try {
             DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(declareId);
             ProjectInfo projectInfo = projectInfoService.getProjectInfoById(declareRecord.getProjectId());
             ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.SCENE_EXPLORE, projectInfo.getProjectCategoryId());
             ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetails(declareId, projectPhase.getId());
-            BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchByPlanDetailsId(planDetails.getId()) ;
-            return basicApplyBatch;
+            List<BasicApply> basicApplyList = basicApplyService.getBasicApplyListByPlanDetailsId(planDetails.getId());
+            return basicApplyList;
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
             return null;
         }
     }
 
+    public BasicApplyBatch getBasicApplyBatchById(Integer declareId) {
+        try {
+            DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(declareId);
+            ProjectInfo projectInfo = projectInfoService.getProjectInfoById(declareRecord.getProjectId());
+            ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.SCENE_EXPLORE, projectInfo.getProjectCategoryId());
+            ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetails(declareId, projectPhase.getId());
+            BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchByPlanDetailsId(planDetails.getId());
+            return basicApplyBatch;
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
+            return null;
+        }
+    }
 
 
     /**

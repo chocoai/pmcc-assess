@@ -12,6 +12,7 @@ import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.method.MdIncomeService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
+import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -57,6 +58,8 @@ public class SchemeAreaGroupService {
     private ProjectPlanDetailsService projectPlanDetailsService;
     @Autowired
     private MdIncomeService mdIncomeService;
+    @Autowired
+    private SurveyCommonService surveyCommonService;
 
     public int add(SchemeAreaGroup schemeAreaGroup) {
         return schemeAreaGroupDao.add(schemeAreaGroup);
@@ -166,7 +169,7 @@ public class SchemeAreaGroupService {
             for (SchemeAreaGroup schemeAreaGroup : historyAreaGroups) {
                 List<SchemeJudgeObject> judgeObjects = schemeJudgeObjectService.getJudgeObjectListByAreaGroupId(schemeAreaGroup.getId());
                 if (CollectionUtils.isNotEmpty(judgeObjects)) {//清除估价对象下的任务
-                    judgeObjects.forEach(o -> clearJudgeObjectTask(projectId,o.getId()));
+                    judgeObjects.forEach(o -> clearJudgeObjectTask(projectId, o.getId()));
                     schemeJudgeObjectDao.deleteJudgeObjectByAreaId(schemeAreaGroup.getId());
                 }
                 //清除区域下工作任务
@@ -231,7 +234,7 @@ public class SchemeAreaGroupService {
                     declareRecordList.forEach(o -> declareRecordToJudgeObject(o, sameAreaGroup, schemeJudgeObjectDao.getAreaGroupMaxNumber(projectId, sameAreaGroup.getId()) + 1));
                 }
                 if (CollectionUtils.isNotEmpty(judgeObjectDeclareList)) {//需被移除的估价对象
-                    judgeObjectDeclareList.forEach(o -> clearJudgeObjectTask(projectId,o.getId()));
+                    judgeObjectDeclareList.forEach(o -> clearJudgeObjectTask(projectId, o.getId()));
                     //需要重新排号
                 }
             }
@@ -247,9 +250,11 @@ public class SchemeAreaGroupService {
      * @return
      */
     private SchemeJudgeObject declareRecordToJudgeObject(DeclareRecord declareRecord, SchemeAreaGroup areaGroup, Integer i) {
+        BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(declareRecord.getId());
         SchemeJudgeObject schemeJudgeObject = new SchemeJudgeObject();
         schemeJudgeObject.setProjectId(declareRecord.getProjectId());
         schemeJudgeObject.setDeclareRecordId(declareRecord.getId());
+        if (basicApply != null) schemeJudgeObject.setBasicApplyId(basicApply.getId());
         schemeJudgeObject.setNumber(String.valueOf(i));
         schemeJudgeObject.setCreator(commonService.thisUserAccount());
         schemeJudgeObject.setAreaGroupId(areaGroup.getId());
@@ -324,7 +329,6 @@ public class SchemeAreaGroupService {
 
     /**
      * 清除估价对象相关任务
-     *
      */
     public void clearJudgeObjectTask(Integer projectId, Integer judgeObjectId) {
         ProjectPlanDetails where = new ProjectPlanDetails();

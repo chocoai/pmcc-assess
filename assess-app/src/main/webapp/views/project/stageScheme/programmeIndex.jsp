@@ -12,7 +12,6 @@
     <link rel="stylesheet"
           href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/panel.css">
 </head>
-
 <body class="nav-md footer_fixed">
 <div class="container body">
     <div class="main_container">
@@ -426,6 +425,24 @@
         </div>
     </div>
 </div>
+<!--查看合并的委估对象明细-->
+<div id="loadSceneExploreBasicApplyModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">查勘信息</h3>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered" id="tb_baisc_apply_list">
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 <!--评估对象-->
 <script type="text/html" id="judgeObjectHtml">
     <div class="x_panel">
@@ -447,7 +464,9 @@
                        class="btn btn-xs btn-warning judge-merge-cancel tooltips">取消合并</a>
                     <a href="javascript://" onclick="programme.mergeJudgeCancelPart(this);"
                        class="btn btn-xs btn-warning judge-merge-cancel tooltips">调整合并</a>
-                    <a href="javascript://" title="评估方法" onclick="programmeMethod.setMethod(this);"
+                    <a href="javascript://" onclick="programme.loadSceneExploreBasicApplyList('{declareId}');"
+                       class="btn btn-xs btn-success judge-relation-object tooltips">关联对象</a>
+                    <a href="javascript://" onclick="programmeMethod.relationObject(this);"
                        class="btn btn-xs btn-success judge-method tooltips">评估方法</a>
                 </small>
             </h3>
@@ -1422,8 +1441,6 @@
         var idArray = [];
         if (id) {
             idArray.push(id);
-        } else {
-
         }
         Loading.progressShow();
         $.ajax({
@@ -1515,6 +1532,35 @@
         $(_this).closest('.area_panel').find('.judge-object-content').find('.fa-chevron-up').each(function () {
             $(this).closest('.collapse-link').trigger('click');
         })
+    }
+
+    //加载权证查勘数据列表
+    programme.loadSceneExploreBasicApplyList = function (declareId) {
+        $.ajax({
+            url: "${pageContext.request.contextPath}/schemeProgramme/getSceneExploreBasicApplyList",
+            type: "post",
+            dataType: "json",
+            data: {
+                declareId: declareId
+            },
+            success: function (result) {
+                if (result.ret) {
+
+                    $('#loadSceneExploreBasicApplyModal').modal();
+                }
+                else {
+                    Alert(result.errmsg);
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
+    }
+
+    //选择权证查勘数据
+    programme.selectSceneExploreBasicApply = function (_this) {
+
     }
 </script>
 <script type="text/javascript">

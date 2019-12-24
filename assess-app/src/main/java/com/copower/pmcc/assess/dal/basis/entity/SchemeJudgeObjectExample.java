@@ -466,6 +466,66 @@ public class SchemeJudgeObjectExample {
             return (Criteria) this;
         }
 
+        public Criteria andBasicApplyIdIsNull() {
+            addCriterion("basic_apply_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicApplyIdIsNotNull() {
+            addCriterion("basic_apply_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicApplyIdEqualTo(Integer value) {
+            addCriterion("basic_apply_id =", value, "basicApplyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicApplyIdNotEqualTo(Integer value) {
+            addCriterion("basic_apply_id <>", value, "basicApplyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicApplyIdGreaterThan(Integer value) {
+            addCriterion("basic_apply_id >", value, "basicApplyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicApplyIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("basic_apply_id >=", value, "basicApplyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicApplyIdLessThan(Integer value) {
+            addCriterion("basic_apply_id <", value, "basicApplyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicApplyIdLessThanOrEqualTo(Integer value) {
+            addCriterion("basic_apply_id <=", value, "basicApplyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicApplyIdIn(List<Integer> values) {
+            addCriterion("basic_apply_id in", values, "basicApplyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicApplyIdNotIn(List<Integer> values) {
+            addCriterion("basic_apply_id not in", values, "basicApplyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicApplyIdBetween(Integer value1, Integer value2) {
+            addCriterion("basic_apply_id between", value1, value2, "basicApplyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasicApplyIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("basic_apply_id not between", value1, value2, "basicApplyId");
+            return (Criteria) this;
+        }
+
         public Criteria andNumberIsNull() {
             addCriterion("number is null");
             return (Criteria) this;

@@ -171,7 +171,7 @@ public class BasicHouseService {
         //删除标准时，删除原来basicApply的数据
         BasicApply basicApply = new BasicApply();
         basicApply.setBasicHouseId(houseId);
-        BasicApply basicApplyOnly = basicApplyService.getBasicApplyOnly(basicApply);
+        BasicApply basicApplyOnly = basicApplyService.getBasicApply(basicApply);
         if (basicApplyOnly != null) {
             basicApplyDao.deleteBasicApply(basicApplyOnly.getId());
         }

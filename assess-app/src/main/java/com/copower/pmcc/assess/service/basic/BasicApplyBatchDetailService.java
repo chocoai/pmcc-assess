@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.basic;
 
+import com.copower.pmcc.assess.common.enums.basic.EstateTaggingTypeEnum;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDetailDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyDao;
@@ -9,12 +10,14 @@ import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class BasicApplyBatchDetailService {
@@ -168,41 +171,41 @@ public class BasicApplyBatchDetailService {
             basicApplyBatchDetailDao.addInfo(basicApplyBatchDetail);
         }
         //存入basicApply
-        this.standardIntoBasicApply(basicApplyBatchDetail, planDetailsId);
+        this.insertBasicApply(basicApplyBatchDetail, planDetailsId);
 
         return basicApplyBatchDetail;
     }
 
     //存入basicApply表单
-    public void standardIntoBasicApply(BasicApplyBatchDetail basicApplyBatchDetail, Integer planDetailsId) throws Exception {
-        if (!basicApplyBatchDetail.getTableName().equals("tb_basic_house"))
+    public void insertBasicApply(BasicApplyBatchDetail houseBasicApplyBatchDetail, Integer planDetailsId) throws Exception {
+        if (!houseBasicApplyBatchDetail.getTableName().equals("tb_basic_house"))
             return;
         BasicApply where = new BasicApply();
         where.setPlanDetailsId(planDetailsId);
-        where.setBasicHouseId(basicApplyBatchDetail.getTableId());
-        BasicApply basicApplyOnly = basicApplyService.getBasicApplyOnly(where);
-        if (basicApplyOnly == null) {
-            BasicApply basicApply = new BasicApply();
-            basicApply.setBasicHouseId(basicApplyBatchDetail.getTableId());
-            basicApply.setHouseNumber(basicHouseService.getBasicHouseById(basicApplyBatchDetail.getTableId()).getHouseNumber());
+        where.setBasicHouseId(houseBasicApplyBatchDetail.getTableId());
+        BasicApply basicApply = basicApplyService.getBasicApply(where);
+        if (basicApply == null) {
+            Map<EstateTaggingTypeEnum, BasicApplyBatchDetail> map = getApplyBatchDetailMap(houseBasicApplyBatchDetail);
+            basicApply.setBasicHouseId(houseBasicApplyBatchDetail.getTableId());
+            basicApply.setHouseNumber(houseBasicApplyBatchDetail.getName());
+            BasicHouse basicHouse = basicHouseService.getBasicHouseById(houseBasicApplyBatchDetail.getTableId());
+            if (basicHouse != null)
+                basicApply.setArea(basicHouse.getArea());
             //单元
-            BasicApplyBatchDetail unitBatchDetail = basicApplyBatchDetailDao.getInfoById(basicApplyBatchDetail.getPid());
+            BasicApplyBatchDetail unitBatchDetail = map.get(EstateTaggingTypeEnum.UNIT);
             basicApply.setBasicUnitId(unitBatchDetail.getTableId());
-            basicApply.setUnitNumber(basicUnitService.getBasicUnitById(unitBatchDetail.getTableId()).getUnitNumber());
+            basicApply.setUnitNumber(unitBatchDetail.getName());
             //楼栋
-            BasicApplyBatchDetail buildBatchDetail = basicApplyBatchDetailDao.getInfoById(unitBatchDetail.getPid());
+            BasicApplyBatchDetail buildBatchDetail = map.get(EstateTaggingTypeEnum.BUILDING);
             basicApply.setBasicBuildingId(buildBatchDetail.getTableId());
-            basicApply.setBuildingNumber(basicBuildingDao.getBasicBuildingById(buildBatchDetail.getTableId()).getBuildingNumber());
-            //楼盘id
-            BasicApplyBatch applyBatch = basicApplyBatchDao.getBasicApplyBatchById(basicApplyBatchDetail.getApplyBatchId());
-            basicApply.setBasicEstateId(applyBatch.getEstateId());
-            basicApply.setType(applyBatch.getType());
+            basicApply.setBuildingNumber(buildBatchDetail.getName());
+            //楼盘
+            BasicApplyBatchDetail estateBatchDetail = map.get(EstateTaggingTypeEnum.ESTATE);
+            basicApply.setBasicEstateId(estateBatchDetail.getTableId());
             basicApply.setPlanDetailsId(planDetailsId);
+            basicApply.setName(basicApplyService.getFullName(estateBatchDetail.getName(), buildBatchDetail.getName(), unitBatchDetail.getName(), houseBasicApplyBatchDetail.getName()));
             basicApplyService.saveBasicApply(basicApply);
         }
-//        if (basicApplyOnly != null && basicApplyBatchDetail.getBisStandard() == Boolean.FALSE) {
-//            basicApplyDao.deleteBasicApply(basicApplyOnly.getId());//取消标准时，删除原来的数据
-//        }
     }
 
     /**
@@ -216,6 +219,24 @@ public class BasicApplyBatchDetailService {
         basicApplyBatchDetail.setPid(pid);
         basicApplyBatchDetail.setApplyBatchId(applyBatchId);
         return basicApplyBatchDetailDao.getInfoList(basicApplyBatchDetail);
+    }
+
+    /**
+     * 获取一个完整估价Map
+     *
+     * @param houseBasicApplyBatchDetail
+     * @return
+     */
+    public Map<EstateTaggingTypeEnum, BasicApplyBatchDetail> getApplyBatchDetailMap(BasicApplyBatchDetail houseBasicApplyBatchDetail) {
+        Map<EstateTaggingTypeEnum, BasicApplyBatchDetail> map = Maps.newHashMap();
+        map.put(EstateTaggingTypeEnum.HOUSE, houseBasicApplyBatchDetail);
+        BasicApplyBatchDetail unitBatchDetail = basicApplyBatchDetailDao.getInfoById(houseBasicApplyBatchDetail.getPid());
+        map.put(EstateTaggingTypeEnum.UNIT, unitBatchDetail);
+        BasicApplyBatchDetail buildBatchDetail = basicApplyBatchDetailDao.getInfoById(unitBatchDetail.getPid());
+        map.put(EstateTaggingTypeEnum.BUILDING, buildBatchDetail);
+        BasicApplyBatchDetail estateBatchDetail = basicApplyBatchDetailDao.getInfoById(buildBatchDetail.getPid());
+        map.put(EstateTaggingTypeEnum.ESTATE, estateBatchDetail);
+        return map;
     }
 
     /**
@@ -257,7 +278,7 @@ public class BasicApplyBatchDetailService {
                 List<BasicApplyBatchDetail> houseDetails = getBasicApplyBatchDetailByPid(id, basicApplyBatchDetail.getApplyBatchId());
                 if (CollectionUtils.isNotEmpty(houseDetails)) {
                     for (BasicApplyBatchDetail house : houseDetails) {
-                         //删除单元下房屋
+                        //删除单元下房屋
                         basicHouseService.deleteHousesAndBasicApply(house.getTableId());
                         basicHouseTradingService.deleteBasicHouseTradingByHouseId(house.getTableId());
                         basicApplyBatchDetailDao.deleteInfo(house.getId());

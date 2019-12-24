@@ -957,7 +957,6 @@ public class BasicApplyBatchService {
             BasicUnit version = basicApplyTransferService.copyBasicUnit(null, oldBasicUnit, null, false);
             version.setRelevanceId(oldBasicUnit.getId());
             basicUnitService.saveAndUpdateBasicUnit(version, true);
-
             if (basicUnit != null) {
                 basicUnitService.saveAndUpdateBasicUnit(basicUnit, true);
                 BasicApplyBatchDetail unitDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(FormatUtils.entityNameConvertToTableName(BasicUnit.class), basicUnit.getId());
@@ -980,14 +979,14 @@ public class BasicApplyBatchService {
             BasicHouse version = basicApplyTransferService.copyBasicHouse(null, oldBasicHouse, oldTradingByHouseId, null, false);
             version.setRelevanceId(oldBasicHouse.getId());
             basicHouseService.saveAndUpdateBasicHouse(version, true);
-
             if (basicHouse != null) {
-                Integer house = basicHouseService.saveAndUpdateBasicHouse(basicHouse, true);
+                Integer houseId = basicHouseService.saveAndUpdateBasicHouse(basicHouse, true);
                 BasicApplyBatchDetail houseDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(FormatUtils.entityNameConvertToTableName(BasicHouse.class), basicHouse.getId());
                 if (houseDetail != null) {
                     houseDetail.setName(basicHouse.getHouseNumber());
                     houseDetail.setDisplayName(basicHouse.getHouseNumber());
                     basicApplyBatchDetailDao.updateInfo(houseDetail);
+
                 }
                 //交易信息
                 jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_TRADING.getVar());
@@ -995,7 +994,7 @@ public class BasicApplyBatchService {
                 if (basicTrading != null) {
                     BasicHouseTrading houseTradingOld = basicHouseTradingService.getTradingByHouseId(basicHouse.getId());
                     basicTrading.setId(houseTradingOld.getId());
-                    basicTrading.setHouseId(house);
+                    basicTrading.setHouseId(houseId);
                     basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicTrading, true);
                 }
                 //完损度
@@ -1004,7 +1003,7 @@ public class BasicApplyBatchService {
                 if (!org.springframework.util.CollectionUtils.isEmpty(damagedDegreeList)) {
                     for (BasicHouseDamagedDegree degree : damagedDegreeList) {
                         Integer category = degree.getCategory();
-                        BasicHouseDamagedDegree damagedDegree = basicHouseDamagedDegreeService.getDamagedDegreeByHouseIdAndCategory(house, category);
+                        BasicHouseDamagedDegree damagedDegree = basicHouseDamagedDegreeService.getDamagedDegreeByHouseIdAndCategory(houseId, category);
                         damagedDegree.setEntityCondition(degree.getEntityCondition());
                         damagedDegree.setEntityConditionContent(degree.getEntityConditionContent());
                         damagedDegree.setScore(degree.getScore());
@@ -2308,7 +2307,7 @@ public class BasicApplyBatchService {
      * @param sourceBatchDetailId
      * @throws Exception
      */
-    public void deepCopy(Integer sourceBatchDetailId) throws Exception {
+    public void deepCopy(Integer sourceBatchDetailId,Integer planDetailsId) throws Exception {
         //被复制数据
         BasicApplyBatchDetail sourceBasicApplyBatchDetail = basicApplyBatchDetailDao.getInfoById(sourceBatchDetailId);
 
@@ -2317,21 +2316,21 @@ public class BasicApplyBatchService {
             BasicBuilding sourceBuilding = basicBuildingDao.getBasicBuildingById(sourceBasicApplyBatchDetail.getTableId());
             List<BasicBuilding> sourceBuildings = Lists.newArrayList();
             sourceBuildings.add(sourceBuilding);
-            deepCopyBasicBuilding(sourceBuildings, sourceBasicApplyBatchDetail);
+            deepCopyBasicBuilding(sourceBuildings, sourceBasicApplyBatchDetail,planDetailsId);
         }
         //复制单元
         if (sourceBasicApplyBatchDetail.getTableName().equals("tb_basic_unit")) {
             BasicUnit sourceUnit = basicUnitDao.getBasicUnitById(sourceBasicApplyBatchDetail.getTableId());
             List<BasicUnit> sourceUnits = Lists.newArrayList();
             sourceUnits.add(sourceUnit);
-            deepCopyBasicUnit(sourceUnits, null, sourceBasicApplyBatchDetail, null);
+            deepCopyBasicUnit(sourceUnits, null, sourceBasicApplyBatchDetail, null,planDetailsId);
         }
         //复制房屋
         if (sourceBasicApplyBatchDetail.getTableName().equals("tb_basic_house")) {
             BasicHouse sourceHouse = basicHouseDao.getBasicHouseById(sourceBasicApplyBatchDetail.getTableId());
             List<BasicHouse> sourceHouses = Lists.newArrayList();
             sourceHouses.add(sourceHouse);
-            deepCopyBasicHouse(sourceHouses, null, sourceBasicApplyBatchDetail, null);
+            deepCopyBasicHouse(sourceHouses, null, sourceBasicApplyBatchDetail, null,planDetailsId);
         }
 
     }
@@ -2343,7 +2342,7 @@ public class BasicApplyBatchService {
      * @return
      * @throws Exception
      */
-    private void deepCopyBasicBuilding(List<BasicBuilding> sourceBuildings, BasicApplyBatchDetail source) throws Exception {
+    private void deepCopyBasicBuilding(List<BasicBuilding> sourceBuildings, BasicApplyBatchDetail source,Integer planDetailsId) throws Exception {
         if (CollectionUtils.isNotEmpty(sourceBuildings))
             for (BasicBuilding buildingOld : sourceBuildings) {
                 BasicBuilding targetBuilding = new BasicBuilding();
@@ -2399,7 +2398,7 @@ public class BasicApplyBatchService {
                     List<BasicApplyBatchDetail> unitBatchDetailList = basicApplyBatchDetailService.getBasicApplyBatchDetailByPid(source.getId(), source.getApplyBatchId());
                     List<BasicUnit> oldUnits = LangUtils.transform(unitBatchDetailList, o -> basicUnitDao.getBasicUnitById(o.getTableId()));
 
-                    deepCopyBasicUnit(oldUnits, targetBuilding.getId(), null, newBatchDetail);
+                    deepCopyBasicUnit(oldUnits, targetBuilding.getId(), null, newBatchDetail,planDetailsId);
                 }
             }
     }
@@ -2413,7 +2412,7 @@ public class BasicApplyBatchService {
      * @return
      * @throws Exception
      */
-    private void deepCopyBasicUnit(List<BasicUnit> sourceUnits, Integer targetBuildingId, BasicApplyBatchDetail source, BasicApplyBatchDetail parent) throws Exception {
+    private void deepCopyBasicUnit(List<BasicUnit> sourceUnits, Integer targetBuildingId, BasicApplyBatchDetail source, BasicApplyBatchDetail parent,Integer planDetailsId) throws Exception {
         if (CollectionUtils.isNotEmpty(sourceUnits))
             for (BasicUnit sourceUnit : sourceUnits) {
                 if (sourceUnit != null) {
@@ -2492,7 +2491,7 @@ public class BasicApplyBatchService {
                     }
                     List<BasicHouse> oldHouses = LangUtils.transform(unitBatchDetailList, o -> basicHouseDao.getBasicHouseById(o.getTableId()));
 
-                    deepCopyBasicHouse(oldHouses, targetUnit.getId(), null, newBatchDetail);
+                    deepCopyBasicHouse(oldHouses, targetUnit.getId(), null, newBatchDetail,planDetailsId);
                 }
             }
     }
@@ -2505,7 +2504,7 @@ public class BasicApplyBatchService {
      * @param targetUnitId
      * @throws Exception
      */
-    public void deepCopyBasicHouse(List<BasicHouse> sourceHouses, Integer targetUnitId, BasicApplyBatchDetail source, BasicApplyBatchDetail unitParent) throws Exception {
+    public void deepCopyBasicHouse(List<BasicHouse> sourceHouses, Integer targetUnitId, BasicApplyBatchDetail source, BasicApplyBatchDetail unitParent,Integer planDetailsId) throws Exception {
         if (CollectionUtils.isNotEmpty(sourceHouses))
             for (BasicHouse sourceHouse : sourceHouses) {
                 if (sourceHouse != null) {
@@ -2523,7 +2522,7 @@ public class BasicApplyBatchService {
                         newBatchDetail.setCreator(commonService.thisUserAccount());
                         basicApplyBatchDetailDao.addInfo(newBatchDetail);
                         //生成BasicApply
-                        createBasicApply(newBatchDetail);
+                        basicApplyBatchDetailService.insertBasicApply(newBatchDetail,planDetailsId);
                     }
                     if (unitParent != null && unitParent.getId() != null) {
                         BasicApplyBatchDetail basicApplyBatchDetail = new BasicApplyBatchDetail();
@@ -2535,7 +2534,7 @@ public class BasicApplyBatchService {
                         basicApplyBatchDetail.setDisplayName(targetHouse.getHouseNumber());
                         basicApplyBatchDetail.setCreator(commonService.thisUserAccount());
                         basicApplyBatchDetailDao.addInfo(basicApplyBatchDetail);
-                        createBasicApply(basicApplyBatchDetail);
+                        basicApplyBatchDetailService.insertBasicApply(basicApplyBatchDetail,planDetailsId);
                     }
                     basicHouseService.clearInvalidChildData(targetHouse.getId());
                     //房屋交易信息
@@ -2632,32 +2631,5 @@ public class BasicApplyBatchService {
                     }
                 }
             }
-    }
-
-    //写入BasicApply表中
-    public void createBasicApply(BasicApplyBatchDetail houseApplyBatchDetail){
-        //单元
-        BasicApplyBatchDetail unitApplyBatchDetail = basicApplyBatchDetailService.getDataById(houseApplyBatchDetail.getPid());
-        Integer unitId = unitApplyBatchDetail.getTableId();
-        //楼栋
-        BasicApplyBatchDetail buildApplyBatchDetail = basicApplyBatchDetailService.getDataById(unitApplyBatchDetail.getPid());
-        Integer buildId = buildApplyBatchDetail.getTableId();
-        //楼盘
-        BasicApplyBatch applyBatch = getBasicApplyBatchById(houseApplyBatchDetail.getApplyBatchId());
-        Integer estateId = applyBatch.getEstateId();
-        //新增basicApply
-        BasicApply basicApply = new BasicApply();
-        basicApply.setBasicHouseId(houseApplyBatchDetail.getTableId());
-        basicApply.setBasicUnitId(unitId);
-        basicApply.setBasicBuildingId(buildId);
-        basicApply.setBasicEstateId(estateId);
-        basicApply.setPlanDetailsId(applyBatch.getPlanDetailsId());
-        basicApply.setType(applyBatch.getType());
-        basicApply.setBuildingNumber(buildApplyBatchDetail.getName());
-        basicApply.setUnitNumber(unitApplyBatchDetail.getName());
-        basicApply.setHouseNumber(houseApplyBatchDetail.getName());
-        basicApply.setDraftFlag(false);
-        basicApply.setDraftFlag(false);
-        basicApplyService.saveBasicApply(basicApply);
     }
 }

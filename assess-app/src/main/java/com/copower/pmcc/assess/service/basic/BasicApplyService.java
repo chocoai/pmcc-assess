@@ -120,7 +120,7 @@ public class BasicApplyService {
         return basicApplies;
     }
 
-    public BasicApply getBasicApplyOnly(BasicApply basicApply) {
+    public BasicApply getBasicApply(BasicApply basicApply) {
         List<BasicApply> basicApplies = basicApplyDao.getBasicApplyList(basicApply);
         if (!ObjectUtils.isEmpty(basicApplies)) {
             return basicApplies.get(0);

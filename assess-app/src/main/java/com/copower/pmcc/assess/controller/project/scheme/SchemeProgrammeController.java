@@ -4,10 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.constant.BaseConstant;
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectPlan;
-import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeFunction;
-import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeJudgeFunctionApplyDto;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeProgrammeDto;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
@@ -28,6 +25,7 @@ import com.copower.pmcc.assess.service.project.ProjectPlanService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeFunctionService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
+import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
@@ -83,6 +81,8 @@ public class SchemeProgrammeController {
     private BaseService baseService;
     @Autowired
     private PublicService publicService;
+    @Autowired
+    private SurveyCommonService surveyCommonService;
 
     /**
      * 编辑或者申请 参数
@@ -196,6 +196,17 @@ public class SchemeProgrammeController {
         } catch (BpmException e) {
             baseService.writeExceptionInfo(e, "方案 编辑任务提交");
             return HttpResult.newErrorResult("异常");
+        }
+    }
+
+    @RequestMapping(value = "/getSceneExploreBasicApplyList", name = "权证查勘数据列表 ", method = RequestMethod.POST)
+    public HttpResult getSceneExploreBasicApplyList(Integer declareId) {
+        try {
+            List<BasicApply> basicApplyList = surveyCommonService.getSceneExploreBasicApplyList(declareId);
+            return HttpResult.newCorrectResult(basicApplyList);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
         }
     }
 
