@@ -198,6 +198,7 @@ public class BasicApplyBatchDetailService {
         where.setBasicHouseId(houseBasicApplyBatchDetail.getTableId());
         BasicApply basicApply = basicApplyService.getBasicApply(where);
         if (basicApply == null) {
+            basicApply = new BasicApply();
             Map<EstateTaggingTypeEnum, BasicApplyBatchDetail> map = getApplyBatchDetailMap(houseBasicApplyBatchDetail);
             basicApply.setBasicHouseId(houseBasicApplyBatchDetail.getTableId());
             basicApply.setHouseNumber(houseBasicApplyBatchDetail.getName());
