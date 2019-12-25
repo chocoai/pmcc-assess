@@ -16,6 +16,7 @@ import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.ProjectTaskService;
 import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
+import com.copower.pmcc.bpm.api.dto.model.BoxReActivityDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxRuDto;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
@@ -170,16 +171,15 @@ public class ProjectTaskController extends BaseController {
             modelAndView.addObject("boxCnName", String.format("%s-成果审批", boxCnName.toString()));
         }
         //获取相应的考核项
-        BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(boxId);
-        if (boxReDto.getBisLaunchCheck() != null && boxReDto.getBisLaunchCheck()) {
-            //考核标识符
-            modelAndView.addObject("bisCheck", 1);
+        BoxReDto boxReDto = null;
+        if (boxId != null && boxId != 0) {
+            boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(boxId);
+        }
+        if (boxReDto != null && boxReDto.getBisLaunchCheck() != null && boxReDto.getBisLaunchCheck()) {
             Object activityId = modelAndView.getModel().get("activityId");
             if (activityId != null) {
                 Integer boxReActivitiId = (Integer) activityId;
-                //当前节点即将要填写的考核记录
-                modelAndView.addObject("assessmentItemList", bpmRpcBoxService.getAssessmentItemList(boxId, boxReActivitiId));
-                setCheckParams(projectPlanDetails, processInsId, boxId, boxReActivitiId, modelAndView, false);
+                setCheckParams(boxId, boxReActivitiId, false, modelAndView);
 
             }
         }
@@ -280,16 +280,15 @@ public class ProjectTaskController extends BaseController {
         modelAndView.addObject("projectFlog", "1");
         ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId()));
         modelAndView.addObject("projectInfo", projectInfoVo);
-        if (boxId != 0 && boxId != null){
+        if (boxId != null && boxId != 0) {
             //获取相应的考核项
             BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(boxId);
             if (boxReDto.getBisLaunchCheck() != null && boxReDto.getBisLaunchCheck()) {
-                //考核标识符
-                modelAndView.addObject("bisCheck", 1);
                 Object activityId = modelAndView.getModel().get("activityId");
                 if (activityId != null) {
-                    setCheckParams(projectPlanDetails, null, boxId, (Integer) activityId, modelAndView, true);
-
+                    setCheckParams(boxId, (Integer) activityId, true, modelAndView);
+                } else {
+                    setCheckParams(boxId, null, true, modelAndView);
                 }
             }
         }
@@ -316,26 +315,29 @@ public class ProjectTaskController extends BaseController {
     }
 
     /**
-     * @param projectPlanDetails
-     * @param processInsId
      * @param boxId
-     * @param boxReActivitiId
+     * @param boxReActivitiId 注意此参数可能是错误的
      * @param modelAndView
-     * @param isDetail           是否是详情页 ,详情页不显示考核记录 除非是抽查人员
      */
-    private void setCheckParams(ProjectPlanDetails projectPlanDetails, String processInsId, Integer boxId, Integer boxReActivitiId, ModelAndView modelAndView, boolean isDetail) {
+    private void setCheckParams(Integer boxId, Integer boxReActivitiId, boolean isDetail, ModelAndView modelAndView) {
         //巡查人或者抽查人  可以看到当前模型下 所有人的考核记录
         boolean spotCheck = chksAssessmentProjectPerformanceService.getSpotCheck(boxId, processControllerComponent.getThisUser());
         //抽查或者巡查标识符
         modelAndView.addObject("spotCheck", spotCheck);
-        if (spotCheck) {
-            //抽查人员需要填写的考核记录
-            modelAndView.addObject("spotCheckAssessmentItemList", chksAssessmentProjectPerformanceService.getSpotCheckAssessmentItems(boxId));
-            isDetail = false;//把考核记录设置为可以查看,因为是抽查人员嘛
+        //考核标识符
+        modelAndView.addObject("bisCheck", 1);
+        modelAndView.addObject(StringUtils.uncapitalize(BoxReDto.class.getSimpleName()), bpmRpcBoxService.getBoxReInfoByBoxId(boxId));
+        //抽查节点info
+        modelAndView.addObject("spotBoxReActivityDto", bpmRpcBoxService.getEndActivityByBoxId(boxId));
+        BoxReActivityDto boxReActivityDto = chksAssessmentProjectPerformanceService.getFilterBoxReActivityDto(boxReActivitiId, boxId, isDetail);
+        Integer activityId = null;
+        if (boxReActivityDto != null) {
+            //普通节点info
+            modelAndView.addObject(StringUtils.uncapitalize(BoxReActivityDto.class.getSimpleName()), boxReActivityDto);
+            activityId = boxReActivityDto.getId();
         }
-        if (!isDetail) {
-            modelAndView.addObject("assessmentProjectPerformanceDtoList", chksAssessmentProjectPerformanceService.getAssessmentProjectPerformanceDtoMap(boxId, boxReActivitiId, spotCheck, processInsId, projectPlanDetails.getProjectId()));
-        }
+        //当前节点  可以查看的权限节点信息列表
+        modelAndView.addObject("activityDtoList", chksAssessmentProjectPerformanceService.getAssessmentProjectPerformanceNext(boxId, activityId, spotCheck));
     }
 
 }

@@ -161,10 +161,8 @@
         var data = formApproval.getFormData();
         data["formData"] = formData;
         data = $.extend({}, data, approvalData);
-        if ("${bisCheck}"=='1') {
-            if (!validChks()) {
-                return false;
-            }
+
+        if ("${bisCheck==1}") {
             var itemObj = getChksData();
             data = jQuery.extend({}, data, itemObj);
         }
