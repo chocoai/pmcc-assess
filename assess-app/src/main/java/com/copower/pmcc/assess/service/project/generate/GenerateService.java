@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.project.generate;
 
+import com.copower.pmcc.assess.common.enums.AssessProjectTypeEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.service.PublicService;
@@ -87,7 +88,7 @@ public class GenerateService {
         processInfo.setAppKey(applicationConstant.getAppKey());
         processInfo.setProcessEventExecutor(GenerateEvent.class);
         try {
-            processUserDto = processControllerComponent.processStart(processControllerComponent.getThisUser(),processInfo, projectInfo.getCreator(), false);
+            processUserDto = processControllerComponent.processStart(processControllerComponent.getThisUser(), processInfo, projectInfo.getCreator(), false);
         } catch (BpmException e) {
             log.info(e.getMessage());
             throw new BusinessException(e.getMessage());
@@ -132,7 +133,8 @@ public class GenerateService {
      */
     @Transactional(rollbackFor = Exception.class)
     public void reGetDocumentNumber(Integer projectId, Integer areaId, Integer reportType) {
-        ProjectNumberRecord numberRecord = projectNumberRecordService.getProjectNumberRecord(projectId, areaId, reportType);
+        AssessProjectTypeEnum assessProjectType = projectInfoService.getAssessProjectType(projectInfoService.getProjectInfoById(projectId).getProjectCategoryId());
+        ProjectNumberRecord numberRecord = projectNumberRecordService.getProjectNumberRecord(projectId, areaId, assessProjectType, reportType);
         if (numberRecord != null) {
             numberRecord.setBisDelete(true);
             projectNumberRecordService.updateProjectNumberRecord(numberRecord);

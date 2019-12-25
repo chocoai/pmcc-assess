@@ -5,17 +5,17 @@ import com.copower.pmcc.assess.dal.basis.entity.DataNumberRule;
 
 public class DataNumberRuleVo extends DataNumberRule {
 
-    private String assessClassName;
+    private String assessProjectTypeName;
     private String reportTypeName;
     private String sameReportTypeName;
     private String recountName;
 
-    public String getAssessClassName() {
-        return assessClassName;
+    public String getAssessProjectTypeName() {
+        return assessProjectTypeName;
     }
 
-    public void setAssessClassName(String assessClassName) {
-        this.assessClassName = assessClassName;
+    public void setAssessProjectTypeName(String assessProjectTypeName) {
+        this.assessProjectTypeName = assessProjectTypeName;
     }
 
     public String getReportTypeName() {

@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dal.basis.mapper.ProjectNumberRecordMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -24,33 +25,22 @@ public class ProjectNumberRecordDao {
         return projectNumberRecordMapper.selectByExample(example);
     }
 
-    /**
-     * 报告编号
-     *
-     * @param projectId
-     * @param reportType
-     * @return
-     */
-    public List<ProjectNumberRecord> getNumberList(Integer projectId, Integer reportType) {
+    public List<ProjectNumberRecord> getProjectNumberRecordList(String assessProjectType, List<Integer> reportTypes) {
         ProjectNumberRecordExample example = new ProjectNumberRecordExample();
         ProjectNumberRecordExample.Criteria criteria = example.createCriteria();
-        criteria.andProjectIdEqualTo(projectId).andReportTypeEqualTo(reportType);
+        if(StringUtils.isNotBlank(assessProjectType))
+            criteria.andAssessProjectTypeEqualTo(assessProjectType);
+        if(CollectionUtils.isNotEmpty(reportTypes))
+            criteria.andReportTypeIn(reportTypes);
         example.setOrderByClause("number desc");
         return projectNumberRecordMapper.selectByExample(example);
     }
 
-    public List<ProjectNumberRecord> getNumberByYear(Integer year, Integer reportType) {
+    public ProjectNumberRecord getProjectNumberRecord(Integer projectId, Integer areaId, Integer year,String assessProjectType, Integer reportType) {
         ProjectNumberRecordExample example = new ProjectNumberRecordExample();
         ProjectNumberRecordExample.Criteria criteria = example.createCriteria();
-        criteria.andYearEqualTo(year).andReportTypeEqualTo(reportType);
-        example.setOrderByClause("number desc");
-        return projectNumberRecordMapper.selectByExample(example);
-    }
-
-    public ProjectNumberRecord getProjectNumberRecord(Integer projectId, Integer areaId, Integer year, Integer reportType) {
-        ProjectNumberRecordExample example = new ProjectNumberRecordExample();
-        ProjectNumberRecordExample.Criteria criteria = example.createCriteria();
-        criteria.andBisDeleteEqualTo(false).andProjectIdEqualTo(projectId).andAreaIdEqualTo(areaId).andYearEqualTo(year).andReportTypeEqualTo(reportType);
+        criteria.andBisDeleteEqualTo(false).andProjectIdEqualTo(projectId);
+        criteria.andAreaIdEqualTo(areaId).andYearEqualTo(year).andAssessProjectTypeEqualTo(assessProjectType).andReportTypeEqualTo(reportType);
         example.setOrderByClause("number desc");
         List<ProjectNumberRecord> numberRecordList = projectNumberRecordMapper.selectByExample(example);
         if (CollectionUtils.isEmpty(numberRecordList)) return null;

@@ -5,13 +5,15 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="process_ins_id" property="processInsId" jdbcType="VARCHAR" />
     <result column="project_id" property="projectId" jdbcType="INTEGER" />
+    <result column="assess_project_type" property="assessProjectType" jdbcType="VARCHAR" />
     <result column="report_type" property="reportType" jdbcType="INTEGER" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="number_record_id" property="numberRecordId" jdbcType="INTEGER" />
+    <result column="number_value" property="numberValue" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
-    <result column="number_record_id" property="numberRecordId" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -72,8 +74,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, process_ins_id, project_id, report_type, remark, status, creator, gmt_created, 
-    gmt_modified, number_record_id
+    id, process_ins_id, project_id, assess_project_type, report_type, remark, status, 
+    number_record_id, number_value, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectTakeNumberExample" >
     select
@@ -109,14 +111,14 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_project_take_number (process_ins_id, project_id, report_type, 
-      remark, status, creator, 
-      gmt_created, gmt_modified, number_record_id
-      )
-    values (#{processInsId,jdbcType=VARCHAR}, #{projectId,jdbcType=INTEGER}, #{reportType,jdbcType=INTEGER}, 
-      #{remark,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{numberRecordId,jdbcType=INTEGER}
-      )
+    insert into tb_project_take_number (process_ins_id, project_id, assess_project_type, 
+      report_type, remark, status, 
+      number_record_id, number_value, creator, 
+      gmt_created, gmt_modified)
+    values (#{processInsId,jdbcType=VARCHAR}, #{projectId,jdbcType=INTEGER}, #{assessProjectType,jdbcType=VARCHAR}, 
+      #{reportType,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{numberRecordId,jdbcType=INTEGER}, #{numberValue,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectTakeNumber" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -130,6 +132,9 @@
       <if test="projectId != null" >
         project_id,
       </if>
+      <if test="assessProjectType != null" >
+        assess_project_type,
+      </if>
       <if test="reportType != null" >
         report_type,
       </if>
@@ -138,6 +143,12 @@
       </if>
       <if test="status != null" >
         status,
+      </if>
+      <if test="numberRecordId != null" >
+        number_record_id,
+      </if>
+      <if test="numberValue != null" >
+        number_value,
       </if>
       <if test="creator != null" >
         creator,
@@ -148,9 +159,6 @@
       <if test="gmtModified != null" >
         gmt_modified,
       </if>
-      <if test="numberRecordId != null" >
-        number_record_id,
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="processInsId != null" >
@@ -158,6 +166,9 @@
       </if>
       <if test="projectId != null" >
         #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="assessProjectType != null" >
+        #{assessProjectType,jdbcType=VARCHAR},
       </if>
       <if test="reportType != null" >
         #{reportType,jdbcType=INTEGER},
@@ -168,6 +179,12 @@
       <if test="status != null" >
         #{status,jdbcType=VARCHAR},
       </if>
+      <if test="numberRecordId != null" >
+        #{numberRecordId,jdbcType=INTEGER},
+      </if>
+      <if test="numberValue != null" >
+        #{numberValue,jdbcType=VARCHAR},
+      </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
       </if>
@@ -176,9 +193,6 @@
       </if>
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="numberRecordId != null" >
-        #{numberRecordId,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -200,6 +214,9 @@
       <if test="record.projectId != null" >
         project_id = #{record.projectId,jdbcType=INTEGER},
       </if>
+      <if test="record.assessProjectType != null" >
+        assess_project_type = #{record.assessProjectType,jdbcType=VARCHAR},
+      </if>
       <if test="record.reportType != null" >
         report_type = #{record.reportType,jdbcType=INTEGER},
       </if>
@@ -209,6 +226,12 @@
       <if test="record.status != null" >
         status = #{record.status,jdbcType=VARCHAR},
       </if>
+      <if test="record.numberRecordId != null" >
+        number_record_id = #{record.numberRecordId,jdbcType=INTEGER},
+      </if>
+      <if test="record.numberValue != null" >
+        number_value = #{record.numberValue,jdbcType=VARCHAR},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -217,9 +240,6 @@
       </if>
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.numberRecordId != null" >
-        number_record_id = #{record.numberRecordId,jdbcType=INTEGER},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -231,13 +251,15 @@
     set id = #{record.id,jdbcType=INTEGER},
       process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
       project_id = #{record.projectId,jdbcType=INTEGER},
+      assess_project_type = #{record.assessProjectType,jdbcType=VARCHAR},
       report_type = #{record.reportType,jdbcType=INTEGER},
       remark = #{record.remark,jdbcType=VARCHAR},
       status = #{record.status,jdbcType=VARCHAR},
+      number_record_id = #{record.numberRecordId,jdbcType=INTEGER},
+      number_value = #{record.numberValue,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      number_record_id = #{record.numberRecordId,jdbcType=INTEGER}
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -251,6 +273,9 @@
       <if test="projectId != null" >
         project_id = #{projectId,jdbcType=INTEGER},
       </if>
+      <if test="assessProjectType != null" >
+        assess_project_type = #{assessProjectType,jdbcType=VARCHAR},
+      </if>
       <if test="reportType != null" >
         report_type = #{reportType,jdbcType=INTEGER},
       </if>
@@ -259,6 +284,12 @@
       </if>
       <if test="status != null" >
         status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="numberRecordId != null" >
+        number_record_id = #{numberRecordId,jdbcType=INTEGER},
+      </if>
+      <if test="numberValue != null" >
+        number_value = #{numberValue,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -269,9 +300,6 @@
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
-      <if test="numberRecordId != null" >
-        number_record_id = #{numberRecordId,jdbcType=INTEGER},
-      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -279,13 +307,15 @@
     update tb_project_take_number
     set process_ins_id = #{processInsId,jdbcType=VARCHAR},
       project_id = #{projectId,jdbcType=INTEGER},
+      assess_project_type = #{assessProjectType,jdbcType=VARCHAR},
       report_type = #{reportType,jdbcType=INTEGER},
       remark = #{remark,jdbcType=VARCHAR},
       status = #{status,jdbcType=VARCHAR},
+      number_record_id = #{numberRecordId,jdbcType=INTEGER},
+      number_value = #{numberValue,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      number_record_id = #{numberRecordId,jdbcType=INTEGER}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

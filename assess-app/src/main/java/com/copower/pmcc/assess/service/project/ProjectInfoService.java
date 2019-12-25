@@ -800,4 +800,16 @@ public class ProjectInfoService {
         }
         return null;
     }
+
+    public List<KeyValueDto> getAssessProjectTypeList(){
+        List<KeyValueDto> list=Lists.newArrayList();
+        for (AssessProjectTypeEnum assessProjectTypeEnum : AssessProjectTypeEnum.values()) {
+            KeyValueDto keyValueDto=new KeyValueDto();
+            keyValueDto.setKey(assessProjectTypeEnum.getKey());
+            keyValueDto.setValue(assessProjectTypeEnum.getDec());
+            keyValueDto.setExplain(assessProjectTypeEnum.getDec());
+            list.add(keyValueDto);
+        }
+        return list;
+    }
 }

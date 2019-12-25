@@ -19,7 +19,6 @@
                 <input type="hidden" name="projectId" value="${projectPlanDetails.projectId}">
                 <%@include file="./assetsAppraisalDicApprovalModel.jsp" %>
             </form>
-
             <%@include file="/views/share/form_approval.jsp" %>
             <%@include file="/views/share/form_log.jsp" %>
         </div>

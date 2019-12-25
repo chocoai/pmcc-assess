@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.ProjectNumberRecord" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="project_id" property="projectId" jdbcType="INTEGER" />
+    <result column="assess_project_type" property="assessProjectType" jdbcType="VARCHAR" />
     <result column="report_type" property="reportType" jdbcType="INTEGER" />
     <result column="area_id" property="areaId" jdbcType="INTEGER" />
     <result column="number_value" property="numberValue" jdbcType="VARCHAR" />
@@ -73,8 +74,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, project_id, report_type, area_id, number_value, year, number, bis_delete, creator, 
-    gmt_created, gmt_modified
+    id, project_id, assess_project_type, report_type, area_id, number_value, year, number, 
+    bis_delete, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectNumberRecordExample" >
     select
@@ -110,14 +111,14 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_project_number_record (project_id, report_type, area_id, 
-      number_value, year, number, 
-      bis_delete, creator, gmt_created, 
-      gmt_modified)
-    values (#{projectId,jdbcType=INTEGER}, #{reportType,jdbcType=INTEGER}, #{areaId,jdbcType=INTEGER}, 
-      #{numberValue,jdbcType=VARCHAR}, #{year,jdbcType=INTEGER}, #{number,jdbcType=INTEGER}, 
-      #{bisDelete,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_project_number_record (project_id, assess_project_type, report_type, 
+      area_id, number_value, year, 
+      number, bis_delete, creator, 
+      gmt_created, gmt_modified)
+    values (#{projectId,jdbcType=INTEGER}, #{assessProjectType,jdbcType=VARCHAR}, #{reportType,jdbcType=INTEGER}, 
+      #{areaId,jdbcType=INTEGER}, #{numberValue,jdbcType=VARCHAR}, #{year,jdbcType=INTEGER}, 
+      #{number,jdbcType=INTEGER}, #{bisDelete,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectNumberRecord" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -127,6 +128,9 @@
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="projectId != null" >
         project_id,
+      </if>
+      <if test="assessProjectType != null" >
+        assess_project_type,
       </if>
       <if test="reportType != null" >
         report_type,
@@ -159,6 +163,9 @@
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="projectId != null" >
         #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="assessProjectType != null" >
+        #{assessProjectType,jdbcType=VARCHAR},
       </if>
       <if test="reportType != null" >
         #{reportType,jdbcType=INTEGER},
@@ -204,6 +211,9 @@
       <if test="record.projectId != null" >
         project_id = #{record.projectId,jdbcType=INTEGER},
       </if>
+      <if test="record.assessProjectType != null" >
+        assess_project_type = #{record.assessProjectType,jdbcType=VARCHAR},
+      </if>
       <if test="record.reportType != null" >
         report_type = #{record.reportType,jdbcType=INTEGER},
       </if>
@@ -240,6 +250,7 @@
     update tb_project_number_record
     set id = #{record.id,jdbcType=INTEGER},
       project_id = #{record.projectId,jdbcType=INTEGER},
+      assess_project_type = #{record.assessProjectType,jdbcType=VARCHAR},
       report_type = #{record.reportType,jdbcType=INTEGER},
       area_id = #{record.areaId,jdbcType=INTEGER},
       number_value = #{record.numberValue,jdbcType=VARCHAR},
@@ -258,6 +269,9 @@
     <set >
       <if test="projectId != null" >
         project_id = #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="assessProjectType != null" >
+        assess_project_type = #{assessProjectType,jdbcType=VARCHAR},
       </if>
       <if test="reportType != null" >
         report_type = #{reportType,jdbcType=INTEGER},
@@ -292,6 +306,7 @@
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectNumberRecord" >
     update tb_project_number_record
     set project_id = #{projectId,jdbcType=INTEGER},
+      assess_project_type = #{assessProjectType,jdbcType=VARCHAR},
       report_type = #{reportType,jdbcType=INTEGER},
       area_id = #{areaId,jdbcType=INTEGER},
       number_value = #{numberValue,jdbcType=VARCHAR},

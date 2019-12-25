@@ -51,7 +51,6 @@
                                     </button>
                                 </div>
                             </div>
-
                         </form>
                         <table class="table table-bordered" id="tb_List">
                             <!-- cerare document add ajax data-->
@@ -76,90 +75,100 @@
             <form id="frm" class="form-horizontal">
                 <input type="hidden" id="id" name="id" value="0">
                 <div class="modal-body">
-                    <div class="col-md-12">
-                        <div class="panel-body">
-                            <div class="form-group">
-                                <div class="x-valid">
-                                    <label class="col-sm-2 control-label">
-                                        报告类型<span class="symbol required"></span>
-                                    </label>
-                                    <div class="col-sm-4">
-                                        <select class="form-control" required id="reportType" name="reportType">
-                                            <option value="">-请选择-</option>
-                                            <c:forEach var="items" items="${reportTypeList}">
-                                                <option value="${items.id}">${items.name}</option>
-                                            </c:forEach>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="x-valid">
-                                    <label class="col-sm-2 control-label">
-                                        前缀<span class="symbol required"></span>
-                                    </label>
-                                    <div class="col-sm-4">
-                                        <input type="text" required data-rule-maxlength="50" placeholder="前缀"
-                                               id="prefix" name="prefix" class="form-control">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="x-valid">
-                                    <label class="col-sm-2 control-label">
-                                        文号规则<span class="symbol required"></span>
-                                    </label>
-                                    <div class="col-sm-4">
-                                        <input type="text" required placeholder="文号规则"
-                                                name="numberRule" value="" class="form-control">
-                                    </div>
-                                </div>
-                                <div class="x-valid">
-                                    <label class="col-sm-2 control-label">
-                                        位数<span class="symbol required"></span>
-                                    </label>
-                                    <div class="col-sm-4">
-                                        <input type="text" data-rule-digits="true" placeholder="位数"
-                                               id="figures" name="figures" class="form-control">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="x-valid">
-                                    <label class="col-sm-2 control-label">
-                                        起始年份
-                                    </label>
-                                    <div class="col-sm-4">
-                                        <input type="text" data-rule-digits="true" placeholder="起始年份"
-                                               id="startYear" name="startYear" class="form-control">
-                                    </div>
-                                </div>
-                                <div class="x-valid">
-                                    <label class="col-sm-2 control-label">
-                                        起始编号
-                                    </label>
-                                    <div class="col-sm-4">
-                                        <input type="text" data-rule-digits="true" placeholder="起始编号"
-                                               id="startNumber" name="startNumber" class="form-control">
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="form-group">
-                                <div class="x-valid">
-                                    <label class="col-sm-2 control-label">
-                                       文号分组
-                                    </label>
-                                    <div class="col-sm-4">
-                                        <select class="form-control"  name="groupName">
-                                            <option value="">-请选择-</option>
-                                            <option value="result">结果报告文号</option>
-                                            <option value="preaudit">预评报告文号</option>
-                                        </select>
-                                    </div>
-                                </div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                项目类型<span class="symbol required"></span>
+                            </label>
+                            <div class="col-sm-4">
+                                <select class="form-control" required id="assessProjectType" name="assessProjectType">
+                                    <option value="">-请选择-</option>
+                                    <c:forEach var="items" items="${assessProjectTypeList}">
+                                        <option value="${items.key}">${items.explain}</option>
+                                    </c:forEach>
+                                </select>
                             </div>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                报告类型<span class="symbol required"></span>
+                            </label>
+                            <div class="col-sm-4">
+                                <select class="form-control" required id="reportType" name="reportType">
+                                    <option value="">-请选择-</option>
+                                    <c:forEach var="items" items="${reportTypeList}">
+                                        <option value="${items.id}">${items.name}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                前缀<span class="symbol required"></span>
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="text" required data-rule-maxlength="50" placeholder="前缀"
+                                       id="prefix" name="prefix" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                文号规则<span class="symbol required"></span>
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="text" required placeholder="文号规则"
+                                       name="numberRule" value="" class="form-control">
+                            </div>
+                        </div>
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                位数<span class="symbol required"></span>
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="text" data-rule-digits="true" placeholder="位数"
+                                       id="figures" name="figures" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                起始年份
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="text" data-rule-digits="true" placeholder="起始年份"
+                                       id="startYear" name="startYear" class="form-control">
+                            </div>
+                        </div>
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                起始编号
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="text" data-rule-digits="true" placeholder="起始编号"
+                                       id="startNumber" name="startNumber" class="form-control">
+                            </div>
+                        </div>
 
+                    </div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                文号分组
+                            </label>
+                            <div class="col-sm-4">
+                                <select class="form-control"  name="groupName">
+                                    <option value="">-请选择-</option>
+                                    <option value="result">结果报告文号</option>
+                                    <option value="preaudit">预评报告文号</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </form>
             <div class="modal-footer">
@@ -184,6 +193,7 @@
     //加载 文号规则 数据列表
     function loadDataDicList() {
         var cols = [];
+        cols.push({field: 'assessProjectTypeName', title: '项目类型'});
         cols.push({field: 'reportTypeName', title: '报告类型'});
         cols.push({field: 'prefix', title: '前缀'});
         cols.push({field: 'numberRule', title: '文号规则'});
@@ -197,7 +207,6 @@
                 }else if(row.groupName=='preaudit'){
                     return '预评报告文号';
                 }
-
             }
         });
 

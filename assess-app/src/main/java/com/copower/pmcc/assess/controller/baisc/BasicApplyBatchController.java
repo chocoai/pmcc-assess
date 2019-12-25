@@ -212,7 +212,7 @@ public class BasicApplyBatchController extends BaseController {
     @ResponseBody
     @RequestMapping(value = "/getAndEditDetail", name = "获取和编辑", method = RequestMethod.GET)
     public HttpResult getAndEditDetail(Integer id) {
-        return HttpResult.newCorrectResult(basicApplyBatchDetailService.getDataById(id));
+        return HttpResult.newCorrectResult(basicApplyBatchDetailService.getBasicApplyBatchDetailVo(basicApplyBatchDetailService.getDataById(id)));
     }
 
     @RequestMapping(value = "/fillInformation", name = "填写信息页面", method = RequestMethod.GET)

@@ -165,6 +165,76 @@ public class DataNumberRuleExample {
             return (Criteria) this;
         }
 
+        public Criteria andAssessProjectTypeIsNull() {
+            addCriterion("assess_project_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessProjectTypeIsNotNull() {
+            addCriterion("assess_project_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessProjectTypeEqualTo(String value) {
+            addCriterion("assess_project_type =", value, "assessProjectType");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessProjectTypeNotEqualTo(String value) {
+            addCriterion("assess_project_type <>", value, "assessProjectType");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessProjectTypeGreaterThan(String value) {
+            addCriterion("assess_project_type >", value, "assessProjectType");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessProjectTypeGreaterThanOrEqualTo(String value) {
+            addCriterion("assess_project_type >=", value, "assessProjectType");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessProjectTypeLessThan(String value) {
+            addCriterion("assess_project_type <", value, "assessProjectType");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessProjectTypeLessThanOrEqualTo(String value) {
+            addCriterion("assess_project_type <=", value, "assessProjectType");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessProjectTypeLike(String value) {
+            addCriterion("assess_project_type like", value, "assessProjectType");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessProjectTypeNotLike(String value) {
+            addCriterion("assess_project_type not like", value, "assessProjectType");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessProjectTypeIn(List<String> values) {
+            addCriterion("assess_project_type in", values, "assessProjectType");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessProjectTypeNotIn(List<String> values) {
+            addCriterion("assess_project_type not in", values, "assessProjectType");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessProjectTypeBetween(String value1, String value2) {
+            addCriterion("assess_project_type between", value1, value2, "assessProjectType");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessProjectTypeNotBetween(String value1, String value2) {
+            addCriterion("assess_project_type not between", value1, value2, "assessProjectType");
+            return (Criteria) this;
+        }
+
         public Criteria andReportTypeIsNull() {
             addCriterion("report_type is null");
             return (Criteria) this;

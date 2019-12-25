@@ -241,13 +241,17 @@ public class DataBlockController extends BaseController {
     }
 
 
+    /**
+     * 更新文号到erp中
+     * @param projectId
+     */
     public void updateDocNumberToErp(Integer projectId) {
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
         if (projectInfo == null) return;
         SysProjectDto sysProjectDto = erpRpcProjectService.getProjectInfoByProjectId(projectId, BaseConstant.ASSESS_APP_KEY);
         if (sysProjectDto != null && sysProjectDto.getId() > 0) {
             sysProjectDto.setStatus(ProjectStatusEnum.FINISH.getKey());
-            List<String> reportNumberList = projectNumberRecordService.getReportNumberList(projectId, null);
+            List<String> reportNumberList = projectNumberRecordService.getReportNumberList(projectId, null,null);
             if (CollectionUtils.isEmpty(reportNumberList)) return;
             String s = StringUtils.join(reportNumberList, ',');
             sysProjectDto.setProjectDocumentNumber(s);

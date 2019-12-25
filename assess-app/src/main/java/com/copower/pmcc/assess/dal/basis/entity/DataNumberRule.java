@@ -5,6 +5,8 @@ import java.util.Date;
 public class DataNumberRule {
     private Integer id;
 
+    private String assessProjectType;
+
     private Integer reportType;
 
     private String fieldName;
@@ -37,6 +39,14 @@ public class DataNumberRule {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getAssessProjectType() {
+        return assessProjectType;
+    }
+
+    public void setAssessProjectType(String assessProjectType) {
+        this.assessProjectType = assessProjectType == null ? null : assessProjectType.trim();
     }
 
     public Integer getReportType() {

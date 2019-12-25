@@ -35,6 +35,8 @@ public class BasicApplyBatchDetail {
 
     private Date gmtModified;
 
+    private String executor;
+
     public Integer getId() {
         return id;
     }
@@ -161,5 +163,13 @@ public class BasicApplyBatchDetail {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getExecutor() {
+        return executor;
+    }
+
+    public void setExecutor(String executor) {
+        this.executor = executor == null ? null : executor.trim();
     }
 }

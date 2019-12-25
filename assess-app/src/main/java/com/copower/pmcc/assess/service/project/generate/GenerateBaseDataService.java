@@ -83,6 +83,7 @@ public class GenerateBaseDataService {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     protected static final String errorStr = "无";
     //spring bean
+    private ProjectInfoService projectInfoService;
     private SchemeJudgeObjectService schemeJudgeObjectService;
     private SchemeJudgeFunctionService schemeJudgeFunctionService;
     private SchemeAreaGroupService schemeAreaGroupService;
@@ -160,7 +161,8 @@ public class GenerateBaseDataService {
      */
     public String getWordNumber() {
         try {
-            String number = projectNumberRecordService.getReportNumber(projectId, areaId, this.baseReportTemplate.getReportType());
+            AssessProjectTypeEnum assessProjectType = projectInfoService.getAssessProjectType(projectInfo.getProjectCategoryId());
+            String number = projectNumberRecordService.getReportNumber(projectInfo, areaId,assessProjectType, this.baseReportTemplate.getReportType(),false);
             if (StringUtils.isNotBlank(number)) {
                 return number;
             }
@@ -6846,6 +6848,7 @@ public class GenerateBaseDataService {
         this.areaId = areaId;
         this.baseReportTemplate = baseReportTemplate;
         //注入bean
+        this.projectInfoService = SpringContextUtils.getBean(ProjectInfoService.class);
         this.generateCommonMethod = SpringContextUtils.getBean(GenerateCommonMethod.class);
         this.schemeJudgeObjectService = SpringContextUtils.getBean(SchemeJudgeObjectService.class);
         this.schemeAreaGroupService = SpringContextUtils.getBean(SchemeAreaGroupService.class);
