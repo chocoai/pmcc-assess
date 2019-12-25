@@ -168,6 +168,8 @@
             var itemObj = getChksData();
             data = jQuery.extend({}, data, itemObj);
         }
+
+
         Loading.progressShow();
         $.ajax({
             url: "${pageContext.request.contextPath}/ProjectTask/submitTaskApproval",
