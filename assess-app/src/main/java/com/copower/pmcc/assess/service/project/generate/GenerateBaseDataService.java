@@ -162,7 +162,7 @@ public class GenerateBaseDataService {
     public String getWordNumber() {
         try {
             AssessProjectTypeEnum assessProjectType = projectInfoService.getAssessProjectType(projectInfo.getProjectCategoryId());
-            String number = projectNumberRecordService.getReportNumber(projectInfo, areaId,assessProjectType, this.baseReportTemplate.getReportType());
+            String number = projectNumberRecordService.getReportNumber(projectInfo, areaId,assessProjectType, this.baseReportTemplate.getReportType(),false);
             if (StringUtils.isNotBlank(number)) {
                 return number;
             }

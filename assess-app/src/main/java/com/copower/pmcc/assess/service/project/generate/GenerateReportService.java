@@ -251,7 +251,7 @@ public class GenerateReportService {
                 numberRecord.setBisDelete(true);
                 projectNumberRecordService.updateProjectNumberRecord(numberRecord);
                 //将已经老旧的文号替换为最新的文号
-                String value = projectNumberRecordService.getReportNumber(projectInfoVo,generateReportInfo.getAreaGroupId(),assessProjectType,reportType.getId()) ;
+                String value = projectNumberRecordService.getReportNumber(projectInfoVo,generateReportInfo.getAreaGroupId(),assessProjectType,reportType.getId(),false) ;
                 AsposeUtils.replaceText(dir, numberRecord.getNumberValue(), value);
                 //替换编号
                 AsposeUtils.replaceText(dir, projectNumberRecordService.getWordNumber2(numberRecord.getNumberValue()), projectNumberRecordService.getWordNumber2(value));

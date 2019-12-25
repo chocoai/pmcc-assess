@@ -121,15 +121,17 @@ public class ProjectNumberRecordService {
      * @param reportType 报告类型
      * @return
      */
-    public String getReportNumber(ProjectInfo projectInfo, Integer areaId, AssessProjectTypeEnum assessProjectType, Integer reportType) throws BusinessException {
+    public String getReportNumber(ProjectInfo projectInfo, Integer areaId, AssessProjectTypeEnum assessProjectType, Integer reportType, Boolean isMustTakeNew) throws BusinessException {
         //1.根据文号规则走号
         //2.生成报告号之后将其存储
         if (projectInfo == null || areaId == null || reportType == null)
             throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
         //判断该区域的该报告类型是否已经有文号，如果已有则直接返回
         int year = DateUtils.getYear(new Date());
-        ProjectNumberRecord numberRecord = projectNumberRecordDao.getProjectNumberRecord(projectInfo.getId(), areaId, year, assessProjectType.getKey(), reportType);
-        if (numberRecord != null) return numberRecord.getNumberValue();
+        if (isMustTakeNew == Boolean.FALSE) {
+            ProjectNumberRecord numberRecord = projectNumberRecordDao.getProjectNumberRecord(projectInfo.getId(), areaId, year, assessProjectType.getKey(), reportType);
+            if (numberRecord != null) return numberRecord.getNumberValue();
+        }
         BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicById(reportType);
         int number = 1;
         DataNumberRule numberRule = dataNumberRuleService.getDataNumberRule(assessProjectType, reportType);
@@ -168,7 +170,7 @@ public class ProjectNumberRecordService {
                 //无效则直接拿最大号
                 if (projectNumberRecords.get(0).getBisDelete() == true) {
                     //直接取最大号
-                    reportNumberService = new ReportNumberService(assessProjectType,reportType, year, number, numberRule, reportNumber).invoke();
+                    reportNumberService = new ReportNumberService(assessProjectType, reportType, year, number, numberRule, reportNumber).invoke();
                     number = reportNumberService.getNumber();
                     reportNumber = reportNumberService.getReportNumber();
                 } else {

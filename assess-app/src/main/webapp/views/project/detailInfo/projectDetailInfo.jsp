@@ -322,8 +322,8 @@
             cols.push({field: 'remark', title: '说明'});
             cols.push({field: 'creatorName', title: '拿号人'});
             cols.push({
-                field: 'takeTime', title: '拿号时间', formatter: function (value, row, index) {
-                    return formatDate(value);
+                field: 'gmtCreated', title: '拿号时间', formatter: function (value, row, index) {
+                    return formatDate(value,true);
                 }
             });
             target.bootstrapTable('destroy');
