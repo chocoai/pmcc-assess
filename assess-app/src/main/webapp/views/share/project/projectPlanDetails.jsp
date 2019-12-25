@@ -163,10 +163,8 @@
         data = $.extend({}, data, approvalData);
 
         if ("${bisCheck==1}") {
-            if (validChks()) {
-                var itemObj = getChksData();
-                data = jQuery.extend({}, data, itemObj);
-            }
+            var itemObj = getChksData();
+            data = jQuery.extend({}, data, itemObj);
         }
 
 
