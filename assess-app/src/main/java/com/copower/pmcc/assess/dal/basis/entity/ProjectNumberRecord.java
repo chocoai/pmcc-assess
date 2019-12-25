@@ -7,6 +7,8 @@ public class ProjectNumberRecord {
 
     private Integer projectId;
 
+    private String assessProjectType;
+
     private Integer reportType;
 
     private Integer areaId;
@@ -39,6 +41,14 @@ public class ProjectNumberRecord {
 
     public void setProjectId(Integer projectId) {
         this.projectId = projectId;
+    }
+
+    public String getAssessProjectType() {
+        return assessProjectType;
+    }
+
+    public void setAssessProjectType(String assessProjectType) {
+        this.assessProjectType = assessProjectType == null ? null : assessProjectType.trim();
     }
 
     public Integer getReportType() {

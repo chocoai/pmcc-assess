@@ -47,10 +47,11 @@ public class ProjectNumberRecordDao {
         return projectNumberRecordMapper.selectByExample(example);
     }
 
-    public ProjectNumberRecord getProjectNumberRecord(Integer projectId, Integer areaId, Integer year, Integer reportType) {
+    public ProjectNumberRecord getProjectNumberRecord(Integer projectId, Integer areaId, Integer year,String assessProjectType, Integer reportType) {
         ProjectNumberRecordExample example = new ProjectNumberRecordExample();
         ProjectNumberRecordExample.Criteria criteria = example.createCriteria();
-        criteria.andBisDeleteEqualTo(false).andProjectIdEqualTo(projectId).andAreaIdEqualTo(areaId).andYearEqualTo(year).andReportTypeEqualTo(reportType);
+        criteria.andBisDeleteEqualTo(false).andProjectIdEqualTo(projectId);
+        criteria.andAreaIdEqualTo(areaId).andYearEqualTo(year).andAssessProjectTypeEqualTo(assessProjectType).andReportTypeEqualTo(reportType);
         example.setOrderByClause("number desc");
         List<ProjectNumberRecord> numberRecordList = projectNumberRecordMapper.selectByExample(example);
         if (CollectionUtils.isEmpty(numberRecordList)) return null;

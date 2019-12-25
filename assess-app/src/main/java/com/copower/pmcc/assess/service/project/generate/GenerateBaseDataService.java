@@ -83,6 +83,7 @@ public class GenerateBaseDataService {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     protected static final String errorStr = "无";
     //spring bean
+    private ProjectInfoService projectInfoService;
     private SchemeJudgeObjectService schemeJudgeObjectService;
     private SchemeJudgeFunctionService schemeJudgeFunctionService;
     private SchemeAreaGroupService schemeAreaGroupService;
@@ -160,7 +161,8 @@ public class GenerateBaseDataService {
      */
     public String getWordNumber() {
         try {
-            String number = projectNumberRecordService.getReportNumber(projectId, areaId, this.baseReportTemplate.getReportType());
+            AssessProjectTypeEnum assessProjectType = projectInfoService.getAssessProjectType(projectInfo.getProjectCategoryId());
+            String number = projectNumberRecordService.getReportNumber(projectInfo, areaId,assessProjectType, this.baseReportTemplate.getReportType());
             if (StringUtils.isNotBlank(number)) {
                 return number;
             }

@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.data;
 
+import com.copower.pmcc.assess.common.enums.AssessProjectTypeEnum;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataNumberRuleDao;
 import com.copower.pmcc.assess.dal.basis.entity.DataNumberRule;
 import com.copower.pmcc.assess.dto.output.data.DataNumberRuleVo;
@@ -23,7 +24,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service(value="dataNumberRuleService")
+@Service(value = "dataNumberRuleService")
 public class DataNumberRuleService {
 
     @Autowired
@@ -41,7 +42,7 @@ public class DataNumberRuleService {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<DataNumberRule> dataNumberRulesList = dataNumberRuleDao.getDataNumberRule(reportType);
+        List<DataNumberRule> dataNumberRulesList = dataNumberRuleDao.getDataNumberRule(null, reportType);
         List<DataNumberRuleVo> dataNumberRuleVos = getVoList(dataNumberRulesList);
         vo.setTotal(page.getTotal());
         vo.setRows(CollectionUtils.isEmpty(dataNumberRuleVos) ? new ArrayList<DataNumberRuleVo>() : dataNumberRuleVos);
@@ -53,56 +54,59 @@ public class DataNumberRuleService {
         return LangUtils.transform(list, p -> {
             DataNumberRuleVo dataNumberRuleVo = new DataNumberRuleVo();
             BeanUtils.copyProperties(p, dataNumberRuleVo);
+            dataNumberRuleVo.setAssessProjectTypeName(AssessProjectTypeEnum.getDecByKey(p.getAssessProjectType()));
             dataNumberRuleVo.setReportTypeName(baseDataDicService.getNameById(p.getReportType()));
             dataNumberRuleVo.setSameReportTypeName(baseDataDicService.getNameById(p.getSameReportType()));
             return dataNumberRuleVo;
         });
     }
 
-    public DataNumberRule getDataNumberRule(Integer reportType){
-        List<DataNumberRule> dataNumberRulesList = dataNumberRuleDao.getDataNumberRule(reportType);
-        if(CollectionUtils.isEmpty(dataNumberRulesList)) return null;
+    public DataNumberRule getDataNumberRule(AssessProjectTypeEnum assessProjectTypeEnum, Integer reportType) {
+        List<DataNumberRule> dataNumberRulesList = dataNumberRuleDao.getDataNumberRule(assessProjectTypeEnum.getKey(), reportType);
+        if (CollectionUtils.isEmpty(dataNumberRulesList)) return null;
         return dataNumberRulesList.get(0);
     }
 
-    public DataNumberRule getDataNumberRule(String fieldName){
-        DataNumberRule where=new DataNumberRule();
+    public DataNumberRule getDataNumberRule(String fieldName) {
+        DataNumberRule where = new DataNumberRule();
         where.setFieldName(fieldName);
         List<DataNumberRule> dataNumberRulesList = dataNumberRuleDao.getDataNumberRule(where);
-        if(CollectionUtils.isEmpty(dataNumberRulesList)) return null;
+        if (CollectionUtils.isEmpty(dataNumberRulesList)) return null;
         return dataNumberRulesList.get(0);
     }
 
     public boolean save(DataNumberRule dataNumberRule) throws BusinessException {
-        if(dataNumberRule == null)
+        if (dataNumberRule == null)
             throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
-        if(dataNumberRule.getId() != null && dataNumberRule.getId() > 0){
+        if (dataNumberRule.getId() != null && dataNumberRule.getId() > 0) {
             return dataNumberRuleDao.update(dataNumberRule);
-        }else{
+        } else {
             dataNumberRule.setCreator(processControllerComponent.getThisUser());
             return dataNumberRuleDao.save(dataNumberRule);
         }
     }
 
     public boolean delete(Integer id) throws BusinessException {
-        if(id ==null) throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());;
+        if (id == null) throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
+        ;
         return dataNumberRuleDao.delete(id);
     }
 
-    public List<DataNumberRule> getDataNumberRuleByGroup(String groupName){
+    public List<DataNumberRule> getDataNumberRuleByGroup(AssessProjectTypeEnum assessProjectTypeEnum, String groupName) {
         DataNumberRule dataNumberRule = new DataNumberRule();
         dataNumberRule.setGroupName(groupName);
+        dataNumberRule.setAssessProjectType(assessProjectTypeEnum.getKey());
         List<DataNumberRule> dataNumberRulesList = dataNumberRuleDao.getDataNumberRule(dataNumberRule);
         return dataNumberRulesList;
     }
 
-    public List<Integer> getSameGroupReportType(Integer reportType){
-        DataNumberRule dataNumberRulesList = getDataNumberRule(reportType);
-        List<DataNumberRule> numberRuleGroup = getDataNumberRuleByGroup(dataNumberRulesList.getGroupName());
+    public List<Integer> getSameGroupReportType(AssessProjectTypeEnum assessProjectTypeEnum, Integer reportType) {
+        DataNumberRule dataNumberRulesList = getDataNumberRule(assessProjectTypeEnum, reportType);
+        List<DataNumberRule> numberRuleGroup = getDataNumberRuleByGroup(assessProjectTypeEnum, dataNumberRulesList.getGroupName());
         //一个分组下的reportType
         List<Integer> reportTypes = LangUtils.transform(numberRuleGroup, o -> o.getReportType());
         //去重
         List<Integer> reportTypeList = generateCommonMethod.removeDuplicate(reportTypes);
-        return  reportTypeList;
+        return reportTypeList;
     }
 }

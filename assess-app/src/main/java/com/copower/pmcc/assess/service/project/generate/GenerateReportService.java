@@ -5,7 +5,8 @@ import com.aspose.words.Document;
 import com.copower.pmcc.ad.api.dto.AdCompanyQualificationDto;
 import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.PoiUtils;
-import com.copower.pmcc.assess.common.enums.*;
+import com.copower.pmcc.assess.common.enums.AssessProjectTypeEnum;
+import com.copower.pmcc.assess.common.enums.SchemeSupportTypeEnum;
 import com.copower.pmcc.assess.common.enums.report.*;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
@@ -45,8 +46,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.math.BigDecimal;
 import java.util.*;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -246,12 +245,13 @@ public class GenerateReportService {
         GenerateBaseDataService generateBaseDataService = new GenerateBaseDataService(projectInfoVo, generateReportInfo.getAreaGroupId(), baseReportTemplate, projectPlan);
         //重新拿号
         if (Objects.equal(generateReportInfo.getSymbolOperation(), BaseReportSymbolOperationEnum.RESET.getKey())) {
-            ProjectNumberRecord numberRecord = projectNumberRecordService.getProjectNumberRecord(generateReportInfo.getProjectId(), generateReportInfo.getAreaGroupId(), reportType.getId());
+            AssessProjectTypeEnum assessProjectType = projectInfoService.getAssessProjectType(projectInfoVo.getProjectCategoryId());
+            ProjectNumberRecord numberRecord = projectNumberRecordService.getProjectNumberRecord(generateReportInfo.getProjectId(), generateReportInfo.getAreaGroupId(),assessProjectType, reportType.getId());
             if (numberRecord != null) {
                 numberRecord.setBisDelete(true);
                 projectNumberRecordService.updateProjectNumberRecord(numberRecord);
                 //将已经老旧的文号替换为最新的文号
-                String value = projectNumberRecordService.getReportNumber(generateReportInfo.getProjectId(),generateReportInfo.getAreaGroupId(),reportType.getId()) ;
+                String value = projectNumberRecordService.getReportNumber(projectInfoVo,generateReportInfo.getAreaGroupId(),assessProjectType,reportType.getId()) ;
                 AsposeUtils.replaceText(dir, numberRecord.getNumberValue(), value);
                 //替换编号
                 AsposeUtils.replaceText(dir, projectNumberRecordService.getWordNumber2(numberRecord.getNumberValue()), projectNumberRecordService.getWordNumber2(value));

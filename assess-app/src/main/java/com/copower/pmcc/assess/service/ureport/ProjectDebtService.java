@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.service.ureport;
 
 import com.bstek.ureport.build.BeanPageDataSet;
+import com.copower.pmcc.assess.common.enums.AssessProjectTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.ReportProjectDebtDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
@@ -195,20 +196,21 @@ public class ProjectDebtService {
                     reportProjectDebt.setReportUseUnitName(initiateUnitInformationVo.getuUseUnitName());
                 }
                 //预评报告文号
-                List<Integer> sameGroupPreauditType = dataNumberRuleService.getSameGroupReportType(preauditId);
+                AssessProjectTypeEnum assessProjectType = projectInfoService.getAssessProjectType(projectInfo.getProjectCategoryId());
+                List<Integer> sameGroupPreauditType = dataNumberRuleService.getSameGroupReportType(assessProjectType,preauditId);
                 List<String> preauditList = Lists.newArrayList();
                 for (Integer type : sameGroupPreauditType) {
-                    preauditList.addAll(projectNumberRecordService.getReportNumberList(projectItem.getId(), type));
+                    preauditList.addAll(projectNumberRecordService.getReportNumberList(projectItem.getId(),assessProjectType, type));
 
                 }
                 if (CollectionUtils.isNotEmpty(preauditList)) {
                     reportProjectDebt.setPreauditNumber(StringUtils.join(preauditList, ","));
                 }
                 //结果报告文号
-                List<Integer> sameGroupResultType = dataNumberRuleService.getSameGroupReportType(resultId);
+                List<Integer> sameGroupResultType = dataNumberRuleService.getSameGroupReportType(assessProjectType,resultId);
                 List<String> resultIdList = Lists.newArrayList();
                 for (Integer resultType : sameGroupResultType) {
-                    resultIdList.addAll(projectNumberRecordService.getReportNumberList(projectItem.getId(), resultType));
+                    resultIdList.addAll(projectNumberRecordService.getReportNumberList(projectItem.getId(),assessProjectType, resultType));
 
                 }
                 if (CollectionUtils.isNotEmpty(resultIdList)) {

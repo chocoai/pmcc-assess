@@ -1,5 +1,7 @@
 package com.copower.pmcc.assess.common.enums;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * Created by zch on 2019/8/12.
  * 评估类型
@@ -28,5 +30,23 @@ public enum AssessProjectTypeEnum {
 
     public String getKey() {
         return key;
+    }
+
+    public static String getDecByKey(String key) {
+        if (StringUtils.isBlank(key)) return null;
+        for (AssessProjectTypeEnum assessProjectTypeEnum : values()) {
+            if (assessProjectTypeEnum.getKey().equals(key))
+                return assessProjectTypeEnum.getDec();
+        }
+        return null;
+    }
+
+    public static AssessProjectTypeEnum getAssessProjectTypeEnumByKey(String key) {
+        if (StringUtils.isBlank(key)) return null;
+        for (AssessProjectTypeEnum assessProjectTypeEnum : values()) {
+            if (assessProjectTypeEnum.getKey().equals(key))
+                return assessProjectTypeEnum;
+        }
+        return null;
     }
 }
