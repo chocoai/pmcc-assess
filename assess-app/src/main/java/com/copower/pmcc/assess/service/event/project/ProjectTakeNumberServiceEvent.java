@@ -30,6 +30,7 @@ public class ProjectTakeNumberServiceEvent extends BaseProcessEvent {
         AssessProjectTypeEnum assessProjectType = projectInfoService.getAssessProjectType(projectInfo.getProjectCategoryId());
         String reportNumber = projectNumberRecordService.getReportNumber(projectInfo, 0, assessProjectType, projectTakeNumber.getReportType());
         projectTakeNumber.setNumberValue(reportNumber);
+        projectTakeNumber.setAssessProjectType(assessProjectType.getKey());
         projectTakeNumberService.editData(projectTakeNumber);
     }
 }
