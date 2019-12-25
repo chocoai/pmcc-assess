@@ -486,7 +486,7 @@
                        class="btn btn-xs btn-warning judge-merge tooltips">合并</a>
                     <a href="javascript://" onclick="programme.mergeJudgeCancel(this);"
                        class="btn btn-xs btn-warning judge-merge-cancel tooltips">取消合并</a>
-                    <a href="javascript://" onclick="programme.mergeJudgeCancelPart(this);"
+                    <a href="javascript://" onclick="programme.mergeJudgeAdjustView(this);"
                        class="btn btn-xs btn-warning judge-merge-cancel tooltips">调整合并</a>
                     <a href="javascript://" onclick="programme.loadSceneExploreBasicApplyList('{declareId}','{id}');"
                        class="btn btn-xs btn-success judge-relation-object tooltips">关联查勘</a>
@@ -696,7 +696,7 @@
         areaItemHtml: '<li data-areaGroupId="{areaGroupId}"> <label>{areaName}</label> <a href="javascript://" onclick="programme.mergeItemRemove(this);" style="float: right;"><i class="fa fa-remove fa-white" ></i></a> </li>',
         //委估对象合并项html
         judgeItemHtml: '<li data-judgeId="{judgeId}">  <label onclick="programme.setStandardJudge(this);">{mergeNumber}号估价对象</label> <a href="javascript://"  onclick="$(this).closest(\'li\').remove();"  style="float: right;"><i class="fa fa-remove fa-white" ></i></a>  </li>',
-        judgeSplitItemHtml: '<li data-judgeId="{judgeId}">  <label>{name}</label> <a href="javascript://" onclick="programme.splitItemRemove(this);"  style="float: right;"><i class="fa fa-remove fa-white" ></i></a>  </li>',
+        judgeAdjustItemHtml: '<li data-judgeId="{judgeId}" data-type="{type}">  <label>{name}</label> <a href="javascript://" onclick="programme.splitItemRemove(this);"  style="float: right;"><i class="fa fa-remove fa-white" ></i></a>  </li>',
         currJudgeMethodButton: undefined //当前评估方法button
     };
 
@@ -970,6 +970,12 @@
         var mergeNumber = $panel.find('[data-name="mergeNumber"]').val();
         var judgeId = $panel.find('[data-name="id"]').val();
         var html = programme.config.judgeItemHtml;
+        if (programme.config.judgeAdjustPopIndex > 0) {
+            $("#judge-split-ul").prepend(programme.config.judgeAdjustItemHtml.replace(/{type}/,'add').replace(/{name}/g, mergeNumber + "号估价对象").replace(/{judgeId}/g, judgeId));
+            var addIds = $("#judge-split-ul").attr('data-add-ids');
+            $("#judge-split-ul").attr('data-add-ids', (addIds + "," + judgeId).replace(/^,/, ""));
+            return;
+        }
         if (programme.config.judgePopIndex <= 0) {
             programme.config.judgePopIndex = layer.open({
                 title: "委估对象合并",
@@ -1068,7 +1074,7 @@
     };
 
     //调整合并的委估对象
-    programme.mergeJudgeCancelPart = function (_this) {
+    programme.mergeJudgeAdjustView = function (_this) {
         var id = $(_this).closest('.x_panel').find('[data-name=id]').val();
         $.ajax({
             url: '${pageContext.request.contextPath}/schemeProgramme/getJudgeObjectListByPid',
@@ -1089,15 +1095,15 @@
                         area: ['420px', '300px'], //宽高
                         content: '<ul id="judge-split-ul" class="list-unstyled project_files" data-remove-ids="" data-add-ids=""></ul>',
                         yes: function (index, layero) {
-                            programme.mergeJudgeAdjudt(id, $(_this).closest('.area_panel'));
+                            programme.mergeJudgeAdjust(id, $(_this).closest('.area_panel'));
                         },
                         end: function () {
                             programme.config.judgeAdjustPopIndex = 0;
                         },
                         success: function () {
-                            var html = programme.config.judgeSplitItemHtml;
+                            var html = programme.config.judgeAdjustItemHtml;
                             $.each(result.rows, function (i, item) {
-                                $("#judge-split-ul").prepend(html.replace(/{name}/g, item.name).replace(/{judgeId}/g, item.id));
+                                $("#judge-split-ul").prepend(html.replace(/{type}/,'remove').replace(/{name}/g, item.name).replace(/{judgeId}/g, item.id));
                             })
                         }
                     });
@@ -1115,15 +1121,21 @@
     programme.splitItemRemove = function (_this) {
         var li = $(_this).closest('li');
         var id = li.attr('data-judgeid');
-        var removeIds = $("#judge-split-ul").attr('data-remove-ids');
-        $("#judge-split-ul").attr('data-remove-ids', (removeIds + "," + id).replace(/^,/, ""));
+        if(li.attr('data-type')=='remove'){
+            var removeIds = $("#judge-split-ul").attr('data-remove-ids');
+            $("#judge-split-ul").attr('data-remove-ids', (removeIds + "," + id).replace(/^,/, ""));
+        }
+        if(li.attr('data-type')=='add'){
+            var addIds = $("#judge-split-ul").attr('data-add-ids');
+            $("#judge-split-ul").attr('data-add-ids', (addIds + "," + id).replace(/^,/, ""));
+        }
         li.remove();
     };
 
     //调整合并的委估对象
-    programme.mergeJudgeAdjudt = function (id, panel) {
+    programme.mergeJudgeAdjust = function (id, panel) {
         $.ajax({
-            url: '${pageContext.request.contextPath}/schemeProgramme/mergeJudgeAdjudt',
+            url: '${pageContext.request.contextPath}/schemeProgramme/mergeJudgeAdjust',
             data: {
                 id: id,
                 removeIds: $("#judge-split-ul").attr('data-remove-ids'),
@@ -1569,9 +1581,9 @@
             },
             success: function (result) {
                 if (result.ret) {
-                    var tBody = $('#tb_baisc_apply_list').find('tbody');
+                    var tBody = $('#tb_baisc_apply_list').find('tbody').empty();
                     $.each(result.data, function (i, item) {
-                        var html = '<tr><td>' + item.name + '<input type="hidden" name="id" value="'+item.id+'"><input type="hidden" name="area" value="'+item.area+'"></td><td>' + item.area + '</td>';
+                        var html = '<tr><td>' + item.name + '<input type="hidden" name="id" value="' + item.id + '"><input type="hidden" name="area" value="' + item.area + '"></td><td>' + item.area + '</td>';
                         html += '<td><input type="button" class="btn btn-xs btn-primary" value="选择" onclick="programme.selectSceneExploreBasicApply(this,' + judgeId + ');"></td><tr>';
                         tBody.append(html);
                     })
@@ -1601,7 +1613,7 @@
             },
             success: function (result) {
                 if (result.ret) {
-                    $(document).find('[name=evaluationArea'+judgeId+']').val();
+                    $(document).find('[name=evaluationArea' + judgeId + ']').val(area);
                     toastr.success('关联成功');
                     $('#loadSceneExploreBasicApplyModal').modal('hide');
                 }

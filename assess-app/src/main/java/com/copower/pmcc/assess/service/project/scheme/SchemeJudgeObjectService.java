@@ -392,6 +392,7 @@ public class SchemeJudgeObjectService {
             splitJudgeObject.setAreaGroupId(schemeJudgeObject.getAreaGroupId());
             splitJudgeObject.setOriginalAreaGroupId(schemeJudgeObject.getOriginalAreaGroupId());
             splitJudgeObject.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
+            splitJudgeObject.setBasicApplyId(schemeJudgeObject.getBasicApplyId());
             splitJudgeObject.setNumber(schemeJudgeObject.getNumber());
             splitJudgeObject.setSplitNumber(judgeObjectList.size() + 1);
             splitJudgeObject.setName(String.format("%s-%s%s", schemeJudgeObject.getNumber(), splitJudgeObject.getSplitNumber(), BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME));
@@ -534,29 +535,55 @@ public class SchemeJudgeObjectService {
      * @param id
      */
     @Transactional(rollbackFor = Exception.class)
-    public void mergeJudgeAdjudt(Integer id, String removeIds,String addIds) {
+    public void mergeJudgeAdjust(Integer id, String removeIds,String addIds) {
         //1.将原参与合并的委估对象设置为可用，更该估价对象号及名称
         //2.标准估价对象无法移除
-        if (StringUtils.isBlank(removeIds)) return;
         SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectDao.getSchemeJudgeObject(id);
-        List<Integer> list = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(removeIds));
-        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getListByIds(list);
-        String number = "," + schemeJudgeObject.getNumber();
-        String name = "," + schemeJudgeObject.getName();
-        if (CollectionUtils.isNotEmpty(judgeObjectList)) {
-            for (SchemeJudgeObject judgeObject : judgeObjectList) {
-                if (judgeObject.getId().equals(schemeJudgeObject.getStandardJudgeId())) continue;
-                judgeObject.setBisEnable(true);
-                judgeObject.setPid(0);
-                schemeJudgeObjectDao.updateSchemeJudgeObject(judgeObject);
-                String fullNumber = "," + judgeObject.getNumber() + (judgeObject.getSplitNumber() == null ? "" : "-" + judgeObject.getSplitNumber());
-                number = number.replace(fullNumber, "");
-                name = name.replace(fullNumber, "");
+        if (StringUtils.isNotBlank(removeIds)) {
+            List<Integer> list = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(removeIds));
+            List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getListByIds(list);
+            String number = "," + schemeJudgeObject.getNumber();
+            String name = "," + schemeJudgeObject.getName();
+            BigDecimal evaluationArea = schemeJudgeObject.getEvaluationArea();
+            if (CollectionUtils.isNotEmpty(judgeObjectList)) {
+                for (SchemeJudgeObject judgeObject : judgeObjectList) {
+                    if (judgeObject.getId().equals(schemeJudgeObject.getStandardJudgeId())) continue;
+                    judgeObject.setBisEnable(true);
+                    judgeObject.setPid(0);
+                    schemeJudgeObjectDao.updateSchemeJudgeObject(judgeObject);
+                    String fullNumber = "," + judgeObject.getNumber() + (judgeObject.getSplitNumber() == null ? "" : "-" + judgeObject.getSplitNumber());
+                    number = number.replace(fullNumber, "");
+                    name = name.replace(fullNumber, "");
+                    evaluationArea=evaluationArea.subtract(judgeObject.getEvaluationArea());
+                }
             }
+            schemeJudgeObject.setNumber(number.replaceAll("^,+?", ""));
+            schemeJudgeObject.setName(name.replaceAll("^,+?", ""));
+            schemeJudgeObject.setEvaluationArea(evaluationArea);
+            schemeJudgeObjectDao.updateSchemeJudgeObject(schemeJudgeObject);
         }
-        schemeJudgeObject.setNumber(number.replaceAll("^,+?", ""));
-        schemeJudgeObject.setName(name.replaceAll("^,+?", ""));
-        schemeJudgeObjectDao.updateSchemeJudgeObject(schemeJudgeObject);
+
+        if (StringUtils.isNotBlank(addIds)) {
+            List<Integer> list = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(addIds));
+            List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getListByIds(list);
+            String number = schemeJudgeObject.getNumber();
+            BigDecimal evaluationArea = schemeJudgeObject.getEvaluationArea();
+            if (CollectionUtils.isNotEmpty(judgeObjectList)) {
+                for (SchemeJudgeObject judgeObject : judgeObjectList) {
+                    judgeObject.setBisEnable(false);
+                    judgeObject.setPid(id);
+                    schemeJudgeObjectDao.updateSchemeJudgeObject(judgeObject);
+                    String fullNumber = "," + judgeObject.getNumber() + (judgeObject.getSplitNumber() == null ? "" : "-" + judgeObject.getSplitNumber());
+                    number = number+fullNumber;
+                    evaluationArea=evaluationArea.add(judgeObject.getEvaluationArea());
+                }
+            }
+            schemeJudgeObject.setNumber(number);
+            schemeJudgeObject.setName(number+BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME);
+            schemeJudgeObject.setEvaluationArea(evaluationArea);
+            schemeJudgeObjectDao.updateSchemeJudgeObject(schemeJudgeObject);
+        }
+
     }
 
     /**

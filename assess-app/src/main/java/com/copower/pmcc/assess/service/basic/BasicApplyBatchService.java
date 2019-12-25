@@ -62,6 +62,7 @@ import org.springframework.util.ObjectUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -883,7 +884,7 @@ public class BasicApplyBatchService {
      * @throws Exception
      */
     @Transactional(rollbackFor = Exception.class)
-    public void saveDraft(String formData, Integer applyBatchId) throws Exception {
+    public void saveDraft(String formData, Integer applyBatchId,Integer planDetailsId) throws Exception {
         String jsonContent = null;
         JSONObject jsonObject = JSON.parseObject(formData);
 
@@ -995,6 +996,20 @@ public class BasicApplyBatchService {
                     houseDetail.setDisplayName(basicHouse.getHouseNumber());
                     basicApplyBatchDetailDao.updateInfo(houseDetail);
 
+                    BasicApply where = new BasicApply();
+                    where.setPlanDetailsId(planDetailsId);
+                    where.setBasicHouseId(houseDetail.getTableId());
+                    BasicApply basicApply = basicApplyService.getBasicApply(where);
+                    Map<EstateTaggingTypeEnum, BasicApplyBatchDetail> map = basicApplyBatchDetailService.getApplyBatchDetailMap(houseDetail);
+                    basicApply.setArea(basicHouse.getArea());
+                    //单元
+                    BasicApplyBatchDetail unitBatchDetail = map.get(EstateTaggingTypeEnum.UNIT);
+                    //楼栋
+                    BasicApplyBatchDetail buildBatchDetail = map.get(EstateTaggingTypeEnum.BUILDING);
+                    //楼盘
+                    BasicApplyBatchDetail estateBatchDetail = map.get(EstateTaggingTypeEnum.ESTATE);
+                    basicApply.setName(basicApplyService.getFullName(estateBatchDetail.getName(), buildBatchDetail.getName(), unitBatchDetail.getName(), houseDetail.getName()));
+                    basicApplyService.saveBasicApply(basicApply);
                 }
                 //交易信息
                 jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_TRADING.getVar());
@@ -2315,7 +2330,7 @@ public class BasicApplyBatchService {
      * @param sourceBatchDetailId
      * @throws Exception
      */
-    public void deepCopy(Integer sourceBatchDetailId,Integer planDetailsId) throws Exception {
+    public void deepCopy(Integer sourceBatchDetailId, Integer planDetailsId) throws Exception {
         //被复制数据
         BasicApplyBatchDetail sourceBasicApplyBatchDetail = basicApplyBatchDetailDao.getInfoById(sourceBatchDetailId);
 
@@ -2324,21 +2339,21 @@ public class BasicApplyBatchService {
             BasicBuilding sourceBuilding = basicBuildingDao.getBasicBuildingById(sourceBasicApplyBatchDetail.getTableId());
             List<BasicBuilding> sourceBuildings = Lists.newArrayList();
             sourceBuildings.add(sourceBuilding);
-            deepCopyBasicBuilding(sourceBuildings, sourceBasicApplyBatchDetail,planDetailsId);
+            deepCopyBasicBuilding(sourceBuildings, sourceBasicApplyBatchDetail, planDetailsId);
         }
         //复制单元
         if (sourceBasicApplyBatchDetail.getTableName().equals("tb_basic_unit")) {
             BasicUnit sourceUnit = basicUnitDao.getBasicUnitById(sourceBasicApplyBatchDetail.getTableId());
             List<BasicUnit> sourceUnits = Lists.newArrayList();
             sourceUnits.add(sourceUnit);
-            deepCopyBasicUnit(sourceUnits, null, sourceBasicApplyBatchDetail, null,planDetailsId);
+            deepCopyBasicUnit(sourceUnits, null, sourceBasicApplyBatchDetail, null, planDetailsId);
         }
         //复制房屋
         if (sourceBasicApplyBatchDetail.getTableName().equals("tb_basic_house")) {
             BasicHouse sourceHouse = basicHouseDao.getBasicHouseById(sourceBasicApplyBatchDetail.getTableId());
             List<BasicHouse> sourceHouses = Lists.newArrayList();
             sourceHouses.add(sourceHouse);
-            deepCopyBasicHouse(sourceHouses, null, sourceBasicApplyBatchDetail, null,planDetailsId);
+            deepCopyBasicHouse(sourceHouses, null, sourceBasicApplyBatchDetail, null, planDetailsId);
         }
 
     }
@@ -2350,7 +2365,7 @@ public class BasicApplyBatchService {
      * @return
      * @throws Exception
      */
-    private void deepCopyBasicBuilding(List<BasicBuilding> sourceBuildings, BasicApplyBatchDetail source,Integer planDetailsId) throws Exception {
+    private void deepCopyBasicBuilding(List<BasicBuilding> sourceBuildings, BasicApplyBatchDetail source, Integer planDetailsId) throws Exception {
         if (CollectionUtils.isNotEmpty(sourceBuildings))
             for (BasicBuilding buildingOld : sourceBuildings) {
                 BasicBuilding targetBuilding = new BasicBuilding();
@@ -2406,7 +2421,7 @@ public class BasicApplyBatchService {
                     List<BasicApplyBatchDetail> unitBatchDetailList = basicApplyBatchDetailService.getBasicApplyBatchDetailByPid(source.getId(), source.getApplyBatchId());
                     List<BasicUnit> oldUnits = LangUtils.transform(unitBatchDetailList, o -> basicUnitDao.getBasicUnitById(o.getTableId()));
 
-                    deepCopyBasicUnit(oldUnits, targetBuilding.getId(), null, newBatchDetail,planDetailsId);
+                    deepCopyBasicUnit(oldUnits, targetBuilding.getId(), null, newBatchDetail, planDetailsId);
                 }
             }
     }
@@ -2420,7 +2435,7 @@ public class BasicApplyBatchService {
      * @return
      * @throws Exception
      */
-    private void deepCopyBasicUnit(List<BasicUnit> sourceUnits, Integer targetBuildingId, BasicApplyBatchDetail source, BasicApplyBatchDetail parent,Integer planDetailsId) throws Exception {
+    private void deepCopyBasicUnit(List<BasicUnit> sourceUnits, Integer targetBuildingId, BasicApplyBatchDetail source, BasicApplyBatchDetail parent, Integer planDetailsId) throws Exception {
         if (CollectionUtils.isNotEmpty(sourceUnits))
             for (BasicUnit sourceUnit : sourceUnits) {
                 if (sourceUnit != null) {
@@ -2499,7 +2514,7 @@ public class BasicApplyBatchService {
                     }
                     List<BasicHouse> oldHouses = LangUtils.transform(unitBatchDetailList, o -> basicHouseDao.getBasicHouseById(o.getTableId()));
 
-                    deepCopyBasicHouse(oldHouses, targetUnit.getId(), null, newBatchDetail,planDetailsId);
+                    deepCopyBasicHouse(oldHouses, targetUnit.getId(), null, newBatchDetail, planDetailsId);
                 }
             }
     }
@@ -2512,7 +2527,7 @@ public class BasicApplyBatchService {
      * @param targetUnitId
      * @throws Exception
      */
-    public void deepCopyBasicHouse(List<BasicHouse> sourceHouses, Integer targetUnitId, BasicApplyBatchDetail source, BasicApplyBatchDetail unitParent,Integer planDetailsId) throws Exception {
+    public void deepCopyBasicHouse(List<BasicHouse> sourceHouses, Integer targetUnitId, BasicApplyBatchDetail source, BasicApplyBatchDetail unitParent, Integer planDetailsId) throws Exception {
         if (CollectionUtils.isNotEmpty(sourceHouses))
             for (BasicHouse sourceHouse : sourceHouses) {
                 if (sourceHouse != null) {
@@ -2530,7 +2545,7 @@ public class BasicApplyBatchService {
                         newBatchDetail.setCreator(commonService.thisUserAccount());
                         basicApplyBatchDetailDao.addInfo(newBatchDetail);
                         //生成BasicApply
-                        basicApplyBatchDetailService.insertBasicApply(newBatchDetail,planDetailsId);
+                        basicApplyBatchDetailService.insertBasicApply(newBatchDetail, planDetailsId);
                     }
                     if (unitParent != null && unitParent.getId() != null) {
                         BasicApplyBatchDetail basicApplyBatchDetail = new BasicApplyBatchDetail();
@@ -2542,7 +2557,7 @@ public class BasicApplyBatchService {
                         basicApplyBatchDetail.setDisplayName(targetHouse.getHouseNumber());
                         basicApplyBatchDetail.setCreator(commonService.thisUserAccount());
                         basicApplyBatchDetailDao.addInfo(basicApplyBatchDetail);
-                        basicApplyBatchDetailService.insertBasicApply(basicApplyBatchDetail,planDetailsId);
+                        basicApplyBatchDetailService.insertBasicApply(basicApplyBatchDetail, planDetailsId);
                     }
                     basicHouseService.clearInvalidChildData(targetHouse.getId());
                     //房屋交易信息

@@ -420,9 +420,9 @@ public class BasicApplyBatchController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "/saveDraft", name = "保存楼盘等")
-    public HttpResult saveDraft(String formData, Integer applyBatchId) {
+    public HttpResult saveDraft(String formData, Integer applyBatchId, Integer planDetailsId) {
         try {
-            basicApplyBatchService.saveDraft(formData, applyBatchId);
+            basicApplyBatchService.saveDraft(formData,applyBatchId, planDetailsId);
             return HttpResult.newCorrectResult();
         } catch (BusinessException e) {
             log.error(e.getMessage(), e);

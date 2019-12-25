@@ -254,7 +254,10 @@ public class SchemeAreaGroupService {
         SchemeJudgeObject schemeJudgeObject = new SchemeJudgeObject();
         schemeJudgeObject.setProjectId(declareRecord.getProjectId());
         schemeJudgeObject.setDeclareRecordId(declareRecord.getId());
-        if (basicApply != null) schemeJudgeObject.setBasicApplyId(basicApply.getId());
+        if (basicApply != null) {
+            schemeJudgeObject.setBasicApplyId(basicApply.getId());
+            schemeJudgeObject.setEvaluationArea(basicApply.getArea());
+        }
         schemeJudgeObject.setNumber(String.valueOf(i));
         schemeJudgeObject.setCreator(commonService.thisUserAccount());
         schemeJudgeObject.setAreaGroupId(areaGroup.getId());

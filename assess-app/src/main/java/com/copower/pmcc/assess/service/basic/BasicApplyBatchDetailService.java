@@ -391,8 +391,10 @@ public class BasicApplyBatchDetailService {
         oldDto.setPlanDetailsId(planDetailsId);
         oldDto.setBusinessId(tableId);
         oldDto.setBusinessKey(tableName);
-        ProjectResponsibilityDto sonTask = bpmRpcProjectTaskService.getProjectTask(oldDto);
-        bpmRpcProjectTaskService.deleteProjectTask(sonTask.getId());
+        List<ProjectResponsibilityDto> projectTaskList = bpmRpcProjectTaskService.getProjectTaskList(oldDto);
+        if(CollectionUtils.isNotEmpty(projectTaskList)){
+            projectTaskList.forEach(o-> bpmRpcProjectTaskService.deleteProjectTask(o.getId()));
+        }
     }
 
     /**
