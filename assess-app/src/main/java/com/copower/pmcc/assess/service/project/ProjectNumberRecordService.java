@@ -191,6 +191,7 @@ public class ProjectNumberRecordService {
         ProjectNumberRecord projectNumberRecord = new ProjectNumberRecord();
         projectNumberRecord.setProjectId(projectInfo.getId());
         projectNumberRecord.setAreaId(areaId);
+        projectNumberRecord.setAssessProjectType(assessProjectType.getKey());
         projectNumberRecord.setReportType(reportType);
         projectNumberRecord.setYear(year);
         projectNumberRecord.setNumber(number);
