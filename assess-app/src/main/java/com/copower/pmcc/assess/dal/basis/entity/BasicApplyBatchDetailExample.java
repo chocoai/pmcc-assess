@@ -1114,6 +1114,76 @@ public class BasicApplyBatchDetailExample {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
             return (Criteria) this;
         }
+
+        public Criteria andExecutorIsNull() {
+            addCriterion("executor is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andExecutorIsNotNull() {
+            addCriterion("executor is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andExecutorEqualTo(String value) {
+            addCriterion("executor =", value, "executor");
+            return (Criteria) this;
+        }
+
+        public Criteria andExecutorNotEqualTo(String value) {
+            addCriterion("executor <>", value, "executor");
+            return (Criteria) this;
+        }
+
+        public Criteria andExecutorGreaterThan(String value) {
+            addCriterion("executor >", value, "executor");
+            return (Criteria) this;
+        }
+
+        public Criteria andExecutorGreaterThanOrEqualTo(String value) {
+            addCriterion("executor >=", value, "executor");
+            return (Criteria) this;
+        }
+
+        public Criteria andExecutorLessThan(String value) {
+            addCriterion("executor <", value, "executor");
+            return (Criteria) this;
+        }
+
+        public Criteria andExecutorLessThanOrEqualTo(String value) {
+            addCriterion("executor <=", value, "executor");
+            return (Criteria) this;
+        }
+
+        public Criteria andExecutorLike(String value) {
+            addCriterion("executor like", value, "executor");
+            return (Criteria) this;
+        }
+
+        public Criteria andExecutorNotLike(String value) {
+            addCriterion("executor not like", value, "executor");
+            return (Criteria) this;
+        }
+
+        public Criteria andExecutorIn(List<String> values) {
+            addCriterion("executor in", values, "executor");
+            return (Criteria) this;
+        }
+
+        public Criteria andExecutorNotIn(List<String> values) {
+            addCriterion("executor not in", values, "executor");
+            return (Criteria) this;
+        }
+
+        public Criteria andExecutorBetween(String value1, String value2) {
+            addCriterion("executor between", value1, value2, "executor");
+            return (Criteria) this;
+        }
+
+        public Criteria andExecutorNotBetween(String value1, String value2) {
+            addCriterion("executor not between", value1, value2, "executor");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

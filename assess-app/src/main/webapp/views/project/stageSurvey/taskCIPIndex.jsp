@@ -68,13 +68,13 @@
                         <ul id="ztree" class="ztree"></ul>
                     </div>
                     <div class="col-md-8" id="btnGroup">
-                        <a class="btn btn-xs btn-success" onclick="batchTreeTool.showAddModal()">
+                        <a class="btn btn-xs btn-success  masterTool" onclick="batchTreeTool.showAddModal()">
                             新增
                         </a>
-                        <a class="btn btn-xs btn-primary" onclick=" batchTreeTool.getAndEditDetail();">
+                        <a class="btn btn-xs btn-primary masterTool" onclick=" batchTreeTool.getAndEditDetail();">
                             编辑
                         </a>
-                        <a class="btn btn-xs btn-warning" onclick=" batchTreeTool.deleteDetail();">
+                        <a class="btn btn-xs btn-warning masterTool" onclick=" batchTreeTool.deleteDetail();">
                             删除
                         </a>
                         <a class="btn btn-xs btn-primary" onclick=" batchTreeTool.expandAll(true);">
@@ -83,16 +83,19 @@
                         <a class="btn btn-xs btn-primary" onclick=" batchTreeTool.expandAll(false);">
                             全部收起
                         </a>
-                        <a class="btn btn-xs btn-primary fillInformation" onclick="batchTreeTool.fillInformation();">
+                        <a class="btn btn-xs btn-primary fillInformation deserveTool" onclick="batchTreeTool.fillInformation();">
                             填写信息
+                        </a>
+                        <a style="display: none" class="btn btn-xs btn-primary fillInformation limitTool" onclick="batchTreeTool.checkInfo();">
+                            查看信息
                         </a>
                         <a class="btn btn-xs btn-warning copy" onclick="batchTreeTool.copy();">
                             复制
                         </a>
-                        <a class="btn btn-xs btn-warning paste" onclick="batchTreeTool.paste();">
+                        <a class="btn btn-xs btn-warning paste deserveTool" onclick="batchTreeTool.paste();">
                             粘贴
                         </a>
-                        <a class="btn btn-xs btn-warning paste" onclick="batchTreeTool.deepCopy();">
+                        <a class="btn btn-xs btn-warning paste masterTool" onclick="batchTreeTool.deepCopy();">
                             深复制
                         </a>
                     </div>
@@ -332,6 +335,9 @@
 <script type="text/javascript">
     var batchApply = undefined;
     var setting = {
+        view: {
+            fontCss: setFontCss,
+        },
         data: {
             key: {
                 name: "displayName"
@@ -341,6 +347,11 @@
                 idKey: "id",
                 pIdKey: "pid",
                 rootPId: 0
+            }
+        },// 回调函数
+        callback: {
+            onClick: function (event, treeId, treeNode, clickFlag) {
+                batchTreeTool.showFunctionBtn();
             }
         }
     };
@@ -361,6 +372,7 @@
                 var rootNode = zTreeObj.getNodes()[0];
                 zTreeObj.selectNode(rootNode);
                 zTreeObj.expandAll(true);
+                zTreeObj.setting.callback.onClick(null, zTreeObj.setting.treeId, rootNode);//调用事件
             }
         })
     }
@@ -398,6 +410,14 @@
                 html += " <div class='col-sm-4'>";
                 html += "<input type='text'  name='name' class='form-control' required value=''>";
                 html += "</div>";
+                html += "<label class='col-sm-2 control-label'>";
+                html += "执行人";
+                html += "<span class='symbol required'></span>";
+                html += "</label>";
+                html += " <div class='col-sm-4'>";
+                html += " <input type='hidden' id='executor' name='executor'>";
+                html += "<input type='text' name='executorName' id='executorName' data-rule-maxlength='50' readonly class='form-control' onclick='personSelect()'>";
+                html += "</div>";
                 break;
             }
             case 1: {
@@ -408,6 +428,14 @@
                 html += "</label>";
                 html += " <div class='col-sm-4'>";
                 html += "<input type='text'  name='name' class='form-control' required value=''>";
+                html += "</div>";
+                html += "<label class='col-sm-2 control-label'>";
+                html += "执行人";
+                html += "<span class='symbol required'></span>";
+                html += "</label>";
+                html += " <div class='col-sm-4'>";
+                html += " <input type='hidden' id='executor' name='executor'>";
+                html += "<input type='text' name='executorName' id='executorName' data-rule-maxlength='50' readonly class='form-control' onclick='personSelect()'>";
                 html += "</div>";
                 break;
             }
@@ -420,6 +448,14 @@
                 html += " <div class='col-sm-4'>";
                 html += "<input type='text'  name='name' class='form-control' required value=''>";
                 html += "</div>";
+                html += "<label class='col-sm-2 control-label'>";
+                html += "执行人";
+                html += "<span class='symbol required'></span>";
+                html += "</label>";
+                html += " <div class='col-sm-4'>";
+                html += " <input type='hidden' id='executor' name='executor'>";
+                html += "<input type='text' name='executorName' id='executorName' data-rule-maxlength='50' readonly class='form-control' onclick='personSelect()'>";
+                html += "</div>";
                 break;
             }
 
@@ -428,10 +464,13 @@
                 return false;
                 break;
             }
+
         }
         $("#detailContent").empty().append(html);
         $("#frm_detail").find("input[name='applyBatchId']").val($("#basicBatchApplyFrm").find('[name=id]').val());
         $("#frm_detail").find("input[name='pid']").val(node.id);
+        $("#frm_detail").find("input[name='executor']").val(node.creator);
+        $("#frm_detail").find("input[name='executorName']").val(node.creatorName);
         $("#detail_modal").modal();
     }
 
@@ -457,9 +496,11 @@
                         pid: result.data.pid,
                         tableId: result.data.tableId,
                         type: result.data.tableName.replace('tb_basic_', ''),
-                        displayName: result.data.displayName
+                        displayName: result.data.displayName,
+                        executor: result.data.executor,
+                        creator: result.data.creator,
                     });
-                    console.log(childNode);
+
                     $('#detail_modal').modal('hide');
                 } else {
                     Alert("保存数据失败，失败原因:" + result.errmsg);
@@ -471,7 +512,6 @@
     //编辑明细
     batchTreeTool.getAndEditDetail = function () {
         var node = zTreeObj.getSelectedNodes()[0];
-        console.log(node);
         if (node.level == 0) {
             Alert("楼盘信息请在【填写信息】中修改。");
             return false;
@@ -503,6 +543,14 @@
                 html += " <div class='col-sm-4'>";
                 html += "<input type='text'  name='name' class='form-control' required>";
                 html += "</div>";
+                html += "<label class='col-sm-2 control-label'>";
+                html += "执行人";
+                html += "<span class='symbol required'></span>";
+                html += "</label>";
+                html += " <div class='col-sm-4'>";
+                html += " <input type='hidden' id='executor' name='executor'>";
+                html += "<input type='text' name='executorName' id='executorName' data-rule-maxlength='50' readonly class='form-control' onclick='personSelect()'>";
+                html += "</div>";
                 break;
             }
             case 2: {
@@ -513,6 +561,14 @@
                 html += " <div class='col-sm-4'>";
                 html += "<input type='text'  name='name' class='form-control' required>";
                 html += "</div>";
+                html += "<label class='col-sm-2 control-label'>";
+                html += "执行人";
+                html += "<span class='symbol required'></span>";
+                html += "</label>";
+                html += " <div class='col-sm-4'>";
+                html += " <input type='hidden' id='executor' name='executor'>";
+                html += "<input type='text' name='executorName' id='executorName' data-rule-maxlength='50' readonly class='form-control' onclick='personSelect()'>";
+                html += "</div>";
                 break;
             }
             case 3: {
@@ -522,6 +578,14 @@
                 html += "</label>";
                 html += " <div class='col-sm-4'>";
                 html += "<input type='text'  name='name' class='form-control' required>";
+                html += "</div>";
+                html += "<label class='col-sm-2 control-label'>";
+                html += "执行人";
+                html += "<span class='symbol required'></span>";
+                html += "</label>";
+                html += " <div class='col-sm-4'>";
+                html += " <input type='hidden' id='executor' name='executor'>";
+                html += "<input type='text' name='executorName' id='executorName' data-rule-maxlength='50' readonly class='form-control' onclick='personSelect()'>";
                 html += "</div>";
                 break;
             }
@@ -555,6 +619,8 @@
                     node.name = result.data.name;
                     node.displayName = result.data.displayName;
                     node.pid = result.data.pid;
+                    node.executor = result.data.executor;
+                    node.creator = result.data.creator;
                     zTreeObj.updateNode(node, false);
                     $('#detail_modal_b').modal('hide');
                 } else {
@@ -704,4 +770,63 @@
         zTreeObj.expandAll(flag);
     }
 
+    batchTreeTool.showFunctionBtn = function () {
+        var node = zTreeObj.getSelectedNodes()[0];
+        //子任务控制按钮
+        if('${projectTaskMasterId}'!='${responsibilityId}'){
+            $("#btnGroup").find('.btn.masterTool').hide();
+            //是当前执行人时
+            if(node.executor == '${userAccount}'){
+                $("#btnGroup").find('.btn.deserveTool').show();
+                $("#btnGroup").find('.btn.limitTool').hide();
+            }else{
+                $("#btnGroup").find('.btn.limitTool').show();
+                $("#btnGroup").find('.btn.deserveTool').hide();
+            }
+        }
+
+    }
+
+    //信息详情页面
+    batchTreeTool.checkInfo = function() {
+        var node = zTreeObj.getSelectedNodes()[0];
+        var classify = $("#basicBatchApplyFrm").find('[name=classify]').val();
+        var formType = $("#basicBatchApplyFrm").find('[name=type]').val();
+        var url = '${pageContext.request.contextPath}/basicApplyBatch/informationDetail?';
+        url += 'applyBatchId=' + $("#basicBatchApplyFrm").find('[name=id]').val();
+        url += '&formClassify=' + classify;
+        url += '&formType=' + formType;
+        url += '&tableId=' + node.tableId;
+        url += '&tbType=' + node.type;
+        url += '&tableName=' + node.tableName;
+        url += '&planDetailsId=${projectPlanDetails.id}';
+        openWin(url, function () {
+        })
+    }
+
+    function setFontCss(treeId, treeNode) {
+        if(treeNode.executor != '${userAccount}'){
+            return {color:"#AAAAAA"};
+        }
+    }
+
+    //选择人员
+    function personSelect() {
+        erpEmployee.select({
+            onSelected: function (data) {
+                if (data.account) {
+                    $("#frm_detail").find("#executorName").val(data.name);
+                    $("#frm_detail").find("#executor").val(data.account);
+                    $("#frm_detail_b").find("#executorName").val(data.name);
+                    $("#frm_detail_b").find("#executor").val(data.account);
+                }
+                else {
+                    $("#frm_detail").find("#executorName").val('');
+                    $("#frm_detail").find("#executor").val('');
+                    $("#frm_detail_b").find("#executorName").val('');
+                    $("#frm_detail_b").find("#executor").val('');
+                }
+            }
+        });
+    }
 </script>
