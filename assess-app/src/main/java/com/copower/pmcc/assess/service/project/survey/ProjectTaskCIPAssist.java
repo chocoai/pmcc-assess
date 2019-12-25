@@ -13,8 +13,10 @@ import com.copower.pmcc.assess.service.event.project.ProjectTaskCIPEven;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
+import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
 import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
+import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.LangUtils;
@@ -51,25 +53,27 @@ public class ProjectTaskCIPAssist implements ProjectTaskInterface {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private ProjectInfoService projectInfoService;
+    @Autowired
+    private BpmRpcProjectTaskService bpmRpcProjectTaskService;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskCIPIndex", "", 0, "0", "");
-        setViewParam(projectPlanDetails,modelAndView) ;
+        setViewParam(projectPlanDetails, modelAndView);
         return modelAndView;
     }
 
     @Override
     public ModelAndView approvalView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskCIPApproval", processInsId, boxId, taskId, agentUserAccount);
-        setViewParam(projectPlanDetails,modelAndView) ;
+        setViewParam(projectPlanDetails, modelAndView);
         return modelAndView;
     }
 
     @Override
     public ModelAndView returnEditView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskCIPIndex", processInsId, boxId, taskId, agentUserAccount);
-        setViewParam(projectPlanDetails,modelAndView) ;
+        setViewParam(projectPlanDetails, modelAndView);
         return modelAndView;
     }
 
@@ -81,7 +85,7 @@ public class ProjectTaskCIPAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView detailsView(ProjectPlanDetails projectPlanDetails, Integer boxId) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskCIPApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
-        setViewParam(projectPlanDetails,modelAndView) ;
+        setViewParam(projectPlanDetails, modelAndView);
         return modelAndView;
     }
 
@@ -105,12 +109,19 @@ public class ProjectTaskCIPAssist implements ProjectTaskInterface {
 
     }
 
-    private void setViewParam(ProjectPlanDetails projectPlanDetails,ModelAndView modelAndView){
+    private void setViewParam(ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) {
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
         modelAndView.addObject("declareRecord", declareRecord);
         modelAndView.addObject("applyBatch", basicApplyBatchService.getBasicApplyBatchByPlanDetailsId(projectPlanDetails.getId()));
         modelAndView.addObject("formClassifyList", getFormClassifyList(projectPlanDetails.getProjectId()));
         modelAndView.addObject("examineFormTypeList", surveyCommonService.getExamineFormTypeList());
+        modelAndView.addObject("userAccount", processControllerComponent.getThisUser());
+        //用于页面判断是否是子任务
+        ProjectResponsibilityDto masterDto = new ProjectResponsibilityDto();
+        masterDto.setPlanDetailsId(projectPlanDetails.getId());
+        masterDto.setPid(0);
+        ProjectResponsibilityDto projectTaskMaster = bpmRpcProjectTaskService.getProjectTask(masterDto);
+        modelAndView.addObject("projectTaskMasterId", projectTaskMaster.getId());
     }
 
     private List<BaseDataDic> getFormClassifyList(Integer projectId) {

@@ -191,6 +191,9 @@ public class BasicApplyBatchService {
             ztreeDto.setTableName(item.getTableName());
             ztreeDto.setTableId(item.getTableId());
             ztreeDto.setType(getZtreeDtoType(item.getTableName()));
+            ztreeDto.setCreator(item.getCreator());
+            ztreeDto.setExecutor(item.getExecutor());
+            ztreeDto.setCreatorName(publicService.getUserNameByAccount(item.getCreator()));
             treeDtos.add(ztreeDto);
         }
         return treeDtos;
@@ -778,6 +781,7 @@ public class BasicApplyBatchService {
         estateApplyBatchDetail.setTableId(basicEstate.getId());
         estateApplyBatchDetail.setName(estateName);
         estateApplyBatchDetail.setDisplayName(estateName);
+        estateApplyBatchDetail.setExecutor(commonService.thisUserAccount());
         basicApplyBatchDetailService.saveBasicApplyBatchDetail(estateApplyBatchDetail);
 
         if (AssessDataDicKeyConstant.PROJECT_SURVEY_FORM_CLASSIFY_SINGEL.equals(classifyDataDic.getFieldName())) {
@@ -793,6 +797,7 @@ public class BasicApplyBatchService {
             buildingApplyBatchDetail.setTableId(basicBuilding.getId());
             buildingApplyBatchDetail.setName("楼栋信息");
             buildingApplyBatchDetail.setDisplayName("楼栋信息");
+            buildingApplyBatchDetail.setExecutor(commonService.thisUserAccount());
             basicApplyBatchDetailService.saveBasicApplyBatchDetail(buildingApplyBatchDetail);
             //单元
             BasicUnit basicUnit = new BasicUnit();
@@ -806,6 +811,7 @@ public class BasicApplyBatchService {
             unitApplyBatchDetail.setTableId(basicUnit.getId());
             unitApplyBatchDetail.setName("单元信息");
             unitApplyBatchDetail.setDisplayName("单元信息");
+            unitApplyBatchDetail.setExecutor(commonService.thisUserAccount());
             basicApplyBatchDetailService.saveBasicApplyBatchDetail(unitApplyBatchDetail);
             //房屋
             BasicHouse basicHouse = new BasicHouse();
@@ -823,6 +829,7 @@ public class BasicApplyBatchService {
             houseApplyBatchDetail.setTableId(basicHouse.getId());
             houseApplyBatchDetail.setName("房屋信息");
             houseApplyBatchDetail.setDisplayName("房屋信息");
+            houseApplyBatchDetail.setExecutor(commonService.thisUserAccount());
             basicApplyBatchDetailService.saveBasicApplyBatchDetail(houseApplyBatchDetail);
 
             BasicApply basicApply = new BasicApply();
