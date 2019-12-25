@@ -6848,6 +6848,7 @@ public class GenerateBaseDataService {
         this.areaId = areaId;
         this.baseReportTemplate = baseReportTemplate;
         //注入bean
+        this.projectInfoService = SpringContextUtils.getBean(ProjectInfoService.class);
         this.generateCommonMethod = SpringContextUtils.getBean(GenerateCommonMethod.class);
         this.schemeJudgeObjectService = SpringContextUtils.getBean(SchemeJudgeObjectService.class);
         this.schemeAreaGroupService = SpringContextUtils.getBean(SchemeAreaGroupService.class);

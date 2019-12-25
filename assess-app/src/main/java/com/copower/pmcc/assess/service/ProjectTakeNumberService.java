@@ -193,11 +193,6 @@ public class ProjectTakeNumberService {
             vo.setReportTypeName(baseDataDicService.getNameById(projectTakeNumber.getReportType()));
             vo.setCreatorName(publicService.getUserNameByAccount(projectTakeNumber.getCreator()));
         }
-        if (numberRecordId != null) {
-            ProjectNumberRecord projectNumberRecord = projectNumberRecordDao.getProjectNumberRecord(numberRecordId);
-            vo.setTakeTime(projectNumberRecord.getGmtCreated());
-            vo.setNumberValue(projectNumberRecord.getNumberValue());
-        }
         return vo;
     }
 

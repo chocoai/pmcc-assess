@@ -15,9 +15,7 @@ import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
-import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Ordering;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -139,57 +137,25 @@ public class ProjectNumberRecordService {
             throw new BusinessException(HttpReturnEnum.NOTFIND.getName());
         if (numberRule.getStartNumber() != null)
             number = numberRule.getStartNumber();
-        ReportNumberService reportNumberService = null;
         String reportNumber = numberRule.getNumberRule().replaceAll("\\{prefix\\}", numberRule.getPrefix())
                 .replaceAll("\\{year\\}", String.valueOf(year));
-
         //根据配置判断是否属于分组文号，如技术报告使用结果报告号等
         //得到同分组文号的文号规则，根据项目区域找到最大编号
         //根据项目区域及报告类型取得对应的报告编号
         if (numberRule.getGroupName() != null) {
             List<DataNumberRule> numberRuleGroup = dataNumberRuleService.getDataNumberRuleByGroup(assessProjectType, numberRule.getGroupName());
-            //一个分组下的reportType
-            List<Integer> reportTypes = LangUtils.transform(numberRuleGroup, o -> o.getReportType());
-            //去重
-            List<Integer> reportTypeList = generateCommonMethod.removeDuplicate(reportTypes);
-            List<ProjectNumberRecord> projectNumberRecords = Lists.newArrayList();
-            for (Integer reportTypeValue : reportTypeList) {
-                List<ProjectNumberRecord> numberRecords = getAllNumberRecord(projectInfo.getId(), areaId, assessProjectType, reportTypeValue);
-                if (CollectionUtils.isNotEmpty(numberRecords))
-                    projectNumberRecords.addAll(numberRecords);
-            }
-            if (CollectionUtils.isNotEmpty(projectNumberRecords)) {
-                if (projectNumberRecords.size() >= 2) {
-                    //排序
-                    Ordering<ProjectNumberRecord> ordering = Ordering.from((o1, o2) -> {
-                        return (o2.getNumber().compareTo(o1.getNumber()));
-                    });
-                    projectNumberRecords.sort(ordering);
+            if(CollectionUtils.isNotEmpty(numberRuleGroup)){
+                List<Integer> reportTypeList = generateCommonMethod.removeDuplicate(LangUtils.transform(numberRuleGroup, o -> o.getReportType()));//去重
+                if(CollectionUtils.isNotEmpty(reportTypeList)){
+                    //取同一项目类型同一组下最大的编号
+                    List<ProjectNumberRecord> projectNumberRecordList = projectNumberRecordDao.getProjectNumberRecordList(assessProjectType.getKey(), reportTypeList);
+                    if (CollectionUtils.isNotEmpty(projectNumberRecordList)) {
+                        number = projectNumberRecordList.get(0).getNumber() + 1;
+                    }
                 }
-                //判断拿到的最大号是否有效
-                //无效则直接拿最大号
-                if (projectNumberRecords.get(0).getBisDelete() == true) {
-                    //直接取最大号
-                    reportNumberService = new ReportNumberService(assessProjectType, reportType, year, number, numberRule, reportNumber).invoke();
-                    number = reportNumberService.getNumber();
-                    reportNumber = reportNumberService.getReportNumber();
-                } else {
-                    number = projectNumberRecords.get(0).getNumber();
-                    reportNumber = reportNumber.replaceAll("\\{number\\}", StringUtils.leftPad(String.valueOf(number), numberRule.getFigures(), '0'));
-                }
-            } else {
-                //直接取最大号
-                reportNumberService = new ReportNumberService(assessProjectType, reportType, year, number, numberRule, reportNumber).invoke();
-                number = reportNumberService.getNumber();
-                reportNumber = reportNumberService.getReportNumber();
             }
-        } else {
-            //直接取最大号
-            reportNumberService = new ReportNumberService(assessProjectType, reportType, year, number, numberRule, reportNumber).invoke();
-            number = reportNumberService.getNumber();
-            reportNumber = reportNumberService.getReportNumber();
         }
-
+        reportNumber = reportNumber.replaceAll("\\{number\\}", StringUtils.leftPad(String.valueOf(number), numberRule.getFigures(), '0'));
         ProjectNumberRecord projectNumberRecord = new ProjectNumberRecord();
         projectNumberRecord.setProjectId(projectInfo.getId());
         projectNumberRecord.setAreaId(areaId);
@@ -200,6 +166,7 @@ public class ProjectNumberRecordService {
         projectNumberRecord.setNumberValue(reportNumber);
         projectNumberRecord.setCreator(commonService.thisUserAccount());
         projectNumberRecordDao.addProjectNumberRecord(projectNumberRecord);
+
         //更新项目信息中报告文号生成时间
         if (StringUtils.equals(AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT, baseDataDic.getFieldName())) {
             projectInfo.setPreauditNumberDate(new Date());
@@ -210,73 +177,5 @@ public class ProjectNumberRecordService {
             projectInfoService.saveProjectInfo(projectInfo);
         }
         return reportNumber;
-    }
-
-    private class ReportNumberService {
-        private AssessProjectTypeEnum assessProjectType;
-        private Integer reportType;
-        private int year;
-        private int number;
-        private DataNumberRule numberRule;
-        private String reportNumber;
-        private Boolean isPreaudit;
-
-        public ReportNumberService(AssessProjectTypeEnum assessProjectType, Integer reportType, int year, int number, DataNumberRule numberRule, String reportNumber) {
-            this.assessProjectType = assessProjectType;
-            this.reportType = reportType;
-            this.year = year;
-            this.number = number;
-            this.numberRule = numberRule;
-            this.reportNumber = reportNumber;
-            this.isPreaudit = isPreaudit;
-        }
-
-        public int getNumber() {
-            return number;
-        }
-
-        public String getReportNumber() {
-            return reportNumber;
-        }
-
-        public ReportNumberService invoke() {
-            PageHelper.startPage(0, 1);//取一条数据
-            List<ProjectNumberRecord> numberRecords = getProjectNumberRecord(year, assessProjectType, reportType);
-            if (CollectionUtils.isEmpty(numberRecords)) {
-                reportNumber = reportNumber.replaceAll("\\{number\\}", StringUtils.leftPad(String.valueOf(number), numberRule.getFigures(), '0'));
-            } else {
-                number = numberRecords.get(0).getNumber() + 1;
-                reportNumber = reportNumber.replaceAll("\\{number\\}", StringUtils.leftPad(String.valueOf(number), numberRule.getFigures(), '0'));
-            }
-            return this;
-        }
-    }
-
-    public List<ProjectNumberRecord> getProjectNumberRecord(Integer year, AssessProjectTypeEnum assessProjectType, Integer reportType) {
-        DataNumberRule numberRule = dataNumberRuleService.getDataNumberRule(assessProjectType, reportType);
-        if (numberRule.getGroupName() != null) {
-            List<DataNumberRule> numberRuleGroup = dataNumberRuleService.getDataNumberRuleByGroup(assessProjectType, numberRule.getGroupName());
-            //一个分组下的reportType
-            List<Integer> reportTypes = LangUtils.transform(numberRuleGroup, o -> o.getReportType());
-            //去重
-            List<Integer> reportTypeList = generateCommonMethod.removeDuplicate(reportTypes);
-            List<ProjectNumberRecord> projectNumberRecords = Lists.newArrayList();
-            for (Integer reportTypeValue : reportTypeList) {
-                List<ProjectNumberRecord> numberByYear = projectNumberRecordDao.getNumberByYear(year, reportTypeValue);
-                if (CollectionUtils.isNotEmpty(numberByYear))
-                    projectNumberRecords.addAll(numberByYear);
-            }
-            if (CollectionUtils.isNotEmpty(projectNumberRecords)) {
-                if (projectNumberRecords.size() >= 2) {
-                    //排序
-                    Ordering<ProjectNumberRecord> ordering = Ordering.from((o1, o2) -> {
-                        return (o2.getNumber().compareTo(o1.getNumber()));
-                    });
-                    projectNumberRecords.sort(ordering);
-                }
-                return projectNumberRecords;
-            }
-        }
-        return null;
     }
 }
