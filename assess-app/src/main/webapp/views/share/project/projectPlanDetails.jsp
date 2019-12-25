@@ -161,16 +161,13 @@
         var data = formApproval.getFormData();
         data["formData"] = formData;
         data = $.extend({}, data, approvalData);
-
-        if ("${bisCheck==1}") {
+        if ("${bisCheck}"=='1') {
             if (!validChks()) {
                 return false;
             }
             var itemObj = getChksData();
             data = jQuery.extend({}, data, itemObj);
         }
-
-
         Loading.progressShow();
         $.ajax({
             url: "${pageContext.request.contextPath}/ProjectTask/submitTaskApproval",

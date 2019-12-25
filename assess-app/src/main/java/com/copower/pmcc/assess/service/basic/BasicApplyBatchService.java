@@ -685,6 +685,7 @@ public class BasicApplyBatchService {
         return null;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public void deleteBatchByPlanDetailsId(Integer planDetailsId) throws Exception {
         if (planDetailsId == null) return;
         BasicApplyBatch applyBatch = getBasicApplyBatchByPlanDetailsId(planDetailsId);

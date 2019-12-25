@@ -197,28 +197,27 @@ public class BasicApplyBatchDetailService {
         where.setPlanDetailsId(planDetailsId);
         where.setBasicHouseId(houseBasicApplyBatchDetail.getTableId());
         BasicApply basicApply = basicApplyService.getBasicApply(where);
-        if (basicApply == null) {
-            Map<EstateTaggingTypeEnum, BasicApplyBatchDetail> map = getApplyBatchDetailMap(houseBasicApplyBatchDetail);
-            basicApply.setBasicHouseId(houseBasicApplyBatchDetail.getTableId());
-            basicApply.setHouseNumber(houseBasicApplyBatchDetail.getName());
-            BasicHouse basicHouse = basicHouseService.getBasicHouseById(houseBasicApplyBatchDetail.getTableId());
-            if (basicHouse != null)
-                basicApply.setArea(basicHouse.getArea());
-            //单元
-            BasicApplyBatchDetail unitBatchDetail = map.get(EstateTaggingTypeEnum.UNIT);
-            basicApply.setBasicUnitId(unitBatchDetail.getTableId());
-            basicApply.setUnitNumber(unitBatchDetail.getName());
-            //楼栋
-            BasicApplyBatchDetail buildBatchDetail = map.get(EstateTaggingTypeEnum.BUILDING);
-            basicApply.setBasicBuildingId(buildBatchDetail.getTableId());
-            basicApply.setBuildingNumber(buildBatchDetail.getName());
-            //楼盘
-            BasicApplyBatchDetail estateBatchDetail = map.get(EstateTaggingTypeEnum.ESTATE);
-            basicApply.setBasicEstateId(estateBatchDetail.getTableId());
-            basicApply.setPlanDetailsId(planDetailsId);
-            basicApply.setName(basicApplyService.getFullName(estateBatchDetail.getName(), buildBatchDetail.getName(), unitBatchDetail.getName(), houseBasicApplyBatchDetail.getName()));
-            basicApplyService.saveBasicApply(basicApply);
-        }
+        basicApply = basicApply == null ? new BasicApply() : basicApply;
+        Map < EstateTaggingTypeEnum, BasicApplyBatchDetail > map = getApplyBatchDetailMap(houseBasicApplyBatchDetail);
+        basicApply.setBasicHouseId(houseBasicApplyBatchDetail.getTableId());
+        basicApply.setHouseNumber(houseBasicApplyBatchDetail.getName());
+        BasicHouse basicHouse = basicHouseService.getBasicHouseById(houseBasicApplyBatchDetail.getTableId());
+        if (basicHouse != null)
+            basicApply.setArea(basicHouse.getArea());
+        //单元
+        BasicApplyBatchDetail unitBatchDetail = map.get(EstateTaggingTypeEnum.UNIT);
+        basicApply.setBasicUnitId(unitBatchDetail.getTableId());
+        basicApply.setUnitNumber(unitBatchDetail.getName());
+        //楼栋
+        BasicApplyBatchDetail buildBatchDetail = map.get(EstateTaggingTypeEnum.BUILDING);
+        basicApply.setBasicBuildingId(buildBatchDetail.getTableId());
+        basicApply.setBuildingNumber(buildBatchDetail.getName());
+        //楼盘
+        BasicApplyBatchDetail estateBatchDetail = map.get(EstateTaggingTypeEnum.ESTATE);
+        basicApply.setBasicEstateId(estateBatchDetail.getTableId());
+        basicApply.setPlanDetailsId(planDetailsId);
+        basicApply.setName(basicApplyService.getFullName(estateBatchDetail.getName(), buildBatchDetail.getName(), unitBatchDetail.getName(), houseBasicApplyBatchDetail.getName()));
+        basicApplyService.saveBasicApply(basicApply);
     }
 
     /**

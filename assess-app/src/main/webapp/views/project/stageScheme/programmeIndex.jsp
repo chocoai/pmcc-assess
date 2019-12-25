@@ -426,7 +426,8 @@
     </div>
 </div>
 <!--查看合并的委估对象明细-->
-<div id="loadSceneExploreBasicApplyModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+<div id="loadSceneExploreBasicApplyModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -436,8 +437,31 @@
                 <h3 class="modal-title">查勘信息</h3>
             </div>
             <div class="modal-body">
-                <table class="table table-bordered" id="tb_baisc_apply_list">
-
+                <table class="table" id="tb_baisc_apply_list">
+                    <thead>
+                    <tr>
+                        <th>查勘项</th>
+                        <th>面积</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                        <td><input type="button" class="btn btn-xs btn-primary" value="选择"></td>
+                    </tr>
+                    <tr>
+                        <td>Jacob</td>
+                        <td>Thornton</td>
+                        <td>@fat</td>
+                    </tr>
+                    <tr>
+                        <td>Larry</td>
+                        <td>the Bird</td>
+                        <td>@twitter</td>
+                    </tr>
+                    </tbody>
                 </table>
             </div>
         </div>
@@ -464,8 +488,8 @@
                        class="btn btn-xs btn-warning judge-merge-cancel tooltips">取消合并</a>
                     <a href="javascript://" onclick="programme.mergeJudgeCancelPart(this);"
                        class="btn btn-xs btn-warning judge-merge-cancel tooltips">调整合并</a>
-                    <a href="javascript://" onclick="programme.loadSceneExploreBasicApplyList('{declareId}');"
-                       class="btn btn-xs btn-success judge-relation-object tooltips">关联对象</a>
+                    <a href="javascript://" onclick="programme.loadSceneExploreBasicApplyList('{declareId}','{id}');"
+                       class="btn btn-xs btn-success judge-relation-object tooltips">关联查勘</a>
                     <a href="javascript://" onclick="programmeMethod.relationObject(this);"
                        class="btn btn-xs btn-success judge-method tooltips">评估方法</a>
                 </small>
@@ -1535,7 +1559,7 @@
     }
 
     //加载权证查勘数据列表
-    programme.loadSceneExploreBasicApplyList = function (declareId) {
+    programme.loadSceneExploreBasicApplyList = function (declareId, judgeId) {
         $.ajax({
             url: "${pageContext.request.contextPath}/schemeProgramme/getSceneExploreBasicApplyList",
             type: "post",
@@ -1545,7 +1569,12 @@
             },
             success: function (result) {
                 if (result.ret) {
-
+                    var tBody = $('#tb_baisc_apply_list').find('tbody');
+                    $.each(result.data, function (i, item) {
+                        var html = '<tr><td>' + item.name + '<input type="hidden" name="id" value="'+item.id+'"><input type="hidden" name="area" value="'+item.area+'"></td><td>' + item.area + '</td>';
+                        html += '<td><input type="button" class="btn btn-xs btn-primary" value="选择" onclick="programme.selectSceneExploreBasicApply(this,' + judgeId + ');"></td><tr>';
+                        tBody.append(html);
+                    })
                     $('#loadSceneExploreBasicApplyModal').modal();
                 }
                 else {
@@ -1559,8 +1588,31 @@
     }
 
     //选择权证查勘数据
-    programme.selectSceneExploreBasicApply = function (_this) {
-
+    programme.selectSceneExploreBasicApply = function (_this, judgeId) {
+        var basicApplyId = $(_this).closest('tr').find('[name=id]').val();
+        var area = $(_this).closest('tr').find('[name=area]').val();
+        $.ajax({
+            url: "${pageContext.request.contextPath}/schemeProgramme/updateSchemeJudgeObject",
+            type: "post",
+            dataType: "json",
+            data: {
+                id: judgeId,
+                basicApplyId: basicApplyId
+            },
+            success: function (result) {
+                if (result.ret) {
+                    $(document).find('[name=evaluationArea'+judgeId+']').val();
+                    toastr.success('关联成功');
+                    $('#loadSceneExploreBasicApplyModal').modal('hide');
+                }
+                else {
+                    Alert(result.errmsg);
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
     }
 </script>
 <script type="text/javascript">
