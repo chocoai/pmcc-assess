@@ -129,11 +129,11 @@ public class ProjectInfoController {
         ProjectInfo projectInfo = null;
         if (StringUtils.isNotEmpty(processInsId)) {
             projectInfo = projectInfoService.getProjectInfoByProcessInsId(processInsId);
-            modelAndView = processControllerComponent.baseFormModelAndView("/project/stageInit/projectIndex", processInsId, boxId, taskId, agentUserAccount);
+            modelAndView = processControllerComponent.baseFormModelAndView(projectInfoService.getProjectInfoView(), processInsId, boxId, taskId, agentUserAccount);
         }
         if (projectId != null) {
             projectInfo = projectInfoService.getProjectInfoById(projectId);
-            modelAndView = processControllerComponent.baseFormModelAndView("/project/stageInit/projectIndex", "0", 0, "0", "");
+            modelAndView = processControllerComponent.baseFormModelAndView(projectInfoService.getProjectInfoView(), "0", 0, "0", "");
         }
         if (projectInfo != null) {
             if (modelAndView != null) {

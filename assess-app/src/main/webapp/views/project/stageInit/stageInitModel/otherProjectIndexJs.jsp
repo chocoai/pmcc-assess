@@ -891,7 +891,7 @@
     //项目经理
     objProject.selectUserAccountManager = function (this_) {
         erpEmployee.select({
-            currOrgId: '${companyId}',
+            currOrgId: '${baseViewDto.thisUser.companyId}',
             onSelected: function (data) {
                 $(this_).closest('.input-group').find("input[name='userAccountManager']").val(data.account);
                 $(this_).closest('.input-group').find("input[name='userAccountManagerName']").val(data.name);
@@ -903,7 +903,7 @@
     objProject.selectUserAccountMember = function (this_) {
         erpEmployee.select({
             multi: true,
-            currOrgId: '${companyId}',
+            currOrgId: '${baseViewDto.thisUser.companyId}',
             onSelected: function (data) {
                 $(this_).closest('.input-group').find("input[name='userAccountMember']").val(data.account);
                 $(this_).closest('.input-group').find("input[name='userAccountMemberName']").val(data.name);
@@ -945,7 +945,7 @@
         //选择客户
         crmCustomer.select({
             multi: false,//是否允许多选
-            companyId:${companyId},
+            companyId:${baseViewDto.thisUser.companyId},
             onSelected: function (nodes) {
                 if (nodes.length == 0) {
                     return false;
