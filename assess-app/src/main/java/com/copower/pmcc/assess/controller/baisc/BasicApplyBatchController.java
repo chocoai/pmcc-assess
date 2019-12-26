@@ -179,7 +179,7 @@ public class BasicApplyBatchController extends BaseController {
         try {
             BasicApplyBatchDetail basicApplyBatchDetail = JSON.parseObject(formData, BasicApplyBatchDetail.class);
 
-            return HttpResult.newCorrectResult(basicApplyBatchDetailService.addBasicApplyBatchDetail(basicApplyBatchDetail, planDetailsId));
+            return HttpResult.newCorrectResult(basicApplyBatchDetailService.getBasicApplyBatchDetailVo(basicApplyBatchDetailService.addBasicApplyBatchDetail(basicApplyBatchDetail, planDetailsId)));
         } catch (Exception e1) {
             log.error(e1.getMessage(), e1);
             return HttpResult.newErrorResult("保存数据异常");

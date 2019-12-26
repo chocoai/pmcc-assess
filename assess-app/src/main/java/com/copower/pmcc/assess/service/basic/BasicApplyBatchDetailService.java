@@ -413,6 +413,9 @@ public class BasicApplyBatchDetailService {
         if (StringUtils.isNotEmpty(basicApplyBatchDetail.getExecutor())) {
             vo.setExecutorName(publicService.getUserNameByAccount(basicApplyBatchDetail.getExecutor()));
         }
+        if (StringUtils.isNotEmpty(basicApplyBatchDetail.getCreator())) {
+            vo.setCreatorName(publicService.getUserNameByAccount(basicApplyBatchDetail.getCreator()));
+        }
         return vo;
     }
 
