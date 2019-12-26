@@ -22,7 +22,6 @@ public class ProjectInfoVo extends ProjectInfo {
     private String projectClassName;
     private String projectTypeName;
     private String projectCategoryName;
-    private String entrustPurposeName;
     private String entrustAimTypeName;
     private String provinceName;
     private String cityName;
@@ -37,7 +36,6 @@ public class ProjectInfoVo extends ProjectInfo {
     private BaseProjectClassify baseProjectClassify;
     private String departmentName;
     private String valueTypeName;
-    private String propertyScopeName;
     private String loanTypeName;
     private String serviceComeFromName;
     private Integer finishPre;
@@ -107,13 +105,6 @@ public class ProjectInfoVo extends ProjectInfo {
         this.projectCategoryName = projectCategoryName;
     }
 
-    public String getEntrustPurposeName() {
-        return entrustPurposeName;
-    }
-
-    public void setEntrustPurposeName(String entrustPurposeName) {
-        this.entrustPurposeName = entrustPurposeName;
-    }
 
     public String getProvinceName() {
         return provinceName;
@@ -219,13 +210,7 @@ public class ProjectInfoVo extends ProjectInfo {
         this.finishPre = finishPre;
     }
 
-    public String getPropertyScopeName() {
-        return propertyScopeName;
-    }
 
-    public void setPropertyScopeName(String propertyScopeName) {
-        this.propertyScopeName = propertyScopeName;
-    }
 
     public String getEntrustAimTypeName() {
         return entrustAimTypeName;

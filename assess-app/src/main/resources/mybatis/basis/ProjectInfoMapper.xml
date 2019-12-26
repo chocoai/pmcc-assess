@@ -12,6 +12,7 @@
     <result column="city" property="city" jdbcType="VARCHAR" />
     <result column="district" property="district" jdbcType="VARCHAR" />
     <result column="valuation_date" property="valuationDate" jdbcType="TIMESTAMP" />
+    <result column="entrust_purpose_name" property="entrustPurposeName" jdbcType="VARCHAR" />
     <result column="entrust_purpose" property="entrustPurpose" jdbcType="INTEGER" />
     <result column="entrust_aim_type" property="entrustAimType" jdbcType="INTEGER" />
     <result column="remark_entrust_purpose" property="remarkEntrustPurpose" jdbcType="VARCHAR" />
@@ -39,6 +40,7 @@
     <result column="assign_status" property="assignStatus" jdbcType="VARCHAR" />
     <result column="estate_name" property="estateName" jdbcType="VARCHAR" />
     <result column="preaudit_number_date" property="preauditNumberDate" jdbcType="TIMESTAMP" />
+    <result column="property_scope_name" property="propertyScopeName" jdbcType="VARCHAR" />
     <result column="result_number_date" property="resultNumberDate" jdbcType="TIMESTAMP" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
@@ -104,12 +106,13 @@
   </sql>
   <sql id="Base_Column_List" >
     id, project_class_id, project_type_id, project_category_id, project_name, urgency, 
-    province, city, district, valuation_date, entrust_purpose, entrust_aim_type, remark_entrust_purpose, 
-    value_type, remark_value_type, department_id, remarks, complete_date_plan, complete_date_actual, 
-    complete_date_start, process_ins_id, property_scope, scope_include, scope_not_include, 
-    loan_type, contract_id, contract_name, contract_price, service_come_from, service_come_from_explain, 
-    status, project_status, public_project_id, assign_process_ins_id, assign_status, 
-    estate_name, preaudit_number_date, result_number_date, creator, gmt_created, gmt_modified
+    province, city, district, valuation_date, entrust_purpose_name, entrust_purpose, 
+    entrust_aim_type, remark_entrust_purpose, value_type, remark_value_type, department_id, 
+    remarks, complete_date_plan, complete_date_actual, complete_date_start, process_ins_id, 
+    property_scope, scope_include, scope_not_include, loan_type, contract_id, contract_name, 
+    contract_price, service_come_from, service_come_from_explain, status, project_status, 
+    public_project_id, assign_process_ins_id, assign_status, estate_name, preaudit_number_date, 
+    property_scope_name, result_number_date, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectInfoExample" >
     select
@@ -148,33 +151,33 @@
     insert into tb_project_info (project_class_id, project_type_id, project_category_id, 
       project_name, urgency, province, 
       city, district, valuation_date, 
-      entrust_purpose, entrust_aim_type, remark_entrust_purpose, 
-      value_type, remark_value_type, department_id, 
-      remarks, complete_date_plan, complete_date_actual, 
-      complete_date_start, process_ins_id, property_scope, 
-      scope_include, scope_not_include, loan_type, 
-      contract_id, contract_name, contract_price, 
-      service_come_from, service_come_from_explain, 
-      status, project_status, public_project_id, 
-      assign_process_ins_id, assign_status, estate_name, 
-      preaudit_number_date, result_number_date, 
-      creator, gmt_created, gmt_modified
-      )
+      entrust_purpose_name, entrust_purpose, entrust_aim_type, 
+      remark_entrust_purpose, value_type, remark_value_type, 
+      department_id, remarks, complete_date_plan, 
+      complete_date_actual, complete_date_start, 
+      process_ins_id, property_scope, scope_include, 
+      scope_not_include, loan_type, contract_id, 
+      contract_name, contract_price, service_come_from, 
+      service_come_from_explain, status, project_status, 
+      public_project_id, assign_process_ins_id, assign_status, 
+      estate_name, preaudit_number_date, property_scope_name, 
+      result_number_date, creator, gmt_created, 
+      gmt_modified)
     values (#{projectClassId,jdbcType=INTEGER}, #{projectTypeId,jdbcType=INTEGER}, #{projectCategoryId,jdbcType=INTEGER}, 
       #{projectName,jdbcType=VARCHAR}, #{urgency,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, 
       #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, #{valuationDate,jdbcType=TIMESTAMP}, 
-      #{entrustPurpose,jdbcType=INTEGER}, #{entrustAimType,jdbcType=INTEGER}, #{remarkEntrustPurpose,jdbcType=VARCHAR}, 
-      #{valueType,jdbcType=INTEGER}, #{remarkValueType,jdbcType=VARCHAR}, #{departmentId,jdbcType=INTEGER}, 
-      #{remarks,jdbcType=VARCHAR}, #{completeDatePlan,jdbcType=TIMESTAMP}, #{completeDateActual,jdbcType=TIMESTAMP}, 
-      #{completeDateStart,jdbcType=TIMESTAMP}, #{processInsId,jdbcType=VARCHAR}, #{propertyScope,jdbcType=VARCHAR}, 
-      #{scopeInclude,jdbcType=VARCHAR}, #{scopeNotInclude,jdbcType=VARCHAR}, #{loanType,jdbcType=INTEGER}, 
-      #{contractId,jdbcType=VARCHAR}, #{contractName,jdbcType=VARCHAR}, #{contractPrice,jdbcType=DECIMAL}, 
-      #{serviceComeFrom,jdbcType=VARCHAR}, #{serviceComeFromExplain,jdbcType=VARCHAR}, 
-      #{status,jdbcType=VARCHAR}, #{projectStatus,jdbcType=VARCHAR}, #{publicProjectId,jdbcType=INTEGER}, 
-      #{assignProcessInsId,jdbcType=VARCHAR}, #{assignStatus,jdbcType=VARCHAR}, #{estateName,jdbcType=VARCHAR}, 
-      #{preauditNumberDate,jdbcType=TIMESTAMP}, #{resultNumberDate,jdbcType=TIMESTAMP}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+      #{entrustPurposeName,jdbcType=VARCHAR}, #{entrustPurpose,jdbcType=INTEGER}, #{entrustAimType,jdbcType=INTEGER}, 
+      #{remarkEntrustPurpose,jdbcType=VARCHAR}, #{valueType,jdbcType=INTEGER}, #{remarkValueType,jdbcType=VARCHAR}, 
+      #{departmentId,jdbcType=INTEGER}, #{remarks,jdbcType=VARCHAR}, #{completeDatePlan,jdbcType=TIMESTAMP}, 
+      #{completeDateActual,jdbcType=TIMESTAMP}, #{completeDateStart,jdbcType=TIMESTAMP}, 
+      #{processInsId,jdbcType=VARCHAR}, #{propertyScope,jdbcType=VARCHAR}, #{scopeInclude,jdbcType=VARCHAR}, 
+      #{scopeNotInclude,jdbcType=VARCHAR}, #{loanType,jdbcType=INTEGER}, #{contractId,jdbcType=VARCHAR}, 
+      #{contractName,jdbcType=VARCHAR}, #{contractPrice,jdbcType=DECIMAL}, #{serviceComeFrom,jdbcType=VARCHAR}, 
+      #{serviceComeFromExplain,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{projectStatus,jdbcType=VARCHAR}, 
+      #{publicProjectId,jdbcType=INTEGER}, #{assignProcessInsId,jdbcType=VARCHAR}, #{assignStatus,jdbcType=VARCHAR}, 
+      #{estateName,jdbcType=VARCHAR}, #{preauditNumberDate,jdbcType=TIMESTAMP}, #{propertyScopeName,jdbcType=VARCHAR}, 
+      #{resultNumberDate,jdbcType=TIMESTAMP}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectInfo" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -208,6 +211,9 @@
       </if>
       <if test="valuationDate != null" >
         valuation_date,
+      </if>
+      <if test="entrustPurposeName != null" >
+        entrust_purpose_name,
       </if>
       <if test="entrustPurpose != null" >
         entrust_purpose,
@@ -290,6 +296,9 @@
       <if test="preauditNumberDate != null" >
         preaudit_number_date,
       </if>
+      <if test="propertyScopeName != null" >
+        property_scope_name,
+      </if>
       <if test="resultNumberDate != null" >
         result_number_date,
       </if>
@@ -330,6 +339,9 @@
       </if>
       <if test="valuationDate != null" >
         #{valuationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="entrustPurposeName != null" >
+        #{entrustPurposeName,jdbcType=VARCHAR},
       </if>
       <if test="entrustPurpose != null" >
         #{entrustPurpose,jdbcType=INTEGER},
@@ -412,6 +424,9 @@
       <if test="preauditNumberDate != null" >
         #{preauditNumberDate,jdbcType=TIMESTAMP},
       </if>
+      <if test="propertyScopeName != null" >
+        #{propertyScopeName,jdbcType=VARCHAR},
+      </if>
       <if test="resultNumberDate != null" >
         #{resultNumberDate,jdbcType=TIMESTAMP},
       </if>
@@ -464,6 +479,9 @@
       </if>
       <if test="record.valuationDate != null" >
         valuation_date = #{record.valuationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.entrustPurposeName != null" >
+        entrust_purpose_name = #{record.entrustPurposeName,jdbcType=VARCHAR},
       </if>
       <if test="record.entrustPurpose != null" >
         entrust_purpose = #{record.entrustPurpose,jdbcType=INTEGER},
@@ -546,6 +564,9 @@
       <if test="record.preauditNumberDate != null" >
         preaudit_number_date = #{record.preauditNumberDate,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.propertyScopeName != null" >
+        property_scope_name = #{record.propertyScopeName,jdbcType=VARCHAR},
+      </if>
       <if test="record.resultNumberDate != null" >
         result_number_date = #{record.resultNumberDate,jdbcType=TIMESTAMP},
       </if>
@@ -575,6 +596,7 @@
       city = #{record.city,jdbcType=VARCHAR},
       district = #{record.district,jdbcType=VARCHAR},
       valuation_date = #{record.valuationDate,jdbcType=TIMESTAMP},
+      entrust_purpose_name = #{record.entrustPurposeName,jdbcType=VARCHAR},
       entrust_purpose = #{record.entrustPurpose,jdbcType=INTEGER},
       entrust_aim_type = #{record.entrustAimType,jdbcType=INTEGER},
       remark_entrust_purpose = #{record.remarkEntrustPurpose,jdbcType=VARCHAR},
@@ -602,6 +624,7 @@
       assign_status = #{record.assignStatus,jdbcType=VARCHAR},
       estate_name = #{record.estateName,jdbcType=VARCHAR},
       preaudit_number_date = #{record.preauditNumberDate,jdbcType=TIMESTAMP},
+      property_scope_name = #{record.propertyScopeName,jdbcType=VARCHAR},
       result_number_date = #{record.resultNumberDate,jdbcType=TIMESTAMP},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -639,6 +662,9 @@
       </if>
       <if test="valuationDate != null" >
         valuation_date = #{valuationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="entrustPurposeName != null" >
+        entrust_purpose_name = #{entrustPurposeName,jdbcType=VARCHAR},
       </if>
       <if test="entrustPurpose != null" >
         entrust_purpose = #{entrustPurpose,jdbcType=INTEGER},
@@ -721,6 +747,9 @@
       <if test="preauditNumberDate != null" >
         preaudit_number_date = #{preauditNumberDate,jdbcType=TIMESTAMP},
       </if>
+      <if test="propertyScopeName != null" >
+        property_scope_name = #{propertyScopeName,jdbcType=VARCHAR},
+      </if>
       <if test="resultNumberDate != null" >
         result_number_date = #{resultNumberDate,jdbcType=TIMESTAMP},
       </if>
@@ -747,6 +776,7 @@
       city = #{city,jdbcType=VARCHAR},
       district = #{district,jdbcType=VARCHAR},
       valuation_date = #{valuationDate,jdbcType=TIMESTAMP},
+      entrust_purpose_name = #{entrustPurposeName,jdbcType=VARCHAR},
       entrust_purpose = #{entrustPurpose,jdbcType=INTEGER},
       entrust_aim_type = #{entrustAimType,jdbcType=INTEGER},
       remark_entrust_purpose = #{remarkEntrustPurpose,jdbcType=VARCHAR},
@@ -774,6 +804,7 @@
       assign_status = #{assignStatus,jdbcType=VARCHAR},
       estate_name = #{estateName,jdbcType=VARCHAR},
       preaudit_number_date = #{preauditNumberDate,jdbcType=TIMESTAMP},
+      property_scope_name = #{propertyScopeName,jdbcType=VARCHAR},
       result_number_date = #{resultNumberDate,jdbcType=TIMESTAMP},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},

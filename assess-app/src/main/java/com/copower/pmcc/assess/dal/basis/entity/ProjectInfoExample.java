@@ -746,6 +746,76 @@ public class ProjectInfoExample {
             return (Criteria) this;
         }
 
+        public Criteria andEntrustPurposeNameIsNull() {
+            addCriterion("entrust_purpose_name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustPurposeNameIsNotNull() {
+            addCriterion("entrust_purpose_name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustPurposeNameEqualTo(String value) {
+            addCriterion("entrust_purpose_name =", value, "entrustPurposeName");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustPurposeNameNotEqualTo(String value) {
+            addCriterion("entrust_purpose_name <>", value, "entrustPurposeName");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustPurposeNameGreaterThan(String value) {
+            addCriterion("entrust_purpose_name >", value, "entrustPurposeName");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustPurposeNameGreaterThanOrEqualTo(String value) {
+            addCriterion("entrust_purpose_name >=", value, "entrustPurposeName");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustPurposeNameLessThan(String value) {
+            addCriterion("entrust_purpose_name <", value, "entrustPurposeName");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustPurposeNameLessThanOrEqualTo(String value) {
+            addCriterion("entrust_purpose_name <=", value, "entrustPurposeName");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustPurposeNameLike(String value) {
+            addCriterion("entrust_purpose_name like", value, "entrustPurposeName");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustPurposeNameNotLike(String value) {
+            addCriterion("entrust_purpose_name not like", value, "entrustPurposeName");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustPurposeNameIn(List<String> values) {
+            addCriterion("entrust_purpose_name in", values, "entrustPurposeName");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustPurposeNameNotIn(List<String> values) {
+            addCriterion("entrust_purpose_name not in", values, "entrustPurposeName");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustPurposeNameBetween(String value1, String value2) {
+            addCriterion("entrust_purpose_name between", value1, value2, "entrustPurposeName");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustPurposeNameNotBetween(String value1, String value2) {
+            addCriterion("entrust_purpose_name not between", value1, value2, "entrustPurposeName");
+            return (Criteria) this;
+        }
+
         public Criteria andEntrustPurposeIsNull() {
             addCriterion("entrust_purpose is null");
             return (Criteria) this;
@@ -2523,6 +2593,76 @@ public class ProjectInfoExample {
 
         public Criteria andPreauditNumberDateNotBetween(Date value1, Date value2) {
             addCriterion("preaudit_number_date not between", value1, value2, "preauditNumberDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyScopeNameIsNull() {
+            addCriterion("property_scope_name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyScopeNameIsNotNull() {
+            addCriterion("property_scope_name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyScopeNameEqualTo(String value) {
+            addCriterion("property_scope_name =", value, "propertyScopeName");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyScopeNameNotEqualTo(String value) {
+            addCriterion("property_scope_name <>", value, "propertyScopeName");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyScopeNameGreaterThan(String value) {
+            addCriterion("property_scope_name >", value, "propertyScopeName");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyScopeNameGreaterThanOrEqualTo(String value) {
+            addCriterion("property_scope_name >=", value, "propertyScopeName");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyScopeNameLessThan(String value) {
+            addCriterion("property_scope_name <", value, "propertyScopeName");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyScopeNameLessThanOrEqualTo(String value) {
+            addCriterion("property_scope_name <=", value, "propertyScopeName");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyScopeNameLike(String value) {
+            addCriterion("property_scope_name like", value, "propertyScopeName");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyScopeNameNotLike(String value) {
+            addCriterion("property_scope_name not like", value, "propertyScopeName");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyScopeNameIn(List<String> values) {
+            addCriterion("property_scope_name in", values, "propertyScopeName");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyScopeNameNotIn(List<String> values) {
+            addCriterion("property_scope_name not in", values, "propertyScopeName");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyScopeNameBetween(String value1, String value2) {
+            addCriterion("property_scope_name between", value1, value2, "propertyScopeName");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyScopeNameNotBetween(String value1, String value2) {
+            addCriterion("property_scope_name not between", value1, value2, "propertyScopeName");
             return (Criteria) this;
         }
 

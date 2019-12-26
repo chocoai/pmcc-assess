@@ -3,7 +3,7 @@
 <html lang="en" class="no-js">
 <head>
     <%@include file="/views/share/main_css.jsp" %>
-    <%@include file="/views/project/stageInit/other/otherProjectIndexJs.jsp" %>
+    <%@include file="/views/project/stageInit/stageInitModel/otherProjectIndexJs.jsp" %>
 </head>
 <body class="nav-md footer_fixed">
 <div class="container body">
@@ -26,7 +26,7 @@
                 </div>
                 <div class="x_content">
                     <!-- 项目基本信息 start -->
-                    <%@include file="/views/project/stageInit/other/projectInfo.jsp" %>
+                    <%@include file="/views/project/stageInit/stageInitModel/projectInfo.jsp" %>
                     <!-- 项目基本信息 end -->
                 </div>
             </div>
@@ -39,7 +39,7 @@
                     <div class="clearfix"></div>
                 </div>
                 <!-- 委托人 start -->
-                <%@include file="/views/project/stageInit/other/projectConsignor.jsp" %>
+                <%@include file="/views/project/stageInit/stageInitModel/projectConsignor.jsp" %>
                 <!-- 委托人 end -->
             </div>
             <div class="x_panel">
@@ -51,7 +51,7 @@
                     <div class="clearfix"></div>
                 </div>
                 <!-- 占有人 start -->
-                <%@include file="/views/project/stageInit/other/projectPossessor.jsp" %>
+                <%@include file="/views/project/stageInit/stageInitModel/projectPossessor.jsp" %>
                 <!-- 占有人 end -->
             </div>
 
@@ -64,7 +64,7 @@
                     <div class="clearfix"></div>
                 </div>
                 <!-- 报告使用单位 start -->
-                <%@include file="/views/project/stageInit/other/projectUnit_information.jsp" %>
+                <%@include file="/views/project/stageInit/stageInitModel/projectUnit_information.jsp" %>
                 <!-- 报告使用单位 end -->
             </div>
 
