@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.service.event.project;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareApply;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlan;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
+import com.copower.pmcc.assess.service.chks.ChksAssessmentProjectPerformanceService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.ProjectPlanService;
 import com.copower.pmcc.assess.service.project.declare.DeclareApplyService;
@@ -28,6 +29,8 @@ public class DeclareRealtyEstateCertEvent extends ProjectTaskEvent {
     private ProjectPlanService projectPlanService;
     @Autowired
     private ProjectPlanSurveyService projectPlanSurveyService;
+    @Autowired
+    private ChksAssessmentProjectPerformanceService chksAssessmentProjectPerformanceService;
 
     @Override
     public void processFinishExecute(ProcessExecution processExecution) throws Exception {
@@ -42,5 +45,9 @@ public class DeclareRealtyEstateCertEvent extends ProjectTaskEvent {
                 projectPlanSurveyService.appendSurveyPlanDetails(projectPlan.getProjectId(), projectPlan.getStageSort());
         }
         super.processFinishExecute(processExecution);//数据写入record记录表中后再执行进入下阶段
+
+        if (projectPlanDetails != null && projectPlanDetails.getId() != null) {
+            chksAssessmentProjectPerformanceService.checkTaskChksActivity(projectPlanDetails.getId());
+        }
     }
 }

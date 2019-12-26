@@ -2,17 +2,23 @@ package com.copower.pmcc.assess.service.chks;
 
 
 import com.alibaba.fastjson.JSONObject;
+import com.copower.pmcc.assess.common.enums.ResponsibileModelEnum;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectPhase;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectWorkStage;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
+import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
+import com.copower.pmcc.assess.service.project.ProjectPlanService;
 import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.dto.model.AssessmentItemDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReActivityDto;
+import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
+import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
@@ -23,12 +29,14 @@ import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.github.pagehelper.PageHelper;
+import com.google.common.base.*;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -55,6 +63,10 @@ public class ChksAssessmentProjectPerformanceService {
     private BaseService baseService;
     @Autowired
     private PublicService publicService;
+    @Autowired
+    private ProjectPlanService projectPlanService;
+    @Autowired
+    private ProjectPhaseService projectPhaseService;
 
     public ChksBootstrapTableVo getChksBootstrapTableVo(AssessmentProjectPerformanceDto where, String activityIds) {
         List<Integer> activityList = null;
@@ -317,63 +329,6 @@ public class ChksAssessmentProjectPerformanceService {
 
 
     /**
-     * 获取此节点的下级的考核记录
-     * 之前需要的参数 boxId,boxReActivitiId , spotCheck ,processInsId ,projectId
-     *
-     * @param query 目前直接传入一个对象
-     * @return
-     */
-    public List<AssessmentProjectPerformanceDto> getAssessmentProjectPerformanceDtoList(boolean spotCheck, AssessmentProjectPerformanceQuery query) {
-        List<AssessmentProjectPerformanceDto> assessmentProjectPerformanceDtoList = new ArrayList<>(0);
-        List<BoxReActivityDto> activityDtoList = getAssessmentProjectPerformanceNext(query.getBoxId(), query.getActivityId(), spotCheck);
-        if (CollectionUtils.isEmpty(activityDtoList)) {
-            return assessmentProjectPerformanceDtoList;
-        }
-        Iterator<BoxReActivityDto> iterator = activityDtoList.iterator();
-        while (iterator.hasNext()) {
-            BoxReActivityDto reActivityDto = iterator.next();
-            query.setActivityId(reActivityDto.getId());
-            List<AssessmentProjectPerformanceDto> assessmentProjectPerformanceDtos = getAssessmentProjectPerformanceDtoList(query);
-            if (CollectionUtils.isEmpty(assessmentProjectPerformanceDtos)) {
-                continue;
-            }
-            assessmentProjectPerformanceDtoList.addAll(assessmentProjectPerformanceDtos);
-        }
-        if (CollectionUtils.isNotEmpty(assessmentProjectPerformanceDtoList)) {
-            Iterator<AssessmentProjectPerformanceDto> assessmentProjectPerformanceDtoIterator = assessmentProjectPerformanceDtoList.iterator();
-            while (assessmentProjectPerformanceDtoIterator.hasNext()) {
-                AssessmentProjectPerformanceDto vo = assessmentProjectPerformanceDtoIterator.next();
-                if (vo.getSpotActivityId() != null) {
-                    if (vo.getSpotActivityId() != 0) {
-                        assessmentProjectPerformanceDtoIterator.remove();
-                    }
-                }
-            }
-        }
-        return assessmentProjectPerformanceDtoList;
-    }
-
-    public Map<String, List<AssessmentProjectPerformanceDto>> getAssessmentProjectPerformanceDtoMap(boolean spotCheck, AssessmentProjectPerformanceQuery query) {
-        LinkedHashMap<String, List<AssessmentProjectPerformanceDto>> listLinkedHashMap = new LinkedHashMap<>();
-        List<AssessmentProjectPerformanceDto> dtoList = getAssessmentProjectPerformanceDtoList(spotCheck, query);
-        if (CollectionUtils.isNotEmpty(dtoList)) {
-            Iterator<AssessmentProjectPerformanceDto> iterator = dtoList.iterator();
-            while (iterator.hasNext()) {
-                AssessmentProjectPerformanceDto assessmentProjectPerformanceDto = iterator.next();
-                if (listLinkedHashMap.containsKey(assessmentProjectPerformanceDto.getActivityName())) {
-                    listLinkedHashMap.get(assessmentProjectPerformanceDto.getActivityName()).add(assessmentProjectPerformanceDto);
-                } else {
-                    List<AssessmentProjectPerformanceDto> projectPerformanceDtos = new ArrayList<>();
-                    projectPerformanceDtos.add(assessmentProjectPerformanceDto);
-                    listLinkedHashMap.put(assessmentProjectPerformanceDto.getActivityName(), projectPerformanceDtos);
-                }
-            }
-        }
-        return listLinkedHashMap;
-    }
-
-
-    /**
      * 获取当前登陆人是否是巡查或者抽查 对象
      *
      * @param boxId   模型 id
@@ -454,6 +409,107 @@ public class ChksAssessmentProjectPerformanceService {
             baseService.writeExceptionInfo(e);
         }
         return null;
+    }
+
+    /**
+     * 确定流程结束   考核是否完成,假如没有那么会生成一个task任务
+     * @param planDetailsId
+     * @throws Exception
+     */
+    public void checkTaskChksActivity(Integer planDetailsId) throws Exception {
+        Integer boxId = null;
+        if (planDetailsId == null){
+            return;
+        }
+        ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
+        if (projectPlanDetails == null){
+            return;
+        }
+        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseById(projectPlanDetails.getProjectPhaseId()) ;
+        if (StringUtils.isNotBlank(projectPhase.getBoxName())){
+//            BoxReDto boxReDto = bpmRpcBoxService.getBoxReByBoxName(projectPhase.getBoxName(),publicService.getCurrentCompany().getCompanyId()) ;
+            BoxReDto boxReDto = bpmRpcBoxService.getBoxReByBoxName(projectPhase.getBoxName()) ;
+            if (boxReDto == null){
+                return;
+            }
+            boxId = boxReDto.getId();
+        }
+        if (boxId == null) {
+            return;
+        }
+        List<BoxReActivityDto> boxReActivityDtoList = bpmRpcBoxService.getBoxReActivityByBoxId(boxId);
+        BoxReActivityDto boxReActivityDto = bpmRpcBoxService.getEndActivityByBoxId(boxId);
+        if (CollectionUtils.isEmpty(boxReActivityDtoList)) {
+            return;
+        }
+        if (boxReActivityDto == null) {
+            return;
+        }
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
+        ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlanDetails.getProjectWorkStageId());
+        Iterator<BoxReActivityDto> iterator = boxReActivityDtoList.iterator();
+        while (iterator.hasNext()) {
+            BoxReActivityDto boxReActivityDto1 = iterator.next();
+            if (com.google.common.base.Objects.equal(boxReActivityDto1.getId(), boxReActivityDto.getId())) {
+                iterator.remove();
+            }
+        }
+        boxReActivityDtoList.add(boxReActivityDto);
+        ListIterator<BoxReActivityDto> listIterator = boxReActivityDtoList.listIterator();
+        while (listIterator.hasNext()) {
+            BoxReActivityDto reActivityDto = listIterator.next();
+            List<String> list = bpmRpcBoxService.getRoleUserByActivityId(reActivityDto.getId());
+            if (CollectionUtils.isEmpty(list)) {
+                continue;
+            }
+            int i = 0;
+            for (String account:list){
+                AssessmentProjectPerformanceQuery query = new AssessmentProjectPerformanceQuery(boxId) ;
+                query.setPlanDetailsId(planDetailsId);
+                query.setActivityId(reActivityDto.getId());
+                query.setProjectId(projectPlanDetails.getProjectId());
+                query.setExaminePeople(account);
+                List<AssessmentProjectPerformanceDto> assessmentProjectPerformanceDtoList = getAssessmentProjectPerformanceDtoList(query) ;
+                if (CollectionUtils.isNotEmpty(assessmentProjectPerformanceDtoList)){
+                    i++;
+                }
+            }
+            if (i == 0){
+                for (int j = 0; j < list.size(); j++) {
+                    String account = list.get(i) ;
+                    //发起任务
+                    appendTask(projectPlanDetails,projectInfo,projectWorkStage,account,j) ;
+                }
+            }
+
+        }
+    }
+
+    /**
+     * 发起任务
+     * @param target
+     * @param projectInfo
+     * @param projectWorkStage
+     * @param account
+     * @param i
+     * @throws Exception
+     */
+    private void appendTask(ProjectPlanDetails target,ProjectInfo projectInfo,ProjectWorkStage projectWorkStage,String account,int i)throws Exception{
+        final int sort = 10;
+        ProjectPlanDetails projectPlanDetails = new ProjectPlanDetails();
+        projectPlanDetails.setPlanStartDate(new Date());
+        projectPlanDetails.setPlanEndDate(new Date());
+        projectPlanDetails.setPlanHours(new BigDecimal(0));
+        projectPlanDetails.setExecuteUserAccount(account);
+        projectPlanDetails.setProjectId(target.getProjectId());
+        projectPlanDetails.setPlanId(target.getPlanId());
+        projectPlanDetails.setProjectPhaseId(target.getProjectPhaseId());
+        projectPlanDetails.setProjectWorkStageId(target.getProjectWorkStageId());
+        projectPlanDetails.setProjectPhaseName(String.join("","考核未完成 ===>",target.getProjectPhaseName()));
+        projectPlanDetails.setSorting(sort+i);
+        projectPlanDetails.setStatus(ProcessStatusEnum.RUN.getValue());
+        projectPlanDetails.setId(target.getId());
+        projectPlanService.saveProjectPlanDetailsResponsibility(projectPlanDetails,projectInfo.getProjectName(),projectWorkStage.getWorkStageName(), ResponsibileModelEnum.TASK) ;
     }
 
     public void updateAssessmentProjectPerformanceDto(AssessmentProjectPerformanceDto assessmentProjectPerformanceDto, boolean updateNull) {
