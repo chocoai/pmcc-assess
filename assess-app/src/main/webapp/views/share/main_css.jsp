@@ -21,6 +21,7 @@
 <meta content="" name="author"/>
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/jquery-ui/jquery-ui.css">
 <script src="/assets/js/jquery/2.0.3/jquery.min.js?v=${assessVersion}"></script>
 <script src='${pageContext.request.contextPath}/js/assess.key.js?v=${assessVersion}'></script>
 <script src='${pageContext.request.contextPath}/js/assess.upload.key.js?v=${assessVersion}'></script>

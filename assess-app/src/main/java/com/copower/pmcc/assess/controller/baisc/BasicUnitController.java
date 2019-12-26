@@ -60,16 +60,16 @@ public class BasicUnitController {
         }
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/getBootstrapTableVo", method = {RequestMethod.GET})
-    public BootstrapTableVo getBootstrapTableVo(BasicUnit basicUnit) {
-        try {
-            return basicUnitService.getBootstrapTableVo(basicUnit);
-        } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
-            return null;
-        }
-    }
+//    @ResponseBody
+//    @RequestMapping(value = "/getBootstrapTableVo", method = {RequestMethod.GET})
+//    public BootstrapTableVo getBootstrapTableVo(BasicUnit basicUnit) {
+//        try {
+//            return basicUnitService.getBootstrapTableVo(basicUnit);
+//        } catch (Exception e) {
+//            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+//            return null;
+//        }
+//    }
 
     @ResponseBody
     @RequestMapping(value = "/basicUnitList", name = "获取数据列表", method = {RequestMethod.GET})
@@ -145,8 +145,7 @@ public class BasicUnitController {
         BootstrapTableVo vo = new BootstrapTableVo();
         try {
             if (buildingId != null) {
-                basicUnit.setBuildingId(buildingId);
-                vo = basicUnitService.getBootstrapTableVo(basicUnit);
+                vo = basicUnitService.getBootstrapTableVo(buildingId);
             }
         } catch (Exception e1) {
             logger.error(String.format("exception: %s", e1.getMessage()), e1);

@@ -60,16 +60,16 @@ public class BasicHouseController {
         }
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/getBootstrapTableVo", method = {RequestMethod.GET})
-    public BootstrapTableVo getBootstrapTableVo(BasicHouse basicHouse) {
-        try {
-            return basicHouseService.getBootstrapTableVo(basicHouse);
-        } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
-            return null;
-        }
-    }
+//    @ResponseBody
+//    @RequestMapping(value = "/getBootstrapTableVo", method = {RequestMethod.GET})
+//    public BootstrapTableVo getBootstrapTableVo(BasicHouse basicHouse) {
+//        try {
+//            return basicHouseService.getBootstrapTableVo(basicHouse);
+//        } catch (Exception e) {
+//            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+//            return null;
+//        }
+//    }
 
     @ResponseBody
     @RequestMapping(value = "/basicHouseList", name = "获取数据列表", method = {RequestMethod.GET})
@@ -163,12 +163,10 @@ public class BasicHouseController {
     @ResponseBody
     @RequestMapping(value = "/getBasicHouseList", method = {RequestMethod.GET}, name = "获取案例 房屋列表")
     public BootstrapTableVo getBasicHouseList(Integer unitId) {
-        BasicHouse basicHouse = new BasicHouse();
         BootstrapTableVo vo = new BootstrapTableVo();
         try {
             if (unitId != null) {
-                basicHouse.setUnitId(unitId);
-                vo = basicHouseService.getBootstrapTableVo(basicHouse);
+                vo = basicHouseService.getBootstrapTableVo(unitId);
             }
         } catch (Exception e1) {
             logger.error(String.format("exception: %s", e1.getMessage()), e1);

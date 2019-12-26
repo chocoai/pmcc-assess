@@ -95,16 +95,16 @@ public class BasicBuildingController {
         }
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/getBootstrapTableVo", method = {RequestMethod.GET})
-    public BootstrapTableVo getBootstrapTableVo(BasicBuilding basicBuilding) {
-        try {
-            return basicBuildingService.getBootstrapTableVo(basicBuilding);
-        } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
-            return null;
-        }
-    }
+//    @ResponseBody
+//    @RequestMapping(value = "/getBootstrapTableVo", method = {RequestMethod.GET})
+//    public BootstrapTableVo getBootstrapTableVo(BasicBuilding basicBuilding) {
+//        try {
+//            return basicBuildingService.getBootstrapTableVo(basicBuilding);
+//        } catch (Exception e) {
+//            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+//            return null;
+//        }
+//    }
 
     @ResponseBody
     @RequestMapping(value = "/basicBuildingList", name = "获取数据列表", method = {RequestMethod.GET})
@@ -144,9 +144,8 @@ public class BasicBuildingController {
     @RequestMapping(value = "/getBuildingList", method = {RequestMethod.GET}, name = "楼栋--列表")
     public BootstrapTableVo getBootstrapTableVo(Integer estateId) throws Exception {
         if (estateId == null) return null;
-        BasicBuilding basicBuilding = new BasicBuilding();
-        basicBuilding.setEstateId(estateId);
-        BootstrapTableVo vo = basicBuildingService.getBootstrapTableVo(basicBuilding);
+
+        BootstrapTableVo vo = basicBuildingService.getBootstrapTableVo(estateId);
         return vo;
     }
 }
