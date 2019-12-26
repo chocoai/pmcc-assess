@@ -24,6 +24,8 @@ public class ProjectInfo {
 
     private Date valuationDate;
 
+    private String entrustPurposeName;
+
     private Integer entrustPurpose;
 
     private Integer entrustAimType;
@@ -77,6 +79,8 @@ public class ProjectInfo {
     private String estateName;
 
     private Date preauditNumberDate;
+
+    private String propertyScopeName;
 
     private Date resultNumberDate;
 
@@ -164,6 +168,14 @@ public class ProjectInfo {
 
     public void setValuationDate(Date valuationDate) {
         this.valuationDate = valuationDate;
+    }
+
+    public String getEntrustPurposeName() {
+        return entrustPurposeName;
+    }
+
+    public void setEntrustPurposeName(String entrustPurposeName) {
+        this.entrustPurposeName = entrustPurposeName == null ? null : entrustPurposeName.trim();
     }
 
     public Integer getEntrustPurpose() {
@@ -380,6 +392,14 @@ public class ProjectInfo {
 
     public void setPreauditNumberDate(Date preauditNumberDate) {
         this.preauditNumberDate = preauditNumberDate;
+    }
+
+    public String getPropertyScopeName() {
+        return propertyScopeName;
+    }
+
+    public void setPropertyScopeName(String propertyScopeName) {
+        this.propertyScopeName = propertyScopeName == null ? null : propertyScopeName.trim();
     }
 
     public Date getResultNumberDate() {

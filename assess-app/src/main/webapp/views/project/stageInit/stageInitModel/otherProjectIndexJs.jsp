@@ -1073,6 +1073,23 @@
         return true;
     };
 
+    objProject.baseValid = function () {
+        //表单校验
+        if (!$("#" + this.config.info.frm).valid()) {
+            return false;
+        }
+        if (!$("#" + this.config.consignor.frm).valid()) {
+            return false;
+        }
+        if (!$("#" + this.config.possessor.frm).valid()) {
+            return false;
+        }
+        if (!$("#" + this.config.unit_information.frm).valid()) {
+            return false;
+        }
+        return true;
+    };
+
     objProject.hasLinkman = function (tbListId) {
         var rows = $("#" + tbListId).bootstrapTable('getData');
         if (rows == null || rows.length <= 0) return false;

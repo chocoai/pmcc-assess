@@ -14,10 +14,9 @@
                 </div>
             </div>
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">紧急程度<span
-                        class="symbol required"></span></label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">紧急程度</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <select name="urgency" class="form-control search-select select2 urgency" required="required">
+                    <select name="urgency" class="form-control search-select select2 urgency" >
                     </select>
                 </div>
             </div>
@@ -32,12 +31,10 @@
         </div>
         <div class="form-group">
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">委托目的<span
-                        class="symbol required"></span></label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">委托目的</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <select name="entrustPurpose" class="form-control search-select select2 entrustPurpose"
-                            required="required">
-                    </select>
+
+                    <input type="text" name="entrustPurposeName" class="form-control" placeholder="委托目的">
                 </div>
             </div>
             <%--<div class="x-valid">--%>
@@ -109,8 +106,8 @@
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">评估范围</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <select name="propertyScope" class="form-control search-select select2 propertyScope">
-                    </select>
+
+                    <input type="text" name="propertyScopeName"  class="form-control" placeholder="评估范围" >
                 </div>
             </div>
             <div class="x-valid">

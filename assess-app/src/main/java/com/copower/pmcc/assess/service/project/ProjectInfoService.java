@@ -51,7 +51,6 @@ import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.SysDepartmentDto;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.api.provider.ErpRpcDepartmentService;
-import com.copower.pmcc.erp.api.provider.ErpRpcToolsService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
@@ -117,10 +116,6 @@ public class ProjectInfoService {
     private ProjectPlanService projectPlanService;
     @Autowired
     private BaseProjectClassifyService baseProjectClassifyService;
-    @Autowired
-    private ErpRpcToolsService erpRpcToolsService;
-    @Autowired
-    private BaseParameterService baseParameterServcie;
     @Autowired
     private ProjectMemberDao projectMemberDao;
     @Autowired
@@ -210,7 +205,7 @@ public class ProjectInfoService {
      */
     private void allocateProjectManager(ProjectMember projectMember, ProjectInfo projectInfo) {
         List<ProjectWorkStage> projectWorkStages = projectWorkStageService.queryWorkStageByClassIdAndTypeId(projectInfo.getProjectTypeId(), true);
-        String boxName = baseParameterServcie.getParameterValues(BaseParameterEnum.PROJECT_APPLY_ASSIGN_PROCESS_KEY.getParameterKey());
+        String boxName = baseParameterService.getParameterValues(BaseParameterEnum.PROJECT_APPLY_ASSIGN_PROCESS_KEY.getParameterKey());
         Integer boxId = bpmRpcBoxService.getBoxIdByBoxName(boxName);
         BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(boxId);
         ProcessInfo processInfo = new ProcessInfo();
@@ -811,5 +806,14 @@ public class ProjectInfoService {
             list.add(keyValueDto);
         }
         return list;
+    }
+
+    public String getProjectInfoView(){
+        try {
+            return baseParameterService.getBaseParameter(BaseParameterEnum.PROJECTINITVIEWURL) ;
+        } catch (BusinessException e) {
+            logger.error(e.getMessage(),e);
+            return null;
+        }
     }
 }
