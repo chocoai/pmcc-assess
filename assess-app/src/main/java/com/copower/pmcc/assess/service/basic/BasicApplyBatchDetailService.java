@@ -115,7 +115,7 @@ public class BasicApplyBatchDetailService {
                     basicBuildingDao.updateBasicBuilding(building, false);
                     //执行人发生改变，子任务发生改变
                     if (!StringUtils.equals(oldData.getExecutor(), basicApplyBatchDetail.getExecutor())) {
-                        updateSonTask(planDetailsId, "building", basicApplyBatchDetail.getTableId(), basicApplyBatchDetail.getExecutor());
+                        updateSonTask(planDetailsId, "building", basicApplyBatchDetail.getTableId(), basicApplyBatchDetail.getExecutor(), oldData.getCreator());
                     }
                     break;
                 case "tb_basic_unit":
@@ -125,7 +125,7 @@ public class BasicApplyBatchDetailService {
                     basicUnitService.saveAndUpdateBasicUnit(unit, false);
                     //执行人发生改变，子任务发生改变
                     if (!StringUtils.equals(oldData.getExecutor(), basicApplyBatchDetail.getExecutor())) {
-                        updateSonTask(planDetailsId, "unit", basicApplyBatchDetail.getTableId(), basicApplyBatchDetail.getExecutor());
+                        updateSonTask(planDetailsId, "unit", basicApplyBatchDetail.getTableId(), basicApplyBatchDetail.getExecutor(), oldData.getCreator());
                     }
                     break;
                 case "tb_basic_house":
@@ -134,7 +134,7 @@ public class BasicApplyBatchDetailService {
                     basicHouseService.saveAndUpdateBasicHouse(house, false);
                     //执行人发生改变，子任务发生改变
                     if (!StringUtils.equals(oldData.getExecutor(), basicApplyBatchDetail.getExecutor())) {
-                        updateSonTask(planDetailsId, "house", basicApplyBatchDetail.getTableId(), basicApplyBatchDetail.getExecutor());
+                        updateSonTask(planDetailsId, "house", basicApplyBatchDetail.getTableId(), basicApplyBatchDetail.getExecutor(), oldData.getCreator());
                     }
                     break;
             }
@@ -240,16 +240,28 @@ public class BasicApplyBatchDetailService {
     }
 
     //修改子任务
-    public void updateSonTask(Integer planDetailsId, String key, Integer tableId, String executor) {
+    public void updateSonTask(Integer planDetailsId, String key, Integer tableId, String executor, String creator) {
         ProjectResponsibilityDto oldDto = new ProjectResponsibilityDto();
         oldDto.setPlanDetailsId(planDetailsId);
         oldDto.setBusinessId(tableId);
         oldDto.setBusinessKey(key);
         ProjectResponsibilityDto oldTask = bpmRpcProjectTaskService.getProjectTask(oldDto);
-        ProjectResponsibilityDto newDto = new ProjectResponsibilityDto();
-        BeanUtils.copyProperties(oldTask, newDto, "userAccount", "gmtCreated", "gmtModified");
-        newDto.setUserAccount(executor);
-        bpmRpcProjectTaskService.updateProjectTask(newDto);
+        if (oldTask != null) {
+            //执行人变为创建人则删除子任务
+            if (StringUtils.equals(creator, executor)) {
+                bpmRpcProjectTaskService.deleteProjectTask(oldTask.getId());
+            } else {
+                ProjectResponsibilityDto newDto = new ProjectResponsibilityDto();
+                BeanUtils.copyProperties(oldTask, newDto, "userAccount", "gmtCreated", "gmtModified");
+                newDto.setUserAccount(executor);
+                bpmRpcProjectTaskService.updateProjectTask(newDto);
+            }
+        } else {
+            if (!StringUtils.equals(creator, executor)) {
+                addSonTask(planDetailsId, key, tableId, executor);
+            }
+        }
+
     }
 
     //存入basicApply表单
@@ -392,8 +404,8 @@ public class BasicApplyBatchDetailService {
         oldDto.setBusinessId(tableId);
         oldDto.setBusinessKey(tableName);
         List<ProjectResponsibilityDto> projectTaskList = bpmRpcProjectTaskService.getProjectTaskList(oldDto);
-        if(CollectionUtils.isNotEmpty(projectTaskList)){
-            projectTaskList.forEach(o-> bpmRpcProjectTaskService.deleteProjectTask(o.getId()));
+        if (CollectionUtils.isNotEmpty(projectTaskList)) {
+            projectTaskList.forEach(o -> bpmRpcProjectTaskService.deleteProjectTask(o.getId()));
         }
     }
 
