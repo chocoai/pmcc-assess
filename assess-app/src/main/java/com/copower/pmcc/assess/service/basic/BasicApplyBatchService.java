@@ -2463,6 +2463,7 @@ public class BasicApplyBatchService {
                         basicApplyBatchDetail.setName(targetUnit.getUnitNumber());
                         basicApplyBatchDetail.setDisplayName(String.format("%s单元", targetUnit.getUnitNumber()));
                         basicApplyBatchDetail.setCreator(commonService.thisUserAccount());
+                        basicApplyBatchDetail.setExecutor(commonService.thisUserAccount());
                         basicApplyBatchDetailDao.addInfo(basicApplyBatchDetail);
                     }
 
@@ -2556,6 +2557,7 @@ public class BasicApplyBatchService {
                         basicApplyBatchDetail.setName(targetHouse.getHouseNumber());
                         basicApplyBatchDetail.setDisplayName(targetHouse.getHouseNumber());
                         basicApplyBatchDetail.setCreator(commonService.thisUserAccount());
+                        basicApplyBatchDetail.setExecutor(commonService.thisUserAccount());
                         basicApplyBatchDetailDao.addInfo(basicApplyBatchDetail);
                         basicApplyBatchDetailService.insertBasicApply(basicApplyBatchDetail, planDetailsId);
                     }

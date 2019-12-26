@@ -498,6 +498,7 @@
                         type: result.data.tableName.replace('tb_basic_', ''),
                         displayName: result.data.displayName,
                         executor: result.data.executor,
+                        executorName: result.data.executorName,
                         creator: result.data.creator,
                         creatorName: result.data.creatorName,
                     });
@@ -622,6 +623,8 @@
                     node.pid = result.data.pid;
                     node.executor = result.data.executor;
                     node.creator = result.data.creator;
+                    node.creatorName = result.data.creatorName;
+                    node.executorName = result.data.executorName;
                     zTreeObj.updateNode(node, false);
                     $('#detail_modal_b').modal('hide');
                 } else {
@@ -808,6 +811,8 @@
     function setFontCss(treeId, treeNode) {
         if(treeNode.executor != '${userAccount}'){
             return {color:"#AAAAAA"};
+        }else{
+            return {color:"black"};
         }
     }
 
