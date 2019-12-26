@@ -490,7 +490,7 @@
                        class="btn btn-xs btn-warning judge-merge-cancel tooltips">调整合并</a>
                     <a href="javascript://" onclick="programme.loadSceneExploreBasicApplyList('{declareId}','{id}');"
                        class="btn btn-xs btn-success judge-relation-object tooltips">关联查勘</a>
-                    <a href="javascript://" onclick="programmeMethod.relationObject(this);"
+                    <a href="javascript://" onclick="programmeMethod.setMethod(this);"
                        class="btn btn-xs btn-success judge-method tooltips">评估方法</a>
                 </small>
             </h3>
