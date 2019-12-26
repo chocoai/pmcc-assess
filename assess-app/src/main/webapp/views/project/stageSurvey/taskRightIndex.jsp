@@ -603,11 +603,11 @@
     function loadDeclareRecordTable2(groupId, data) {
         var target = $("#" + commonField.recordTable + groupId);
         var cols = [];
-        cols.push({field: 'declareName', title: '权证名称', width: "12%"});
-        cols.push({field: 'buildingNumber', title: '楼栋号', width: "6%"});
+        cols.push({field: 'declareName', title: '权证名称', width: "22%"});
+        cols.push({field: 'buildingNumber', title: '楼栋号', width: "16%"});
         cols.push({field: 'unitNumber', title: '单元号', width: "6%"});
         cols.push({field: 'ownership', title: '所有权人', width: "6%"});
-        cols.push({field: 'seat', title: '坐落', width: "19%"});
+        cols.push({field: 'seat', title: '坐落', width: "29%"});
         cols.push({
             field: 'id', title: '操作', width: 200, formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
@@ -670,7 +670,7 @@
     //加载 他项权利列表
     function loadAssetRightList(groupId) {
         var cols = [];
-        cols.push({field: 'typeName', title: '类型'});
+//        cols.push({field: 'typeName', title: '类型'});
         cols.push({field: 'categoryName', title: '类别'});
         cols.push({field: 'remark', title: '他项权利描述', width: '40%'});
         cols.push({field: 'number', title: '他权证编号'});

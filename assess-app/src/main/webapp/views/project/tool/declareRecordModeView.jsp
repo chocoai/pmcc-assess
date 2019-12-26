@@ -23,27 +23,27 @@
                         <div class="panel-body">
                             <div class="form-horizontal">
                                 <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">省</label>
-                                        <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                                            <select name="province"
-                                                    class="form-control search-select select2"></select>
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">市</label>
-                                        <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                                            <select name="city"
-                                                    class="form-control search-select select2"></select>
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">县</label>
-                                        <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                                            <select name="district"
-                                                    class="form-control search-select select2"></select>
-                                        </div>
-                                    </div>
+                                    <%--<div class="x-valid">--%>
+                                        <%--<label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">省</label>--%>
+                                        <%--<div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">--%>
+                                            <%--<select name="province"--%>
+                                                    <%--class="form-control search-select select2"></select>--%>
+                                        <%--</div>--%>
+                                    <%--</div>--%>
+                                    <%--<div class="x-valid">--%>
+                                        <%--<label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">市</label>--%>
+                                        <%--<div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">--%>
+                                            <%--<select name="city"--%>
+                                                    <%--class="form-control search-select select2"></select>--%>
+                                        <%--</div>--%>
+                                    <%--</div>--%>
+                                    <%--<div class="x-valid">--%>
+                                        <%--<label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">县</label>--%>
+                                        <%--<div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">--%>
+                                            <%--<select name="district"--%>
+                                                    <%--class="form-control search-select select2"></select>--%>
+                                        <%--</div>--%>
+                                    <%--</div>--%>
                                     <div class="x-valid">
                                         <div class="x-valid">
                                             <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
@@ -115,14 +115,14 @@
         }
         declareRecordModeObj.loadDeclareRecordTable({projectId: defaultObj.projectId});
         box.modal('show');
-        AssessCommon.initAreaInfo({
-            provinceTarget: box.find("select[name='province']"),
-            cityTarget: box.find("select[name='city']"),
-            districtTarget: box.find("select[name='district']"),
-            provinceValue: null,
-            cityValue: null,
-            districtValue: null
-        });
+//        AssessCommon.initAreaInfo({
+//            provinceTarget: box.find("select[name='province']"),
+//            cityTarget: box.find("select[name='city']"),
+//            districtTarget: box.find("select[name='district']"),
+//            provinceValue: null,
+//            cityValue: null,
+//            districtValue: null
+//        });
     };
 
     /**
@@ -160,20 +160,20 @@
 
     declareRecordModeObj.searchData = function (_this) {
         var group = $(_this).closest(".form-group");
-        var province = group.find("select[name='province']").val();
-        var city = group.find("select[name='city']").val();
-        var district = group.find("select[name='district']").val();
+//        var province = group.find("select[name='province']").val();
+//        var city = group.find("select[name='city']").val();
+//        var district = group.find("select[name='district']").val();
         var name = group.find("[name='name']").val();
         var data = {projectId: declareRecordModeObj.projectId};
-        if (province) {
-            data.province = province;
-        }
-        if (city) {
-            data.city = city;
-        }
-        if (district) {
-            data.district = district;
-        }
+//        if (province) {
+//            data.province = province;
+//        }
+//        if (city) {
+//            data.city = city;
+//        }
+//        if (district) {
+//            data.district = district;
+//        }
         if (name) {
             data.name = name;
         }
@@ -189,10 +189,10 @@
         var cols = [];
         cols.push({checkbox: true, width: "5%"});
         cols.push({field: 'name', title: '权证名称', width: "22%"});
-        cols.push({field: 'buildingNumber', title: '楼栋号', width: "6%"});
-        cols.push({field: 'unit', title: '单元号', width: "6%"});
-        cols.push({field: 'ownership', title: '所有权人', width: "6%"});
-        cols.push({field: 'seat', title: '坐落', width: "19%"});
+        cols.push({field: 'buildingNumber', title: '楼栋号', width: "9%"});
+        cols.push({field: 'unit', title: '单元号', width: "10%"});
+        cols.push({field: 'ownership', title: '所有权人', width: "10%"});
+        cols.push({field: 'seat', title: '坐落', width: "29%"});
 //        cols.push({field: 'floorArea', title: '证载面积', width: "9%"});
 //        cols.push({field: 'practicalArea', title: '实际面积', width: "9%"});
         var method = {

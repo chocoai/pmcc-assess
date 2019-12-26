@@ -587,11 +587,17 @@
         var result = {};
         var target = $("#chksTableList").find("tbody");
         var data = [];
+        var dataS = [];
         getChksSonData(target, data);
-        if (data.length == 0) {
+        for (var i = 0;i<data.length;i++){
+            if (data[i].actualScore != 0){
+                dataS.push(data[i]) ;
+            }
+        }
+        if (dataS.length == 0) {
             return result;
         }
-        result.chksScore = JSON.stringify(data);
+        result.chksScore = JSON.stringify(dataS);
         if ($("#tb_log").size() != 0) {
             var appData = $("#tb_log").bootstrapTable("getData");
             if (appData.length != 0) {
