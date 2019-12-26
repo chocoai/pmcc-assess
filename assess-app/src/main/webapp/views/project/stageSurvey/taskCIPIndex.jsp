@@ -499,6 +499,7 @@
                         displayName: result.data.displayName,
                         executor: result.data.executor,
                         creator: result.data.creator,
+                        creatorName: result.data.creatorName,
                     });
 
                     $('#detail_modal').modal('hide');
