@@ -473,7 +473,7 @@ public class BasicApplyBatchDetailService {
 
     //获取单元
     public List<BasicUnit> getBasicUnitListByBatchId(Integer id, BasicBuilding basicBuilding) throws Exception {
-        List<BasicApplyBatchDetail> infoList = this.getUnitBatchDetailsByBatchId(id, basicBuilding);
+        List<BasicApplyBatchDetail> infoList = this.getUnitBatchDetailsByBatchId(basicBuilding);
         List<BasicUnit> basicUnits = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(infoList))
             for (BasicApplyBatchDetail item : infoList) {
@@ -483,12 +483,12 @@ public class BasicApplyBatchDetailService {
         return basicUnits;
     }
 
-    public List<BasicApplyBatchDetail> getUnitBatchDetailsByBatchId(Integer id, BasicBuilding basicBuilding) {
+    public List<BasicApplyBatchDetail> getUnitBatchDetailsByBatchId(BasicBuilding basicBuilding) {
         BasicApplyBatchDetail parent = getBasicApplyBatchDetail("tb_basic_building", basicBuilding.getId());
         if (parent == null) return null;
         BasicApplyBatchDetail basicApplyBatchDetail = new BasicApplyBatchDetail();
         basicApplyBatchDetail.setTableName("tb_basic_unit");
-        basicApplyBatchDetail.setApplyBatchId(id);
+        basicApplyBatchDetail.setApplyBatchId(parent.getApplyBatchId());
         basicApplyBatchDetail.setPid(parent.getId());
         return basicApplyBatchDetailDao.getInfoList(basicApplyBatchDetail);
     }
@@ -496,7 +496,7 @@ public class BasicApplyBatchDetailService {
 
     //获取房屋
     public List<BasicHouse> getBasicHouseListByBatchId(Integer id, BasicUnit basicUnit) throws Exception {
-        List<BasicApplyBatchDetail> infoList = this.getHouseBatchDetailsByBatchId(id, basicUnit);
+        List<BasicApplyBatchDetail> infoList = this.getHouseBatchDetailsByBatchId(basicUnit);
         List<BasicHouse> basicHouses = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(infoList))
             for (BasicApplyBatchDetail item : infoList) {
@@ -506,11 +506,11 @@ public class BasicApplyBatchDetailService {
         return basicHouses;
     }
 
-    public List<BasicApplyBatchDetail> getHouseBatchDetailsByBatchId(Integer id, BasicUnit basicUnit) {
+    public List<BasicApplyBatchDetail> getHouseBatchDetailsByBatchId(BasicUnit basicUnit) {
         BasicApplyBatchDetail parent = getBasicApplyBatchDetail("tb_basic_unit", basicUnit.getId());
         BasicApplyBatchDetail basicApplyBatchDetail = new BasicApplyBatchDetail();
         basicApplyBatchDetail.setTableName("tb_basic_house");
-        basicApplyBatchDetail.setApplyBatchId(id);
+        basicApplyBatchDetail.setApplyBatchId(parent.getApplyBatchId());
         basicApplyBatchDetail.setPid(parent.getId());
         return basicApplyBatchDetailDao.getInfoList(basicApplyBatchDetail);
     }

@@ -11,6 +11,7 @@ import com.copower.pmcc.assess.dal.basis.dao.basic.BasicHouseDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dal.cases.entity.*;
 import com.copower.pmcc.assess.dto.input.SynchronousDataDto;
+import com.copower.pmcc.assess.dto.output.basic.BasicBuildingVo;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseDamagedDegreeVo;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseTradingVo;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseVo;
@@ -105,6 +106,8 @@ public class BasicHouseService {
     private BasicEstateTaggingService basicEstateTaggingService;
     @Autowired
     private BasicApplyDao basicApplyDao;
+    @Autowired
+    private BasicUnitService basicUnitService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -196,6 +199,18 @@ public class BasicHouseService {
         BasicHouse basicHouse = new BasicHouse();
         basicHouse.setUnitId(unitId);
         return basicHouseDao.basicHouseList(basicHouse);
+    }
+
+    public BootstrapTableVo getBootstrapTableVo(Integer unitId) throws Exception {
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        BasicUnit basicUnit = basicUnitService.getBasicUnitById(unitId);
+        List<BasicHouse> basicHouseList = basicApplyBatchDetailService.getBasicHouseListByBatchId(null, basicUnit);
+        List<BasicHouseVo> transform = LangUtils.transform(basicHouseList, o -> getBasicHouseVo(o));
+        vo.setTotal(page.getTotal());
+        vo.setRows(ObjectUtils.isEmpty(transform) ? new ArrayList<BasicHouseVo>(10) : transform);
+        return vo;
     }
 
     public BootstrapTableVo getBootstrapTableVo(BasicHouse basicHouse) throws Exception {

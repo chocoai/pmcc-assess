@@ -9,6 +9,7 @@ import com.copower.pmcc.assess.dal.basis.dao.basic.BasicUnitDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dal.cases.entity.*;
 import com.copower.pmcc.assess.dto.input.SynchronousDataDto;
+import com.copower.pmcc.assess.dto.output.basic.BasicBuildingVo;
 import com.copower.pmcc.assess.dto.output.basic.BasicUnitVo;
 import com.copower.pmcc.assess.dto.output.cases.CaseUnitHuxingVo;
 import com.copower.pmcc.assess.service.PublicService;
@@ -80,6 +81,8 @@ public class BasicUnitService {
     private BasicEstateTaggingDao basicEstateTaggingDao;
     @Autowired
     private CaseEstateTaggingService caseEstateTaggingService;
+    @Autowired
+    private BasicBuildingService basicBuildingService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -148,6 +151,19 @@ public class BasicUnitService {
         return basicUnitDao.basicUnitList(basicUnit);
     }
 
+
+    public BootstrapTableVo getBootstrapTableVo(Integer buildingId) throws Exception {
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        BasicBuildingVo building = basicBuildingService.getBasicBuildingById(buildingId);
+        List<BasicUnit> basicUnitList = basicApplyBatchDetailService.getBasicUnitListByBatchId(null, building);
+
+        List<BasicUnitVo> transform = LangUtils.transform(basicUnitList, o -> getBasicUnitVo(o));
+        vo.setTotal(page.getTotal());
+        vo.setRows(ObjectUtils.isEmpty(transform) ? new ArrayList<BasicUnitVo>(10) : transform);
+        return vo;
+    }
 
     public BootstrapTableVo getBootstrapTableVo(BasicUnit basicUnit) throws Exception {
         BootstrapTableVo vo = new BootstrapTableVo();
