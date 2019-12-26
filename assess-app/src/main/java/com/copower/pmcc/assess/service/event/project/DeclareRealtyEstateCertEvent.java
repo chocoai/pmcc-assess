@@ -47,7 +47,6 @@ public class DeclareRealtyEstateCertEvent extends ProjectTaskEvent {
         super.processFinishExecute(processExecution);//数据写入record记录表中后再执行进入下阶段
 
         if (projectPlanDetails != null && projectPlanDetails.getId() != null) {
-            chksAssessmentProjectPerformanceService.checkTaskChksActivity(projectPlanDetails.getId());
         }
     }
 }
