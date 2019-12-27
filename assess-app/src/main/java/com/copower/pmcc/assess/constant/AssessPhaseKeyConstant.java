@@ -21,4 +21,6 @@ public class AssessPhaseKeyConstant {
     public static final String LIQUIDATION_ANALYSIS = "liquidation.analysis";  //变现分析税费
     public static final String REIMBURSEMENT = "reimbursement";  //法定优先受偿款
     public static final String REPORT_ANALYSIS_CATEGORY_MARKET = "report.analysis.category.market";  //市场背景描述与分析
+
+    public static final String ASSESS_SCHEME_PROGRAMME_SETTING = "assess.scheme.programme.setting";  //评估方案编制
 }

@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.service.event.project;
 
-import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlan;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectWorkStage;
@@ -17,6 +16,7 @@ import java.util.Date;
 
 /**
  * Created by zch on 2019-11-7.
+ * 评估方案编制
  */
 @Component
 public class ProgrammeProcessEvent extends BaseProcessEvent {
@@ -38,17 +38,12 @@ public class ProgrammeProcessEvent extends BaseProcessEvent {
     @Override
     public void processFinishExecute(ProcessExecution processExecution) throws Exception {
         super.processFinishExecute(processExecution);
-        //
-
         ProjectPlan projectPlan = projectPlanService.getProjectplanByProcessInsId(processExecution.getProcessInstanceId());
         if (projectPlan == null){
             return;
         }
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlan.getProjectId());
         ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlan.getWorkStageId());
-        //更新项目状态
-//        projectPlan.setProjectStatus(ProjectStatusEnum.NORMAL.getKey());
-//        projectPlanService.updateProjectPlan(projectPlan) ;
         schemeJudgeObjectService.submitProgrammeHandle(projectInfo,projectPlan,projectWorkStage) ;
 
     }

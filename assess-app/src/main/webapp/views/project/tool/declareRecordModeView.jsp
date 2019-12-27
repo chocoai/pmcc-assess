@@ -23,27 +23,27 @@
                         <div class="panel-body">
                             <div class="form-horizontal">
                                 <div class="form-group">
-                                    <%--<div class="x-valid">--%>
-                                        <%--<label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">省</label>--%>
-                                        <%--<div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">--%>
-                                            <%--<select name="province"--%>
-                                                    <%--class="form-control search-select select2"></select>--%>
-                                        <%--</div>--%>
-                                    <%--</div>--%>
-                                    <%--<div class="x-valid">--%>
-                                        <%--<label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">市</label>--%>
-                                        <%--<div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">--%>
-                                            <%--<select name="city"--%>
-                                                    <%--class="form-control search-select select2"></select>--%>
-                                        <%--</div>--%>
-                                    <%--</div>--%>
-                                    <%--<div class="x-valid">--%>
-                                        <%--<label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">县</label>--%>
-                                        <%--<div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">--%>
-                                            <%--<select name="district"--%>
-                                                    <%--class="form-control search-select select2"></select>--%>
-                                        <%--</div>--%>
-                                    <%--</div>--%>
+                                    <div class="x-valid">
+                                        <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">坐落</label>
+                                        <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
+                                            <input class="form-control" type="text" name="seat"
+                                                   placeholder="坐落">
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">楼栋号</label>
+                                        <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
+                                            <input class="form-control" type="text" name="buildingNumber"
+                                                   placeholder="楼栋号">
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">单元号</label>
+                                        <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
+                                            <input class="form-control" type="text" name="unit"
+                                                   placeholder="单元号">
+                                        </div>
+                                    </div>
                                     <div class="x-valid">
                                         <div class="x-valid">
                                             <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
@@ -164,6 +164,9 @@
 //        var city = group.find("select[name='city']").val();
 //        var district = group.find("select[name='district']").val();
         var name = group.find("[name='name']").val();
+        var seat = group.find("[name='seat']").val();
+        var unit = group.find("[name='unit']").val();
+        var buildingNumber = group.find("[name='buildingNumber']").val();
         var data = {projectId: declareRecordModeObj.projectId};
 //        if (province) {
 //            data.province = province;
@@ -176,6 +179,15 @@
 //        }
         if (name) {
             data.name = name;
+        }
+        if (unit) {
+            data.unit = unit;
+        }
+        if (buildingNumber) {
+            data.buildingNumber = buildingNumber;
+        }
+        if (seat) {
+            seat.name = seat;
         }
         declareRecordModeObj.loadDeclareRecordTable(data);
     };
@@ -215,7 +227,7 @@
             }
         };
         table.bootstrapTable('destroy');
-        TableInit(table, "${pageContext.request.contextPath}/declareRecord/getDeclareRecordList", cols, options, method);
+        TableInit(table, "${pageContext.request.contextPath}/declareRecord/getBootstrapTableVo", cols, options, method);
     };
 
 </script>

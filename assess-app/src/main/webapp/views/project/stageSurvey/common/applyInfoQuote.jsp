@@ -114,7 +114,7 @@
 <script type="application/javascript">
 
     //填充对应的数据
-    function autocompleteData (data) {
+    function autocompleteData(data) {
         if ("estate" == "${tbType}") {
             var basicEstate = data.basicEstate;
             var basicEstateLandState = data.basicEstateLandState;
@@ -713,11 +713,11 @@
          * 描述:加载数据列表
          * @date:2018-09-13
          **/
-        loadDataList: function (flag,estateName) {
-            if(estateName){
+        loadDataList: function (flag, estateName) {
+            if (estateName) {
                 $("#querySearch").val(estateName);
             }
-            var estate={};
+            var estate = {};
             estate.querySearch = $("#querySearch").val();
             estate.queryProvince = $("#queryProvince").val();
             estate.queryCity = $("#queryCity").val();
@@ -780,7 +780,7 @@
                 cityTarget: $("#queryCity")
             });
             $("#" + caseFun.config.father.caseEstate.frm()).clearAll();
-            caseFun.caseEstate.loadDataList(true,estateName);
+            caseFun.caseEstate.loadDataList(true, estateName);
             $('#' + caseFun.config.father.caseEstate.box()).modal("show");
         },
         quote: function (id) {
@@ -812,7 +812,7 @@
             href += "?id=" + id;
             window.open(href, "");
         },
-        loadDataList: function (estateId) {
+        loadDataList: function (estateId, buildName) {
             var cols = [];
             cols.push({field: 'buildingNumber', title: '楼栋编号'});
             cols.push({field: 'buildingName', title: '楼栋名称'});
@@ -829,7 +829,8 @@
             });
             $("#" + caseFun.config.father.caseBuild.table()).bootstrapTable('destroy');
             TableInit(caseFun.config.father.caseBuild.table(), "${pageContext.request.contextPath}/caseBuilding/getBuildingList", cols, {
-                estateId: estateId
+                estateId: estateId,
+                buildName: buildName
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -839,8 +840,8 @@
                 }
             });
         },
-        showModel: function (estateId) {
-            caseFun.caseBuild.loadDataList(estateId);
+        showModel: function (estateId, buildName) {
+            caseFun.caseBuild.loadDataList(estateId, buildName);
             $('#' + caseFun.config.father.caseBuild.box()).modal("show");
         },
         quote: function (id) {
@@ -872,7 +873,7 @@
             href += "?id=" + id;
             window.open(href, "");
         },
-        loadDataList: function (buildingId) {
+        loadDataList: function (buildingId, unitName) {
             var cols = [];
             cols.push({field: 'unitNumber', title: '单元编号'});
             cols.push({field: 'elevatorHouseholdRatio', title: '梯户比'});
@@ -889,7 +890,8 @@
             });
             $("#" + caseFun.config.father.caseUnit.table()).bootstrapTable('destroy');
             TableInit(caseFun.config.father.caseUnit.table(), "${pageContext.request.contextPath}/caseUnit/getCaseUnitList", cols, {
-                caseBuildingId: buildingId
+                caseBuildingId: buildingId,
+                unitName: unitName
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -899,8 +901,8 @@
                 }
             });
         },
-        showModel: function (buildingId) {
-            caseFun.caseUnit.loadDataList(buildingId);
+        showModel: function (buildingId, unitName) {
+            caseFun.caseUnit.loadDataList(buildingId, unitName);
             $('#' + caseFun.config.father.caseUnit.box()).modal("show");
         },
         quote: function (id) {
@@ -931,7 +933,7 @@
             href += "?id=" + id;
             window.open(href, "");
         },
-        loadDataList: function (unitId) {
+        loadDataList: function (unitId, houseName) {
             var cols = [];
             cols.push({field: 'houseNumber', title: '房号'});
             cols.push({field: 'floor', title: '所在楼层'});
@@ -948,7 +950,8 @@
             });
             $("#" + caseFun.config.father.caseHouse.table()).bootstrapTable('destroy');
             TableInit(caseFun.config.father.caseHouse.table(), "${pageContext.request.contextPath}/caseHouse/getCaseHouseList", cols, {
-                unitId: unitId
+                unitId: unitId,
+                houseName: houseName
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -958,8 +961,8 @@
                 }
             });
         },
-        showModel: function (unitId) {
-            caseFun.caseHouse.loadDataList(unitId);
+        showModel: function (unitId, houseName) {
+            caseFun.caseHouse.loadDataList(unitId, houseName);
             $('#' + caseFun.config.father.caseHouse.box()).modal("show");
         },
         quote: function (id) {

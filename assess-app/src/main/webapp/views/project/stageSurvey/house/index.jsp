@@ -71,7 +71,13 @@
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/js/examine/examine.common.js?v=${assessVersion}"></script>
 <script src='${pageContext.request.contextPath}/js/autocomplete/estate.case.js?v=${assessVersion}'></script>
+<script src='${pageContext.request.contextPath}/js/autocomplete/building.case.js?v=${assessVersion}'></script>
+<script src='${pageContext.request.contextPath}/js/autocomplete/unit.case.js?v=${assessVersion}'></script>
+<script src='${pageContext.request.contextPath}/js/autocomplete/property.js?v=${assessVersion}'></script>
+<script src='${pageContext.request.contextPath}/js/autocomplete/builder.js?v=${assessVersion}'></script>
 <script src="${pageContext.request.contextPath}/js/autocomplete/developer.js?v=${assessVersion}"></script>
+<script src="${pageContext.request.contextPath}/js/autocomplete/unit.case.js?v=${assessVersion}"></script>
+<script src="${pageContext.request.contextPath}/js/autocomplete/house.case.js?v=${assessVersion}"></script>
 </html>
 <script type="text/javascript">
     //保存数据信息

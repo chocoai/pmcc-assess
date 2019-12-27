@@ -92,11 +92,11 @@ public class CaseBuildingService {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
-    public BootstrapTableVo getCaseBuildingListVos(CaseBuilding caseBuilding) {
+    public BootstrapTableVo getCaseBuildingListVos(Integer estateId,String buildName) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<CaseBuilding> caseBuildings = getCaseBuildingList(caseBuilding);
+        List<CaseBuilding> caseBuildings = caseBuildingDao.getBuildingList(estateId, buildName);
         vo.setRows(caseBuildings);
         vo.setTotal(page.getTotal());
         return vo;
@@ -247,7 +247,12 @@ public class CaseBuildingService {
     public List<CustomCaseEntity> autoCompleteCaseBuilding(String buildingNumber, Integer estateId) {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<CustomCaseEntity> mainList = caseBuildingDao.getLatestVersionBuildingList(buildingNumber, estateId);
+        BasicApplyBatchDetail applyBatchDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail("tb_basic_estate", estateId);
+        Integer caseEstateId = 0;
+        if(applyBatchDetail!=null){
+            caseEstateId = applyBatchDetail.getQuoteId();
+        }
+        List<CustomCaseEntity> mainList = caseBuildingDao.getLatestVersionBuildingList(buildingNumber, caseEstateId);
         return mainList;
     }
 

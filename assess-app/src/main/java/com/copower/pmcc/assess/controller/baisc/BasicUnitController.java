@@ -1,6 +1,8 @@
 package com.copower.pmcc.assess.controller.baisc;
 
+import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchDetail;
 import com.copower.pmcc.assess.dal.basis.entity.BasicUnit;
+import com.copower.pmcc.assess.service.basic.BasicApplyBatchDetailService;
 import com.copower.pmcc.assess.service.basic.BasicUnitService;
 import com.copower.pmcc.assess.service.basic.PublicBasicService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -25,6 +27,9 @@ public class BasicUnitController {
     private BasicUnitService basicUnitService;
     @Autowired
     private PublicBasicService publicBasicService;
+    @Autowired
+    private BasicApplyBatchDetailService basicApplyBatchDetailService;
+
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @ResponseBody
@@ -42,7 +47,7 @@ public class BasicUnitController {
     @RequestMapping(value = "/saveAndUpdateBasicUnit", name = "新增或者修改", method = {RequestMethod.POST})
     public HttpResult saveAndUpdateBasicUnit(BasicUnit basicUnit) {
         try {
-            return HttpResult.newCorrectResult(basicUnitService.saveAndUpdateBasicUnit(basicUnit,true));
+            return HttpResult.newCorrectResult(basicUnitService.saveAndUpdateBasicUnit(basicUnit, true));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(500, e.getMessage());
@@ -153,4 +158,21 @@ public class BasicUnitController {
         }
         return vo;
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/getQuoteBuildingId", name = "获取引用的楼栋id", method = RequestMethod.GET)
+    public HttpResult getAndEditDetail(Integer id) {
+        try {
+            BasicApplyBatchDetail unitDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail("tb_basic_unit", id);
+            Integer quoteId = 0;
+            if (unitDetail != null) {
+                quoteId = basicApplyBatchDetailService.getDataById(unitDetail.getPid()).getQuoteId();
+            }
+            return HttpResult.newCorrectResult(200, quoteId);
+        } catch (Exception e) {
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(500, e.getMessage());
+        }
+    }
+
 }

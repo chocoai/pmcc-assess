@@ -49,6 +49,18 @@ public class CaseBuildingDao {
         return caseBuildingMapper.selectByExample(example);
     }
 
+    public List<CaseBuilding> getBuildingList(Integer caseEstateId,String buildName) {
+        CaseBuildingExample example = new CaseBuildingExample();
+        CaseBuildingExample.Criteria criteria = example.createCriteria();
+        if (caseEstateId!=null) {
+            criteria.andEstateIdEqualTo(caseEstateId);
+        }
+        if (!StringUtils.isEmpty(buildName)) {
+            criteria.andBuildingNumberLike(String.format("%s%s%s", "%", buildName, "%"));
+        }
+        return caseBuildingMapper.selectByExample(example);
+    }
+
     /**
      * 新增
      * @param caseBuilding

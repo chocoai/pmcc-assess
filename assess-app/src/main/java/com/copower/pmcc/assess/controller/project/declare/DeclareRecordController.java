@@ -43,6 +43,11 @@ public class DeclareRecordController {
     }
 
     @GetMapping(value = "/getBootstrapTableVoDispatch", name = "获取列表,参数里有项目id传入更好")
+    public BootstrapTableVo getBootstrapTableVoDispatch(DeclareRecord declareRecord) {
+        return declareRecordService.getBootstrapTableVoDispatch(declareRecord);
+    }
+
+    @GetMapping(value = "/getBootstrapTableVo", name = "获取列表")
     public BootstrapTableVo getBootstrapTableVo(DeclareRecord declareRecord) {
         return declareRecordService.getBootstrapTableVo(declareRecord);
     }

@@ -74,11 +74,9 @@ public class CaseBuildingController {
 
     @ResponseBody
     @RequestMapping(value = "/getBuildingList", method = {RequestMethod.GET}, name = "楼栋--列表")
-    public BootstrapTableVo getBootstrapTableVo(Integer estateId) {
+    public BootstrapTableVo getBootstrapTableVo(Integer estateId, String buildName) {
         if (estateId == null) return null;
-        CaseBuilding caseBuilding = new CaseBuilding();
-        caseBuilding.setEstateId(estateId);
-        BootstrapTableVo vo = caseBuildingService.getCaseBuildingListVos(caseBuilding);
+        BootstrapTableVo vo = caseBuildingService.getCaseBuildingListVos(estateId, buildName);
         return vo;
     }
 
@@ -103,4 +101,20 @@ public class CaseBuildingController {
             return HttpResult.newErrorResult(e.getMessage());
         }
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/getCaseBuildingById", method = {RequestMethod.GET}, name = "获取案例 楼盘")
+    public HttpResult getCaseBuildingById(Integer caseBuildingId) {
+        CaseBuilding caseBuilding = null;
+        try {
+            if (caseBuildingId != null) {
+                caseBuilding = caseBuildingService.getCaseBuildingById(caseBuildingId);
+            }
+        } catch (Exception e1) {
+            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
+            return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
+        }
+        return HttpResult.newCorrectResult(caseBuilding);
+    }
+
 }

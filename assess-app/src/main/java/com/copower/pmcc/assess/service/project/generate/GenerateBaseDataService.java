@@ -4206,8 +4206,10 @@ public class GenerateBaseDataService {
                     if (StringUtils.isNotEmpty(basicHouseVo.getFloor())) {
                         stringBuilder.append("估价对象位于所在建筑物的第").append(basicHouseVo.getFloor()).append("层").append(",");
                     }
-                    if (basicHouseVo.getOrientation() != null) {
-                        stringBuilder.append(basicHouseVo.getOrientationName()).append("朝向");
+                    if (basicHouseVo.getHuxingId() != null) {
+                        BasicUnitHuxing unitHuxing = basicUnitHuxingService.getBasicUnitHuxingById(basicHouseVo.getHuxingId());
+                        String orientationName = baseDataDicService.getNameById(unitHuxing.getOrientation());
+                        stringBuilder.append(orientationName).append("朝向");
                     }
                     if (StringUtils.isNotEmpty(stringBuilder.toString())) {
                         stringLinkedList.add(stringBuilder.toString());

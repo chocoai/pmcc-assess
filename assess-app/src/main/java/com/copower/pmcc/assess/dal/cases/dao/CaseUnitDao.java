@@ -49,6 +49,18 @@ public class CaseUnitDao {
         return caseUnitMapper.selectByExample(example);
     }
 
+    public List<CaseUnit> getUnitList(Integer caseBuildingId,String unitName) {
+        CaseUnitExample example = new CaseUnitExample();
+        CaseUnitExample.Criteria criteria = example.createCriteria();
+        if (caseBuildingId!=null) {
+            criteria.andBuildingIdEqualTo(caseBuildingId);
+        }
+        if (!StringUtils.isEmpty(unitName)) {
+            criteria.andUnitNumberLike(String.format("%s%s%s", "%", unitName, "%"));
+        }
+        return caseUnitMapper.selectByExample(example);
+    }
+
     /**
      * 新增
      *

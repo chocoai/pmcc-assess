@@ -52,7 +52,20 @@ public class DeclareRecordDao {
 
     public List<DeclareRecord> getDeclareRecordList(DeclareRecord declareRecord) {
         DeclareRecordExample example = new DeclareRecordExample();
-        MybatisUtils.convertObj2Example(declareRecord, example);
+        DeclareRecordExample.Criteria criteria = example.createCriteria();
+        if (StringUtils.isNotBlank(declareRecord.getName())){
+            criteria.andNameLike(String.join("",StringUtils.repeat("%",2),declareRecord.getName(),StringUtils.repeat("%",2))) ;
+        }
+        if (StringUtils.isNotBlank(declareRecord.getSeat())){
+            criteria.andSeatLike(String.join("",StringUtils.repeat("%",2),declareRecord.getSeat(),StringUtils.repeat("%",2))) ;
+        }
+        if (StringUtils.isNotBlank(declareRecord.getBuildingNumber())){
+            criteria.andBuildingNumberLike(String.join("",StringUtils.repeat("%",2),declareRecord.getBuildingNumber(),StringUtils.repeat("%",2))) ;
+        }
+        if (StringUtils.isNotBlank(declareRecord.getUnit())){
+            criteria.andUnitLike(String.join("",StringUtils.repeat("%",2),declareRecord.getUnit(),StringUtils.repeat("%",2))) ;
+        }
+        MybatisUtils.convertObj2Criteria(declareRecord, criteria);
         example.setOrderByClause("id");
         return mapper.selectByExample(example);
     }
@@ -81,6 +94,7 @@ public class DeclareRecordDao {
         }
         return mapper.selectByExample(example);
     }
+
 
     public boolean updateDeclareRecord(DeclareRecord declareRecord) {
         return mapper.updateByPrimaryKeySelective(declareRecord) > 0;

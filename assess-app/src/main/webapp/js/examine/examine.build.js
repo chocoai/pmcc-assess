@@ -513,22 +513,16 @@
         })
     };
 
-    buildingCommon.onSelect = function (id) {
-        Loading.progressShow();
+    buildingCommon.onSelect = function (id,name) {
         $.ajax({
-            url: getContextPath() + '/basicBuilding/appWriteBuilding',
+            url: getContextPath() + '/caseBuilding/getCaseBuildingById',
             data: {
-                applyId: basicCommon.getApplyId(),
                 caseBuildingId: id
             },
-            type: 'post',
+            type: 'get',
             success: function (result) {
-                Loading.progressHide();
                 if (result.ret) {
-                    basicCommon.update({caseBuildingId: id, id: basicCommon.getApplyId()}, function () {
-                        basicCommon.basicApplyForm.find("input[name='caseBuildingId']").val(id);
-                        buildingCommon.detail(basicCommon.getApplyId());
-                    });
+                    caseFun.caseBuild.showModel(result.data.estateId,name);
                 } else {
                     console.log(result.errmsg);
                     Alert("转移失败!");
@@ -682,10 +676,10 @@
         });
         $("#txt_building_search").apBuilding({
             caseEstateId: function () {
-                return basicCommon.getCaseEstateId();
+                return buildingCommon.buildingForm.find('[name=estateId]').val();
             },
             onSelect: function (id, name) {
-                buildingCommon.onSelect(id);
+                buildingCommon.onSelect(id,name);
             }
         });
     };

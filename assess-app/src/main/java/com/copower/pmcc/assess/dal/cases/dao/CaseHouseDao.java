@@ -63,6 +63,18 @@ public class CaseHouseDao {
         return caseHouseMapper.selectByExample(example);
     }
 
+    public List<CaseHouse> getHouseList(Integer unitId,String houseName) {
+        CaseHouseExample example = new CaseHouseExample();
+        CaseHouseExample.Criteria criteria = example.createCriteria();
+        if (unitId!=null) {
+            criteria.andUnitIdEqualTo(unitId);
+        }
+        if (!StringUtils.isEmpty(houseName)) {
+            criteria.andHouseNumberLike(String.format("%s%s%s", "%", houseName, "%"));
+        }
+        return caseHouseMapper.selectByExample(example);
+    }
+
     /**
      * 新增
      *
