@@ -171,18 +171,18 @@ public class ProjectTaskController extends BaseController {
             modelAndView.addObject("boxCnName", String.format("%s-成果审批", boxCnName.toString()));
         }
         //获取相应的考核项
-        BoxReDto boxReDto = null;
-        if (boxId != null && boxId != 0) {
-            boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(boxId);
-        }
-        if (boxReDto != null && boxReDto.getBisLaunchCheck() != null && boxReDto.getBisLaunchCheck()) {
-            Object activityId = modelAndView.getModel().get("activityId");
-            if (activityId != null) {
-                Integer boxReActivitiId = (Integer) activityId;
-                setCheckParams(boxId, boxReActivitiId, false, modelAndView);
-
-            }
-        }
+//        BoxReDto boxReDto = null;
+//        if (boxId != null && boxId != 0) {
+//            boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(boxId);
+//        }
+//        if (boxReDto != null && boxReDto.getBisLaunchCheck() != null && boxReDto.getBisLaunchCheck()) {
+//            Object activityId = modelAndView.getModel().get("activityId");
+//            if (activityId != null) {
+//                Integer boxReActivitiId = (Integer) activityId;
+//                setCheckParams(boxId, boxReActivitiId, false, modelAndView);
+//
+//            }
+//        }
         modelAndView.addObject("viewUrl", viewUrl);
         modelAndView.addObject("projectId", projectPlanDetails.getProjectId());
         modelAndView.addObject("projectFlog", "1");
@@ -280,18 +280,18 @@ public class ProjectTaskController extends BaseController {
         modelAndView.addObject("projectFlog", "1");
         ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId()));
         modelAndView.addObject("projectInfo", projectInfoVo);
-        if (boxId != null && boxId != 0) {
-            //获取相应的考核项
-            BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(boxId);
-            if (boxReDto.getBisLaunchCheck() != null && boxReDto.getBisLaunchCheck()) {
-                Object activityId = modelAndView.getModel().get("activityId");
-                if (activityId != null) {
-                    setCheckParams(boxId, (Integer) activityId, true, modelAndView);
-                } else {
-                    setCheckParams(boxId, null, true, modelAndView);
-                }
-            }
-        }
+//        if (boxId != null && boxId != 0) {
+//            //获取相应的考核项
+//            BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(boxId);
+//            if (boxReDto.getBisLaunchCheck() != null && boxReDto.getBisLaunchCheck()) {
+//                Object activityId = modelAndView.getModel().get("activityId");
+//                if (activityId != null) {
+//                    setCheckParams(boxId, (Integer) activityId, true, modelAndView);
+//                } else {
+//                    setCheckParams(boxId, null, true, modelAndView);
+//                }
+//            }
+//        }
         return modelAndView;
     }
 

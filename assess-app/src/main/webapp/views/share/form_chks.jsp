@@ -33,7 +33,7 @@
                 </form>
 
                 <%--<div class=" col-xs-6  col-sm-6  col-md-6  col-lg-6 col-xs-offset-6 col-sm-offset-6 col-md-offset-6 col-lg-offset-6">--%>
-                    <%----%>
+                <%----%>
                 <%--</div>--%>
 
                 <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
@@ -77,6 +77,12 @@
     </tr>
 </script>
 
+<script type="text/html" id="assessmentItemTemplateRemarksHTML">
+    <tr>
+        <td colspan="5"><textarea class="form-control" name="remarks" placeholder="考核综合说明">{remarks}</textarea></td>
+    </tr>
+</script>
+
 <div class="x_panel">
     <div class="x_title collapse-link">
         <ul class="nav navbar-right panel_toolbox">
@@ -104,8 +110,6 @@
                 </table>
             </form>
         </div>
-
-
 
 
         <div class=" col-xs-6  col-sm-6  col-md-6  col-lg-6 col-xs-offset-6 col-sm-offset-6 col-md-offset-6 col-lg-offset-6">
@@ -176,6 +180,9 @@
             planDetailsId: '${projectPlanDetails.id}',
             planId: '${projectPlanDetails.planId}'
         };
+        if ('${processInsId}'){
+            option.processInsId = '${processInsId}' ;
+        }
         getAssessmentProjectPerformanceDtoList(option, function (data) {
             if (data.length == 0) {
                 getAssessmentItemTemplate({
@@ -197,6 +204,9 @@
                         });
                         restHtml += html;
                     });
+                    var remarksHtml = $("#assessmentItemTemplateRemarksHTML").html();
+                    remarksHtml = remarksHtml.replace(/{remarks}/g, '');
+                    restHtml += remarksHtml;
                     target.empty().append(restHtml);
                 });
             } else {
@@ -219,6 +229,13 @@
                             restHtml += htmlB;
                         });
                     }
+                    var remarksHtml = $("#assessmentItemTemplateRemarksHTML").html();
+                    if (obj.remarks) {
+                        remarksHtml = remarksHtml.replace(/{remarks}/g, obj.remarks);
+                    }else {
+                        remarksHtml = remarksHtml.replace(/{remarks}/g, '');
+                    }
+                    restHtml += remarksHtml;
                 });
                 target.empty().append(restHtml);
             }
@@ -226,7 +243,6 @@
     }
 
     $(document).ready(function () {
-        console.log("test") ;
         if ("${spotBoxReActivityDto}") {
             var spotCheck = "${spotCheck}";
             if (spotCheck == 'true') {
@@ -331,7 +347,6 @@
     }
 
 
-
     function getAssessmentItemTemplate(query, callback) {
         $.ajax({
             url: "${pageContext.request.contextPath}/chksAssessmentProjectPerformance/getAssessmentItemTemplate",
@@ -385,8 +400,12 @@
         saveAssessmentServer({chksScore: JSON.stringify(data), fomData: JSON.stringify(parentData)}, function (data) {
             toastr.warning("考核成功!");
             boxReActivityDtoTableList();
-            tableChkSpotAssessmentList() ;
-            writeChkSpotAssessmentParent({activityId:parentData.activityId,tableId:parentData.tableId,byExaminePeople:parentData.byExaminePeople}) ;
+            tableChkSpotAssessmentList();
+            writeChkSpotAssessmentParent({
+                activityId: parentData.activityId,
+                tableId: parentData.tableId,
+                byExaminePeople: parentData.byExaminePeople
+            });
         });
     }
 
@@ -403,21 +422,21 @@
             planId: '${projectPlanDetails.planId}',
             boxId: '${boxReDto.id}'
         };
-        var target = $("#tableChkSpotAssessment") ;
+        var target = $("#tableChkSpotAssessment");
         getChksBootstrapTableVoBase(target, options);
     }
 
     /*显示抽查数据页面*/
-    function showChkSpotAssessmentParent(activityId,byExaminePeople,tableId) {
+    function showChkSpotAssessmentParent(activityId, byExaminePeople, tableId) {
         var box = $("#divChksRecordModal");
         var from = box.find("form");
         from.clearAll();
 //        var data = {activityId:activityId,byExaminePeople:byExaminePeople,tableId:tableId} ;
-        var data = {activityId:'${spotBoxReActivityDto.id}',byExaminePeople:byExaminePeople,tableId:tableId} ;
+        var data = {activityId: '${spotBoxReActivityDto.id}', byExaminePeople: byExaminePeople, tableId: tableId};
         from.initForm(data);
         box.modal("show");
-        writeChkSpotAssessmentParent(data) ;
-        tableChkSpotAssessmentList() ;
+        writeChkSpotAssessmentParent(data);
+        tableChkSpotAssessmentList();
     }
 
     /*抽查数据 插入*/
@@ -429,14 +448,14 @@
             projectId: '${projectPlanDetails.projectId}',
             planDetailsId: '${projectPlanDetails.id}',
             planId: '${projectPlanDetails.planId}',
-            tableId:initData.tableId,
-            byExaminePeople:initData.byExaminePeople
+            tableId: initData.tableId,
+            byExaminePeople: initData.byExaminePeople
         };
         var box = $("#divChksRecordModal");
-        getAssessmentProjectPerformanceDtoList(option,function (data) {
+        getAssessmentProjectPerformanceDtoList(option, function (data) {
             var target = box.find("form").find("tbody");
-            if (data.length == 0){
-                getAssessmentItemTemplate({boxId:option.boxId,spotCheck:true},function (result) {
+            if (data.length == 0) {
+                getAssessmentItemTemplate({boxId: option.boxId, spotCheck: true}, function (result) {
                     var restHtml = "";
                     $.each(result, function (i, item) {
                         var html = replaceAssessmentItem($("#assessmentItemTemplateHTML").html(), {
@@ -454,9 +473,9 @@
                         restHtml += html;
                     });
                     target.empty().append(restHtml);
-                }) ;
+                });
             }
-            if (data.length != 0){
+            if (data.length != 0) {
                 var restHtml = "";
                 $.each(data, function (i, obj) {
                     if (obj.detailList) {
@@ -479,7 +498,7 @@
                 });
                 target.empty().append(restHtml);
             }
-        }) ;
+        });
     }
 
 
@@ -487,7 +506,7 @@
         var spotCheck = "${spotCheck}";//当节点是抽查节点的情况
         if (spotCheck == 'true') {
             spotCheck = true;
-        }else {
+        } else {
             spotCheck = false;
         }
         var cols = [];
@@ -506,16 +525,16 @@
         });
         cols.push({field: 'examineScore', title: '考核分值'});
         cols.push({field: 'validScore', title: '实际分值'});
-        if (spotCheck){
+        if (spotCheck) {
             cols.push({
                 field: 'id', title: '抽查考核', width: "20%", formatter: function (value, row, index) {
-                    if (! row.spotActivityId){
+                    if (!row.spotActivityId) {
                         var str = '<div class="btn-margin">';
-                        str += '<a class="btn btn-xs btn-success" href="javascript:showChkSpotAssessmentParent(' + row.activityId +",'"+row.examinePeople+ "','"+row.id+ "'"+');" >抽查考核 <i class="fa fa-check-circle"></i></a>';
+                        str += '<a class="btn btn-xs btn-success" href="javascript:showChkSpotAssessmentParent(' + row.activityId + ",'" + row.examinePeople + "','" + row.id + "'" + ');" >抽查考核 <i class="fa fa-check-circle"></i></a>';
                         str += '</div>';
                         return str;
-                    }else {
-                        return "此条节点是抽查数据不可考核!" ;
+                    } else {
+                        return "此条节点是抽查数据不可考核!";
                     }
                 }
             });
@@ -584,20 +603,24 @@
 
     //收集数据 审批的时候
     function getChksData() {
+        var table = $("#chksTableList");
+        var form = table.closest("form");
         var result = {};
-        var target = $("#chksTableList").find("tbody");
+        var target = table.find("tbody");
+        var remarks = form.find("textarea[name=remarks]").val();
         var data = [];
-        var dataS = [];
+        var filterData = [];
         getChksSonData(target, data);
-        for (var i = 0;i<data.length;i++){
-            if (data[i].actualScore != 0){
-                dataS.push(data[i]) ;
+        for (var i = 0; i < data.length; i++) {
+            if (data[i].actualScore) {
+                filterData.push(data[i]);
             }
         }
-        if (dataS.length == 0) {
+        if (filterData.length == 0) {
             return result;
         }
-        result.chksScore = JSON.stringify(dataS);
+        result.chksScore = JSON.stringify(filterData);
+        result.chksRemarks = remarks;
         if ($("#tb_log").size() != 0) {
             var appData = $("#tb_log").bootstrapTable("getData");
             if (appData.length != 0) {
@@ -610,6 +633,32 @@
             }
         }
         return result;
+    }
+
+    function vaildChksData() {
+        var table = $("#chksTableList");
+        var form = table.closest("form");
+        var remarks = form.find("textarea[name=remarks]").val();
+        var target = table.find("tbody");
+        var data = [];
+        var filterData = [];
+        getChksSonData(target, data);
+        for (var i = 0; i < data.length; i++) {
+            if (data[i].actualScore) {
+                filterData.push(data[i]);
+            }
+        }
+        //当填写 了说明，却又不填写考核分值 是不允许的
+        if (remarks) {
+
+            if (filterData.length == 0) {
+                Alert("当填写了考核综合说明,那么就必须对考核子项进行打分，或者不填考核说明。");
+                return false;
+            }
+
+        }
+
+        return true;
     }
 
 

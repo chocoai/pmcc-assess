@@ -29,7 +29,6 @@ import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.github.pagehelper.PageHelper;
-import com.google.common.base.*;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -297,6 +296,7 @@ public class ChksAssessmentProjectPerformanceService {
      */
     public List<AssessmentProjectPerformanceDto> getAssessmentProjectPerformanceDtoList(AssessmentProjectPerformanceQuery query) {
         query.setAppKey(applicationConstant.getAppKey());
+        query.setExaminePeople(processControllerComponent.getThisUser());
         List<AssessmentProjectPerformanceDto> assessmentProjectPerformanceDtos = chksRpcAssessmentService.getAssessmentProjectPerformanceDtoList(query);
         if (CollectionUtils.isNotEmpty(assessmentProjectPerformanceDtos)) {
             Iterator<AssessmentProjectPerformanceDto> assessmentProjectPerformanceDtoIterator = assessmentProjectPerformanceDtos.iterator();
