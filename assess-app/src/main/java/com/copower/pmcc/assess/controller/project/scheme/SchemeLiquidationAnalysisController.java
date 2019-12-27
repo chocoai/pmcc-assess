@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeLiquidationAna
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeLiquidationAnalysisJudgeDao;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeLiquidationAnalysisGroup;
+import com.copower.pmcc.assess.dal.basis.entity.SchemeLiquidationAnalysisJudge;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeLiquidationAnalysisGroupDto;
 import com.copower.pmcc.assess.dto.output.project.scheme.SchemeLiquidationAnalysisGroupVo;
 import com.copower.pmcc.assess.service.BaseService;
@@ -15,6 +16,7 @@ import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -170,14 +172,37 @@ public class SchemeLiquidationAnalysisController {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<Integer> ids = projectTaskLiquidationAnalysisService.getSchemeJudgeObjIds(groupId);
-        if (CollectionUtils.isEmpty(ids)) {
-            //防止查出所有数据
-            ids.add(0);
-        }
-        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getJudgeObjectListByQuery(name, certName, seat, ownership, areaGroupId, ids);
+
+        List<SchemeLiquidationAnalysisJudge> judgeList = schemeLiquidationAnalysisJudgeDao.getListByQuery(name, certName, seat, ownership, areaGroupId, groupId);
         vo.setTotal(page.getTotal());
-        vo.setRows(CollectionUtils.isEmpty(judgeObjectList) ? new ArrayList<SchemeJudgeObject>() : judgeObjectList);
+        vo.setRows(CollectionUtils.isEmpty(judgeList) ? new ArrayList<SchemeLiquidationAnalysisJudge>() : judgeList);
         return vo;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/deleteJudgeItem", name = "删除一条明细", method = RequestMethod.POST)
+    public HttpResult deleteJudgeItem(Integer id) {
+        try {
+            schemeLiquidationAnalysisJudgeDao.deleteInfo(id);
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/deleteJudgeItemByIds", name = "删除多条明细", method = RequestMethod.POST)
+    public HttpResult deleteJudgeItemByIds(String ids) {
+        try {
+            List<Integer> integers = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(ids));
+            if (CollectionUtils.isNotEmpty(integers)) {
+                integers.forEach(integer -> schemeLiquidationAnalysisJudgeDao.deleteInfo(integer));
+            }
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
     }
 }

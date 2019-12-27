@@ -416,17 +416,19 @@ public class SchemeLiquidationAnalysisService {
     }
 
     public void addSchemeLiquidationAnalysisJudges(List<Integer> schemeJudgeObjIds, Integer areaId, Integer groupId) {
-        //删除后再添加
+        //判断是否存在后再添加
         SchemeLiquidationAnalysisJudge oldData = new SchemeLiquidationAnalysisJudge();
         oldData.setGroupId(groupId);
         List<SchemeLiquidationAnalysisJudge> oldList = schemeLiquidationAnalysisJudgeDao.getSchemeLiquidationAnalysisJudgeList(oldData);
-        if (CollectionUtils.isNotEmpty(oldList)) {
-            for (SchemeLiquidationAnalysisJudge item : oldList) {
-                schemeLiquidationAnalysisJudgeDao.deleteInfo(item.getId());
-            }
-        }
+        List<Integer> existIds = LangUtils.transform(oldList, o -> o.getJudgeObjectId());
+//        if (CollectionUtils.isNotEmpty(oldList)) {
+//            for (SchemeLiquidationAnalysisJudge item : oldList) {
+//                schemeLiquidationAnalysisJudgeDao.deleteInfo(item.getId());
+//            }
+//        }
         if (CollectionUtils.isEmpty(schemeJudgeObjIds)) return;
         for (Integer judgeObjectId : schemeJudgeObjIds) {
+            if(existIds.contains(judgeObjectId)) continue;
             SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
             SchemeLiquidationAnalysisJudge schemeLiquidationAnalysisJudge = new SchemeLiquidationAnalysisJudge();
             schemeLiquidationAnalysisJudge.setAreaId(areaId);

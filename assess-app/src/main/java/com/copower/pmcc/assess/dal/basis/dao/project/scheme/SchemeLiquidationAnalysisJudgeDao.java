@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.dal.basis.entity.SchemeLiquidationAnalysisJudge;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeLiquidationAnalysisJudgeExample;
 import com.copower.pmcc.assess.dal.basis.mapper.SchemeLiquidationAnalysisJudgeMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -47,6 +48,31 @@ public class SchemeLiquidationAnalysisJudgeDao {
     public List<SchemeLiquidationAnalysisJudge> getSchemeLiquidationAnalysisJudgeList(SchemeLiquidationAnalysisJudge schemeLiquidationAnalysisJudge) {
         SchemeLiquidationAnalysisJudgeExample example = new SchemeLiquidationAnalysisJudgeExample();
         MybatisUtils.convertObj2Example(schemeLiquidationAnalysisJudge, example);
+        return schemeLiquidationAnalysisJudgeMapper.selectByExample(example);
+    }
+
+    public List<SchemeLiquidationAnalysisJudge> getListByQuery(String name,String certName, String seat,String ownership,Integer areaGroupId, Integer groupId) {
+        SchemeLiquidationAnalysisJudgeExample example = new SchemeLiquidationAnalysisJudgeExample();
+        SchemeLiquidationAnalysisJudgeExample.Criteria criteria = example.createCriteria();
+        if(areaGroupId!=null){
+            criteria.andAreaIdEqualTo(areaGroupId);
+        }
+        if(groupId!=null){
+            criteria.andGroupIdEqualTo(groupId);
+        }
+        if (StringUtils.isNotBlank(name)) {
+            criteria.andNameLike(String.format("%%%s%%", name));
+        }
+        if (StringUtils.isNotBlank(seat)) {
+            criteria.andSeatLike(String.format("%%%s%%", seat));
+        }
+        if (StringUtils.isNotBlank(certName)) {
+            criteria.andCertNameLike(String.format("%%%s%%", certName));
+        }
+        if (StringUtils.isNotBlank(ownership)) {
+            criteria.andOwnershipLike(String.format("%%%s%%", ownership));
+        }
+
         return schemeLiquidationAnalysisJudgeMapper.selectByExample(example);
     }
 
