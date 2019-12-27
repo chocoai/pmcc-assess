@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.controller.project;
 
-import com.copower.pmcc.assess.common.enums.AssessProjectTypeEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
@@ -17,7 +16,6 @@ import com.copower.pmcc.assess.service.project.ProjectCenterService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
-import com.copower.pmcc.assess.service.project.plan.execute.PlanSchemeExecute;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
@@ -173,14 +171,6 @@ public class ProjectCenterController {
         String viewUrl = "/project/detailInfo/projectStageInfoDefault";
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
         ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(workStageId);
-        //如果为房产 现场与方案阶段使用不同的页面
-        String projectTypeKey = projectInfoService.getAssessProjectType(projectInfo.getProjectCategoryId()).getKey();
-        if (AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_HOUSE.getKey().equals(projectTypeKey) || AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_LAND.getKey().equals(projectTypeKey)) {
-            //评估方案计划
-            if (StringUtils.equals(projectWorkStage.getStageForm(), StringUtils.uncapitalize(PlanSchemeExecute.class.getSimpleName()))) {
-                viewUrl = "/project/detailInfo/house/schemeStageInfo";
-            }
-        }
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(viewUrl);
         List<ProjectPlanVo> projectPlanList = projectInfoService.getProjectPlanList(projectId);
         modelAndView.addObject("projectPlanList", projectPlanList);

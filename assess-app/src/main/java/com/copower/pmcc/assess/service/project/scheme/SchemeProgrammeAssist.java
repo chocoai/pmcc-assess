@@ -129,10 +129,6 @@ public class SchemeProgrammeAssist implements ProjectTaskInterface {
         List<SchemeProgrammeDto> applyDto = JSON.parseArray(formData, SchemeProgrammeDto.class);
         schemeJudgeObjectService.saveProgrammeAll(applyDto);
         if (StringUtils.isBlank(processInsId)) {
-//            if (projectPlanDetails.getBisRestart() == Boolean.TRUE) {
-//
-//            }
-
             ProjectPlan projectPlan = projectPlanService.getProjectplanById(projectPlanDetails.getPlanId());
             if (projectPlan == null){
                 return;

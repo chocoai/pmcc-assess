@@ -154,7 +154,8 @@ public class SchemeProgrammeController {
 
     @RequestMapping(value = "/schemeProgrammeApprovalDetails", name = "方案流程详情", method = {RequestMethod.GET})
     public ModelAndView schemeProgrammeApprovalDetails(String processInsId, String taskId, Integer boxId, String agentUserAccount) {
-        ProjectPlan projectPlan = projectPlanService.getProjectplanByProcessInsId(processInsId);
+        ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsByProcessInsId(processInsId);
+        ProjectPlan projectPlan = projectPlanService.getProjectplanById(projectPlanDetails.getPlanId());
         return view(projectPlan.getProjectId(), projectPlan.getId(), null);
     }
 
@@ -162,14 +163,16 @@ public class SchemeProgrammeController {
     public ModelAndView schemeProgrammeEdit(String processInsId, String taskId, Integer boxId, String agentUserAccount) {
         String view = "/project/stageScheme/programmeIndex";
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView(view, processInsId, boxId, taskId, agentUserAccount);
-        ProjectPlan projectPlan = projectPlanService.getProjectplanByProcessInsId(processInsId);
+        ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsByProcessInsId(processInsId);
+        ProjectPlan projectPlan = projectPlanService.getProjectplanById(projectPlanDetails.getPlanId());
         setEditParams(modelAndView, projectPlan.getProjectId(), projectPlan.getId(), processInsId);
         return modelAndView;
     }
 
     @RequestMapping(value = "/schemeProgrammeApproval", name = "方案流程 审批", method = {RequestMethod.GET})
     public ModelAndView schemeProgrammeApproval(String processInsId, String taskId, Integer boxId, String agentUserAccount) {
-        ProjectPlan projectPlan = projectPlanService.getProjectplanByProcessInsId(processInsId);
+        ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsByProcessInsId(processInsId);
+        ProjectPlan projectPlan = projectPlanService.getProjectplanById(projectPlanDetails.getPlanId());
         String view = "/project/stageScheme/programmeView";
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView(view, processInsId, boxId, taskId, agentUserAccount);
         setDetailParams(modelAndView, projectPlan.getProjectId(), projectPlan.getId(), processInsId);
