@@ -28,7 +28,7 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-                    <%@include file="/views/project/stageInit/other/projectInfo.jsp" %>
+                    <%@include file="/views/project/stageInit/stageInitModel/projectInfo.jsp" %>
                 </div>
             </div>
             <div class="x_panel">
@@ -40,7 +40,7 @@
                     <div class="clearfix"></div>
                 </div>
                 <!-- 委托人 start -->
-                <%@include file="/views/project/stageInit/other/projectConsignor.jsp" %>
+                <%@include file="/views/project/stageInit/stageInitModel/projectConsignor.jsp" %>
                 <!-- 委托人 end -->
             </div>
 
@@ -53,7 +53,7 @@
                     <div class="clearfix"></div>
                 </div>
                 <!-- 占有人 start -->
-                <%@include file="/views/project/stageInit/other/projectPossessor.jsp" %>
+                <%@include file="/views/project/stageInit/stageInitModel/projectPossessor.jsp" %>
                 <!-- 占有人 end -->
             </div>
 
@@ -66,10 +66,10 @@
                     <div class="clearfix"></div>
                 </div>
                 <!-- 报告使用单位 start -->
-                <%@include file="/views/project/stageInit/other/projectUnit_information.jsp" %>
+                <%@include file="/views/project/stageInit/stageInitModel/projectUnit_information.jsp" %>
                 <!-- 报告使用单位 end -->
             </div>
-            <%@include file="/views/project/stageInit/other/otherProjectIndexJs.jsp" %>
+            <%@include file="/views/project/stageInit/stageInitModel/otherProjectIndexJs.jsp" %>
             <!-- 公共模块end -->
             <%@include file="apply/project_info_apply.jsp" %>
             <!-- 公共尾部模块引用 -->

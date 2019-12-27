@@ -103,7 +103,7 @@ public class DeclareRecordService {
      * @param declareRecord
      * @return
      */
-    public BootstrapTableVo getBootstrapTableVo(DeclareRecord declareRecord) {
+    public BootstrapTableVo getBootstrapTableVoDispatch(DeclareRecord declareRecord) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
@@ -157,6 +157,17 @@ public class DeclareRecordService {
     public List<DeclareRecord> getDeclareRecordList(Integer projectId, Boolean bisGenerate) {
         List<DeclareRecord> declareRecords = declareRecordDao.getDeclareRecordList(projectId, bisGenerate);
         return declareRecords;
+    }
+
+    public BootstrapTableVo getBootstrapTableVo(DeclareRecord declareRecord){
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        List<DeclareRecord> declareRecordList = declareRecordDao.getDeclareRecordList(declareRecord);
+        List<DeclareRecordVo> vos = LangUtils.transform(declareRecordList, o -> getDeclareRecordVo(o));
+        vo.setTotal(page.getTotal());
+        vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<DeclareRecordVo>() : vos);
+        return vo;
     }
 
     public BootstrapTableVo getDeclareRecordList(Integer projectId, String name, String seat, Boolean bisPartIn, String province, String city, String district) {

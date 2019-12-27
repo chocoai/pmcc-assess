@@ -28,7 +28,7 @@
                             </label>
                             <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
                                 <select class="form-control" required name="category"
-                                        onchange="changeRemark(this,'_number')">
+                                        onchange="changeRemark(this)">
                                 </select>
                             </div>
                         </div>
@@ -785,8 +785,8 @@
         }
     }
 
-    function changeRemark(that, value) {
-        var form = $("#" + commonField.inventoryFrm + value);
+    function changeRemark(that) {
+        var form = $(that).closest("form");
         form.find("textarea[name='remark']").val($(that).find('option:selected').attr('title'));
     }
 

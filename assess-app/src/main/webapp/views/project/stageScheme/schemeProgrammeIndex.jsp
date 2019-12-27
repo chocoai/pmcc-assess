@@ -282,6 +282,7 @@
             </c:forEach>
 
 
+
             <div class="x_panel">
                 <div class="x_content">
                     <div class="col-sm-4 col-sm-offset-5">
@@ -303,6 +304,7 @@
 </div>
 
 
+<!-- -->
 <div id="modal_method_info" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -486,7 +488,7 @@
                        class="btn btn-xs btn-warning judge-merge-cancel tooltips">调整合并</a>
                     <a href="javascript://" onclick="programme.loadSceneExploreBasicApplyList('{declareId}','{id}');"
                        class="btn btn-xs btn-success judge-relation-object tooltips">关联查勘</a>
-                    <a href="javascript://" onclick="programmeMethod.relationObject(this);"
+                    <a href="javascript://" onclick="programmeMethod.setMethod(this);"
                        class="btn btn-xs btn-success judge-method tooltips">评估方法</a>
                 </small>
             </h3>
@@ -628,9 +630,13 @@
         </div>
     </div>
 </script>
+
+
+
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
 <script src="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/jquery.easyui.min.js?v=${assessVersion}"></script>
+
 <script type="text/javascript">
     $(function () {
         $(".area_panel .x_title").each(function () {
@@ -648,38 +654,8 @@
             programme.areaMergeCancel($(this).closest('.area_panel').find('[name=areaGroupId]').val());
             e.stopPropagation();
         })
-    })
+    });
 
-    //  提交 编辑数据(流程状态下)
-    function saveform() {
-        if (!$("#frm_approval").valid()) {
-            return false;
-        }
-        //进行保存操作
-        programme.saveProgrammeAll(function () {
-            var item = formApproval.getFormData();
-            $.extend(item, {planId: '${planId}', projectId: '${projectInfo.id}'});
-            $.ajax({
-                url: "${pageContext.request.contextPath}/schemeProgramme/submitProgrammeEdit",
-                type: "post",
-                dataType: "json",
-                data: item,
-                success: function (result) {
-                    if (result.ret) {
-                        Alert("提交数据成功!", 1, null, function () {
-                            window.close();
-                        });
-                    }
-                    else {
-                        Alert(result.errmsg);
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
-                }
-            })
-        });
-    }
 
     //方案
     var programme = {};
@@ -700,7 +676,8 @@
         if (valueConnotation) {
             $("#frmJudgeObject" + id).find('[name=valueConnotation]').select2('val', JSON.parse(valueConnotation));
         }
-    }
+    };
+
 
     //加载区域下的委估对象列表
     programme.loadJudgeObjectList = function (_this) {
@@ -1258,8 +1235,6 @@
         });
     };
 
-
-
     //加载合并对象的明细
     programme.loadJudgeDetailList = function (pid) {
         var cols = [];
@@ -1576,6 +1551,8 @@
             }
         })
     }
+
+
 </script>
 
 <script type="text/javascript">
@@ -1759,7 +1736,6 @@
     }
 </script>
 
-
 <script type="application/javascript">
     //提交
     function submit() {
@@ -1776,12 +1752,12 @@
                 isPass = false;
                 return false;
             }
-        })
+        });
         if (!isPass) return false;
         var data = [];
         $(".area_panel").each(function () {
             data.push(programme.getProgrammeAreaData($(this)));
-        })
+        });
         if ("${processInsId}" != "0") {
             submitEditToServer(JSON.stringify(data));
         } else {

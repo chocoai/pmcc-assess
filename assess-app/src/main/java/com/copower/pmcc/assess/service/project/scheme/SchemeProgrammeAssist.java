@@ -4,21 +4,25 @@ import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.constant.BaseConstant;
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeProgrammeDto;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.dto.output.project.scheme.SchemeAreaGroupVo;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.BaseService;
+import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataBestUseDescriptionService;
 import com.copower.pmcc.assess.service.data.DataSetUseFieldService;
 import com.copower.pmcc.assess.service.data.EvaluationMethodService;
 import com.copower.pmcc.assess.service.data.EvaluationThinkingService;
+import com.copower.pmcc.assess.service.event.project.ProgrammeProcessEvent;
 import com.copower.pmcc.assess.service.method.MdCommonService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
+import com.copower.pmcc.assess.service.project.ProjectPlanService;
+import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
+import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import org.apache.commons.lang3.StringUtils;
@@ -61,6 +65,12 @@ public class SchemeProgrammeAssist implements ProjectTaskInterface {
     private MdCommonService mdCommonService;
     @Autowired
     private BaseService baseService;
+    @Autowired
+    private PublicService publicService;
+    @Autowired
+    private ProjectPlanService projectPlanService;
+    @Autowired
+    private ProjectWorkStageService projectWorkStageService;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
@@ -118,6 +128,32 @@ public class SchemeProgrammeAssist implements ProjectTaskInterface {
     public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
         List<SchemeProgrammeDto> applyDto = JSON.parseArray(formData, SchemeProgrammeDto.class);
         schemeJudgeObjectService.saveProgrammeAll(applyDto);
+        if (StringUtils.isBlank(processInsId)) {
+//            if (projectPlanDetails.getBisRestart() == Boolean.TRUE) {
+//
+//            }
+
+            ProjectPlan projectPlan = projectPlanService.getProjectplanById(projectPlanDetails.getPlanId());
+            if (projectPlan == null){
+                return;
+            }
+            ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlan.getProjectId());
+            ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlan.getWorkStageId());
+            try {
+                schemeJudgeObjectService.submitProgrammeHandle(projectInfo,projectPlan,projectWorkStage) ;
+            } catch (BpmException e) {
+                baseService.writeExceptionInfo(e,"评估方案编制阶段任务发起失败");
+                throw  new BusinessException("评估方案编制阶段任务发起失败") ;
+            }
+        } else {
+            //修改监听器
+            try {
+                publicService.updateProcessEventExecutor(processInsId, ProgrammeProcessEvent.class.getSimpleName());
+            } catch (BpmException e) {
+                baseService.writeExceptionInfo(e,"评估方案编制修改监听器失败");
+                throw  new BusinessException("评估方案编制修改监听器失败") ;
+            }
+        }
     }
 
 
