@@ -379,24 +379,16 @@
         })
     };
 
-    unitCommon.onSelect = function (id) {
-        Loading.progressShow();
+    unitCommon.onSelect = function (id,name) {
         $.ajax({
-            url: getContextPath() + '/basicUnit/appWriteUnit',
+            url: getContextPath() + '/caseUnit/getCaseUnitById',
             data: {
-                applyId: basicCommon.getApplyId(),
-                caseUnitId: id
+                id: id,
             },
-            type: 'post',
+            type: 'get',
             success: function (result) {
-                Loading.progressHide();
                 if (result.ret) {
-                    basicCommon.update({caseUnitId: id, id: basicCommon.getApplyId()}, function () {
-                        unitCommon.detail(basicCommon.getApplyId(), function (data) {
-                            unitCommon.initForm(data);
-                        });
-                        basicCommon.basicApplyForm.find("input[name='caseUnitId']").val(id);
-                    });
+                    caseFun.caseUnit.showModel(result.data.buildingId,name);
                 } else {
                     console.log(result.errmsg);
                     Alert("转移失败!");
@@ -406,14 +398,32 @@
     };
 
     unitCommon.autocompleteStart = function () {
-        $("#txt_Unit_search").apUnit({
-            caseBuildingId: function () {
-                return basicCommon.getcaseBuildingId();
+        var id = unitCommon.unitForm.find('[name=id]').val();
+        $.ajax({
+            url: getContextPath() + '/basicUnit/getQuoteBuildingId',
+            data: {
+                id: id,
             },
-            onSelect: function (id, name) {
-                unitCommon.onSelect(id);
+            type: 'get',
+            success: function (result) {
+                if (result.ret) {
+                    var caseBuildingId = result.data;
+                    $("#txt_Unit_search").apUnit({
+                        caseBuildingId: function () {
+                            return caseBuildingId;
+                        },
+                        onSelect: function (id, name) {
+                            unitCommon.onSelect(id,name);
+                        }
+                    });
+                } else {
+                    console.log(result.errmsg);
+                    Alert("转移失败!");
+                }
             }
-        });
+        })
+
+
     };
 
 

@@ -583,5 +583,6 @@
 <script type="text/javascript">
     $(function () {
         buildingCommon.initById('${basicBuilding.id}');
+        buildingCommon.autocompleteStart();
     })
 </script>

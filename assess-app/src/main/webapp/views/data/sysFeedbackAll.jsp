@@ -157,8 +157,6 @@
             cols.push({field: 'statusName', title: '状态'});
             cols.push({field: 'questionTitle', title: '存在问题'});
             cols.push({field: 'feedbackPersonName', title: '反馈人'});
-            cols.push({field: 'deatilDescription', title: '问题详情'});
-            cols.push({field: 'disposeScheme', title: '处理方案'});
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';

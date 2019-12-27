@@ -208,7 +208,7 @@ public class CaseEstateService {
         BasicApplyBatchDetail batchDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(FormatUtils.entityNameConvertToTableName(BasicEstate.class), tableId);
         if(batchDetail!=null) {
             batchDetail.setQuoteId(quoteId);
-            batchDetail.setBaseType(BaseConstant.DATABASE_PMCC_ASSESS);
+            batchDetail.setBaseType(BaseConstant.DATABASE_PMCC_ASSESS_CASE);
             basicApplyBatchDetailService.saveBasicApplyBatchDetail(batchDetail);
         }
         //案列数据复制到basic

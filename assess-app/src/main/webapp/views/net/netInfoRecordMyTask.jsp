@@ -189,7 +189,8 @@
                                                 省
                                             </label>
                                             <div class="col-sm-2">
-                                                <select name="province" id="landProvince" class="form-control search-select select2">
+                                                <select name="province" id="landProvince"
+                                                        class="form-control search-select select2">
                                                 </select>
                                             </div>
                                         </div>
@@ -198,7 +199,8 @@
                                                 市
                                             </label>
                                             <div class="col-sm-2">
-                                                <select name="city" id="landCity" class="form-control search-select select2">
+                                                <select name="city" id="landCity"
+                                                        class="form-control search-select select2">
                                                 </select>
                                             </div>
                                         </div>
@@ -207,7 +209,8 @@
                                                 区
                                             </label>
                                             <div class="col-sm-2">
-                                                <select name="district" id="landDistrict" class="form-control search-select select2">
+                                                <select name="district" id="landDistrict"
+                                                        class="form-control search-select select2">
                                                 </select>
                                             </div>
                                         </div>
@@ -394,7 +397,8 @@
                                                 变现率
                                             </label>
                                             <div class="col-sm-2">
-                                                <input type="text" name="landRealizationRatios"  onfocus="detailInfo.prototype.getHouseRealizationRatios()"
+                                                <input type="text" name="landRealizationRatios"
+                                                       onfocus="detailInfo.prototype.getHouseRealizationRatios()"
                                                        class="form-control x-percent">
                                             </div>
                                         </div>
@@ -537,7 +541,8 @@
                                                 省
                                             </label>
                                             <div class="col-sm-2">
-                                                <select name="province" id="houseProvince" class="form-control search-select select2">
+                                                <select name="province" id="houseProvince"
+                                                        class="form-control search-select select2">
                                                 </select>
                                             </div>
                                         </div>
@@ -546,7 +551,8 @@
                                                 市
                                             </label>
                                             <div class="col-sm-2">
-                                                <select name="city" id="houseCity" class="form-control search-select select2">
+                                                <select name="city" id="houseCity"
+                                                        class="form-control search-select select2">
                                                 </select>
                                             </div>
                                         </div>
@@ -555,7 +561,8 @@
                                                 区
                                             </label>
                                             <div class="col-sm-2">
-                                                <select name="district" id="houseDistrict" class="form-control search-select select2">
+                                                <select name="district" id="houseDistrict"
+                                                        class="form-control search-select select2">
                                                 </select>
                                             </div>
                                         </div>
@@ -725,7 +732,8 @@
                                                 变现率
                                             </label>
                                             <div class="col-sm-2">
-                                                <input type="text" name="houseRealizationRatios" onfocus="detailInfo.prototype.getHouseRealizationRatios()"
+                                                <input type="text" name="houseRealizationRatios"
+                                                       onfocus="detailInfo.prototype.getHouseRealizationRatios()"
                                                        class="form-control x-percent">
                                             </div>
                                         </div>
@@ -1199,25 +1207,23 @@
             })
         },
         assignTask: function () {
-            Alert("过滤掉已申请数据", 2, null, function () {
-                var rows = $('#transaction_List').bootstrapTable('getSelections');
-                if (rows && rows.length > 0) {
-                    var idArray = [];
-                    $.each(rows, function (i, item) {
-                        if (item.status == 2) {
-                            idArray.push(item.id);
-                        }
-                    })
-                    var ids = idArray.join()
-                    $("#selectIds").val(ids);
-                    //确认
-                    var href = "${pageContext.request.contextPath}/netInfoAssignTask/apply";
-                    href += "?ids=" + ids;
-                    window.open(href, "");
-                } else {
-                    toastr.info('请选择要审批的数据');
-                }
-            })
+            var rows = $('#transaction_List').bootstrapTable('getSelections');
+            if (rows && rows.length > 0) {
+                var idArray = [];
+                $.each(rows, function (i, item) {
+                    if (item.status == 2) {
+                        idArray.push(item.id);
+                    }
+                })
+                var ids = idArray.join()
+                $("#selectIds").val(ids);
+                //确认
+                var href = "${pageContext.request.contextPath}/netInfoAssignTask/apply";
+                href += "?ids=" + ids;
+                window.open(href, "");
+            } else {
+                toastr.info('请选择要审批的数据');
+            }
         },
         loadOnclickData: function (id) {
             var cols = [];
@@ -1372,15 +1378,15 @@
             cols.push({field: 'fileViewName', title: '附件'});
             cols.push({
                 field: 'id', width: '6%', title: '操作', formatter: function (value, row, index) {
-                    var str = '<div class="btn-margin">';
-                    if(row.status != 1){
-                        str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="detailInfo.prototype.getAndInitLand(' + row.id + ')"><i class="fa fa-edit fa-white"></i></a>';
-                    }
                     if (row.status == 0) {
+                        var str = '<div class="btn-margin">';
+                        str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="detailInfo.prototype.getAndInitLand(' + row.id + ')"><i class="fa fa-edit fa-white"></i></a>';
                         str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="删除" onclick="detailInfo.prototype.deleteLandItem(' + row.id + ')"><i class="fa fa-minus fa-white"></i></a>';
+                        str += '</div>';
+                        return str;
+                    } else {
+                        return '-';
                     }
-                    str += '</div>';
-                    return str;
                 }
             });
             $("#landHistory").bootstrapTable('destroy');
@@ -1485,15 +1491,15 @@
             cols.push({field: 'fileViewName', title: '附件'});
             cols.push({
                 field: 'id', width: '6%', title: '操作', formatter: function (value, row, index) {
-                    var str = '<div class="btn-margin">';
-                    if(row.status != 1) {
-                        str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="detailInfo.prototype.getAndInitHouse(' + row.id + ')"><i class="fa fa-edit fa-white"></i></a>';
-                    }
                     if (row.status == 0) {
+                        var str = '<div class="btn-margin">';
+                        str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="detailInfo.prototype.getAndInitHouse(' + row.id + ')"><i class="fa fa-edit fa-white"></i></a>';
                         str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="删除" onclick="detailInfo.prototype.deleteHouseItem(' + row.id + ')"><i class="fa fa-minus fa-white"></i></a>';
+                        str += '</div>';
+                        return str;
+                    } else {
+                        return '-';
                     }
-                    str += '</div>';
-                    return str;
                 }
             });
             $("#houseHistory").bootstrapTable('destroy');

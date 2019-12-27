@@ -1,6 +1,8 @@
 package com.copower.pmcc.assess.controller.baisc;
 
+import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchDetail;
 import com.copower.pmcc.assess.dal.basis.entity.BasicHouse;
+import com.copower.pmcc.assess.service.basic.BasicApplyBatchDetailService;
 import com.copower.pmcc.assess.service.basic.BasicHouseService;
 import com.copower.pmcc.assess.service.basic.PublicBasicService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -25,6 +27,8 @@ public class BasicHouseController {
     private PublicBasicService publicBasicService;
     @Autowired
     private BasicHouseService basicHouseService;
+    @Autowired
+    private BasicApplyBatchDetailService basicApplyBatchDetailService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @ResponseBody
@@ -42,7 +46,7 @@ public class BasicHouseController {
     @RequestMapping(value = "/saveAndUpdateBasicHouse", name = "新增或者修改", method = {RequestMethod.POST})
     public HttpResult saveAndUpdateBasicHouse(BasicHouse basicHouse) {
         try {
-            return HttpResult.newCorrectResult(basicHouseService.saveAndUpdateBasicHouse(basicHouse,true));
+            return HttpResult.newCorrectResult(basicHouseService.saveAndUpdateBasicHouse(basicHouse, true));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(500, e.getMessage());
@@ -173,5 +177,21 @@ public class BasicHouseController {
             return null;
         }
         return vo;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getQuoteUnitId", name = "获取引用的单元id", method = RequestMethod.GET)
+    public HttpResult getAndEditDetail(Integer id) {
+        try {
+            BasicApplyBatchDetail houseDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail("tb_basic_house", id);
+            Integer quoteId = 0;
+            if (houseDetail != null) {
+                quoteId = basicApplyBatchDetailService.getDataById(houseDetail.getPid()).getQuoteId();
+            }
+            return HttpResult.newCorrectResult(200, quoteId);
+        } catch (Exception e) {
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(500, e.getMessage());
+        }
     }
 }

@@ -121,6 +121,21 @@
         autoHeightEnabled: false,
         autoFloatEnabled: true
     });
+    var ue2 = UE.getEditor('deatilDescription_d', {
+        toolbars: [
+            ['source', 'autotypeset', 'bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc']
+        ],
+        zIndex: 11009,
+        initialFrameHeight: 120,
+        elementPathEnabled: false,//是否启用元素路径，默认是true显示
+        wordCount: false, //是否开启字数统计
+        autoHeightEnabled: false,
+        autoFloatEnabled: true
+    });
+    ue2.ready(function () {
+        //不可编辑
+        ue2.setDisabled();
+    });
 
     var sysFeedback = function () {
 
@@ -131,6 +146,8 @@
             data.table = "tb_FatherList";
             data.box = "divBoxFather";
             data.frm = "frmFather";
+            data.box_d = "divBoxFatherDetail";
+            data.frm_d = "frmFatherDetail";
             return data;
         },
         loadDataDicList: function () {
@@ -140,13 +157,16 @@
             cols.push({field: 'statusName', title: '状态'});
             cols.push({field: 'questionTitle', title: '存在问题'});
             cols.push({field: 'feedbackPersonName', title: '反馈人'});
-            cols.push({field: 'deatilDescription', title: '问题详情'});
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
-                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="sysFeedback.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
-                    str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="sysFeedback.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
+                    if (row.status == 0) {
+                        str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="sysFeedback.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
+                        str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="sysFeedback.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
+                    } else {
+                        str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="查看" onclick="sysFeedback.prototype.checkDetail(' + row.id + ',\'tb_List\')"><i class="fa fa-search fa-white"></i></a>';
+                    }
                     str += '</div>';
                     return str;
                 }
@@ -240,21 +260,43 @@
                 }
             })
         },
+        checkDetail: function (id) {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/sysFeedback/getSysFeedbackById",
+                type: "get",
+                dataType: "json",
+                data: {id: id},
+                success: function (result) {
+                    if (result.ret) {
+                        $("#" + sysFeedback.prototype.config().frm_d).clearAll();
+                        $("#" + sysFeedback.prototype.config().frm_d).initForm(result.data);
+                        var content = result.data.deatilDescription;
+                        setTimeout(function () {
+                            ue2.setContent(content, false);
+                        }, 500);
+                        $('#' + sysFeedback.prototype.config().box_d).modal("show");
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        },
         //选择人员
-        personSelect:function(_this) {
-        erpEmployee.select({
-            onSelected: function (data) {
-                if (data.account) {
-                    $(_this).val(data.name);
-                    $(_this).prev().val(data.account);
+        personSelect: function (_this) {
+            erpEmployee.select({
+                onSelected: function (data) {
+                    if (data.account) {
+                        $(_this).val(data.name);
+                        $(_this).prev().val(data.account);
+                    }
+                    else {
+                        $(_this).val("");
+                        $(_this).prev().val("");
+                    }
                 }
-                else {
-                    $(_this).val("");
-                    $(_this).prev().val("");
-                }
-            }
-        });
-    }
+            });
+        }
 
     }
 </script>
@@ -279,7 +321,7 @@
                                             所属系统
                                         </label>
                                         <div class="col-sm-3">
-                                            <select class="form-control"  name="systemType">
+                                            <select class="form-control" name="systemType">
                                                 <option value="">--请选择--</option>
                                                 <c:if test="${not empty systemTypes}">
                                                     <c:forEach items="${systemTypes}" var="item">
@@ -312,7 +354,8 @@
                                             <input type="hidden" name="feedbackPerson">
                                             <input type="text" data-rule-maxlength="50" readonly
                                                    placeholder="选择人员" onclick="sysFeedback.prototype.personSelect(this)"
-                                                   id="feedbackPersonName" name="feedbackPersonName" class="form-control">
+                                                   id="feedbackPersonName" name="feedbackPersonName"
+                                                   class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -322,7 +365,7 @@
                                             存在问题<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" name="questionTitle"  class="form-control" required>
+                                            <input type="text" name="questionTitle" class="form-control" required>
                                         </div>
                                     </div>
                                 </div>
@@ -346,6 +389,79 @@
                     </button>
                     <button type="button" class="btn btn-primary" onclick="sysFeedback.prototype.saveData()">
                         保存
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div id="divBoxFatherDetail" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">我的反馈</h3>
+            </div>
+            <form id="frmFatherDetail" class="form-horizontal">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            所属系统
+                                        </label>
+                                        <div class="col-sm-3">
+                                            <input type="text" name="systemTypeName" readonly class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            紧急程度
+                                        </label>
+                                        <div class="col-sm-3">
+                                            <input type="text" name="urgencyLevelName" readonly class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            反馈人
+                                        </label>
+                                        <div class="col-sm-3">
+                                            <input type="text" name="feedbackPersonName" readonly class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            存在问题
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <input type="text" name="questionTitle" class="form-control" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            问题详情描述
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <div style="width:99%;height:200px;" id="deatilDescription_d"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-default">
+                        关闭
                     </button>
                 </div>
             </form>
