@@ -1,32 +1,22 @@
 package com.copower.pmcc.assess.controller.data;
 
-import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
-import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.controller.BaseController;
 import com.copower.pmcc.assess.dal.basis.entity.DataBlock;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.NetInfoRecordService;
 import com.copower.pmcc.assess.service.basic.PublicBasicService;
 import com.copower.pmcc.assess.service.data.DataBlockService;
-import com.copower.pmcc.assess.service.project.ProjectInfoService;
-import com.copower.pmcc.assess.service.project.ProjectNumberRecordService;
-import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
+import com.copower.pmcc.assess.service.project.scheme.SchemeLiquidationAnalysisService;
+import com.copower.pmcc.assess.service.project.survey.SurveyAssetRightDeclareService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
-import com.copower.pmcc.erp.api.dto.SysProjectDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
-import com.copower.pmcc.erp.api.provider.ErpRpcProjectService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.util.List;
 
 /**
  * @Auther: zch
@@ -39,21 +29,18 @@ public class DataBlockController extends BaseController {
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
-    private ErpRpcProjectService erpRpcProjectService;
-    @Autowired
     private DataBlockService dataBlockService;
     @Autowired
     private ErpAreaService erpAreaService;
     @Autowired
     private PublicBasicService publicBasicService;
     @Autowired
-    private ProjectInfoService projectInfoService;
-    @Autowired
     private NetInfoRecordService netInfoRecordService;
     @Autowired
-    private SchemeJudgeObjectService schemeJudgeObjectService;
+    private SurveyAssetRightDeclareService surveyAssetRightDeclareService;
     @Autowired
-    private ProjectNumberRecordService projectNumberRecordService;
+    private SchemeLiquidationAnalysisService schemeLiquidationAnalysisService;
+
 
     @RequestMapping(value = "/view", name = "转到index页面 ", method = {RequestMethod.GET})
     public ModelAndView index() {
@@ -166,16 +153,11 @@ public class DataBlockController extends BaseController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/updateJudgeObjectHistory", method = {RequestMethod.GET}, name = "更新估价对象历史数据")
-    public HttpResult updateJudgeObjectHistory() {
+    @RequestMapping(value = "/updateOldData", method = {RequestMethod.GET}, name = "更新历史数据")
+    public HttpResult updateOldData() {
         try {
-            schemeJudgeObjectService.updateJudgeFunction();
-            List<ProjectInfo> projectInfoList = projectInfoService.getProjectInfoList(new ProjectInfo());
-            if(CollectionUtils.isNotEmpty(projectInfoList)){
-                for (ProjectInfo projectInfo : projectInfoList) {
-                    schemeJudgeObjectService.recordToHistory(projectInfo.getId());
-                }
-            }
+            surveyAssetRightDeclareService.updateOldData();
+            schemeLiquidationAnalysisService.fixOldData();
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             log.error(String.format("exception: %s", e.getMessage()), e);
@@ -207,55 +189,4 @@ public class DataBlockController extends BaseController {
         }
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/updateOldData", method = {RequestMethod.GET}, name = "抓取两年前老数据")
-    public HttpResult updateOldData() {
-        try {
-            dataBlockService.updateOldData();
-            return HttpResult.newCorrectResult();
-        } catch (Exception e) {
-            log.error(String.format("exception: %s", e.getMessage()), e);
-            return HttpResult.newErrorResult("抓取两年前老数据异常");
-        }
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/updateDocNumberToErp", method = {RequestMethod.GET}, name = "更新文号")
-    public HttpResult updateDocNumberToErp() {
-        try {
-            List<ProjectInfo> projectInfoList = projectInfoService.getProjectInfoList(new ProjectInfo());
-            if(CollectionUtils.isNotEmpty(projectInfoList)){
-                for (ProjectInfo projectInfo : projectInfoList) {
-                    try{
-                        updateDocNumberToErp(projectInfo.getId());
-                    }catch (Exception ex){
-
-                    }
-                }
-            }
-            return HttpResult.newCorrectResult();
-        } catch (Exception e) {
-            log.error(String.format("exception: %s", e.getMessage()), e);
-            return HttpResult.newErrorResult("更新文号数据异常");
-        }
-    }
-
-
-    /**
-     * 更新文号到erp中
-     * @param projectId
-     */
-    public void updateDocNumberToErp(Integer projectId) {
-        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
-        if (projectInfo == null) return;
-        SysProjectDto sysProjectDto = erpRpcProjectService.getProjectInfoByProjectId(projectId, BaseConstant.ASSESS_APP_KEY);
-        if (sysProjectDto != null && sysProjectDto.getId() > 0) {
-            sysProjectDto.setStatus(ProjectStatusEnum.FINISH.getKey());
-            List<String> reportNumberList = projectNumberRecordService.getReportNumberList(projectId, null,null);
-            if (CollectionUtils.isEmpty(reportNumberList)) return;
-            String s = StringUtils.join(reportNumberList, ',');
-            sysProjectDto.setProjectDocumentNumber(s);
-            erpRpcProjectService.saveProject(sysProjectDto);
-        }
-    }
 }
