@@ -175,23 +175,8 @@
                     </form>
                 </div>
             </div>
-
-            <div id="taskLiquidationAnalysisAppend">
-
-            </div>
-            <div class="x_panel">
-                <div class="x_content">
-                    <div class="col-sm-4 col-sm-offset-5">
-                        <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
-                            取消
-                        </button>
-
-                        <button id="btn_submit" class="btn btn-success" onclick="submit();">
-                            提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
+            <div id="taskLiquidationAnalysisAppend"></div>
+            <%@include file="/views/share/form_apply.jsp" %>
             <%@include file="/views/share/form_log.jsp" %>
         </div>
     </div>

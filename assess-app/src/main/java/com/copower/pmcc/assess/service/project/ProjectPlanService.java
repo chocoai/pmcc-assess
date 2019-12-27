@@ -484,7 +484,6 @@ public class ProjectPlanService {
         projectPlanResponsibility.setAppKey(applicationConstant.getAppKey());
         updateProjectTaskUrl(responsibileModelEnum, projectPlanResponsibility);
         bpmRpcProjectTaskService.saveProjectTaskExtend(projectPlanResponsibility);
-
     }
 
     /**
@@ -501,12 +500,6 @@ public class ProjectPlanService {
             case TASK:
                 url = "/" + applicationConstant.getAppKey() + "/ProjectTask/projectTaskIndex";
                 break;
-            case PLAN:
-            case NEWPLAN:
-                url = "/" + applicationConstant.getAppKey() + "/ProjectPlan/planIndex?planId=" + projectPlanResponsibility.getPlanId();
-                break;
-            case ALLTASK:
-                url = "/" + applicationConstant.getAppKey() + "/projectTaskAll/projectTaskAllIndex?planId=" + projectPlanResponsibility.getPlanId();
         }
         projectPlanResponsibility.setProjectDetailsUrl("/" + applicationConstant.getAppKey() + "/projectCenter/projectInfo?projectId=" + projectPlanResponsibility.getProjectId());
         projectPlanResponsibility.setUrl(url);

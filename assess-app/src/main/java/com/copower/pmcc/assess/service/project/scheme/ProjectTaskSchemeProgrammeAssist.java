@@ -42,7 +42,7 @@ import java.util.List;
  */
 @Component
 @WorkFlowAnnotation(desc = "评估方案编制")
-public class SchemeProgrammeAssist implements ProjectTaskInterface {
+public class ProjectTaskSchemeProgrammeAssist implements ProjectTaskInterface {
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired

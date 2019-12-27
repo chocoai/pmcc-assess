@@ -14,8 +14,6 @@
     <%@include file="/views/share/main_css.jsp" %>
 </head>
 <body class="nav-md">
-
-
 <div class="container body">
     <div class="main_container">
         <div class="right_col" role="main" style="margin-left: 0px">
@@ -23,9 +21,7 @@
             <%@include file="/views/share/form_head.jsp" %>
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <!-- 公共模块end -->
-
             <%@include file="/views/project/subsequent/modules/info_form.jsp" %>
-
             <!-- 公共尾部模块引用 -->
             <div class="panel-body">
                 <div class="form-group">
@@ -33,7 +29,6 @@
                         <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
                             取消
                         </button>
-
                         <button id="commit_btn" class="btn btn-success" onclick="masterObj.commit();">
                             提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
                         </button>
@@ -48,14 +43,9 @@
                 </form>
             </c:if>
             <!-- 尾部end -->
-
         </div>
-
     </div>
-
 </div>
-
-
 <%@include file="/views/share/main_footer.jsp" %>
 </body>
 </html>
