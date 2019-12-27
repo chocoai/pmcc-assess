@@ -11,7 +11,7 @@
             <small>
                 <input type="button" id="btnViewProjectInfoMore" class="btn btn-success btn-xs" value="查看更多..."/>
             </small>
-            <small>${projectInfo.projectClassName}/${projectInfo.projectTypeName}/${projectInfo.projectCategoryName}</small>
+            <small>${projectInfo.projectCategoryName}</small>
         </h3>
         <div class="clearfix"></div>
     </div>

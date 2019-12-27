@@ -162,7 +162,7 @@
         data["formData"] = formData;
         data = $.extend({}, data, approvalData);
 
-        if ("${bisCheck==1}") {
+        if ("${bisCheck}" == 1) {
             var itemObj = getChksData();
             data = jQuery.extend({}, data, itemObj);
         }

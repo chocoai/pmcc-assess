@@ -9,7 +9,7 @@
         </ul>
         <h3>
             项目信息
-            <small>${projectInfo.projectClassName}/${projectInfo.projectTypeName}/${projectInfo.projectCategoryName}</small>
+            <small>${projectInfo.projectCategoryName}</small>
         </h3>
         <div class="clearfix"></div>
     </div>
