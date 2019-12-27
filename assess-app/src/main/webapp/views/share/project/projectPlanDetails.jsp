@@ -172,6 +172,10 @@
             <%--var itemObj = getChksData();--%>
             <%--data = jQuery.extend({}, data, itemObj);--%>
         <%--}--%>
+        if ("${bisCheck}" == 1) {
+            var itemObj = getChksData();
+            data = jQuery.extend({}, data, itemObj);
+        }
 
 
         Loading.progressShow();

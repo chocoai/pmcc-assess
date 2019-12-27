@@ -120,19 +120,19 @@ public class MdMarketCompareFieldService extends BaseService {
             houseTrading = basicHouseTradingService.getTradingByHouseId(examineHouse.getId());
             houseTrading = houseTrading == null ? new BasicHouseTrading() : houseTrading;
             //处理下bug ,必要得否则null id 会把子类所有得数据查出来
-            if (houseTrading.getId() == null){
+            if (houseTrading.getId() == null) {
                 houseTrading.setId(0);
             }
-            if (examineHouse.getId() == null){
+            if (examineHouse.getId() == null) {
                 examineHouse.setId(0);
             }
-            if (examineUnit.getId() == null){
+            if (examineUnit.getId() == null) {
                 examineUnit.setId(0);
             }
-            if (examineBuilding.getId() == null){
+            if (examineBuilding.getId() == null) {
                 examineBuilding.setId(0);
             }
-            if (examineEstate.getId() == null){
+            if (examineEstate.getId() == null) {
                 examineEstate.setId(0);
             }
             //取得申报记录信息
@@ -189,8 +189,8 @@ public class MdMarketCompareFieldService extends BaseService {
                             break;
                         case PRICE_CONNOTATION://单价内涵
                             String priceConnotationName = baseDataDicService.getNameById(houseTrading.getPriceConnotation());
-                            if("其它".equals(priceConnotationName))
-                                priceConnotationName=houseTrading.getPriceConnotationUnit();
+                            if ("其它".equals(priceConnotationName))
+                                priceConnotationName = houseTrading.getPriceConnotationUnit();
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.PRICE_CONNOTATION.getKey(), priceConnotationName));
                             break;
                         case LOCATION://房地产坐落
@@ -226,12 +226,11 @@ public class MdMarketCompareFieldService extends BaseService {
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.FLOOR.getKey(), stringBuilder.toString()));
                             break;
                         case ORIENTATION://朝向
-                            BasicUnitHuxing basicUnitHuxing = new BasicUnitHuxing();
-                            basicUnitHuxing.setUnitId(examineUnit.getId());
-                            List<BasicUnitHuxing> basicUnitHuxingList = basicUnitHuxingDao.basicUnitHuxingList(basicUnitHuxing);
-                            if(CollectionUtils.isNotEmpty(basicUnitHuxingList)){
-                                list.add(getMarketCompareItemDto(MethodCompareFieldEnum.ORIENTATION.getKey(), baseDataDicService.getNameById(NumberUtils.isNumber(basicUnitHuxingList.get(0).getOrientation()) ? Integer.parseInt(basicUnitHuxingList.get(0).getOrientation()) : null)));
+                            BasicUnitHuxing unitHuxing = basicUnitHuxingDao.getBasicUnitHuxingById(examineHouse.getHuxingId());
+                            if (unitHuxing == null) {
+                                unitHuxing = new BasicUnitHuxing();
                             }
+                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.ORIENTATION.getKey(), baseDataDicService.getNameById(unitHuxing.getOrientation())));
                             break;
                         case TRAFFIC_CONDITIONS://交通条件
                             stringBuilder = new StringBuilder();
@@ -542,7 +541,7 @@ public class MdMarketCompareFieldService extends BaseService {
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.Other.getKey(), generateCommonMethod.trimText(stringBuilder.toString())));
                             break;
                         case BUILDING_YEAR://竣工时间
-                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.BUILDING_YEAR.getKey(), DateUtils.formatDate(examineBuilding.getBeCompletedTime(),DateUtils.DATE_YYYY_MM), isCase));
+                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.BUILDING_YEAR.getKey(), DateUtils.formatDate(examineBuilding.getBeCompletedTime(), DateUtils.DATE_YYYY_MM), isCase));
                             break;
                         case CONSTRUCTION_QUALITY://工程质量
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.CONSTRUCTION_QUALITY.getKey(), baseDataDicService.getNameById(examineBuilding.getConstructionQuality())));

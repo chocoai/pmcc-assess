@@ -100,11 +100,11 @@ public class CaseHouseService {
     private BasicApplyBatchDetailDao basicApplyBatchDetailDao;
     private Logger logger = LoggerFactory.getLogger(getClass());
 
-    public BootstrapTableVo getCaseHouseListVos(CaseHouse caseHouse) {
+    public BootstrapTableVo getCaseHouseListVos(Integer unitId,String houseName) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<CaseHouse> caseHouses = getCaseHouseList(caseHouse);
+        List<CaseHouse> caseHouses = caseHouseDao.getHouseList(unitId,houseName);
         vo.setRows(caseHouses);
         vo.setTotal(page.getTotal());
         return vo;

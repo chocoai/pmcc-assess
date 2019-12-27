@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.service.project.generate;
 
 import com.copower.pmcc.assess.common.enums.basic.*;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicUnitHuxingDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.basic.*;
 import com.copower.pmcc.assess.service.BaseService;
@@ -41,6 +42,8 @@ public class GenerateLoactionService {
     private static final String error = "无";
     @Autowired
     private BaseService baseService;
+    @Autowired
+    private BasicUnitHuxingDao basicUnitHuxingDao;
 
 
     /**
@@ -601,8 +604,9 @@ public class GenerateLoactionService {
             }
             GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
             BasicHouse basicHouse = generateBaseExamineService.getBasicHouse();
-            if (basicHouse != null && basicHouse.getOrientation() != null) {
-                map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), baseDataDicService.getNameById(basicHouse.getOrientation()));
+            if (basicHouse != null && basicHouse.getHuxingId() != null) {
+                BasicUnitHuxing unitHuxing = basicUnitHuxingDao.getBasicUnitHuxingById(basicHouse.getHuxingId());
+                map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), baseDataDicService.getNameById(unitHuxing.getOrientation()));
             }
         }
         String s = generateCommonMethod.judgeEachDesc(map, "", ";", false);

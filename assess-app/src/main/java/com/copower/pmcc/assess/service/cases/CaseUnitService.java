@@ -142,11 +142,11 @@ public class CaseUnitService {
         }
     }
 
-    public BootstrapTableVo getCaseUnitListVos(CaseUnit caseUnit) {
+    public BootstrapTableVo getCaseUnitListVos(Integer caseBuildingId, String unitName) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<CaseUnit> caseUnits = getCaseUnitList(caseUnit);
+        List<CaseUnit> caseUnits = caseUnitDao.getUnitList(caseBuildingId, unitName);
         vo.setRows(caseUnits);
         vo.setTotal(page.getTotal());
         return vo;
@@ -233,7 +233,7 @@ public class CaseUnitService {
         basicUnitService.clearInvalidChildData(tableId);
         //更新批量申请表信息
         BasicApplyBatchDetail batchDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(FormatUtils.entityNameConvertToTableName(BasicUnit.class), tableId);
-        if(batchDetail!=null) {
+        if (batchDetail != null) {
             batchDetail.setQuoteId(id);
             batchDetail.setBaseType(BaseConstant.DATABASE_PMCC_ASSESS_CASE);
             basicApplyBatchDetailDao.updateInfo(batchDetail);
@@ -250,7 +250,7 @@ public class CaseUnitService {
         basicUnit.setBuildingId(null);
         basicUnit.setBuildingId(oldBasicUnit.getBuildingId());
 
-        basicUnitService.saveAndUpdateBasicUnit(basicUnit,false);
+        basicUnitService.saveAndUpdateBasicUnit(basicUnit, false);
 
         //删除原有的附件
         SysAttachmentDto deleteExample = new SysAttachmentDto();
@@ -300,7 +300,7 @@ public class CaseUnitService {
                     basicUnitHuxing.setId(null);
                     basicUnitHuxing.setGmtCreated(null);
                     basicUnitHuxing.setGmtModified(null);
-                    Integer huxingId = basicUnitHuxingService.saveAndUpdateBasicUnitHuxing(basicUnitHuxing,false);
+                    Integer huxingId = basicUnitHuxingService.saveAndUpdateBasicUnitHuxing(basicUnitHuxing, false);
 
                     //附件拷贝
                     example = new SysAttachmentDto();

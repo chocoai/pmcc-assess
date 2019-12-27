@@ -22,7 +22,7 @@
                     <h2>
                         <input type="hidden" name="projectInfoVoJson" id="projectInfoVoJson" value='${projectInfoVoJson}'>
                         项目信息
-                        <small>${projectInfo.projectClassName}/${projectInfo.projectTypeName}/${projectInfo.projectCategoryName}</small>
+                        <small>${projectInfo.projectCategoryName}</small>
                     </h2>
                     <input type="hidden" value="${projectInfo.id}">
                     <div class="clearfix"></div>

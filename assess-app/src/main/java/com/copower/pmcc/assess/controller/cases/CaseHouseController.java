@@ -184,13 +184,11 @@ public class CaseHouseController {
 
     @ResponseBody
     @RequestMapping(value = "/getCaseHouseList", method = {RequestMethod.GET}, name = "获取案例 房屋列表")
-    public BootstrapTableVo getCaseHouseList(Integer unitId) {
-        CaseHouse caseHouse = new CaseHouse();
+    public BootstrapTableVo getCaseHouseList(Integer unitId,String houseName) {
         BootstrapTableVo vo = new BootstrapTableVo();
         try {
             if (unitId != null) {
-                caseHouse.setUnitId(unitId);
-                vo = caseHouseService.getCaseHouseListVos(caseHouse);
+                vo = caseHouseService.getCaseHouseListVos(unitId,houseName);
             }
         } catch (Exception e1) {
             logger.error(String.format("exception: %s", e1.getMessage()), e1);

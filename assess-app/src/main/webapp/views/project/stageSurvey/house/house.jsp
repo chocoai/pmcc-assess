@@ -756,5 +756,6 @@
 <script type="text/javascript">
     $(function () {
         houseCommon.initById('${basicHouse.id}');
+        houseCommon.autocompleteStart();
     })
 </script>

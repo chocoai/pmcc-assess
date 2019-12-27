@@ -2,7 +2,6 @@ package com.copower.pmcc.assess.controller.cases;
 
 import com.copower.pmcc.assess.common.enums.basic.BasicApplyTypeEnum;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicUnitDao;
-import com.copower.pmcc.assess.dal.basis.entity.BasicBuilding;
 import com.copower.pmcc.assess.dal.basis.entity.BasicUnit;
 import com.copower.pmcc.assess.dal.cases.custom.entity.CustomCaseEntity;
 import com.copower.pmcc.assess.dal.cases.entity.CaseBuilding;
@@ -57,13 +56,13 @@ public class CaseUnitController {
 
 
     @RequestMapping(value = "/detailView", name = "转到详情页面 ", method = RequestMethod.GET)
-    public ModelAndView detailView(Integer id) throws Exception{
+    public ModelAndView detailView(Integer id) throws Exception {
         String view = "project/stageSurvey/house/detail/unit";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
         CaseUnit caseUnit = caseUnitService.getCaseUnitById(id);
         CaseBuilding caseBuilding = caseBuildingService.getCaseBuildingById(caseUnit.getBuildingId());
         CaseEstate caseEstate = caseEstateService.getCaseEstateById(caseBuilding.getEstateId());
-        if(caseEstate.getType()!=null) {
+        if (caseEstate.getType() != null) {
             modelAndView.addObject("formType", BasicApplyTypeEnum.getEnumById(caseEstate.getType()).getKey());
         }
 
@@ -72,7 +71,7 @@ public class CaseUnitController {
         List<BasicUnit> units = basicUnitDao.basicUnitList(unit);
         if (CollectionUtils.isNotEmpty(units)) {
             unit = units.get(0);
-        }else{
+        } else {
             basicUnitDao.addBasicUnit(unit);
         }
         caseUnitService.quoteCaseUnitToBasic(id, unit.getId());
@@ -100,14 +99,10 @@ public class CaseUnitController {
 
     @ResponseBody
     @RequestMapping(value = "/getCaseUnitList", method = {RequestMethod.GET}, name = "获取案例 单元列表")
-    public BootstrapTableVo getCaseUnitList(Integer caseBuildingId) {
-        CaseUnit caseUnit = new CaseUnit();
+    public BootstrapTableVo getCaseUnitList(Integer caseBuildingId, String unitName) {
         BootstrapTableVo vo = new BootstrapTableVo();
         try {
-            if (caseBuildingId != null) {
-                caseUnit.setBuildingId(caseBuildingId);
-                vo = caseUnitService.getCaseUnitListVos(caseUnit);
-            }
+            vo = caseUnitService.getCaseUnitListVos(caseBuildingId, unitName);
         } catch (Exception e1) {
             logger.error(String.format("exception: %s", e1.getMessage()), e1);
             return null;
@@ -175,9 +170,9 @@ public class CaseUnitController {
 
     @ResponseBody
     @RequestMapping(value = "/quoteCaseUnitToBasic", name = "引用案列数据", method = {RequestMethod.GET})
-    public HttpResult quoteCaseUnitToBasic(Integer id,Integer tableId) {
+    public HttpResult quoteCaseUnitToBasic(Integer id, Integer tableId) {
         try {
-            return HttpResult.newCorrectResult(caseUnitService.quoteCaseUnitToBasic(id,tableId));
+            return HttpResult.newCorrectResult(caseUnitService.quoteCaseUnitToBasic(id, tableId));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(e.getMessage());

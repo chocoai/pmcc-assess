@@ -68,6 +68,12 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <small>
+                        <input type="button" class="btn btn-xs btn-primary" value="批量删除"
+                               onclick="deleteJudgeItemByIds(this);">
+                    </small>
+                </div>
+                <div class="form-group">
                     <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
                         <table class="table table-bordered" id="schemeLiquidationJudgeList_number">
                         </table>
@@ -848,6 +854,14 @@
         cols.push({field: 'certName', title: '权证名称', width: "22%"});
         cols.push({field: 'ownership', title: '所有权人', width: "22%"});
         cols.push({field: 'seat', title: '坐落', width: "22%"});
+        cols.push({
+            field: 'id', width: '6%', title: '操作', formatter: function (value, row, index) {
+                var str = '<div class="btn-margin">';
+                str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="删除" onclick="deleteJudgeItem(' + row.id + ',\'' + groupId + '\')"><i class="fa fa-minus fa-white"></i></a>';
+                str += '</div>';
+                return str;
+            }
+        });
         var method = {
             showColumns: false,
             showRefresh: false,
@@ -857,7 +871,7 @@
             }
         };
         $("#schemeLiquidationJudgeList" + groupId).bootstrapTable('destroy');
-        TableInit("schemeLiquidationJudgeList" + groupId, "${pageContext.request.contextPath}/schemeLiquidationAnalysis/getSchemeLiquidationJudgeList", cols, options, method);
+        TableInit("schemeLiquidationJudgeList" + groupId, "${pageContext.request.contextPath}/schemeLiquidationAnalysis/getSchemeLiquidationJudgeList", cols, options, method, true);
     };
 
     //查询已选择估价对象
@@ -885,6 +899,65 @@
 
         loadSchemeLiquidationJudgeTable(groupId, data);
     };
+
+    function deleteJudgeItem(id, groupId) {
+        Alert("确认删除!", 2, null, function () {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/schemeLiquidationAnalysis/deleteJudgeItem",
+                type: "post",
+                dataType: "json",
+                data: {id: id},
+                success: function (result) {
+                    if (result.ret) {
+                        toastr.success('删除成功');
+                        loadSchemeLiquidationJudgeTable(groupId, {groupId: groupId});
+                    }
+                    else {
+                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        });
+    }
+
+    function deleteJudgeItemByIds(_this) {
+        var groupId = $(_this).closest('.form-horizontal').find("input[name='id']").val();
+        var rows = $("#schemeLiquidationJudgeList" + groupId).bootstrapTable('getSelections');
+        if (rows && rows.length > 0) {
+            var idArray = [];
+            $.each(rows, function (i, item) {
+                idArray.push(item.id);
+            });
+            var ids = idArray.join(",");
+            Alert("确认删除!", 2, null, function () {
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/schemeLiquidationAnalysis/deleteJudgeItemByIds",
+                    type: "post",
+                    dataType: "json",
+                    data: {ids: ids},
+                    success: function (result) {
+                        if (result.ret) {
+                            toastr.success('删除成功');
+                            loadSchemeLiquidationJudgeTable(groupId, {groupId: groupId});
+                        }
+                        else {
+                            Alert("保存数据失败，失败原因:" + result.errmsg);
+                        }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
+                    }
+                })
+            });
+
+        } else {
+            toastr.info('至少选择一个');
+        }
+    }
+
 </script>
 <script type="application/javascript">
     //选择估价对象
@@ -969,6 +1042,8 @@
 
         schemeJudgeObj.loadSchemeJudgeObjTable(data);
     };
+
+
 </script>
 
 </html>
