@@ -601,7 +601,7 @@ public class ChksAssessmentProjectPerformanceService {
         projectPlanDetails.setProjectWorkStageId(target.getProjectWorkStageId());
         projectPlanDetails.setProjectPhaseName(String.join("-", projectWorkStage.getWorkStageName(), "[考核计划]", target.getProjectPhaseName(), "时间:", DateUtils.format(new Date(), DateUtils.HOUR_MINUTE_CHINESE_PATTERN)));
         projectPlanDetails.setSorting(10);
-        projectPlanDetails.setStatus(ProcessStatusEnum.RUN.getValue());
+        projectPlanDetails.setStatus(ProcessStatusEnum.FINISH.getValue());
         projectPlanDetailsService.saveProjectPlanDetails(projectPlanDetails);
 
         ProjectResponsibilityDto projectPlanResponsibility = new ProjectResponsibilityDto();
@@ -615,7 +615,7 @@ public class ChksAssessmentProjectPerformanceService {
         projectPlanResponsibility.setConclusion(ResponsibileModelEnum.TASK.getName());
         projectPlanResponsibility.setPlanEndTime(new Date());
         projectPlanResponsibility.setAppKey(applicationConstant.getAppKey());
-        projectPlanService.updateProjectTaskUrl(ResponsibileModelEnum.TASK, projectPlanResponsibility);
+        projectPlanService.updateProjectTaskUrl(ResponsibileModelEnum.DETAIL, projectPlanResponsibility);
         projectPlanResponsibility.setCreator(account);
 
 
@@ -631,6 +631,7 @@ public class ChksAssessmentProjectPerformanceService {
         }
         if (projectPlanResponsibility.getId() != null) {
             projectPlanResponsibility.setUrl(String.join("", "/pmcc-assess/ProjectTask/projectTaskDetailsById?planDetailsId=", target.getId().toString()));
+            projectPlanResponsibility.setPlanDetailsId(target.getId());
             bpmRpcProjectTaskService.updateProjectTask(projectPlanResponsibility);
         }
     }
