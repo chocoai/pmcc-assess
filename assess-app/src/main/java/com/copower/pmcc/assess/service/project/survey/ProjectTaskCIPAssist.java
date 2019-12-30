@@ -121,7 +121,8 @@ public class ProjectTaskCIPAssist implements ProjectTaskInterface {
         masterDto.setPlanDetailsId(projectPlanDetails.getId());
         masterDto.setPid(0);
         ProjectResponsibilityDto projectTaskMaster = bpmRpcProjectTaskService.getProjectTask(masterDto);
-        modelAndView.addObject("projectTaskMasterId", projectTaskMaster.getId());
+        if (projectTaskMaster != null)
+            modelAndView.addObject("projectTaskMasterId", projectTaskMaster.getId());
     }
 
     private List<BaseDataDic> getFormClassifyList(Integer projectId) {
