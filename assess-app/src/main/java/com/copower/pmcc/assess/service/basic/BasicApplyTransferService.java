@@ -649,6 +649,7 @@ public class BasicApplyTransferService {
         estateBatchDetail.setName(basicEstateNew.getName());
         estateBatchDetail.setDisplayName(basicEstateNew.getName());
         estateBatchDetail.setBisStandard(false);
+        estateBatchDetail.setExecutor(commonService.thisUserAccount());
         basicApplyBatchDetailService.saveBasicApplyBatchDetail(estateBatchDetail);
 
         BasicApplyBatchDetail buildingBatchDetail = new BasicApplyBatchDetail();
@@ -659,6 +660,7 @@ public class BasicApplyTransferService {
         buildingBatchDetail.setName(basicBuilding.getBuildingNumber());
         buildingBatchDetail.setDisplayName(basicBuilding.getBuildingName());
         buildingBatchDetail.setBisStandard(false);
+        buildingBatchDetail.setExecutor(commonService.thisUserAccount());
         basicApplyBatchDetailService.saveBasicApplyBatchDetail(buildingBatchDetail);
 
         BasicApplyBatchDetail unitBatchDetail = new BasicApplyBatchDetail();
@@ -669,6 +671,7 @@ public class BasicApplyTransferService {
         unitBatchDetail.setName(basicUnit.getUnitNumber());
         unitBatchDetail.setDisplayName(String.format("%s单元", basicUnit.getUnitNumber()));
         unitBatchDetail.setBisStandard(false);
+        unitBatchDetail.setExecutor(commonService.thisUserAccount());
         basicApplyBatchDetailService.saveBasicApplyBatchDetail(unitBatchDetail);
 
         BasicApplyBatchDetail houseBatchDetail = new BasicApplyBatchDetail();
@@ -679,6 +682,7 @@ public class BasicApplyTransferService {
         houseBatchDetail.setName(basicHouse.getHouseNumber());
         houseBatchDetail.setDisplayName(basicHouse.getHouseNumber());
         houseBatchDetail.setBisStandard(true);
+        houseBatchDetail.setExecutor(commonService.thisUserAccount());
         basicApplyBatchDetailService.saveBasicApplyBatchDetail(houseBatchDetail);
         return targetBasicApply;
     }
