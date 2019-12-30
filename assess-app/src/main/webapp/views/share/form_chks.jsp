@@ -178,7 +178,8 @@
             activityId: '${boxReActivityDto.id}',
             projectId: '${projectPlanDetails.projectId}',
             planDetailsId: '${projectPlanDetails.id}',
-            planId: '${projectPlanDetails.planId}'
+            planId: '${projectPlanDetails.planId}',
+            isEffective:true //数据必须有效
         };
         if ('${processInsId}'){
             option.processInsId = '${processInsId}' ;
@@ -511,6 +512,7 @@
         }
         var cols = [];
         cols.push({field: 'projectName', title: '项目名称'});
+        cols.push({field: 'processInsId', title: '流程实例'});
         cols.push({field: 'businessKey', title: '业务名称'});
         cols.push({field: 'activityName', title: '考核节点'});
         cols.push({field: 'examinePeopleName', title: '考核人'});
@@ -518,7 +520,7 @@
         cols.push({
             field: 'examineDate', title: '考核时间', formatter: function (value, row, index) {
                 if (value) {
-                    return formatDate(value, false);
+                    return formatDate(value, true);
                 }
                 return "";
             }

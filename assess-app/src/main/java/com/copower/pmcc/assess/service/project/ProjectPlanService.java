@@ -116,8 +116,8 @@ public class ProjectPlanService {
         return projectPlanDao.getProjectPlanByStatus(Lists.newArrayList(projectId), status);
     }
 
-    public List<ProjectPlan> getProjectPlanList2(Integer projectId,Integer workStageId , Integer categoryId){
-        return projectPlanDao.getProjectPlanList2(projectId, workStageId, categoryId) ;
+    public List<ProjectPlan> getProjectPlanList2(Integer projectId, Integer workStageId, Integer categoryId) {
+        return projectPlanDao.getProjectPlanList2(projectId, workStageId, categoryId);
     }
 
     public List<ProjectPlan> getProjectPlanList(Integer projectId) {
@@ -507,6 +507,12 @@ public class ProjectPlanService {
                 break;
             case ALLTASK:
                 url = "/" + applicationConstant.getAppKey() + "/projectTaskAll/projectTaskAllIndex?planId=" + projectPlanResponsibility.getPlanId();
+                break;
+            case DETAIL:
+                url = "/" + applicationConstant.getAppKey() + "/ProjectTask/projectTaskDetailsById?planDetailsId="+projectPlanResponsibility.getPlanDetailsId();
+                break;
+            default:
+                break;
         }
         projectPlanResponsibility.setProjectDetailsUrl("/" + applicationConstant.getAppKey() + "/projectCenter/projectInfo?projectId=" + projectPlanResponsibility.getProjectId());
         projectPlanResponsibility.setUrl(url);

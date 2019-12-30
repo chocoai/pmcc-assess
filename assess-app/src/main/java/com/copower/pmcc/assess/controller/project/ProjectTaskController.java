@@ -171,18 +171,20 @@ public class ProjectTaskController extends BaseController {
             modelAndView.addObject("boxCnName", String.format("%s-成果审批", boxCnName.toString()));
         }
         //获取相应的考核项
-//        BoxReDto boxReDto = null;
-//        if (boxId != null && boxId != 0) {
-//            boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(boxId);
-//        }
-//        if (boxReDto != null && boxReDto.getBisLaunchCheck() != null && boxReDto.getBisLaunchCheck()) {
-//            Object activityId = modelAndView.getModel().get("activityId");
-//            if (activityId != null) {
-//                Integer boxReActivitiId = (Integer) activityId;
-//                setCheckParams(boxId, boxReActivitiId, false, modelAndView);
-//
-//            }
-//        }
+        BoxReDto boxReDto = null;
+        if (boxId != null && boxId != 0) {
+            boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(boxId);
+        }
+        if (boxReDto != null && boxReDto.getBisLaunchCheck() != null && boxReDto.getBisLaunchCheck()) {
+            Object activityId = modelAndView.getModel().get("activityId");
+            if (activityId != null) {
+                Integer boxReActivitiId = (Integer) activityId;
+                setCheckParams(boxId, boxReActivitiId, false,projectPlanDetails, modelAndView);
+
+            }
+        }
+        modelAndView.addObject("BoxApprovalLogDtoList", chksAssessmentProjectPerformanceService.getBoxApprovalLogVoList(processInsId));
+
         modelAndView.addObject("viewUrl", viewUrl);
         modelAndView.addObject("projectId", projectPlanDetails.getProjectId());
         modelAndView.addObject("projectFlog", "1");
@@ -319,7 +321,7 @@ public class ProjectTaskController extends BaseController {
      * @param boxReActivitiId 注意此参数可能是错误的
      * @param modelAndView
      */
-    private void setCheckParams(Integer boxId, Integer boxReActivitiId, boolean isDetail, ModelAndView modelAndView) {
+    private void setCheckParams(Integer boxId, Integer boxReActivitiId, boolean isDetail,ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) {
         //巡查人或者抽查人  可以看到当前模型下 所有人的考核记录
         boolean spotCheck = chksAssessmentProjectPerformanceService.getSpotCheck(boxId, processControllerComponent.getThisUser());
         //抽查或者巡查标识符

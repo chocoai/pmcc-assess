@@ -165,13 +165,13 @@
         data["formData"] = formData;
         data = $.extend({}, data, approvalData);
 
-        <%--if ("${bisCheck==1}") {--%>
-            <%--if (!vaildChksData()){--%>
-                <%--return false;--%>
-            <%--}--%>
-            <%--var itemObj = getChksData();--%>
-            <%--data = jQuery.extend({}, data, itemObj);--%>
-        <%--}--%>
+        if ("${bisCheck==1}") {
+            if (!vaildChksData()){
+                return false;
+            }
+            var itemObj = getChksData();
+            data = jQuery.extend({}, data, itemObj);
+        }
 
 
 
