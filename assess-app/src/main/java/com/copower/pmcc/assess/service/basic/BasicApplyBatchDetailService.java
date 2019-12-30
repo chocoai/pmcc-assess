@@ -226,6 +226,7 @@ public class BasicApplyBatchDetailService {
 
     //添加子任务
     public void addSonTask(Integer planDetailsId, String key, Integer tableId, String executor) {
+        if(executor==null) return;
         ProjectResponsibilityDto masterDto = new ProjectResponsibilityDto();
         masterDto.setPlanDetailsId(planDetailsId);
         masterDto.setPid(0);
@@ -241,6 +242,7 @@ public class BasicApplyBatchDetailService {
 
     //修改子任务
     public void updateSonTask(Integer planDetailsId, String key, Integer tableId, String executor, String creator) {
+        if(executor==null) return;
         ProjectResponsibilityDto oldDto = new ProjectResponsibilityDto();
         oldDto.setPlanDetailsId(planDetailsId);
         oldDto.setBusinessId(tableId);
