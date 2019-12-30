@@ -6,8 +6,14 @@ import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDetailDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicBuildingDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dal.cases.entity.CaseBuilding;
+import com.copower.pmcc.assess.dal.cases.entity.CaseEstate;
+import com.copower.pmcc.assess.dal.cases.entity.CaseUnit;
 import com.copower.pmcc.assess.dto.output.project.survey.BasicApplyBatchDetailVo;
 import com.copower.pmcc.assess.service.PublicService;
+import com.copower.pmcc.assess.service.cases.CaseBuildingService;
+import com.copower.pmcc.assess.service.cases.CaseEstateService;
+import com.copower.pmcc.assess.service.cases.CaseUnitService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
@@ -32,6 +38,12 @@ public class BasicApplyBatchDetailService {
     private BasicApplyBatchDetailDao basicApplyBatchDetailDao;
     @Autowired
     private BasicHouseService basicHouseService;
+    @Autowired
+    private CaseUnitService caseUnitService;
+    @Autowired
+    private CaseBuildingService caseBuildingService;
+    @Autowired
+    private CaseEstateService caseEstateService;
     @Autowired
     private BasicBuildingDao basicBuildingDao;
     @Autowired
@@ -115,7 +127,7 @@ public class BasicApplyBatchDetailService {
                     basicBuildingDao.updateBasicBuilding(building, false);
                     //执行人发生改变，子任务发生改变
                     if (!StringUtils.equals(oldData.getExecutor(), basicApplyBatchDetail.getExecutor())) {
-                        updateSonTask(planDetailsId, "building", basicApplyBatchDetail.getTableId(), basicApplyBatchDetail.getExecutor(), oldData.getCreator());
+                        updateSonTask(planDetailsId, "building", basicApplyBatchDetail.getTableId(), basicApplyBatchDetail.getExecutor(), oldData.getCreator(), basicApplyBatchDetail.getApplyBatchId());
                     }
                     break;
                 case "tb_basic_unit":
@@ -125,7 +137,7 @@ public class BasicApplyBatchDetailService {
                     basicUnitService.saveAndUpdateBasicUnit(unit, false);
                     //执行人发生改变，子任务发生改变
                     if (!StringUtils.equals(oldData.getExecutor(), basicApplyBatchDetail.getExecutor())) {
-                        updateSonTask(planDetailsId, "unit", basicApplyBatchDetail.getTableId(), basicApplyBatchDetail.getExecutor(), oldData.getCreator());
+                        updateSonTask(planDetailsId, "unit", basicApplyBatchDetail.getTableId(), basicApplyBatchDetail.getExecutor(), oldData.getCreator(), basicApplyBatchDetail.getApplyBatchId());
                     }
                     break;
                 case "tb_basic_house":
@@ -134,7 +146,7 @@ public class BasicApplyBatchDetailService {
                     basicHouseService.saveAndUpdateBasicHouse(house, false);
                     //执行人发生改变，子任务发生改变
                     if (!StringUtils.equals(oldData.getExecutor(), basicApplyBatchDetail.getExecutor())) {
-                        updateSonTask(planDetailsId, "house", basicApplyBatchDetail.getTableId(), basicApplyBatchDetail.getExecutor(), oldData.getCreator());
+                        updateSonTask(planDetailsId, "house", basicApplyBatchDetail.getTableId(), basicApplyBatchDetail.getExecutor(), oldData.getCreator(), basicApplyBatchDetail.getApplyBatchId());
                     }
                     break;
             }
@@ -157,7 +169,7 @@ public class BasicApplyBatchDetailService {
                     basicApplyBatchDetail.setTableId(building.getId());
                     //当前人与执行人不一致时发起子任务
                     if (!StringUtils.equals(basicApplyBatchDetail.getCreator(), basicApplyBatchDetail.getExecutor())) {
-                        addSonTask(planDetailsId, "building", building.getId(), basicApplyBatchDetail.getExecutor());
+                        addSonTask(planDetailsId, "building", building.getId(), basicApplyBatchDetail.getExecutor(), basicApplyBatchDetail.getApplyBatchId());
                     }
 
                     break;
@@ -174,7 +186,7 @@ public class BasicApplyBatchDetailService {
                     basicApplyBatchDetail.setTableId(unit.getId());
                     //当前人与执行人不一致时发起子任务
                     if (!StringUtils.equals(basicApplyBatchDetail.getCreator(), basicApplyBatchDetail.getExecutor())) {
-                        addSonTask(planDetailsId, "unit", unit.getId(), basicApplyBatchDetail.getExecutor());
+                        addSonTask(planDetailsId, "unit", unit.getId(), basicApplyBatchDetail.getExecutor(), basicApplyBatchDetail.getApplyBatchId());
                     }
                     break;
                 case "tb_basic_house":
@@ -212,7 +224,7 @@ public class BasicApplyBatchDetailService {
                     basicHouseTradingService.saveAndUpdateBasicHouseTrading(houseTrading, false);
                     //当前人与执行人不一致时发起子任务
                     if (!StringUtils.equals(basicApplyBatchDetail.getCreator(), basicApplyBatchDetail.getExecutor())) {
-                        addSonTask(planDetailsId, "house", house.getId(), basicApplyBatchDetail.getExecutor());
+                        addSonTask(planDetailsId, "house", house.getId(), basicApplyBatchDetail.getExecutor(), basicApplyBatchDetail.getApplyBatchId());
                     }
                     break;
             }
@@ -225,8 +237,10 @@ public class BasicApplyBatchDetailService {
     }
 
     //添加子任务
-    public void addSonTask(Integer planDetailsId, String key, Integer tableId, String executor) {
-        if(executor==null) return;
+    public void addSonTask(Integer planDetailsId, String key, Integer tableId, String executor, Integer basicApplyBatchId) {
+        if (executor == null) return;
+        BasicApplyBatch applyBatch = basicApplyBatchDao.getBasicApplyBatchById(basicApplyBatchId);
+        if (StringUtils.equals(applyBatch.getCreator(), executor)) return;
         ProjectResponsibilityDto masterDto = new ProjectResponsibilityDto();
         masterDto.setPlanDetailsId(planDetailsId);
         masterDto.setPid(0);
@@ -241,8 +255,8 @@ public class BasicApplyBatchDetailService {
     }
 
     //修改子任务
-    public void updateSonTask(Integer planDetailsId, String key, Integer tableId, String executor, String creator) {
-        if(executor==null) return;
+    public void updateSonTask(Integer planDetailsId, String key, Integer tableId, String executor, String creator, Integer applyBatchId) {
+        if (executor == null) return;
         ProjectResponsibilityDto oldDto = new ProjectResponsibilityDto();
         oldDto.setPlanDetailsId(planDetailsId);
         oldDto.setBusinessId(tableId);
@@ -260,7 +274,7 @@ public class BasicApplyBatchDetailService {
             }
         } else {
             if (!StringUtils.equals(creator, executor)) {
-                addSonTask(planDetailsId, key, tableId, executor);
+                addSonTask(planDetailsId, key, tableId, executor, applyBatchId);
             }
         }
 
@@ -284,17 +298,46 @@ public class BasicApplyBatchDetailService {
                 basicApply.setArea(basicHouse.getArea());
             //单元
             BasicApplyBatchDetail unitBatchDetail = map.get(EstateTaggingTypeEnum.UNIT);
-            basicApply.setBasicUnitId(unitBatchDetail.getTableId());
-            basicApply.setUnitNumber(unitBatchDetail.getName());
+            if (unitBatchDetail != null) {
+                basicApply.setUnitNumber(unitBatchDetail.getName());
+                basicApply.setBasicUnitId(unitBatchDetail.getTableId());
+            } else {
+                CaseUnit caseUnit = caseUnitService.getCaseUnitById(houseBasicApplyBatchDetail.getCaseTablePid());
+                if (caseUnit != null) {
+                    CaseBuilding caseBuilding = caseBuildingService.getCaseBuildingById(caseUnit.getBuildingId());
+                    CaseEstate caseEstate = caseEstateService.getCaseEstateById(caseBuilding.getEstateId());
+                    basicApply.setName(basicApplyService.getFullName(caseEstate.getName(), caseBuilding.getBuildingNumber(), caseUnit.getUnitNumber(), houseBasicApplyBatchDetail.getName()));
+                }
+            }
             //楼栋
             BasicApplyBatchDetail buildBatchDetail = map.get(EstateTaggingTypeEnum.BUILDING);
-            basicApply.setBasicBuildingId(buildBatchDetail.getTableId());
-            basicApply.setBuildingNumber(buildBatchDetail.getName());
+            if (buildBatchDetail != null) {
+                basicApply.setBuildingNumber(buildBatchDetail.getName());
+                basicApply.setBasicBuildingId(buildBatchDetail.getTableId());
+            } else {
+                if (unitBatchDetail != null) {
+                    CaseBuilding caseBuilding = caseBuildingService.getCaseBuildingById(unitBatchDetail.getCaseTablePid());
+                    if (caseBuilding != null) {
+                        CaseEstate caseEstate = caseEstateService.getCaseEstateById(caseBuilding.getEstateId());
+                        basicApply.setName(basicApplyService.getFullName(caseEstate.getName(), caseBuilding.getBuildingNumber(), unitBatchDetail.getName(), houseBasicApplyBatchDetail.getName()));
+                    }
+                }
+            }
             //楼盘
             BasicApplyBatchDetail estateBatchDetail = map.get(EstateTaggingTypeEnum.ESTATE);
-            basicApply.setBasicEstateId(estateBatchDetail.getTableId());
+            if (estateBatchDetail != null) {
+                basicApply.setBasicEstateId(estateBatchDetail.getTableId());
+            } else {
+                if (buildBatchDetail != null) {
+                    CaseEstate caseEstate = caseEstateService.getCaseEstateById(buildBatchDetail.getCaseTablePid());
+                    if (caseEstate != null) {
+                        basicApply.setName(basicApplyService.getFullName(caseEstate.getName(), buildBatchDetail.getName(), unitBatchDetail.getName(), houseBasicApplyBatchDetail.getName()));
+                    }
+                }
+            }
             basicApply.setPlanDetailsId(planDetailsId);
-            basicApply.setName(basicApplyService.getFullName(estateBatchDetail.getName(), buildBatchDetail.getName(), unitBatchDetail.getName(), houseBasicApplyBatchDetail.getName()));
+            if (basicApply.getName() == null)
+                basicApply.setName(basicApplyService.getFullName(estateBatchDetail.getName(), buildBatchDetail.getName(), unitBatchDetail.getName(), houseBasicApplyBatchDetail.getName()));
             basicApplyService.saveBasicApply(basicApply);
         }
     }
@@ -322,11 +365,17 @@ public class BasicApplyBatchDetailService {
         Map<EstateTaggingTypeEnum, BasicApplyBatchDetail> map = Maps.newHashMap();
         map.put(EstateTaggingTypeEnum.HOUSE, houseBasicApplyBatchDetail);
         BasicApplyBatchDetail unitBatchDetail = basicApplyBatchDetailDao.getInfoById(houseBasicApplyBatchDetail.getPid());
-        map.put(EstateTaggingTypeEnum.UNIT, unitBatchDetail);
-        BasicApplyBatchDetail buildBatchDetail = basicApplyBatchDetailDao.getInfoById(unitBatchDetail.getPid());
-        map.put(EstateTaggingTypeEnum.BUILDING, buildBatchDetail);
-        BasicApplyBatchDetail estateBatchDetail = basicApplyBatchDetailDao.getInfoById(buildBatchDetail.getPid());
-        map.put(EstateTaggingTypeEnum.ESTATE, estateBatchDetail);
+        if (unitBatchDetail != null) {
+            map.put(EstateTaggingTypeEnum.UNIT, unitBatchDetail);
+            BasicApplyBatchDetail buildBatchDetail = basicApplyBatchDetailDao.getInfoById(unitBatchDetail.getPid());
+            if (buildBatchDetail != null) {
+                map.put(EstateTaggingTypeEnum.BUILDING, buildBatchDetail);
+                BasicApplyBatchDetail estateBatchDetail = basicApplyBatchDetailDao.getInfoById(buildBatchDetail.getPid());
+                if (estateBatchDetail != null) {
+                    map.put(EstateTaggingTypeEnum.ESTATE, estateBatchDetail);
+                }
+            }
+        }
         return map;
     }
 
