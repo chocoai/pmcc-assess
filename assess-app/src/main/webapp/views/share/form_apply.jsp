@@ -1,6 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<c:if test="${not empty projectPlanResponsibility and projectPlanResponsibility.pid==0}">
+<c:if test="${not empty projectPlanResponsibility and projectPlanResponsibility.pid<=0}">
     <div class="x_panel">
         <div class="x_content">
             <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4    col-xs-offset-5 col-sm-offset-5 col-md-offset-5 col-lg-offset-5">
