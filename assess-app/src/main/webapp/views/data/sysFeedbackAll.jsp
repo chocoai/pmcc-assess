@@ -88,10 +88,6 @@
                                 <button type="button" class="btn btn-success" onclick="$('#frmQuery').clearAll()">
                                     重置
                                 </button>
-                                <button type="button" class="btn btn-success"
-                                        onclick="sysFeedback.prototype.showModel()"
-                                        data-toggle="modal" href="#divBox"> 新增
-                                </button>
                             </div>
                         </div>
 

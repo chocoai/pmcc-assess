@@ -11,6 +11,7 @@ import sun.misc.BASE64Decoder;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.*;
+import java.util.Base64;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -107,7 +108,7 @@ public class FileUtils {
 
     /**
      * @param base64String base64编码字符串
-     * @param path   图片路径-具体到文件
+     * @param path         图片路径-具体到文件
      * @return
      * @Description: 将base64编码字符串转换为图片
      * @Author:
@@ -142,5 +143,19 @@ public class FileUtils {
     }
 
     private FileUtils() {
+    }
+
+    /**
+     * @param path 图片路径
+     * @return
+     * @Description: 将图片路径进行base64编码
+     * @Author:
+     * @CreateTime:
+     */
+    public static String base64Encode(String path) throws Exception {
+        Base64.Encoder encoder = Base64.getEncoder();
+        byte[] textByte = path.getBytes("UTF-8");
+        String encodedText = encoder.encodeToString(textByte);
+        return encodedText;
     }
 }

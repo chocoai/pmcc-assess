@@ -355,73 +355,143 @@ public class SysFeedbackExample {
             return (Criteria) this;
         }
 
-        public Criteria andDisposeSchemeIsNull() {
-            addCriterion("dispose_scheme is null");
+        public Criteria andDeatilDescriptionIsNull() {
+            addCriterion("deatil_description is null");
             return (Criteria) this;
         }
 
-        public Criteria andDisposeSchemeIsNotNull() {
-            addCriterion("dispose_scheme is not null");
+        public Criteria andDeatilDescriptionIsNotNull() {
+            addCriterion("deatil_description is not null");
             return (Criteria) this;
         }
 
-        public Criteria andDisposeSchemeEqualTo(String value) {
-            addCriterion("dispose_scheme =", value, "disposeScheme");
+        public Criteria andDeatilDescriptionEqualTo(String value) {
+            addCriterion("deatil_description =", value, "deatilDescription");
             return (Criteria) this;
         }
 
-        public Criteria andDisposeSchemeNotEqualTo(String value) {
-            addCriterion("dispose_scheme <>", value, "disposeScheme");
+        public Criteria andDeatilDescriptionNotEqualTo(String value) {
+            addCriterion("deatil_description <>", value, "deatilDescription");
             return (Criteria) this;
         }
 
-        public Criteria andDisposeSchemeGreaterThan(String value) {
-            addCriterion("dispose_scheme >", value, "disposeScheme");
+        public Criteria andDeatilDescriptionGreaterThan(String value) {
+            addCriterion("deatil_description >", value, "deatilDescription");
             return (Criteria) this;
         }
 
-        public Criteria andDisposeSchemeGreaterThanOrEqualTo(String value) {
-            addCriterion("dispose_scheme >=", value, "disposeScheme");
+        public Criteria andDeatilDescriptionGreaterThanOrEqualTo(String value) {
+            addCriterion("deatil_description >=", value, "deatilDescription");
             return (Criteria) this;
         }
 
-        public Criteria andDisposeSchemeLessThan(String value) {
-            addCriterion("dispose_scheme <", value, "disposeScheme");
+        public Criteria andDeatilDescriptionLessThan(String value) {
+            addCriterion("deatil_description <", value, "deatilDescription");
             return (Criteria) this;
         }
 
-        public Criteria andDisposeSchemeLessThanOrEqualTo(String value) {
-            addCriterion("dispose_scheme <=", value, "disposeScheme");
+        public Criteria andDeatilDescriptionLessThanOrEqualTo(String value) {
+            addCriterion("deatil_description <=", value, "deatilDescription");
             return (Criteria) this;
         }
 
-        public Criteria andDisposeSchemeLike(String value) {
-            addCriterion("dispose_scheme like", value, "disposeScheme");
+        public Criteria andDeatilDescriptionLike(String value) {
+            addCriterion("deatil_description like", value, "deatilDescription");
             return (Criteria) this;
         }
 
-        public Criteria andDisposeSchemeNotLike(String value) {
-            addCriterion("dispose_scheme not like", value, "disposeScheme");
+        public Criteria andDeatilDescriptionNotLike(String value) {
+            addCriterion("deatil_description not like", value, "deatilDescription");
             return (Criteria) this;
         }
 
-        public Criteria andDisposeSchemeIn(List<String> values) {
-            addCriterion("dispose_scheme in", values, "disposeScheme");
+        public Criteria andDeatilDescriptionIn(List<String> values) {
+            addCriterion("deatil_description in", values, "deatilDescription");
             return (Criteria) this;
         }
 
-        public Criteria andDisposeSchemeNotIn(List<String> values) {
-            addCriterion("dispose_scheme not in", values, "disposeScheme");
+        public Criteria andDeatilDescriptionNotIn(List<String> values) {
+            addCriterion("deatil_description not in", values, "deatilDescription");
             return (Criteria) this;
         }
 
-        public Criteria andDisposeSchemeBetween(String value1, String value2) {
-            addCriterion("dispose_scheme between", value1, value2, "disposeScheme");
+        public Criteria andDeatilDescriptionBetween(String value1, String value2) {
+            addCriterion("deatil_description between", value1, value2, "deatilDescription");
             return (Criteria) this;
         }
 
-        public Criteria andDisposeSchemeNotBetween(String value1, String value2) {
-            addCriterion("dispose_scheme not between", value1, value2, "disposeScheme");
+        public Criteria andDeatilDescriptionNotBetween(String value1, String value2) {
+            addCriterion("deatil_description not between", value1, value2, "deatilDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailEncodeIsNull() {
+            addCriterion("detail_encode is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailEncodeIsNotNull() {
+            addCriterion("detail_encode is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailEncodeEqualTo(String value) {
+            addCriterion("detail_encode =", value, "detailEncode");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailEncodeNotEqualTo(String value) {
+            addCriterion("detail_encode <>", value, "detailEncode");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailEncodeGreaterThan(String value) {
+            addCriterion("detail_encode >", value, "detailEncode");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailEncodeGreaterThanOrEqualTo(String value) {
+            addCriterion("detail_encode >=", value, "detailEncode");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailEncodeLessThan(String value) {
+            addCriterion("detail_encode <", value, "detailEncode");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailEncodeLessThanOrEqualTo(String value) {
+            addCriterion("detail_encode <=", value, "detailEncode");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailEncodeLike(String value) {
+            addCriterion("detail_encode like", value, "detailEncode");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailEncodeNotLike(String value) {
+            addCriterion("detail_encode not like", value, "detailEncode");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailEncodeIn(List<String> values) {
+            addCriterion("detail_encode in", values, "detailEncode");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailEncodeNotIn(List<String> values) {
+            addCriterion("detail_encode not in", values, "detailEncode");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailEncodeBetween(String value1, String value2) {
+            addCriterion("detail_encode between", value1, value2, "detailEncode");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailEncodeNotBetween(String value1, String value2) {
+            addCriterion("detail_encode not between", value1, value2, "detailEncode");
             return (Criteria) this;
         }
 
@@ -495,73 +565,133 @@ public class SysFeedbackExample {
             return (Criteria) this;
         }
 
-        public Criteria andDeatilDescriptionIsNull() {
-            addCriterion("deatil_description is null");
+        public Criteria andStatusIsNull() {
+            addCriterion("status is null");
             return (Criteria) this;
         }
 
-        public Criteria andDeatilDescriptionIsNotNull() {
-            addCriterion("deatil_description is not null");
+        public Criteria andStatusIsNotNull() {
+            addCriterion("status is not null");
             return (Criteria) this;
         }
 
-        public Criteria andDeatilDescriptionEqualTo(String value) {
-            addCriterion("deatil_description =", value, "deatilDescription");
+        public Criteria andStatusEqualTo(Integer value) {
+            addCriterion("status =", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andDeatilDescriptionNotEqualTo(String value) {
-            addCriterion("deatil_description <>", value, "deatilDescription");
+        public Criteria andStatusNotEqualTo(Integer value) {
+            addCriterion("status <>", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andDeatilDescriptionGreaterThan(String value) {
-            addCriterion("deatil_description >", value, "deatilDescription");
+        public Criteria andStatusGreaterThan(Integer value) {
+            addCriterion("status >", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andDeatilDescriptionGreaterThanOrEqualTo(String value) {
-            addCriterion("deatil_description >=", value, "deatilDescription");
+        public Criteria andStatusGreaterThanOrEqualTo(Integer value) {
+            addCriterion("status >=", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andDeatilDescriptionLessThan(String value) {
-            addCriterion("deatil_description <", value, "deatilDescription");
+        public Criteria andStatusLessThan(Integer value) {
+            addCriterion("status <", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andDeatilDescriptionLessThanOrEqualTo(String value) {
-            addCriterion("deatil_description <=", value, "deatilDescription");
+        public Criteria andStatusLessThanOrEqualTo(Integer value) {
+            addCriterion("status <=", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andDeatilDescriptionLike(String value) {
-            addCriterion("deatil_description like", value, "deatilDescription");
+        public Criteria andStatusIn(List<Integer> values) {
+            addCriterion("status in", values, "status");
             return (Criteria) this;
         }
 
-        public Criteria andDeatilDescriptionNotLike(String value) {
-            addCriterion("deatil_description not like", value, "deatilDescription");
+        public Criteria andStatusNotIn(List<Integer> values) {
+            addCriterion("status not in", values, "status");
             return (Criteria) this;
         }
 
-        public Criteria andDeatilDescriptionIn(List<String> values) {
-            addCriterion("deatil_description in", values, "deatilDescription");
+        public Criteria andStatusBetween(Integer value1, Integer value2) {
+            addCriterion("status between", value1, value2, "status");
             return (Criteria) this;
         }
 
-        public Criteria andDeatilDescriptionNotIn(List<String> values) {
-            addCriterion("deatil_description not in", values, "deatilDescription");
+        public Criteria andStatusNotBetween(Integer value1, Integer value2) {
+            addCriterion("status not between", value1, value2, "status");
             return (Criteria) this;
         }
 
-        public Criteria andDeatilDescriptionBetween(String value1, String value2) {
-            addCriterion("deatil_description between", value1, value2, "deatilDescription");
+        public Criteria andDisposeSchemeIsNull() {
+            addCriterion("dispose_scheme is null");
             return (Criteria) this;
         }
 
-        public Criteria andDeatilDescriptionNotBetween(String value1, String value2) {
-            addCriterion("deatil_description not between", value1, value2, "deatilDescription");
+        public Criteria andDisposeSchemeIsNotNull() {
+            addCriterion("dispose_scheme is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisposeSchemeEqualTo(String value) {
+            addCriterion("dispose_scheme =", value, "disposeScheme");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisposeSchemeNotEqualTo(String value) {
+            addCriterion("dispose_scheme <>", value, "disposeScheme");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisposeSchemeGreaterThan(String value) {
+            addCriterion("dispose_scheme >", value, "disposeScheme");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisposeSchemeGreaterThanOrEqualTo(String value) {
+            addCriterion("dispose_scheme >=", value, "disposeScheme");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisposeSchemeLessThan(String value) {
+            addCriterion("dispose_scheme <", value, "disposeScheme");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisposeSchemeLessThanOrEqualTo(String value) {
+            addCriterion("dispose_scheme <=", value, "disposeScheme");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisposeSchemeLike(String value) {
+            addCriterion("dispose_scheme like", value, "disposeScheme");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisposeSchemeNotLike(String value) {
+            addCriterion("dispose_scheme not like", value, "disposeScheme");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisposeSchemeIn(List<String> values) {
+            addCriterion("dispose_scheme in", values, "disposeScheme");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisposeSchemeNotIn(List<String> values) {
+            addCriterion("dispose_scheme not in", values, "disposeScheme");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisposeSchemeBetween(String value1, String value2) {
+            addCriterion("dispose_scheme between", value1, value2, "disposeScheme");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisposeSchemeNotBetween(String value1, String value2) {
+            addCriterion("dispose_scheme not between", value1, value2, "disposeScheme");
             return (Criteria) this;
         }
 
@@ -632,66 +762,6 @@ public class SysFeedbackExample {
 
         public Criteria andCreatorNotBetween(String value1, String value2) {
             addCriterion("creator not between", value1, value2, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusIsNull() {
-            addCriterion("status is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusIsNotNull() {
-            addCriterion("status is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusEqualTo(Integer value) {
-            addCriterion("status =", value, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusNotEqualTo(Integer value) {
-            addCriterion("status <>", value, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusGreaterThan(Integer value) {
-            addCriterion("status >", value, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusGreaterThanOrEqualTo(Integer value) {
-            addCriterion("status >=", value, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusLessThan(Integer value) {
-            addCriterion("status <", value, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusLessThanOrEqualTo(Integer value) {
-            addCriterion("status <=", value, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusIn(List<Integer> values) {
-            addCriterion("status in", values, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusNotIn(List<Integer> values) {
-            addCriterion("status not in", values, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusBetween(Integer value1, Integer value2) {
-            addCriterion("status between", value1, value2, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusNotBetween(Integer value1, Integer value2) {
-            addCriterion("status not between", value1, value2, "status");
             return (Criteria) this;
         }
 
