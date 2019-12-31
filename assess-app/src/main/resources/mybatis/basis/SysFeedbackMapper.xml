@@ -6,11 +6,12 @@
     <result column="system_type" property="systemType" jdbcType="INTEGER" />
     <result column="urgency_level" property="urgencyLevel" jdbcType="INTEGER" />
     <result column="question_title" property="questionTitle" jdbcType="VARCHAR" />
-    <result column="dispose_scheme" property="disposeScheme" jdbcType="VARCHAR" />
-    <result column="feedback_person" property="feedbackPerson" jdbcType="VARCHAR" />
     <result column="deatil_description" property="deatilDescription" jdbcType="VARCHAR" />
-    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="detail_encode" property="detailEncode" jdbcType="VARCHAR" />
+    <result column="feedback_person" property="feedbackPerson" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="dispose_scheme" property="disposeScheme" jdbcType="VARCHAR" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
   </resultMap>
@@ -73,8 +74,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, system_type, urgency_level, question_title, dispose_scheme, feedback_person, 
-    deatil_description, creator, status, gmt_created, gmt_modified
+    id, system_type, urgency_level, question_title, deatil_description, detail_encode, 
+    feedback_person, status, dispose_scheme, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.SysFeedbackExample" >
     select
@@ -111,13 +112,13 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_sys_feedback (system_type, urgency_level, question_title, 
-      dispose_scheme, feedback_person, deatil_description, 
-      creator, status, gmt_created, 
-      gmt_modified)
+      deatil_description, detail_encode, feedback_person, 
+      status, dispose_scheme, creator, 
+      gmt_created, gmt_modified)
     values (#{systemType,jdbcType=INTEGER}, #{urgencyLevel,jdbcType=INTEGER}, #{questionTitle,jdbcType=VARCHAR}, 
-      #{disposeScheme,jdbcType=VARCHAR}, #{feedbackPerson,jdbcType=VARCHAR}, #{deatilDescription,jdbcType=VARCHAR}, 
-      #{creator,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{deatilDescription,jdbcType=VARCHAR}, #{detailEncode,jdbcType=VARCHAR}, #{feedbackPerson,jdbcType=VARCHAR}, 
+      #{status,jdbcType=INTEGER}, #{disposeScheme,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SysFeedback" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -134,20 +135,23 @@
       <if test="questionTitle != null" >
         question_title,
       </if>
-      <if test="disposeScheme != null" >
-        dispose_scheme,
+      <if test="deatilDescription != null" >
+        deatil_description,
+      </if>
+      <if test="detailEncode != null" >
+        detail_encode,
       </if>
       <if test="feedbackPerson != null" >
         feedback_person,
       </if>
-      <if test="deatilDescription != null" >
-        deatil_description,
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="disposeScheme != null" >
+        dispose_scheme,
       </if>
       <if test="creator != null" >
         creator,
-      </if>
-      <if test="status != null" >
-        status,
       </if>
       <if test="gmtCreated != null" >
         gmt_created,
@@ -166,20 +170,23 @@
       <if test="questionTitle != null" >
         #{questionTitle,jdbcType=VARCHAR},
       </if>
-      <if test="disposeScheme != null" >
-        #{disposeScheme,jdbcType=VARCHAR},
+      <if test="deatilDescription != null" >
+        #{deatilDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="detailEncode != null" >
+        #{detailEncode,jdbcType=VARCHAR},
       </if>
       <if test="feedbackPerson != null" >
         #{feedbackPerson,jdbcType=VARCHAR},
       </if>
-      <if test="deatilDescription != null" >
-        #{deatilDescription,jdbcType=VARCHAR},
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="disposeScheme != null" >
+        #{disposeScheme,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null" >
-        #{status,jdbcType=INTEGER},
       </if>
       <if test="gmtCreated != null" >
         #{gmtCreated,jdbcType=TIMESTAMP},
@@ -210,20 +217,23 @@
       <if test="record.questionTitle != null" >
         question_title = #{record.questionTitle,jdbcType=VARCHAR},
       </if>
-      <if test="record.disposeScheme != null" >
-        dispose_scheme = #{record.disposeScheme,jdbcType=VARCHAR},
+      <if test="record.deatilDescription != null" >
+        deatil_description = #{record.deatilDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="record.detailEncode != null" >
+        detail_encode = #{record.detailEncode,jdbcType=VARCHAR},
       </if>
       <if test="record.feedbackPerson != null" >
         feedback_person = #{record.feedbackPerson,jdbcType=VARCHAR},
       </if>
-      <if test="record.deatilDescription != null" >
-        deatil_description = #{record.deatilDescription,jdbcType=VARCHAR},
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=INTEGER},
+      </if>
+      <if test="record.disposeScheme != null" >
+        dispose_scheme = #{record.disposeScheme,jdbcType=VARCHAR},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
-      </if>
-      <if test="record.status != null" >
-        status = #{record.status,jdbcType=INTEGER},
       </if>
       <if test="record.gmtCreated != null" >
         gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -242,11 +252,12 @@
       system_type = #{record.systemType,jdbcType=INTEGER},
       urgency_level = #{record.urgencyLevel,jdbcType=INTEGER},
       question_title = #{record.questionTitle,jdbcType=VARCHAR},
-      dispose_scheme = #{record.disposeScheme,jdbcType=VARCHAR},
-      feedback_person = #{record.feedbackPerson,jdbcType=VARCHAR},
       deatil_description = #{record.deatilDescription,jdbcType=VARCHAR},
-      creator = #{record.creator,jdbcType=VARCHAR},
+      detail_encode = #{record.detailEncode,jdbcType=VARCHAR},
+      feedback_person = #{record.feedbackPerson,jdbcType=VARCHAR},
       status = #{record.status,jdbcType=INTEGER},
+      dispose_scheme = #{record.disposeScheme,jdbcType=VARCHAR},
+      creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
@@ -265,20 +276,23 @@
       <if test="questionTitle != null" >
         question_title = #{questionTitle,jdbcType=VARCHAR},
       </if>
-      <if test="disposeScheme != null" >
-        dispose_scheme = #{disposeScheme,jdbcType=VARCHAR},
+      <if test="deatilDescription != null" >
+        deatil_description = #{deatilDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="detailEncode != null" >
+        detail_encode = #{detailEncode,jdbcType=VARCHAR},
       </if>
       <if test="feedbackPerson != null" >
         feedback_person = #{feedbackPerson,jdbcType=VARCHAR},
       </if>
-      <if test="deatilDescription != null" >
-        deatil_description = #{deatilDescription,jdbcType=VARCHAR},
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="disposeScheme != null" >
+        dispose_scheme = #{disposeScheme,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null" >
-        status = #{status,jdbcType=INTEGER},
       </if>
       <if test="gmtCreated != null" >
         gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
@@ -294,11 +308,12 @@
     set system_type = #{systemType,jdbcType=INTEGER},
       urgency_level = #{urgencyLevel,jdbcType=INTEGER},
       question_title = #{questionTitle,jdbcType=VARCHAR},
-      dispose_scheme = #{disposeScheme,jdbcType=VARCHAR},
-      feedback_person = #{feedbackPerson,jdbcType=VARCHAR},
       deatil_description = #{deatilDescription,jdbcType=VARCHAR},
-      creator = #{creator,jdbcType=VARCHAR},
+      detail_encode = #{detailEncode,jdbcType=VARCHAR},
+      feedback_person = #{feedbackPerson,jdbcType=VARCHAR},
       status = #{status,jdbcType=INTEGER},
+      dispose_scheme = #{disposeScheme,jdbcType=VARCHAR},
+      creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
