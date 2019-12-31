@@ -111,5 +111,16 @@ public class ChksAssessmentProjectPerformanceController {
         }
     }
 
+    @PostMapping(value = "/deleteResponsibilityById",name = "删除任务数据 delete")
+    public HttpResult deleteResponsibilityById(String id){
+        try {
+            chksAssessmentProjectPerformanceService.deleteResponsibilityById(id);
+            return HttpResult.newCorrectResult(200,"成功") ;
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e,"删除任务数据 delete 出错");
+            return HttpResult.newErrorResult(500,e.getMessage()) ;
+        }
+    }
+
 }
 

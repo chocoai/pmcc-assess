@@ -182,6 +182,19 @@
 
                 </c:if>
             </div>
+
+            <div class=" col-xs-6  col-sm-6  col-md-6  col-lg-6 col-xs-offset-6 col-sm-offset-6 col-md-offset-6 col-lg-offset-6">
+                <c:if test="${flog == 'details'}">
+
+                    <c:if test="${projectResponsibilityDto != null}">
+                        <button class="btn btn-success" onclick="deleteResponsibilityById('${projectResponsibilityDto.id}');">
+                            关闭此任务
+                        </button>
+                    </c:if>
+
+
+                </c:if>
+            </div>
         </c:if>
 
         <c:if test="${!empty spotAssessmentProjectPerformanceList}">
@@ -241,6 +254,37 @@
 
 
 <script type="text/javascript">
+
+    $(document).ready(function () {
+        var spotCheck = "${spotCheck}";
+        if (spotCheck == 'true') {
+
+        }
+        if (spotCheck == 'false') {
+            boxReActivityDtoTableList();
+            loadChksServerData();
+        }
+    });
+
+    function deleteResponsibilityById(id) {
+        $.ajax({
+            url: "${pageContext.request.contextPath}/chksAssessmentProjectPerformance/deleteResponsibilityById",
+            type: "post",
+            dataType: "json",
+            data: {id:id},
+            success: function (result) {
+                if (result.ret) {
+                    toastr.warning("任务删除成功!");
+                    window.close();
+                } else {
+                    Alert("失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result.errmsg);
+            }
+        });
+    }
 
 
     function getChksSonData(target, data) {
@@ -355,16 +399,6 @@
         });
     }
 
-    $(document).ready(function () {
-        var spotCheck = "${spotCheck}";
-        if (spotCheck == 'true') {
-
-        }
-        if (spotCheck == 'false') {
-            boxReActivityDtoTableList();
-            loadChksServerData();
-        }
-    });
 
     function saveAssessmentItem() {
         var target = $("#chksTableList").find("tbody");
@@ -436,7 +470,8 @@
             boxId: '${boxReDto.id}',
             projectId: '${projectPlanDetails.projectId}',
             planId: '${projectPlanDetails.planId}',
-            planDetailsId: '${projectPlanDetails.id}'
+            planDetailsId: '${projectPlanDetails.id}',
+            spotActivityId:0
         };
         if ('${activityDtoList}') {
             var activityIds = [];

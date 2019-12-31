@@ -33,6 +33,7 @@ import com.copower.pmcc.erp.common.utils.SpringContextUtils;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -179,7 +180,7 @@ public class ProjectTaskController extends BaseController {
             Object activityId = modelAndView.getModel().get("activityId");
             if (activityId != null) {
                 Integer boxReActivitiId = (Integer) activityId;
-                setCheckParams(boxId, boxReActivitiId,projectPlanDetails, modelAndView);
+                setCheckParams(boxId, boxReActivitiId, projectPlanDetails, modelAndView);
 
             }
         }
@@ -242,11 +243,11 @@ public class ProjectTaskController extends BaseController {
         String viewUrl = "projectTaskAssist";
 
         ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsByProcessInsId(processInsId);
-        return getProjectTaskDetails(boxId, viewUrl, projectPlanDetails);
+        return getProjectTaskDetails(boxId, viewUrl, projectPlanDetails, null);
     }
 
     @RequestMapping(value = "/projectTaskDetailsById", name = "工作成果详情", method = RequestMethod.GET)
-    public ModelAndView projectTaskDetailsById(Integer planDetailsId) {
+    public ModelAndView projectTaskDetailsById(Integer planDetailsId, String responsibilityId) {
         String viewUrl = "projectTaskAssist";
         ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
         int boxId = 0;
@@ -254,10 +255,10 @@ public class ProjectTaskController extends BaseController {
             BoxRuDto boxRuDto = bpmRpcBoxService.getBoxRuByProcessInstId(projectPlanDetails.getProcessInsId());
             boxId = boxRuDto.getBoxId();
         }
-        return getProjectTaskDetails(boxId, viewUrl, projectPlanDetails);
+        return getProjectTaskDetails(boxId, viewUrl, projectPlanDetails, responsibilityId);
     }
 
-    private ModelAndView getProjectTaskDetails(Integer boxId, String viewUrl, ProjectPlanDetails projectPlanDetails) {
+    private ModelAndView getProjectTaskDetails(Integer boxId, String viewUrl, ProjectPlanDetails projectPlanDetails, String responsibilityId) {
         ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseById(projectPlanDetails.getProjectPhaseId());
         if (StringUtils.isNotBlank(projectPhase.getPhaseForm())) {
             viewUrl = projectPhase.getPhaseForm();
@@ -287,6 +288,14 @@ public class ProjectTaskController extends BaseController {
             BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(boxId);
             if (boxReDto.getBisLaunchCheck() != null && boxReDto.getBisLaunchCheck()) {
                 setCheckParams(boxId, null, projectPlanDetails, modelAndView);
+            }
+        }
+        if (StringUtils.isNotBlank(responsibilityId)) {
+            if (NumberUtils.isNumber(responsibilityId)) {
+                ProjectResponsibilityDto projectResponsibilityDto = bpmRpcProjectTaskService.getProjectTaskById(Integer.parseInt(responsibilityId));
+                if (projectResponsibilityDto != null){
+                    modelAndView.addObject(StringUtils.uncapitalize(ProjectResponsibilityDto.class.getSimpleName()),projectResponsibilityDto) ;
+                }
             }
         }
         return modelAndView;
@@ -319,19 +328,19 @@ public class ProjectTaskController extends BaseController {
     private void setCheckParams(Integer boxId, Integer boxReActivitiId, ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) {
         //巡查人或者抽查人  可以看到当前模型下 所有人的考核记录
         boolean spotCheck = chksAssessmentProjectPerformanceService.getSpotCheck(boxId, processControllerComponent.getThisUser());
-        BoxReActivityDto boxReActivityDto = chksAssessmentProjectPerformanceService.getFilterBoxReActivityDto(boxReActivitiId,boxId,projectPlanDetails.getProcessInsId(),spotCheck);
-        if (boxReActivityDto == null){
+        BoxReActivityDto boxReActivityDto = chksAssessmentProjectPerformanceService.getFilterBoxReActivityDto(boxReActivitiId, boxId, projectPlanDetails.getProcessInsId(), spotCheck);
+        if (boxReActivityDto == null) {
             return;
         }
         //抽查或者巡查标识符
         modelAndView.addObject("spotCheck", spotCheck);
         //考核标识符
-        modelAndView.addObject("bisCheck", chksAssessmentProjectPerformanceService.getChksRuningEnum(projectPlanDetails.getProcessInsId(),boxReActivityDto.getId(),boxId,spotCheck).getKey());
+        modelAndView.addObject("bisCheck", chksAssessmentProjectPerformanceService.getChksRuningEnum(projectPlanDetails.getProcessInsId(), boxReActivityDto.getId(), boxId, spotCheck).getKey());
         modelAndView.addObject(StringUtils.uncapitalize(BoxReDto.class.getSimpleName()), bpmRpcBoxService.getBoxReInfoByBoxId(boxId));
         modelAndView.addObject(StringUtils.uncapitalize(BoxReActivityDto.class.getSimpleName()), boxReActivityDto);
         //当前节点  可以查看的权限节点信息列表
         modelAndView.addObject("activityDtoList", chksAssessmentProjectPerformanceService.getAssessmentProjectPerformanceNext(boxId, boxReActivityDto.getId(), spotCheck));
-        if (spotCheck){
+        if (spotCheck) {
             modelAndView.addObject("spotAssessmentProjectPerformanceList", chksAssessmentProjectPerformanceService.getAssessmentProjectPerformanceDtoMap(boxId, projectPlanDetails.getProcessInsId()));
             modelAndView.addObject("spotAssessmentItemDtoList", chksAssessmentProjectPerformanceService.getAssessmentItemTemplate(boxId, boxReActivityDto.getId()));
 

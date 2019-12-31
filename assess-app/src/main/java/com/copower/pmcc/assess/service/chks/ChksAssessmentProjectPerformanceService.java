@@ -40,6 +40,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -595,18 +596,24 @@ public class ChksAssessmentProjectPerformanceService {
         chksRpcAssessmentService.deleteAssessmentProjectPerformanceByIds(ids);
     }
 
+    public void deleteResponsibilityById(String responsibilityId) {
+        if (NumberUtils.isNumber(responsibilityId)) {
+            bpmRpcProjectTaskService.deleteProjectTask(Integer.parseInt(responsibilityId));
+        }
+    }
+
     public Map<KeyValueDto, List<AssessmentProjectPerformanceDto>> getAssessmentProjectPerformanceDtoMap(Integer boxId, String processInsId) {
         Map<KeyValueDto, List<AssessmentProjectPerformanceDto>> keyValueDtoListMap = new HashMap<>();
-        AssessmentProjectPerformanceQuery query = new AssessmentProjectPerformanceQuery(boxId) ;
+        AssessmentProjectPerformanceQuery query = new AssessmentProjectPerformanceQuery(boxId);
         query.setProcessInsId(processInsId);
         LinkedHashMap<String, List<AssessmentProjectPerformanceDto>> listLinkedHashMap = new LinkedHashMap<>();
         List<AssessmentProjectPerformanceDto> dtoList = getAssessmentProjectPerformanceDtoList(query);
 
-        if (CollectionUtils.isNotEmpty(dtoList)){
+        if (CollectionUtils.isNotEmpty(dtoList)) {
             Iterator<AssessmentProjectPerformanceDto> iterator = dtoList.iterator();
             while (iterator.hasNext()) {
                 AssessmentProjectPerformanceDto assessmentProjectPerformanceDto = iterator.next();
-                if (assessmentProjectPerformanceDto.getSpotActivityId() != null && assessmentProjectPerformanceDto.getSpotActivityId()!=0){
+                if (assessmentProjectPerformanceDto.getSpotActivityId() != null && assessmentProjectPerformanceDto.getSpotActivityId() != 0) {
                     iterator.remove();
                 }
             }
@@ -626,14 +633,14 @@ public class ChksAssessmentProjectPerformanceService {
                 }
             }
         }
-        if (!listLinkedHashMap.isEmpty()){
+        if (!listLinkedHashMap.isEmpty()) {
             Iterator<Map.Entry<String, List<AssessmentProjectPerformanceDto>>> entryIterator = listLinkedHashMap.entrySet().iterator();
-            while (entryIterator.hasNext()){
+            while (entryIterator.hasNext()) {
                 Map.Entry<String, List<AssessmentProjectPerformanceDto>> entry = entryIterator.next();
-                AssessmentProjectPerformanceDto performanceDto = entry.getValue().get(0) ;
-                KeyValueDto keyValueDto = new KeyValueDto(entry.getKey(),performanceDto.getActivityId().toString()) ;
+                AssessmentProjectPerformanceDto performanceDto = entry.getValue().get(0);
+                KeyValueDto keyValueDto = new KeyValueDto(entry.getKey(), performanceDto.getActivityId().toString());
                 keyValueDto.setExplain(performanceDto.getExaminePeople());
-                keyValueDtoListMap.put(keyValueDto,entry.getValue()) ;
+                keyValueDtoListMap.put(keyValueDto, entry.getValue());
             }
         }
         return keyValueDtoListMap;
