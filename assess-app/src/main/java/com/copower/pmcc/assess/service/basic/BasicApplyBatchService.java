@@ -187,7 +187,11 @@ public class BasicApplyBatchService {
             ZtreeDto ztreeDto = new ZtreeDto();
             ztreeDto.setId(item.getId());
             ztreeDto.setName(item.getName());
-            ztreeDto.setDisplayName(item.getDisplayName());
+            if(basicApplyBatch.getPlanDetailsId()==null){
+                ztreeDto.setDisplayName(item.getDisplayName());
+            }else {
+                ztreeDto.setDisplayName(String.format("%s(%s)",item.getDisplayName(),publicService.getUserNameByAccount(item.getExecutor())));
+            }
             ztreeDto.setPid(item.getPid());
             ztreeDto.setTableName(item.getTableName());
             ztreeDto.setTableId(item.getTableId());

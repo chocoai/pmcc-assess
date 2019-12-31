@@ -23,6 +23,7 @@ import com.copower.pmcc.assess.service.project.ProjectPlanService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
+import com.copower.pmcc.erp.api.dto.SysSymbolListDto;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FileUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
@@ -251,7 +252,8 @@ public class GenerateReportService {
                 numberRecord.setBisDelete(true);
                 projectNumberRecordService.updateProjectNumberRecord(numberRecord);
                 //将已经老旧的文号替换为最新的文号
-                String value = projectNumberRecordService.getReportNumber(projectInfoVo,generateReportInfo.getAreaGroupId(),assessProjectType,reportType.getId(),false) ;
+                SysSymbolListDto symbolListDto = projectNumberRecordService.getReportNumber(projectInfoVo, generateReportInfo.getAreaGroupId(), assessProjectType, reportType.getId(), false);
+                String value = symbolListDto.getSymbol();
                 AsposeUtils.replaceText(dir, numberRecord.getNumberValue(), value);
                 //替换编号
                 AsposeUtils.replaceText(dir, projectNumberRecordService.getWordNumber2(numberRecord.getNumberValue()), projectNumberRecordService.getWordNumber2(value));

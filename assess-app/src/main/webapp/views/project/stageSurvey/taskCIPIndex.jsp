@@ -68,13 +68,13 @@
                         <ul id="ztree" class="ztree"></ul>
                     </div>
                     <div class="col-md-8" id="btnGroup">
-                        <a class="btn btn-xs btn-success  masterTool" onclick="batchTreeTool.showAddModal()">
+                        <a class="btn btn-xs btn-success deserveTool" onclick="batchTreeTool.showAddModal()">
                             新增
                         </a>
                         <a class="btn btn-xs btn-primary masterTool" onclick=" batchTreeTool.getAndEditDetail();">
                             编辑
                         </a>
-                        <a class="btn btn-xs btn-warning masterTool" onclick=" batchTreeTool.deleteDetail();">
+                        <a class="btn btn-xs btn-warning deleteTool" onclick=" batchTreeTool.deleteDetail();">
                             删除
                         </a>
                         <a class="btn btn-xs btn-primary" onclick=" batchTreeTool.expandAll(true);">
@@ -187,33 +187,7 @@
                     </div>
                 </div>
             </div>
-            <div class="x_panel">
-                <div class="x_content">
-                    <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4    col-xs-offset-5 col-sm-offset-5 col-md-offset-5 col-lg-offset-5">
-                        <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
-                            取消
-                        </button>
-                        <c:choose>
-                            <c:when test="${projectPhase.bisUseBox eq false}">
-                                <button id="btn_submit" class="btn btn-success"
-                                        onclick="submit(false);">
-                                    直接提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
-                                </button>
-                                <button id="btn_submit" class="btn btn-primary"
-                                        onclick="submit(true);">
-                                    提交审批<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
-                                </button>
-                            </c:when>
-                            <c:otherwise>
-                                <button id="btn_submit" class="btn btn-success"
-                                        onclick="submit();">
-                                    提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
-                                </button>
-                            </c:otherwise>
-                        </c:choose>
-                    </div>
-                </div>
-            </div>
+            <%@include file="/views/share/form_apply.jsp" %>
             <%@include file="/views/share/form_log.jsp" %>
         </div>
     </div>
@@ -496,7 +470,7 @@
                         pid: result.data.pid,
                         tableId: result.data.tableId,
                         type: result.data.tableName.replace('tb_basic_', ''),
-                        displayName: result.data.displayName,
+                        displayName: result.data.displayName+'('+result.data.executorName+')',
                         executor: result.data.executor,
                         executorName: result.data.executorName,
                         creator: result.data.creator,
@@ -619,7 +593,7 @@
                     var node = zTreeObj.getSelectedNodes()[0];
                     node.id = result.data.id;
                     node.name = result.data.name;
-                    node.displayName = result.data.displayName;
+                    node.displayName = result.data.displayName+'('+result.data.executorName+')';
                     node.pid = result.data.pid;
                     node.executor = result.data.executor;
                     node.creator = result.data.creator;
@@ -783,9 +757,16 @@
             if(node.executor == '${userAccount}'){
                 $("#btnGroup").find('.btn.deserveTool').show();
                 $("#btnGroup").find('.btn.limitTool').hide();
+                //删除按钮控制
+                if(node.executor == node.creator){
+                    $("#btnGroup").find('.btn.deleteTool').show();
+                }else{
+                    $("#btnGroup").find('.btn.deleteTool').hide();
+                }
             }else{
                 $("#btnGroup").find('.btn.limitTool').show();
                 $("#btnGroup").find('.btn.deserveTool').hide();
+                $("#btnGroup").find('.btn.deleteTool').hide();
             }
         }
 

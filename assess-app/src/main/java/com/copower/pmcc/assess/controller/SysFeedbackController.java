@@ -108,11 +108,7 @@ public class SysFeedbackController {
     @RequestMapping(value = "/saveAndUpdateSysFeedback", method = {RequestMethod.POST}, name = "保存")
     public HttpResult saveAndUpdate(SysFeedback sysFeedback) {
         try {
-            if (sysFeedback.getId() == null || sysFeedback.getId().equals(0)) {
-                sysFeedbackService.addSysFeedbackReturnId(sysFeedback);
-            } else {
-                sysFeedbackService.updateSysFeedback(sysFeedback);
-            }
+            sysFeedbackService.saveSysFeedbackReturnId(sysFeedback);
             return HttpResult.newCorrectResult("保存 success!");
         } catch (Exception e) {
             logger.error(String.format("exception: %s", e.getMessage()), e);

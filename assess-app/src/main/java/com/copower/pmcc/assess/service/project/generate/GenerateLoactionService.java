@@ -67,7 +67,7 @@ public class GenerateLoactionService {
      * @return
      * @throws Exception
      */
-    public String getFaceStreet(List<SchemeJudgeObject> judgeObjectList)  {
+    public String getFaceStreet(List<SchemeJudgeObject> judgeObjectList) {
         String value = null;
         try {
             Map<Integer, String> map = Maps.newHashMap();
@@ -129,7 +129,7 @@ public class GenerateLoactionService {
         LinkedHashSet<String> hashSet = Sets.newLinkedHashSet();
         if (CollectionUtils.isNotEmpty(basicMatchingEnvironmentVoList)) {
             for (BasicMatchingEnvironmentVo oo : basicMatchingEnvironmentVoList) {
-                if (!Objects.equal(oo.getType(), baseDataDic.getId().toString())){
+                if (!Objects.equal(oo.getType(), baseDataDic.getId().toString())) {
                     continue;
                 }
                 if (StringUtils.isNotBlank(oo.getRemark())) {
@@ -279,7 +279,7 @@ public class GenerateLoactionService {
      * @return
      * @throws Exception
      */
-    public String getRoadCondition(List<SchemeJudgeObject> judgeObjectList)  {
+    public String getRoadCondition(List<SchemeJudgeObject> judgeObjectList) {
         Map<Integer, String> map = Maps.newHashMap();
 
         for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
@@ -393,7 +393,7 @@ public class GenerateLoactionService {
      * @throws Exception
      */
     public String getParkingConvenience(BasicApply basicApply) {
-        if (basicApply == null){
+        if (basicApply == null) {
             return null;
         }
         StringBuilder builder = new StringBuilder(8);
@@ -450,7 +450,7 @@ public class GenerateLoactionService {
      * @return
      * @throws Exception
      */
-    public String getTrafficCharges(BasicApply basicApply)  {
+    public String getTrafficCharges(BasicApply basicApply) {
         if (basicApply == null) {
             return null;
         }
@@ -477,7 +477,7 @@ public class GenerateLoactionService {
      * @return
      * @throws Exception
      */
-    public String getTrafficControl(BasicApply basicApply)  {
+    public String getTrafficControl(BasicApply basicApply) {
         if (basicApply == null) {
             return null;
         }
@@ -511,7 +511,7 @@ public class GenerateLoactionService {
      *
      * @return
      */
-    public String getWithImportantLocationDistance(BasicApply basicApply)  {
+    public String getWithImportantLocationDistance(BasicApply basicApply) {
         if (basicApply == null) {
             return null;
         }
@@ -595,7 +595,7 @@ public class GenerateLoactionService {
      * @return
      * @throws Exception
      */
-    public String getOrientation(List<SchemeJudgeObject> judgeObjectList)  {
+    public String getOrientation(List<SchemeJudgeObject> judgeObjectList) {
         Map<Integer, String> map = Maps.newHashMap();
         for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
             BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
@@ -606,7 +606,8 @@ public class GenerateLoactionService {
             BasicHouse basicHouse = generateBaseExamineService.getBasicHouse();
             if (basicHouse != null && basicHouse.getHuxingId() != null) {
                 BasicUnitHuxing unitHuxing = basicUnitHuxingDao.getBasicUnitHuxingById(basicHouse.getHuxingId());
-                map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), baseDataDicService.getNameById(unitHuxing.getOrientation()));
+                if (unitHuxing != null)
+                    map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), baseDataDicService.getNameById(unitHuxing.getOrientation()));
             }
         }
         String s = generateCommonMethod.judgeEachDesc(map, "", ";", false);
@@ -623,7 +624,7 @@ public class GenerateLoactionService {
      */
     public String getPosition(BasicEstate basicEstate) {
         StringBuffer stringBuffer = new StringBuffer(8);
-        if (basicEstate == null){
+        if (basicEstate == null) {
             return stringBuffer.toString();
         }
         stringBuffer.append(erpAreaService.getSysAreaName(basicEstate.getProvince()))

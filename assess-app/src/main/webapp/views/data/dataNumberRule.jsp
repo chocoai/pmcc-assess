@@ -104,67 +104,19 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                前缀<span class="symbol required"></span>
-                            </label>
-                            <div class="col-sm-4">
-                                <input type="text" required data-rule-maxlength="50" placeholder="前缀"
-                                       id="prefix" name="prefix" class="form-control">
-                            </div>
-                        </div>
                     </div>
                     <div class="form-group">
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                文号规则<span class="symbol required"></span>
+                                文号规则
                             </label>
                             <div class="col-sm-4">
-                                <input type="text" required placeholder="文号规则"
-                                       name="numberRule" value="" class="form-control">
-                            </div>
-                        </div>
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                位数<span class="symbol required"></span>
-                            </label>
-                            <div class="col-sm-4">
-                                <input type="text" data-rule-digits="true" placeholder="位数"
-                                       id="figures" name="figures" class="form-control">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                起始年份
-                            </label>
-                            <div class="col-sm-4">
-                                <input type="text" data-rule-digits="true" placeholder="起始年份"
-                                       id="startYear" name="startYear" class="form-control">
-                            </div>
-                        </div>
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                起始编号
-                            </label>
-                            <div class="col-sm-4">
-                                <input type="text" data-rule-digits="true" placeholder="起始编号"
-                                       id="startNumber" name="startNumber" class="form-control">
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                文号分组
-                            </label>
-                            <div class="col-sm-4">
-                                <select class="form-control"  name="groupName">
+                                <input type="hidden" name="erpNumberRule" >
+                                <select class="form-control"  name="erpRuleId" onchange="numberRuleChange(this);">
                                     <option value="">-请选择-</option>
-                                    <option value="result">结果报告文号</option>
-                                    <option value="preaudit">预评报告文号</option>
+                                    <c:forEach items="${sysSymbolRuleList}" var="item">
+                                        <option value="${item.id}">${item.numberRule}</option>
+                                    </c:forEach>
                                 </select>
                             </div>
                         </div>
@@ -190,26 +142,17 @@
     $(function () {
         loadDataDicList();
     })
+
+    function numberRuleChange(_this) {
+        $(_this).closest('div').find('[name=erpNumberRule]').val($(_this).find("option:selected").text());
+    }
+
     //加载 文号规则 数据列表
     function loadDataDicList() {
         var cols = [];
         cols.push({field: 'assessProjectTypeName', title: '项目类型'});
         cols.push({field: 'reportTypeName', title: '报告类型'});
-        cols.push({field: 'prefix', title: '前缀'});
-        cols.push({field: 'numberRule', title: '文号规则'});
-        cols.push({field: 'figures', title: '位数'});
-        cols.push({field: 'startYear', title: '起始年份'});
-        cols.push({field: 'startNumber', title: '起始编号'});
-        cols.push({
-            field: 'groupName', title: '文号分组', formatter: function (value, row, index) {
-                if(row.groupName=='result'){
-                    return '结果报告文号';
-                }else if(row.groupName=='preaudit'){
-                    return '预评报告文号';
-                }
-            }
-        });
-
+        cols.push({field: 'erpNumberRule', title: '文号规则'});
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';

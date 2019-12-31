@@ -1,7 +1,11 @@
 package com.copower.pmcc.assess.service.project.survey;
 
+import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareRecordDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetRightDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetRightDeclareDao;
-import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetRightDeclare;
+import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetRightGroupDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetRightItemDao;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -12,12 +16,18 @@ import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import java.sql.ResultSetMetaData;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -26,8 +36,6 @@ import java.util.List;
  */
 @Service
 public class SurveyAssetRightDeclareService {
-
-
     @Autowired
     private CommonService commonService;
     @Autowired
@@ -118,5 +126,5 @@ public class SurveyAssetRightDeclareService {
         select.setGroupId(groupId);
         return getSurveyAssetRightDeclareListByExample(select) ;
     }
-    
+
 }

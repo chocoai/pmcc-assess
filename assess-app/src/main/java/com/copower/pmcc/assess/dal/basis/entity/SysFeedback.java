@@ -11,15 +11,17 @@ public class SysFeedback {
 
     private String questionTitle;
 
-    private String disposeScheme;
+    private String deatilDescription;
+
+    private String detailEncode;
 
     private String feedbackPerson;
 
-    private String deatilDescription;
+    private Integer status;
+
+    private String disposeScheme;
 
     private String creator;
-
-    private Integer status;
 
     private Date gmtCreated;
 
@@ -57,12 +59,20 @@ public class SysFeedback {
         this.questionTitle = questionTitle == null ? null : questionTitle.trim();
     }
 
-    public String getDisposeScheme() {
-        return disposeScheme;
+    public String getDeatilDescription() {
+        return deatilDescription;
     }
 
-    public void setDisposeScheme(String disposeScheme) {
-        this.disposeScheme = disposeScheme == null ? null : disposeScheme.trim();
+    public void setDeatilDescription(String deatilDescription) {
+        this.deatilDescription = deatilDescription == null ? null : deatilDescription.trim();
+    }
+
+    public String getDetailEncode() {
+        return detailEncode;
+    }
+
+    public void setDetailEncode(String detailEncode) {
+        this.detailEncode = detailEncode == null ? null : detailEncode.trim();
     }
 
     public String getFeedbackPerson() {
@@ -73,12 +83,20 @@ public class SysFeedback {
         this.feedbackPerson = feedbackPerson == null ? null : feedbackPerson.trim();
     }
 
-    public String getDeatilDescription() {
-        return deatilDescription;
+    public Integer getStatus() {
+        return status;
     }
 
-    public void setDeatilDescription(String deatilDescription) {
-        this.deatilDescription = deatilDescription == null ? null : deatilDescription.trim();
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public String getDisposeScheme() {
+        return disposeScheme;
+    }
+
+    public void setDisposeScheme(String disposeScheme) {
+        this.disposeScheme = disposeScheme == null ? null : disposeScheme.trim();
     }
 
     public String getCreator() {
@@ -87,14 +105,6 @@ public class SysFeedback {
 
     public void setCreator(String creator) {
         this.creator = creator == null ? null : creator.trim();
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
     }
 
     public Date getGmtCreated() {

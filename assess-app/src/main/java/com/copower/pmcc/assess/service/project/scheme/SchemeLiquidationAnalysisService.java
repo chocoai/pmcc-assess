@@ -487,21 +487,4 @@ public class SchemeLiquidationAnalysisService {
         return LangUtils.transform(dataList, o -> o.getJudgeObjectId());
     }
 
-    //老数据处理方法
-    public void fixOldData() {
-        //获取所有group数据
-        List<SchemeLiquidationAnalysisGroup> groupList = schemeLiquidationAnalysisGroupDao.getObjectList(new SchemeLiquidationAnalysisGroup());
-        for (SchemeLiquidationAnalysisGroup group : groupList) {
-            //若存在recordIds（权证ids）
-            //通过权证ids找到SchemeJudgeObjects并生成liquidationAnalysisJudge数据
-            if (StringUtils.isNotEmpty(group.getRecordIds())) {
-                List<Integer> recordIds = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(group.getRecordIds()));
-                if (CollectionUtils.isNotEmpty(recordIds)) {
-                    List<SchemeJudgeObject> judgeObjects = schemeJudgeObjectDao.getListByDeclareIds(recordIds);
-                    List<Integer> schemeJudgeObjIds = LangUtils.transform(judgeObjects, o -> o.getId());
-                    addSchemeLiquidationAnalysisJudges(schemeJudgeObjIds, group.getAreaId(), group.getId());
-                }
-            }
-        }
-    }
 }

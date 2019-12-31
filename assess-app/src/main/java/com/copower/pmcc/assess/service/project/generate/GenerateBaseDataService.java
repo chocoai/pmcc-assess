@@ -41,10 +41,7 @@ import com.copower.pmcc.assess.service.project.declare.*;
 import com.copower.pmcc.assess.service.project.scheme.*;
 import com.copower.pmcc.assess.service.project.survey.SurveyAssetRightGroupService;
 import com.copower.pmcc.assess.service.project.survey.SurveyAssetRightService;
-import com.copower.pmcc.erp.api.dto.KeyValueDto;
-import com.copower.pmcc.erp.api.dto.ProjectDocumentDto;
-import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
-import com.copower.pmcc.erp.api.dto.SysUserDto;
+import com.copower.pmcc.erp.api.dto.*;
 import com.copower.pmcc.erp.api.provider.ErpRpcToolsService;
 import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -162,7 +159,8 @@ public class GenerateBaseDataService {
     public String getWordNumber() {
         try {
             AssessProjectTypeEnum assessProjectType = projectInfoService.getAssessProjectType(projectInfo.getProjectCategoryId());
-            String number = projectNumberRecordService.getReportNumber(projectInfo, areaId,assessProjectType, this.baseReportTemplate.getReportType(),false);
+            SysSymbolListDto symbolListDto = projectNumberRecordService.getReportNumber(projectInfo, areaId, assessProjectType, this.baseReportTemplate.getReportType(), false);
+            String number = symbolListDto.getSymbol();
             if (StringUtils.isNotBlank(number)) {
                 return number;
             }

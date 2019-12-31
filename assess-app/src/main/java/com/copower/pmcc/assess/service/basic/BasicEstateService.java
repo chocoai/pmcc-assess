@@ -182,15 +182,15 @@ public class BasicEstateService {
         }
         BasicEstateVo vo = new BasicEstateVo();
         BeanUtils.copyProperties(basicEstate, vo);
-        if (org.apache.commons.lang.StringUtils.isNotBlank(basicEstate.getProvince())) {
+        if (StringUtils.isNotBlank(basicEstate.getProvince())) {
             //省
             vo.setProvinceName(erpAreaService.getSysAreaName(basicEstate.getProvince()));
         }
-        if (org.apache.commons.lang.StringUtils.isNotBlank(basicEstate.getCity())) {
+        if (StringUtils.isNotBlank(basicEstate.getCity())) {
             //市或者县
             vo.setCityName(erpAreaService.getSysAreaName(basicEstate.getCity()));
         }
-        if (org.apache.commons.lang.StringUtils.isNotBlank(basicEstate.getDistrict())) {
+        if (StringUtils.isNotBlank(basicEstate.getDistrict())) {
             //县
             vo.setDistrictName(erpAreaService.getSysAreaName(basicEstate.getDistrict()));
         }
@@ -200,6 +200,8 @@ public class BasicEstateService {
             if (dataBlock != null) {
                 vo.setBlockName(dataBlock.getName());
             }
+        } else {
+            vo.setBlockName(basicEstate.getBlockName());
         }
         vo.setSupplyGasName(baseDataDicService.getNameById(basicEstate.getSupplyGas()));
         vo.setSupplyPowerName(baseDataDicService.getNameById(basicEstate.getSupplyPower()));
@@ -220,9 +222,7 @@ public class BasicEstateService {
             List<Integer> ids = FormatUtils.transformString2Integer(basicEstate.getInfrastructure());
             if (org.apache.commons.collections.CollectionUtils.isNotEmpty(ids)) {
                 List<String> stringList = Lists.newArrayList();
-                for (Integer integer : ids) {
-                    stringList.add(baseDataDicService.getNameById(integer));
-                }
+                ids.forEach(o -> stringList.add(baseDataDicService.getNameById(o)));
                 vo.setInfrastructureName(StringUtils.join(stringList, "，"));
             }
         }
@@ -988,5 +988,10 @@ public class BasicEstateService {
         }
         return targetBasicEstate;
     }
+
+    //-----------------------------------------------------------------------------------------------------------------------------------
+    //数据保存、数据清理、数据拷贝
+    //1.
+    //1.清理楼盘下的子表数据
 
 }

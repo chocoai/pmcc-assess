@@ -247,23 +247,7 @@
                     })
                 </script>
             </c:forEach>
-            <div class="x_panel">
-                <div class="x_content">
-                    <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4  col-xs-offset-5  col-sm-offset-5  col-md-offset-5  col-lg-offset-5">
-                        <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
-                            取消
-                        </button>
-                        <button id="commit_btn" class="btn btn-success" onclick="submit();">
-                            提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <c:if test="${processInsId ne '0'}">
-                <form id="frm_approval">
-                    <%@include file="/views/share/ApprovalVariable.jsp" %>
-                </form>
-            </c:if>
+            <%@include file="/views/share/form_apply.jsp" %>
             <%@include file="/views/share/form_log.jsp" %>
         </div>
     </div>

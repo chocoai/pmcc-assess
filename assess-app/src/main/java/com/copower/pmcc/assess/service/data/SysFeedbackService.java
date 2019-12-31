@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.data;
 
+import com.copower.pmcc.assess.common.FileUtils;
 import com.copower.pmcc.assess.dal.basis.dao.data.SysFeedbackDao;
 import com.copower.pmcc.assess.dal.basis.entity.SysFeedback;
 import com.copower.pmcc.assess.dto.output.data.SysFeedbackVo;
@@ -13,6 +14,7 @@ import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -21,6 +23,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 @Service
@@ -93,14 +98,28 @@ public class SysFeedbackService {
      * @param sysFeedback
      * @throws BusinessException
      */
-    public boolean addSysFeedbackReturnId(SysFeedback sysFeedback) {
-        sysFeedback.setCreator(processControllerComponent.getThisUser());
-        return sysFeedbackDao.addObject(sysFeedback);
+    public boolean saveSysFeedbackReturnId(SysFeedback sysFeedback) throws Exception{
+        //src图片地址进行编码
+        String content = sysFeedback.getDeatilDescription();
+        String regex = "(?<=(src=\"))[^\"]*?(?=\")";
+        Pattern p = Pattern.compile(regex);
+        Matcher m = p.matcher(content);
+        while (m.find()) {
+            String result = m.group();
+            String encode = FileUtils.base64Encode(result);
+            content = content.replaceAll(result, encode);
+        }
+        sysFeedback.setDetailEncode(content);
+        if (sysFeedback.getId() == null || sysFeedback.getId().equals(0)) {
+            sysFeedback.setCreator(processControllerComponent.getThisUser());
+            return sysFeedbackDao.addObject(sysFeedback);
+        } else {
+            return sysFeedbackDao.updateObject(sysFeedback);
+        }
+
     }
 
-    public boolean updateSysFeedback(SysFeedback sysFeedback) {
-        return sysFeedbackDao.updateObject(sysFeedback);
-    }
+
 
     /**
      * 删除

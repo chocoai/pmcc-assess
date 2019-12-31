@@ -484,7 +484,6 @@ public class ProjectPlanService {
         projectPlanResponsibility.setAppKey(applicationConstant.getAppKey());
         updateProjectTaskUrl(responsibileModelEnum, projectPlanResponsibility);
         bpmRpcProjectTaskService.saveProjectTaskExtend(projectPlanResponsibility);
-
     }
 
     /**
