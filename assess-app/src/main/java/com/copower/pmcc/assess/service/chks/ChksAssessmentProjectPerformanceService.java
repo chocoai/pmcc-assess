@@ -615,7 +615,7 @@ public class ChksAssessmentProjectPerformanceService {
         projectPlanResponsibility.setConclusion(ResponsibileModelEnum.TASK.getName());
         projectPlanResponsibility.setPlanEndTime(new Date());
         projectPlanResponsibility.setAppKey(applicationConstant.getAppKey());
-        projectPlanService.updateProjectTaskUrl(ResponsibileModelEnum.DETAIL, projectPlanResponsibility);
+//        projectPlanService.updateProjectTaskUrl(ResponsibileModelEnum.DETAIL, projectPlanResponsibility);
         projectPlanResponsibility.setCreator(account);
 
 
