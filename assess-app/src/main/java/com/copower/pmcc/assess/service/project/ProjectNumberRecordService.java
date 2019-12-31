@@ -131,7 +131,7 @@ public class ProjectNumberRecordService {
         if (projectInfo == null || areaId == null || reportType == null)
             throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
         SysSymbolListDto sysSymbolListDto = new SysSymbolListDto();
-        int year = DateUtils.getYear(new Date());
+        int year = DateUtils.getYear(new Date("2020-1-1"));
         if (isMustTakeNew == Boolean.FALSE) {
             ProjectNumberRecord numberRecord = projectNumberRecordDao.getProjectNumberRecord(projectInfo.getId(), areaId, year, assessProjectType.getKey(), reportType);
             if (numberRecord != null) {
