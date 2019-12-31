@@ -8,7 +8,9 @@ import com.copower.pmcc.assess.service.data.DataNumberRuleService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.api.provider.ErpRpcToolsService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import com.copower.pmcc.erp.constant.ApplicationConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,6 +34,10 @@ public class DataNumberRuleController {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private ProjectInfoService projectInfoService;
+    @Autowired
+    private ErpRpcToolsService erpRpcToolsService;
+    @Autowired
+    private ApplicationConstant applicationConstant;
 
     @RequestMapping(value = "/index", name = "文号规则视图")
     public ModelAndView index() {
@@ -39,6 +45,7 @@ public class DataNumberRuleController {
         List<BaseDataDic> reportTypeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.REPORT_TYPE);
         modelAndView.addObject("assessProjectTypeList",  projectInfoService.getAssessProjectTypeList());
         modelAndView.addObject("reportTypeList", reportTypeList);
+        modelAndView.addObject("sysSymbolRuleList", erpRpcToolsService.getSysSymbolRuleDto(applicationConstant.getAppKey()));
         return modelAndView;
     }
 

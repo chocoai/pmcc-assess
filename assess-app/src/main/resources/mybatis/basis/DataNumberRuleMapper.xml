@@ -5,6 +5,8 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="assess_project_type" property="assessProjectType" jdbcType="VARCHAR" />
     <result column="report_type" property="reportType" jdbcType="INTEGER" />
+    <result column="erp_rule_id" property="erpRuleId" jdbcType="INTEGER" />
+    <result column="erp_number_rule" property="erpNumberRule" jdbcType="VARCHAR" />
     <result column="field_name" property="fieldName" jdbcType="VARCHAR" />
     <result column="group_name" property="groupName" jdbcType="VARCHAR" />
     <result column="prefix" property="prefix" jdbcType="VARCHAR" />
@@ -77,9 +79,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, assess_project_type, report_type, field_name, group_name, prefix, number_rule, 
-    figures, start_year, start_number, same_report_type, bis_enable, creator, gmt_created, 
-    gmt_modified
+    id, assess_project_type, report_type, erp_rule_id, erp_number_rule, field_name, group_name, 
+    prefix, number_rule, figures, start_year, start_number, same_report_type, bis_enable, 
+    creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataNumberRuleExample" >
     select
@@ -115,16 +117,18 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_data_number_rule (assess_project_type, report_type, field_name, 
-      group_name, prefix, number_rule, 
-      figures, start_year, start_number, 
-      same_report_type, bis_enable, creator, 
-      gmt_created, gmt_modified)
-    values (#{assessProjectType,jdbcType=VARCHAR}, #{reportType,jdbcType=INTEGER}, #{fieldName,jdbcType=VARCHAR}, 
-      #{groupName,jdbcType=VARCHAR}, #{prefix,jdbcType=VARCHAR}, #{numberRule,jdbcType=VARCHAR}, 
-      #{figures,jdbcType=INTEGER}, #{startYear,jdbcType=INTEGER}, #{startNumber,jdbcType=INTEGER}, 
-      #{sameReportType,jdbcType=INTEGER}, #{bisEnable,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_data_number_rule (assess_project_type, report_type, erp_rule_id, 
+      erp_number_rule, field_name, group_name, 
+      prefix, number_rule, figures, 
+      start_year, start_number, same_report_type, 
+      bis_enable, creator, gmt_created, 
+      gmt_modified)
+    values (#{assessProjectType,jdbcType=VARCHAR}, #{reportType,jdbcType=INTEGER}, #{erpRuleId,jdbcType=INTEGER}, 
+      #{erpNumberRule,jdbcType=VARCHAR}, #{fieldName,jdbcType=VARCHAR}, #{groupName,jdbcType=VARCHAR}, 
+      #{prefix,jdbcType=VARCHAR}, #{numberRule,jdbcType=VARCHAR}, #{figures,jdbcType=INTEGER}, 
+      #{startYear,jdbcType=INTEGER}, #{startNumber,jdbcType=INTEGER}, #{sameReportType,jdbcType=INTEGER}, 
+      #{bisEnable,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataNumberRule" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -137,6 +141,12 @@
       </if>
       <if test="reportType != null" >
         report_type,
+      </if>
+      <if test="erpRuleId != null" >
+        erp_rule_id,
+      </if>
+      <if test="erpNumberRule != null" >
+        erp_number_rule,
       </if>
       <if test="fieldName != null" >
         field_name,
@@ -181,6 +191,12 @@
       </if>
       <if test="reportType != null" >
         #{reportType,jdbcType=INTEGER},
+      </if>
+      <if test="erpRuleId != null" >
+        #{erpRuleId,jdbcType=INTEGER},
+      </if>
+      <if test="erpNumberRule != null" >
+        #{erpNumberRule,jdbcType=VARCHAR},
       </if>
       <if test="fieldName != null" >
         #{fieldName,jdbcType=VARCHAR},
@@ -238,6 +254,12 @@
       <if test="record.reportType != null" >
         report_type = #{record.reportType,jdbcType=INTEGER},
       </if>
+      <if test="record.erpRuleId != null" >
+        erp_rule_id = #{record.erpRuleId,jdbcType=INTEGER},
+      </if>
+      <if test="record.erpNumberRule != null" >
+        erp_number_rule = #{record.erpNumberRule,jdbcType=VARCHAR},
+      </if>
       <if test="record.fieldName != null" >
         field_name = #{record.fieldName,jdbcType=VARCHAR},
       </if>
@@ -284,6 +306,8 @@
     set id = #{record.id,jdbcType=INTEGER},
       assess_project_type = #{record.assessProjectType,jdbcType=VARCHAR},
       report_type = #{record.reportType,jdbcType=INTEGER},
+      erp_rule_id = #{record.erpRuleId,jdbcType=INTEGER},
+      erp_number_rule = #{record.erpNumberRule,jdbcType=VARCHAR},
       field_name = #{record.fieldName,jdbcType=VARCHAR},
       group_name = #{record.groupName,jdbcType=VARCHAR},
       prefix = #{record.prefix,jdbcType=VARCHAR},
@@ -308,6 +332,12 @@
       </if>
       <if test="reportType != null" >
         report_type = #{reportType,jdbcType=INTEGER},
+      </if>
+      <if test="erpRuleId != null" >
+        erp_rule_id = #{erpRuleId,jdbcType=INTEGER},
+      </if>
+      <if test="erpNumberRule != null" >
+        erp_number_rule = #{erpNumberRule,jdbcType=VARCHAR},
       </if>
       <if test="fieldName != null" >
         field_name = #{fieldName,jdbcType=VARCHAR},
@@ -352,6 +382,8 @@
     update tb_data_number_rule
     set assess_project_type = #{assessProjectType,jdbcType=VARCHAR},
       report_type = #{reportType,jdbcType=INTEGER},
+      erp_rule_id = #{erpRuleId,jdbcType=INTEGER},
+      erp_number_rule = #{erpNumberRule,jdbcType=VARCHAR},
       field_name = #{fieldName,jdbcType=VARCHAR},
       group_name = #{groupName,jdbcType=VARCHAR},
       prefix = #{prefix,jdbcType=VARCHAR},

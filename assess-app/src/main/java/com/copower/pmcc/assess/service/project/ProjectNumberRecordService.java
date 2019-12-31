@@ -10,12 +10,14 @@ import com.copower.pmcc.assess.dal.basis.entity.ProjectNumberRecord;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataNumberRuleService;
 import com.copower.pmcc.assess.service.project.generate.GenerateCommonMethod;
+import com.copower.pmcc.erp.api.dto.SysSymbolListDto;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
+import com.copower.pmcc.erp.api.provider.ErpRpcToolsService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
-import com.google.common.collect.Lists;
+import com.copower.pmcc.erp.constant.ApplicationConstant;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +45,10 @@ public class ProjectNumberRecordService {
     private GenerateCommonMethod generateCommonMethod;
     @Autowired
     private ProjectInfoService projectInfoService;
+    @Autowired
+    private ErpRpcToolsService erpRpcToolsService;
+    @Autowired
+    private ApplicationConstant applicationConstant;
 
     public List<String> getReportNumberList(Integer projectId, AssessProjectTypeEnum assessProjectTypeEnum, Integer reportType) {
         ProjectNumberRecord where = new ProjectNumberRecord();
@@ -119,63 +125,52 @@ public class ProjectNumberRecordService {
      * @param reportType 报告类型
      * @return
      */
-    public String getReportNumber(ProjectInfo projectInfo, Integer areaId, AssessProjectTypeEnum assessProjectType, Integer reportType, Boolean isMustTakeNew) throws BusinessException {
+    public SysSymbolListDto getReportNumber(ProjectInfo projectInfo, Integer areaId, AssessProjectTypeEnum assessProjectType, Integer reportType, Boolean isMustTakeNew) throws BusinessException {
         //1.根据文号规则走号
         //2.生成报告号之后将其存储
         if (projectInfo == null || areaId == null || reportType == null)
             throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
-        //判断该区域的该报告类型是否已经有文号，如果已有则直接返回
+        SysSymbolListDto sysSymbolListDto = new SysSymbolListDto();
         int year = DateUtils.getYear(new Date());
         if (isMustTakeNew == Boolean.FALSE) {
             ProjectNumberRecord numberRecord = projectNumberRecordDao.getProjectNumberRecord(projectInfo.getId(), areaId, year, assessProjectType.getKey(), reportType);
-            if (numberRecord != null) return numberRecord.getNumberValue();
+            if (numberRecord != null) {
+                sysSymbolListDto.setSymbol(numberRecord.getNumberValue());
+                return sysSymbolListDto;
+            }
         }
         BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicById(reportType);
-        int number = 1;
         DataNumberRule numberRule = dataNumberRuleService.getDataNumberRule(assessProjectType, reportType);
         if (numberRule == null)
             throw new BusinessException(HttpReturnEnum.NOTFIND.getName());
-        if (numberRule.getStartNumber() != null)
-            number = numberRule.getStartNumber();
-        String reportNumber = numberRule.getNumberRule().replaceAll("\\{prefix\\}", numberRule.getPrefix())
-                .replaceAll("\\{year\\}", String.valueOf(year));
-        //根据配置判断是否属于分组文号，如技术报告使用结果报告号等
-        //得到同分组文号的文号规则，根据项目区域找到最大编号
-        //根据项目区域及报告类型取得对应的报告编号
-        if (numberRule.getGroupName() != null) {
-            List<DataNumberRule> numberRuleGroup = dataNumberRuleService.getDataNumberRuleByGroup(assessProjectType, numberRule.getGroupName());
-            if(CollectionUtils.isNotEmpty(numberRuleGroup)){
-                List<Integer> reportTypeList = generateCommonMethod.removeDuplicate(LangUtils.transform(numberRuleGroup, o -> o.getReportType()));//去重
-                if(CollectionUtils.isNotEmpty(reportTypeList)){
-                    //取同一项目类型同一组下最大的编号
-                    List<ProjectNumberRecord> projectNumberRecordList = projectNumberRecordDao.getProjectNumberRecordList(assessProjectType.getKey(), reportTypeList);
-                    if (CollectionUtils.isNotEmpty(projectNumberRecordList)) {
-                        number = projectNumberRecordList.get(0).getNumber() + 1;
-                    }
-                }
-            }
-        }
-        reportNumber = reportNumber.replaceAll("\\{number\\}", StringUtils.leftPad(String.valueOf(number), numberRule.getFigures(), '0'));
-        ProjectNumberRecord projectNumberRecord = new ProjectNumberRecord();
-        projectNumberRecord.setProjectId(projectInfo.getId());
-        projectNumberRecord.setAreaId(areaId);
-        projectNumberRecord.setAssessProjectType(assessProjectType.getKey());
-        projectNumberRecord.setReportType(reportType);
-        projectNumberRecord.setYear(year);
-        projectNumberRecord.setNumber(number);
-        projectNumberRecord.setNumberValue(reportNumber);
-        projectNumberRecord.setCreator(commonService.thisUserAccount());
-        projectNumberRecordDao.addProjectNumberRecord(projectNumberRecord);
 
-        //更新项目信息中报告文号生成时间
-        if (StringUtils.equals(AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT, baseDataDic.getFieldName())) {
-            projectInfo.setPreauditNumberDate(new Date());
-            projectInfoService.saveProjectInfo(projectInfo);
+        List<SysSymbolListDto> sysSymbolList = erpRpcToolsService.getSysSymbolList(applicationConstant.getAppKey(), numberRule.getErpRuleId(), year);
+        if (CollectionUtils.isNotEmpty(sysSymbolList))
+            sysSymbolListDto = sysSymbolList.get(0);
+        else
+            sysSymbolListDto = erpRpcToolsService.getSysSymbol(applicationConstant.getAppKey(), numberRule.getErpRuleId(), year);
+        if (sysSymbolListDto != null) {
+            ProjectNumberRecord projectNumberRecord = new ProjectNumberRecord();
+            projectNumberRecord.setProjectId(projectInfo.getId());
+            projectNumberRecord.setAreaId(areaId);
+            projectNumberRecord.setAssessProjectType(assessProjectType.getKey());
+            projectNumberRecord.setReportType(reportType);
+            projectNumberRecord.setYear(year);
+            projectNumberRecord.setNumberValue(sysSymbolListDto.getSymbol());
+            projectNumberRecord.setCreator(commonService.thisUserAccount());
+            projectNumberRecordDao.addProjectNumberRecord(projectNumberRecord);
+
+            //更新项目信息中报告文号生成时间
+            if (StringUtils.equals(AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT, baseDataDic.getFieldName())) {
+                projectInfo.setPreauditNumberDate(new Date());
+                projectInfoService.saveProjectInfo(projectInfo);
+            }
+            if (StringUtils.equals(AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT, baseDataDic.getFieldName())) {
+                projectInfo.setResultNumberDate(new Date());
+                projectInfoService.saveProjectInfo(projectInfo);
+            }
+            erpRpcToolsService.updateSymbolUsed(applicationConstant.getAppKey(),sysSymbolListDto.getSymbol());
         }
-        if (StringUtils.equals(AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT, baseDataDic.getFieldName())) {
-            projectInfo.setResultNumberDate(new Date());
-            projectInfoService.saveProjectInfo(projectInfo);
-        }
-        return reportNumber;
+        return sysSymbolListDto;
     }
 }

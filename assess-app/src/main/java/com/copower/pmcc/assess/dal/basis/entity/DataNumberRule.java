@@ -9,6 +9,10 @@ public class DataNumberRule {
 
     private Integer reportType;
 
+    private Integer erpRuleId;
+
+    private String erpNumberRule;
+
     private String fieldName;
 
     private String groupName;
@@ -55,6 +59,22 @@ public class DataNumberRule {
 
     public void setReportType(Integer reportType) {
         this.reportType = reportType;
+    }
+
+    public Integer getErpRuleId() {
+        return erpRuleId;
+    }
+
+    public void setErpRuleId(Integer erpRuleId) {
+        this.erpRuleId = erpRuleId;
+    }
+
+    public String getErpNumberRule() {
+        return erpNumberRule;
+    }
+
+    public void setErpNumberRule(String erpNumberRule) {
+        this.erpNumberRule = erpNumberRule == null ? null : erpNumberRule.trim();
     }
 
     public String getFieldName() {
