@@ -496,6 +496,7 @@ public class ProjectPlanService {
         if (projectPlanResponsibility == null)
             return;
         String url = new String();
+        ///
         switch (responsibileModelEnum) {
             case TASK:
                 url = "/" + applicationConstant.getAppKey() + "/ProjectTask/projectTaskIndex";
