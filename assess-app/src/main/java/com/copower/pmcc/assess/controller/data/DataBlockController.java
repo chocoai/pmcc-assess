@@ -1,22 +1,32 @@
 package com.copower.pmcc.assess.controller.data;
 
+import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.controller.BaseController;
-import com.copower.pmcc.assess.dal.basis.entity.DataBlock;
+import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dto.output.project.ProjectMemberVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.NetInfoRecordService;
 import com.copower.pmcc.assess.service.basic.PublicBasicService;
 import com.copower.pmcc.assess.service.data.DataBlockService;
+import com.copower.pmcc.assess.service.project.*;
 import com.copower.pmcc.assess.service.project.scheme.SchemeLiquidationAnalysisService;
 import com.copower.pmcc.assess.service.project.survey.SurveyAssetRightDeclareService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @Auther: zch
@@ -152,12 +162,94 @@ public class DataBlockController extends BaseController {
         }
     }
 
+    @Autowired
+    private ProjectInfoService projectInfoService;
+    @Autowired
+    private ProjectPlanService projectPlanService;
+    @Autowired
+    private ProjectPhaseService projectPhaseService;
+    @Autowired
+    private ProjectPlanDetailsService projectPlanDetailsService;
+    @Autowired
+    private ProjectMemberService projectMemberService;
+    @Autowired
+    private ErpRpcUserService erpRpcUserService;
+
     @ResponseBody
     @RequestMapping(value = "/updateOldData", method = {RequestMethod.GET}, name = "更新历史数据")
     public HttpResult updateOldData() {
         try {
-            surveyAssetRightDeclareService.updateOldData();
-            schemeLiquidationAnalysisService.fixOldData();
+            //1.循环所有房产项目，判断项目是否走到出具报告，当已走到出具报告阶段但无设置方案与出具报告事项，为其添加相关事项
+            ProjectInfo where = new ProjectInfo();
+            where.setProjectClassId(285);
+            where.setProjectTypeId(344);
+            where.setProjectCategoryId(345);
+            //where.setId(695);
+            ProjectPhase reportPhase = projectPhaseService.getProjectPhaseById(153);
+            ProjectPhase pammePhase = projectPhaseService.getProjectPhaseById(154);
+            List<ProjectInfo> projectInfoList = projectInfoService.getProjectInfoList(where);
+            for (ProjectInfo projectInfo : projectInfoList) {
+                List<ProjectPlan> projectPlanList = projectPlanService.getProjectPlanList(projectInfo.getId());
+                if (CollectionUtils.isNotEmpty(projectPlanList)) {
+                    for (ProjectPlan projectPlan : projectPlanList) {
+                        if (projectPlan.getWorkStageId().equals(15) &&
+                                (projectPlan.getProjectStatus().equals("task") || projectPlan.getProjectStatus().equals("finish")
+                                        || projectPlan.getProjectStatus().equals("planExecute"))) {
+                            ProjectMemberVo projectMember = projectMemberService.getProjectMember(projectInfo.getId());
+                            SysUserDto sysUser = erpRpcUserService.getSysUser(projectMember.getUserAccountManager());
+                            ProjectPlanDetails wherePlanDetails = new ProjectPlanDetails();
+                            wherePlanDetails.setProjectId(projectPlan.getProjectId());
+                            List<ProjectPlanDetails> planDetailsList = projectPlanDetailsService.getProjectDetails(wherePlanDetails);
+                            if (CollectionUtils.isNotEmpty(planDetailsList)) {
+                                List<Integer> collect = planDetailsList.stream().map(o -> o.getProjectPhaseId()).collect(Collectors.toList());
+                                if (!collect.contains(153)) {
+                                    ProjectPlanDetails projectPlanDetails = new ProjectPlanDetails();
+                                    projectPlanDetails.setProjectWorkStageId(projectPlan.getWorkStageId());
+                                    projectPlanDetails.setPlanId(projectPlan.getId());
+                                    projectPlanDetails.setProjectId(projectPlan.getProjectId());
+                                    projectPlanDetails.setProjectPhaseName(reportPhase.getProjectPhaseName());
+                                    projectPlanDetails.setProjectPhaseId(reportPhase.getId());
+                                    projectPlanDetails.setExecuteUserAccount(projectMember.getUserAccountManager());
+                                    projectPlanDetails.setExecuteDepartmentId(sysUser.getDepartmentId());
+                                    projectPlanDetails.setPlanStartDate(new Date());
+                                    projectPlanDetails.setPlanEndDate(new Date());
+                                    projectPlanDetails.setBisEnable(true);
+                                    projectPlanDetails.setProcessInsId("0");
+                                    projectPlanDetails.setPid(0);
+                                    projectPlanDetails.setBisStart(true);
+                                    projectPlanDetails.setSorting(reportPhase.getPhaseSort());
+                                    projectPlanDetails.setStatus(ProjectStatusEnum.FINISH.getKey());
+                                    projectPlanDetailsService.saveProjectPlanDetails(projectPlanDetails);
+                                }
+                                if (!collect.contains(154)) {
+                                    for (ProjectPlan item : projectPlanList) {
+                                        if (item.getWorkStageId().equals(13)) {
+                                            projectPlan = item;
+                                        }
+                                    }
+                                    ProjectPlanDetails projectPlanDetails = new ProjectPlanDetails();
+                                    projectPlanDetails.setProjectWorkStageId(projectPlan.getWorkStageId());
+                                    projectPlanDetails.setPlanId(projectPlan.getId());
+                                    projectPlanDetails.setProjectId(projectPlan.getProjectId());
+                                    projectPlanDetails.setProjectPhaseName(pammePhase.getProjectPhaseName());
+                                    projectPlanDetails.setProjectPhaseId(pammePhase.getId());
+                                    projectPlanDetails.setExecuteUserAccount(projectMember.getUserAccountManager());
+                                    projectPlanDetails.setExecuteDepartmentId(sysUser.getDepartmentId());
+                                    projectPlanDetails.setPlanStartDate(new Date());
+                                    projectPlanDetails.setPlanEndDate(new Date());
+                                    projectPlanDetails.setBisEnable(true);
+                                    projectPlanDetails.setProcessInsId("0");
+                                    projectPlanDetails.setPid(0);
+                                    projectPlanDetails.setBisStart(true);
+                                    projectPlanDetails.setSorting(pammePhase.getPhaseSort());
+                                    projectPlanDetails.setStatus(ProjectStatusEnum.FINISH.getKey());
+                                    projectPlanDetailsService.saveProjectPlanDetails(projectPlanDetails);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             log.error(String.format("exception: %s", e.getMessage()), e);
