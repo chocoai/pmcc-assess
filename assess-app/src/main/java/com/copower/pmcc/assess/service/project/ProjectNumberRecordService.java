@@ -131,7 +131,7 @@ public class ProjectNumberRecordService {
         if (projectInfo == null || areaId == null || reportType == null)
             throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
         SysSymbolListDto sysSymbolListDto = new SysSymbolListDto();
-        int year = DateUtils.getYear(new Date("2020-1-1"));
+        int year = DateUtils.getYear(DateUtils.today());
         if (isMustTakeNew == Boolean.FALSE) {
             ProjectNumberRecord numberRecord = projectNumberRecordDao.getProjectNumberRecord(projectInfo.getId(), areaId, year, assessProjectType.getKey(), reportType);
             if (numberRecord != null) {
@@ -169,7 +169,7 @@ public class ProjectNumberRecordService {
                 projectInfo.setResultNumberDate(new Date());
                 projectInfoService.saveProjectInfo(projectInfo);
             }
-            erpRpcToolsService.updateSymbolUsed(applicationConstant.getAppKey(),sysSymbolListDto.getSymbol());
+            erpRpcToolsService.updateSymbolUsed(applicationConstant.getAppKey(), sysSymbolListDto.getSymbol());
         }
         return sysSymbolListDto;
     }
