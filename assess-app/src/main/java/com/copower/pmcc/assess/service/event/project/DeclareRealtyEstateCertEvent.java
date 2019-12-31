@@ -10,8 +10,6 @@ import com.copower.pmcc.assess.service.project.declare.DeclareApplyService;
 import com.copower.pmcc.assess.service.project.survey.ProjectPlanSurveyService;
 import com.copower.pmcc.bpm.api.dto.model.ProcessExecution;
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,7 +19,6 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class DeclareRealtyEstateCertEvent extends ProjectTaskEvent {
-    private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private DeclareApplyService declareApplyService;
     @Autowired
@@ -47,10 +44,8 @@ public class DeclareRealtyEstateCertEvent extends ProjectTaskEvent {
         }
         super.processFinishExecute(processExecution);//数据写入record记录表中后再执行进入下阶段
 
-        if (projectPlanDetails != null && projectPlanDetails.getId() != null) {
-            if (StringUtils.isNotEmpty(projectPlanDetails.getProcessInsId())){
-                chksAssessmentProjectPerformanceService.checkTaskChksActivity(processExecution.getProcessInstanceId());
-            }
+        if (StringUtils.isNotEmpty(processExecution.getProcessInstanceId())){
+            chksAssessmentProjectPerformanceService.checkTaskChksActivity(processExecution.getProcessInstanceId());
         }
     }
 }

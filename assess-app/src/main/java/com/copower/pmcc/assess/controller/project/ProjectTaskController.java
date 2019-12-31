@@ -179,7 +179,7 @@ public class ProjectTaskController extends BaseController {
             Object activityId = modelAndView.getModel().get("activityId");
             if (activityId != null) {
                 Integer boxReActivitiId = (Integer) activityId;
-                setCheckParams(boxId, boxReActivitiId, false,projectPlanDetails, modelAndView);
+                setCheckParams(boxId, boxReActivitiId,projectPlanDetails, modelAndView);
 
             }
         }
@@ -282,18 +282,13 @@ public class ProjectTaskController extends BaseController {
         modelAndView.addObject("projectFlog", "1");
         ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId()));
         modelAndView.addObject("projectInfo", projectInfoVo);
-//        if (boxId != null && boxId != 0) {
-//            //获取相应的考核项
-//            BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(boxId);
-//            if (boxReDto.getBisLaunchCheck() != null && boxReDto.getBisLaunchCheck()) {
-//                Object activityId = modelAndView.getModel().get("activityId");
-//                if (activityId != null) {
-//                    setCheckParams(boxId, (Integer) activityId, true, modelAndView);
-//                } else {
-//                    setCheckParams(boxId, null, true, modelAndView);
-//                }
-//            }
-//        }
+        if (boxId != null && boxId != 0) {
+            //获取相应的考核项
+            BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(boxId);
+            if (boxReDto.getBisLaunchCheck() != null && boxReDto.getBisLaunchCheck()) {
+                setCheckParams(boxId, null, projectPlanDetails, modelAndView);
+            }
+        }
         return modelAndView;
     }
 
@@ -321,25 +316,26 @@ public class ProjectTaskController extends BaseController {
      * @param boxReActivitiId 注意此参数可能是错误的
      * @param modelAndView
      */
-    private void setCheckParams(Integer boxId, Integer boxReActivitiId, boolean isDetail,ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) {
+    private void setCheckParams(Integer boxId, Integer boxReActivitiId, ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) {
         //巡查人或者抽查人  可以看到当前模型下 所有人的考核记录
         boolean spotCheck = chksAssessmentProjectPerformanceService.getSpotCheck(boxId, processControllerComponent.getThisUser());
+        BoxReActivityDto boxReActivityDto = chksAssessmentProjectPerformanceService.getFilterBoxReActivityDto(boxReActivitiId,boxId,projectPlanDetails.getProcessInsId(),spotCheck);
+        if (boxReActivityDto == null){
+            return;
+        }
         //抽查或者巡查标识符
         modelAndView.addObject("spotCheck", spotCheck);
         //考核标识符
-        modelAndView.addObject("bisCheck", 1);
+        modelAndView.addObject("bisCheck", chksAssessmentProjectPerformanceService.getChksRuningEnum(projectPlanDetails.getProcessInsId(),boxReActivityDto.getId(),boxId,spotCheck).getKey());
         modelAndView.addObject(StringUtils.uncapitalize(BoxReDto.class.getSimpleName()), bpmRpcBoxService.getBoxReInfoByBoxId(boxId));
-        //抽查节点info
-        modelAndView.addObject("spotBoxReActivityDto", bpmRpcBoxService.getEndActivityByBoxId(boxId));
-        BoxReActivityDto boxReActivityDto = chksAssessmentProjectPerformanceService.getFilterBoxReActivityDto(boxReActivitiId, boxId, isDetail);
-        Integer activityId = null;
-        if (boxReActivityDto != null) {
-            //普通节点info
-            modelAndView.addObject(StringUtils.uncapitalize(BoxReActivityDto.class.getSimpleName()), boxReActivityDto);
-            activityId = boxReActivityDto.getId();
-        }
+        modelAndView.addObject(StringUtils.uncapitalize(BoxReActivityDto.class.getSimpleName()), boxReActivityDto);
         //当前节点  可以查看的权限节点信息列表
-        modelAndView.addObject("activityDtoList", chksAssessmentProjectPerformanceService.getAssessmentProjectPerformanceNext(boxId, activityId, spotCheck));
+        modelAndView.addObject("activityDtoList", chksAssessmentProjectPerformanceService.getAssessmentProjectPerformanceNext(boxId, boxReActivityDto.getId(), spotCheck));
+        if (spotCheck){
+            modelAndView.addObject("spotAssessmentProjectPerformanceList", chksAssessmentProjectPerformanceService.getAssessmentProjectPerformanceDtoMap(boxId, projectPlanDetails.getProcessInsId()));
+            modelAndView.addObject("spotAssessmentItemDtoList", chksAssessmentProjectPerformanceService.getAssessmentItemTemplate(boxId, boxReActivityDto.getId()));
+
+        }
     }
 
 }

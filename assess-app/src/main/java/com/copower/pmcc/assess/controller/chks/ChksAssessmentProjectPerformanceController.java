@@ -43,9 +43,9 @@ public class ChksAssessmentProjectPerformanceController {
     }
 
     @GetMapping(value = "/getAssessmentItemTemplate",name = "获取模板数据")
-    public HttpResult getAssessmentItemTemplate(@RequestParam(defaultValue = "false") boolean spotCheck, Integer boxId, Integer boxReActivitiId){
+    public HttpResult getAssessmentItemTemplate( Integer boxId, Integer boxReActivitiId){
         try {
-            return HttpResult.newCorrectResult(200,chksAssessmentProjectPerformanceService.getAssessmentItemTemplate(spotCheck, boxId, boxReActivitiId))  ;
+            return HttpResult.newCorrectResult(200,chksAssessmentProjectPerformanceService.getAssessmentItemTemplate( boxId, boxReActivitiId))  ;
         } catch (Exception e) {
             baseService.writeExceptionInfo(e,"获取数据出错");
             return HttpResult.newErrorResult(500,e.getMessage()) ;
