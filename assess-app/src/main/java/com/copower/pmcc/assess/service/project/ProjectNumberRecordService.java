@@ -157,6 +157,7 @@ public class ProjectNumberRecordService {
             projectNumberRecord.setReportType(reportType);
             projectNumberRecord.setYear(year);
             projectNumberRecord.setNumberValue(sysSymbolListDto.getSymbol());
+            projectNumberRecord.setNumber(sysSymbolListDto.getSymbolNumber());
             projectNumberRecord.setCreator(commonService.thisUserAccount());
             projectNumberRecordDao.addProjectNumberRecord(projectNumberRecord);
 
