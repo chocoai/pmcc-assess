@@ -10,6 +10,7 @@ public class SchemeAreaGroupVo extends SchemeAreaGroup {
     private String valueDefinitionName;
     private String valueConnotationName;
     private String propertyScopeName;
+    private String entrustAimTypeName;
 
     public String getEntrustPurposeName() {
         return entrustPurposeName;
@@ -41,5 +42,13 @@ public class SchemeAreaGroupVo extends SchemeAreaGroup {
 
     public void setPropertyScopeName(String propertyScopeName) {
         this.propertyScopeName = propertyScopeName;
+    }
+
+    public String getEntrustAimTypeName() {
+        return entrustAimTypeName;
+    }
+
+    public void setEntrustAimTypeName(String entrustAimTypeName) {
+        this.entrustAimTypeName = entrustAimTypeName;
     }
 }

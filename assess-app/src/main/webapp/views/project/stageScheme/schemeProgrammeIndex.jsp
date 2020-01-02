@@ -99,6 +99,65 @@
                     <div class="x_content collapse">
                         <form id="frmJudgeObject${item.id}" class="form-horizontal">
                             <div class="form-group">
+
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        委托目的<span class="symbol required"></span>
+                                    </label>
+                                    <div class="col-sm-2">
+                                        <select name="entrustmentPurpose" class="form-control" required="required" onchange="programme.changeEntrustmentPurpose(this,'${item.entrustAimType}');">
+                                            <option value="">-请选择-</option>
+                                            <c:forEach items="${entrustmentPurposes}" var="entrustmentPurpose">
+                                                <c:choose>
+                                                    <c:when test="${entrustmentPurpose.id eq item.entrustPurpose}">
+                                                        <option value="${entrustmentPurpose.id}"
+                                                                selected="selected">${entrustmentPurpose.name}</option>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <c:if test="${entrustmentPurpose.id eq projectInfo.entrustPurpose}">
+                                                            <option value="${entrustmentPurpose.id}"
+                                                                    selected="selected">${entrustmentPurpose.name}</option>
+                                                        </c:if>
+                                                        <c:if test="${entrustmentPurpose.id ne projectInfo.entrustPurpose}">
+                                                            <option value="${entrustmentPurpose.id}">${entrustmentPurpose.name}</option>
+                                                        </c:if>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="x-valid">
+                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">委托目的类别</label>
+                                    <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                        <select name="entrustAimType" class="form-control search-select select2" onchange="programme.changeEntrustAimType(this);">
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        委托目的描述<span class="symbol required"></span>
+                                    </label>
+                                    <div class="col-sm-2">
+                                        <input type="text" name="remarkEntrustPurpose" required="required"
+                                               placeholder="委托目的描述" class="form-control"
+                                               value="${empty item.remarkEntrustPurpose?projectInfo.remarkEntrustPurpose:item.remarkEntrustPurpose}">
+                                    </div>
+                                </div>
+
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        财产范围<span class="symbol required"></span>
+                                    </label>
+                                    <div class="col-sm-2">
+                                        <select class="form-control" name="propertyScope" required></select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
                                         评估基准日<span class="symbol required"></span>
@@ -121,45 +180,7 @@
                                                value="${empty item.timePointExplain?valueDateExplain:item.timePointExplain}">
                                     </div>
                                 </div>
-                                <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
-                                        委托目的<span class="symbol required"></span>
-                                    </label>
-                                    <div class="col-sm-2">
-                                        <select name="entrustmentPurpose" class="form-control" required>
-                                            <option value="">-请选择-</option>
-                                            <c:forEach items="${entrustmentPurposes}" var="entrustmentPurpose">
-                                                <c:choose>
-                                                    <c:when test="${entrustmentPurpose.id eq item.entrustPurpose}">
-                                                        <option value="${entrustmentPurpose.id}"
-                                                                selected="selected">${entrustmentPurpose.name}</option>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <c:if test="${entrustmentPurpose.id eq projectInfo.entrustPurpose}">
-                                                            <option value="${entrustmentPurpose.id}"
-                                                                    selected="selected">${entrustmentPurpose.name}</option>
-                                                        </c:if>
-                                                        <c:if test="${entrustmentPurpose.id ne projectInfo.entrustPurpose}">
-                                                            <option value="${entrustmentPurpose.id}">${entrustmentPurpose.name}</option>
-                                                        </c:if>
-                                                    </c:otherwise>
-                                                </c:choose>
-                                            </c:forEach>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
-                                        委托目的描述<span class="symbol required"></span>
-                                    </label>
-                                    <div class="col-sm-2">
-                                        <input type="text" name="remarkEntrustPurpose" required="required"
-                                               placeholder="委托目的描述" class="form-control"
-                                               value="${empty item.remarkEntrustPurpose?projectInfo.remarkEntrustPurpose:item.remarkEntrustPurpose}">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
+
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
                                         价值类型<span class="symbol required"></span>
@@ -187,14 +208,11 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
-                                        财产范围<span class="symbol required"></span>
-                                    </label>
-                                    <div class="col-sm-2">
-                                        <select class="form-control" name="propertyScope" required></select>
-                                    </div>
-                                </div>
+                            </div>
+
+                            <div class="form-group">
+
+
                             </div>
                             <div class="form-group">
                                 <div class="x-valid">
@@ -683,6 +701,30 @@
         currJudgeMethodButton: undefined //当前评估方法button
     };
 
+    //委托目的 的类别
+    programme.changeEntrustmentPurpose = function (_this,entrustAimType) {
+        var group = $(_this).closest(".form-group") ;
+        var entrustmentPurpose = group.find("select[name='entrustmentPurpose']").val() ;
+        if (!entrustmentPurpose){
+            return false;
+        }
+        AssessCommon.loadDataDicByPid(entrustmentPurpose,entrustAimType,function (html,data) {
+            group.find("select[name='entrustAimType']").empty().html(html).trigger('change');
+        });
+    };
+
+    //委托目的 的类别  带出备注
+    programme.changeEntrustAimType = function (_this) {
+        var group = $(_this).closest(".form-group") ;
+        var entrustAimType = group.find("select[name='entrustAimType']").val() ;
+        if (!entrustAimType){
+            return false;
+        }
+        AssessCommon.getDataDicInfo(entrustAimType,function (data) {
+            group.find("input[name='remarkEntrustPurpose']").val(data.remark) ;
+        }) ;
+    };
+
     //设置价值内涵的值
     programme.setValueConnotation = function (id, valueConnotation) {
         if (valueConnotation) {
@@ -1149,6 +1191,7 @@
         data.timePointExplain = $(areaPanel).find('[name="timePointExplain"]').val();
 
         data.entrustmentPurpose = $(areaPanel).find('[name="entrustmentPurpose"]').val();
+        data.entrustAimType = $(areaPanel).find('[name="entrustAimType"]').val();
         data.remarkEntrustPurpose = $(areaPanel).find('[name="remarkEntrustPurpose"]').val();
 
         data.valueDefinition = $(areaPanel).find('[name="valueDefinition"]').val();

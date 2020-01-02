@@ -458,6 +458,7 @@ public class SchemeAreaGroupService {
         schemeAreaGroupVo.setEntrustPurposeName(baseDataDicService.getNameById(schemeAreaGroup.getEntrustPurpose()));
         schemeAreaGroupVo.setValueDefinitionName(baseDataDicService.getNameById(schemeAreaGroup.getValueDefinition()));
         schemeAreaGroupVo.setPropertyScopeName(baseDataDicService.getNameById(schemeAreaGroup.getPropertyScope()));
+        schemeAreaGroupVo.setEntrustAimTypeName(baseDataDicService.getNameById(schemeAreaGroup.getEntrustAimType()));
         if (StringUtils.isNotBlank(schemeAreaGroup.getValueConnotation())) {
             List<String> list = JSON.parseArray(schemeAreaGroup.getValueConnotation(), String.class);
             if (CollectionUtils.isNotEmpty(list)) {

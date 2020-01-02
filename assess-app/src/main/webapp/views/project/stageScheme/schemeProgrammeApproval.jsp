@@ -36,70 +36,84 @@
                         <form id="frmJudgeObject${item.id}" class="form-horizontal">
                             <div class="form-group">
                                 <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
+                                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
                                         评估基准日
                                     </label>
-                                    <div class="col-sm-2">
+                                    <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
                                         <label class="form-control">
                                             <fmt:formatDate value="${item.valueTimePoint}" pattern="yyyy-MM-dd"/>
                                         </label>
                                     </div>
                                 </div>
                                 <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
+                                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
                                         基准日说明
                                     </label>
-                                    <div class="col-sm-2">
+                                    <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
                                         <label class="form-control">${item.timePointExplain}</label>
                                     </div>
                                 </div>
+
                                 <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
+                                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
+                                        价值类型
+                                    </label>
+                                    <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
+                                        <label class="form-control">${item.valueDefinitionName}</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
                                         委托目的
                                     </label>
-                                    <div class="col-sm-2">
+                                    <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
                                         <label class="form-control">${item.entrustPurposeName}</label>
                                     </div>
                                 </div>
                                 <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
+                                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
+                                        委托目的类别
+                                    </label>
+                                    <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
+                                        <label class="form-control">${item.entrustAimTypeName}</label>
+                                    </div>
+                                </div>
+                                <div class="x-valid">
+                                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
                                         委托目的描述
                                     </label>
-                                    <div class="col-sm-2">
+                                    <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
                                         <label class="form-control">${item.remarkEntrustPurpose}</label>
                                     </div>
                                 </div>
                             </div>
+
                             <div class="form-group">
+
                                 <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
-                                        价值类型
-                                    </label>
-                                    <div class="col-sm-2">
-                                        <label class="form-control">${item.valueDefinitionName}</label>
-                                    </div>
-                                </div>
-                                <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
+                                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
                                         财产范围
                                     </label>
-                                    <div class="col-sm-2">
+                                    <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
                                         <label class="form-control">${item.propertyScopeName}</label>
                                     </div>
                                 </div>
                                 <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
+                                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
                                         财产包括
                                     </label>
-                                    <div class="col-sm-2">
+                                    <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
                                         <label class="form-control">${item.scopeInclude}</label>
                                     </div>
                                 </div>
                                 <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
+                                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
                                         财产不包括
                                     </label>
-                                    <div class="col-sm-2">
+                                    <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
                                         <label class="form-control">${item.scopeNotInclude}</label>
                                     </div>
                                 </div>

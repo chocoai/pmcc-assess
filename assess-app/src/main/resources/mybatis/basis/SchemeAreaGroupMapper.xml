@@ -26,6 +26,7 @@
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+    <result column="entrust_aim_type" property="entrustAimType" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -89,7 +90,7 @@
     id, pid, project_id, province, city, district, area_name, value_time_point, time_point_explain, 
     entrust_purpose, remark_entrust_purpose, value_definition, value_definition_desc, 
     value_connotation, value_connotation_desc, property_scope, scope_include, scope_not_include, 
-    bis_new, bis_enable, bis_merge, creator, gmt_created, gmt_modified
+    bis_new, bis_enable, bis_merge, creator, gmt_created, gmt_modified, entrust_aim_type
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeAreaGroupExample" >
     select
@@ -133,7 +134,7 @@
       value_connotation_desc, property_scope, scope_include, 
       scope_not_include, bis_new, bis_enable, 
       bis_merge, creator, gmt_created, 
-      gmt_modified)
+      gmt_modified, entrust_aim_type)
     values (#{pid,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, 
       #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, #{areaName,jdbcType=VARCHAR}, 
       #{valueTimePoint,jdbcType=TIMESTAMP}, #{timePointExplain,jdbcType=VARCHAR}, #{entrustPurpose,jdbcType=INTEGER}, 
@@ -142,7 +143,7 @@
       #{valueConnotationDesc,jdbcType=VARCHAR}, #{propertyScope,jdbcType=INTEGER}, #{scopeInclude,jdbcType=VARCHAR}, 
       #{scopeNotInclude,jdbcType=VARCHAR}, #{bisNew,jdbcType=BIT}, #{bisEnable,jdbcType=BIT}, 
       #{bisMerge,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{gmtModified,jdbcType=TIMESTAMP}, #{entrustAimType,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeAreaGroup" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -219,6 +220,9 @@
       <if test="gmtModified != null" >
         gmt_modified,
       </if>
+      <if test="entrustAimType != null" >
+        entrust_aim_type,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="pid != null" >
@@ -289,6 +293,9 @@
       </if>
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="entrustAimType != null" >
+        #{entrustAimType,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -373,6 +380,9 @@
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.entrustAimType != null" >
+        entrust_aim_type = #{record.entrustAimType,jdbcType=INTEGER},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -403,7 +413,8 @@
       bis_merge = #{record.bisMerge,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      entrust_aim_type = #{record.entrustAimType,jdbcType=INTEGER}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -480,6 +491,9 @@
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="entrustAimType != null" >
+        entrust_aim_type = #{entrustAimType,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -507,7 +521,8 @@
       bis_merge = #{bisMerge,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      entrust_aim_type = #{entrustAimType,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
