@@ -91,6 +91,10 @@
                     <groupId>com.copower</groupId>
                     <artifactId>hr-api</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>com.copower</groupId>
+                    <artifactId>erp-api</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
 
