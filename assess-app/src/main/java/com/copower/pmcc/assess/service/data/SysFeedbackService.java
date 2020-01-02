@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.data;
 
+import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.FileUtils;
 import com.copower.pmcc.assess.dal.basis.dao.data.SysFeedbackDao;
 import com.copower.pmcc.assess.dal.basis.entity.SysFeedback;
@@ -11,10 +12,13 @@ import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import com.copower.pmcc.erp.common.utils.LangUtils;
+import com.copower.pmcc.erp.http.HttpApiRequest;
+import com.copower.pmcc.erp.http.RequestParam;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -22,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -89,6 +94,7 @@ public class SysFeedbackService {
         if (StringUtils.isNotEmpty(sysFeedback.getCreator())) {
             sysFeedbackVo.setFeedbackPersonName(publicService.getUserNameByAccount(sysFeedback.getFeedbackPerson()));
         }
+        sysFeedbackVo.setCompanyName(publicService.getCurrentCompany().getName());
         return sysFeedbackVo;
     }
 
@@ -98,7 +104,7 @@ public class SysFeedbackService {
      * @param sysFeedback
      * @throws BusinessException
      */
-    public boolean saveSysFeedbackReturnId(SysFeedback sysFeedback) throws Exception{
+    public boolean saveSysFeedbackReturnId(SysFeedback sysFeedback) throws Exception {
         //src图片地址进行编码
         String content = sysFeedback.getDeatilDescription();
         String regex = "(?<=(src=\"))[^\"]*?(?=\")";
@@ -120,7 +126,6 @@ public class SysFeedbackService {
     }
 
 
-
     /**
      * 删除
      *
@@ -131,4 +136,66 @@ public class SysFeedbackService {
         return sysFeedbackDao.deleteObject(id);
     }
 
+    /**
+     * 问题提交
+     *
+     * @param ids
+     */
+    public void submitQuestion(List<Integer> ids) throws Exception {
+        if (CollectionUtils.isNotEmpty(ids)) {
+            List<SysFeedbackVo> feedbackList = LangUtils.transform(ids, o -> getSysFeedbackVo(sysFeedbackDao.getSingleObject(o)));
+            String jsonString = JSON.toJSONString(feedbackList);
+            //提交到pmcc-develop
+            RequestParam param = new RequestParam();
+            param.setCompanyKey("123");
+            param.setAppSecret("123");
+            param.setUrl("http://dev.pmcc.com/pmcc-develop/devProjectFeedback/acceptQuestions");
+            Map<String, String> map = new HashMap<>();
+            map.put("jsonData", jsonString);
+            param.setParams(map);
+            HttpResult httpResult = HttpApiRequest.doPost(param);
+            if (httpResult.getRet()) {
+                for (Integer id : ids) {
+                    SysFeedbackVo feedbackVo = this.getBySysFeedbackId(id);
+                    //状态变为待处理
+                    feedbackVo.setStatus(1);
+                    sysFeedbackDao.updateObject(feedbackVo);
+                }
+            }
+        }
+    }
+
+    /**
+     * 问题更新
+     */
+    public void updateQuestions() throws Exception {
+        //获取我所有待处理任务
+        SysFeedback sysFeedback = new SysFeedback();
+        sysFeedback.setStatus(1);
+        sysFeedback.setCreator(processControllerComponent.getThisUser());
+        List<SysFeedback> list = sysFeedbackDao.getListObject(sysFeedback);
+        List<Integer> ids = LangUtils.transform(list, o -> o.getId());
+        String jsonString = JSON.toJSONString(ids);
+        //从pmcc-develop中拉取
+        RequestParam param = new RequestParam();
+        param.setCompanyKey("123");
+        param.setAppSecret("123");
+        param.setUrl("http://dev.pmcc.com/pmcc-develop/devProjectFeedback/reverseQuestions");
+        Map<String, String> map = new HashMap<>();
+        map.put("stringIds", jsonString);
+        param.setParams(map);
+        HttpResult httpResult = HttpApiRequest.doPost(param);
+        if (httpResult.getRet()) {
+            String resultData = httpResult.getData().toString();
+            List<SysFeedback> reverseQuestions = JSON.parseArray(resultData, SysFeedback.class);
+            if (CollectionUtils.isNotEmpty(reverseQuestions)) {
+                for (SysFeedback temp : reverseQuestions) {
+                    SysFeedback feedback = sysFeedbackDao.getSingleObject(temp.getId());
+                    feedback.setStatus(2);
+                    feedback.setDisposeScheme(temp.getDisposeScheme());
+                    sysFeedbackDao.updateObject(feedback);
+                }
+            }
+        }
+    }
 }

@@ -7,6 +7,15 @@ public class SysFeedbackVo extends SysFeedback {
     private String urgencyLevelName;
     private String statusName;
     private String feedbackPersonName;
+    private String companyName;
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
 
     public String getFeedbackPersonName() {
         return feedbackPersonName;

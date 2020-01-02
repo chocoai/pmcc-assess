@@ -80,7 +80,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-sm-3">
+                            <div class="col-sm-5">
                                 <button type="button" class="btn btn-primary"
                                         onclick="sysFeedback.prototype.loadDataDicList()">
                                     查询
@@ -91,6 +91,14 @@
                                 <button type="button" class="btn btn-success"
                                         onclick="sysFeedback.prototype.showModel()"
                                         data-toggle="modal" href="#divBox"> 新增
+                                </button>
+                                <button type="button" class="btn btn-primary"
+                                        onclick="sysFeedback.prototype.submitQuestion()">
+                                    提交问题
+                                </button>
+                                <button type="button" class="btn btn-primary"
+                                        onclick="sysFeedback.prototype.updateQuestions()">
+                                    更新
                                 </button>
                             </div>
                         </div>
@@ -136,6 +144,22 @@
         //不可编辑
         ue2.setDisabled();
     });
+    var ue3 = UE.getEditor('disposeScheme', {
+        toolbars: [
+            ['source', 'autotypeset', 'bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc']
+        ],
+        zIndex: 11009,
+        initialFrameHeight: 120,
+        elementPathEnabled: false,//是否启用元素路径，默认是true显示
+        wordCount: false, //是否开启字数统计
+        autoHeightEnabled: false,
+        autoFloatEnabled: true
+    });
+    ue3.ready(function () {
+        //不可编辑
+        ue3.setDisabled();
+    });
+
 
     var sysFeedback = function () {
 
@@ -184,7 +208,7 @@
                 onLoadSuccess: function () {
                     $('.tooltips').tooltip();
                 }
-            });
+            },true);
         },
         removeData: function (id) {
             Alert("确认删除!", 2, null, function () {
@@ -270,9 +294,11 @@
                     if (result.ret) {
                         $("#" + sysFeedback.prototype.config().frm_d).clearAll();
                         $("#" + sysFeedback.prototype.config().frm_d).initForm(result.data);
-                        var content = result.data.deatilDescription;
+                        var deatilDescription = result.data.deatilDescription;
+                        var disposeScheme = result.data.disposeScheme;
                         setTimeout(function () {
-                            ue2.setContent(content, false);
+                            ue2.setContent(deatilDescription, false);
+                            ue3.setContent(disposeScheme, false);
                         }, 500);
                         $('#' + sysFeedback.prototype.config().box_d).modal("show");
                     }
@@ -296,6 +322,50 @@
                     }
                 }
             });
+        },
+        submitQuestion: function () {
+            var rows = $('#' + sysFeedback.prototype.config().table).bootstrapTable('getSelections');
+            if (rows && rows.length > 0) {
+                var idArray = [];
+                $.each(rows, function (i, item) {
+                    if(item.status==0){
+                        idArray.push(item.id);
+                    }
+                });
+                $.ajax({
+                    url: '${pageContext.request.contextPath}/sysFeedback/submitQuestion',
+                    data: {
+                        ids: idArray.join()
+                    },
+                    success: function (result) {
+                        if (result.ret) {
+                            toastr.success("提交成功");
+                            sysFeedback.prototype.loadDataDicList();
+                        }
+                    }
+                })
+            } else {
+                toastr.info('请选择要添加的数据');
+            }
+        },
+        updateQuestions: function () {
+            Loading.progressShow();
+            $.ajax({
+                url: '${pageContext.request.contextPath}/sysFeedback/updateQuestions',
+                type: "post",
+                dataType: "json",
+                success: function (result) {
+                    if (result.ret) {
+                        Loading.progressHide();
+                        toastr.success("更新完成");
+                        sysFeedback.prototype.loadDataDicList();
+                    }
+                },
+                error: function (result) {
+                    Loading.progressHide();
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
         }
 
     }
@@ -452,6 +522,16 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <div style="width:99%;height:200px;" id="deatilDescription_d"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            解决方案
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <div style="width:99%;height:200px;" id="disposeScheme"></div>
                                         </div>
                                     </div>
                                 </div>
