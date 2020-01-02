@@ -23,7 +23,7 @@ public class SysFeedbackDao {
     @Autowired
     private SysFeedbackMapper sysFeedbackMapper;
 
-    public List<SysFeedback> getSysFeedbackList(Integer systemType,String questionTitle,String feedbackPerson,Integer status,String creator) {
+    public List<SysFeedback> getSysFeedbackList(Integer systemType, String questionTitle, String feedbackPerson, Integer status, String creator) {
         SysFeedbackExample example = new SysFeedbackExample();
         SysFeedbackExample.Criteria criteria = example.createCriteria();
         criteria.andIdIsNotNull();
@@ -33,15 +33,16 @@ public class SysFeedbackDao {
         if (status != null) {
             criteria.andStatusEqualTo(status);
         }
-        if (StringUtils.isNotEmpty(questionTitle )) {
+        if (StringUtils.isNotEmpty(questionTitle)) {
             criteria.andQuestionTitleLike(String.format("%s%s%s", "%", questionTitle, "%"));
         }
-        if (StringUtils.isNotEmpty(feedbackPerson )) {
+        if (StringUtils.isNotEmpty(feedbackPerson)) {
             criteria.andFeedbackPersonLike(String.format("%s%s%s", "%", feedbackPerson, "%"));
         }
-        if (StringUtils.isNotEmpty(creator )) {
+        if (StringUtils.isNotEmpty(creator)) {
             criteria.andCreatorLike(String.format("%s%s%s", "%", creator, "%"));
         }
+        example.setOrderByClause("id desc");
         return sysFeedbackMapper.selectByExample(example);
     }
 
