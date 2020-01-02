@@ -155,9 +155,6 @@
 
     //审批页面提交
     function saveApprovalform(formData, approvalData) {
-
-
-
         if (!$("#frm_approval").valid()) {
             return false;
         }
@@ -165,16 +162,13 @@
         data["formData"] = formData;
         data = $.extend({}, data, approvalData);
 
-        if ("${bisCheck==1}") {
+        if ("${bisCheck}"=="1") {
             if (!vaildChksData()){
                 return false;
             }
             var itemObj = getChksData();
             data = jQuery.extend({}, data, itemObj);
         }
-
-
-
         Loading.progressShow();
         $.ajax({
             url: "${pageContext.request.contextPath}/ProjectTask/submitTaskApproval",
