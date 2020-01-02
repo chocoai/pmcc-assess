@@ -42,23 +42,21 @@
                     <input type="hidden" name="entrustPurposeName">
                 </div>
             </div>
-            <%--<div class="x-valid">--%>
-                <%--<label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">委托目的类别<span--%>
-                        <%--class="symbol required"></span></label>--%>
-                <%--<div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">--%>
-                    <%--<select name="entrustAimType" class="form-control search-select select2 entrustAimType_p"--%>
-                            <%--required="required" >--%>
-                    <%--</select>--%>
-                <%--</div>--%>
-            <%--</div>--%>
-            <%--<div class="x-valid">--%>
-                <%--<label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">委托目的描述</label>--%>
-                <%--<div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">--%>
-                    <%--<input name="remarkEntrustPurpose"--%>
-                           <%--class="form-control"--%>
-                           <%--placeholder="委托目的描述" value="${projectInfo.remarkEntrustPurpose}"/>--%>
-                <%--</div>--%>
-            <%--</div>--%>
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">委托目的类别</label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <select name="entrustAimType" class="form-control search-select select2 entrustAimType_p">
+                    </select>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">委托目的描述</label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <input name="remarkEntrustPurpose"
+                           class="form-control"
+                           placeholder="委托目的描述" value="${projectInfo.remarkEntrustPurpose}"/>
+                </div>
+            </div>
             <%--<div class="x-valid">--%>
                 <%--<label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">价值类型<span--%>
                         <%--class="symbol required"></span></label>--%>
@@ -70,42 +68,7 @@
                 <%--</div>--%>
             <%--</div>--%>
 
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">评估基准日</label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input placeholder="评估基准日"
-                           name="valuationDate" data-date-format="yyyy-mm-dd"
-                           class="form-control date-picker dbdate" readonly="readonly"
-                           value="<fmt:formatDate value='${projectInfo.valuationDate}' pattern='yyyy-MM-dd'/>">
-                </div>
-            </div>
 
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">执业部门<span
-                        class="symbol required"></span></label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <div class="input-group">
-                        <input type="hidden" name="departmentId"
-                               value="${projectInfo.departmentId}">
-                        <input class='form-control' name="departmentName" required
-                               readonly="readonly" onclick="objProject.selectDepartment(this);"
-                               value="${projectInfo.departmentName}">
-                        <span class="input-group-btn">
-                        <button type="button" class="btn btn-default docs-tooltip"
-                                onclick="objProject.selectDepartment(this);"
-                                data-toggle="tooltip"
-                                data-original-title="选择">
-                            <i class="fa fa-search"></i>
-                        </button>
-                         <button type="button" class="btn btn-default docs-tooltip"
-                                 onclick="$(this).closest('.input-group').find('input').val('');"
-                                 data-toggle="tooltip" data-original-title="清除">
-                            <i class="fa fa-trash-o"></i>
-                        </button>
-                        </span>
-                    </div>
-                </div>
-            </div>
         </div>
         <div class="form-group">
             <div class="x-valid">
@@ -188,12 +151,33 @@
             </div>
 
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">贷款类型</label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">执业部门<span
+                        class="symbol required"></span></label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <select name="loanType" class="form-control search-select select2 loanType">
-                    </select>
+                    <div class="input-group">
+                        <input type="hidden" name="departmentId"
+                               value="${projectInfo.departmentId}">
+                        <input class='form-control' name="departmentName" required
+                               readonly="readonly" onclick="objProject.selectDepartment(this);"
+                               value="${projectInfo.departmentName}">
+                        <span class="input-group-btn">
+                        <button type="button" class="btn btn-default docs-tooltip"
+                                onclick="objProject.selectDepartment(this);"
+                                data-toggle="tooltip"
+                                data-original-title="选择">
+                            <i class="fa fa-search"></i>
+                        </button>
+                         <button type="button" class="btn btn-default docs-tooltip"
+                                 onclick="$(this).closest('.input-group').find('input').val('');"
+                                 data-toggle="tooltip" data-original-title="清除">
+                            <i class="fa fa-trash-o"></i>
+                        </button>
+                        </span>
+                    </div>
                 </div>
             </div>
+
+
         </div>
         <div class="form-group">
             <div class="x-valid">
@@ -227,6 +211,18 @@
                            value="${projectInfo.contractPrice}"/>
                 </div>
             </div>
+
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">评估基准日</label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <input placeholder="评估基准日"
+                           name="valuationDate" data-date-format="yyyy-mm-dd"
+                           class="form-control date-picker dbdate" readonly="readonly"
+                           value="<fmt:formatDate value='${projectInfo.valuationDate}' pattern='yyyy-MM-dd'/>">
+                </div>
+            </div>
+
+
         </div>
         <div class="form-group">
             <div class="x-valid">
@@ -241,6 +237,13 @@
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">业务来源说明</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <input name="serviceComeFromExplain" class="form-control" placeholder="业务来源说明" value="${projectInfo.serviceComeFromExplain}"/>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">贷款类型</label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <select name="loanType" class="form-control search-select select2 loanType">
+                    </select>
                 </div>
             </div>
         </div>

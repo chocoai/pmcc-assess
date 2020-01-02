@@ -51,6 +51,8 @@ public class SchemeAreaGroup {
 
     private Date gmtModified;
 
+    private Integer entrustAimType;
+
     public Integer getId() {
         return id;
     }
@@ -241,5 +243,13 @@ public class SchemeAreaGroup {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public Integer getEntrustAimType() {
+        return entrustAimType;
+    }
+
+    public void setEntrustAimType(Integer entrustAimType) {
+        this.entrustAimType = entrustAimType;
     }
 }

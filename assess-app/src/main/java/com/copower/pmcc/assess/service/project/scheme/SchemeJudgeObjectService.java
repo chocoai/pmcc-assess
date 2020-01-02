@@ -604,6 +604,7 @@ public class SchemeJudgeObjectService {
         schemeAreaGroup.setPropertyScope(schemeProgrammeDto.getPropertyScope());
         schemeAreaGroup.setScopeInclude(schemeProgrammeDto.getScopeInclude());
         schemeAreaGroup.setScopeNotInclude(schemeProgrammeDto.getScopeNotInclude());
+        schemeAreaGroup.setEntrustAimType(schemeProgrammeDto.getEntrustAimType());
         schemeAreaGroupService.saveAreaGroup(schemeAreaGroup);
     }
 

@@ -125,17 +125,28 @@
 
     //测算结果
     rewardRateFunc.success = function (rewardRateId) {
+        var frm =  $("#frm_reward_rate") ;
         var data = {};
         data.id = rewardRateId;
         data.parameterValue = [];
-        data.resultValue = $("#frm_reward_rate").find('[name=resultValue]').text();
-        $("#frm_reward_rate").find('tr').each(function () {
+        data.resultValue = frm.find('[name=resultValue]').text();
+        frm.find('tr').each(function () {
             var item = {};
             item.name = $(this).find('[name=name]').val();
             item.ratio = $(this).find('[name=ratio]').attr("data-value");
             item.remark = $(this).find('[name=remark]').val();
             data.parameterValue.push(item);
-        })
+        });
+        var checkData = [] ;
+        $.each(data.parameterValue,function (i,item) {
+            if ($.isNumeric(item.ratio)){
+                checkData.push(item) ;
+            }
+        });
+       if (checkData.length != frm.find("input[name='ratio']").size()){
+           toastr.warning('每一项报酬率都要填写!');
+           return false;
+       }
         Loading.progressShow();
         $.ajax({
             url: "${pageContext.request.contextPath}/toolRewardRate/saveToolRewardRate",

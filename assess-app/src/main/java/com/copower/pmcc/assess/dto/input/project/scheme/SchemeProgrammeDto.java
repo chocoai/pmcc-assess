@@ -21,6 +21,7 @@ public class SchemeProgrammeDto {
     private Integer propertyScope;
     private String scopeInclude;
     private String scopeNotInclude;
+    private Integer entrustAimType;
     List<SchemeJudgeObject> schemeJudgeObjects;
 
     public Integer getAreaGroupId() {
@@ -101,5 +102,13 @@ public class SchemeProgrammeDto {
 
     public void setSchemeJudgeObjects(List<SchemeJudgeObject> schemeJudgeObjects) {
         this.schemeJudgeObjects = schemeJudgeObjects;
+    }
+
+    public Integer getEntrustAimType() {
+        return entrustAimType;
+    }
+
+    public void setEntrustAimType(Integer entrustAimType) {
+        this.entrustAimType = entrustAimType;
     }
 }
