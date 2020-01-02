@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.controller.project.declare;
 
+import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareBuildEngineering;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareBuildEquipmentInstall;
 import com.copower.pmcc.assess.dto.input.project.declare.DeclareBuildEquipmentInstallDto;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -81,24 +83,24 @@ public class DeclareBuildEquipmentInstallController {
 
     @ResponseBody
     @RequestMapping(value = "/deleteDeclareBuildEquipmentInstallById", method = {RequestMethod.POST}, name = "删除设备安装维护")
-    public HttpResult delete(String ids) {
+    public HttpResult delete(String id) {
         try {
-            if (org.apache.commons.lang3.StringUtils.isNotBlank(ids)) {
-                List<Integer> integers = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(ids));
-                for (Integer id : integers) {
+            if (org.apache.commons.lang3.StringUtils.isNotBlank(id)) {
+                List<Integer> integers = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(id));
+                for (Integer integer : integers) {
                     DeclareBuildEquipmentInstall declareBuildEquipmentInstall = new DeclareBuildEquipmentInstall();
-                    declareBuildEquipmentInstall.setId(id);
+                    declareBuildEquipmentInstall.setId(integer);
                     declareBuildEquipmentInstallService.removeDeclareBuildEquipmentInstall(declareBuildEquipmentInstall);
                 }
-                return HttpResult.newCorrectResult();
             }
+            return HttpResult.newCorrectResult();
         } catch (Exception e1) {
             logger.error(String.format("exception: %s" + e1.getMessage()), e1);
             return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
         }
-        return null;
     }
 
+    @Deprecated
     @ResponseBody
     @RequestMapping(value = "/saveAndUpdateDeclareBuildEquipmentInstall", method = {RequestMethod.POST}, name = "更新设备安装维护")
     public HttpResult saveAndUpdate(DeclareBuildEquipmentInstallDto declareBuildEquipmentInstallDto) {
@@ -116,8 +118,21 @@ public class DeclareBuildEquipmentInstallController {
     }
 
     @ResponseBody
+    @RequestMapping(value = "/saveDeclareBuildEquipmentInstall", method = {RequestMethod.POST}, name = "更新设备安装维护")
+    public HttpResult saveDeclareBuildEquipmentInstall(String formData, @RequestParam(defaultValue = "false") boolean updateNull) {
+        try {
+            DeclareBuildEquipmentInstall declareBuildEquipmentInstall = JSONObject.parseObject(formData, DeclareBuildEquipmentInstall.class);
+            declareBuildEquipmentInstallService.saveDeclareBuildEquipmentInstall(declareBuildEquipmentInstall, updateNull);
+            return HttpResult.newCorrectResult(declareBuildEquipmentInstall);
+        } catch (Exception e) {
+            logger.error(String.format("exception: %s", e.getMessage()), e);
+            return HttpResult.newErrorResult("保存异常");
+        }
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/listDeclareBuildEquipmentInstall", method = {RequestMethod.GET}, name = "设备安装维护 list")
-    public HttpResult list(Integer pid, String province, String city, String district, Integer planDetailsId,String declareType) {
+    public HttpResult list(Integer pid, String province, String city, String district, Integer planDetailsId, String declareType) {
         try {
             DeclareBuildEquipmentInstall declareBuildEquipmentInstall = new DeclareBuildEquipmentInstall();
             if (!StringUtils.isEmpty(province)) {
@@ -135,7 +150,7 @@ public class DeclareBuildEquipmentInstallController {
             if (pid != null) {
                 declareBuildEquipmentInstall.setPid(pid);
             }
-            if (org.apache.commons.lang.StringUtils.isNotBlank(declareType)){
+            if (org.apache.commons.lang.StringUtils.isNotBlank(declareType)) {
                 declareBuildEquipmentInstall.setDeclareType(declareType);
             }
             return HttpResult.newCorrectResult(declareBuildEquipmentInstallService.declareBuildEquipmentInstallVos(declareBuildEquipmentInstall));
@@ -155,7 +170,7 @@ public class DeclareBuildEquipmentInstallController {
             if (multipartFile.isEmpty()) {
                 return HttpResult.newErrorResult("上传的文件不能为空");
             }
-            String str = declareBuildEquipmentInstallService.importData(oo,multipartFile);
+            String str = declareBuildEquipmentInstallService.importData(oo, multipartFile);
             return HttpResult.newCorrectResult(str);
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());

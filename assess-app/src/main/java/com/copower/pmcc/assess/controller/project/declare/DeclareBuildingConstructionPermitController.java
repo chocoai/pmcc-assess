@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.controller.project.declare;
 
+import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareBuildingConstructionPermit;
 import com.copower.pmcc.assess.dto.input.project.declare.DeclareBuildingConstructionPermitDto;
 import com.copower.pmcc.assess.service.project.declare.DeclareBuildingConstructionPermitService;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -75,6 +77,7 @@ public class DeclareBuildingConstructionPermitController {
         return null;
     }
 
+    @Deprecated
     @ResponseBody
     @RequestMapping(value = "/saveAndUpdateDeclareBuildingConstructionPermit", method = {RequestMethod.POST}, name = "更新建筑工程施工许可证维护")
     public HttpResult saveAndUpdate(DeclareBuildingConstructionPermitDto declareBuildingConstructionPermitDto) {
@@ -83,6 +86,20 @@ public class DeclareBuildingConstructionPermitController {
             BeanUtils.copyProperties(declareBuildingConstructionPermitDto, declareBuildingConstructionPermit);
             Integer id = declareBuildingConstructionPermitService.saveAndUpdateDeclareBuildingConstructionPermit(declareBuildingConstructionPermit);
             return HttpResult.newCorrectResult(id);
+        } catch (Exception e) {
+            logger.error(String.format("exception: %s", e.getMessage()), e);
+            return HttpResult.newErrorResult("保存异常");
+        }
+    }
+
+
+    @ResponseBody
+    @RequestMapping(value = "/saveDeclareBuildingConstructionPermit", method = {RequestMethod.POST}, name = "更新建筑工程施工许可证维护")
+    public HttpResult saveDeclareBuildingConstructionPermit(String formData, @RequestParam(defaultValue = "false") boolean updateNull) {
+        DeclareBuildingConstructionPermit declareBuildingConstructionPermit = JSONObject.parseObject(formData, DeclareBuildingConstructionPermit.class);
+        try {
+            declareBuildingConstructionPermitService.saveAndUpdateDeclareBuildingConstructionPermit(declareBuildingConstructionPermit,updateNull);
+            return HttpResult.newCorrectResult(declareBuildingConstructionPermit);
         } catch (Exception e) {
             logger.error(String.format("exception: %s", e.getMessage()), e);
             return HttpResult.newErrorResult("保存异常");

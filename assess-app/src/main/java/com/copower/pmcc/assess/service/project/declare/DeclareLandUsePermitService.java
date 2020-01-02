@@ -37,13 +37,17 @@ public class DeclareLandUsePermitService {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     public Integer saveAndUpdateDeclareLandUsePermit(DeclareLandUsePermit declareLandUsePermit) {
+       return saveAndUpdateDeclareLandUsePermit(declareLandUsePermit,false) ;
+    }
+
+    public Integer saveAndUpdateDeclareLandUsePermit(DeclareLandUsePermit declareLandUsePermit, boolean updateNull) {
         if (declareLandUsePermit.getId() == null || declareLandUsePermit.getId().intValue() == 0) {
             declareLandUsePermit.setCreator(commonService.thisUserAccount());
             Integer id = declareLandUsePermitDao.addDeclareLandUsePermit(declareLandUsePermit);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(DeclareLandUsePermit.class), id);
             return id;
         } else {
-            declareLandUsePermitDao.updateDeclareLandUsePermit(declareLandUsePermit);
+            declareLandUsePermitDao.updateDeclareLandUsePermit(declareLandUsePermit,updateNull);
             return null;
         }
     }

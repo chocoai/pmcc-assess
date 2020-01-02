@@ -57,6 +57,8 @@ public class DeclareBuildEquipmentInstall {
 
     private Date gmtModified;
 
+    private Boolean bisRecord;
+
     public Integer getId() {
         return id;
     }
@@ -271,5 +273,13 @@ public class DeclareBuildEquipmentInstall {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public Boolean getBisRecord() {
+        return bisRecord;
+    }
+
+    public void setBisRecord(Boolean bisRecord) {
+        this.bisRecord = bisRecord;
     }
 }

@@ -290,6 +290,10 @@ public class DeclareRealtyLandCertService {
 
 
     public Integer saveAndUpdateDeclareRealtyLandCert(DeclareRealtyLandCert declareRealtyLandCert) {
+        return saveAndUpdateDeclareRealtyLandCert(declareRealtyLandCert,false) ;
+    }
+
+    public Integer saveAndUpdateDeclareRealtyLandCert(DeclareRealtyLandCert declareRealtyLandCert, boolean updateNull) {
         if (declareRealtyLandCert.getId() == null) {
             declareRealtyLandCert.setCreator(commonService.thisUserAccount());
             Integer id = null;
@@ -297,7 +301,7 @@ public class DeclareRealtyLandCertService {
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(DeclareRealtyLandCert.class), id);
             return id;
         } else {
-            declareRealtyLandCertDao.updateDeclareRealtyLandCert(declareRealtyLandCert);
+            declareRealtyLandCertDao.updateDeclareRealtyLandCert(declareRealtyLandCert,updateNull);
             updateDeclareRealtyLandCertAndUpdateDeclareRecordOrJudgeObject(declareRealtyLandCert);
             return declareRealtyLandCert.getId();
         }

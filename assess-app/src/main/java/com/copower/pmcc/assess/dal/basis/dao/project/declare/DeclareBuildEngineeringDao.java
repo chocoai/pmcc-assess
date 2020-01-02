@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.dal.basis.entity.DeclareBuildEngineering;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareBuildEngineeringExample;
 import com.copower.pmcc.assess.dal.basis.mapper.DeclareBuildEngineeringMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -30,6 +31,31 @@ public class DeclareBuildEngineeringDao {
 
     public boolean updateDeclareBuildEngineering(DeclareBuildEngineering declareBuildEngineering){
         return declareBuildEngineeringMapper.updateByPrimaryKeySelective(declareBuildEngineering)==1;
+    }
+
+    public boolean updateDeclareBuildEngineering(DeclareBuildEngineering declareBuildEngineering,boolean updateNull){
+        if (updateNull){
+            DeclareBuildEngineering target = getDeclareBuildEngineeringById(declareBuildEngineering.getId()) ;
+            if (declareBuildEngineering.getPlanDetailsId() == null){
+                declareBuildEngineering.setPlanDetailsId(target.getPlanDetailsId());
+            }
+            if (StringUtils.isEmpty(declareBuildEngineering.getEnable())){
+                declareBuildEngineering.setEnable(target.getEnable());
+            }
+            if (declareBuildEngineering.getBisRecord() == null){
+                declareBuildEngineering.setBisRecord(target.getBisRecord());
+            }
+            if (declareBuildEngineering.getPid() == null){
+                declareBuildEngineering.setPid(target.getPid());
+            }
+            if (StringUtils.isEmpty(declareBuildEngineering.getCreator())){
+                declareBuildEngineering.setCreator(target.getCreator());
+            }
+            if (declareBuildEngineering.getGmtCreated() == null){
+                declareBuildEngineering.setGmtCreated(target.getGmtCreated());
+            }
+        }
+        return updateNull ? declareBuildEngineeringMapper.updateByPrimaryKey(declareBuildEngineering) == 1 : declareBuildEngineeringMapper.updateByPrimaryKeySelective(declareBuildEngineering) == 1;
     }
 
     public void removeDeclareBuildEngineering(DeclareBuildEngineering declareBuildEngineering){

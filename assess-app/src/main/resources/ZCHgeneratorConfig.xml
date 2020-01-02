@@ -186,21 +186,27 @@
 
 
 
-        <table tableName="tb_survey_asset_right" domainObjectName="SurveyAssetRight">
+        <table tableName="tb_declare_build_engineering" domainObjectName="DeclareBuildEngineering">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 
-        <table tableName="tb_survey_asset_right_declare" domainObjectName="SurveyAssetRightDeclare">
+
+        <table tableName="tb_declare_build_equipment_install" domainObjectName="DeclareBuildEquipmentInstall">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 
-        <table tableName="tb_survey_asset_right_group" domainObjectName="SurveyAssetRightGroup">
+        <table tableName="tb_declare_building_permit" domainObjectName="DeclareBuildingPermit">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 
-        <table tableName="tb_survey_asset_right_item" domainObjectName="SurveyAssetRightItem">
+        <table tableName="tb_declare_land_use_permit" domainObjectName="DeclareLandUsePermit">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
+
+        <table tableName="tb_declare_pre_sale_permit" domainObjectName="DeclarePreSalePermit">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+
 
 
 

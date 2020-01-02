@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyLandCert;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyLandCertExample;
 import com.copower.pmcc.assess.dal.basis.mapper.DeclareRealtyLandCertMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -28,8 +29,33 @@ public class DeclareRealtyLandCertDao {
         return declareRealtyLandCertMapper.selectByPrimaryKey(id);
     }
 
+    public boolean updateDeclareRealtyLandCert(DeclareRealtyLandCert declareRealtyLandCert,boolean updateNull){
+        if (updateNull){
+            DeclareRealtyLandCert target = getDeclareRealtyLandCertById(declareRealtyLandCert.getId()) ;
+            if (declareRealtyLandCert.getPlanDetailsId() == null){
+                declareRealtyLandCert.setPlanDetailsId(target.getPlanDetailsId());
+            }
+            if (StringUtils.isEmpty(declareRealtyLandCert.getEnable())){
+                declareRealtyLandCert.setEnable(target.getEnable());
+            }
+            if (declareRealtyLandCert.getBisRecord() == null){
+                declareRealtyLandCert.setBisRecord(target.getBisRecord());
+            }
+            if (declareRealtyLandCert.getPid() == null){
+                declareRealtyLandCert.setPid(target.getPid());
+            }
+            if (StringUtils.isEmpty(declareRealtyLandCert.getCreator())){
+                declareRealtyLandCert.setCreator(target.getCreator());
+            }
+            if (declareRealtyLandCert.getGmtCreated() == null){
+                declareRealtyLandCert.setGmtCreated(target.getGmtCreated());
+            }
+        }
+        return updateNull ? declareRealtyLandCertMapper.updateByPrimaryKey(declareRealtyLandCert) == 1 : declareRealtyLandCertMapper.updateByPrimaryKeySelective(declareRealtyLandCert) == 1;
+    }
+
     public boolean updateDeclareRealtyLandCert(DeclareRealtyLandCert declareRealtyLandCert){
-        return declareRealtyLandCertMapper.updateByPrimaryKeySelective(declareRealtyLandCert)==1;
+        return  declareRealtyLandCertMapper.updateByPrimaryKeySelective(declareRealtyLandCert) == 1;
     }
 
     public List<DeclareRealtyLandCert> getList(Integer planDetailsId){

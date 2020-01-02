@@ -175,6 +175,14 @@ declareCommon.showHtmlMastInit = function (target, callback) {
     }
 };
 
+//公共  赋值 方法
+declareCommon.initFormData = function (form,item) {
+    var frm = $(form.selector);
+    frm.clearAll();
+    frm.initForm(item);
+    frm.validate();
+};
+
 //土地
 declareCommon.getLandColumn = function () {
     var cols = [];
@@ -278,11 +286,20 @@ declareCommon.getEquipmentInstallationColumn = function () {
  * @param item
  * @param callback
  */
-declareCommon.declareBuildCenterSaveAndUpdate = function (item, callback) {
+declareCommon.declareBuildCenterSaveAndUpdateBase = function (item, updateNull,callback) {
+    if (updateNull == null){
+        updateNull = false;
+    }
+    if (updateNull == undefined){
+        updateNull = false;
+    }
+    if (updateNull == ''){
+        updateNull = false;
+    }
     $.ajax({
         type: "POST",
-        url: getContextPath() + "/declareBuildEngineeringAndEquipmentCenter/saveAndUpdateDeclareBuildEngineeringAndEquipmentCenter",
-        data: item,
+        url: getContextPath() + "/declareBuildEngineeringAndEquipmentCenter/saveDeclareBuildEngineeringAndEquipmentCenter",
+        data: {formData:JSON.stringify(item),updateNull:updateNull},
         success: function (result) {
             if (result.ret) {
                 if (callback) {
@@ -296,6 +313,10 @@ declareCommon.declareBuildCenterSaveAndUpdate = function (item, callback) {
             Alert("调用服务端方法失败，失败原因:" + e);
         }
     });
+};
+
+declareCommon.declareBuildCenterSaveAndUpdate = function (item, callback) {
+    declareCommon.declareBuildCenterSaveAndUpdateBase(item,false,callback) ;
 };
 
 /**
@@ -396,11 +417,20 @@ declareCommon.copyDeclareBuildCenter = function (copyId, ids, callback) {
 };
 
 
-declareCommon.saveLandData = function (data, callback) {
+declareCommon.saveLandDataBase = function (data, updateNull,callback) {
+    if (updateNull == null){
+        updateNull = false;
+    }
+    if (updateNull == undefined){
+        updateNull = false;
+    }
+    if (updateNull == ''){
+        updateNull = false;
+    }
     $.ajax({
         type: "POST",
         url: getContextPath() + "/declareRealtyLandCert/saveAndUpdateDeclareRealtyLandCert",
-        data: {formData: JSON.stringify(data)},
+        data: {formData: JSON.stringify(data),updateNull:updateNull},
         success: function (result) {
             if (result.ret) {
                 callback(result.data);
@@ -412,6 +442,10 @@ declareCommon.saveLandData = function (data, callback) {
             Alert("调用服务端方法失败，失败原因:" + e);
         }
     });
+};
+
+declareCommon.saveLandData = function (data, callback) {
+    declareCommon.saveLandDataBase(data,false,callback) ;
 };
 
 declareCommon.getLandData = function (id, callback, errCallback) {
@@ -479,11 +513,20 @@ declareCommon.deleteLandData = function (ids, callback) {
     });
 };
 
-declareCommon.saveHouseData = function (data, callback) {
+declareCommon.saveHouseDataBase = function (data,updateNull, callback) {
+    if (updateNull == null){
+        updateNull = false;
+    }
+    if (updateNull == undefined){
+        updateNull = false;
+    }
+    if (updateNull == ''){
+        updateNull = false;
+    }
     $.ajax({
         type: "POST",
         url: getContextPath() + "/declareRealtyHouseCert/saveAndUpdateDeclareRealtyHouseCert",
-        data: {formData: JSON.stringify(data)},
+        data: {formData: JSON.stringify(data),updateNull:updateNull},
         success: function (result) {
             if (result.ret) {
                 callback(result.data);
@@ -495,6 +538,10 @@ declareCommon.saveHouseData = function (data, callback) {
             Alert("调用服务端方法失败，失败原因:" + e);
         }
     });
+};
+
+declareCommon.saveHouseData = function (data, callback) {
+    declareCommon.saveHouseDataBase(data,false,callback) ;
 };
 
 declareCommon.getHouseData = function (id, callback) {
@@ -552,11 +599,20 @@ declareCommon.deleteDeclareRealtyData = function (ids, callback) {
 };
 
 //不动产save
-declareCommon.saveDeclareRealtyData = function (data, callback) {
+declareCommon.saveDeclareRealtyDataBase = function (data, updateNull,callback) {
+    if (updateNull == null){
+        updateNull = false;
+    }
+    if (updateNull == undefined){
+        updateNull = false;
+    }
+    if (updateNull == ''){
+        updateNull = false;
+    }
     $.ajax({
         type: "POST",
         url: getContextPath() + "/declareRealtyRealEstateCert/saveAndUpdateDeclareRealtyRealEstateCert",
-        data: {formData: JSON.stringify(data)},
+        data: {formData: JSON.stringify(data),updateNull:updateNull},
         success: function (result) {
             if (result.ret) {
                 callback(result.data);
@@ -568,6 +624,10 @@ declareCommon.saveDeclareRealtyData = function (data, callback) {
             Alert("调用服务端方法失败，失败原因:" + e);
         }
     });
+};
+
+declareCommon.saveDeclareRealtyData = function (data, callback) {
+    declareCommon.saveDeclareRealtyDataBase(data,false,callback) ;
 };
 
 //房产初始化并且赋值
@@ -881,5 +941,483 @@ declareCommon.initDeclareRealty = function (item, form, fileArr, callback,bisDet
 
     frm.find("select").select2({
         minimumResultsForSearch: -1
+    });
+};
+
+//save 设备安装
+declareCommon.saveDeclareBuildEquipmentInstall = function (data, updateNull,callback) {
+    if (updateNull == null){
+        updateNull = false;
+    }
+    if (updateNull == undefined){
+        updateNull = false;
+    }
+    if (updateNull == ''){
+        updateNull = false;
+    }
+    $.ajax({
+        type: "POST",
+        url: getContextPath() + "/declareBuildEquipmentInstall/saveDeclareBuildEquipmentInstall",
+        data: {formData: JSON.stringify(data),updateNull:updateNull},
+        success: function (result) {
+            if (result.ret) {
+                callback(result.data);
+            } else {
+                Alert("保存失败:" + result.errmsg);
+            }
+        },
+        error: function (e) {
+            Alert("调用服务端方法失败，失败原因:" + e);
+        }
+    });
+};
+//initForm 设备安装
+declareCommon.initFormDeclareBuildEquipmentInstall = function (form,item) {
+    var frm = $(form.selector);
+    frm.clearAll();
+    frm.initForm(item);
+    AssessCommon.initAreaInfo({
+        provinceTarget: frm.find("select[name='province']"),
+        cityTarget: frm.find("select[name='city']"),
+        districtTarget: frm.find("select[name='district']"),
+        provinceValue: item.province,
+        cityValue: item.city,
+        districtValue: item.district
+    });
+
+    frm.validate();
+};
+
+//delete 设备安装
+declareCommon.deleteDeclareBuildEquipmentInstallById = function (id, callback) {
+    $.ajax({
+        type: "POST",
+        url: getContextPath() + "/declareBuildEquipmentInstall/deleteDeclareBuildEquipmentInstallById",
+        data: {id: id},
+        success: function (result) {
+            if (result.ret) {
+                if (callback) {
+                    callback();
+                }
+            } else {
+                Alert("失败:" + result.errmsg);
+            }
+        },
+        error: function (e) {
+            Alert("调用服务端方法失败，失败原因:" + e);
+        }
+    });
+};
+
+//get 设备安装
+declareCommon.getDeclareBuildEquipmentInstallById = function (id, callback) {
+    $.ajax({
+        type: "get",
+        url: getContextPath() + "/declareBuildEquipmentInstall/getDeclareBuildEquipmentInstallById",
+        data: {id: id},
+        success: function (result) {
+            if (result.ret) {
+                if (callback) {
+                    callback();
+                }
+            } else {
+                Alert("失败:" + result.errmsg);
+            }
+        },
+        error: function (e) {
+            Alert("调用服务端方法失败，失败原因:" + e);
+        }
+    });
+};
+//save 土建
+declareCommon.saveDeclareBuildEngineering = function (data, updateNull,callback) {
+    if (updateNull == null){
+        updateNull = false;
+    }
+    if (updateNull == undefined){
+        updateNull = false;
+    }
+    if (updateNull == ''){
+        updateNull = false;
+    }
+    $.ajax({
+        type: "POST",
+        url: getContextPath() + "/declareBuildEngineering/saveDeclareBuildEngineering",
+        data: {formData: JSON.stringify(data),updateNull:updateNull},
+        success: function (result) {
+            if (result.ret) {
+                callback(result.data);
+            } else {
+                Alert("保存失败:" + result.errmsg);
+            }
+        },
+        error: function (e) {
+            Alert("调用服务端方法失败，失败原因:" + e);
+        }
+    });
+};
+//initForm 土建
+declareCommon.initFormDeclareBuildEngineering = function (form,item) {
+    var frm = $(form.selector);
+    frm.clearAll();
+    frm.initForm(item);
+    AssessCommon.initAreaInfo({
+        provinceTarget: frm.find("select[name='province']"),
+        cityTarget: frm.find("select[name='city']"),
+        districtTarget: frm.find("select[name='district']"),
+        provinceValue: item.province,
+        cityValue: item.city,
+        districtValue: item.district
+    });
+
+    try {
+        //在这加了时间的input 请在下面的label[name='xxx'] 加上 谢谢
+        frm.find("input[name='terminationDate']").val(formatDate(item.terminationDate));
+        frm.find("input[name='registrationDate']").val(formatDate(item.registrationDate));
+    } catch (e) {
+    }
+
+
+    try {
+        frm.find("label[name='terminationDate']").html(formatDate(item.terminationDate));
+        frm.find("label[name='registrationDate']").html(formatDate(item.registrationDate));
+    } catch (e) {
+    }
+
+    AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareLandCertificateType, item.type, function (html, data) {
+        frm.find("select[name='type']").empty().html(html).trigger('change');
+    });
+    AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareUseRightType, item.useRightType, function (html, data) {
+        frm.find("select[name='useRightType']").empty().html(html).trigger('change');
+    });
+    AssessCommon.loadDataDicByKey(AssessDicKey.estate_total_land_use, item.purpose, function (html, data) {
+        frm.find("select[name='purpose']").empty().html(html).trigger('change');
+    });
+
+    frm.validate();
+};
+
+//delete 土建
+declareCommon.deleteDeclareBuildEngineeringById = function (id, callback) {
+    $.ajax({
+        type: "POST",
+        url: getContextPath() + "/declareBuildEngineering/deleteDeclareBuildEngineeringById",
+        data: {id: id},
+        success: function (result) {
+            if (result.ret) {
+                if (callback) {
+                    callback();
+                }
+            } else {
+                Alert("失败:" + result.errmsg);
+            }
+        },
+        error: function (e) {
+            Alert("调用服务端方法失败，失败原因:" + e);
+        }
+    });
+};
+
+//get 土建
+declareCommon.getDeclareBuildEngineeringById = function (id, callback) {
+    $.ajax({
+        type: "get",
+        url: getContextPath() + "/declareBuildEngineering/getDeclareBuildEngineeringById",
+        data: {id: id},
+        success: function (result) {
+            if (result.ret) {
+                if (callback) {
+                    callback();
+                }
+            } else {
+                Alert("失败:" + result.errmsg);
+            }
+        },
+        error: function (e) {
+            Alert("调用服务端方法失败，失败原因:" + e);
+        }
+    });
+};
+//save 建筑工程施工许可证
+declareCommon.saveDeclareBuildingConstructionPermit = function (data, updateNull,callback) {
+    if (updateNull == null){
+        updateNull = false;
+    }
+    if (updateNull == undefined){
+        updateNull = false;
+    }
+    if (updateNull == ''){
+        updateNull = false;
+    }
+    $.ajax({
+        type: "POST",
+        url: getContextPath() + "/declareBuildingConstructionPermit/saveDeclareBuildingConstructionPermit",
+        data: {formData: JSON.stringify(data),updateNull:updateNull},
+        success: function (result) {
+            if (result.ret) {
+                callback(result.data);
+            } else {
+                Alert("保存失败:" + result.errmsg);
+            }
+        },
+        error: function (e) {
+            Alert("调用服务端方法失败，失败原因:" + e);
+        }
+    });
+};
+
+//delete 建筑工程施工许可证
+declareCommon.deleteDeclareBuildingConstructionPermitById = function (id, callback) {
+    $.ajax({
+        type: "POST",
+        url: getContextPath() + "/declareBuildingConstructionPermit/deleteDeclareBuildingConstructionPermitById",
+        data: {id: id},
+        success: function (result) {
+            if (result.ret) {
+                if (callback) {
+                    callback();
+                }
+            } else {
+                Alert("失败:" + result.errmsg);
+            }
+        },
+        error: function (e) {
+            Alert("调用服务端方法失败，失败原因:" + e);
+        }
+    });
+};
+
+//get 建筑工程施工许可证
+declareCommon.getDeclareBuildingConstructionPermitById = function (id, callback) {
+    $.ajax({
+        type: "get",
+        url: getContextPath() + "/declareBuildingConstructionPermit/getDeclareBuildingConstructionPermitById",
+        data: {id: id},
+        success: function (result) {
+            if (result.ret) {
+                if (callback) {
+                    callback();
+                }
+            } else {
+                Alert("失败:" + result.errmsg);
+            }
+        },
+        error: function (e) {
+            Alert("调用服务端方法失败，失败原因:" + e);
+        }
+    });
+};
+
+
+//save 建设工程规划许可证
+declareCommon.saveDeclareBuildingPermit = function (data, updateNull,callback) {
+    if (updateNull == null){
+        updateNull = false;
+    }
+    if (updateNull == undefined){
+        updateNull = false;
+    }
+    if (updateNull == ''){
+        updateNull = false;
+    }
+    $.ajax({
+        type: "POST",
+        url: getContextPath() + "/declareBuildingPermit/saveDeclareBuildingPermit",
+        data: {formData: JSON.stringify(data),updateNull:updateNull},
+        success: function (result) {
+            if (result.ret) {
+                callback(result.data);
+            } else {
+                Alert("保存失败:" + result.errmsg);
+            }
+        },
+        error: function (e) {
+            Alert("调用服务端方法失败，失败原因:" + e);
+        }
+    });
+};
+
+//delete 建设工程规划许可证
+declareCommon.deleteDeclareBuildingPermitById = function (id, callback) {
+    $.ajax({
+        type: "POST",
+        url: getContextPath() + "/declareBuildingPermit/deleteDeclareBuildingPermitById",
+        data: {id: id},
+        success: function (result) {
+            if (result.ret) {
+                if (callback) {
+                    callback();
+                }
+            } else {
+                Alert("失败:" + result.errmsg);
+            }
+        },
+        error: function (e) {
+            Alert("调用服务端方法失败，失败原因:" + e);
+        }
+    });
+};
+
+//get 建设工程规划许可证
+declareCommon.getDeclareBuildingPermitById = function (id, callback) {
+    $.ajax({
+        type: "get",
+        url: getContextPath() + "/declareBuildingPermit/getDeclareBuildingPermitById",
+        data: {id: id},
+        success: function (result) {
+            if (result.ret) {
+                if (callback) {
+                    callback();
+                }
+            } else {
+                Alert("失败:" + result.errmsg);
+            }
+        },
+        error: function (e) {
+            Alert("调用服务端方法失败，失败原因:" + e);
+        }
+    });
+};
+
+
+//save 建设用地规划许可证
+declareCommon.saveDeclareLandUsePermit = function (data, updateNull,callback) {
+    if (updateNull == null){
+        updateNull = false;
+    }
+    if (updateNull == undefined){
+        updateNull = false;
+    }
+    if (updateNull == ''){
+        updateNull = false;
+    }
+    $.ajax({
+        type: "POST",
+        url: getContextPath() + "/declareLandUsePermit/saveDeclareLandUsePermit",
+        data: {formData: JSON.stringify(data),updateNull:updateNull},
+        success: function (result) {
+            if (result.ret) {
+                callback(result.data);
+            } else {
+                Alert("保存失败:" + result.errmsg);
+            }
+        },
+        error: function (e) {
+            Alert("调用服务端方法失败，失败原因:" + e);
+        }
+    });
+};
+
+//delete 建设用地规划许可证
+declareCommon.deleteDeclareLandUsePermitById = function (id, callback) {
+    $.ajax({
+        type: "POST",
+        url: getContextPath() + "/declareLandUsePermit/deleteDeclareLandUsePermitById",
+        data: {id: id},
+        success: function (result) {
+            if (result.ret) {
+                if (callback) {
+                    callback();
+                }
+            } else {
+                Alert("失败:" + result.errmsg);
+            }
+        },
+        error: function (e) {
+            Alert("调用服务端方法失败，失败原因:" + e);
+        }
+    });
+};
+
+//get 建设用地规划许可证
+declareCommon.getDeclareLandUsePermitById = function (id, callback) {
+    $.ajax({
+        type: "get",
+        url: getContextPath() + "/declareLandUsePermit/getDeclareLandUsePermitById",
+        data: {id: id},
+        success: function (result) {
+            if (result.ret) {
+                if (callback) {
+                    callback();
+                }
+            } else {
+                Alert("失败:" + result.errmsg);
+            }
+        },
+        error: function (e) {
+            Alert("调用服务端方法失败，失败原因:" + e);
+        }
+    });
+};
+
+//
+
+//save 商品房预售许可证
+declareCommon.saveDeclarePreSalePermit = function (data, updateNull,callback) {
+    if (updateNull == null){
+        updateNull = false;
+    }
+    if (updateNull == undefined){
+        updateNull = false;
+    }
+    if (updateNull == ''){
+        updateNull = false;
+    }
+    $.ajax({
+        type: "POST",
+        url: getContextPath() + "/declarePreSalePermit/saveDeclarePreSalePermit",
+        data: {formData: JSON.stringify(data),updateNull:updateNull},
+        success: function (result) {
+            if (result.ret) {
+                callback(result.data);
+            } else {
+                Alert("保存失败:" + result.errmsg);
+            }
+        },
+        error: function (e) {
+            Alert("调用服务端方法失败，失败原因:" + e);
+        }
+    });
+};
+
+//delete 商品房预售许可证
+declareCommon.deleteDeclarePreSalePermitById = function (id, callback) {
+    $.ajax({
+        type: "POST",
+        url: getContextPath() + "/declarePreSalePermit/deleteDeclarePreSalePermitById",
+        data: {id: id},
+        success: function (result) {
+            if (result.ret) {
+                if (callback) {
+                    callback();
+                }
+            } else {
+                Alert("失败:" + result.errmsg);
+            }
+        },
+        error: function (e) {
+            Alert("调用服务端方法失败，失败原因:" + e);
+        }
+    });
+};
+
+//get 商品房预售许可证
+declareCommon.getDeclarePreSalePermitById = function (id, callback) {
+    $.ajax({
+        type: "get",
+        url: getContextPath() + "/declarePreSalePermit/getDeclarePreSalePermitById",
+        data: {id: id},
+        success: function (result) {
+            if (result.ret) {
+                if (callback) {
+                    callback();
+                }
+            } else {
+                Alert("失败:" + result.errmsg);
+            }
+        },
+        error: function (e) {
+            Alert("调用服务端方法失败，失败原因:" + e);
+        }
     });
 };

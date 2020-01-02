@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.dal.basis.entity.DeclareLandUsePermit;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareLandUsePermitExample;
 import com.copower.pmcc.assess.dal.basis.mapper.DeclareLandUsePermitMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -19,26 +20,42 @@ public class DeclareLandUsePermitDao {
     @Autowired
     private DeclareLandUsePermitMapper declareLandUsePermitMapper;
 
-    public Integer addDeclareLandUsePermit(DeclareLandUsePermit declareLandUsePermit){
+    public Integer addDeclareLandUsePermit(DeclareLandUsePermit declareLandUsePermit) {
         declareLandUsePermitMapper.insertSelective(declareLandUsePermit);
         return declareLandUsePermit.getId();
     }
 
-    public DeclareLandUsePermit getDeclareLandUsePermitById(Integer id){
+    public DeclareLandUsePermit getDeclareLandUsePermitById(Integer id) {
         return declareLandUsePermitMapper.selectByPrimaryKey(id);
     }
 
-    public boolean updateDeclareLandUsePermit(DeclareLandUsePermit declareLandUsePermit){
-        return declareLandUsePermitMapper.updateByPrimaryKeySelective(declareLandUsePermit)==1;
+    public boolean updateDeclareLandUsePermit(DeclareLandUsePermit declareLandUsePermit) {
+        return declareLandUsePermitMapper.updateByPrimaryKeySelective(declareLandUsePermit) == 1;
     }
 
-    public void removeDeclareLandUsePermit(DeclareLandUsePermit declareLandUsePermit){
+    public boolean updateDeclareLandUsePermit(DeclareLandUsePermit declareLandUsePermit, boolean updateNull) {
+        if (updateNull){
+            DeclareLandUsePermit target = getDeclareLandUsePermitById(declareLandUsePermit.getId()) ;
+            if (declareLandUsePermit.getPlanDetailsId() == null){
+                declareLandUsePermit.setPlanDetailsId(target.getPlanDetailsId());
+            }
+            if (StringUtils.isEmpty(declareLandUsePermit.getCreator())){
+                declareLandUsePermit.setCreator(target.getCreator());
+            }
+            if (declareLandUsePermit.getGmtCreated() == null){
+                declareLandUsePermit.setGmtCreated(target.getGmtCreated());
+            }
+        }
+        return updateNull ? declareLandUsePermitMapper.updateByPrimaryKey(declareLandUsePermit) == 1 : declareLandUsePermitMapper.updateByPrimaryKeySelective(declareLandUsePermit) == 1;
+    }
+
+    public void removeDeclareLandUsePermit(DeclareLandUsePermit declareLandUsePermit) {
         DeclareLandUsePermitExample example = new DeclareLandUsePermitExample();
         MybatisUtils.convertObj2Example(declareLandUsePermit, example);
         declareLandUsePermitMapper.deleteByExample(example);
     }
 
-    public List<DeclareLandUsePermit> getDeclareLandUsePermitList(DeclareLandUsePermit declareLandUsePermit){
+    public List<DeclareLandUsePermit> getDeclareLandUsePermitList(DeclareLandUsePermit declareLandUsePermit) {
         DeclareLandUsePermitExample example = new DeclareLandUsePermitExample();
         MybatisUtils.convertObj2Example(declareLandUsePermit, example);
         return declareLandUsePermitMapper.selectByExample(example);

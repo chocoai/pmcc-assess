@@ -322,7 +322,7 @@ declareRealtyRealEstateCert.saveAndUpdateData = function () {
             return false;
         }
     }
-    declareCommon.saveDeclareRealtyData(data, function (item) {
+    declareCommon.saveDeclareRealtyDataBase(data, true,function (item) {
         if (!declareCommon.isNotBlank(data.id)) {
             declareCommon.declareBuildCenterSaveAndUpdate({
                 realEstateId: item,

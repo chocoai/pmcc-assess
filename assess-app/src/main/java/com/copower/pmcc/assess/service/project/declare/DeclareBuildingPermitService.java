@@ -37,13 +37,17 @@ public class DeclareBuildingPermitService {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     public Integer saveAndUpdateDeclareBuildingPermit(DeclareBuildingPermit declareBuildingPermit) {
+       return saveAndUpdateDeclareBuildingPermit(declareBuildingPermit,false) ;
+    }
+
+    public Integer saveAndUpdateDeclareBuildingPermit(DeclareBuildingPermit declareBuildingPermit, boolean updateNull) {
         if (declareBuildingPermit.getId() == null || declareBuildingPermit.getId().intValue() == 0) {
             declareBuildingPermit.setCreator(commonService.thisUserAccount());
             Integer id = declareBuildingPermitDao.addDeclareBuildingPermit(declareBuildingPermit);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(DeclareBuildingPermit.class), id);
             return id;
         } else {
-            declareBuildingPermitDao.updateDeclareBuildingPermit(declareBuildingPermit);
+            declareBuildingPermitDao.updateDeclareBuildingPermit(declareBuildingPermit,updateNull);
             return null;
         }
     }

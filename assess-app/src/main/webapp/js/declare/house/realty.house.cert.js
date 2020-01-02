@@ -79,7 +79,7 @@ assessCommonHouse.saveAndUpdateHouse = function () {
             return false;
         }
     }
-    declareCommon.saveHouseData(data, function (item) {
+    declareCommon.saveHouseDataBase(data,true, function (item) {
         if (!declareCommon.isNotBlank(data.id)) {
             declareCommon.declareBuildCenterSaveAndUpdate({
                 houseId: item,
@@ -374,7 +374,7 @@ assessCommonHouse.saveAndUpdateLand = function () {
     var data = formParams(assessCommonHouse.config.son.declareRealtyLandCert.frm);
     data.planDetailsId = declareCommon.getPlanDetailsId();
     data.enable = declareCommon.branchData;
-    declareCommon.saveLandData(data, function (landId) {
+    declareCommon.saveLandDataBase(data, true,function (landId) {
         if (landId) {
             declareCommon.declareBuildCenterSaveAndUpdate({landId: landId, id: data.centerId}, function () {
                 assessCommonHouse.loadList();

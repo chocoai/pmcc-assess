@@ -37,13 +37,17 @@ public class DeclareBuildingConstructionPermitService {
     private DeclareBuildingConstructionPermitDao declareBuildingConstructionPermitDao;
 
     public Integer saveAndUpdateDeclareBuildingConstructionPermit(DeclareBuildingConstructionPermit declareBuildingConstructionPermit) {
+       return saveAndUpdateDeclareBuildingConstructionPermit(declareBuildingConstructionPermit,false) ;
+    }
+
+    public Integer saveAndUpdateDeclareBuildingConstructionPermit(DeclareBuildingConstructionPermit declareBuildingConstructionPermit, boolean updateNull) {
         if (declareBuildingConstructionPermit.getId() == null || declareBuildingConstructionPermit.getId().intValue() == 0) {
             declareBuildingConstructionPermit.setCreator(commonService.thisUserAccount());
             Integer id = declareBuildingConstructionPermitDao.addDeclareBuildingConstructionPermit(declareBuildingConstructionPermit);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(DeclareBuildingConstructionPermit.class), id);
             return id;
         } else {
-            declareBuildingConstructionPermitDao.updateDeclareBuildingConstructionPermit(declareBuildingConstructionPermit);
+            declareBuildingConstructionPermitDao.updateDeclareBuildingConstructionPermit(declareBuildingConstructionPermit,updateNull);
             return null;
         }
     }

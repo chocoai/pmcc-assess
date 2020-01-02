@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.controller.project.declare;
 
+import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.dal.basis.entity.DeclarePreSalePermit;
 import com.copower.pmcc.assess.dto.input.project.declare.DeclarePreSalePermitDto;
 import com.copower.pmcc.assess.service.project.declare.DeclarePreSalePermitService;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -76,12 +78,13 @@ public class DeclarePreSalePermitController {
         return null;
     }
 
+    @Deprecated
     @ResponseBody
     @RequestMapping(value = "/saveAndUpdateDeclarePreSalePermit", method = {RequestMethod.POST}, name = "更新商品房预售许可证")
     public HttpResult saveAndUpdate(DeclarePreSalePermitDto declarePreSalePermitDto) {
         DeclarePreSalePermit declarePreSalePermit = new DeclarePreSalePermit();
         try {
-            BeanUtils.copyProperties(declarePreSalePermitDto,declarePreSalePermit);
+            BeanUtils.copyProperties(declarePreSalePermitDto, declarePreSalePermit);
             Integer id = declarePreSalePermitService.saveAndUpdateDeclarePreSalePermit(declarePreSalePermit);
             return HttpResult.newCorrectResult(id);
         } catch (Exception e) {
@@ -90,9 +93,23 @@ public class DeclarePreSalePermitController {
         }
     }
 
+
+    @ResponseBody
+    @RequestMapping(value = "/saveDeclarePreSalePermit", method = {RequestMethod.POST}, name = "更新商品房预售许可证")
+    public HttpResult saveDeclarePreSalePermit(String formData, @RequestParam(defaultValue = "false") boolean updateNull) {
+        try {
+            DeclarePreSalePermit declarePreSalePermit = JSONObject.parseObject(formData, DeclarePreSalePermit.class);
+            declarePreSalePermitService.saveAndUpdateDeclarePreSalePermit(declarePreSalePermit,updateNull);
+            return HttpResult.newCorrectResult(declarePreSalePermit);
+        } catch (Exception e) {
+            logger.error(String.format("exception: %s", e.getMessage()), e);
+            return HttpResult.newErrorResult("保存异常");
+        }
+    }
+
     @ResponseBody
     @RequestMapping(value = "/listDeclarePreSalePermit", method = {RequestMethod.GET}, name = "商品房预售许可证 list")
-    public HttpResult list( Integer planDetailsId) {
+    public HttpResult list(Integer planDetailsId) {
         try {
             DeclarePreSalePermit declarePreSalePermit = new DeclarePreSalePermit();
             if (planDetailsId != null) {

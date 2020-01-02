@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -103,10 +104,10 @@ public class DeclareRealtyLandCertController {
 
     @ResponseBody
     @RequestMapping(value = "/saveAndUpdateDeclareRealtyLandCert", method = {RequestMethod.POST}, name = "更新土地证维护")
-    public HttpResult saveAndUpdate(String formData) {
+    public HttpResult saveAndUpdate(String formData,@RequestParam(defaultValue = "false") boolean updateNull) {
         try {
             DeclareRealtyLandCert declareRealtyLandCert= JSON.parseObject(formData,DeclareRealtyLandCert.class);
-            Integer id = declareRealtyLandCertService.saveAndUpdateDeclareRealtyLandCert(declareRealtyLandCert);
+            Integer id = declareRealtyLandCertService.saveAndUpdateDeclareRealtyLandCert(declareRealtyLandCert,updateNull);
             return HttpResult.newCorrectResult(id);
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
