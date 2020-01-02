@@ -9,11 +9,14 @@ import com.copower.pmcc.assess.service.data.SysFeedbackService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -114,6 +117,32 @@ public class SysFeedbackController {
             logger.error(String.format("exception: %s", e.getMessage()), e);
             return HttpResult.newErrorResult("保存异常");
         }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/submitQuestion", method = {RequestMethod.POST}, name = "问题提交")
+    public HttpResult submitQuestion(String ids) {
+        try {
+            if (StringUtils.isNotBlank(ids))
+                sysFeedbackService.submitQuestion(FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(ids)));
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+
+
+    @ResponseBody
+    @RequestMapping(value = "/updateQuestions", method = {RequestMethod.POST}, name = "更新")
+    public HttpResult updateQuestions() {
+        try {
+            sysFeedbackService.updateQuestions();
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
     }
 
 
