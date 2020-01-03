@@ -568,6 +568,7 @@
                 <div class="x_panel">
                     <div class="x_content">
                         <!-- 从表 -->
+                        <%@include file="/views/project/stageSurvey/commonDetail/estateInvestigation.jsp" %>
                         <%@include file="/views/project/stageSurvey/commonDetail/estateNetwork.jsp" %>
                         <%@include file="/views/project/stageSurvey/commonDetail/estateParking.jsp" %>
                         <%@include file="/views/project/stageSurvey/commonDetail/matchingEnvironment.jsp" %>

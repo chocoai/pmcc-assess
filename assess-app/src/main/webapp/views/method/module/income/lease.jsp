@@ -123,11 +123,11 @@
                     <div class="form-group">
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                月租金收入(元/m2)<span class="symbol required"></span>
+                                月租金收入(元/m²)<span class="symbol required"></span>
                             </label>
                             <div class="col-sm-4">
                                 <div class="input-group">
-                                    <input type="text" name="rentalIncome" placeholder="月租金收入(元/m2)"
+                                    <input type="text" name="rentalIncome" placeholder="月租金收入(元/m²)"
                                            data-rule-number="true"
                                            class="form-control" required="required">
                                     <span class="input-group-btn">
@@ -181,10 +181,10 @@
                     <div class="form-group">
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                年押金(元/m2)<span class="symbol required"></span>
+                                年押金(元/m²)<span class="symbol required"></span>
                             </label>
                             <div class="col-sm-4">
-                                <input type="text" name="deposit" data-rule-number="true" placeholder="年押金(元/m2)"
+                                <input type="text" name="deposit" data-rule-number="true" placeholder="年押金(元/m²)"
                                        onblur="lease.computeOtherIncome(this);" class="form-control"
                                        required="required">
                             </div>
@@ -302,10 +302,10 @@
                         </div>
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                重置价格(元/m2)<span class="symbol required"></span>
+                                重置价格(元/m²)<span class="symbol required"></span>
                             </label>
                             <div class="col-sm-4">
-                                <input type="text" name="replacementValue" placeholder="重置价格(元/m2)"
+                                <input type="text" name="replacementValue" placeholder="重置价格(元/m²)"
                                        data-rule-number="true"
                                        class="form-control " required="required">
                             </div>
@@ -1055,9 +1055,7 @@
                 var g = $(this).find('[data-name=rentalGrowthRate]').val();
                 if (!AssessCommon.isNumber(g)) return false;
                 g = parseFloat(g);//租金增长率
-
                 var h = (1 - Math.pow((1 + g) / (1 + r), yc)).toFixed(6);//年期修正系数
-                if (h <= 0) return false;
                 var k = 0;
                 k = (h / (r - g) / Math.pow((1 + r), n)).toFixed(6);//收益现值系数
                 $(this).find('[data-name=correctionFactor]').text(h);

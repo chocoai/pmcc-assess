@@ -652,6 +652,7 @@
 </script>
 <div class="x_content">
     <%@include file="/views/project/tool/landLevelModalView.jsp" %>
+    <%@include file="/views/project/stageSurvey/common/estateInvestigation.jsp" %>
     <%@include file="/views/project/stageSurvey/common/estateNetwork.jsp" %>
     <%@include file="/views/project/stageSurvey/common/estateParking.jsp" %>
     <%@include file="/views/project/stageSurvey/common/matchingEnvironment.jsp" %>
@@ -678,7 +679,8 @@
     </c:if>
 </div>
 <%@include file="/views/project/tool/toolMapHandleView.jsp" %>
-
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/ajaxfileupload.js?v=${assessVersion}"></script>
 <script src='${pageContext.request.contextPath}/js/common.column.js?v=${assessVersion}'></script>
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/js/examine/examine.estate.js?v=${assessVersion}"></script>

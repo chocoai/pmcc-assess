@@ -870,3 +870,44 @@ var matchingMaterial;
         matchingMaterial.prototype.loadDataDicList();
     })
 })();
+
+var estateInvestigation;
+(function () {
+    estateInvestigation = function () {
+    };
+    estateInvestigation.prototype = {
+        config: function () {
+            var data = {};
+            data.table = "EstateInvestigationList";
+            data.box = "divBoxEstateInvestigation";
+            data.frm = "frmEstateInvestigation";
+            return data;
+        },
+        loadDataDicList: function () {
+            var cols = commonColumn.estateInvestigation();
+            $("#" + estateInvestigation.prototype.config().table).bootstrapTable('destroy');
+            TableInit(estateInvestigation.prototype.config().table, getContextPath() + "/basicEstateInvestigation/getEstateInvestigationListByEstateId", cols, {
+                estateId: estateCommon.getEstateId()
+            }, {
+                showColumns: false,
+                showRefresh: false,
+                search: false,
+                onLoadSuccess: function () {
+                    $('.tooltips').tooltip();
+                }
+            });
+        },
+        isNotNull: function (item) {
+            if (item) {
+                return true;
+            }
+            return false;
+        }
+    }
+
+    //绑定事件
+    $('#' + estateInvestigation.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
+        estateInvestigation.prototype.loadDataDicList();
+    })
+
+})();
