@@ -66,10 +66,10 @@ public class DeclareBuildEngineeringService {
     public String importData(DeclareBuildEngineering declareBuildEngineering, MultipartFile multipartFile) throws Exception {
         String declareType = null;
         List<BaseProjectClassify> baseProjectClassifies = baseProjectClassifyService.getCacheProjectClassifyListByKey(AssessProjectClassifyConstant.SINGLE_HOUSE_BUILDING_CERTIFICATE_TYPE);
-        if (!ObjectUtils.isEmpty(baseProjectClassifies)){
-            for (BaseProjectClassify baseProjectClassify:baseProjectClassifies){
-                if (Objects.equal(baseProjectClassify.getName(), DeclareTypeEnum.DeclareBuildEngineering.getKey())){
-                    declareType = String.format("%d",baseProjectClassify.getId());
+        if (!ObjectUtils.isEmpty(baseProjectClassifies)) {
+            for (BaseProjectClassify baseProjectClassify : baseProjectClassifies) {
+                if (Objects.equal(baseProjectClassify.getName(), DeclareTypeEnum.DeclareBuildEngineering.getKey())) {
+                    declareType = String.format("%d", baseProjectClassify.getId());
                 }
             }
         }
@@ -110,7 +110,7 @@ public class DeclareBuildEngineeringService {
                 oo = new DeclareBuildEngineering();
                 oo.setPlanDetailsId(declareBuildEngineering.getPlanDetailsId());
                 oo.setDeclareType(declareType);
-                if (!declarePoiHelp.buildEngineering(oo,builder,row,i)){
+                if (!declarePoiHelp.buildEngineering(oo, builder, row, i)) {
                     continue;
                 }
             } catch (Exception e) {
@@ -127,6 +127,11 @@ public class DeclareBuildEngineeringService {
     }
 
     public Integer saveAndUpdateDeclareBuildEngineering(DeclareBuildEngineering declareBuildEngineering) {
+        return saveAndUpdateDeclareBuildEngineering(declareBuildEngineering,false) ;
+    }
+
+
+    public Integer saveAndUpdateDeclareBuildEngineering(DeclareBuildEngineering declareBuildEngineering, boolean updateNull) {
         if (declareBuildEngineering.getId() == null) {
             declareBuildEngineering.setCreator(commonService.thisUserAccount());
             Integer id = declareBuildEngineeringDao.addDeclareBuildEngineering(declareBuildEngineering);
@@ -139,8 +144,22 @@ public class DeclareBuildEngineeringService {
             declareBuildEngineeringAndEquipmentCenterService.saveAndUpdateDeclareBuildEngineeringAndEquipmentCenter(oo);
             return id;
         } else {
-            declareBuildEngineeringDao.updateDeclareBuildEngineering(declareBuildEngineering);
+            declareBuildEngineeringDao.updateDeclareBuildEngineering(declareBuildEngineering, updateNull);
             return null;
+        }
+    }
+
+    public Integer saveDeclareBuildEngineering(DeclareBuildEngineering target,boolean updateNull){
+        if (target.getId() == null || target.getId() == 0) {
+            if (StringUtils.isEmpty(target.getCreator())) {
+                target.setCreator(commonService.thisUserAccount());
+            }
+            declareBuildEngineeringDao.addDeclareBuildEngineering(target);
+            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(DeclareBuildEngineering.class), target.getId());
+            return target.getId();
+        } else {
+            declareBuildEngineeringDao.updateDeclareBuildEngineering(target, updateNull);
+            return target.getId();
         }
     }
 
@@ -173,9 +192,9 @@ public class DeclareBuildEngineeringService {
         DeclareBuildEngineeringAndEquipmentCenter query = new DeclareBuildEngineeringAndEquipmentCenter();
         query.setBuildEngineeringId(declareBuildEngineering.getId());
         List<DeclareBuildEngineeringAndEquipmentCenter> declareBuildEngineeringAndEquipmentCenterList = declareBuildEngineeringAndEquipmentCenterService.declareBuildEngineeringAndEquipmentCenterList(query);
-        if (!ObjectUtils.isEmpty(declareBuildEngineeringAndEquipmentCenterList)){
-            for (DeclareBuildEngineeringAndEquipmentCenter engineeringAndEquipmentCenter:declareBuildEngineeringAndEquipmentCenterList){
-                if (engineeringAndEquipmentCenter.getBuildEngineeringId().equals(declareBuildEngineering.getId())){
+        if (!ObjectUtils.isEmpty(declareBuildEngineeringAndEquipmentCenterList)) {
+            for (DeclareBuildEngineeringAndEquipmentCenter engineeringAndEquipmentCenter : declareBuildEngineeringAndEquipmentCenterList) {
+                if (engineeringAndEquipmentCenter.getBuildEngineeringId().equals(declareBuildEngineering.getId())) {
                     declareBuildEngineeringAndEquipmentCenterService.removeDeclareBuildEngineeringAndEquipmentCenter(engineeringAndEquipmentCenter);
                 }
             }
@@ -184,7 +203,7 @@ public class DeclareBuildEngineeringService {
     }
 
     public DeclareBuildEngineeringVo getDeclareBuildEngineeringVo(DeclareBuildEngineering declareBuildEngineering) {
-        if (declareBuildEngineering == null){
+        if (declareBuildEngineering == null) {
             return null;
         }
         DeclareBuildEngineeringVo vo = new DeclareBuildEngineeringVo();
@@ -192,9 +211,9 @@ public class DeclareBuildEngineeringService {
         DeclareBuildEngineeringAndEquipmentCenter query = new DeclareBuildEngineeringAndEquipmentCenter();
         query.setBuildEngineeringId(declareBuildEngineering.getId());
         List<DeclareBuildEngineeringAndEquipmentCenter> declareBuildEngineeringAndEquipmentCenterList = declareBuildEngineeringAndEquipmentCenterService.declareBuildEngineeringAndEquipmentCenterList(query);
-        if (!ObjectUtils.isEmpty(declareBuildEngineeringAndEquipmentCenterList)){
-            for (DeclareBuildEngineeringAndEquipmentCenter oo:declareBuildEngineeringAndEquipmentCenterList){
-                if (oo.getBuildEngineeringId().equals(declareBuildEngineering.getId())){
+        if (!ObjectUtils.isEmpty(declareBuildEngineeringAndEquipmentCenterList)) {
+            for (DeclareBuildEngineeringAndEquipmentCenter oo : declareBuildEngineeringAndEquipmentCenterList) {
+                if (oo.getBuildEngineeringId().equals(declareBuildEngineering.getId())) {
                     vo.setCenterId(oo.getId());
                     vo.setDeclareBuildEngineeringAndEquipmentCenter(oo);
                 }
@@ -235,7 +254,7 @@ public class DeclareBuildEngineeringService {
         return vo;
     }
 
-    public void eventWriteDeclareApply(DeclareApply declareApply){
+    public void eventWriteDeclareApply(DeclareApply declareApply) {
         DeclareRecord declareRecord = null;
         if (declareApply == null) {
             return;
@@ -245,7 +264,7 @@ public class DeclareBuildEngineeringService {
         List<DeclareBuildEngineering> lists = declareBuildEngineeringDao.getDeclareBuildEngineeringList(query);
         for (DeclareBuildEngineering oo : lists) {
             declareRecord = new DeclareRecord();
-            BeanUtils.copyProperties(oo,declareRecord);
+            BeanUtils.copyProperties(oo, declareRecord);
             declareRecord.setId(null);
             declareRecord.setProjectId(declareApply.getProjectId());
             declareRecord.setOwnership(oo.getOccupancyUnit());
@@ -259,7 +278,7 @@ public class DeclareBuildEngineeringService {
             try {
                 declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
             } catch (Exception e1) {
-                logger.error("写入失败!",e1);
+                logger.error("写入失败!", e1);
             }
         }
     }

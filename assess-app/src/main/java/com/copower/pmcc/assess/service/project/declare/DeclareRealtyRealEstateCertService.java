@@ -149,13 +149,17 @@ public class DeclareRealtyRealEstateCertService {
     }
 
     public Integer saveAndUpdateDeclareRealtyRealEstateCert(DeclareRealtyRealEstateCert declareRealtyRealEstateCert) {
+       return saveAndUpdateDeclareRealtyRealEstateCert(declareRealtyRealEstateCert,false) ;
+    }
+
+    public Integer saveAndUpdateDeclareRealtyRealEstateCert(DeclareRealtyRealEstateCert declareRealtyRealEstateCert,boolean updateNull) {
         if (declareRealtyRealEstateCert.getId() == null) {
             declareRealtyRealEstateCert.setCreator(commonService.thisUserAccount());
             Integer id = declareRealtyRealEstateCertDao.addDeclareRealtyRealEstateCert(declareRealtyRealEstateCert);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(DeclareRealtyRealEstateCert.class), id);
             return id;
         } else {
-            declareRealtyRealEstateCertDao.updateDeclareRealtyRealEstateCert(declareRealtyRealEstateCert);
+            declareRealtyRealEstateCertDao.updateDeclareRealtyRealEstateCert(declareRealtyRealEstateCert,updateNull);
             updateDeclareRealtyRealEstateCertAndUpdateDeclareRecordOrJudgeObject(declareRealtyRealEstateCert);
             return null;
         }

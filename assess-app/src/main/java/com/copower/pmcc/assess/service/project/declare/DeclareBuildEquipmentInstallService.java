@@ -66,10 +66,10 @@ public class DeclareBuildEquipmentInstallService {
     public String importData(DeclareBuildEquipmentInstall declareBuildEquipmentInstall, MultipartFile multipartFile) throws Exception {
         String declareType = null;
         List<BaseProjectClassify> baseProjectClassifies = baseProjectClassifyService.getCacheProjectClassifyListByKey(AssessProjectClassifyConstant.SINGLE_HOUSE_BUILDING_CERTIFICATE_TYPE);
-        if (!ObjectUtils.isEmpty(baseProjectClassifies)){
-            for (BaseProjectClassify baseProjectClassify:baseProjectClassifies){
-                if (Objects.equal(baseProjectClassify.getName(), DeclareTypeEnum.DeclareBuildEquipmentInstall.getKey())){
-                    declareType = String.format("%d",baseProjectClassify.getId());
+        if (!ObjectUtils.isEmpty(baseProjectClassifies)) {
+            for (BaseProjectClassify baseProjectClassify : baseProjectClassifies) {
+                if (Objects.equal(baseProjectClassify.getName(), DeclareTypeEnum.DeclareBuildEquipmentInstall.getKey())) {
+                    declareType = String.format("%d", baseProjectClassify.getId());
                 }
             }
         }
@@ -110,7 +110,7 @@ public class DeclareBuildEquipmentInstallService {
                 oo = new DeclareBuildEquipmentInstall();
                 oo.setPlanDetailsId(declareBuildEquipmentInstall.getPlanDetailsId());
                 oo.setDeclareType(declareType);
-                if (!declarePoiHelp.buildEquipmentInstall(oo,builder,row,i)){
+                if (!declarePoiHelp.buildEquipmentInstall(oo, builder, row, i)) {
                     continue;
                 }
             } catch (Exception e) {
@@ -127,6 +127,10 @@ public class DeclareBuildEquipmentInstallService {
     }
 
     public Integer saveAndUpdateDeclareBuildEquipmentInstall(DeclareBuildEquipmentInstall declareBuildEquipmentInstall) {
+        return saveAndUpdateDeclareBuildEquipmentInstall(declareBuildEquipmentInstall, false);
+    }
+
+    public Integer saveAndUpdateDeclareBuildEquipmentInstall(DeclareBuildEquipmentInstall declareBuildEquipmentInstall, boolean updateNull) {
         if (declareBuildEquipmentInstall.getId() == null) {
             declareBuildEquipmentInstall.setCreator(commonService.thisUserAccount());
             Integer id = declareBuildEquipmentInstallDao.addDeclareBuildEquipmentInstall(declareBuildEquipmentInstall);
@@ -139,8 +143,22 @@ public class DeclareBuildEquipmentInstallService {
             declareBuildEngineeringAndEquipmentCenterService.saveAndUpdateDeclareBuildEngineeringAndEquipmentCenter(oo);
             return id;
         } else {
-            declareBuildEquipmentInstallDao.updateDeclareBuildEquipmentInstall(declareBuildEquipmentInstall);
+            declareBuildEquipmentInstallDao.updateDeclareBuildEquipmentInstall(declareBuildEquipmentInstall, updateNull);
             return null;
+        }
+    }
+
+    public Integer saveDeclareBuildEquipmentInstall(DeclareBuildEquipmentInstall target, boolean updateNull) {
+        if (target.getId() == null || target.getId() == 0) {
+            if (StringUtils.isEmpty(target.getCreator())) {
+                target.setCreator(commonService.thisUserAccount());
+            }
+            declareBuildEquipmentInstallDao.addDeclareBuildEquipmentInstall(target);
+            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(DeclareBuildEquipmentInstall.class), target.getId());
+            return target.getId();
+        } else {
+            declareBuildEquipmentInstallDao.updateDeclareBuildEquipmentInstall(target, updateNull);
+            return target.getId();
         }
     }
 
@@ -173,9 +191,9 @@ public class DeclareBuildEquipmentInstallService {
         DeclareBuildEngineeringAndEquipmentCenter oo = new DeclareBuildEngineeringAndEquipmentCenter();
         oo.setBuildEquipmentId(declareBuildEquipmentInstall.getId());
         List<DeclareBuildEngineeringAndEquipmentCenter> declareBuildEngineeringAndEquipmentCenterList = declareBuildEngineeringAndEquipmentCenterService.declareBuildEngineeringAndEquipmentCenterList(oo);
-        if (!ObjectUtils.isEmpty(declareBuildEngineeringAndEquipmentCenterList)){
-            for (DeclareBuildEngineeringAndEquipmentCenter engineeringAndEquipmentCenter:declareBuildEngineeringAndEquipmentCenterList){
-                if (engineeringAndEquipmentCenter.getBuildEquipmentId().equals(declareBuildEquipmentInstall.getId())){
+        if (!ObjectUtils.isEmpty(declareBuildEngineeringAndEquipmentCenterList)) {
+            for (DeclareBuildEngineeringAndEquipmentCenter engineeringAndEquipmentCenter : declareBuildEngineeringAndEquipmentCenterList) {
+                if (engineeringAndEquipmentCenter.getBuildEquipmentId().equals(declareBuildEquipmentInstall.getId())) {
                     declareBuildEngineeringAndEquipmentCenterService.removeDeclareBuildEngineeringAndEquipmentCenter(engineeringAndEquipmentCenter);
                 }
             }
@@ -189,9 +207,9 @@ public class DeclareBuildEquipmentInstallService {
         DeclareBuildEngineeringAndEquipmentCenter andEquipmentCenter = new DeclareBuildEngineeringAndEquipmentCenter();
         andEquipmentCenter.setBuildEquipmentId(declareBuildEquipmentInstall.getId());
         List<DeclareBuildEngineeringAndEquipmentCenter> declareBuildEngineeringAndEquipmentCenterList = declareBuildEngineeringAndEquipmentCenterService.declareBuildEngineeringAndEquipmentCenterList(andEquipmentCenter);
-        if (!ObjectUtils.isEmpty(declareBuildEngineeringAndEquipmentCenterList)){
-            for (DeclareBuildEngineeringAndEquipmentCenter oo:declareBuildEngineeringAndEquipmentCenterList){
-                if (oo.getBuildEquipmentId().equals(declareBuildEquipmentInstall.getId())){
+        if (!ObjectUtils.isEmpty(declareBuildEngineeringAndEquipmentCenterList)) {
+            for (DeclareBuildEngineeringAndEquipmentCenter oo : declareBuildEngineeringAndEquipmentCenterList) {
+                if (oo.getBuildEquipmentId().equals(declareBuildEquipmentInstall.getId())) {
                     vo.setCenterId(oo.getId());
                     vo.setDeclareBuildEngineeringAndEquipmentCenter(oo);
                 }
@@ -201,14 +219,14 @@ public class DeclareBuildEquipmentInstallService {
             if (NumberUtils.isNumber(declareBuildEquipmentInstall.getProvince())) {
                 //省
                 vo.setProvinceName(erpAreaService.getSysAreaName(declareBuildEquipmentInstall.getProvince()));
-            }else {
+            } else {
                 vo.setProvinceName(declareBuildEquipmentInstall.getProvince());
             }
         }
         if (StringUtils.isNotBlank(declareBuildEquipmentInstall.getCity())) {
             if (NumberUtils.isNumber(declareBuildEquipmentInstall.getCity())) {
                 vo.setCityName(erpAreaService.getSysAreaName(declareBuildEquipmentInstall.getCity()));
-            }else {
+            } else {
                 //市,区
                 vo.setCityName(declareBuildEquipmentInstall.getCity());
             }
@@ -217,7 +235,7 @@ public class DeclareBuildEquipmentInstallService {
             if (NumberUtils.isNumber(declareBuildEquipmentInstall.getDistrict())) {
                 //县
                 vo.setDistrictName(erpAreaService.getSysAreaName(declareBuildEquipmentInstall.getDistrict()));
-            }else {
+            } else {
                 vo.setDistrictName(declareBuildEquipmentInstall.getDistrict());
             }
         }
@@ -237,7 +255,7 @@ public class DeclareBuildEquipmentInstallService {
         return vo;
     }
 
-    public void eventWriteDeclareApply(DeclareApply declareApply){
+    public void eventWriteDeclareApply(DeclareApply declareApply) {
         DeclareRecord declareRecord = null;
         if (declareApply == null) {
             return;
@@ -247,7 +265,7 @@ public class DeclareBuildEquipmentInstallService {
         List<DeclareBuildEquipmentInstall> lists = declareBuildEquipmentInstallDao.getDeclareBuildEquipmentInstallList(query);
         for (DeclareBuildEquipmentInstall oo : lists) {
             declareRecord = new DeclareRecord();
-            BeanUtils.copyProperties(oo,declareRecord);
+            BeanUtils.copyProperties(oo, declareRecord);
             declareRecord.setId(null);
             declareRecord.setProjectId(declareApply.getProjectId());
             declareRecord.setOwnership(oo.getOccupancyUnit());
@@ -260,7 +278,7 @@ public class DeclareBuildEquipmentInstallService {
             try {
                 declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
             } catch (Exception e1) {
-                logger.error("写入失败!",e1);
+                logger.error("写入失败!", e1);
             }
         }
     }

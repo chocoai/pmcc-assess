@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.dal.basis.entity.DeclareBuildingConstructionPermi
 import com.copower.pmcc.assess.dal.basis.entity.DeclareBuildingConstructionPermitExample;
 import com.copower.pmcc.assess.dal.basis.mapper.DeclareBuildingConstructionPermitMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -30,6 +31,24 @@ public class DeclareBuildingConstructionPermitDao {
 
     public boolean updateDeclareBuildingConstructionPermit(DeclareBuildingConstructionPermit declareBuildingConstructionPermit){
         return declareBuildingConstructionPermitMapper.updateByPrimaryKeySelective(declareBuildingConstructionPermit)==1;
+    }
+
+    public boolean updateDeclareBuildingConstructionPermit(DeclareBuildingConstructionPermit declareBuildingConstructionPermit, boolean updateNull){
+
+        if (updateNull) {
+            DeclareBuildingConstructionPermit target = getDeclareBuildingConstructionPermitById(declareBuildingConstructionPermit.getId());
+            if (declareBuildingConstructionPermit.getPlanDetailsId() == null) {
+                declareBuildingConstructionPermit.setPlanDetailsId(target.getPlanDetailsId());
+            }
+            if (StringUtils.isEmpty(declareBuildingConstructionPermit.getCreator())) {
+                declareBuildingConstructionPermit.setCreator(target.getCreator());
+            }
+            if (declareBuildingConstructionPermit.getGmtCreated() == null) {
+                declareBuildingConstructionPermit.setGmtCreated(target.getGmtCreated());
+            }
+        }
+
+        return updateNull ? declareBuildingConstructionPermitMapper.updateByPrimaryKey(declareBuildingConstructionPermit) == 1 : declareBuildingConstructionPermitMapper.updateByPrimaryKeySelective(declareBuildingConstructionPermit) == 1;
     }
 
     public void removeDeclareBuildingConstructionPermit(DeclareBuildingConstructionPermit declareBuildingConstructionPermit){

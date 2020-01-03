@@ -1765,6 +1765,66 @@ public class DeclareBuildEngineeringExample {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
             return (Criteria) this;
         }
+
+        public Criteria andBisRecordIsNull() {
+            addCriterion("bis_record is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisRecordIsNotNull() {
+            addCriterion("bis_record is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisRecordEqualTo(Boolean value) {
+            addCriterion("bis_record =", value, "bisRecord");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisRecordNotEqualTo(Boolean value) {
+            addCriterion("bis_record <>", value, "bisRecord");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisRecordGreaterThan(Boolean value) {
+            addCriterion("bis_record >", value, "bisRecord");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisRecordGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_record >=", value, "bisRecord");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisRecordLessThan(Boolean value) {
+            addCriterion("bis_record <", value, "bisRecord");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisRecordLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_record <=", value, "bisRecord");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisRecordIn(List<Boolean> values) {
+            addCriterion("bis_record in", values, "bisRecord");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisRecordNotIn(List<Boolean> values) {
+            addCriterion("bis_record not in", values, "bisRecord");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisRecordBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_record between", value1, value2, "bisRecord");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisRecordNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_record not between", value1, value2, "bisRecord");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

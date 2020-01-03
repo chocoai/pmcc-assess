@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.controller.project.declare;
 
+import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareBuildEngineering;
 import com.copower.pmcc.assess.dto.input.project.declare.DeclareBuildEngineeringDto;
 import com.copower.pmcc.assess.service.project.declare.DeclareBuildEngineeringService;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -80,13 +82,13 @@ public class DeclareBuildEngineeringController {
 
     @ResponseBody
     @RequestMapping(value = "/deleteDeclareBuildEngineeringById", method = {RequestMethod.POST}, name = "删除土建维护")
-    public HttpResult delete(String ids) {
+    public HttpResult delete(String id) {
         try {
-            if (!StringUtils.isEmpty(ids)) {
-                List<Integer> integers = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(ids));
-                for (Integer id : integers) {
+            if (!StringUtils.isEmpty(id)) {
+                List<Integer> integers = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(id));
+                for (Integer integer : integers) {
                     DeclareBuildEngineering declareBuildEngineering = new DeclareBuildEngineering();
-                    declareBuildEngineering.setId(id);
+                    declareBuildEngineering.setId(integer);
                     declareBuildEngineeringService.removeDeclareBuildEngineering(declareBuildEngineering);
                 }
             }
@@ -107,6 +109,19 @@ public class DeclareBuildEngineeringController {
         try {
             declareBuildEngineeringService.saveAndUpdateDeclareBuildEngineering(declareBuildEngineering);
             return HttpResult.newCorrectResult("保存 success!");
+        } catch (Exception e) {
+            logger.error(String.format("exception: %s", e.getMessage()), e);
+            return HttpResult.newErrorResult("保存异常");
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/saveDeclareBuildEngineering", method = {RequestMethod.POST}, name = "更新土建维护")
+    public HttpResult saveDeclareBuildEngineering(String formData, @RequestParam(defaultValue = "false") boolean updateNull) {
+        try {
+            DeclareBuildEngineering declareBuildEngineering = JSONObject.parseObject(formData, DeclareBuildEngineering.class);
+            declareBuildEngineeringService.saveDeclareBuildEngineering(declareBuildEngineering, updateNull);
+            return HttpResult.newCorrectResult(declareBuildEngineering);
         } catch (Exception e) {
             logger.error(String.format("exception: %s", e.getMessage()), e);
             return HttpResult.newErrorResult("保存异常");

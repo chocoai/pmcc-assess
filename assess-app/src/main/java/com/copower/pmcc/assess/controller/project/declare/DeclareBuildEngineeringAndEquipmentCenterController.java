@@ -1,17 +1,13 @@
 package com.copower.pmcc.assess.controller.project.declare;
 
+import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareBuildEngineeringAndEquipmentCenter;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.project.declare.DeclareBuildEngineeringAndEquipmentCenterService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 /**
@@ -22,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/declareBuildEngineeringAndEquipmentCenter")
 @RestController
 public class DeclareBuildEngineeringAndEquipmentCenterController {
-    private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private BaseService baseService;
 
@@ -44,9 +39,21 @@ public class DeclareBuildEngineeringAndEquipmentCenterController {
     }
 
     @RequestMapping(value = "/saveAndUpdateDeclareBuildEngineeringAndEquipmentCenter", method = {RequestMethod.POST}, name = "更新在建工程中间表")
-    public HttpResult saveAndUpdate(DeclareBuildEngineeringAndEquipmentCenter declareBuildEngineeringAndEquipmentCenter) {
+    public HttpResult saveAndUpdate(DeclareBuildEngineeringAndEquipmentCenter declareBuildEngineeringAndEquipmentCenter, @RequestParam(defaultValue = "false") boolean updateNull) {
         try {
-            Integer id = declareBuildEngineeringAndEquipmentCenterService.saveAndUpdateDeclareBuildEngineeringAndEquipmentCenter(declareBuildEngineeringAndEquipmentCenter);
+            Integer id = declareBuildEngineeringAndEquipmentCenterService.saveAndUpdateDeclareBuildEngineeringAndEquipmentCenter(declareBuildEngineeringAndEquipmentCenter, updateNull);
+            return HttpResult.newCorrectResult(id);
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
+            return HttpResult.newErrorResult("保存异常");
+        }
+    }
+
+    @RequestMapping(value = "/saveDeclareBuildEngineeringAndEquipmentCenter", method = {RequestMethod.POST}, name = "更新在建工程中间表")
+    public HttpResult saveDeclareBuildEngineeringAndEquipmentCenter(String formData, @RequestParam(defaultValue = "false") boolean updateNull) {
+        try {
+            DeclareBuildEngineeringAndEquipmentCenter target = JSONObject.parseObject(formData, DeclareBuildEngineeringAndEquipmentCenter.class);
+            Integer id = declareBuildEngineeringAndEquipmentCenterService.saveAndUpdateDeclareBuildEngineeringAndEquipmentCenter(target, updateNull);
             return HttpResult.newCorrectResult(id);
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
@@ -73,7 +80,7 @@ public class DeclareBuildEngineeringAndEquipmentCenterController {
         try {
             if (StringUtils.isNotEmpty(type)) {
                 declareBuildEngineeringAndEquipmentCenterService.copy(ids, copyId, type);
-            }else {
+            } else {
                 declareBuildEngineeringAndEquipmentCenterService.copy(ids, copyId);
             }
             return HttpResult.newCorrectResult();

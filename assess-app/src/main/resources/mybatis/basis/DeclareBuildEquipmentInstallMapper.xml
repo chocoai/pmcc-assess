@@ -29,6 +29,7 @@
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+    <result column="bis_record" property="bisRecord" jdbcType="BIT" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -92,7 +93,8 @@
     id, pid, plan_details_id, province, city, district, occupancy_unit, name, be_located, 
     specification_model, manufacturer, measurement_unit, number, expected_completion_date, 
     start_date, book_equipment_fee, book_capital_cost, book_installation_fee, other, 
-    declaration_date, declarer, remark, enable, declare_type, creator, gmt_created, gmt_modified
+    declaration_date, declarer, remark, enable, declare_type, creator, gmt_created, gmt_modified, 
+    bis_record
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareBuildEquipmentInstallExample" >
     select
@@ -136,8 +138,8 @@
       book_equipment_fee, book_capital_cost, book_installation_fee, 
       other, declaration_date, declarer, 
       remark, enable, declare_type, 
-      creator, gmt_created, gmt_modified
-      )
+      creator, gmt_created, gmt_modified, 
+      bis_record)
     values (#{pid,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, 
       #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, #{occupancyUnit,jdbcType=VARCHAR}, 
       #{name,jdbcType=VARCHAR}, #{beLocated,jdbcType=VARCHAR}, #{specificationModel,jdbcType=VARCHAR}, 
@@ -146,8 +148,8 @@
       #{bookEquipmentFee,jdbcType=VARCHAR}, #{bookCapitalCost,jdbcType=VARCHAR}, #{bookInstallationFee,jdbcType=VARCHAR}, 
       #{other,jdbcType=VARCHAR}, #{declarationDate,jdbcType=TIMESTAMP}, #{declarer,jdbcType=VARCHAR}, 
       #{remark,jdbcType=VARCHAR}, #{enable,jdbcType=VARCHAR}, #{declareType,jdbcType=VARCHAR}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
+      #{bisRecord,jdbcType=BIT})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareBuildEquipmentInstall" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -233,6 +235,9 @@
       <if test="gmtModified != null" >
         gmt_modified,
       </if>
+      <if test="bisRecord != null" >
+        bis_record,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="pid != null" >
@@ -312,6 +317,9 @@
       </if>
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bisRecord != null" >
+        #{bisRecord,jdbcType=BIT},
       </if>
     </trim>
   </insert>
@@ -405,6 +413,9 @@
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.bisRecord != null" >
+        bis_record = #{record.bisRecord,jdbcType=BIT},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -438,7 +449,8 @@
       declare_type = #{record.declareType,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      bis_record = #{record.bisRecord,jdbcType=BIT}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -524,6 +536,9 @@
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="bisRecord != null" >
+        bis_record = #{bisRecord,jdbcType=BIT},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -554,7 +569,8 @@
       declare_type = #{declareType,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      bis_record = #{bisRecord,jdbcType=BIT}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

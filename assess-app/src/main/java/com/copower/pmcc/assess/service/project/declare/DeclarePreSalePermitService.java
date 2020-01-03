@@ -37,13 +37,18 @@ public class DeclarePreSalePermitService {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     public Integer saveAndUpdateDeclarePreSalePermit(DeclarePreSalePermit declarePreSalePermit) {
+        return saveAndUpdateDeclarePreSalePermit(declarePreSalePermit, false);
+    }
+
+
+    public Integer saveAndUpdateDeclarePreSalePermit(DeclarePreSalePermit declarePreSalePermit, boolean updateNull) {
         if (declarePreSalePermit.getId() == null || declarePreSalePermit.getId().intValue() == 0) {
             declarePreSalePermit.setCreator(commonService.thisUserAccount());
             Integer id = declarePreSalePermitDao.addDeclarePreSalePermit(declarePreSalePermit);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(DeclarePreSalePermit.class), id);
             return id;
         } else {
-            declarePreSalePermitDao.updateDeclarePreSalePermit(declarePreSalePermit);
+            declarePreSalePermitDao.updateDeclarePreSalePermit(declarePreSalePermit, updateNull);
             return null;
         }
     }

@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.controller.project.declare;
 
+import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareLandUsePermit;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareLandUsePermit;
 import com.copower.pmcc.assess.dto.input.project.declare.DeclareLandUsePermitDto;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -76,6 +78,7 @@ public class DeclareLandUsePermitController {
         return null;
     }
 
+    @Deprecated
     @ResponseBody
     @RequestMapping(value = "/saveAndUpdateDeclareLandUsePermit", method = {RequestMethod.POST}, name = "更新建设用地规划许可证")
     public HttpResult saveAndUpdate(DeclareLandUsePermitDto declareLandUsePermitDto) {
@@ -84,6 +87,19 @@ public class DeclareLandUsePermitController {
             BeanUtils.copyProperties(declareLandUsePermitDto, declareLandUsePermit);
             Integer id = declareLandUsePermitService.saveAndUpdateDeclareLandUsePermit(declareLandUsePermit);
             return HttpResult.newCorrectResult(id);
+        } catch (Exception e) {
+            logger.error(String.format("exception: %s", e.getMessage()), e);
+            return HttpResult.newErrorResult("保存异常");
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/saveDeclareLandUsePermit", method = {RequestMethod.POST}, name = "更新建设用地规划许可证")
+    public HttpResult saveDeclareLandUsePermit(String formData, @RequestParam(defaultValue = "false") boolean updateNull) {
+        try {
+            DeclareLandUsePermit declareLandUsePermit = JSONObject.parseObject(formData, DeclareLandUsePermit.class);
+            declareLandUsePermitService.saveAndUpdateDeclareLandUsePermit(declareLandUsePermit, updateNull);
+            return HttpResult.newCorrectResult(declareLandUsePermit);
         } catch (Exception e) {
             logger.error(String.format("exception: %s", e.getMessage()), e);
             return HttpResult.newErrorResult("保存异常");

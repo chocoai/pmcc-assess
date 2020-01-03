@@ -252,6 +252,10 @@ public class DeclareRealtyHouseCertService {
 
 
     public Integer saveAndUpdateDeclareRealtyHouseCert(DeclareRealtyHouseCert declareRealtyHouseCert) {
+       return saveAndUpdateDeclareRealtyHouseCert(declareRealtyHouseCert,false) ;
+    }
+
+    public Integer saveAndUpdateDeclareRealtyHouseCert(DeclareRealtyHouseCert declareRealtyHouseCert,boolean updateNull) {
         if (declareRealtyHouseCert.getId() == null) {
             declareRealtyHouseCert.setCreator(commonService.thisUserAccount());
             Integer id = null;
@@ -259,7 +263,7 @@ public class DeclareRealtyHouseCertService {
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class), id);
             return id;
         } else {
-            declareRealtyHouseCertDao.updateDeclareRealtyHouseCert(declareRealtyHouseCert);
+            declareRealtyHouseCertDao.updateDeclareRealtyHouseCert(declareRealtyHouseCert,updateNull);
             updateDeclareRealtyHouseCertAndUpdateDeclareRecordOrJudgeObject(declareRealtyHouseCert);
             return declareRealtyHouseCert.getId();
         }
