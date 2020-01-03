@@ -14,15 +14,16 @@
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
             <!-- 申报各种类型的html视图 -->
             <%@include file="/views/project/stageDeclare/declareApplyModel.jsp" %>
+
             <!-- 房产证 -->
-            <div id="viewDeclareRealtyHouseCert">
-                <%@include file="/views/project/stageDeclare/houseDeclarationModel/viewDeclareRealtyHouseCert.jsp" %>
-            </div>
+            <%@include file="/views/project/stageDeclare/houseDeclarationModel/viewDeclareRealtyHouseCert.jsp" %>
+
+            <!-- 土地证 -->
+            <%--<%@include file="/views/project/stageDeclare/houseDeclarationModel/viewDeclareRealtyLandCert.jsp" %>--%>
+
             <!-- 不动产证 -->
-            <div id="viewDeclareRealtyRealEstateCert">
-                <%@include
-                        file="/views/project/stageDeclare/houseDeclarationModel/viewDeclareRealtyRealEstateCert.jsp" %>
-            </div>
+            <%@include file="/views/project/stageDeclare/houseDeclarationModel/viewDeclareRealtyRealEstateCert.jsp" %>
+
             <div class="x_panel">
                 <div class="x_content form-horizontal">
                     <form class="form-horizontal" id="declareApplyForm">
@@ -165,15 +166,27 @@
 <%@include file="/views/share/main_footer.jsp" %>
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/tree-grid/js/jquery.treegrid.js?v=${assessVersion}"></script>
+
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/declare/declare.common.js?v=${assessVersion}"></script>
+
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/js/declare/house/realty.house.cert.js?v=${assessVersion}"></script>
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/js/declare/house/realty.real.estate.cert.js?v=${assessVersion}"></script>
+
+<%--<script type="text/javascript"--%>
+        <%--src="${pageContext.request.contextPath}/js/declare/house/realty.land.cert.js?v=${assessVersion}"></script>--%>
+
+
+
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/ajaxfileupload.js?v=${assessVersion}"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/map.position.js?v=1.0"></script>
+
 <input type="file" id="ajaxFileUpload" name="file" style="display: none;">
+
+
 <script type="text/javascript">
+
     $(document).ready(function () {
         var fileArr = [AssessUploadKey.PROJECT_PROXY ,AssessUploadKey.ASSESS_REPORT_Enclosure ] ;
         $.each(fileArr,function (i,n) {
@@ -181,6 +194,7 @@
             declareCommon.fileUpload(n, AssessDBKey.ProjectInfo, "${projectPlanDetails.projectId}", true, n);
         });
     });
+
 </script>
 <script type="application/javascript">
     //提交
@@ -204,9 +218,6 @@
         if (!frm.valid()) {
             return false;
         }
-//        if (!declareApplyExtensionCumstom.valid(frm.next('form'))) {
-//            return false;
-//        }
         var formData = formSerializeArray(frm);
         if ("${processInsId}" != "0") {
             submitEditToServer(JSON.stringify(formData));
