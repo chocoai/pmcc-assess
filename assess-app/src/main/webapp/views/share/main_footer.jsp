@@ -19,11 +19,6 @@
 
 %>
 <div id="pmcc-footer"></div>
-<script type="text/javascript">
-    window.sysParameter = {
-        sysSignatureType: '${systemInfo.signatureType}'
-    };
-</script>
 <script src='/assets/js/comm/pmcc.js?v=${assessVersion}'></script>
 <script src='/assets/js/comm/erp-footer.js?v=${assessVersion}'></script>
 <script type="application/javascript">
