@@ -19,10 +19,9 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta content="" name="description"/>
 <meta content="" name="author"/>
-
+<script src="/assets/js/comm/pmcc-css.js?v=${assessVersion}"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/jquery-ui/jquery-ui.css">
-<script src="/assets/js/jquery/2.0.3/jquery.min.js?v=${assessVersion}"></script>
 <script src='${pageContext.request.contextPath}/js/assess.key.js?v=${assessVersion}'></script>
 <script src='${pageContext.request.contextPath}/js/assess.upload.key.js?v=${assessVersion}'></script>
 <script src='${pageContext.request.contextPath}/js/assess.default.js?v=${assessVersion}'></script>
@@ -30,7 +29,7 @@
 <script src='${pageContext.request.contextPath}/js/common.column.js?v=${assessVersion}'></script>
 <script src='${pageContext.request.contextPath}/js/ajaxhook.min.js?v=${assessVersion}'></script>
 <script src="${pageContext.request.contextPath}/assets/layer/layer.js?v=${assessVersion}"></script>
-<script src="/assets/js/comm/pmcc-css.js?v=${assessVersion}"></script>
+
 <script type="text/javascript">
     jQuery.ajaxSetup({
         cache: false,
