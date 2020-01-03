@@ -355,6 +355,26 @@
                 return str;
             }
         });
+        cols.push({
+            field: 'creator', title: '许可证信息', formatter: function (value, row, index) {
+                var str = '<div class="dropdown">';
+                str += "<button class='btn btn-primary dropdown-toggle' data-toggle='dropdown'>" + "<i class='fa fa-users'>" + "</i>" + "许可证信息" + "<span class='caret'>" + "</span>" + "</button>";
+                str += "<ul class='dropdown-menu' role='menu' aria-labelledby='dropdownMenu2'>";
+
+                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='declareApprovalFun.realtyRealDeclaredeclareBuildingPermitView(" + row.id + ")'" + ">" + "建设工程规划许可证" + "<i class='fa fa-navicon'></i>" + "</a>" + "</li>";
+
+                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='declareApprovalFun.realtyRealDeclaredeclareLandUsePermitView(" + row.id + ")'" + ">" + "建设用地规划许可证" + "<i class='fa fa-navicon'></i>" + "</a>" + "</li>";
+
+                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='declareApprovalFun.realtyRealDeclaredeclareBuildingConstructionPermitView(" + row.id + ")'" + ">" + "建筑工程施工许可证" + "<i class='fa fa-navicon'></i>" + "</a>" + "</li>";
+
+                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='declareApprovalFun.realtyRealDeclaredeclarePreSalePermitView(" + row.id + ")'" + ">" + "商品房预售许可证" + "<i class='fa fa-navicon'></i>" + "</a>" + "</li>";
+
+
+                str += "</ul>";
+                str += "</div>";
+                return str;
+            }
+        });
         $("#" + declareApprovalFun.declareRealtyRealEstateCertConfig.table).bootstrapTable('destroy');
         TableInit(declareApprovalFun.declareRealtyRealEstateCertConfig.table, "${pageContext.request.contextPath}/declareRealtyRealEstateCert/getDeclareRealtyRealEstateCertList", cols, {
             planDetailsId: '${empty projectPlanDetails.id?0:projectPlanDetails.id}', enable: declareCommon.masterData
@@ -365,6 +385,104 @@
             onLoadSuccess: function () {
                 $('.tooltips').tooltip();
             }
+        });
+    };
+    //不动产 建设工程规划许可证
+    declareApprovalFun.realtyRealDeclaredeclareBuildingPermitView = function (id) {
+        var item = $("#" + declareApprovalFun.declareRealtyRealEstateCertConfig.table).bootstrapTable('getRowByUniqueId', id);
+        if (!declareCommon.isNotBlank(item.centerId)) {
+            toastr.success('不合符调整后的数据约定,请联系管理员!');
+            return false;
+        }
+        var box = $("#declareBuildingPermitRealtyRealBox");
+        var frm = box.find("form");
+        var arr = ["declareBuildingPermitFileId2"] ;
+        var inputArr = ["date"] ;
+        box.find("#" + commonDeclareApprovalModel.config.buildingPermit.handleId).remove();
+        box.find(".panel-body").append(commonDeclareApprovalModel.buildingPermit.getHtml());
+        declareCommon.showHtmlMastInit(frm, function (area) {
+            box.modal("show");
+            declareCommon.getDeclareBuildCenter(item.centerId, function (centerData) {
+                if (centerData.buildingPermitId) {
+                    declareCommon.getDeclareBuildingPermitById(centerData.buildingPermitId, function (data) {
+                        declareCommon.initFormData(frm, data, arr, true, AssessDBKey.DeclareBuildingPermit,inputArr);
+                    });
+                }
+            });
+        });
+    };
+    //不动产 建设用地规划许可证
+    declareApprovalFun.realtyRealDeclaredeclareLandUsePermitView = function (id) {
+        var item = $("#" + declareApprovalFun.declareRealtyRealEstateCertConfig.table).bootstrapTable('getRowByUniqueId', id);
+        if (!declareCommon.isNotBlank(item.centerId)) {
+            toastr.success('不合符调整后的数据约定,请联系管理员!');
+            return false;
+        }
+        var box = $("#declareLandUsePermitRealtyRealBox");
+        var frm = box.find("form");
+        box.find("#" + commonDeclareApprovalModel.config.landUsePermit.handleId).remove();
+        box.find(".panel-body").append(commonDeclareApprovalModel.landUsePermit.getHtml());
+        var arr = ["declareLandUsePermitFileId2"] ;
+        var inputArr = ["date"] ;
+        declareCommon.showHtmlMastInit(frm, function (area) {
+            box.modal("show");
+            declareCommon.getDeclareBuildCenter(item.centerId, function (centerData) {
+                if (centerData.landUsePermitId) {
+                    declareCommon.getDeclareLandUsePermitById(centerData.landUsePermitId, function (data) {
+                        declareCommon.initFormData(frm, data, arr, true, AssessDBKey.DeclareLandUsePermit,inputArr);
+                    });
+                }
+            });
+        });
+
+    };
+    //不动产 建筑工程施工许可证
+    declareApprovalFun.realtyRealDeclaredeclareBuildingConstructionPermitView = function (id) {
+        var item = $("#" + declareApprovalFun.declareRealtyRealEstateCertConfig.table).bootstrapTable('getRowByUniqueId', id);
+        if (!declareCommon.isNotBlank(item.centerId)) {
+            toastr.success('不合符调整后的数据约定,请联系管理员!');
+            return false;
+        }
+        var arr = ["declareBuildingConstructionPermitFileId2"];
+        var inputArr = ["date","contractPeriod"] ;
+        var box = $("#declareBuildingConstructionPermitRealtyRealBox");
+        var frm = box.find("form");
+        box.find("#" + commonDeclareApprovalModel.config.buildingConstructionPermit.handleId).remove();
+        box.find(".panel-body").append(commonDeclareApprovalModel.buildingConstructionPermit.getHtml());
+        declareCommon.showHtmlMastInit(frm, function (area) {
+            box.modal("show");
+            declareCommon.getDeclareBuildCenter(item.centerId, function (centerData) {
+                if (centerData.buildingConstructionPermitId) {
+                    declareCommon.getDeclareBuildingConstructionPermitById(centerData.buildingConstructionPermitId, function (data) {
+                        declareCommon.initFormData(frm, data, arr, true, AssessDBKey.DeclareBuildingConstructionPermit,inputArr);
+                    });
+                }
+            });
+        });
+    };
+
+    //不动产 商品房预售许可证
+    declareApprovalFun.realtyRealDeclaredeclarePreSalePermitView = function (id) {
+        var item = $("#" + declareApprovalFun.declareRealtyRealEstateCertConfig.table).bootstrapTable('getRowByUniqueId', id);
+        if (!declareCommon.isNotBlank(item.centerId)) {
+            toastr.success('不合符调整后的数据约定,请联系管理员!');
+            return false;
+        }
+        var arr = ["declarePreSalePermitFileId2"];
+        var inputArr = ["date"] ;
+        var box = $("#declarePreSalePermitRealtyRealBox");
+        var frm = box.find("form");
+        box.find("#" + commonDeclareApprovalModel.config.preSalePermit.handleId).remove();
+        box.find(".panel-body").append(commonDeclareApprovalModel.preSalePermit.getHtml());
+        declareCommon.showHtmlMastInit(frm, function (area) {
+            box.modal("show");
+            declareCommon.getDeclareBuildCenter(item.centerId, function (centerData) {
+                if (centerData.preSalePermitId) {
+                    declareCommon.getDeclarePreSalePermitById(centerData.preSalePermitId, function (data) {
+                        declareCommon.initFormData(frm, data, arr, true, AssessDBKey.DeclarePreSalePermit,inputArr);
+                    });
+                }
+            });
         });
     };
 
@@ -385,7 +503,6 @@
     }
 
 </script>
-</body>
 
 
 
@@ -479,6 +596,182 @@
                     </button>
                 </div>
             </form>
+        </div>
+    </div>
+</div>
+
+<!-- 不动产 建设工程规划许可证 -->
+<div id="declareBuildingPermitRealtyRealBox" class="modal fade bs-example-modal-lg" data-backdrop="static"
+     tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="width:1000px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">建设工程规划许可证</h3>
+            </div>
+            <form  class="form-horizontal">
+                <input type="hidden" name="id">
+                <input type="hidden" name="centerId">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                            附件<span class="symbol required"></span>
+                                        </label>
+                                        <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
+                                            <div id="_declareBuildingPermitFileId2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">
+                    关闭
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 不动产 建设用地规划许可证 -->
+<div id="declareLandUsePermitRealtyRealBox" class="modal fade bs-example-modal-lg" data-backdrop="static"
+     tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="width:1000px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">建设用地规划许可证</h3>
+            </div>
+            <form  class="form-horizontal">
+                <input type="hidden" name="id">
+                <input type="hidden" name="centerId">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                            附件<span class="symbol required"></span>
+                                        </label>
+                                        <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
+                                            <div id="_declareLandUsePermitFileId2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">
+                    关闭
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 不动产 建筑工程施工许可证 -->
+<div id="declareBuildingConstructionPermitRealtyRealBox" class="modal fade bs-example-modal-lg" data-backdrop="static"
+     tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="width:1000px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">建筑工程施工许可证</h3>
+            </div>
+            <form  class="form-horizontal">
+                <input type="hidden" name="id">
+                <input type="hidden" name="centerId">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                            附件<span class="symbol required"></span>
+                                        </label>
+                                        <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
+                                            <div id="_declareBuildingConstructionPermitFileId2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">
+                    关闭
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 不动产 商品房预售许可证 -->
+<div id="declarePreSalePermitRealtyRealBox" class="modal fade bs-example-modal-lg" data-backdrop="static"
+     tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="width:1000px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">商品房预售许可证</h3>
+            </div>
+            <form  class="form-horizontal">
+                <input type="hidden" name="id">
+                <input type="hidden" name="centerId">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                            附件<span class="symbol required"></span>
+                                        </label>
+                                        <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
+                                            <div id="_declarePreSalePermitFileId2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">
+                    关闭
+                </button>
+            </div>
         </div>
     </div>
 </div>

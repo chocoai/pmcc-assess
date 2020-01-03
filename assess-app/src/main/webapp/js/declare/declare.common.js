@@ -176,11 +176,28 @@ declareCommon.showHtmlMastInit = function (target, callback) {
 };
 
 //公共  赋值 方法
-declareCommon.initFormData = function (form,item) {
+declareCommon.initFormData = function (form,item,fileArr,bisDetail,tableName,inputArr) {
     var frm = $(form.selector);
     frm.clearAll();
     frm.initForm(item);
     frm.validate();
+    if (fileArr) {
+        $.each(fileArr, function (i, n) {
+            if(bisDetail==false){
+                declareCommon.showFile(n,tableName, declareCommon.isNotBlank(item.id) ? item.id : '0', false);
+                declareCommon.fileUpload(n, tableName, declareCommon.isNotBlank(item.id) ? item.id : '0', false);
+            }else{
+                declareCommon.showFile(n, tableName, declareCommon.isNotBlank(item.id) ? item.id : '0', true);
+                declareCommon.fileUpload(n, tableName, declareCommon.isNotBlank(item.id) ? item.id : '0', true);
+            }
+        });
+    }
+    if (inputArr){
+        $.each(inputArr,function (i,n) {
+            frm.find("input[name='"+n+"']").val(formatDate(item[n]));
+            frm.find("label[name='"+n+"']").html(formatDate(item[n]));
+        });
+    }
 };
 
 //土地
@@ -1196,7 +1213,7 @@ declareCommon.getDeclareBuildingConstructionPermitById = function (id, callback)
         success: function (result) {
             if (result.ret) {
                 if (callback) {
-                    callback();
+                    callback(result.data);
                 }
             } else {
                 Alert("失败:" + result.errmsg);
@@ -1267,7 +1284,7 @@ declareCommon.getDeclareBuildingPermitById = function (id, callback) {
         success: function (result) {
             if (result.ret) {
                 if (callback) {
-                    callback();
+                    callback(result.data);
                 }
             } else {
                 Alert("失败:" + result.errmsg);
@@ -1338,7 +1355,7 @@ declareCommon.getDeclareLandUsePermitById = function (id, callback) {
         success: function (result) {
             if (result.ret) {
                 if (callback) {
-                    callback();
+                    callback(result.data);
                 }
             } else {
                 Alert("失败:" + result.errmsg);
@@ -1410,7 +1427,7 @@ declareCommon.getDeclarePreSalePermitById = function (id, callback) {
         success: function (result) {
             if (result.ret) {
                 if (callback) {
-                    callback();
+                    callback(result.data);
                 }
             } else {
                 Alert("失败:" + result.errmsg);

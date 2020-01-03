@@ -1170,6 +1170,15 @@
                 </div>
             </div>
         </div>
+        <div class="form-group">
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">备注<span
+                        class="symbol required"></span></label>
+                <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
+                    <textarea name="remark" placeholder="备注" class="form-control"></textarea>
+                </div>
+            </div>
+        </div>
     </div>
 </script>
 
@@ -1265,6 +1274,15 @@
                 </div>
             </div>
         </div>
+        <div class="form-group">
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">备注<span
+                        class="symbol required"></span></label>
+                <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
+                    <textarea name="remark" placeholder="备注" class="form-control"></textarea>
+                </div>
+            </div>
+        </div>
 
     </div>
 </script>
@@ -1324,21 +1342,27 @@
                 </div>
             </div>
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">建设位置<span
-                        class="symbol required"></span></label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">建设位置</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <input type="text"
-                           placeholder="建设位置" name="location" class="form-control"
-                           required="required">
+                           placeholder="建设位置" name="location" class="form-control">
                 </div>
             </div>
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">建设规模<span
-                        class="symbol required"></span></label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">建设规模</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <input type="text"
-                           placeholder="建设规模" name="scaleConstruction" class="form-control"
-                           required="required">
+                           placeholder="建设规模" name="scaleConstruction" class="form-control">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">备注<span
+                        class="symbol required"></span></label>
+                <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
+                    <textarea name="remark" placeholder="备注" class="form-control"></textarea>
                 </div>
             </div>
         </div>
