@@ -424,10 +424,7 @@ var unitHuxingPrice;
             return data;
         },
         loadDataDicList: function (unitHuxingId) {
-            var cols = [];
-            cols.push({field: 'houseNumber', title: '房号'});
-            cols.push({field: 'price', title: '价格'});
-            cols.push({field: 'remark', title: '备注'});
+            var cols = commonColumn.estateInvestigation();
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
@@ -438,7 +435,7 @@ var unitHuxingPrice;
                 }
             });
             $("#" + unitHuxingPrice.prototype.config().table).bootstrapTable('destroy');
-            TableInit(unitHuxingPrice.prototype.config().table, getContextPath() + "/basicUnitHuxingPrice/getUnitHuxingPriceList", cols, {
+            TableInit(unitHuxingPrice.prototype.config().table, getContextPath() + "/basicEstateInvestigation/getEstateInvestigationList", cols, {
                 unitHuxingId: unitHuxingId
             }, {
                 showColumns: false,
@@ -451,7 +448,7 @@ var unitHuxingPrice;
         },
         removeData: function (id,unitHuxingId) {
             $.ajax({
-                url: getContextPath() + "/basicUnitHuxingPrice/deleteBasicUnitHuxingPrice",
+                url: getContextPath() + "/basicEstateInvestigation/deleteBasicEstateInvestigation",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -478,6 +475,9 @@ var unitHuxingPrice;
             $("#" + unitHuxingPrice.prototype.config().frm).clearAll();
             var unitHuxingId = $("#" + unitHuxingPrice.prototype.config().tableFrm).find("input[name='unitHuxingId']").val();
             $("#" + unitHuxingPrice.prototype.config().frm).find("input[name='huxingId']").val(unitHuxingId);
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseLoadUtility, '', function (html, data) {
+                $("#" + unitHuxingPrice.prototype.config().frm).find('select.planningUse').empty().html(html).trigger('change');
+            });
             $('#' + unitHuxingPrice.prototype.config().box).modal("show");
         },
         saveData: function () {
@@ -487,7 +487,7 @@ var unitHuxingPrice;
             var unitHuxingId = $("#" + unitHuxingPrice.prototype.config().frm).find("input[name='huxingId']").val()
             var data = formParams(unitHuxingPrice.prototype.config().frm,true);
             $.ajax({
-                url: getContextPath() + "/basicUnitHuxingPrice/saveAndUpdateBasicUnitHuxingPrice",
+                url: getContextPath() + "/basicEstateInvestigation/saveAndUpdateBasicEstateInvestigation",
                 type: "post",
                 dataType: "json",
                 data: data,
@@ -514,7 +514,7 @@ var unitHuxingPrice;
         },
         getAndInit: function (id,unitHuxingId) {
             $.ajax({
-                url: getContextPath() + "/basicUnitHuxingPrice/getBasicUnitHuxingPriceById",
+                url: getContextPath() + "/basicEstateInvestigation/getBasicEstateInvestigationById",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -538,6 +538,33 @@ var unitHuxingPrice;
             $("#" + unitHuxingPrice.prototype.config().frm).clearAll();
             $("#" + unitHuxingPrice.prototype.config().frm).find("input[name='huxingId']").val(unitHuxingId);
             $("#" + unitHuxingPrice.prototype.config().frm).initForm(item);
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseLoadUtility, item.planningUse, function (html, data) {
+                $("#" + unitHuxingPrice.prototype.config().frm).find('select.planningUse').empty().html(html).trigger('change');
+            });
+        },
+        importData : function () {
+            var unitHuxingId = $("#" + unitHuxingPrice.prototype.config().tableFrm).find("input[name='unitHuxingId']").val();
+            $.ajaxFileUpload({
+            type: "POST",
+            url: getContextPath() + "/basicEstateInvestigation/importData",
+            data: {
+                huxingId: unitHuxingId
+            },//要传到后台的参数，没有可以不写
+            secureuri: false,//是否启用安全提交，默认为false
+            fileElementId: 'ajaxFileUpload',//文件选择框的id属性
+            dataType: 'json',//服务器返回的格式
+            async: false,
+            success: function (result) {
+                if (result.ret) {
+                    unitHuxingPrice.prototype.loadDataDicList(unitHuxingId);
+                    Alert(result.data);
+                }
+            },
+            error: function (result, status, e) {
+                Loading.progressHide();
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        });
         }
     }
 
