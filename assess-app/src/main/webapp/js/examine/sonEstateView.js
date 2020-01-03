@@ -4,7 +4,7 @@
 
 
 var matchingMainConversion;
-(function () {
+;(function () {
     matchingMainConversion = function () {
 
     };
@@ -135,7 +135,7 @@ var matchingMainConversion;
 })();
 
 var matchingMainRoad;
-(function () {
+;(function () {
     matchingMainRoad = function () {
 
     };
@@ -293,7 +293,7 @@ var matchingMainRoad;
 })();
 
 var matchingMetro;
-(function () {
+;(function () {
     matchingMetro = function () {
 
     };
@@ -497,7 +497,7 @@ var matchingMetro;
 })();
 
 var matchingTrafficHub;//交通枢纽信息
-(function () {
+;(function () {
     matchingTrafficHub = function () {
 
     };
@@ -659,7 +659,7 @@ var matchingTrafficHub;//交通枢纽信息
 
 
 var matchingTransit;
-(function () {
+;(function () {
     matchingTransit = function () {
 
     };
@@ -864,7 +864,7 @@ var matchingTransit;
 
 
 var matchingMedical;//医疗
-(function () {
+;(function () {
     matchingMedical = function () {
 
     };
@@ -1026,7 +1026,7 @@ var matchingMedical;//医疗
 })();
 
 var matchingMaterial;
-(function () {
+;(function () {
     matchingMaterial = function () {
 
     };
@@ -1162,7 +1162,7 @@ var matchingMaterial;
 
 
 var matchingMarket; //商场
-(function () {
+;(function () {
     matchingMarket = function () {
 
     };
@@ -1377,7 +1377,7 @@ var matchingMarket; //商场
 })();
 
 var matchingRestaurant;//餐饮
-(function () {
+;(function () {
     matchingRestaurant = function () {
 
     };
@@ -1592,7 +1592,7 @@ var matchingRestaurant;//餐饮
 })();
 
 var matchingRecreation;//娱乐
-(function () {
+;(function () {
     matchingRecreation = function () {
 
     };
@@ -1805,7 +1805,7 @@ var matchingRecreation;//娱乐
 
 
 var matchingFinance;
-(function () {
+;(function () {
     matchingFinance = function () {
 
     };
@@ -1973,7 +1973,7 @@ var matchingFinance;
 })();
 
 var matchingEnvironment;
-(function () {
+;(function () {
     matchingEnvironment = function () {
 
     };
@@ -2160,7 +2160,7 @@ var matchingEnvironment;
 })();
 
 var matchingEducation;
-(function () {
+;(function () {
     matchingEducation = function () {
 
     };
@@ -2329,7 +2329,7 @@ var matchingEducation;
 })();
 
 var estateNetwork;
-(function () {
+;(function () {
     estateNetwork = function () {
 
     };
@@ -2458,7 +2458,7 @@ var estateNetwork;
 })();
 
 var estateParking;
-(function () {
+;(function () {
     estateParking = function () {
 
     };
@@ -2617,7 +2617,7 @@ var estateParking;
 
 
 var estateSupplyWater;
-(function () {
+;(function () {
     estateSupplyWater = function () {
 
     };
@@ -2756,7 +2756,7 @@ var estateSupplyWater;
 
 
 var estateDrainWater;
-(function () {
+;(function () {
     estateDrainWater = function () {
     };
     estateDrainWater.prototype = {
@@ -2893,7 +2893,7 @@ var estateDrainWater;
 })();
 
 var estateSupplyPower;
-(function () {
+;(function () {
     estateSupplyPower = function () {
 
     };
@@ -3031,7 +3031,7 @@ var estateSupplyPower;
 })();
 
 var estateSupplyHeating;
-(function () {
+;(function () {
     estateSupplyHeating = function () {
     };
     estateSupplyHeating.prototype = {
@@ -3168,7 +3168,7 @@ var estateSupplyHeating;
 })();
 
 var estateSupplyGas;
-(function () {
+;(function () {
     estateSupplyGas = function () {
     };
     estateSupplyGas.prototype = {
@@ -3305,7 +3305,7 @@ var estateSupplyGas;
 })();
 
 var estateInvestigation;
-(function () {
+;(function () {
     estateInvestigation = function () {
     };
     estateInvestigation.prototype = {

@@ -32,26 +32,29 @@ jQuery.extend({
                 jQuery('<input type="hidden" name="' + i + '" value="' + data[i] + '" />').appendTo(form);
             }
         }
-        //      var oldElement;
-        //      if(fileElement == null)
-        //          oldElement = jQuery('#' + fileElementId);
-        //      else
-        //          oldElement = fileElement;
-        //
-        //      var newElement = jQuery(oldElement).clone();
-        //      jQuery(oldElement).attr('id', fileId);
-        //      jQuery(oldElement).before(newElement);
-        //      jQuery(oldElement).appendTo(form);
+        var oldElement;
+        if (fileElement == null)
+            oldElement = jQuery('#' + fileElementId);
+        else
+            oldElement = fileElement;
+
+        var newElement = jQuery(oldElement).clone();
+        jQuery(oldElement).attr('id', fileId);
+        jQuery(oldElement).before(newElement);
+        jQuery(oldElement).appendTo(form);
         if (typeof (fileElementId) == 'string') {
             fileElementId = [fileElementId];
         }
-        for (var i in fileElementId) {
+        if(fileElementId.length>0){
             var oldElement = jQuery('#' + fileElementId[i]);
-            var newElement = jQuery(oldElement).clone(true,true);
+            var newElement = jQuery(oldElement).clone(true, true);
             jQuery(oldElement).attr('id', fileId);
             jQuery(oldElement).before(newElement);
             jQuery(oldElement).appendTo(form);
         }
+        // for (var i in fileElementId) {
+        //
+        // }
         //set attributes
         jQuery(form).css('position', 'absolute');
         jQuery(form).css('top', '-1200px');
@@ -120,7 +123,7 @@ jQuery.extend({
                     jQuery.event.trigger("ajaxComplete", [xml, s]);
 
                 // Handle the global AJAX counter
-                if (s.global && ! --jQuery.active)
+                if (s.global && !--jQuery.active)
                     jQuery.event.trigger("ajaxStop");
 
                 // Process result
@@ -176,7 +179,8 @@ jQuery.extend({
                     jQuery('#' + frameId).remove();
                     jQuery(form).remove();
                 }
-                catch (e) { }
+                catch (e) {
+                }
             }
         };
     },
