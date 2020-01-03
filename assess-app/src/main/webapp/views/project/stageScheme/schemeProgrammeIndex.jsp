@@ -105,7 +105,16 @@
                                         委托目的<span class="symbol required"></span>
                                     </label>
                                     <div class="col-sm-2">
-                                        <select name="entrustmentPurpose" class="form-control" required="required" onchange="programme.changeEntrustmentPurpose(this,'${item.entrustAimType}');">
+                                        <c:if test="${!empty item.entrustAimType}">
+                                            <script>
+                                                $(document).ready(function () {
+                                                    var frmJudgeObjectA = $("#frmJudgeObject${item.id}") ;
+                                                    programme.changeEntrustmentPurpose(frmJudgeObjectA.find("select[name='entrustmentPurpose']"),'${item.entrustAimType}') ;
+                                                });
+                                            </script>
+                                        </c:if>
+
+                                        <select name="entrustmentPurpose" class="form-control" required="required" onchange="programme.changeEntrustmentPurpose(this,null);">
                                             <option value="">-请选择-</option>
                                             <c:forEach items="${entrustmentPurposes}" var="entrustmentPurpose">
                                                 <c:choose>
