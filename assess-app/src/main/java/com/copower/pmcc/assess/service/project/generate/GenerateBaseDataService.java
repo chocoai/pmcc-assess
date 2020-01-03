@@ -191,7 +191,13 @@ public class GenerateBaseDataService {
         ProjectQrcodeRecord qrcodeRecode = projectQrcodeRecordService.getProjectQrcodeRecode(projectId, areaId, this.baseReportTemplate.getReportType());
         String qrCode = null;
         if (qrcodeRecode != null) {
-            qrCode = qrcodeRecode.getQrcode();
+            qrCode = qrcodeRecode.getQrcode();//更新部分信息
+            ProjectDocumentDto projectDocumentDto = erpRpcToolsService.getProjectDocumentById(qrcodeRecode.getProjectDocumentId());
+            if(projectDocumentDto!=null){
+                projectDocumentDto.setReportDate(DateUtils.formatDate(generateReportInfo.getReportIssuanceDate(), DateUtils.DATE_CHINESE_PATTERN));
+                projectDocumentDto.setReportMember(publicService.getUserNameByAccount(generateReportInfo.getRealEstateAppraiser()));
+                erpRpcToolsService.saveProjectDocument(projectDocumentDto);
+            }
         } else {
             AdCompanyQualificationDto qualificationDto = getCompanyQualificationForPractising();
             ProjectDocumentDto projectDocumentDto = new ProjectDocumentDto();
@@ -205,6 +211,8 @@ public class GenerateBaseDataService {
             projectDocumentDto.setTableName(FormatUtils.entityNameConvertToTableName(GenerateReportInfo.class));
             projectDocumentDto.setTableId(generateReportInfo.getId());
             projectDocumentDto.setFieldsName(generateCommonMethod.getReportFieldsName(reportType, generateReportInfo.getAreaGroupId()));
+            projectDocumentDto.setReportDate(DateUtils.formatDate(generateReportInfo.getReportIssuanceDate(), DateUtils.DATE_CHINESE_PATTERN));
+            projectDocumentDto.setReportMember(publicService.getUserNameByAccount(generateReportInfo.getRealEstateAppraiser()));
             projectDocumentDto = erpRpcToolsService.saveProjectDocument(projectDocumentDto);
 
             qrcodeRecode = new ProjectQrcodeRecord();
@@ -2106,7 +2114,7 @@ public class GenerateBaseDataService {
             List<Integer> schemeJudgeObjIds = schemeLiquidationAnalysisService.getSchemeJudgeObjIds(groupItem.getId());
             List<Integer> judgeNumbers = schemeJudgeObjectService.getJudgeNumberByIds(schemeJudgeObjIds);
             String number = generateCommonMethod.convertNumber(judgeNumbers);
-            if(StringUtils.isNotEmpty(number)){
+            if (StringUtils.isNotEmpty(number)) {
                 builder.insertHtml(generateCommonMethod.getSongWarpCssHtml3(String.format("%s%s", number, "号委估对象")));
             }
         }
@@ -3441,12 +3449,13 @@ public class GenerateBaseDataService {
 
     /**
      * 分组
+     *
      * @param list
      * @return
      */
     private Map<SchemeReimbursementItemVo, List<SchemeJudgeObject>> getSurveyAssetInventoryRightRecordListMap(List<SchemeJudgeObject> list) {
         Map<SchemeReimbursementItemVo, List<SchemeJudgeObject>> map = Maps.newHashMap();
-        final List<SchemeJudgeObject> schemeJudgeObjectList = new ArrayList<>(list.size()) ;
+        final List<SchemeJudgeObject> schemeJudgeObjectList = new ArrayList<>(list.size());
         if (CollectionUtils.isNotEmpty(list)) {
             for (SchemeJudgeObject oo : list) {
                 schemeJudgeObjectList.add(oo);
@@ -3474,18 +3483,18 @@ public class GenerateBaseDataService {
             List<SurveyAssetRightDeclare> rightDeclareList = surveyAssetRightGroupService.getSurveyAssetRightDeclareListByGroupId(rightGroup.getId());
             SchemeReimbursementItemVo vo = schemeReimbursementService.getSchemeReimbursementItemVoByInventoryRightRecordId(rightGroup.getId());
             if (CollectionUtils.isNotEmpty(rightDeclareList)) {
-                List<Integer> integerList = LangUtils.transform(rightDeclareList,oo -> oo.getDeclareId()) ;
+                List<Integer> integerList = LangUtils.transform(rightDeclareList, oo -> oo.getDeclareId());
                 List<SchemeJudgeObject> judgeObjectList = Lists.newArrayList();
                 if (CollectionUtils.isEmpty(integerList)) {
                     continue;
                 }
                 Iterator<SchemeJudgeObject> schemeJudgeObjectIterator = schemeJudgeObjectList.iterator();
-                while (schemeJudgeObjectIterator.hasNext()){
+                while (schemeJudgeObjectIterator.hasNext()) {
                     SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectIterator.next();
-                    if (schemeJudgeObject.getDeclareRecordId() == null){
+                    if (schemeJudgeObject.getDeclareRecordId() == null) {
                         continue;
                     }
-                    if (integerList.contains(schemeJudgeObject.getDeclareRecordId())){
+                    if (integerList.contains(schemeJudgeObject.getDeclareRecordId())) {
                         judgeObjectList.add(schemeJudgeObject);
                         schemeJudgeObjectIterator.remove();
                     }
@@ -3582,7 +3591,7 @@ public class GenerateBaseDataService {
                                 builder.write(evaluationArea.toString());
                             }
                             if (j == colMax - 4) {
-                                builder.write(String.format("%s%s",price.toString(),"元"));
+                                builder.write(String.format("%s%s", price.toString(), "元"));
                             }
                             if (j == colMax - 3) {
                                 BigDecimal temp = new BigDecimal(total.toString());
@@ -3743,7 +3752,7 @@ public class GenerateBaseDataService {
             }
         }
         if (schemeJudgeObject.getPrice() != null) {//7
-            linkedLists.add(String.format("%s%s",schemeJudgeObject.getPrice().toString(),unit));
+            linkedLists.add(String.format("%s%s", schemeJudgeObject.getPrice().toString(), unit));
         } else {
             linkedLists.add(nullValue);
         }
@@ -5117,7 +5126,6 @@ public class GenerateBaseDataService {
         AsposeUtils.saveWord(localPath, doc);
         return localPath;
     }
-
 
 
     /**
