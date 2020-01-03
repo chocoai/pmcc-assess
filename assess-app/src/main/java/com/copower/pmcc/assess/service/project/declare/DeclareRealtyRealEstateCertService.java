@@ -149,17 +149,17 @@ public class DeclareRealtyRealEstateCertService {
     }
 
     public Integer saveAndUpdateDeclareRealtyRealEstateCert(DeclareRealtyRealEstateCert declareRealtyRealEstateCert) {
-       return saveAndUpdateDeclareRealtyRealEstateCert(declareRealtyRealEstateCert,false) ;
+        return saveAndUpdateDeclareRealtyRealEstateCert(declareRealtyRealEstateCert, false);
     }
 
-    public Integer saveAndUpdateDeclareRealtyRealEstateCert(DeclareRealtyRealEstateCert declareRealtyRealEstateCert,boolean updateNull) {
+    public Integer saveAndUpdateDeclareRealtyRealEstateCert(DeclareRealtyRealEstateCert declareRealtyRealEstateCert, boolean updateNull) {
         if (declareRealtyRealEstateCert.getId() == null) {
             declareRealtyRealEstateCert.setCreator(commonService.thisUserAccount());
             Integer id = declareRealtyRealEstateCertDao.addDeclareRealtyRealEstateCert(declareRealtyRealEstateCert);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(DeclareRealtyRealEstateCert.class), id);
             return id;
         } else {
-            declareRealtyRealEstateCertDao.updateDeclareRealtyRealEstateCert(declareRealtyRealEstateCert,updateNull);
+            declareRealtyRealEstateCertDao.updateDeclareRealtyRealEstateCert(declareRealtyRealEstateCert, updateNull);
             updateDeclareRealtyRealEstateCertAndUpdateDeclareRecordOrJudgeObject(declareRealtyRealEstateCert);
             return null;
         }
@@ -298,15 +298,15 @@ public class DeclareRealtyRealEstateCertService {
         }
         vo.setPlanningUseName(baseDataDicService.getNameById(declareRealtyRealEstateCert.getHouseCertUse()));
         String certUseCategoryName = baseDataDicService.getNameById(declareRealtyRealEstateCert.getLandCertUseCategory());
-        if(StringUtils.isNotEmpty(certUseCategoryName)) {
+        if (StringUtils.isNotEmpty(certUseCategoryName)) {
             vo.setLandCertUseCategoryName(certUseCategoryName);
-        }else{
+        } else {
             vo.setLandCertUseCategoryName(declareRealtyRealEstateCert.getLandCertUseCategory());
         }
         String purposeName = baseDataDicService.getNameById(declareRealtyRealEstateCert.getLandCertUse());
-        if(StringUtils.isNotEmpty(purposeName)) {
+        if (StringUtils.isNotEmpty(purposeName)) {
             vo.setPurposeName(purposeName);
-        }else{
+        } else {
             vo.setPurposeName(declareRealtyRealEstateCert.getLandCertUse());
         }
         vo.setTypeName(baseDataDicService.getNameById(declareRealtyRealEstateCert.getLandRightType()));
@@ -395,7 +395,18 @@ public class DeclareRealtyRealEstateCertService {
         declareRecord.setNature(baseDataDicService.getNameById(declareRealtyRealEstateCert.getNature()));
         declareRecord.setLandCertUse(declareRealtyRealEstateCert.getLandCertUse());
         declareRecord.setLandCertUseCategory(declareRealtyRealEstateCert.getLandCertUseCategory());
-        declareRecord.setLandRightType(baseDataDicService.getNameById(declareRealtyRealEstateCert.getLandRightType()));//权利类型
+
+        if (declareRealtyRealEstateCert.getLandRightType() != null) {//权利类型
+            BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicById(declareRealtyRealEstateCert.getLandRightType());
+            if (baseDataDic != null) {
+                if (StringUtils.isNotEmpty(baseDataDic.getRemark())) {
+                    declareRecord.setLandRightType(baseDataDic.getRemark());
+                } else {
+                    declareRecord.setLandRightType(baseDataDic.getName());
+                }
+            }
+        }
+
         declareRecord.setLandRightNature(baseDataDicService.getNameById(declareRealtyRealEstateCert.getLandRightNature()));//权利性质
         declareRecord.setLandUseEndDate(declareRealtyRealEstateCert.getUseEndDate());
         declareRecord.setLandUseRightArea(declareRealtyRealEstateCert.getUseRightArea());

@@ -521,7 +521,16 @@ public class DeclareRealtyLandCertService {
         declareRecord.setRoomNumber(oo.getRoomNumber());
         declareRecord.setLandCertUse(oo.getCertUse());
         declareRecord.setLandCertUseCategory(oo.getCertUseCategory());
-        declareRecord.setLandRightType(baseDataDicService.getNameById(oo.getLandRightType()));//权利类型
+        if (oo.getLandRightType() != null) {//权利类型
+            BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicById(oo.getLandRightType());
+            if (baseDataDic != null) {
+                if (StringUtils.isNotEmpty(baseDataDic.getRemark())) {
+                    declareRecord.setLandRightType(baseDataDic.getRemark());
+                }else {
+                    declareRecord.setLandRightType(baseDataDic.getName());
+                }
+            }
+        }
         declareRecord.setLandRightNature(baseDataDicService.getNameById(oo.getLandRightNature()));//权利性质
         declareRecord.setFloorArea(oo.getUseRightArea());
         declareRecord.setLandUseEndDate(oo.getTerminationDate());

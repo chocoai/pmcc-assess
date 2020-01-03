@@ -19,7 +19,7 @@
             <%@include file="/views/project/stageDeclare/houseDeclarationModel/viewDeclareRealtyHouseCert.jsp" %>
 
             <!-- 土地证 -->
-            <%--<%@include file="/views/project/stageDeclare/houseDeclarationModel/viewDeclareRealtyLandCert.jsp" %>--%>
+            <%@include file="/views/project/stageDeclare/houseDeclarationModel/viewDeclareRealtyLandCert.jsp" %>
 
             <!-- 不动产证 -->
             <%@include file="/views/project/stageDeclare/houseDeclarationModel/viewDeclareRealtyRealEstateCert.jsp" %>
@@ -174,8 +174,8 @@
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/js/declare/house/realty.real.estate.cert.js?v=${assessVersion}"></script>
 
-<%--<script type="text/javascript"--%>
-        <%--src="${pageContext.request.contextPath}/js/declare/house/realty.land.cert.js?v=${assessVersion}"></script>--%>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/declare/house/realty.land.cert.js?v=${assessVersion}"></script>
 
 
 

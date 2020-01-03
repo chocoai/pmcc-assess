@@ -861,12 +861,7 @@
                     <label class="form-control" name="apportionmentArea"></label>
                 </div>
             </div>
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">登记机关</label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <label class="form-control" name="registrationAuthority"></label>
-                </div>
-            </div>
+
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">其它(房屋)</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
@@ -969,6 +964,12 @@
                     <%--<label class="form-control" name="useEndDate"></label>--%>
                     <input type="text" name="useEndDateFmt" id="useEndDateFmt_d" class="form-control"
                            readonly="readonly">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">登记机关</label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <label class="form-control" name="registrationAuthority"></label>
                 </div>
             </div>
         </div>

@@ -252,10 +252,10 @@ public class DeclareRealtyHouseCertService {
 
 
     public Integer saveAndUpdateDeclareRealtyHouseCert(DeclareRealtyHouseCert declareRealtyHouseCert) {
-       return saveAndUpdateDeclareRealtyHouseCert(declareRealtyHouseCert,false) ;
+        return saveAndUpdateDeclareRealtyHouseCert(declareRealtyHouseCert, false);
     }
 
-    public Integer saveAndUpdateDeclareRealtyHouseCert(DeclareRealtyHouseCert declareRealtyHouseCert,boolean updateNull) {
+    public Integer saveAndUpdateDeclareRealtyHouseCert(DeclareRealtyHouseCert declareRealtyHouseCert, boolean updateNull) {
         if (declareRealtyHouseCert.getId() == null) {
             declareRealtyHouseCert.setCreator(commonService.thisUserAccount());
             Integer id = null;
@@ -263,7 +263,7 @@ public class DeclareRealtyHouseCertService {
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class), id);
             return id;
         } else {
-            declareRealtyHouseCertDao.updateDeclareRealtyHouseCert(declareRealtyHouseCert,updateNull);
+            declareRealtyHouseCertDao.updateDeclareRealtyHouseCert(declareRealtyHouseCert, updateNull);
             updateDeclareRealtyHouseCertAndUpdateDeclareRecordOrJudgeObject(declareRealtyHouseCert);
             return declareRealtyHouseCert.getId();
         }
@@ -453,7 +453,7 @@ public class DeclareRealtyHouseCertService {
         declareRecord.setBuildingNumber(oo.getBuildingNumber());
         declareRecord.setUnit(oo.getUnit());
         declareRecord.setRegistrationDate(oo.getRegistrationDate());
-        if (declareRecord.getRegistrationDate() == null){
+        if (declareRecord.getRegistrationDate() == null) {
             declareRecord.setRegistrationDate(oo.getRegistrationTime());
         }
         declareRecord.setFloor(oo.getFloor());
@@ -486,7 +486,18 @@ public class DeclareRealtyHouseCertService {
         if (realtyLandCert != null) {
             declareRecord.setLandCertUse(realtyLandCert.getCertUse());
             declareRecord.setLandCertUseCategory(realtyLandCert.getCertUseCategory());
-            declareRecord.setLandRightType(baseDataDicService.getNameById(realtyLandCert.getLandRightType()));
+
+            if (realtyLandCert.getLandRightType() != null) {
+                BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicById(realtyLandCert.getLandRightType());
+                if (baseDataDic != null) {
+                    if (StringUtils.isNotEmpty(baseDataDic.getRemark())) {
+                        declareRecord.setLandRightType(baseDataDic.getRemark());
+                    }else {
+                        declareRecord.setLandRightType(baseDataDic.getName());
+                    }
+                }
+            }
+
             declareRecord.setLandRightNature(baseDataDicService.getNameById(realtyLandCert.getLandRightNature()));
             declareRecord.setLandUseRightArea(realtyLandCert.getUseRightArea());
         }

@@ -126,7 +126,8 @@
                 if (engine.size() == 0) {
                     engine = $(that).closest("#" + commonDeclareApplyModel.config.realEstateCert.handleId2);
                 }
-                var district = engine.find("select[name='district']").val();
+                var district = engine.find("select[name='district'] option:selected").val();
+                var city = engine.find("select[name='city'] option:selected").val();
                 var unit = engine.find("input[name='unit']").val();
                 var floor = engine.find("input[name='floor']").val();
                 var roomNumber = engine.find("input[name='roomNumber']").val();
@@ -167,23 +168,49 @@
                 } else {
                     buildingNumber = buildingNumber + "栋";
                 }
-                /* if (commonDeclareApplyModel.isNotBlank(district)) {
-                 AssessCommon.getAreaById(district, function (data) {
-                 if (!commonDeclareApplyModel.isNotBlank(data)) {
-                 district = "";
-                 } else {
-                 district = data.name;
-                 }
-                 text = district + streetNumber + attachedNumber + buildingNumber + unit + floor + roomNumber;
-                 engine.find("input[name='beLocated']").val(text);
-                 });
-                 } else {
-                 district = "";
-                 text = district + streetNumber + attachedNumber + buildingNumber + unit + floor + roomNumber;
-                 engine.find("input[name='beLocated']").val(text);
-                 }*/
+                var key = 1;
+                if (commonDeclareApplyModel.isNotBlank(district)) {
+                    key = 1;
+                }
+                if (commonDeclareApplyModel.isNotBlank(city)) {
+                    key = 2;
+                }
+                //城市和县都不为null
+                if (commonDeclareApplyModel.isNotBlank(city) && commonDeclareApplyModel.isNotBlank(district)) {
+                    key = 3;
+                }
+                //城市和县都为null
+                if (!commonDeclareApplyModel.isNotBlank(city) && !commonDeclareApplyModel.isNotBlank(district)) {
+                    key = 4;
+                }
                 text = streetNumber + attachedNumber + buildingNumber + unit + floor + roomNumber;
-                engine.find("input[name='beLocated']").val(text);
+                switch (key) {
+                    case 1:
+                        AssessCommon.getAreaById(district, function (data) {
+                            text = data.name + text;
+                            engine.find("input[name='beLocated']").val(text);
+                        });
+                        break;
+                    case 2:
+                        AssessCommon.getAreaById(city, function (data) {
+                            text = data.name + text;
+                            engine.find("input[name='beLocated']").val(text);
+                        });
+                        break;
+                    case 3:
+                        AssessCommon.getAreaById(district, function (districtData) {
+                            AssessCommon.getAreaById(city, function (cityData) {
+                                text = cityData.name + districtData.name + text;
+                                engine.find("input[name='beLocated']").val(text);
+                            });
+                        });
+                        break;
+                    case 4:
+                        engine.find("input[name='beLocated']").val(text);
+                        break;
+                    default:
+                        break;
+                }
             }
         }
     };
@@ -232,7 +259,8 @@
             text = $(that).val();
             if (commonDeclareApplyModel.isNotBlank(text)) {
                 var engine = $(that).closest("#" + commonDeclareApplyModel.config.house.handleId);
-                var district = engine.find("select[name='district']").val();
+                var district = engine.find("select[name='district'] option:selected").val();
+                var city = engine.find("select[name='city'] option:selected").val();
                 var unit = engine.find("input[name='unit']").val();
                 var floor = engine.find("input[name='floor']").val();
                 var roomNumber = engine.find("input[name='roomNumber']").val();
@@ -273,23 +301,49 @@
                 } else {
                     buildingNumber = buildingNumber + "栋";
                 }
-                /* if (commonDeclareApplyModel.isNotBlank(district)) {
-                 AssessCommon.getAreaById(district, function (data) {
-                 if (!commonDeclareApplyModel.isNotBlank(data)) {
-                 district = "";
-                 } else {
-                 district = data.name;
-                 }
-                 text = district + streetNumber + attachedNumber + buildingNumber + unit + floor + roomNumber;
-                 engine.find("input[name='beLocated']").val(text);
-                 });
-                 } else {
-                 district = "";
-                 text = district + streetNumber + attachedNumber + buildingNumber + unit + floor + roomNumber;
-                 engine.find("input[name='beLocated']").val(text);
-                 }*/
+                var key = 1;
+                if (commonDeclareApplyModel.isNotBlank(district)) {
+                    key = 1;
+                }
+                if (commonDeclareApplyModel.isNotBlank(city)) {
+                    key = 2;
+                }
+                //城市和县都不为null
+                if (commonDeclareApplyModel.isNotBlank(city) && commonDeclareApplyModel.isNotBlank(district)) {
+                    key = 3;
+                }
+                //城市和县都为null
+                if (!commonDeclareApplyModel.isNotBlank(city) && !commonDeclareApplyModel.isNotBlank(district)) {
+                    key = 4;
+                }
                 text = streetNumber + attachedNumber + buildingNumber + unit + floor + roomNumber;
-                engine.find("input[name='beLocated']").val(text);
+                switch (key) {
+                    case 1:
+                        AssessCommon.getAreaById(district, function (data) {
+                            text = data.name + text;
+                            engine.find("input[name='beLocated']").val(text);
+                        });
+                        break;
+                    case 2:
+                        AssessCommon.getAreaById(city, function (data) {
+                            text = data.name + text;
+                            engine.find("input[name='beLocated']").val(text);
+                        });
+                        break;
+                    case 3:
+                        AssessCommon.getAreaById(district, function (districtData) {
+                            AssessCommon.getAreaById(city, function (cityData) {
+                                text = cityData.name + districtData.name + text;
+                                engine.find("input[name='beLocated']").val(text);
+                            });
+                        });
+                        break;
+                    case 4:
+                        engine.find("input[name='beLocated']").val(text);
+                        break;
+                    default:
+                        break;
+                }
             }
         }
     };
@@ -340,7 +394,8 @@
                 if (engine.size() == 0) {
                     engine = $(that).closest("#" + commonDeclareApplyModel.config.land.handleId2);
                 }
-                var district = engine.find("select[name='district']").val();
+                var district = engine.find("select[name='district'] option:selected").val();
+                var city = engine.find("select[name='city'] option:selected").val();
                 var unit = engine.find("input[name='unit']").val();
                 var floor = engine.find("input[name='floor']").val();
                 var roomNumber = engine.find("input[name='roomNumber']").val();
@@ -382,23 +437,49 @@
                 } else {
                     buildingNumber = buildingNumber + "栋";
                 }
-                /* if (commonDeclareApplyModel.isNotBlank(district)) {
-                 AssessCommon.getAreaById(district, function (data) {
-                 if (!commonDeclareApplyModel.isNotBlank(data)) {
-                 district = "";
-                 } else {
-                 district = data.name;
-                 }
-                 text = district + streetNumber + attachedNumber + buildingNumber + unit + floor + roomNumber;
-                 engine.find("input[name='beLocated']").val(text);
-                 });
-                 } else {
-                 district = "";
-                 text = district + streetNumber + attachedNumber + buildingNumber + unit + floor + roomNumber;
-                 engine.find("input[name='beLocated']").val(text);
-                 }*/
+                var key = 1;
+                if (commonDeclareApplyModel.isNotBlank(district)) {
+                    key = 1;
+                }
+                if (commonDeclareApplyModel.isNotBlank(city)) {
+                    key = 2;
+                }
+                //城市和县都不为null
+                if (commonDeclareApplyModel.isNotBlank(city) && commonDeclareApplyModel.isNotBlank(district)) {
+                    key = 3;
+                }
+                //城市和县都为null
+                if (!commonDeclareApplyModel.isNotBlank(city) && !commonDeclareApplyModel.isNotBlank(district)) {
+                    key = 4;
+                }
                 text = streetNumber + attachedNumber + buildingNumber + unit + floor + roomNumber;
-                engine.find("input[name='beLocated']").val(text);
+                switch (key) {
+                    case 1:
+                        AssessCommon.getAreaById(district, function (data) {
+                            text = data.name + text;
+                            engine.find("input[name='beLocated']").val(text);
+                        });
+                        break;
+                    case 2:
+                        AssessCommon.getAreaById(city, function (data) {
+                            text = data.name + text;
+                            engine.find("input[name='beLocated']").val(text);
+                        });
+                        break;
+                    case 3:
+                        AssessCommon.getAreaById(district, function (districtData) {
+                            AssessCommon.getAreaById(city, function (cityData) {
+                                text = cityData.name + districtData.name + text;
+                                engine.find("input[name='beLocated']").val(text);
+                            });
+                        });
+                        break;
+                    case 4:
+                        engine.find("input[name='beLocated']").val(text);
+                        break;
+                    default:
+                        break;
+                }
             }
         },
         getHtml: function () {
@@ -1391,7 +1472,8 @@
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <select name="city"
                             class="form-control search-select select2"
-                            required="required">
+                            required="required"
+                            onchange="commonDeclareApplyModel.realEstateCert.beLocatedSplicing(this);">
                     </select>
                 </div>
             </div>
@@ -1402,7 +1484,7 @@
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <select name="district"
                             class="form-control search-select select2 district"
-                            onchange="commonDeclareApplyModel.realEstateCert.beLocatedSplicing(this)">
+                            onchange="commonDeclareApplyModel.realEstateCert.beLocatedSplicing(this);commonDeclareApplyModel.realEstateCert.beLocatedSplicing(this);">
                     </select>
                 </div>
             </div>
@@ -1569,7 +1651,7 @@
                 </label>
                 <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                     <div class="input-group">
-                        <input type="text"  name="houseCertUse" class="form-control" list="realHouseUseList" required>
+                        <input type="text" name="houseCertUse" class="form-control" list="realHouseUseList" required>
                         <datalist id="realHouseUseList">
 
                         </datalist>
@@ -1589,7 +1671,8 @@
                 </label>
                 <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                     <div class="input-group">
-                        <input type="text"  name="houseCertUseCategory" class="form-control" list="houseCertUseCategoryList1">
+                        <input type="text" name="houseCertUseCategory" class="form-control"
+                               list="houseCertUseCategoryList1">
                         <datalist id="houseCertUseCategoryList1">
 
                         </datalist>
@@ -1621,12 +1704,12 @@
                 </div>
             </div>
             <%--<div class="x-valid">--%>
-                <%--<label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">建筑面积</label>--%>
-                <%--<div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">--%>
-                    <%--<input type="text"--%>
-                           <%--placeholder="建筑面积(数字)" name="floorArea" class="form-control"--%>
-                           <%--data-rule-maxlength="100" data-rule-number='true'>--%>
-                <%--</div>--%>
+            <%--<label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">建筑面积</label>--%>
+            <%--<div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">--%>
+            <%--<input type="text"--%>
+            <%--placeholder="建筑面积(数字)" name="floorArea" class="form-control"--%>
+            <%--data-rule-maxlength="100" data-rule-number='true'>--%>
+            <%--</div>--%>
             <%--</div>--%>
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">证载面积
@@ -1657,14 +1740,7 @@
                            data-rule-maxlength="100" data-rule-number='true'>
                 </div>
             </div>
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">登记机关
-                    <span class="symbol required"></span></label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text" required
-                           placeholder="登记机关" name="registrationAuthority" class="form-control">
-                </div>
-            </div>
+
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">其它(房屋)</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
@@ -1714,7 +1790,7 @@
                 </label>
                 <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                     <div class="input-group">
-                        <input type="text"  name="landCertUse" class="form-control" list="landCertUseList" required>
+                        <input type="text" name="landCertUse" class="form-control" list="landCertUseList" required>
                         <datalist id="landCertUseList">
 
                         </datalist>
@@ -1782,16 +1858,16 @@
                 </div>
             </div>
 
-                <div class="x-valid">
-                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地分摊面积
-                        <span class="symbol required"></span></label>
-                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                        <input type="text" required
-                               placeholder="土地分摊面积(数字)" name="landApportionArea" class="form-control"
-                               data-rule-maxlength="100"
-                               data-rule-number='true'>
-                    </div>
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">土地分摊面积
+                    <span class="symbol required"></span></label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <input type="text" required
+                           placeholder="土地分摊面积(数字)" name="landApportionArea" class="form-control"
+                           data-rule-maxlength="100"
+                           data-rule-number='true'>
                 </div>
+            </div>
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                     土地使用年限起
@@ -1804,16 +1880,25 @@
             </div>
         </div>
         <div class="form-group">
-                <div class="x-valid">
-                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                        土地使用年限止<span class="symbol required"></span>
-                    </label>
-                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                        <input placeholder="土地使用年限止" required
-                               name="useEndDate" data-date-format="yyyy-mm-dd"
-                               class="form-control date-picker dbdate roomTime">
-                    </div>
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                    土地使用年限止<span class="symbol required"></span>
+                </label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <input placeholder="土地使用年限止" required
+                           name="useEndDate" data-date-format="yyyy-mm-dd"
+                           class="form-control date-picker dbdate roomTime">
                 </div>
+            </div>
+
+            <div class="x-valid">
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">登记机关
+                    <span class="symbol required"></span></label>
+                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <input type="text" required
+                           placeholder="登记机关" name="registrationAuthority" class="form-control">
+                </div>
+            </div>
         </div>
         <div class="form-group">
             <div class="x-valid">
@@ -2005,7 +2090,7 @@
                 </label>
                 <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                     <div class="input-group">
-                        <input type="text"  name="landCertUse" class="form-control" list="landCertUseList2">
+                        <input type="text" name="landCertUse" class="form-control" list="landCertUseList2">
                         <datalist id="landCertUseList2">
 
                         </datalist>
@@ -2150,7 +2235,7 @@
                 </label>
                 <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                     <div class="input-group">
-                        <input type="text"  name="houseCertUse" class="form-control" list="realHouseUseList2">
+                        <input type="text" name="houseCertUse" class="form-control" list="realHouseUseList2">
                         <datalist id="realHouseUseList2">
 
                         </datalist>
@@ -2170,7 +2255,8 @@
                 </label>
                 <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                     <div class="input-group">
-                        <input type="text"  name="houseCertUseCategory" class="form-control" list="houseCertUseCategoryList2">
+                        <input type="text" name="houseCertUseCategory" class="form-control"
+                               list="houseCertUseCategoryList2">
                         <datalist id="houseCertUseCategoryList2">
 
                         </datalist>
@@ -2287,7 +2373,7 @@
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <select name="city"
                             class="form-control search-select select2"
-                            required="required">
+                            required="required" onchange="commonDeclareApplyModel.house.beLocatedSplicing(this)">
                     </select>
                 </div>
             </div>
@@ -2479,7 +2565,7 @@
                 </label>
                 <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                     <div class="input-group">
-                        <input type="text"  name="certUse" class="form-control" list="houseUseList" required="required">
+                        <input type="text" name="certUse" class="form-control" list="houseUseList" required="required">
                         <datalist id="houseUseList">
 
                         </datalist>
@@ -2499,7 +2585,7 @@
                 </label>
                 <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                     <div class="input-group">
-                        <input type="text"  name="certUseCategory" class="form-control" list="housecertUseCategoryList">
+                        <input type="text" name="certUseCategory" class="form-control" list="housecertUseCategoryList">
                         <datalist id="housecertUseCategoryList">
 
                         </datalist>
@@ -2647,7 +2733,7 @@
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <select name="city"
                             class="form-control search-select select2 city"
-                            required="required">
+                            required="required" onchange="commonDeclareApplyModel.land.landBeLocatedSplicing(this)">
                     </select>
                 </div>
             </div>
@@ -2921,7 +3007,8 @@
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">登记机关<span
                         class="symbol required"></span></label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text" placeholder="登记机关" name="registrationAuthority" class="form-control" required="required">
+                    <input type="text" placeholder="登记机关" name="registrationAuthority" class="form-control"
+                           required="required">
                 </div>
             </div>
         </div>
@@ -3181,7 +3268,7 @@
                 </label>
                 <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                     <div class="input-group">
-                        <input type="text"  name="certUse" class="form-control" list="certUseList2">
+                        <input type="text" name="certUse" class="form-control" list="certUseList2">
                         <datalist id="certUseList2">
 
                         </datalist>

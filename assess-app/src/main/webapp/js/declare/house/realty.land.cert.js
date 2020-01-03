@@ -11,11 +11,57 @@ assessCommonLand.config = {
     box: declareCommon.config.land.box,
     fileId: declareCommon.config.land.fileId,
     newFileId: declareCommon.config.land.newFileId,
-    houseFileId: declareCommon.config.land.houseFileId,
-    newHouseFileId: declareCommon.config.land.newHouseFileId,
-    HouseCert:{
-        frm:declareCommon.config.land.HouseCert.frm,
-        box:declareCommon.config.land.HouseCert.box
+    handleCopy:"#landHandleInputGroup"
+};
+
+assessCommonLand.copyData = function () {
+    var table = $("#" + assessCommonLand.config.table) ;
+    var rows = table.bootstrapTable('getSelections');
+    if (!rows || rows.length <= 0) {
+        toastr.info("请选择要复制的数据");
+    } else if (rows.length == 1) {
+        Alert("确认要复制？", 2, null, function () {
+            $(assessCommonLand.config.handleCopy).find("input[name='name']").val(rows[0].landCertName);
+            $(assessCommonLand.config.handleCopy).find("input[name='id']").val(rows[0].centerId);
+            toastr.info("复制从数据成功!");
+            table.bootstrapTable('uncheckAll');
+        });
+    } else {
+        toastr.info("只能选择一行数据进行复制");
+    }
+};
+
+assessCommonLand.pasteAll = function () {
+    var table = $("#" + assessCommonLand.config.table) ;
+    var rows = table.bootstrapTable('getSelections');
+    if (!rows || rows.length <= 0) {
+        toastr.info("请选择要复制的数据");
+    } else if (rows.length >= 1) {
+        var copyId = $(assessCommonLand.config.handleCopy).find("input[name='id']").val();
+        var idArray = [];
+        rows.forEach(function (ele, index) {
+            idArray.push(ele.centerId);
+        });
+        //过滤一次
+        var filtered = idArray.filter(function (element, index, array) {
+            return element == copyId;
+        });
+        //判断
+        if (filtered.length == 1) {
+            toastr.info("需要粘贴的从数据包含了自身,这样情况是不被允许的");
+            table.bootstrapTable('uncheckAll');
+            return false;
+        }
+        Alert("确认要粘贴？", 2, null, function () {
+            declareCommon.copyDeclareBuildCenter(copyId, idArray.join(","), function () {
+                toastr.info("粘贴从数据成功!");
+                table.bootstrapTable('uncheckAll');
+                $(assessCommonLand.config.handleCopy).find("input").val('');
+                $("#" + assessCommonLand.config.table).bootstrapTable('refresh');
+            });
+        });
+    } else {
+        toastr.info("只能选择一行数据进行复制");
     }
 };
 
@@ -31,11 +77,11 @@ assessCommonLand.landImportEvent = function (id) {
  * 土地证附件 导入处理
  */
 assessCommonLand.landImportHandle = function () {
-    var target = $("#" + assessCommonLand.config.newFileId) ;
+    var target = $("#" + assessCommonLand.config.newFileId);
     var id = target.attr("data-id");
     var value = target.val();
-    if (!declareCommon.isNotBlank(value)){
-        return false ;
+    if (!declareCommon.isNotBlank(value)) {
+        return false;
     }
     $.ajaxFileUpload({
         type: "POST",
@@ -62,63 +108,9 @@ assessCommonLand.landImportHandle = function () {
     });
 };
 
-/**
- * 房产证附件触发事件 (会先检测是否关联)
- * @param id
- */
-assessCommonLand.houseImportEvent = function (id) {
-    var data = $("#" + assessCommonLand.config.table).bootstrapTable('getRowByUniqueId', id);
-    if (declareCommon.isNotBlank(data.pid)) {
-        declareCommon.getHouseData(data.pid , function (item) {
-            if (declareCommon.isNotBlank(item)) {
-                $("#" + assessCommonLand.config.newHouseFileId).attr("data-id", item.id);
-                $("#" + assessCommonLand.config.newHouseFileId).trigger('click');
-            } else {
-                toastr.success('关联数据已经被删除了!');
-            }
-        });
-    } else {
-        toastr.success('请关联房产证数据!');
-    }
-};
-
-/**
- * 房产证附件 导入处理
- */
-assessCommonLand.houseImportHandle = function () {
-    var target = $("#" + assessCommonLand.config.newHouseFileId) ;
-    var id = target.attr("data-id");
-    var value = target.val();
-    if (!declareCommon.isNotBlank(value)){
-        return false ;
-    }
-    $.ajaxFileUpload({
-        type: "POST",
-        url: getContextPath() + "/public/importAjaxFile",
-        data: {
-            planDetailsId: declareCommon.getPlanDetailsId(),
-            tableName: AssessDBKey.DeclareRealtyHouseCert,
-            tableId: id,
-            fieldsName: assessCommonLand.config.houseFileId
-        },//要传到后台的参数，没有可以不写
-        secureuri: false,//是否启用安全提交，默认为false
-        fileElementId: target.attr("id"),//文件选择框的id属性
-        dataType: 'json',//服务器返回的格式
-        async: false,
-        success: function (result) {
-            if (result.ret) {
-                declareRealtyLandCert.loadList();
-            }
-        },
-        error: function (result, status, e) {
-            Loading.progressHide();
-            Alert("调用服务端方法失败，失败原因:" + result);
-        }
-    });
-};
 
 assessCommonLand.init = function (item) {
-    declareCommon.initLand(item,$("#" + assessCommonLand.config.frm),[assessCommonLand.config.fileId],null);
+    declareCommon.initLand(item, $("#" + assessCommonLand.config.frm), [assessCommonLand.config.fileId], null);
 };
 
 /**
@@ -142,7 +134,7 @@ assessCommonLand.deleteLand = function () {
                 rows.forEach(function (item, index, source) {
                     arr.push(item.id);
                 });
-                declareCommon.deleteLandData(arr.join(","),function () {
+                declareCommon.deleteLandData(arr.join(","), function () {
                     assessCommonLand.loadList();
                     toastr.success('成功!');
                 });
@@ -153,8 +145,8 @@ assessCommonLand.deleteLand = function () {
     }
 };
 
-assessCommonLand.getLand = function (id,callback) {
-    declareCommon.getLandData(id,callback);
+assessCommonLand.getLand = function (id, callback) {
+    declareCommon.getLandData(id, callback);
 };
 
 /**
@@ -166,9 +158,7 @@ assessCommonLand.editLand = function () {
         toastr.info("请选择要编辑的数据");
     } else if (rows.length == 1) {
         assessCommonLand.showAddModelLand();
-        assessCommonLand.getLand(rows[0].id , function (data) {
-            assessCommonLand.init(data);
-        }) ;
+        assessCommonLand.init(rows[0]);
         $("#" + assessCommonLand.config.frm).validate();
         $('#' + assessCommonLand.config.box).modal("show");
     } else {
@@ -185,21 +175,35 @@ assessCommonLand.loadList = function () {
     cols.push({
         field: 'id', title: '操作', formatter: function (value, row, index) {
             var str = '<div class="btn-margin">';
-            if (row.pid) {
-                str += '<a class="btn btn-xs btn-success" href="javascript:assessCommonLand.showAddModelHouse(' + row.id + ');" ><i class="fa fa-check">房产证</i></a>';
-            } else {
-                str += '<a class="btn btn-xs btn-success" href="javascript:assessCommonLand.showAddModelHouse(' + row.id + ');" ><i class="fa fa-remove">房产证</i></a>';
-            }
             str += "<a class='btn btn-xs btn-success tooltips' data-placement='top' data-original-title='土地证附件' onclick='assessCommonLand.landImportEvent(" + row.id + ")'" + ">" + "<i class='fa'>" + "土地证附件" + "</a>";
-            str += "<a class='btn btn-xs btn-success tooltips' data-placement='top' data-original-title='房产证附件' onclick='assessCommonLand.houseImportEvent(" + row.id + ")'" + ">" + "<i class='fa'>" + "房产证附件" + "</a>";
             str += '</div>';
+            return str;
+        }
+    });
+    cols.push({
+        field: 'creator', title: '许可证信息', formatter: function (value, row, index) {
+            var str = '<div class="dropdown">';
+            str += "<button class='btn btn-primary dropdown-toggle' data-toggle='dropdown'>" + "<i class='fa fa-users'>" + "</i>" + "许可证信息" + "<span class='caret'>" + "</span>" + "</button>";
+            str += "<ul class='dropdown-menu' role='menu' aria-labelledby='dropdownMenu2'>";
+
+            str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='assessCommonLand.declareBuildingPermitView(" + row.id + ")'" + ">" + "建设工程规划许可证" + "<i class='fa fa-navicon'></i>" + "</a>" + "</li>";
+
+            str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='assessCommonLand.declareLandUsePermitView(" + row.id + ")'" + ">" + "建设用地规划许可证" + "<i class='fa fa-navicon'></i>" + "</a>" + "</li>";
+
+            str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='assessCommonLand.declareBuildingConstructionPermitView(" + row.id + ")'" + ">" + "建筑工程施工许可证" + "<i class='fa fa-navicon'></i>" + "</a>" + "</li>";
+
+            str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='assessCommonLand.declarePreSalePermitView(" + row.id + ")'" + ">" + "商品房预售许可证" + "<i class='fa fa-navicon'></i>" + "</a>" + "</li>";
+
+
+            str += "</ul>";
+            str += "</div>";
             return str;
         }
     });
     $("#" + assessCommonLand.config.table).bootstrapTable('destroy');
     TableInit(assessCommonLand.config.table, getContextPath() + "/declareRealtyLandCert/getDeclareRealtyLandCertList", cols, {
         planDetailsId: declareCommon.getPlanDetailsId(),
-        enable:declareCommon.masterData
+        enable: declareCommon.masterData
     }, {
         showColumns: false,
         showRefresh: false,
@@ -223,11 +227,20 @@ assessCommonLand.saveAndUpdateLand = function () {
     if (!declareCommon.isNotBlank(data.id)) {
         data.planDetailsId = declareCommon.getPlanDetailsId();
         data.enable = declareCommon.masterData;
-        data.pid = "0";
         data.declareType = declareCommon.declareLandType;
     }
-    declareCommon.saveLandData(data , function () {
-        assessCommonLand.loadList();
+    declareCommon.saveLandData(data, function (item) {
+        if (!declareCommon.isNotBlank(data.id)) {
+            declareCommon.declareBuildCenterSaveAndUpdate({
+                landId: item,
+                planDetailsId: declareCommon.getPlanDetailsId(),
+                type: declareCommon.declareCenterData.landId.type
+            }, function () {
+                assessCommonLand.loadList();
+            });
+        } else {
+            assessCommonLand.loadList();
+        }
         toastr.success('成功!');
         $('#' + assessCommonLand.config.box).modal("hide");
     });
@@ -257,12 +270,258 @@ assessCommonLand.inputFile = function () {
             }
         },
         error: function (result, status, e) {
-            console.log(result) ;
+            console.log(result);
             Loading.progressHide();
             Alert("调用服务端方法失败，失败原因:" + result);
         }
     });
 };
+
+
+
+//建设工程规划许可证
+assessCommonLand.declareBuildingPermitView = function (id) {
+    var item = $("#" + assessCommonLand.config.table).bootstrapTable('getRowByUniqueId', id);
+    if (!declareCommon.isNotBlank(item.centerId)) {
+        toastr.success('不合符调整后的数据约定,请联系管理员!');
+        return false;
+    }
+    var box = $("#declareBuildingPermitLandBox");
+    var frm = box.find("form");
+    box.find("#" + commonDeclareApplyModel.config.buildingPermit.handleId).remove();
+    box.find(".panel-body").append(commonDeclareApplyModel.buildingPermit.getHtml());
+    var arr = ["declareBuildingPermitFileId3"] ;
+    var inputArr = ["date"] ;
+    declareCommon.showHtmlMastInit(frm, function (area) {
+        box.modal("show");
+        declareCommon.getDeclareBuildCenter(item.centerId, function (centerData) {
+            if (centerData.buildingPermitId) {
+                declareCommon.getDeclareBuildingPermitById(centerData.buildingPermitId, function (data) {
+                    data.centerId = centerData.id;
+                    declareCommon.initFormData(frm, data, arr, false, AssessDBKey.DeclareBuildingPermit,inputArr);
+                });
+            } else {
+                declareCommon.initFormData(frm, {centerId: centerData.id}, arr, false, AssessDBKey.DeclareBuildingPermit,inputArr);
+            }
+        });
+    });
+};
+//建设工程规划许可证
+assessCommonLand.declareBuildingPermitSaveAndUpdate = function () {
+    var box = $("#declareBuildingPermitLandBox");
+    var frm = box.find("form");
+    if (!frm.valid()) {
+        return false;
+    }
+    var data = formSerializeArray(frm);
+    data.planDetailsId = declareCommon.getPlanDetailsId();
+    declareCommon.saveDeclareBuildingPermit(data, true, function (item) {
+        declareCommon.declareBuildCenterSaveAndUpdate({buildingPermitId: item.id, id: data.centerId}, function () {
+            box.modal("hide");
+        });
+    });
+};
+//建设工程规划许可证
+assessCommonLand.declareBuildingPermitRemove = function () {
+    var box = $("#declareBuildingPermitLandBox");
+    var frm = box.find("form");
+    var data = formSerializeArray(frm);
+    if (declareCommon.isNotBlank(data.centerId)) {
+        declareCommon.getDeclareBuildCenter(data.centerId, function (centerData) {
+            if (declareCommon.isNotBlank(centerData.buildingPermitId)) {
+                declareCommon.deleteByDeclareBuildCenterType(data.centerId, declareCommon.declareCenterData.buildingPermitId.type, function () {
+                    box.modal("hide");
+                    toastr.success('已经删除!');
+                });
+            } else {
+                toastr.success('未添加数据!');
+            }
+        });
+    }
+};
+
+//建设用地规划许可证
+assessCommonLand.declareLandUsePermitView = function (id) {
+    var item = $("#" + assessCommonLand.config.table).bootstrapTable('getRowByUniqueId', id);
+    if (!declareCommon.isNotBlank(item.centerId)) {
+        toastr.success('不合符调整后的数据约定,请联系管理员!');
+        return false;
+    }
+    var box = $("#declareLandUsePermitLandBox");
+    var frm = box.find("form");
+    box.find("#" + commonDeclareApplyModel.config.landUsePermit.handleId).remove();
+    box.find(".panel-body").append(commonDeclareApplyModel.landUsePermit.getHtml());
+    var arr = ["declareLandUsePermitFileId3"] ;
+    var inputArr = ["date"] ;
+    declareCommon.showHtmlMastInit(frm, function (area) {
+        box.modal("show");
+        declareCommon.getDeclareBuildCenter(item.centerId, function (centerData) {
+            if (centerData.landUsePermitId) {
+                declareCommon.getDeclareLandUsePermitById(centerData.landUsePermitId, function (data) {
+                    data.centerId = centerData.id;
+                    declareCommon.initFormData(frm, data, arr, false, AssessDBKey.DeclareLandUsePermit,inputArr);
+                });
+            } else {
+                declareCommon.initFormData(frm, {centerId: centerData.id}, arr, false, AssessDBKey.DeclareLandUsePermit,inputArr);
+            }
+        });
+    });
+};
+//建设用地规划许可证
+assessCommonLand.declareLandUsePermitSaveAndUpdate = function () {
+    var box = $("#declareLandUsePermitLandBox");
+    var frm = box.find("form");
+    if (!frm.valid()) {
+        return false;
+    }
+    var data = formSerializeArray(frm);
+    data.planDetailsId = declareCommon.getPlanDetailsId();
+    declareCommon.saveDeclareLandUsePermit(data, true, function (item) {
+        declareCommon.declareBuildCenterSaveAndUpdate({landUsePermitId: item.id, id: data.centerId}, function () {
+            box.modal("hide");
+        });
+    });
+};
+//建设用地规划许可证
+assessCommonLand.declareLandUsePermitRemove = function () {
+    var box = $("#declareLandUsePermitLandBox");
+    var frm = box.find("form");
+    var data = formSerializeArray(frm);
+    if (declareCommon.isNotBlank(data.centerId)) {
+        declareCommon.getDeclareBuildCenter(data.centerId, function (centerData) {
+            if (declareCommon.isNotBlank(centerData.landUsePermitId)) {
+                declareCommon.deleteByDeclareBuildCenterType(data.centerId, declareCommon.declareCenterData.landUsePermitId.type, function () {
+                    box.modal("hide");
+                    toastr.success('已经删除!');
+                });
+            } else {
+                toastr.success('未添加数据!');
+            }
+        });
+    }
+};
+
+//建筑工程施工许可证
+assessCommonLand.declareBuildingConstructionPermitView = function (id) {
+    var item = $("#" + assessCommonLand.config.table).bootstrapTable('getRowByUniqueId', id);
+    if (!declareCommon.isNotBlank(item.centerId)) {
+        toastr.success('不合符调整后的数据约定,请联系管理员!');
+        return false;
+    }
+    var arr = ["declareBuildingConstructionPermitFileId3"];
+    var inputArr = ["date","contractPeriod"] ;
+    var box = $("#declareBuildingConstructionPermitLandBox");
+    var frm = box.find("form");
+    box.find("#" + commonDeclareApplyModel.config.buildingConstructionPermit.handleId).remove();
+    box.find(".panel-body").append(commonDeclareApplyModel.buildingConstructionPermit.getHtml());
+    declareCommon.showHtmlMastInit(frm, function (area) {
+        box.modal("show");
+        declareCommon.getDeclareBuildCenter(item.centerId, function (centerData) {
+            if (centerData.buildingConstructionPermitId) {
+                declareCommon.getDeclareBuildingConstructionPermitById(centerData.buildingConstructionPermitId, function (data) {
+                    data.centerId = centerData.id;
+                    declareCommon.initFormData(frm, data, arr, false, AssessDBKey.DeclareBuildingConstructionPermit,inputArr);
+                });
+            } else {
+                declareCommon.initFormData(frm, {centerId: centerData.id}, arr, false, AssessDBKey.DeclareBuildingConstructionPermit,inputArr);
+            }
+        });
+    });
+};
+//建筑工程施工许可证
+assessCommonLand.declareBuildingConstructionPermitRemove = function () {
+    var box = $("#declareBuildingConstructionPermitLandBox");
+    var frm = box.find("form");
+    var data = formSerializeArray(frm);
+    if (declareCommon.isNotBlank(data.centerId)) {
+        declareCommon.getDeclareBuildCenter(data.centerId, function (centerData) {
+            if (declareCommon.isNotBlank(centerData.buildingConstructionPermitId)) {
+                declareCommon.deleteByDeclareBuildCenterType(data.centerId, declareCommon.declareCenterData.buildingConstructionPermitId.type, function () {
+                    box.modal("hide");
+                    toastr.success('已经删除!');
+                });
+            } else {
+                toastr.success('未添加数据!');
+            }
+        });
+    }
+};
+//建筑工程施工许可证
+assessCommonLand.declareBuildingConstructionPermitSaveAndUpdate = function () {
+    var box = $("#declareBuildingConstructionPermitLandBox");
+    var frm = box.find("form");
+    if (!frm.valid()) {
+        return false;
+    }
+    var data = formSerializeArray(frm);
+    data.planDetailsId = declareCommon.getPlanDetailsId();
+    declareCommon.saveDeclareBuildingConstructionPermit(data, true, function (item) {
+        declareCommon.declareBuildCenterSaveAndUpdate({buildingConstructionPermitId: item.id, id: data.centerId}, function () {
+            box.modal("hide");
+        });
+    });
+};
+//商品房预售许可证
+assessCommonLand.declarePreSalePermitView = function (id) {
+    var item = $("#" + assessCommonLand.config.table).bootstrapTable('getRowByUniqueId', id);
+    if (!declareCommon.isNotBlank(item.centerId)) {
+        toastr.success('不合符调整后的数据约定,请联系管理员!');
+        return false;
+    }
+    var arr = ["declarePreSalePermitFileId3"];
+    var inputArr = ["date"] ;
+    var box = $("#declarePreSalePermitLandBox");
+    var frm = box.find("form");
+    box.find("#" + commonDeclareApplyModel.config.preSalePermit.handleId).remove();
+    box.find(".panel-body").append(commonDeclareApplyModel.preSalePermit.getHtml());
+    declareCommon.showHtmlMastInit(frm, function (area) {
+        box.modal("show");
+        declareCommon.getDeclareBuildCenter(item.centerId, function (centerData) {
+            if (centerData.preSalePermitId) {
+                declareCommon.getDeclarePreSalePermitById(centerData.preSalePermitId, function (data) {
+                    data.centerId = centerData.id;
+                    declareCommon.initFormData(frm, data, arr, false, AssessDBKey.DeclarePreSalePermit,inputArr);
+                });
+            } else {
+                declareCommon.initFormData(frm, {centerId: centerData.id}, arr, false, AssessDBKey.DeclarePreSalePermit,inputArr);
+            }
+        });
+    });
+};
+//商品房预售许可证
+assessCommonLand.declarePreSalePermitRemove = function () {
+    var box = $("#declarePreSalePermitLandBox");
+    var frm = box.find("form");
+    var data = formSerializeArray(frm);
+    if (declareCommon.isNotBlank(data.centerId)) {
+        declareCommon.getDeclareBuildCenter(data.centerId, function (centerData) {
+            if (declareCommon.isNotBlank(centerData.preSalePermitId)) {
+                declareCommon.deleteByDeclareBuildCenterType(data.centerId, declareCommon.declareCenterData.preSalePermitId.type, function () {
+                    box.modal("hide");
+                    toastr.success('已经删除!');
+                });
+            } else {
+                toastr.success('未添加数据!');
+            }
+        });
+    }
+};
+//商品房预售许可证
+assessCommonLand.declarePreSalePermitSaveAndUpdate = function () {
+    var box = $("#declarePreSalePermitLandBox");
+    var frm = box.find("form");
+    if (!frm.valid()) {
+        return false;
+    }
+    var data = formSerializeArray(frm);
+    data.planDetailsId = declareCommon.getPlanDetailsId();
+    declareCommon.saveDeclarePreSalePermit(data, true, function (item) {
+        declareCommon.declareBuildCenterSaveAndUpdate({preSalePermitId: item.id, id: data.centerId}, function () {
+            box.modal("hide");
+        });
+    });
+};
+
 
 $(function () {
     assessCommonLand.loadList();
