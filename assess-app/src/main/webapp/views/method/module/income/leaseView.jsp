@@ -122,7 +122,7 @@
                     <div class="form-group">
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                月租金收入(元/m2)
+                                月租金收入(元/m²)
                             </label>
                             <div class="col-sm-4">
                                 <div class="input-group">
@@ -134,16 +134,24 @@
                                 </div>
                             </div>
                         </div>
-
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                全年月份数
+                            </label>
+                            <div class="col-sm-4">
+                                <label class="form-control" data-name="monthNumber"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
                                 月租金收入说明<span class="symbol required"></span>
                             </label>
-                            <div class="col-sm-4">
+                            <div class="col-sm-10">
                                 <label class="form-control" data-name="rentalIncomeRemark"></label>
                             </div>
                         </div>
-
                     </div>
                     <div class="form-group">
                         <div class="x-valid">
@@ -166,7 +174,7 @@
                     <div class="form-group">
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                年押金(元/m2)
+                                年押金(元/m²)
                             </label>
                             <div class="col-sm-4">
                                 <label class="form-control" data-name="deposit"></label>
@@ -235,16 +243,6 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                全年月份数
-                            </label>
-                            <div class="col-sm-4">
-                                <label class="form-control" data-name="monthNumber"></label>
-                            </div>
-                        </div>
-                    </div>
                 </form>
             </div>
             <div class="modal-footer">
@@ -280,7 +278,7 @@
                         </div>
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                重置价格(元/m2)
+                                重置价格(元/m²)
                             </label>
                             <div class="col-sm-4">
                                 <label class="form-control" name="replacementValue"></label>
