@@ -3303,3 +3303,160 @@ var estateSupplyGas;
         estateSupplyGas.prototype.loadDataDicList();
     })
 })();
+
+var estateInvestigation;
+(function () {
+    estateInvestigation = function () {
+    };
+    estateInvestigation.prototype = {
+        config: function () {
+            var data = {};
+            data.table = "EstateInvestigationList";
+            data.box = "divBoxEstateInvestigation";
+            data.frm = "frmEstateInvestigation";
+            return data;
+        },
+        loadDataDicList: function () {
+            var cols = commonColumn.estateInvestigation();
+            cols.push({
+                field: 'id', title: '操作', formatter: function (value, row, index) {
+                    var str = '<div class="btn-margin">';
+                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="estateInvestigation.prototype.getAndInit(' + row.id + ')"><i class="fa fa-edit fa-white"></i></a>';
+                    str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="estateInvestigation.prototype.removeData(' + row.id + ')"><i class="fa fa-minus fa-white"></i></a>';
+                    str += '</div>';
+                    return str;
+                }
+            });
+            $("#" + estateInvestigation.prototype.config().table).bootstrapTable('destroy');
+            TableInit(estateInvestigation.prototype.config().table, getContextPath() + "/basicEstateInvestigation/getEstateInvestigationListByEstateId", cols, {
+                estateId: estateCommon.getEstateId()
+            }, {
+                showColumns: false,
+                showRefresh: false,
+                search: false,
+                onLoadSuccess: function () {
+                    $('.tooltips').tooltip();
+                }
+            });
+        },
+        removeData: function (id) {
+            $.ajax({
+                url: getContextPath() + "/basicEstateInvestigation/deleteBasicEstateInvestigation",
+                type: "post",
+                dataType: "json",
+                data: {id: id},
+                success: function (result) {
+                    if (result.ret) {
+                        toastr.success('删除成功');
+                        estateInvestigation.prototype.loadDataDicList();
+                    }
+                    else {
+                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        },
+        showModel: function () {
+            $("#" + estateInvestigation.prototype.config().frm).clearAll();
+            var estateId = estateCommon.getEstateId();
+            $("#" + estateInvestigation.prototype.config().frm).find("input[name='estateId']").val(estateId);
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseLoadUtility, '', function (html, data) {
+                $("#" + estateInvestigation.prototype.config().frm).find('select.planningUse').empty().html(html).trigger('change');
+            });
+            $('#' + estateInvestigation.prototype.config().box).modal("show");
+        },
+        saveData: function () {
+            if (!$("#" + estateInvestigation.prototype.config().frm).valid()) {
+                return false;
+            }
+            var data = formParams(estateInvestigation.prototype.config().frm,true);
+            data.estateId = estateCommon.getEstateId();
+            $.ajax({
+                url: getContextPath() + "/basicEstateInvestigation/saveAndUpdateBasicEstateInvestigation",
+                type: "post",
+                dataType: "json",
+                data: data,
+                success: function (result) {
+                    if (result.ret) {
+                        toastr.success('保存成功');
+                        $('#' + estateInvestigation.prototype.config().box).modal('hide');
+                        estateInvestigation.prototype.loadDataDicList();
+                    }
+                    else {
+                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        },
+        isNotNull: function (item) {
+            if (item) {
+                return true;
+            }
+            return false;
+        },
+        getAndInit: function (id) {
+            $.ajax({
+                url: getContextPath() + "/basicEstateInvestigation/getBasicEstateInvestigationById",
+                type: "post",
+                dataType: "json",
+                data: {id: id},
+                success: function (result) {
+                    if (result.ret) {
+                        var data = result.data;
+                        if (estateInvestigation.prototype.isNotNull(data)) {
+                            estateInvestigation.prototype.init(data);
+                        } else {
+                            estateInvestigation.prototype.init({});
+                        }
+                        $('#' + estateInvestigation.prototype.config().box).modal("show");
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        },
+        init: function (item) {
+            $("#" + estateInvestigation.prototype.config().frm).clearAll();
+            $("#" + estateInvestigation.prototype.config().frm).initForm(item);
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseLoadUtility, item.planningUse, function (html, data) {
+                $("#" + estateInvestigation.prototype.config().frm).find('select.planningUse').empty().html(html).trigger('change');
+            });
+        },
+        importData : function () {
+            $.ajaxFileUpload({
+                type: "POST",
+                url: getContextPath() + "/basicEstateInvestigation/importData",
+                data: {
+                    estateId : estateCommon.getEstateId()
+                },//要传到后台的参数，没有可以不写
+                secureuri: false,//是否启用安全提交，默认为false
+                fileElementId: 'ajaxFileUploadInvestigation',//文件选择框的id属性
+                dataType: 'json',//服务器返回的格式
+                async: false,
+                success: function (result) {
+                    if (result.ret) {
+                        estateInvestigation.prototype.loadDataDicList();
+                        Alert(result.data);
+                    }
+                },
+                error: function (result, status, e) {
+                    Loading.progressHide();
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            });
+        }
+    }
+
+    //绑定事件
+    $('#' + estateInvestigation.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
+        estateInvestigation.prototype.loadDataDicList();
+    })
+
+})();

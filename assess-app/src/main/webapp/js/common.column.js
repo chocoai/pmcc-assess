@@ -2,6 +2,19 @@
  * Created by kings on 2018-12-12.
  */
 var commonColumn = {};
+//楼盘-调查信息
+commonColumn.estateInvestigation = function () {
+    var cols = [];
+    cols.push({field: 'buildingNumber', title: '楼栋号'});
+    cols.push({field: 'unitNumber', title: '单元号'});
+    cols.push({field: 'houseNumber', title: '房号'});
+    cols.push({field: 'buildingArea', title: '建筑面积'});
+    cols.push({field: 'price', title: '价格'});
+    cols.push({field: 'planningUseName', title: '规划用途'});
+    cols.push({field: 'construction', title: '结构'});
+    cols.push({field: 'remark', title: '备注'});
+    return cols;
+}
 //楼盘-通信网络信息
 commonColumn.estateNetworkColumn = function () {
     var cols = [];
