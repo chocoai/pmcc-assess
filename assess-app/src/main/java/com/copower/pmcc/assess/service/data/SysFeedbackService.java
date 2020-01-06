@@ -6,9 +6,12 @@ import com.copower.pmcc.assess.dal.basis.dao.data.SysFeedbackDao;
 import com.copower.pmcc.assess.dal.basis.entity.SysFeedback;
 import com.copower.pmcc.assess.dto.output.data.SysFeedbackVo;
 import com.copower.pmcc.assess.service.PublicService;
+import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.api.provider.ErpRpcAttachmentService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
@@ -19,6 +22,7 @@ import com.copower.pmcc.erp.http.RequestParam;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -43,6 +47,10 @@ public class SysFeedbackService {
     private PublicService publicService;
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private BaseAttachmentService baseAttachmentService;
+    @Autowired
+    private ErpRpcAttachmentService erpRpcAttachmentService;
 
     public SysFeedbackVo getBySysFeedbackId(Integer id) {
         SysFeedback object = sysFeedbackDao.getSingleObject(id);
@@ -105,16 +113,38 @@ public class SysFeedbackService {
      * @throws BusinessException
      */
     public boolean saveSysFeedbackReturnId(SysFeedback sysFeedback) throws Exception {
-        //src图片地址进行编码
+        //找到对应的attachment下载到本地
+        //进行base64编译，替换src路径
         String content = sysFeedback.getDeatilDescription();
-        String regex = "(?<=(src=\"))[^\"]*?(?=\")";
+        String regex = "(?<=(title=\"))[^\"]*?(?=\")";
         Pattern p = Pattern.compile(regex);
         Matcher m = p.matcher(content);
+        List<String> paths = Lists.newArrayList();
         while (m.find()) {
             String result = m.group();
-            String encode = FileUtils.base64Encode(result);
-            content = content.replaceAll(result, encode);
+            SysAttachmentDto deleteExample = new SysAttachmentDto();
+            deleteExample.setTableName("tb_uedit");
+            deleteExample.setFtpFileName(result);
+            deleteExample.setAppKey("pmcc-all");
+            List<SysAttachmentDto> attachmentList = erpRpcAttachmentService.getAttachmentList(deleteExample);
+            if (CollectionUtils.isNotEmpty(attachmentList)) {
+                paths.add(baseAttachmentService.downloadFtpFileToLocal(attachmentList.get(0).getId()));
+            } else {
+                paths.add("");
+            }
         }
+
+        String regex2 = "(?<=(src=\"))[^\"]*?(?=\")";
+        Pattern p2 = Pattern.compile(regex2);
+        Matcher m2 = p2.matcher(content);
+        Integer i = 0;
+        while (m2.find()) {
+            String result = m2.group();
+            String encode = FileUtils.base64Encode(paths.get(i));
+            content = content.replaceAll(result, String.format("%s%s", "data:img/jpg;base64,", encode));
+            i++;
+        }
+
         sysFeedback.setDetailEncode(content);
         if (sysFeedback.getId() == null || sysFeedback.getId().equals(0)) {
             sysFeedback.setCreator(processControllerComponent.getThisUser());

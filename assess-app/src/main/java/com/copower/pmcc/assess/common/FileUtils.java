@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import sun.misc.BASE64Decoder;
+import sun.misc.BASE64Encoder;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -148,14 +149,23 @@ public class FileUtils {
     /**
      * @param path 图片路径
      * @return
-     * @Description: 将图片路径进行base64编码
+     * @Description: 图片转化成base64字符串
      * @Author:
      * @CreateTime:
      */
     public static String base64Encode(String path) throws Exception {
-        Base64.Encoder encoder = Base64.getEncoder();
-        byte[] textByte = path.getBytes("UTF-8");
-        String encodedText = encoder.encodeToString(textByte);
-        return encodedText;
+        InputStream inputStream = null;
+        byte[] data = null;
+        try {
+            inputStream = new FileInputStream(path);
+            data = new byte[inputStream.available()];
+            inputStream.read(data);
+            inputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // 加密
+        BASE64Encoder encoder = new BASE64Encoder();
+        return encoder.encode(data);
     }
 }
