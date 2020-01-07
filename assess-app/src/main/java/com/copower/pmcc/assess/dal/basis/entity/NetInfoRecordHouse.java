@@ -62,6 +62,8 @@ public class NetInfoRecordHouse {
 
     private Integer tradingType;
 
+    private String purchaseLimitStatus;
+
     public Integer getId() {
         return id;
     }
@@ -292,5 +294,13 @@ public class NetInfoRecordHouse {
 
     public void setTradingType(Integer tradingType) {
         this.tradingType = tradingType;
+    }
+
+    public String getPurchaseLimitStatus() {
+        return purchaseLimitStatus;
+    }
+
+    public void setPurchaseLimitStatus(String purchaseLimitStatus) {
+        this.purchaseLimitStatus = purchaseLimitStatus == null ? null : purchaseLimitStatus.trim();
     }
 }

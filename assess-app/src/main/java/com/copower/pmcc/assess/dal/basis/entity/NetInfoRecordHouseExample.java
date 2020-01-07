@@ -1995,6 +1995,76 @@ public class NetInfoRecordHouseExample {
             addCriterion("trading_type not between", value1, value2, "tradingType");
             return (Criteria) this;
         }
+
+        public Criteria andPurchaseLimitStatusIsNull() {
+            addCriterion("purchase_limit_status is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaseLimitStatusIsNotNull() {
+            addCriterion("purchase_limit_status is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaseLimitStatusEqualTo(String value) {
+            addCriterion("purchase_limit_status =", value, "purchaseLimitStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaseLimitStatusNotEqualTo(String value) {
+            addCriterion("purchase_limit_status <>", value, "purchaseLimitStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaseLimitStatusGreaterThan(String value) {
+            addCriterion("purchase_limit_status >", value, "purchaseLimitStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaseLimitStatusGreaterThanOrEqualTo(String value) {
+            addCriterion("purchase_limit_status >=", value, "purchaseLimitStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaseLimitStatusLessThan(String value) {
+            addCriterion("purchase_limit_status <", value, "purchaseLimitStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaseLimitStatusLessThanOrEqualTo(String value) {
+            addCriterion("purchase_limit_status <=", value, "purchaseLimitStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaseLimitStatusLike(String value) {
+            addCriterion("purchase_limit_status like", value, "purchaseLimitStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaseLimitStatusNotLike(String value) {
+            addCriterion("purchase_limit_status not like", value, "purchaseLimitStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaseLimitStatusIn(List<String> values) {
+            addCriterion("purchase_limit_status in", values, "purchaseLimitStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaseLimitStatusNotIn(List<String> values) {
+            addCriterion("purchase_limit_status not in", values, "purchaseLimitStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaseLimitStatusBetween(String value1, String value2) {
+            addCriterion("purchase_limit_status between", value1, value2, "purchaseLimitStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaseLimitStatusNotBetween(String value1, String value2) {
+            addCriterion("purchase_limit_status not between", value1, value2, "purchaseLimitStatus");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {
