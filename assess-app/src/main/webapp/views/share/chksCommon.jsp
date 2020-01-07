@@ -303,9 +303,11 @@
                         });
                         restHtml += html;
                     });
-                    var remarksHtml = $("#assessmentItemTemplateRemarksHTML").html();
-                    remarksHtml = remarksHtml.replace(/{remarks}/g, '');
-                    restHtml += remarksHtml;
+                    if (data.length >= 1){
+                        var remarksHtml = $("#assessmentItemTemplateRemarksHTML").html();
+                        remarksHtml = remarksHtml.replace(/{remarks}/g, '');
+                        restHtml += remarksHtml;
+                    }
                     target.empty().append(restHtml);
                 });
             } else {
@@ -348,8 +350,17 @@
             projectId: '${projectPlanDetails.projectId}',
             planId: '${projectPlanDetails.planId}',
             planDetailsId: '${projectPlanDetails.id}',
-            spotActivityId: 0
+            spotActivityId: 0,
+            isEffective:true
         };
+        if ('${processInsId}') {
+            options.processInsId = '${processInsId}';
+        }
+        if (!options.processInsId) {
+            if ('${projectPlanDetails.processInsId}') {
+                options.processInsId = '${projectPlanDetails.processInsId}';
+            }
+        }
         if ('${activityDtoList}') {
             var activityIds = [];
             var data = null;
@@ -367,7 +378,7 @@
                 options.activityIdList = activityIds.join(",");
             }
         }
-        var headHtml = "<caption>参考考核数据</caption>";
+        var headHtml = "<caption>参考考核数据(包含历史数据)</caption>";
         headHtml += "<thead>";
         headHtml += "<tr><td width='5%' align='center' >被考核人</td> <td width='5%' align='center'>考核人</td> <td width='60%' align='center'>考核详情</td> <td width='5%' align='center'>得分</td> <td width='5%' align='center'>考核时间</td> <td width='20%' align='center'>综合说明</td></tr>";
         headHtml += "</thead>";
@@ -459,12 +470,16 @@
             }
         }
         assessmentCommonHandle.getChksSonData(target, data);
+        if (data.length == 0){
+            toastr.warning("请确定考核数据填写情况!或者咨询管理员配置考核数据模板!");
+            return false;
+        }
         if (!frm.valid()) {
             return false;
         }
         assessmentCommonHandle.saveAssessmentServer({chksScore: JSON.stringify(data), fomData: JSON.stringify(parentData)}, function (data) {
             toastr.warning("考核成功!");
-
+            assessmentCommonHandle.loadChksServerViewTable();
         });
     }
 
@@ -476,6 +491,10 @@
         var remarks = target.find("textarea[name=remarks]").val();
         var data = [];
         assessmentCommonHandle.getChksSonData(target, data);
+        if (data.length == 0){
+            toastr.warning("请确定考核数据填写情况!或者咨询管理员配置考核数据模板!");
+            return false;
+        }
         var processInsId = '${processInsId}';
         if (!processInsId) {
             processInsId = '${projectPlanDetails.processInsId}';
@@ -496,6 +515,7 @@
             fomData: JSON.stringify(parentData)
         }, function () {
             toastr.success("考核成功!");
+            assessmentCommonHandle.loadChksServerViewTable();
             assessmentCommonHandle.loadChksServerBase(parentData, {
                 boxId: parentData.boxId,
                 boxReActivitiId: parentData.spotActivityId
