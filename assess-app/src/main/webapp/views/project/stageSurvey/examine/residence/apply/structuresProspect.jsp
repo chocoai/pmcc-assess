@@ -12,7 +12,9 @@
         <div class="clearfix"></div>
     </div>
     <form class="form-horizontal" id="basicBuildingFrm">
-        <input type="hidden" name="id">
+        <input type="hidden" name="id" value="${basicBuilding.id}">
+        <input type="hidden" name="estateId" value="${basicApplyBatch.estateId}">
+
         <div  class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
@@ -78,9 +80,13 @@
     </form>
 </div>
 
-
-
-
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/examine/examine.build.js?v=${assessVersion}"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/examine/examine.common.js?v=${assessVersion}"></script>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/tree-grid/css/jquery.treegrid.css">
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/assets/tree-grid/js/jquery.treegrid.js?v=${assessVersion}"></script>
 </html>
 
 <script type="application/javascript">
@@ -126,20 +132,21 @@
         if (!json)return;
         $(".vSpecifications").empty();
         var jsonarray = eval(json);
+        console.log(jsonarray+"==33==")
         $.each(jsonarray, function (i, n) {
             var html = "<div class='form-group' >";
 
             html += "<div class='x-valid'>";
             html += "<label class='col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label'>" + "规格名称" + "</label>";
             html += "<div class='col-xs-3  col-sm-3  col-md-3  col-lg-3 '>";
-            html += "<input type='text' required class='form-control' id='specificationName" + i + "' name='specificationName" + i + "' >";
+            html += "<input type='text' required class='form-control' value='" + n["specificationName"] + "' id='specificationName" + i + "' name='specificationName" + i + "' >";
             html += "</div>";
             html += "</div>";
 
             html += "<div class='x-valid'>";
             html += "<label class='col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label'>" + "规格内容" + "</label>";
             html += "<div class='col-xs-3  col-sm-3  col-md-3  col-lg-3 '>";
-            html += "<input type='text' required class='form-control' id='specificationContent" + i + "' name='specificationContent" + i + "' >";
+            html += "<input type='text' required class='form-control' value='" + n["specificationContent"] + "' id='specificationContent" + i + "' name='specificationContent" + i + "' >";
             html += "</div>";
             html += "</div>";
 
@@ -151,6 +158,7 @@
 
             html += "</div>";
             $(".vSpecifications").append(html);
+            num++;
         })
     }
 

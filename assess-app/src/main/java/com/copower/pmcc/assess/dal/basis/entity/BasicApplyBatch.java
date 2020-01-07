@@ -41,6 +41,8 @@ public class BasicApplyBatch {
 
     private Date gmtModified;
 
+    private Integer buildingStatus;
+
     public Integer getId() {
         return id;
     }
@@ -191,5 +193,13 @@ public class BasicApplyBatch {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public Integer getBuildingStatus() {
+        return buildingStatus;
+    }
+
+    public void setBuildingStatus(Integer buildingStatus) {
+        this.buildingStatus = buildingStatus;
     }
 }

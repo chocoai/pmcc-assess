@@ -14,6 +14,8 @@ import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
 import com.copower.pmcc.assess.service.basic.*;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
+import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
+import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
@@ -87,6 +89,10 @@ public class BasicApplyBatchController extends BaseController {
     private BpmRpcBoxService bpmRpcBoxService;
     @Autowired
     private BaseParameterService baseParameterService;
+    @Autowired
+    private ProjectPlanDetailsService projectPlanDetailsService;
+    @Autowired
+    private DeclareRecordService declareRecordService;
 
     @RequestMapping(value = "/basicBatchApplyIndex", name = "申请首页", method = RequestMethod.GET)
     public ModelAndView basicApplyIndex(Integer caseEstateId) throws Exception {
@@ -246,6 +252,8 @@ public class BasicApplyBatchController extends BaseController {
             case BUILDING:
                 modelAndView.addObject("basicBuilding", basicBuildingService.getBasicBuildingById(tbId));
                 BasicApplyBatch applyBatchById = basicApplyBatchService.getBasicApplyBatchById(applyBatchId);
+                BasicApplyBatchDetail batchDetailBuild = basicApplyBatchDetailService.getBasicApplyBatchDetail(applyBatchId, FormatUtils.entityNameConvertToTableName(BasicBuilding.class), tbId);
+                modelAndView.addObject("bisStructure", batchDetailBuild.getBisStructure());
                 if (applyBatchById != null) {
                     quoteId = applyBatchById.getQuoteId();
                 }
@@ -360,7 +368,13 @@ public class BasicApplyBatchController extends BaseController {
                         stringBuffer.append("estate");
                         break;
                     case BUILDING:
-                        stringBuffer.append("building");
+                        BasicApplyBatchDetail batchDetailBuild = basicApplyBatchDetailService.getBasicApplyBatchDetail(applyBatchId, FormatUtils.entityNameConvertToTableName(BasicBuilding.class), tableId);
+                        //构筑物页面
+                        if(batchDetailBuild.getBisStructure()){
+                            stringBuffer.append("structures");
+                        }else{
+                            stringBuffer.append("building");
+                        }
                         break;
                     case UNIT:
                         stringBuffer.append("unit");
@@ -700,6 +714,16 @@ public class BasicApplyBatchController extends BaseController {
             if (applyBatch.getPlanDetailsId() == null) {
                 applyBatch.setDraftFlag(true);
             }
+            //修改权证建筑状态
+            if(applyBatch.getBuildingStatus()!=null){
+                ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetailsById(applyBatch.getPlanDetailsId());
+                if(planDetails!=null&&planDetails.getDeclareRecordId()!=null){
+                    DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(planDetails.getDeclareRecordId());
+                    declareRecord.setBuildingStatus(applyBatch.getBuildingStatus());
+                    declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
+                }
+            }
+
             basicApplyBatchService.saveApplyInfo(applyBatch);
             return HttpResult.newCorrectResult(applyBatch);
         } catch (Exception e) {
@@ -710,12 +734,13 @@ public class BasicApplyBatchController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "/initBasicApplyBatchInfo", method = {RequestMethod.POST}, name = "初始化")
-    public HttpResult initBasicApplyBatchInfo(Integer planDetailsId, Integer classify, Integer type) {
+    public HttpResult initBasicApplyBatchInfo(Integer planDetailsId, Integer classify, Integer type,Integer buildingStatus) {
         try {
             BasicApplyBatch applyBatch = new BasicApplyBatch();
             applyBatch.setPlanDetailsId(planDetailsId);
             applyBatch.setClassify(classify);
             applyBatch.setType(type);
+            applyBatch.setBuildingStatus(buildingStatus);
             basicApplyBatchService.initBasicApplyBatchInfo(applyBatch);
             return HttpResult.newCorrectResult(applyBatch);
         } catch (Exception e) {

@@ -37,6 +37,8 @@ public class BasicApplyBatchDetail {
 
     private String executor;
 
+    private Boolean bisStructure;
+
     public Integer getId() {
         return id;
     }
@@ -171,5 +173,13 @@ public class BasicApplyBatchDetail {
 
     public void setExecutor(String executor) {
         this.executor = executor == null ? null : executor.trim();
+    }
+
+    public Boolean getBisStructure() {
+        return bisStructure;
+    }
+
+    public void setBisStructure(Boolean bisStructure) {
+        this.bisStructure = bisStructure;
     }
 }

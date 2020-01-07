@@ -37,9 +37,11 @@
                 <c:if test="${tbType eq 'estate'}">
                     <%@include file="/views/project/stageSurvey/house/estate.jsp" %>
                 </c:if>
-                <c:if test="${tbType eq 'building'}">
+                <c:if test="${tbType eq 'building' && bisStructure==false}">
                     <%@include file="/views/project/stageSurvey/house/building.jsp" %>
                 </c:if>
+                <c:if test="${tbType eq 'building' && bisStructure==true}">
+                    <%@include file="/views/project/stageSurvey/examine/residence/apply/structuresProspect.jsp" %>                </c:if>
                 <c:if test="${tbType eq 'unit'}">
                     <%@include file="/views/project/stageSurvey/house/unit.jsp" %>
                 </c:if>

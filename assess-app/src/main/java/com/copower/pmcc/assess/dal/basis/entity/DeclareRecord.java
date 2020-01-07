@@ -84,6 +84,8 @@ public class DeclareRecord {
 
     private BigDecimal price;
 
+    private Integer buildingStatus;
+
     private Boolean bisPartIn;
 
     private Boolean bisGenerate;
@@ -412,6 +414,14 @@ public class DeclareRecord {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public Integer getBuildingStatus() {
+        return buildingStatus;
+    }
+
+    public void setBuildingStatus(Integer buildingStatus) {
+        this.buildingStatus = buildingStatus;
     }
 
     public Boolean getBisPartIn() {

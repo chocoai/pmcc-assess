@@ -199,6 +199,7 @@ public class BasicApplyBatchService {
             ztreeDto.setCreator(item.getCreator());
             ztreeDto.setExecutor(item.getExecutor());
             ztreeDto.setCreatorName(publicService.getUserNameByAccount(item.getCreator()));
+            ztreeDto.setBisStructure(item.getBisStructure());
             treeDtos.add(ztreeDto);
         }
         return treeDtos;

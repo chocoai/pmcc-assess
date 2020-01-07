@@ -1314,6 +1314,66 @@ public class BasicApplyBatchExample {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
             return (Criteria) this;
         }
+
+        public Criteria andBuildingStatusIsNull() {
+            addCriterion("building_status is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingStatusIsNotNull() {
+            addCriterion("building_status is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingStatusEqualTo(Integer value) {
+            addCriterion("building_status =", value, "buildingStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingStatusNotEqualTo(Integer value) {
+            addCriterion("building_status <>", value, "buildingStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingStatusGreaterThan(Integer value) {
+            addCriterion("building_status >", value, "buildingStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingStatusGreaterThanOrEqualTo(Integer value) {
+            addCriterion("building_status >=", value, "buildingStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingStatusLessThan(Integer value) {
+            addCriterion("building_status <", value, "buildingStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingStatusLessThanOrEqualTo(Integer value) {
+            addCriterion("building_status <=", value, "buildingStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingStatusIn(List<Integer> values) {
+            addCriterion("building_status in", values, "buildingStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingStatusNotIn(List<Integer> values) {
+            addCriterion("building_status not in", values, "buildingStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingStatusBetween(Integer value1, Integer value2) {
+            addCriterion("building_status between", value1, value2, "buildingStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingStatusNotBetween(Integer value1, Integer value2) {
+            addCriterion("building_status not between", value1, value2, "buildingStatus");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

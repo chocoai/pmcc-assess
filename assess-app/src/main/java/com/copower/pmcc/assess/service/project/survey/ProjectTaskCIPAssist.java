@@ -115,6 +115,8 @@ public class ProjectTaskCIPAssist implements ProjectTaskInterface {
         modelAndView.addObject("applyBatch", basicApplyBatchService.getBasicApplyBatchByPlanDetailsId(projectPlanDetails.getId()));
         modelAndView.addObject("formClassifyList", getFormClassifyList(projectPlanDetails.getProjectId()));
         modelAndView.addObject("examineFormTypeList", surveyCommonService.getExamineFormTypeList());
+        List<BaseDataDic> buildingStatusList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.PROJECT_SURVEY_BUILDING_STATUS);
+        modelAndView.addObject("buildingStatusList", buildingStatusList);
         modelAndView.addObject("userAccount", processControllerComponent.getThisUser());
         //用于页面判断是否是子任务
         ProjectResponsibilityDto masterDto = new ProjectResponsibilityDto();

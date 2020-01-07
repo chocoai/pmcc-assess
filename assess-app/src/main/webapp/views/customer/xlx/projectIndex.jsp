@@ -82,11 +82,6 @@
                             <button id="commit_btn" class="btn btn-success" onclick="projectApply(false);">
                                 直接提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
                             </button>
-                            <c:if test="${processInsId == '0' || processInsId == null || processInsId == 0}">
-                                <button id="approval_btn" class="btn btn-primary" onclick="projectApply(true);">
-                                    提交审批<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
-                                </button>
-                            </c:if>
                         </div>
                     </div>
                 </div>
