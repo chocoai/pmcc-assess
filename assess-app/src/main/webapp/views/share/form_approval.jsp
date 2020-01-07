@@ -117,7 +117,7 @@
         </div>
     </c:if>
 </form>
-<c:if test="${bisCheck==1}">
+<c:if test="${showCheck==2}">
     <%@include file="form_chks.jsp" %>
 </c:if>
 <c:if test="${flog=='approval'}">

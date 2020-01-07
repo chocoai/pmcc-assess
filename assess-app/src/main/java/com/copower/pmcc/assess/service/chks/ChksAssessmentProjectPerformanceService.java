@@ -226,6 +226,13 @@ public class ChksAssessmentProjectPerformanceService {
         saveAssessmentProjectPerformanceBase(dto, JSONObject.parseArray(chksScore, AssessmentProjectPerformanceDetailDto.class), projectPlanDetails);
     }
 
+    public List<BoxReActivityDto> getAssessmentProjectPerformanceNext(Integer boxId, BoxReActivityDto boxReActivityDto, boolean spotCheck){
+        if (spotCheck){
+            return getAssessmentProjectPerformanceNext(boxId,0,spotCheck);
+        }
+        return getAssessmentProjectPerformanceNext(boxId,boxReActivityDto.getId(),spotCheck);
+    }
+
     /**
      * 获取目标节点可以查看的节点  (筛选根据bpm中排序顺序来判断,即当低于他的顺序视为可以查看[相当于下级])
      *
@@ -356,7 +363,7 @@ public class ChksAssessmentProjectPerformanceService {
      * @return
      */
     public List<String> getSpotCheckUserAccounts(Integer boxId) {
-        BoxReActivityDto boxReActivityDto = bpmRpcBoxService.getEndActivityByBoxId(boxId);
+        BoxReActivityDto boxReActivityDto = getSpotBoxReActivityDto(boxId);
         try {
             List<String> userAccounts = Lists.newArrayList();
             List<String> list = bpmRpcBoxService.getRoleUserByActivityId(boxReActivityDto.getId());
@@ -437,7 +444,6 @@ public class ChksAssessmentProjectPerformanceService {
             BoxApprovalLogVo boxApprovalLogVo = boxApprovalLogVoIterator.next();
             creatorMaps.put(boxApprovalLogVo.getCreator(), boxApprovalLogVo.getProcessInsId());
         }
-
         BiFunction<List<AssessmentProjectPerformanceDto>, LinkedHashMap<String, String>, Multimap<Integer, String>> biFunction = new BiFunction<List<AssessmentProjectPerformanceDto>, LinkedHashMap<String, String>, Multimap<Integer, String>>() {
             @Override
             public Multimap<Integer, String> apply(List<AssessmentProjectPerformanceDto> assessmentProjectPerformanceDtos, LinkedHashMap<String, String> stringStringLinkedHashMap) {
@@ -537,6 +543,24 @@ public class ChksAssessmentProjectPerformanceService {
      * @throws Exception
      */
     private void appendTask(ProjectPlanDetails target, ProjectInfo projectInfo, ProjectWorkStage projectWorkStage, String account) throws Exception {
+        LinkedList<String> linkedList = Lists.newLinkedList();
+        if (StringUtils.isNotBlank(target.getProcessInsId())) {
+            Integer boxReActivitiId = getBoxReActivitiId(target.getProcessInsId(), account);
+            if (boxReActivitiId != null) {
+                BoxReActivityDto boxReActivityDto = bpmRpcBoxService.getBoxreActivityInfoById(boxReActivitiId);
+                if (boxReActivityDto != null) {
+                    linkedList.add(boxReActivityDto.getCnName());
+                }
+            }
+        }
+        if (StringUtils.isNotBlank(projectWorkStage.getWorkStageName())) {
+            linkedList.add(projectWorkStage.getWorkStageName());
+        }
+        if (StringUtils.isNotBlank(target.getProjectPhaseName())) {
+            linkedList.add(target.getProjectPhaseName());
+        }
+        linkedList.add("[考核计划]");
+        linkedList.add(DateUtils.format(new Date(), DateUtils.HOUR_MINUTE_CHINESE_PATTERN));
         ProjectPlanDetails projectPlanDetails = new ProjectPlanDetails();
         projectPlanDetails.setPlanEndDate(new Date());
         projectPlanDetails.setPlanStartDate(new Date());
@@ -546,16 +570,12 @@ public class ChksAssessmentProjectPerformanceService {
         projectPlanDetails.setProjectId(target.getProjectId());
         projectPlanDetails.setProjectPhaseId(target.getProjectPhaseId());
         projectPlanDetails.setProjectWorkStageId(target.getProjectWorkStageId());
-        projectPlanDetails.setProjectPhaseName(String.join("-", projectWorkStage.getWorkStageName(), "[考核计划]", target.getProjectPhaseName(), "时间:", DateUtils.format(new Date(), DateUtils.HOUR_MINUTE_CHINESE_PATTERN)));
-        projectPlanDetails.setSorting(10);
+        projectPlanDetails.setProjectPhaseName(StringUtils.join(linkedList,"-"));
+        projectPlanDetails.setSorting(linkedList.hashCode());
         projectPlanDetails.setStatus(ProcessStatusEnum.FINISH.getValue());
         projectPlanDetailsService.saveProjectPlanDetails(projectPlanDetails);
-
         ProjectResponsibilityDto projectPlanResponsibility = new ProjectResponsibilityDto();
-
-
         projectPlanService.saveProjectPlanDetailsResponsibility(projectPlanDetails, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.TASK);
-
         List<ProjectResponsibilityDto> projectResponsibilityDtoList = bpmRpcProjectTaskService.getProjectTaskByUserAccountAndAppKeyForProject(account, applicationConstant.getAppKey(), projectInfo.getId());
         if (CollectionUtils.isNotEmpty(projectResponsibilityDtoList)) {
             for (ProjectResponsibilityDto responsibilityDto : projectResponsibilityDtoList) {
@@ -575,7 +595,6 @@ public class ChksAssessmentProjectPerformanceService {
             }
         }
         if (projectPlanResponsibility.getId() != null) {
-//            projectPlanResponsibility.setUrl(String.join("", "/pmcc-assess/ProjectTask/projectTaskDetailsById?planDetailsId=", target.getId().toString()));
             bpmRpcProjectTaskService.updateProjectTask(projectPlanResponsibility);
         }
     }
@@ -603,12 +622,9 @@ public class ChksAssessmentProjectPerformanceService {
     }
 
     public Map<KeyValueDto, List<AssessmentProjectPerformanceDto>> getAssessmentProjectPerformanceDtoMap(Integer boxId, String processInsId) {
-        Map<KeyValueDto, List<AssessmentProjectPerformanceDto>> keyValueDtoListMap = new HashMap<>();
         AssessmentProjectPerformanceQuery query = new AssessmentProjectPerformanceQuery(boxId);
         query.setProcessInsId(processInsId);
-        LinkedHashMap<String, List<AssessmentProjectPerformanceDto>> listLinkedHashMap = new LinkedHashMap<>();
         List<AssessmentProjectPerformanceDto> dtoList = getAssessmentProjectPerformanceDtoList(query);
-
         if (CollectionUtils.isNotEmpty(dtoList)) {
             Iterator<AssessmentProjectPerformanceDto> iterator = dtoList.iterator();
             while (iterator.hasNext()) {
@@ -618,8 +634,12 @@ public class ChksAssessmentProjectPerformanceService {
                 }
             }
         }
+       return conversionProjectPerformanceDtoMap(dtoList) ;
+    }
 
-
+    public Map<KeyValueDto, List<AssessmentProjectPerformanceDto>> conversionProjectPerformanceDtoMap(List<AssessmentProjectPerformanceDto> dtoList) {
+        Map<KeyValueDto, List<AssessmentProjectPerformanceDto>> keyValueDtoListMap = new HashMap<>();
+        LinkedHashMap<String, List<AssessmentProjectPerformanceDto>> listLinkedHashMap = new LinkedHashMap<>();
         if (CollectionUtils.isNotEmpty(dtoList)) {
             Iterator<AssessmentProjectPerformanceDto> iterator = dtoList.iterator();
             while (iterator.hasNext()) {
@@ -652,12 +672,14 @@ public class ChksAssessmentProjectPerformanceService {
      * @param processInsId
      * @return
      */
-    public Integer getBoxReActivitiId(String processInsId) {
+    public Integer getBoxReActivitiId(String processInsId, String creator) {
         List<BoxApprovalLogVo> boxApprovalLogVoList = getBoxApprovalLogVoList(processInsId);
         if (CollectionUtils.isEmpty(boxApprovalLogVoList)) {
             return null;
         }
-        String creator = processControllerComponent.getThisUser();
+        if (StringUtils.isBlank(creator)) {
+            creator = processControllerComponent.getThisUser();
+        }
         Iterator<BoxApprovalLogVo> iterator = boxApprovalLogVoList.iterator();
         while (iterator.hasNext()) {
             BoxApprovalLogVo next = iterator.next();
@@ -670,25 +692,34 @@ public class ChksAssessmentProjectPerformanceService {
         return null;
     }
 
+
+    /**
+     * 获取抽查人员的考核节点
+     *
+     * @param boxId
+     * @return
+     */
+    public BoxReActivityDto getSpotBoxReActivityDto(Integer boxId) {
+        List<BoxReActivityDto> boxReActivityDtoList = bpmRpcBoxService.getBoxReActivityByBoxId(boxId);
+        //暂时使用此方法,以后会考虑使用bisSpotCheck 字段来考虑
+        return bpmRpcBoxService.getEndActivityByBoxId(boxId);
+    }
+
     /**
      * 获取节点模型数据
      *
      * @param boxReActivitiId
-     * @param boxId
      * @param processInsId
-     * @param spotCheck
      * @return
      * @throws Exception
      */
-    public BoxReActivityDto getFilterBoxReActivityDto(Integer boxReActivitiId, Integer boxId, String processInsId, boolean spotCheck) {
-        if (spotCheck) {
-            return bpmRpcBoxService.getEndActivityByBoxId(boxId);
-        }
+    public BoxReActivityDto getFilterBoxReActivityDto(Integer boxReActivitiId, String processInsId) {
+
         if (boxReActivitiId != null) {
             return bpmRpcBoxService.getBoxreActivityInfoById(boxReActivitiId);
         }
         if (StringUtils.isNotBlank(processInsId)) {
-            boxReActivitiId = getBoxReActivitiId(processInsId);
+            boxReActivitiId = getBoxReActivitiId(processInsId, null);
             if (boxReActivitiId != null) {
                 return bpmRpcBoxService.getBoxreActivityInfoById(boxReActivitiId);
             }
@@ -704,22 +735,21 @@ public class ChksAssessmentProjectPerformanceService {
      * @param boxId
      * @return
      */
-    public ChksRuningEnum getChksRuningEnum(String processInsId, Integer boxReActivitiId, Integer boxId, boolean spotCheck) {
+    public ChksRuningEnum getChksRuningEnum(BoxReActivityDto boxReActivityDto,  Integer boxId,String processInsId) {
         AssessmentProjectPerformanceQuery query = new AssessmentProjectPerformanceQuery(boxId);
         query.setProcessInsId(processInsId);
         query.setEffective(true);
-        if (spotCheck) {
-            query.setSpotActivityId(boxReActivitiId);
-        } else {
-            query.setActivityId(boxReActivitiId);
+        if (boxReActivityDto != null) {
+            query.setActivityId(boxReActivityDto.getId());
+        }else {
+            return ChksRuningEnum.CHKS_FINSH_ENUM_RUN;
         }
         //本次所有的考核记录
         List<AssessmentProjectPerformanceDto> assessmentProjectPerformanceDtoList = getAssessmentProjectPerformanceDtoList(query);
-        if (CollectionUtils.isEmpty(assessmentProjectPerformanceDtoList)) {
-            return ChksRuningEnum.CHKS_RUNING_ENUM_RUN;
-        } else {
+        if (CollectionUtils.isNotEmpty(assessmentProjectPerformanceDtoList)) {
             return ChksRuningEnum.CHKS_FINSH_ENUM_RUN;
         }
+        return ChksRuningEnum.CHKS_RUNING_ENUM_RUN;
     }
 
     /**

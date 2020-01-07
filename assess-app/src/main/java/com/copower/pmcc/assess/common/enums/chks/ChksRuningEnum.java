@@ -5,7 +5,8 @@ package com.copower.pmcc.assess.common.enums.chks;
  * 考核枚举
  */
 public enum ChksRuningEnum {
-    CHKS_RUNING_ENUM_RUN(1,"考核可以进行"),
+    CHKS_RUNING_ENUM_RUN(1,"普通考核可以进行"),
+    CHKS_SHOW_ENUM_RUN(2,"考核查看"),
     CHKS_FINSH_ENUM_RUN(-1,"考核不可以进行"),
     ;
     private int key;
