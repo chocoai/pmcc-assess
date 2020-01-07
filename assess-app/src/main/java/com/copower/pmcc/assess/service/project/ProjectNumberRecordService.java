@@ -2,27 +2,38 @@ package com.copower.pmcc.assess.service.project;
 
 import com.copower.pmcc.assess.common.enums.AssessProjectTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
+import com.copower.pmcc.assess.dal.basis.custom.entity.CustomProjectNumberRecord;
+import com.copower.pmcc.assess.dal.basis.custom.mapper.CustomProjectNumberRecordMapper;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectNumberRecordDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.DataNumberRule;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectNumberRecord;
+import com.copower.pmcc.assess.dto.output.data.DataPropertyVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataNumberRuleService;
 import com.copower.pmcc.assess.service.project.generate.GenerateCommonMethod;
 import com.copower.pmcc.erp.api.dto.SysSymbolListDto;
+import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.api.provider.ErpRpcToolsService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -49,6 +60,8 @@ public class ProjectNumberRecordService {
     private ErpRpcToolsService erpRpcToolsService;
     @Autowired
     private ApplicationConstant applicationConstant;
+    @Autowired
+    private CustomProjectNumberRecordMapper customProjectNumberRecordMapper;
 
     public List<String> getReportNumberList(Integer projectId, AssessProjectTypeEnum assessProjectTypeEnum, Integer reportType) {
         ProjectNumberRecord where = new ProjectNumberRecord();
@@ -173,5 +186,29 @@ public class ProjectNumberRecordService {
             erpRpcToolsService.updateSymbolUsed(applicationConstant.getAppKey(), sysSymbolListDto.getSymbol());
         }
         return sysSymbolListDto;
+    }
+
+
+    public BootstrapTableVo getProjectNumberRecordList(String projectName,Integer reportType,String numberValue){
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        List<CustomProjectNumberRecord> customNumberRecordList = customProjectNumberRecordMapper.getAllProjectNumberRecord(projectName,reportType,numberValue);
+        List<CustomProjectNumberRecord> vos = LangUtils.transform(customNumberRecordList, o -> getCustomProjectNumberRecord(o));
+        vo.setTotal(page.getTotal());
+        vo.setRows(org.apache.commons.collections.CollectionUtils.isEmpty(vos) ? new ArrayList<CustomProjectNumberRecord>() : vos);
+        return vo;
+    }
+
+    public CustomProjectNumberRecord getCustomProjectNumberRecord(CustomProjectNumberRecord data) {
+        if (data == null){
+            return null;
+        }
+        CustomProjectNumberRecord vo = new CustomProjectNumberRecord();
+        BeanUtils.copyProperties(data, vo);
+        if (data.getReportType()!=null) {
+            vo.setReportTypeName(baseDataDicService.getNameById(data.getReportType()));
+        }
+        return vo;
     }
 }

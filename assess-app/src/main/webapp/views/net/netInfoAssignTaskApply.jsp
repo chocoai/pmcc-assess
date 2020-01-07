@@ -689,6 +689,20 @@
                                     <div class="form-group">
                                         <div class="x-valid">
                                             <label class="col-sm-1 control-label">
+                                                限购状态
+                                            </label>
+                                            <div class="col-sm-3">
+                                                <select class="form-control" required name="purchaseLimitStatus">
+                                                    <option value="">--请选择--</option>
+                                                    <option value="限购">限购</option>
+                                                    <option value="不限购">不限购</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="x-valid">
+                                            <label class="col-sm-1 control-label">
                                                 成交对象概况
                                             </label>
                                             <div class="col-sm-11">
@@ -1415,6 +1429,9 @@
                     }
                     if (row.tradingTypeName) {
                         result += '交易类型：' + row.tradingTypeName + '<br/>';
+                    }
+                    if (row.purchaseLimitStatus) {
+                        result += '限购状态：' + row.purchaseLimitStatus + '<br/>';
                     }
                     return result;
                 }

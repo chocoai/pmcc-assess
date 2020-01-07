@@ -145,6 +145,9 @@
                     if (row.tradingTypeName) {
                         result += '交易类型：' + row.tradingTypeName + '<br/>';
                     }
+                    if (row.purchaseLimitStatus) {
+                        result += '限购状态：' + row.purchaseLimitStatus + '<br/>';
+                    }
                     return result;
                 }
             });

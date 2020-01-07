@@ -9,6 +9,7 @@ import com.copower.pmcc.chks.api.dto.AssessmentProjectPerformanceQuery;
 import com.copower.pmcc.chks.api.dto.ChksBootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,9 +34,25 @@ public class ChksAssessmentProjectPerformanceController {
     }
 
     @GetMapping(value = "/getAssessmentProjectPerformanceDtoList",name = "获取考核后的数据")
-    public HttpResult getAssessmentProjectPerformanceDtoList(AssessmentProjectPerformanceQuery query){
+    public HttpResult getAssessmentProjectPerformanceDtoList(AssessmentProjectPerformanceQuery query,String activityIdList){
         try {
+            if (StringUtils.isNotBlank(activityIdList)){
+                query.setActivityIds(FormatUtils.transformString2Integer(activityIdList));
+            }
             return HttpResult.newCorrectResult(200,chksAssessmentProjectPerformanceService.getAssessmentProjectPerformanceDtoList(query))  ;
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e,"获取获取考核后的数据出错");
+            return HttpResult.newErrorResult(500,e.getMessage()) ;
+        }
+    }
+
+    @GetMapping(value = "/conversionProjectPerformanceDtoMap",name = "获取考核后的数据")
+    public HttpResult conversionProjectPerformanceDtoMap(AssessmentProjectPerformanceQuery query,String activityIdList){
+        try {
+            if (StringUtils.isNotBlank(activityIdList)){
+                query.setActivityIds(FormatUtils.transformString2Integer(activityIdList));
+            }
+            return HttpResult.newCorrectResult(200,chksAssessmentProjectPerformanceService.conversionProjectPerformanceDtoMap(chksAssessmentProjectPerformanceService.getAssessmentProjectPerformanceDtoList(query)))  ;
         } catch (Exception e) {
             baseService.writeExceptionInfo(e,"获取获取考核后的数据出错");
             return HttpResult.newErrorResult(500,e.getMessage()) ;
