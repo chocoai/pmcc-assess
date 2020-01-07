@@ -60,6 +60,20 @@
                                     </c:if>
                                 </div>
                             </div>
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                    建筑状态
+                                </label>
+                                <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
+                                    <c:if test="${not empty buildingStatusList}">
+                                        <c:forEach var="item" items="${buildingStatusList}">
+                                            <c:if test="${applyBatch.buildingStatus == item.id}">
+                                                <label class="form-control">${item.name}</label>
+                                            </c:if>
+                                        </c:forEach>
+                                    </c:if>
+                                </div>
+                            </div>
                         </div>
                     </form>
 

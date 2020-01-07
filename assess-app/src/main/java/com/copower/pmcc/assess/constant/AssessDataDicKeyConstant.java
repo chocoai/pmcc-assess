@@ -97,6 +97,7 @@ public class AssessDataDicKeyConstant {
     public static final String PROJECT_SURVEY_FORM_CLASSIFY_MULTIPLE = "project.survey.form.classify.multiple";//查勘案例表单大类-多套房产
     public static final String PROJECT_SURVEY_FORM_CLASSIFY_LAND_ONLY = "project.survey.form.classify.land.only";//查勘案例表单大类-纯土地
     public static final String PROJECT_SURVEY_FORM_CLASSIFY_LAND = "project.survey.form.classify.land";//查勘案例表单大类-土地带房产
+    public static final String PROJECT_SURVEY_BUILDING_STATUS = "project.survey.building.status";//建筑状态
 
     public static final String INVENTORY_CONTENT = "project.survey.inventory.content"; //清查内容
     public static final String INVENTORY_CONTENT_DEFAULT = "project.survey.inventory.content.default"; //清查内容默认

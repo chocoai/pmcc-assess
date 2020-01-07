@@ -19,9 +19,18 @@ public class ZtreeDto implements Serializable,Cloneable,Comparable<ZtreeDto> {
     private String tableName;
     private Integer tableId;
     private Boolean bisModify;
+    private Boolean bisStructure;
     private String creator;
     private String creatorName;
     private String executor;
+
+    public Boolean getBisStructure() {
+        return bisStructure;
+    }
+
+    public void setBisStructure(Boolean bisStructure) {
+        this.bisStructure = bisStructure;
+    }
 
     public String getCreatorName() {
         return creatorName;

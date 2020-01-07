@@ -62,6 +62,21 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                    建筑状态<span class="symbol required"></span>
+                                </label>
+                                <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
+                                    <select class="form-control" name="buildingStatus" onchange="saveBasicApplyBatch();" required>
+                                        <option value="">-请选择-</option>
+                                        <c:if test="${not empty buildingStatusList}">
+                                            <c:forEach var="item" items="${buildingStatusList}">
+                                                <option value="${item.id}" ${item.id eq applyBatch.buildingStatus?'selected="selected"':''}>${item.name}</option>
+                                            </c:forEach>
+                                        </c:if>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                     </form>
                     <div class="col-md-3 col-lg-offset-1" style="max-height: 500px;overflow: auto;">
@@ -204,12 +219,12 @@
 
     //任务提交
     function submit(useBox) {
-        if (AssessDicKey.projectSurveyFormClassifyMultiple == getClassifyKey()) {
-            if (getStandardCount() <= 0) {
-                Alert("申请中至少包含一个标准对象");
-                return;
-            }
-        }
+        // if (AssessDicKey.projectSurveyFormClassifyMultiple == getClassifyKey()) {
+        //     if (getStandardCount() <= 0) {
+        //         Alert("申请中至少包含一个标准对象");
+        //         return;
+        //     }
+        // }
         var formData = {};
         formData.declareId = "${declareRecord.id}";
         formData.projectId = "${projectInfo.id}";
@@ -273,7 +288,8 @@
             data: {
                 planDetailsId: '${projectPlanDetails.id}',
                 classify: $("#basicBatchApplyFrm").find('[name=classify]').val(),
-                type: $("#basicBatchApplyFrm").find('[name=type]').val()
+                type: $("#basicBatchApplyFrm").find('[name=type]').val(),
+                buildingStatus: $("#basicBatchApplyFrm").find('[name=buildingStatus]').val()
             },
             success: function (result) {
                 if (result.ret) {
@@ -373,6 +389,11 @@
     batchTreeTool.showAddModal = function () {
         var node = zTreeObj.getSelectedNodes()[0];
         var level = node.level;
+        console.log(node.bisStructure+"=====bisStructure")
+        if(node.bisStructure){
+            Alert("构筑物下无法继续添加节点。");
+            return false;
+        }
         var html = "";
         switch (level) {
             case 0: {
@@ -381,14 +402,25 @@
                 html += "楼栋编号";
                 html += "<span class='symbol required'></span>";
                 html += "</label>";
-                html += " <div class='col-sm-4'>";
+                html += " <div class='col-sm-2'>";
                 html += "<input type='text'  name='name' class='form-control' required value=''>";
+                html += "</div>";
+                html += "<label class='col-sm-2 control-label'>";
+                html += "构筑物";
+                html += "<span class='symbol required'></span>";
+                html += "</label>";
+                html += " <div class='col-sm-2'>";
+                html += "<select id='bisStructure' name='bisStructure' required class='form-control'>";
+                html += "<option value=''>--请选择--</option>";
+                html += "<option value='true'>是</option>";
+                html += "<option value='false'>否</option>";
+                html += "</select>";
                 html += "</div>";
                 html += "<label class='col-sm-2 control-label'>";
                 html += "执行人";
                 html += "<span class='symbol required'></span>";
                 html += "</label>";
-                html += " <div class='col-sm-4'>";
+                html += " <div class='col-sm-2'>";
                 html += " <input type='hidden' id='executor' name='executor'>";
                 html += "<input type='text' name='executorName' id='executorName' data-rule-maxlength='50' readonly class='form-control' onclick='personSelect()'>";
                 html += "</div>";
@@ -475,6 +507,7 @@
                         executorName: result.data.executorName,
                         creator: result.data.creator,
                         creatorName: result.data.creatorName,
+                        bisStructure: result.data.bisStructure
                     });
 
                     $('#detail_modal').modal('hide');
@@ -516,14 +549,25 @@
                 html += "<label class='col-sm-2 control-label'>";
                 html += "楼栋编号";
                 html += "</label>";
-                html += " <div class='col-sm-4'>";
+                html += " <div class='col-sm-2'>";
                 html += "<input type='text'  name='name' class='form-control' required>";
+                html += "</div>";
+                html += "<label class='col-sm-2 control-label'>";
+                html += "构筑物";
+                html += "<span class='symbol required'></span>";
+                html += "</label>";
+                html += " <div class='col-sm-2'>";
+                html += "<select id='bisStructure_b' name='bisStructure' required class='form-control'>";
+                html += "<option value=''>--请选择--</option>";
+                html += "<option value='true'>是</option>";
+                html += "<option value='false'>否</option>";
+                html += "</select>";
                 html += "</div>";
                 html += "<label class='col-sm-2 control-label'>";
                 html += "执行人";
                 html += "<span class='symbol required'></span>";
                 html += "</label>";
-                html += " <div class='col-sm-4'>";
+                html += " <div class='col-sm-2'>";
                 html += " <input type='hidden' id='executor' name='executor'>";
                 html += "<input type='text' name='executorName' id='executorName' data-rule-maxlength='50' readonly class='form-control' onclick='personSelect()'>";
                 html += "</div>";
@@ -569,7 +613,7 @@
         $("#frm_detail_b").clearAll();
         $("#frm_detail_b").find("#detailContent_b").empty().append(html);
         $("#frm_detail_b").initForm(data);
-        $("#bisStandard_b").val('' + data.bisStandard);
+        $("#bisStructure_b").val('' + data.bisStructure);
         $("#detail_modal_b").modal();
     }
 
@@ -599,6 +643,7 @@
                     node.creator = result.data.creator;
                     node.creatorName = result.data.creatorName;
                     node.executorName = result.data.executorName;
+                    node.bisStructure = result.data.bisStructure;
                     zTreeObj.updateNode(node, false);
                     $('#detail_modal_b').modal('hide');
                 } else {

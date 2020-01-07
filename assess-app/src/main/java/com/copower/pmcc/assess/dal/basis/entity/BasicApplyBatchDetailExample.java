@@ -1184,6 +1184,66 @@ public class BasicApplyBatchDetailExample {
             addCriterion("executor not between", value1, value2, "executor");
             return (Criteria) this;
         }
+
+        public Criteria andBisStructureIsNull() {
+            addCriterion("bis_structure is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisStructureIsNotNull() {
+            addCriterion("bis_structure is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisStructureEqualTo(Boolean value) {
+            addCriterion("bis_structure =", value, "bisStructure");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisStructureNotEqualTo(Boolean value) {
+            addCriterion("bis_structure <>", value, "bisStructure");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisStructureGreaterThan(Boolean value) {
+            addCriterion("bis_structure >", value, "bisStructure");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisStructureGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_structure >=", value, "bisStructure");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisStructureLessThan(Boolean value) {
+            addCriterion("bis_structure <", value, "bisStructure");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisStructureLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_structure <=", value, "bisStructure");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisStructureIn(List<Boolean> values) {
+            addCriterion("bis_structure in", values, "bisStructure");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisStructureNotIn(List<Boolean> values) {
+            addCriterion("bis_structure not in", values, "bisStructure");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisStructureBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_structure between", value1, value2, "bisStructure");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisStructureNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_structure not between", value1, value2, "bisStructure");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

@@ -19,6 +19,7 @@
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
     <result column="executor" property="executor" jdbcType="VARCHAR" />
+    <result column="bis_structure" property="bisStructure" jdbcType="BIT" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -81,7 +82,7 @@
   <sql id="Base_Column_List" >
     id, pid, apply_batch_id, table_name, table_id, name, display_name, bis_standard, 
     quote_id, base_type, case_table_pid, upgrade_table_id, creator, bis_delete, gmt_created, 
-    gmt_modified, executor
+    gmt_modified, executor, bis_structure
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchDetailExample" >
     select
@@ -122,13 +123,13 @@
       bis_standard, quote_id, base_type, 
       case_table_pid, upgrade_table_id, creator, 
       bis_delete, gmt_created, gmt_modified, 
-      executor)
+      executor, bis_structure)
     values (#{pid,jdbcType=INTEGER}, #{applyBatchId,jdbcType=INTEGER}, #{tableName,jdbcType=VARCHAR}, 
       #{tableId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{displayName,jdbcType=VARCHAR}, 
       #{bisStandard,jdbcType=BIT}, #{quoteId,jdbcType=INTEGER}, #{baseType,jdbcType=VARCHAR}, 
       #{caseTablePid,jdbcType=INTEGER}, #{upgradeTableId,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
       #{bisDelete,jdbcType=BIT}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
-      #{executor,jdbcType=VARCHAR})
+      #{executor,jdbcType=VARCHAR}, #{bisStructure,jdbcType=BIT})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchDetail" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -184,6 +185,9 @@
       <if test="executor != null" >
         executor,
       </if>
+      <if test="bisStructure != null" >
+        bis_structure,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="pid != null" >
@@ -233,6 +237,9 @@
       </if>
       <if test="executor != null" >
         #{executor,jdbcType=VARCHAR},
+      </if>
+      <if test="bisStructure != null" >
+        #{bisStructure,jdbcType=BIT},
       </if>
     </trim>
   </insert>
@@ -296,6 +303,9 @@
       <if test="record.executor != null" >
         executor = #{record.executor,jdbcType=VARCHAR},
       </if>
+      <if test="record.bisStructure != null" >
+        bis_structure = #{record.bisStructure,jdbcType=BIT},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -319,7 +329,8 @@
       bis_delete = #{record.bisDelete,jdbcType=BIT},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      executor = #{record.executor,jdbcType=VARCHAR}
+      executor = #{record.executor,jdbcType=VARCHAR},
+      bis_structure = #{record.bisStructure,jdbcType=BIT}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -375,6 +386,9 @@
       <if test="executor != null" >
         executor = #{executor,jdbcType=VARCHAR},
       </if>
+      <if test="bisStructure != null" >
+        bis_structure = #{bisStructure,jdbcType=BIT},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -395,7 +409,8 @@
       bis_delete = #{bisDelete,jdbcType=BIT},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      executor = #{executor,jdbcType=VARCHAR}
+      executor = #{executor,jdbcType=VARCHAR},
+      bis_structure = #{bisStructure,jdbcType=BIT}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
