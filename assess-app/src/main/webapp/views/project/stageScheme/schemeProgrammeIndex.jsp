@@ -1,3 +1,4 @@
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!-- 评估方案编制 -->
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -77,7 +78,7 @@
                     <input type="hidden" name="areaGroupId" value="${item.id}">
                     <div class="x_title collapse-link" onclick="programme.loadJudgeObjectList(this);">
                         <ul class="nav navbar-right panel_toolbox">
-                            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                            <li><a class="collapse-link"><i class="fa fa-chevron-${fn:length(areaGroups)<3?'down':'up'}"></i></a></li>
                         </ul>
                         <h3>
                             <label>${item.areaName}</label>
@@ -96,10 +97,9 @@
                         </h3>
                         <div class="clearfix"></div>
                     </div>
-                    <div class="x_content collapse">
+                    <div class="x_content ${fn:length(areaGroups)<3?'':'collapse'} ">
                         <form id="frmJudgeObject${item.id}" class="form-horizontal">
                             <div class="form-group">
-
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
                                         委托目的<span class="symbol required"></span>
@@ -678,9 +678,9 @@
 
 <script type="text/javascript">
     $(function () {
-        $(".area_panel .x_title").each(function () {
-            $(this).trigger('click');
-        })
+//        $(".area_panel .x_title").each(function () {
+//            $(this).trigger('click');
+//        })
         programme.loadDeclareRecordList();
 
         //阻止合并按钮的冒泡
@@ -861,55 +861,59 @@
         $("#area-merge-ul").find('li').each(function () {
             areaGroupIdArray.push($(this).attr('data-areaGroupId'));
         })
-        Loading.progressShow();
-        $.ajax({
-            url: '${pageContext.request.contextPath}/schemeProgramme/areaGroupMerge',
-            data: {
-                projectId: '${projectInfo.id}',
-                areaGroupIds: areaGroupIdArray.join()
-            },
-            type: "post",
-            dataType: "json",
-            success: function (result) {
-                Loading.progressHide();
-                if (result.ret) {
-                    Alert("区域合并成功", 1, null, function () {
-                        window.location.href = window.location.href;
-                    })
-                } else {
-                    Alert("区域合并失败:" + result.errmsg);
+        Alert("区域合并后原区域相关工作事项将被删除，确定要合并么？", 2, null, function () {
+            Loading.progressShow();
+            $.ajax({
+                url: '${pageContext.request.contextPath}/schemeProgramme/areaGroupMerge',
+                data: {
+                    projectId: '${projectInfo.id}',
+                    areaGroupIds: areaGroupIdArray.join()
+                },
+                type: "post",
+                dataType: "json",
+                success: function (result) {
+                    Loading.progressHide();
+                    if (result.ret) {
+                        Alert("区域合并成功", 1, null, function () {
+                            window.location.href = window.location.href;
+                        });
+                    } else {
+                        Alert("区域合并失败:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
                 }
-            },
-            error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
-            }
-        });
+            });
+        })
     };
 
     //区域合并取消
     programme.areaMergeCancel = function (id) {
-        Loading.progressShow();
-        $.ajax({
-            url: '${pageContext.request.contextPath}/schemeProgramme/areaGroupMergeCancel',
-            data: {
-                id: id
-            },
-            type: "post",
-            dataType: "json",
-            success: function (result) {
-                Loading.progressHide();
-                if (result.ret) {
-                    Alert("区域合并取消成功", 1, null, function () {
-                        window.location.href = window.location.href;
-                    })
-                } else {
-                    Alert("区域合并取消失败:" + result.errmsg);
+        Alert("取消后原合并区域的工作事项任务将被删除，确定要取消合并么？", 2, null, function () {
+            Loading.progressShow();
+            $.ajax({
+                url: '${pageContext.request.contextPath}/schemeProgramme/areaGroupMergeCancel',
+                data: {
+                    id: id
+                },
+                type: "post",
+                dataType: "json",
+                success: function (result) {
+                    Loading.progressHide();
+                    if (result.ret) {
+                        Alert("区域合并取消成功", 1, null, function () {
+                            window.location.href = window.location.href;
+                        })
+                    } else {
+                        Alert("区域合并取消失败:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
                 }
-            },
-            error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
-            }
-        });
+            });
+        })
     };
 
     //委估对象拆分

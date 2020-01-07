@@ -72,7 +72,7 @@ public class GenerateReportInfoService {
         List<GenerateReportInfo> generationList = generateReportGenerationList(where);
         if (org.apache.commons.collections.CollectionUtils.isEmpty(generationList)) {
             generationList = Lists.newArrayList();
-            List<SchemeAreaGroup> areaGroupList = schemeAreaGroupService.getAreaGroupList(projectId);
+            List<SchemeAreaGroup> areaGroupList = schemeAreaGroupService.getAreaGroupEnableByProjectId(projectId);
             for (SchemeAreaGroup schemeAreaGroup : areaGroupList) {
                 GenerateReportInfo generateReportInfo = new GenerateReportInfo();
                 generateReportInfo.setProjectId(projectId);

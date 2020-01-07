@@ -535,7 +535,7 @@ public class SchemeJudgeObjectService {
      * @param id
      */
     @Transactional(rollbackFor = Exception.class)
-    public void mergeJudgeAdjust(Integer id, String removeIds,String addIds) {
+    public void mergeJudgeAdjust(Integer id, String removeIds, String addIds) {
         //1.将原参与合并的委估对象设置为可用，更该估价对象号及名称
         //2.标准估价对象无法移除
         SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectDao.getSchemeJudgeObject(id);
@@ -554,7 +554,7 @@ public class SchemeJudgeObjectService {
                     String fullNumber = "," + judgeObject.getNumber() + (judgeObject.getSplitNumber() == null ? "" : "-" + judgeObject.getSplitNumber());
                     number = number.replace(fullNumber, "");
                     name = name.replace(fullNumber, "");
-                    evaluationArea=evaluationArea.subtract(judgeObject.getEvaluationArea());
+                    evaluationArea = evaluationArea.subtract(judgeObject.getEvaluationArea());
                 }
             }
             schemeJudgeObject.setNumber(number.replaceAll("^,+?", ""));
@@ -574,12 +574,12 @@ public class SchemeJudgeObjectService {
                     judgeObject.setPid(id);
                     schemeJudgeObjectDao.updateSchemeJudgeObject(judgeObject);
                     String fullNumber = "," + judgeObject.getNumber() + (judgeObject.getSplitNumber() == null ? "" : "-" + judgeObject.getSplitNumber());
-                    number = number+fullNumber;
-                    evaluationArea=evaluationArea.add(judgeObject.getEvaluationArea());
+                    number = number + fullNumber;
+                    evaluationArea = evaluationArea.add(judgeObject.getEvaluationArea());
                 }
             }
             schemeJudgeObject.setNumber(number);
-            schemeJudgeObject.setName(number+BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME);
+            schemeJudgeObject.setName(number + BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME);
             schemeJudgeObject.setEvaluationArea(evaluationArea);
             schemeJudgeObjectDao.updateSchemeJudgeObject(schemeJudgeObject);
         }
@@ -727,7 +727,7 @@ public class SchemeJudgeObjectService {
      */
     public void submitProgrammeHandle(ProjectInfo projectInfo, ProjectPlan projectPlan, ProjectWorkStage projectWorkStage) throws BusinessException, BpmException {
         String projectManager = projectMemberService.getProjectManager(projectInfo.getId());
-        List<SchemeAreaGroup> areaGroupList = schemeAreaGroupService.getAreaGroupList(projectInfo.getId());
+        List<SchemeAreaGroup> areaGroupList = schemeAreaGroupService.getAreaGroupEnableByProjectId(projectInfo.getId());
         if (CollectionUtils.isNotEmpty(areaGroupList)) {
             List<MdNewAndRemoveDto> methodChangeJudges = Lists.newArrayList();//只是改变了评估方法的估价对象
             ProjectPhase phaseSurePrice = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.SURE_PRICE, projectInfo.getProjectCategoryId());
@@ -819,7 +819,7 @@ public class SchemeJudgeObjectService {
             //已经被移除的估价对象
             if (CollectionUtils.isNotEmpty(judgeObjectHistoryList)) {
                 judgeObjectHistoryList.forEach(o -> {
-                    schemeAreaGroupService.clearJudgeObjectTask(projectInfo.getId(), o.getJudgeObjectId());
+                    clearJudgeObjectTask(projectInfo.getId(), o.getJudgeObjectId());
                 });
             }
 
@@ -850,9 +850,23 @@ public class SchemeJudgeObjectService {
                 }
             }
         }
+        schemeAreaGroupService.clearAreaGroupTask(schemeAreaGroupService.getAreaGroupAllByProjectId(projectInfo.getId()));//清理掉空的区域
+        recordToHistory(projectInfo.getId()); //当所有任务生成完成后，将当前方案版本数据存入历史数据表中
+    }
 
-        //当所有任务生成完成后，将当前方案版本数据存入历史数据表中
-        recordToHistory(projectInfo.getId());
+    /**
+     * 清除估价对象相关任务
+     */
+    public void clearJudgeObjectTask(Integer projectId, Integer judgeObjectId) {
+        ProjectPlanDetails where = new ProjectPlanDetails();
+        where.setProjectId(projectId);
+        where.setJudgeObjectId(judgeObjectId);
+        List<ProjectPlanDetails> projectDetails = projectPlanDetailsService.getProjectDetails(where);
+        if (CollectionUtils.isNotEmpty(projectDetails)) {
+            projectDetails.forEach(o -> projectPlanDetailsService.deleteProjectPlanDetails(o));
+        } else {
+            schemeJudgeObjectDao.removeSchemeJudgeObject(judgeObjectId);
+        }
     }
 
     public void recordToHistory(Integer projectId) {

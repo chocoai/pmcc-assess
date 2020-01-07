@@ -61,7 +61,7 @@ public class ProjectSchemeChangeController {
         String boxName = baseParameterService.getBaseParameter(BaseParameterEnum.PROJECT_SCHEME_CHANGE_PROCESS_KEY);
         BoxReDto boxReDto = bpmRpcBoxService.getBoxReByBoxName(boxName);
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("project/change/scheme_change/apply", boxReDto.getId());
-        List<SchemeAreaGroupVo> areaGroups = schemeAreaGroupService.getSchemeAreaGroup(projectId);//获取分组信息
+        List<SchemeAreaGroupVo> areaGroups = schemeAreaGroupService.getSchemeAreaGroupVos(projectId);//获取分组信息
         ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(projectId));
         modelAndView.addObject("projectInfo", projectInfoVo);
         modelAndView.addObject("areaGroups", areaGroups);

@@ -166,4 +166,10 @@ public class SchemeJudgeObjectDao {
         if (CollectionUtils.isEmpty(judgeObjects)) return 0;
         return Integer.valueOf(judgeObjects.get(0).getNumber());
     }
+
+    public int getCountByAreaGroupId(Integer areaGroupId){
+        SchemeJudgeObjectExample example = new SchemeJudgeObjectExample();
+        example.createCriteria().andAreaGroupIdEqualTo(areaGroupId);
+        return mapper.countByExample(example);
+    }
 }

@@ -92,7 +92,7 @@ public class SchemeProgrammeController {
      * @param planId
      */
     private void setEditParams(ModelAndView modelAndView, Integer projectId, Integer planId, String processInsId) {
-        List<SchemeAreaGroupVo> areaGroups = schemeAreaGroupService.getSchemeAreaGroup(projectId);//获取分组信息
+        List<SchemeAreaGroupVo> areaGroups = schemeAreaGroupService.getSchemeAreaGroupVos(projectId);//获取分组信息
         ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(projectId));
         modelAndView.addObject("projectInfo", projectInfoVo);
         modelAndView.addObject("areaGroups", areaGroups);
@@ -123,7 +123,7 @@ public class SchemeProgrammeController {
      * @param planId
      */
     private void setDetailParams(ModelAndView modelAndView, Integer projectId, Integer planId, String processInsId) {
-        List<SchemeAreaGroupVo> areaGroups = schemeAreaGroupService.getSchemeAreaGroup(projectId);//获取分组信息
+        List<SchemeAreaGroupVo> areaGroups = schemeAreaGroupService.getSchemeAreaGroupVos(projectId);//获取分组信息
         ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(projectId));
         modelAndView.addObject("projectInfo", projectInfoVo);
         modelAndView.addObject("areaGroups", areaGroups);

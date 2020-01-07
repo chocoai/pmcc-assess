@@ -88,7 +88,7 @@ public class GenerateReportService {
     private ProjectNumberRecordService projectNumberRecordService;
 
     public List<SchemeAreaGroup> getAreaGroupList(Integer projectId) {
-        return schemeAreaGroupService.getAreaGroupList(projectId);
+        return schemeAreaGroupService.getAreaGroupEnableByProjectId(projectId);
     }
 
     /**
