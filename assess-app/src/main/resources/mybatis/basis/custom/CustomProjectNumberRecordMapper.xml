@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.copower.pmcc.assess.dal.basis.custom.mapper.CustomProjectNumberRecordMapper">
+    <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.custom.entity.CustomProjectNumberRecord">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="project_id" property="projectId" jdbcType="INTEGER" />
+        <result column="project_name" property="projectName" jdbcType="VARCHAR" />
+        <result column="assess_project_type" property="assessProjectType" jdbcType="VARCHAR" />
+        <result column="report_type" property="reportType" jdbcType="INTEGER" />
+        <result column="area_id" property="areaId" jdbcType="INTEGER" />
+        <result column="number_value" property="numberValue" jdbcType="VARCHAR" />
+        <result column="year" property="year" jdbcType="INTEGER" />
+        <result column="number" property="number" jdbcType="INTEGER" />
+        <result column="bis_delete" property="bisDelete" jdbcType="BIT" />
+        <result column="creator" property="creator" jdbcType="VARCHAR" />
+        <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
+        <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <select id="getAllProjectNumberRecord" parameterType="map" resultMap="BaseResultMap">
+        select
+        A.id, A.project_id,B.project_name, A.assess_project_type, A.report_type, A.area_id, A.number_value, A.year, A.number,
+        A.bis_delete, A.creator, A.gmt_created, A.gmt_modified
+        from tb_project_number_record A
+        LEFT JOIN tb_project_info B ON A.project_id = B.id WHERE 1=1
+        <if test="projectName!=null and projectName!=''">
+            AND (B.project_name LIKE
+            CONCAT(CONCAT('%',#{projectName}), '%'))
+        </if>
+        <if test="reportType!=null">
+            AND A.report_type = #{reportType}
+        </if>
+        <if test="numberValue!=null and numberValue!=''">
+            AND (A.number_value LIKE
+            CONCAT(CONCAT('%',#{numberValue}), '%'))
+        </if>
+        ORDER BY A.id DESC
+    </select>
+</mapper>
