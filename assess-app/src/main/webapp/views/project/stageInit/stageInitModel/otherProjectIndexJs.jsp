@@ -557,13 +557,18 @@
                     $("#" + objProject.config.consignor.frm).find("input[type='radio'][name='csType'][value='0']").removeAttr("checked");
                     $(this).attr("checked", true);
                     $("#consignor_tab").hide();
+                    $("#consignor_tab").find("input").attr("disabled", true);
                     $("#consignor_tab_unit").show();
+                    $("#consignor_tab_unit").find("input").attr("disabled", false);
                 }
                 if ($(this).val() == 0) {
                     $("#" + objProject.config.consignor.frm).find("input[type='radio'][name='csType'][value='1']").removeAttr("checked");
                     $(this).attr("checked", true);
                     $("#consignor_tab").show();
+                    $("#consignor_tab").find("input").attr("disabled", false);
+
                     $("#consignor_tab_unit").hide();
+                    $("#consignor_tab_unit").find("input").attr("disabled", true);
                 }
             });
             $.each(objProject.config.consignor.files, function (i, n) {
@@ -574,12 +579,16 @@
                 if (item.csType == 1) {
                     $("#" + objProject.config.consignor.frm).find("input[type='radio'][name='csType'][value='1']").attr("checked", true);
                     $("#consignor_tab").hide();
+                    $("#consignor_tab").find("input").attr("disabled", true);
                     $("#consignor_tab_unit").show();
+                    $("#consignor_tab_unit").find("input").attr("disabled", false);
                 }
                 if (item.csType == 0) {
                     $("#" + objProject.config.consignor.frm).find("input[type='radio'][name='csType'][value='0']").attr("checked", true);
                     $("#consignor_tab").show();
+                    $("#consignor_tab").find("input").attr("disabled", false);
                     $("#consignor_tab_unit").hide();
+                    $("#consignor_tab_unit").find("input").attr("disabled", true);
                 }
             }
             objProject.consignor.loadContactList();
@@ -654,13 +663,17 @@
                     $("#" + objProject.config.possessor.frm).find("input[type='radio'][name='pType'][value='0']").removeAttr("checked");
                     $(this).attr("checked", true);
                     $("#possessor_tab").hide();
+                    $("#possessor_tab").find("input").attr("disabled", true);
                     $("#possessor_tab_unit").show();
+                    $("#possessor_tab_unit").find("input").attr("disabled", false);
                 }
                 if ($(this).val() == 0) {
                     $("#" + objProject.config.possessor.frm).find("input[type='radio'][name='pType'][value='1']").removeAttr("checked");
                     $(this).attr("checked", true);
                     $("#possessor_tab").show();
+                    $("#possessor_tab").find("input").attr("disabled", false);
                     $("#possessor_tab_unit").hide();
+                    $("#possessor_tab_unit").find("input").attr("disabled", true);
                 }
                 //拷贝数据
                 objProject.possessor.copyConsignor($(this).val());
@@ -672,12 +685,16 @@
             if (item.id) {
                 if (item.pType == 1) {
                     $("#possessor_tab").hide();
+                    $("#possessor_tab").find("input").attr("disabled", true);
                     $("#possessor_tab_unit").show();
+                    $("#possessor_tab_unit").find("input").attr("disabled", false);
                     $("#" + objProject.config.possessor.frm).find("input[type='radio'][name='pType'][value='1']").attr("checked", true);
                 }
                 if (item.pType == 0) {
                     $("#possessor_tab").show();
+                    $("#possessor_tab").find("input").attr("disabled", false);
                     $("#possessor_tab_unit").hide();
+                    $("#possessor_tab_unit").find("input").attr("disabled", true);
                     $("#" + objProject.config.possessor.frm).find("input[type='radio'][name='pType'][value='0']").attr("checked", true);
                 }
             }
