@@ -320,7 +320,7 @@ public class ProjectInfoController {
         //判断当前人是否为项目经理
         modelAndView.addObject("isPM", StringUtils.equals(projectMemberVo.getUserAccountManager(), processControllerComponent.getThisUser()));
         //区域
-        modelAndView.addObject("areaGroupList", schemeAreaGroupService.getAreaGroupList(projectId));
+        modelAndView.addObject("areaGroupList", schemeAreaGroupService.getSchemeAreaGroupVos(projectId));
         //项目发文件
         List<DocumentTemplate> documentTemplateList = documentTemplateService.getDocumentTemplateList("", baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_TEMPLATE_TYPE_DISPATCH).getId());
         modelAndView.addObject("documentTemplateList", documentTemplateList);

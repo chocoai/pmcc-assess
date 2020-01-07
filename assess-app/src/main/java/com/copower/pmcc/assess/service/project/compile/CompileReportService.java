@@ -70,7 +70,7 @@ public class CompileReportService {
         if (CollectionUtils.isNotEmpty(planDetails)) {
             return;//避免重复初始化
         }
-        List<SchemeAreaGroup> schemeAreaGroups = schemeAreaGroupDao.getSchemeAreaGroupByProjectId(projectId);
+        List<SchemeAreaGroup> schemeAreaGroups = schemeAreaGroupDao.getAreaGroupEnableByProjectId(projectId);
         int i = 1;
         //一级分类 地址
         if (CollectionUtils.isNotEmpty(schemeAreaGroups)) {

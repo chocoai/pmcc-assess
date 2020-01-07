@@ -49,7 +49,7 @@ public class PlanComplieExecute implements ProjectPlanExecuteInterface {
     @Transactional(rollbackFor = Exception.class)
     public void execute(ProjectPlan projectPlan, ProjectWorkStage projectWorkStage) throws BusinessException, BpmException {
         //获取项目下区域，再针对区域添加市场背景描述与分析任务
-        List<SchemeAreaGroup> areaGroupList = schemeAreaGroupService.getAreaGroupList(projectPlan.getProjectId());
+        List<SchemeAreaGroup> areaGroupList = schemeAreaGroupService.getAreaGroupEnableByProjectId(projectPlan.getProjectId());
         if (CollectionUtils.isEmpty(areaGroupList)) return;
         int i = 0;
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlan.getProjectId());

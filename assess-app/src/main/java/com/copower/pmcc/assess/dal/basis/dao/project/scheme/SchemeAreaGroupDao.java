@@ -50,9 +50,15 @@ public class SchemeAreaGroupDao {
         return mapper.selectByExample(example);
     }
 
-    public List<SchemeAreaGroup> getSchemeAreaGroupByProjectId(Integer projectId) {
+    public List<SchemeAreaGroup> getAreaGroupEnableByProjectId(Integer projectId) {
         SchemeAreaGroupExample example = new SchemeAreaGroupExample();
         example.createCriteria().andProjectIdEqualTo(projectId).andBisEnableEqualTo(true);
+        return mapper.selectByExample(example);
+    }
+
+    public List<SchemeAreaGroup> getAreaGroupAllByProjectId(Integer projectId) {
+        SchemeAreaGroupExample example = new SchemeAreaGroupExample();
+        example.createCriteria().andProjectIdEqualTo(projectId);
         return mapper.selectByExample(example);
     }
 }

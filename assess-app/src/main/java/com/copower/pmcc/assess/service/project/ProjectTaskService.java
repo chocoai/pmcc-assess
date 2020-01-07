@@ -146,8 +146,6 @@ public class ProjectTaskService {
             projectPlanDetails.setStatus(ProcessStatusEnum.RUN.getValue());
             projectPlanDetailsDao.updateProjectPlanDetails(projectPlanDetails);
         }
-
-
         //保存业务数据
         String viewUrl = "projectTaskAssist";
         if (StringUtils.isNotBlank(projectPhase.getPhaseForm())) {

@@ -71,8 +71,13 @@ public class SchemeAreaGroupService {
      * @param projectId
      * @return
      */
-    public List<SchemeAreaGroup> getAreaGroupList(Integer projectId) {
-        List<SchemeAreaGroup> schemeAreaGroupList = schemeAreaGroupDao.getSchemeAreaGroupByProjectId(projectId);
+    public List<SchemeAreaGroup> getAreaGroupEnableByProjectId(Integer projectId) {
+        List<SchemeAreaGroup> schemeAreaGroupList = schemeAreaGroupDao.getAreaGroupEnableByProjectId(projectId);
+        return schemeAreaGroupList;
+    }
+
+    public List<SchemeAreaGroup> getAreaGroupAllByProjectId(Integer projectId) {
+        List<SchemeAreaGroup> schemeAreaGroupList = schemeAreaGroupDao.getAreaGroupAllByProjectId(projectId);
         return schemeAreaGroupList;
     }
 
@@ -126,8 +131,8 @@ public class SchemeAreaGroupService {
      * @return
      */
     @Transactional(rollbackFor = Exception.class)
-    public List<SchemeAreaGroupVo> getSchemeAreaGroup(Integer projectId) {
-        List<SchemeAreaGroup> voList = this.getAreaGroupList(projectId);
+    public List<SchemeAreaGroupVo> getSchemeAreaGroupVos(Integer projectId) {
+        List<SchemeAreaGroup> voList = this.getAreaGroupEnableByProjectId(projectId);
         if (CollectionUtils.isNotEmpty(voList))
             return LangUtils.transform(voList, o -> this.getSchemeAreaGroupVo(o));
         return null;
@@ -147,7 +152,7 @@ public class SchemeAreaGroupService {
         List<DeclareRecord> declareRecords = declareRecordDao.getPartInDeclareRecordsByProjectId(projectId);
         List<SchemeAreaGroup> newAreaGroups = groupDeclareRecord(declareRecords);
         if (CollectionUtils.isEmpty(newAreaGroups)) return;
-        List<SchemeAreaGroup> historyAreaGroups = getAreaGroupList(projectId);
+        List<SchemeAreaGroup> historyAreaGroups = getAreaGroupEnableByProjectId(projectId);
         List<SchemeAreaGroup> sameAreaGroups = Lists.newArrayList();//新旧一致的区域
         Iterator historyAreaGroupIterator = historyAreaGroups.iterator();
         while (historyAreaGroupIterator.hasNext()) {
@@ -169,11 +174,11 @@ public class SchemeAreaGroupService {
             for (SchemeAreaGroup schemeAreaGroup : historyAreaGroups) {
                 List<SchemeJudgeObject> judgeObjects = schemeJudgeObjectService.getJudgeObjectListByAreaGroupId(schemeAreaGroup.getId());
                 if (CollectionUtils.isNotEmpty(judgeObjects)) {//清除估价对象下的任务
-                    judgeObjects.forEach(o -> clearJudgeObjectTask(projectId, o.getId()));
+                    judgeObjects.forEach(o -> schemeJudgeObjectService.clearJudgeObjectTask(projectId, o.getId()));
                     schemeJudgeObjectDao.deleteJudgeObjectByAreaId(schemeAreaGroup.getId());
                 }
-                //清除区域下工作任务
-                clearAreaGroupTask(schemeAreaGroup);
+                //清除区域下工作任务事项
+                clearAreaGroupTask(Lists.newArrayList(schemeAreaGroup));
                 schemeAreaGroupDao.remove(schemeAreaGroup.getId());
             }
         }
@@ -234,7 +239,7 @@ public class SchemeAreaGroupService {
                     declareRecordList.forEach(o -> declareRecordToJudgeObject(o, sameAreaGroup, schemeJudgeObjectDao.getAreaGroupMaxNumber(projectId, sameAreaGroup.getId()) + 1));
                 }
                 if (CollectionUtils.isNotEmpty(judgeObjectDeclareList)) {//需被移除的估价对象
-                    judgeObjectDeclareList.forEach(o -> clearJudgeObjectTask(projectId, o.getId()));
+                    judgeObjectDeclareList.forEach(o -> schemeJudgeObjectService.clearJudgeObjectTask(projectId, o.getId()));
                     //需要重新排号
                 }
             }
@@ -313,37 +318,8 @@ public class SchemeAreaGroupService {
         return list;
     }
 
-    /**
-     * 清除区域相关任务
-     *
-     * @param areaGroup
-     */
-    private void clearAreaGroupTask(SchemeAreaGroup areaGroup) {
-        ProjectPlanDetails where = new ProjectPlanDetails();
-        where.setProjectId(areaGroup.getProjectId());
-        where.setAreaId(areaGroup.getId());
-        List<ProjectPlanDetails> projectDetails = projectPlanDetailsService.getProjectDetails(where);
-        if (CollectionUtils.isNotEmpty(projectDetails)) {
-            projectDetails.forEach(o -> projectPlanDetailsService.deleteProjectPlanDetails(o));
-        } else {
-            schemeAreaGroupDao.remove(areaGroup.getId());
-        }
-    }
 
-    /**
-     * 清除估价对象相关任务
-     */
-    public void clearJudgeObjectTask(Integer projectId, Integer judgeObjectId) {
-        ProjectPlanDetails where = new ProjectPlanDetails();
-        where.setProjectId(projectId);
-        where.setJudgeObjectId(judgeObjectId);
-        List<ProjectPlanDetails> projectDetails = projectPlanDetailsService.getProjectDetails(where);
-        if (CollectionUtils.isNotEmpty(projectDetails)) {
-            projectDetails.forEach(o -> projectPlanDetailsService.deleteProjectPlanDetails(o));
-        } else {
-            schemeJudgeObjectDao.removeSchemeJudgeObject(judgeObjectId);
-        }
-    }
+
 
     /**
      * 区域分组合并
@@ -376,6 +352,7 @@ public class SchemeAreaGroupService {
         newAreaGroup.setTimePointExplain(schemeAreaGroupList.get(0).getTimePointExplain());
         newAreaGroup.setBisEnable(true);
         newAreaGroup.setBisMerge(true);
+        newAreaGroup.setBisNew(true);
         newAreaGroup.setCreator(commonService.thisUserAccount());
         schemeAreaGroupDao.add(newAreaGroup);
         int i = 1;//委估对象重新编号
@@ -397,6 +374,7 @@ public class SchemeAreaGroupService {
                     i++;
                 }
             }
+            clearAreaGroupTask(Lists.newArrayList(oldAreaGroup));
         }
     }
 
@@ -405,18 +383,40 @@ public class SchemeAreaGroupService {
      *
      * @param id
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void areaGroupMergeCancel(Integer id) throws BusinessException {
         List<SchemeAreaGroup> schemeAreaGroupList = schemeAreaGroupDao.getSchemeAreaGroupByPid(id);
         if (CollectionUtils.isNotEmpty(schemeAreaGroupList)) {
             for (SchemeAreaGroup areaGroup : schemeAreaGroupList) {
                 areaGroup.setPid(0);
                 areaGroup.setBisEnable(true);
+                areaGroup.setBisNew(true);
                 schemeAreaGroupDao.update(areaGroup);
                 schemeJudgeObjectService.areaGroupReduction(areaGroup.getId());
             }
         }
-        schemeAreaGroupDao.remove(id);
+        clearAreaGroupTask(Lists.newArrayList(get(id)));
+    }
+
+    /**
+     * 清理掉空的区域及事项
+     *
+     * @param areaGroupList
+     */
+    public void clearAreaGroupTask(List<SchemeAreaGroup> areaGroupList) {
+        if (CollectionUtils.isEmpty(areaGroupList)) return;
+        for (SchemeAreaGroup schemeAreaGroup : areaGroupList) {
+            if (schemeJudgeObjectDao.getCountByAreaGroupId(schemeAreaGroup.getId()) <= 0) {
+                //清除区域信息 清除区域相关的任务
+                if (schemeAreaGroup.getBisMerge() == Boolean.TRUE)//合并的区域才删除
+                    schemeAreaGroupDao.remove(schemeAreaGroup.getId());
+                ProjectPlanDetails where = new ProjectPlanDetails();
+                where.setAreaId(schemeAreaGroup.getId());
+                List<ProjectPlanDetails> planDetailsList = projectPlanDetailsService.getProjectDetails(where);
+                if (CollectionUtils.isNotEmpty(planDetailsList))
+                    planDetailsList.forEach(o -> projectPlanDetailsService.deleteProjectPlanDetails(o));
+            }
+        }
     }
 
     /**
