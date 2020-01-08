@@ -294,8 +294,8 @@ public class ProjectTaskController extends BaseController {
         if (StringUtils.isNotBlank(responsibilityId)) {
             if (NumberUtils.isNumber(responsibilityId)) {
                 ProjectResponsibilityDto projectResponsibilityDto = bpmRpcProjectTaskService.getProjectTaskById(Integer.parseInt(responsibilityId));
-                if (projectResponsibilityDto != null){
-                    modelAndView.addObject(StringUtils.uncapitalize(ProjectResponsibilityDto.class.getSimpleName()),projectResponsibilityDto) ;
+                if (projectResponsibilityDto != null) {
+                    modelAndView.addObject(StringUtils.uncapitalize(ProjectResponsibilityDto.class.getSimpleName()), projectResponsibilityDto);
                 }
             }
         }
@@ -331,18 +331,18 @@ public class ProjectTaskController extends BaseController {
         boolean spotCheck = chksAssessmentProjectPerformanceService.getSpotCheck(boxId, processControllerComponent.getThisUser());
         BoxReActivityDto boxReActivityDto = chksAssessmentProjectPerformanceService.getFilterBoxReActivityDto(boxReActivitiId, projectPlanDetails.getProcessInsId());
         BoxReActivityDto spotReActivityDto = chksAssessmentProjectPerformanceService.getSpotBoxReActivityDto(boxId);
-        if (boxReActivityDto == null && spotReActivityDto == null){
+        if (boxReActivityDto == null && spotReActivityDto == null) {
             return;
         }
-        if (!spotCheck){
-            if (boxReActivityDto == null){
+        if (!spotCheck) {
+            if (boxReActivityDto == null) {
                 return;
             }
         }
         //抽查或者巡查标识符
         modelAndView.addObject("spotCheck", spotCheck);
         //考核能否进行
-        modelAndView.addObject("bisCheck",chksAssessmentProjectPerformanceService.getChksRuningEnum(boxReActivityDto,boxId,projectPlanDetails.getProcessInsId()).getKey() );
+        modelAndView.addObject("bisCheck", chksAssessmentProjectPerformanceService.getChksRuningEnum(boxReActivityDto, boxId, projectPlanDetails.getProcessInsId(), boxReActivitiId != null).getKey());
         //考核标识符
         modelAndView.addObject("showCheck", ChksRuningEnum.CHKS_SHOW_ENUM_RUN.getKey());
         modelAndView.addObject(StringUtils.uncapitalize(BoxReDto.class.getSimpleName()), bpmRpcBoxService.getBoxReInfoByBoxId(boxId));

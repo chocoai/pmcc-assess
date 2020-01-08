@@ -381,7 +381,7 @@
                 options.activityIdList = activityIds.join(",");
             }
         }
-        var headHtml = "<caption>参考考核数据(包含历史数据)</caption>";
+        var headHtml = "<caption>参考考核数据(包含所在权限下本次流程的所有数据)</caption>";
         headHtml += "<thead>";
         headHtml += "<tr><td width='5%' align='center' >被考核人</td> <td width='5%' align='center'>考核人</td> <td width='60%' align='center'>考核详情</td> <td width='5%' align='center'>得分</td> <td width='5%' align='center'>考核时间</td> <td width='20%' align='center'>综合说明</td></tr>";
         headHtml += "</thead>";
@@ -548,6 +548,9 @@
             target = table.find("tbody");
         }else {
             table = target.closest("table") ;
+        }
+        if (target.find("tr").size() == 0){//这种情况是抽查情况或者没有配模板情况
+            return true;
         }
         var remarks = table.find("textarea[name=remarks]").val();
         var data = [];

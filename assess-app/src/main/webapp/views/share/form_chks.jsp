@@ -36,9 +36,11 @@
                 <c:if test="${flog == 'details'}">
 
                     <c:if test="${boxReActivityDto != null && bisCheck==1}">
-                        <button class="btn btn-success" onclick="saveAssessmentItem();">
-                            保存考核记录
-                        </button>
+                        <c:if test="${! spotCheck}">
+                            <button class="btn btn-success" onclick="saveAssessmentItem();">
+                                保存考核记录
+                            </button>
+                        </c:if>
                     </c:if>
 
 
@@ -128,7 +130,7 @@
         if ('${boxReActivityDto}') {
             if ('${spotReActivityDto}') {
                 //抽查节点不需要普通考核
-                if ('${boxReActivityDto.id == spotReActivityDto.id}') {
+                if ('${boxReActivityDto.id}' == '${spotReActivityDto.id}') {
                     return false;
                 }
             }
