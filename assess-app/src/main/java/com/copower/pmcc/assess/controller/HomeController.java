@@ -118,4 +118,9 @@ public class HomeController {
         return HttpResult.newCorrectResult();
     }
 
+    @RequestMapping(value = "/function", method = RequestMethod.GET)
+    public ModelAndView function() {
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("function");
+        return modelAndView;
+    }
 }
