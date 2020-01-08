@@ -460,17 +460,17 @@ public class ChksAssessmentProjectPerformanceService {
         //过去的考核记录
         List<AssessmentProjectPerformanceDto> pastProjectPerformanceDtoList = Lists.newArrayList(collection);
 
-        LinkedHashMap<String, String> creatorMaps = Maps.newLinkedHashMap();//审批人 人员和流程实例id的 key-value map
+        LinkedListMultimap<String, String> creatorMaps = LinkedListMultimap.create();//审批人 人员和流程实例id的 key-value map
         Iterator<BoxApprovalLogVo> boxApprovalLogVoIterator = boxApprovalLogVoList.iterator();
         while (boxApprovalLogVoIterator.hasNext()) {
             BoxApprovalLogVo boxApprovalLogVo = boxApprovalLogVoIterator.next();
             creatorMaps.put(boxApprovalLogVo.getCreator(), boxApprovalLogVo.getProcessInsId());
         }
-        BiFunction<List<AssessmentProjectPerformanceDto>, LinkedHashMap<String, String>, Multimap<Integer, String>> biFunction = new BiFunction<List<AssessmentProjectPerformanceDto>, LinkedHashMap<String, String>, Multimap<Integer, String>>() {
+        BiFunction<List<AssessmentProjectPerformanceDto>, LinkedListMultimap<String, String>, LinkedListMultimap<Integer, String>> biFunction = new BiFunction<List<AssessmentProjectPerformanceDto>, LinkedListMultimap<String, String>, LinkedListMultimap<Integer, String>>() {
             @Override
-            public Multimap<Integer, String> apply(List<AssessmentProjectPerformanceDto> assessmentProjectPerformanceDtos, LinkedHashMap<String, String> stringStringLinkedHashMap) {
-                Multimap<Integer, String> integerStringMap = HashMultimap.create();
-                Iterator<Map.Entry<String, String>> entryIterator = stringStringLinkedHashMap.entrySet().iterator();
+            public LinkedListMultimap<Integer, String> apply(List<AssessmentProjectPerformanceDto> assessmentProjectPerformanceDtos, LinkedListMultimap<String, String> stringStringLinkedHashMap) {
+                LinkedListMultimap<Integer, String> integerStringMap = LinkedListMultimap.create();
+                Iterator<Map.Entry<String, String>> entryIterator = stringStringLinkedHashMap.entries().iterator();
                 while (entryIterator.hasNext()) {
                     Map.Entry<String, String> stringEntry = entryIterator.next();
                     if (CollectionUtils.isNotEmpty(assessmentProjectPerformanceDtos)) {
@@ -493,14 +493,14 @@ public class ChksAssessmentProjectPerformanceService {
                 return integerStringMap;
             }
         };
-        BiPredicate<List<AssessmentProjectPerformanceDto>, LinkedHashMap<String, String>> biPredicate = new BiPredicate<List<AssessmentProjectPerformanceDto>, LinkedHashMap<String, String>>() {
+        BiPredicate<List<AssessmentProjectPerformanceDto>, LinkedListMultimap<String, String>> biPredicate = new BiPredicate<List<AssessmentProjectPerformanceDto>, LinkedListMultimap<String, String>>() {
             @Override
-            public boolean test(List<AssessmentProjectPerformanceDto> assessmentProjectPerformanceDtos, LinkedHashMap<String, String> stringStringLinkedHashMap) {
+            public boolean test(List<AssessmentProjectPerformanceDto> assessmentProjectPerformanceDtos, LinkedListMultimap<String, String> stringStringLinkedHashMap) {
                 int count = 0;//定义一个未匹配到的计数器,当没有匹配到一次 计数器自动加1
                 if (CollectionUtils.isEmpty(assessmentProjectPerformanceDtos)) {
                     return false;
                 }
-                Iterator<Map.Entry<String, String>> entryIterator = stringStringLinkedHashMap.entrySet().iterator();
+                Iterator<Map.Entry<String, String>> entryIterator = stringStringLinkedHashMap.entries().iterator();
                 while (entryIterator.hasNext()) {
                     Map.Entry<String, String> stringEntry = entryIterator.next();
                     //当人员和流程实例id 在考核记录记录中找不到则返回true ,就说明没有匹配到
@@ -539,7 +539,7 @@ public class ChksAssessmentProjectPerformanceService {
         //2:部分跳过或者全部跳过但是保留有审批人数据  有审批记录却没有考核记录的对审批人发起考核任务并且到详情页面考核
         if (!testCheck) {
             //获取那些保留了审批记录却没有 考核记录的人员
-            Multimap<Integer, String> integerStringMap = biFunction.apply(thisProjectPerformanceDtoList, creatorMaps);
+            LinkedListMultimap<Integer, String> integerStringMap = biFunction.apply(thisProjectPerformanceDtoList, creatorMaps);
             if (!integerStringMap.isEmpty()) {
                 Collection<Map.Entry<Integer, String>> entryCollection = integerStringMap.entries();
                 Iterator<Map.Entry<Integer, String>> listIterator = entryCollection.iterator();
@@ -872,6 +872,7 @@ public class ChksAssessmentProjectPerformanceService {
 
     /**
      * 获取审批日志
+     *
      * @param processInsId
      * @return
      */
