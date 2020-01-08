@@ -1,9 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
 <%@include file="/views/share/chksCommon.jsp" %>
-
-
 <div class="x_panel">
     <div class="x_title collapse-link">
         <ul class="nav navbar-right panel_toolbox">
@@ -126,12 +123,19 @@
 <script type="text/javascript">
 
     $(document).ready(function () {
+        assessmentCommonHandle.loadChksServerViewTable();
+
         if ('${boxReActivityDto}') {
+            if ('${spotReActivityDto}') {
+                //抽查节点不需要普通考核
+                if ('${boxReActivityDto.id == spotReActivityDto.id}') {
+                    return false;
+                }
+            }
             if ("${bisCheck}" == 1) {
                 loadChksServerData();
             }
         }
-        assessmentCommonHandle.loadChksServerViewTable();
     });
 
     function loadChksServerData() {
@@ -192,10 +196,9 @@
     //收集数据 审批的时候
     function getChksData() {
         var table = $("#chksTableList");
-        var form = table.closest("form");
         var result = {};
         var target = table.find("tbody");
-        var remarks = form.find("textarea[name=remarks]").val();
+        var remarks = table.find("textarea[name=remarks]").val();
         var data = [];
         var filterData = [];
         assessmentCommonHandle.getChksSonData(target, data);
@@ -221,30 +224,6 @@
             }
         }
         return result;
-    }
-
-    function vaildChksData() {
-        var table = $("#chksTableList");
-        var form = table.closest("form");
-        var remarks = form.find("textarea[name=remarks]").val();
-        var target = table.find("tbody");
-        var data = [];
-        var filterData = [];
-        assessmentCommonHandle.getChksSonData(target, data);
-        for (var i = 0; i < data.length; i++) {
-            if (data[i].actualScore) {
-                filterData.push(data[i]);
-            }
-        }
-        //当填写 了说明，却又不填写考核分值 是不允许的
-        if (remarks) {
-            if (filterData.length == 0) {
-                Alert("当填写了考核综合说明,那么就必须对考核子项进行打分，或者不填考核说明。");
-                return false;
-            }
-
-        }
-        return true;
     }
 
 

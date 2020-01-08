@@ -185,7 +185,7 @@ public class ProjectTaskController extends BaseController {
 
             }
         }
-        modelAndView.addObject("BoxApprovalLogDtoList", chksAssessmentProjectPerformanceService.getBoxApprovalLogVoList(processInsId));
+        modelAndView.addObject("BoxApprovalLogDtoList", chksAssessmentProjectPerformanceService.getFilterBoxApprovalLogVoList(processInsId));
 
         modelAndView.addObject("viewUrl", viewUrl);
         modelAndView.addObject("projectId", projectPlanDetails.getProjectId());

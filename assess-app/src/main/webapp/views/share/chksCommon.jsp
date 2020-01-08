@@ -67,6 +67,8 @@
     var assessmentCommonHandle = {};
 
 
+
+
     /**
      * 范围校验
      * @param _this
@@ -169,9 +171,10 @@
             if (performanceId) {
                 obj.performanceId = performanceId;
             }
-            obj.actualScore = ele.find("[data-name='actualScore']").val();
+            var eleActualScore = ele.find("[data-name='actualScore']") ;
+            obj.actualScore = eleActualScore.val();
             obj.remark = ele.find("[data-name='remark']").val();
-            if (obj.actualScore) {
+            if (eleActualScore.size() != 0) {
                 data.push(obj);
             }
         });
@@ -390,7 +393,7 @@
                 tr += "<td width='5%' align='center'>" + data.byExaminePeopleName + "</td>";
                 tr += "<td width='5%' align='center'>" + data.examinePeopleName + "</td>";
                 tr += "<td width='60%' align='center'>";
-                if (data.detailList.length > 1) {
+                if (data.detailList.length >= 1) {
                     var childHtml = "";
                     childHtml += "<table class='table table-striped' >";
                     $.each(data.detailList, function (j, item) {
@@ -439,10 +442,13 @@
 
 
     function saveAssessmentItem() {
+        if (!vaildChksData()){
+            return false;
+        }
         var target = $("#chksTableList").find("tbody");
-        var frm = target.closest("form");
-        var remarks = frm.find("textarea[name=remarks]").val();
+        var remarks = target.find("textarea[name=remarks]").val();
         var data = [];
+        var filterData = [];
         var processInsId = '${processInsId}';
         if (!processInsId) {
             processInsId = '${projectPlanDetails.processInsId}';
@@ -470,16 +476,19 @@
             }
         }
         assessmentCommonHandle.getChksSonData(target, data);
-        if (data.length == 0){
-            toastr.warning("请确定考核数据填写情况!或者咨询管理员配置考核数据模板!");
+        for (var i = 0; i < data.length; i++) {
+            if (data[i].actualScore) {
+                filterData.push(data[i]);
+            }
+        }
+        if (filterData.length == 0){
+            toastr.warning("详情页考核需要填写全部数据!");
             return false;
         }
-        if (!frm.valid()) {
-            return false;
-        }
-        assessmentCommonHandle.saveAssessmentServer({chksScore: JSON.stringify(data), fomData: JSON.stringify(parentData)}, function (data) {
+        assessmentCommonHandle.saveAssessmentServer({chksScore: JSON.stringify(filterData), fomData: JSON.stringify(parentData)}, function (data) {
             toastr.warning("考核成功!");
             assessmentCommonHandle.loadChksServerViewTable();
+            loadChksServerData();
         });
     }
 
@@ -488,11 +497,20 @@
         var box = $("#divChksRecordModal");
         var form = box.find("form");
         var target = $("#tableChkSpotAssessment");
-        var remarks = target.find("textarea[name=remarks]").val();
+        var filterData = [];
         var data = [];
+        if (!vaildChksData(target)){
+            return false;
+        }
+        var remarks = target.find("textarea[name=remarks]").val();
         assessmentCommonHandle.getChksSonData(target, data);
-        if (data.length == 0){
-            toastr.warning("请确定考核数据填写情况!或者咨询管理员配置考核数据模板!");
+        for (var i = 0; i < data.length; i++) {
+            if (data[i].actualScore) {
+                filterData.push(data[i]);
+            }
+        }
+        if (filterData.length == 0){
+            toastr.warning("详情页考核需要填写全部数据!");
             return false;
         }
         var processInsId = '${processInsId}';
@@ -511,7 +529,7 @@
             byExaminePeople: form.find("input[name='byExaminePeople']").val()
         };
         assessmentCommonHandle.saveAssessmentServer({
-            chksScore: JSON.stringify(data),
+            chksScore: JSON.stringify(filterData),
             fomData: JSON.stringify(parentData)
         }, function () {
             toastr.success("考核成功!");
@@ -521,9 +539,48 @@
                 boxReActivitiId: parentData.spotActivityId
             }, target);
         });
-
-
 //        box.modal("hide");
+    }
+
+    function vaildChksData(target) {
+        var table = $("#chksTableList");
+        if (target == null || target == undefined || target == ''){
+            target = table.find("tbody");
+        }else {
+            table = target.closest("table") ;
+        }
+        var remarks = table.find("textarea[name=remarks]").val();
+        var data = [];
+        var filterData = [];
+        assessmentCommonHandle.getChksSonData(target, data);
+        if (data.length == 0){
+            toastr.warning("请确定考核数据填写情况!或者咨询管理员配置考核数据模板!");
+            return false;
+        }
+        for (var i = 0; i < data.length; i++) {
+            if (data[i].actualScore) {
+                filterData.push(data[i]);
+            }
+        }
+        //当填写 了说明，却又不填写考核分值 是不允许的
+        if (remarks) {
+            if (filterData.length == 0) {
+                Alert("当填写了考核综合说明,那么就必须对考核子项进行打分，或者不填考核说明。");
+                return false;
+            }
+
+        }
+        if (filterData.length != 0){
+            if (data.length != filterData.length){
+                Alert("请填写完整!");
+                return false;
+            }
+            if (! remarks){
+                Alert("请填写考核说明!");
+                return false;
+            }
+        }
+        return true;
     }
 
 </script>

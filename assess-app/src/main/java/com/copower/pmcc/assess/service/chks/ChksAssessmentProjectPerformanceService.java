@@ -117,7 +117,6 @@ public class ChksAssessmentProjectPerformanceService {
                 projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
             }
         }
-
         saveAssessmentProjectPerformanceBase(assessmentProjectPerformanceDto, detailDtoList, projectPlanDetails);
     }
 
@@ -199,7 +198,6 @@ public class ChksAssessmentProjectPerformanceService {
                 }
             }
         }
-
         chksRpcAssessmentService.saveAssessmentProjectPerformanceBase(projectPerformanceDto, detailDtos);
     }
 
@@ -327,27 +325,30 @@ public class ChksAssessmentProjectPerformanceService {
                 }
             }
         }
-        if (CollectionUtils.isNotEmpty(assessmentProjectPerformanceDtos)){
+        if (CollectionUtils.isNotEmpty(assessmentProjectPerformanceDtos)) {
             Ordering<AssessmentProjectPerformanceDto> ordering = Ordering.from(new Comparator<AssessmentProjectPerformanceDto>() {
                 @Override
                 public int compare(AssessmentProjectPerformanceDto o1, AssessmentProjectPerformanceDto o2) {
                     BoxReActivityDto boxReActivityDtoA1 = bpmRpcBoxService.getBoxreActivityInfoById(o1.getActivityId());
                     BoxReActivityDto boxReActivityDtoA2 = bpmRpcBoxService.getBoxreActivityInfoById(o2.getActivityId());
-                    if (boxReActivityDtoA1 == null || boxReActivityDtoA2 == null){
+                    if (boxReActivityDtoA1 == null || boxReActivityDtoA2 == null) {
                         return 0;
                     }
                     Integer a = boxReActivityDtoA1.getSortMultilevel();
                     Integer b = boxReActivityDtoA2.getSortMultilevel();
-                    if (a == null){
+                    if (a == null) {
                         a = boxReActivityDtoA1.getSorting();
                     }
-                    if (b == null){
+                    if (b == null) {
                         b = boxReActivityDtoA2.getSorting();
                     }
-                    return Integer.compare(a,b);
+                    if (a == null || b == null) {
+                        return 0;
+                    }
+                    return Integer.compare(a, b);
                 }
             });
-            Collections.sort(assessmentProjectPerformanceDtos,ordering);
+            Collections.sort(assessmentProjectPerformanceDtos, ordering);
         }
         return assessmentProjectPerformanceDtos;
     }
@@ -447,7 +448,7 @@ public class ChksAssessmentProjectPerformanceService {
             //不作处理
         }
         //审批日志记录
-        List<BoxApprovalLogVo> boxApprovalLogVoList = getBoxApprovalLogVoList(processInsId);
+        List<BoxApprovalLogVo> boxApprovalLogVoList = getFilterBoxApprovalLogVoList(processInsId);
         //无 审批记录
         if (CollectionUtils.isEmpty(boxApprovalLogVoList)) {
             return;
@@ -511,19 +512,20 @@ public class ChksAssessmentProjectPerformanceService {
                 return count == 0;
             }
         };
+        //过去的考核记录 全部失效
+        if (CollectionUtils.isNotEmpty(pastProjectPerformanceDtoList)) {
+            Iterator<AssessmentProjectPerformanceDto> assessmentProjectPerformanceDtoIterator = pastProjectPerformanceDtoList.iterator();
+            while (assessmentProjectPerformanceDtoIterator.hasNext()) {
+                AssessmentProjectPerformanceDto performanceDto = assessmentProjectPerformanceDtoIterator.next();
+                performanceDto.setEffective(false);//过去数据全部设为无效
+                chksRpcAssessmentService.updateAssessmentProjectPerformanceDto(performanceDto, true);
+            }
+        }
         boolean testCheck = biPredicate.test(thisProjectPerformanceDtoList, creatorMaps);
         //1:有审批记录,并且每次都有考核记录那么此次考核通过，以往考核记录自动失效
         //当本次的审批人在本次的考核记录中都能找到对应的考核记录
         //通过
         if (testCheck) {
-            if (CollectionUtils.isNotEmpty(pastProjectPerformanceDtoList)) {
-                Iterator<AssessmentProjectPerformanceDto> assessmentProjectPerformanceDtoIterator = pastProjectPerformanceDtoList.iterator();
-                while (assessmentProjectPerformanceDtoIterator.hasNext()) {
-                    AssessmentProjectPerformanceDto performanceDto = assessmentProjectPerformanceDtoIterator.next();
-                    performanceDto.setEffective(false);//过去数据全部设为无效
-                    chksRpcAssessmentService.updateAssessmentProjectPerformanceDto(performanceDto, true);
-                }
-            }
             return;
         }
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
@@ -644,6 +646,7 @@ public class ChksAssessmentProjectPerformanceService {
 
     /**
      * 增加节点排序
+     *
      * @param boxId
      * @param processInsId
      * @return
@@ -670,25 +673,28 @@ public class ChksAssessmentProjectPerformanceService {
                 public int compare(Map.Entry<KeyValueDto, List<AssessmentProjectPerformanceDto>> o1, Map.Entry<KeyValueDto, List<AssessmentProjectPerformanceDto>> o2) {
                     BoxReActivityDto boxReActivityDtoA1 = bpmRpcBoxService.getBoxreActivityInfoById(Integer.parseInt(o1.getKey().getValue()));
                     BoxReActivityDto boxReActivityDtoA2 = bpmRpcBoxService.getBoxreActivityInfoById(Integer.parseInt(o2.getKey().getValue()));
-                    if (boxReActivityDtoA1 == null || boxReActivityDtoA2 == null){
+                    if (boxReActivityDtoA1 == null || boxReActivityDtoA2 == null) {
                         return 0;
                     }
                     Integer a = boxReActivityDtoA1.getSortMultilevel();
                     Integer b = boxReActivityDtoA2.getSortMultilevel();
-                    if (a == null){
+                    if (a == null) {
                         a = boxReActivityDtoA1.getSorting();
                     }
-                    if (b == null){
+                    if (b == null) {
                         b = boxReActivityDtoA2.getSorting();
                     }
-                    return Integer.compare(a,b);
+                    if (a == null || b == null) {
+                        return 0;
+                    }
+                    return Integer.compare(a, b);
                 }
             });
-            Collections.sort(entryArrayList,ordering);
+            Collections.sort(entryArrayList, ordering);
             Iterator<Map.Entry<KeyValueDto, List<AssessmentProjectPerformanceDto>>> iterator = entryArrayList.iterator();
-            while (iterator.hasNext()){
+            while (iterator.hasNext()) {
                 Map.Entry<KeyValueDto, List<AssessmentProjectPerformanceDto>> entry = iterator.next();
-                keyValueDtoListLinkedHashMap.put(entry.getKey(),entry.getValue()) ;
+                keyValueDtoListLinkedHashMap.put(entry.getKey(), entry.getValue());
             }
         }
         return keyValueDtoListLinkedHashMap;
@@ -730,7 +736,7 @@ public class ChksAssessmentProjectPerformanceService {
      * @return
      */
     public Integer getBoxReActivitiId(String processInsId, String creator) {
-        List<BoxApprovalLogVo> boxApprovalLogVoList = getBoxApprovalLogVoList(processInsId);
+        List<BoxApprovalLogVo> boxApprovalLogVoList = getFilterBoxApprovalLogVoList(processInsId);
         if (CollectionUtils.isEmpty(boxApprovalLogVoList)) {
             return null;
         }
@@ -768,9 +774,9 @@ public class ChksAssessmentProjectPerformanceService {
                     }
                 }
             }
-//            return bpmRpcBoxService.getEndActivityByBoxId(boxId);
         }
         return null;
+        //return bpmRpcBoxService.getEndActivityByBoxId(boxId);
     }
 
     /**
@@ -799,7 +805,6 @@ public class ChksAssessmentProjectPerformanceService {
      * 考核标识
      *
      * @param processInsId
-     * @param boxReActivitiId
      * @param boxId
      * @return
      */
@@ -821,12 +826,56 @@ public class ChksAssessmentProjectPerformanceService {
     }
 
     /**
-     * 获取审批日志 ,方法不合理的写法 但是木有办法啊，在此时此刻没有提供合适的接口
+     * 获取过滤后的审批日志
      *
      * @param processInsId
      * @return
      */
-    public List<BoxApprovalLogVo> getBoxApprovalLogVoList(String processInsId) {
+    public List<BoxApprovalLogVo> getFilterBoxApprovalLogVoList(String processInsId) {
+        final List<String> filterActivityKey = Arrays.asList("edit", "start");
+        List<BoxApprovalLogVo> boxApprovalLogDtoList = getBoxApprovalLogVoList(processInsId);
+        BoxApprovalLogVo boxApprovalLogVoMax = null;
+        if (CollectionUtils.isNotEmpty(boxApprovalLogDtoList)) {
+            Integer id = boxApprovalLogDtoList.stream().map(boxApprovalLogVo -> boxApprovalLogVo.getId()).max(Integer::compareTo).get();
+            boxApprovalLogVoMax = boxApprovalLogDtoList.stream().filter(boxApprovalLogVo -> Objects.equal(id, boxApprovalLogVo.getId())).findFirst().get();
+        }
+        if (CollectionUtils.isNotEmpty(boxApprovalLogDtoList)) {
+            Iterator<BoxApprovalLogVo> iterator = boxApprovalLogDtoList.iterator();
+            while (iterator.hasNext()) {
+                BoxApprovalLogVo boxApprovalLogVo = iterator.next();
+                if (boxApprovalLogVo.getBisApply() != null) {
+                    if (boxApprovalLogVo.getBisApply()) {
+                        iterator.remove();//删除  申请人日志
+                        if (Objects.equal(boxApprovalLogVo.getId(), boxApprovalLogVoMax.getId())) {//假如和我们的目标一致那么整个过滤计划马上终止
+                            break;
+                        }
+                        continue;
+                    }
+                }
+                if (filterActivityKey.contains(boxApprovalLogVo.getActivityNameKey())) {
+                    iterator.remove();
+                    if (Objects.equal(boxApprovalLogVo.getId(), boxApprovalLogVoMax.getId())) {//假如和我们的目标一致那么整个过滤计划马上终止
+                        break;
+                    }
+                    continue;
+                }
+                int number = boxApprovalLogVoMax.getSorting().intValue();
+                int comparisons = boxApprovalLogVo.getSorting().intValue();
+                if (comparisons < number) {
+                    iterator.remove();
+                    continue;
+                }
+            }
+        }
+        return boxApprovalLogDtoList;
+    }
+
+    /**
+     * 获取审批日志
+     * @param processInsId
+     * @return
+     */
+    private List<BoxApprovalLogVo> getBoxApprovalLogVoList(String processInsId) {
         List<BoxApprovalLogVo> boxApprovalLogDtoList = new ArrayList<>();
         BootstrapTableVo bootstrapTableVo = bpmRpcProcessInsManagerService.getApprovalLogForApp(applicationConstant.getAppKey(), processInsId, 1, 10000);
         if (bootstrapTableVo != null) {
@@ -839,17 +888,7 @@ public class ChksAssessmentProjectPerformanceService {
                 }
             }
         }
-        if (CollectionUtils.isNotEmpty(boxApprovalLogDtoList)) {
-            Iterator<BoxApprovalLogVo> iterator = boxApprovalLogDtoList.iterator();
-            while (iterator.hasNext()) {
-                BoxApprovalLogVo boxApprovalLogVo = iterator.next();
-                if (boxApprovalLogVo.getBisApply() != null) {
-                    if (boxApprovalLogVo.getBisApply()) {
-                        iterator.remove();//删除  申请人日志
-                    }
-                }
-            }
-        }
+
         return boxApprovalLogDtoList;
     }
 
