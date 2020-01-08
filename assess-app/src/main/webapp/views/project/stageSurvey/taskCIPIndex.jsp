@@ -772,6 +772,7 @@
             url: "${pageContext.request.contextPath}/basicApplyBatch/deepCopy",
             data: {
                 sourceBatchDetailId: node.id,
+                planDetailsId:'${projectPlanDetails.id}'
             },
             type: "post",
             dataType: "json",
