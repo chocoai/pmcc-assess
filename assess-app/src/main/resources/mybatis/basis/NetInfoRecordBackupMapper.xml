@@ -1,0 +1,560 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.NetInfoRecordBackupMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordBackup" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="province" property="province" jdbcType="VARCHAR" />
+    <result column="city" property="city" jdbcType="VARCHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="notice_date" property="noticeDate" jdbcType="VARCHAR" />
+    <result column="begin_time" property="beginTime" jdbcType="TIMESTAMP" />
+    <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
+    <result column="source_site_name" property="sourceSiteName" jdbcType="VARCHAR" />
+    <result column="source_site_url" property="sourceSiteUrl" jdbcType="VARCHAR" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
+    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+    <result column="current_price" property="currentPrice" jdbcType="VARCHAR" />
+    <result column="consult_price" property="consultPrice" jdbcType="VARCHAR" />
+    <result column="init_price" property="initPrice" jdbcType="VARCHAR" />
+    <result column="liquid_ratios" property="liquidRatios" jdbcType="VARCHAR" />
+    <result column="unit_name" property="unitName" jdbcType="VARCHAR" />
+    <result column="amount" property="amount" jdbcType="INTEGER" />
+    <result column="assess_base_date" property="assessBaseDate" jdbcType="TIMESTAMP" />
+    <result column="area" property="area" jdbcType="DECIMAL" />
+    <result column="negotiated_total_price" property="negotiatedTotalPrice" jdbcType="DECIMAL" />
+    <result column="negotiated_date" property="negotiatedDate" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="executor" property="executor" jdbcType="VARCHAR" />
+    <result column="belong_type" property="belongType" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, province, city, title, content, type, notice_date, begin_time, end_time, source_site_name, 
+    source_site_url, creator, gmt_created, gmt_modified, current_price, consult_price, 
+    init_price, liquid_ratios, unit_name, amount, assess_base_date, area, negotiated_total_price, 
+    negotiated_date, status, executor, belong_type
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordBackupExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_net_info_record_backup
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_net_info_record_backup
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_net_info_record_backup
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordBackupExample" >
+    delete from tb_net_info_record_backup
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordBackup" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_net_info_record_backup (province, city, title, 
+      content, type, notice_date, 
+      begin_time, end_time, source_site_name, 
+      source_site_url, creator, gmt_created, 
+      gmt_modified, current_price, consult_price, 
+      init_price, liquid_ratios, unit_name, 
+      amount, assess_base_date, area, 
+      negotiated_total_price, negotiated_date, 
+      status, executor, belong_type
+      )
+    values (#{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, 
+      #{content,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{noticeDate,jdbcType=VARCHAR}, 
+      #{beginTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, #{sourceSiteName,jdbcType=VARCHAR}, 
+      #{sourceSiteUrl,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP}, #{currentPrice,jdbcType=VARCHAR}, #{consultPrice,jdbcType=VARCHAR}, 
+      #{initPrice,jdbcType=VARCHAR}, #{liquidRatios,jdbcType=VARCHAR}, #{unitName,jdbcType=VARCHAR}, 
+      #{amount,jdbcType=INTEGER}, #{assessBaseDate,jdbcType=TIMESTAMP}, #{area,jdbcType=DECIMAL}, 
+      #{negotiatedTotalPrice,jdbcType=DECIMAL}, #{negotiatedDate,jdbcType=TIMESTAMP}, 
+      #{status,jdbcType=INTEGER}, #{executor,jdbcType=VARCHAR}, #{belongType,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordBackup" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_net_info_record_backup
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="province != null" >
+        province,
+      </if>
+      <if test="city != null" >
+        city,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="noticeDate != null" >
+        notice_date,
+      </if>
+      <if test="beginTime != null" >
+        begin_time,
+      </if>
+      <if test="endTime != null" >
+        end_time,
+      </if>
+      <if test="sourceSiteName != null" >
+        source_site_name,
+      </if>
+      <if test="sourceSiteUrl != null" >
+        source_site_url,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created,
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified,
+      </if>
+      <if test="currentPrice != null" >
+        current_price,
+      </if>
+      <if test="consultPrice != null" >
+        consult_price,
+      </if>
+      <if test="initPrice != null" >
+        init_price,
+      </if>
+      <if test="liquidRatios != null" >
+        liquid_ratios,
+      </if>
+      <if test="unitName != null" >
+        unit_name,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="assessBaseDate != null" >
+        assess_base_date,
+      </if>
+      <if test="area != null" >
+        area,
+      </if>
+      <if test="negotiatedTotalPrice != null" >
+        negotiated_total_price,
+      </if>
+      <if test="negotiatedDate != null" >
+        negotiated_date,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="executor != null" >
+        executor,
+      </if>
+      <if test="belongType != null" >
+        belong_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="province != null" >
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="noticeDate != null" >
+        #{noticeDate,jdbcType=VARCHAR},
+      </if>
+      <if test="beginTime != null" >
+        #{beginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sourceSiteName != null" >
+        #{sourceSiteName,jdbcType=VARCHAR},
+      </if>
+      <if test="sourceSiteUrl != null" >
+        #{sourceSiteUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null" >
+        #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="currentPrice != null" >
+        #{currentPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="consultPrice != null" >
+        #{consultPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="initPrice != null" >
+        #{initPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="liquidRatios != null" >
+        #{liquidRatios,jdbcType=VARCHAR},
+      </if>
+      <if test="unitName != null" >
+        #{unitName,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=INTEGER},
+      </if>
+      <if test="assessBaseDate != null" >
+        #{assessBaseDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="area != null" >
+        #{area,jdbcType=DECIMAL},
+      </if>
+      <if test="negotiatedTotalPrice != null" >
+        #{negotiatedTotalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="negotiatedDate != null" >
+        #{negotiatedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="executor != null" >
+        #{executor,jdbcType=VARCHAR},
+      </if>
+      <if test="belongType != null" >
+        #{belongType,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordBackupExample" resultType="java.lang.Integer" >
+    select count(*) from tb_net_info_record_backup
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_net_info_record_backup
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.province != null" >
+        province = #{record.province,jdbcType=VARCHAR},
+      </if>
+      <if test="record.city != null" >
+        city = #{record.city,jdbcType=VARCHAR},
+      </if>
+      <if test="record.title != null" >
+        title = #{record.title,jdbcType=VARCHAR},
+      </if>
+      <if test="record.content != null" >
+        content = #{record.content,jdbcType=VARCHAR},
+      </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=VARCHAR},
+      </if>
+      <if test="record.noticeDate != null" >
+        notice_date = #{record.noticeDate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.beginTime != null" >
+        begin_time = #{record.beginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.endTime != null" >
+        end_time = #{record.endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.sourceSiteName != null" >
+        source_site_name = #{record.sourceSiteName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sourceSiteUrl != null" >
+        source_site_url = #{record.sourceSiteUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.creator != null" >
+        creator = #{record.creator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gmtCreated != null" >
+        gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gmtModified != null" >
+        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.currentPrice != null" >
+        current_price = #{record.currentPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="record.consultPrice != null" >
+        consult_price = #{record.consultPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="record.initPrice != null" >
+        init_price = #{record.initPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="record.liquidRatios != null" >
+        liquid_ratios = #{record.liquidRatios,jdbcType=VARCHAR},
+      </if>
+      <if test="record.unitName != null" >
+        unit_name = #{record.unitName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.amount != null" >
+        amount = #{record.amount,jdbcType=INTEGER},
+      </if>
+      <if test="record.assessBaseDate != null" >
+        assess_base_date = #{record.assessBaseDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.area != null" >
+        area = #{record.area,jdbcType=DECIMAL},
+      </if>
+      <if test="record.negotiatedTotalPrice != null" >
+        negotiated_total_price = #{record.negotiatedTotalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.negotiatedDate != null" >
+        negotiated_date = #{record.negotiatedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=INTEGER},
+      </if>
+      <if test="record.executor != null" >
+        executor = #{record.executor,jdbcType=VARCHAR},
+      </if>
+      <if test="record.belongType != null" >
+        belong_type = #{record.belongType,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_net_info_record_backup
+    set id = #{record.id,jdbcType=INTEGER},
+      province = #{record.province,jdbcType=VARCHAR},
+      city = #{record.city,jdbcType=VARCHAR},
+      title = #{record.title,jdbcType=VARCHAR},
+      content = #{record.content,jdbcType=VARCHAR},
+      type = #{record.type,jdbcType=VARCHAR},
+      notice_date = #{record.noticeDate,jdbcType=VARCHAR},
+      begin_time = #{record.beginTime,jdbcType=TIMESTAMP},
+      end_time = #{record.endTime,jdbcType=TIMESTAMP},
+      source_site_name = #{record.sourceSiteName,jdbcType=VARCHAR},
+      source_site_url = #{record.sourceSiteUrl,jdbcType=VARCHAR},
+      creator = #{record.creator,jdbcType=VARCHAR},
+      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      current_price = #{record.currentPrice,jdbcType=VARCHAR},
+      consult_price = #{record.consultPrice,jdbcType=VARCHAR},
+      init_price = #{record.initPrice,jdbcType=VARCHAR},
+      liquid_ratios = #{record.liquidRatios,jdbcType=VARCHAR},
+      unit_name = #{record.unitName,jdbcType=VARCHAR},
+      amount = #{record.amount,jdbcType=INTEGER},
+      assess_base_date = #{record.assessBaseDate,jdbcType=TIMESTAMP},
+      area = #{record.area,jdbcType=DECIMAL},
+      negotiated_total_price = #{record.negotiatedTotalPrice,jdbcType=DECIMAL},
+      negotiated_date = #{record.negotiatedDate,jdbcType=TIMESTAMP},
+      status = #{record.status,jdbcType=INTEGER},
+      executor = #{record.executor,jdbcType=VARCHAR},
+      belong_type = #{record.belongType,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordBackup" >
+    update tb_net_info_record_backup
+    <set >
+      <if test="province != null" >
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="noticeDate != null" >
+        notice_date = #{noticeDate,jdbcType=VARCHAR},
+      </if>
+      <if test="beginTime != null" >
+        begin_time = #{beginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        end_time = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sourceSiteName != null" >
+        source_site_name = #{sourceSiteName,jdbcType=VARCHAR},
+      </if>
+      <if test="sourceSiteUrl != null" >
+        source_site_url = #{sourceSiteUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="currentPrice != null" >
+        current_price = #{currentPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="consultPrice != null" >
+        consult_price = #{consultPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="initPrice != null" >
+        init_price = #{initPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="liquidRatios != null" >
+        liquid_ratios = #{liquidRatios,jdbcType=VARCHAR},
+      </if>
+      <if test="unitName != null" >
+        unit_name = #{unitName,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=INTEGER},
+      </if>
+      <if test="assessBaseDate != null" >
+        assess_base_date = #{assessBaseDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="area != null" >
+        area = #{area,jdbcType=DECIMAL},
+      </if>
+      <if test="negotiatedTotalPrice != null" >
+        negotiated_total_price = #{negotiatedTotalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="negotiatedDate != null" >
+        negotiated_date = #{negotiatedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="executor != null" >
+        executor = #{executor,jdbcType=VARCHAR},
+      </if>
+      <if test="belongType != null" >
+        belong_type = #{belongType,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordBackup" >
+    update tb_net_info_record_backup
+    set province = #{province,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      title = #{title,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      notice_date = #{noticeDate,jdbcType=VARCHAR},
+      begin_time = #{beginTime,jdbcType=TIMESTAMP},
+      end_time = #{endTime,jdbcType=TIMESTAMP},
+      source_site_name = #{sourceSiteName,jdbcType=VARCHAR},
+      source_site_url = #{sourceSiteUrl,jdbcType=VARCHAR},
+      creator = #{creator,jdbcType=VARCHAR},
+      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      current_price = #{currentPrice,jdbcType=VARCHAR},
+      consult_price = #{consultPrice,jdbcType=VARCHAR},
+      init_price = #{initPrice,jdbcType=VARCHAR},
+      liquid_ratios = #{liquidRatios,jdbcType=VARCHAR},
+      unit_name = #{unitName,jdbcType=VARCHAR},
+      amount = #{amount,jdbcType=INTEGER},
+      assess_base_date = #{assessBaseDate,jdbcType=TIMESTAMP},
+      area = #{area,jdbcType=DECIMAL},
+      negotiated_total_price = #{negotiatedTotalPrice,jdbcType=DECIMAL},
+      negotiated_date = #{negotiatedDate,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=INTEGER},
+      executor = #{executor,jdbcType=VARCHAR},
+      belong_type = #{belongType,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
