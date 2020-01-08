@@ -2,27 +2,18 @@ package com.copower.pmcc.assess.service;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordContentDao;
-import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordDao;
-import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecord;
-import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordContent;
+import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordBackupDao;
+import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordBackup;
 import com.copower.pmcc.assess.dto.input.net.JDSFDto;
 import com.copower.pmcc.assess.dto.input.net.JDZCDto;
 import com.copower.pmcc.assess.dto.input.net.TBSFDto;
 import com.copower.pmcc.assess.dto.input.net.ZGSFDto;
-import com.copower.pmcc.assess.dto.output.net.NetInfoRecordVo;
 import com.copower.pmcc.assess.service.project.generate.GenerateCommonMethod;
-import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
-import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
-import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.StringUtil;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -33,7 +24,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -58,12 +48,11 @@ import java.util.zip.GZIPInputStream;
  * @time: 11:16
  */
 @Service
-public class NetInfoRecordService {
-    private final static Logger logger = LoggerFactory.getLogger(NetInfoRecordService.class);
+public class NetInfoRecordBackupService {
+    private final static Logger logger = LoggerFactory.getLogger(NetInfoRecordBackupService.class);
     @Autowired
-    private NetInfoRecordDao netInfoRecordDao;
-    @Autowired
-    private NetInfoRecordContentDao netInfoRecordContentDao;
+    private NetInfoRecordBackupDao netInfoRecordBackupDao;
+
     @Autowired
     private PublicService publicService;
     @Autowired
@@ -164,47 +153,47 @@ public class NetInfoRecordService {
                         sb.insert(1, "\"id\":\"\",");
                         TBSFDto tbsfDto = JSON.parseObject(sb.toString(), TBSFDto.class);
                         if (!StringUtils.equals(tbsfDto.getStatus(), "done")) continue;
-                        NetInfoRecord netInfoRecord = new NetInfoRecord();
-                        netInfoRecord.setTitle(tbsfDto.getTitle());
-                        netInfoRecord.setSourceSiteUrl(String.format("%s" + tbsfDto.getItemUrl(), "https:"));
+                        NetInfoRecordBackup netInfoRecordBackup = new NetInfoRecordBackup();
+                        netInfoRecordBackup.setTitle(tbsfDto.getTitle());
+                        netInfoRecordBackup.setSourceSiteUrl(String.format("%s" + tbsfDto.getItemUrl(), "https:"));
                         tbsfDto.setType(entry.getValue().substring(0, entry.getValue().indexOf("_")));
                         String provinceAndCity = entry.getValue().substring(entry.getValue().indexOf("_") + 1);
-                        netInfoRecord.setProvince(provinceAndCity.substring(0, provinceAndCity.indexOf("_")));
-                        netInfoRecord.setCity(provinceAndCity.substring(provinceAndCity.indexOf("_") + 1));
-                        Elements itemContent = getContent(netInfoRecord.getSourceSiteUrl(), "#J_HoverShow", "GBK").select("tr").get(0).select("span");
+                        netInfoRecordBackup.setProvince(provinceAndCity.substring(0, provinceAndCity.indexOf("_")));
+                        netInfoRecordBackup.setCity(provinceAndCity.substring(provinceAndCity.indexOf("_") + 1));
+                        Elements itemContent = getContent(netInfoRecordBackup.getSourceSiteUrl(), "#J_HoverShow", "GBK").select("tr").get(0).select("span");
                         String initPrice = "";
                         if (itemContent != null) {
                             initPrice = itemContent.get(2).childNodes().get(0).toString().replace(",", "");
                         }
-                        netInfoRecord.setCurrentPrice(getRealMoney(tbsfDto.getCurrentPrice()));
-                        netInfoRecord.setConsultPrice(getRealMoney(tbsfDto.getConsultPrice()));
-                        netInfoRecord.setInitPrice(getRealMoney(initPrice));
-                        netInfoRecord.setLiquidRatios(getLiquidRatios(tbsfDto.getCurrentPrice(), tbsfDto.getConsultPrice()));
+                        netInfoRecordBackup.setCurrentPrice(getRealMoney(tbsfDto.getCurrentPrice()));
+                        netInfoRecordBackup.setConsultPrice(getRealMoney(tbsfDto.getConsultPrice()));
+                        netInfoRecordBackup.setInitPrice(getRealMoney(initPrice));
+                        netInfoRecordBackup.setLiquidRatios(getLiquidRatios(tbsfDto.getCurrentPrice(), tbsfDto.getConsultPrice()));
                         String content = getContent(tbsfDto.getTitle(), tbsfDto.getType(), tbsfDto.getCurrentPrice(), tbsfDto.getConsultPrice(), initPrice
                                 , DateUtils.format(tbsfDto.getEnd(), DateUtils.DATE_CHINESE_PATTERN), DateUtils.format(tbsfDto.getStart(), DateUtils.DATE_CHINESE_PATTERN));
-                        netInfoRecord.setContent(content);
-                        netInfoRecord.setType(tbsfDto.getType());
-                        netInfoRecord.setBeginTime(tbsfDto.getStart());
-                        netInfoRecord.setEndTime(tbsfDto.getEnd());
-                        netInfoRecord.setSourceSiteName("淘宝司法拍卖网");
-                        netInfoRecordDao.addInfo(netInfoRecord);
+                        netInfoRecordBackup.setContent(content);
+                        netInfoRecordBackup.setType(tbsfDto.getType());
+                        netInfoRecordBackup.setBeginTime(tbsfDto.getStart());
+                        netInfoRecordBackup.setEndTime(tbsfDto.getEnd());
+                        netInfoRecordBackup.setSourceSiteName("淘宝司法拍卖网");
+                        netInfoRecordBackupDao.addInfo(netInfoRecordBackup);
 
                         Elements noticeEles = getContent(String.format("%s" + tbsfDto.getItemUrl(), "https:"), "#J_ItemNotice", "GBK");
                         if (noticeEles.size() == 0) {
                             noticeEles = getContent(String.format("%s" + tbsfDto.getItemUrl(), "https:"), "#J_NoticeDetail", "GBK");
                         }
-                        if (noticeEles.size() != 0) {
-                            String contentHref = noticeEles.get(0).attributes().get("data-from").trim();
-                            Elements body = getContent(String.format("%s" + contentHref, "https:"), "body", "GBK");
-                            NetInfoRecordContent netInfoRecordContent = new NetInfoRecordContent();
-                            netInfoRecordContent.setRecordId(netInfoRecord.getId());
-                            if (body.html().length() > 30000) {
-                                netInfoRecordContent.setFullDescription(body.html().substring(0, 30000));
-                            } else {
-                                netInfoRecordContent.setFullDescription(body.html());
-                            }
-                            netInfoRecordContentDao.addInfo(netInfoRecordContent);
-                        }
+//                        if (noticeEles.size() != 0) {
+//                            String contentHref = noticeEles.get(0).attributes().get("data-from").trim();
+//                            Elements body = getContent(String.format("%s" + contentHref, "https:"), "body", "GBK");
+//                            NetInfoRecordBackupContent netInfoRecordBackupContent = new NetInfoRecordBackupContent();
+//                            netInfoRecordBackupContent.setRecordBackupId(netInfoRecordBackup.getId());
+//                            if (body.html().length() > 30000) {
+//                                netInfoRecordBackupContent.setFullDescription(body.html().substring(0, 30000));
+//                            } else {
+//                                netInfoRecordBackupContent.setFullDescription(body.html());
+//                            }
+                        //netInfoRecordBackupContentDao.addInfo(netInfoRecordBackupContent);
+                        //}
                     }
                 }
 
@@ -269,14 +258,14 @@ public class NetInfoRecordService {
                         JDSFDto jdsfDto = JSON.parseObject(dataStr, JDSFDto.class);
                         String itemHref = String.format("%s%s", itemHrefStr, jdsfDto.getId());
                         if (jdsfDto.getEndTime().compareTo(date) < 0) break circ;
-                        NetInfoRecord netInfoRecord = new NetInfoRecord();
-                        netInfoRecord.setSourceSiteUrl(itemHref);
-                        netInfoRecord.setTitle(jdsfDto.getTitle());
-                        netInfoRecord.setProvince(jdsfDto.getProvince());
-                        netInfoRecord.setCity(jdsfDto.getCity());
-                        netInfoRecord.setEndTime(jdsfDto.getEndTime());
-                        netInfoRecord.setBeginTime(jdsfDto.getStartTime());
-                        netInfoRecord.setType(entry.getKey());
+                        NetInfoRecordBackup netInfoRecordBackup = new NetInfoRecordBackup();
+                        netInfoRecordBackup.setSourceSiteUrl(itemHref);
+                        netInfoRecordBackup.setTitle(jdsfDto.getTitle());
+                        netInfoRecordBackup.setProvince(jdsfDto.getProvince());
+                        netInfoRecordBackup.setCity(jdsfDto.getCity());
+                        netInfoRecordBackup.setEndTime(jdsfDto.getEndTime());
+                        netInfoRecordBackup.setBeginTime(jdsfDto.getStartTime());
+                        netInfoRecordBackup.setType(entry.getKey());
                         String initPrice = "";
                         try {
                             String replace = initPriceHref.replace("%s", jdsfDto.getId().toString());
@@ -288,15 +277,15 @@ public class NetInfoRecordService {
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                        netInfoRecord.setCurrentPrice(getRealMoney(jdsfDto.getCurrentPriceStr()));
-                        netInfoRecord.setConsultPrice(getRealMoney(jdsfDto.getAssessmentPriceStr()));
-                        netInfoRecord.setInitPrice(getRealMoney(initPrice));
-                        netInfoRecord.setLiquidRatios(getLiquidRatios(jdsfDto.getCurrentPriceStr(), jdsfDto.getAssessmentPriceStr()));
+                        netInfoRecordBackup.setCurrentPrice(getRealMoney(jdsfDto.getCurrentPriceStr()));
+                        netInfoRecordBackup.setConsultPrice(getRealMoney(jdsfDto.getAssessmentPriceStr()));
+                        netInfoRecordBackup.setInitPrice(getRealMoney(initPrice));
+                        netInfoRecordBackup.setLiquidRatios(getLiquidRatios(jdsfDto.getCurrentPriceStr(), jdsfDto.getAssessmentPriceStr()));
                         String content = getContent(jdsfDto.getTitle(), entry.getKey(), jdsfDto.getCurrentPriceStr(), jdsfDto.getAssessmentPriceStr(), initPrice
                                 , DateUtils.format(jdsfDto.getEndTime(), DateUtils.DATE_CHINESE_PATTERN), DateUtils.format(jdsfDto.getStartTime(), DateUtils.DATE_CHINESE_PATTERN));
-                        netInfoRecord.setContent(content);
-                        netInfoRecord.setSourceSiteName("京东司法拍卖网");
-                        netInfoRecordDao.addInfo(netInfoRecord);
+                        netInfoRecordBackup.setContent(content);
+                        netInfoRecordBackup.setSourceSiteName("京东司法拍卖网");
+                        netInfoRecordBackupDao.addInfo(netInfoRecordBackup);
                     }
                 }
             }
@@ -351,21 +340,21 @@ public class NetInfoRecordService {
                         JDZCDto jdzcDto = JSON.parseObject(dataStr, JDZCDto.class);
                         String itemHref = String.format("%s%s", itemHrefStr, jdzcDto.getId());
                         if (jdzcDto.getEndTime().compareTo(date) < 0) break circ;
-                        NetInfoRecord netInfoRecord = new NetInfoRecord();
-                        netInfoRecord.setSourceSiteUrl(itemHref);
-                        netInfoRecord.setTitle(jdzcDto.getTitle());
-                        netInfoRecord.setProvince(jdzcDto.getProvince());
-                        netInfoRecord.setCity(jdzcDto.getCity());
-                        netInfoRecord.setBeginTime(jdzcDto.getStartTime());
-                        netInfoRecord.setEndTime(jdzcDto.getEndTime());
-                        netInfoRecord.setType(entry.getKey());
-                        netInfoRecord.setCurrentPrice(getRealMoney(jdzcDto.getCurrentPrice()));
-                        netInfoRecord.setInitPrice(getRealMoney(jdzcDto.getStartPrice()));
+                        NetInfoRecordBackup netInfoRecordBackup = new NetInfoRecordBackup();
+                        netInfoRecordBackup.setSourceSiteUrl(itemHref);
+                        netInfoRecordBackup.setTitle(jdzcDto.getTitle());
+                        netInfoRecordBackup.setProvince(jdzcDto.getProvince());
+                        netInfoRecordBackup.setCity(jdzcDto.getCity());
+                        netInfoRecordBackup.setBeginTime(jdzcDto.getStartTime());
+                        netInfoRecordBackup.setEndTime(jdzcDto.getEndTime());
+                        netInfoRecordBackup.setType(entry.getKey());
+                        netInfoRecordBackup.setCurrentPrice(getRealMoney(jdzcDto.getCurrentPrice()));
+                        netInfoRecordBackup.setInitPrice(getRealMoney(jdzcDto.getStartPrice()));
                         String content = getContent(jdzcDto.getTitle(), entry.getKey(), jdzcDto.getCurrentPrice(), "", jdzcDto.getStartPrice()
                                 , DateUtils.format(jdzcDto.getEndTime(), DateUtils.DATE_CHINESE_PATTERN), DateUtils.format(jdzcDto.getStartTime(), DateUtils.DATE_CHINESE_PATTERN));
-                        netInfoRecord.setContent(content);
-                        netInfoRecord.setSourceSiteName("京东资产拍卖网");
-                        netInfoRecordDao.addInfo(netInfoRecord);
+                        netInfoRecordBackup.setContent(content);
+                        netInfoRecordBackup.setSourceSiteName("京东资产拍卖网");
+                        netInfoRecordBackupDao.addInfo(netInfoRecordBackup);
                     }
                 }
             }
@@ -456,36 +445,36 @@ public class NetInfoRecordService {
                         ZGSFDto zgsfDto = JSON.parseObject(dataStr, ZGSFDto.class);
                         String itemHref = String.format("%s%s%s", itemHrefStr, zgsfDto.getId(), ".html");
                         if (zgsfDto.getEndTime().compareTo(date) < 0) break circ;
-                        NetInfoRecord netInfoRecord = new NetInfoRecord();
-                        netInfoRecord.setSourceSiteUrl(itemHref);
-                        netInfoRecord.setTitle(zgsfDto.getName());
-                        netInfoRecord.setProvince(entry.getKey().substring(entry.getKey().indexOf("_") + 1));
-                        netInfoRecord.setBeginTime(zgsfDto.getStartTime());
-                        netInfoRecord.setEndTime(zgsfDto.getEndTime());
-                        netInfoRecord.setType(entry.getKey().substring(0, entry.getKey().indexOf("_")));
-                        netInfoRecord.setCurrentPrice(getRealMoney(zgsfDto.getNowPrice()));
-                        netInfoRecord.setConsultPrice(getRealMoney(zgsfDto.getAssessPrice()));
-                        netInfoRecord.setInitPrice(getRealMoney(zgsfDto.getStartPrice()));
-                        netInfoRecord.setLiquidRatios(getLiquidRatios(zgsfDto.getNowPrice(), zgsfDto.getAssessPrice()));
+                        NetInfoRecordBackup netInfoRecordBackup = new NetInfoRecordBackup();
+                        netInfoRecordBackup.setSourceSiteUrl(itemHref);
+                        netInfoRecordBackup.setTitle(zgsfDto.getName());
+                        netInfoRecordBackup.setProvince(entry.getKey().substring(entry.getKey().indexOf("_") + 1));
+                        netInfoRecordBackup.setBeginTime(zgsfDto.getStartTime());
+                        netInfoRecordBackup.setEndTime(zgsfDto.getEndTime());
+                        netInfoRecordBackup.setType(entry.getKey().substring(0, entry.getKey().indexOf("_")));
+                        netInfoRecordBackup.setCurrentPrice(getRealMoney(zgsfDto.getNowPrice()));
+                        netInfoRecordBackup.setConsultPrice(getRealMoney(zgsfDto.getAssessPrice()));
+                        netInfoRecordBackup.setInitPrice(getRealMoney(zgsfDto.getStartPrice()));
+                        netInfoRecordBackup.setLiquidRatios(getLiquidRatios(zgsfDto.getNowPrice(), zgsfDto.getAssessPrice()));
                         String content = getContent(zgsfDto.getName(), entry.getKey().substring(0, entry.getKey().indexOf("_")), zgsfDto.getNowPrice(), zgsfDto.getAssessPrice(), zgsfDto.getStartPrice()
                                 , DateUtils.format(zgsfDto.getEndTime(), DateUtils.DATE_CHINESE_PATTERN), DateUtils.format(zgsfDto.getStartTime(), DateUtils.DATE_CHINESE_PATTERN));
-                        netInfoRecord.setContent(content);
-                        netInfoRecord.setSourceSiteName("中国拍卖行业协会网-司法");
-                        netInfoRecordDao.addInfo(netInfoRecord);
+                        netInfoRecordBackup.setContent(content);
+                        netInfoRecordBackup.setSourceSiteName("中国拍卖行业协会网-司法");
+                        netInfoRecordBackupDao.addInfo(netInfoRecordBackup);
 
                         String contentHref = itemHref.replace("lot", "caa-web-ws/ws/0.1/notice/lot");
                         contentHref = contentHref.replace(".html", "");
-                        Elements contentBody = getContent(contentHref, "body", "");
-                        if (contentBody.size() != 0 && contentBody != null) {
-                            NetInfoRecordContent netInfoRecordContent = new NetInfoRecordContent();
-                            netInfoRecordContent.setRecordId(netInfoRecord.getId());
-                            if (contentBody.html().length() > 30000) {
-                                netInfoRecordContent.setFullDescription(contentBody.html().substring(0, 30000));
-                            } else {
-                                netInfoRecordContent.setFullDescription(contentBody.html());
-                            }
-                            netInfoRecordContentDao.addInfo(netInfoRecordContent);
-                        }
+                        //Elements contentBody = getContent(contentHref, "body", "");
+//                        if (contentBody.size() != 0 && contentBody != null) {
+//                            NetInfoRecordBackupContent netInfoRecordBackupContent = new NetInfoRecordBackupContent();
+//                            netInfoRecordBackupContent.setRecordBackupId(netInfoRecordBackup.getId());
+//                            if (contentBody.html().length() > 30000) {
+//                                netInfoRecordBackupContent.setFullDescription(contentBody.html().substring(0, 30000));
+//                            } else {
+//                                netInfoRecordBackupContent.setFullDescription(contentBody.html());
+//                            }
+//                            netInfoRecordBackupContentDao.addInfo(netInfoRecordBackupContent);
+//                        }
                     }
                 }
             }
@@ -572,36 +561,36 @@ public class NetInfoRecordService {
                         ZGSFDto zgsfDto = JSON.parseObject(dataStr, ZGSFDto.class);
                         String itemHref = String.format("%s%s%s", itemHrefStr, "lotId=" + zgsfDto.getId(), "&meetId=" + zgsfDto.getMeetId());
                         if (zgsfDto.getEndTime().compareTo(date) < 0) break circ;
-                        NetInfoRecord netInfoRecord = new NetInfoRecord();
-                        netInfoRecord.setSourceSiteUrl(itemHref);
-                        netInfoRecord.setTitle(zgsfDto.getName());
-                        netInfoRecord.setProvince(entry.getKey().substring(entry.getKey().indexOf("_") + 1));
-                        netInfoRecord.setBeginTime(zgsfDto.getStartTime());
-                        netInfoRecord.setEndTime(zgsfDto.getEndTime());
-                        netInfoRecord.setType(entry.getKey().substring(0, entry.getKey().indexOf("_")));
-                        netInfoRecord.setCurrentPrice(getRealMoney(zgsfDto.getNowPrice()));
-                        netInfoRecord.setConsultPrice(getRealMoney(zgsfDto.getAssessPrice()));
-                        netInfoRecord.setInitPrice(getRealMoney(zgsfDto.getStartPrice()));
-                        netInfoRecord.setLiquidRatios(getLiquidRatios(zgsfDto.getNowPrice(), zgsfDto.getAssessPrice()));
+                        NetInfoRecordBackup netInfoRecordBackup = new NetInfoRecordBackup();
+                        netInfoRecordBackup.setSourceSiteUrl(itemHref);
+                        netInfoRecordBackup.setTitle(zgsfDto.getName());
+                        netInfoRecordBackup.setProvince(entry.getKey().substring(entry.getKey().indexOf("_") + 1));
+                        netInfoRecordBackup.setBeginTime(zgsfDto.getStartTime());
+                        netInfoRecordBackup.setEndTime(zgsfDto.getEndTime());
+                        netInfoRecordBackup.setType(entry.getKey().substring(0, entry.getKey().indexOf("_")));
+                        netInfoRecordBackup.setCurrentPrice(getRealMoney(zgsfDto.getNowPrice()));
+                        netInfoRecordBackup.setConsultPrice(getRealMoney(zgsfDto.getAssessPrice()));
+                        netInfoRecordBackup.setInitPrice(getRealMoney(zgsfDto.getStartPrice()));
+                        netInfoRecordBackup.setLiquidRatios(getLiquidRatios(zgsfDto.getNowPrice(), zgsfDto.getAssessPrice()));
                         String content = getContent(zgsfDto.getName(), entry.getKey().substring(0, entry.getKey().indexOf("_")), zgsfDto.getNowPrice(), zgsfDto.getAssessPrice(), zgsfDto.getStartPrice()
                                 , DateUtils.format(zgsfDto.getEndTime(), DateUtils.DATE_CHINESE_PATTERN), DateUtils.format(zgsfDto.getStartTime(), DateUtils.DATE_CHINESE_PATTERN));
-                        netInfoRecord.setContent(content);
-                        netInfoRecord.setSourceSiteName("中国拍卖行业协会网-标的");
-                        netInfoRecordDao.addInfo(netInfoRecord);
+                        netInfoRecordBackup.setContent(content);
+                        netInfoRecordBackup.setSourceSiteName("中国拍卖行业协会网-标的");
+                        netInfoRecordBackupDao.addInfo(netInfoRecordBackup);
 
                         String contentHref = itemHref.replace("pages/lots/profession.html?lotId=", "wt-web-ws/ws/0.1/lot/");
                         contentHref = contentHref.replace(String.format("%s%s", "&meetId=", zgsfDto.getMeetId()), "/introduction");
-                        Elements contentBody = getContent(contentHref, "body", "");
-                        if (contentBody.size() != 0 && contentBody != null) {
-                            NetInfoRecordContent netInfoRecordContent = new NetInfoRecordContent();
-                            netInfoRecordContent.setRecordId(netInfoRecord.getId());
-                            if (contentBody.html().length() > 30000) {
-                                netInfoRecordContent.setFullDescription(contentBody.html().substring(0, 30000));
-                            } else {
-                                netInfoRecordContent.setFullDescription(contentBody.html());
-                            }
-                            netInfoRecordContentDao.addInfo(netInfoRecordContent);
-                        }
+                        //Elements contentBody = getContent(contentHref, "body", "");
+//                        if (contentBody.size() != 0 && contentBody != null) {
+//                            NetInfoRecordBackupContent netInfoRecordBackupContent = new NetInfoRecordBackupContent();
+//                            netInfoRecordBackupContent.setRecordBackupId(netInfoRecordBackup.getId());
+//                            if (contentBody.html().length() > 30000) {
+//                                netInfoRecordBackupContent.setFullDescription(contentBody.html().substring(0, 30000));
+//                            } else {
+//                                netInfoRecordBackupContent.setFullDescription(contentBody.html());
+//                            }
+//                            netInfoRecordBackupContentDao.addInfo(netInfoRecordBackupContent);
+//                        }
                     }
                 }
             }
@@ -677,9 +666,9 @@ public class NetInfoRecordService {
                                 endTime = sdf.parse(endTimeStr.substring(endTimeStr.indexOf("：") + 1, endTimeStr.length()));
                             }
                             if (endTime == null || endTime.compareTo(date) < 0) continue circ;
-                            NetInfoRecord netInfoRecord = new NetInfoRecord();
-                            netInfoRecord.setTitle(titleName);
-                            netInfoRecord.setSourceSiteUrl(itemHref);
+                            NetInfoRecordBackup netInfoRecordBackup = new NetInfoRecordBackup();
+                            netInfoRecordBackup.setTitle(titleName);
+                            netInfoRecordBackup.setSourceSiteUrl(itemHref);
                             String consultPrice = info.get(0).childNodes().get(6).childNodes().get(2).childNodes().get(0).childNodes().get(0).toString();
                             //单位可能是元或万元
                             String moneyUnit = info.get(0).childNodes().get(6).childNodes().get(2).childNodes().get(1).toString();
@@ -699,31 +688,31 @@ public class NetInfoRecordService {
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
-                            netInfoRecord.setProvince(entry.getValue().substring(entry.getValue().indexOf("_") + 1));
-                            netInfoRecord.setSourceSiteName("公拍网");
-                            netInfoRecord.setEndTime(endTime);
-                            netInfoRecord.setBeginTime(endTime);
-                            netInfoRecord.setType(entry.getValue().substring(0, entry.getValue().indexOf("_")));
-                            netInfoRecord.setCurrentPrice(getRealMoney(currentPrice));
-                            netInfoRecord.setConsultPrice(getRealMoney(consultPrice));
-                            netInfoRecord.setInitPrice(getRealMoney(initPrice));
-                            netInfoRecord.setLiquidRatios(getLiquidRatios(currentPrice, consultPrice));
-                            String content = getContent(titleName, netInfoRecord.getType(), currentPrice, consultPrice, initPrice
+                            netInfoRecordBackup.setProvince(entry.getValue().substring(entry.getValue().indexOf("_") + 1));
+                            netInfoRecordBackup.setSourceSiteName("公拍网");
+                            netInfoRecordBackup.setEndTime(endTime);
+                            netInfoRecordBackup.setBeginTime(endTime);
+                            netInfoRecordBackup.setType(entry.getValue().substring(0, entry.getValue().indexOf("_")));
+                            netInfoRecordBackup.setCurrentPrice(getRealMoney(currentPrice));
+                            netInfoRecordBackup.setConsultPrice(getRealMoney(consultPrice));
+                            netInfoRecordBackup.setInitPrice(getRealMoney(initPrice));
+                            netInfoRecordBackup.setLiquidRatios(getLiquidRatios(currentPrice, consultPrice));
+                            String content = getContent(titleName, netInfoRecordBackup.getType(), currentPrice, consultPrice, initPrice
                                     , DateUtils.format(endTime, DateUtils.DATE_CHINESE_PATTERN), "");
-                            netInfoRecord.setContent(content);
-                            netInfoRecordDao.addInfo(netInfoRecord);
+                            netInfoRecordBackup.setContent(content);
+                            netInfoRecordBackupDao.addInfo(netInfoRecordBackup);
 
-                            Elements contentBody = getContent(itemHref, ".d-article", "");
-                            if (contentBody.size() != 0 && contentBody != null) {
-                                NetInfoRecordContent netInfoRecordContent = new NetInfoRecordContent();
-                                netInfoRecordContent.setRecordId(netInfoRecord.getId());
-                                if (contentBody.get(1).html().length() > 30000) {
-                                    netInfoRecordContent.setFullDescription(contentBody.get(1).html().substring(0, 30000));
-                                } else {
-                                    netInfoRecordContent.setFullDescription(contentBody.get(1).html());
-                                }
-                                netInfoRecordContentDao.addInfo(netInfoRecordContent);
-                            }
+                            //Elements contentBody = getContent(itemHref, ".d-article", "");
+//                            if (contentBody.size() != 0 && contentBody != null) {
+//                                NetInfoRecordBackupContent netInfoRecordBackupContent = new NetInfoRecordBackupContent();
+//                                netInfoRecordBackupContent.setRecordBackupId(netInfoRecordBackup.getId());
+//                                if (contentBody.get(1).html().length() > 30000) {
+//                                    netInfoRecordBackupContent.setFullDescription(contentBody.get(1).html().substring(0, 30000));
+//                                } else {
+//                                    netInfoRecordBackupContent.setFullDescription(contentBody.get(1).html());
+//                                }
+//                                netInfoRecordBackupContentDao.addInfo(netInfoRecordBackupContent);
+//                            }
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -783,21 +772,21 @@ public class NetInfoRecordService {
                             String fieldValue = checkNull(select, j);
                             fieldValues.add(publicService.delHtmlTags(fieldValue));
                         }
-                        NetInfoRecord netInfoRecord = new NetInfoRecord();
+                        NetInfoRecordBackup netInfoRecordBackup = new NetInfoRecordBackup();
                         String title = itemContent.get(i).childNodes().get(3).childNodes().get(0).toString();
-                        netInfoRecord.setTitle(title);
-                        netInfoRecord.setSourceSiteUrl(String.format("%s%s", "http://www.yaggzy.org.cn", detailHref));
-                        netInfoRecord.setProvince("四川");
-                        netInfoRecord.setCity("雅安");
-                        netInfoRecord.setSourceSiteName("公共资源交易平台-雅安");
-                        netInfoRecord.setBeginTime(publishtime);
-                        netInfoRecord.setEndTime(publishtime);
+                        netInfoRecordBackup.setTitle(title);
+                        netInfoRecordBackup.setSourceSiteUrl(String.format("%s%s", "http://www.yaggzy.org.cn", detailHref));
+                        netInfoRecordBackup.setProvince("四川");
+                        netInfoRecordBackup.setCity("雅安");
+                        netInfoRecordBackup.setSourceSiteName("公共资源交易平台-雅安");
+                        netInfoRecordBackup.setBeginTime(publishtime);
+                        netInfoRecordBackup.setEndTime(publishtime);
                         StringBuilder content = new StringBuilder();
                         for (int m = 0; m < fieldNames.size(); m++) {
                             content.append(fieldNames.get(m) + "：" + fieldValues.get(m) + "；");
                         }
-                        netInfoRecord.setContent(content.toString());
-                        netInfoRecordDao.addInfo(netInfoRecord);
+                        netInfoRecordBackup.setContent(content.toString());
+                        netInfoRecordBackupDao.addInfo(netInfoRecordBackup);
                     }
                 }
             }
@@ -904,15 +893,15 @@ public class NetInfoRecordService {
                                         String fieldValue = checkNull(select, j);
                                         fieldValues.add(publicService.delHtmlTags(fieldValue));
                                     }
-                                    NetInfoRecord netInfoRecord = new NetInfoRecord();
-                                    netInfoRecord.setProvince("四川");
-                                    netInfoRecord.setCity("成都");
-                                    netInfoRecord.setType(typeName);
-                                    netInfoRecord.setSourceSiteUrl(link);
-                                    netInfoRecord.setBeginTime(publishtime);
-                                    netInfoRecord.setEndTime(publishtime);
-                                    netInfoRecord.setTitle(titleStr.replaceAll("\n", ""));
-                                    netInfoRecord.setSourceSiteName("公共资源交易平台-成都");
+                                    NetInfoRecordBackup netInfoRecordBackup = new NetInfoRecordBackup();
+                                    netInfoRecordBackup.setProvince("四川");
+                                    netInfoRecordBackup.setCity("成都");
+                                    netInfoRecordBackup.setType(typeName);
+                                    netInfoRecordBackup.setSourceSiteUrl(link);
+                                    netInfoRecordBackup.setBeginTime(publishtime);
+                                    netInfoRecordBackup.setEndTime(publishtime);
+                                    netInfoRecordBackup.setTitle(titleStr.replaceAll("\n", ""));
+                                    netInfoRecordBackup.setSourceSiteName("公共资源交易平台-成都");
                                     StringBuilder content = new StringBuilder();
                                     if (CollectionUtils.isNotEmpty(fieldNames)) {
                                         for (int m = 0; m < fieldNames.size(); m++) {
@@ -1005,8 +994,8 @@ public class NetInfoRecordService {
 
                                     content.append("发布时间：" + publishtimeStr + "；");
                                     content.append("地址：" + address.replaceAll("\n", "").substring(1, address.length() - 2) + "；");
-                                    netInfoRecord.setContent(content.toString());
-                                    netInfoRecordDao.addInfo(netInfoRecord);
+                                    netInfoRecordBackup.setContent(content.toString());
+                                    netInfoRecordBackupDao.addInfo(netInfoRecordBackup);
                                 }
 
                             }
@@ -1168,15 +1157,15 @@ public class NetInfoRecordService {
                                         } catch (Exception e) {
                                         }
                                     }
-                                    NetInfoRecord netInfoRecord = new NetInfoRecord();
-                                    netInfoRecord.setProvince("四川");
-                                    netInfoRecord.setCity("成都");
-                                    netInfoRecord.setType(typeName);
-                                    netInfoRecord.setSourceSiteUrl(link);
-                                    netInfoRecord.setBeginTime(publishtime);
-                                    netInfoRecord.setEndTime(publishtime);
-                                    netInfoRecord.setTitle(titleStr.replaceAll("\n", ""));
-                                    netInfoRecord.setSourceSiteName("公共资源交易平台-成都");
+                                    NetInfoRecordBackup netInfoRecordBackup = new NetInfoRecordBackup();
+                                    netInfoRecordBackup.setProvince("四川");
+                                    netInfoRecordBackup.setCity("成都");
+                                    netInfoRecordBackup.setType(typeName);
+                                    netInfoRecordBackup.setSourceSiteUrl(link);
+                                    netInfoRecordBackup.setBeginTime(publishtime);
+                                    netInfoRecordBackup.setEndTime(publishtime);
+                                    netInfoRecordBackup.setTitle(titleStr.replaceAll("\n", ""));
+                                    netInfoRecordBackup.setSourceSiteName("公共资源交易平台-成都");
                                     StringBuilder content = new StringBuilder();
                                     for (int m = 0; m < fieldValues.size(); m++) {
                                         content.append(fieldValues.get(m) + "；");
@@ -1184,8 +1173,8 @@ public class NetInfoRecordService {
 
                                     content.append("发布时间：" + publishtimeStr + "；");
                                     content.append("地址：" + address.replaceAll("\n", "").substring(1, address.length() - 2) + "；");
-                                    netInfoRecord.setContent(content.toString());
-                                    netInfoRecordDao.addInfo(netInfoRecord);
+                                    netInfoRecordBackup.setContent(content.toString());
+                                    netInfoRecordBackupDao.addInfo(netInfoRecordBackup);
                                 }
 
                             }
@@ -1302,17 +1291,17 @@ public class NetInfoRecordService {
                     if (content.length() > 500) {
                         content = content.substring(0, 500);
                     }
-                    NetInfoRecord netInfoRecord = new NetInfoRecord();
-                    netInfoRecord.setProvince("四川");
-                    netInfoRecord.setCity("凉山");
-                    netInfoRecord.setType("交易公告");
-                    netInfoRecord.setSourceSiteUrl(String.format("%s%s", "http://ggzyjy.lsz.gov.cn", link));
-                    netInfoRecord.setBeginTime(publishtime);
-                    netInfoRecord.setEndTime(publishtime);
-                    netInfoRecord.setTitle(titleStr.replaceAll("\n", ""));
-                    netInfoRecord.setSourceSiteName("公共资源交易平台-凉山州");
-                    netInfoRecord.setContent(String.format("%s%s", content, "..."));
-                    netInfoRecordDao.addInfo(netInfoRecord);
+                    NetInfoRecordBackup netInfoRecordBackup = new NetInfoRecordBackup();
+                    netInfoRecordBackup.setProvince("四川");
+                    netInfoRecordBackup.setCity("凉山");
+                    netInfoRecordBackup.setType("交易公告");
+                    netInfoRecordBackup.setSourceSiteUrl(String.format("%s%s", "http://ggzyjy.lsz.gov.cn", link));
+                    netInfoRecordBackup.setBeginTime(publishtime);
+                    netInfoRecordBackup.setEndTime(publishtime);
+                    netInfoRecordBackup.setTitle(titleStr.replaceAll("\n", ""));
+                    netInfoRecordBackup.setSourceSiteName("公共资源交易平台-凉山州");
+                    netInfoRecordBackup.setContent(String.format("%s%s", content, "..."));
+                    netInfoRecordBackupDao.addInfo(netInfoRecordBackup);
                 }
             }
         } catch (Exception e) {
@@ -1354,17 +1343,17 @@ public class NetInfoRecordService {
                     if (content.length() > 500) {
                         content = content.substring(0, 500);
                     }
-                    NetInfoRecord netInfoRecord = new NetInfoRecord();
-                    netInfoRecord.setProvince("四川");
-                    netInfoRecord.setCity("攀枝花");
-                    netInfoRecord.setType("交易信息");
-                    netInfoRecord.setSourceSiteUrl(String.format("%s%s", "http://ggzy.panzhihua.gov.cn", link));
-                    netInfoRecord.setBeginTime(publishTime);
-                    netInfoRecord.setEndTime(publishTime);
-                    netInfoRecord.setTitle(titleStr.replaceAll("\n", ""));
-                    netInfoRecord.setSourceSiteName("公共资源交易平台-攀枝花");
-                    netInfoRecord.setContent(String.format("%s%s", content, "..."));
-                    netInfoRecordDao.addInfo(netInfoRecord);
+                    NetInfoRecordBackup netInfoRecordBackup = new NetInfoRecordBackup();
+                    netInfoRecordBackup.setProvince("四川");
+                    netInfoRecordBackup.setCity("攀枝花");
+                    netInfoRecordBackup.setType("交易信息");
+                    netInfoRecordBackup.setSourceSiteUrl(String.format("%s%s", "http://ggzy.panzhihua.gov.cn", link));
+                    netInfoRecordBackup.setBeginTime(publishTime);
+                    netInfoRecordBackup.setEndTime(publishTime);
+                    netInfoRecordBackup.setTitle(titleStr.replaceAll("\n", ""));
+                    netInfoRecordBackup.setSourceSiteName("公共资源交易平台-攀枝花");
+                    netInfoRecordBackup.setContent(String.format("%s%s", content, "..."));
+                    netInfoRecordBackupDao.addInfo(netInfoRecordBackup);
                 }
             }
         } catch (Exception e) {
@@ -1470,34 +1459,34 @@ public class NetInfoRecordService {
                     }
 
                     String type = contentElements.get(5).childNodes().get(1).toString();
-                    NetInfoRecord netInfoRecord = new NetInfoRecord();
-                    netInfoRecord.setProvince(province);
-                    netInfoRecord.setCity(city);
-                    netInfoRecord.setType(type);
-                    netInfoRecord.setSourceSiteUrl(link);
-                    netInfoRecord.setTitle(titleStr);
-                    netInfoRecord.setBeginTime(publishtime);
+                    NetInfoRecordBackup netInfoRecordBackup = new NetInfoRecordBackup();
+                    netInfoRecordBackup.setProvince(province);
+                    netInfoRecordBackup.setCity(city);
+                    netInfoRecordBackup.setType(type);
+                    netInfoRecordBackup.setSourceSiteUrl(link);
+                    netInfoRecordBackup.setTitle(titleStr);
+                    netInfoRecordBackup.setBeginTime(publishtime);
 
                     Elements tableElementHrefs = getContent(link, ".row.hh-sort-text", "");
                     if (tableElementHrefs.size() == 2) {
                         Elements dealInfo = tableElementHrefs.get(1).select("li span");
                         String endTimeStr = dealInfo.get(3).childNodes().get(0).toString().trim();
                         Date endTime = DateUtils.parse(endTimeStr);
-                        netInfoRecord.setEndTime(endTime);
+                        netInfoRecordBackup.setEndTime(endTime);
                         String currentPriceStr = generateCommonMethod.getNumber(dealInfo.get(7).childNodes().get(0).toString());
                         if (StringUtils.isNotEmpty(currentPriceStr)) {
-                            netInfoRecord.setCurrentPrice(new BigDecimal(currentPriceStr).multiply(new BigDecimal("10000")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+                            netInfoRecordBackup.setCurrentPrice(new BigDecimal(currentPriceStr).multiply(new BigDecimal("10000")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
                         }
                         String initPriceStr = generateCommonMethod.getNumber(dealInfo.get(6).childNodes().get(0).toString());
                         if (StringUtils.isNotEmpty(initPriceStr)) {
-                            netInfoRecord.setInitPrice(new BigDecimal(initPriceStr).multiply(new BigDecimal("10000")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+                            netInfoRecordBackup.setInitPrice(new BigDecimal(initPriceStr).multiply(new BigDecimal("10000")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
                         }
                     }
-                    String content = getContent(titleStr, type, netInfoRecord.getCurrentPrice(), "", netInfoRecord.getInitPrice()
-                            , DateUtils.format(netInfoRecord.getEndTime(), DateUtils.DATE_CHINESE_PATTERN), DateUtils.format(netInfoRecord.getBeginTime(), DateUtils.DATE_CHINESE_PATTERN));
-                    netInfoRecord.setSourceSiteName("土流网");
-                    netInfoRecord.setContent(content);
-                    netInfoRecordDao.addInfo(netInfoRecord);
+                    String content = getContent(titleStr, type, netInfoRecordBackup.getCurrentPrice(), "", netInfoRecordBackup.getInitPrice()
+                            , DateUtils.format(netInfoRecordBackup.getEndTime(), DateUtils.DATE_CHINESE_PATTERN), DateUtils.format(netInfoRecordBackup.getBeginTime(), DateUtils.DATE_CHINESE_PATTERN));
+                    netInfoRecordBackup.setSourceSiteName("土流网");
+                    netInfoRecordBackup.setContent(content);
+                    netInfoRecordBackupDao.addInfo(netInfoRecordBackup);
                 }
             }
         } catch (Exception e) {
@@ -1537,16 +1526,16 @@ public class NetInfoRecordService {
                     if (content.length() > 500) {
                         content = content.substring(0, 500);
                     }
-                    NetInfoRecord netInfoRecord = new NetInfoRecord();
-                    netInfoRecord.setProvince("四川");
-                    netInfoRecord.setType("土地经营权");
-                    netInfoRecord.setSourceSiteUrl(String.format("%s%s", "https://www.cdaee.com", link));
-                    netInfoRecord.setTitle(titleStr);
-                    netInfoRecord.setBeginTime(publishtime);
-                    netInfoRecord.setEndTime(publishtime);
-                    netInfoRecord.setSourceSiteName("农村产权交易中心");
-                    netInfoRecord.setContent(String.format("%s%s", content, "..."));
-                    netInfoRecordDao.addInfo(netInfoRecord);
+                    NetInfoRecordBackup netInfoRecordBackup = new NetInfoRecordBackup();
+                    netInfoRecordBackup.setProvince("四川");
+                    netInfoRecordBackup.setType("土地经营权");
+                    netInfoRecordBackup.setSourceSiteUrl(String.format("%s%s", "https://www.cdaee.com", link));
+                    netInfoRecordBackup.setTitle(titleStr);
+                    netInfoRecordBackup.setBeginTime(publishtime);
+                    netInfoRecordBackup.setEndTime(publishtime);
+                    netInfoRecordBackup.setSourceSiteName("农村产权交易中心");
+                    netInfoRecordBackup.setContent(String.format("%s%s", content, "..."));
+                    netInfoRecordBackupDao.addInfo(netInfoRecordBackup);
                 }
             }
         } catch (Exception e) {
@@ -1747,62 +1736,6 @@ public class NetInfoRecordService {
         }
     }
 
-    public BootstrapTableVo getInfoRecordList(String queryTitle, String queryWebName, String province, String city, String queryContent, String queryType, String queryStartTime, String queryEndTime, String executor, Integer status) throws Exception {
-        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
-        BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
-        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        String provinceName = erpAreaService.getSysAreaName(province);
-        String cityName = erpAreaService.getSysAreaName(city);
-        Date startTimeParse = null;
-        Date endTimeParse = null;
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        if (StringUtil.isNotEmpty(queryStartTime))
-            startTimeParse = sdf.parse(queryStartTime);
-        if (StringUtil.isNotEmpty(queryEndTime)) {
-            endTimeParse = sdf.parse(queryEndTime);
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(endTimeParse);
-            calendar.add(Calendar.DAY_OF_MONTH, +1); //得到后1天
-            endTimeParse = calendar.getTime();
-        }
-        List<NetInfoRecord> netInfoRecords = netInfoRecordDao.getNetInfoRecordListByName(queryTitle, queryWebName, provinceName, cityName, queryContent, queryType, startTimeParse, endTimeParse, executor, status);
-        List<NetInfoRecordVo> vos = LangUtils.transform(netInfoRecords, o -> getNetInfoRecordVo(o));
-        bootstrapTableVo.setTotal(page.getTotal());
-        bootstrapTableVo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<NetInfoRecord>() : vos);
-        return bootstrapTableVo;
-    }
-
-
-    public NetInfoRecordVo getNetInfoRecordVo(NetInfoRecord netInfoRecord) {
-        if (netInfoRecord == null) return null;
-        NetInfoRecordVo netInfoRecordVo = new NetInfoRecordVo();
-        BeanUtils.copyProperties(netInfoRecord, netInfoRecordVo);
-        //单价=成交价/面积
-        if (StringUtils.isNotEmpty(netInfoRecord.getCurrentPrice()) && netInfoRecord.getArea() != null) {
-            BigDecimal currentPrice = new BigDecimal(netInfoRecord.getCurrentPrice());
-            BigDecimal unitPrice = currentPrice.divide(netInfoRecord.getArea(), 2, BigDecimal.ROUND_HALF_UP);
-            netInfoRecordVo.setUnitPrice(unitPrice.toString());
-        }
-        //默认使用结束日期作为成交日期,计算周期
-        if (netInfoRecord.getEndTime() != null && netInfoRecord.getAssessBaseDate() != null) {
-            String value = String.valueOf(DateUtils.diffDate(netInfoRecord.getEndTime(), netInfoRecord.getAssessBaseDate()));
-            netInfoRecordVo.setLiquidCycle(String.format("%s%s", value, "天"));
-        }
-        if (netInfoRecord.getStatus().equals(0)) {
-            netInfoRecordVo.setStatusName("未分派");
-        }
-        if (netInfoRecord.getStatus().equals(1)) {
-            netInfoRecordVo.setStatusName("已分派");
-        }
-        if (netInfoRecord.getStatus().equals(2)) {
-            netInfoRecordVo.setStatusName("审批中");
-        }
-        if (netInfoRecord.getStatus().equals(3)) {
-            netInfoRecordVo.setStatusName("审批通过");
-        }
-        return netInfoRecordVo;
-    }
-
 
     //获取前几天的日期
     public Date getInstanceDate(Integer days) {
@@ -1849,26 +1782,14 @@ public class NetInfoRecordService {
 
     public void assignTask(String executor, String ids) throws Exception {
         List<Integer> integers = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(ids));
-        List<NetInfoRecord> infoRecords = LangUtils.transform(integers, o -> netInfoRecordDao.getInfoById(o));
+        List<NetInfoRecordBackup> infoRecordBackups = LangUtils.transform(integers, o -> netInfoRecordBackupDao.getInfoById(o));
         //状态为已分派
-        for (NetInfoRecord netInfo : infoRecords) {
+        for (NetInfoRecordBackup netInfo : infoRecordBackups) {
             netInfo.setStatus(1);
             netInfo.setExecutor(executor);
-            netInfoRecordDao.updateInfo(netInfo);
+            netInfoRecordBackupDao.updateInfo(netInfo);
         }
 
     }
 
-    public BootstrapTableVo getInfoRecordListByIds(String ids) {
-        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
-        BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
-        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<Integer> integers = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(ids));
-        List<NetInfoRecord> transform = LangUtils.transform(integers, o -> netInfoRecordDao.getInfoById(o));
-
-        List<NetInfoRecordVo> vos = LangUtils.transform(transform, o -> getNetInfoRecordVo(o));
-        bootstrapTableVo.setTotal(page.getTotal());
-        bootstrapTableVo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<NetInfoRecord>() : vos);
-        return bootstrapTableVo;
-    }
 }
