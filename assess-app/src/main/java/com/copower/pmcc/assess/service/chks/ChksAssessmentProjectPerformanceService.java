@@ -802,14 +802,13 @@ public class ChksAssessmentProjectPerformanceService {
     }
 
     /**
-     * 考核标识
+     * 获取考核标识
      *
      * @param processInsId
      * @param boxId
      * @return
      */
-    public ChksRuningEnum getChksRuningEnum(BoxReActivityDto boxReActivityDto, Integer boxId, String processInsId,boolean approval) {
-        List<BoxReActivityDto> boxReActivityDtoList = bpmRpcBoxService.getBoxReActivityByBoxId(boxId);
+    public ChksRuningEnum getChksRuningEnum(BoxReActivityDto boxReActivityDto, Integer boxId, String processInsId, boolean approval) {
         AssessmentProjectPerformanceQuery query = new AssessmentProjectPerformanceQuery(boxId);
         query.setProcessInsId(processInsId);
         query.setEffective(true);
@@ -818,40 +817,9 @@ public class ChksAssessmentProjectPerformanceService {
         } else {
             return ChksRuningEnum.CHKS_FINSH_ENUM_RUN;
         }
-        if (CollectionUtils.isNotEmpty(boxReActivityDtoList)){//当上一个节点没有考核 那么本节点则不允许考核
-            Ordering<BoxReActivityDto> ordering = Ordering.from(new Comparator<BoxReActivityDto>() {
-                @Override
-                public int compare(BoxReActivityDto o1, BoxReActivityDto o2) {
-                    return o1.getSortMultilevel().compareTo(o2.getSortMultilevel());
-                }
-            });
-            //当前情况下只考虑在审批情况下
-            if (approval){
-                int targetId = 0;
-                Collections.sort(boxReActivityDtoList,ordering);
-                ListIterator<BoxReActivityDto> iterator = boxReActivityDtoList.listIterator();
-                while (iterator.hasNext()){
-                    BoxReActivityDto next = iterator.next();
-                    if (Objects.equal(next.getId(),boxReActivityDto.getId())){
-                        targetId = iterator.previous().getId().intValue();
-                        break;
-                    }
-                }
-                if (targetId != 0 && StringUtils.isNotBlank(processInsId)){
-                    Integer temp = Integer.valueOf(targetId);
-                    if (!Objects.equal(temp,boxReActivityDto.getId())){
-                        BoxReActivityDto target = boxReActivityDtoList.stream().filter(boxReActivity -> Objects.equal(boxReActivity.getId(),temp)).findFirst().get();
-                        AssessmentProjectPerformanceQuery select = new AssessmentProjectPerformanceQuery(boxId) ;
-                        select.setActivityId(targetId);
-                        select.setProcessInsId(processInsId);
-                        select.setEffective(true);
-                        List<AssessmentProjectPerformanceDto> assessmentProjectPerformanceDtoList = getAssessmentProjectPerformanceDtoList(select) ;
-                        if (CollectionUtils.isEmpty(assessmentProjectPerformanceDtoList)){
-//                            return ChksRuningEnum.CHKS_FINSH_ENUM_RUN;
-                        }
-                    }
-                }
-            }
+        ChksRuningEnum target = getChksRuningEnumHandle(boxReActivityDto, boxId, processInsId, approval);
+        if (target != null) {
+            return target;
         }
         //本次所有的考核记录
         List<AssessmentProjectPerformanceDto> assessmentProjectPerformanceDtoList = getAssessmentProjectPerformanceDtoList(query);
@@ -859,6 +827,79 @@ public class ChksAssessmentProjectPerformanceService {
             return ChksRuningEnum.CHKS_FINSH_ENUM_RUN;
         }
         return ChksRuningEnum.CHKS_RUNING_ENUM_RUN;
+    }
+
+    /**
+     * 获取上一个节点是否考核数据的标识
+     *
+     * @param boxReActivityDto
+     * @param boxId
+     * @param processInsId
+     * @param approval
+     * @return
+     */
+    private ChksRuningEnum getChksRuningEnumHandle(BoxReActivityDto boxReActivityDto, Integer boxId, String processInsId, boolean approval) {
+        if (!approval) {
+            return null;
+        }
+        if (StringUtils.isBlank(processInsId)) {
+            return null;
+        }
+        List<BoxReActivityDto> boxReActivityDtoList = bpmRpcBoxService.getBoxReActivityByBoxId(boxId);
+        if (CollectionUtils.isEmpty(boxReActivityDtoList)) {
+            return null;
+        }
+        if (boxReActivityDtoList.size() < 2) {//当前情况下只考虑在审批情况下,并且至少得两个节点才判断 否则没有意义
+            return null;
+        }
+        Ordering<BoxReActivityDto> ordering = Ordering.from(new Comparator<BoxReActivityDto>() {
+            @Override
+            public int compare(BoxReActivityDto o1, BoxReActivityDto o2) {
+                return o1.getSortMultilevel().compareTo(o2.getSortMultilevel());
+            }
+        });
+        int targetId = 0;
+        Collections.sort(boxReActivityDtoList, ordering);
+        ListIterator<BoxReActivityDto> iterator = boxReActivityDtoList.listIterator();
+        while (iterator.hasNext()) {
+            BoxReActivityDto next = iterator.next();
+            if (Objects.equal(next.getId(), boxReActivityDto.getId())) {
+                targetId = boxReActivityDtoList.indexOf(next);
+                break;
+            }
+        }
+        if (targetId == 0) {
+            return null;
+        }
+        int temp = targetId - 1;
+        if (temp < 0) {
+            return null;
+        }
+        BoxReActivityDto target = null;
+        try {
+            target = boxReActivityDtoList.get(temp);
+        } catch (Exception e) {
+            //可能会有数据越界的情况,虽然大概率不会
+            return null;
+        }
+        if (target == null) {
+            return null;
+        }
+        if (Objects.equal(target.getId(), boxReActivityDto.getId())) {
+            return null;
+        }
+        if (target.getSortMultilevel() < 0) {
+            return null;
+        }
+        AssessmentProjectPerformanceQuery select = new AssessmentProjectPerformanceQuery(boxId);
+        select.setActivityId(target.getId());
+        select.setProcessInsId(processInsId);
+        select.setEffective(true);
+        List<AssessmentProjectPerformanceDto> assessmentProjectPerformanceDtoList = getAssessmentProjectPerformanceDtoList(select);
+        if (CollectionUtils.isEmpty(assessmentProjectPerformanceDtoList)) {
+            return ChksRuningEnum.CHKS_FINSH_ENUM_RUN;
+        }
+        return null;
     }
 
     /**
@@ -872,7 +913,7 @@ public class ChksAssessmentProjectPerformanceService {
         List<BoxApprovalLogVo> boxApprovalLogDtoList = getBoxApprovalLogVoList(processInsId);
         BoxApprovalLogVo boxApprovalLogVoMax = null;
         if (CollectionUtils.isNotEmpty(boxApprovalLogDtoList)) {
-            if (boxApprovalLogDtoList.size() != 1){
+            if (boxApprovalLogDtoList.size() != 1) {
                 Integer id = boxApprovalLogDtoList.stream().map(boxApprovalLogVo -> boxApprovalLogVo.getId()).max(Integer::compareTo).get();
                 boxApprovalLogVoMax = boxApprovalLogDtoList.stream().filter(boxApprovalLogVo -> Objects.equal(id, boxApprovalLogVo.getId())).findFirst().get();
             }
@@ -884,7 +925,7 @@ public class ChksAssessmentProjectPerformanceService {
                 if (boxApprovalLogVo.getBisApply() != null) {
                     if (boxApprovalLogVo.getBisApply()) {
                         iterator.remove();//删除  申请人日志
-                        if (boxApprovalLogVoMax != null){
+                        if (boxApprovalLogVoMax != null) {
                             if (Objects.equal(boxApprovalLogVo.getId(), boxApprovalLogVoMax.getId())) {//假如和我们的目标一致那么整个过滤计划马上终止
                                 break;
                             }
@@ -894,14 +935,14 @@ public class ChksAssessmentProjectPerformanceService {
                 }
                 if (filterActivityKey.contains(boxApprovalLogVo.getActivityNameKey())) {
                     iterator.remove();
-                    if (boxApprovalLogVoMax != null){
+                    if (boxApprovalLogVoMax != null) {
                         if (Objects.equal(boxApprovalLogVo.getId(), boxApprovalLogVoMax.getId())) {//假如和我们的目标一致那么整个过滤计划马上终止
                             break;
                         }
                     }
                     continue;
                 }
-                if (boxApprovalLogVoMax != null){
+                if (boxApprovalLogVoMax != null) {
                     int number = boxApprovalLogVoMax.getSorting().intValue();
                     int comparisons = boxApprovalLogVo.getSorting().intValue();
                     if (comparisons > number) {
@@ -933,7 +974,18 @@ public class ChksAssessmentProjectPerformanceService {
                 }
             }
         }
-
+        if (CollectionUtils.isNotEmpty(boxApprovalLogDtoList)) {
+            Iterator<BoxApprovalLogVo> iterator = boxApprovalLogDtoList.iterator();
+            while (iterator.hasNext()) {
+                BoxApprovalLogVo boxApprovalLogVo = iterator.next();
+                if (boxApprovalLogVo.getBisApply() != null) {
+                    if (boxApprovalLogVo.getBisApply()) {
+                        iterator.remove();//删除  申请人日志
+                        continue;
+                    }
+                }
+            }
+        }
         return boxApprovalLogDtoList;
     }
 
