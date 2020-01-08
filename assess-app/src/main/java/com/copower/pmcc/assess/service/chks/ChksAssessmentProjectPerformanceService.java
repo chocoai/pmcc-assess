@@ -736,7 +736,7 @@ public class ChksAssessmentProjectPerformanceService {
      * @return
      */
     public Integer getBoxReActivitiId(String processInsId, String creator) {
-        List<BoxApprovalLogVo> boxApprovalLogVoList = getFilterBoxApprovalLogVoList(processInsId);
+        List<BoxApprovalLogVo> boxApprovalLogVoList = getBoxApprovalLogVoList(processInsId);
         if (CollectionUtils.isEmpty(boxApprovalLogVoList)) {
             return null;
         }
@@ -808,7 +808,8 @@ public class ChksAssessmentProjectPerformanceService {
      * @param boxId
      * @return
      */
-    public ChksRuningEnum getChksRuningEnum(BoxReActivityDto boxReActivityDto, Integer boxId, String processInsId) {
+    public ChksRuningEnum getChksRuningEnum(BoxReActivityDto boxReActivityDto, Integer boxId, String processInsId,boolean approval) {
+        List<BoxReActivityDto> boxReActivityDtoList = bpmRpcBoxService.getBoxReActivityByBoxId(boxId);
         AssessmentProjectPerformanceQuery query = new AssessmentProjectPerformanceQuery(boxId);
         query.setProcessInsId(processInsId);
         query.setEffective(true);
@@ -816,6 +817,41 @@ public class ChksAssessmentProjectPerformanceService {
             query.setActivityId(boxReActivityDto.getId());
         } else {
             return ChksRuningEnum.CHKS_FINSH_ENUM_RUN;
+        }
+        if (CollectionUtils.isNotEmpty(boxReActivityDtoList)){//当上一个节点没有考核 那么本节点则不允许考核
+            Ordering<BoxReActivityDto> ordering = Ordering.from(new Comparator<BoxReActivityDto>() {
+                @Override
+                public int compare(BoxReActivityDto o1, BoxReActivityDto o2) {
+                    return o1.getSortMultilevel().compareTo(o2.getSortMultilevel());
+                }
+            });
+            //当前情况下只考虑在审批情况下
+            if (approval){
+                int targetId = 0;
+                Collections.sort(boxReActivityDtoList,ordering);
+                ListIterator<BoxReActivityDto> iterator = boxReActivityDtoList.listIterator();
+                while (iterator.hasNext()){
+                    BoxReActivityDto next = iterator.next();
+                    if (Objects.equal(next.getId(),boxReActivityDto.getId())){
+                        targetId = iterator.previous().getId().intValue();
+                        break;
+                    }
+                }
+                if (targetId != 0 && StringUtils.isNotBlank(processInsId)){
+                    Integer temp = Integer.valueOf(targetId);
+                    if (!Objects.equal(temp,boxReActivityDto.getId())){
+                        BoxReActivityDto target = boxReActivityDtoList.stream().filter(boxReActivity -> Objects.equal(boxReActivity.getId(),temp)).findFirst().get();
+                        AssessmentProjectPerformanceQuery select = new AssessmentProjectPerformanceQuery(boxId) ;
+                        select.setActivityId(targetId);
+                        select.setProcessInsId(processInsId);
+                        select.setEffective(true);
+                        List<AssessmentProjectPerformanceDto> assessmentProjectPerformanceDtoList = getAssessmentProjectPerformanceDtoList(select) ;
+                        if (CollectionUtils.isEmpty(assessmentProjectPerformanceDtoList)){
+//                            return ChksRuningEnum.CHKS_FINSH_ENUM_RUN;
+                        }
+                    }
+                }
+            }
         }
         //本次所有的考核记录
         List<AssessmentProjectPerformanceDto> assessmentProjectPerformanceDtoList = getAssessmentProjectPerformanceDtoList(query);
@@ -836,8 +872,10 @@ public class ChksAssessmentProjectPerformanceService {
         List<BoxApprovalLogVo> boxApprovalLogDtoList = getBoxApprovalLogVoList(processInsId);
         BoxApprovalLogVo boxApprovalLogVoMax = null;
         if (CollectionUtils.isNotEmpty(boxApprovalLogDtoList)) {
-            Integer id = boxApprovalLogDtoList.stream().map(boxApprovalLogVo -> boxApprovalLogVo.getId()).max(Integer::compareTo).get();
-            boxApprovalLogVoMax = boxApprovalLogDtoList.stream().filter(boxApprovalLogVo -> Objects.equal(id, boxApprovalLogVo.getId())).findFirst().get();
+            if (boxApprovalLogDtoList.size() != 1){
+                Integer id = boxApprovalLogDtoList.stream().map(boxApprovalLogVo -> boxApprovalLogVo.getId()).max(Integer::compareTo).get();
+                boxApprovalLogVoMax = boxApprovalLogDtoList.stream().filter(boxApprovalLogVo -> Objects.equal(id, boxApprovalLogVo.getId())).findFirst().get();
+            }
         }
         if (CollectionUtils.isNotEmpty(boxApprovalLogDtoList)) {
             Iterator<BoxApprovalLogVo> iterator = boxApprovalLogDtoList.iterator();
@@ -846,24 +884,30 @@ public class ChksAssessmentProjectPerformanceService {
                 if (boxApprovalLogVo.getBisApply() != null) {
                     if (boxApprovalLogVo.getBisApply()) {
                         iterator.remove();//删除  申请人日志
-                        if (Objects.equal(boxApprovalLogVo.getId(), boxApprovalLogVoMax.getId())) {//假如和我们的目标一致那么整个过滤计划马上终止
-                            break;
+                        if (boxApprovalLogVoMax != null){
+                            if (Objects.equal(boxApprovalLogVo.getId(), boxApprovalLogVoMax.getId())) {//假如和我们的目标一致那么整个过滤计划马上终止
+                                break;
+                            }
                         }
                         continue;
                     }
                 }
                 if (filterActivityKey.contains(boxApprovalLogVo.getActivityNameKey())) {
                     iterator.remove();
-                    if (Objects.equal(boxApprovalLogVo.getId(), boxApprovalLogVoMax.getId())) {//假如和我们的目标一致那么整个过滤计划马上终止
-                        break;
+                    if (boxApprovalLogVoMax != null){
+                        if (Objects.equal(boxApprovalLogVo.getId(), boxApprovalLogVoMax.getId())) {//假如和我们的目标一致那么整个过滤计划马上终止
+                            break;
+                        }
                     }
                     continue;
                 }
-                int number = boxApprovalLogVoMax.getSorting().intValue();
-                int comparisons = boxApprovalLogVo.getSorting().intValue();
-                if (comparisons < number) {
-                    iterator.remove();
-                    continue;
+                if (boxApprovalLogVoMax != null){
+                    int number = boxApprovalLogVoMax.getSorting().intValue();
+                    int comparisons = boxApprovalLogVo.getSorting().intValue();
+                    if (comparisons < number) {
+                        iterator.remove();
+                        continue;
+                    }
                 }
             }
         }
