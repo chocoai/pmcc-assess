@@ -904,7 +904,7 @@ public class ChksAssessmentProjectPerformanceService {
                 if (boxApprovalLogVoMax != null){
                     int number = boxApprovalLogVoMax.getSorting().intValue();
                     int comparisons = boxApprovalLogVo.getSorting().intValue();
-                    if (comparisons < number) {
+                    if (comparisons > number) {
                         iterator.remove();
                         continue;
                     }
