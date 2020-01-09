@@ -888,7 +888,7 @@ public class ChksAssessmentProjectPerformanceService {
         if (Objects.equal(target.getId(), boxReActivityDto.getId())) {
             return null;
         }
-        if (target.getSortMultilevel() < 0) {
+        if (target.getSortMultilevel() <= 0) {
             return null;
         }
         AssessmentProjectPerformanceQuery select = new AssessmentProjectPerformanceQuery(boxId);
