@@ -165,7 +165,7 @@ public class BasicUnitController {
         try {
             BasicApplyBatchDetail unitDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail("tb_basic_unit", id);
             Integer quoteId = 0;
-            if (unitDetail != null) {
+            if (unitDetail != null && unitDetail.getPid()!= null) {
                 quoteId = basicApplyBatchDetailService.getDataById(unitDetail.getPid()).getQuoteId();
             }
             return HttpResult.newCorrectResult(200, quoteId);
