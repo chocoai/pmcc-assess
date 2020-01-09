@@ -48,6 +48,8 @@
     <result column="ground_num" property="groundNum" jdbcType="VARCHAR" />
     <result column="apportionment_area" property="apportionmentArea" jdbcType="DECIMAL" />
     <result column="cert_use_category" property="certUseCategory" jdbcType="VARCHAR" />
+    <result column="public_situation_remark" property="publicSituationRemark" jdbcType="VARCHAR" />
+    <result column="auto_init_number" property="autoInitNumber" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -114,7 +116,7 @@
     floor_area, location, inner_area, evidence_area, other, land_number, land_acquisition, 
     use_start_date, use_end_date, public_area, other_note, registration_authority, land_registration_date, 
     registration_date, declare_type, enable, bis_record, creator, gmt_created, gmt_modified, 
-    ground_num, apportionment_area, cert_use_category
+    ground_num, apportionment_area, cert_use_category, public_situation_remark, auto_init_number
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyHouseCertExample" >
     select
@@ -165,7 +167,8 @@
       registration_date, declare_type, enable, 
       bis_record, creator, gmt_created, 
       gmt_modified, ground_num, apportionment_area, 
-      cert_use_category)
+      cert_use_category, public_situation_remark, 
+      auto_init_number)
     values (#{pid,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, #{certName,jdbcType=VARCHAR}, 
       #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, 
       #{type,jdbcType=VARCHAR}, #{number,jdbcType=VARCHAR}, #{ownership,jdbcType=VARCHAR}, 
@@ -181,7 +184,8 @@
       #{registrationDate,jdbcType=TIMESTAMP}, #{declareType,jdbcType=VARCHAR}, #{enable,jdbcType=VARCHAR}, 
       #{bisRecord,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
       #{gmtModified,jdbcType=TIMESTAMP}, #{groundNum,jdbcType=VARCHAR}, #{apportionmentArea,jdbcType=DECIMAL}, 
-      #{certUseCategory,jdbcType=VARCHAR})
+      #{certUseCategory,jdbcType=VARCHAR}, #{publicSituationRemark,jdbcType=VARCHAR}, 
+      #{autoInitNumber,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyHouseCert" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -324,6 +328,12 @@
       <if test="certUseCategory != null" >
         cert_use_category,
       </if>
+      <if test="publicSituationRemark != null" >
+        public_situation_remark,
+      </if>
+      <if test="autoInitNumber != null" >
+        auto_init_number,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="pid != null" >
@@ -460,6 +470,12 @@
       </if>
       <if test="certUseCategory != null" >
         #{certUseCategory,jdbcType=VARCHAR},
+      </if>
+      <if test="publicSituationRemark != null" >
+        #{publicSituationRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="autoInitNumber != null" >
+        #{autoInitNumber,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -610,6 +626,12 @@
       <if test="record.certUseCategory != null" >
         cert_use_category = #{record.certUseCategory,jdbcType=VARCHAR},
       </if>
+      <if test="record.publicSituationRemark != null" >
+        public_situation_remark = #{record.publicSituationRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.autoInitNumber != null" >
+        auto_init_number = #{record.autoInitNumber,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -662,7 +684,9 @@
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       ground_num = #{record.groundNum,jdbcType=VARCHAR},
       apportionment_area = #{record.apportionmentArea,jdbcType=DECIMAL},
-      cert_use_category = #{record.certUseCategory,jdbcType=VARCHAR}
+      cert_use_category = #{record.certUseCategory,jdbcType=VARCHAR},
+      public_situation_remark = #{record.publicSituationRemark,jdbcType=VARCHAR},
+      auto_init_number = #{record.autoInitNumber,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -805,6 +829,12 @@
       <if test="certUseCategory != null" >
         cert_use_category = #{certUseCategory,jdbcType=VARCHAR},
       </if>
+      <if test="publicSituationRemark != null" >
+        public_situation_remark = #{publicSituationRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="autoInitNumber != null" >
+        auto_init_number = #{autoInitNumber,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -854,7 +884,9 @@
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       ground_num = #{groundNum,jdbcType=VARCHAR},
       apportionment_area = #{apportionmentArea,jdbcType=DECIMAL},
-      cert_use_category = #{certUseCategory,jdbcType=VARCHAR}
+      cert_use_category = #{certUseCategory,jdbcType=VARCHAR},
+      public_situation_remark = #{publicSituationRemark,jdbcType=VARCHAR},
+      auto_init_number = #{autoInitNumber,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

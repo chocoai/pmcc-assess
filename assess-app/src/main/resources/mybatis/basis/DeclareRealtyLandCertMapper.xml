@@ -46,6 +46,8 @@
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+    <result column="public_situation_remark" property="publicSituationRemark" jdbcType="VARCHAR" />
+    <result column="auto_init_number" property="autoInitNumber" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -112,7 +114,8 @@
     cert_use, cert_use_category, housing_structure, graph_number, land_right_nature, 
     acquisition_price, termination_date, use_right_area, acreage, apportionment_area, 
     memo, registration_authority, registration_date, approval_name, approval_time, approval_mechanism, 
-    declare_type, enable, bis_record, creator, gmt_created, gmt_modified
+    declare_type, enable, bis_record, creator, gmt_created, gmt_modified, public_situation_remark, 
+    auto_init_number
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyLandCertExample" >
     select
@@ -162,7 +165,8 @@
       registration_date, approval_name, approval_time, 
       approval_mechanism, declare_type, enable, 
       bis_record, creator, gmt_created, 
-      gmt_modified)
+      gmt_modified, public_situation_remark, auto_init_number
+      )
     values (#{pid,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, #{landCertGetQuestion,jdbcType=INTEGER}, 
       #{landCertName,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, 
       #{district,jdbcType=VARCHAR}, #{landRightType,jdbcType=INTEGER}, #{location,jdbcType=VARCHAR}, 
@@ -177,7 +181,8 @@
       #{registrationDate,jdbcType=TIMESTAMP}, #{approvalName,jdbcType=VARCHAR}, #{approvalTime,jdbcType=TIMESTAMP}, 
       #{approvalMechanism,jdbcType=VARCHAR}, #{declareType,jdbcType=VARCHAR}, #{enable,jdbcType=VARCHAR}, 
       #{bisRecord,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{gmtModified,jdbcType=TIMESTAMP}, #{publicSituationRemark,jdbcType=VARCHAR}, #{autoInitNumber,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyLandCert" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -314,6 +319,12 @@
       <if test="gmtModified != null" >
         gmt_modified,
       </if>
+      <if test="publicSituationRemark != null" >
+        public_situation_remark,
+      </if>
+      <if test="autoInitNumber != null" >
+        auto_init_number,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="pid != null" >
@@ -444,6 +455,12 @@
       </if>
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="publicSituationRemark != null" >
+        #{publicSituationRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="autoInitNumber != null" >
+        #{autoInitNumber,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -588,6 +605,12 @@
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.publicSituationRemark != null" >
+        public_situation_remark = #{record.publicSituationRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.autoInitNumber != null" >
+        auto_init_number = #{record.autoInitNumber,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -638,7 +661,9 @@
       bis_record = #{record.bisRecord,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      public_situation_remark = #{record.publicSituationRemark,jdbcType=VARCHAR},
+      auto_init_number = #{record.autoInitNumber,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -775,6 +800,12 @@
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="publicSituationRemark != null" >
+        public_situation_remark = #{publicSituationRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="autoInitNumber != null" >
+        auto_init_number = #{autoInitNumber,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -822,7 +853,9 @@
       bis_record = #{bisRecord,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      public_situation_remark = #{publicSituationRemark,jdbcType=VARCHAR},
+      auto_init_number = #{autoInitNumber,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

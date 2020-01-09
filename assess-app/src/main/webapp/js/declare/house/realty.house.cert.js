@@ -28,7 +28,8 @@ assessCommonHouse.config = {
         frm:  declareCommon.config.declareEconomicIndicatorsContent.frm,
         name: declareCommon.config.declareEconomicIndicatorsContent.name
     } ,
-    handleCopy: "#houseHandleInputGroup"
+    handleCopy: "#houseHandleInputGroup",
+    autoPDFFileId:"houseAttachmentAutomatedWarrantsPDF"
 };
 
 /**
@@ -623,5 +624,13 @@ assessCommonHouse.loadList = function () {
 
 $(function () {
     assessCommonHouse.loadList();
+
+    //pdf 附件
+    (function (id,FileId,tableName) {
+        declareCommon.showFile(FileId, AssessDBKey.DeclareRealtyHouseCert, id, true);
+        declareCommon.fileUpload(FileId, AssessDBKey.DeclareRealtyHouseCert, id, true);
+    }(declareCommon.getPlanDetailsId(),assessCommonHouse.config.autoPDFFileId,AssessDBKey.DeclareRealtyHouseCert)) ;
+
+
 });
 

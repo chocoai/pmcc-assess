@@ -96,6 +96,10 @@ public class DeclareRealtyHouseCert {
 
     private String certUseCategory;
 
+    private String publicSituationRemark;
+
+    private String autoInitNumber;
+
     public Integer getId() {
         return id;
     }
@@ -462,5 +466,21 @@ public class DeclareRealtyHouseCert {
 
     public void setCertUseCategory(String certUseCategory) {
         this.certUseCategory = certUseCategory == null ? null : certUseCategory.trim();
+    }
+
+    public String getPublicSituationRemark() {
+        return publicSituationRemark;
+    }
+
+    public void setPublicSituationRemark(String publicSituationRemark) {
+        this.publicSituationRemark = publicSituationRemark == null ? null : publicSituationRemark.trim();
+    }
+
+    public String getAutoInitNumber() {
+        return autoInitNumber;
+    }
+
+    public void setAutoInitNumber(String autoInitNumber) {
+        this.autoInitNumber = autoInitNumber == null ? null : autoInitNumber.trim();
     }
 }

@@ -92,6 +92,10 @@ public class DeclareRealtyLandCert {
 
     private Date gmtModified;
 
+    private String publicSituationRemark;
+
+    private String autoInitNumber;
+
     public Integer getId() {
         return id;
     }
@@ -442,5 +446,21 @@ public class DeclareRealtyLandCert {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getPublicSituationRemark() {
+        return publicSituationRemark;
+    }
+
+    public void setPublicSituationRemark(String publicSituationRemark) {
+        this.publicSituationRemark = publicSituationRemark == null ? null : publicSituationRemark.trim();
+    }
+
+    public String getAutoInitNumber() {
+        return autoInitNumber;
+    }
+
+    public void setAutoInitNumber(String autoInitNumber) {
+        this.autoInitNumber = autoInitNumber == null ? null : autoInitNumber.trim();
     }
 }

@@ -128,6 +128,10 @@ public class DeclareRealtyRealEstateCert {
 
     private String acquisitionType;
 
+    private String publicSituationRemark;
+
+    private String autoInitNumber;
+
     public Integer getId() {
         return id;
     }
@@ -622,5 +626,21 @@ public class DeclareRealtyRealEstateCert {
 
     public void setAcquisitionType(String acquisitionType) {
         this.acquisitionType = acquisitionType == null ? null : acquisitionType.trim();
+    }
+
+    public String getPublicSituationRemark() {
+        return publicSituationRemark;
+    }
+
+    public void setPublicSituationRemark(String publicSituationRemark) {
+        this.publicSituationRemark = publicSituationRemark == null ? null : publicSituationRemark.trim();
+    }
+
+    public String getAutoInitNumber() {
+        return autoInitNumber;
+    }
+
+    public void setAutoInitNumber(String autoInitNumber) {
+        this.autoInitNumber = autoInitNumber == null ? null : autoInitNumber.trim();
     }
 }
