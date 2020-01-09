@@ -845,6 +845,12 @@ public class ChksAssessmentProjectPerformanceService {
         if (StringUtils.isBlank(processInsId)) {
             return null;
         }
+        if (boxReActivityDto == null){
+            return null;
+        }
+        if (boxId == null){
+            return null;
+        }
         List<BoxReActivityDto> boxReActivityDtoList = bpmRpcBoxService.getBoxReActivityByBoxId(boxId);
         if (CollectionUtils.isEmpty(boxReActivityDtoList)) {
             return null;
