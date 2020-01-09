@@ -118,10 +118,8 @@
                                             报告使用单位
                                         </label>
                                         <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                            <input type="hidden" name="queryUseUnit">
-                                            <input type="text" readonly="readonly" required="required"
-                                                   placeholder="单位" class="form-control" name="queryUseUnitName"
-                                                   onclick="selectCustomer(this)">
+                                            <input type="text"
+                                                   placeholder="单位" class="form-control" name="queryUseUnitName">
                                         </div>
                                     </div>
                                     <div class="x-valid">

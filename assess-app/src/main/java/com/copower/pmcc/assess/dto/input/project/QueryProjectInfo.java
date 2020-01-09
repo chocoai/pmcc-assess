@@ -24,6 +24,7 @@ public class QueryProjectInfo {
     private String queryConsignor;
     private Integer queryConsignorType;
     private Integer queryUseUnit;
+    private String queryUseUnitName;
     private String queryEstateName;
     private Integer queryLoanType;
     private Integer queryDepartmentId;
@@ -146,5 +147,13 @@ public class QueryProjectInfo {
 
     public void setQueryConsignorType(Integer queryConsignorType) {
         this.queryConsignorType = queryConsignorType;
+    }
+
+    public String getQueryUseUnitName() {
+        return queryUseUnitName;
+    }
+
+    public void setQueryUseUnitName(String queryUseUnitName) {
+        this.queryUseUnitName = queryUseUnitName;
     }
 }
