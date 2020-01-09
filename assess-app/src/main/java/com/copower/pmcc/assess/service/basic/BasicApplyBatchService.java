@@ -1007,13 +1007,20 @@ public class BasicApplyBatchService {
                     BasicApply basicApply = basicApplyService.getBasicApply(where);
                     Map<EstateTaggingTypeEnum, BasicApplyBatchDetail> map = basicApplyBatchDetailService.getApplyBatchDetailMap(houseDetail);
                     basicApply.setArea(basicHouse.getArea());
-                    //单元
-                    BasicApplyBatchDetail unitBatchDetail = map.get(EstateTaggingTypeEnum.UNIT);
-                    //楼栋
-                    BasicApplyBatchDetail buildBatchDetail = map.get(EstateTaggingTypeEnum.BUILDING);
-                    //楼盘
-                    BasicApplyBatchDetail estateBatchDetail = map.get(EstateTaggingTypeEnum.ESTATE);
-                    basicApply.setName(basicApplyService.getFullName(estateBatchDetail.getName(), buildBatchDetail.getName(), unitBatchDetail.getName(), houseDetail.getName()));
+                    if(houseDetail.getCaseTablePid()==null){
+                        //单元
+                        BasicApplyBatchDetail unitBatchDetail = map.get(EstateTaggingTypeEnum.UNIT);
+                        //楼栋
+                        BasicApplyBatchDetail buildBatchDetail = map.get(EstateTaggingTypeEnum.BUILDING);
+                        //楼盘
+                        BasicApplyBatchDetail estateBatchDetail = map.get(EstateTaggingTypeEnum.ESTATE);
+                        basicApply.setName(basicApplyService.getFullName(estateBatchDetail.getName(), buildBatchDetail.getName(), unitBatchDetail.getName(), houseDetail.getName()));
+                    }else{
+                        CaseUnit caseUnit = caseUnitService.getCaseUnitById(houseDetail.getCaseTablePid());
+                        CaseBuilding caseBuilding = caseBuildingService.getCaseBuildingById(caseUnit.getBuildingId());
+                        CaseEstate caseEstate = caseEstateService.getCaseEstateById(caseBuilding.getEstateId());
+                        basicApply.setName(basicApplyService.getFullName(caseEstate.getName(), caseBuilding.getBuildingNumber(), caseUnit.getUnitNumber(), houseDetail.getName()));
+                    }
                     basicApplyService.saveBasicApply(basicApply);
                 }
                 //交易信息
