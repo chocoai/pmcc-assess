@@ -64,10 +64,10 @@
                                     查询
                                 </button>
 
-                                <button type="button" class="btn btn-success"
-                                        onclick="projectNumberRecord.prototype.showModel()"
-                                        data-toggle="modal" href="#divBox"> 新增
-                                </button>
+                                <%--<button type="button" class="btn btn-success"--%>
+                                        <%--onclick="projectNumberRecord.prototype.showModel()"--%>
+                                        <%--data-toggle="modal" href="#divBox"> 新增--%>
+                                <%--</button>--%>
                             </div>
                         </div>
 
