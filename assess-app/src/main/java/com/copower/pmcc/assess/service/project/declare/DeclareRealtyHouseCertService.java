@@ -66,7 +66,7 @@ public class DeclareRealtyHouseCertService {
     @Autowired
     private DeclareRecordService declareRecordService;
     @Autowired
-    private DeclarePublicService declarePoiHelp;
+    private DeclarePublicService declarePublicService;
     @Autowired
     private DeclareBuildEngineeringAndEquipmentCenterService declareBuildEngineeringAndEquipmentCenterService;
     @Autowired
@@ -75,6 +75,11 @@ public class DeclareRealtyHouseCertService {
     private BaseService baseService;
     @Autowired
     private ProjectPlanDetailsService projectPlanDetailsService;
+
+
+    public void attachmentAutomatedWarrants(DeclarePublicService.AutomatedWarrants automatedWarrants)throws Exception{
+        declarePublicService.attachmentAutomatedWarrants(automatedWarrants);
+    }
 
     /**
      * 功能描述: 导入土地证 并且和房产证关联
@@ -123,7 +128,7 @@ public class DeclareRealtyHouseCertService {
                     builder.append(String.format("\n第%s行异常：%s", i, "没有数据"));
                     continue;
                 }
-                if (!declarePoiHelp.land(landCert, builder, row, i)) {
+                if (!declarePublicService.land(landCert, builder, row, i)) {
                     continue;
                 }
                 landCert.setEnable(DeclareTypeEnum.BranchData.getKey());
@@ -228,7 +233,7 @@ public class DeclareRealtyHouseCertService {
                 BeanUtils.copyProperties(declareRealtyHouseCert, oo);
                 oo.setId(null);
                 //excel 处理
-                if (!declarePoiHelp.house(oo, builder, row, i)) {
+                if (!declarePublicService.house(oo, builder, row, i)) {
                     continue;
                 }
             } catch (Exception e) {

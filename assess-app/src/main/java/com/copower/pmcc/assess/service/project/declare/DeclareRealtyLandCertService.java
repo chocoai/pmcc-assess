@@ -72,7 +72,7 @@ public class DeclareRealtyLandCertService {
     @Autowired
     private DeclareRecordService declareRecordService;
     @Autowired
-    private DeclarePublicService declarePoiHelp;
+    private DeclarePublicService declarePublicService;
     @Autowired
     private BaseProjectClassifyService baseProjectClassifyService;
     @Autowired
@@ -85,6 +85,10 @@ public class DeclareRealtyLandCertService {
     private BaseService baseService;
     @Autowired
     private ProjectPlanDetailsService projectPlanDetailsService;
+
+    public void attachmentAutomatedWarrants(DeclarePublicService.AutomatedWarrants automatedWarrants)throws Exception{
+        declarePublicService.attachmentAutomatedWarrants(automatedWarrants);
+    }
 
     /**
      * 功能描述: 关联房产证
@@ -135,7 +139,7 @@ public class DeclareRealtyLandCertService {
                     continue;
                 }
                 houseCert = new DeclareRealtyHouseCert();
-                if (!declarePoiHelp.house(houseCert, builder, row, i)) {
+                if (!declarePublicService.house(houseCert, builder, row, i)) {
                     continue;
                 }
                 houseCert.setEnable(DeclareTypeEnum.BranchData.getKey());
@@ -270,7 +274,7 @@ public class DeclareRealtyLandCertService {
                 }
                 BeanUtils.copyProperties(declareRealtyLandCert, oo);
                 oo.setId(null);
-                if (!declarePoiHelp.land(oo, builder, row, i)) {
+                if (!declarePublicService.land(oo, builder, row, i)) {
                     continue;
                 }
             } catch (Exception e) {

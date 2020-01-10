@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.controller.project.declare;
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyHouseCert;
 import com.copower.pmcc.assess.service.BaseService;
+import com.copower.pmcc.assess.service.project.declare.DeclarePublicService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRealtyHouseCertService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
@@ -145,6 +146,18 @@ public class DeclareRealtyHouseCertController {
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult("异常");
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/attachmentAutomatedWarrants", name = "申报图片自动关联", method = RequestMethod.POST)
+    public HttpResult attachmentAutomatedWarrants(DeclarePublicService.AutomatedWarrants  automatedWarrants){
+        try {
+            declareRealtyHouseCertService.attachmentAutomatedWarrants(automatedWarrants);
+            return HttpResult.newCorrectResult(500,"success");
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
+            return HttpResult.newErrorResult(200,e.getMessage());
         }
     }
 

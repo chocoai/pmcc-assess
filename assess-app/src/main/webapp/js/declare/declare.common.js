@@ -109,7 +109,7 @@ declareCommon.fileUpload = function (target, tableName, id, deleteFlag, fieldsNa
         formData: {
             tableName: tableName,
             tableId: id,
-            fieldsName: fieldsName,
+            fieldsName: target,
             // projectId: id
         },
         deleteFlag: deleteFlag
@@ -137,7 +137,7 @@ declareCommon.showFile = function (target, tableName, id, deleteFlag, fieldsName
         formData: {
             tableName: tableName,
             tableId: id,
-            fieldsName: fieldsName,
+            fieldsName: target,
             // projectId: id
         },
         deleteFlag: deleteFlag
@@ -175,6 +175,8 @@ declareCommon.showHtmlMastInit = function (target, callback) {
     }
 };
 
+
+
 //公共  赋值 方法
 declareCommon.initFormData = function (form,item,fileArr,bisDetail,tableName,inputArr) {
     var frm = $(form.selector);
@@ -198,6 +200,31 @@ declareCommon.initFormData = function (form,item,fileArr,bisDetail,tableName,inp
             frm.find("label[name='"+n+"']").html(formatDate(item[n]));
         });
     }
+};
+
+declareCommon.ajaxServerMethod = function (data, url,type,callback,errorCallback) {
+    $.ajax({
+        type: type,
+        url: getContextPath() + url,
+        data: data,
+        success: function (result) {
+            if (result.ret) {
+                if (callback) {
+                    callback(result.data);
+                }
+            } else {
+                if (errorCallback){
+                    errorCallback(result.errmsg) ;
+                }
+            }
+        },
+        error: function (e) {
+            if (errorCallback){
+                errorCallback(e) ;
+            }
+            Alert("调用服务端方法失败，失败原因:" + e);
+        }
+    });
 };
 
 //土地

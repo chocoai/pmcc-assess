@@ -7,6 +7,7 @@ import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -17,6 +18,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.Serializable;
 import java.util.*;
 import java.util.List;
@@ -64,6 +66,48 @@ public class AsposeUtils {
 
     public static FieldCollection getFieldCollection(Document doc) throws Exception {
         return doc.getRange().getFields();
+    }
+
+    public static void extractImages(String path, LinkedList<String> linkedList, String targetFolder, String suffix) throws Exception {
+        if (StringUtils.isBlank(targetFolder)) {
+            targetFolder = System.getProperty("java.io.tmpdir");
+        }
+        File fileFolder = new File(targetFolder);
+        if (!fileFolder.isDirectory()) {
+            fileFolder.mkdirs();
+        }
+        Document doc = new Document(path);
+        NodeCollection shapes = doc.getChildNodes(NodeType.SHAPE, true);
+        for (Shape shape : (Iterable<Shape>) shapes) {
+            if (shape.hasImage()) {
+                String extension = FileFormatUtil.imageTypeToExtension(shape.getImageData().getImageType());
+                String imagePath = null;
+                if (StringUtils.isBlank(suffix)) {
+                    imagePath = String.join("", targetFolder, File.separator, UUID.randomUUID().toString(), extension);
+                    suffix = FilenameUtils.getExtension(imagePath);
+                } else {
+                    imagePath = String.join("", targetFolder, File.separator, UUID.randomUUID().toString(), ".",suffix);
+                }
+                if (linkedList != null) {
+                    linkedList.add(imagePath);
+                }
+                ImageData imageData = shape.getImageData();
+                FileOutputStream out = new FileOutputStream(imagePath);
+                ImageIO.write(imageData.toImage(), suffix, out);
+            }
+        }
+    }
+
+    public static void extractImages(String path, String targetFolder) throws Exception {
+        extractImages(path, null, targetFolder, null);
+    }
+
+    public static void extractImages(String path, String targetFolder, String suffix) throws Exception {
+        extractImages(path, null, targetFolder, suffix);
+    }
+
+    public static void extractImages(String path, LinkedList<String> linkedList) throws Exception {
+        extractImages(path, linkedList, null, null);
     }
 
     /**

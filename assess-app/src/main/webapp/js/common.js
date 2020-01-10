@@ -590,6 +590,21 @@ $(function () {
                     }
                 })
             },
+            getSysAttachmentDtoList: function (data, callback) {
+                $.ajax({
+                    url: getContextPath() + "/public/getSysAttachmentDtoList",
+                    type: "get",
+                    data: data,
+                    dataType: "json",
+                    success: function (result) {
+                        if (result.ret) {
+                            if (callback) {
+                                callback(result.data);
+                            }
+                        }
+                    }
+                })
+            },
             //新增或者更新附件
             saveAndUpdateSysAttachmentDto: function (item, callback) {
                 $.ajax({
@@ -792,97 +807,97 @@ $(function () {
             },
 
             //獲取不包含文件名的名稱
-            getFileName:function (fileName) {
-                if(!fileName) return"";
+            getFileName: function (fileName) {
+                if (!fileName) return "";
                 return fileName.substring(0, fileName.lastIndexOf("."));
             },
             //获取DataList字典信息
-            loadDataListHtml:function (key, value, callback, async) {
-            if (key) {
-                $.ajax({
-                    url: getContextPath() + "/baseDataDic/getDataDicListByFieldName",
-                    type: "get",
-                    dataType: "json",
-                    async: async,
-                    data: {
-                        fieldName: key
-                    },
-                    success: function (result) {
-                        if (result.ret) {
-                            var retHtml = '<option value="" selected>-请选择-</option>';
-                            $.each(result.data, function (i, item) {
-                                retHtml += '<option value="' + item.name + '"'
-                                if (item.name == value) {
-                                    retHtml += 'selected="selected"'
+            loadDataListHtml: function (key, value, callback, async) {
+                if (key) {
+                    $.ajax({
+                        url: getContextPath() + "/baseDataDic/getDataDicListByFieldName",
+                        type: "get",
+                        dataType: "json",
+                        async: async,
+                        data: {
+                            fieldName: key
+                        },
+                        success: function (result) {
+                            if (result.ret) {
+                                var retHtml = '<option value="" selected>-请选择-</option>';
+                                $.each(result.data, function (i, item) {
+                                    retHtml += '<option value="' + item.name + '"'
+                                    if (item.name == value) {
+                                        retHtml += 'selected="selected"'
+                                    }
+                                    retHtml += '>' + item.name + '</option>'
+                                });
+                                if (callback) {
+                                    callback(retHtml, result.data);
                                 }
-                                retHtml += '>' + item.name + '</option>'
-                            });
-                            if (callback) {
-                                callback(retHtml, result.data);
-                            }
 
+                            }
+                        },
+                        error: function (result) {
+                            Alert("调用服务端方法失败，失败原因:" + result);
                         }
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result);
-                    }
-                });
-            }
-        },
-            //通过fieldName与name获取子集
-            getSonDataList:function (fieldName, name,value, callback) {
-            $.ajax({
-                url: getContextPath() + "/baseDataDic/getDataDicByName",
-                type: "get",
-                dataType: "json",
-                data: {
-                    fieldName: fieldName,
-                    name: name
-                },
-                success: function (result) {
-                    if (result.ret) {
-                        if(result.data){
-                            AssessCommon.loadSonDataListHtml(result.data.id,value,callback);
-                        }
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    });
                 }
-            });
-
-        },
-            loadSonDataListHtml:function (pid, value, callback) {
-            if (pid) {
+            },
+            //通过fieldName与name获取子集
+            getSonDataList: function (fieldName, name, value, callback) {
                 $.ajax({
-                    url: getContextPath() + "/baseDataDic/getCacheDataDicListByPid",
+                    url: getContextPath() + "/baseDataDic/getDataDicByName",
                     type: "get",
                     dataType: "json",
                     data: {
-                        pid: pid
+                        fieldName: fieldName,
+                        name: name
                     },
                     success: function (result) {
                         if (result.ret) {
-                            var retHtml = '<option value="" selected>-请选择-</option>';
-                            $.each(result.data, function (i, item) {
-                                retHtml += '<option value="' + item.name + '"'
-                                if (item.name == value) {
-                                    retHtml += 'selected="selected"'
-                                }
-                                retHtml += '>' + item.name + '</option>'
-                            });
-                            if (callback) {
-                                callback(retHtml, result.data);
+                            if (result.data) {
+                                AssessCommon.loadSonDataListHtml(result.data.id, value, callback);
                             }
-
                         }
                     },
                     error: function (result) {
                         Alert("调用服务端方法失败，失败原因:" + result);
                     }
                 });
+
+            },
+            loadSonDataListHtml: function (pid, value, callback) {
+                if (pid) {
+                    $.ajax({
+                        url: getContextPath() + "/baseDataDic/getCacheDataDicListByPid",
+                        type: "get",
+                        dataType: "json",
+                        data: {
+                            pid: pid
+                        },
+                        success: function (result) {
+                            if (result.ret) {
+                                var retHtml = '<option value="" selected>-请选择-</option>';
+                                $.each(result.data, function (i, item) {
+                                    retHtml += '<option value="' + item.name + '"'
+                                    if (item.name == value) {
+                                        retHtml += 'selected="selected"'
+                                    }
+                                    retHtml += '>' + item.name + '</option>'
+                                });
+                                if (callback) {
+                                    callback(retHtml, result.data);
+                                }
+
+                            }
+                        },
+                        error: function (result) {
+                            Alert("调用服务端方法失败，失败原因:" + result);
+                        }
+                    });
+                }
             }
-        }
         }
     ;
 
@@ -1040,11 +1055,11 @@ var getCorrectResult = function (type, num1, num2, result) {
     return result;
 };
 
-var getDateDiff = function(sDate, eDate) { //sDate和eDate是yyyy-MM-dd格式
+var getDateDiff = function (sDate, eDate) { //sDate和eDate是yyyy-MM-dd格式
     var date1 = new Date(sDate);
     var date2 = new Date(eDate);
-    var date3=date2.getTime()-date1.getTime();
-    var days=Math.floor(date3/(24*3600*1000));
+    var date3 = date2.getTime() - date1.getTime();
+    var days = Math.floor(date3 / (24 * 3600 * 1000));
     return days;
 }
 

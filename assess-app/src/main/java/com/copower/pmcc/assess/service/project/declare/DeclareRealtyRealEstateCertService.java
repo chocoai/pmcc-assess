@@ -67,7 +67,7 @@ public class DeclareRealtyRealEstateCertService {
     @Autowired
     private DeclareRecordService declareRecordService;
     @Autowired
-    private DeclarePublicService declarePoiHelp;
+    private DeclarePublicService declarePublicService;
     @Autowired
     private PublicService publicService;
     @Autowired
@@ -80,6 +80,10 @@ public class DeclareRealtyRealEstateCertService {
     private ProjectPlanDetailsService projectPlanDetailsService;
     @Autowired
     private BaseService baseService;
+
+    public void attachmentAutomatedWarrants(DeclarePublicService.AutomatedWarrants automatedWarrants)throws Exception{
+        declarePublicService.attachmentAutomatedWarrants(automatedWarrants);
+    }
 
     public String importData(DeclareRealtyRealEstateCert declareRealtyRealEstateCert, MultipartFile multipartFile) throws Exception {
         Workbook workbook = null;
@@ -127,7 +131,7 @@ public class DeclareRealtyRealEstateCertService {
                 oo.setEnable(DeclareTypeEnum.MasterData.getKey());
                 oo.setId(null);
                 //excel处理
-                if (!declarePoiHelp.realEstateCert(oo, builder, row, i)) {
+                if (!declarePublicService.realEstateCert(oo, builder, row, i)) {
                     continue;
                 }
             } catch (Exception e) {
