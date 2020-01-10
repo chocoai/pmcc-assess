@@ -1,13 +1,19 @@
 package com.copower.pmcc.assess.service.project.declare;
 
 import com.alibaba.fastjson.JSONObject;
+import com.aspose.words.SaveFormat;
+import com.copower.pmcc.assess.common.AsposeUtils;
+import com.copower.pmcc.assess.common.PDFUtil;
 import com.copower.pmcc.assess.common.PoiUtils;
+import com.copower.pmcc.assess.common.enums.DeclareTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareApplyDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dto.output.project.declare.DeclareRealtyHouseCertVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.PublicService;
+import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.event.project.DeclareRealtyEstateCertEvent;
 import com.copower.pmcc.assess.service.project.ProjectPlanService;
@@ -15,25 +21,29 @@ import com.copower.pmcc.assess.service.project.generate.GenerateCommonMethod;
 import com.copower.pmcc.assess.service.project.survey.ProjectPlanSurveyService;
 import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
+import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.DateUtils;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.google.common.base.Objects;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Ordering;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.poi.ss.usermodel.Row;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 /**
  * Created by kings on 2018-5-9.
@@ -58,6 +68,10 @@ public class DeclarePublicService {
     private ProjectPlanSurveyService projectPlanSurveyService;
     @Autowired
     private PublicService publicService;
+    @Autowired
+    private BaseAttachmentService baseAttachmentService;
+    @Autowired
+    private DeclareRealtyHouseCertService declareRealtyHouseCertService;
 
     private static final String UNIT = "单元";
     private static final String FLOOR = "层";
@@ -89,8 +103,8 @@ public class DeclarePublicService {
             }
             return null;
         };
-        BiFunction<String,String,String> replaceFun = (s2, s) -> Pattern.compile(String.join("", "[", "^", numberRegex, "]", "*")).matcher(s2).replaceAll(s);
-        String streetName = String.join("",org.apache.commons.lang3.StringUtils.substringBetween(text, "", NUMBER),NUMBER);
+        BiFunction<String, String, String> replaceFun = (s2, s) -> Pattern.compile(String.join("", "[", "^", numberRegex, "]", "*")).matcher(s2).replaceAll(s);
+        String streetName = String.join("", org.apache.commons.lang3.StringUtils.substringBetween(text, "", NUMBER), NUMBER);
         stringMap.put(STREET, streetName);
 
 //        final String value = StringUtils.removeStart(text, streetName);
@@ -131,7 +145,7 @@ public class DeclarePublicService {
             if (StringUtils.contains(value, ATTACHED)) {
                 String attached = function.apply(Pattern.compile(String.join("", "^", ATTACHED, numberRegex, "*")).matcher(value));
                 if (StringUtils.isNotEmpty(attached)) {
-                    String number = replaceFun.apply(attached,"") ;//提取出整个字符中的数字
+                    String number = replaceFun.apply(attached, "");//提取出整个字符中的数字
                     stringMap.put(ATTACHED, number);
                     value = StringUtils.replaceOnce(value, String.join("", attached, NUMBER), "");
                 }
@@ -141,21 +155,21 @@ public class DeclarePublicService {
             if (StringUtils.contains(value, BUILDING)) {
                 String building = org.apache.commons.lang3.StringUtils.substringBetween(value, "", BUILDING);
                 value = StringUtils.replaceOnce(value, String.join("", building, BUILDING), "");
-                stringMap.put(BUILDING, replaceFun.apply(building,""));
+                stringMap.put(BUILDING, replaceFun.apply(building, ""));
             }
         }
         if (StringUtils.isNotEmpty(value)) {
             if (StringUtils.contains(value, BUILDING2)) {
                 String building = org.apache.commons.lang3.StringUtils.substringBetween(value, "", BUILDING2);
                 value = StringUtils.replaceOnce(value, String.join("", building, BUILDING2), "");
-                stringMap.put(BUILDING, replaceFun.apply(building,""));
+                stringMap.put(BUILDING, replaceFun.apply(building, ""));
             }
         }
         if (StringUtils.isNotEmpty(value)) {
             if (StringUtils.contains(value, UNIT)) {
                 String unit = org.apache.commons.lang3.StringUtils.substringBetween(value, "", UNIT);
                 value = StringUtils.replaceOnce(value, String.join("", unit, UNIT), "");
-                stringMap.put(UNIT, replaceFun.apply(unit,""));
+                stringMap.put(UNIT, replaceFun.apply(unit, ""));
             }
         }
 
@@ -163,12 +177,12 @@ public class DeclarePublicService {
             if (StringUtils.contains(value, FLOOR)) {
                 String floor = org.apache.commons.lang3.StringUtils.substringBetween(value, "", FLOOR);
                 value = StringUtils.replaceOnce(value, String.join("", floor, FLOOR), "");
-                stringMap.put(FLOOR, replaceFun.apply(floor,""));
+                stringMap.put(FLOOR, replaceFun.apply(floor, ""));
             }
         }
         if (StringUtils.isNotEmpty(value)) {
             if (StringUtils.contains(value, NUMBER)) {//最后剩余的就是房号
-                stringMap.put(RoomNumber, replaceFun.apply(value,""));
+                stringMap.put(RoomNumber, replaceFun.apply(value, ""));
             }
         }
         return stringMap;
@@ -467,6 +481,10 @@ public class DeclarePublicService {
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(34)))) {
             oo.setApprovalMechanism(PoiUtils.getCellValue(row.getCell(34)));
         }
+        //关联附件编号
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(35)))) {
+            oo.setAutoInitNumber(PoiUtils.getCellValue(row.getCell(35)));
+        }
         return true;
     }
 
@@ -665,6 +683,10 @@ public class DeclarePublicService {
         //记事
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(17)))) {
             declareRealtyLandCert.setMemo(PoiUtils.getCellValue(row.getCell(17)));
+        }
+        //关联附件编号
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(18)))) {
+            declareRealtyLandCert.setAutoInitNumber(PoiUtils.getCellValue(row.getCell(18)));
         }
         return true;
     }
@@ -892,7 +914,10 @@ public class DeclarePublicService {
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(23)))) {
             declareRealtyHouseCert.setOther(PoiUtils.getCellValue(row.getCell(23)));
         }
-
+        //关联附件编号
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(24)))) {
+            declareRealtyHouseCert.setAutoInitNumber(PoiUtils.getCellValue(row.getCell(24)));
+        }
         return true;
     }
 
@@ -1140,5 +1165,221 @@ public class DeclarePublicService {
             return pattern.matcher(str).matches();
         }
 
+    }
+
+    /**
+     * 申报图片自动关联
+     *
+     * @param automatedWarrants
+     */
+    public void attachmentAutomatedWarrants(AutomatedWarrants automatedWarrants) throws Exception {
+        List<String> filterSuffix = Arrays.asList(com.aspose.words.SaveFormat.getName(SaveFormat.DOC), com.aspose.words.SaveFormat.getName(SaveFormat.DOCX), com.aspose.words.SaveFormat.getName(SaveFormat.DOTX));
+        String localPath = baseAttachmentService.downloadFtpFileToLocal(automatedWarrants.getAttachmentId());
+        String fileExtension = FilenameUtils.getExtension(localPath);
+        LinkedList<String> linkedList = new LinkedList<>();
+        if (PDFUtil.PDF.equals(fileExtension)) {
+            PDFUtil.extractImages(localPath, linkedList);
+        } else if (filterSuffix.stream().anyMatch(s -> s.equalsIgnoreCase(fileExtension))) {
+            AsposeUtils.extractImages(localPath, linkedList);
+        } else {
+            throw new Exception("传入的文档只能说doc,docx,dotx,pdf这四种格式的文档,其它的暂时不支持哦!");
+        }
+        if (CollectionUtils.isEmpty(linkedList)) {
+            throw new Exception("传入的文档没有图片");
+        }
+        LinkedHashMap<String, Integer> linkedHashMap = Maps.newLinkedHashMap();
+        if (Objects.equal(FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class), automatedWarrants.getTableName())) {
+            DeclareRealtyHouseCert query = new DeclareRealtyHouseCert();
+            query.setPlanDetailsId(automatedWarrants.getPlanDetailsId());
+            query.setEnable(DeclareTypeEnum.MasterData.getKey());
+            List<DeclareRealtyHouseCertVo> declareRealtyHouseCertVoList = declareRealtyHouseCertService.lists(query);
+            if (CollectionUtils.isNotEmpty(declareRealtyHouseCertVoList)) {
+                for (DeclareRealtyHouseCertVo declareRealtyHouseCertVo : declareRealtyHouseCertVoList) {
+                    if (StringUtils.isEmpty(declareRealtyHouseCertVo.getAutoInitNumber())) {
+                        continue;
+                    }
+                    linkedHashMap.put(declareRealtyHouseCertVo.getAutoInitNumber(), declareRealtyHouseCertVo.getId());
+                }
+            }
+        }
+        if (linkedHashMap.isEmpty()) {
+            throw new Exception("没有找到申报编号!");
+        }
+        LinkedList<Integer> integerLinkedList = getFilterAutomatedWarrants(linkedHashMap, automatedWarrants);
+        if (CollectionUtils.isEmpty(integerLinkedList)) {
+            throw new Exception("没有找到匹配的申报编号!");
+        }
+        //处理规则问题
+        boolean initMark = linkedList.size()  == integerLinkedList.size() *  automatedWarrants.getStep().intValue();//标识
+        if (!initMark) {
+            throw new Exception(String.join("-", "申报编号数量和!传入的文档中图片数量不匹配", String.format("%s%s", "申报图片数量", String.valueOf(linkedList.size())), String.format("%s%s", "申报编号数", String.valueOf(integerLinkedList.size())),String.format("申报步长:%s",automatedWarrants.getStep().toString())));
+        }
+        //根据步长进行分组
+        List<List<String>> listList = splitsList(linkedList, automatedWarrants.getStep().intValue());
+        int length = listList.size();
+        SysAttachmentDto params = new SysAttachmentDto();
+        params.setTableName(automatedWarrants.getTableName());
+        params.setFieldsName(automatedWarrants.getFieldsName());
+        for (int i = 0; i < length; i++) {
+            Integer id = integerLinkedList.get(i);
+            params.setTableId(id);
+            List<String> stringList = listList.get(i);
+            for (String path : stringList) {
+                baseAttachmentService.importAjaxFile(path, params);
+            }
+        }
+        //处理结束后删除附件
+        baseAttachmentService.deleteAttachment(automatedWarrants.getAttachmentId()) ;
+    }
+
+    /**
+     * 获取筛选之后的申报编号
+     *
+     * @param linkedHashMap
+     * @param automatedWarrants
+     * @return
+     */
+    private LinkedList<Integer> getFilterAutomatedWarrants(LinkedHashMap<String, Integer> linkedHashMap, AutomatedWarrants automatedWarrants) {
+        LinkedList<Integer> linkedList = Lists.newLinkedList();
+        Iterator<Map.Entry<String, Integer>> entryIterator = linkedHashMap.entrySet().iterator();
+        LinkedHashMap<Integer, Integer> integerLinkedHashMap = Maps.newLinkedHashMap();
+        while (entryIterator.hasNext()) {
+            Map.Entry<String, Integer> integerEntry = entryIterator.next();
+            String key = integerEntry.getKey();
+            if (StringUtils.isNotBlank(automatedWarrants.getPrefixNumber())) {
+                key = StringUtils.remove(integerEntry.getKey(), automatedWarrants.getPrefixNumber());
+            }
+            int number = Integer.parseInt(key);
+            if (number > automatedWarrants.getEndNumber().intValue() || number < automatedWarrants.getStartNumber().intValue()) {
+                continue;
+            }
+            integerLinkedHashMap.put(Integer.valueOf(number), integerEntry.getValue());
+        }
+        List<Map.Entry<Integer, Integer>> tempList = Lists.newArrayList();
+        if (!integerLinkedHashMap.isEmpty()) {
+            Iterator<Map.Entry<Integer, Integer>> iterator = integerLinkedHashMap.entrySet().iterator();
+            while (iterator.hasNext()) {
+                tempList.add(iterator.next());
+            }
+        }
+        Ordering<Map.Entry<Integer, Integer>> ordering = Ordering.from(new Comparator<Map.Entry<Integer, Integer>>() {
+            @Override
+            public int compare(Map.Entry<Integer, Integer> o1, Map.Entry<Integer, Integer> o2) {
+                return o1.getKey().compareTo(o2.getKey());
+            }
+        });
+        Collections.sort(tempList, ordering);
+        if (CollectionUtils.isNotEmpty(tempList)) {
+            Iterator<Map.Entry<Integer, Integer>> iterator = tempList.iterator();
+            while (iterator.hasNext()) {
+                linkedList.add(iterator.next().getValue());
+            }
+        }
+        return linkedList;
+    }
+
+    private List<List<String>> splitsList(List<String> list, int splitSize) {
+        if (null == list) {
+            return null;
+        }
+        int listSize = list.size();
+        List<List<String>> newList = new ArrayList<List<String>>();
+        if (listSize < splitSize) {
+            newList.add(list);
+            return newList;
+        }
+        int addLength = splitSize;
+        int times = listSize / splitSize;
+        if (listSize % splitSize != 0) {
+            times += 1;
+        }
+        int start = 0;
+        int end = 0;
+        int last = times - 1;
+        for (int i = 0; i < times; i++) {
+            start = i * splitSize;
+            if (i < last) {
+                end = start + addLength;
+            } else {
+                end = listSize;
+            }
+            newList.add(list.subList(start, end));
+        }
+        return newList;
+    }
+
+    public static class AutomatedWarrants implements Serializable {
+        private String prefixNumber;
+        private Integer startNumber;
+        private Integer endNumber;
+        private Integer step;
+        Integer attachmentId;
+        private String tableName;
+        private String fieldsName;
+        private Integer planDetailsId;
+
+        public String getPrefixNumber() {
+            return prefixNumber;
+        }
+
+        public void setPrefixNumber(String prefixNumber) {
+            this.prefixNumber = prefixNumber;
+        }
+
+        public Integer getStartNumber() {
+            return startNumber;
+        }
+
+        public void setStartNumber(Integer startNumber) {
+            this.startNumber = startNumber;
+        }
+
+        public Integer getEndNumber() {
+            return endNumber;
+        }
+
+        public void setEndNumber(Integer endNumber) {
+            this.endNumber = endNumber;
+        }
+
+        public Integer getStep() {
+            return step;
+        }
+
+        public void setStep(Integer step) {
+            this.step = step;
+        }
+
+        public Integer getAttachmentId() {
+            return attachmentId;
+        }
+
+        public void setAttachmentId(Integer attachmentId) {
+            this.attachmentId = attachmentId;
+        }
+
+        public String getTableName() {
+            return tableName;
+        }
+
+        public void setTableName(String tableName) {
+            this.tableName = tableName;
+        }
+
+        public Integer getPlanDetailsId() {
+            return planDetailsId;
+        }
+
+        public void setPlanDetailsId(Integer planDetailsId) {
+            this.planDetailsId = planDetailsId;
+        }
+
+        public String getFieldsName() {
+            return fieldsName;
+        }
+
+        public void setFieldsName(String fieldsName) {
+            this.fieldsName = fieldsName;
+        }
     }
 }

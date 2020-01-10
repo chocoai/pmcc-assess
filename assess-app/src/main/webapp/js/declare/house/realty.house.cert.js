@@ -19,17 +19,17 @@ assessCommonHouse.config = {
             table: declareCommon.config.house.son.declareRealtyLandCert.table
         }
     },
-    declareEconomicIndicatorsHead:{
-        frm:  declareCommon.config.declareEconomicIndicatorsHead.frm,
+    declareEconomicIndicatorsHead: {
+        frm: declareCommon.config.declareEconomicIndicatorsHead.frm,
         name: declareCommon.config.declareEconomicIndicatorsHead.name,
         box: declareCommon.config.declareEconomicIndicatorsHead.box
-    } ,
-    declareEconomicIndicatorsContent:{
-        frm:  declareCommon.config.declareEconomicIndicatorsContent.frm,
+    },
+    declareEconomicIndicatorsContent: {
+        frm: declareCommon.config.declareEconomicIndicatorsContent.frm,
         name: declareCommon.config.declareEconomicIndicatorsContent.name
-    } ,
+    },
     handleCopy: "#houseHandleInputGroup",
-    autoPDFFileId:"houseAttachmentAutomatedWarrantsPDF"
+    autoPDFFileId: "houseAttachmentAutomatedWarrantsPDF"
 };
 
 /**
@@ -80,7 +80,7 @@ assessCommonHouse.saveAndUpdateHouse = function () {
             return false;
         }
     }
-    declareCommon.saveHouseDataBase(data,true, function (item) {
+    declareCommon.saveHouseDataBase(data, true, function (item) {
         if (!declareCommon.isNotBlank(data.id)) {
             declareCommon.declareBuildCenterSaveAndUpdate({
                 houseId: item,
@@ -113,16 +113,16 @@ assessCommonHouse.deleteHouse = function () {
         $.each(rows, function (i, item) {
             idArray.push(item.id);
             idCenters.push(item.centerId);
-            if (declareCommon.isNotBlank(item.bisRecord)){
-                if (item.bisRecord){
+            if (declareCommon.isNotBlank(item.bisRecord)) {
+                if (item.bisRecord) {
                     bisRecord++;
                 }
             }
         });
-        if (bisRecord != 0){
+        if (bisRecord != 0) {
             toastr.info("其中包括了已经参与查勘任务的权证,请重新选择");
             $("#" + assessCommonHouse.config.table).bootstrapTable('uncheckAll');
-            return false ;
+            return false;
         }
         Alert("确认要删除么？", 2, null, function () {
             declareCommon.deleteHouseData(idArray.join(","), function () {
@@ -235,27 +235,27 @@ assessCommonHouse.showAddModelDeclareEconomicIndicators = function (id) {
         toastr.success('不合符调整后的数据约定,请联系管理员!');
         return false;
     }
-    var showDelHtml = "" ;
+    var showDelHtml = "";
     showDelHtml += declareCommon.declareCenterData.indicatorIdDelHtml;
-    showDelHtml = showDelHtml.replace(/{method}/g, 'assessCommonHouse.deleteDeclareEconomicIndicatorsCenter') ;
+    showDelHtml = showDelHtml.replace(/{method}/g, 'assessCommonHouse.deleteDeclareEconomicIndicatorsCenter');
     declareCommon.getDeclareBuildCenter(item.centerId, function (centerData) {
-        if (centerData.indicatorId){
+        if (centerData.indicatorId) {
             economicIndicators.init({
                 planDetailsId: declareCommon.getPlanDetailsId(),
                 economicId: centerData.indicatorId,
-                showDelHtml:showDelHtml,
-                centerId:item.centerId
+                showDelHtml: showDelHtml,
+                centerId: item.centerId
             });
-        }else {
+        } else {
             economicIndicators.init({
                 planDetailsId: declareCommon.getPlanDetailsId(),
                 saveCallback: function (economicId) {//经济指标id更新到中间表
                     declareCommon.declareBuildCenterSaveAndUpdate({indicatorId: economicId, id: item.centerId});
                 },
-                showDelHtml:showDelHtml,
-                centerId:item.centerId,
-                targetCallback:function () {
-                    economicIndicators.autoSummary(true) ;
+                showDelHtml: showDelHtml,
+                centerId: item.centerId,
+                targetCallback: function () {
+                    economicIndicators.autoSummary(true);
                 }
             });
         }
@@ -266,7 +266,7 @@ assessCommonHouse.showAddModelDeclareEconomicIndicators = function (id) {
 /**
  * 删除中间表得经济指标 注意这得删除不是通过经济指标方法删除得土地证而是中间表删除得经济指标
  */
-assessCommonHouse.deleteDeclareEconomicIndicatorsCenter = function (frmEle,box) {
+assessCommonHouse.deleteDeclareEconomicIndicatorsCenter = function (frmEle, box) {
     var data = formParams(frmEle);
     if (declareCommon.isNotBlank(data.centerId)) {
         declareCommon.getDeclareBuildCenter(data.centerId, function (centerData) {
@@ -274,7 +274,7 @@ assessCommonHouse.deleteDeclareEconomicIndicatorsCenter = function (frmEle,box) 
                 declareCommon.deleteByDeclareBuildCenterType(data.centerId, declareCommon.declareCenterData.indicatorId.type, function () {
                     $('#' + box).modal("hide");
                     toastr.success('已经删除!');
-                    economicIndicators.autoSummary(true) ;
+                    economicIndicators.autoSummary(true);
                     assessCommonHouse.loadList();
                 });
             } else {
@@ -320,8 +320,8 @@ assessCommonHouse.showAddModelLand = function (id) {
         registrationAuthority: item.registrationAuthority,
         apportionmentArea: item.apportionmentArea,
         terminationDate: item.useEndDate,
-        ownership:item.ownership,
-        publicSituation:item.publicSituation
+        ownership: item.ownership,
+        publicSituation: item.publicSituation
     };
     declareCommon.showHtmlMastInit($("#" + assessCommonHouse.config.son.declareRealtyLandCert.frm), function (area) {
         $('#' + assessCommonHouse.config.son.declareRealtyLandCert.box).modal("show");
@@ -332,8 +332,8 @@ assessCommonHouse.showAddModelLand = function (id) {
                         data.centerId = item.centerId;
                         assessCommonHouse.initLand(data);
                     }
-                },function (text) {
-                    Alert(text) ;
+                }, function (text) {
+                    Alert(text);
                     assessCommonHouse.initLand(data);
                 });
             } else {//未关联情况
@@ -375,7 +375,7 @@ assessCommonHouse.saveAndUpdateLand = function () {
     var data = formParams(assessCommonHouse.config.son.declareRealtyLandCert.frm);
     data.planDetailsId = declareCommon.getPlanDetailsId();
     data.enable = declareCommon.branchData;
-    declareCommon.saveLandDataBase(data, true,function (landId) {
+    declareCommon.saveLandDataBase(data, true, function (landId) {
         if (landId) {
             declareCommon.declareBuildCenterSaveAndUpdate({landId: landId, id: data.centerId}, function () {
                 assessCommonHouse.loadList();
@@ -515,11 +515,11 @@ assessCommonHouse.landImportEvent = function (id) {
  * 土地证附件 导入处理
  */
 assessCommonHouse.landImportHandle = function () {
-    var target = $("#" + assessCommonHouse.config.son.declareRealtyLandCert.fileId) ;
+    var target = $("#" + assessCommonHouse.config.son.declareRealtyLandCert.fileId);
     var id = target.attr("data-id");
     var value = target.val();
-    if (!declareCommon.isNotBlank(value)){
-        return false ;
+    if (!declareCommon.isNotBlank(value)) {
+        return false;
     }
     $.ajaxFileUpload({
         type: "POST",
@@ -557,11 +557,11 @@ assessCommonHouse.houseImportEvent = function (id) {
  * 房产证附件 导入处理
  */
 assessCommonHouse.houseImportHandle = function () {
-    var target = $("#" + assessCommonHouse.config.fileIdNew) ;
+    var target = $("#" + assessCommonHouse.config.fileIdNew);
     var id = target.attr("data-id");
     var value = target.val();
-    if (!declareCommon.isNotBlank(value)){
-        return false ;
+    if (!declareCommon.isNotBlank(value)) {
+        return false;
     }
     $.ajaxFileUpload({
         type: "POST",
@@ -578,15 +578,79 @@ assessCommonHouse.houseImportHandle = function () {
         async: false,
         success: function (result) {
             if (result.ret) {
-                declareCommon.getHouseData(id , function (row) {
+                declareCommon.getHouseData(id, function (row) {
                     toastr.success('成功 !');
                     $("#" + assessCommonHouse.config.table).bootstrapTable('updateByUniqueId', {id: id, row: row});
-                }) ;
+                });
             }
         },
         error: function (result, status, e) {
             Loading.progressHide();
             Alert("调用服务端方法失败，失败原因:" + result);
+        }
+    });
+};
+
+/*自动关联编号的附件*/
+assessCommonHouse.attachmentAutomatedWarrants = function (_this) {
+    var group = $(_this).closest(".form-group");
+    var prefixNumber = group.find("[name='prefixNumber']").val();
+    var startNumber = group.find("[name='startNumber']").val();
+    var endNumber = group.find("[name='endNumber']").val();
+    var step = group.find("[name='step']").val();
+    if (!$.isNumeric(startNumber)) {
+        toastr.warning('启始编号非数字请重新填写');
+        return false;
+    }
+    if (!$.isNumeric(endNumber)) {
+        toastr.warning('截至编号非数字请重新填写');
+        return false;
+    }
+    if (!$.isNumeric(step)) {
+        toastr.warning('步长非数字请重新填写');
+        return false;
+    }
+    var data = {
+        prefixNumber: prefixNumber,
+        startNumber: startNumber,
+        endNumber: endNumber,
+        step: step,
+        fieldsName: assessCommonHouse.config.fileId,
+        tableName: AssessDBKey.DeclareRealtyHouseCert,
+        planDetailsId: declareCommon.getPlanDetailsId()
+    };
+    if (startNumber > endNumber) {
+        toastr.error('截至编号 必须大于 启始编号');
+        return false;
+    }
+    var query = {
+        tableId: declareCommon.getPlanDetailsId(),
+        tableName: AssessDBKey.DeclareRealtyHouseCert,
+        fieldsName: assessCommonHouse.config.autoPDFFileId
+    };
+    AssessCommon.getSysAttachmentDtoList(query, function (array) {
+        if (!array) {
+            toastr.warning('请上传pdf或者word');
+            return false;
+        }
+        if (array.length == 1) {
+            data.attachmentId = array[0].id;
+            Loading.progressShow();
+            declareCommon.ajaxServerMethod(data, "/declareRealtyHouseCert/attachmentAutomatedWarrants", "post", function () {
+                Loading.progressHide();
+                (function (id, FileId, tableName) {
+                    declareCommon.fileUpload(FileId, tableName, id, true);
+                    declareCommon.showFile(FileId, tableName, id, true);
+                }(query.tableId, query.fieldsName, query.tableName));
+                assessCommonHouse.loadList();
+                toastr.success('成功 !');
+            }, function (message) {
+                Loading.progressHide();
+                toastr.error(message);
+            });
+        } else {
+            toastr.info('请上传pdf或者word一个');
+            return false;
         }
     });
 };
@@ -626,10 +690,10 @@ $(function () {
     assessCommonHouse.loadList();
 
     //pdf 附件
-    (function (id,FileId,tableName) {
-        declareCommon.showFile(FileId, AssessDBKey.DeclareRealtyHouseCert, id, true);
-        declareCommon.fileUpload(FileId, AssessDBKey.DeclareRealtyHouseCert, id, true);
-    }(declareCommon.getPlanDetailsId(),assessCommonHouse.config.autoPDFFileId,AssessDBKey.DeclareRealtyHouseCert)) ;
+    (function (id, FileId, tableName) {
+        declareCommon.fileUpload(FileId, tableName, id, true);
+        declareCommon.showFile(FileId, tableName, id, true);
+    }(declareCommon.getPlanDetailsId(), assessCommonHouse.config.autoPDFFileId, AssessDBKey.DeclareRealtyHouseCert));
 
 
 });

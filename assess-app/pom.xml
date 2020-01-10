@@ -15,7 +15,7 @@
     <properties>
         <file_encoding>UTF-8</file_encoding>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
+        <pdfbox.version>2.0.14</pdfbox.version>
         <!-- define profile and resource path -->
         <profiles.dir>src/main/profiles</profiles.dir>
         <resources.dir>src/main/resources</resources.dir>
@@ -208,6 +208,37 @@
             <groupId>com.aspose</groupId>
             <artifactId>aspose-words</artifactId>
             <version>16.4.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox</artifactId>
+            <version>${pdfbox.version}</version>
+        </dependency>
+
+        <!-- pdf 组件 -->
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>fontbox</artifactId>
+            <version>${pdfbox.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>xmpbox</artifactId>
+            <version>${pdfbox.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>preflight</artifactId>
+            <version>${pdfbox.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox-tools</artifactId>
+            <version>${pdfbox.version}</version>
         </dependency>
 
         <!--==================================== -->

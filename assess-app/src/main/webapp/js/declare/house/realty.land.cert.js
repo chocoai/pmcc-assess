@@ -11,7 +11,8 @@ assessCommonLand.config = {
     box: declareCommon.config.land.box,
     fileId: declareCommon.config.land.fileId,
     newFileId: declareCommon.config.land.newFileId,
-    handleCopy:"#landHandleInputGroup"
+    handleCopy:"#landHandleInputGroup",
+    autoPDFFileId: "landAttachmentAutomatedWarrantsPDF"
 };
 
 assessCommonLand.copyData = function () {
@@ -522,8 +523,79 @@ assessCommonLand.declarePreSalePermitSaveAndUpdate = function () {
     });
 };
 
+/*自动关联编号的附件*/
+assessCommonLand.attachmentAutomatedWarrants = function (_this) {
+    var group = $(_this).closest(".form-group");
+    var prefixNumber = group.find("[name='prefixNumber']").val();
+    var startNumber = group.find("[name='startNumber']").val();
+    var endNumber = group.find("[name='endNumber']").val();
+    var step = group.find("[name='step']").val();
+    if (!$.isNumeric(startNumber)) {
+        toastr.warning('启始编号非数字请重新填写');
+        return false;
+    }
+    if (!$.isNumeric(endNumber)) {
+        toastr.warning('截至编号非数字请重新填写');
+        return false;
+    }
+    if (!$.isNumeric(step)) {
+        toastr.warning('步长非数字请重新填写');
+        return false;
+    }
+    var data = {
+        prefixNumber: prefixNumber,
+        startNumber: startNumber,
+        endNumber: endNumber,
+        step: step,
+        fieldsName: assessCommonLand.config.fileId,
+        tableName: AssessDBKey.DeclareRealtyLandCert,
+        planDetailsId: declareCommon.getPlanDetailsId()
+    };
+    if (startNumber > endNumber) {
+        toastr.error('截至编号 必须大于 启始编号');
+        return false;
+    }
+    var query = {
+        tableId: declareCommon.getPlanDetailsId(),
+        tableName: AssessDBKey.DeclareRealtyLandCert,
+        fieldsName: assessCommonLand.config.autoPDFFileId
+    };
+    AssessCommon.getSysAttachmentDtoList(query, function (array) {
+        if (!array) {
+            toastr.warning('请上传pdf或者word');
+            return false;
+        }
+        if (array.length == 1) {
+            data.attachmentId = array[0].id;
+            Loading.progressShow();
+            declareCommon.ajaxServerMethod(data, "/declareRealtyLandCert/attachmentAutomatedWarrants", "post", function () {
+                Loading.progressHide();
+                (function (id, FileId, tableName) {
+                    declareCommon.fileUpload(FileId, tableName, id, true);
+                    declareCommon.showFile(FileId, tableName, id, true);
+                }(query.tableId, query.fieldsName, query.tableName));
+                assessCommonLand.loadList();
+                toastr.success('成功 !');
+            }, function (message) {
+                Loading.progressHide();
+                toastr.error(message);
+            });
+        } else {
+            toastr.info('请上传pdf或者word一个');
+            return false;
+        }
+    });
+};
+
 
 $(function () {
     assessCommonLand.loadList();
+
+    //pdf 附件
+    (function (id, FileId, tableName) {
+        declareCommon.fileUpload(FileId, tableName, id, true);
+        declareCommon.showFile(FileId, tableName, id, true);
+    }(declareCommon.getPlanDetailsId(), assessCommonLand.config.autoPDFFileId, AssessDBKey.DeclareRealtyLandCert));
+
 });
 

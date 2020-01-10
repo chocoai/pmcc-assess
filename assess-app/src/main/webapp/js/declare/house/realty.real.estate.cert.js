@@ -21,7 +21,8 @@ declareRealtyRealEstateCert.config = {
         frm: declareCommon.config.declareEconomicIndicatorsContent2.frm,
         name: declareCommon.config.declareEconomicIndicatorsContent2.name
     },
-    handleCopy: "#realtyRealEstateHandleInputGroup"
+    handleCopy: "#realtyRealEstateHandleInputGroup",
+    autoPDFFileId: "RealEstateAttachmentAutomatedWarrantsPDF"
 };
 
 declareRealtyRealEstateCert.init = function (item) {
@@ -602,6 +603,81 @@ declareRealtyRealEstateCert.saveAndUpdateData = function () {
     });
 };
 
+/*自动关联编号的附件*/
+declareRealtyRealEstateCert.attachmentAutomatedWarrants = function (_this) {
+    var group = $(_this).closest(".form-group");
+    var prefixNumber = group.find("[name='prefixNumber']").val();
+    var startNumber = group.find("[name='startNumber']").val();
+    var endNumber = group.find("[name='endNumber']").val();
+    var step = group.find("[name='step']").val();
+    if (!$.isNumeric(startNumber)) {
+        toastr.warning('启始编号非数字请重新填写');
+        return false;
+    }
+    if (!$.isNumeric(endNumber)) {
+        toastr.warning('截至编号非数字请重新填写');
+        return false;
+    }
+    if (!$.isNumeric(step)) {
+        toastr.warning('步长非数字请重新填写');
+        return false;
+    }
+    var data = {
+        prefixNumber: prefixNumber,
+        startNumber: startNumber,
+        endNumber: endNumber,
+        step: step,
+        fieldsName: declareRealtyRealEstateCert.config.newFileId,
+        tableName: AssessDBKey.DeclareRealtyRealEstateCert,
+        planDetailsId: declareCommon.getPlanDetailsId()
+    };
+    if (startNumber > endNumber) {
+        toastr.error('截至编号 必须大于 启始编号');
+        return false;
+    }
+    var query = {
+        tableId: declareCommon.getPlanDetailsId(),
+        tableName: AssessDBKey.DeclareRealtyRealEstateCert,
+        fieldsName: declareRealtyRealEstateCert.config.autoPDFFileId
+    };
+    AssessCommon.getSysAttachmentDtoList(query, function (array) {
+        if (!array) {
+            toastr.warning('请上传pdf或者word');
+            return false;
+        }
+        if (array.length == 1) {
+            data.attachmentId = array[0].id;
+            Loading.progressShow();
+            declareCommon.ajaxServerMethod(data, "/declareRealtyRealEstateCert/attachmentAutomatedWarrants", "post", function () {
+                Loading.progressHide();
+                (function (id, FileId, tableName) {
+                    declareCommon.fileUpload(FileId, tableName, id, true);
+                    declareCommon.showFile(FileId, tableName, id, true);
+                }(query.tableId, query.fieldsName, query.tableName));
+                declareRealtyRealEstateCert.loadList();
+                toastr.success('成功 !');
+            }, function (message) {
+                Loading.progressHide();
+                toastr.error(message);
+            });
+        } else {
+            toastr.info('请上传pdf或者word一个');
+            return false;
+        }
+    });
+};
+
 $(function () {
+
+
     declareRealtyRealEstateCert.loadList();
+
+
+
+    //pdf 附件
+    (function (id, FileId, tableName) {
+        declareCommon.fileUpload(FileId, tableName, id, true);
+        declareCommon.showFile(FileId, tableName, id, true);
+    }(declareCommon.getPlanDetailsId(), declareRealtyRealEstateCert.config.autoPDFFileId, AssessDBKey.DeclareRealtyRealEstateCert));
+
 });
