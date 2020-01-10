@@ -830,7 +830,7 @@
                         <form id="frmAdd" class="form-horizontal">
                             <input type="hidden" name="masterId">
                             <div class="panel-body">
-                                <button type="button" class="btn btn-success"
+                                <button type="button" class="btn btn-success" id="addBtn"
                                         onclick="detailInfo.prototype.addInit()"
                                         data-toggle="modal"> 新增
                                 </button>
@@ -944,7 +944,7 @@
             cols.push({
                 field: 'id', width: '6%', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
-                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="补全信息" onclick="detailInfo.prototype.showTableListModal(' + row.id + ')"><i class="fa fa-edit fa-white"></i></a>';
+                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="补全信息" onclick="detailInfo.prototype.showTableListModal(' + row.id + ',' + row.status + ')"><i class="fa fa-edit fa-white"></i></a>';
                     str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="查看网址" onclick="detailInfo.prototype.openItem(' + index + ')"><i class="fa fa-eye fa-white"></i></a>';
                     str += '</div>';
                     return str;
@@ -976,11 +976,15 @@
                 window.open(row.sourceSiteUrl, "");
             }
         },
-        showTableListModal: function (masterId) {
-            // var masterId = $("#" + detailInfo.prototype.config().frm).find("input[name='masterId']").val();
+        showTableListModal: function (masterId,status) {
             detailInfo.prototype.loadLandHistoryList(masterId);
             detailInfo.prototype.loadHouseHistoryList(masterId);
             $("#frmAdd").find("input[name='masterId']").val(masterId);
+            if(status == 3||status == 4){
+                $("#frmAdd").find("#addBtn").hide();
+            }else{
+                $("#frmAdd").find("#addBtn").show();
+            }
             $('#divBoxTableList').modal("show");
         },
         addInit: function () {
