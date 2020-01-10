@@ -1335,62 +1335,22 @@ declareCommon.saveDeclareLandUsePermit = function (data, updateNull,callback) {
     if (updateNull == ''){
         updateNull = false;
     }
-    $.ajax({
-        type: "POST",
-        url: getContextPath() + "/declareLandUsePermit/saveDeclareLandUsePermit",
-        data: {formData: JSON.stringify(data),updateNull:updateNull},
-        success: function (result) {
-            if (result.ret) {
-                callback(result.data);
-            } else {
-                Alert("保存失败:" + result.errmsg);
-            }
-        },
-        error: function (e) {
-            Alert("调用服务端方法失败，失败原因:" + e);
-        }
+    declareCommon.ajaxServerMethod({formData: JSON.stringify(data),updateNull:updateNull},"/declareLandUsePermit/saveDeclareLandUsePermit","POST",callback,function (message) {
+        toastr.error(message);
     });
 };
 
 //delete 建设用地规划许可证
 declareCommon.deleteDeclareLandUsePermitById = function (id, callback) {
-    $.ajax({
-        type: "POST",
-        url: getContextPath() + "/declareLandUsePermit/deleteDeclareLandUsePermitById",
-        data: {id: id},
-        success: function (result) {
-            if (result.ret) {
-                if (callback) {
-                    callback();
-                }
-            } else {
-                Alert("失败:" + result.errmsg);
-            }
-        },
-        error: function (e) {
-            Alert("调用服务端方法失败，失败原因:" + e);
-        }
+    declareCommon.ajaxServerMethod({id: id},"/declareLandUsePermit/deleteDeclareLandUsePermitById","POST",callback,function (message) {
+        toastr.error(message);
     });
 };
 
 //get 建设用地规划许可证
 declareCommon.getDeclareLandUsePermitById = function (id, callback) {
-    $.ajax({
-        type: "get",
-        url: getContextPath() + "/declareLandUsePermit/getDeclareLandUsePermitById",
-        data: {id: id},
-        success: function (result) {
-            if (result.ret) {
-                if (callback) {
-                    callback(result.data);
-                }
-            } else {
-                Alert("失败:" + result.errmsg);
-            }
-        },
-        error: function (e) {
-            Alert("调用服务端方法失败，失败原因:" + e);
-        }
+    declareCommon.ajaxServerMethod({id: id},"/declareLandUsePermit/getDeclareLandUsePermitById","get",callback,function (message) {
+        toastr.error(message);
     });
 };
 
@@ -1407,61 +1367,21 @@ declareCommon.saveDeclarePreSalePermit = function (data, updateNull,callback) {
     if (updateNull == ''){
         updateNull = false;
     }
-    $.ajax({
-        type: "POST",
-        url: getContextPath() + "/declarePreSalePermit/saveDeclarePreSalePermit",
-        data: {formData: JSON.stringify(data),updateNull:updateNull},
-        success: function (result) {
-            if (result.ret) {
-                callback(result.data);
-            } else {
-                Alert("保存失败:" + result.errmsg);
-            }
-        },
-        error: function (e) {
-            Alert("调用服务端方法失败，失败原因:" + e);
-        }
+    declareCommon.ajaxServerMethod({formData: JSON.stringify(data),updateNull:updateNull},"/declarePreSalePermit/saveDeclarePreSalePermit","POST",callback,function (message) {
+        toastr.error(message);
     });
 };
 
 //delete 商品房预售许可证
 declareCommon.deleteDeclarePreSalePermitById = function (id, callback) {
-    $.ajax({
-        type: "POST",
-        url: getContextPath() + "/declarePreSalePermit/deleteDeclarePreSalePermitById",
-        data: {id: id},
-        success: function (result) {
-            if (result.ret) {
-                if (callback) {
-                    callback();
-                }
-            } else {
-                Alert("失败:" + result.errmsg);
-            }
-        },
-        error: function (e) {
-            Alert("调用服务端方法失败，失败原因:" + e);
-        }
+    declareCommon.ajaxServerMethod({id: id},"/declarePreSalePermit/deleteDeclarePreSalePermitById","POST",callback,function (message) {
+        toastr.error(message);
     });
 };
 
 //get 商品房预售许可证
 declareCommon.getDeclarePreSalePermitById = function (id, callback) {
-    $.ajax({
-        type: "get",
-        url: getContextPath() + "/declarePreSalePermit/getDeclarePreSalePermitById",
-        data: {id: id},
-        success: function (result) {
-            if (result.ret) {
-                if (callback) {
-                    callback(result.data);
-                }
-            } else {
-                Alert("失败:" + result.errmsg);
-            }
-        },
-        error: function (e) {
-            Alert("调用服务端方法失败，失败原因:" + e);
-        }
+    declareCommon.ajaxServerMethod({id: id},"/declarePreSalePermit/getDeclarePreSalePermitById","get",callback,function (message) {
+        toastr.error(message);
     });
 };
