@@ -714,15 +714,6 @@ public class BasicApplyBatchController extends BaseController {
             if (applyBatch.getPlanDetailsId() == null) {
                 applyBatch.setDraftFlag(true);
             }
-            //修改权证建筑状态
-            if(applyBatch.getBuildingStatus()!=null){
-                ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetailsById(applyBatch.getPlanDetailsId());
-                if(planDetails!=null&&planDetails.getDeclareRecordId()!=null){
-                    DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(planDetails.getDeclareRecordId());
-                    declareRecord.setBuildingStatus(applyBatch.getBuildingStatus());
-                    declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
-                }
-            }
 
             basicApplyBatchService.saveApplyInfo(applyBatch);
             return HttpResult.newCorrectResult(applyBatch);
@@ -787,6 +778,28 @@ public class BasicApplyBatchController extends BaseController {
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return HttpResult.newErrorResult("获取标准对象数量");
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/editBuildingStatus", method = {RequestMethod.POST}, name = "保存")
+    public HttpResult editBuildingStatus(String formData) {
+        try {
+            BasicApplyBatch applyBatch = JSON.parseObject(formData, BasicApplyBatch.class);
+            //修改权证建筑状态
+            if(applyBatch.getBuildingStatus()!=null){
+                ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetailsById(applyBatch.getPlanDetailsId());
+                if(planDetails!=null&&planDetails.getDeclareRecordId()!=null){
+                    DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(planDetails.getDeclareRecordId());
+                    declareRecord.setBuildingStatus(applyBatch.getBuildingStatus());
+                    declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
+                }
+            }
+            basicApplyBatchService.saveApplyInfo(applyBatch);
+            return HttpResult.newCorrectResult(applyBatch);
+        } catch (Exception e) {
+            logger.error(String.format("exception: %s", e.getMessage()), e);
+            return HttpResult.newErrorResult("保存异常");
         }
     }
 

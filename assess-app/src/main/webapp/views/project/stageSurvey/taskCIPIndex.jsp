@@ -62,21 +62,24 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    建筑状态<span class="symbol required"></span>
-                                </label>
-                                <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                                    <select class="form-control" name="buildingStatus" onchange="saveBasicApplyBatch();" required>
-                                        <option value="">-请选择-</option>
-                                        <c:if test="${not empty buildingStatusList}">
-                                            <c:forEach var="item" items="${buildingStatusList}">
-                                                <option value="${item.id}" ${item.id eq applyBatch.buildingStatus?'selected="selected"':''}>${item.name}</option>
-                                            </c:forEach>
-                                        </c:if>
-                                    </select>
+                            <c:if test="${not empty declareRecord}">
+                                <div class="x-valid">
+                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                        建筑状态<span class="symbol required"></span>
+                                    </label>
+                                    <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
+                                        <select class="form-control" name="buildingStatus"
+                                                onchange="editBuildingStatus();" required>
+                                            <option value="">-请选择-</option>
+                                            <c:if test="${not empty buildingStatusList}">
+                                                <c:forEach var="item" items="${buildingStatusList}">
+                                                    <option value="${item.id}" ${item.id eq applyBatch.buildingStatus?'selected="selected"':''}>${item.name}</option>
+                                                </c:forEach>
+                                            </c:if>
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
+                            </c:if>
                         </div>
                     </form>
                     <div class="col-md-3 col-lg-offset-1" style="max-height: 500px;overflow: auto;">
@@ -98,10 +101,12 @@
                         <a class="btn btn-xs btn-primary" onclick=" batchTreeTool.expandAll(false);">
                             全部收起
                         </a>
-                        <a class="btn btn-xs btn-primary fillInformation deserveTool" onclick="batchTreeTool.fillInformation();">
+                        <a class="btn btn-xs btn-primary fillInformation deserveTool"
+                           onclick="batchTreeTool.fillInformation();">
                             填写信息
                         </a>
-                        <a style="display: none" class="btn btn-xs btn-primary fillInformation limitTool" onclick="batchTreeTool.checkInfo();">
+                        <a style="display: none" class="btn btn-xs btn-primary fillInformation limitTool"
+                           onclick="batchTreeTool.checkInfo();">
                             查看信息
                         </a>
                         <a class="btn btn-xs btn-warning copy" onclick="batchTreeTool.copy();">
@@ -321,6 +326,25 @@
             }
         });
     }
+
+    //修改权证建筑状态
+    function editBuildingStatus() {
+        $.ajax({
+            url: "${pageContext.request.contextPath}/basicApplyBatch/editBuildingStatus",
+            type: "post",
+            dataType: "json",
+            data: {
+                formData: JSON.stringify(formSerializeArray($("#basicBatchApplyFrm")))
+            },
+            success: function (result) {
+                if (result.ret) {
+
+                } else {
+                    Alert(result.errmsg);
+                }
+            }
+        });
+    }
 </script>
 <script type="text/javascript">
     var batchApply = undefined;
@@ -370,8 +394,8 @@
     batchTreeTool.ztreeInitByPlanDetailsId = function (planDetailsId) {
         $.ajax({
             url: '${pageContext.request.contextPath}/basicApplyBatch/getTreeByPlanDetailsId',
-            data:{
-                planDetailsId:planDetailsId
+            data: {
+                planDetailsId: planDetailsId
             },
             type: 'get',
             dataType: "json",
@@ -389,8 +413,8 @@
     batchTreeTool.showAddModal = function () {
         var node = zTreeObj.getSelectedNodes()[0];
         var level = node.level;
-        console.log(node.bisStructure+"=====bisStructure")
-        if(node.bisStructure){
+        console.log(node.bisStructure + "=====bisStructure")
+        if (node.bisStructure) {
             Alert("构筑物下无法继续添加节点。");
             return false;
         }
@@ -502,7 +526,7 @@
                         pid: result.data.pid,
                         tableId: result.data.tableId,
                         type: result.data.tableName.replace('tb_basic_', ''),
-                        displayName: result.data.displayName+'('+result.data.executorName+')',
+                        displayName: result.data.displayName + '(' + result.data.executorName + ')',
                         executor: result.data.executor,
                         executorName: result.data.executorName,
                         creator: result.data.creator,
@@ -637,7 +661,7 @@
                     var node = zTreeObj.getSelectedNodes()[0];
                     node.id = result.data.id;
                     node.name = result.data.name;
-                    node.displayName = result.data.displayName+'('+result.data.executorName+')';
+                    node.displayName = result.data.displayName + '(' + result.data.executorName + ')';
                     node.pid = result.data.pid;
                     node.executor = result.data.executor;
                     node.creator = result.data.creator;
@@ -772,7 +796,7 @@
             url: "${pageContext.request.contextPath}/basicApplyBatch/deepCopy",
             data: {
                 sourceBatchDetailId: node.id,
-                planDetailsId:'${projectPlanDetails.id}'
+                planDetailsId: '${projectPlanDetails.id}'
             },
             type: "post",
             dataType: "json",
@@ -797,19 +821,19 @@
     batchTreeTool.showFunctionBtn = function () {
         var node = zTreeObj.getSelectedNodes()[0];
         //子任务控制按钮
-        if('${projectTaskMasterId}'!='${responsibilityId}'){
+        if ('${projectTaskMasterId}' != '${responsibilityId}') {
             $("#btnGroup").find('.btn.masterTool').hide();
             //是当前执行人时
-            if(node.executor == '${userAccount}'){
+            if (node.executor == '${userAccount}') {
                 $("#btnGroup").find('.btn.deserveTool').show();
                 $("#btnGroup").find('.btn.limitTool').hide();
                 //删除按钮控制
-                if(node.executor == node.creator){
+                if (node.executor == node.creator) {
                     $("#btnGroup").find('.btn.deleteTool').show();
-                }else{
+                } else {
                     $("#btnGroup").find('.btn.deleteTool').hide();
                 }
-            }else{
+            } else {
                 $("#btnGroup").find('.btn.limitTool').show();
                 $("#btnGroup").find('.btn.deserveTool').hide();
                 $("#btnGroup").find('.btn.deleteTool').hide();
@@ -819,7 +843,7 @@
     }
 
     //信息详情页面
-    batchTreeTool.checkInfo = function() {
+    batchTreeTool.checkInfo = function () {
         var node = zTreeObj.getSelectedNodes()[0];
         var classify = $("#basicBatchApplyFrm").find('[name=classify]').val();
         var formType = $("#basicBatchApplyFrm").find('[name=type]').val();
@@ -836,10 +860,10 @@
     }
 
     function setFontCss(treeId, treeNode) {
-        if(treeNode.executor != '${userAccount}'){
-            return {color:"#AAAAAA"};
-        }else{
-            return {color:"black"};
+        if (treeNode.executor != '${userAccount}') {
+            return {color: "#AAAAAA"};
+        } else {
+            return {color: "black"};
         }
     }
 
