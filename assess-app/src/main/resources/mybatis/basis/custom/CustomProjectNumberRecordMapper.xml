@@ -34,6 +34,6 @@
             AND (A.number_value LIKE
             CONCAT(CONCAT('%',#{numberValue}), '%'))
         </if>
-        ORDER BY A.id DESC
+        ORDER BY A.year DESC,A.number
     </select>
 </mapper>
