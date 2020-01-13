@@ -103,11 +103,12 @@ public class CustomReportJianSheBankService {
                     //估价对象坐落位置
                     vo.setSeat(judgeObjectList.get(0).getSeat());
                     BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(judgeObjectList.get(0).getDeclareRecordId());
-                    BasicEstate basicEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
-                    if (basicEstate != null) {
-                        vo.setEstateName(basicEstate.getName());
+                    if(basicApply!=null){
+                        BasicEstate basicEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
+                        if (basicEstate != null) {
+                            vo.setEstateName(basicEstate.getName());
+                        }
                     }
-
 
                 }
             }

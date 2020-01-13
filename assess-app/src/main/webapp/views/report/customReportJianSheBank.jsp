@@ -198,9 +198,11 @@
         exportData: function () {
             var numberValue = $("#queryNumberValue").val();
             var unitName = $("#queryUnitName").val();
+            var reportType = $("#queryReportType").val();
             var href = "${pageContext.request.contextPath}/customReportJianSheBank/export";
             href += "?numberValue=" + numberValue;
             href += "&unitName=" + unitName;
+            href += "&reportType=" + reportType;
             window.open(href, "");
         }
 
