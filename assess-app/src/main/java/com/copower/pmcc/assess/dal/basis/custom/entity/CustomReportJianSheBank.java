@@ -7,11 +7,6 @@ import java.util.Date;
  * Created by kings on 2018-7-16.
  */
 public class CustomReportJianSheBank {
-    //经办行	委托人	抵押人	业务类型
-    // 评估类型	估价对象所处区域	小区名称	估价对象坐落位置
-    // 业务受理时间	预评出具时间	报告出具时间	面积（）	评估总价（万元）
-    // 评估单价
-    // 评估费用（元）	评估机构	评估师	备注	报告文号
     private Integer id;
     private Integer projectId;
     private Integer reportType;//报告类型
