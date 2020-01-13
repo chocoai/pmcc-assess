@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.copower.pmcc.assess.dal.basis.custom.mapper.CustomReportHuaXiaBankMapper">
+    <resultMap id="BaseResultMap"
+               type="com.copower.pmcc.assess.dal.basis.custom.entity.CustomReportHuaXiaBank">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="project_id" property="projectId" jdbcType="INTEGER"/>
+        <result column="report_type" property="reportType" jdbcType="INTEGER" />
+        <result column="u_use_unit_name" property="unitName" jdbcType="VARCHAR"/>
+        <result column="number_value" property="numberValue" jdbcType="VARCHAR"/>
+        <result column="project_category_id" property="projectCategoryId" jdbcType="INTEGER" />
+        <result column="contract_price" property="contractPrice" jdbcType="DECIMAL"/>
+        <result column="area_id" property="areaId" jdbcType="INTEGER"/>
+
+    </resultMap>
+
+    <select id="getCustomReportHuaXiaBankList" parameterType="map" resultMap="BaseResultMap">
+        select
+        A.id,A.project_id, A.report_type,E.u_use_unit_name,A.number_value,B.project_category_id
+        ,B.contract_price,A.area_id
+        from tb_project_number_record A
+        LEFT JOIN tb_project_info B ON A.project_id = B.id
+        LEFT JOIN tb_initiate_unit_information E ON A.project_id = E.project_id
+        WHERE 1=1
+        and bis_delete = false
+        <if test="numberValue!=null and numberValue!=''">
+            AND (A.number_value LIKE
+            CONCAT(CONCAT('%',#{numberValue}), '%'))
+        </if>
+        <if test="unitName!=null and unitName!=''">
+            AND (E.u_use_unit_name LIKE
+            CONCAT(CONCAT('%',#{unitName}), '%'))
+        </if>
+        ORDER BY A.id DESC
+    </select>
+</mapper>

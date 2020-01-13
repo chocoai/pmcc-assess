@@ -326,6 +326,11 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="modal-footer">
+                                <button type="button" data-dismiss="modal" class="btn btn-default">
+                                    关闭
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
