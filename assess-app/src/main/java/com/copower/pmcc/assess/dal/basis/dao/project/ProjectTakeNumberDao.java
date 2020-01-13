@@ -34,6 +34,10 @@ public class ProjectTakeNumberDao {
         return projectTakeNumberMapper.selectByExample(example);
     }
 
+    public ProjectTakeNumber getProjectTakeNumberById(Integer id){
+        return projectTakeNumberMapper.selectByPrimaryKey(id) ;
+    }
+
 
     /**
      * 新增数据
@@ -51,6 +55,10 @@ public class ProjectTakeNumberDao {
      */
     public boolean modifyProjectTakeNumber(ProjectTakeNumber record) {
         return projectTakeNumberMapper.updateByPrimaryKeySelective(record) == 1;
+    }
+
+    public boolean updateProjectTakeNumber(ProjectTakeNumber projectTakeNumber,boolean updateNull){
+        return updateNull ? projectTakeNumberMapper.updateByPrimaryKey(projectTakeNumber) == 1 : projectTakeNumberMapper.updateByPrimaryKeySelective(projectTakeNumber) == 1;
     }
 
     /**

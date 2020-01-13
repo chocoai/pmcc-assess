@@ -27,6 +27,20 @@ public class ProjectTakeNumber {
 
     private Date gmtModified;
 
+    private String qualificationType;
+
+    private Date investigationsStartDate;
+
+    private Date investigationsEndDate;
+
+    private Date reportIssuanceDate;
+
+    private Date homeWorkEndTime;
+
+    private String realEstateAppraiser;
+
+    private Integer planDetailsId;
+
     public Integer getId() {
         return id;
     }
@@ -121,5 +135,61 @@ public class ProjectTakeNumber {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getQualificationType() {
+        return qualificationType;
+    }
+
+    public void setQualificationType(String qualificationType) {
+        this.qualificationType = qualificationType == null ? null : qualificationType.trim();
+    }
+
+    public Date getInvestigationsStartDate() {
+        return investigationsStartDate;
+    }
+
+    public void setInvestigationsStartDate(Date investigationsStartDate) {
+        this.investigationsStartDate = investigationsStartDate;
+    }
+
+    public Date getInvestigationsEndDate() {
+        return investigationsEndDate;
+    }
+
+    public void setInvestigationsEndDate(Date investigationsEndDate) {
+        this.investigationsEndDate = investigationsEndDate;
+    }
+
+    public Date getReportIssuanceDate() {
+        return reportIssuanceDate;
+    }
+
+    public void setReportIssuanceDate(Date reportIssuanceDate) {
+        this.reportIssuanceDate = reportIssuanceDate;
+    }
+
+    public Date getHomeWorkEndTime() {
+        return homeWorkEndTime;
+    }
+
+    public void setHomeWorkEndTime(Date homeWorkEndTime) {
+        this.homeWorkEndTime = homeWorkEndTime;
+    }
+
+    public String getRealEstateAppraiser() {
+        return realEstateAppraiser;
+    }
+
+    public void setRealEstateAppraiser(String realEstateAppraiser) {
+        this.realEstateAppraiser = realEstateAppraiser == null ? null : realEstateAppraiser.trim();
+    }
+
+    public Integer getPlanDetailsId() {
+        return planDetailsId;
+    }
+
+    public void setPlanDetailsId(Integer planDetailsId) {
+        this.planDetailsId = planDetailsId;
     }
 }

@@ -1,15 +1,17 @@
 package com.copower.pmcc.assess.service;
 
+import com.copower.pmcc.assess.common.enums.AssessProjectTypeEnum;
 import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
+import com.copower.pmcc.assess.constant.AssessProjectClassifyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectNumberRecordDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectTakeNumberDao;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectNumberRecord;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectTakeNumber;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.ProjectTakeNumberVo;
+import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
+import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.event.project.ProjectTakeNumberServiceEvent;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.bpm.api.dto.ProcessUserDto;
@@ -34,7 +36,9 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -42,7 +46,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ProjectTakeNumberService {
@@ -65,9 +72,11 @@ public class ProjectTakeNumberService {
     @Autowired
     private BaseDataDicService baseDataDicService;
     @Autowired
-    private ProjectNumberRecordDao projectNumberRecordDao;
-    @Autowired
     private PublicService publicService;
+    @Autowired
+    private BaseAttachmentService baseAttachmentService;
+    @Autowired
+    private BaseProjectClassifyService baseProjectClassifyService;
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -124,10 +133,14 @@ public class ProjectTakeNumberService {
     public ProjectTakeNumber getDataByProcessInsId(String processInsId) {
         ProjectTakeNumber projectTakeNumber = new ProjectTakeNumber();
         projectTakeNumber.setProcessInsId(processInsId);
-        List<ProjectTakeNumber> projectTakeNumbers = projectTakeNumberDao.getProjectTakeNumber(projectTakeNumber);
+        List<ProjectTakeNumber> projectTakeNumbers = getProjectTakeNumberListQuery(projectTakeNumber);
         if (CollectionUtils.isNotEmpty(projectTakeNumbers))
             projectTakeNumber = projectTakeNumbers.get(0);
         return projectTakeNumber;
+    }
+
+    public List<ProjectTakeNumber> getProjectTakeNumberListQuery(ProjectTakeNumber target) {
+        return projectTakeNumberDao.getProjectTakeNumber(target);
     }
 
     public void approvalCommit(ApprovalModelDto approvalModelDto) {
@@ -159,6 +172,25 @@ public class ProjectTakeNumberService {
         projectTakeNumberDao.modifyProjectTakeNumber(projectTakeNumber);
     }
 
+    public void saveAndUpdateProjectTakeNumber(ProjectTakeNumber projectTakeNumber, Boolean updateNull) {
+        if (updateNull == null) {
+            updateNull = Boolean.FALSE;
+        }
+        if (projectTakeNumber == null) {
+            return;
+        }
+        if (projectTakeNumber.getId() == null || projectTakeNumber.getId() == 0) {
+            if (StringUtils.isEmpty(projectTakeNumber.getCreator())) {
+                projectTakeNumber.setCreator(processControllerComponent.getThisUser());
+            }
+            projectTakeNumberDao.addProjectTakeNumber(projectTakeNumber);
+            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(ProjectTakeNumber.class), projectTakeNumber.getId());
+
+        } else {
+            projectTakeNumberDao.updateProjectTakeNumber(projectTakeNumber, updateNull);
+        }
+    }
+
 
     /**
      * 获取数据列表
@@ -173,7 +205,7 @@ public class ProjectTakeNumberService {
         ProjectTakeNumber takeNumber = new ProjectTakeNumber();
         takeNumber.setProjectId(projectId);
         takeNumber.setStatus(ProcessStatusEnum.FINISH.getValue());
-        List<ProjectTakeNumber> list = projectTakeNumberDao.getProjectTakeNumber(takeNumber);
+        List<ProjectTakeNumber> list = getProjectTakeNumberListQuery(takeNumber);
         List<ProjectTakeNumberVo> vos = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(list)) {
             vos = LangUtils.transform(list, o -> getProjectTakeNumberVo(o, o.getNumberRecordId()));
@@ -193,7 +225,54 @@ public class ProjectTakeNumberService {
             vo.setReportTypeName(baseDataDicService.getNameById(projectTakeNumber.getReportType()));
             vo.setCreatorName(publicService.getUserNameByAccount(projectTakeNumber.getCreator()));
         }
+        if (numberRecordId != null) {
+
+        }
         return vo;
+    }
+
+    public ProjectTakeNumberVo getProjectTakeNumberVo(ProjectTakeNumber projectTakeNumber) {
+        return getProjectTakeNumberVo(projectTakeNumber, null);
+    }
+
+    public ProjectTakeNumber getProjectTakeNumberById(Integer id){
+        return projectTakeNumberDao.getProjectTakeNumberById(id) ;
+    }
+
+    /**
+     * 初始化 拿号 工作事项
+     * @param projectPlanDetails
+     */
+    public void initProjectTakeNumber(ProjectPlanDetails projectPlanDetails) {
+        Map<String,AssessProjectTypeEnum> typeEnumMap = Maps.newHashMap();
+        typeEnumMap.put(AssessProjectClassifyConstant.SINGLE_HOUSE_PROPERTY_CERTIFICATE_TYPE_SIMPLE,AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_HOUSE);
+        typeEnumMap.put(AssessProjectClassifyConstant.SINGLE_HOUSE_LAND_CERTIFICATE_TYPE_SIMPLE,AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_LAND) ;
+        typeEnumMap.put(AssessProjectClassifyConstant.COMPREHENSIVE_ASSETS_TYPE,AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_ASSETS) ;
+        ProjectTakeNumber query = new ProjectTakeNumber();
+        query.setPlanDetailsId(projectPlanDetails.getId());
+        query.setProjectId(projectPlanDetails.getProjectId());
+        if (StringUtils.isNotBlank(projectPlanDetails.getProcessInsId())) {
+            query.setProcessInsId(projectPlanDetails.getProcessInsId());
+        }
+        List<ProjectTakeNumber> projectTakeNumberList = getProjectTakeNumberListQuery(query);
+        if (CollectionUtils.isNotEmpty(projectTakeNumberList)) {
+            return;
+        }
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
+        List<AssessProjectTypeEnum> assessProjectTypeEnumList = new ArrayList<>(1) ;
+        Map<String, BaseProjectClassify> classifyMap = Maps.newHashMap();
+        typeEnumMap.forEach((s, assessProjectTypeEnum) -> classifyMap.put(s, baseProjectClassifyService.getCacheProjectClassifyByFieldName(s)));
+        if (!classifyMap.isEmpty()){
+            classifyMap.forEach((s, baseProjectClassify) -> {
+                if (com.google.common.base.Objects.equal(baseProjectClassify.getId(), projectInfo.getProjectCategoryId())) {
+                    if (typeEnumMap.containsKey(s)){
+                        assessProjectTypeEnumList.add(typeEnumMap.get(s)) ;
+                    }
+                }
+            });
+        }
+        query.setAssessProjectType(assessProjectTypeEnumList.get(0).getKey());
+        saveAndUpdateProjectTakeNumber(query, true);
     }
 
 }

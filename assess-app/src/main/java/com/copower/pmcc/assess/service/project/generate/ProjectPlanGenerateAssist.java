@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.service.project.generate;
 
-import com.copower.pmcc.ad.api.enums.AdPersonalEnum;
 import com.copower.pmcc.assess.common.enums.AssessProjectTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
@@ -19,9 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 描述:
@@ -58,11 +55,6 @@ public class ProjectPlanGenerateAssist implements ProjectPlanInterface {
 
     private void setModelParam(ProjectPlan projectPlan, ModelAndView modelAndView) {
         List<SchemeAreaGroup> schemeAreaGroupList = generateReportService.getAreaGroupList(projectPlan.getProjectId());
-        Map<String, String> qualificationTypes = new HashMap<>();
-        qualificationTypes.put(AdPersonalEnum.PERSONAL_QUALIFICATION_ASSESS_ZCTDGJS.getValue(), AdPersonalEnum.PERSONAL_QUALIFICATION_ASSESS_ZCTDGJS.getName());
-        qualificationTypes.put(AdPersonalEnum.PERSONAL_QUALIFICATION_ASSESS_ZCZCGJS.getValue(), AdPersonalEnum.PERSONAL_QUALIFICATION_ASSESS_ZCZCGJS.getName());
-        qualificationTypes.put(AdPersonalEnum.PERSONAL_QUALIFICATION_ASSESS_SFJDR.getValue(), AdPersonalEnum.PERSONAL_QUALIFICATION_ASSESS_SFJDR.getName());
-        qualificationTypes.put(AdPersonalEnum.PERSONAL_QUALIFICATION_ASSESS_ZCFDCGJS.getValue(), AdPersonalEnum.PERSONAL_QUALIFICATION_ASSESS_ZCFDCGJS.getName());
         List<BaseDataDic> reportTypeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.REPORT_TYPE);
         List<BaseDataDic> reportTypeList2 = Lists.newArrayList();
         List<String> stringList = Lists.newArrayList();
@@ -76,7 +68,7 @@ public class ProjectPlanGenerateAssist implements ProjectPlanInterface {
         modelAndView.addObject("reportTypeList",reportTypeList2);
         modelAndView.addObject("schemeAreaGroupList", schemeAreaGroupList);
         modelAndView.addObject("projectPlan", projectPlan);
-        modelAndView.addObject("qualificationTypes", qualificationTypes);
+        modelAndView.addObject("qualificationTypes", GenerateReportInfoService.getQualificationTypes());
         modelAndView.addObject("generationVos", generateReportInfoService.initGenerateReportInfo(projectPlan.getProjectId(),projectPlan.getId()));
         List<KeyValueDto> keyValueDtoList = Lists.newArrayList();
         for (AssessProjectTypeEnum typeEnum: AssessProjectTypeEnum.values()){

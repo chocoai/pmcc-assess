@@ -14,6 +14,13 @@
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+    <result column="qualification_type" property="qualificationType" jdbcType="VARCHAR" />
+    <result column="investigations_start_date" property="investigationsStartDate" jdbcType="TIMESTAMP" />
+    <result column="investigations_end_date" property="investigationsEndDate" jdbcType="TIMESTAMP" />
+    <result column="report_issuance_date" property="reportIssuanceDate" jdbcType="TIMESTAMP" />
+    <result column="home_work_end_time" property="homeWorkEndTime" jdbcType="TIMESTAMP" />
+    <result column="real_estate_appraiser" property="realEstateAppraiser" jdbcType="VARCHAR" />
+    <result column="plan_details_id" property="planDetailsId" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -75,7 +82,9 @@
   </sql>
   <sql id="Base_Column_List" >
     id, process_ins_id, project_id, assess_project_type, report_type, remark, status, 
-    number_record_id, number_value, creator, gmt_created, gmt_modified
+    number_record_id, number_value, creator, gmt_created, gmt_modified, qualification_type, 
+    investigations_start_date, investigations_end_date, report_issuance_date, home_work_end_time, 
+    real_estate_appraiser, plan_details_id
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectTakeNumberExample" >
     select
@@ -114,11 +123,17 @@
     insert into tb_project_take_number (process_ins_id, project_id, assess_project_type, 
       report_type, remark, status, 
       number_record_id, number_value, creator, 
-      gmt_created, gmt_modified)
+      gmt_created, gmt_modified, qualification_type, 
+      investigations_start_date, investigations_end_date, 
+      report_issuance_date, home_work_end_time, 
+      real_estate_appraiser, plan_details_id)
     values (#{processInsId,jdbcType=VARCHAR}, #{projectId,jdbcType=INTEGER}, #{assessProjectType,jdbcType=VARCHAR}, 
       #{reportType,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
       #{numberRecordId,jdbcType=INTEGER}, #{numberValue,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{qualificationType,jdbcType=VARCHAR}, 
+      #{investigationsStartDate,jdbcType=TIMESTAMP}, #{investigationsEndDate,jdbcType=TIMESTAMP}, 
+      #{reportIssuanceDate,jdbcType=TIMESTAMP}, #{homeWorkEndTime,jdbcType=TIMESTAMP}, 
+      #{realEstateAppraiser,jdbcType=VARCHAR}, #{planDetailsId,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectTakeNumber" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -159,6 +174,27 @@
       <if test="gmtModified != null" >
         gmt_modified,
       </if>
+      <if test="qualificationType != null" >
+        qualification_type,
+      </if>
+      <if test="investigationsStartDate != null" >
+        investigations_start_date,
+      </if>
+      <if test="investigationsEndDate != null" >
+        investigations_end_date,
+      </if>
+      <if test="reportIssuanceDate != null" >
+        report_issuance_date,
+      </if>
+      <if test="homeWorkEndTime != null" >
+        home_work_end_time,
+      </if>
+      <if test="realEstateAppraiser != null" >
+        real_estate_appraiser,
+      </if>
+      <if test="planDetailsId != null" >
+        plan_details_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="processInsId != null" >
@@ -193,6 +229,27 @@
       </if>
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="qualificationType != null" >
+        #{qualificationType,jdbcType=VARCHAR},
+      </if>
+      <if test="investigationsStartDate != null" >
+        #{investigationsStartDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="investigationsEndDate != null" >
+        #{investigationsEndDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reportIssuanceDate != null" >
+        #{reportIssuanceDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="homeWorkEndTime != null" >
+        #{homeWorkEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="realEstateAppraiser != null" >
+        #{realEstateAppraiser,jdbcType=VARCHAR},
+      </if>
+      <if test="planDetailsId != null" >
+        #{planDetailsId,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -241,6 +298,27 @@
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.qualificationType != null" >
+        qualification_type = #{record.qualificationType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.investigationsStartDate != null" >
+        investigations_start_date = #{record.investigationsStartDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.investigationsEndDate != null" >
+        investigations_end_date = #{record.investigationsEndDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.reportIssuanceDate != null" >
+        report_issuance_date = #{record.reportIssuanceDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.homeWorkEndTime != null" >
+        home_work_end_time = #{record.homeWorkEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.realEstateAppraiser != null" >
+        real_estate_appraiser = #{record.realEstateAppraiser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.planDetailsId != null" >
+        plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -259,7 +337,14 @@
       number_value = #{record.numberValue,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      qualification_type = #{record.qualificationType,jdbcType=VARCHAR},
+      investigations_start_date = #{record.investigationsStartDate,jdbcType=TIMESTAMP},
+      investigations_end_date = #{record.investigationsEndDate,jdbcType=TIMESTAMP},
+      report_issuance_date = #{record.reportIssuanceDate,jdbcType=TIMESTAMP},
+      home_work_end_time = #{record.homeWorkEndTime,jdbcType=TIMESTAMP},
+      real_estate_appraiser = #{record.realEstateAppraiser,jdbcType=VARCHAR},
+      plan_details_id = #{record.planDetailsId,jdbcType=INTEGER}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -300,6 +385,27 @@
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="qualificationType != null" >
+        qualification_type = #{qualificationType,jdbcType=VARCHAR},
+      </if>
+      <if test="investigationsStartDate != null" >
+        investigations_start_date = #{investigationsStartDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="investigationsEndDate != null" >
+        investigations_end_date = #{investigationsEndDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reportIssuanceDate != null" >
+        report_issuance_date = #{reportIssuanceDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="homeWorkEndTime != null" >
+        home_work_end_time = #{homeWorkEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="realEstateAppraiser != null" >
+        real_estate_appraiser = #{realEstateAppraiser,jdbcType=VARCHAR},
+      </if>
+      <if test="planDetailsId != null" >
+        plan_details_id = #{planDetailsId,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -315,7 +421,14 @@
       number_value = #{numberValue,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      qualification_type = #{qualificationType,jdbcType=VARCHAR},
+      investigations_start_date = #{investigationsStartDate,jdbcType=TIMESTAMP},
+      investigations_end_date = #{investigationsEndDate,jdbcType=TIMESTAMP},
+      report_issuance_date = #{reportIssuanceDate,jdbcType=TIMESTAMP},
+      home_work_end_time = #{homeWorkEndTime,jdbcType=TIMESTAMP},
+      real_estate_appraiser = #{realEstateAppraiser,jdbcType=VARCHAR},
+      plan_details_id = #{planDetailsId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

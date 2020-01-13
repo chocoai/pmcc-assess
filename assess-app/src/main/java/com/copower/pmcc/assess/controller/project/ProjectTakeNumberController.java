@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.controller.project;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
 import com.copower.pmcc.assess.controller.BaseController;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectNumberRecordDao;
@@ -10,21 +11,22 @@ import com.copower.pmcc.assess.dal.basis.entity.ProjectTakeNumber;
 import com.copower.pmcc.assess.dto.output.project.ProjectTakeNumberVo;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.ProjectTakeNumberService;
+import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
+import com.copower.pmcc.assess.service.project.ProjectNumberRecordService;
+import com.copower.pmcc.assess.service.project.ProjectQrcodeRecordService;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
+import com.copower.pmcc.erp.api.dto.SysSymbolListDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -33,7 +35,7 @@ import org.springframework.web.servlet.ModelAndView;
  * @author: huhao
  * @data: 2018-9-3
  */
-@Controller
+@RestController
 @RequestMapping(value = "/projectTakeNumber")
 public class ProjectTakeNumberController extends BaseController {
     @Autowired
@@ -50,6 +52,12 @@ public class ProjectTakeNumberController extends BaseController {
     private ProjectTakeNumberService projectTakeNumberService;
     @Autowired
     private BaseService baseService;
+    @Autowired
+    private ProjectQrcodeRecordService projectQrcodeRecordService;
+    @Autowired
+    private BaseAttachmentService baseAttachmentService;
+    @Autowired
+    private ProjectNumberRecordService projectNumberRecordService;
 
     @RequestMapping(value = "/apply", name = "项目拿号申请")
     public ModelAndView apply(Integer projectId) throws BusinessException {
@@ -64,7 +72,6 @@ public class ProjectTakeNumberController extends BaseController {
         return modelAndView;
     }
 
-    @ResponseBody
     @PostMapping(value = "/applyCommit", name = "项目拿号申请提交")
     public HttpResult applyCommit(ProjectTakeNumber projectTakeNumber) {
         try {
@@ -100,7 +107,6 @@ public class ProjectTakeNumberController extends BaseController {
     }
 
     @RequestMapping(value = "/approvalCommit", name = "审批提交", method = RequestMethod.POST)
-    @ResponseBody
     public HttpResult approvalCommit(ApprovalModelDto approvalModelDto) {
         try {
             projectTakeNumberService.approvalCommit(approvalModelDto);
@@ -124,7 +130,6 @@ public class ProjectTakeNumberController extends BaseController {
     }
 
     @RequestMapping(value = "/editCommit", name = "修改提交", method = RequestMethod.POST)
-    @ResponseBody
     public HttpResult editCommit(String businessDataJson, ApprovalModelDto approvalModelDto) {
         try {
             ProjectTakeNumber projectTakeNumber = JSON.parseObject(businessDataJson, ProjectTakeNumber.class);
@@ -137,9 +142,36 @@ public class ProjectTakeNumberController extends BaseController {
         }
     }
 
-    @ResponseBody
     @RequestMapping(value = "/getTakeNumberList", name = "拿号列表", method = RequestMethod.GET)
     public BootstrapTableVo getDocumentSendVoList(Integer projectId) {
         return projectTakeNumberService.getDocumentSendVoList(projectId);
     }
+
+    @GetMapping(value = "/getProjectWordNumber", name = "文号拿取")
+    public HttpResult getProjectWordNumber(@RequestParam(name = "areaId", defaultValue = "0") Integer areaId, String formData) {
+        try {
+            ProjectTakeNumber projectTakeNumber = JSONObject.parseObject(formData, ProjectTakeNumber.class);
+            SysSymbolListDto sysSymbolListDto = projectNumberRecordService.getSysSymbolListDto(areaId, projectTakeNumber.getProjectId(), projectTakeNumber.getReportType(), projectTakeNumber.getAssessProjectType());
+            projectTakeNumber.setNumberValue(sysSymbolListDto.getSymbol());
+            projectTakeNumberService.saveAndUpdateProjectTakeNumber(projectTakeNumber, false);
+            return HttpResult.newCorrectResult(200, projectTakeNumber);
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
+            return HttpResult.newErrorResult(500, e);
+        }
+    }
+
+    @GetMapping(value = "/toolBaseOrCode", name = "二维码 拿取")
+    public HttpResult toolBaseOrCode(Integer takeNumberId) {
+        try {
+            ProjectTakeNumber projectTakeNumber = projectTakeNumberService.getProjectTakeNumberById(takeNumberId) ;
+            SysAttachmentDto sysAttachmentDto = projectQrcodeRecordService.toolBaseOrCode(projectTakeNumber);
+            sysAttachmentDto.setFilePath(baseAttachmentService.getViewImageUrl(sysAttachmentDto.getId()));
+            return HttpResult.newCorrectResult(200, sysAttachmentDto);
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
+            return HttpResult.newErrorResult(500, e);
+        }
+    }
+
 }

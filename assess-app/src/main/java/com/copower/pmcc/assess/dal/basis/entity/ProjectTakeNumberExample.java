@@ -884,6 +884,446 @@ public class ProjectTakeNumberExample {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
             return (Criteria) this;
         }
+
+        public Criteria andQualificationTypeIsNull() {
+            addCriterion("qualification_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualificationTypeIsNotNull() {
+            addCriterion("qualification_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualificationTypeEqualTo(String value) {
+            addCriterion("qualification_type =", value, "qualificationType");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualificationTypeNotEqualTo(String value) {
+            addCriterion("qualification_type <>", value, "qualificationType");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualificationTypeGreaterThan(String value) {
+            addCriterion("qualification_type >", value, "qualificationType");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualificationTypeGreaterThanOrEqualTo(String value) {
+            addCriterion("qualification_type >=", value, "qualificationType");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualificationTypeLessThan(String value) {
+            addCriterion("qualification_type <", value, "qualificationType");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualificationTypeLessThanOrEqualTo(String value) {
+            addCriterion("qualification_type <=", value, "qualificationType");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualificationTypeLike(String value) {
+            addCriterion("qualification_type like", value, "qualificationType");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualificationTypeNotLike(String value) {
+            addCriterion("qualification_type not like", value, "qualificationType");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualificationTypeIn(List<String> values) {
+            addCriterion("qualification_type in", values, "qualificationType");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualificationTypeNotIn(List<String> values) {
+            addCriterion("qualification_type not in", values, "qualificationType");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualificationTypeBetween(String value1, String value2) {
+            addCriterion("qualification_type between", value1, value2, "qualificationType");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualificationTypeNotBetween(String value1, String value2) {
+            addCriterion("qualification_type not between", value1, value2, "qualificationType");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvestigationsStartDateIsNull() {
+            addCriterion("investigations_start_date is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvestigationsStartDateIsNotNull() {
+            addCriterion("investigations_start_date is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvestigationsStartDateEqualTo(Date value) {
+            addCriterion("investigations_start_date =", value, "investigationsStartDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvestigationsStartDateNotEqualTo(Date value) {
+            addCriterion("investigations_start_date <>", value, "investigationsStartDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvestigationsStartDateGreaterThan(Date value) {
+            addCriterion("investigations_start_date >", value, "investigationsStartDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvestigationsStartDateGreaterThanOrEqualTo(Date value) {
+            addCriterion("investigations_start_date >=", value, "investigationsStartDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvestigationsStartDateLessThan(Date value) {
+            addCriterion("investigations_start_date <", value, "investigationsStartDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvestigationsStartDateLessThanOrEqualTo(Date value) {
+            addCriterion("investigations_start_date <=", value, "investigationsStartDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvestigationsStartDateIn(List<Date> values) {
+            addCriterion("investigations_start_date in", values, "investigationsStartDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvestigationsStartDateNotIn(List<Date> values) {
+            addCriterion("investigations_start_date not in", values, "investigationsStartDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvestigationsStartDateBetween(Date value1, Date value2) {
+            addCriterion("investigations_start_date between", value1, value2, "investigationsStartDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvestigationsStartDateNotBetween(Date value1, Date value2) {
+            addCriterion("investigations_start_date not between", value1, value2, "investigationsStartDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvestigationsEndDateIsNull() {
+            addCriterion("investigations_end_date is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvestigationsEndDateIsNotNull() {
+            addCriterion("investigations_end_date is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvestigationsEndDateEqualTo(Date value) {
+            addCriterion("investigations_end_date =", value, "investigationsEndDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvestigationsEndDateNotEqualTo(Date value) {
+            addCriterion("investigations_end_date <>", value, "investigationsEndDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvestigationsEndDateGreaterThan(Date value) {
+            addCriterion("investigations_end_date >", value, "investigationsEndDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvestigationsEndDateGreaterThanOrEqualTo(Date value) {
+            addCriterion("investigations_end_date >=", value, "investigationsEndDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvestigationsEndDateLessThan(Date value) {
+            addCriterion("investigations_end_date <", value, "investigationsEndDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvestigationsEndDateLessThanOrEqualTo(Date value) {
+            addCriterion("investigations_end_date <=", value, "investigationsEndDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvestigationsEndDateIn(List<Date> values) {
+            addCriterion("investigations_end_date in", values, "investigationsEndDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvestigationsEndDateNotIn(List<Date> values) {
+            addCriterion("investigations_end_date not in", values, "investigationsEndDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvestigationsEndDateBetween(Date value1, Date value2) {
+            addCriterion("investigations_end_date between", value1, value2, "investigationsEndDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvestigationsEndDateNotBetween(Date value1, Date value2) {
+            addCriterion("investigations_end_date not between", value1, value2, "investigationsEndDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andReportIssuanceDateIsNull() {
+            addCriterion("report_issuance_date is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andReportIssuanceDateIsNotNull() {
+            addCriterion("report_issuance_date is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andReportIssuanceDateEqualTo(Date value) {
+            addCriterion("report_issuance_date =", value, "reportIssuanceDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andReportIssuanceDateNotEqualTo(Date value) {
+            addCriterion("report_issuance_date <>", value, "reportIssuanceDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andReportIssuanceDateGreaterThan(Date value) {
+            addCriterion("report_issuance_date >", value, "reportIssuanceDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andReportIssuanceDateGreaterThanOrEqualTo(Date value) {
+            addCriterion("report_issuance_date >=", value, "reportIssuanceDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andReportIssuanceDateLessThan(Date value) {
+            addCriterion("report_issuance_date <", value, "reportIssuanceDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andReportIssuanceDateLessThanOrEqualTo(Date value) {
+            addCriterion("report_issuance_date <=", value, "reportIssuanceDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andReportIssuanceDateIn(List<Date> values) {
+            addCriterion("report_issuance_date in", values, "reportIssuanceDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andReportIssuanceDateNotIn(List<Date> values) {
+            addCriterion("report_issuance_date not in", values, "reportIssuanceDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andReportIssuanceDateBetween(Date value1, Date value2) {
+            addCriterion("report_issuance_date between", value1, value2, "reportIssuanceDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andReportIssuanceDateNotBetween(Date value1, Date value2) {
+            addCriterion("report_issuance_date not between", value1, value2, "reportIssuanceDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andHomeWorkEndTimeIsNull() {
+            addCriterion("home_work_end_time is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHomeWorkEndTimeIsNotNull() {
+            addCriterion("home_work_end_time is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHomeWorkEndTimeEqualTo(Date value) {
+            addCriterion("home_work_end_time =", value, "homeWorkEndTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andHomeWorkEndTimeNotEqualTo(Date value) {
+            addCriterion("home_work_end_time <>", value, "homeWorkEndTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andHomeWorkEndTimeGreaterThan(Date value) {
+            addCriterion("home_work_end_time >", value, "homeWorkEndTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andHomeWorkEndTimeGreaterThanOrEqualTo(Date value) {
+            addCriterion("home_work_end_time >=", value, "homeWorkEndTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andHomeWorkEndTimeLessThan(Date value) {
+            addCriterion("home_work_end_time <", value, "homeWorkEndTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andHomeWorkEndTimeLessThanOrEqualTo(Date value) {
+            addCriterion("home_work_end_time <=", value, "homeWorkEndTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andHomeWorkEndTimeIn(List<Date> values) {
+            addCriterion("home_work_end_time in", values, "homeWorkEndTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andHomeWorkEndTimeNotIn(List<Date> values) {
+            addCriterion("home_work_end_time not in", values, "homeWorkEndTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andHomeWorkEndTimeBetween(Date value1, Date value2) {
+            addCriterion("home_work_end_time between", value1, value2, "homeWorkEndTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andHomeWorkEndTimeNotBetween(Date value1, Date value2) {
+            addCriterion("home_work_end_time not between", value1, value2, "homeWorkEndTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andRealEstateAppraiserIsNull() {
+            addCriterion("real_estate_appraiser is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRealEstateAppraiserIsNotNull() {
+            addCriterion("real_estate_appraiser is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRealEstateAppraiserEqualTo(String value) {
+            addCriterion("real_estate_appraiser =", value, "realEstateAppraiser");
+            return (Criteria) this;
+        }
+
+        public Criteria andRealEstateAppraiserNotEqualTo(String value) {
+            addCriterion("real_estate_appraiser <>", value, "realEstateAppraiser");
+            return (Criteria) this;
+        }
+
+        public Criteria andRealEstateAppraiserGreaterThan(String value) {
+            addCriterion("real_estate_appraiser >", value, "realEstateAppraiser");
+            return (Criteria) this;
+        }
+
+        public Criteria andRealEstateAppraiserGreaterThanOrEqualTo(String value) {
+            addCriterion("real_estate_appraiser >=", value, "realEstateAppraiser");
+            return (Criteria) this;
+        }
+
+        public Criteria andRealEstateAppraiserLessThan(String value) {
+            addCriterion("real_estate_appraiser <", value, "realEstateAppraiser");
+            return (Criteria) this;
+        }
+
+        public Criteria andRealEstateAppraiserLessThanOrEqualTo(String value) {
+            addCriterion("real_estate_appraiser <=", value, "realEstateAppraiser");
+            return (Criteria) this;
+        }
+
+        public Criteria andRealEstateAppraiserLike(String value) {
+            addCriterion("real_estate_appraiser like", value, "realEstateAppraiser");
+            return (Criteria) this;
+        }
+
+        public Criteria andRealEstateAppraiserNotLike(String value) {
+            addCriterion("real_estate_appraiser not like", value, "realEstateAppraiser");
+            return (Criteria) this;
+        }
+
+        public Criteria andRealEstateAppraiserIn(List<String> values) {
+            addCriterion("real_estate_appraiser in", values, "realEstateAppraiser");
+            return (Criteria) this;
+        }
+
+        public Criteria andRealEstateAppraiserNotIn(List<String> values) {
+            addCriterion("real_estate_appraiser not in", values, "realEstateAppraiser");
+            return (Criteria) this;
+        }
+
+        public Criteria andRealEstateAppraiserBetween(String value1, String value2) {
+            addCriterion("real_estate_appraiser between", value1, value2, "realEstateAppraiser");
+            return (Criteria) this;
+        }
+
+        public Criteria andRealEstateAppraiserNotBetween(String value1, String value2) {
+            addCriterion("real_estate_appraiser not between", value1, value2, "realEstateAppraiser");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdIsNull() {
+            addCriterion("plan_details_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdIsNotNull() {
+            addCriterion("plan_details_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdEqualTo(Integer value) {
+            addCriterion("plan_details_id =", value, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdNotEqualTo(Integer value) {
+            addCriterion("plan_details_id <>", value, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdGreaterThan(Integer value) {
+            addCriterion("plan_details_id >", value, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("plan_details_id >=", value, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdLessThan(Integer value) {
+            addCriterion("plan_details_id <", value, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdLessThanOrEqualTo(Integer value) {
+            addCriterion("plan_details_id <=", value, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdIn(List<Integer> values) {
+            addCriterion("plan_details_id in", values, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdNotIn(List<Integer> values) {
+            addCriterion("plan_details_id not in", values, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdBetween(Integer value1, Integer value2) {
+            addCriterion("plan_details_id between", value1, value2, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("plan_details_id not between", value1, value2, "planDetailsId");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

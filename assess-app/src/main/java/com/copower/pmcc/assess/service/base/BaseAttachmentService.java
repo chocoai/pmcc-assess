@@ -366,6 +366,10 @@ public class BaseAttachmentService {
      * @throws Exception
      */
     public String importAjaxFile(String filePath, SysAttachmentDto params) throws Exception {
+       return importAjaxFileHandle(filePath, params).getId().toString();
+    }
+
+    public SysAttachmentDto importAjaxFileHandle(String filePath, SysAttachmentDto params) throws Exception {
         File file = new File(filePath);
         SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
         sysAttachmentDto.setTableId(params.getTableId() == null ? 0 : params.getTableId());
@@ -404,7 +408,7 @@ public class BaseAttachmentService {
         sysAttachmentDto.setFtpFileName(ftpFileName);
         ftpUtilsExtense.uploadFilesToFTP(ftpBasePath, new FileInputStream(file), ftpFileName);
         addAttachment(sysAttachmentDto);
-        return String.valueOf(sysAttachmentDto.getId());
+        return sysAttachmentDto;
     }
 
     public String getViewImageUrl(Integer id) throws BusinessException {

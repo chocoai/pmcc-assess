@@ -5,14 +5,9 @@ import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.custom.entity.CustomProjectNumberRecord;
 import com.copower.pmcc.assess.dal.basis.custom.mapper.CustomProjectNumberRecordMapper;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectNumberRecordDao;
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.basis.entity.DataNumberRule;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectNumberRecord;
-import com.copower.pmcc.assess.dto.output.data.DataPropertyVo;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataNumberRuleService;
-import com.copower.pmcc.assess.service.project.generate.GenerateCommonMethod;
 import com.copower.pmcc.erp.api.dto.SysSymbolListDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
@@ -27,15 +22,14 @@ import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.base.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -52,8 +46,6 @@ public class ProjectNumberRecordService {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private CommonService commonService;
-    @Autowired
-    private GenerateCommonMethod generateCommonMethod;
     @Autowired
     private ProjectInfoService projectInfoService;
     @Autowired
@@ -189,11 +181,11 @@ public class ProjectNumberRecordService {
     }
 
 
-    public BootstrapTableVo getProjectNumberRecordList(String projectName,Integer reportType,String numberValue){
+    public BootstrapTableVo getProjectNumberRecordList(String projectName, Integer reportType, String numberValue) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<CustomProjectNumberRecord> customNumberRecordList = customProjectNumberRecordMapper.getAllProjectNumberRecord(projectName,reportType,numberValue);
+        List<CustomProjectNumberRecord> customNumberRecordList = customProjectNumberRecordMapper.getAllProjectNumberRecord(projectName, reportType, numberValue);
         List<CustomProjectNumberRecord> vos = LangUtils.transform(customNumberRecordList, o -> getCustomProjectNumberRecord(o));
         vo.setTotal(page.getTotal());
         vo.setRows(org.apache.commons.collections.CollectionUtils.isEmpty(vos) ? new ArrayList<CustomProjectNumberRecord>() : vos);
@@ -201,14 +193,37 @@ public class ProjectNumberRecordService {
     }
 
     public CustomProjectNumberRecord getCustomProjectNumberRecord(CustomProjectNumberRecord data) {
-        if (data == null){
+        if (data == null) {
             return null;
         }
         CustomProjectNumberRecord vo = new CustomProjectNumberRecord();
         BeanUtils.copyProperties(data, vo);
-        if (data.getReportType()!=null) {
+        if (data.getReportType() != null) {
             vo.setReportTypeName(baseDataDicService.getNameById(data.getReportType()));
         }
         return vo;
     }
+
+    /**
+     * 文号拿取
+     *
+     * @param areaId
+     * @param projectId
+     * @param reportType
+     * @return
+     * @throws BusinessException
+     */
+    public SysSymbolListDto getSysSymbolListDto(Integer areaId, Integer projectId, Integer reportType, String assessProjectType) throws BusinessException {
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
+        AssessProjectTypeEnum assessProjectTypeEnum = null;
+        for (AssessProjectTypeEnum typeEnum : AssessProjectTypeEnum.values()) {
+            if (!com.google.common.base.Objects.equal(assessProjectType, typeEnum.getKey())) {
+                continue;
+            }
+            assessProjectTypeEnum = typeEnum;
+        }
+        return getReportNumber(projectInfo, areaId, assessProjectTypeEnum, reportType, false);
+    }
+
+
 }
