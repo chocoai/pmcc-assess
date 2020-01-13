@@ -218,8 +218,11 @@ public class ProjectNumberRecordService {
         AssessProjectTypeEnum assessProjectTypeEnum = null;
         for (AssessProjectTypeEnum typeEnum : AssessProjectTypeEnum.values()) {
             if (!com.google.common.base.Objects.equal(assessProjectType, typeEnum.getKey())) {
-                continue;
+                continue ;
             }
+
+
+
             assessProjectTypeEnum = typeEnum;
         }
         return getReportNumber(projectInfo, areaId, assessProjectTypeEnum, reportType, false);
