@@ -1,22 +1,17 @@
 package com.copower.pmcc.assess.service.report;
 
-import com.copower.pmcc.ad.api.provider.AdRpcQualificationsService;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.custom.entity.CustomReportHuaXiaBank;
 import com.copower.pmcc.assess.dal.basis.custom.mapper.CustomReportHuaXiaBankMapper;
-import com.copower.pmcc.assess.dal.basis.dao.project.initiate.InitiateContactsDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
 import com.copower.pmcc.assess.dto.output.project.initiate.InitiateConsignorVo;
 import com.copower.pmcc.assess.dto.output.project.initiate.InitiatePossessorVo;
-import com.copower.pmcc.assess.service.BaseService;
-import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.project.ProjectNumberRecordService;
 import com.copower.pmcc.assess.service.project.initiate.InitiateConsignorService;
 import com.copower.pmcc.assess.service.project.initiate.InitiatePossessorService;
-import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeFunctionService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -27,7 +22,6 @@ import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -52,19 +46,9 @@ public class CustomReportHuaXiaBankService {
     @Autowired
     private BaseDataDicService baseDataDicService;
     @Autowired
-    private PublicService publicService;
-    @Autowired
     private SchemeJudgeObjectService schemeJudgeObjectService;
     @Autowired
-    private SchemeJudgeFunctionService schemeJudgeFunctionService;
-    @Autowired
     private InitiateConsignorService initiateConsignorService;
-    @Autowired
-    private InitiateContactsDao initiateContactsDao;
-    @Autowired
-    private AdRpcQualificationsService adRpcQualificationsService;
-    @Autowired
-    private BaseService baseService;
     @Autowired
     private CustomReportHuaXiaBankMapper customReportHuaXiaBankMapper;
     @Autowired
@@ -79,7 +63,6 @@ public class CustomReportHuaXiaBankService {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<Integer> reportTypes = Lists.newArrayList();
         List<CustomReportHuaXiaBank> customNumberRecordList = customReportHuaXiaBankMapper.getCustomReportHuaXiaBankList(numberValue, unitName);
         List<CustomReportHuaXiaBank> vos = LangUtils.transform(customNumberRecordList, o -> getCustomReportHuaXiaBank(o));
         vo.setTotal(page.getTotal());
