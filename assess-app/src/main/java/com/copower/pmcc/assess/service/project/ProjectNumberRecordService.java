@@ -211,4 +211,16 @@ public class ProjectNumberRecordService {
         }
         return vo;
     }
+
+    public List<String> getReportNumberByArea(Integer projectId,Integer areaId, Integer reportType) {
+        ProjectNumberRecord where = new ProjectNumberRecord();
+        where.setBisDelete(false);
+        where.setProjectId(projectId);
+        where.setAreaId(areaId);
+        where.setReportType(reportType);
+        List<ProjectNumberRecord> numberList = projectNumberRecordDao.getProjectNumberRecordList(where);
+        List<String> list = LangUtils.transform(numberList, o -> o.getNumberValue());
+        return list;
+    }
+
 }
