@@ -681,7 +681,7 @@ public class GenerateCommonMethod {
         }
     }
 
-    public List<String> specialTreatment(List<String> strings) {
+    public static List<String> specialTreatment(List<String> strings) {
         List<String> stringList = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(strings)) {
             for (String s : strings) {

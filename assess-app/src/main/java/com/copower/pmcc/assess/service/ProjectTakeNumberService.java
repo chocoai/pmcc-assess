@@ -1,10 +1,13 @@
 package com.copower.pmcc.assess.service;
 
+import com.aspose.words.*;
+import com.copower.pmcc.ad.api.enums.AdPersonalEnum;
+import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.enums.AssessProjectTypeEnum;
 import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
+import com.copower.pmcc.assess.common.enums.report.BaseReportFieldEnum;
 import com.copower.pmcc.assess.constant.AssessProjectClassifyConstant;
-import com.copower.pmcc.assess.dal.basis.dao.project.ProjectNumberRecordDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectTakeNumberDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.ProjectTakeNumberVo;
@@ -37,7 +40,9 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Ordering;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,10 +51,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.io.File;
+import java.io.FileInputStream;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
+import java.util.regex.Pattern;
 
 @Service
 public class ProjectTakeNumberService {
@@ -191,6 +197,115 @@ public class ProjectTakeNumberService {
         }
     }
 
+    /**
+     * 替换文号和 二维码
+     *
+     * @param attachmentIds 需要替换的文档
+     * @param symbol        文号
+     * @param query         二维码附件
+     */
+    public void replaceDocument(String attachmentIds, String symbol, SysAttachmentDto query) throws Exception {
+        if (StringUtils.isEmpty(attachmentIds)) {
+            return;
+        }
+        if (StringUtils.isEmpty(symbol)) {
+            return;
+        }
+        List<Integer> ids = FormatUtils.transformString2Integer(attachmentIds);
+        if (CollectionUtils.isEmpty(ids)) {
+            return;
+        }
+        Map<Integer, String> integerStringMap = new HashMap<>(ids.size());
+        Iterator<Integer> integerIterator = ids.iterator();
+        while (integerIterator.hasNext()) {
+            Integer id = integerIterator.next();
+            String path = baseAttachmentService.downloadFtpFileToLocal(id);
+            if (StringUtils.isNotBlank(path)) {
+                String extension = FilenameUtils.getExtension(path);
+                //必须是规定的文档
+                int[] arr = new int[]{SaveFormat.DOC, SaveFormat.DOT, SaveFormat.DOTX, SaveFormat.DOCM, SaveFormat.DOTX, SaveFormat.DOTM};
+                for (int i = 0; i < arr.length; i++) {
+                    if (StringUtils.equalsIgnoreCase(SaveFormat.getName(arr[i]), extension)) {
+                        integerStringMap.put(id, path);
+                    }
+                }
+            }
+        }
+        if (integerStringMap.isEmpty()) {
+            return;
+        }
+        String otherPath = null;
+        SysAttachmentDto sysAttachmentDto = null;
+        if (query != null) {
+            List<SysAttachmentDto> sysAttachmentDtoList = baseAttachmentService.getAttachmentList(query);
+            if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
+                Ordering<SysAttachmentDto> ordering = Ordering.from(new Comparator<SysAttachmentDto>() {
+                    @Override
+                    public int compare(SysAttachmentDto o1, SysAttachmentDto o2) {
+                        return o1.getId().compareTo(o2.getId());
+                    }
+                }).reverse();
+                Collections.sort(sysAttachmentDtoList, ordering);
+                sysAttachmentDto = sysAttachmentDtoList.get(0);
+            }
+        }
+        if (sysAttachmentDto != null) {
+            otherPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getId());
+        }
+        Iterator<Map.Entry<Integer, String>> entryIterator = integerStringMap.entrySet().iterator();
+        while (entryIterator.hasNext()) {
+            Map.Entry<Integer, String> entry = entryIterator.next();
+            Integer id = entry.getKey();
+            SysAttachmentDto params = baseAttachmentService.getSysAttachmentDto(id);
+            params.setId(null);
+            params.setFilePath(null);
+            params.setFileSize(null);
+//            params.setFileName(null);
+            String tempPath = entry.getValue();
+
+            //开始替换
+            replaceDocument(tempPath, symbol, otherPath);
+
+            baseAttachmentService.importAjaxFile(tempPath, params);
+            baseAttachmentService.deleteAttachment(id);
+        }
+    }
+
+    /**
+     * 替换类似${文号},${二维码}
+     *
+     * @param tempPath  源文件
+     * @param symbol    文号字符串
+     * @param otherPath 二维码文件
+     */
+    private void replaceDocument(String tempPath, String symbol, String otherPath) throws Exception {
+        Document document = new Document(tempPath);
+        String reportNumber = String.join("", "${", BaseReportFieldEnum.ReportNumber.getName(), "}");
+        String reportQrcode = String.join("", "\\$\\{", BaseReportFieldEnum.ReportQrcode.getName(), "\\}");
+        document.getRange().replace(reportNumber, symbol, false, false);
+        if (StringUtils.isNotBlank(otherPath)) {
+            IReplacingCallback callback = new IReplacingCallback() {
+                @Override
+                public int replacing(ReplacingArgs e) throws Exception {
+                    DocumentBuilder builder = new DocumentBuilder((Document) e.getMatchNode().getDocument());
+                    builder.moveTo(e.getMatchNode());
+
+                    String folder = System.getProperty("java.io.tmpdir");
+                    String replacePath = String.join("", folder, File.separator, UUID.randomUUID().toString(), ".", "doc");
+                    Document replacingCallback = new Document();
+                    DocumentBuilder documentBuilder = new DocumentBuilder(replacingCallback);
+                    documentBuilder.insertImage(new FileInputStream(otherPath));
+                    AsposeUtils.saveWord(replacePath, replacingCallback);
+
+                    builder.insertDocument(replacingCallback, 0);
+                    return 0;
+                }
+            };
+            document.getRange().replace(Pattern.compile(reportQrcode), callback, false);
+        }
+        AsposeUtils.saveWord(tempPath, document);
+    }
+
 
     /**
      * 获取数据列表
@@ -221,12 +336,26 @@ public class ProjectTakeNumberService {
         }
         ProjectTakeNumberVo vo = new ProjectTakeNumberVo();
         BeanUtils.copyProperties(projectTakeNumber, vo);
+        vo.setReportTypeName(baseDataDicService.getNameById(projectTakeNumber.getReportType()));
         if (projectTakeNumber.getReportType() != null) {
-            vo.setReportTypeName(baseDataDicService.getNameById(projectTakeNumber.getReportType()));
             vo.setCreatorName(publicService.getUserNameByAccount(projectTakeNumber.getCreator()));
         }
         if (numberRecordId != null) {
 
+        }
+        //取资质名称
+        if (StringUtils.isNotBlank(projectTakeNumber.getQualificationType())) {
+            AdPersonalEnum adPersonalEnum = AdPersonalEnum.create(projectTakeNumber.getQualificationType());
+            if (adPersonalEnum != null)
+                vo.setQualificationTypeName(adPersonalEnum.getName());
+        }
+        //取估价师名称
+        if (StringUtils.isNotBlank(projectTakeNumber.getRealEstateAppraiser())) {
+            List<String> stringList = FormatUtils.transformString2List(projectTakeNumber.getRealEstateAppraiser());
+            if (!org.springframework.util.CollectionUtils.isEmpty(stringList)) {
+                String userName = publicService.getUserNameByAccountList(stringList);
+                vo.setRealEstateAppraiserName(userName);
+            }
         }
         return vo;
     }
@@ -235,19 +364,20 @@ public class ProjectTakeNumberService {
         return getProjectTakeNumberVo(projectTakeNumber, null);
     }
 
-    public ProjectTakeNumber getProjectTakeNumberById(Integer id){
-        return projectTakeNumberDao.getProjectTakeNumberById(id) ;
+    public ProjectTakeNumber getProjectTakeNumberById(Integer id) {
+        return projectTakeNumberDao.getProjectTakeNumberById(id);
     }
 
     /**
      * 初始化 拿号 工作事项
+     *
      * @param projectPlanDetails
      */
     public void initProjectTakeNumber(ProjectPlanDetails projectPlanDetails) {
-        Map<String,AssessProjectTypeEnum> typeEnumMap = Maps.newHashMap();
-        typeEnumMap.put(AssessProjectClassifyConstant.SINGLE_HOUSE_PROPERTY_CERTIFICATE_TYPE_SIMPLE,AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_HOUSE);
-        typeEnumMap.put(AssessProjectClassifyConstant.SINGLE_HOUSE_LAND_CERTIFICATE_TYPE_SIMPLE,AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_LAND) ;
-        typeEnumMap.put(AssessProjectClassifyConstant.COMPREHENSIVE_ASSETS_TYPE,AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_ASSETS) ;
+        Map<String, AssessProjectTypeEnum> typeEnumMap = Maps.newHashMap();
+        typeEnumMap.put(AssessProjectClassifyConstant.SINGLE_HOUSE_PROPERTY_CERTIFICATE_TYPE_SIMPLE, AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_HOUSE);
+        typeEnumMap.put(AssessProjectClassifyConstant.SINGLE_HOUSE_LAND_CERTIFICATE_TYPE_SIMPLE, AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_LAND);
+        typeEnumMap.put(AssessProjectClassifyConstant.COMPREHENSIVE_ASSETS_TYPE, AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_ASSETS);
         ProjectTakeNumber query = new ProjectTakeNumber();
         query.setPlanDetailsId(projectPlanDetails.getId());
         query.setProjectId(projectPlanDetails.getProjectId());
@@ -259,14 +389,14 @@ public class ProjectTakeNumberService {
             return;
         }
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
-        List<AssessProjectTypeEnum> assessProjectTypeEnumList = new ArrayList<>(1) ;
+        List<AssessProjectTypeEnum> assessProjectTypeEnumList = new ArrayList<>(1);
         Map<String, BaseProjectClassify> classifyMap = Maps.newHashMap();
         typeEnumMap.forEach((s, assessProjectTypeEnum) -> classifyMap.put(s, baseProjectClassifyService.getCacheProjectClassifyByFieldName(s)));
-        if (!classifyMap.isEmpty()){
+        if (!classifyMap.isEmpty()) {
             classifyMap.forEach((s, baseProjectClassify) -> {
                 if (com.google.common.base.Objects.equal(baseProjectClassify.getId(), projectInfo.getProjectCategoryId())) {
-                    if (typeEnumMap.containsKey(s)){
-                        assessProjectTypeEnumList.add(typeEnumMap.get(s)) ;
+                    if (typeEnumMap.containsKey(s)) {
+                        assessProjectTypeEnumList.add(typeEnumMap.get(s));
                     }
                 }
             });

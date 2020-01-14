@@ -16,6 +16,7 @@ import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -73,19 +74,29 @@ public class ProjectQrcodeRecordService {
         projectDocumentDto.setCustomer(projectTakeNumber.getRealEstateAppraiser());
         projectDocumentDto.setDocumentNumber(projectTakeNumber.getNumberValue());
         projectDocumentDto.setAppKey(applicationConstant.getAppKey());
+
+        projectDocumentDto.setProjectId(projectTakeNumber.getProjectId());
+
+        //二维码跳转错误,现在没有解决
+        projectDocumentDto.setErpProjectId(projectTakeNumber.getProjectId());
+
+
         projectDocumentDto.setTableName(FormatUtils.entityNameConvertToTableName(ProjectTakeNumber.class));
         projectDocumentDto.setFieldsName(String.join("_", ProjectTakeNumber.class.getSimpleName(), "BaseOrCode"));
         projectDocumentDto.setTableId(projectTakeNumber.getId());
         projectDocumentDto.setReportDate(DateUtils.formatDate(projectTakeNumber.getReportIssuanceDate(), DateUtils.DATE_CHINESE_PATTERN));
         projectDocumentDto.setReportMember(publicService.getUserNameByAccount(projectTakeNumber.getRealEstateAppraiser()));
         projectDocumentDto.setCreator(projectTakeNumber.getRealEstateAppraiser());
-        erpRpcToolsService.saveProjectDocument(projectDocumentDto);
+        ProjectDocumentDto document = erpRpcToolsService.saveProjectDocument(projectDocumentDto);
+        if (document != null){
+            BeanUtils.copyProperties(document,projectDocumentDto);
+        }
         String qrCode = "";
         if (StringUtils.isNotBlank(projectDocumentDto.getQrcode())) {
             qrCode = projectDocumentDto.getQrcode();
         }else {
             StringBuilder stringBuilder = new StringBuilder(8);
-            stringBuilder.append("").append("文号号:").append(projectTakeNumber.getNumberValue()).append(";").append(StringUtils.repeat("\n\r\t", 1));
+            stringBuilder.append("").append("文号:").append(projectTakeNumber.getNumberValue()).append(";").append(StringUtils.repeat("\n\r\t", 1));
             qrCode = stringBuilder.toString();
         }
         String folder = System.getProperty("java.io.tmpdir");
@@ -95,6 +106,7 @@ public class ProjectQrcodeRecordService {
         sysAttachmentDto.setTableId(projectDocumentDto.getTableId());
         sysAttachmentDto.setTableName(projectDocumentDto.getTableName());
         sysAttachmentDto.setFieldsName(projectDocumentDto.getFieldsName());
+        baseAttachmentService.deleteAttachmentByDto(sysAttachmentDto) ;
         //上传形成附件
         return baseAttachmentService.importAjaxFileHandle(imagePath, sysAttachmentDto);
     }

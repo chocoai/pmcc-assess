@@ -15,6 +15,9 @@ public class ProjectTakeNumberVo extends ProjectTakeNumber {
     private String creatorName;
     private Date takeTime;
 
+    private String qualificationTypeName;
+    private String realEstateAppraiserName;
+
     public String getNumberValue() {
         return numberValue;
     }
@@ -45,5 +48,21 @@ public class ProjectTakeNumberVo extends ProjectTakeNumber {
 
     public void setReportTypeName(String reportTypeName) {
         this.reportTypeName = reportTypeName;
+    }
+
+    public String getQualificationTypeName() {
+        return qualificationTypeName;
+    }
+
+    public void setQualificationTypeName(String qualificationTypeName) {
+        this.qualificationTypeName = qualificationTypeName;
+    }
+
+    public String getRealEstateAppraiserName() {
+        return realEstateAppraiserName;
+    }
+
+    public void setRealEstateAppraiserName(String realEstateAppraiserName) {
+        this.realEstateAppraiserName = realEstateAppraiserName;
     }
 }

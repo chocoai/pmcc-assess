@@ -25,6 +25,8 @@ import com.copower.pmcc.erp.api.dto.SysSymbolListDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -161,12 +163,21 @@ public class ProjectTakeNumberController extends BaseController {
         }
     }
 
-    @GetMapping(value = "/toolBaseOrCode", name = "二维码 拿取")
-    public HttpResult toolBaseOrCode(Integer takeNumberId) {
+
+    @GetMapping(value = "/toolBaseOrCode", name = "二维码 拿取,加上一个功能替换,假如不存替换的附件id则不替换")
+    public HttpResult toolBaseOrCode(Integer takeNumberId,String attachmentIds) {
         try {
             ProjectTakeNumber projectTakeNumber = projectTakeNumberService.getProjectTakeNumberById(takeNumberId) ;
             SysAttachmentDto sysAttachmentDto = projectQrcodeRecordService.toolBaseOrCode(projectTakeNumber);
             sysAttachmentDto.setFilePath(baseAttachmentService.getViewImageUrl(sysAttachmentDto.getId()));
+            if (StringUtils.isNotBlank(attachmentIds)){
+                //二维码附件
+                SysAttachmentDto query = new SysAttachmentDto();
+                query.setTableName(sysAttachmentDto.getTableName());
+                query.setTableId(sysAttachmentDto.getTableId());
+                query.setFieldsName(sysAttachmentDto.getFieldsName());
+                projectTakeNumberService.replaceDocument(attachmentIds,projectTakeNumber.getNumberValue(),query) ;
+            }
             return HttpResult.newCorrectResult(200, sysAttachmentDto);
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);

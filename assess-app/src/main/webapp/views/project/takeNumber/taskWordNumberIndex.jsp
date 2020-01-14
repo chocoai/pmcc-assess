@@ -346,7 +346,7 @@
     };
 
     baseTakeNumber.initFormData = function (data) {
-        var fileArr = ["ProjectTakeNumber_BaseOrCode","ProjectTakeNumber_Document"];
+        var fileArr = ["ProjectTakeNumber_BaseOrCode", "ProjectTakeNumber_Document"];
         var inputArr = ["investigationsStartDate", "investigationsEndDate", "reportIssuanceDate", "homeWorkEndTime"];
         var frm = baseTakeNumber.handleJquery(baseTakeNumber.config.frm);
         baseTakeNumber.baseInitFormData(frm, data, fileArr, true, AssessDBKey.ProjectTakeNumber, inputArr);
@@ -394,20 +394,36 @@
         if (!frm.valid()) {
             return false;
         }
+        var objData = formSerializeArray(frm);
+        var queryFile = {
+            tableId: objData.id,
+            tableName: AssessDBKey.ProjectTakeNumber,
+            fieldsName: "ProjectTakeNumber_Document"
+        };
         Loading.progressShow();
-        baseTakeNumber.ajaxServerMethod({formData: JSON.stringify(formSerializeArray(frm))}, "projectTakeNumber/getProjectWordNumber", "get", function (data) {
-            baseTakeNumber.ajaxServerMethod({takeNumberId: data.id}, "projectTakeNumber/toolBaseOrCode", "get", function (sysAttachmentDto) {
+        //获取上传的附件
+        AssessCommon.getSysAttachmentDtoList(queryFile, function (fileArrays) {
+            var ids = [];
+            if (fileArrays) {
+                $.each(fileArrays, function (i, item) {
+                    ids.push(item.id) ;
+                })
+            }
+            console.log(fileArrays) ;
+            baseTakeNumber.ajaxServerMethod({formData: JSON.stringify(objData)}, "projectTakeNumber/getProjectWordNumber", "get", function (data) {
+                baseTakeNumber.ajaxServerMethod({takeNumberId: objData.id,attachmentIds:ids.join(",")}, "projectTakeNumber/toolBaseOrCode", "get", function (sysAttachmentDto) {
+                    Loading.progressHide();
+                    data.imgPath = "${pageContext.request.contextPath}" + sysAttachmentDto.filePath;
+                    data.attachmentId = sysAttachmentDto.id;
+                    baseTakeNumber.initFormData(data);
+                }, function (error) {
+                    Loading.progressHide();
+                    Alert(error);
+                });
+            }, function (data) {
+                Alert(data);
                 Loading.progressHide();
-                data.imgPath = "${pageContext.request.contextPath}" + sysAttachmentDto.filePath;
-                data.attachmentId = sysAttachmentDto.id;
-                baseTakeNumber.initFormData(data);
-            }, function (error) {
-                Loading.progressHide();
-                Alert(error);
             });
-        }, function (data) {
-            Alert(data);
-            Loading.progressHide();
         });
     };
 
