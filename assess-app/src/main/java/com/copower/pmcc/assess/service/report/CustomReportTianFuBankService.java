@@ -10,6 +10,7 @@ import com.copower.pmcc.assess.dal.basis.entity.InitiateContacts;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
 import com.copower.pmcc.assess.dto.output.project.initiate.InitiateConsignorVo;
 import com.copower.pmcc.assess.dto.output.project.initiate.InitiatePossessorVo;
+import com.copower.pmcc.assess.dto.output.project.initiate.InitiateUnitInformationVo;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -17,6 +18,7 @@ import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.project.ProjectNumberRecordService;
 import com.copower.pmcc.assess.service.project.initiate.InitiateConsignorService;
 import com.copower.pmcc.assess.service.project.initiate.InitiatePossessorService;
+import com.copower.pmcc.assess.service.project.initiate.InitiateUnitInformationService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeFunctionService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -72,7 +74,7 @@ public class CustomReportTianFuBankService {
     @Autowired
     private InitiatePossessorService initiatePossessorService;
     @Autowired
-    private ProjectNumberRecordService projectNumberRecordService;
+    private InitiateUnitInformationService initiateUnitInformationService;
 
 
     public BootstrapTableVo getCustomReportTianFuBankList(String numberValue, String unitName,Integer reportType) {
@@ -109,7 +111,8 @@ public class CustomReportTianFuBankService {
         //评估标的
         vo.setProjectCategoryName(baseProjectClassifyService.getNameById(data.getProjectCategoryId()));
         //经办客户经理（使用单位联系人）
-        List<InitiateContacts> contactsList = initiateContactsDao.getList(consignorVo.getId(), 3, null, null, null);
+        InitiateUnitInformationVo unitInformationVo = initiateUnitInformationService.getDataByProjectId(data.getProjectId());
+        List<InitiateContacts> contactsList = initiateContactsDao.getList(unitInformationVo.getId(), 3, null, null, null);
         if (CollectionUtils.isNotEmpty(contactsList)) {
             vo.setCustomerManager(contactsList.get(0).getcName());
         }
