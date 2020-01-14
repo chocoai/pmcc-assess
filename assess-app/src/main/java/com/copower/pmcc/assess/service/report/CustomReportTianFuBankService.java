@@ -47,6 +47,7 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -77,11 +78,28 @@ public class CustomReportTianFuBankService {
     private InitiateUnitInformationService initiateUnitInformationService;
 
 
-    public BootstrapTableVo getCustomReportTianFuBankList(String numberValue, String unitName,Integer reportType) {
+    public BootstrapTableVo getCustomReportTianFuBankList(String numberValue, String unitName, Integer reportType,String queryPreviewsStartDate,
+                                                          String queryPreviewsEndDate, String queryResultStartDate, String queryResultEndDate) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<CustomReportTianFuBank> customNumberRecordList = customReportTianFuBankMapper.getCustomReportTianFuBankList(numberValue, unitName,reportType);
+        Date previewsStartDate = null;
+        if (StringUtils.isNotEmpty(queryPreviewsStartDate)) {
+            previewsStartDate = DateUtils.parse(queryPreviewsStartDate);
+        }
+        Date previewsEndDate = null;
+        if (StringUtils.isNotEmpty(queryPreviewsStartDate)) {
+            previewsEndDate = DateUtils.parse(queryPreviewsEndDate);
+        }
+        Date resultStartDate = null;
+        if (StringUtils.isNotEmpty(queryResultStartDate)) {
+            resultStartDate = DateUtils.parse(queryResultStartDate);
+        }
+        Date resultEndDate = null;
+        if (StringUtils.isNotEmpty(queryResultEndDate)) {
+            resultEndDate = DateUtils.parse(queryResultEndDate);
+        }
+        List<CustomReportTianFuBank> customNumberRecordList = customReportTianFuBankMapper.getCustomReportTianFuBankList(numberValue, unitName, reportType, previewsStartDate, previewsEndDate, resultStartDate, resultEndDate);
         List<CustomReportTianFuBank> vos = LangUtils.transform(customNumberRecordList, o -> getCustomReportTianFuBank(o));
         vo.setTotal(page.getTotal());
         vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<CustomReportTianFuBank>() : vos);
@@ -126,9 +144,26 @@ public class CustomReportTianFuBankService {
      *
      * @param response
      */
-    public void export(HttpServletResponse response, String numberValue, String unitName,Integer reportType) throws BusinessException, IOException {
+    public void export(HttpServletResponse response, String numberValue, String unitName, Integer reportType,String queryPreviewsStartDate,
+                       String queryPreviewsEndDate, String queryResultStartDate, String queryResultEndDate) throws BusinessException, IOException {
         //获取数据
-        List<CustomReportTianFuBank> customNumberRecordList = customReportTianFuBankMapper.getCustomReportTianFuBankList(numberValue, unitName,reportType);
+        Date previewsStartDate = null;
+        if (StringUtils.isNotEmpty(queryPreviewsStartDate)) {
+            previewsStartDate = DateUtils.parse(queryPreviewsStartDate);
+        }
+        Date previewsEndDate = null;
+        if (StringUtils.isNotEmpty(queryPreviewsStartDate)) {
+            previewsEndDate = DateUtils.parse(queryPreviewsEndDate);
+        }
+        Date resultStartDate = null;
+        if (StringUtils.isNotEmpty(queryResultStartDate)) {
+            resultStartDate = DateUtils.parse(queryResultStartDate);
+        }
+        Date resultEndDate = null;
+        if (StringUtils.isNotEmpty(queryResultEndDate)) {
+            resultEndDate = DateUtils.parse(queryResultEndDate);
+        }
+        List<CustomReportTianFuBank> customNumberRecordList = customReportTianFuBankMapper.getCustomReportTianFuBankList(numberValue, unitName, reportType, previewsStartDate, previewsEndDate, resultStartDate, resultEndDate);
         List<CustomReportTianFuBank> vos = LangUtils.transform(customNumberRecordList, o -> getCustomReportTianFuBank(o));
 
         if (CollectionUtils.isEmpty(customNumberRecordList)) {
@@ -138,9 +173,6 @@ public class CustomReportTianFuBankService {
         Sheet sheet = wb.createSheet();
         Row row = sheet.createRow(0);
         //创建Excel标题
-        //评估时间（年/月/日）	所属支行	客户名称	借款金额
-        // 	抵押物品种	评估机构	评估报告编号
-        // 评估费金额  	经办客户经理 机构负责人 入账日期
         String[] title = {"评估时间", "所属支行", "客户名称", "借款金额", "抵押物品种",
                 "评估机构", "评估报告编号", "评估费金额", "经办客户经理", "机构负责人", "入账日期"};
 

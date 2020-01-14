@@ -24,6 +24,24 @@ public class CustomReportTianFuBank {
     private String principal;//机构负责人
     private Date enterTieme;//入账日期
     private Integer areaId;//
+    private Date preauditNumberDate;//预评时间
+    private Date resultNumberDate;//结果时间
+
+    public Date getPreauditNumberDate() {
+        return preauditNumberDate;
+    }
+
+    public void setPreauditNumberDate(Date preauditNumberDate) {
+        this.preauditNumberDate = preauditNumberDate;
+    }
+
+    public Date getResultNumberDate() {
+        return resultNumberDate;
+    }
+
+    public void setResultNumberDate(Date resultNumberDate) {
+        this.resultNumberDate = resultNumberDate;
+    }
 
     public Integer getId() {
         return id;

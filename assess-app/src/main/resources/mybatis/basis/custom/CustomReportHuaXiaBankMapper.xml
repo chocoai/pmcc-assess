@@ -11,13 +11,14 @@
         <result column="project_category_id" property="projectCategoryId" jdbcType="INTEGER" />
         <result column="contract_price" property="contractPrice" jdbcType="DECIMAL"/>
         <result column="area_id" property="areaId" jdbcType="INTEGER"/>
-
+        <result column="preaudit_number_date" property="preauditNumberDate" jdbcType="TIMESTAMP"/>
+        <result column="result_number_date" property="resultNumberDate" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <select id="getCustomReportHuaXiaBankList" parameterType="map" resultMap="BaseResultMap">
-        select
+        select distinct
         A.id,A.project_id, A.report_type,E.u_use_unit_name,A.number_value,B.project_category_id
-        ,B.contract_price,A.area_id
+        ,B.contract_price,A.area_id, B.preaudit_number_date, B.result_number_date
         from tb_project_number_record A
         LEFT JOIN tb_project_info B ON A.project_id = B.id
         LEFT JOIN tb_initiate_unit_information E ON A.project_id = E.project_id
@@ -30,6 +31,21 @@
         <if test="unitName!=null and unitName!=''">
             AND (E.u_use_unit_name LIKE
             CONCAT(CONCAT('%',#{unitName}), '%'))
+        </if>
+        <if test="reportType!=null">
+            AND A.report_type = #{reportType}
+        </if>
+        <if test="previewsStartDate!=null">
+            AND B.preaudit_number_date &gt;= #{previewsStartDate}
+        </if>
+        <if test="previewsEndDate!=null">
+            AND B.preaudit_number_date &lt;= #{previewsEndDate}
+        </if>
+        <if test="resultStartDate!=null">
+            AND B.result_number_date >= #{resultStartDate}
+        </if>
+        <if test="resultEndDate!=null">
+            AND B.result_number_date &lt;= #{resultEndDate}
         </if>
         ORDER BY A.id DESC
     </select>

@@ -42,6 +42,7 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -70,11 +71,28 @@ public class CustomReportTianJinBankService {
     private ProjectNumberRecordService projectNumberRecordService;
 
 
-    public BootstrapTableVo getCustomReportTianJinBankList(String numberValue, String unitName, Integer reportType) {
+    public BootstrapTableVo getCustomReportTianJinBankList(String numberValue, String unitName, Integer reportType,String queryPreviewsStartDate,
+                                                           String queryPreviewsEndDate, String queryResultStartDate, String queryResultEndDate) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<CustomReportTianJinBank> customNumberRecordList = customReportTianJinBankMapper.getCustomReportTianJinBankList(numberValue, unitName, reportType);
+        Date previewsStartDate = null;
+        if (StringUtils.isNotEmpty(queryPreviewsStartDate)) {
+            previewsStartDate = DateUtils.parse(queryPreviewsStartDate);
+        }
+        Date previewsEndDate = null;
+        if (StringUtils.isNotEmpty(queryPreviewsStartDate)) {
+            previewsEndDate = DateUtils.parse(queryPreviewsEndDate);
+        }
+        Date resultStartDate = null;
+        if (StringUtils.isNotEmpty(queryResultStartDate)) {
+            resultStartDate = DateUtils.parse(queryResultStartDate);
+        }
+        Date resultEndDate = null;
+        if (StringUtils.isNotEmpty(queryResultEndDate)) {
+            resultEndDate = DateUtils.parse(queryResultEndDate);
+        }
+        List<CustomReportTianJinBank> customNumberRecordList = customReportTianJinBankMapper.getCustomReportTianJinBankList(numberValue, unitName, reportType, previewsStartDate, previewsEndDate, resultStartDate, resultEndDate);
         List<CustomReportTianJinBank> vos = LangUtils.transform(customNumberRecordList, o -> getCustomReportTianJinBank(o));
         vo.setTotal(page.getTotal());
         vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<CustomReportTianJinBank>() : vos);
@@ -158,9 +176,26 @@ public class CustomReportTianJinBankService {
      *
      * @param response
      */
-    public void export(HttpServletResponse response, String numberValue, String unitName, Integer reportType) throws BusinessException, IOException {
+    public void export(HttpServletResponse response, String numberValue, String unitName, Integer reportType,String queryPreviewsStartDate,
+                       String queryPreviewsEndDate, String queryResultStartDate, String queryResultEndDate) throws BusinessException, IOException {
         //获取数据
-        List<CustomReportTianJinBank> customNumberRecordList = customReportTianJinBankMapper.getCustomReportTianJinBankList(numberValue, unitName, reportType);
+        Date previewsStartDate = null;
+        if (StringUtils.isNotEmpty(queryPreviewsStartDate)) {
+            previewsStartDate = DateUtils.parse(queryPreviewsStartDate);
+        }
+        Date previewsEndDate = null;
+        if (StringUtils.isNotEmpty(queryPreviewsStartDate)) {
+            previewsEndDate = DateUtils.parse(queryPreviewsEndDate);
+        }
+        Date resultStartDate = null;
+        if (StringUtils.isNotEmpty(queryResultStartDate)) {
+            resultStartDate = DateUtils.parse(queryResultStartDate);
+        }
+        Date resultEndDate = null;
+        if (StringUtils.isNotEmpty(queryResultEndDate)) {
+            resultEndDate = DateUtils.parse(queryResultEndDate);
+        }
+        List<CustomReportTianJinBank> customNumberRecordList = customReportTianJinBankMapper.getCustomReportTianJinBankList(numberValue, unitName, reportType, previewsStartDate, previewsEndDate, resultStartDate, resultEndDate);
         List<CustomReportTianJinBank> vos = LangUtils.transform(customNumberRecordList, o -> getCustomReportTianJinBank(o));
 
         if (CollectionUtils.isEmpty(customNumberRecordList)) {

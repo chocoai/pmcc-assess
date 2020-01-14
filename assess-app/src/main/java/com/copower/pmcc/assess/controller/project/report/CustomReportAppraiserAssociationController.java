@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.report.CustomReportAppraiserAssociationService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,13 @@ public class CustomReportAppraiserAssociationController {
     public ModelAndView index() {
         String view = "/report/customReportAppraiserAssociation";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
-        List<BaseDataDic> reportTypeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.REPORT_TYPE);
+        List<BaseDataDic> reportTypeList = Lists.newArrayList();
+        //预评报告
+        BaseDataDic preauditReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT);
+        //结果报告
+        BaseDataDic resultReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_RESULT);
+        reportTypeList.add(preauditReport);
+        reportTypeList.add(resultReport);
         modelAndView.addObject("reportTypeList", reportTypeList);
         return modelAndView;
     }

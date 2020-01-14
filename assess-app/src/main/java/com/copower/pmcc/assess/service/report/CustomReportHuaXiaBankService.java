@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.service.report;
 
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
+import com.copower.pmcc.assess.dal.basis.custom.entity.CustomReportHengFengBank;
 import com.copower.pmcc.assess.dal.basis.custom.entity.CustomReportHuaXiaBank;
 import com.copower.pmcc.assess.dal.basis.custom.mapper.CustomReportHuaXiaBankMapper;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
@@ -39,6 +40,7 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -59,11 +61,28 @@ public class CustomReportHuaXiaBankService {
     private ProjectNumberRecordService projectNumberRecordService;
 
 
-    public BootstrapTableVo getCustomReportHuaXiaBankList(String numberValue, String unitName) {
+    public BootstrapTableVo getCustomReportHuaXiaBankList(String numberValue, String unitName, Integer reportType,String queryPreviewsStartDate,
+                                                          String queryPreviewsEndDate, String queryResultStartDate, String queryResultEndDate) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<CustomReportHuaXiaBank> customNumberRecordList = customReportHuaXiaBankMapper.getCustomReportHuaXiaBankList(numberValue, unitName);
+        Date previewsStartDate = null;
+        if (StringUtils.isNotEmpty(queryPreviewsStartDate)) {
+            previewsStartDate = DateUtils.parse(queryPreviewsStartDate);
+        }
+        Date previewsEndDate = null;
+        if (StringUtils.isNotEmpty(queryPreviewsStartDate)) {
+            previewsEndDate = DateUtils.parse(queryPreviewsEndDate);
+        }
+        Date resultStartDate = null;
+        if (StringUtils.isNotEmpty(queryResultStartDate)) {
+            resultStartDate = DateUtils.parse(queryResultStartDate);
+        }
+        Date resultEndDate = null;
+        if (StringUtils.isNotEmpty(queryResultEndDate)) {
+            resultEndDate = DateUtils.parse(queryResultEndDate);
+        }
+        List<CustomReportHuaXiaBank> customNumberRecordList = customReportHuaXiaBankMapper.getCustomReportHuaXiaBankList(numberValue, unitName, reportType, previewsStartDate, previewsEndDate, resultStartDate, resultEndDate);
         List<CustomReportHuaXiaBank> vos = LangUtils.transform(customNumberRecordList, o -> getCustomReportHuaXiaBank(o));
         vo.setTotal(page.getTotal());
         vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<CustomReportHuaXiaBank>() : vos);
@@ -160,9 +179,26 @@ public class CustomReportHuaXiaBankService {
      *
      * @param response
      */
-    public void export(HttpServletResponse response, String numberValue, String unitName) throws BusinessException, IOException {
+    public void export(HttpServletResponse response, String numberValue, String unitName, Integer reportType,String queryPreviewsStartDate,
+                       String queryPreviewsEndDate, String queryResultStartDate, String queryResultEndDate) throws BusinessException, IOException {
         //获取数据
-        List<CustomReportHuaXiaBank> customNumberRecordList = customReportHuaXiaBankMapper.getCustomReportHuaXiaBankList(numberValue, unitName);
+        Date previewsStartDate = null;
+        if (StringUtils.isNotEmpty(queryPreviewsStartDate)) {
+            previewsStartDate = DateUtils.parse(queryPreviewsStartDate);
+        }
+        Date previewsEndDate = null;
+        if (StringUtils.isNotEmpty(queryPreviewsStartDate)) {
+            previewsEndDate = DateUtils.parse(queryPreviewsEndDate);
+        }
+        Date resultStartDate = null;
+        if (StringUtils.isNotEmpty(queryResultStartDate)) {
+            resultStartDate = DateUtils.parse(queryResultStartDate);
+        }
+        Date resultEndDate = null;
+        if (StringUtils.isNotEmpty(queryResultEndDate)) {
+            resultEndDate = DateUtils.parse(queryResultEndDate);
+        }
+        List<CustomReportHuaXiaBank> customNumberRecordList = customReportHuaXiaBankMapper.getCustomReportHuaXiaBankList(numberValue, unitName, reportType, previewsStartDate, previewsEndDate, resultStartDate, resultEndDate);
         List<CustomReportHuaXiaBank> vos = LangUtils.transform(customNumberRecordList, o -> getCustomReportHuaXiaBank(o));
 
         if (CollectionUtils.isEmpty(customNumberRecordList)) {

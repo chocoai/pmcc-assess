@@ -34,6 +34,24 @@ public class CustomReportJiaoTongBank {
     private String qualificationType;//资质类型
     private String realEstateAppraiser;//估价师
     private Integer areaId;//
+    private Date preauditNumberDate;//预评时间
+    private Date resultNumberDate;//结果时间
+
+    public Date getPreauditNumberDate() {
+        return preauditNumberDate;
+    }
+
+    public void setPreauditNumberDate(Date preauditNumberDate) {
+        this.preauditNumberDate = preauditNumberDate;
+    }
+
+    public Date getResultNumberDate() {
+        return resultNumberDate;
+    }
+
+    public void setResultNumberDate(Date resultNumberDate) {
+        this.resultNumberDate = resultNumberDate;
+    }
 
     public Integer getId() {
         return id;

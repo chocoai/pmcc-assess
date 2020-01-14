@@ -27,6 +27,24 @@ public class CustomReportTianJinBank {
     private String numberValue;//文号
     private String unitName;//使用单位
     private Integer areaId;//
+    private Date preauditNumberDate;//预评时间
+    private Date resultNumberDate;//结果时间
+
+    public Date getPreauditNumberDate() {
+        return preauditNumberDate;
+    }
+
+    public void setPreauditNumberDate(Date preauditNumberDate) {
+        this.preauditNumberDate = preauditNumberDate;
+    }
+
+    public Date getResultNumberDate() {
+        return resultNumberDate;
+    }
+
+    public void setResultNumberDate(Date resultNumberDate) {
+        this.resultNumberDate = resultNumberDate;
+    }
 
     public String getUnitName() {
         return unitName;

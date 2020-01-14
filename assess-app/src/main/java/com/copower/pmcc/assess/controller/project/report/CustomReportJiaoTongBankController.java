@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.report.CustomReportJiaoTongBankService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,17 +35,24 @@ public class CustomReportJiaoTongBankController {
     public ModelAndView index() {
         String view = "/report/customReportJiaoTongBank";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
-        List<BaseDataDic> reportTypeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.REPORT_TYPE);
+        List<BaseDataDic> reportTypeList = Lists.newArrayList();
+        //预评报告
+        BaseDataDic preauditReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT);
+        //结果报告
+        BaseDataDic resultReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_RESULT);
+        reportTypeList.add(preauditReport);
+        reportTypeList.add(resultReport);
         modelAndView.addObject("reportTypeList", reportTypeList);
         return modelAndView;
     }
 
     @ResponseBody
     @RequestMapping(value = "/getCustomReportJiaoTongBankList", method = {RequestMethod.GET}, name = "获取列表")
-    public BootstrapTableVo getCustomReportJiaoTongBankList(String numberValue, String unitName, Integer reportType) {
+    public BootstrapTableVo getCustomReportJiaoTongBankList(String numberValue, String unitName, Integer reportType,
+                                                            String queryPreviewsStartDate, String queryPreviewsEndDate, String queryResultStartDate, String queryResultEndDate) {
         BootstrapTableVo vo = null;
         try {
-            vo = customReportJiaoTongBankService.getCustomReportJiaoTongBankList(numberValue, unitName, reportType);
+            vo = customReportJiaoTongBankService.getCustomReportJiaoTongBankList(numberValue, unitName, reportType,queryPreviewsStartDate,queryPreviewsEndDate,queryResultStartDate,queryResultEndDate);
         } catch (Exception e1) {
             logger.error(String.format("exception: %s", e1.getMessage()), e1);
             return null;
@@ -53,9 +61,10 @@ public class CustomReportJiaoTongBankController {
     }
 
     @RequestMapping(value = "/export", name = "导出")
-    public void export(HttpServletResponse response, String numberValue, String unitName, Integer reportType) throws Exception {
+    public void export(HttpServletResponse response, String numberValue, String unitName, Integer reportType,
+                       String queryPreviewsStartDate, String queryPreviewsEndDate, String queryResultStartDate, String queryResultEndDate) throws Exception {
         try {
-            customReportJiaoTongBankService.export(response, numberValue, unitName, reportType);
+            customReportJiaoTongBankService.export(response, numberValue, unitName, reportType,queryPreviewsStartDate,queryPreviewsEndDate,queryResultStartDate,queryResultEndDate);
         } catch (Exception e) {
             e.printStackTrace();
         }

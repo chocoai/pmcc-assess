@@ -223,6 +223,8 @@
             });
         },
         showBtn: function () {
+            $("#queryResultBtn").find('input').val('');
+            $("#queryPreauditBtn").find('input').val('');
             var type = $("#queryReportType").find("option:selected").text();
             if (type == "结果报告") {
                 $("#queryResultBtn").show();

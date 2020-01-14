@@ -34,6 +34,15 @@ public class CustomReportJianSheBank {
     private String qualificationType;//资质类型
     private String realEstateAppraiser;//估价师
     private Integer areaId;//
+    private Date resultNumberDate;//结果时间
+
+    public Date getResultNumberDate() {
+        return resultNumberDate;
+    }
+
+    public void setResultNumberDate(Date resultNumberDate) {
+        this.resultNumberDate = resultNumberDate;
+    }
 
     public String getQualificationType() {
         return qualificationType;

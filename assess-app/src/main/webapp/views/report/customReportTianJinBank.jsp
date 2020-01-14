@@ -24,19 +24,20 @@
                 <div class="x_content">
                     <form id="frmQuery" class="form-horizontal">
                         <div class="form-group ">
-                            <%--<div>--%>
-                                <%--<label class="col-sm-1 control-label">--%>
-                                    <%--报告类型--%>
-                                <%--</label>--%>
-                                <%--<div class="col-sm-2">--%>
-                                    <%--<select name="queryReportType" id="queryReportType" class="form-control">--%>
-                                        <%--<option value="">--请选择--</option>--%>
-                                        <%--<c:forEach var="item" items="${reportTypeList}">--%>
-                                            <%--<option value="${item.id}">${item.name}</option>--%>
-                                        <%--</c:forEach>--%>
-                                    <%--</select>--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
+                            <div>
+                                <label class="col-sm-1 control-label">
+                                    报告类型
+                                </label>
+                                <div class="col-sm-2">
+                                    <select name="queryReportType" id="queryReportType" class="form-control"
+                                            onchange="ReportTianJinBank.prototype.showBtn()">
+                                        <option value="">--请选择--</option>
+                                        <c:forEach var="item" items="${reportTypeList}">
+                                            <option value="${item.id}">${item.name}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                            </div>
                             <div>
                                 <label class="col-sm-1 control-label">
                                     文号
@@ -57,6 +58,52 @@
                                            class="form-control">
                                 </div>
                             </div>
+                        </div>
+                            <div class="form-group ">
+                                <div id="queryPreauditBtn" style="display: none">
+                                    <div class="x-valid">
+                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                            开始时间
+                                        </label>
+                                        <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                            <input id="queryPreviewsStartDate" name="queryPreviewsStartDate"
+                                                   class="form-control date-picker dbdate"
+                                                   data-date-format="yyyy-mm-dd" placeholder="开始时间"/>
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                            结束时间
+                                        </label>
+                                        <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                            <input id="queryPreviewsEndDate" name="queryPreviewsEndDate"
+                                                   class="form-control date-picker dbdate"
+                                                   data-date-format="yyyy-mm-dd" placeholder="结束时间"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="queryResultBtn" style="display: none">
+                                    <div class="x-valid">
+                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                            开始时间
+                                        </label>
+                                        <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                            <input id="queryResultStartDate" name="queryResultStartDate"
+                                                   class="form-control date-picker dbdate"
+                                                   data-date-format="yyyy-mm-dd" placeholder="开始时间"/>
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                            结束时间
+                                        </label>
+                                        <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                            <input id="queryResultEndDate" name="queryResultEndDate"
+                                                   class="form-control date-picker dbdate"
+                                                   data-date-format="yyyy-mm-dd" placeholder="结束时间"/>
+                                        </div>
+                                    </div>
+                                </div>
                             <div class="col-sm-3">
                                 <button type="button" class="btn btn-success" onclick="$('#frmQuery').clearAll()">
                                     重置
@@ -136,7 +183,12 @@
             $("#" + ReportTianJinBank.prototype.config().table).bootstrapTable('destroy');
             TableInit(ReportTianJinBank.prototype.config().table, "${pageContext.request.contextPath}/customReportTianJinBank/getCustomReportTianJinBankList", cols, {
                 numberValue: $("#queryNumberValue").val(),
-                unitName: $("#queryUnitName").val()
+                unitName: $("#queryUnitName").val(),
+                reportType: $("#queryReportType").val(),
+                queryPreviewsStartDate: $("#queryPreviewsStartDate").val(),
+                queryPreviewsEndDate: $("#queryPreviewsEndDate").val(),
+                queryResultStartDate: $("#queryResultStartDate").val(),
+                queryResultEndDate: $("#queryResultEndDate").val()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -183,12 +235,37 @@
                 }
             });
         },
+        showBtn: function () {
+            $("#queryResultBtn").find('input').val('');
+            $("#queryPreauditBtn").find('input').val('');
+            var type = $("#queryReportType").find("option:selected").text();
+            if (type == "结果报告") {
+                $("#queryResultBtn").show();
+                $("#queryPreauditBtn").hide();
+            } else if (type == "预评报告") {
+                $("#queryResultBtn").hide();
+                $("#queryPreauditBtn").show();
+            } else {
+                $("#queryResultBtn").hide();
+                $("#queryPreauditBtn").hide();
+            }
+        },
         exportData: function () {
             var numberValue = $("#queryNumberValue").val();
             var unitName = $("#queryUnitName").val();
+            var reportType = $("#queryReportType").val();
+            var queryPreviewsStartDate = $("#queryPreviewsStartDate").val();
+            var queryPreviewsEndDate = $("#queryPreviewsEndDate").val();
+            var queryResultStartDate = $("#queryResultStartDate").val();
+            var queryResultEndDate = $("#queryResultEndDate").val();
             var href = "${pageContext.request.contextPath}/customReportTianJinBank/export";
             href += "?numberValue=" + numberValue;
             href += "&unitName=" + unitName;
+            href += "&reportType=" + reportType;
+            href += "&queryPreviewsStartDate=" + queryPreviewsStartDate;
+            href += "&queryPreviewsEndDate=" + queryPreviewsEndDate;
+            href += "&queryResultStartDate=" + queryResultStartDate;
+            href += "&queryResultEndDate=" + queryResultEndDate;
             window.open(href, "");
         }
 
