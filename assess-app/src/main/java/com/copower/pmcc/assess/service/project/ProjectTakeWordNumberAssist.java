@@ -98,7 +98,7 @@ public class ProjectTakeWordNumberAssist implements ProjectTaskInterface {
         ProjectTakeNumber query = new ProjectTakeNumber();
         query.setPlanDetailsId(projectPlanDetails.getId());
         if (StringUtils.isNotBlank(projectPlanDetails.getProcessInsId())) {
-            query.setProcessInsId(projectPlanDetails.getProcessInsId());
+//            query.setProcessInsId(projectPlanDetails.getProcessInsId());
         }
         List<ProjectTakeNumber> projectTakeNumberList = projectTakeNumberService.getProjectTakeNumberListQuery(query);
         if (CollectionUtils.isNotEmpty(projectTakeNumberList)) {
