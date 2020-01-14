@@ -411,7 +411,7 @@ public class PublicService {
         sysProjectDto.setProjectMember(projectMember.getUserAccountMember());
         sysProjectDto.setProjectJson(JSON.toJSONString(projectInfo));
         sysProjectDto.setProjectCompanyId(getCurrentCompany().getCompanyId());
-        sysProjectDto.setProjectDepartmentId(getCurrentCompany().getCompanyId());
+        sysProjectDto.setProjectDepartmentId(projectInfo.getDepartmentId());
         sysProjectDto.setAppKey(applicationConstant.getAppKey());
         sysProjectDto.setStatus(ProjectStatusEnum.NORMAL.getKey());
         sysProjectDto.setProjectDetailsUrl(String.format("/projectCenter/projectInfo?projectId=%s",projectInfo.getId()));

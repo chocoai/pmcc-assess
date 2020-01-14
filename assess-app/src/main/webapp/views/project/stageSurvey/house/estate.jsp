@@ -652,7 +652,6 @@
 </script>
 <div class="x_content">
     <%@include file="/views/project/tool/landLevelModalView.jsp" %>
-    <%@include file="/views/project/stageSurvey/common/estateInvestigation.jsp" %>
     <%@include file="/views/project/stageSurvey/common/estateNetwork.jsp" %>
     <%@include file="/views/project/stageSurvey/common/estateParking.jsp" %>
     <%@include file="/views/project/stageSurvey/common/matchingEnvironment.jsp" %>
