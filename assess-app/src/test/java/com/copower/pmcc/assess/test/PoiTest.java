@@ -24,8 +24,7 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Test;
 
@@ -479,6 +478,49 @@ public class PoiTest {
         builder.writeln("fffffffffffffff");
 
         document.save("D:\\test\\template1.doc");
+    }
+
+    @Test
+    public void getKeyMap() {
+        Workbook workbook = null;
+        try {
+            FileInputStream inputStream = new FileInputStream("D:\\test\\测试文档.xlsx");
+            workbook = WorkbookFactory.create(inputStream);
+        } catch (Exception e) {
+            //logger.error(e.getMessage());
+        }
+        //只取第一个sheet
+        Sheet sheet = workbook.getSheetAt(0);
+        Row row = sheet.getRow(0);
+
+        Map<String, Integer> map = getKeyMatchIndex(row);
+        if (!map.isEmpty()) {
+            System.out.print(map.get("fcz"));
+            System.out.print(map.get("tdz"));
+        }
+    }
+
+    /**
+     * key值对应列的序号
+     *
+     * @param row
+     * @return
+     */
+    public Map<String, Integer> getKeyMatchIndex(Row row) {
+        if (row == null) return null;
+        int physicalNumberOfCells = row.getPhysicalNumberOfCells();
+        short lastCellNum = row.getLastCellNum();
+        int colLength = physicalNumberOfCells > lastCellNum ? physicalNumberOfCells : lastCellNum;
+        Map<String, Integer> map = Maps.newHashMap();
+        for (Integer i = 0; i < colLength; i++) {
+            Cell cell = row.getCell(i);
+            if (cell == null) continue;
+            String value = cell.getStringCellValue();
+            if (StringUtils.isNotBlank(value)) {
+                map.put(value, i);
+            }
+        }
+        return map;
     }
 
     @Test
