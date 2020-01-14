@@ -683,7 +683,7 @@ assessCommonHouse.loadList = function () {
         onLoadSuccess: function () {
             $('.tooltips').tooltip();
         }
-    }, true);
+    }, true,false);
 };
 
 $(function () {

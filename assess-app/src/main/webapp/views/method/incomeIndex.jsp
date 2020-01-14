@@ -81,18 +81,16 @@
                         租赁限制<span class="symbol required"></span>
                     </label>
                     <div class="col-sm-2 col-sm-offset-1">
-                    <span class="radio-inline"><input type="radio" required name="leaseMode" id="leaseMode0"
-                                                      onchange="incomeIndex.leaseModeChange(this);" value="0"><label
+                    <span class="radio-inline"><input type="radio" required name="leaseMode" id="leaseMode0" value="0"><label
                             for="leaseMode0">限制</label></span>
                     </div>
                     <div class="col-sm-2">
-                        <span class="radio-inline"><input type="radio" checked="checked" name="leaseMode" id="leaseMode1" value="1"
-                                                          onchange="incomeIndex.leaseModeChange(this);"><label
+                        <span class="radio-inline"><input type="radio" checked="checked" name="leaseMode" id="leaseMode1" value="1"><label
                                 for="leaseMode1">无限制</label></span>
                     </div>
                 </div>
             </div>
-            <div class="form-group" id="group_restriction_explain" style="display: none;">
+            <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
                         租约限制说明<span class="symbol required"></span>
@@ -101,7 +99,6 @@
                         <textarea name="restrictionExplain" class="form-control"  required>${empty mdIncome?'': mdIncome.restrictionExplain}</textarea>
                     </div>
                 </div>
-
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
                         租约限制附件
@@ -407,16 +404,6 @@
             lease.loadLeaseCostList();
             lease.loadLeaseParameterList();
             lease.loadCalculationResult();
-        }
-    }
-
-    //租赁方式切换
-    incomeIndex.leaseModeChange = function (_this) {
-        var value = $(_this).val();
-        if (value == 0) {
-            $("#group_restriction_explain").show();
-        } else if (value == 1) {
-            $("#group_restriction_explain").hide();
         }
     }
 

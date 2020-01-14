@@ -12,7 +12,6 @@
     <div class="x_content collapse">
         <form class="form-horizontal">
             <div class="form-group">
-
                 <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
                     <div class="btn-group">
                         <button type="button" class="btn btn-success" onclick="declareRealtyRealEstateCert.showAddModel()"
@@ -28,7 +27,7 @@
 
                 <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
                     <div class="btn-group">
-                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">批量导入数据
+                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">导入不动产证
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu" role="menu">
@@ -69,7 +68,7 @@
                 <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
                     <div class="row">
                         <div class="x-valid">
-                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">编号前缀(可以不填,不填那么就是纯数字)</label>
+                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">编号前缀</label>
                             <div class=" col-xs-1  col-sm-1  col-md-1  col-lg-1 ">
                                 <input type="text"
                                        placeholder="编号前缀" name="prefixNumber" class="form-control">
@@ -92,10 +91,9 @@
                         </div>
 
                         <div class="x-valid">
-                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">步长(每个权证关联的图片个数)</label>
+                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">步长</label>
                             <div class=" col-xs-1  col-sm-1  col-md-1  col-lg-1 ">
-                                <input type="text"
-                                       placeholder="必须数字" name="step" class="form-control" value="1">
+                                <input type="text" placeholder="每个权证关联的图片个数" name="step" class="form-control" value="">
                             </div>
                         </div>
 

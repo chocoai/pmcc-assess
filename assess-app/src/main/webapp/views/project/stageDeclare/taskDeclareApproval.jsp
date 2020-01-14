@@ -177,7 +177,7 @@
                                     $(function () {
                                         (function (fileId) {
                                             declareCommon.showFile(fileId, AssessDBKey.DeclareApplyExtension, "${itemData.id}", false, fileId);
-                                        }('other_Enclosure${itemData.id}')) ;
+                                        }('other_Enclosure${itemData.id}'));
                                     });
                                 </script>
                             </div>
@@ -217,13 +217,13 @@
                 table: declareCommon.config.house.son.declareRealtyLandCert.table
             }
         },
-        declareEconomicIndicatorsHead:{
-            frm:  declareCommon.config.declareEconomicIndicatorsHead.frm,
+        declareEconomicIndicatorsHead: {
+            frm: declareCommon.config.declareEconomicIndicatorsHead.frm,
             name: declareCommon.config.declareEconomicIndicatorsHead.name,
             box: declareCommon.config.declareEconomicIndicatorsHead.box
-        } ,
-        declareEconomicIndicatorsContent:{
-            frm:  declareCommon.config.declareEconomicIndicatorsContent.frm,
+        },
+        declareEconomicIndicatorsContent: {
+            frm: declareCommon.config.declareEconomicIndicatorsContent.frm,
             name: declareCommon.config.declareEconomicIndicatorsContent.name
         }
     };
@@ -236,13 +236,13 @@
         fileId: declareCommon.config.declareRealty.fileId,
         newFileId: declareCommon.config.declareRealty.newFileId,
         fileView: declareCommon.config.declareRealty.fileView,
-        declareEconomicIndicatorsHead:{
-            frm:  declareCommon.config.declareEconomicIndicatorsHead2.frm,
+        declareEconomicIndicatorsHead: {
+            frm: declareCommon.config.declareEconomicIndicatorsHead2.frm,
             name: declareCommon.config.declareEconomicIndicatorsHead2.name,
             box: declareCommon.config.declareEconomicIndicatorsHead2.box
-        } ,
-        declareEconomicIndicatorsContent:{
-            frm:  declareCommon.config.declareEconomicIndicatorsContent2.frm,
+        },
+        declareEconomicIndicatorsContent: {
+            frm: declareCommon.config.declareEconomicIndicatorsContent2.frm,
             name: declareCommon.config.declareEconomicIndicatorsContent2.name
         }
     };
@@ -262,7 +262,7 @@
         $('#' + declareApprovalFun.houseConfig.box).find("#" + commonDeclareApprovalModel.config.house.handleId).remove();
         $('#' + declareApprovalFun.houseConfig.box).find(".panel-body").append(commonDeclareApprovalModel.house.getHtml());
         declareCommon.showHtmlMastInit($("#" + declareApprovalFun.houseConfig.frm), function (area) {
-            declareCommon.initHouse(item, $("#" + declareApprovalFun.houseConfig.frm), [declareApprovalFun.houseConfig.fileId], null,false);
+            declareCommon.initHouse(item, $("#" + declareApprovalFun.houseConfig.frm), [declareApprovalFun.houseConfig.fileId], null, false);
             $('#' + declareApprovalFun.houseConfig.box).modal("show");
         });
     };
@@ -280,13 +280,13 @@
                     if (declareCommon.isNotBlank(data)) {
                         $('#' + declareApprovalFun.houseConfig.son.declareRealtyLandCert.box).find("#" + commonDeclareApprovalModel.config.land.handleId).remove();
                         $('#' + declareApprovalFun.houseConfig.son.declareRealtyLandCert.box).find(".panel-body").append(commonDeclareApprovalModel.land.getHtml());
-                        declareCommon.initLand(data, $("#" + declareApprovalFun.houseConfig.son.declareRealtyLandCert.frm), [declareCommon.config.land.fileId], null,false);
+                        declareCommon.initLand(data, $("#" + declareApprovalFun.houseConfig.son.declareRealtyLandCert.frm), [declareCommon.config.land.fileId], null, false);
                         $('#' + declareApprovalFun.houseConfig.son.declareRealtyLandCert.box).modal("show");
                     } else {
                         toastr.success('关联的土地证数据已经被删除!');
                     }
                 });
-            }else {
+            } else {
                 toastr.success('无土地证数据!');
             }
         });
@@ -299,16 +299,16 @@
             toastr.success('不合符调整后的数据约定,请联系管理员!');
             return false;
         }
-        var attribute = {readonly:"readonly",'class':'form-control'} ;
+        var attribute = {readonly: "readonly", 'class': 'form-control'};
         declareCommon.getDeclareBuildCenter(item.centerId, function (centerData) {
             if (declareCommon.isNotBlank(centerData.indicatorId)) {//关联情况
                 economicIndicators.init({
                     planDetailsId: declareCommon.getPlanDetailsId(),
                     economicId: centerData.indicatorId,
-                    centerId:item.centerId,
-                    attribute:attribute
+                    centerId: item.centerId,
+                    attribute: attribute
                 });
-            }else {
+            } else {
                 toastr.success('经济指标无!');
             }
         });
@@ -338,7 +338,7 @@
             onLoadSuccess: function () {
                 $('.tooltips').tooltip();
             }
-        });
+        }, false, false);
     };
 
 
@@ -347,8 +347,8 @@
         var item = $("#" + declareApprovalFun.declareRealtyRealEstateCertConfig.table).bootstrapTable('getRowByUniqueId', id);
         $('#' + declareApprovalFun.declareRealtyRealEstateCertConfig.box).find("#" + commonDeclareApprovalModel.config.realEstateCert.handleId).remove();
         $('#' + declareApprovalFun.declareRealtyRealEstateCertConfig.box).find(".panel-body").append(commonDeclareApprovalModel.realEstateCert.getHtml());
-        declareCommon.showHtmlMastInit($("#" + declareApprovalFun.declareRealtyRealEstateCertConfig.frm),function (area) {
-            declareCommon.initDeclareRealty(item,$("#" + declareApprovalFun.declareRealtyRealEstateCertConfig.frm),[declareApprovalFun.declareRealtyRealEstateCertConfig.fileId],null,false);
+        declareCommon.showHtmlMastInit($("#" + declareApprovalFun.declareRealtyRealEstateCertConfig.frm), function (area) {
+            declareCommon.initDeclareRealty(item, $("#" + declareApprovalFun.declareRealtyRealEstateCertConfig.frm), [declareApprovalFun.declareRealtyRealEstateCertConfig.fileId], null, false);
             $('#' + declareApprovalFun.declareRealtyRealEstateCertConfig.box).modal("show");
         });
     };
@@ -360,23 +360,23 @@
             toastr.success('不合符调整后的数据约定,请联系管理员!');
             return false;
         }
-        var attribute = {readonly:"readonly",'class':'form-control'} ;
+        var attribute = {readonly: "readonly", 'class': 'form-control'};
         declareCommon.getDeclareBuildCenter(item.centerId, function (centerData) {
             if (declareCommon.isNotBlank(centerData.indicatorId)) {//关联情况
                 economicIndicators.init({
                     planDetailsId: declareCommon.getPlanDetailsId(),
                     economicId: centerData.indicatorId,
-                    centerId:item.centerId,
-                    attribute:attribute
+                    centerId: item.centerId,
+                    attribute: attribute
                 });
-            }else {
+            } else {
                 toastr.success('经济指标无!');
             }
         });
     };
 
     //不动产
-    declareApprovalFun.realEstateloadList  = function () {
+    declareApprovalFun.realEstateloadList = function () {
         var cols = declareCommon.getRealEstateColumn();
         cols.push({field: 'fileViewName', title: '不动产附件'});
         cols.push({
@@ -429,8 +429,8 @@
         }
         var box = $("#declareBuildingPermitRealtyRealBox");
         var frm = box.find("form");
-        var arr = ["declareBuildingPermitFileId2"] ;
-        var inputArr = ["date"] ;
+        var arr = ["declareBuildingPermitFileId2"];
+        var inputArr = ["date"];
         box.find("#" + commonDeclareApprovalModel.config.buildingPermit.handleId).remove();
         box.find(".panel-body").append(commonDeclareApprovalModel.buildingPermit.getHtml());
         declareCommon.showHtmlMastInit(frm, function (area) {
@@ -438,7 +438,7 @@
             declareCommon.getDeclareBuildCenter(item.centerId, function (centerData) {
                 if (centerData.buildingPermitId) {
                     declareCommon.getDeclareBuildingPermitById(centerData.buildingPermitId, function (data) {
-                        declareCommon.initFormData(frm, data, arr, true, AssessDBKey.DeclareBuildingPermit,inputArr);
+                        declareCommon.initFormData(frm, data, arr, true, AssessDBKey.DeclareBuildingPermit, inputArr);
                     });
                 }
             });
@@ -455,14 +455,14 @@
         var frm = box.find("form");
         box.find("#" + commonDeclareApprovalModel.config.landUsePermit.handleId).remove();
         box.find(".panel-body").append(commonDeclareApprovalModel.landUsePermit.getHtml());
-        var arr = ["declareLandUsePermitFileId2"] ;
-        var inputArr = ["date"] ;
+        var arr = ["declareLandUsePermitFileId2"];
+        var inputArr = ["date"];
         declareCommon.showHtmlMastInit(frm, function (area) {
             box.modal("show");
             declareCommon.getDeclareBuildCenter(item.centerId, function (centerData) {
                 if (centerData.landUsePermitId) {
                     declareCommon.getDeclareLandUsePermitById(centerData.landUsePermitId, function (data) {
-                        declareCommon.initFormData(frm, data, arr, true, AssessDBKey.DeclareLandUsePermit,inputArr);
+                        declareCommon.initFormData(frm, data, arr, true, AssessDBKey.DeclareLandUsePermit, inputArr);
                     });
                 }
             });
@@ -477,7 +477,7 @@
             return false;
         }
         var arr = ["declareBuildingConstructionPermitFileId2"];
-        var inputArr = ["date","contractPeriod"] ;
+        var inputArr = ["date", "contractPeriod"];
         var box = $("#declareBuildingConstructionPermitRealtyRealBox");
         var frm = box.find("form");
         box.find("#" + commonDeclareApprovalModel.config.buildingConstructionPermit.handleId).remove();
@@ -487,7 +487,7 @@
             declareCommon.getDeclareBuildCenter(item.centerId, function (centerData) {
                 if (centerData.buildingConstructionPermitId) {
                     declareCommon.getDeclareBuildingConstructionPermitById(centerData.buildingConstructionPermitId, function (data) {
-                        declareCommon.initFormData(frm, data, arr, true, AssessDBKey.DeclareBuildingConstructionPermit,inputArr);
+                        declareCommon.initFormData(frm, data, arr, true, AssessDBKey.DeclareBuildingConstructionPermit, inputArr);
                     });
                 }
             });
@@ -502,7 +502,7 @@
             return false;
         }
         var arr = ["declarePreSalePermitFileId2"];
-        var inputArr = ["date"] ;
+        var inputArr = ["date"];
         var box = $("#declarePreSalePermitRealtyRealBox");
         var frm = box.find("form");
         box.find("#" + commonDeclareApprovalModel.config.preSalePermit.handleId).remove();
@@ -512,7 +512,7 @@
             declareCommon.getDeclareBuildCenter(item.centerId, function (centerData) {
                 if (centerData.preSalePermitId) {
                     declareCommon.getDeclarePreSalePermitById(centerData.preSalePermitId, function (data) {
-                        declareCommon.initFormData(frm, data, arr, true, AssessDBKey.DeclarePreSalePermit,inputArr);
+                        declareCommon.initFormData(frm, data, arr, true, AssessDBKey.DeclarePreSalePermit, inputArr);
                     });
                 }
             });
@@ -585,14 +585,14 @@
         var frm = box.find("form");
         box.find("#" + commonDeclareApprovalModel.config.buildingPermit.handleId).remove();
         box.find(".panel-body").append(commonDeclareApprovalModel.buildingPermit.getHtml());
-        var arr = ["declareBuildingPermitFileId3"] ;
-        var inputArr = ["date"] ;
+        var arr = ["declareBuildingPermitFileId3"];
+        var inputArr = ["date"];
         declareCommon.showHtmlMastInit(frm, function (area) {
             box.modal("show");
             declareCommon.getDeclareBuildCenter(item.centerId, function (centerData) {
                 if (centerData.buildingPermitId) {
                     declareCommon.getDeclareBuildingPermitById(centerData.buildingPermitId, function (data) {
-                        declareCommon.initFormData(frm, data, arr, true, AssessDBKey.DeclareBuildingPermit,inputArr);
+                        declareCommon.initFormData(frm, data, arr, true, AssessDBKey.DeclareBuildingPermit, inputArr);
                     });
                 }
             });
@@ -609,14 +609,14 @@
         var frm = box.find("form");
         box.find("#" + commonDeclareApprovalModel.config.landUsePermit.handleId).remove();
         box.find(".panel-body").append(commonDeclareApprovalModel.landUsePermit.getHtml());
-        var arr = ["declareLandUsePermitFileId3"] ;
-        var inputArr = ["date"] ;
+        var arr = ["declareLandUsePermitFileId3"];
+        var inputArr = ["date"];
         declareCommon.showHtmlMastInit(frm, function (area) {
             box.modal("show");
             declareCommon.getDeclareBuildCenter(item.centerId, function (centerData) {
                 if (centerData.landUsePermitId) {
                     declareCommon.getDeclareLandUsePermitById(centerData.landUsePermitId, function (data) {
-                        declareCommon.initFormData(frm, data, arr, false, AssessDBKey.DeclareLandUsePermit,inputArr);
+                        declareCommon.initFormData(frm, data, arr, false, AssessDBKey.DeclareLandUsePermit, inputArr);
                     });
                 }
             });
@@ -630,7 +630,7 @@
             return false;
         }
         var arr = ["declareBuildingConstructionPermitFileId3"];
-        var inputArr = ["date","contractPeriod"] ;
+        var inputArr = ["date", "contractPeriod"];
         var box = $("#declareBuildingConstructionPermitLandBox");
         var frm = box.find("form");
         box.find("#" + commonDeclareApprovalModel.config.buildingConstructionPermit.handleId).remove();
@@ -640,7 +640,7 @@
             declareCommon.getDeclareBuildCenter(item.centerId, function (centerData) {
                 if (centerData.buildingConstructionPermitId) {
                     declareCommon.getDeclareBuildingConstructionPermitById(centerData.buildingConstructionPermitId, function (data) {
-                        declareCommon.initFormData(frm, data, arr, false, AssessDBKey.DeclareBuildingConstructionPermit,inputArr);
+                        declareCommon.initFormData(frm, data, arr, false, AssessDBKey.DeclareBuildingConstructionPermit, inputArr);
                     });
                 }
             });
@@ -654,7 +654,7 @@
             return false;
         }
         var arr = ["declarePreSalePermitFileId3"];
-        var inputArr = ["date"] ;
+        var inputArr = ["date"];
         var box = $("#declarePreSalePermitLandBox");
         var frm = box.find("form");
         box.find("#" + commonDeclareApprovalModel.config.preSalePermit.handleId).remove();
@@ -664,7 +664,7 @@
             declareCommon.getDeclareBuildCenter(item.centerId, function (centerData) {
                 if (centerData.preSalePermitId) {
                     declareCommon.getDeclarePreSalePermitById(centerData.preSalePermitId, function (data) {
-                        declareCommon.initFormData(frm, data, arr, false, AssessDBKey.DeclarePreSalePermit,inputArr);
+                        declareCommon.initFormData(frm, data, arr, false, AssessDBKey.DeclarePreSalePermit, inputArr);
                     });
                 }
             });
@@ -675,17 +675,17 @@
     $(function () {
         declareApprovalFun.realEstateloadList();
         declareApprovalFun.houseLoadList();
-        declareApprovalFun.landLoadList() ;
-        var fileArr = [AssessUploadKey.PROJECT_PROXY  ,AssessUploadKey.ASSESS_REPORT_Enclosure ] ;
-        $.each(fileArr,function (i,n) {
+        declareApprovalFun.landLoadList();
+        var fileArr = [AssessUploadKey.PROJECT_PROXY, AssessUploadKey.ASSESS_REPORT_Enclosure];
+        $.each(fileArr, function (i, n) {
             declareCommon.showFile(n, AssessDBKey.ProjectInfo, "${projectPlanDetails.projectId}", false, n);
         });
     });
 
 
-
 </script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/assets/tree-grid/js/jquery.treegrid.js?v=${assessVersion}"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/assets/tree-grid/js/jquery.treegrid.js?v=${assessVersion}"></script>
 <script type="application/javascript">
     //提交审批
     function saveform() {
@@ -693,7 +693,6 @@
     }
 
 </script>
-
 
 
 <!--  房产证模块 房产证信息 -->
@@ -802,7 +801,7 @@
                         aria-hidden="true">&times;</span></button>
                 <h3 class="modal-title">建设工程规划许可证</h3>
             </div>
-            <form  class="form-horizontal">
+            <form class="form-horizontal">
                 <input type="hidden" name="id">
                 <input type="hidden" name="centerId">
                 <div class="modal-body">
@@ -845,7 +844,7 @@
                         aria-hidden="true">&times;</span></button>
                 <h3 class="modal-title">建设用地规划许可证</h3>
             </div>
-            <form  class="form-horizontal">
+            <form class="form-horizontal">
                 <input type="hidden" name="id">
                 <input type="hidden" name="centerId">
                 <div class="modal-body">
@@ -889,7 +888,7 @@
                         aria-hidden="true">&times;</span></button>
                 <h3 class="modal-title">建筑工程施工许可证</h3>
             </div>
-            <form  class="form-horizontal">
+            <form class="form-horizontal">
                 <input type="hidden" name="id">
                 <input type="hidden" name="centerId">
                 <div class="modal-body">
@@ -934,7 +933,7 @@
                         aria-hidden="true">&times;</span></button>
                 <h3 class="modal-title">商品房预售许可证</h3>
             </div>
-            <form  class="form-horizontal">
+            <form class="form-horizontal">
                 <input type="hidden" name="id">
                 <input type="hidden" name="centerId">
                 <div class="modal-body">
@@ -1015,7 +1014,7 @@
                         aria-hidden="true">&times;</span></button>
                 <h3 class="modal-title">建设工程规划许可证</h3>
             </div>
-            <form  class="form-horizontal">
+            <form class="form-horizontal">
                 <input type="hidden" name="id">
                 <input type="hidden" name="centerId">
                 <div class="modal-body">
@@ -1058,7 +1057,7 @@
                         aria-hidden="true">&times;</span></button>
                 <h3 class="modal-title">建设用地规划许可证</h3>
             </div>
-            <form  class="form-horizontal">
+            <form class="form-horizontal">
                 <input type="hidden" name="id">
                 <input type="hidden" name="centerId">
                 <div class="modal-body">
@@ -1102,7 +1101,7 @@
                         aria-hidden="true">&times;</span></button>
                 <h3 class="modal-title">建筑工程施工许可证</h3>
             </div>
-            <form  class="form-horizontal">
+            <form class="form-horizontal">
                 <input type="hidden" name="id">
                 <input type="hidden" name="centerId">
                 <div class="modal-body">
@@ -1147,7 +1146,7 @@
                         aria-hidden="true">&times;</span></button>
                 <h3 class="modal-title">商品房预售许可证</h3>
             </div>
-            <form  class="form-horizontal">
+            <form class="form-horizontal">
                 <input type="hidden" name="id">
                 <input type="hidden" name="centerId">
                 <div class="modal-body">

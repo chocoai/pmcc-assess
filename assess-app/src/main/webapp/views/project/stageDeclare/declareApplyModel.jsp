@@ -24,6 +24,56 @@
         return false
     };
 
+    //坐落拼接
+    commonDeclareApplyModel.seatJoin= function (engine) {
+        var district = engine.find("select[name='district'] option:selected").text();
+        var city = engine.find("select[name='city'] option:selected").text();
+        var unit = engine.find("input[name='unit']").val();
+        var floor = engine.find("input[name='floor']").val();
+        var roomNumber = engine.find("input[name='roomNumber']").val();
+        var streetNumber = engine.find("input[name='streetNumber']").val();
+        var attachedNumber = engine.find("input[name='attachedNumber']").val();
+        var buildingNumber = engine.find("input[name='buildingNumber']").val();
+        if (commonDeclareApplyModel.isNotBlank(unit)) {
+            unit = unit + "单元";
+        } else {
+            unit = "";
+        }
+        if (commonDeclareApplyModel.isNotBlank(floor)) {
+            floor = floor + "层";
+        } else {
+            floor = "";
+        }
+        if (!commonDeclareApplyModel.isNotBlank(roomNumber)) {
+            roomNumber = "";
+        } else {
+            roomNumber = roomNumber + "号";
+        }
+        if (!commonDeclareApplyModel.isNotBlank(streetNumber)) {
+            streetNumber = "";
+        }
+        if (commonDeclareApplyModel.isNotBlank(attachedNumber)) {
+            attachedNumber = "附" + attachedNumber + "号";
+        } else {
+            attachedNumber = "";
+        }
+        if (commonDeclareApplyModel.isNotBlank(buildingNumber)) {
+            buildingNumber = buildingNumber + "栋";
+        } else {
+            buildingNumber = "";
+        }
+        text = (streetNumber + attachedNumber + buildingNumber + unit + floor + roomNumber).replace(/号+/,'号');
+        if(commonDeclareApplyModel.isNotBlank(district)){
+            engine.find("input[name='beLocated']").val(district+text);
+            return;
+        }
+        if(commonDeclareApplyModel.isNotBlank(city)){
+            engine.find("input[name='beLocated']").val(city+text);
+            return;
+        }
+        engine.find("input[name='beLocated']").val(text);
+    };
+
     commonDeclareApplyModel.config = {
         house: {
             id: "declareModelHouse",
@@ -117,7 +167,7 @@
                 }
             }
         },
-        //座落
+        //不动产座落
         beLocatedSplicing: function (that) {
             var text = "";
             text = $(that).val();
@@ -126,91 +176,7 @@
                 if (engine.size() == 0) {
                     engine = $(that).closest("#" + commonDeclareApplyModel.config.realEstateCert.handleId2);
                 }
-                var district = engine.find("select[name='district'] option:selected").val();
-                var city = engine.find("select[name='city'] option:selected").val();
-                var unit = engine.find("input[name='unit']").val();
-                var floor = engine.find("input[name='floor']").val();
-                var roomNumber = engine.find("input[name='roomNumber']").val();
-                var streetNumber = engine.find("input[name='streetNumber']").val();
-                var attachedNumber = engine.find("input[name='attachedNumber']").val();
-                var buildingNumber = engine.find("input[name='buildingNumber']").val();
-                if (!commonDeclareApplyModel.isNotBlank(unit)) {
-                    unit = "";
-                } else {
-                    unit = unit + "单元";
-                }
-                if (!commonDeclareApplyModel.isNotBlank(floor)) {
-                    floor = "";
-                } else {
-                    floor = floor + "层";
-                }
-                if (!commonDeclareApplyModel.isNotBlank(roomNumber)) {
-                    roomNumber = "";
-                } else {
-                    roomNumber = roomNumber + "号";
-                }
-                if (!commonDeclareApplyModel.isNotBlank(streetNumber)) {
-                    streetNumber = "";
-                } else {
-                    var char = streetNumber.charAt(streetNumber.length - 1)
-                    if (char != "号") {
-                        streetNumber = streetNumber + "号";
-                        engine.find("input[name='streetNumber']").val(streetNumber);
-                    }
-                }
-                if (!commonDeclareApplyModel.isNotBlank(attachedNumber)) {
-                    attachedNumber = "";
-                } else {
-                    attachedNumber = "附" + attachedNumber + "号";
-                }
-                if (!commonDeclareApplyModel.isNotBlank(buildingNumber)) {
-                    buildingNumber = "";
-                } else {
-                    buildingNumber = buildingNumber + "栋";
-                }
-                var key = 1;
-                if (commonDeclareApplyModel.isNotBlank(district)) {
-                    key = 1;
-                }
-                if (commonDeclareApplyModel.isNotBlank(city)) {
-                    key = 2;
-                }
-                //城市和县都不为null
-                if (commonDeclareApplyModel.isNotBlank(city) && commonDeclareApplyModel.isNotBlank(district)) {
-                    key = 3;
-                }
-                //城市和县都为null
-                if (!commonDeclareApplyModel.isNotBlank(city) && !commonDeclareApplyModel.isNotBlank(district)) {
-                    key = 4;
-                }
-                text = streetNumber + attachedNumber + buildingNumber + unit + floor + roomNumber;
-                switch (key) {
-                    case 1:
-                        AssessCommon.getAreaById(district, function (data) {
-                            text = data.name + text;
-                            engine.find("input[name='beLocated']").val(text);
-                        });
-                        break;
-                    case 2:
-                        AssessCommon.getAreaById(city, function (data) {
-                            text = data.name + text;
-                            engine.find("input[name='beLocated']").val(text);
-                        });
-                        break;
-                    case 3:
-                        AssessCommon.getAreaById(district, function (districtData) {
-                            AssessCommon.getAreaById(city, function (cityData) {
-                                text = cityData.name + districtData.name + text;
-                                engine.find("input[name='beLocated']").val(text);
-                            });
-                        });
-                        break;
-                    case 4:
-                        engine.find("input[name='beLocated']").val(text);
-                        break;
-                    default:
-                        break;
-                }
+                commonDeclareApplyModel.seatJoin(engine);
             }
         }
     };
@@ -253,97 +219,14 @@
                 }
             }
         },
-        //坐落
+
+        //房产坐落
         beLocatedSplicing: function (that) {
             var text = "";
             text = $(that).val();
             if (commonDeclareApplyModel.isNotBlank(text)) {
                 var engine = $(that).closest("#" + commonDeclareApplyModel.config.house.handleId);
-                var district = engine.find("select[name='district'] option:selected").val();
-                var city = engine.find("select[name='city'] option:selected").val();
-                var unit = engine.find("input[name='unit']").val();
-                var floor = engine.find("input[name='floor']").val();
-                var roomNumber = engine.find("input[name='roomNumber']").val();
-                var streetNumber = engine.find("input[name='streetNumber']").val();
-                var attachedNumber = engine.find("input[name='attachedNumber']").val();
-                var buildingNumber = engine.find("input[name='buildingNumber']").val();
-                if (!commonDeclareApplyModel.isNotBlank(unit)) {
-                    unit = "";
-                } else {
-                    unit = unit + "单元";
-                }
-                if (!commonDeclareApplyModel.isNotBlank(floor)) {
-                    floor = "";
-                } else {
-                    floor = floor + "层";
-                }
-                if (!commonDeclareApplyModel.isNotBlank(roomNumber)) {
-                    roomNumber = "";
-                } else {
-                    roomNumber = roomNumber + "号";
-                }
-                if (!commonDeclareApplyModel.isNotBlank(streetNumber)) {
-                    streetNumber = "";
-                } else {
-                    var char = streetNumber.charAt(streetNumber.length - 1)
-                    if (char != "号") {
-                        streetNumber = streetNumber + "号";
-                        engine.find("input[name='streetNumber']").val(streetNumber);
-                    }
-                }
-                if (!commonDeclareApplyModel.isNotBlank(attachedNumber)) {
-                    attachedNumber = "";
-                } else {
-                    attachedNumber = "附" + attachedNumber + "号";
-                }
-                if (!commonDeclareApplyModel.isNotBlank(buildingNumber)) {
-                    buildingNumber = "";
-                } else {
-                    buildingNumber = buildingNumber + "栋";
-                }
-                var key = 1;
-                if (commonDeclareApplyModel.isNotBlank(district)) {
-                    key = 1;
-                }
-                if (commonDeclareApplyModel.isNotBlank(city)) {
-                    key = 2;
-                }
-                //城市和县都不为null
-                if (commonDeclareApplyModel.isNotBlank(city) && commonDeclareApplyModel.isNotBlank(district)) {
-                    key = 3;
-                }
-                //城市和县都为null
-                if (!commonDeclareApplyModel.isNotBlank(city) && !commonDeclareApplyModel.isNotBlank(district)) {
-                    key = 4;
-                }
-                text = streetNumber + attachedNumber + buildingNumber + unit + floor + roomNumber;
-                switch (key) {
-                    case 1:
-                        AssessCommon.getAreaById(district, function (data) {
-                            text = data.name + text;
-                            engine.find("input[name='beLocated']").val(text);
-                        });
-                        break;
-                    case 2:
-                        AssessCommon.getAreaById(city, function (data) {
-                            text = data.name + text;
-                            engine.find("input[name='beLocated']").val(text);
-                        });
-                        break;
-                    case 3:
-                        AssessCommon.getAreaById(district, function (districtData) {
-                            AssessCommon.getAreaById(city, function (cityData) {
-                                text = cityData.name + districtData.name + text;
-                                engine.find("input[name='beLocated']").val(text);
-                            });
-                        });
-                        break;
-                    case 4:
-                        engine.find("input[name='beLocated']").val(text);
-                        break;
-                    default:
-                        break;
-                }
+                commonDeclareApplyModel.seatJoin(engine);
             }
         }
     };
@@ -381,11 +264,9 @@
                         }
                     });
                 }
-
-
             }
         },
-        //坐落 拼接
+        //土地坐落拼接
         landBeLocatedSplicing: function (that) {
             var text = "";
             text = $(that).val();
@@ -394,92 +275,7 @@
                 if (engine.size() == 0) {
                     engine = $(that).closest("#" + commonDeclareApplyModel.config.land.handleId2);
                 }
-                var district = engine.find("select[name='district'] option:selected").val();
-                var city = engine.find("select[name='city'] option:selected").val();
-                var unit = engine.find("input[name='unit']").val();
-                var floor = engine.find("input[name='floor']").val();
-                var roomNumber = engine.find("input[name='roomNumber']").val();
-                var streetNumber = engine.find("input[name='streetNumber']").val();
-                var attachedNumber = engine.find("input[name='attachedNumber']").val();
-                var buildingNumber = engine.find("input[name='buildingNumber']").val();
-                if (!commonDeclareApplyModel.isNotBlank(unit)) {
-                    unit = "";
-                } else {
-                    unit = unit + "单元";
-                }
-                if (!commonDeclareApplyModel.isNotBlank(floor)) {
-                    floor = "";
-                } else {
-                    floor = floor + "层";
-                }
-                if (!commonDeclareApplyModel.isNotBlank(roomNumber)) {
-                    roomNumber = "";
-                } else {
-                    roomNumber = roomNumber + "号";
-                }
-                if (!commonDeclareApplyModel.isNotBlank(streetNumber)) {
-                    streetNumber = "";
-                } else {
-                    var char = streetNumber.charAt(streetNumber.length - 1)
-                    if (char != "号") {
-                        streetNumber = streetNumber + "号";
-                        engine.find("input[name='streetNumber']").val(streetNumber);
-                    }
-                }
-                if (!commonDeclareApplyModel.isNotBlank(attachedNumber)) {
-                    attachedNumber = "";
-                } else {
-                    attachedNumber = "附" + attachedNumber + "号";
-
-                }
-                if (!commonDeclareApplyModel.isNotBlank(buildingNumber)) {
-                    buildingNumber = "";
-                } else {
-                    buildingNumber = buildingNumber + "栋";
-                }
-                var key = 1;
-                if (commonDeclareApplyModel.isNotBlank(district)) {
-                    key = 1;
-                }
-                if (commonDeclareApplyModel.isNotBlank(city)) {
-                    key = 2;
-                }
-                //城市和县都不为null
-                if (commonDeclareApplyModel.isNotBlank(city) && commonDeclareApplyModel.isNotBlank(district)) {
-                    key = 3;
-                }
-                //城市和县都为null
-                if (!commonDeclareApplyModel.isNotBlank(city) && !commonDeclareApplyModel.isNotBlank(district)) {
-                    key = 4;
-                }
-                text = streetNumber + attachedNumber + buildingNumber + unit + floor + roomNumber;
-                switch (key) {
-                    case 1:
-                        AssessCommon.getAreaById(district, function (data) {
-                            text = data.name + text;
-                            engine.find("input[name='beLocated']").val(text);
-                        });
-                        break;
-                    case 2:
-                        AssessCommon.getAreaById(city, function (data) {
-                            text = data.name + text;
-                            engine.find("input[name='beLocated']").val(text);
-                        });
-                        break;
-                    case 3:
-                        AssessCommon.getAreaById(district, function (districtData) {
-                            AssessCommon.getAreaById(city, function (cityData) {
-                                text = cityData.name + districtData.name + text;
-                                engine.find("input[name='beLocated']").val(text);
-                            });
-                        });
-                        break;
-                    case 4:
-                        engine.find("input[name='beLocated']").val(text);
-                        break;
-                    default:
-                        break;
-                }
+                commonDeclareApplyModel.seatJoin(engine);
             }
         },
         getHtml: function () {

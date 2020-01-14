@@ -246,19 +246,12 @@ declareCommon.getLandColumn = function () {
 //房产
 declareCommon.getHouseColumn = function () {
     var cols = [];
+    cols.push({field: 'autoInitNumber', title: '编号'});
     cols.push({
         field: 'provinceName', title: '区域', formatter: function (value, row, index) {
             return AssessCommon.getAreaFullName(row.provinceName, row.cityName, row.districtName);
         }
     });
-    // cols.push({
-    //     field: 'bisRecord', title: '是否参与查勘任务', formatter: function (value, row, index) {
-    //         if (row.bisRecord){
-    //             return "已经参与" ;
-    //         }
-    //         return "暂时没有参与下一阶段任务";
-    //     }
-    // });
     cols.push({field: 'certName', title: '房屋权证号'});
     cols.push({field: 'beLocated', title: '坐落'});
     cols.push({field: 'ownership', title: '房屋所有权人'});

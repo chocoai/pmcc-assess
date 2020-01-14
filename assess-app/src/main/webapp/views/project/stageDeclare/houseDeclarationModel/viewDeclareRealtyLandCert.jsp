@@ -10,12 +10,10 @@
         <div class="clearfix"></div>
     </div>
     <div class="x_content collapse">
-
         <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
             <form class="form-horizontal">
                 <div class="form-group">
-
-                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
                         <div class="btn-group">
                             <button type="button" class="btn btn-success" onclick="assessCommonLand.showAddModelLand()"
                                     data-toggle="modal"> 新增
@@ -24,11 +22,9 @@
                             <div type="button" class="btn btn-primary" onclick="assessCommonLand.deleteLand()"> 删除</div>
                         </div>
                     </div>
-
-                    <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
-
+                    <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
                         <div class="btn-group">
-                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">导入土地证数据
+                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">导入土地证
                                 <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu" role="menu">
@@ -40,14 +36,13 @@
                                 </li>
                             </ul>
                         </div>
-
+                    </div>
+                    <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
                         <div class="btn-group">
                             <div class="btn btn-primary" onclick="assessCommonLand.copyData();"> <i class="fa fa-files-o" aria-hidden="true"></i> 复制</div>
                             <div class="btn btn-primary" onclick="assessCommonLand.pasteAll();"> <i class="fa fa-clipboard" aria-hidden="true"></i>粘贴</div>
                         </div>
-
                     </div>
-
                     <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
                         <div class="input-group" id="landHandleInputGroup">
                             <input type="hidden" name="id">
@@ -62,57 +57,59 @@
                         </div>
                     </div>
                 </div>
-            </form>
-        </div>
 
-        <div class="form-group">
-            <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                <div class="row">
-                    <div class="x-valid">
-                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">编号前缀(可以不填,不填那么就是纯数字)</label>
-                        <div class=" col-xs-1  col-sm-1  col-md-1  col-lg-1 ">
-                            <input type="text"
-                                   placeholder="编号前缀" name="prefixNumber" class="form-control">
-                        </div>
-                    </div>
+                <div class="form-group">
+                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                        <div class="row">
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">编号前缀</label>
+                                <div class=" col-xs-1  col-sm-1  col-md-1  col-lg-1 ">
+                                    <input type="text"
+                                           placeholder="编号前缀" name="prefixNumber" class="form-control">
+                                </div>
+                            </div>
 
-                    <div class="x-valid">
-                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">启始编号</label>
-                        <div class=" col-xs-1  col-sm-1  col-md-1  col-lg-1 ">
-                            <input type="text"
-                                   placeholder="必须数字" name="startNumber" class="form-control">
-                        </div>
-                    </div>
-                    <div class="x-valid">
-                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">截至编号</label>
-                        <div class=" col-xs-1  col-sm-1  col-md-1  col-lg-1 ">
-                            <input type="text"
-                                   placeholder="必须数字" name="endNumber" class="form-control">
-                        </div>
-                    </div>
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">启始编号</label>
+                                <div class=" col-xs-1  col-sm-1  col-md-1  col-lg-1 ">
+                                    <input type="text"
+                                           placeholder="必须数字" name="startNumber" class="form-control">
+                                </div>
+                            </div>
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">截至编号</label>
+                                <div class=" col-xs-1  col-sm-1  col-md-1  col-lg-1 ">
+                                    <input type="text"
+                                           placeholder="必须数字" name="endNumber" class="form-control">
+                                </div>
+                            </div>
 
-                    <div class="x-valid">
-                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">步长(每个权证关联的图片个数)</label>
-                        <div class=" col-xs-1  col-sm-1  col-md-1  col-lg-1 ">
-                            <input type="text"
-                                   placeholder="必须数字" name="step" class="form-control" value="1">
-                        </div>
-                    </div>
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">步长</label>
+                                <div class=" col-xs-1  col-sm-1  col-md-1  col-lg-1 ">
+                                    <input type="text"
+                                           placeholder="每个权证关联的图片个数" name="step" class="form-control" value="">
+                                </div>
+                            </div>
 
-                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                        <input id="landAttachmentAutomatedWarrantsPDF" name="landAttachmentAutomatedWarrantsPDF" placeholder="pdf自动关联权证附件" class="form-control"
-                               type="file">
-                        <div id="_landAttachmentAutomatedWarrantsPDF"></div>
-                    </div>
+                            <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                <input id="landAttachmentAutomatedWarrantsPDF" name="landAttachmentAutomatedWarrantsPDF" placeholder="pdf自动关联权证附件" class="form-control"
+                                       type="file">
+                                <div id="_landAttachmentAutomatedWarrantsPDF"></div>
+                            </div>
 
-                    <div class="x-valid">
-                        <div class=" col-xs-1  col-sm-1  col-md-1  col-lg-1 ">
-                            <button type="button" class="btn-primary btn" onclick="assessCommonLand.attachmentAutomatedWarrants(this);">关联</button>
+                            <div class="x-valid">
+                                <div class=" col-xs-1  col-sm-1  col-md-1  col-lg-1 ">
+                                    <button type="button" class="btn-primary btn" onclick="assessCommonLand.attachmentAutomatedWarrants(this);">关联</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
+
+
 
 
         <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">

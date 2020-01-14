@@ -732,13 +732,16 @@ public class DeclarePublicService {
             //编号
             String numberStr = StringUtils.substringAfterLast(declareRealtyHouseCert.getCertName(), "第");
             declareRealtyHouseCert.setNumber(generateCommonMethod.getNumber(numberStr));
+            String before = StringUtils.substringBefore(declareRealtyHouseCert.getCertName(), "字");
+            String tempString = before;
             for (BaseDataDic type : types) {
-                if (certName.contains(type.getName())) {
+                tempString = tempString.replace(type.getName(), "");
+            }
+            declareRealtyHouseCert.setLocation(tempString);
+            tempString = before.replace(tempString, "");
+            for (BaseDataDic type : types) {
+                if (type.getName().equals(tempString)) {
                     declareRealtyHouseCert.setType(type.getId().toString());
-                    declareRealtyHouseCert.setLocation(StringUtils.substringBetween(declareRealtyHouseCert.getCertName(), "", type.getName()));
-                    break;
-                } else {
-                    declareRealtyHouseCert.setLocation(StringUtils.substringBetween(declareRealtyHouseCert.getCertName(), "", "第"));
                 }
             }
         } else {
@@ -1210,9 +1213,9 @@ public class DeclarePublicService {
             throw new Exception("没有找到匹配的申报编号!");
         }
         //处理规则问题
-        boolean initMark = linkedList.size()  == integerLinkedList.size() *  automatedWarrants.getStep().intValue();//标识
+        boolean initMark = linkedList.size() == integerLinkedList.size() * automatedWarrants.getStep().intValue();//标识
         if (!initMark) {
-            throw new Exception(String.join("-", "申报编号数量和!传入的文档中图片数量不匹配", String.format("%s%s", "申报图片数量", String.valueOf(linkedList.size())), String.format("%s%s", "申报编号数", String.valueOf(integerLinkedList.size())),String.format("申报步长:%s",automatedWarrants.getStep().toString())));
+            throw new Exception(String.join("-", "申报编号数量和!传入的文档中图片数量不匹配", String.format("%s%s", "申报图片数量", String.valueOf(linkedList.size())), String.format("%s%s", "申报编号数", String.valueOf(integerLinkedList.size())), String.format("申报步长:%s", automatedWarrants.getStep().toString())));
         }
         //根据步长进行分组
         List<List<String>> listList = splitsList(linkedList, automatedWarrants.getStep().intValue());
@@ -1229,7 +1232,7 @@ public class DeclarePublicService {
             }
         }
         //处理结束后删除附件
-        baseAttachmentService.deleteAttachment(automatedWarrants.getAttachmentId()) ;
+        baseAttachmentService.deleteAttachment(automatedWarrants.getAttachmentId());
     }
 
     /**
