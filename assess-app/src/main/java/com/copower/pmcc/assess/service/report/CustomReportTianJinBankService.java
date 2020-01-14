@@ -93,11 +93,11 @@ public class CustomReportTianJinBankService {
             List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectService.getJudgeObjectFullListByAreaId(data.getAreaId());
             if (CollectionUtils.isNotEmpty(judgeObjectList)) {
                 vo.setAssessTotal(judgeObjectList.get(0).getEvaluationArea().multiply(judgeObjectList.get(0).getPrice()).setScale(2, BigDecimal.ROUND_HALF_UP));
-                //面积
-                vo.setArea(judgeObjectList.get(0).getEvaluationArea());
-                //坐落
-                vo.setSeat(judgeObjectList.get(0).getSeat());
             }
+            //面积
+            vo.setArea(judgeObjectList.get(0).getEvaluationArea());
+            //坐落
+            vo.setSeat(judgeObjectList.get(0).getSeat());
         }
 
         //抵押人(占有人)

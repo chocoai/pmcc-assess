@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.copower.pmcc.assess.dal.basis.custom.mapper.CustomReportJiaoTongBankMapper">
+
+    <resultMap id="BaseResultMap"
+               type="com.copower.pmcc.assess.dal.basis.custom.entity.CustomReportJiaoTongBank">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="project_id" property="projectId" jdbcType="INTEGER"/>
+        <result column="number_value" property="numberValue" jdbcType="VARCHAR"/>
+        <result column="report_type" property="reportType" jdbcType="INTEGER" />
+        <result column="project_category_id" property="projectCategoryId" jdbcType="INTEGER" />
+        <result column="report_issuance_date" property="reportIssuanceDate" jdbcType="TIMESTAMP"/>
+        <result column="valuation_date" property="valuationDate" jdbcType="TIMESTAMP"/>
+        <result column="u_use_unit_name" property="unitName" jdbcType="VARCHAR"/>
+        <result column="contract_price" property="assessCost" jdbcType="DECIMAL"/>
+        <result column="assess_organization" property="assessOrganization" jdbcType="VARCHAR"/>
+        <result column="area_id" property="areaId" jdbcType="INTEGER"/>
+        <result column="qualification_type" property="qualificationType" jdbcType="VARCHAR"/>
+        <result column="real_estate_appraiser" property="realEstateAppraiser" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="getCustomReportJiaoTongBankList" parameterType="map" resultMap="BaseResultMap">
+        select
+        A.id,A.project_id,A.number_value, A.report_type, B.project_category_id,D.report_issuance_date,
+        E.u_use_unit_name,B.valuation_date,B.contract_price,C.assess_organization,A.area_id,
+        D.qualification_type,D.real_estate_appraiser
+        from tb_project_number_record A
+        LEFT JOIN tb_project_info B ON A.project_id = B.id
+        LEFT JOIN tb_declare_apply C ON A.project_id = C.project_id
+        LEFT JOIN tb_generate_report_info D ON A.project_id = D.project_id
+        LEFT JOIN tb_initiate_unit_information E ON A.project_id = E.project_id
+        LEFT JOIN tb_scheme_area_group F ON A.area_id = F.id
+        WHERE 1=1
+        and bis_delete = false
+        <if test="numberValue!=null and numberValue!=''">
+            AND (A.number_value LIKE
+            CONCAT(CONCAT('%',#{numberValue}), '%'))
+        </if>
+        <if test="unitName!=null and unitName!=''">
+            AND (E.u_use_unit_name LIKE
+            CONCAT(CONCAT('%',#{unitName}), '%'))
+        </if>
+        <if test="reportType!=null">
+            AND A.report_type = #{reportType}
+        </if>
+        ORDER BY A.id DESC
+    </select>
+</mapper>
