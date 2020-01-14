@@ -23,13 +23,10 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,6 +37,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by zch on 2019-12-16.
@@ -80,7 +78,7 @@ public class SurveyAssetRightItemService {
             updateSurveyAssetRightItem(oo, updateNull);
         } else {
             saveSurveyAssetRightItem(oo);
-            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(SurveyAssetRightItem.class),oo.getId());
+            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(SurveyAssetRightItem.class), oo.getId());
         }
     }
 
@@ -158,108 +156,7 @@ public class SurveyAssetRightItemService {
     public List<SurveyAssetRightItem> getSurveyAssetRightItemListByGroupId(Integer groupId) {
         SurveyAssetRightItem select = new SurveyAssetRightItem();
         select.setGroupId(groupId);
-        return getSurveyAssetRightItemListByExample(select) ;
-    }
-
-    private boolean importData(SurveyAssetRightItem target, StringBuilder builder, Row row, int i) throws Exception {
-        List<BaseDataDic> typeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.HOUSE_INVENTORY_RIGHT_CATEGORY);
-        for (int j = 0; j < 12; j++) {
-            String value = PoiUtils.getCellValue(row.getCell(j));
-            switch (j) {
-                case 0: {
-                    if (CollectionUtils.isEmpty(typeList)){
-                        builder.append("数据字典未配!") ;
-                        return false;
-                    }
-                    if (StringUtils.isNotBlank(value)) {
-                        BaseDataDic typeDic = baseDataDicService.getDataDicByName(typeList, value);
-                        if (typeDic == null) {
-                            builder.append(String.format("\n第%s行异常：类型与系统配置的名称不一致(共有情况)", i));
-                        } else {
-                            target.setCategory(typeDic.getId());
-                        }
-                    } else {
-                        builder.append(String.join("", "第", String.valueOf(i), "行", "第", String.valueOf(j), "列", "类型没有填写正确"));
-                    }
-                    break;
-                }
-                case 1: {
-                    if (StringUtils.isNotBlank(value)) {
-                        target.setRemark(value);
-                    }
-                    break;
-                }
-                case 2: {
-                    if (StringUtils.isNotBlank(value)) {
-                        target.setNumber(value);
-                    }
-                    break;
-                }
-                case 3: {
-                    if (StringUtils.isNotBlank(value)) {
-                        target.setObligor(value);
-                    }
-                    break;
-                }
-                case 4: {
-                    if (StringUtils.isNotBlank(value)) {
-                        if (NumberUtils.isNumber(value)) {
-                            target.setRegisterAmount(value);
-                        }
-                    }
-                    break;
-                }
-                case 5: {
-                    if (StringUtils.isNotBlank(value)) {
-                        if (NumberUtils.isNumber(value)) {
-                            target.setRegisterArea(value);
-                        }
-                    }
-                    break;
-                }
-                case 6: {
-                    if (StringUtils.isNotBlank(value)) {
-                        target.setRegisterDate(DateUtils.convertDate(value, DateUtils.DATE_PATTERN));
-                    }
-                    break;
-                }
-                case 7: {
-                    if (StringUtils.isNotBlank(value)) {
-                        target.setEndDate(DateUtils.convertDate(value, DateUtils.DATE_PATTERN));
-                    }
-                    break;
-                }
-                case 8: {
-                    if (StringUtils.isNotBlank(value)) {
-                        target.setBeginDate(DateUtils.convertDate(value, DateUtils.DATE_PATTERN));
-                    }
-                    break;
-                }
-                case 9: {
-                    if (StringUtils.isNotBlank(value)) {
-                        target.setObligee(value);
-                    }
-                    break;
-                }
-                case 10: {
-                    if (StringUtils.isNotBlank(value)) {
-                        if (NumberUtils.isNumber(value)) {
-                            target.setActualAmount(value);
-                        }
-                    }
-                    break;
-                }
-                case 11: {
-                    if (StringUtils.isNotBlank(value)) {
-                        target.setRightRank(value);
-                    }
-                    break;
-                }
-                default:
-                    break;
-            }
-        }
-        return true;
+        return getSurveyAssetRightItemListByExample(select);
     }
 
     /**
@@ -283,25 +180,20 @@ public class SurveyAssetRightItemService {
         } catch (Exception e) {
             baseService.writeExceptionInfo(e, "他项权利详情表");
         }
-        //只取第一个sheet
-        Sheet sheet = workbook.getSheetAt(0);
-        //工作表的第一行
-        row = sheet.getRow(0);
-        //读取数据的起始行
-        int startRowNumber = 1;
-        //导入成功数据条数
-        int successCount = 0;
-        //总列数
-        int colLength = row.getPhysicalNumberOfCells() != 0 ? row.getPhysicalNumberOfCells() : row.getLastCellNum();
-        //总行数
-        int rowLength = sheet.getPhysicalNumberOfRows() != 0 ? sheet.getPhysicalNumberOfRows() : sheet.getLastRowNum();
+        Sheet sheet = workbook.getSheetAt(0);//只取第一个sheet
+        int startRowNumber = 2;//读取数据的起始行
+        int successCount = 0; //导入成功数据条数
+        int rowLength = PoiUtils.getSheetRowsCount(sheet); //总行数
         rowLength = rowLength - startRowNumber;
         if (rowLength == 0) {
-            builder.append("没有数据!");
-            return builder.toString();
+            throw new BusinessException("没有需要导入的数据");
         }
+        row = sheet.getRow(0);//工作表的第一行
+        Map<String, Integer> map = PoiUtils.getKeyIndexMap(row);
+        if (map.isEmpty()) throw new BusinessException("未设置key值表头");
+        List<BaseDataDic> typeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.HOUSE_INVENTORY_RIGHT_CATEGORY);
         for (int i = startRowNumber; i < rowLength + startRowNumber; i++) {
-            SurveyAssetRightItem target = null;
+            SurveyAssetRightItem rightItem = null;
             //标识符
             try {
                 row = sheet.getRow(i);
@@ -309,14 +201,65 @@ public class SurveyAssetRightItemService {
                     builder.append(String.format("\n第%s行异常：%s", i, "没有数据"));
                     continue;
                 }
-                target = new SurveyAssetRightItem();
-                BeanUtils.copyProperties(input, target);
-                target.setId(null);
-                //excel 处理
-                if (!this.importData(target, builder, row, i)) {
-                    continue;
+                rightItem = new SurveyAssetRightItem();
+                BeanUtils.copyProperties(input, rightItem);
+                rightItem.setId(null);
+                String value = PoiUtils.getCellValue(row.getCell(map.get("category")));
+                if (StringUtils.isNotBlank(value)) {
+                    BaseDataDic typeDic = baseDataDicService.getDataDicByName(typeList, value);
+                    if (typeDic == null) {
+                        builder.append(String.format("\n第%s行异常：类别与系统配置的名称不一致", i));
+                    } else {
+                        rightItem.setCategory(typeDic.getId());
+                    }
+                } else {
+                    builder.append(String.join("", "第", String.valueOf(i), "行", "第", String.valueOf(i), "列", "类型没有填写正确"));
                 }
-                saveSurveyAssetRightItem(target);
+                value = PoiUtils.getCellValue(row.getCell(map.get("remark")));
+                if (StringUtils.isNotBlank(value)) {
+                    rightItem.setRemark(value);
+                }
+                value = PoiUtils.getCellValue(row.getCell(map.get("number")));
+                if (StringUtils.isNotBlank(value)) {
+                    rightItem.setNumber(value);
+                }
+                value = PoiUtils.getCellValue(row.getCell(map.get("obligor")));
+                if (StringUtils.isNotBlank(value)) {
+                    rightItem.setObligor(value);
+                }
+                value = PoiUtils.getCellValue(row.getCell(map.get("registerAmount")));
+                if (StringUtils.isNotBlank(value)) {
+                    rightItem.setRegisterAmount(value);
+                }
+                value = PoiUtils.getCellValue(row.getCell(map.get("registerArea")));
+                if (StringUtils.isNotBlank(value)) {
+                    rightItem.setRegisterArea(value);
+                }
+                value = PoiUtils.getCellValue(row.getCell(map.get("registerDate")));
+                if (StringUtils.isNotBlank(value)) {
+                    rightItem.setRegisterDate(DateUtils.convertDate(value));
+                }
+                value = PoiUtils.getCellValue(row.getCell(map.get("endDate")));
+                if (StringUtils.isNotBlank(value)) {
+                    rightItem.setEndDate(DateUtils.convertDate(value));
+                }
+                value = PoiUtils.getCellValue(row.getCell(map.get("beginDate")));
+                if (StringUtils.isNotBlank(value)) {
+                    rightItem.setBeginDate(DateUtils.convertDate(value));
+                }
+                value = PoiUtils.getCellValue(row.getCell(map.get("obligee")));
+                if (StringUtils.isNotBlank(value)) {
+                    rightItem.setObligee(value);
+                }
+                value = PoiUtils.getCellValue(row.getCell(map.get("actualAmount")));
+                if (StringUtils.isNotBlank(value)) {
+                    rightItem.setActualAmount(value);
+                }
+                value = PoiUtils.getCellValue(row.getCell(map.get("rightRank")));
+                if (StringUtils.isNotBlank(value)) {
+                    rightItem.setRightRank(value);
+                }
+                saveSurveyAssetRightItem(rightItem);
                 successCount++;
             } catch (Exception e) {
                 builder.append(String.format("\n第%s行异常：%s", i + 1, e.getMessage()));

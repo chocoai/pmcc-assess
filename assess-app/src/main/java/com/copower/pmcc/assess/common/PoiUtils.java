@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.common;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
@@ -557,5 +558,38 @@ public class PoiUtils {
         return font;
     }
 
+    /**
+     * key值对应列的序号
+     *
+     * @param row
+     * @return
+     */
+    public static Map<String, Integer> getKeyIndexMap(Row row) {
+        if (row == null) return null;
+        int physicalNumberOfCells = row.getPhysicalNumberOfCells();
+        short lastCellNum = row.getLastCellNum();
+        int colLength = physicalNumberOfCells > lastCellNum ? physicalNumberOfCells : lastCellNum;
+        Map<String, Integer> map = Maps.newHashMap();
+        for (Integer i = 0; i < colLength; i++) {
+            Cell cell = row.getCell(i);
+            if (cell == null) continue;
+            String value = cell.getStringCellValue();
+            if (StringUtils.isNotBlank(value)) {
+                map.put(value, i);
+            }
+        }
+        return map;
+    }
+
+    /**
+     * 获取sheet的总行数
+     * @param sheet
+     * @return
+     */
+    public static Integer getSheetRowsCount(Sheet sheet) {
+        int physicalNumberOfRows = sheet.getPhysicalNumberOfRows();
+        int lastRowNum = sheet.getLastRowNum();
+        return physicalNumberOfRows > lastRowNum ? physicalNumberOfRows : lastRowNum;
+    }
 
 }
