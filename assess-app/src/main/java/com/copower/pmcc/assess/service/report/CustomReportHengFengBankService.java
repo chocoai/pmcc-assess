@@ -108,7 +108,9 @@ public class CustomReportHengFengBankService {
             if (CollectionUtils.isNotEmpty(judgeObjectList)) {
                 vo.setArea(judgeObjectList.get(0).getEvaluationArea());
                 //评估总价
-                vo.setAssessTotal(judgeObjectList.get(0).getEvaluationArea().multiply(judgeObjectList.get(0).getPrice()).setScale(2, BigDecimal.ROUND_HALF_UP));
+                if (judgeObjectList.get(0).getEvaluationArea() != null && judgeObjectList.get(0).getPrice() != null) {
+                    vo.setAssessTotal(judgeObjectList.get(0).getEvaluationArea().multiply(judgeObjectList.get(0).getPrice()).setScale(2, BigDecimal.ROUND_HALF_UP));
+                }
                 //抵押物地址
                 vo.setSeat(judgeObjectList.get(0).getSeat());
             }
@@ -117,25 +119,14 @@ public class CustomReportHengFengBankService {
         InitiateConsignorVo consignorVo = initiateConsignorService.getDataByProjectId(data.getProjectId());
         String principalStr = StringUtils.isNotBlank(consignorVo.getCsName()) ? consignorVo.getCsName() : consignorVo.getCsEntrustmentUnit();
         vo.setConsignor(principalStr);
-
         //评估类型
         vo.setProjectCategoryName(baseProjectClassifyService.getNameById(data.getProjectCategoryId()));
         //签字估价师
         if (StringUtils.isNotEmpty(data.getRealEstateAppraiser())) {
             List<String> names = FormatUtils.transformString2List(data.getRealEstateAppraiser());
-            try {
-                StringBuilder s = new StringBuilder();
-                for (String account : names) {
-                    s.append(publicService.getUserNameByAccount(account)).append("、");
-                }
-                s.deleteCharAt(s.length() - 1);
-                vo.setAppraiser(s.toString());
-            } catch (Exception e) {
-                baseService.writeExceptionInfo(e, "签字估价师");
-            }
-
+            String accountList = publicService.getUserNameByAccountList(names);
+            vo.setAppraiser(accountList);
         }
-
 
         return vo;
 

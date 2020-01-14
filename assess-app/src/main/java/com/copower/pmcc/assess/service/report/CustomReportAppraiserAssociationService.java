@@ -120,11 +120,11 @@ public class CustomReportAppraiserAssociationService {
                 vo.setEvaluationArea(judgeObjectList.get(0).getEvaluationArea());
                 if (judgeObjectList.get(0).getEvaluationArea() != null && judgeObjectList.get(0).getPrice() != null) {
                     vo.setAssessTotal(judgeObjectList.get(0).getEvaluationArea().multiply(judgeObjectList.get(0).getPrice()).setScale(2, BigDecimal.ROUND_HALF_UP));
-                    //单价
-                    vo.setPrice(judgeObjectList.get(0).getPrice());
-                    //坐落
-                    vo.setSeat(judgeObjectList.get(0).getSeat());
                 }
+                //单价
+                vo.setPrice(judgeObjectList.get(0).getPrice());
+                //坐落
+                vo.setSeat(judgeObjectList.get(0).getSeat());
             }
         }
         //委托人
