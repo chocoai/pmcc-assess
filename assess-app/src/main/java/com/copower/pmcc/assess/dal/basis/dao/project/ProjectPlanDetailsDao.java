@@ -34,16 +34,12 @@ public class ProjectPlanDetailsDao {
         return projectPlanDetailsMapper.selectByExample(example);
     }
 
-    public List<ProjectPlanDetails> getProjectPlanDetailsList(Integer planId, Integer pid, String search) {
-
+    public List<ProjectPlanDetails> getProjectPlanDetailsList(Integer projectId, Integer projectPhaseId, String projectPhaseName) {
         ProjectPlanDetailsExample example = new ProjectPlanDetailsExample();
-
-        ProjectPlanDetailsExample.Criteria criteria = example.createCriteria().andPlanIdEqualTo(planId);
-        if (pid != null) {
-            criteria.andPidEqualTo(pid);
-        }
-        if (StringUtils.isNotBlank(search)) {
-            criteria.andProjectPhaseNameLike(search);
+        ProjectPlanDetailsExample.Criteria criteria = example.createCriteria();
+        criteria.andProjectIdEqualTo(projectId).andProjectPhaseIdEqualTo(projectPhaseId);
+        if (StringUtils.isNotBlank(projectPhaseName)) {
+            criteria.andProjectPhaseNameLike(String.format("%%%s%%",projectPhaseName));
         }
         return projectPlanDetailsMapper.selectByExample(example);
     }
@@ -89,13 +85,6 @@ public class ProjectPlanDetailsDao {
         ProjectPlanDetailsExample.Criteria criteria = example.createCriteria();
         criteria.andPlanIdEqualTo(planId);
         example.setOrderByClause("sorting,id desc");
-        return projectPlanDetailsMapper.selectByExample(example);
-    }
-
-    public List<ProjectPlanDetails> getRootProjectPlanDetailsByPlanId(Integer planId) {
-        ProjectPlanDetailsExample example = new ProjectPlanDetailsExample();
-        example.createCriteria().andPidEqualTo(0).andPlanIdEqualTo(planId);
-        example.setOrderByClause("sorting");
         return projectPlanDetailsMapper.selectByExample(example);
     }
 
@@ -151,13 +140,6 @@ public class ProjectPlanDetailsDao {
     public Boolean updateProjectPlanDetailsAndNull(ProjectPlanDetails projectPlanDetails) {
         int i = projectPlanDetailsMapper.updateByPrimaryKeySelective(projectPlanDetails);
         return i == 1;
-    }
-
-    //项目中心使用的方法
-    public Integer getProjectDetailsCount(String userAccount, Date dates, Date datee) {
-        ProjectPlanDetailsExample example = new ProjectPlanDetailsExample();
-        example.createCriteria().andExecuteUserAccountEqualTo(userAccount).andPlanStartDateGreaterThanOrEqualTo(dates).andPlanEndDateLessThanOrEqualTo(datee);
-        return projectPlanDetailsMapper.countByExample(example);
     }
 
     /**

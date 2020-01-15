@@ -60,18 +60,20 @@
                 <h3 class="modal-title">选择案例</h3>
             </div>
             <div class="modal-body">
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th></th>
-                        <th>名称</th>
-                        <th>面积</th>
-                        <th>面积说明</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-1 control-label">
+                            名称
+                        </label>
+                        <div class="col-sm-3">
+                            <input type="text" placeholder="名称" class="form-control" name="projectPhaseName">
+                        </div>
+                        <div class="col-sm-3">
+                            <input type="button" class="btn btn-primary" value="查询" onclick="marketCompare.loadCaseAll();">
+                        </div>
+                    </div>
+                </div>
+                <table class="table table-bordered" id="select_case_list"></table>
             </div>
             <div class="modal-footer">
                 <button type="button" data-dismiss="modal" class="btn btn-default">
@@ -126,7 +128,8 @@
 <script type="text/html" id="selectJudgeHtml">
     <tr>
         <td data-name="name">{name}</td>
-        <td><input type="button" class="btn btn-xs btn-warning" value="选择" onclick="marketCompare.selectStandardJudge('{basicApplyId}');"></td>
+        <td><input type="button" class="btn btn-xs btn-warning" value="选择"
+                   onclick="marketCompare.selectStandardJudge('{basicApplyId}');"></td>
     </tr>
 </script>
 
@@ -248,11 +251,11 @@
         marketCompare.isPass = true;
         marketCompare.isLand = false;
         marketCompare.fields = [];
+        marketCompare.projectId = 0;
         marketCompare.mcId = 0;
         marketCompare.price = 0;
         marketCompare.evaluation = {};
         marketCompare.judgeObjectId = 0;
-        marketCompare.casesAll = [];
         marketCompare.standardJudges = [];
         marketCompare.init = function (options) {
             var defaluts = {
@@ -260,8 +263,8 @@
                 fields: undefined,//字段信息
                 evaluation: undefined,//委估对象
                 cases: undefined,//案例
-                casesAll: undefined,//所有案例
                 standardJudges: undefined,//标准估价对象
+                projectId: undefined,
                 mcId: undefined,
                 judgeObjectId: undefined,
                 isLand: false,//是否为土地比较法
@@ -283,11 +286,11 @@
                 Alert("委估对象为空！");
                 return;
             }
+            marketCompare.projectId = defaluts.projectId;
             marketCompare.mcId = defaluts.mcId;
             marketCompare.areaId = defaluts.areaId;
             marketCompare.isLand = defaluts.isLand == 'true' ? true : false;
             marketCompare.evaluation = defaluts.evaluation;
-            marketCompare.casesAll = defaluts.casesAll;
             marketCompare.standardJudges = defaluts.standardJudges;
             marketCompare.judgeObjectId = defaluts.judgeObjectId;
             $("#tb_md_mc_item_list").empty();
@@ -882,69 +885,37 @@
             })
         }
 
-        //加载所有案例
+        //加载案例数据
         marketCompare.loadCaseAll = function () {
-            var planDetailsIdArray = [];
-            $.each(marketCompare.casesAll, function (i, item) {
-                planDetailsIdArray.push(item.id);
-            })
-            Loading.progressShow();
-            $.ajax({
-                url: '${pageContext.request.contextPath}/marketCompare/getCasesAll',
-                data: {
-                    planDetailsIds: planDetailsIdArray.join()
-                },
-                type: 'post',
-                dataType: 'json',
-                success: function (result) {
-                    Loading.progressHide();
-                    if (result.ret && result.data) {
-                        var html = '';
-                        $.each(result.data, function (i, item) {
-                            var htmlTemp = $("#selectCaseHtml").html();
-                            htmlTemp = htmlTemp.replace(/{planDetailsId}/, item.planDetailsId).replace(/{name}/, item.name);
-                            htmlTemp = htmlTemp.replace(/{area}/, item.area).replace(/{areaDesc}/, AssessCommon.toString(item.areaDesc));
-                            html += htmlTemp;
-                        })
-                        $("#modal_select_case").find('tbody').empty().append(html);
-                        $('#modal_select_case').modal();
-                    }
+            var cols = [];
+            cols.push({field: 'name', title: '名称'});
+            cols.push({field: 'area', title: '面积'});
+            $("#select_case_list").bootstrapTable('destroy');
+            TableInit("select_case_list", getContextPath() + "/marketCompare/getCasesAll", cols, {
+                projectId: marketCompare.projectId,
+                projectPhaseName: $("#modal_select_case").find('[name=projectPhaseName]').val()
+            }, {
+                showColumns: false,
+                showRefresh: false,
+                search: false,
+                onLoadSuccess: function () {
+                    $('.tooltips').tooltip();
                 }
-            })
+            }, true, false);
+            $('#modal_select_case').modal();
         }
 
         //选择案例
         marketCompare.selectCase = function () {
             //如果案例的面积超过估价对象面积3倍则必须为面积添加说明
-            var cbxs = $("#modal_select_case").find('input:checkbox:checked');
-            if (cbxs.length <= 0) {
+            var rows = $("#select_case_list").bootstrapTable('getSelections');
+            if (rows.length <= 0) {
                 Alert("还未选择任何案例");
                 return false;
             }
-
-            var errmsg = '';
-            var areaDescArray = [];
-            var evaluationArea = marketCompare.evaluation.area;
-            $.each(cbxs, function (i, item) {
-                var tr = $(item).closest('tr');
-                var name = tr.find('[data-name=name]').text();
-                var area = tr.find('[data-name=area]').text();
-                var areaDesc = tr.find('[name=areaDesc]').val();
-                if (AssessCommon.isNumber(area) && AssessCommon.isNumber(evaluationArea)) {
-                    if (parseFloat(evaluationArea) * 3 < parseFloat(area) && areaDesc.length <= 0) {
-                        errmsg += name + "必须填写面积说明";
-                        return false;
-                    }
-                }
-                areaDescArray.push({"planDetailsId": $(item).val(), "areaDesc": areaDesc});
-            })
-            if (errmsg.length > 0) {
-                Alert(errmsg);
-                return false;
-            }
-            var caseArray = [];
-            $.each(cbxs, function (i, item) {
-                caseArray.push($(item).val());
+            var planDetailsIdArray = [];
+            $.each(rows, function (i, row) {
+                planDetailsIdArray.push(row.planDetailsId);
             })
             Loading.progressShow();
             $.ajax({
@@ -953,7 +924,7 @@
                     mcId: marketCompare.mcId,
                     isLand: marketCompare.isLand,
                     judgeObjectId: marketCompare.judgeObjectId,
-                    areaDescJson: JSON.stringify(areaDescArray)
+                    planDetailsIdList: planDetailsIdArray.join()
                 },
                 type: 'post',
                 dataType: 'json',
@@ -963,12 +934,12 @@
                         toastr.success("选择成功！");
                         $('#modal_select_case').modal('hide');
                         marketCompare.init({
+                            projectId: marketCompare.projectId,
                             mcId: result.data.mcId,
                             judgeObjectId: result.data.judgeObjectId,
                             marketCompare: result.data.marketCompare,
                             fields: result.data.fields,
                             evaluation: result.data.evaluation,
-                            casesAll: marketCompare.casesAll,
                             standardJudges: marketCompare.standardJudges,
                             isLand: marketCompare.isLand,
                             areaId: marketCompare.areaId,
@@ -1121,12 +1092,12 @@
                     if (result.ret) {
                         toastr.success("刷新成功！");
                         marketCompare.init({
+                            projectId: marketCompare.projectId,
                             mcId: result.data.mcId,
                             judgeObjectId: result.data.judgeObjectId,
                             marketCompare: result.data.marketCompare,
                             fields: result.data.fields,
                             evaluation: result.data.evaluation,
-                            casesAll: marketCompare.casesAll,
                             standardJudges: marketCompare.standardJudges,
                             isLand: marketCompare.isLand,
                             areaId: marketCompare.areaId,
@@ -1174,12 +1145,12 @@
                         toastr.success("选择成功！");
                         $('#modal_select_judge').modal('hide');
                         marketCompare.init({
+                            projectId: marketCompare.projectId,
                             mcId: result.data.mcId,
                             judgeObjectId: result.data.judgeObjectId,
                             marketCompare: result.data.marketCompare,
                             fields: result.data.fields,
                             evaluation: result.data.evaluation,
-                            casesAll: marketCompare.casesAll,
                             standardJudges: marketCompare.standardJudges,
                             isLand: marketCompare.isLand,
                             areaId: marketCompare.areaId,

@@ -1,7 +1,6 @@
 package com.copower.pmcc.assess.service.method;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.enums.AssessProjectTypeEnum;
 import com.copower.pmcc.assess.common.enums.ExamineTypeEnum;
 import com.copower.pmcc.assess.common.enums.basic.BasicApplyTypeEnum;
@@ -27,9 +26,17 @@ import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
+import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
+import com.copower.pmcc.erp.common.exception.BusinessException;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.DateUtils;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -38,6 +45,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -168,9 +176,9 @@ public class MdMarketCompareService {
         List<BasicApply> basicApplyList = basicApplyService.getBasicApplyListByPlanDetailsId(planDetails.getId());
         String setUseFieldType = isLand ? BaseConstant.ASSESS_DATA_SET_USE_FIELD_LAND : BaseConstant.ASSESS_DATA_SET_USE_FIELD_HOUSE;
         List<DataSetUseField> setUseFieldList = getSetUseFieldList(setUseFieldType);
-        if(schemeJudgeObject.getBasicApplyId()==null){
+        if (schemeJudgeObject.getBasicApplyId() == null) {
             setJudgeCompareItem(areaGroup, schemeJudgeObject, basicApplyService.getByBasicApplyId(schemeJudgeObject.getBasicApplyId()), mdMarketCompare.getId(), setUseFieldList, isLand);
-        }else{
+        } else {
             if (CollectionUtils.isNotEmpty(basicApplyList)) {//检查估价对象是否有多个标准 如果有多个标准则不处理 由前端选择后初始化
                 setJudgeCompareItem(areaGroup, schemeJudgeObject, basicApplyList.get(basicApplyList.size() - 1), mdMarketCompare.getId(), setUseFieldList, isLand);
             }
@@ -278,31 +286,6 @@ public class MdMarketCompareService {
         mdMarketCompareItem.setHouseId(basicHouse.getId());
     }
 
-    /**
-     * 加载项目所有案例数据
-     *
-     * @param planDetailsIds
-     * @return
-     */
-    public List<MdCompareCaseVo> getCasesAll(List<Integer> planDetailsIds) {
-        if (CollectionUtils.isEmpty(planDetailsIds)) return null;
-        List<ProjectPlanDetails> planDetails = projectPlanDetailsService.getProjectPlanDetailsByIds(planDetailsIds);
-        if (CollectionUtils.isEmpty(planDetails)) return null;
-        List<MdCompareCaseVo> voList = Lists.newArrayList();
-        for (ProjectPlanDetails planDetail : planDetails) {
-            MdCompareCaseVo mdCompareCaseVo = new MdCompareCaseVo();
-            BasicApply basicApply = basicApplyService.getBasicApplyByPlanDetailsId(planDetail.getId());
-            if (basicApply == null) continue;
-            mdCompareCaseVo.setPlanDetailsId(planDetail.getId());
-            mdCompareCaseVo.setName(planDetail.getProjectPhaseName());
-            BasicHouse basicHouse = basicHouseService.getHouseByApplyId(basicApply.getId());
-            if (basicHouse == null) continue;
-            mdCompareCaseVo.setArea(basicHouse.getArea());
-            mdCompareCaseVo.setAreaDesc(basicHouse.getAreaDesc());
-            voList.add(mdCompareCaseVo);
-        }
-        return voList;
-    }
 
     /**
      * 选择估价对象
@@ -326,10 +309,14 @@ public class MdMarketCompareService {
 
     /**
      * 选择案例
-     *
-     * @param areaDescJson
+     * @param mcId
+     * @param planDetailsIdList
+     * @param judgeObjectId
+     * @param isLand
+     * @return
+     * @throws Exception
      */
-    public MdCompareInitParamVo selectCase(Integer mcId, String areaDescJson, Integer judgeObjectId, boolean isLand) throws Exception {
+    public MdCompareInitParamVo selectCase(Integer mcId, String planDetailsIdList, Integer judgeObjectId, boolean isLand) throws Exception {
         MdCompareInitParamVo mdCompareInitParamVo = new MdCompareInitParamVo();
         //清除原案例信息
         List<MdMarketCompareItem> compareItemList = getCaseListByMcId(mcId);
@@ -343,39 +330,28 @@ public class MdMarketCompareService {
         String setUseFieldType = isLand ? BaseConstant.ASSESS_DATA_SET_USE_FIELD_LAND : BaseConstant.ASSESS_DATA_SET_USE_FIELD_HOUSE;
         List<DataSetUseField> setUseFieldList = getSetUseFieldList(setUseFieldType);
         //添加选择后的案例信息
-        List<MdCompareCaseVo> list = JSONObject.parseArray(areaDescJson, MdCompareCaseVo.class);
-        if (CollectionUtils.isNotEmpty(list)) {
-            ProjectInfo projectInfo = null;
-            int i = 1;
-            for (MdCompareCaseVo mdCompareCaseVo : list) {
-                ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(mdCompareCaseVo.getPlanDetailsId());
-                MdMarketCompareItem mdMarketCompareItem = new MdMarketCompareItem();
-                mdMarketCompareItem.setMcId(mcId);
-                mdMarketCompareItem.setPlanDetailsId(mdCompareCaseVo.getPlanDetailsId());
-                mdMarketCompareItem.setName(String.format("案例%s", i));
-                mdMarketCompareItem.setType(ExamineTypeEnum.CASE.getId());
-                mdMarketCompareItem.setCreator(commonService.thisUserAccount());
-                mdMarketCompareItem.setMustAdjustPrice(false);
-                if (projectInfo == null)
-                    projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
-                BasicApply basicApply = basicApplyService.getBasicApplyByPlanDetailsId(projectPlanDetails.getId());
-                mdMarketCompareItem.setJsonContent(mdMarketCompareFieldService.getCompareInfo(areaGroup, schemeJudgeObject, basicApply, setUseFieldList, true));
-                if (isLand) {//在估价对象中获取法定年限与剩余年限，如果未获取到则无年期修正系数
-                    setCoefficient(areaGroup, schemeJudgeObject, mdMarketCompareItem, basicApply, true);
-                }
-                setResidueRatioParam(mdMarketCompareItem, basicApply, areaGroup.getValueTimePoint());//获取成新率相关参数
-                mdMarketCompareItemDao.addMarketCompareItem(mdMarketCompareItem);
-                if (StringUtils.isNotBlank(mdCompareCaseVo.getAreaDesc()) && basicApply != null) {
-                    BasicHouse basicHouse = basicHouseService.getHouseByApplyId(basicApply.getId());
-                    if (basicHouse != null) {
-                        basicHouse.setAreaDesc(mdCompareCaseVo.getAreaDesc());
-                        basicHouseService.saveAndUpdateBasicHouse(basicHouse, false);
-                    }
-                }
-                i++;
+        if(StringUtils.isBlank(planDetailsIdList))
+            throw new BusinessException("请选择有效案例");
+        List<Integer> integers = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(planDetailsIdList));
+        int i = 1;
+        for (Integer planDetailsId : integers) {
+            ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
+            MdMarketCompareItem mdMarketCompareItem = new MdMarketCompareItem();
+            mdMarketCompareItem.setMcId(mcId);
+            mdMarketCompareItem.setPlanDetailsId(planDetailsId);
+            mdMarketCompareItem.setName(String.format("案例%s", i));
+            mdMarketCompareItem.setType(ExamineTypeEnum.CASE.getId());
+            mdMarketCompareItem.setCreator(commonService.thisUserAccount());
+            mdMarketCompareItem.setMustAdjustPrice(false);
+            BasicApply basicApply = basicApplyService.getBasicApplyByPlanDetailsId(projectPlanDetails.getId());
+            mdMarketCompareItem.setJsonContent(mdMarketCompareFieldService.getCompareInfo(areaGroup, schemeJudgeObject, basicApply, setUseFieldList, true));
+            if (isLand) {//在估价对象中获取法定年限与剩余年限，如果未获取到则无年期修正系数
+                setCoefficient(areaGroup, schemeJudgeObject, mdMarketCompareItem, basicApply, true);
             }
+            setResidueRatioParam(mdMarketCompareItem, basicApply, areaGroup.getValueTimePoint());//获取成新率相关参数
+            mdMarketCompareItemDao.addMarketCompareItem(mdMarketCompareItem);
+            i++;
         }
-
         mdCompareInitParamVo.setMcId(mcId);
         mdCompareInitParamVo.setJudgeObjectId(judgeObjectId);
         mdCompareInitParamVo.setMarketCompare(getMdMarketCompare(mcId));
@@ -463,17 +439,35 @@ public class MdMarketCompareService {
     }
 
     /**
-     * 获取所有案例信息
+     * 加载项目所有案例数据
      *
+     * @param projectId
      * @return
      */
-    public List<ProjectPlanDetails> getCaseAll(Integer projectId) {
+    public BootstrapTableVo getCasesAll(Integer projectId, String projectPhaseName) {
+        BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.CASE_STUDY_EXTEND);
-        ProjectPlanDetails projectPlanDetails = new ProjectPlanDetails();
-        projectPlanDetails.setProjectId(projectId);
-        projectPlanDetails.setProjectPhaseId(projectPhase.getId());
-        List<ProjectPlanDetails> detailsList = projectPlanDetailsDao.getListObject(projectPlanDetails);
-        return detailsList;
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        List<ProjectPlanDetails> planDetails = projectPlanDetailsDao.getProjectPlanDetailsList(projectId, projectPhase.getId(), projectPhaseName);
+        List<MdCompareCaseVo> voList = Lists.newArrayList();
+        if (CollectionUtils.isNotEmpty(planDetails)) {
+            for (ProjectPlanDetails planDetail : planDetails) {
+                MdCompareCaseVo mdCompareCaseVo = new MdCompareCaseVo();
+                BasicApply basicApply = basicApplyService.getBasicApplyByPlanDetailsId(planDetail.getId());
+                if (basicApply == null) continue;
+                mdCompareCaseVo.setPlanDetailsId(planDetail.getId());
+                mdCompareCaseVo.setName(planDetail.getProjectPhaseName());
+                BasicHouse basicHouse = basicHouseService.getHouseByApplyId(basicApply.getId());
+                if (basicHouse == null) continue;
+                mdCompareCaseVo.setArea(basicHouse.getArea());
+                mdCompareCaseVo.setAreaDesc(basicHouse.getAreaDesc());
+                voList.add(mdCompareCaseVo);
+            }
+        }
+        bootstrapTableVo.setTotal(page.getTotal());
+        bootstrapTableVo.setRows(voList == null ? new ArrayList() : voList);
+        return bootstrapTableVo;
     }
 
     /**
