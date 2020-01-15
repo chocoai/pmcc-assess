@@ -595,7 +595,7 @@ public class SchemeJudgeObjectService {
     public void saveProgrammeArea(SchemeProgrammeDto schemeProgrammeDto) throws BusinessException {
         if (schemeProgrammeDto == null)
             throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
-        SchemeAreaGroup schemeAreaGroup = schemeAreaGroupService.get(schemeProgrammeDto.getAreaGroupId());
+        SchemeAreaGroup schemeAreaGroup = schemeAreaGroupService.getSchemeAreaGroup(schemeProgrammeDto.getAreaGroupId());
         schemeAreaGroup.setValueTimePoint(schemeProgrammeDto.getValueTimePoint());
         schemeAreaGroup.setTimePointExplain(schemeProgrammeDto.getTimePointExplain());
         schemeAreaGroup.setEntrustPurpose(schemeProgrammeDto.getEntrustmentPurpose());
@@ -731,15 +731,9 @@ public class SchemeJudgeObjectService {
         if (CollectionUtils.isNotEmpty(areaGroupList)) {
             List<MdNewAndRemoveDto> methodChangeJudges = Lists.newArrayList();//只是改变了评估方法的估价对象
             ProjectPhase phaseSurePrice = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.SURE_PRICE, projectInfo.getProjectCategoryId());
-            ProjectPhase phaseLiquidationAnalysis = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.LIQUIDATION_ANALYSIS, projectInfo.getProjectCategoryId());
-            ProjectPhase phaseReimbursement = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.REIMBURSEMENT, projectInfo.getProjectCategoryId());
+
             String mortgageKey = baseDataDicService.getCacheDataDicById(projectInfo.getEntrustPurpose()).getFieldName();
             Map<Integer, ProjectPhase> phaseMap = getProjectPhaseMap(projectInfo.getProjectCategoryId());
-            List<ProjectPhase> judgeProjectPhases = Lists.newArrayList();
-            if (StringUtils.equals(mortgageKey, AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE_MORTGAGE)) {//如果是抵押评估还需添加事项，变现分析税费、法定优先受偿款
-                judgeProjectPhases.add(phaseLiquidationAnalysis);
-                judgeProjectPhases.add(phaseReimbursement);
-            }
             List<SchemeJudgeObjectHistory> judgeObjectHistoryList = schemeJudgeObjectHistoryDao.getListByProjectId(projectInfo.getId());
             SchemeJudgeObjectAppendTaskDto appendTaskDto = new SchemeJudgeObjectAppendTaskDto();
             appendTaskDto.setProjectInfo(projectInfo);
@@ -759,6 +753,7 @@ public class SchemeJudgeObjectService {
                             appendTaskForJudgeObject(appendTaskDto);
                         }
                     }
+                    List<ProjectPhase> judgeProjectPhases =schemeAreaGroupService.getAreaProjectPhaseListByEntrustPurpose(projectInfo,schemeAreaGroup.getEntrustPurpose());
                     if (CollectionUtils.isNotEmpty(judgeProjectPhases)) {
                         for (ProjectPhase projectPhase : judgeProjectPhases) {
                             savePlanDetails(projectInfo, projectWorkStage, projectPlan, schemeAreaGroup.getId(), schemeAreaGroup, null, schemeAreaGroup.getAreaName(), projectPhase, projectManager);
@@ -888,21 +883,6 @@ public class SchemeJudgeObjectService {
                 judgeObjectHistory.setCreator(commonService.thisUserAccount());
                 schemeJudgeObjectHistoryDao.addSchemeJudgeObjectHistory(judgeObjectHistory);
             });
-        }
-    }
-
-    public void updateJudgeFunction() {
-        SchemeJudgeObject schemeJudgeObject = new SchemeJudgeObject();
-        schemeJudgeObject.setBisEnable(true);
-        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getJudgeObjectList(schemeJudgeObject);
-        if (CollectionUtils.isNotEmpty(judgeObjectList)) {
-            for (SchemeJudgeObject judgeObject : judgeObjectList) {
-                List<SchemeJudgeFunction> judgeFunctions = schemeJudgeFunctionService.getApplicableJudgeFunctions(judgeObject.getId());
-                if (CollectionUtils.isNotEmpty(judgeFunctions)) {
-                    judgeObject.setJudgeFunction(FormatUtils.transformListString(LangUtils.transform(judgeFunctions, o -> String.valueOf(o.getMethodType()))));
-                    schemeJudgeObjectDao.updateSchemeJudgeObject(judgeObject);
-                }
-            }
         }
     }
 

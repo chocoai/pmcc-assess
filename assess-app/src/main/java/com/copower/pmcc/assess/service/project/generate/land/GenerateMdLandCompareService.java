@@ -80,7 +80,7 @@ public class GenerateMdLandCompareService {
         this.schemeJudgeObjectService = SpringContextUtils.getBean(SchemeJudgeObjectService.class);
         this.generateCommonMethod = SpringContextUtils.getBean(GenerateCommonMethod.class);
         this.dataHousePriceIndexService = SpringContextUtils.getBean(DataHousePriceIndexService.class);
-        schemeAreaGroup = schemeAreaGroupService.get(areaId);
+        schemeAreaGroup = schemeAreaGroupService.getSchemeAreaGroup(areaId);
         this.valueTimePoint = schemeAreaGroup.getValueTimePoint();
         this.schemeJudgeObjectId = schemeJudgeObjectId;
         this.mcId = mcId;

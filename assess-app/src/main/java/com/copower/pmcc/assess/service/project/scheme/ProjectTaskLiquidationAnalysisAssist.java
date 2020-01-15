@@ -133,6 +133,6 @@ public class ProjectTaskLiquidationAnalysisAssist implements ProjectTaskInterfac
         modelAndView.addObject("salesTax", salesTax);
         List<DeclareRecord> declareRecordList = declareRecordService.getDeclareRecordByProjectId(projectPlanDetails.getProjectId());
         modelAndView.addObject("declareRecordList",declareRecordList);
-        modelAndView.addObject("areaGroup", schemeAreaGroupService.get(projectPlanDetails.getAreaId()));
+        modelAndView.addObject("areaGroup", schemeAreaGroupService.getSchemeAreaGroup(projectPlanDetails.getAreaId()));
     }
 }

@@ -162,7 +162,7 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
 
     private void setViewBaseParam(SchemeJudgeObject schemeJudgeObject, ModelAndView modelAndView) {
         if (schemeJudgeObject.getAreaGroupId() != null) {
-            SchemeAreaGroup schemeAreaGroup = schemeAreaGroupService.get(schemeJudgeObject.getAreaGroupId());
+            SchemeAreaGroup schemeAreaGroup = schemeAreaGroupService.getSchemeAreaGroup(schemeJudgeObject.getAreaGroupId());
             if (schemeAreaGroup != null) {
                 List<InfrastructureVo> dataInfrastructureList = dataInfrastructureService.calculatingMethod(schemeAreaGroup.getProvince(), schemeAreaGroup.getCity(), schemeAreaGroup.getDistrict());
                 modelAndView.addObject("dataInfrastructureList", dataInfrastructureList);

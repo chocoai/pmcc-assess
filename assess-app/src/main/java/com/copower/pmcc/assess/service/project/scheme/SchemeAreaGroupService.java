@@ -1,6 +1,8 @@
 package com.copower.pmcc.assess.service.project.scheme;
 
 import com.alibaba.fastjson.JSON;
+import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
+import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareRecordDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeAreaGroupDao;
@@ -11,6 +13,7 @@ import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.method.MdIncomeService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
+import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
@@ -60,6 +63,8 @@ public class SchemeAreaGroupService {
     private MdIncomeService mdIncomeService;
     @Autowired
     private SurveyCommonService surveyCommonService;
+    @Autowired
+    private ProjectPhaseService projectPhaseService;
 
     public int add(SchemeAreaGroup schemeAreaGroup) {
         return schemeAreaGroupDao.add(schemeAreaGroup);
@@ -259,6 +264,7 @@ public class SchemeAreaGroupService {
         SchemeJudgeObject schemeJudgeObject = new SchemeJudgeObject();
         schemeJudgeObject.setProjectId(declareRecord.getProjectId());
         schemeJudgeObject.setDeclareRecordId(declareRecord.getId());
+        schemeJudgeObject.setBuildingStatus(declareRecord.getBuildingStatus());
         if (basicApply != null) {
             schemeJudgeObject.setBasicApplyId(basicApply.getId());
             schemeJudgeObject.setEvaluationArea(basicApply.getArea());
@@ -318,7 +324,72 @@ public class SchemeAreaGroupService {
         return list;
     }
 
+    /**
+     * 区域拆分
+     *
+     * @param areaGroupId
+     * @param judgeObjectIdList
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void areaGroupSplit(Integer areaGroupId, List<Integer> judgeObjectIdList) throws BusinessException {
+        //1.创建一个新的区域  2.将选择的估价对象迁移到新的区域中 3.根据情况创建出变现税费与受偿款款任务
+        if (areaGroupId == null || CollectionUtils.isEmpty(judgeObjectIdList))
+            throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
+        SchemeAreaGroup schemeAreaGroup = getSchemeAreaGroup(areaGroupId);
 
+
+
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(schemeAreaGroup.getProjectId());
+        List<ProjectPhase> judgeProjectPhases = getAreaProjectPhaseListByEntrustPurpose(projectInfo, schemeAreaGroup.getEntrustPurpose());
+    }
+
+    /**
+     * 取消区域拆分
+     *
+     * @param areaGroupId
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void areaGroupSplitCancel(Integer areaGroupId) {
+        //1.删除该区域下任务 2.将估价对象还原到原区域中 3.删除该区域
+    }
+
+    /**
+     * 根据区域设定的委托目的确定其工作事项
+     *
+     * @param entrustPurpose
+     * @return
+     */
+    public List<ProjectPhase> getAreaProjectPhaseListByEntrustPurpose(ProjectInfo projectInfo, Integer entrustPurpose) {
+        List<ProjectPhase> judgeProjectPhases = Lists.newArrayList();
+        BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicById(entrustPurpose);
+        if (baseDataDic != null && StringUtils.equals(baseDataDic.getFieldName(), AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE_MORTGAGE)) {//如果是抵押评估还需添加事项，变现分析税费、法定优先受偿款
+            ProjectPhase phaseLiquidationAnalysis = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.LIQUIDATION_ANALYSIS, projectInfo.getProjectCategoryId());
+            ProjectPhase phaseReimbursement = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.REIMBURSEMENT, projectInfo.getProjectCategoryId());
+            judgeProjectPhases.add(phaseLiquidationAnalysis);
+            judgeProjectPhases.add(phaseReimbursement);
+        }
+        return judgeProjectPhases;
+    }
+
+    /**
+     * 同区域下非拆分的区域
+     *
+     * @param areaGroupId
+     * @return
+     */
+    public SchemeAreaGroup getNotSplitAreaGroup(Integer areaGroupId) {
+        SchemeAreaGroup schemeAreaGroup = getSchemeAreaGroup(areaGroupId);
+        if (schemeAreaGroup != null && schemeAreaGroup.getBisSplit() == Boolean.FALSE)
+            return schemeAreaGroup;
+        SchemeAreaGroup where = new SchemeAreaGroup();
+        where.setProvince(schemeAreaGroup.getProvince());
+        where.setCity(schemeAreaGroup.getCity());
+        where.setDistrict(schemeAreaGroup.getDistrict());
+        where.setBisSplit(false);
+        List<SchemeAreaGroup> schemeAreaGroupList = schemeAreaGroupDao.getSchemeAreaGroupList(where);
+        if (CollectionUtils.isEmpty(schemeAreaGroupList)) return null;
+        return schemeAreaGroupList.get(0);
+    }
 
 
     /**
@@ -395,7 +466,7 @@ public class SchemeAreaGroupService {
                 schemeJudgeObjectService.areaGroupReduction(areaGroup.getId());
             }
         }
-        clearAreaGroupTask(Lists.newArrayList(get(id)));
+        clearAreaGroupTask(Lists.newArrayList(getSchemeAreaGroup(id)));
     }
 
     /**
@@ -446,8 +517,8 @@ public class SchemeAreaGroupService {
     }
 
 
-    public SchemeAreaGroup get(Integer id) {
-        return schemeAreaGroupDao.get(id);
+    public SchemeAreaGroup getSchemeAreaGroup(Integer id) {
+        return schemeAreaGroupDao.getSchemeAreaGroup(id);
     }
 
 

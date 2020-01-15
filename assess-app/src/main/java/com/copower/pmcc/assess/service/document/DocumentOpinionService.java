@@ -358,7 +358,7 @@ public class DocumentOpinionService {
         if (documentOpinion.getReportTypeId() != null)
             vo.setReportTypeName(baseDataDicService.getNameById(documentOpinion.getReportTypeId()));
         if (documentOpinion.getAreaGroupId() != null)
-            vo.setAreaGroupName(schemeAreaGroupService.get(documentOpinion.getAreaGroupId()).getAreaName());
+            vo.setAreaGroupName(schemeAreaGroupService.getSchemeAreaGroup(documentOpinion.getAreaGroupId()).getAreaName());
         String fieldName = baseDataDicService.getDataDicById(documentOpinion.getReportTypeId()).getFieldName();
         String reportFieldName = fieldName.toUpperCase().replace(".", "_");
         List<SysAttachmentDto> sysAttachmentDtos = baseAttachmentService.getByField_tableId(documentOpinion.getId(), String.format("%s%s", reportFieldName, documentOpinion.getAreaGroupId()), FormatUtils.entityNameConvertToTableName(DocumentOpinion.class));

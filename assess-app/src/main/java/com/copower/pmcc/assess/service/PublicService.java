@@ -419,6 +419,20 @@ public class PublicService {
         projectInfoService.updateProjectInfo(projectInfo);
     }
 
+    public String tagfilter(String str) {
+        final String regxpForHtml = "<([^>]*)>"; // 过滤所有以<开头以>结尾的标签
+        Pattern pattern = Pattern.compile(regxpForHtml);
+        Matcher matcher = pattern.matcher(str);
+        StringBuffer sb = new StringBuffer();
+        boolean result1 = matcher.find();
+        while (result1) {
+            matcher.appendReplacement(sb, "");
+            result1 = matcher.find();
+        }
+        matcher.appendTail(sb);
+        return sb.toString().trim();
+    }
+
     //去掉标签
     public String delHtmlTags(String htmlStr) {
         //定义script的正则表达式，去除js可以防止注入

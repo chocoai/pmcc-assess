@@ -170,7 +170,7 @@ public class SchemeLiquidationAnalysisService {
         }
 
         //地方教育税附加
-        SchemeAreaGroup areaGroup = schemeAreaGroupService.get(areaId);
+        SchemeAreaGroup areaGroup = schemeAreaGroupService.getSchemeAreaGroup(areaId);
         DataTaxRateAllocation localEducation = dataTaxRateAllocationService.getTaxRateByKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_LOCAL_EDUCATION_TAX_ADDITIONAL, areaGroup.getProvince(), areaGroup.getCity(), null);
         if (localEducation != null) {
             analysisItem.setTaxRateId(localEducation.getId());

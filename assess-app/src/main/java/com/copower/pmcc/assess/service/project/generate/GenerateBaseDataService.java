@@ -6905,7 +6905,7 @@ public class GenerateBaseDataService {
         this.surveyAssetRightService = SpringContextUtils.getBean(SurveyAssetRightService.class);
         this.basicHouseTradingService = SpringContextUtils.getBean(BasicHouseTradingService.class);
         //必须在bean之后
-        SchemeAreaGroup areaGroup = schemeAreaGroupService.get(areaId);
+        SchemeAreaGroup areaGroup = schemeAreaGroupService.getSchemeAreaGroup(areaId);
         if (areaGroup == null) {
             areaGroup = new SchemeAreaGroup();
         }
