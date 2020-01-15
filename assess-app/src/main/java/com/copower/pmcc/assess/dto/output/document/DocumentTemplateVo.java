@@ -7,6 +7,24 @@ import com.copower.pmcc.assess.dal.basis.entity.DocumentTemplate;
  */
 public class DocumentTemplateVo extends DocumentTemplate {
     private String templateTypeName;
+    private String assessProjectTypeName;
+    private String reportTypeName;
+
+    public String getAssessProjectTypeName() {
+        return assessProjectTypeName;
+    }
+
+    public void setAssessProjectTypeName(String assessProjectTypeName) {
+        this.assessProjectTypeName = assessProjectTypeName;
+    }
+
+    public String getReportTypeName() {
+        return reportTypeName;
+    }
+
+    public void setReportTypeName(String reportTypeName) {
+        this.reportTypeName = reportTypeName;
+    }
 
     public String getTemplateTypeName() {
         return templateTypeName;

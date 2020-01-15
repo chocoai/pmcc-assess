@@ -2,18 +2,26 @@ package com.copower.pmcc.assess.service.document;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.copower.pmcc.ad.api.dto.AdCompanyQualificationDto;
 import com.copower.pmcc.assess.common.DocumentWordUtils;
+import com.copower.pmcc.assess.common.FileUtils;
+import com.copower.pmcc.assess.common.enums.AssessProjectTypeEnum;
 import com.copower.pmcc.assess.common.enums.document.DocumentBaseEnum;
+import com.copower.pmcc.assess.dal.basis.dao.data.DataNumberRuleDao;
 import com.copower.pmcc.assess.dal.basis.dao.document.DocumentDao;
-import com.copower.pmcc.assess.dal.basis.entity.DocumentSend;
-import com.copower.pmcc.assess.dal.basis.entity.DocumentTemplate;
-import com.copower.pmcc.assess.dal.basis.entity.DocumentTemplateBookmark;
-import com.copower.pmcc.assess.dal.basis.entity.DocumentTemplateField;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.DocumentTemplateFieldVo;
 import com.copower.pmcc.assess.dto.output.document.DocumentSendVo;
+import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
+import com.copower.pmcc.assess.service.ProjectTakeNumberService;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.assist.DdlMySqlAssist;
 import com.copower.pmcc.assess.service.event.BaseProcessEvent;
+import com.copower.pmcc.assess.service.project.ProjectInfoService;
+import com.copower.pmcc.assess.service.project.ProjectNumberRecordService;
+import com.copower.pmcc.assess.service.project.ProjectQrcodeRecordService;
+import com.copower.pmcc.assess.service.project.generate.GenerateBaseDataService;
+import com.copower.pmcc.assess.service.project.generate.GenerateCommonMethod;
 import com.copower.pmcc.bpm.api.dto.ProcessUserDto;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
@@ -25,12 +33,11 @@ import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
-import com.copower.pmcc.erp.api.dto.DynamicFormField;
-import com.copower.pmcc.erp.api.dto.KeyValueDto;
-import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
+import com.copower.pmcc.erp.api.dto.*;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.CustomTableTypeEnum;
 import com.copower.pmcc.erp.api.provider.ErpRpcAttachmentService;
+import com.copower.pmcc.erp.api.provider.ErpRpcToolsService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
@@ -84,6 +91,20 @@ public class DocumentSendService {
     private FtpUtilsExtense ftpUtilsExtense;
     @Autowired
     private PublicService publicService;
+    @Autowired
+    private ProjectInfoService projectInfoService;
+    @Autowired
+    private ProjectNumberRecordService projectNumberRecordService;
+    @Autowired
+    private DataNumberRuleDao dataNumberRuleDao;
+    @Autowired
+    private ProjectQrcodeRecordService projectQrcodeRecordService;
+    @Autowired
+    private ErpRpcToolsService erpRpcToolsService;
+    @Autowired
+    private ProjectTakeNumberService projectTakeNumberService;
+    @Autowired
+    private GenerateCommonMethod generateCommonMethod;
 
     public List<DocumentSend> getDocumentSend(DocumentSend documentSend) {
         return documentDao.getDocumentSendList(documentSend);
@@ -294,6 +315,19 @@ public class DocumentSendService {
         try {
             DocumentTemplate documentTemplate = documentTemplateService.getDocumentTemplate(documentSend.getContractType());
             Map<String, String> document = documentWordUtils.createDocument(documentTemplate, wordValues, sysAttachmentDto);//将文本字段进行替换，并返回相应本地文件路径
+            //生成文号
+            String symbolNumber = new String();
+            ProjectInfo projectInfo = projectInfoService.getProjectInfoById(documentSend.getProjectId());
+            AssessProjectTypeEnum assessProjectTypeEnum = AssessProjectTypeEnum.getAssessProjectTypeEnumByKey(documentTemplate.getAssessProjectType());
+            DataNumberRule numberRule = dataNumberRuleDao.getDataNumberRuleById(documentTemplate.getNumbetRuleId());
+            if (numberRule != null) {
+                SysSymbolListDto symbolListDto = projectNumberRecordService.getReportNumber(projectInfo, 0, assessProjectTypeEnum, numberRule.getReportType(), false);
+                symbolNumber = symbolListDto.getSymbol();
+            }
+            //生成二维码
+            String reportQrcodePath = this.getReportQrcode(documentSend, symbolNumber);
+            //替换
+            projectTakeNumberService.replaceDocument(document.get("localFullPath"), symbolNumber, reportQrcodePath);
             //对Word文件进行格式化操作
             ftpUtilsExtense.uploadFilesToFTP(document.get("ftpPath"), new FileInputStream(document.get("localFullPath")), document.get("ftpFileName"));
         } catch (Exception e) {
@@ -334,5 +368,56 @@ public class DocumentSendService {
         BeanUtils.copyProperties(documentSend, vo);
         vo.setUserName(publicService.getUserNameByAccount(documentSend.getCreator()));
         return vo;
+    }
+
+    /**
+     * 获取报告二维码
+     *
+     * @return
+     */
+    public String getReportQrcode(DocumentSend documentSend, String wordNumber) throws Exception {
+        //1.先从本地查看是否已生成过二维码
+        //2.如果已生成直接返回已生成的二维码
+        //3.如果没有生成则调用接口生成二维码并记录数据到本地
+        DocumentTemplate documentTemplate = documentTemplateService.getDocumentTemplate(documentSend.getContractType());
+        DataNumberRule numberRule = dataNumberRuleDao.getDataNumberRuleById(documentTemplate.getNumbetRuleId());
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(documentSend.getProjectId());
+        ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfo);
+        ProjectQrcodeRecord qrcodeRecode = projectQrcodeRecordService.getProjectQrcodeRecode(documentSend.getProjectId(), 0, numberRule.getReportType());
+        GenerateBaseDataService generateBaseDataService = new GenerateBaseDataService(projectInfoVo, 0, new BaseReportTemplate(), new ProjectPlan());
+        String qrCode = null;
+        if (qrcodeRecode != null) {
+            qrCode = qrcodeRecode.getQrcode();//更新部分信息
+            ProjectDocumentDto projectDocumentDto = erpRpcToolsService.getProjectDocumentById(qrcodeRecode.getProjectDocumentId());
+            if (projectDocumentDto != null) {
+                projectDocumentDto.setReportDate(DateUtils.formatDate(new Date(), DateUtils.DATE_CHINESE_PATTERN));
+                projectDocumentDto.setReportMember(publicService.getUserNameByAccount(processControllerComponent.getThisUser()));
+                erpRpcToolsService.saveProjectDocument(projectDocumentDto);
+            }
+        } else {
+            AdCompanyQualificationDto qualificationDto = generateBaseDataService.getCompanyQualificationForPractising();
+            ProjectDocumentDto projectDocumentDto = new ProjectDocumentDto();
+            projectDocumentDto.setProjectName(projectInfo.getProjectName());
+            projectDocumentDto.setCompanyName(qualificationDto != null ? qualificationDto.getOrganizationName() : "");
+            projectDocumentDto.setDocumentNumber(wordNumber);
+            projectDocumentDto.setAppKey(applicationConstant.getAppKey());
+            projectDocumentDto.setTableName(FormatUtils.entityNameConvertToTableName(GenerateReportInfo.class));
+            projectDocumentDto.setReportDate(DateUtils.formatDate(new Date(), DateUtils.DATE_CHINESE_PATTERN));
+            projectDocumentDto.setReportMember(publicService.getUserNameByAccount(processControllerComponent.getThisUser()));
+            projectDocumentDto = erpRpcToolsService.saveProjectDocument(projectDocumentDto);
+
+            qrcodeRecode = new ProjectQrcodeRecord();
+            qrcodeRecode.setProjectId(projectInfo.getId());
+            qrcodeRecode.setAreaId(0);
+            qrcodeRecode.setReportType(numberRule.getReportType());
+            qrcodeRecode.setProjectDocumentId(projectDocumentDto.getId());
+            qrcodeRecode.setQrcode(projectDocumentDto.getQrcode());
+            projectQrcodeRecordService.saveProjectQrcodeRecode(qrcodeRecode);
+            qrCode = projectDocumentDto.getQrcode();
+            erpRpcToolsService.saveProjectDocument(projectDocumentDto);
+        }
+        String imageFullPath = generateCommonMethod.getLocalPath("", "jpg");
+        FileUtils.base64ToImage(qrCode, imageFullPath);
+        return imageFullPath;
     }
 }

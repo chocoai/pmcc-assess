@@ -55,7 +55,7 @@
                 <div class='modal-body'>
                     <div class="form-group">
                         <div class='x-valid'>
-                            <label class='col-sm-2 control-label'>名称<span class="symbol required"></span></label>
+                            <label class='col-sm-2 control-label'>模板名称<span class="symbol required"></span></label>
                             <div class='col-sm-10'>
                                 <input type="hidden" id="templateId" name="id" required class='form-control'>
                                 <input type="text" name="templateName" required class='form-control'>
@@ -66,22 +66,44 @@
                         <div class='x-valid'>
                             <label class='col-sm-2 control-label'>提供日期</label>
                             <div class='col-sm-10'>
-                                <input type="text" placeholder="提供日期" class="form-control date-picker dbdate" data-date-format="yyyy-mm-dd" name="provideDate" readonly="readonly">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class='x-valid'>
-                            <label class='col-sm-2 control-label'>文号规则</label>
-                            <div class='col-sm-10'>
-                                <input type="text" name="prefix" class='form-control'>
+                                <input type="text" placeholder="提供日期" class="form-control date-picker dbdate"
+                                       data-date-format="yyyy-mm-dd" name="provideDate" readonly="readonly">
                             </div>
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                资质类型
+                                项目类型
+                            </label>
+                            <div class="col-sm-10">
+                                <select class="form-control" required name="assessProjectType" onchange="getNumberRule(this);">
+                                    <option value="">--请选择--</option>
+                                    <c:if test="${not empty assessProjectTypeList}">
+                                        <c:forEach var="items" items="${assessProjectTypeList}">
+                                            <option value="${items.key}">${items.explain}</option>
+                                        </c:forEach>
+                                    </c:if>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                文号规则
+                            </label>
+                            <div class="col-sm-10">
+                                <select class="form-control" name="numbetRuleId">
+
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                模板类型
                             </label>
                             <div class="col-sm-10">
                                 <select class="form-control" required name="templateType">
@@ -142,6 +164,7 @@
         });
         loadTemplateList();
     })
+
     //加载附件
     function loadTemplateAttachment() {
         FileUtils.getFileShows({
@@ -154,14 +177,18 @@
             deleteFlag: true
         });
     }
+
     function loadTemplateList() {
         var cols = [];
         cols.push({field: 'templateName', title: '模板名称'});
-        cols.push({field: 'provideDate', title: '提供日期', formatter: function (value, row, index) {
-            return formatDate(value);
-        }});
-        cols.push({field: 'templateTypeName', title: '类型'});
-        cols.push({field: 'prefix', title: '文号规则'});
+        cols.push({
+            field: 'provideDate', title: '提供日期', formatter: function (value, row, index) {
+                return formatDate(value);
+            }
+        });
+        cols.push({field: 'assessProjectTypeName', title: '项目类型'});
+        cols.push({field: 'reportTypeName', title: '文号规则'});
+        cols.push({field: 'templateTypeName', title: '模板类型'});
         cols.push({
             field: 'opation', title: '操作', formatter: function (value, row, index) {
 
@@ -185,23 +212,28 @@
         reloadBookmarkList(id);
         $('#modalTemplate_bookmark_base').modal({backdrop: 'static', keyboard: false});
     }
+
     function loadFiledWindow(id) {
         $("#templateId").val(id);
         reloadFieldList(id);
         $('#modalTemplate_fields_base').modal({backdrop: 'static', keyboard: false});
     }
+
     //新增类型
     function addTemplate() {
         $("#frmTemplate").clearAll();
         $("#templateId").val(0);
+        getNumberRule();
         loadTemplateAttachment();
         $('#modalTemplate').modal({backdrop: 'static', keyboard: false});
     }
+
     //编辑模板
     function editTemplate(index) {
         var row = $(templateTable).bootstrapTable('getData')[index];
         $("#frmTemplate").clearAll();
         $("#frmTemplate").initForm(row);
+        getNumberRule(row.numbetRuleId);
         loadTemplateAttachment();
         $('#modalTemplate').modal({backdrop: 'static', keyboard: false});
     }
@@ -218,7 +250,7 @@
             url: "${pageContext.request.contextPath}/DocumentTemplate/saveTemplate",
             type: "post",
             dataType: "json",
-            data: {formData:JSON.stringify(data)},
+            data: {formData: JSON.stringify(data)},
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
@@ -238,6 +270,42 @@
     }
 
 
+    //类别
+    function getNumberRule(numbetRuleId) {
+        $("#frmTemplate").find('[name=numbetRuleId]').html('');
+            var assessProjectType = $("#frmTemplate").find('[name=assessProjectType]').val();
+            if (!assessProjectType) {
+                return false;
+            }
+            $.ajax({
+                url: "${pageContext.request.contextPath}/numberRule/getDataByProjectType",
+                type: "post",
+                dataType: "json",
+                data: {assessProjectType: assessProjectType},
+                success: function (result) {
+                    if (result.ret) {
+                        var data = result.data
+                        if (data.length >= 1) {
+                            var option = "<option value=''>请选择</option>";
+                            for (var i = 0; i < data.length; i++) {
+                                option += "<option value='" + data[i].id + "'>" + data[i].reportTypeName + "</option>";
+                            }
+                            $("#frmTemplate").find('[name=numbetRuleId]').html(option);
+                            if (numbetRuleId) {
+                                $("#frmTemplate").find('[name=numbetRuleId]').val(numbetRuleId);
+                            }
+                        }
+                    }
+                    else {
+                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+
+    }
 </script>
 
 

@@ -11,6 +11,7 @@ import com.copower.pmcc.assess.dto.output.DocumentTemplateFieldVo;
 import com.copower.pmcc.assess.dto.output.document.DocumentTemplateVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.document.DocumentTemplateService;
+import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.CustomTableTypeDto;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
@@ -56,6 +57,8 @@ public class DocumentTemplateController {
     private ProcessControllerComponent processControllerComponent;
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private ProjectInfoService projectInfoService;
 
     @GetMapping(value = "/index", name = "模板首页")
     public ModelAndView homeMain() {
@@ -64,6 +67,8 @@ public class DocumentTemplateController {
         modelAndView.addObject("customSetType", customSetType);
         List<BaseDataDic> templateTypes = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_TEMPLATE_TYPE);
         modelAndView.addObject("templateTypes", templateTypes);
+        modelAndView.addObject("assessProjectTypeList", projectInfoService.getAssessProjectTypeList());
+
         return modelAndView;
     }
 

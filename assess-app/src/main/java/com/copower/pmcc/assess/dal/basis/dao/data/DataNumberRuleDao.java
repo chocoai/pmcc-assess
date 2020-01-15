@@ -52,4 +52,9 @@ public class DataNumberRuleDao {
         int i = dataNumberRuleMapper.deleteByPrimaryKey(id);
         return i > 0;
     }
+
+    public DataNumberRule getDataNumberRuleById(Integer id) {
+        return dataNumberRuleMapper.selectByPrimaryKey(id);
+    }
+
 }

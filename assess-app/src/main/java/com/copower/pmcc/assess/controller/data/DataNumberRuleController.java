@@ -1,8 +1,11 @@
 package com.copower.pmcc.assess.controller.data;
 
+import com.copower.pmcc.assess.common.enums.AssessProjectTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
+import com.copower.pmcc.assess.dal.basis.dao.data.DataNumberRuleDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.DataNumberRule;
+import com.copower.pmcc.assess.dto.output.data.DataNumberRuleVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataNumberRuleService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
@@ -38,12 +41,14 @@ public class DataNumberRuleController {
     private ErpRpcToolsService erpRpcToolsService;
     @Autowired
     private ApplicationConstant applicationConstant;
+    @Autowired
+    private DataNumberRuleDao dataNumberRuleDao;
 
     @RequestMapping(value = "/index", name = "文号规则视图")
     public ModelAndView index() {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/data/dataNumberRule");
         List<BaseDataDic> reportTypeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.REPORT_TYPE);
-        modelAndView.addObject("assessProjectTypeList",  projectInfoService.getAssessProjectTypeList());
+        modelAndView.addObject("assessProjectTypeList", projectInfoService.getAssessProjectTypeList());
         modelAndView.addObject("reportTypeList", reportTypeList);
         modelAndView.addObject("sysSymbolRuleList", erpRpcToolsService.getSysSymbolRuleDto(applicationConstant.getAppKey()));
         return modelAndView;
@@ -76,6 +81,19 @@ public class DataNumberRuleController {
             return HttpResult.newErrorResult(e.getMessage());
         }
         return HttpResult.newCorrectResult();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getDataByProjectType", name = "取得文号规则", method = RequestMethod.POST)
+    public HttpResult getDataByProjectType(String assessProjectType) {
+        try {
+            AssessProjectTypeEnum assessProjectTypeEnum = AssessProjectTypeEnum.getAssessProjectTypeEnumByKey(assessProjectType);
+            List<DataNumberRule> ruleList = dataNumberRuleDao.getDataNumberRule(assessProjectTypeEnum.getKey(), null);
+            List<DataNumberRuleVo> voList = dataNumberRuleService.getVoList(ruleList);
+            return HttpResult.newCorrectResult(voList);
+        } catch (Exception e) {
+            return HttpResult.newErrorResult(e.getMessage());
+        }
     }
 
 }

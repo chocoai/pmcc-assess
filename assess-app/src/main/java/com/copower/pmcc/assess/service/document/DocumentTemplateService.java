@@ -1,7 +1,10 @@
 package com.copower.pmcc.assess.service.document;
 
 import com.copower.pmcc.assess.common.DocumentWordUtils;
+import com.copower.pmcc.assess.common.enums.AssessProjectTypeEnum;
+import com.copower.pmcc.assess.dal.basis.dao.data.DataNumberRuleDao;
 import com.copower.pmcc.assess.dal.basis.dao.document.DocumentDao;
+import com.copower.pmcc.assess.dal.basis.entity.DataNumberRule;
 import com.copower.pmcc.assess.dal.basis.entity.DocumentTemplate;
 import com.copower.pmcc.assess.dal.basis.entity.DocumentTemplateBookmark;
 import com.copower.pmcc.assess.dal.basis.entity.DocumentTemplateField;
@@ -49,6 +52,8 @@ public class DocumentTemplateService {
     private DocumentWordUtils documentWordUtils;
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private DataNumberRuleDao dataNumberRuleDao;
 
     ///region 模板
     public void saveTemplate(DocumentTemplate documentTemplate) throws BusinessException {
@@ -146,6 +151,15 @@ public class DocumentTemplateService {
         BeanUtils.copyProperties(documentTemplate, vo);
         if(documentTemplate.getTemplateType()!=null){
             vo.setTemplateTypeName(baseDataDicService.getNameById(documentTemplate.getTemplateType()));
+        }
+        if(documentTemplate.getAssessProjectType()!=null){
+            vo.setAssessProjectTypeName(AssessProjectTypeEnum.getDecByKey(documentTemplate.getAssessProjectType()));
+        }
+        if(documentTemplate.getNumbetRuleId()!=null){
+            DataNumberRule numberRule = dataNumberRuleDao.getDataNumberRuleById(documentTemplate.getNumbetRuleId());
+            if(numberRule.getReportType()!=null){
+                vo.setReportTypeName(baseDataDicService.getNameById(numberRule.getReportType()));
+            }
         }
         return vo;
     }
