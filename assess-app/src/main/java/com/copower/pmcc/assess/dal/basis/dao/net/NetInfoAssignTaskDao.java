@@ -68,4 +68,10 @@ public class NetInfoAssignTaskDao {
     public NetInfoAssignTask getDataById(Integer id) {
         return netInfoAssignTaskMapper.selectByPrimaryKey(id);
     }
+
+    public boolean deleteData(Integer id) {
+        int i = netInfoAssignTaskMapper.deleteByPrimaryKey(id);
+        return i > 0;
+    }
+
 }
