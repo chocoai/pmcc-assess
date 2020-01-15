@@ -283,10 +283,8 @@
      * @param bisDetail 是否是详情页面
      */
     estateCommon.initForm = function (data,bisDetail) {
-        estateCommon.estateForm.clearAll();
-        estateCommon.estateLandStateForm.clearAll();
-        estateCommon.estateForm.initForm(data.estate);
-        estateCommon.estateLandStateForm.initForm(data.land);
+        estateCommon.estateForm.clearAll().initForm(data.estate);
+        estateCommon.estateLandStateForm.clearAll().initForm(data.land);
         AssessCommon.initAreaInfo({
             provinceTarget: estateCommon.estateForm.find("select[name='province']"),
             cityTarget: estateCommon.estateForm.find("select[name='city']"),

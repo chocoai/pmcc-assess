@@ -344,37 +344,61 @@
         </div>
         <div class="form-group">
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">东至<span
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">四至(1)<span
                         class="symbol required"></span></label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text" class="form-control" placeholder="东至" required
-                           name="eastTo" value="${basicEstateLandState.eastTo}">
+                <div class=" col-xs-1  col-sm-1  col-md-1  col-lg-1">
+                    <select class="form-control" name="eastToName">
+                        <option value="东至" selected="selected">东至</option>
+                        <option value="东南">东南</option>
+                        <option value="东北">东北</option>
+                    </select>
+                </div>
+                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2">
+                    <input type="text" class="form-control" required name="eastTo" value="${basicEstateLandState.eastTo}">
                 </div>
             </div>
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">南至<span
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">四至(2)<span
                         class="symbol required"></span></label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text" class="form-control" placeholder="南至" required
-                           name="southTo" value="${basicEstateLandState.southTo}">
+                <div class=" col-xs-1  col-sm-1  col-md-1  col-lg-1">
+                    <select class="form-control" name="southToName">
+                        <option value="南至" selected="selected">南至</option>
+                        <option value="东南">东南</option>
+                        <option value="西南">西南</option>
+                    </select>
+                </div>
+                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2">
+                    <input type="text" class="form-control"  required name="southTo" value="${basicEstateLandState.southTo}">
                 </div>
             </div>
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">西至<span
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">四至(3)<span
                         class="symbol required"></span></label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text" class="form-control" placeholder="西至" required
-                           name="westTo" value="${basicEstateLandState.westTo}">
+                <div class=" col-xs-1  col-sm-1  col-md-1  col-lg-1">
+                    <select class="form-control" name="westToName">
+                        <option value="西至" selected="selected" >西至</option>
+                        <option value="西南">西南</option>
+                        <option value="西北"></option>
+                    </select>
+                </div>
+                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                    <input type="text" class="form-control" required name="westTo" value="${basicEstateLandState.westTo}">
                 </div>
             </div>
         </div>
         <div class="form-group">
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">北至<span
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">四至(4)<span
                         class="symbol required"></span></label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text" class="form-control" placeholder="北至" required
-                           name="northTo" value="${basicEstateLandState.northTo}">
+                <div class=" col-xs-1  col-sm-1  col-md-1  col-lg-1">
+                    <select class="form-control"  name="northToName">
+                        <option value="北至" selected="selected">北至</option>
+                        <option value="东北">东北</option>
+                        <option value="西北">西北</option>
+                    </select>
+                </div>
+                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                    <input type="text" class="form-control"  required name="northTo" value="${basicEstateLandState.northTo}">
                 </div>
             </div>
             <div class="x-valid">

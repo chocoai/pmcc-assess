@@ -9,12 +9,15 @@
     <result column="land_use_type" property="landUseType" jdbcType="VARCHAR" />
     <result column="land_use_category" property="landUseCategory" jdbcType="VARCHAR" />
     <result column="land_factor_total_score" property="landFactorTotalScore" jdbcType="DECIMAL" />
-    <result column="land_level_content" property="landLevelContent" jdbcType="VARCHAR" />
     <result column="land_level" property="landLevel" jdbcType="INTEGER" />
     <result column="land_area" property="landArea" jdbcType="VARCHAR" />
+    <result column="east_to_name" property="eastToName" jdbcType="VARCHAR" />
     <result column="east_to" property="eastTo" jdbcType="VARCHAR" />
+    <result column="south_to_name" property="southToName" jdbcType="VARCHAR" />
     <result column="south_to" property="southTo" jdbcType="VARCHAR" />
+    <result column="west_to_name" property="westToName" jdbcType="VARCHAR" />
     <result column="west_to" property="westTo" jdbcType="VARCHAR" />
+    <result column="north_to_name" property="northToName" jdbcType="VARCHAR" />
     <result column="north_to" property="northTo" jdbcType="VARCHAR" />
     <result column="shape_state" property="shapeState" jdbcType="INTEGER" />
     <result column="shape_state_remark" property="shapeStateRemark" jdbcType="VARCHAR" />
@@ -43,6 +46,9 @@
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.copower.pmcc.assess.dal.basis.entity.BasicEstateLandState" extends="BaseResultMap" >
+    <result column="land_level_content" property="landLevelContent" jdbcType="LONGVARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -104,14 +110,33 @@
   </sql>
   <sql id="Base_Column_List" >
     id, apply_id, estate_id, name, land_use_type, land_use_category, land_factor_total_score, 
-    land_level_content, land_level, land_area, east_to, south_to, west_to, north_to, 
-    shape_state, shape_state_remark, planeness, topographic_terrain, development_degree, 
-    development_degree_remark, development_degree_content, plot_ratio, building_density, 
-    green_space_rate, compatible_ratio, bearing_capacity, contaminated, ph, fertility, 
-    conclusion, hold_on, building_height_limit, investment_intensity, special_restrictions, 
-    present_situation_land_use, infrastructure_completeness, development_time, bis_delete, 
-    creator, gmt_created, gmt_modified
+    land_level, land_area, east_to_name, east_to, south_to_name, south_to, west_to_name, 
+    west_to, north_to_name, north_to, shape_state, shape_state_remark, planeness, topographic_terrain, 
+    development_degree, development_degree_remark, development_degree_content, plot_ratio, 
+    building_density, green_space_rate, compatible_ratio, bearing_capacity, contaminated, 
+    ph, fertility, conclusion, hold_on, building_height_limit, investment_intensity, 
+    special_restrictions, present_situation_land_use, infrastructure_completeness, development_time, 
+    bis_delete, creator, gmt_created, gmt_modified
   </sql>
+  <sql id="Blob_Column_List" >
+    land_level_content
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicEstateLandStateExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from tb_basic_estate_land_state
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicEstateLandStateExample" >
     select
     <if test="distinct" >
@@ -126,9 +151,11 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
     from tb_basic_estate_land_state
     where id = #{id,jdbcType=INTEGER}
   </select>
@@ -148,8 +175,9 @@
     </selectKey>
     insert into tb_basic_estate_land_state (apply_id, estate_id, name, 
       land_use_type, land_use_category, land_factor_total_score, 
-      land_level_content, land_level, land_area, 
-      east_to, south_to, west_to, 
+      land_level, land_area, east_to_name, 
+      east_to, south_to_name, south_to, 
+      west_to_name, west_to, north_to_name, 
       north_to, shape_state, shape_state_remark, 
       planeness, topographic_terrain, development_degree, 
       development_degree_remark, development_degree_content, 
@@ -160,11 +188,12 @@
       special_restrictions, present_situation_land_use, 
       infrastructure_completeness, development_time, 
       bis_delete, creator, gmt_created, 
-      gmt_modified)
+      gmt_modified, land_level_content)
     values (#{applyId,jdbcType=INTEGER}, #{estateId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
-      #{landUseType,jdbcType=VARCHAR}, #{landUseCategory,jdbcType=VARCHAR}, #{landFactorTotalScore,jdbcType=DECIMAL},
-      #{landLevelContent,jdbcType=VARCHAR}, #{landLevel,jdbcType=INTEGER}, #{landArea,jdbcType=VARCHAR}, 
-      #{eastTo,jdbcType=VARCHAR}, #{southTo,jdbcType=VARCHAR}, #{westTo,jdbcType=VARCHAR}, 
+      #{landUseType,jdbcType=VARCHAR}, #{landUseCategory,jdbcType=VARCHAR}, #{landFactorTotalScore,jdbcType=DECIMAL}, 
+      #{landLevel,jdbcType=INTEGER}, #{landArea,jdbcType=VARCHAR}, #{eastToName,jdbcType=VARCHAR}, 
+      #{eastTo,jdbcType=VARCHAR}, #{southToName,jdbcType=VARCHAR}, #{southTo,jdbcType=VARCHAR}, 
+      #{westToName,jdbcType=VARCHAR}, #{westTo,jdbcType=VARCHAR}, #{northToName,jdbcType=VARCHAR}, 
       #{northTo,jdbcType=VARCHAR}, #{shapeState,jdbcType=INTEGER}, #{shapeStateRemark,jdbcType=VARCHAR}, 
       #{planeness,jdbcType=INTEGER}, #{topographicTerrain,jdbcType=INTEGER}, #{developmentDegree,jdbcType=INTEGER}, 
       #{developmentDegreeRemark,jdbcType=VARCHAR}, #{developmentDegreeContent,jdbcType=VARCHAR}, 
@@ -175,7 +204,7 @@
       #{specialRestrictions,jdbcType=VARCHAR}, #{presentSituationLandUse,jdbcType=VARCHAR}, 
       #{infrastructureCompleteness,jdbcType=INTEGER}, #{developmentTime,jdbcType=TIMESTAMP}, 
       #{bisDelete,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{gmtModified,jdbcType=TIMESTAMP}, #{landLevelContent,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicEstateLandState" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -201,23 +230,32 @@
       <if test="landFactorTotalScore != null" >
         land_factor_total_score,
       </if>
-      <if test="landLevelContent != null" >
-        land_level_content,
-      </if>
       <if test="landLevel != null" >
         land_level,
       </if>
       <if test="landArea != null" >
         land_area,
       </if>
+      <if test="eastToName != null" >
+        east_to_name,
+      </if>
       <if test="eastTo != null" >
         east_to,
+      </if>
+      <if test="southToName != null" >
+        south_to_name,
       </if>
       <if test="southTo != null" >
         south_to,
       </if>
+      <if test="westToName != null" >
+        west_to_name,
+      </if>
       <if test="westTo != null" >
         west_to,
+      </if>
+      <if test="northToName != null" >
+        north_to_name,
       </if>
       <if test="northTo != null" >
         north_to,
@@ -303,6 +341,9 @@
       <if test="gmtModified != null" >
         gmt_modified,
       </if>
+      <if test="landLevelContent != null" >
+        land_level_content,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="applyId != null" >
@@ -323,23 +364,32 @@
       <if test="landFactorTotalScore != null" >
         #{landFactorTotalScore,jdbcType=DECIMAL},
       </if>
-      <if test="landLevelContent != null" >
-        #{landLevelContent,jdbcType=VARCHAR},
-      </if>
       <if test="landLevel != null" >
         #{landLevel,jdbcType=INTEGER},
       </if>
       <if test="landArea != null" >
         #{landArea,jdbcType=VARCHAR},
       </if>
+      <if test="eastToName != null" >
+        #{eastToName,jdbcType=VARCHAR},
+      </if>
       <if test="eastTo != null" >
         #{eastTo,jdbcType=VARCHAR},
+      </if>
+      <if test="southToName != null" >
+        #{southToName,jdbcType=VARCHAR},
       </if>
       <if test="southTo != null" >
         #{southTo,jdbcType=VARCHAR},
       </if>
+      <if test="westToName != null" >
+        #{westToName,jdbcType=VARCHAR},
+      </if>
       <if test="westTo != null" >
         #{westTo,jdbcType=VARCHAR},
+      </if>
+      <if test="northToName != null" >
+        #{northToName,jdbcType=VARCHAR},
       </if>
       <if test="northTo != null" >
         #{northTo,jdbcType=VARCHAR},
@@ -425,6 +475,9 @@
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="landLevelContent != null" >
+        #{landLevelContent,jdbcType=LONGVARCHAR},
+      </if>
     </trim>
   </insert>
   <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicEstateLandStateExample" resultType="java.lang.Integer" >
@@ -457,23 +510,32 @@
       <if test="record.landFactorTotalScore != null" >
         land_factor_total_score = #{record.landFactorTotalScore,jdbcType=DECIMAL},
       </if>
-      <if test="record.landLevelContent != null" >
-        land_level_content = #{record.landLevelContent,jdbcType=VARCHAR},
-      </if>
       <if test="record.landLevel != null" >
         land_level = #{record.landLevel,jdbcType=INTEGER},
       </if>
       <if test="record.landArea != null" >
         land_area = #{record.landArea,jdbcType=VARCHAR},
       </if>
+      <if test="record.eastToName != null" >
+        east_to_name = #{record.eastToName,jdbcType=VARCHAR},
+      </if>
       <if test="record.eastTo != null" >
         east_to = #{record.eastTo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.southToName != null" >
+        south_to_name = #{record.southToName,jdbcType=VARCHAR},
       </if>
       <if test="record.southTo != null" >
         south_to = #{record.southTo,jdbcType=VARCHAR},
       </if>
+      <if test="record.westToName != null" >
+        west_to_name = #{record.westToName,jdbcType=VARCHAR},
+      </if>
       <if test="record.westTo != null" >
         west_to = #{record.westTo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.northToName != null" >
+        north_to_name = #{record.northToName,jdbcType=VARCHAR},
       </if>
       <if test="record.northTo != null" >
         north_to = #{record.northTo,jdbcType=VARCHAR},
@@ -559,7 +621,61 @@
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.landLevelContent != null" >
+        land_level_content = #{record.landLevelContent,jdbcType=LONGVARCHAR},
+      </if>
     </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update tb_basic_estate_land_state
+    set id = #{record.id,jdbcType=INTEGER},
+      apply_id = #{record.applyId,jdbcType=INTEGER},
+      estate_id = #{record.estateId,jdbcType=INTEGER},
+      name = #{record.name,jdbcType=VARCHAR},
+      land_use_type = #{record.landUseType,jdbcType=VARCHAR},
+      land_use_category = #{record.landUseCategory,jdbcType=VARCHAR},
+      land_factor_total_score = #{record.landFactorTotalScore,jdbcType=DECIMAL},
+      land_level = #{record.landLevel,jdbcType=INTEGER},
+      land_area = #{record.landArea,jdbcType=VARCHAR},
+      east_to_name = #{record.eastToName,jdbcType=VARCHAR},
+      east_to = #{record.eastTo,jdbcType=VARCHAR},
+      south_to_name = #{record.southToName,jdbcType=VARCHAR},
+      south_to = #{record.southTo,jdbcType=VARCHAR},
+      west_to_name = #{record.westToName,jdbcType=VARCHAR},
+      west_to = #{record.westTo,jdbcType=VARCHAR},
+      north_to_name = #{record.northToName,jdbcType=VARCHAR},
+      north_to = #{record.northTo,jdbcType=VARCHAR},
+      shape_state = #{record.shapeState,jdbcType=INTEGER},
+      shape_state_remark = #{record.shapeStateRemark,jdbcType=VARCHAR},
+      planeness = #{record.planeness,jdbcType=INTEGER},
+      topographic_terrain = #{record.topographicTerrain,jdbcType=INTEGER},
+      development_degree = #{record.developmentDegree,jdbcType=INTEGER},
+      development_degree_remark = #{record.developmentDegreeRemark,jdbcType=VARCHAR},
+      development_degree_content = #{record.developmentDegreeContent,jdbcType=VARCHAR},
+      plot_ratio = #{record.plotRatio,jdbcType=VARCHAR},
+      building_density = #{record.buildingDensity,jdbcType=VARCHAR},
+      green_space_rate = #{record.greenSpaceRate,jdbcType=VARCHAR},
+      compatible_ratio = #{record.compatibleRatio,jdbcType=VARCHAR},
+      bearing_capacity = #{record.bearingCapacity,jdbcType=VARCHAR},
+      contaminated = #{record.contaminated,jdbcType=VARCHAR},
+      ph = #{record.ph,jdbcType=VARCHAR},
+      fertility = #{record.fertility,jdbcType=VARCHAR},
+      conclusion = #{record.conclusion,jdbcType=VARCHAR},
+      hold_on = #{record.holdOn,jdbcType=VARCHAR},
+      building_height_limit = #{record.buildingHeightLimit,jdbcType=DECIMAL},
+      investment_intensity = #{record.investmentIntensity,jdbcType=DECIMAL},
+      special_restrictions = #{record.specialRestrictions,jdbcType=VARCHAR},
+      present_situation_land_use = #{record.presentSituationLandUse,jdbcType=VARCHAR},
+      infrastructure_completeness = #{record.infrastructureCompleteness,jdbcType=INTEGER},
+      development_time = #{record.developmentTime,jdbcType=TIMESTAMP},
+      bis_delete = #{record.bisDelete,jdbcType=BIT},
+      creator = #{record.creator,jdbcType=VARCHAR},
+      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      land_level_content = #{record.landLevelContent,jdbcType=LONGVARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -573,12 +689,15 @@
       land_use_type = #{record.landUseType,jdbcType=VARCHAR},
       land_use_category = #{record.landUseCategory,jdbcType=VARCHAR},
       land_factor_total_score = #{record.landFactorTotalScore,jdbcType=DECIMAL},
-      land_level_content = #{record.landLevelContent,jdbcType=VARCHAR},
       land_level = #{record.landLevel,jdbcType=INTEGER},
       land_area = #{record.landArea,jdbcType=VARCHAR},
+      east_to_name = #{record.eastToName,jdbcType=VARCHAR},
       east_to = #{record.eastTo,jdbcType=VARCHAR},
+      south_to_name = #{record.southToName,jdbcType=VARCHAR},
       south_to = #{record.southTo,jdbcType=VARCHAR},
+      west_to_name = #{record.westToName,jdbcType=VARCHAR},
       west_to = #{record.westTo,jdbcType=VARCHAR},
+      north_to_name = #{record.northToName,jdbcType=VARCHAR},
       north_to = #{record.northTo,jdbcType=VARCHAR},
       shape_state = #{record.shapeState,jdbcType=INTEGER},
       shape_state_remark = #{record.shapeStateRemark,jdbcType=VARCHAR},
@@ -632,23 +751,32 @@
       <if test="landFactorTotalScore != null" >
         land_factor_total_score = #{landFactorTotalScore,jdbcType=DECIMAL},
       </if>
-      <if test="landLevelContent != null" >
-        land_level_content = #{landLevelContent,jdbcType=VARCHAR},
-      </if>
       <if test="landLevel != null" >
         land_level = #{landLevel,jdbcType=INTEGER},
       </if>
       <if test="landArea != null" >
         land_area = #{landArea,jdbcType=VARCHAR},
       </if>
+      <if test="eastToName != null" >
+        east_to_name = #{eastToName,jdbcType=VARCHAR},
+      </if>
       <if test="eastTo != null" >
         east_to = #{eastTo,jdbcType=VARCHAR},
+      </if>
+      <if test="southToName != null" >
+        south_to_name = #{southToName,jdbcType=VARCHAR},
       </if>
       <if test="southTo != null" >
         south_to = #{southTo,jdbcType=VARCHAR},
       </if>
+      <if test="westToName != null" >
+        west_to_name = #{westToName,jdbcType=VARCHAR},
+      </if>
       <if test="westTo != null" >
         west_to = #{westTo,jdbcType=VARCHAR},
+      </if>
+      <if test="northToName != null" >
+        north_to_name = #{northToName,jdbcType=VARCHAR},
       </if>
       <if test="northTo != null" >
         north_to = #{northTo,jdbcType=VARCHAR},
@@ -734,7 +862,58 @@
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="landLevelContent != null" >
+        land_level_content = #{landLevelContent,jdbcType=LONGVARCHAR},
+      </if>
     </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicEstateLandState" >
+    update tb_basic_estate_land_state
+    set apply_id = #{applyId,jdbcType=INTEGER},
+      estate_id = #{estateId,jdbcType=INTEGER},
+      name = #{name,jdbcType=VARCHAR},
+      land_use_type = #{landUseType,jdbcType=VARCHAR},
+      land_use_category = #{landUseCategory,jdbcType=VARCHAR},
+      land_factor_total_score = #{landFactorTotalScore,jdbcType=DECIMAL},
+      land_level = #{landLevel,jdbcType=INTEGER},
+      land_area = #{landArea,jdbcType=VARCHAR},
+      east_to_name = #{eastToName,jdbcType=VARCHAR},
+      east_to = #{eastTo,jdbcType=VARCHAR},
+      south_to_name = #{southToName,jdbcType=VARCHAR},
+      south_to = #{southTo,jdbcType=VARCHAR},
+      west_to_name = #{westToName,jdbcType=VARCHAR},
+      west_to = #{westTo,jdbcType=VARCHAR},
+      north_to_name = #{northToName,jdbcType=VARCHAR},
+      north_to = #{northTo,jdbcType=VARCHAR},
+      shape_state = #{shapeState,jdbcType=INTEGER},
+      shape_state_remark = #{shapeStateRemark,jdbcType=VARCHAR},
+      planeness = #{planeness,jdbcType=INTEGER},
+      topographic_terrain = #{topographicTerrain,jdbcType=INTEGER},
+      development_degree = #{developmentDegree,jdbcType=INTEGER},
+      development_degree_remark = #{developmentDegreeRemark,jdbcType=VARCHAR},
+      development_degree_content = #{developmentDegreeContent,jdbcType=VARCHAR},
+      plot_ratio = #{plotRatio,jdbcType=VARCHAR},
+      building_density = #{buildingDensity,jdbcType=VARCHAR},
+      green_space_rate = #{greenSpaceRate,jdbcType=VARCHAR},
+      compatible_ratio = #{compatibleRatio,jdbcType=VARCHAR},
+      bearing_capacity = #{bearingCapacity,jdbcType=VARCHAR},
+      contaminated = #{contaminated,jdbcType=VARCHAR},
+      ph = #{ph,jdbcType=VARCHAR},
+      fertility = #{fertility,jdbcType=VARCHAR},
+      conclusion = #{conclusion,jdbcType=VARCHAR},
+      hold_on = #{holdOn,jdbcType=VARCHAR},
+      building_height_limit = #{buildingHeightLimit,jdbcType=DECIMAL},
+      investment_intensity = #{investmentIntensity,jdbcType=DECIMAL},
+      special_restrictions = #{specialRestrictions,jdbcType=VARCHAR},
+      present_situation_land_use = #{presentSituationLandUse,jdbcType=VARCHAR},
+      infrastructure_completeness = #{infrastructureCompleteness,jdbcType=INTEGER},
+      development_time = #{developmentTime,jdbcType=TIMESTAMP},
+      bis_delete = #{bisDelete,jdbcType=BIT},
+      creator = #{creator,jdbcType=VARCHAR},
+      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      land_level_content = #{landLevelContent,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicEstateLandState" >
@@ -745,12 +924,15 @@
       land_use_type = #{landUseType,jdbcType=VARCHAR},
       land_use_category = #{landUseCategory,jdbcType=VARCHAR},
       land_factor_total_score = #{landFactorTotalScore,jdbcType=DECIMAL},
-      land_level_content = #{landLevelContent,jdbcType=VARCHAR},
       land_level = #{landLevel,jdbcType=INTEGER},
       land_area = #{landArea,jdbcType=VARCHAR},
+      east_to_name = #{eastToName,jdbcType=VARCHAR},
       east_to = #{eastTo,jdbcType=VARCHAR},
+      south_to_name = #{southToName,jdbcType=VARCHAR},
       south_to = #{southTo,jdbcType=VARCHAR},
+      west_to_name = #{westToName,jdbcType=VARCHAR},
       west_to = #{westTo,jdbcType=VARCHAR},
+      north_to_name = #{northToName,jdbcType=VARCHAR},
       north_to = #{northTo,jdbcType=VARCHAR},
       shape_state = #{shapeState,jdbcType=INTEGER},
       shape_state_remark = #{shapeStateRemark,jdbcType=VARCHAR},

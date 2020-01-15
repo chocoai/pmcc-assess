@@ -556,76 +556,6 @@ public class BasicEstateLandStateExample {
             return (Criteria) this;
         }
 
-        public Criteria andLandLevelContentIsNull() {
-            addCriterion("land_level_content is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandLevelContentIsNotNull() {
-            addCriterion("land_level_content is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandLevelContentEqualTo(String value) {
-            addCriterion("land_level_content =", value, "landLevelContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandLevelContentNotEqualTo(String value) {
-            addCriterion("land_level_content <>", value, "landLevelContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandLevelContentGreaterThan(String value) {
-            addCriterion("land_level_content >", value, "landLevelContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandLevelContentGreaterThanOrEqualTo(String value) {
-            addCriterion("land_level_content >=", value, "landLevelContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandLevelContentLessThan(String value) {
-            addCriterion("land_level_content <", value, "landLevelContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandLevelContentLessThanOrEqualTo(String value) {
-            addCriterion("land_level_content <=", value, "landLevelContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandLevelContentLike(String value) {
-            addCriterion("land_level_content like", value, "landLevelContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandLevelContentNotLike(String value) {
-            addCriterion("land_level_content not like", value, "landLevelContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandLevelContentIn(List<String> values) {
-            addCriterion("land_level_content in", values, "landLevelContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandLevelContentNotIn(List<String> values) {
-            addCriterion("land_level_content not in", values, "landLevelContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandLevelContentBetween(String value1, String value2) {
-            addCriterion("land_level_content between", value1, value2, "landLevelContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandLevelContentNotBetween(String value1, String value2) {
-            addCriterion("land_level_content not between", value1, value2, "landLevelContent");
-            return (Criteria) this;
-        }
-
         public Criteria andLandLevelIsNull() {
             addCriterion("land_level is null");
             return (Criteria) this;
@@ -756,6 +686,76 @@ public class BasicEstateLandStateExample {
             return (Criteria) this;
         }
 
+        public Criteria andEastToNameIsNull() {
+            addCriterion("east_to_name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEastToNameIsNotNull() {
+            addCriterion("east_to_name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEastToNameEqualTo(String value) {
+            addCriterion("east_to_name =", value, "eastToName");
+            return (Criteria) this;
+        }
+
+        public Criteria andEastToNameNotEqualTo(String value) {
+            addCriterion("east_to_name <>", value, "eastToName");
+            return (Criteria) this;
+        }
+
+        public Criteria andEastToNameGreaterThan(String value) {
+            addCriterion("east_to_name >", value, "eastToName");
+            return (Criteria) this;
+        }
+
+        public Criteria andEastToNameGreaterThanOrEqualTo(String value) {
+            addCriterion("east_to_name >=", value, "eastToName");
+            return (Criteria) this;
+        }
+
+        public Criteria andEastToNameLessThan(String value) {
+            addCriterion("east_to_name <", value, "eastToName");
+            return (Criteria) this;
+        }
+
+        public Criteria andEastToNameLessThanOrEqualTo(String value) {
+            addCriterion("east_to_name <=", value, "eastToName");
+            return (Criteria) this;
+        }
+
+        public Criteria andEastToNameLike(String value) {
+            addCriterion("east_to_name like", value, "eastToName");
+            return (Criteria) this;
+        }
+
+        public Criteria andEastToNameNotLike(String value) {
+            addCriterion("east_to_name not like", value, "eastToName");
+            return (Criteria) this;
+        }
+
+        public Criteria andEastToNameIn(List<String> values) {
+            addCriterion("east_to_name in", values, "eastToName");
+            return (Criteria) this;
+        }
+
+        public Criteria andEastToNameNotIn(List<String> values) {
+            addCriterion("east_to_name not in", values, "eastToName");
+            return (Criteria) this;
+        }
+
+        public Criteria andEastToNameBetween(String value1, String value2) {
+            addCriterion("east_to_name between", value1, value2, "eastToName");
+            return (Criteria) this;
+        }
+
+        public Criteria andEastToNameNotBetween(String value1, String value2) {
+            addCriterion("east_to_name not between", value1, value2, "eastToName");
+            return (Criteria) this;
+        }
+
         public Criteria andEastToIsNull() {
             addCriterion("east_to is null");
             return (Criteria) this;
@@ -823,6 +823,76 @@ public class BasicEstateLandStateExample {
 
         public Criteria andEastToNotBetween(String value1, String value2) {
             addCriterion("east_to not between", value1, value2, "eastTo");
+            return (Criteria) this;
+        }
+
+        public Criteria andSouthToNameIsNull() {
+            addCriterion("south_to_name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSouthToNameIsNotNull() {
+            addCriterion("south_to_name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSouthToNameEqualTo(String value) {
+            addCriterion("south_to_name =", value, "southToName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSouthToNameNotEqualTo(String value) {
+            addCriterion("south_to_name <>", value, "southToName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSouthToNameGreaterThan(String value) {
+            addCriterion("south_to_name >", value, "southToName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSouthToNameGreaterThanOrEqualTo(String value) {
+            addCriterion("south_to_name >=", value, "southToName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSouthToNameLessThan(String value) {
+            addCriterion("south_to_name <", value, "southToName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSouthToNameLessThanOrEqualTo(String value) {
+            addCriterion("south_to_name <=", value, "southToName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSouthToNameLike(String value) {
+            addCriterion("south_to_name like", value, "southToName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSouthToNameNotLike(String value) {
+            addCriterion("south_to_name not like", value, "southToName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSouthToNameIn(List<String> values) {
+            addCriterion("south_to_name in", values, "southToName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSouthToNameNotIn(List<String> values) {
+            addCriterion("south_to_name not in", values, "southToName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSouthToNameBetween(String value1, String value2) {
+            addCriterion("south_to_name between", value1, value2, "southToName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSouthToNameNotBetween(String value1, String value2) {
+            addCriterion("south_to_name not between", value1, value2, "southToName");
             return (Criteria) this;
         }
 
@@ -896,6 +966,76 @@ public class BasicEstateLandStateExample {
             return (Criteria) this;
         }
 
+        public Criteria andWestToNameIsNull() {
+            addCriterion("west_to_name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWestToNameIsNotNull() {
+            addCriterion("west_to_name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWestToNameEqualTo(String value) {
+            addCriterion("west_to_name =", value, "westToName");
+            return (Criteria) this;
+        }
+
+        public Criteria andWestToNameNotEqualTo(String value) {
+            addCriterion("west_to_name <>", value, "westToName");
+            return (Criteria) this;
+        }
+
+        public Criteria andWestToNameGreaterThan(String value) {
+            addCriterion("west_to_name >", value, "westToName");
+            return (Criteria) this;
+        }
+
+        public Criteria andWestToNameGreaterThanOrEqualTo(String value) {
+            addCriterion("west_to_name >=", value, "westToName");
+            return (Criteria) this;
+        }
+
+        public Criteria andWestToNameLessThan(String value) {
+            addCriterion("west_to_name <", value, "westToName");
+            return (Criteria) this;
+        }
+
+        public Criteria andWestToNameLessThanOrEqualTo(String value) {
+            addCriterion("west_to_name <=", value, "westToName");
+            return (Criteria) this;
+        }
+
+        public Criteria andWestToNameLike(String value) {
+            addCriterion("west_to_name like", value, "westToName");
+            return (Criteria) this;
+        }
+
+        public Criteria andWestToNameNotLike(String value) {
+            addCriterion("west_to_name not like", value, "westToName");
+            return (Criteria) this;
+        }
+
+        public Criteria andWestToNameIn(List<String> values) {
+            addCriterion("west_to_name in", values, "westToName");
+            return (Criteria) this;
+        }
+
+        public Criteria andWestToNameNotIn(List<String> values) {
+            addCriterion("west_to_name not in", values, "westToName");
+            return (Criteria) this;
+        }
+
+        public Criteria andWestToNameBetween(String value1, String value2) {
+            addCriterion("west_to_name between", value1, value2, "westToName");
+            return (Criteria) this;
+        }
+
+        public Criteria andWestToNameNotBetween(String value1, String value2) {
+            addCriterion("west_to_name not between", value1, value2, "westToName");
+            return (Criteria) this;
+        }
+
         public Criteria andWestToIsNull() {
             addCriterion("west_to is null");
             return (Criteria) this;
@@ -963,6 +1103,76 @@ public class BasicEstateLandStateExample {
 
         public Criteria andWestToNotBetween(String value1, String value2) {
             addCriterion("west_to not between", value1, value2, "westTo");
+            return (Criteria) this;
+        }
+
+        public Criteria andNorthToNameIsNull() {
+            addCriterion("north_to_name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNorthToNameIsNotNull() {
+            addCriterion("north_to_name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNorthToNameEqualTo(String value) {
+            addCriterion("north_to_name =", value, "northToName");
+            return (Criteria) this;
+        }
+
+        public Criteria andNorthToNameNotEqualTo(String value) {
+            addCriterion("north_to_name <>", value, "northToName");
+            return (Criteria) this;
+        }
+
+        public Criteria andNorthToNameGreaterThan(String value) {
+            addCriterion("north_to_name >", value, "northToName");
+            return (Criteria) this;
+        }
+
+        public Criteria andNorthToNameGreaterThanOrEqualTo(String value) {
+            addCriterion("north_to_name >=", value, "northToName");
+            return (Criteria) this;
+        }
+
+        public Criteria andNorthToNameLessThan(String value) {
+            addCriterion("north_to_name <", value, "northToName");
+            return (Criteria) this;
+        }
+
+        public Criteria andNorthToNameLessThanOrEqualTo(String value) {
+            addCriterion("north_to_name <=", value, "northToName");
+            return (Criteria) this;
+        }
+
+        public Criteria andNorthToNameLike(String value) {
+            addCriterion("north_to_name like", value, "northToName");
+            return (Criteria) this;
+        }
+
+        public Criteria andNorthToNameNotLike(String value) {
+            addCriterion("north_to_name not like", value, "northToName");
+            return (Criteria) this;
+        }
+
+        public Criteria andNorthToNameIn(List<String> values) {
+            addCriterion("north_to_name in", values, "northToName");
+            return (Criteria) this;
+        }
+
+        public Criteria andNorthToNameNotIn(List<String> values) {
+            addCriterion("north_to_name not in", values, "northToName");
+            return (Criteria) this;
+        }
+
+        public Criteria andNorthToNameBetween(String value1, String value2) {
+            addCriterion("north_to_name between", value1, value2, "northToName");
+            return (Criteria) this;
+        }
+
+        public Criteria andNorthToNameNotBetween(String value1, String value2) {
+            addCriterion("north_to_name not between", value1, value2, "northToName");
             return (Criteria) this;
         }
 
