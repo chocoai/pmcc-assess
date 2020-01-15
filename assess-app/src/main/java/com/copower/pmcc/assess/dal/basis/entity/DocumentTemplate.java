@@ -7,8 +7,6 @@ public class DocumentTemplate {
 
     private String templateName;
 
-    private String prefix;
-
     private Integer templateType;
 
     private Date provideDate;
@@ -16,6 +14,10 @@ public class DocumentTemplate {
     private Date gmtCreated;
 
     private Date gmtModified;
+
+    private String assessProjectType;
+
+    private Integer numbetRuleId;
 
     public Integer getId() {
         return id;
@@ -31,14 +33,6 @@ public class DocumentTemplate {
 
     public void setTemplateName(String templateName) {
         this.templateName = templateName == null ? null : templateName.trim();
-    }
-
-    public String getPrefix() {
-        return prefix;
-    }
-
-    public void setPrefix(String prefix) {
-        this.prefix = prefix == null ? null : prefix.trim();
     }
 
     public Integer getTemplateType() {
@@ -71,5 +65,21 @@ public class DocumentTemplate {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getAssessProjectType() {
+        return assessProjectType;
+    }
+
+    public void setAssessProjectType(String assessProjectType) {
+        this.assessProjectType = assessProjectType == null ? null : assessProjectType.trim();
+    }
+
+    public Integer getNumbetRuleId() {
+        return numbetRuleId;
+    }
+
+    public void setNumbetRuleId(Integer numbetRuleId) {
+        this.numbetRuleId = numbetRuleId;
     }
 }

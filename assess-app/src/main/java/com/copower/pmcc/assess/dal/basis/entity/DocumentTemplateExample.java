@@ -235,76 +235,6 @@ public class DocumentTemplateExample {
             return (Criteria) this;
         }
 
-        public Criteria andPrefixIsNull() {
-            addCriterion("prefix is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andPrefixIsNotNull() {
-            addCriterion("prefix is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andPrefixEqualTo(String value) {
-            addCriterion("prefix =", value, "prefix");
-            return (Criteria) this;
-        }
-
-        public Criteria andPrefixNotEqualTo(String value) {
-            addCriterion("prefix <>", value, "prefix");
-            return (Criteria) this;
-        }
-
-        public Criteria andPrefixGreaterThan(String value) {
-            addCriterion("prefix >", value, "prefix");
-            return (Criteria) this;
-        }
-
-        public Criteria andPrefixGreaterThanOrEqualTo(String value) {
-            addCriterion("prefix >=", value, "prefix");
-            return (Criteria) this;
-        }
-
-        public Criteria andPrefixLessThan(String value) {
-            addCriterion("prefix <", value, "prefix");
-            return (Criteria) this;
-        }
-
-        public Criteria andPrefixLessThanOrEqualTo(String value) {
-            addCriterion("prefix <=", value, "prefix");
-            return (Criteria) this;
-        }
-
-        public Criteria andPrefixLike(String value) {
-            addCriterion("prefix like", value, "prefix");
-            return (Criteria) this;
-        }
-
-        public Criteria andPrefixNotLike(String value) {
-            addCriterion("prefix not like", value, "prefix");
-            return (Criteria) this;
-        }
-
-        public Criteria andPrefixIn(List<String> values) {
-            addCriterion("prefix in", values, "prefix");
-            return (Criteria) this;
-        }
-
-        public Criteria andPrefixNotIn(List<String> values) {
-            addCriterion("prefix not in", values, "prefix");
-            return (Criteria) this;
-        }
-
-        public Criteria andPrefixBetween(String value1, String value2) {
-            addCriterion("prefix between", value1, value2, "prefix");
-            return (Criteria) this;
-        }
-
-        public Criteria andPrefixNotBetween(String value1, String value2) {
-            addCriterion("prefix not between", value1, value2, "prefix");
-            return (Criteria) this;
-        }
-
         public Criteria andTemplateTypeIsNull() {
             addCriterion("template_type is null");
             return (Criteria) this;
@@ -542,6 +472,136 @@ public class DocumentTemplateExample {
 
         public Criteria andGmtModifiedNotBetween(Date value1, Date value2) {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessProjectTypeIsNull() {
+            addCriterion("assess_project_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessProjectTypeIsNotNull() {
+            addCriterion("assess_project_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessProjectTypeEqualTo(String value) {
+            addCriterion("assess_project_type =", value, "assessProjectType");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessProjectTypeNotEqualTo(String value) {
+            addCriterion("assess_project_type <>", value, "assessProjectType");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessProjectTypeGreaterThan(String value) {
+            addCriterion("assess_project_type >", value, "assessProjectType");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessProjectTypeGreaterThanOrEqualTo(String value) {
+            addCriterion("assess_project_type >=", value, "assessProjectType");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessProjectTypeLessThan(String value) {
+            addCriterion("assess_project_type <", value, "assessProjectType");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessProjectTypeLessThanOrEqualTo(String value) {
+            addCriterion("assess_project_type <=", value, "assessProjectType");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessProjectTypeLike(String value) {
+            addCriterion("assess_project_type like", value, "assessProjectType");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessProjectTypeNotLike(String value) {
+            addCriterion("assess_project_type not like", value, "assessProjectType");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessProjectTypeIn(List<String> values) {
+            addCriterion("assess_project_type in", values, "assessProjectType");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessProjectTypeNotIn(List<String> values) {
+            addCriterion("assess_project_type not in", values, "assessProjectType");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessProjectTypeBetween(String value1, String value2) {
+            addCriterion("assess_project_type between", value1, value2, "assessProjectType");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessProjectTypeNotBetween(String value1, String value2) {
+            addCriterion("assess_project_type not between", value1, value2, "assessProjectType");
+            return (Criteria) this;
+        }
+
+        public Criteria andNumbetRuleIdIsNull() {
+            addCriterion("numbet_rule_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNumbetRuleIdIsNotNull() {
+            addCriterion("numbet_rule_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNumbetRuleIdEqualTo(Integer value) {
+            addCriterion("numbet_rule_id =", value, "numbetRuleId");
+            return (Criteria) this;
+        }
+
+        public Criteria andNumbetRuleIdNotEqualTo(Integer value) {
+            addCriterion("numbet_rule_id <>", value, "numbetRuleId");
+            return (Criteria) this;
+        }
+
+        public Criteria andNumbetRuleIdGreaterThan(Integer value) {
+            addCriterion("numbet_rule_id >", value, "numbetRuleId");
+            return (Criteria) this;
+        }
+
+        public Criteria andNumbetRuleIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("numbet_rule_id >=", value, "numbetRuleId");
+            return (Criteria) this;
+        }
+
+        public Criteria andNumbetRuleIdLessThan(Integer value) {
+            addCriterion("numbet_rule_id <", value, "numbetRuleId");
+            return (Criteria) this;
+        }
+
+        public Criteria andNumbetRuleIdLessThanOrEqualTo(Integer value) {
+            addCriterion("numbet_rule_id <=", value, "numbetRuleId");
+            return (Criteria) this;
+        }
+
+        public Criteria andNumbetRuleIdIn(List<Integer> values) {
+            addCriterion("numbet_rule_id in", values, "numbetRuleId");
+            return (Criteria) this;
+        }
+
+        public Criteria andNumbetRuleIdNotIn(List<Integer> values) {
+            addCriterion("numbet_rule_id not in", values, "numbetRuleId");
+            return (Criteria) this;
+        }
+
+        public Criteria andNumbetRuleIdBetween(Integer value1, Integer value2) {
+            addCriterion("numbet_rule_id between", value1, value2, "numbetRuleId");
+            return (Criteria) this;
+        }
+
+        public Criteria andNumbetRuleIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("numbet_rule_id not between", value1, value2, "numbetRuleId");
             return (Criteria) this;
         }
     }

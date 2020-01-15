@@ -278,7 +278,7 @@ public class ProjectTakeNumberService {
      * @param symbol    文号字符串
      * @param otherPath 二维码文件
      */
-    private void replaceDocument(String tempPath, String symbol, String otherPath) throws Exception {
+    public void replaceDocument(String tempPath, String symbol, String otherPath) throws Exception {
         Document document = new Document(tempPath);
         String reportNumber = String.join("", "${", BaseReportFieldEnum.ReportNumber.getName(), "}");
         String reportQrcode = String.join("", "\\$\\{", BaseReportFieldEnum.ReportQrcode.getName(), "\\}");
