@@ -15,6 +15,8 @@ public class SchemeAreaGroup {
 
     private String district;
 
+    private Integer buildingStatus;
+
     private String areaName;
 
     private Date valueTimePoint;
@@ -22,6 +24,8 @@ public class SchemeAreaGroup {
     private String timePointExplain;
 
     private Integer entrustPurpose;
+
+    private Integer entrustAimType;
 
     private String remarkEntrustPurpose;
 
@@ -43,6 +47,8 @@ public class SchemeAreaGroup {
 
     private Boolean bisEnable;
 
+    private Boolean bisSplit;
+
     private Boolean bisMerge;
 
     private String creator;
@@ -50,8 +56,6 @@ public class SchemeAreaGroup {
     private Date gmtCreated;
 
     private Date gmtModified;
-
-    private Integer entrustAimType;
 
     public Integer getId() {
         return id;
@@ -101,6 +105,14 @@ public class SchemeAreaGroup {
         this.district = district == null ? null : district.trim();
     }
 
+    public Integer getBuildingStatus() {
+        return buildingStatus;
+    }
+
+    public void setBuildingStatus(Integer buildingStatus) {
+        this.buildingStatus = buildingStatus;
+    }
+
     public String getAreaName() {
         return areaName;
     }
@@ -131,6 +143,14 @@ public class SchemeAreaGroup {
 
     public void setEntrustPurpose(Integer entrustPurpose) {
         this.entrustPurpose = entrustPurpose;
+    }
+
+    public Integer getEntrustAimType() {
+        return entrustAimType;
+    }
+
+    public void setEntrustAimType(Integer entrustAimType) {
+        this.entrustAimType = entrustAimType;
     }
 
     public String getRemarkEntrustPurpose() {
@@ -213,6 +233,14 @@ public class SchemeAreaGroup {
         this.bisEnable = bisEnable;
     }
 
+    public Boolean getBisSplit() {
+        return bisSplit;
+    }
+
+    public void setBisSplit(Boolean bisSplit) {
+        this.bisSplit = bisSplit;
+    }
+
     public Boolean getBisMerge() {
         return bisMerge;
     }
@@ -243,13 +271,5 @@ public class SchemeAreaGroup {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public Integer getEntrustAimType() {
-        return entrustAimType;
-    }
-
-    public void setEntrustAimType(Integer entrustAimType) {
-        this.entrustAimType = entrustAimType;
     }
 }

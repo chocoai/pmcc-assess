@@ -38,17 +38,9 @@ import java.util.List;
 @RequestMapping("/home")
 public class HomeController {
     @Autowired
-    private CommonService commonService;
-    @Autowired
-    private BpmRpcProcessMapService bpmRpcProcessMapService;
-    @Autowired
     private BpmRpcProcessInsManagerService bpmRpcProcessInsManagerService;
     @Autowired
     private ProcessControllerComponent processControllerComponent;
-    @Autowired
-    private ErpRpcToolsService erpRpcToolsService;
-    @Autowired
-    private ErpRpcProjectService erpRpcProjectService;
     @Autowired
     private ProjectInfoService projectInfoService;
     @Autowired
@@ -63,39 +55,11 @@ public class HomeController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getworkPredict", name = "取当前责任的预报工作事项", method = RequestMethod.GET)
-    public HttpResult getworkPredict() {
-
-        List<SysWorkPredictDto> sysWorkPredict = erpRpcToolsService.getSysWorkPredict(commonService.thisUserAccount(), "", false);
-
-        if (CollectionUtils.isNotEmpty(sysWorkPredict)) {
-            return HttpResult.newCorrectResult(sysWorkPredict);
-        } else {
-            return HttpResult.newErrorResult("");
-        }
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/getUserProcessList", name = "取当前责任人的流程地图", method = RequestMethod.POST)
-    public HttpResult getUserProcessList() {
-        List<BpmProcessMapDto> processMap = bpmRpcProcessMapService.getUserProcessList(commonService.thisUserAccount());
-        return HttpResult.newCorrectResult(processMap);
-    }
-
-    @ResponseBody
     @RequestMapping(value = "/getMyProcessGroup", method = RequestMethod.GET)
     public HttpResult getMyProcessGroup() {
 
         List<ProcessGroupDto> myProcessGroup = bpmRpcProcessInsManagerService.getMyProcessGroup("", "");
         return HttpResult.newCorrectResult(myProcessGroup);
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/getProjectList", name = "取得所有项目信息", method = RequestMethod.GET)
-    public BootstrapTableVo getProjectList() {
-        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
-        BootstrapTableVo projectInfoByStatus = erpRpcProjectService.getProjectInfoByStatus(requestBaseParam.getOffset(), requestBaseParam.getLimit(), "", requestBaseParam.getSearch());
-        return projectInfoByStatus;
     }
 
     @ResponseBody

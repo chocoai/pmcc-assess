@@ -16,6 +16,8 @@ public class SchemeJudgeObject {
 
     private Integer declareRecordId;
 
+    private Integer buildingStatus;
+
     private Integer basicApplyId;
 
     private String number;
@@ -138,6 +140,14 @@ public class SchemeJudgeObject {
 
     public void setDeclareRecordId(Integer declareRecordId) {
         this.declareRecordId = declareRecordId;
+    }
+
+    public Integer getBuildingStatus() {
+        return buildingStatus;
+    }
+
+    public void setBuildingStatus(Integer buildingStatus) {
+        this.buildingStatus = buildingStatus;
     }
 
     public Integer getBasicApplyId() {
