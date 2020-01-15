@@ -348,7 +348,7 @@
         $('#' + declareApprovalFun.declareRealtyRealEstateCertConfig.box).find("#" + commonDeclareApprovalModel.config.realEstateCert.handleId).remove();
         $('#' + declareApprovalFun.declareRealtyRealEstateCertConfig.box).find(".panel-body").append(commonDeclareApprovalModel.realEstateCert.getHtml());
         declareCommon.showHtmlMastInit($("#" + declareApprovalFun.declareRealtyRealEstateCertConfig.frm), function (area) {
-            declareCommon.initDeclareRealty(item, $("#" + declareApprovalFun.declareRealtyRealEstateCertConfig.frm), [declareApprovalFun.declareRealtyRealEstateCertConfig.fileId], null, false);
+            declareCommon.initDeclareRealty(item, $("#" + declareApprovalFun.declareRealtyRealEstateCertConfig.frm), [declareApprovalFun.declareRealtyRealEstateCertConfig.newFileId], null, false);
             $('#' + declareApprovalFun.declareRealtyRealEstateCertConfig.box).modal("show");
         });
     };
@@ -983,9 +983,7 @@
                         <div class="col-md-12">
                             <div class="panel-body">
                                 <div class="form-group">
-                                    <div class="col-sm-5">
-                                        <div id="_declareRealtyLandCertFileId"></div>
-                                    </div>
+
                                 </div>
                             </div>
                         </div>
