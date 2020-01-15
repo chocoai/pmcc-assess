@@ -134,6 +134,10 @@
                                         onclick="detailInfo.prototype.assignTask()">
                                     发起审批
                                 </button>
+                                <button type="button" class="btn btn-primary"
+                                        onclick="detailInfo.prototype.backTask()">
+                                    任务退回
+                                </button>
                             </div>
                         </div>
                     </form>
@@ -1634,6 +1638,40 @@
                 $("#houseRealizationCycle").val(getDateDiff(houseAssessStandardDate, houseNegotiatedDate));
             } else {
                 $("#houseRealizationCycle").val('');
+            }
+        },
+        backTask: function () {
+            var rows = $('#transaction_List').bootstrapTable('getSelections');
+            if (rows && rows.length > 0) {
+                var idArray = [];
+                $.each(rows, function (i, item) {
+                    if (item.status != 3&&item.status != 4) {
+                        idArray.push(item.id);
+                    }
+                })
+                var ids = idArray.join()
+                Alert("确认退回!", 2, null, function () {
+                    $.ajax({
+                        url: "${pageContext.request.contextPath}/netInfoAssignTask/backTask",
+                        type: "post",
+                        dataType: "json",
+                        data: {ids: ids},
+                        success: function (result) {
+                            if (result.ret) {
+                                toastr.success('删除成功');
+                                detailInfo.prototype.loadDataDicList();
+                            }
+                            else {
+                                Alert("保存数据失败，失败原因:" + result.errmsg);
+                            }
+                        },
+                        error: function (result) {
+                            Alert("调用服务端方法失败，失败原因:" + result);
+                        }
+                    })
+                });
+            } else {
+                toastr.info('请选择要退回的任务');
             }
         },
     }
