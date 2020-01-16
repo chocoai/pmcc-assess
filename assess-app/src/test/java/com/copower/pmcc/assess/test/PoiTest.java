@@ -4,9 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.aspose.words.*;
 import com.copower.pmcc.assess.common.AsposeUtils;
-import com.copower.pmcc.assess.common.CreateInsertHelp;
 import com.copower.pmcc.assess.common.PoiUtils;
-import com.copower.pmcc.assess.dal.basis.entity.CsrBorrower;
 import com.copower.pmcc.assess.dto.input.project.compile.CompileReportApplyDto;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeMarketCompareApplyDto;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
@@ -224,12 +222,7 @@ public class PoiTest {
 
     @Test
     public void insertSqlTest() {
-        CsrBorrower csrBorrower = new CsrBorrower();
-        csrBorrower.setProjectId(0);
-        csrBorrower.setBisImport(true);
-        csrBorrower.setBorrowerId(UUID.randomUUID().toString());
-        String s = new CreateInsertHelp().createInsert(csrBorrower);
-        System.out.print(s);
+
 
         System.out.println(FormatUtils.camelToUnderline("borrowerId"));
     }

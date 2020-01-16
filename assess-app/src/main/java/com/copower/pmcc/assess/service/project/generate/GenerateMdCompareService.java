@@ -97,7 +97,7 @@ public class GenerateMdCompareService {
         this.mcId = mcId;
         this.areaId = areaId;
         getEvaluationItemList();
-        schemeAreaGroup = schemeAreaGroupService.get(areaId);
+        schemeAreaGroup = schemeAreaGroupService.getSchemeAreaGroup(areaId);
         this.valueTimePoint = schemeAreaGroup.getValueTimePoint();
     }
 
@@ -1033,7 +1033,7 @@ public class GenerateMdCompareService {
             //获取最小日期
             Date startDate = sdf.parse(dateList.get(0));
 
-            SchemeAreaGroup schemeAreaGroup = schemeAreaGroupService.get(this.areaId);
+            SchemeAreaGroup schemeAreaGroup = schemeAreaGroupService.getSchemeAreaGroup(this.areaId);
             //获取时间区间与地区内的房价指数
             DataHousePriceIndex query = new DataHousePriceIndex();
             query.setEvaluationDate(this.valueTimePoint);

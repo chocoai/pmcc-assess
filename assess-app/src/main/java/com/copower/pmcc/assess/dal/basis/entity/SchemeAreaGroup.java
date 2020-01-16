@@ -23,6 +23,8 @@ public class SchemeAreaGroup {
 
     private Integer entrustPurpose;
 
+    private Integer entrustAimType;
+
     private String remarkEntrustPurpose;
 
     private Integer valueDefinition;
@@ -43,15 +45,17 @@ public class SchemeAreaGroup {
 
     private Boolean bisEnable;
 
+    private Boolean bisSplit;
+
     private Boolean bisMerge;
+
+    private Integer sorting;
 
     private String creator;
 
     private Date gmtCreated;
 
     private Date gmtModified;
-
-    private Integer entrustAimType;
 
     public Integer getId() {
         return id;
@@ -131,6 +135,14 @@ public class SchemeAreaGroup {
 
     public void setEntrustPurpose(Integer entrustPurpose) {
         this.entrustPurpose = entrustPurpose;
+    }
+
+    public Integer getEntrustAimType() {
+        return entrustAimType;
+    }
+
+    public void setEntrustAimType(Integer entrustAimType) {
+        this.entrustAimType = entrustAimType;
     }
 
     public String getRemarkEntrustPurpose() {
@@ -213,12 +225,28 @@ public class SchemeAreaGroup {
         this.bisEnable = bisEnable;
     }
 
+    public Boolean getBisSplit() {
+        return bisSplit;
+    }
+
+    public void setBisSplit(Boolean bisSplit) {
+        this.bisSplit = bisSplit;
+    }
+
     public Boolean getBisMerge() {
         return bisMerge;
     }
 
     public void setBisMerge(Boolean bisMerge) {
         this.bisMerge = bisMerge;
+    }
+
+    public Integer getSorting() {
+        return sorting;
+    }
+
+    public void setSorting(Integer sorting) {
+        this.sorting = sorting;
     }
 
     public String getCreator() {
@@ -243,13 +271,5 @@ public class SchemeAreaGroup {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public Integer getEntrustAimType() {
-        return entrustAimType;
-    }
-
-    public void setEntrustAimType(Integer entrustAimType) {
-        this.entrustAimType = entrustAimType;
     }
 }

@@ -22,11 +22,19 @@ public class BasicEstateLandState {
 
     private String landArea;
 
+    private String eastToName;
+
     private String eastTo;
+
+    private String southToName;
 
     private String southTo;
 
+    private String westToName;
+
     private String westTo;
+
+    private String northToName;
 
     private String northTo;
 
@@ -158,12 +166,28 @@ public class BasicEstateLandState {
         this.landArea = landArea == null ? null : landArea.trim();
     }
 
+    public String getEastToName() {
+        return eastToName;
+    }
+
+    public void setEastToName(String eastToName) {
+        this.eastToName = eastToName == null ? null : eastToName.trim();
+    }
+
     public String getEastTo() {
         return eastTo;
     }
 
     public void setEastTo(String eastTo) {
         this.eastTo = eastTo == null ? null : eastTo.trim();
+    }
+
+    public String getSouthToName() {
+        return southToName;
+    }
+
+    public void setSouthToName(String southToName) {
+        this.southToName = southToName == null ? null : southToName.trim();
     }
 
     public String getSouthTo() {
@@ -174,12 +198,28 @@ public class BasicEstateLandState {
         this.southTo = southTo == null ? null : southTo.trim();
     }
 
+    public String getWestToName() {
+        return westToName;
+    }
+
+    public void setWestToName(String westToName) {
+        this.westToName = westToName == null ? null : westToName.trim();
+    }
+
     public String getWestTo() {
         return westTo;
     }
 
     public void setWestTo(String westTo) {
         this.westTo = westTo == null ? null : westTo.trim();
+    }
+
+    public String getNorthToName() {
+        return northToName;
+    }
+
+    public void setNorthToName(String northToName) {
+        this.northToName = northToName == null ? null : northToName.trim();
     }
 
     public String getNorthTo() {

@@ -111,9 +111,7 @@ public class ProjectTaskLandCompareAssist implements ProjectTaskInterface {
      * @param modelAndView
      */
     private void setViewParam(ProjectPlanDetails projectPlanDetails, SchemeInfo info,SchemeJudgeObject judgeObject, ModelAndView modelAndView) {
-        List<ProjectPlanDetails> caseAll = mdMarketCompareService.getCaseAll(projectPlanDetails.getProjectId());
         ProjectInfo projectInfo=projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
-        modelAndView.addObject("casesAllJSON", JSON.toJSONString(caseAll));
         MdMarketCompare marketCompare = mdMarketCompareService.getMdMarketCompare(info.getMethodDataId());
         List<DataSetUseField> fieldList = mdMarketCompareService.getShowSetUseFieldList(projectInfoService.getAssessProjectType(projectInfo.getProjectCategoryId()));
         MdMarketCompareItem evaluationObject = mdMarketCompareService.getEvaluationByMcId(marketCompare.getId());

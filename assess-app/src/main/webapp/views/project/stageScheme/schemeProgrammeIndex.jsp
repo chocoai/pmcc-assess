@@ -75,10 +75,18 @@
 
             <c:forEach items="${areaGroups}" var="item">
                 <div class="x_panel area_panel">
+                    <c:if test="${fn:length(areaGroups)<3}">
+                        <script type="text/javascript">
+                            $(function () {
+                                programme.loadJudgeObjectList($('[name=areaGroupId][value=${item.id}]'));
+                            })
+                        </script>
+                    </c:if>
                     <input type="hidden" name="areaGroupId" value="${item.id}">
                     <div class="x_title collapse-link" onclick="programme.loadJudgeObjectList(this);">
                         <ul class="nav navbar-right panel_toolbox">
-                            <li><a class="collapse-link"><i class="fa fa-chevron-${fn:length(areaGroups)<3?'down':'up'}"></i></a></li>
+                            <li><a class="collapse-link"><i
+                                    class="fa fa-chevron-${fn:length(areaGroups)<3?'down':'up'}"></i></a></li>
                         </ul>
                         <h3>
                             <label>${item.areaName}</label>
@@ -108,13 +116,14 @@
                                         <c:if test="${!empty item.entrustAimType}">
                                             <script>
                                                 $(document).ready(function () {
-                                                    var frmJudgeObjectA = $("#frmJudgeObject${item.id}") ;
-                                                    programme.changeEntrustmentPurpose(frmJudgeObjectA.find("select[name='entrustmentPurpose']"),'${item.entrustAimType}') ;
+                                                    var frmJudgeObjectA = $("#frmJudgeObject${item.id}");
+                                                    programme.changeEntrustmentPurpose(frmJudgeObjectA.find("select[name='entrustmentPurpose']"), '${item.entrustAimType}');
                                                 });
                                             </script>
                                         </c:if>
 
-                                        <select name="entrustmentPurpose" class="form-control" required="required" onchange="programme.changeEntrustmentPurpose(this,null);">
+                                        <select name="entrustmentPurpose" class="form-control" required="required"
+                                                onchange="programme.changeEntrustmentPurpose(this,null);">
                                             <option value="">-请选择-</option>
                                             <c:forEach items="${entrustmentPurposes}" var="entrustmentPurpose">
                                                 <c:choose>
@@ -140,7 +149,8 @@
                                 <div class="x-valid">
                                     <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">委托目的类别</label>
                                     <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                        <select name="entrustAimType" class="form-control search-select select2" onchange="programme.changeEntrustAimType(this);">
+                                        <select name="entrustAimType" class="form-control"
+                                                onchange="programme.changeEntrustAimType(this);">
                                         </select>
                                     </div>
                                 </div>
@@ -307,7 +317,6 @@
                     </div>
                 </div>
             </c:forEach>
-
 
 
             <div class="x_panel">
@@ -513,7 +522,7 @@
             </ul>
             <h3>
                 <input type="checkbox">
-                <label>{mergeNumber}</label>
+                <label style="word-break: break-all">{mergeNumber}</label>
                 <small>
                     <a href="javascript://" onclick="programme.splitJudge(this);"
                        class="btn btn-xs btn-success judge-split tooltips">拆分</a>
@@ -671,7 +680,6 @@
 </script>
 
 
-
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
 <script src="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/jquery.easyui.min.js?v=${assessVersion}"></script>
@@ -711,27 +719,27 @@
     };
 
     //委托目的 的类别
-    programme.changeEntrustmentPurpose = function (_this,entrustAimType) {
-        var group = $(_this).closest(".form-group") ;
-        var entrustmentPurpose = group.find("select[name='entrustmentPurpose']").val() ;
-        if (!entrustmentPurpose){
+    programme.changeEntrustmentPurpose = function (_this, entrustAimType) {
+        var group = $(_this).closest(".form-group");
+        var entrustmentPurpose = group.find("select[name='entrustmentPurpose']").val();
+        if (!entrustmentPurpose) {
             return false;
         }
-        AssessCommon.loadDataDicByPid(entrustmentPurpose,entrustAimType,function (html,data) {
+        AssessCommon.loadDataDicByPid(entrustmentPurpose, entrustAimType, function (html, data) {
             group.find("select[name='entrustAimType']").empty().html(html).trigger('change');
         });
     };
 
     //委托目的 的类别  带出备注
     programme.changeEntrustAimType = function (_this) {
-        var group = $(_this).closest(".form-group") ;
-        var entrustAimType = group.find("select[name='entrustAimType']").val() ;
-        if (!entrustAimType){
+        var group = $(_this).closest(".form-group");
+        var entrustAimType = group.find("select[name='entrustAimType']").val();
+        if (!entrustAimType) {
             return false;
         }
-        AssessCommon.getDataDicInfo(entrustAimType,function (data) {
-            group.find("input[name='remarkEntrustPurpose']").val(data.remark) ;
-        }) ;
+        AssessCommon.getDataDicInfo(entrustAimType, function (data) {
+            group.find("input[name='remarkEntrustPurpose']").val(data.remark);
+        });
     };
 
     //设置价值内涵的值
@@ -1010,7 +1018,7 @@
         var judgeId = $panel.find('[data-name="id"]').val();
         var html = programme.config.judgeItemHtml;
         if (programme.config.judgeAdjustPopIndex > 0) {
-            $("#judge-split-ul").prepend(programme.config.judgeAdjustItemHtml.replace(/{type}/,'add').replace(/{name}/g, mergeNumber + "号估价对象").replace(/{judgeId}/g, judgeId));
+            $("#judge-split-ul").prepend(programme.config.judgeAdjustItemHtml.replace(/{type}/, 'add').replace(/{name}/g, mergeNumber + "号估价对象").replace(/{judgeId}/g, judgeId));
             var addIds = $("#judge-split-ul").attr('data-add-ids');
             $("#judge-split-ul").attr('data-add-ids', (addIds + "," + judgeId).replace(/^,/, ""));
             return;
@@ -1142,7 +1150,7 @@
                         success: function () {
                             var html = programme.config.judgeAdjustItemHtml;
                             $.each(result.rows, function (i, item) {
-                                $("#judge-split-ul").prepend(html.replace(/{type}/,'remove').replace(/{name}/g, item.name).replace(/{judgeId}/g, item.id));
+                                $("#judge-split-ul").prepend(html.replace(/{type}/, 'remove').replace(/{name}/g, item.name).replace(/{judgeId}/g, item.id));
                             })
                         }
                     });
@@ -1160,11 +1168,11 @@
     programme.splitItemRemove = function (_this) {
         var li = $(_this).closest('li');
         var id = li.attr('data-judgeid');
-        if(li.attr('data-type')=='remove'){
+        if (li.attr('data-type') == 'remove') {
             var removeIds = $("#judge-split-ul").attr('data-remove-ids');
             $("#judge-split-ul").attr('data-remove-ids', (removeIds + "," + id).replace(/^,/, ""));
         }
-        if(li.attr('data-type')=='add'){
+        if (li.attr('data-type') == 'add') {
             var addIds = $("#judge-split-ul").attr('data-add-ids');
             $("#judge-split-ul").attr('data-add-ids', (addIds + "," + id).replace(/^,/, ""));
         }
@@ -1828,7 +1836,7 @@
         if ("${processInsId}" != "0") {
             submitEditToServer(JSON.stringify(data));
         } else {
-            submitToServer(JSON.stringify(data),mustUseBox);
+            submitToServer(JSON.stringify(data), mustUseBox);
         }
     }
 </script>

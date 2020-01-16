@@ -79,7 +79,7 @@
         <if test="queryUseUnit!=null">
             AND E.u_use_unit = #{queryUseUnit}
         </if>
-        <if test="queryUseUnitName!=null">
+        <if test="queryUseUnitName!=null and queryUseUnitName!=''">
             AND E.u_use_unit_name LIKE CONCAT(CONCAT('%', #{queryUseUnitName}), '%')
         </if>
         <if test="queryEstateName!=null and queryEstateName!=''">

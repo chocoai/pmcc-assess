@@ -4,20 +4,17 @@ import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.entity.MdMarketCompare;
 import com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareItem;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
 import com.copower.pmcc.assess.dto.input.method.MarketCompareResultDto;
 import com.copower.pmcc.assess.dto.output.basic.BasicApplyVo;
-import com.copower.pmcc.assess.dto.output.method.MdCompareCaseVo;
 import com.copower.pmcc.assess.dto.output.method.MdCompareInitParamVo;
 import com.copower.pmcc.assess.service.method.MdMarketCompareService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
-import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -54,8 +51,6 @@ public class MarketCompareController {
             marketCompare = mdMarketCompareService.initExplore(judgeObject, isLand);
         }
         String setUseFieldType = isLand ? BaseConstant.ASSESS_DATA_SET_USE_FIELD_LAND : BaseConstant.ASSESS_DATA_SET_USE_FIELD_HOUSE;
-        List<ProjectPlanDetails> caseAll = mdMarketCompareService.getCaseAll(judgeObject.getProjectId());
-        modelAndView.addObject("casesAllJSON", JSON.toJSONString(caseAll));
         MdMarketCompareItem evaluationObject = mdMarketCompareService.getEvaluationByMcId(marketCompare.getId());
         List<BasicApplyVo> standardJudgeList = mdMarketCompareService.getStandardJudgeList(judgeObject);
         modelAndView.addObject("standardJudgesJSON", JSON.toJSONString(CollectionUtils.isEmpty(standardJudgeList) ? Lists.newArrayList() : standardJudgeList));
@@ -89,23 +84,17 @@ public class MarketCompareController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getCasesAll", name = "获取所有案例", method = RequestMethod.POST)
-    public HttpResult getCasesAll(String planDetailsIds) {
-        try {
-            if (StringUtils.isBlank(planDetailsIds))
-                return null;
-            List<MdCompareCaseVo> caseAll = mdMarketCompareService.getCasesAll(FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(planDetailsIds)));
-            return HttpResult.newCorrectResult(caseAll);
-        } catch (Exception e) {
-            return HttpResult.newErrorResult("保存失败");
-        }
+    @RequestMapping(value = "/getCasesAll", name = "获取所有案例", method = RequestMethod.GET)
+    public BootstrapTableVo getCasesAll(Integer projectId, String projectPhaseName) {
+        BootstrapTableVo casesAll = mdMarketCompareService.getCasesAll(projectId, projectPhaseName);
+        return casesAll;
     }
 
     @ResponseBody
     @RequestMapping(value = "/selectCase", name = "选择案例", method = RequestMethod.POST)
-    public HttpResult selectCase(Integer mcId, String areaDescJson, Integer judgeObjectId, Boolean isLand) {
+    public HttpResult selectCase(Integer mcId, String planDetailsIdList, Integer judgeObjectId, Boolean isLand) {
         try {
-            MdCompareInitParamVo mdCompareInitParamVo = mdMarketCompareService.selectCase(mcId, areaDescJson, judgeObjectId, isLand);
+            MdCompareInitParamVo mdCompareInitParamVo = mdMarketCompareService.selectCase(mcId, planDetailsIdList, judgeObjectId, isLand);
             return HttpResult.newCorrectResult(mdCompareInitParamVo);
         } catch (Exception e) {
             return HttpResult.newErrorResult("保存失败");

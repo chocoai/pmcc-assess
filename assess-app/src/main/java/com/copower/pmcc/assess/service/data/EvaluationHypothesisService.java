@@ -10,6 +10,7 @@ import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInventory
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.data.DataEvaluationHypothesisVo;
 import com.copower.pmcc.assess.dto.output.project.scheme.SchemeJudgeObjectVo;
+import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
@@ -18,7 +19,10 @@ import com.copower.pmcc.assess.service.basic.BasicHouseService;
 import com.copower.pmcc.assess.service.project.generate.GenerateCommonMethod;
 import com.copower.pmcc.assess.service.project.generate.GenerateReportInfoService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
-import com.copower.pmcc.assess.service.project.survey.*;
+import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryContentService;
+import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryService;
+import com.copower.pmcc.assess.service.project.survey.SurveyAssetRightGroupService;
+import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -41,8 +45,6 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * 3.1.2.12	评估假设
@@ -84,6 +86,8 @@ public class EvaluationHypothesisService {
     private GenerateReportInfoService generateReportGenerationService;
     @Autowired
     private SurveyAssetRightGroupService surveyAssetRightGroupService;
+    @Autowired
+    private PublicService publicService;
 
 
     /**
@@ -458,7 +462,7 @@ public class EvaluationHypothesisService {
                 content.append(pledgeContent).append(otherContent);
                 if (StringUtils.isNotBlank(content)) {
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.HYPOTHESIS_DEPART_FROM_FACT_PLEDGE);
-                    stringBuilder.append(generateCommonMethod.getIndentHtml(tagfilter(dataReportTemplateByField.getTemplate().replace("#{内容}", content))));
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(publicService.tagfilter(dataReportTemplateByField.getTemplate().replace("#{内容}", content))));
                 }
 
             }
@@ -579,30 +583,30 @@ public class EvaluationHypothesisService {
                 //他权
                 if (StringUtils.isNotBlank(content)) {
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.ALIENI_IURIS);
-                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s%s", "（" + (++order) + "）", tagfilter(dataReportTemplateByField.getTemplate().replace("#{一般假设他权与转让}", content)))));
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s%s", "（" + (++order) + "）", publicService.tagfilter(dataReportTemplateByField.getTemplate().replace("#{一般假设他权与转让}", content)))));
                 }
                 //安全质量
                 DataReportTemplateItem safetyQuality = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.SAFETY_QUALITY);
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s%s", "（" + (++order) + "）", tagfilter(safetyQuality.getTemplate()))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s%s", "（" + (++order) + "）", publicService.tagfilter(safetyQuality.getTemplate()))));
 
                 //建筑
                 if (StringUtils.isNotBlank(noBuildingArea)) {
                     String number = getSubstitutionPrincipleName(noBuildingArea.toString());
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.BUILDING_AREA);
-                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s%s", "（" + (++order) + "）", tagfilter(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", number)))));
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s%s", "（" + (++order) + "）", publicService.tagfilter(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", number)))));
                 }
                 if (StringUtils.isNotBlank(noBuildingConstruction)) {
                     String number = getSubstitutionPrincipleName(noBuildingConstruction.toString());
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.BUILDING_CONSTRUCTION);
-                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s%s", "（" + (++order) + "）", tagfilter(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", number)))));
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s%s", "（" + (++order) + "）", publicService.tagfilter(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", number)))));
                 }
                 //合理价格
                 DataReportTemplateItem reasonablePrice = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.REASONABLE_PRICE);
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s%s", "（" + (++order) + "）", tagfilter(reasonablePrice.getTemplate()))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s%s", "（" + (++order) + "）", publicService.tagfilter(reasonablePrice.getTemplate()))));
 
                 //公共设施
                 DataReportTemplateItem communalFacilities = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.COMMUNAL_FACILITIES);
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s%s", "（" + (++order) + "）", tagfilter(communalFacilities.getTemplate()))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s%s", "（" + (++order) + "）", publicService.tagfilter(communalFacilities.getTemplate()))));
             }
 
             //评估报告的使用限制
@@ -622,33 +626,33 @@ public class EvaluationHypothesisService {
 
                 //估价报告用途
                 DataReportTemplateItem purpose = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.HYPOTHESIS_USE_RESTRICTION_PURPOSE);
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s%s", "（" + (++order3) + "）", tagfilter(purpose.getTemplate()))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s%s", "（" + (++order3) + "）", publicService.tagfilter(purpose.getTemplate()))));
 
                 //相差天数
                 long daysBetween = (investigationsEndDate.getTime() - valuationDate.getTime()) / (60 * 60 * 24 * 1000);
                 //评估基准日与报告有效期
                 if (!pledgeId.equals(projectInfo.getEntrustPurpose())) {
                     DataReportTemplateItem pledge = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.HYPOTHESIS_USE_RESTRICTION_PLEDGE);
-                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s%s", "（" + (++order3) + "）", tagfilter(pledge.getName()))));
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s%s", "（" + (++order3) + "）", publicService.tagfilter(pledge.getName()))));
                     stringBuilder.append(generateCommonMethod.getIndentHtml(pledge.getTemplate()));
                 } else if (pledgeId.equals(projectInfo.getEntrustPurpose()) && Math.abs(daysBetween) > 180) {
                     DataReportTemplateItem pledge = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.HYPOTHESIS_USE_RESTRICTION_PLEDGE);
-                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s%s", "（" + (++order3) + "）", tagfilter(pledge.getName()))));
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s%s", "（" + (++order3) + "）", publicService.tagfilter(pledge.getName()))));
                     stringBuilder.append(generateCommonMethod.getIndentHtml(pledge.getTemplate()));
                 } else if (pledgeId.equals(projectInfo.getEntrustPurpose()) && Math.abs(daysBetween) <= 180) {
                     DataReportTemplateItem pledge = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.HYPOTHESIS_USE_RESTRICTION_NOT_PLEDGE);
-                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s%s", "（" + (++order3) + "）", tagfilter(pledge.getName()))));
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s%s", "（" + (++order3) + "）", publicService.tagfilter(pledge.getName()))));
                     stringBuilder.append(generateCommonMethod.getIndentHtml(pledge.getTemplate()));
                 }
                 //成交价格与报告内容
                 DataReportTemplateItem content = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.HYPOTHESIS_USE_RESTRICTION_CONTENT);
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s%s", "（" + (++order3) + "）", tagfilter(content.getTemplate()))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s%s", "（" + (++order3) + "）", publicService.tagfilter(content.getTemplate()))));
                 //解释
                 DataReportTemplateItem explain = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.HYPOTHESIS_USE_RESTRICTION_EXPLAIN);
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s%s", "（" + (++order3) + "）", tagfilter(explain.getTemplate()))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s%s", "（" + (++order3) + "）", publicService.tagfilter(explain.getTemplate()))));
                 //其他
                 DataReportTemplateItem other = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.HYPOTHESIS_USE_RESTRICTION_OTHER);
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s%s", "（" + (++order3) + "）", tagfilter(other.getTemplate()))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s%s", "（" + (++order3) + "）", publicService.tagfilter(other.getTemplate()))));
             }
 
 
@@ -696,37 +700,5 @@ public class EvaluationHypothesisService {
         return stringBuilder;
     }
 
-    public static String tagfilter(String str) {
-        final String regxpForHtml = "<([^>]*)>"; // 过滤所有以<开头以>结尾的标签
-        Pattern pattern = Pattern.compile(regxpForHtml);
-        Matcher matcher = pattern.matcher(str);
-        StringBuffer sb = new StringBuffer();
-        boolean result1 = matcher.find();
-        while (result1) {
-            matcher.appendReplacement(sb, "");
-            result1 = matcher.find();
-        }
-        matcher.appendTail(sb);
-        return sb.toString().trim();
-    }
-
-
-    public void splicingContent(StringBuilder num, StringBuilder registrationContent, StringBuilder actualContent,
-                                StringBuilder remark, SchemeJudgeObject judgeObject, SurveyAssetInventoryContent item) {
-        num.append(judgeObject.getNumber()).append(",");
-        registrationContent.append(item.getRegistration()).append("、");
-        actualContent.append(item.getActual()).append("、");
-        //相关附件
-        StringBuilder fileNames = new StringBuilder();
-        List<SysAttachmentDto> sysAttachmentDtos = this.getSysAttachmentDtos(item.getId(), FormatUtils.entityNameConvertToTableName(SurveyAssetInventoryContent.class));
-        if (CollectionUtils.isNotEmpty(sysAttachmentDtos)) {
-            for (SysAttachmentDto file : sysAttachmentDtos) {
-                fileNames.append(file.getFileName()).append("、");
-            }
-            remark.append(fileNames.deleteCharAt(fileNames.length() - 1));
-        }
-        if (StringUtils.isNotBlank(item.getCredential())) {
-            remark.append("文件说明").append(item.getCredential()).append(";");
-        }
-    }
+    
 }

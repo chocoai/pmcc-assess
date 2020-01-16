@@ -7,7 +7,7 @@
 <script type="text/html" id="taskLiquidationAnalysisDiv">
     <div class="x_panel">
         <div class="x_title">
-            <h3>变现分析税费（0{index}）
+            <h3>变现分析税费（{index}）
                 <small>
                     <a href="javascript://;" class="btn btn-xs btn-warning"
                        onclick="saveAnalysisGroup(true,'taskLiquidationAnalysisFrm_number');">保存</a>

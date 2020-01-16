@@ -198,7 +198,7 @@ public class DataReportAnalysisService {
         if (baseDataDic == null) {
             return "";
         }
-        SchemeAreaGroup schemeAreaGroup = schemeAreaGroupService.get(areaGroupId);
+        SchemeAreaGroup schemeAreaGroup = schemeAreaGroupService.getSchemeAreaGroup(areaGroupId);
         SchemeLiquidationAnalysis data = schemeLiquidationAnalysisService.getDataByAreaId(areaGroupId);
         String liquidRatios = "";//变现比率
         String liquidTime = "";//变现时间

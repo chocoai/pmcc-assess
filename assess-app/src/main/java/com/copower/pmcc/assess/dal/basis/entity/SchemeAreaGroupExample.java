@@ -755,6 +755,66 @@ public class SchemeAreaGroupExample {
             return (Criteria) this;
         }
 
+        public Criteria andEntrustAimTypeIsNull() {
+            addCriterion("entrust_aim_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustAimTypeIsNotNull() {
+            addCriterion("entrust_aim_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustAimTypeEqualTo(Integer value) {
+            addCriterion("entrust_aim_type =", value, "entrustAimType");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustAimTypeNotEqualTo(Integer value) {
+            addCriterion("entrust_aim_type <>", value, "entrustAimType");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustAimTypeGreaterThan(Integer value) {
+            addCriterion("entrust_aim_type >", value, "entrustAimType");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustAimTypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("entrust_aim_type >=", value, "entrustAimType");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustAimTypeLessThan(Integer value) {
+            addCriterion("entrust_aim_type <", value, "entrustAimType");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustAimTypeLessThanOrEqualTo(Integer value) {
+            addCriterion("entrust_aim_type <=", value, "entrustAimType");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustAimTypeIn(List<Integer> values) {
+            addCriterion("entrust_aim_type in", values, "entrustAimType");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustAimTypeNotIn(List<Integer> values) {
+            addCriterion("entrust_aim_type not in", values, "entrustAimType");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustAimTypeBetween(Integer value1, Integer value2) {
+            addCriterion("entrust_aim_type between", value1, value2, "entrustAimType");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustAimTypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("entrust_aim_type not between", value1, value2, "entrustAimType");
+            return (Criteria) this;
+        }
+
         public Criteria andRemarkEntrustPurposeIsNull() {
             addCriterion("remark_entrust_purpose is null");
             return (Criteria) this;
@@ -1415,6 +1475,66 @@ public class SchemeAreaGroupExample {
             return (Criteria) this;
         }
 
+        public Criteria andBisSplitIsNull() {
+            addCriterion("bis_split is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisSplitIsNotNull() {
+            addCriterion("bis_split is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisSplitEqualTo(Boolean value) {
+            addCriterion("bis_split =", value, "bisSplit");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisSplitNotEqualTo(Boolean value) {
+            addCriterion("bis_split <>", value, "bisSplit");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisSplitGreaterThan(Boolean value) {
+            addCriterion("bis_split >", value, "bisSplit");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisSplitGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_split >=", value, "bisSplit");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisSplitLessThan(Boolean value) {
+            addCriterion("bis_split <", value, "bisSplit");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisSplitLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_split <=", value, "bisSplit");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisSplitIn(List<Boolean> values) {
+            addCriterion("bis_split in", values, "bisSplit");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisSplitNotIn(List<Boolean> values) {
+            addCriterion("bis_split not in", values, "bisSplit");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisSplitBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_split between", value1, value2, "bisSplit");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisSplitNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_split not between", value1, value2, "bisSplit");
+            return (Criteria) this;
+        }
+
         public Criteria andBisMergeIsNull() {
             addCriterion("bis_merge is null");
             return (Criteria) this;
@@ -1472,6 +1592,66 @@ public class SchemeAreaGroupExample {
 
         public Criteria andBisMergeNotBetween(Boolean value1, Boolean value2) {
             addCriterion("bis_merge not between", value1, value2, "bisMerge");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingIsNull() {
+            addCriterion("sorting is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingIsNotNull() {
+            addCriterion("sorting is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingEqualTo(Integer value) {
+            addCriterion("sorting =", value, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingNotEqualTo(Integer value) {
+            addCriterion("sorting <>", value, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingGreaterThan(Integer value) {
+            addCriterion("sorting >", value, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingGreaterThanOrEqualTo(Integer value) {
+            addCriterion("sorting >=", value, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingLessThan(Integer value) {
+            addCriterion("sorting <", value, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingLessThanOrEqualTo(Integer value) {
+            addCriterion("sorting <=", value, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingIn(List<Integer> values) {
+            addCriterion("sorting in", values, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingNotIn(List<Integer> values) {
+            addCriterion("sorting not in", values, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingBetween(Integer value1, Integer value2) {
+            addCriterion("sorting between", value1, value2, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingNotBetween(Integer value1, Integer value2) {
+            addCriterion("sorting not between", value1, value2, "sorting");
             return (Criteria) this;
         }
 
@@ -1662,66 +1842,6 @@ public class SchemeAreaGroupExample {
 
         public Criteria andGmtModifiedNotBetween(Date value1, Date value2) {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
-            return (Criteria) this;
-        }
-
-        public Criteria andEntrustAimTypeIsNull() {
-            addCriterion("entrust_aim_type is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andEntrustAimTypeIsNotNull() {
-            addCriterion("entrust_aim_type is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andEntrustAimTypeEqualTo(Integer value) {
-            addCriterion("entrust_aim_type =", value, "entrustAimType");
-            return (Criteria) this;
-        }
-
-        public Criteria andEntrustAimTypeNotEqualTo(Integer value) {
-            addCriterion("entrust_aim_type <>", value, "entrustAimType");
-            return (Criteria) this;
-        }
-
-        public Criteria andEntrustAimTypeGreaterThan(Integer value) {
-            addCriterion("entrust_aim_type >", value, "entrustAimType");
-            return (Criteria) this;
-        }
-
-        public Criteria andEntrustAimTypeGreaterThanOrEqualTo(Integer value) {
-            addCriterion("entrust_aim_type >=", value, "entrustAimType");
-            return (Criteria) this;
-        }
-
-        public Criteria andEntrustAimTypeLessThan(Integer value) {
-            addCriterion("entrust_aim_type <", value, "entrustAimType");
-            return (Criteria) this;
-        }
-
-        public Criteria andEntrustAimTypeLessThanOrEqualTo(Integer value) {
-            addCriterion("entrust_aim_type <=", value, "entrustAimType");
-            return (Criteria) this;
-        }
-
-        public Criteria andEntrustAimTypeIn(List<Integer> values) {
-            addCriterion("entrust_aim_type in", values, "entrustAimType");
-            return (Criteria) this;
-        }
-
-        public Criteria andEntrustAimTypeNotIn(List<Integer> values) {
-            addCriterion("entrust_aim_type not in", values, "entrustAimType");
-            return (Criteria) this;
-        }
-
-        public Criteria andEntrustAimTypeBetween(Integer value1, Integer value2) {
-            addCriterion("entrust_aim_type between", value1, value2, "entrustAimType");
-            return (Criteria) this;
-        }
-
-        public Criteria andEntrustAimTypeNotBetween(Integer value1, Integer value2) {
-            addCriterion("entrust_aim_type not between", value1, value2, "entrustAimType");
             return (Criteria) this;
         }
     }

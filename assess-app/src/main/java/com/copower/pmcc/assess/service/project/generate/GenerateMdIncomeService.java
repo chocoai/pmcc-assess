@@ -1556,7 +1556,7 @@ public class GenerateMdIncomeService implements Serializable {
 
     private SchemeAreaGroup getSchemeAreaGroup() {
         if (this.schemeAreaGroup == null) {
-            this.schemeAreaGroup = schemeAreaGroupService.get(areaId);
+            this.schemeAreaGroup = schemeAreaGroupService.getSchemeAreaGroup(areaId);
         }
         return this.schemeAreaGroup;
     }

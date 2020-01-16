@@ -119,7 +119,7 @@ public class GenerateReportInfoService {
         if (generateReportGeneration == null) return null;
         GenerateReportInfoVo vo = new GenerateReportInfoVo();
         BeanUtils.copyProperties(generateReportGeneration, vo);
-        SchemeAreaGroup schemeAreaGroup = schemeAreaGroupService.get(generateReportGeneration.getAreaGroupId());
+        SchemeAreaGroup schemeAreaGroup = schemeAreaGroupService.getSchemeAreaGroup(generateReportGeneration.getAreaGroupId());
         if (schemeAreaGroup != null)
             vo.setAreaGroupName(schemeAreaGroup.getAreaName());
         //取资质名称

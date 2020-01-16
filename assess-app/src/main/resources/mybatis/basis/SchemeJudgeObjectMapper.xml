@@ -8,6 +8,7 @@
     <result column="area_group_id" property="areaGroupId" jdbcType="INTEGER" />
     <result column="original_area_group_id" property="originalAreaGroupId" jdbcType="INTEGER" />
     <result column="declare_record_id" property="declareRecordId" jdbcType="INTEGER" />
+    <result column="building_status" property="buildingStatus" jdbcType="INTEGER" />
     <result column="basic_apply_id" property="basicApplyId" jdbcType="INTEGER" />
     <result column="number" property="number" jdbcType="VARCHAR" />
     <result column="original_number" property="originalNumber" jdbcType="VARCHAR" />
@@ -106,13 +107,14 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, pid, project_id, area_group_id, original_area_group_id, declare_record_id, basic_apply_id, 
-    number, original_number, split_number, name, cert_name, ownership, seat, cert_use, 
-    practical_use, land_cert_use, land_practical_use, land_use_end_date, land_legal_year, 
-    land_remaining_year, set_use, best_use, floor_area, evaluation_area, price, original_price, 
-    set_plot_ratio, plan_plot_ratio, actual_plot_ratio, standard_judge_id, standard_judge_explain, 
-    judge_function, not_applicable_reason, merge_explain, split_explain, bis_split, bis_merge, 
-    bis_enable, bis_set_function, sorting, creator, gmt_created, gmt_modified
+    id, pid, project_id, area_group_id, original_area_group_id, declare_record_id, building_status, 
+    basic_apply_id, number, original_number, split_number, name, cert_name, ownership, 
+    seat, cert_use, practical_use, land_cert_use, land_practical_use, land_use_end_date, 
+    land_legal_year, land_remaining_year, set_use, best_use, floor_area, evaluation_area, 
+    price, original_price, set_plot_ratio, plan_plot_ratio, actual_plot_ratio, standard_judge_id, 
+    standard_judge_explain, judge_function, not_applicable_reason, merge_explain, split_explain, 
+    bis_split, bis_merge, bis_enable, bis_set_function, sorting, creator, gmt_created, 
+    gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObjectExample" >
     select
@@ -149,35 +151,37 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_scheme_judge_object (pid, project_id, area_group_id, 
-      original_area_group_id, declare_record_id, basic_apply_id, 
-      number, original_number, split_number, 
-      name, cert_name, ownership, 
-      seat, cert_use, practical_use, 
-      land_cert_use, land_practical_use, land_use_end_date, 
-      land_legal_year, land_remaining_year, set_use, 
-      best_use, floor_area, evaluation_area, 
-      price, original_price, set_plot_ratio, 
-      plan_plot_ratio, actual_plot_ratio, standard_judge_id, 
-      standard_judge_explain, judge_function, not_applicable_reason, 
-      merge_explain, split_explain, bis_split, 
-      bis_merge, bis_enable, bis_set_function, 
-      sorting, creator, gmt_created, 
-      gmt_modified)
+      original_area_group_id, declare_record_id, building_status, 
+      basic_apply_id, number, original_number, 
+      split_number, name, cert_name, 
+      ownership, seat, cert_use, 
+      practical_use, land_cert_use, land_practical_use, 
+      land_use_end_date, land_legal_year, land_remaining_year, 
+      set_use, best_use, floor_area, 
+      evaluation_area, price, original_price, 
+      set_plot_ratio, plan_plot_ratio, actual_plot_ratio, 
+      standard_judge_id, standard_judge_explain, 
+      judge_function, not_applicable_reason, merge_explain, 
+      split_explain, bis_split, bis_merge, 
+      bis_enable, bis_set_function, sorting, 
+      creator, gmt_created, gmt_modified
+      )
     values (#{pid,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, #{areaGroupId,jdbcType=INTEGER}, 
-      #{originalAreaGroupId,jdbcType=INTEGER}, #{declareRecordId,jdbcType=INTEGER}, #{basicApplyId,jdbcType=INTEGER}, 
-      #{number,jdbcType=VARCHAR}, #{originalNumber,jdbcType=VARCHAR}, #{splitNumber,jdbcType=INTEGER}, 
-      #{name,jdbcType=VARCHAR}, #{certName,jdbcType=VARCHAR}, #{ownership,jdbcType=VARCHAR}, 
-      #{seat,jdbcType=VARCHAR}, #{certUse,jdbcType=VARCHAR}, #{practicalUse,jdbcType=VARCHAR}, 
-      #{landCertUse,jdbcType=VARCHAR}, #{landPracticalUse,jdbcType=VARCHAR}, #{landUseEndDate,jdbcType=TIMESTAMP}, 
-      #{landLegalYear,jdbcType=DECIMAL}, #{landRemainingYear,jdbcType=DECIMAL}, #{setUse,jdbcType=INTEGER}, 
-      #{bestUse,jdbcType=INTEGER}, #{floorArea,jdbcType=DECIMAL}, #{evaluationArea,jdbcType=DECIMAL}, 
-      #{price,jdbcType=DECIMAL}, #{originalPrice,jdbcType=DECIMAL}, #{setPlotRatio,jdbcType=DECIMAL}, 
-      #{planPlotRatio,jdbcType=DECIMAL}, #{actualPlotRatio,jdbcType=DECIMAL}, #{standardJudgeId,jdbcType=INTEGER}, 
-      #{standardJudgeExplain,jdbcType=VARCHAR}, #{judgeFunction,jdbcType=VARCHAR}, #{notApplicableReason,jdbcType=VARCHAR}, 
-      #{mergeExplain,jdbcType=VARCHAR}, #{splitExplain,jdbcType=VARCHAR}, #{bisSplit,jdbcType=BIT}, 
-      #{bisMerge,jdbcType=BIT}, #{bisEnable,jdbcType=BIT}, #{bisSetFunction,jdbcType=BIT}, 
-      #{sorting,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{originalAreaGroupId,jdbcType=INTEGER}, #{declareRecordId,jdbcType=INTEGER}, #{buildingStatus,jdbcType=INTEGER}, 
+      #{basicApplyId,jdbcType=INTEGER}, #{number,jdbcType=VARCHAR}, #{originalNumber,jdbcType=VARCHAR}, 
+      #{splitNumber,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{certName,jdbcType=VARCHAR}, 
+      #{ownership,jdbcType=VARCHAR}, #{seat,jdbcType=VARCHAR}, #{certUse,jdbcType=VARCHAR}, 
+      #{practicalUse,jdbcType=VARCHAR}, #{landCertUse,jdbcType=VARCHAR}, #{landPracticalUse,jdbcType=VARCHAR}, 
+      #{landUseEndDate,jdbcType=TIMESTAMP}, #{landLegalYear,jdbcType=DECIMAL}, #{landRemainingYear,jdbcType=DECIMAL}, 
+      #{setUse,jdbcType=INTEGER}, #{bestUse,jdbcType=INTEGER}, #{floorArea,jdbcType=DECIMAL}, 
+      #{evaluationArea,jdbcType=DECIMAL}, #{price,jdbcType=DECIMAL}, #{originalPrice,jdbcType=DECIMAL}, 
+      #{setPlotRatio,jdbcType=DECIMAL}, #{planPlotRatio,jdbcType=DECIMAL}, #{actualPlotRatio,jdbcType=DECIMAL}, 
+      #{standardJudgeId,jdbcType=INTEGER}, #{standardJudgeExplain,jdbcType=VARCHAR}, 
+      #{judgeFunction,jdbcType=VARCHAR}, #{notApplicableReason,jdbcType=VARCHAR}, #{mergeExplain,jdbcType=VARCHAR}, 
+      #{splitExplain,jdbcType=VARCHAR}, #{bisSplit,jdbcType=BIT}, #{bisMerge,jdbcType=BIT}, 
+      #{bisEnable,jdbcType=BIT}, #{bisSetFunction,jdbcType=BIT}, #{sorting,jdbcType=INTEGER}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -199,6 +203,9 @@
       </if>
       <if test="declareRecordId != null" >
         declare_record_id,
+      </if>
+      <if test="buildingStatus != null" >
+        building_status,
       </if>
       <if test="basicApplyId != null" >
         basic_apply_id,
@@ -330,6 +337,9 @@
       </if>
       <if test="declareRecordId != null" >
         #{declareRecordId,jdbcType=INTEGER},
+      </if>
+      <if test="buildingStatus != null" >
+        #{buildingStatus,jdbcType=INTEGER},
       </if>
       <if test="basicApplyId != null" >
         #{basicApplyId,jdbcType=INTEGER},
@@ -474,6 +484,9 @@
       <if test="record.declareRecordId != null" >
         declare_record_id = #{record.declareRecordId,jdbcType=INTEGER},
       </if>
+      <if test="record.buildingStatus != null" >
+        building_status = #{record.buildingStatus,jdbcType=INTEGER},
+      </if>
       <if test="record.basicApplyId != null" >
         basic_apply_id = #{record.basicApplyId,jdbcType=INTEGER},
       </if>
@@ -601,6 +614,7 @@
       area_group_id = #{record.areaGroupId,jdbcType=INTEGER},
       original_area_group_id = #{record.originalAreaGroupId,jdbcType=INTEGER},
       declare_record_id = #{record.declareRecordId,jdbcType=INTEGER},
+      building_status = #{record.buildingStatus,jdbcType=INTEGER},
       basic_apply_id = #{record.basicApplyId,jdbcType=INTEGER},
       number = #{record.number,jdbcType=VARCHAR},
       original_number = #{record.originalNumber,jdbcType=VARCHAR},
@@ -660,6 +674,9 @@
       </if>
       <if test="declareRecordId != null" >
         declare_record_id = #{declareRecordId,jdbcType=INTEGER},
+      </if>
+      <if test="buildingStatus != null" >
+        building_status = #{buildingStatus,jdbcType=INTEGER},
       </if>
       <if test="basicApplyId != null" >
         basic_apply_id = #{basicApplyId,jdbcType=INTEGER},
@@ -785,6 +802,7 @@
       area_group_id = #{areaGroupId,jdbcType=INTEGER},
       original_area_group_id = #{originalAreaGroupId,jdbcType=INTEGER},
       declare_record_id = #{declareRecordId,jdbcType=INTEGER},
+      building_status = #{buildingStatus,jdbcType=INTEGER},
       basic_apply_id = #{basicApplyId,jdbcType=INTEGER},
       number = #{number,jdbcType=VARCHAR},
       original_number = #{originalNumber,jdbcType=VARCHAR},

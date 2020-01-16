@@ -245,16 +245,16 @@ public class GenerateLandEntityService {
     public String fourTheFor(BasicEstateLandStateVo landStateVo) throws Exception {
         LinkedHashSet<String> stringSet = Sets.newLinkedHashSet();
         if (StringUtils.isNotBlank(landStateVo.getEastTo())) {
-            stringSet.add(String.format("%s%s", "东至", landStateVo.getEastTo()));
+            stringSet.add(String.format("%s%s", landStateVo.getEastToName(), landStateVo.getEastTo()));
         }
         if (StringUtils.isNotBlank(landStateVo.getSouthTo())) {
-            stringSet.add(String.format("%s%s", "南至", landStateVo.getSouthTo()));
+            stringSet.add(String.format("%s%s", landStateVo.getSouthToName(), landStateVo.getSouthTo()));
         }
         if (StringUtils.isNotBlank(landStateVo.getWestTo())) {
-            stringSet.add(String.format("%s%s", "西至", landStateVo.getWestTo()));
+            stringSet.add(String.format("%s%s", landStateVo.getWestToName(), landStateVo.getWestTo()));
         }
         if (StringUtils.isNotBlank(landStateVo.getNorthTo())) {
-            stringSet.add(String.format("%s%s", "北至", landStateVo.getNorthTo()));
+            stringSet.add(String.format("%s%s", landStateVo.getNorthToName(), landStateVo.getNorthTo()));
         }
         String v = StringUtils.join(stringSet.stream().filter(s -> StringUtils.isNotBlank(s)).collect(Collectors.toList()), "、");
         return StringUtils.isNotBlank(v) ? v : error;

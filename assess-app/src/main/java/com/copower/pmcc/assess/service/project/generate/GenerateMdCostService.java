@@ -810,7 +810,7 @@ public class GenerateMdCostService {
     private SchemeAreaGroup getSchemeAreaGroup() {
         if (this.schemeAreaGroup == null) {
             synchronized (this) {
-                this.schemeAreaGroup = schemeAreaGroupService.get(areaId);
+                this.schemeAreaGroup = schemeAreaGroupService.getSchemeAreaGroup(areaId);
             }
         }
         return this.schemeAreaGroup;

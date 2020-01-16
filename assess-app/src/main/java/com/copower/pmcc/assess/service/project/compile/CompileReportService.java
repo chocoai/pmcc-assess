@@ -10,9 +10,9 @@ import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataReportAnalysisBackgroundService;
-import com.copower.pmcc.assess.service.data.DataReportAnalysisService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.generate.GenerateCommonMethod;
+import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.CommonService;
@@ -23,8 +23,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created by kings on 2018-5-29.
@@ -42,7 +40,7 @@ public class CompileReportService {
     @Autowired
     private BaseDataDicService baseDataDicService;
     @Autowired
-    private DataReportAnalysisService dataReportAnalysisService;
+    private SchemeAreaGroupService schemeAreaGroupService;
     @Autowired
     private SchemeAreaGroupDao schemeAreaGroupDao;
     @Autowired
@@ -149,7 +147,7 @@ public class CompileReportService {
         if (CollectionUtils.isEmpty(dataDicList)) return;
         CompileReportDetail compileReportDetail = null;
         for (BaseDataDic baseDataDic : dataDicList) {
-            SchemeAreaGroup schemeAreaGroup = schemeAreaGroupDao.get(projectPlanDetails.getAreaId());
+            SchemeAreaGroup schemeAreaGroup = schemeAreaGroupDao.getSchemeAreaGroup(projectPlanDetails.getAreaId());
             DataReportAnalysis analysis = dataReportAnalysisBackgroundService.getReportAnalysisByAreaId(schemeAreaGroup.getDistrict(), baseDataDic.getId(), schemeAreaGroup.getValueTimePoint());
             //根据各种条件获取对应的模板数据
             compileReportDetail = new CompileReportDetail();
@@ -162,7 +160,7 @@ public class CompileReportService {
             compileReportDetail.setMarketBackgroundType(baseDataDic.getId());
             compileReportDetail.setBisModifiable(true);
             if (analysis != null) {
-                compileReportDetail.setContent(tagfilter(analysis.getTemplate()));
+                compileReportDetail.setContent(publicService.tagfilter(analysis.getTemplate()));
             }
             compileReportDetailDao.addReportDetail(compileReportDetail);
         }
@@ -178,8 +176,10 @@ public class CompileReportService {
     public String getReportCompile(Integer areaId, String marketBackgroundType) {
         BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(marketBackgroundType);
         if (baseDataDic == null) return "";
+        //如果该区域是拆分的区域，则取同区域下非拆分区域数据
+        SchemeAreaGroup areaGroup = schemeAreaGroupService.getNotSplitAreaGroup(areaId);
         CompileReportDetail where = new CompileReportDetail();
-        where.setAreaId(areaId);
+        where.setAreaId(areaGroup.getId());
         where.setMarketBackgroundType(baseDataDic.getId());
         List<CompileReportDetail> reportDetailList = compileReportDetailDao.getReportDetailList(where);
         if (CollectionUtils.isEmpty(reportDetailList)) return "";
@@ -189,36 +189,5 @@ public class CompileReportService {
             stringBuilder.append(reportDetail.getContent());
         }
         return stringBuilder.toString();
-    }
-
-    /**
-     * 根据名称获取内容信息
-     *
-     * @param areaId
-     * @param name
-     * @return
-     */
-    public String getContentByName(Integer areaId, String name) {
-        CompileReportDetail where = new CompileReportDetail();
-        where.setAreaId(areaId);
-        where.setName(name);
-        List<CompileReportDetail> detailList = compileReportDetailDao.getReportDetailList(where);
-        if (CollectionUtils.isEmpty(detailList)) return "";
-        return detailList.get(0).getContent();
-    }
-
-
-    public static String tagfilter(String str) {
-        final String regxpForHtml = "<([^>]*)>"; // 过滤所有以<开头以>结尾的标签
-        Pattern pattern = Pattern.compile(regxpForHtml);
-        Matcher matcher = pattern.matcher(str);
-        StringBuffer sb = new StringBuffer();
-        boolean result1 = matcher.find();
-        while (result1) {
-            matcher.appendReplacement(sb, "");
-            result1 = matcher.find();
-        }
-        matcher.appendTail(sb);
-        return sb.toString().trim();
     }
 }

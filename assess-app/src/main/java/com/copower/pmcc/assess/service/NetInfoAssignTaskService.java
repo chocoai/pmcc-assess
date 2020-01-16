@@ -216,6 +216,10 @@ public class NetInfoAssignTaskService {
         netInfoAssignTaskDao.modifyNetInfoAssignTask(netInfoAssignTask);
     }
 
+    public void deleteData(Integer id) {
+        netInfoAssignTaskDao.deleteData(id);
+    }
+
     public void addNetInfoAssignTask(NetInfoAssignTask netInfoAssignTask) {
         netInfoAssignTaskDao.addNetInfoAssignTask(netInfoAssignTask);
     }

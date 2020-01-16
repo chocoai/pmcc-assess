@@ -28,7 +28,6 @@
 <input type="hidden" id="fieldsJSON" value='${fieldsJSON}'>
 <input type="hidden" id="evaluationJSON" value='${evaluationJSON}'>
 <input type="hidden" id="casesJSON" value='${casesJSON}'>
-<input type="hidden" id="casesAllJSON" value='${casesAllJSON}'>
 
 <script type="text/javascript">
     $(function () {
@@ -37,7 +36,7 @@
             marketCompare: JSON.parse($("#marketCompareJSON").val()),
             fields: JSON.parse($("#fieldsJSON").val()),
             evaluation: JSON.parse($("#evaluationJSON").val()),
-            casesAll: JSON.parse($("#casesAllJSON").val()),
+            projectId: ${projectPlanDetails.projectId},
             mcId: '${mcId}',
             isLand: '${isLand}',
             judgeObjectId: '${judgeObject.id}',

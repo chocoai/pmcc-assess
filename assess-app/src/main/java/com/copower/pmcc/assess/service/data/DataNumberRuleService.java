@@ -49,7 +49,7 @@ public class DataNumberRuleService {
         return vo;
     }
 
-    private List<DataNumberRuleVo> getVoList(List<DataNumberRule> list) {
+    public List<DataNumberRuleVo> getVoList(List<DataNumberRule> list) {
         if (CollectionUtils.isEmpty(list)) return null;
         return LangUtils.transform(list, p -> {
             DataNumberRuleVo dataNumberRuleVo = new DataNumberRuleVo();

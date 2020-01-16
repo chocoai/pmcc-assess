@@ -21,7 +21,7 @@
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                     </ul>
-                    <h3>
+                    <h3 style="word-break: break-all">
                         ${judgeObject.name}
                         <small>(${judgeObject.evaluationArea}㎡)</small>
                         <small>
@@ -48,8 +48,6 @@
                             </span>
                     </div>
                 </div>
-
-
                 <%@include file="/views/method/module/costModule/construction.jsp" %>
                 <%@include file="/views/method/module/costModule/constructionJs.jsp" %>
                 <%@include file="/views/method/module/developmentCommon.jsp" %>
@@ -58,7 +56,6 @@
                 <script src="${pageContext.request.contextPath}/js/method/developmentCommon.js?v=${assessVersion}"></script>
                 <script type="text/javascript" src="${pageContext.request.contextPath}/js/declare/declare.common.js?v=${assessVersion}"></script>
             </div>
-
             <div class="x_panel">
                 <div class="x_content">
                     <form class="form-horizontal" id="md_cost_form">

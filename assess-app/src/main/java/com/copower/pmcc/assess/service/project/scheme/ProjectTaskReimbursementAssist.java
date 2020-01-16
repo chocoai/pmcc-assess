@@ -41,7 +41,7 @@ public class ProjectTaskReimbursementAssist implements ProjectTaskInterface {
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskReimbursementIndex", "", 0, "0", "");
         try {
-            writeSchemeReimbursement(projectPlanDetails, schemeAreaGroupService.get(projectPlanDetails.getAreaId()),modelAndView);
+            writeSchemeReimbursement(projectPlanDetails, schemeAreaGroupService.getSchemeAreaGroup(projectPlanDetails.getAreaId()),modelAndView);
         } catch (Exception e) {
             baseService.writeExceptionInfo(e,"生成法定优先受偿款初始数据失败!");
         }
@@ -79,7 +79,7 @@ public class ProjectTaskReimbursementAssist implements ProjectTaskInterface {
     public ModelAndView returnEditView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskReimbursementIndex", processInsId, boxId, taskId, agentUserAccount);
         try {
-            writeSchemeReimbursement(projectPlanDetails, schemeAreaGroupService.get(projectPlanDetails.getAreaId()),modelAndView);
+            writeSchemeReimbursement(projectPlanDetails, schemeAreaGroupService.getSchemeAreaGroup(projectPlanDetails.getAreaId()),modelAndView);
         } catch (Exception e) {
             baseService.writeExceptionInfo(e,"生成法定优先受偿款初始数据失败!");
         }
@@ -121,7 +121,7 @@ public class ProjectTaskReimbursementAssist implements ProjectTaskInterface {
     private void settingModel(ModelAndView modelAndView,ProjectPlanDetails projectPlanDetails){
         SchemeReimbursement schemeReimbursement = schemeReimbursementService.getDataByProcessInsId(projectPlanDetails.getProcessInsId());
         modelAndView.addObject("master", schemeReimbursement);
-        modelAndView.addObject("areaGroup", schemeAreaGroupService.get(projectPlanDetails.getAreaId()));
+        modelAndView.addObject("areaGroup", schemeAreaGroupService.getSchemeAreaGroup(projectPlanDetails.getAreaId()));
     }
 
     /**

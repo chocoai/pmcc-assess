@@ -4,8 +4,12 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
 import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordDao;
+import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordHouseDao;
+import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordLandDao;
 import com.copower.pmcc.assess.dal.basis.entity.NetInfoAssignTask;
 import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecord;
+import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordHouse;
+import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordLand;
 import com.copower.pmcc.assess.service.NetInfoAssignTaskService;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
@@ -50,6 +54,10 @@ public class NetInfoAssignTaskController extends BaseController {
     private NetInfoRecordDao netInfoRecordDao;
     @Autowired
     private NetInfoAssignTaskService netInfoAssignTaskService;
+    @Autowired
+    private NetInfoRecordHouseDao netInfoRecordHouseDao;
+    @Autowired
+    private NetInfoRecordLandDao netInfoRecordLandDao;
 
     @RequestMapping(value = "/apply", name = "拍卖信息补充申请")
     public ModelAndView apply(String ids) throws BusinessException {
@@ -94,7 +102,7 @@ public class NetInfoAssignTaskController extends BaseController {
     @ResponseBody
     public HttpResult approvalCommit(ApprovalModelDto approvalModelDto, String processInsId) {
         try {
-            netInfoAssignTaskService.approvalCommit(approvalModelDto,processInsId);
+            netInfoAssignTaskService.approvalCommit(approvalModelDto, processInsId);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             log.error("提交失败", e);
@@ -140,10 +148,44 @@ public class NetInfoAssignTaskController extends BaseController {
         List<Integer> integers = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(ids));
         return netInfoAssignTaskService.getNetInfoRecordLandList(integers);
     }
+
     @ResponseBody
     @RequestMapping(value = "/houseList", name = "取得房产信息", method = RequestMethod.GET)
     public BootstrapTableVo houseList(String ids) {
         List<Integer> integers = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(ids));
         return netInfoAssignTaskService.getNetInfoRecordHouseList(integers);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/backTask", name = "任务退回", method = RequestMethod.POST)
+    public HttpResult backTask(String ids) {
+        try {
+            List<Integer> integers = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(ids));
+            if (CollectionUtils.isNotEmpty(integers)) {
+                for (Integer id : integers) {
+                    NetInfoRecord infoRecord = netInfoRecordDao.getInfoById(id);
+                    infoRecord.setStatus(0);
+                    infoRecord.setExecutor("");
+                    netInfoRecordDao.updateInfo(infoRecord);
+                }
+                //删除子数据
+                List<NetInfoRecordHouse> netInfoRecordHouses = netInfoRecordHouseDao.getHouseListByMasterIds(integers);
+                if (CollectionUtils.isNotEmpty(netInfoRecordHouses)) {
+                    netInfoRecordHouses.forEach(o -> {
+                        netInfoRecordHouseDao.deleteInfo(o.getId());
+                    });
+                }
+                List<NetInfoRecordLand> netInfoRecordLandList = netInfoRecordLandDao.getLandListByMasterIds(integers);
+                if (CollectionUtils.isNotEmpty(netInfoRecordLandList)) {
+                    netInfoRecordLandList.forEach(o -> {
+                        netInfoRecordLandDao.deleteInfo(o.getId());
+                    });
+                }
+            }
+        } catch (Exception e) {
+            log.error("任务退回失败", e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
     }
 }

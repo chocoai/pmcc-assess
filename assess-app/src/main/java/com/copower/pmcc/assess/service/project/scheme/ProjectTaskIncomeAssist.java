@@ -142,7 +142,7 @@ public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
         }
         modelAndView.addObject("mdIncome", mdIncome);
         SchemeJudgeObject judgeObject = schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId());
-        SchemeAreaGroup areaGroup = schemeAreaGroupService.get(judgeObject.getAreaGroupId());
+        SchemeAreaGroup areaGroup = schemeAreaGroupService.getSchemeAreaGroup(judgeObject.getAreaGroupId());
         modelAndView.addObject("judgeObject", judgeObject);
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(judgeObject.getDeclareRecordId());
         if (declareRecord != null) {

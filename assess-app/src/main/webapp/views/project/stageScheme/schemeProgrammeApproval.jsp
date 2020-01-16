@@ -123,7 +123,7 @@
                             <table class="table">
                                 <thead>
                                 <tr>
-                                    <th style="width: 5%">编号</th>
+                                    <th style="width: 30%;word-break: break-all;">编号</th>
                                         <%--<th style="width: 10%">权证号</th>--%>
                                     <th style="width: 5%">所有权人</th>
                                     <th style="width: 15%">坐落</th>
