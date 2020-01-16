@@ -185,6 +185,23 @@
                     </form>
                 </div>
             </div>
+
+
+            <!-- 考核任务 -->
+            <div class="x_panel">
+                <div class="x_content">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <table class="table table-bordered" id="tableChksCustomerAssessmentPlanDetailList">
+                                    <!-- cerare document add ajax data-->
+                                </table>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
             <%@include file="/views/share/form_approval.jsp" %>
             <%@include file="/views/share/form_log.jsp" %>
         </div>
@@ -671,8 +688,37 @@
         });
     };
 
+    function loadChksCustomerAssessmentPlanDetailTable() {
+        var cols = [];
+        cols.push({field: 'activityName', title: '审批角色名称'});
+        cols.push({
+            field: 'id', title: '操作', formatter: function (value, row, index) {
+                var str = '<div class="btn-margin">';
+                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" target="_blank" data-original-title="考核任务" href="${pageContext.request.contextPath}' + row.url + '">考核任务<i class="fa fa-search fa-white"></i></a>';
+                str += '</div>';
+                return str;
+            }
+        });
+        var query = {formData:JSON.stringify({processInsId:'${projectPlanDetails.processInsId}',creator:'${sysUserDto.userAccount}'})} ;
+        var target = $("#tableChksCustomerAssessmentPlanDetailList") ;
+        if ('${projectPlanDetails.processInsId}'){
+            if ('${sysUserDto}'){
+                target.bootstrapTable('destroy');
+                TableInit(target, "${pageContext.request.contextPath}/chksCustomerAssessmentPlanDetail/getBootstrapTableVo", cols, query, {
+                    showColumns: false,
+                    showRefresh: true,
+                    search: false,
+                    onLoadSuccess: function () {
+                        $('.tooltips').tooltip();
+                    }
+                });
+            }
+        }
+    }
+
 
     $(function () {
+        loadChksCustomerAssessmentPlanDetailTable() ;
         declareApprovalFun.realEstateloadList();
         declareApprovalFun.houseLoadList();
         declareApprovalFun.landLoadList();
