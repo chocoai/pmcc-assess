@@ -181,7 +181,7 @@ public class ProjectTaskController extends BaseController {
             Object activityId = modelAndView.getModel().get("activityId");
             if (activityId != null) {
                 Integer boxReActivitiId = (Integer) activityId;
-                setCheckParams(boxId, boxReActivitiId, projectPlanDetails, modelAndView);
+                setCheckParams(boxId, boxReActivitiId, projectPlanDetails, modelAndView, projectPhase);
 
             }
         }
@@ -288,7 +288,7 @@ public class ProjectTaskController extends BaseController {
             //获取相应的考核项
             BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(boxId);
             if (boxReDto.getBisLaunchCheck() != null && boxReDto.getBisLaunchCheck()) {
-                setCheckParams(boxId, null, projectPlanDetails, modelAndView);
+                setCheckParams(boxId, null, projectPlanDetails, modelAndView, projectPhase);
             }
         }
         if (StringUtils.isNotBlank(responsibilityId)) {
@@ -326,34 +326,40 @@ public class ProjectTaskController extends BaseController {
      * @param boxReActivitiId 注意此参数可能是错误的
      * @param modelAndView
      */
-    private void setCheckParams(Integer boxId, Integer boxReActivitiId, ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) {
+    private void setCheckParams(Integer boxId, Integer boxReActivitiId, ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView, ProjectPhase projectPhase) {
         //巡查人或者抽查人  可以看到当前模型下 所有人的考核记录
         boolean spotCheck = chksAssessmentProjectPerformanceService.getSpotCheck(boxId, processControllerComponent.getThisUser());
-        BoxReActivityDto boxReActivityDto = chksAssessmentProjectPerformanceService.getFilterBoxReActivityDto(boxReActivitiId, projectPlanDetails.getProcessInsId());
+        BoxReActivityDto boxReActivityDto = null;
+        if (boxReActivitiId != null) {
+            boxReActivityDto = bpmRpcBoxService.getBoxreActivityInfoById(boxReActivitiId);
+        }
+        List<BoxReActivityDto> boxReActivityDtoList = null;
+        if (boxReActivityDto == null) {
+            boxReActivityDtoList = chksAssessmentProjectPerformanceService.getFilterBoxReActivityDto(projectPlanDetails.getProcessInsId());
+        }
         BoxReActivityDto spotReActivityDto = chksAssessmentProjectPerformanceService.getSpotBoxReActivityDto(boxId);
-        if (boxReActivityDto == null && spotReActivityDto == null) {
+        if (boxReActivityDto == null && spotReActivityDto == null && CollectionUtils.isEmpty(boxReActivityDtoList)) {
             return;
         }
         if (!spotCheck) {
-            if (boxReActivityDto == null) {
+            if (boxReActivityDto == null && CollectionUtils.isEmpty(boxReActivityDtoList)) {
                 return;
             }
         }
         //抽查或者巡查标识符
         modelAndView.addObject("spotCheck", spotCheck);
         //考核能否进行
-        modelAndView.addObject("bisCheck", chksAssessmentProjectPerformanceService.getChksRuningEnum(boxReActivityDto, boxId, projectPlanDetails.getProcessInsId(), boxReActivitiId != null).getKey());
+        modelAndView.addObject("bisCheck", chksAssessmentProjectPerformanceService.getChksRuningEnum(CollectionUtils.isEmpty(boxReActivityDtoList) ? Lists.newArrayList(boxReActivityDto) : boxReActivityDtoList, projectPhase, boxId, projectPlanDetails.getProcessInsId(), boxReActivitiId != null).getKey());
         //考核标识符
         modelAndView.addObject("showCheck", ChksRuningEnum.CHKS_SHOW_ENUM_RUN.getKey());
         modelAndView.addObject(StringUtils.uncapitalize(BoxReDto.class.getSimpleName()), bpmRpcBoxService.getBoxReInfoByBoxId(boxId));
-        modelAndView.addObject("boxReActivityDto", boxReActivityDto);//普通考核节点
+        modelAndView.addObject("boxReActivityDto", boxReActivityDto);//普通考核节点 审批
+        modelAndView.addObject("boxReActivityDtoList", boxReActivityDtoList);//普通考核节点 发起的详情task任务
         modelAndView.addObject("spotReActivityDto", spotReActivityDto);//抽查节点
         //当前节点  可以查看的权限节点信息列表
-        modelAndView.addObject("activityDtoList", chksAssessmentProjectPerformanceService.getAssessmentProjectPerformanceNext(boxId, boxReActivityDto, spotCheck));
+        modelAndView.addObject("activityDtoList", chksAssessmentProjectPerformanceService.getAssessmentProjectPerformanceNext(boxId, boxReActivitiId, boxReActivityDtoList, spotCheck));
         if (spotCheck) {
             modelAndView.addObject("spotAssessmentProjectPerformanceList", chksAssessmentProjectPerformanceService.getAssessmentProjectPerformanceDtoMap(boxId, projectPlanDetails.getProcessInsId()));
-            modelAndView.addObject("spotAssessmentItemDtoList", chksAssessmentProjectPerformanceService.getAssessmentItemTemplate(boxId, spotReActivityDto.getId()));
-
         }
     }
 

@@ -39,7 +39,7 @@
             <input data-name="contentId" type="hidden" name="contentId{contentId}" value="{contentId}">
         </td>
         <td>{name}</td>
-        <td>{assessmentDes} 范围:{minScore}~{maxScore}</td>
+        <td>{assessmentDes} 范围:{minScore}~{maxScore}  标准值:{standardScore}</td>
         <td>
             <input type="text" required="required" data-rule-number='true'
                    data-name="actualScore"
@@ -189,6 +189,7 @@
         html = html.replace(/{assessmentDes}/g, item.assessmentDes);
         html = html.replace(/{minScore}/g, item.minScore);
         html = html.replace(/{maxScore}/g, item.maxScore);
+        html = html.replace(/{standardScore}/g, item.standardScore);
         html = html.replace(/{actualScore}/g, item.actualScore);
         html = html.replace(/{remark}/g, item.remark);
         return html;
@@ -286,6 +287,29 @@
         TableInit(table, "${pageContext.request.contextPath}/chksAssessmentProjectPerformance/getChksBootstrapTableVo", cols, query, method);
     };
 
+    assessmentCommonHandle.loadChksServerNew = function (activityId,target) {
+        var option = {
+            boxId: '${boxReDto.id}',
+            activityId: activityId,
+            projectId: '${projectPlanDetails.projectId}',
+            planDetailsId: '${projectPlanDetails.id}',
+            planId: '${projectPlanDetails.planId}',
+            isEffective: true //数据必须有效
+        };
+        if ('${processInsId}') {
+            option.processInsId = '${processInsId}';
+        }
+        if (!option.processInsId) {
+            if ('${projectPlanDetails.processInsId}') {
+                option.processInsId = '${projectPlanDetails.processInsId}';
+            }
+        }
+        assessmentCommonHandle.loadChksServerBase(option, {
+            boxId: option.boxId,
+            boxReActivitiId: option.activityId
+        }, target);
+    };
+
     assessmentCommonHandle.loadChksServerBase = function (option, query, target) {
         assessmentCommonHandle.getAssessmentProjectPerformanceDtoList(option, function (data) {
             if (data.length == 0) {
@@ -302,7 +326,8 @@
                             name: item.boxReActivitiNameCn,
                             assessmentDes: item.assessmentDes,
                             minScore: item.minScore,
-                            maxScore: item.maxScore
+                            maxScore: item.maxScore,
+                            standardScore:item.standardScore
                         });
                         restHtml += html;
                     });
@@ -328,6 +353,7 @@
                                 actualScore: item.actualScore,
                                 minScore: item.minScore,
                                 maxScore: item.maxScore,
+                                standardScore: item.standardScore,
                                 remark: item.remark
                             });
                             restHtml += htmlB;
@@ -392,15 +418,16 @@
                 var tr = "<tr>";
                 tr += "<td width='5%' align='center'>" + data.byExaminePeopleName + "</td>";
                 tr += "<td width='5%' align='center'>" + data.examinePeopleName + "</td>";
-                tr += "<td width='60%' align='center'>";
+                tr += "<td width='65%' align='center'>";
                 if (data.detailList.length >= 1) {
                     var childHtml = "";
                     childHtml += "<table class='table table-striped' >";
                     $.each(data.detailList, function (j, item) {
                         childHtml += "<tr>";
-                        childHtml += "<td width='50%' align='center'> 考核标准: " + item.content + "</td>";
-                        childHtml += "<td width='10%' align='center'> 实际得分: " + item.actualScore + "</td>";
-                        childHtml += "<td width='40%' align='center'> 考核说明: " + item.remark + "</td>";
+                        childHtml += "<td width='50%' align='center'>考核标准:" + item.content + "</td>";
+                        childHtml += "<td width='10%' align='center'>标准值:" + item.standardScore + "</td>";
+                        childHtml += "<td width='10%' align='center'>实际得分:" + item.actualScore + "</td>";
+                        childHtml += "<td width='30%' align='center'>考核说明:" + item.remark + "</td>";
                         childHtml += "</tr>";
                     });
                     childHtml += "</table>";
@@ -409,7 +436,7 @@
                 tr += "</td>";
                 tr += "<td width='5%' align='center'>" + data.examineScore + "</td>";
                 tr += "<td width='5%' align='center'>" + formatDate(data.examineDate, true) + "</td>";
-                tr += "<td width='20%' align='center'>" + data.remarks + "</td>";
+                tr += "<td width='15%' align='center'>" + data.remarks + "</td>";
                 tr += "</tr>";
                 bodyHtml += tr;
             }
@@ -441,11 +468,11 @@
     };
 
 
-    function saveAssessmentItem() {
-        if (!vaildChksData()){
+    function saveAssessmentItem(activityId,activityName,selector ) {
+        var target = $(selector).find("tbody");
+        if (!vaildChksData(target)){
             return false;
         }
-        var target = $("#chksTableList").find("tbody");
         var remarks = target.find("textarea[name=remarks]").val();
         var data = [];
         var filterData = [];
@@ -460,8 +487,8 @@
             planDetailsId: '${projectPlanDetails.id}',
             planId: '${projectPlanDetails.planId}',
             boxId: '${boxReDto.id}',
-            activityId: '${boxReActivityDto.id}',
-            activityName: '${boxReActivityDto.cnName}',
+            activityId: activityId,
+            activityName: activityName,
             remarks: remarks
         };
         if ($("#tb_log").size() != 0) {
@@ -488,7 +515,7 @@
         assessmentCommonHandle.saveAssessmentServer({chksScore: JSON.stringify(filterData), fomData: JSON.stringify(parentData)}, function (data) {
             toastr.warning("考核成功!");
             assessmentCommonHandle.loadChksServerViewTable();
-            loadChksServerData();
+            assessmentCommonHandle.loadChksServerNew(activityId,target) ;
         });
     }
 
