@@ -15,8 +15,6 @@ public class SchemeAreaGroup {
 
     private String district;
 
-    private Integer buildingStatus;
-
     private String areaName;
 
     private Date valueTimePoint;
@@ -50,6 +48,8 @@ public class SchemeAreaGroup {
     private Boolean bisSplit;
 
     private Boolean bisMerge;
+
+    private Integer sorting;
 
     private String creator;
 
@@ -103,14 +103,6 @@ public class SchemeAreaGroup {
 
     public void setDistrict(String district) {
         this.district = district == null ? null : district.trim();
-    }
-
-    public Integer getBuildingStatus() {
-        return buildingStatus;
-    }
-
-    public void setBuildingStatus(Integer buildingStatus) {
-        this.buildingStatus = buildingStatus;
     }
 
     public String getAreaName() {
@@ -247,6 +239,14 @@ public class SchemeAreaGroup {
 
     public void setBisMerge(Boolean bisMerge) {
         this.bisMerge = bisMerge;
+    }
+
+    public Integer getSorting() {
+        return sorting;
+    }
+
+    public void setSorting(Integer sorting) {
+        this.sorting = sorting;
     }
 
     public String getCreator() {

@@ -8,7 +8,6 @@
     <result column="province" property="province" jdbcType="VARCHAR" />
     <result column="city" property="city" jdbcType="VARCHAR" />
     <result column="district" property="district" jdbcType="VARCHAR" />
-    <result column="building_status" property="buildingStatus" jdbcType="INTEGER" />
     <result column="area_name" property="areaName" jdbcType="VARCHAR" />
     <result column="value_time_point" property="valueTimePoint" jdbcType="TIMESTAMP" />
     <result column="time_point_explain" property="timePointExplain" jdbcType="VARCHAR" />
@@ -26,6 +25,7 @@
     <result column="bis_enable" property="bisEnable" jdbcType="BIT" />
     <result column="bis_split" property="bisSplit" jdbcType="BIT" />
     <result column="bis_merge" property="bisMerge" jdbcType="BIT" />
+    <result column="sorting" property="sorting" jdbcType="INTEGER" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -89,11 +89,10 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, pid, project_id, province, city, district, building_status, area_name, value_time_point, 
-    time_point_explain, entrust_purpose, entrust_aim_type, remark_entrust_purpose, value_definition, 
-    value_definition_desc, value_connotation, value_connotation_desc, property_scope, 
-    scope_include, scope_not_include, bis_new, bis_enable, bis_split, bis_merge, creator, 
-    gmt_created, gmt_modified
+    id, pid, project_id, province, city, district, area_name, value_time_point, time_point_explain, 
+    entrust_purpose, entrust_aim_type, remark_entrust_purpose, value_definition, value_definition_desc, 
+    value_connotation, value_connotation_desc, property_scope, scope_include, scope_not_include, 
+    bis_new, bis_enable, bis_split, bis_merge, sorting, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeAreaGroupExample" >
     select
@@ -130,23 +129,25 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_scheme_area_group (pid, project_id, province, 
-      city, district, building_status, 
-      area_name, value_time_point, time_point_explain, 
-      entrust_purpose, entrust_aim_type, remark_entrust_purpose, 
-      value_definition, value_definition_desc, value_connotation, 
+      city, district, area_name, 
+      value_time_point, time_point_explain, entrust_purpose, 
+      entrust_aim_type, remark_entrust_purpose, value_definition, 
+      value_definition_desc, value_connotation, 
       value_connotation_desc, property_scope, scope_include, 
       scope_not_include, bis_new, bis_enable, 
-      bis_split, bis_merge, creator, 
-      gmt_created, gmt_modified)
+      bis_split, bis_merge, sorting, 
+      creator, gmt_created, gmt_modified
+      )
     values (#{pid,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, 
-      #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, #{buildingStatus,jdbcType=INTEGER}, 
-      #{areaName,jdbcType=VARCHAR}, #{valueTimePoint,jdbcType=TIMESTAMP}, #{timePointExplain,jdbcType=VARCHAR}, 
-      #{entrustPurpose,jdbcType=INTEGER}, #{entrustAimType,jdbcType=INTEGER}, #{remarkEntrustPurpose,jdbcType=VARCHAR}, 
-      #{valueDefinition,jdbcType=INTEGER}, #{valueDefinitionDesc,jdbcType=VARCHAR}, #{valueConnotation,jdbcType=VARCHAR}, 
+      #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, #{areaName,jdbcType=VARCHAR}, 
+      #{valueTimePoint,jdbcType=TIMESTAMP}, #{timePointExplain,jdbcType=VARCHAR}, #{entrustPurpose,jdbcType=INTEGER}, 
+      #{entrustAimType,jdbcType=INTEGER}, #{remarkEntrustPurpose,jdbcType=VARCHAR}, #{valueDefinition,jdbcType=INTEGER}, 
+      #{valueDefinitionDesc,jdbcType=VARCHAR}, #{valueConnotation,jdbcType=VARCHAR}, 
       #{valueConnotationDesc,jdbcType=VARCHAR}, #{propertyScope,jdbcType=INTEGER}, #{scopeInclude,jdbcType=VARCHAR}, 
       #{scopeNotInclude,jdbcType=VARCHAR}, #{bisNew,jdbcType=BIT}, #{bisEnable,jdbcType=BIT}, 
-      #{bisSplit,jdbcType=BIT}, #{bisMerge,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+      #{bisSplit,jdbcType=BIT}, #{bisMerge,jdbcType=BIT}, #{sorting,jdbcType=INTEGER}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeAreaGroup" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -168,9 +169,6 @@
       </if>
       <if test="district != null" >
         district,
-      </if>
-      <if test="buildingStatus != null" >
-        building_status,
       </if>
       <if test="areaName != null" >
         area_name,
@@ -223,6 +221,9 @@
       <if test="bisMerge != null" >
         bis_merge,
       </if>
+      <if test="sorting != null" >
+        sorting,
+      </if>
       <if test="creator != null" >
         creator,
       </if>
@@ -248,9 +249,6 @@
       </if>
       <if test="district != null" >
         #{district,jdbcType=VARCHAR},
-      </if>
-      <if test="buildingStatus != null" >
-        #{buildingStatus,jdbcType=INTEGER},
       </if>
       <if test="areaName != null" >
         #{areaName,jdbcType=VARCHAR},
@@ -303,6 +301,9 @@
       <if test="bisMerge != null" >
         #{bisMerge,jdbcType=BIT},
       </if>
+      <if test="sorting != null" >
+        #{sorting,jdbcType=INTEGER},
+      </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
       </if>
@@ -340,9 +341,6 @@
       </if>
       <if test="record.district != null" >
         district = #{record.district,jdbcType=VARCHAR},
-      </if>
-      <if test="record.buildingStatus != null" >
-        building_status = #{record.buildingStatus,jdbcType=INTEGER},
       </if>
       <if test="record.areaName != null" >
         area_name = #{record.areaName,jdbcType=VARCHAR},
@@ -395,6 +393,9 @@
       <if test="record.bisMerge != null" >
         bis_merge = #{record.bisMerge,jdbcType=BIT},
       </if>
+      <if test="record.sorting != null" >
+        sorting = #{record.sorting,jdbcType=INTEGER},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -417,7 +418,6 @@
       province = #{record.province,jdbcType=VARCHAR},
       city = #{record.city,jdbcType=VARCHAR},
       district = #{record.district,jdbcType=VARCHAR},
-      building_status = #{record.buildingStatus,jdbcType=INTEGER},
       area_name = #{record.areaName,jdbcType=VARCHAR},
       value_time_point = #{record.valueTimePoint,jdbcType=TIMESTAMP},
       time_point_explain = #{record.timePointExplain,jdbcType=VARCHAR},
@@ -435,6 +435,7 @@
       bis_enable = #{record.bisEnable,jdbcType=BIT},
       bis_split = #{record.bisSplit,jdbcType=BIT},
       bis_merge = #{record.bisMerge,jdbcType=BIT},
+      sorting = #{record.sorting,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -459,9 +460,6 @@
       </if>
       <if test="district != null" >
         district = #{district,jdbcType=VARCHAR},
-      </if>
-      <if test="buildingStatus != null" >
-        building_status = #{buildingStatus,jdbcType=INTEGER},
       </if>
       <if test="areaName != null" >
         area_name = #{areaName,jdbcType=VARCHAR},
@@ -514,6 +512,9 @@
       <if test="bisMerge != null" >
         bis_merge = #{bisMerge,jdbcType=BIT},
       </if>
+      <if test="sorting != null" >
+        sorting = #{sorting,jdbcType=INTEGER},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -533,7 +534,6 @@
       province = #{province,jdbcType=VARCHAR},
       city = #{city,jdbcType=VARCHAR},
       district = #{district,jdbcType=VARCHAR},
-      building_status = #{buildingStatus,jdbcType=INTEGER},
       area_name = #{areaName,jdbcType=VARCHAR},
       value_time_point = #{valueTimePoint,jdbcType=TIMESTAMP},
       time_point_explain = #{timePointExplain,jdbcType=VARCHAR},
@@ -551,6 +551,7 @@
       bis_enable = #{bisEnable,jdbcType=BIT},
       bis_split = #{bisSplit,jdbcType=BIT},
       bis_merge = #{bisMerge,jdbcType=BIT},
+      sorting = #{sorting,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

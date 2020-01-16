@@ -495,66 +495,6 @@ public class SchemeAreaGroupExample {
             return (Criteria) this;
         }
 
-        public Criteria andBuildingStatusIsNull() {
-            addCriterion("building_status is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuildingStatusIsNotNull() {
-            addCriterion("building_status is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuildingStatusEqualTo(Integer value) {
-            addCriterion("building_status =", value, "buildingStatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuildingStatusNotEqualTo(Integer value) {
-            addCriterion("building_status <>", value, "buildingStatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuildingStatusGreaterThan(Integer value) {
-            addCriterion("building_status >", value, "buildingStatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuildingStatusGreaterThanOrEqualTo(Integer value) {
-            addCriterion("building_status >=", value, "buildingStatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuildingStatusLessThan(Integer value) {
-            addCriterion("building_status <", value, "buildingStatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuildingStatusLessThanOrEqualTo(Integer value) {
-            addCriterion("building_status <=", value, "buildingStatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuildingStatusIn(List<Integer> values) {
-            addCriterion("building_status in", values, "buildingStatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuildingStatusNotIn(List<Integer> values) {
-            addCriterion("building_status not in", values, "buildingStatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuildingStatusBetween(Integer value1, Integer value2) {
-            addCriterion("building_status between", value1, value2, "buildingStatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuildingStatusNotBetween(Integer value1, Integer value2) {
-            addCriterion("building_status not between", value1, value2, "buildingStatus");
-            return (Criteria) this;
-        }
-
         public Criteria andAreaNameIsNull() {
             addCriterion("area_name is null");
             return (Criteria) this;
@@ -1652,6 +1592,66 @@ public class SchemeAreaGroupExample {
 
         public Criteria andBisMergeNotBetween(Boolean value1, Boolean value2) {
             addCriterion("bis_merge not between", value1, value2, "bisMerge");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingIsNull() {
+            addCriterion("sorting is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingIsNotNull() {
+            addCriterion("sorting is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingEqualTo(Integer value) {
+            addCriterion("sorting =", value, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingNotEqualTo(Integer value) {
+            addCriterion("sorting <>", value, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingGreaterThan(Integer value) {
+            addCriterion("sorting >", value, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingGreaterThanOrEqualTo(Integer value) {
+            addCriterion("sorting >=", value, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingLessThan(Integer value) {
+            addCriterion("sorting <", value, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingLessThanOrEqualTo(Integer value) {
+            addCriterion("sorting <=", value, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingIn(List<Integer> values) {
+            addCriterion("sorting in", values, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingNotIn(List<Integer> values) {
+            addCriterion("sorting not in", values, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingBetween(Integer value1, Integer value2) {
+            addCriterion("sorting between", value1, value2, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingNotBetween(Integer value1, Integer value2) {
+            addCriterion("sorting not between", value1, value2, "sorting");
             return (Criteria) this;
         }
 
