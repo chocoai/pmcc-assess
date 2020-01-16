@@ -522,7 +522,7 @@
             </ul>
             <h3>
                 <input type="checkbox">
-                <label>{mergeNumber}</label>
+                <label style="word-break: break-all">{mergeNumber}</label>
                 <small>
                     <a href="javascript://" onclick="programme.splitJudge(this);"
                        class="btn btn-xs btn-success judge-split tooltips">拆分</a>

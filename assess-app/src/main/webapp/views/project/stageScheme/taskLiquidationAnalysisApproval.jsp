@@ -8,7 +8,7 @@
 <script type="text/html" id="taskLiquidationAnalysisDiv">
     <div class="x_panel">
         <div class="x_title">
-            <h3>变现分析税费（0{index}）
+            <h3>变现分析税费（{index}）
             </h3>
         </div>
         <div class="x_content">
