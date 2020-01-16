@@ -25,6 +25,7 @@ import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcToolsService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
+import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -355,6 +356,9 @@ public class ProjectTaskController extends BaseController {
         modelAndView.addObject(StringUtils.uncapitalize(BoxReDto.class.getSimpleName()), bpmRpcBoxService.getBoxReInfoByBoxId(boxId));
         modelAndView.addObject("boxReActivityDto", boxReActivityDto);//普通考核节点 审批
         modelAndView.addObject("boxReActivityDtoList", boxReActivityDtoList);//普通考核节点 发起的详情task任务
+        if (CollectionUtils.isNotEmpty(boxReActivityDtoList)){
+            modelAndView.addObject(StringUtils.uncapitalize(SysUserDto.class.getSimpleName()),processControllerComponent.getThisUserInfo()) ;
+        }
         modelAndView.addObject("spotReActivityDto", spotReActivityDto);//抽查节点
         //当前节点  可以查看的权限节点信息列表
         modelAndView.addObject("activityDtoList", chksAssessmentProjectPerformanceService.getAssessmentProjectPerformanceNext(boxId, boxReActivitiId, boxReActivityDtoList, spotCheck));
