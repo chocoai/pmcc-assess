@@ -177,7 +177,7 @@ public class CompileReportService {
         BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(marketBackgroundType);
         if (baseDataDic == null) return "";
         //如果该区域是拆分的区域，则取同区域下非拆分区域数据
-        SchemeAreaGroup areaGroup = schemeAreaGroupService.getNotSplitAreaGroup(areaId);
+        SchemeAreaGroup areaGroup = schemeAreaGroupService.getSourceSplitAreaGroup(areaId);
         CompileReportDetail where = new CompileReportDetail();
         where.setAreaId(areaGroup.getId());
         where.setMarketBackgroundType(baseDataDic.getId());

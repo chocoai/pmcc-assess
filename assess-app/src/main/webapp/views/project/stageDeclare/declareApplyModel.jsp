@@ -194,6 +194,9 @@
             text = $(that).val();
             if (commonDeclareApplyModel.isNotBlank(text)) {
                 var engine = $(that).closest("#" + commonDeclareApplyModel.config.house.handleId);
+                if(commonDeclareApplyModel.isNotBlank(engine.find("input[name='certName']").val())){
+                    return false;
+                }
                 var location = engine.find("input[name='location']").val();
                 var number = engine.find("input[name='number']").val();
                 var id = engine.find("select[name='type']").val();

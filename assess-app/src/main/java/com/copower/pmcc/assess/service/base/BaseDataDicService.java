@@ -148,6 +148,15 @@ public class BaseDataDicService {
 
     }
 
+    public Integer getDataDicIdByName(List<BaseDataDic> dataDicList,String name) {
+        if(CollectionUtils.isEmpty(dataDicList)) return 0;
+        for (BaseDataDic baseDataDic : dataDicList) {
+            if(name.equals(baseDataDic.getName()))
+                return baseDataDic.getId();
+        }
+        return 0;
+    }
+
 
     public BaseDataDic getCacheDataDicByFieldName(String fieldName) {
         String costsKeyPrefix = CacheConstant.getCostsKeyPrefix(AssessCacheConstant.PMCC_ASSESS_DATA_DIC_FIELD_ITEM, fieldName);

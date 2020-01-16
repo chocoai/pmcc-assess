@@ -32,6 +32,7 @@ import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -261,6 +262,31 @@ public class SchemeProgrammeController {
         }
     }
 
+    @PostMapping(name = "区域拆分", value = "/areaGroupSplit")
+    public HttpResult areaGroupSplit(Integer planId, Integer areaGroupId, String judgeObjectIds) {
+        try {
+            List<Integer> list = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(judgeObjectIds));
+            schemeAreaGroupService.areaGroupSplit(planId, areaGroupId,  list);
+            return HttpResult.newCorrectResult();
+        } catch (BusinessException e) {
+            return HttpResult.newErrorResult(e.getMessage());
+        } catch (Exception e) {
+            logger.error("区域拆分", e);
+            return HttpResult.newErrorResult("区域拆分异常");
+        }
+    }
+
+    @PostMapping(name = "移除拆分区域", value = "/areaGroupSplitRemove")
+    public HttpResult areaGroupSplitRemove(Integer areaGroupId) {
+        try {
+            schemeAreaGroupService.areaGroupSplitRemove(areaGroupId);
+            return HttpResult.newCorrectResult();
+        } catch (Exception e) {
+            logger.error("移除拆分区域", e);
+            return HttpResult.newErrorResult("移除拆分区域异常");
+        }
+    }
+
     @PostMapping(name = "委估对象拆分", value = "/splitJudge")
     public HttpResult splitJudge(Integer projectId, Integer areaGroupId, Integer id, Integer splitCount) {
         try {
@@ -413,7 +439,7 @@ public class SchemeProgrammeController {
 
     @RequestMapping(value = "/getJudgeObjectListByPid", name = "获取合并的委估对象明细", method = RequestMethod.GET)
     public BootstrapTableVo getJudgeObjectListByPid(Integer pid) {
-        return schemeJudgeObjectService.getJudgeObjectListByPid(pid);
+        return schemeJudgeObjectService.getBootstrapTableVoByPid(pid);
     }
 
     @RequestMapping(value = "/getPlanDetailsByDeclareId", name = "获取权证调查信息", method = RequestMethod.GET)
@@ -443,17 +469,6 @@ public class SchemeProgrammeController {
         } catch (Exception e) {
             logger.error("更新估价对象信息", e);
             return HttpResult.newErrorResult("更新估价对象信息异常");
-        }
-    }
-
-    @PostMapping(name = "更新出租占用情况", value = "/updateRentalPossessionDesc")
-    public HttpResult updateRentalPossessionDesc(Integer id, String rentalPossessionDesc) {
-        try {
-            schemeJudgeObjectService.updateRentalPossessionDesc(id, rentalPossessionDesc);
-            return HttpResult.newCorrectResult();
-        } catch (Exception e) {
-            logger.error("更新出租占用情况", e);
-            return HttpResult.newErrorResult("更新出租占用情况异常");
         }
     }
 }

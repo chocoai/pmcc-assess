@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <c:if test="${projectPlan.projectStatus ne 'wait'}">
+    <style>
+        .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td { word-break: break-all; }
+        .table > thead > tr > th:nth-child(4) { width: 200px; }
+    </style>
     <div class="row">
         <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
             <div class="x_panel">
@@ -18,7 +22,6 @@
                     </h3>
                 </div>
                 <div class="x_content">
-
                     <form class="form-horizontal" id="project_stage_query">
                         <div class="form-group">
                             <div class="x-valid">

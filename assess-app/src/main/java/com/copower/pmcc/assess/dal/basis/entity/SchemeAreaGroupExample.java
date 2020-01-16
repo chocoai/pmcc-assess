@@ -1355,6 +1355,66 @@ public class SchemeAreaGroupExample {
             return (Criteria) this;
         }
 
+        public Criteria andSplitFromIsNull() {
+            addCriterion("split_from is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSplitFromIsNotNull() {
+            addCriterion("split_from is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSplitFromEqualTo(Integer value) {
+            addCriterion("split_from =", value, "splitFrom");
+            return (Criteria) this;
+        }
+
+        public Criteria andSplitFromNotEqualTo(Integer value) {
+            addCriterion("split_from <>", value, "splitFrom");
+            return (Criteria) this;
+        }
+
+        public Criteria andSplitFromGreaterThan(Integer value) {
+            addCriterion("split_from >", value, "splitFrom");
+            return (Criteria) this;
+        }
+
+        public Criteria andSplitFromGreaterThanOrEqualTo(Integer value) {
+            addCriterion("split_from >=", value, "splitFrom");
+            return (Criteria) this;
+        }
+
+        public Criteria andSplitFromLessThan(Integer value) {
+            addCriterion("split_from <", value, "splitFrom");
+            return (Criteria) this;
+        }
+
+        public Criteria andSplitFromLessThanOrEqualTo(Integer value) {
+            addCriterion("split_from <=", value, "splitFrom");
+            return (Criteria) this;
+        }
+
+        public Criteria andSplitFromIn(List<Integer> values) {
+            addCriterion("split_from in", values, "splitFrom");
+            return (Criteria) this;
+        }
+
+        public Criteria andSplitFromNotIn(List<Integer> values) {
+            addCriterion("split_from not in", values, "splitFrom");
+            return (Criteria) this;
+        }
+
+        public Criteria andSplitFromBetween(Integer value1, Integer value2) {
+            addCriterion("split_from between", value1, value2, "splitFrom");
+            return (Criteria) this;
+        }
+
+        public Criteria andSplitFromNotBetween(Integer value1, Integer value2) {
+            addCriterion("split_from not between", value1, value2, "splitFrom");
+            return (Criteria) this;
+        }
+
         public Criteria andBisNewIsNull() {
             addCriterion("bis_new is null");
             return (Criteria) this;

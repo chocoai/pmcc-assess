@@ -41,6 +41,8 @@ public class SchemeAreaGroup {
 
     private String scopeNotInclude;
 
+    private Integer splitFrom;
+
     private Boolean bisNew;
 
     private Boolean bisEnable;
@@ -207,6 +209,14 @@ public class SchemeAreaGroup {
 
     public void setScopeNotInclude(String scopeNotInclude) {
         this.scopeNotInclude = scopeNotInclude == null ? null : scopeNotInclude.trim();
+    }
+
+    public Integer getSplitFrom() {
+        return splitFrom;
+    }
+
+    public void setSplitFrom(Integer splitFrom) {
+        this.splitFrom = splitFrom;
     }
 
     public Boolean getBisNew() {

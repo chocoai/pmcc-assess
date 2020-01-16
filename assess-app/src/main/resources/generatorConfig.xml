@@ -47,6 +47,9 @@
         <table tableName="tb_scheme_area_group" >
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
+        <table tableName="tb_scheme_judge_object" >
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
 
         <!--<table tableName="tb_md_development" domainObjectName="MdDevelopment">-->
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->

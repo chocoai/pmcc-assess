@@ -12,10 +12,10 @@ import com.copower.pmcc.assess.dto.output.project.scheme.SchemeAreaGroupVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.method.MdIncomeService;
-import com.copower.pmcc.assess.service.project.ProjectInfoService;
-import com.copower.pmcc.assess.service.project.ProjectPhaseService;
-import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
+import com.copower.pmcc.assess.service.project.*;
+import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
 import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
+import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -65,6 +65,12 @@ public class SchemeAreaGroupService {
     private SurveyCommonService surveyCommonService;
     @Autowired
     private ProjectPhaseService projectPhaseService;
+    @Autowired
+    private ProjectPlanService projectPlanService;
+    @Autowired
+    private ProjectWorkStageService projectWorkStageService;
+    @Autowired
+    private ProjectMemberService projectMemberService;
 
     public int add(SchemeAreaGroup schemeAreaGroup) {
         return schemeAreaGroupDao.add(schemeAreaGroup);
@@ -245,7 +251,7 @@ public class SchemeAreaGroupService {
                 }
                 if (CollectionUtils.isNotEmpty(judgeObjectDeclareList)) {//需被移除的估价对象
                     judgeObjectDeclareList.forEach(o -> schemeJudgeObjectService.clearJudgeObjectTask(projectId, o.getId()));
-                    //需要重新排号
+                    schemeJudgeObjectService.reNumberJudgeObject(sameAreaGroup.getId()); //需要重新排号
                 }
             }
         }
@@ -288,7 +294,7 @@ public class SchemeAreaGroupService {
         schemeJudgeObject.setEvaluationArea(declareRecord.getPracticalArea());
         schemeJudgeObject.setPid(0);
         schemeJudgeObject.setBisSplit(false);
-        schemeJudgeObject.setSorting(i);
+        schemeJudgeObject.setSorting(declareRecord.getNumber());
         schemeJudgeObject.setCreator(commonService.thisUserAccount());
         schemeJudgeObjectService.addSchemeJudgeObject(schemeJudgeObject);
         //反写申报数据的区域id
@@ -328,29 +334,80 @@ public class SchemeAreaGroupService {
      * 区域拆分
      *
      * @param areaGroupId
-     * @param judgeObjectIdList
+     * @param judgeObjectIds
      */
     @Transactional(rollbackFor = Exception.class)
-    public void areaGroupSplit(Integer areaGroupId, List<Integer> judgeObjectIdList) throws BusinessException {
-        //1.创建一个新的区域  2.将选择的估价对象迁移到新的区域中 3.根据情况创建出变现税费与受偿款款任务
-        if (areaGroupId == null || CollectionUtils.isEmpty(judgeObjectIdList))
+    public void areaGroupSplit(Integer planId, Integer areaGroupId, List<Integer> judgeObjectIds) throws BusinessException, BpmException {
+        //1.创建一个新的区域  2.将选择的估价对象迁移到新的区域中 3.根据情况创建出变现税费与受偿款款任务（主区域未生成任务则不生成）
+        if (areaGroupId == null || CollectionUtils.isEmpty(judgeObjectIds))
             throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
-        SchemeAreaGroup schemeAreaGroup = getSchemeAreaGroup(areaGroupId);
+        SchemeAreaGroup sourceAreaGroup = getSchemeAreaGroup(areaGroupId);
+        SchemeAreaGroup newAreaGroup = new SchemeAreaGroup();
+        BeanUtils.copyProperties(sourceAreaGroup, newAreaGroup, "id", "creator", "gmtCreated", "gmtModified");
+        newAreaGroup.setSplitFrom(sourceAreaGroup.getId());
+        newAreaGroup.setBisSplit(true);
+        saveAreaGroup(newAreaGroup);
 
+        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectService.getJudgeObjectListByIds(judgeObjectIds);
+        if (CollectionUtils.isNotEmpty(judgeObjectList)) {
+            //1.根据传递的估价对象数据，确定其实际应该移动的所有估价对象
+            //2.再确定是否拆分对象关联的所有的估价对象被选择
+            List<SchemeJudgeObject> judgeObjectListAll = Lists.newArrayList();
+            for (SchemeJudgeObject judgeObject : judgeObjectList) {
+                if (judgeObject.getBisMerge() == Boolean.TRUE) {
+                    judgeObjectListAll.addAll(schemeJudgeObjectService.getChildrenJudgeObject(judgeObject.getId()));
+                }
+                judgeObjectListAll.add(judgeObject);
+            }
+            for (SchemeJudgeObject o : judgeObjectListAll) {
+                if (o.getBisSplit() == Boolean.TRUE) {//找出应该有的拆分数据是否都存在
+                    if (!judgeObjectListAll.contains(o.getSplitFrom()))
+                        throw new BusinessException(String.format("拆分对象%s未包所有拆分对象",schemeJudgeObjectService.getSchemeJudgeObject(o.getSplitFrom()).getName()));
+                    List<SchemeJudgeObject> listBySplitFrom = schemeJudgeObjectService.getJudgeObjectListBySplitFrom(o.getSplitFrom());
+                    List<Integer> list = LangUtils.transform(listBySplitFrom, p -> p.getId());
+                    for (Integer integer : list) {
+                        if (!judgeObjectListAll.contains(integer))
+                            throw new BusinessException(String.format("拆分对象%s未包所有拆分对象",schemeJudgeObjectService.getSchemeJudgeObject(o.getSplitFrom()).getName()));
+                    }
+                }
+                o.setAreaGroupId(newAreaGroup.getId());
+                schemeJudgeObjectService.updateSchemeJudgeObject(o);
+            }
+        }
 
-
-        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(schemeAreaGroup.getProjectId());
-        List<ProjectPhase> judgeProjectPhases = getAreaProjectPhaseListByEntrustPurpose(projectInfo, schemeAreaGroup.getEntrustPurpose());
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(sourceAreaGroup.getProjectId());
+        List<ProjectPhase> judgeProjectPhases = getAreaProjectPhaseListByEntrustPurpose(projectInfo, sourceAreaGroup.getEntrustPurpose());
+        if (sourceAreaGroup.getBisNew() == Boolean.FALSE && CollectionUtils.isNotEmpty(judgeProjectPhases)) {
+            ProjectPlan projectPlan = projectPlanService.getProjectplanById(planId);
+            ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlan.getWorkStageId());
+            String projectManager = projectMemberService.getProjectManager(projectInfo.getId());
+            for (ProjectPhase projectPhase : judgeProjectPhases) {
+                schemeJudgeObjectService.savePlanDetails(projectInfo, projectWorkStage, projectPlan, newAreaGroup.getId(), newAreaGroup, null, newAreaGroup.getAreaName(), projectPhase, projectManager);
+            }
+        }
+        schemeJudgeObjectService.reNumberJudgeObject(sourceAreaGroup.getId());
+        schemeJudgeObjectService.reNumberJudgeObject(newAreaGroup.getId());
     }
 
     /**
-     * 取消区域拆分
+     * 移除拆分的区域
      *
      * @param areaGroupId
      */
     @Transactional(rollbackFor = Exception.class)
-    public void areaGroupSplitCancel(Integer areaGroupId) {
+    public void areaGroupSplitRemove(Integer areaGroupId) {
         //1.删除该区域下任务 2.将估价对象还原到原区域中 3.删除该区域
+        clearAreaGroupTask(Lists.newArrayList(getSchemeAreaGroup(areaGroupId)));
+        SchemeAreaGroup sourceSplitAreaGroup = getSourceSplitAreaGroup(areaGroupId);
+        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectService.getJudgeObjectListByAreaGroupId(areaGroupId);
+        if (CollectionUtils.isNotEmpty(judgeObjectList)) {
+            judgeObjectList.forEach(o -> {
+                o.setAreaGroupId(sourceSplitAreaGroup.getId());
+                schemeJudgeObjectService.updateSchemeJudgeObject(o);
+            });
+        }
+        remove(areaGroupId);
+        schemeJudgeObjectService.reNumberJudgeObject(sourceSplitAreaGroup.getId());
     }
 
     /**
@@ -377,18 +434,11 @@ public class SchemeAreaGroupService {
      * @param areaGroupId
      * @return
      */
-    public SchemeAreaGroup getNotSplitAreaGroup(Integer areaGroupId) {
+    public SchemeAreaGroup getSourceSplitAreaGroup(Integer areaGroupId) {
         SchemeAreaGroup schemeAreaGroup = getSchemeAreaGroup(areaGroupId);
         if (schemeAreaGroup != null && schemeAreaGroup.getBisSplit() == Boolean.FALSE)
             return schemeAreaGroup;
-        SchemeAreaGroup where = new SchemeAreaGroup();
-        where.setProvince(schemeAreaGroup.getProvince());
-        where.setCity(schemeAreaGroup.getCity());
-        where.setDistrict(schemeAreaGroup.getDistrict());
-        where.setBisSplit(false);
-        List<SchemeAreaGroup> schemeAreaGroupList = schemeAreaGroupDao.getSchemeAreaGroupList(where);
-        if (CollectionUtils.isEmpty(schemeAreaGroupList)) return null;
-        return schemeAreaGroupList.get(0);
+        return getSchemeAreaGroup(schemeAreaGroup.getSplitFrom());
     }
 
 
@@ -426,27 +476,22 @@ public class SchemeAreaGroupService {
         newAreaGroup.setBisNew(true);
         newAreaGroup.setCreator(commonService.thisUserAccount());
         schemeAreaGroupDao.add(newAreaGroup);
-        int i = 1;//委估对象重新编号
         for (SchemeAreaGroup oldAreaGroup : schemeAreaGroupList) {
             oldAreaGroup.setPid(newAreaGroup.getId());
             oldAreaGroup.setBisEnable(false);
             schemeAreaGroupDao.update(oldAreaGroup);
-            //委估对象逐一验证，如果已存在合并或拆分的对象，则不允许区域合并
+
             List<SchemeJudgeObject> judgeObjects = schemeJudgeObjectService.getJudgeObjectListByAreaGroupId(oldAreaGroup.getId());
             if (CollectionUtils.isNotEmpty(judgeObjects)) {
                 for (SchemeJudgeObject judgeObject : judgeObjects) {
-                    if (judgeObject.getBisMerge() == Boolean.TRUE || judgeObject.getBisSplit() == Boolean.TRUE)
-                        throw new BusinessException("参与合并的区域中已存在合并或拆分对象");
-                    judgeObject.setOriginalNumber(judgeObject.getNumber());
-                    judgeObject.setNumber(String.valueOf(i));
                     judgeObject.setOriginalAreaGroupId(oldAreaGroup.getId());
                     judgeObject.setAreaGroupId(newAreaGroup.getId());
                     schemeJudgeObjectService.updateSchemeJudgeObject(judgeObject);
-                    i++;
                 }
             }
             clearAreaGroupTask(Lists.newArrayList(oldAreaGroup));
         }
+        schemeJudgeObjectService.reNumberJudgeObject(newAreaGroup.getId());
     }
 
     /**
@@ -481,9 +526,7 @@ public class SchemeAreaGroupService {
                 //清除区域信息 清除区域相关的任务
                 if (schemeAreaGroup.getBisMerge() == Boolean.TRUE)//合并的区域才删除
                     schemeAreaGroupDao.remove(schemeAreaGroup.getId());
-                ProjectPlanDetails where = new ProjectPlanDetails();
-                where.setAreaId(schemeAreaGroup.getId());
-                List<ProjectPlanDetails> planDetailsList = projectPlanDetailsService.getProjectDetails(where);
+                List<ProjectPlanDetails> planDetailsList = projectPlanDetailsService.getProjectPlanDetailsByAreaId(schemeAreaGroup.getId());
                 if (CollectionUtils.isNotEmpty(planDetailsList))
                     planDetailsList.forEach(o -> projectPlanDetailsService.deleteProjectPlanDetails(o));
             }

@@ -32,7 +32,7 @@
             fields: JSON.parse($("#fieldsJSON").val()),
             evaluation: JSON.parse($("#evaluationJSON").val()),
             standardJudges: JSON.parse($("#standardJudgesJSON").val()),
-            projectId: ${projectPlanDetails.projectId},
+            projectId: ${judgeObject.projectId},
             mcId: '${mcId}',
             isLand: '${isLand}',
             judgeObjectId: '${judgeObject.id}',

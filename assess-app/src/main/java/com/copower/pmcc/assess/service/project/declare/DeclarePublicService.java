@@ -8,6 +8,7 @@ import com.copower.pmcc.assess.common.PoiUtils;
 import com.copower.pmcc.assess.common.enums.DeclareTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
+import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareApplyDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.declare.DeclareRealtyHouseCertVo;
@@ -726,23 +727,19 @@ public class DeclarePublicService {
             return false;
         }
         //房产权证号
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(3)))) {
+        if (StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(3)))) {
             String certName = PoiUtils.getCellValue(row.getCell(3));
             declareRealtyHouseCert.setCertName(certName);
-            //编号
-            String numberStr = StringUtils.substringAfterLast(declareRealtyHouseCert.getCertName(), "第");
-            declareRealtyHouseCert.setNumber(generateCommonMethod.getNumber(numberStr));
-            String before = StringUtils.substringBefore(declareRealtyHouseCert.getCertName(), "字");
-            String tempString = before;
-            for (BaseDataDic type : types) {
-                tempString = tempString.replace(type.getName(), "");
-            }
-            declareRealtyHouseCert.setLocation(tempString);
-            tempString = before.replace(tempString, "");
-            for (BaseDataDic type : types) {
-                if (type.getName().equals(tempString)) {
-                    declareRealtyHouseCert.setType(type.getId().toString());
-                }
+            declareRealtyHouseCert.setNumber(generateCommonMethod.getNumber(certName));//编号
+            if (certName.contains(BaseConstant.ASSESS_REALTY_HOUSE_CERT_RIGHT + BaseConstant.ASSESS_REALTY_HOUSE_CERT_CHECK)) {
+                declareRealtyHouseCert.setType(String.valueOf(baseDataDicService.getDataDicIdByName(types, BaseConstant.ASSESS_REALTY_HOUSE_CERT_RIGHT + BaseConstant.ASSESS_REALTY_HOUSE_CERT_CHECK)));
+                declareRealtyHouseCert.setLocation(StringUtils.substringBefore(certName,BaseConstant.ASSESS_REALTY_HOUSE_CERT_RIGHT + BaseConstant.ASSESS_REALTY_HOUSE_CERT_CHECK));
+            } else if (certName.contains(BaseConstant.ASSESS_REALTY_HOUSE_CERT_RIGHT)) {
+                declareRealtyHouseCert.setType(String.valueOf(baseDataDicService.getDataDicIdByName(types, BaseConstant.ASSESS_REALTY_HOUSE_CERT_RIGHT)));
+                declareRealtyHouseCert.setLocation(StringUtils.substringBefore(certName,BaseConstant.ASSESS_REALTY_HOUSE_CERT_RIGHT));
+            } else if (certName.contains(BaseConstant.ASSESS_REALTY_HOUSE_CERT_CHECK)) {
+                declareRealtyHouseCert.setType(String.valueOf(baseDataDicService.getDataDicIdByName(types, BaseConstant.ASSESS_REALTY_HOUSE_CERT_CHECK)));
+                declareRealtyHouseCert.setLocation(StringUtils.substringBefore(certName, BaseConstant.ASSESS_REALTY_HOUSE_CERT_CHECK));
             }
         } else {
             builder.append(String.format("\n第%s行异常：房产权证号必须填写", i));
