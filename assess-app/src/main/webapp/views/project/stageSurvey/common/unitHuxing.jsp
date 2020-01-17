@@ -16,6 +16,9 @@
         <button type="button" class="btn btn-success" onclick="unitHuxing.prototype.showModel()"
                 data-toggle="modal" href="#divBox"> 新增
         </button>
+        <c:if test="${not empty declareRecord}">
+            <div type="button" class="btn btn-primary" onclick="unitHuxing.prototype.importHouseBtn()"> 导入数据</div>
+        </c:if>
         <table class="table table-bordered" id="UnitHuxingList">
             <!-- cerare document add ajax data-->
         </table>
@@ -222,6 +225,7 @@
         </div>
     </div>
 </div>
-
+<input type="file" id="ajaxFileUploadHouse" name="file" style="display: none;"
+       onchange="unitHuxing.prototype.importHouse();">
 </html>
 
