@@ -297,7 +297,7 @@
                     if (declareCommon.isNotBlank(data)) {
                         $('#' + declareApprovalFun.houseConfig.son.declareRealtyLandCert.box).find("#" + commonDeclareApprovalModel.config.land.handleId).remove();
                         $('#' + declareApprovalFun.houseConfig.son.declareRealtyLandCert.box).find(".panel-body").append(commonDeclareApprovalModel.land.getHtml());
-                        declareCommon.initLand(data, $("#" + declareApprovalFun.houseConfig.son.declareRealtyLandCert.frm), [declareCommon.config.land.fileId], null, false);
+                        declareCommon.initLand(data, $("#" + declareApprovalFun.houseConfig.son.declareRealtyLandCert.frm), [declareCommon.config.house.landFileId], null, false);
                         $('#' + declareApprovalFun.houseConfig.son.declareRealtyLandCert.box).modal("show");
                     } else {
                         toastr.success('关联的土地证数据已经被删除!');
@@ -790,6 +790,14 @@
                             <div class="panel-body">
 
                             </div>
+
+                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                土地证
+                            </label>
+                            <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
+                                <div id="_declareRealtyHouseCert_land_FileId"></div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
