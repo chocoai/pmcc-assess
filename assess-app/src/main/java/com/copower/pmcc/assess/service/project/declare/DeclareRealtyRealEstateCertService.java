@@ -106,8 +106,6 @@ public class DeclareRealtyRealEstateCertService {
         int successCount = 0;
         //工作表的第一行
         row = sheet.getRow(0);
-        //总列数
-        int colLength = row.getPhysicalNumberOfCells() != 0 ? row.getPhysicalNumberOfCells() : row.getLastCellNum();
         //总行数
         int rowLength = sheet.getPhysicalNumberOfRows() != 0 ? sheet.getPhysicalNumberOfRows() : sheet.getLastRowNum();
         rowLength = rowLength - startRowNumber;
@@ -141,10 +139,10 @@ public class DeclareRealtyRealEstateCertService {
                 declareBuildEngineeringAndEquipmentCenterService.saveAndUpdateDeclareBuildEngineeringAndEquipmentCenter(center);
                 successCount++;
             } catch (Exception e) {
-                builder.append(String.format("\n第%s行异常：%s", i, e.getMessage()));
+                builder.append(String.format("\n第%s行异常，请检查数据格式", i));
             }
         }
-        return String.format("数据总条数%s，成功%s，失败%s。%s", rowLength, successCount, rowLength - successCount, builder.toString());
+        return String.format("数据总条数%s，成功%s，失败%s。\n%s", rowLength, successCount, rowLength - successCount, builder.toString());
     }
 
     public Integer saveAndUpdateDeclareRealtyRealEstateCert(DeclareRealtyRealEstateCert declareRealtyRealEstateCert) {
