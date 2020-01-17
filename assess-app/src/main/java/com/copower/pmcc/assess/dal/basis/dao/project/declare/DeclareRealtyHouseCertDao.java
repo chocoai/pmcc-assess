@@ -69,4 +69,10 @@ public class DeclareRealtyHouseCertDao {
         example.setOrderByClause("auto_init_number,id");
         return declareRealtyHouseCertMapper.selectByExample(example);
     }
+
+    public Integer getCountByPlanDetailsId(Integer planDetailsId){
+        DeclareRealtyHouseCertExample example = new DeclareRealtyHouseCertExample();
+        example.createCriteria().andPlanDetailsIdEqualTo(planDetailsId);
+        return declareRealtyHouseCertMapper.countByExample(example);
+    }
 }

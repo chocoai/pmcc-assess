@@ -77,7 +77,7 @@ public class DeclareRealtyHouseCertService {
     private ProjectPlanDetailsService projectPlanDetailsService;
 
 
-    public void attachmentAutomatedWarrants(DeclarePublicService.AutomatedWarrants automatedWarrants)throws Exception{
+    public void attachmentAutomatedWarrants(DeclarePublicService.AutomatedWarrants automatedWarrants) throws Exception {
         declarePublicService.attachmentAutomatedWarrants(automatedWarrants);
     }
 
@@ -256,10 +256,10 @@ public class DeclareRealtyHouseCertService {
     public Integer saveAndUpdateDeclareRealtyHouseCert(DeclareRealtyHouseCert declareRealtyHouseCert, boolean updateNull) {
         if (declareRealtyHouseCert.getId() == null) {
             declareRealtyHouseCert.setCreator(commonService.thisUserAccount());
-            Integer id = null;
-            id = declareRealtyHouseCertDao.addDeclareRealtyHouseCert(declareRealtyHouseCert);
-            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class), id);
-            return id;
+            declareRealtyHouseCert.setAutoInitNumber(declareRealtyHouseCertDao.getCountByPlanDetailsId(declareRealtyHouseCert.getPlanDetailsId()) + 1);
+            declareRealtyHouseCertDao.addDeclareRealtyHouseCert(declareRealtyHouseCert);
+            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class), declareRealtyHouseCert.getId());
+            return declareRealtyHouseCert.getId();
         } else {
             declareRealtyHouseCertDao.updateDeclareRealtyHouseCert(declareRealtyHouseCert, updateNull);
             updateDeclareRealtyHouseCertAndUpdateDeclareRecordOrJudgeObject(declareRealtyHouseCert);
@@ -490,7 +490,7 @@ public class DeclareRealtyHouseCertService {
                 if (baseDataDic != null) {
                     if (StringUtils.isNotEmpty(baseDataDic.getRemark())) {
                         declareRecord.setLandRightType(baseDataDic.getRemark());
-                    }else {
+                    } else {
                         declareRecord.setLandRightType(baseDataDic.getName());
                     }
                 }
