@@ -68,7 +68,7 @@ var unitDecorate;
             if (!$("#" + unitDecorate.prototype.config().frm).valid()) {
                 return false;
             }
-            var data = formParams(unitDecorate.prototype.config().frm,true);
+            var data = formParams(unitDecorate.prototype.config().frm, true);
             data.unitId = unitCommon.getUnitId();
             $.ajax({
                 url: getContextPath() + "/basicUnitDecorate/saveAndUpdateBasicUnitDecorate",
@@ -163,6 +163,7 @@ var unitHuxing;
                     str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="unitHuxing.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
                     str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="unitHuxing.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
                     str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="单价调查" onclick="unitHuxingPrice.prototype.showTableModel(' + row.id + ',\'tb_List\')"><i class="fa fa-arrow-right fa-white"></i></a>';
+                    str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="下载房屋模板" onclick="unitHuxing.prototype.getAttachmentId(' + row.id + ',\'tb_List\')">房屋模板</a>';
                     str += '</div>';
                     return str;
                 }
@@ -212,7 +213,7 @@ var unitHuxing;
                 return false;
             }
 
-            var data = formParams(unitHuxing.prototype.config().frm,true);
+            var data = formParams(unitHuxing.prototype.config().frm, true);
             data.unitId = unitCommon.getUnitId();
             data.houseCategory = unitHuxing.prototype.rule("get", data);
             var key = $("#" + unitHuxing.prototype.config().frm).find('select.type').find('option:selected').attr('key');
@@ -400,6 +401,47 @@ var unitHuxing;
             AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseSpatialDistribution, item.spatialDistribution, function (html, data) {
                 $("#" + unitHuxing.prototype.config().frm).find('select.spatialDistribution').empty().html(html).trigger('change');
             });
+        },
+        //下载附件模板
+        getAttachmentId: function (tableId) {
+            $.ajax({
+                url: getContextPath() + "/basicUnitHuxing/getAttachmentId",
+                type: "get",
+                data: {tableId: tableId},
+                dataType: "json",
+                success: function (result) {
+                    if (result.ret) {
+                        window.open(FileUtils.config.downloadUrl + result.data);
+                    }
+                }
+            })
+        },
+        importHouseBtn: function () {
+            $('#ajaxFileUploadHouse').val('').trigger('click');
+        },
+        importHouse: function () {
+            Loading.progressShow();
+            $.ajaxFileUpload({
+                type: "POST",
+                url: getContextPath() + "/basicUnitHuxing/importHouse",
+                data: {
+                    unitId: unitCommon.getUnitId()
+                },//要传到后台的参数，没有可以不写
+                secureuri: false,//是否启用安全提交，默认为false
+                fileElementId: 'ajaxFileUploadHouse',//文件选择框的id属性
+                dataType: 'json',//服务器返回的格式
+                async: false,
+                success: function (result) {
+                    Loading.progressHide();
+                    if (result.ret) {
+                        Alert(result.data);
+                    }
+                },
+                error: function (result, status, e) {
+                    Loading.progressHide();
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            });
         }
     }
 
@@ -428,8 +470,8 @@ var unitHuxingPrice;
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
-                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="unitHuxingPrice.prototype.getAndInit(' + row.id + ',\''+unitHuxingId+'\',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
-                    str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="unitHuxingPrice.prototype.removeData(' + row.id + ',\''+unitHuxingId+'\',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
+                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="unitHuxingPrice.prototype.getAndInit(' + row.id + ',\'' + unitHuxingId + '\',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
+                    str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="unitHuxingPrice.prototype.removeData(' + row.id + ',\'' + unitHuxingId + '\',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
                     str += '</div>';
                     return str;
                 }
@@ -446,7 +488,7 @@ var unitHuxingPrice;
                 }
             });
         },
-        removeData: function (id,unitHuxingId) {
+        removeData: function (id, unitHuxingId) {
             $.ajax({
                 url: getContextPath() + "/basicEstateInvestigation/deleteBasicEstateInvestigation",
                 type: "post",
@@ -485,7 +527,7 @@ var unitHuxingPrice;
                 return false;
             }
             var unitHuxingId = $("#" + unitHuxingPrice.prototype.config().frm).find("input[name='huxingId']").val()
-            var data = formParams(unitHuxingPrice.prototype.config().frm,true);
+            var data = formParams(unitHuxingPrice.prototype.config().frm, true);
             $.ajax({
                 url: getContextPath() + "/basicEstateInvestigation/saveAndUpdateBasicEstateInvestigation",
                 type: "post",
@@ -512,7 +554,7 @@ var unitHuxingPrice;
             }
             return false;
         },
-        getAndInit: function (id,unitHuxingId) {
+        getAndInit: function (id, unitHuxingId) {
             $.ajax({
                 url: getContextPath() + "/basicEstateInvestigation/getBasicEstateInvestigationById",
                 type: "post",
@@ -522,7 +564,7 @@ var unitHuxingPrice;
                     if (result.ret) {
                         var data = result.data;
                         if (unitHuxingPrice.prototype.isNotNull(data)) {
-                            unitHuxingPrice.prototype.init(data,unitHuxingId);
+                            unitHuxingPrice.prototype.init(data, unitHuxingId);
                         } else {
                             unitHuxingPrice.prototype.init({});
                         }
@@ -534,7 +576,7 @@ var unitHuxingPrice;
                 }
             })
         },
-        init: function (item,unitHuxingId) {
+        init: function (item, unitHuxingId) {
             $("#" + unitHuxingPrice.prototype.config().frm).clearAll();
             $("#" + unitHuxingPrice.prototype.config().frm).find("input[name='huxingId']").val(unitHuxingId);
             $("#" + unitHuxingPrice.prototype.config().frm).initForm(item);
@@ -542,29 +584,29 @@ var unitHuxingPrice;
                 $("#" + unitHuxingPrice.prototype.config().frm).find('select.planningUse').empty().html(html).trigger('change');
             });
         },
-        importData : function () {
+        importData: function () {
             var unitHuxingId = $("#" + unitHuxingPrice.prototype.config().tableFrm).find("input[name='unitHuxingId']").val();
             $.ajaxFileUpload({
-            type: "POST",
-            url: getContextPath() + "/basicEstateInvestigation/importData",
-            data: {
-                huxingId: unitHuxingId
-            },//要传到后台的参数，没有可以不写
-            secureuri: false,//是否启用安全提交，默认为false
-            fileElementId: 'ajaxFileUpload',//文件选择框的id属性
-            dataType: 'json',//服务器返回的格式
-            async: false,
-            success: function (result) {
-                if (result.ret) {
-                    unitHuxingPrice.prototype.loadDataDicList(unitHuxingId);
-                    Alert(result.data);
+                type: "POST",
+                url: getContextPath() + "/basicEstateInvestigation/importData",
+                data: {
+                    huxingId: unitHuxingId
+                },//要传到后台的参数，没有可以不写
+                secureuri: false,//是否启用安全提交，默认为false
+                fileElementId: 'ajaxFileUpload',//文件选择框的id属性
+                dataType: 'json',//服务器返回的格式
+                async: false,
+                success: function (result) {
+                    if (result.ret) {
+                        unitHuxingPrice.prototype.loadDataDicList(unitHuxingId);
+                        Alert(result.data);
+                    }
+                },
+                error: function (result, status, e) {
+                    Loading.progressHide();
+                    Alert("调用服务端方法失败，失败原因:" + result);
                 }
-            },
-            error: function (result, status, e) {
-                Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + result);
-            }
-        });
+            });
         }
     }
 
@@ -641,7 +683,7 @@ var unitElevator;
             if (!$("#" + unitElevator.prototype.config().frm).valid()) {
                 return false;
             }
-            var data = formParams(unitElevator.prototype.config().frm,true);
+            var data = formParams(unitElevator.prototype.config().frm, true);
             data.unitId = unitCommon.getUnitId();
             $.ajax({
                 url: getContextPath() + "/basicUnitElevator/saveAndUpdateBasicUnitElevator",
